@@ -5,8 +5,11 @@
  * @var $outputs
  * @var $bSum
  * @var $bAnswer
+ * @var $nbcols
  */
 ?>
+<!-- _statisticsoutput_header -->
+<div class="col-lg-<?php echo $nbcols; ?> sol-sm-12">
 <table class='statisticstable table table-bordered'>
     <thead>
         <tr class='success'>
@@ -26,21 +29,23 @@
         </tr>
         <!-- width depend on how much items... -->
         <tr>
-            <?php if($bAnswer): ?>
+            <th width='' align='center' >
+                <strong>
+                    <?php eT("Answer");?>
+                </strong>
+            </th>
+
+            <?php if ($bShowCount  = true): ?>
                 <th width='' align='center' >
-                    <strong>
-                        <?php eT("Answer");?>
-                    </strong>
+                    <strong><?php eT("Count"); ?></strong>
                 </th>
-            <?php endif; ?>
+            <?php endif;?>
 
-            <th width='' align='center' >
-                <strong><?php eT("Count"); ?></strong>
-            </th>
-
-            <th width='' align='center' >
-                <strong><?php eT("Percentage");?></strong>
-            </th>
+            <?php if ($bShowPercentage  = true): ?>
+                <th width='' align='center' >
+                    <strong><?php eT("Percentage");?></strong>
+                </th>
+            <?php endif;?>
 
             <?php if($bSum): ?>
                 <th width='' align='center' >
@@ -51,3 +56,4 @@
             <?php endif; ?>
         </tr>
     </thead>
+<!-- end of _statisticsoutput_header -->

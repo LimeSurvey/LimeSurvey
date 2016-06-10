@@ -191,7 +191,7 @@ class ExpressionManager {
 'ltrim' => array('ltrim', 'ltrim', gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://php.net/ltrim', 1,2),
 'max' => array('max', 'Math.max', gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://php.net/max', -2),
 'min' => array('min', 'Math.min', gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://php.net/min', -2),
-'mktime' => array('mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0,1,2,3,4,5,6),
+'mktime' => array('exprmgr_mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0,1,2,3,4,5,6),
 'nl2br' => array('nl2br', 'nl2br', gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://php.net/nl2br', 1,1),
 'number_format' => array('number_format', 'number_format', gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://php.net/number-format', 1),
 'pi' => array('pi', 'LEMpi', gT('Get value of pi'), 'number pi()', '', 0),
@@ -269,21 +269,24 @@ class ExpressionManager {
             $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
+        /* When value come from DB : it's set to 1.000000 (DECIMAL) : must be fixed see #11163. Response::model() must fix this . or not ? */
+        /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
+        $arg1[0]=($arg1[2]=="NUMBER" && strpos($arg1[0],".")) ? rtrim(rtrim($arg1[0],"0"),".") : $arg1[0];
+        $arg2[0]=($arg2[2]=="NUMBER" && strpos($arg2[0],".")) ? rtrim(rtrim($arg2[0],"0"),".") : $arg2[0];
+        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0]))==strval($arg1[0]);
+        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0]))==strval($arg2[0]);
 
-        $bNumericArg1 = (is_numeric($arg1[0]) || $arg1[0] == '');
-        $bNumericArg2 = (is_numeric($arg2[0]) || $arg2[0] == '');
-
-        $bStringArg1 = (!$bNumericArg1 || $arg1[0] == '');
-        $bStringArg2 = (!$bNumericArg2 || $arg2[0] == '');
+        $bStringArg1 = !$arg1[0] || !$bNumericArg1;
+        $bStringArg2 = !$arg2[0] || !$bNumericArg2;
 
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType=(!$bBothNumeric && !$bBothString);
 
-        // Set bBothString if one is forced to be string, only if bith can be numeric. Mimic JS and PHO
+        // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
         // Not sure if needed to test if [2] is set. : TODO review
         if($bBothNumeric){
-            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
+            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMBER or WORD : DQ and DS is string entered by user, STRING is a result of a String function
             if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
             {
                 $bBothNumeric=false;
@@ -341,7 +344,7 @@ class ExpressionManager {
                     $result = array(false,$token[1],'NUMBER');
                 }
                 else {
-                    // Need this explicit comparison in order to be in agreement with JavaScript
+                    // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(false,$token[1],'NUMBER');
                     }
@@ -1627,8 +1630,15 @@ class ExpressionManager {
         }
         if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
         {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
+            /*
+            $oAdminTheme = AdminTheme::getInstance();
+            $oAdminTheme->registerCssFile( 'PUBLIC', 'expressions.css' );
+            $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'expression.js');
+            */
+
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "expressions.css" );
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+
         }
         $sClass='em-expression';
         $sClass.=($bHaveError)?" em-haveerror":"";
@@ -2105,6 +2115,14 @@ class ExpressionManager {
                     $this->RDP_AddError(sprintf(gT("Function does not support %s arguments"), $argsPassed).' '
                             . sprintf(gT("Function supports this many arguments, where -1=unlimited: %s"), implode(',', $numArgsAllowed)), $funcNameToken);
                     return false;
+                }
+                if(function_exists("geterrors_".$funcName))
+                {
+                    if($sError=call_user_func_array("geterrors_".$funcName,$params))
+                    {
+                        $this->RDP_AddError($sError,$funcNameToken);
+                        return false;
+                    }
                 }
             }
             catch (Exception $e)
@@ -2778,6 +2796,38 @@ function exprmgr_log($args)
     if(floatval($base)<=0){return NAN;}
     return log($number,$base);
 }
+/**
+ * Get Unix timestamp for a date : false if parameters is invalid.
+ * PHP 5.3.3 send E_STRICT notice without param, then replace by time if needed
+ * @param int $hour
+ * @param int $minute
+ * @param int $second
+ * @param int $month
+ * @param int $day
+ * @param int $year
+ * @return int|boolean
+ */
+function exprmgr_mktime($hour=null,$minute=null,$second=null,$month=null,$day=null,$year=null)
+{
+    $iNumArg=count(array_filter(array($hour,$minute,$second,$month,$day,$year),create_function('$a','return $a !== null;')));
+    switch($iNumArg)
+    {
+        case 0:
+            return time();
+        case 1:
+            return mktime($hour);
+        case 2:
+            return mktime($hour,$minute);
+        case 3:
+            return mktime($hour,$minute,$second);
+        case 4:
+            return mktime($hour,$minute,$second,$month);
+        case 5:
+            return mktime($hour,$minute,$second,$month,$day);
+        default:
+            return mktime($hour,$minute,$second,$month,$day,$year);
+    }
+}
 
 /**
  * Join together $args[N]
@@ -2871,22 +2921,34 @@ function expr_mgr_htmlspecialchars_decode($string)
 }
 
 /**
- * Return true of $input matches the regular expression $pattern
- * @param <type> $pattern
- * @param <type> $input
- * @return <type>
+ * Return true if $input matches the regular expression $pattern
+ * @param string $pattern
+ * @param string $input
+ * @return boolean
  */
 function exprmgr_regexMatch($pattern, $input)
 {
-    try {
-        // 'u' is the regexp modifier for unicode so that non-ASCII string will nbe validated properly
-        $result = @preg_match($pattern.'u', $input);
-    } catch (Exception $e) {
-        $result = false;
-        // How should errors be logged?
-        echo sprintf(gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
+    // Test the regexp pattern agains null : must always return 0, false if error happen
+    if(@preg_match($pattern.'u', null) === false)
+    {
+        return false; // invalid : true or false ?
     }
-    return $result;
+    // 'u' is the regexp modifier for unicode so that non-ASCII string will be validated properly
+    return preg_match($pattern.'u', $input);
+}
+/**
+ * Return error information from pattern of regular expression $pattern
+ * @param string $pattern
+ * @param string $input
+ * @return string|null
+ */
+function geterrors_exprmgr_regexMatch($pattern, $input)
+{
+    // @todo : use set_error_handler to get the preg_last_error
+    if(@preg_match($pattern.'u', null) === false)
+    {
+        return sprintf(gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
+    }
 }
 
 /**

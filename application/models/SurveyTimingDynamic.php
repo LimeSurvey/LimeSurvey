@@ -155,6 +155,60 @@ class SurveyTimingDynamic extends LSActiveRecord
             return false;
         }
     }
-}
 
-?>
+    /**
+     * Search function, used by TbGridView
+     *
+     * @return DataProvider
+     */
+    public function search($iSurveyID, $language)
+    {
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+
+        $oCriteria = new CdbCriteria();
+        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyID}}} s ON t.id=s.id";
+        $oCriteria->condition = 'submitdate IS NOT NULL';
+        $oCriteria->order = "s.id " . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
+        //$oCriteria->offset = $start;
+        //$oCriteria->limit = $limit;
+
+        $dataProvider = new CActiveDataProvider('SurveyTimingDynamic', array(
+            //'sort'=>$sort,
+            'criteria' => $oCriteria,
+            'pagination' => array(
+                'pageSize' => $pageSize,
+            ),
+        ));
+
+        return $dataProvider;
+    }
+
+    /**
+     * Buttons for actions in the grid view
+     *
+     * @return string HTML
+     */
+    public function getButtons()
+    {
+        // View details
+        $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/" . self::$sid . "/id/" . $this->id);
+        $buttons = '<a class="btn btn-xs btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="'.gT('View response details').'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+
+        // Edit
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update'))
+        {
+            $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
+            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="'.gT('Edit this response').'"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        }
+
+        // Delete
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete'))
+        {
+            $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
+            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="' . $deleteUrl . '" role="button" data-toggle="modal" data-tooltip="true" title="'.gT('Delete this response').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
+        }
+
+        return $buttons;
+    }
+
+}

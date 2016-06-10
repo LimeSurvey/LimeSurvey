@@ -23,6 +23,10 @@
             'flash' => $sAllowedExtensions,
             'images' => $sAllowedExtensions
         );
+        if (Yii::app()->getRequest()->enableCsrfValidation && !empty(Yii::app()->getRequest()->csrfCookie))
+        {
+            $_SESSION['KCFINDER']['cookieDomain'] = Yii::app()->getRequest()->csrfCookie->domain;
+        }
 
         if (Yii::app()->getConfig('demoMode') === false &&
                 isset(Yii::app()->session['loginID']) &&
@@ -200,7 +204,6 @@
 
     function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl')."htmleditor.css");
         $htmlcode = '';
         $imgopts = '';
         $toolbarname = 'inline';
@@ -261,9 +264,7 @@
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsAction : \"".$action."\"
         ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
-        ,width:'660'
-        ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'
-        ,smiley_path : \"".Yii::app()->getConfig('imageurl')."/emoticons/texteditor/\"\n"
+        ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
         . $sFileBrowserAvailable
         . $htmlformatoption
         . $toolbaroption

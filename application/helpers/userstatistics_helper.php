@@ -2136,11 +2136,11 @@ class userstatistics_helper {
                 //edit labels and put them into another array
                 if ((incompleteAnsFilterState() != "complete"))
                 {
-                    $lbl[wordwrap(flattenText(gT("Not completed or Not displayed")), 20, "\n")] = $TotalIncomplete;
+                    $lbl[gT("Not completed or Not displayed")] = $TotalIncomplete;
                 }
                 else
                 {
-                    $lbl[wordwrap(flattenText(gT("Not displayed")), 20, "\n")] = $TotalIncomplete;
+                    $lbl[gT("Not displayed")] = $TotalIncomplete;
                 }
             }    //end else -> noncompleted NOT checked
         }

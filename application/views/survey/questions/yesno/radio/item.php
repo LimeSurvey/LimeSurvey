@@ -15,7 +15,7 @@
 <ul class="list-unstyled answers-list radio-list">
 
     <!-- Yes -->
-    <li class="answer-item radio-item">
+    <li class="answer-item radio-item radio">
         <input
             class="radio"
             type="radio"
@@ -24,15 +24,21 @@
             value="Y"
             <?php echo $yChecked; ?>
             onclick="<?php echo $checkconditionFunction; ?>"
+            aria-labelledby="label-answer<?php echo $name;?>Y"
         />
 
-        <label for="answer<?php echo $name;?>Y" class="answertext">
+        <label for="answer<?php echo $name;?>Y" class="answertext"></label>
+        <!--
+             The label text is provided inside a div,
+             To respect the global HTML flow of other question types
+        -->
+        <div class="label-text label-clickable" id="label-answer<?php echo $name;?>Y">
             <?php eT('Yes');?>
-        </label>
+        </div>
     </li>
 
     <!-- No -->
-    <li class="answer-item radio-item">
+    <li class="answer-item radio-item  radio">
         <input
             class="radio"
             type="radio"
@@ -41,16 +47,22 @@
             value="N"
             <?php echo $nChecked; ?>
             onclick="<?php echo $checkconditionFunction;?>"
+            aria-labelledby="label-answer<?php echo $name;?>N"
         />
 
-        <label for="answer<?php echo $name;?>N" class="answertext" >
+        <label for="answer<?php echo $name;?>N" class="answertext" ></label>
+        <!--
+             The label text is provided inside a div,
+             To respect the global HTML flow of other question types
+        -->
+        <div class="label-text label-clickable" id="label-answer<?php echo $name;?>N">
             <?php eT('No');?>
-        </label>
+        </div>
     </li>
 
     <!-- No answer -->
     <?php if($noAnswer):?>
-        <li class="answer-item radio-item noanswer-item">
+        <li class="answer-item radio-item noanswer-item  radio">
             <input
                 class="radio"
                 type="radio"
@@ -59,18 +71,24 @@
                 value=""
                 <?php echo $naChecked; ?>
                 onclick="<?php echo $checkconditionFunction;?>"
+                aria-labelledby="label-answer<?php echo $name;?>"
             />
 
-            <label for="answer<?php echo $name;?>" class="answertext">
+            <label for="answer<?php echo $name;?>" class="answertext"></label>
+            <!--
+                 The label text is provided inside a div,
+                 To respect the global HTML flow of other question types
+            -->
+            <div class="label-text label-clickable" id="label-answer<?php echo $name;?>">
                 <?php eT('No answer');?>
-            </label>
+            </div>
         </li>
     <?php endif;?>
-
-    <input
-        type="hidden"
-        name="java<?php echo $name;?>"
-        id="java<?php echo $name;?>"
-        value="<?php echo $value;?>"
-    />
 </ul>
+
+<input
+    type="hidden"
+    name="java<?php echo $name;?>"
+    id="java<?php echo $name;?>"
+    value="<?php echo $value;?>"
+/>

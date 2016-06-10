@@ -17,8 +17,9 @@
     $data = array('aTabTitles'=>$aTabTitles, 'aTabContents'=>$aTabContents, 'has_permissions'=>$has_permissions, 'surveyid'=>$surveyid,'surveyls_language'=>$surveyls_language);
 ?>
 
-<div class="side-body" id="edit-survey-text-element">
+<div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
+        <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Edit survey text elements and settings"))); ?>
         <h3 class="pagetitle"><?php echo gT("Edit survey text elements and settings"); ?></h3>
 
         <!-- Edition container -->
@@ -38,8 +39,18 @@
                             <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$settings_data)); ?>
                         </div>
                     </div>
+
+                    <!--
+                        This hidden button is now necessary to save the form.
+                        Before, there where several nested forms in Global settings, which is invalid in html
+                        The submit button from the "import ressources" was submitting the whole form.
+                        Now, the "import ressources" is outside the global form, in a modal ( subview/import_ressources_modal.php)
+                        So the globalsetting form needs its own submit button
+                    -->
+                    <input type='submit' class="hide" id="globalsetting_submit" />
                 </form>
             </div>
-        </div>
 
+            <?php $this->renderPartial('/admin/survey/subview/import_ressources_modal', $settings_data); ?>
+        </div>
 </div>

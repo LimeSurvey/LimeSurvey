@@ -36,7 +36,10 @@
 
         <!-- Right content -->
         <div class="col-sm-4">
+        <?php if(Permission::model()->hasGlobalPermission('labelsets','edit'))
+        { ?>
             <?php $this->renderPartial("./labels/_labelviewrightcontent_view", array('lid'=>$lid)); ?>
+        <?php }; ?>
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 <!-- Import.php -->
-<div class="side-body">
-    <h3><?php eT("Import tokens from CSV file"); ?></h3>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Import survey participants from CSV file"))); ?>
+    <h3><?php eT("Import survey participants from CSV file"); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -13,8 +14,8 @@
                     <h2>gT("Token file upload")</h2>
                     <p class="lead danger"><?php gT("Error"); ?></p>
                     <p><?php echo $sError; ?></p>
-                </div>                
+                </div>
             <?php endif;?>
         </div>
     </div>
-</div>    
+</div>

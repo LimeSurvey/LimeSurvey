@@ -1,5 +1,4 @@
 <script type="text/javascript">
-    var adminlanguage='<?php echo $codelanguage; ?>';
     var highlighter='<?php echo $highlighter; ?>';
 </script>
 <script type='text/javascript'>
@@ -127,8 +126,18 @@
                 <!-- All buttons disabled -->
 
                 <!-- import disabled -->
-                <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                <?php
+
+                if (!function_exists("zip_open"))
+                {
+                    $sMessage=gT("You cannot upload templates because you do not have the required ZIP library installed in PHP.");
+                }
+                else
+                {
+                    $sMessage=gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/templates in order to enable this option.");
+                }
+                if(Permission::model()->hasGlobalPermission('templates','import')):?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-import text-muted"></span>
                             <?php eT("Import"); ?>
@@ -138,7 +147,7 @@
 
                 <!-- export disabled -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-export text-muted"></span>
                             <?php eT("Export"); ?>
@@ -148,7 +157,7 @@
 
                 <!-- create disabled -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-copy text-muted"></span>
                             <?php eT("Copy"); ?>
@@ -179,20 +188,20 @@
 
         <!-- Right Menu -->
         <div class="col-md-7 text-right form-inline">
-            <div class="form-group">
-                <label for='templatedir'><?php eT("Template:"); ?></label>
-                <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
-                    <?php echo templateoptions($templates, $templatename); ?>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for='template'><?php eT("Template:"); ?></label>
+                    <select class="listboxtemplates form-control" id='template' name='template' onchange="javascript: $('.templatename').val(this.value); $('#general').submit();">
+                        <?php
+                        echo templateoptions($templates, $templatename); ?>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
-                <select class="listboxtemplates form-control" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/screenredirect/editfile/".$editfile."/templatename/".$templatename); ?>/screenname/'+escape(this.value), '_top')">
-                    <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
-                </select>
-            </div>
-
+                <div class="form-group">
+                    <label for='screen'><?php eT("Screen:"); ?></label>
+                    <?php echo CHtml::dropDownList('screen',$screenname,$screenselect,array(
+                    'class'=>'listboxtemplates form-control',
+                    'onchange'=>"javascript: $('.screenname').val(this.value); $('#general').submit();"));?>
+                </div>
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="glyphicon glyphicon-ok" ></span>
@@ -212,9 +221,10 @@
                 <a class="btn btn-default" href="<?php echo $this->createUrl("/admin"); ?>" role="button">
                     <span class="glyphicon glyphicon-backward" ></span>
                     &nbsp;&nbsp;
-                    <?php eT("Return to admin panel"); ?>
+                    <?php eT("Return to admin home"); ?>
                 </a>
             <?php endif;?>
+
         </div>
     </div>
 </div>
@@ -233,7 +243,8 @@
               <input type='hidden' name='action' value='templateupload' />
                   <div  class="form-group">
                       <label for='the_file'><?php eT("Select template ZIP file:") ?></label>
-                      <input id='the_file' name='the_file' type="file" />
+                      <input id='the_file' name='the_file' type="file" accept='.zip' />
+                      <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
                   </div>
           </div>
           <div class="modal-footer">

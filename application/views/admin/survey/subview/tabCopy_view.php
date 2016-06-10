@@ -38,7 +38,7 @@
         <!-- New survey id -->
         <div class="form-group">
             <label class="col-sm-3 control-label" for='copysurveyid'><?php echo  eT("New survey id:"); ?> </label>
-            <div class="col-sm-5">
+            <div class="col-sm-1">
                 <input  type='text' id='copysurveyid' size='82' maxlength='6' name='copysurveyid' value='' class="form-control" />
             </div>
             <div class="col-sm-2">
@@ -50,9 +50,15 @@
 
         <!-- Convert resource links -->
         <div class="form-group">
-            <label class="col-sm-3 control-label" for='copysurveytranslinksfields'><?php echo  eT("Convert resource links and INSERTANS fields?"); ?> </label>
+            <label class="col-sm-3 control-label" for='copysurveytranslinksfields'><?php echo  eT("Convert resource links and expression fields?"); ?> </label>
             <div class="col-sm-5">
-                <input id='copysurveytranslinksfields' name="copysurveytranslinksfields" type="checkbox" checked='checked'/>
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'copysurveytranslinksfields',
+                    'value'=> "1",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
             </div>
         </div>
 
@@ -60,7 +66,13 @@
         <div class="form-group">
             <label class="col-sm-3 control-label" for='copysurveyexcludequotas'><?php echo  eT("Exclude quotas?"); ?> </label>
             <div class="col-sm-5">
-                <input id='copysurveyexcludequotas' name="copysurveyexcludequotas" type="checkbox" />
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'copysurveyexcludequotas',
+                    'value'=> "0",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
             </div>
         </div>
 
@@ -68,7 +80,13 @@
         <div class="form-group">
             <label class="col-sm-3 control-label" for='copysurveyexcludepermissions'><?php echo  eT("Exclude survey permissions?"); ?> </label>
             <div class="col-sm-5">
-                <input id='copysurveyexcludepermissions' name="copysurveyexcludepermissions" type="checkbox" />
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'copysurveyexcludepermissions',
+                    'value'=> "0",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
             </div>
         </div>
 
@@ -76,7 +94,13 @@
         <div class="form-group">
             <label class="col-sm-3 control-label" for='copysurveyexcludeanswers'><?php echo  eT("Exclude answers?"); ?> </label>
             <div class="col-sm-5">
-                <input id='copysurveyexcludeanswers' name="copysurveyexcludeanswers" type="checkbox" />
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'copysurveyexcludeanswers',
+                    'value'=> "0",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
             </div>
         </div>
 
@@ -84,7 +108,13 @@
         <div class="form-group">
             <label class="col-sm-3 control-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions/relevance?"); ?> </label>
             <div class="col-sm-5">
-                <input id='copysurveyresetconditions' name="copysurveyresetconditions" type="checkbox" />
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'copysurveyresetconditions',
+                    'value'=> "0",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
             </div>
         </div>
 
@@ -92,7 +122,13 @@
         <div class="form-group">
             <label class="col-sm-3 control-label" for='copysurveyresetstartenddate'><?php echo  eT("Reset start/end date/time?"); ?> </label>
             <div class="col-sm-5">
-                <input id='copysurveyresetstartenddate' name="copysurveyresetstartenddate" type="checkbox" />
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'copysurveyresetstartenddate',
+                    'value'=> "0",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
             </div>
         </div>
 

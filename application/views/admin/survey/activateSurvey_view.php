@@ -1,5 +1,5 @@
 <?php if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)): ?>
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
             <div class="jumbotron message-box message-box-error">
@@ -40,7 +40,8 @@
 </div>
 <?php else:?>
 
-<div class='side-body container message-box col-sm-10' >
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='container message-box col-sm-10'>
     <div class='row'>
         <h2 class='col-sm-7 col-sm-offset-2'><?php eT("Warning: Please read this carefully before proceeding!"); ?></h2>
     </div>
@@ -70,10 +71,10 @@
 
     <?php echo CHtml::form(array("admin/survey/sa/activate/surveyid/{$surveyid}/"), 'post', array('class'=>'form-horizontal')); ?>
         <div class='row'>
-            <div class="col-sm-3 col-sm-offset-3">
+            <div class="col-sm-3 col-sm-offset-2">
                 <div class="row">
                     <div class='form-group'>
-                        <label for='anonymized' class='control-label col-sm-6'>
+                        <label for='anonymized' class='control-label col-sm-7'>
                             <?php eT("Anonymized responses?"); ?>
                             <script type="text/javascript">
                                 <!--
@@ -95,7 +96,7 @@
                             )
                         )); */ ?>
 
-                        <div class='col-sm-6'>
+                        <div class='col-sm-5'>
                             <select id='anonymized' class='form-control' name='anonymized' onchange='alertPrivacy();'>
                                 <option value='Y'
                                 <?php if ($aSurveysettings['anonymized'] == "Y") { ?>
@@ -116,10 +117,10 @@
             <div class="col-sm-3">
                 <div class="row">
                     <div class='form-group'>
-                        <label for='datestamp' class='control-label col-sm-5'>
+                        <label for='datestamp' class='control-label col-sm-7'>
                             <?php eT("Date stamp?"); ?>
                         </label>
-                        <div class='col-sm-6'>
+                        <div class='col-sm-5'>
                             <select id='datestamp' class='form-control' name='datestamp' onchange='alertDateStampAnonymization();'>
                                 <option value='Y' <?php if ($aSurveysettings['datestamp'] == "Y"){echo 'selected="selected"';}?>>
                                     <?php eT("Yes"); ?>
@@ -136,14 +137,14 @@
         </div>
 
         <div class='row'>
-            <div class="col-sm-3 col-sm-offset-3">
+            <div class="col-sm-3 col-sm-offset-2">
                 <div class="row">
                     <div class='form-group'>
-                        <label for='ipaddr' class='control-label col-sm-6'>
+                        <label for='ipaddr' class='control-label col-sm-7'>
                             <?php eT("Save IP address?"); ?>
                         </label>
 
-                        <div class='col-sm-6'>
+                        <div class='col-sm-5'>
                             <select name='ipaddr' id='ipaddr' class='form-control'>
                                 <option value='Y' <?php if ($aSurveysettings['ipaddr'] == "Y") {echo "selected='selected'";} ?>>
                                     <?php eT("Yes"); ?>
@@ -161,8 +162,8 @@
                 <div class="row">
 
                     <div class='form-group'>
-                        <label class='control-label col-sm-5' for='refurl'><?php eT("Save referrer URL?"); ?></label>
-                        <div class='col-sm-6'>
+                        <label class='control-label col-sm-7' for='refurl'><?php eT("Save referrer URL?"); ?></label>
+                        <div class='col-sm-5'>
                             <select class='form-control' name='refurl' id='refurl'>
                                 <option value='Y' <?php if ($aSurveysettings['refurl'] == "Y"){echo "selected='selected'";} ?>>
                                     <?php eT("Yes"); ?>
@@ -178,11 +179,11 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-3 col-sm-offset-3">
+            <div class="col-sm-3 col-sm-offset-2">
                 <div class="row">
                     <div class='form-group'>
-                        <label class='control-label col-sm-6' for='savetimings'><?php eT("Save timings?"); ?></label>
-                        <div class='col-sm-6'>
+                        <label class='control-label col-sm-7' for='savetimings'><?php eT("Save timings?"); ?></label>
+                        <div class='col-sm-5'>
                             <select class='form-control' id='savetimings' name='savetimings'>
                                 <option value='Y' <?php if (!isset($aSurveysettings['savetimings']) || !$aSurveysettings['savetimings'] || $aSurveysettings['savetimings'] == "Y") { ?> selected='selected' <?php } ?>>
                                     <?php eT("Yes"); ?>
@@ -215,6 +216,7 @@
         </div>
     </div>
     </form>
+    </div>
 </div>
 </div>
 <?php endif;?>

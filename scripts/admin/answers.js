@@ -4,10 +4,7 @@ $(document).ready(function(){
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
         distance:3});
-    $('.btnaddanswer').click(addinput);
-    $('.btndelanswer').click(deleteinput);
-    $('#editanswersform').submit(checkForDuplicateCodes)
-    $('.btnlsbrowser').click(lsbrowser);
+    $('#editanswersform').submit(checkForDuplicateCodes);
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
     $('#labelsets').click(lspreview);
@@ -19,6 +16,11 @@ $(document).ready(function(){
     flag = [false, false];
     $('#btnsave').click(savelabel);
     updaterowproperties();
+
+
+    $(document).on("click", '.btnaddanswer', addinput);
+    $(document).on("click", '.btndelanswer', deleteinput);
+    $(document).on("click", '.btnlsbrowser', lsbrowser );
 });
 
 
@@ -68,102 +70,79 @@ function deleteinput()
 }
 
 
+/**
+ * add input : the ajax way
+ */
 function addinput()
 {
-    var x;
-    classes=$(this).parent().parent().attr('class').split(' ');
-    console.log($(this).parent().parent().attr('class'));
-    for (x in classes)
-        {
-        if (classes[x].substr(0,3)=='row'){
-            position=classes[x].substr(4);
-        }
-    }
-    info=$(this).closest('table').attr('id').split("_");
-    language=info[1];
-    scale_id=info[2];
-    newposition=Number(position)+1;
-    languages=langs.split(';');
+    console.log('addinput');
+    $that                  = $(this);                            // The "add" button
 
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
+    $currentRow            = $that.parents('.row-container');    // The row containing the "add" button
+    $currentTable          = $that.parents('.answertable');
+    $commonId              = $currentRow.data('common-id');      // The common id of this row in the other languages
+    $elDatas               = $('#add-input-javascript-datas');   // This hidden element  on the page contains various datas for this function
+    $url                   = $elDatas.data('url');               // Url for the request
+    $errormessage          = $elDatas.data('errormessage');     // the error message if the AJAX request failed
+    $languages             = JSON.stringify(langs);              // The languages
 
-    for (x in languages)
-        {
-        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-        if (assessmentvisible)
-            {
-            assessment_style='';
-            assessment_type='text';
-        }
-        else
-            {
-            assessment_style='style="display:none;"';
-            assessment_type='hidden';
-        }
-        if (x==0) {
-            inserthtml=
-            '<tr class="row_'+newposition+'" style="display:none;">'+
-            '   <td>'+
-            '       <span class="glyphicon glyphicon-move"></span>'+
-            '   </td>'+
-            '   <td>'+
-            '       <input class="code first-in-answersjs form-control input-lg" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="20" required value="'+htmlspecialchars(sNextCode)+'" />'+
-            '   </td>'+
-            '   <td '+assessment_style+'>'+
-            '       <input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/>'+
-            '   </td>'+
-            '   <td>'+
-            '       <div class="col-sm-12">'+
-            '           <input type="text" size="20" class="answer first-inanswerjs form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
-            '       </div>'+
-            '   </td>'+
-            '   <td>'+
-            '           <a class="editorLink">'+
-            '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-            '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-            '           </a>'+
-            '       <span class="btnaddanswer icon-add text-success"></span>'+
-            '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
-            '   </td>'+
-            '</tr>'
-        }
-        else
-            {
-            inserthtml=
-            '<tr class="row_'+newposition+'" style="display:none;">'+
-            '   <td>&nbsp;</td>'+
-            '   <td>'+htmlspecialchars(sNextCode)+'</td>'+
+    // We get all the subquestion codes currently displayed
+    var codes = [];
+    $currentTable.find('.code').each(function(){
+        codes.push($(this).val());
+    });
 
-            '   <td>'+
-            '       <div class="col-sm-12">'+
-            '           <input type="text" size="20" class="answer second-in-answerjs form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
-            '       </div>'+
-            '   </td>'+
-            '   <td>'+
-            '           <a class="editorLink">'+
-            '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-            '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-            '           </a>'+
-            '   </td>'+
-            '</tr>'
-        }
-        tablerow.after(inserthtml);
-        tablerow.next().find('.btnaddanswer').click(addinput);
-        tablerow.next().find('.btndelanswer').click(deleteinput);
-        tablerow.next().find('.answer').focus(function(){
-            if ($(this).val()==newansweroption_text)
-                {
-                $(this).val('');
-            }
-        });
-        tablerow.next().find('.code').blur(updatecodes);
-    }
-    $('.row_'+newposition).fadeIn('slow');
-    $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
+    // We convert them to json for the request
+    $codes = JSON.stringify(codes);
 
-    $('.tab-page:first .answertable tbody').sortable('refresh');
-    updaterowproperties();
+    //We build the datas for the request
+    $datas                  = 'surveyid='+$elDatas.data('surveyid');
+    $datas                 += '&gid='+$elDatas.data('gid');
+    $datas                 += '&qid='+$elDatas.data('qid');
+    $datas                 += '&codes='+$codes;
+    $datas                 += '&scale_id='+$(this).data('scale-id');
+    $datas                 += '&type=answer';
+    $datas                 += '&position='+$(this).data('position');
+    $datas                 += '&assessmentvisible'+$(this).data('assessmentvisible');
+    $datas                 += '&languages='+$languages;
+
+    $scaleId  = $(this).data('scale-id')
+    $position = $(this).data('position')
+
+    // We get the HTML of the different rows to insert  (one by language)
+    $.ajax({
+        type: "GET",
+        url: $url,
+        data: $datas,
+        success: function(arrayofhtml) {
+
+            // arrayofhtml is a json string containing the different HTML row by language
+            // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
+
+            $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
+
+            //console.log($arrayOfHtml);
+
+            // We insert each row for each language
+            $.each($arrayOfHtml, function(lang, htmlRow){
+                $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
+                console.log('#row_'+lang+'_'+$commonId);
+                console.log($elRowToUpdate.attr('id'));
+                $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
+            });
+
+            $('#answercount_'+$scaleId).val($position+2);
+            //console.log('scale: '+$scaleId);
+            //console.log('position: '+$position);
+
+        },
+        error :  function(html, statut){
+            console.log(statut);
+            console.log(html);
+        }
+    });
 }
+
 
 function aftermove(event,ui)
 {
@@ -202,6 +181,7 @@ function aftermove(event,ui)
     updaterowproperties();
 }
 
+
 // This function adjust the alternating table rows and renames/renumbers IDs and names
 // if the list has really changed
 function updaterowproperties()
@@ -218,10 +198,12 @@ function updaterowproperties()
         var rownumber=1;
         $(this).children('tr').each(function(){
 
-            $(this).attr('class','');//see http://bugs.jqueryui.com/ticket/9015
+            $(this).removeClass();
             if (highlight){
                 $(this).addClass('highlight');
             }
+
+            $(this).addClass('row-container');
             $(this).addClass('row_'+rownumber);
             $(this).find('.oldcode').attr('id','oldcode_'+rownumber+'_'+scale_id);
             $(this).find('.oldcode').attr('name','oldcode_'+rownumber+'_'+scale_id);
@@ -233,12 +215,6 @@ function updaterowproperties()
             $(this).find('.assessment').attr('name','assessment_'+rownumber+'_'+scale_id);
 
             // Newly inserted row editor button
-            $(this).find('.editorLink').attr('href','javascript:start_popup_editor(\'answer_'+language+'_'+rownumber+'_'+scale_id+'\',\'[Answer:]('+language+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')');
-            $(this).find('.editorLink').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_ctrl');
-            $(this).find('.btneditanswerena').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
-            $(this).find('.btneditanswerena').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
-            $(this).find('.btneditanswerdis').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
-            $(this).find('.btneditanswerdis').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
             highlight=!highlight;
             rownumber++;
         })
@@ -253,40 +229,32 @@ function updatecodes()
 
 function getNextCode(sSourceCode)
 {
+    sourcecode = sSourceCode;
     i=1;
     found=true;
-    mNumberFound=-1;
-    while (i<=sSourceCode.length && found)
+    foundnumber=-1;
+    sclength = sourcecode.length;
+    while (i<=sclength && found == true)
     {
-        found=is_numeric(sSourceCode.substr(-i));
+        found=is_numeric(sourcecode.substr(sclength-i,i));
         if (found)
-            {
-            mNumberFound=sSourceCode.substr(-i);
+        {
+            foundnumber=sourcecode.substr(sclength-i,i);
             i++;
         }
     }
-    if (mNumberFound==-1)
+    if (foundnumber==-1)
     {
-        sBaseCode=sSourceCode;
-        mNumberFound=0
+        return(sourcecode);
     }
     else
     {
-        sBaseCode=sSourceCode.substr(0,sSourceCode.length-mNumberFound.length);
+        foundnumber++;
+        foundnumber=foundnumber+'';
+        result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
+        return(result);
     }
-    var iNumberFound=+mNumberFound;
-    do
-    {
-        iNumberFound=iNumberFound+1;
-        sNewNumber=iNumberFound+'';
-        sResult=sBaseCode+sNewNumber;
-        if (sResult.length>5)
-        {
-          sResult=sResult.substr(sResult.length - 5);
-        }
-    }
-    while (areCodesUnique(sResult)==false);
-    return(sResult);
+
 }
 
 function is_numeric (mixed_var) {
@@ -313,6 +281,7 @@ function checkForDuplicateCodes()
     }
     else
     {
+        updaterowproperties();
         return true;
     }
 }
@@ -480,34 +449,6 @@ function lspreview()
     }
 }
 
-/**
-* This is a debug function
-* similar to var_dump in PHP
-*/
-function dump(arr,level) {
-    var dumped_text = "";
-    if(!level) level = 0;
-
-    //The padding given at the beginning of the line.
-    var level_padding = "";
-    for(var j=0;j<level+1;j++) level_padding += "    ";
-
-    if(typeof(arr) == 'object') { //Array/Hashes/Objects
-        for(var item in arr) {
-            var value = arr[item];
-
-            if(typeof(value) == 'object') { //If it is an array,
-                dumped_text += level_padding + "'" + item + "' ...\n";
-                dumped_text += dump(value,level+1);
-            } else {
-                dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-            }
-        }
-    } else { //Stings/Chars/Numbers etc.
-        dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
-    }
-    return dumped_text;
-}
 
 function transferlabels()
 {
@@ -580,9 +521,7 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-12">'+
                                 '           <input type="text" size="20" class="answer third-in-answerjs  form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
                                 '   </td>'+
 
                                 '   <td>'+
@@ -606,9 +545,7 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-12">'+
                                 '           <input type="text" size="20" class="answer fourth-in-answerjs form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
                                 '   </td>'+
 
                                 '   <td>'+
@@ -637,9 +574,7 @@ function transferlabels()
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                         '   <td>'+
-                        '       <div class="col-sm-12">'+
                         '           <input type="text" size="20" class="answer fifth-in-answerjs form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                        '       </div>'+
                         '   </td>'+
 
                         '   <td>'+
@@ -673,6 +608,7 @@ function transferlabels()
                 });
             }
             $('.tab-page:first .answertable tbody').sortable('refresh');
+            $('#labelsetbrowserModal').modal('hide');
             updaterowproperties();
 
     }}
@@ -752,9 +688,7 @@ function quickaddlabels()
                 '       <input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/>'+
                 '   </td>'+
                 '   <td style="vertical-align: middle;">'+
-                '       <div class="col-sm-12">'+
                 '           <input type="text" size="20" class="answer form-control input-lg" value="'+escaped_value+'"></input>'+
-                '       </div>'+
                 '   </td>'+
                 '   <td>'+
                 '           <a class="editorLink">'+
@@ -774,9 +708,7 @@ function quickaddlabels()
                 '   <td>&nbsp;</td>'+
                 '   <td>&nbsp;</td>'+
                 '   <td>'+
-                '       <div class="col-sm-12">'+
                 '           <input type="text" size="20" class="answer sixt-in-answerjs form-control input-lg" value="'+escaped_value+'"></input>'+
-                '       </div>'+
                 '   </td>'+
                 '   <td>'+
                 '           <a class="editorLink">'+

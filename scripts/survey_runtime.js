@@ -584,10 +584,18 @@ function maxlengthtextarea(){
         }
     });
 }
-/* add a title on cell with answer */
+/**
+ * Add a title on cell with answer
+ * Title must be updated because label can be updated by expression : mouseover do it only if needed. Accessibility must use aria-labelledby
+ **/
 function doToolTipTable()
 {
-   $(document).on("mouseover"," td.answer-item",function(){
-        $( this).attr('title',$(this).find("label").text());
+    $(document).on("mouseover"," td.answer-item",function() {
+        var text = $(this).find('label').text().trim();
+        if(text!==""){
+            $(this).attr('title', text);
+        }else{
+            $(this).removeAttr('title');
+        }
     });
 }

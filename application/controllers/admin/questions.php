@@ -64,11 +64,14 @@ class questions extends Survey_Common_Action
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $aData['activated'] = $surveyinfo['active'];
 
+        $oQuestion = $qrrow;
+        $aData['oQuestion'] = $oQuestion;
         $qrrow = $qrrow->attributes;
         $aData['languagelist'] = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
         $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
 
             $qshowstyle = "";
+
 
         $aData['qshowstyle'] = $qshowstyle;
         $aData['surveyid'] = $iSurveyID;
@@ -78,13 +81,17 @@ class questions extends Survey_Common_Action
         $aData['baselang'] = $baselang;
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
         $DisplayArray = array();
+
         foreach ($aAttributesWithValues as $aAttribute)
         {
             if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default']))
             {
                 if ($aAttribute['inputtype'] == 'singleselect')
                 {
-                    $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                    if(isset($aAttribute['options'][$aAttribute['value']]))
+                    {
+                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                    }
                 }
                 $DisplayArray[] = $aAttribute;
             }
@@ -145,6 +152,7 @@ class questions extends Survey_Common_Action
             $aData['sidemenu']['questiongroups'] = true;
             $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyID;  // Close button
             $aData['surveybar']['savebutton']['form'] = true;
+            $aData['surveybar']['savebutton']['text'] = gt('Import');
             $aData['surveyid'] = $surveyid;
             $aData['groupid'] = $groupid;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -179,9 +187,16 @@ class questions extends Survey_Common_Action
         {
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
             $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
+            $fatalerror='';
 
-            if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-                $fatalerror = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
+            if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
+            {
+                $fatalerror=sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024).'<br>';
+            }
+            elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
+            {
+                $fatalerror = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')).'<br>';
+            }
 
             // validate that we have a SID and GID
             if (!$surveyid)
@@ -190,14 +205,13 @@ class questions extends Survey_Common_Action
             if (!$gid)
                 $fatalerror .= gT("No GID (Group) has been provided. Cannot import question");
 
-            if (isset($fatalerror))
+            if ($fatalerror!='')
             {
                 unlink($sFullFilepath);
-                $message = $fatalerror;
-                $message .= '<p>
-                                <a class="btn btn-default btn-lg"
-                                   href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$surveyid.'">'
-                                   .gT("Return to question list").'</a></p>';
+                $message = '<p>'.$fatalerror.'</p>
+                <a class="btn btn-default btn-lg"
+                href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$surveyid.'">'
+                .gT("Return to question list").'</a></p>';
                 $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
                 die();
             }
@@ -264,11 +278,14 @@ class questions extends Survey_Common_Action
         $baselang = Survey::model()->findByPk($surveyid)->language;
         array_unshift($questlangs, $baselang);
 
-        $questionrow = Question::model()->findByAttributes(array(
+        $oQuestion = Question::model()->findByAttributes(array(
         'qid' => $qid,
         'gid' => $gid,
         'language' => $baselang
-        ))->attributes;
+        ));
+
+        $questionrow = $oQuestion->attributes;
+
         $qtproperties = getQuestionTypeList('', 'array');
 
         $langopts = array();
@@ -372,6 +389,7 @@ class questions extends Survey_Common_Action
         }
 
         $aData = array(
+        'oQuestion' => $oQuestion,
         'qid' => $qid,
         'surveyid' => $surveyid,
         'langopts' => $langopts,
@@ -414,10 +432,17 @@ class questions extends Survey_Common_Action
     */
     public function answeroptions($surveyid, $gid, $qid)
     {
+        // Abort if user lacks permission to update survey content
+        if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'answers.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'answers.js');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
 
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
@@ -463,7 +488,7 @@ class questions extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $qrow = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $oQuestion = $qrow = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
         $qtype = $qrow['type'];
 
         $qtypes = getQuestionTypeList('', 'array');
@@ -553,6 +578,7 @@ class questions extends Survey_Common_Action
         else
             $maxsortorder = 1;
 
+        $aData['oQuestion'] = $oQuestion;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
@@ -616,11 +642,18 @@ class questions extends Survey_Common_Action
     */
     public function subquestions($surveyid, $gid, $qid)
     {
+        // Abort if user lacks permission to update survey content
+        if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aData['gid'] = $gid = sanitize_int($gid);
         $aData['qid'] = $qid = sanitize_int($qid);
 
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'subquestions.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'subquestions.js');
         App()->getClientScript()->registerPackage('jquery-blockUI');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
@@ -658,6 +691,13 @@ class questions extends Survey_Common_Action
     */
     public function _editsubquestion($surveyid, $gid, $qid)
     {
+        // Abort if user lacks permission to update survey content
+        if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
@@ -666,7 +706,8 @@ class questions extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $aParentQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
+        $oQuestion      = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang));
+        $aParentQuestion = $oQuestion->attributes;
 
         $sQuestiontype = $aParentQuestion['type'];
         $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
@@ -736,19 +777,6 @@ class questions extends Survey_Common_Action
                         $question->scale_id = $iScale;
                         $question->relevance = $row->relevance;
                         $question->save();
-                        /** //activerecord is not not new bugfix!
-                        Question::model()->insert(array(
-                        'qid' => $row->qid,
-                        'sid' => $surveyid,
-                        'gid' => $row->gid,
-                        'parent_qid' => $qid,
-                        'title' => $row->title,
-                        'question' => $row->question,
-                        'question_order' => $row->question_order,
-                        'language' => $language,
-                        'scale_id' => $iScale,
-                        ));
-                        */
                         switchMSSQLIdentityInsert('questions', false);
                     }
                 }
@@ -811,14 +839,14 @@ class questions extends Survey_Common_Action
         $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
 
-        $aData['activated'] = $activated = $surveyinfo['active'];
-        $aData['surveyid'] = $surveyid;
-        $aData['gid'] = $gid;
-        $aData['qid'] = $qid;
+        $aData['activated']       = $activated = $surveyinfo['active'];
+        $aData['surveyid']        = $surveyid;
+        $aData['gid']             = $gid;
+        $aData['qid']             = $qid;
         $aData['aParentQuestion'] = $aParentQuestion;
-        $aData['anslangs'] = $anslangs;
-        $aData['maxsortorder'] = $maxsortorder;
-
+        $aData['anslangs']        = $anslangs;
+        $aData['maxsortorder']    = $maxsortorder;
+        $aData['oQuestion']       = $oQuestion;
 
         foreach ($anslangs as $anslang)
         {
@@ -849,11 +877,143 @@ class questions extends Survey_Common_Action
         $aData['formName'] = 'editsubquestionsform';
 
         $aViewUrls['_subQuestionsAndAnwsersJsVariables'][] = $aData;
-        //$aViewUrls['subQuestion_view'][] = $aData;
         $aViewUrls['answerOptions_view'][] = $aData;
 
         return $aViewUrls;
     }
+
+
+
+    public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $scale_id, $type, $languages, $position, $assessmentvisible='')
+    {
+        $languages = explode ( ';', json_decode($languages));
+        $html      = array();
+        $first     = true;
+        $qid = 'new'.rand ( 0 , 99999 );
+        foreach($languages as $language)
+        {
+            $html[$language] = $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
+            $first = false;
+        }
+
+        echo json_encode($html);
+    }
+
+    /**
+     * This function should be called via ajax request
+     * It returns a EMPTY subquestion row HTML for a given ....
+     */
+
+    public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible )
+    {
+        // index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
+        $stringCodes = json_decode($codes); // All the codes of the displayed subquestions
+
+        // TODO: calcul correct value
+        $oldCode  = false;
+        $position = $position;
+        $scale_id = $scale_id ;
+
+
+        // We get the numerical part of each code and we store them in Arrays
+        // One array is to store the pure numerical values (so we can search in it for the greates value, and increment it)
+        // Another array is to store the string values (so we keep all the prefixed "0")
+        $numCodes = array();
+        foreach($stringCodes as $key => $stringCode)
+        {
+            // This will loop into the code, from the last character to the first letter
+            $numericSuffix = ''; $n = 1; $numeric = true;
+            while($numeric == true && $n <= strlen($stringCode))
+            {
+                $currentCharacter = substr($stringCode, -$n, 1);                // get the current character
+
+                if ( ctype_digit($currentCharacter) )                           // check if it's numerical
+                {
+                    $numericSuffix    = $currentCharacter.$numericSuffix;       // store it in a string
+                    $n=$n+1;
+                }
+                else
+                {
+                    $numeric = false;                                           // At first non numeric character found, the loop is stoped
+                }
+            }
+            $numCodesWithZero[$key] = (string) $numericSuffix ;                 // In string type, we can have   : "0001"
+            $numCodes[$key]         = (int) $numericSuffix ;                    // In int type, we can only have : "1"
+        }
+
+        // Let's get the greatest code
+        $greatestNumCode          = max ($numCodes);                            // greatest code
+        $key                      = array_keys($numCodes, max($numCodes));      // its key (same key in all tables)
+        $greatesNumCodeWithZeros  = $numCodesWithZero[$key[0]];                 // its value with prefixed 0 (like : 001)
+        $stringCodeOfGreatestCode = $stringCodes[$key[0]];                      // its original submited  string (like: SQ001)
+
+        // We get the string part of it: it's the original string code, without the greates code with its 0 :
+        // like  substr ("SQ001", (strlen(SQ001)) - strlen(001) ) ==> "SQ"
+        $stringPartOfNewCode    = substr( $stringCodeOfGreatestCode,0, ( strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)  ) );
+
+        // We increment by one the greatest code
+        $numericalPartOfNewCode = $newPosition = $greatestNumCode+1;
+
+        // We get the list of 0 : (using $numericalPartOfNewCode will remove the excedent 0 ; SQ009 will be followed by SQ010 )
+        $listOfZero = substr( $greatesNumCodeWithZeros,0, ( strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)  ) );
+
+        // When no more zero are available we want to be sure that the last 9 unit will not left
+        // (like in SQ01 => SQ99 ; should become SQ100, not SQ9100)
+        $listOfZero = ($listOfZero == "9")?'':$listOfZero;
+
+        // We finaly build the new code
+        $code = $stringPartOfNewCode.$listOfZero.$numericalPartOfNewCode ;
+
+        $activated=false;                                                       // You can't add ne subquestion when survey is active
+        Yii::app()->loadHelper('admin/htmleditor');                             // Prepare the editor helper for the view
+
+        if($type=='subquestion')
+        {
+            $view = '_subquestion';
+            $aData = array(
+                'position'  => $position,
+                'scale_id'  => $scale_id,
+                'activated' => $activated,
+                'first'     => $first,
+                'surveyid'  => $surveyid,
+                'gid'       => $gid,
+                'qid'       => $qid,
+                'language'  => $language,
+                'title'     => $code,
+                'question'  => '',
+                'relevance' => '',
+                'oldCode'   => $oldCode,
+            );
+        }
+        else
+        {
+            $view ='_answer_option';
+            $aData = array(
+                'assessmentvisible' => $assessmentvisible,
+                'assessment_value'  => '',
+                'answer'            => '',
+                'sortorder'         => $newPosition,
+                'position'          => $newPosition,
+                'scale_id'          => $scale_id,
+                'activated'         => $activated,
+                'first'             => $first,
+                'surveyid'          => $surveyid,
+                'gid'               => $gid,
+                'qid'               => $qid,
+                'language'          => $language,
+                'title'             => $code,
+                'question'          => '',
+                'relevance'         => '',
+                'oldCode'           => $oldCode,
+            );
+        }
+
+        $html = '<!-- Inserted Row -->';
+        $html .= $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData, true, false);
+        $html .= '<!-- end of Inserted Row -->';
+        return $html;
+    }
+
 
     /**
      * Add a new question
@@ -862,6 +1022,12 @@ class questions extends Survey_Common_Action
      */
     public function newquestion($surveyid)
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         Yii::app()->loadHelper('admin/htmleditor');
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
         App()->getClientScript()->registerPackage('qTip2');
@@ -869,6 +1035,7 @@ class questions extends Survey_Common_Action
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['importquestion'] = true;
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID;  // Close button
 
         $this->abortIfSurveyIsActive($surveyinfo);
@@ -942,22 +1109,15 @@ class questions extends Survey_Common_Action
         // NB: gid won't be set if user clicks quick-button Add question
         if (isset($_GET['gid']))
         {
-            $oqresult = Question::model()->findAllByAttributes(array(
-                'sid' => $surveyid,
-                'gid' => $_GET['gid'],
-                'language' => $baselang,
-                'parent_qid'=> 0
-            ), array(
-                'order' => 'question_order'
-            ));
-            $aData['oqresult'] = $oqresult;
+            $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$_GET['gid']));
         }
         else
         {
             $aData['oqresult'] = array();
+            $oQuestionGroup = QuestionGroup::model()->find(array('condition'=>'sid=:sid', 'params'=> array(':sid'=>$surveyid), 'order'=>'group_order') );
         }
-
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'questions.js' ));
+        $aData['oQuestionGroup'] = $oQuestionGroup;
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');
 
         $aViewUrls['editQuestion_view'][] = $aData;
         $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
@@ -998,7 +1158,11 @@ class questions extends Survey_Common_Action
         if (isset($qid))
             $qid = sanitize_int($qid);
 
+
         $aViewUrls = array();
+
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
+        $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
@@ -1032,8 +1196,18 @@ class questions extends Survey_Common_Action
             // Prepare selector Mode TODO: with and without image
             if (!$adding)
             {
+                // Abort if user lacks update permission
+                if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+                {
+                    Yii::app()->user->setFlash('error', gT("Access denied"));
+                    $this->getController()->redirect(Yii::app()->request->urlReferrer);
+                }
+
                 Yii::app()->session['FileManagerContext'] = "edit:question:{$surveyid}";
                 $aData['display']['menu_bars']['qid_action'] = 'editquestion';
+
+                $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
+                $aData['oQuestion']=$oQuestion;
 
                 $egresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
 
@@ -1139,14 +1313,6 @@ class questions extends Survey_Common_Action
             }
             $eqrow['conditions_number'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
 
-            if($eqrow['modulename'] != null)
-            {
-                $oQuestionModule = Question::getQuestionModule($esrow['modulename']);
-                $questionTitle = (array) $oQuestionModule->title;
-                $questionModuleName = (array) $oQuestionModule->modulename;
-                $eqrow['modulename'] = $questionModuleName[0];
-                $eqrow['moduletitle'] = $questionTitle[0];
-            }
 
             $aData['eqrow'] = $eqrow;
             $aData['surveyid'] = $surveyid;
@@ -1198,7 +1364,7 @@ class questions extends Survey_Common_Action
                 $oqresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'questions.js' ));
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');
 
             $aData['sValidateUrl'] = ($adding || $copying)?$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid)):$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid,'qid'=>$qid));
 
@@ -1263,11 +1429,8 @@ class questions extends Survey_Common_Action
                 if (isset($qidarray))
                     $qidlist = implode(", ", $qidarray);
                 $message =gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
-                $message .="<br /><a href='". $this->getController()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}")."' >".gT("Look at survey logic files")."</a>.";
-                $this->getController()->error(
-                    $message,
-                    $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}")
-                    );
+                 Yii::app()->setFlashMessage($message,'error');
+                 $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
             }
             else
             {
@@ -1299,11 +1462,10 @@ class questions extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("Question was successfully deleted.");
 
             // remove question from lastVisited
-            SettingGlobal::model()->deleteAll(
-                        "stg_value = :stg_value",
-                        array(':stg_value' => $rqid )
-                    );
-
+            $oCriteria = new CDbCriteria();
+            $oCriteria->compare('stg_name','last_question_%',true,'AND',false);
+            $oCriteria->compare('stg_value',$rqid,false,'AND');
+            SettingGlobal::model()->deleteAll($oCriteria);
 
             $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
         }
@@ -1311,6 +1473,19 @@ class questions extends Survey_Common_Action
         {
             Yii::app()->session['flashmessage'] = gT("You are not authorized to delete questions.");
             $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
+        }
+    }
+
+
+    public function ajaxReloadPositionWidget($gid)
+    {
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
+        if ( is_a($oQuestionGroup, 'QuestionGroup') && Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read'))
+        {
+            return App()->getController()->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
+                        'display'           => 'form_group',
+                        'oQuestionGroup'    => $oQuestionGroup,
+                ));
         }
     }
 

@@ -35,9 +35,9 @@ class Expressions extends Survey_Common_Action {
         else
         {
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH . 'survey_runtime.js' ));
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH . '/expressions/em_javascript.js' ));
 
+            $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
+            $this->registerScriptFile( 'SCRIPT_PATH', '/expressions/em_javascript.js');
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
 

@@ -41,7 +41,7 @@ $(document).ready(function () {
 
         var varName = LEMalias2varName[alias.split(".", 1)];
         var attr = LEMvarNameAttr[varName];
-        if (attr.onlynum == 1)
+        if (attr && attr.onlynum == 1)
         {
             return ls_represent($('#' + attr.jsName_on).val());
         }

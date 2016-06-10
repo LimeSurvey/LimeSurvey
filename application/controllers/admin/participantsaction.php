@@ -62,7 +62,7 @@ class participantsaction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         if (!empty($sScript))
         {
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . $sScript . '.js' ));
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', $sScript . '.js');
             $this->_renderWrappedTemplate('participants', array('participantsPanel', $sScript), $aData);
         }
     }
@@ -869,7 +869,7 @@ class participantsaction extends Survey_Common_Action
             // add attribute values
             foreach($row as $key=>$attvalue)
             {
-                if(preg_match('/^a\d+$/', $key))
+                if(preg_match('/^a\d+$/', $key) )
                 {
                     $aRowToAdd['cell'][] = $attvalue;
                 }
@@ -1002,9 +1002,7 @@ class participantsaction extends Survey_Common_Action
                 'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
                 'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
                 );
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "viewAttribute.js"));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'viewAttribute.js');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
 
@@ -1100,7 +1098,7 @@ class participantsaction extends Survey_Common_Action
      */
     public function editAttributevalue()
     {
-        if (Yii::app()->request->getPost('oper') == "edit" && (Yii::app()->request->getPost('attvalue') || Yii::app()->request->getPost('attvalue')=="0"))
+        if (Yii::app()->request->getPost('oper') == "edit" && isset($_POST['attvalue']))
         {
             $pid = explode('_',Yii::app()->request->getPost('participant_id'));
             $iAttributeId =  Yii::app()->request->getPost('attid');
@@ -1130,31 +1128,28 @@ class participantsaction extends Survey_Common_Action
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
-        if (strtolower($sExtension)=='csv')
+        if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
+        {
+            Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024),'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
+            exit;
+        }
+        elseif (strtolower($sExtension)=='csv')
         {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
             $filterblankemails = Yii::app()->request->getPost('filterbea');
         }
         else
         {
-            $templateData = array();
-            $templateData['errorinupload']['error'] = gT("This is not a .csv file.");
-            $templateData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
-            $templateData['aGlobalErrors'] = array();
-            //  $errorinupload = array('error' => $this->upload->display_errors());
-            //  Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
-            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),$templateData);
+            Yii::app()->setFlashMessage(gT("This is not a .csv file."),'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             exit;
         }
-
-
         if (!$bMoveFileResult)
         {
-            $templateData = array();
-            $templateData['error_msg'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
-            $errorinupload = array('error' => $this->upload->display_errors());
-            Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
-            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->getAllAttributes()));
+            Yii::app()->setFlashMessage(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')),'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
+            exit;
         }
         else
         {
@@ -1196,10 +1191,9 @@ class participantsaction extends Survey_Common_Action
                 'filterbea' => $filterblankemails,
                 'participant_id_exists' => in_array('participant_id', $fieldlist)
             );
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "attributeMapCSV.css");
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMapCSV.js" ));
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMapCSV.js');
 
             $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
             ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
@@ -1515,14 +1509,14 @@ class participantsaction extends Survey_Common_Action
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
 
-	    // Some input validation needed
+        // Some input validation needed
         if ($iShareUserId == '') {
             printf(gT("Please select a user"));
             return;
         }
 
         $i = 0;
-	//  $iShareUserId == 0 means any user
+    //  $iShareUserId == 0 means any user
         if (Permission::model()->hasGlobalPermission('participantpanel','update') && $iShareUserId !== '')
             foreach ($iParticipantId as $iId)
             {
@@ -1656,7 +1650,7 @@ class participantsaction extends Survey_Common_Action
     public function attributeMap()
     {
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMap.js" ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMap.js');
 
         $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');
@@ -1728,8 +1722,8 @@ class participantsaction extends Survey_Common_Action
     public function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMapToken.js"));
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') ."css/attributeMapToken.css");
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMapToken.js');
+        $this->registerCssFile( 'ADMIN', 'attributeMapToken.css' );
 
         $iSurveyID = (int)Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();

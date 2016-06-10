@@ -30,6 +30,8 @@
     var sOperator12= '<?php eT("does not end with",'js');?>';
     var sOperator13= '<?php eT("contains",'js');?>';
     var sOperator14= '<?php eT("does not contain",'js');?>';
+    var sOperator15= '<?php eT("is null",'js');?>';
+    var sOperator16= '<?php eT("is not null",'js');?>';
     var sFind= '<?php eT("Filter",'js');?>';
     var sReset= '<?php eT("Reset",'js');?>';
     var sSelectColumns= '<?php eT("Select columns",'js');?>';
@@ -54,7 +56,7 @@
     <?php } ?>
 </script>
 
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT('Survey responses'); ?></h3>
     <div class="row">
         <div id="displayResponsesContainer" class="content-right" style="overflow-x: scroll; padding-bottom: 2em">

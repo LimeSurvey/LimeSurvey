@@ -3,7 +3,7 @@
  * Result of CSV upload
  */
 ?>
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php if (empty($aTokenListArray) || $iRecordImported == 0 ):?>
@@ -20,15 +20,11 @@
                                 }
                         ?>
                     </h2>
-                    <p>
-                        <input class="btn btn-large btn-default" type='button' value='<?php eT("Display tokens"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
-                    </p>
-                </div>
             <?php else:?>
                 <div class="jumbotron message-box">
                     <h2 class="text-success"><?php eT("Uploaded CSV file successfully"); ?></h2>
                     <p class='lead text-success'><?php eT("Successfully created token entries"); ?></p>
-
+            <?php endif;?>
                     <p>
                         <ul class="list-unstyled">
                             <li><?php printf(gT("%s records in CSV"), $iRecordCount); ?></li>
@@ -48,7 +44,7 @@
                                 <li>
                                     <?php printf(gT("%s duplicate records removed"), count($aDuplicateList)); ?>
                                     [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]
-                                    <div class='badtokenlist' id='duplicateslist' style='display: none;'>
+                                    <div class='badtokenlist well' id='duplicateslist' style='display: none;'>
                                         <ul class="list-unstyled">
                                             <?php foreach ($aDuplicateList as $sDuplicate) { ?>
                                                 <li><?php echo $sDuplicate; ?></li>
@@ -60,9 +56,9 @@
 
                             <?php if (!empty($aInvalidFormatList)) { ?>
                                 <li>
-                                    <?php printf(gT("%s lines had a mismatching number of fields."), count($invalidformatlist)); ?>
+                                    <?php printf(gT("%s lines had a mismatching number of fields."), count($aInvalidFormatList)); ?>
                                     [<a href='#' onclick='$("#invalidformatlist").toggle();'><?php eT("List"); ?></a>]
-                                    <div class='badtokenlist' id='invalidformatlist' style='display: none;'>
+                                    <div class='badtokenlist well' id='invalidformatlist' style='display: none;'>
                                         <ul class="list-unstyled">
                                             <?php foreach ($aInvalidFormatList as $sInvalidFormatList) { ?>
                                                 <li><?php echo $sInvalidFormatList; ?></li>
@@ -76,7 +72,7 @@
                                 <li>
                                     <?php printf(gT("%s records with invalid email address removed"), count($aInvalidEmailList)); ?>
                                     [<a href='#' onclick='$("#invalidemaillist").toggle();'><?php eT("List"); ?></a>]
-                                    <div class='badtokenlist' id='invalidemaillist' style='display: none;'>
+                                    <div class='badtokenlist well' id='invalidemaillist' style='display: none;'>
                                         <ul class="list-unstyled">
                                             <?php foreach ($aInvalidEmailList as $sInvalidEmail) { ?>
                                                 <li><?php echo $sInvalidEmail; ?></li>
@@ -90,7 +86,7 @@
                                 <li>
                                     <?php printf(gT("%s records with other invalid information"), count($aModelErrorList)); ?>
                                     [<a href='#' onclick='$("#invalidmodel").toggle();'><?php eT("List"); ?></a>]
-                                    <div class='badtokenlist' id='invalidmodel' style='display: none;'>
+                                    <div class='badtokenlist well' id='invalidmodel' style='display: none;'>
                                         <ul class="list-unstyled">
                                             <?php foreach ($aModelErrorList as $sModelError) { ?>
                                                 <li><?php echo $sModelError; ?></li>
@@ -104,7 +100,7 @@
                                 <li>
                                     <?php printf(gT("%s invalid attributes"), count($aInvalideAttrFieldName)); ?>
                                     [<a href='#' onclick='$("#invalidattr").toggle();'><?php eT("Ignored columns"); ?></a>]
-                                    <div class='badtokenlist' id='invalidattr' style='display: none;'>
+                                    <div class='badtokenlist well' id='invalidattr' style='display: none;'>
                                         <ul class="list-unstyled">
                                             <?php foreach ($aInvalideAttrFieldName as $sModelError) { ?>
                                                 <li><?php echo $sModelError; ?></li>
@@ -118,7 +114,7 @@
                                 <li>
                                     <?php printf(gT("%s missing attributes"), count($aMissingAttrFieldName)); ?>
                                     [<a href='#' onclick='$("#missingattr").toggle();'><?php eT("Missing columns"); ?></a>]
-                                    <div class='badtokenlist' id='missingattr' style='display: none;'>
+                                    <div class='badtokenlist well' id='missingattr' style='display: none;'>
                                         <ul class="list-unstyled">
                                             <?php foreach ($aMissingAttrFieldName as $sModelError) { ?>
                                                 <li><?php echo $sModelError; ?></li>
@@ -132,10 +128,10 @@
                     <?php } ?>
                     </p>
                     <p>
-                        <input class="btn btn-large btn-default" type='button' value='<?php eT("Display tokens"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
+                        <input class="btn btn-large btn-default" type='button' value='<?php eT("Browse participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
                     </p>
                 </div>
-            <?php endif;?>
+
         </div>
     </div>
 </div>

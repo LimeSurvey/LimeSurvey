@@ -32,9 +32,9 @@ function doFileUpload(){
             previewblock += "<span class='file-name'>"+decodeURIComponent(json[i-1].name)+"</span>";
             previewblock += "</div>";
             
+            previewblock +="<div class='file-info'><fieldset>";
             if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
             {
-                previewblock +="<div class='file-info'><fieldset>";
                 if($('#'+fieldname+'_show_title').val() == 1)
                 {
                     previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_title_"+i+"'>"+uploadLang.titleFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i-1].title)+ "' id='"+fieldname+"_title_"+i+"' /></div></div>";
@@ -44,9 +44,9 @@ function doFileUpload(){
                     previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_comment_"+i+"'>"+uploadLang.commentFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i-1].comment) + "' id='"+fieldname+"_comment_"+i+"' /></div></div>";
                 }
 
-                previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger fa fa-trash' onclick='deletefile(\""+fieldname+"\", "+i+")'>"+uploadLang.deleteFile+"</a></div></div>";
-                previewblock += "</fieldset></div>";
             }
+            previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+i+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
+            previewblock += "</fieldset></div>";
 
             previewblock += "<input type='hidden' id='"+fieldname+"_size_"    +i+"' value="+json[i-1].size+" />"+
                     "<input type='hidden' id='"+fieldname+"_name_"    +i+"' value="+json[i-1].name+" />"+
@@ -85,7 +85,7 @@ function doFileUpload(){
              * do not upload the file and display an error message ! */
             if (filecount >= maxfiles)
             {
-                $('#notice').html('<p class="alert alert-danger fa fa-exclamation-circle">'+uploadLang.errorNoMoreFiles+'</p>');
+                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+uploadLang.errorNoMoreFiles+'</p>');
                 return false;
             }
 
@@ -104,7 +104,7 @@ function doFileUpload(){
             }
             if (allowSubmit == false)
             {
-                $('#notice').html('<p class="alert alert-danger fa fa-exclamation-circle">'+uploadLang.errorOnlyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
+                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+uploadLang.errorOnlyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
                 return false;
             }
 
@@ -143,7 +143,7 @@ function doFileUpload(){
 
             if (metadata.success)
             {
-                $('#notice').html('<p class="alert alert-success fa fa-success">'+metadata.msg+'</p>');
+                $('#notice').html('<p class="alert alert-success"><span class="fa fa-success"></span>&nbsp;'+metadata.msg+'</p>');
                 if( $('#field'+fieldname+'_listfiles').length==0){
                     $("<ul id='field"+fieldname+"_listfiles' class='files-list' />").insertAfter("#uploadstatus");
                 }
@@ -157,9 +157,9 @@ function doFileUpload(){
                 previewblock += "<span class='file-name'>"+decodeURIComponent(metadata.name)+"<span>";
                 previewblock += "</div>";
 
+                previewblock +="<div class='file-info'><fieldset>";
                 if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
                 {
-                    previewblock +="<div class='file-info'><fieldset>";
                     if($('#'+fieldname+'_show_title').val() == 1)
                     {
                         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_title_"+count+"'>"+uploadLang.titleFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_title_"+count+"' /></div></div>";
@@ -168,9 +168,9 @@ function doFileUpload(){
                     {
                         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_comment_"+count+"'>"+uploadLang.commentFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_comment_"+count+"' /></div></div>";
                     }
-                    previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger fa fa-trash' onclick='deletefile(\""+fieldname+"\", "+count+")'>"+uploadLang.deleteFile+"</a></div></div>";
-                    previewblock += "</fieldset></div>";
                 }
+                previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+count+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
+                previewblock += "</fieldset></div>";
 
                 previewblock += "<input type='hidden' id='"+fieldname+"_size_"+count+"' value="+metadata.size+" />"+
                                 "<input type='hidden' id='"+fieldname+"_file_index_"+count+"' value="+metadata.file_index+" />"+
@@ -196,11 +196,11 @@ function doFileUpload(){
                     $('#uploadstatus').html(uploadLang.errorMaxReached);
 
                 if (filecount >= maxfiles)
-                    $('#notice').html('<p class="alert alert-success fa fa-check">'+uploadLang.errorTooMuch+'</p>');
+                    $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;'+uploadLang.errorTooMuch+'</p>');
             }
             else
             {
-                $('#notice').html('<p class="alert alert-danger fa fa-exclamation-circle">'+metadata.msg+'</p>');
+                $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+metadata.msg+'</p>');
             }
             
         }
@@ -295,7 +295,7 @@ function deletefile(fieldname, count) {
     })
     .done(function( msg )
     {
-        $('#notice').html('<p class="alert alert-success fa fa-check">'+msg+'</p>');
+        $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;'+msg+'</p>');
         setTimeout(function() {
             $(".success").remove();
         }, 5000);

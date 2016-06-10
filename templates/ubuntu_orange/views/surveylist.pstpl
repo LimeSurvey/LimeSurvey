@@ -1,3 +1,11 @@
+
+<div class="alert alert-danger" role="alert"  id="checkjavascript">
+    {CHECKJAVASCRIPT}
+</div>
+<script>
+    document.getElementById("checkjavascript").style.display = 'none';
+</script>
+
 <div class="row" id="surveys-list-container">
     <div class="jumbotron" id="surveys-list-jumbotron">
         {SITELOGO}
@@ -20,16 +28,13 @@
         {SURVEYCONTACT}
     </div>
 
-    <div class="col-xs-12 language-changer">
-        <p>{LANGUAGECHANGER}</p>
-    </div>
 </div>
 
 <div id="surveyListFooter" class="well">
     <div class="container">
         <p>
             <a href="http://www.limesurvey.org" target="_blank">
-                <img src="{TEMPLATEURL}poweredby.png" border="0" title="LimeSurvey Survey Software" />
+                <img src="{TEMPLATEURL}poweredby.png" alt="LimeSurvey Survey Software" />
                 </a>
                 <br />
                 <a href="http://www.limesurvey.org" target="_blank">

@@ -18,6 +18,43 @@
                 <?php if($error != '') { echo "<div id='grapherror' style='display:none'>$error<hr /></div>"; } ?>
             </div>
 
+
+            <div class='form-group'>
+                <label for='stats_columns' class="col-sm-5 control-label" ><?php eT("Number of columns:") ?></label>
+                <div class="btn-group hidden-sm hidden-xs  pull-left" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input name="stats_columns" value="1" type="radio" class="selected" >
+                        <?php eT('One');?>
+                    </label>
+                    <label class="btn btn-default active">
+                        <input name="stats_columns" value="2" type="radio" checked>
+                        <?php eT('Two');?>
+                    </label>
+                    <label class="btn btn-default">
+                        <input name="stats_columns" value="3" class="active" type="radio">
+                        <?php eT('Three');?>
+                    </label>
+                </div>
+            </div>
+
+            <div class='form-group'>
+                <label for='graph_labels' class="col-sm-5 control-label" ><?php eT("Graph labels:") ?></label>
+                <div class="btn-group hidden-sm hidden-xs  pull-left" data-toggle="buttons">
+                    <label class="btn btn-default active">
+                        <input name="graph_labels" value="qcode" type="radio" checked>
+                        <?php eT('Question code');?>
+                    </label>
+                    <label class="btn btn-default">
+                        <input name="graph_labels" value="qtext" type="radio">
+                        <?php eT('Question text');?>
+                    </label>
+                    <label class="btn btn-default">
+                        <input name="graph_labels" value="both" class="active" type="radio">
+                        <?php eT('Both');?>
+                    </label>
+                </div>
+            </div>
+
             <div class="form-group col-sm-12">
                 <div class="col-sm-offset-1 alert alert-info alert-dismissible" role="alert">
                     <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>

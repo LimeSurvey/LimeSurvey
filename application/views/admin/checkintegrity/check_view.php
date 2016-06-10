@@ -246,7 +246,7 @@
                                 <ul class='response-tables-list list-unstyled'>
                                     <?php
                                         foreach ($redundantsurveytables as $surveytable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /><label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label></li><?php
+                                        <li><input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label></li><?php
                                     }?>
                                 </ul>
                             </li>
@@ -260,7 +260,7 @@
                                 <ul class='token-tables-list list-unstyled'>
                                     <?php
                                         foreach ($redundanttokentables as $tokentable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /><label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label></li><?php
+                                        <li><input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label></li><?php
                                     }?>
                                 </ul>
                             </li>
@@ -272,7 +272,5 @@
                         <span class='hint warning'><?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?></span></p>
                 </form><?php
             } ?>
-                </p>
         </div>
     </div>
-</div>

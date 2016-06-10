@@ -17,9 +17,6 @@
 var labelcache=[];
 
 /* Event added on document for all button (new one added in js too)*/
-$(document).on("click",'.btntogglerelevance',function(){
-    togglerelevance();
-});
 $(document).on("click","#editsubquestionsform :submit", function() {
     //Validate duplicate before try to submit: surely some other javascript elsewhere
     return code_duplicates_check();
@@ -27,19 +24,35 @@ $(document).on("click","#editsubquestionsform :submit", function() {
 
 $(document).ready(function(){
 
-
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
         start:startmove,
         update:aftermove,
         distance:3});
-    $('.btnaddanswer').click(addinput);
-    $('.btndelanswer').click(deleteinput);
-    $('.btnlsbrowser').click(lsbrowser);
+
+    $(document).on("click", '.btnaddanswer', addinput);
+    $(document).on("click", '.btndelanswer', deleteinput);
+    $(document).on("click", '.btnlsbrowser', lsbrowser );
+
+    //$('.btnaddanswer').click(addinput);
+    //$('.btndelanswer').click(deleteinput);
+    //$('.btnlsbrowser').click(lsbrowser);
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
-    $('#btnqareplace').click(quickaddlabels);
-    $('#btnqainsert').click(quickaddlabels);
+
+
+    $('#quickaddModal').on('show.bs.modal', function(e) {
+        var scale_id = $(e.relatedTarget).data('scale-id');
+
+        $('#btnqainsert').unbind('click').on('click', function () {
+            quickaddlabels(scale_id, 'add');
+        });
+
+        $('#btnqareplace').unbind('click').on('click', function () {
+            quickaddlabels(scale_id, 'replace');
+        });
+    });
+
     $('#labelsets').click(lspreview);
     $('#languagefilter').click(lsbrowser);
     $('.bthsaveaslabel').click(getlabel);
@@ -48,14 +61,70 @@ $(document).ready(function(){
     $('#btnsave').click(savelabel);
 
     updaterowproperties();
+
+    bindExpandRelevanceEquation();
+
 });
+
+/**
+ * Bind relevance equation to expand on click (only once)
+ *
+ * @return void
+ */
+function bindExpandRelevanceEquation()
+{
+    $('.relevance').unbind('click').on('click', function() {
+        $('#rel-eq-th').toggleClass('col-md-1 col-md-4', 'fast');
+        $('.relevance').data('toggle', '').tooltip('destroy');
+        $('.relevance').unbind('click');
+    });
+}
+
+/**
+ * @return {boolean} true if relevance equation field is expanded
+ */
+function relevanceIsExpanded()
+{
+    return $('#rel-eq-th').hasClass('col-md-4');
+}
+
+/**
+ * Bind click to expand relevance equation
+ * if not already expanded.
+ *
+ * @return {void}
+ */
+function bindClickIfNotExpanded()
+{
+    if (!relevanceIsExpanded())
+    {
+        bindExpandRelevanceEquation();
+        // Activate tooltip
+        $('[data-toggle="tooltip"]').tooltip()
+    }
+
+}
+
+/**
+ * Get toolrip data for relevance equation.
+ * If expanded, returns empty string
+ *
+ * @return {string}
+ */
+function getRelevanceToolTip()
+{
+    var relevanceTooltip = !relevanceIsExpanded() ?
+        'data-toggle="tooltip" data-title="' + clickToExpand + '"' :
+        '';
+
+    return relevanceTooltip;
+}
 
 function deleteinput()
 {
+
     // 1.) Check if there is at least one answe
-    console.log('delete input start');
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
-    console.log(countanswers);
     if (countanswers>1)
     {
         // 2.) Remove the table row
@@ -101,144 +170,66 @@ function deleteinput()
 }
 
 
+/**
+ * add input : the ajax way
+ */
 function addinput()
 {
-    console.log('------------------------------------------------------------------');
-    console.log('addinput start');
-    var sID=$('input[name=sid]').val();
-    var gID=$('input[name=gid]').val();
-    var qID=$('input[name=qid]').val();
-    var x;
+    $that                  = $(this);                            // The "add" button
+    $currentRow            = $that.parents('.row-container');    // The row containing the "add" button
+    $currentTable          = $that.parents('.answertable');
+    $commonId              = $currentRow.data('common-id');      // The common id of this row in the other languages
+    $elDatas               = $('#add-input-javascript-datas');   // This hidden element  on the page contains various datas for this function
+    $url                   = $elDatas.data('url');               // Url for the request
+    $errormessage          = $elDatas.data('errormessage');     // the error message if the AJAX request failed
 
-    scale_id=removechars($(this).closest('table').attr('id'));
+    $languages             = JSON.stringify(langs);              // The languages
 
-    languages=langs.split(';');
-    sNextCode=getNextCode($(this).data('code'));
-    console.log('sNextCode: '+sNextCode);
-    console.log('before while');
+    // We get all the subquestion codes currently displayed
+    var codes = [];
+    $currentTable.find('.code').each(function(){
+        codes.push($(this).val());
+    });
 
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
+    // We convert them to json for the request
+    $codes = JSON.stringify(codes);
 
-    console.log('sNextCode: '+sNextCode);
-    console.log('languages: '+languages);
-    classes=$(this).parent().parent().attr('class').split(' ');
-    for (x in classes)
-    {
-        if (classes[x].substr(0,3)=='row')
-        {
-            position=classes[x].substr(4);
+    //We build the datas for the request
+    $datas                  = 'surveyid='+$elDatas.data('surveyid');
+    $datas                 += '&gid='+$elDatas.data('gid');
+    $datas                 += '&qid='+$elDatas.data('qid');
+    $datas                 += '&codes='+$codes;
+    $datas                 += '&scale_id='+$(this).data('scale-id');
+    $datas                 += '&type=subquestion';
+    $datas                 += '&position=';
+    $datas                 += '&languages='+$languages;
+
+    console.log('$datas', $datas);
+
+    // We get the HTML of the different rows to insert  (one by language)
+    $.ajax({
+        type: "GET",
+        url: $url,
+        data: $datas,
+        success: function(arrayofhtml) {
+
+            // arrayofhtml is a json string containing the different HTML row by language
+            // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
+
+            $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
+            console.log('$arrayOfHtml', $arrayOfHtml);
+
+            // We insert each row for each language
+            $.each($arrayOfHtml, function(lang, htmlRow){
+                $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
+                $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
+            });
+
+        },
+        error :  function(html, statut){
+            alert($errormessage);
         }
-    }
-    console.log('position:'+position);
-    //newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
-    newposition = Number($('#rowcontainer').find('tr').index($(this).closest('tr')))+1;
-    console.log('newposition: '+newposition);
-    info=$(this).closest('table').attr('id').split("_");
-    language=info[1];
-    scale_id=info[2];
-
-
-    languages=langs.split(';');
-
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-
-    console.log('sNextCode: '+sNextCode);
-
-    for (x in languages)
-    {
-        console.log('x: '+x);
-        var randomid='new'+Math.floor(Math.random()*111111);
-        relbutton='';
-
-        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-
-        if (x==0)
-        {
-            $(".relevance").toggle(false);
-            if (scale_id==0)
-            {
-                relbutton  = '<td>';
-                relbutton += '  <span class="icon-conditions text-success btntogglerelevance"></span>';
-                relbutton += '  <input style="display: none" type="text" size="20" id="relevance_'+randomid+'_'+scale_id+'" name="relevance_'+randomid+'_'+scale_id+'" class="relevance"  value="1"></input>';
-                relbutton += '</td>';
-            }
-
-            // Line insertion
-            inserthtml= '<tr id="row_'+newposition+'" class="row_'+newposition+'" style="">';
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <span class="glyphicon glyphicon-move"></span>';
-            inserthtml+='   </td>';
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <input class="code form-control input-lg" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" required="required" pattern="^[a-zA-Z0-9]*$" class="code" type="text" maxlength="20" size="20" value="'+htmlspecialchars(sNextCode)+'" />';
-            inserthtml+='   </td>';
-
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="">';
-            inserthtml+='           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input>';
-            inserthtml+='       </div>';
-            inserthtml+='  </td>';
-
-            inserthtml+='  <td style="vertical-align: middle;">';
-            inserthtml+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="glyphicon glyphicon-pencil btneditanswerena"></span>';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="glyphicon glyphicon-pencil btneditanswerdis" alt="Give focus to the HTML editor popup window" style="display: none;"></span>';
-            inserthtml+='           </a>';
-            inserthtml+='       <span class="icon-add text-success btnaddanswer" data-code="'+htmlspecialchars(sNextCode)+'"></span>';
-            inserthtml+='       <span class="glyphicon glyphicon-trash text-success btndelanswer"  ></span>';
-            inserthtml+='  </td>' + relbutton + '</tr>';
-        }
-        else
-        {
-            if (scale_id==0)
-            {
-                relbutton ='<td>'
-                relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
-                relbutton+='           </a>';
-                relbutton+='    <span class="icon-conditions text-success btntogglerelevance"></span>';
-                relbutton+='    <span style="display: none" class="relevance">1</span>';
-                relbutton+='</td>';
-            }
-            else
-            {
-                relbutton ='<td>'
-                relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
-                relbutton+='           </a>';
-                relbutton+='</td>';
-            }
-            inserthtml ='<tr id="row_'+newposition+'" class="row_'+newposition+'" style="display:none;">';
-            inserthtml+='   <td>&nbsp;</td>';
-            inserthtml+='   <td>'+htmlspecialchars(sNextCode)+'</td>';
-
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="">';
-            inserthtml+='           <input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />';
-            inserthtml+='       </div>';
-            inserthtml+='   </td>' + relbutton + '</tr>';
-        }
-        tablerow.after(inserthtml);
-        console.log("insertion");
-
-        tablerow.next().find('.btnaddanswer').click(addinput);
-
-        tablerow.next().find('.btndelanswer').click(deleteinput);
-        tablerow.next().find('.answer').focus(function()
-        {
-            if ($(this).val()==newansweroption_text)
-            {
-                $(this).val('');
-            }
-        });
-        tablerow.next().find('.code').blur(updatecodes);
-    }
-    $('.row_'+newposition).fadeIn('slow');
-    $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
-
-    $('.tab-page:first .answertable tbody').sortable('refresh');
-
+    });
 }
 
 function startmove(event,ui)
@@ -333,42 +324,31 @@ function updatecodes()
 
 function getNextCode(sSourceCode)
 {
-
-        i=1;
-        found=true;
-        mNumberFound=-1;
-        console.log('sSourceCode: '+sSourceCode);
-        while (i<=sSourceCode.length && found)
+    sourcecode = sSourceCode;
+    i=1;
+    found=true;
+    foundnumber=-1;
+    sclength = sourcecode.length;
+    while (i<=sclength && found == true)
+    {
+        found=is_numeric(sourcecode.substr(sclength-i,i));
+        if (found)
         {
-            found=is_numeric(sSourceCode.substr(-i));
-            if (found)
-                {
-                mNumberFound=sSourceCode.substr(-i);
-                i++;
-            }
+            foundnumber=sourcecode.substr(sclength-i,i);
+            i++;
         }
-        if (mNumberFound==-1)
-        {
-            sBaseCode=sSourceCode;
-            mNumberFound=0
-        }
-        else
-        {
-            sBaseCode=sSourceCode.substr(0,sSourceCode.length-mNumberFound.length);
-        }
-        var iNumberFound=+mNumberFound;
-        do
-        {
-            iNumberFound=iNumberFound+1;
-            sNewNumber=iNumberFound+'';
-            sResult=sBaseCode+sNewNumber;
-            if (sResult.length>5)
-            {
-              sResult=sResult.substr(sResult.length - 5);
-            }
-        }
-        while (areCodesUnique(sResult)==false);
-        return(sResult);
+    }
+    if (foundnumber==-1)
+    {
+        return(sourcecode);
+    }
+    else
+    {
+        foundnumber++;
+        foundnumber=foundnumber+'';
+        result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
+        return(result);
+    }
 }
 
 /**
@@ -417,20 +397,26 @@ function popupeditor()
 
 function code_duplicates_check()
 {
+    //$('.code[data-toggle="tooltip"]').data('toggle', '').tooltip('destroy');
+
     languages=langs.split(';');
     var cansubmit=true;
-    $('#tabpage_'+languages[0]+' .answertable tbody').each(function(){
+    $('#tabpage_'+languages[0]+' .answertable tbody').each(function()
+    {
         var codearray=[];
         $(this).find('tr .code').each(function(){
             codearray.push($(this).val().toLowerCase());
         });
-        if (arrHasDupes(codearray))
+        var theDuplicate = arrHasDupesWhich(codearray);
+        if (theDuplicate !== false)
         {
-            //alert(duplicatesubquestioncode);
-            $notifycontainer.notify("create", 'error-notify', { message:duplicatesubquestioncode});
+
+            $('#error-modal .modal-body-text').html(duplicatesubquestioncode);
+            $('#error-modal').modal();
             cansubmit= false;
         }
     });
+    console.log('cansubmit: '+cansubmit);
     return cansubmit;
 }
 
@@ -554,36 +540,6 @@ function lspreview()
 
 }
 
-/**
-* This is a debug function
-* similar to var_dump in PHP
-*/
-function dump(arr,level) {
-    var dumped_text = "";
-    if(!level) level = 0;
-
-    //The padding given at the beginning of the line.
-    var level_padding = "";
-    for(var j=0;j<level+1;j++) level_padding += "    ";
-
-    if(typeof(arr) == 'object') {
-        //Array/Hashes/Objects
-        for(var item in arr) {
-            var value = arr[item];
-
-            if(typeof(value) == 'object') {
-                 //If it is an array,
-                dumped_text += level_padding + "'" + item + "' ...\n";
-                dumped_text += dump(value,level+1);
-            } else {
-                dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-            }
-        }
-    } else { //Stings/Chars/Numbers etc.
-        dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
-    }
-    return dumped_text;
-}
 
 function transferlabels()
 {
@@ -602,8 +558,6 @@ function transferlabels()
     {
         var lsreplace=false;
     }
-
-    console.log('lsreplace: '+lsreplace);
 
     if (lsreplace)
     {
@@ -653,7 +607,6 @@ function transferlabels()
                             var randomid='new'+Math.floor(Math.random()*111111);
                             if (x==0)
                             {
-                                $(".relevance").toggle(false);
                                 tablerows=tablerows+
                                 '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" >'+
                                 '   <td>'+
@@ -702,7 +655,7 @@ function transferlabels()
                                 '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
                                 '           </a>'+
 
-                                '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
+                                //'       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
                                 '       <span style="display: none" class="relevance">1</span>'+
                                 '   </td>'+
                                 '</tr>';
@@ -732,7 +685,7 @@ function transferlabels()
                         '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena  glyphicon glyphicon-pencil text-success" ><span>'+
                         '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                         '           </a>'+
-                        '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
+                        //'       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
                         '       <span style="display: none" class="relevance">1</span>'+
                         '   </td>'+
                         '</tr>';
@@ -764,22 +717,21 @@ function transferlabels()
 
 }
 
-function quickaddlabels()
+/**
+ * Quick-add subquestions/answers
+ *
+ * @param {int} scale_id
+ * @param {string} addOrReplace - Either 'add' or 'replace'
+ * @return {void}
+ */
+function quickaddlabels(scale_id, addOrReplace)
 {
+    console.log('quickaddlabels');
     var sID=$('input[name=sid]').val();
     var gID=$('input[name=gid]').val();
     var qID=$('input[name=qid]').val();
 
-    if ($(this).attr('id')=='btnqareplace')
-    {
-        var lsreplace=true;
-    }
-    else
-    {
-        var lsreplace=false;
-    }
-    scale_id = 0;
-
+    var lsreplace = (addOrReplace === 'replace');
 
     if (lsreplace)
     {
@@ -790,6 +742,7 @@ function quickaddlabels()
     }
 
     languages=langs.split(';');
+
     for (x in languages)
     {
         lsrows=$('#quickaddarea').val().split("\n");
@@ -822,10 +775,12 @@ function quickaddlabels()
             }
             if (x==0)
             {
+                var idAndScale = '' + randomid + '_' + scale_id;
+
                 tablerows=tablerows+
                 '<tr id="row_'+k+'" class="row_'+k+'">'+
                 '   <td>'+
-                '       <span class="glyphicon glyphicon-move text-success"></span>'+
+                '       <span class="glyphicon glyphicon-move"></span>'+
                 '   </td>'+
 
                 '   <td style="vertical-align: middle;">'+
@@ -845,6 +800,10 @@ function quickaddlabels()
                 '       </div>'+
                 '   </td>'+
 
+                '   <td>' +
+                '       <input id="relevance_' + idAndScale + '" name="relevance_' + idAndScale + '" class="relevance form-control input-lg" type="text" value="1" ' + getRelevanceToolTip() + '/>' +
+                '   </td>' +
+
                 '   <td>'+
                 '           <a class="editorLink">'+
                 '               <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
@@ -852,11 +811,9 @@ function quickaddlabels()
                 '           </a>'+
 
                 '       <span class="btnaddanswer icon-add text-success"></span>'+
-                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+                '       <span class="btndelanswer glyphicon glyphicon-trash text-danger"></span>'+
                 '   </td>'+
                 '</tr>';
-
-                $(".relevance").toggle(false);
 
             }
             else
@@ -904,6 +861,7 @@ function quickaddlabels()
     updaterowproperties();
     $('#quickaddModal').modal('hide')
 
+    bindClickIfNotExpanded();
 }
 
 function getlabel()
@@ -1056,11 +1014,4 @@ function ajaxreqsave() {
             $('#dialog-result').show();
         }
     });
-}
-
-
-
-function togglerelevance()
-{
-    $(".relevance").toggle("fast");
 }

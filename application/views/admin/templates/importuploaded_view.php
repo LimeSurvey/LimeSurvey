@@ -29,7 +29,7 @@
     <div class="col-sm-11 col-sm-offset-1 content-right">
         <!-- Message box from super admin -->
         <div class="jumbotron message-box <?php echo $class;?>">
-            <h2 ><?php eT("Import template") ?></h2>
+            <h2 ><?php eT("Import template result:") ?></h2>
 
             <p class='lead <?php echo $statusClass;?>'>
                 <?php echo $status ?>
@@ -37,27 +37,27 @@
 
             <p>
                 <strong><u><?php eT("Resources import summary") ?></u></strong><br />
-                <?php echo gT("Total files imported") . ": $okfiles" ?><br />
-                <?php echo gT("Total errors") . ": $errfiles" ?><br />
+                <?php echo gT("Files imported:") . " $okfiles" ?><br />
+                <?php echo gT("Files skipped:") . " $errfiles" ?><br />
             </p>
             <p>
                 <?php
                     if (count($aImportedFilesInfo) > 0)
                     {
                     ?>
-                    <br /><strong><u><?php eT("Imported Files List") ?>:</u></strong><br />
+                    <br /><strong><u><?php eT("Imported files:") ?></u></strong><br />
                     <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
                         <?php
                             foreach ($aImportedFilesInfo as $entry)
                             {
                                 if ($entry['is_folder']){
                                 ?>
-                                <li><?php echo gT("Folder") . ": " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
+                                <li><?php echo gT("Folder:") . " " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
                                 <?php
                                 }
                                 else
                                 { ?>
-                                <li><?php echo gT("File") . ": " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
+                                <li><?php echo gT("File:") . " " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
 
 
                                 <?php
@@ -68,13 +68,13 @@
                         {
                         ?>
                     </ul>
-                    <br /><strong><u><?php eT("Error files list") ?>:</u></strong><br />
-                    <ul class="list-unstyled">
+                    <br /><strong><u><?php eT("Skipped files:") ?></u></strong><br />
+                    <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
                         <?php
                             foreach ($aErrorFilesInfo as $entry)
                             {
                             ?>
-                            <li><?php echo gT("File") . ": " . $entry["filename"] ?></li>
+                            <li><?php echo gT("File:") . " " . $entry["filename"] ?></li>
                             <?php
                             }
                         }

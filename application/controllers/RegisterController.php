@@ -253,11 +253,33 @@ class RegisterController extends LSYii_Controller {
         $event->set('from', $sFrom);
         $event->set('bounce',$sBounce );
         $event->set('token', $oToken->attributes);
+        App()->getPluginManager()->dispatchEvent($event);
         $aMail['subject'] = $event->get('subject');
         $aMail['message'] = $event->get('body');
         $sTo = $event->get('to');
         $sFrom = $event->get('from');
         $sBounce = $event->get('bounce');
+
+        $aRelevantAttachments = array();
+        if (isset($aSurveyInfo['attachments']))
+        {
+            $aAttachments = unserialize($aSurveyInfo['attachments']);
+            if (!empty($aAttachments))
+            {
+                if (isset($aAttachments['registration']))
+                {
+                    LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $sToken);
+
+                    foreach ($aAttachments['registration'] as $aAttachment)
+                    {
+                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance']))
+                        {
+                            $aRelevantAttachments[] = $aAttachment['url'];
+                        }
+                    }
+                }
+            }
+        }
 
         if ($event->get('send', true) == false)
         {
@@ -269,7 +291,7 @@ class RegisterController extends LSYii_Controller {
                 $oToken->save();
             }
         }
-        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename,$useHtmlEmail,$sBounce))
+        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename,$useHtmlEmail,$sBounce,$aRelevantAttachments))
         {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
@@ -440,7 +462,7 @@ class RegisterController extends LSYii_Controller {
         if(empty(App()->clientScript->scripts)){
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");            
             useFirebug();
             $this->render('/register/display',$aViewData);
         }else{

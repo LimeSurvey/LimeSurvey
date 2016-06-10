@@ -111,8 +111,8 @@ class statistics extends Survey_Common_Action {
 
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'json-js/json2.min.js'));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'statistics.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'json-js/json2.min.js');
 
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
@@ -517,6 +517,7 @@ class statistics extends Survey_Common_Action {
         $aData['error'] = $error;
         $aData['oStatisticsHelper'] = $helper;
         $aData['fresults'] = (isset($aData['fresults']))?$aData['fresults']:false;
+        $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 
@@ -797,8 +798,8 @@ class statistics extends Survey_Common_Action {
         $aData['menu']['expertstats'] =  true;
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'json-js/json2.min.js'));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'statistics.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'json-js/json2.min.js');
         echo $this->_renderWrappedTemplate('export', 'statistics_user_view', $aData);
      }
 
@@ -811,11 +812,7 @@ class statistics extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
-        //$switch = realpath(__DIR__ . '/../..').'/widgets/switch/assets/js/bootstrap-switch.min.js ';
-        $switch = Yii::app()->getBaseUrl(true).'/application/extensions/yiiwheels/widgets/switch/assets/js/bootstrap-switch.min.js ';
-        //var_dump($switch);
-        //App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $switch) );
-        App()->getClientScript()->registerScriptFile( $switch );
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'bootstrap-switch.min.js');
 
         $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']), array('simpleStatistics', 'admin/statistics/sa/index') );
 

@@ -33,19 +33,21 @@
     */
     function getDateFormatData($iDateFormat=0,$sLanguageCode='en')
     {
+        // Bootstrap DateTimePicker uses capital letters, but
+        // we still need small jsdate letters for dropdown client side.
         $aDateFormats= array(
-        1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'dd.mm.yy', 'dateformat' => gT('dd.mm.yyyy')),
-        2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'dd-mm-yy', 'dateformat' => gT('dd-mm-yyyy')),
-        3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'yy.mm.dd', 'dateformat' => gT('yyyy.mm.dd')),
-        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'd.m.yy',   'dateformat' => gT('d.m.yyyy')),
-        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'dd/mm/yy', 'dateformat' => gT('dd/mm/yyyy')),
-        6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'yy-mm-dd', 'dateformat' => gT('yyyy-mm-dd')),
-        7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'yy/mm/dd', 'dateformat' => gT('yyyy/mm/dd')),
-        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yy',   'dateformat' => gT('d/m/yyyy')),
-        9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'mm-dd-yy', 'dateformat' => gT('mm-dd-yyyy')),
-        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yy', 'dateformat' => gT('mm.dd.yyyy')),
-        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yy', 'dateformat' => gT('mm/dd/yyyy')),
-        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'd-m-yy',   'dateformat' => gT('d-m-yyyy'))
+        1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'DD.MM.YYYY', 'jsdate_original' => 'dd.mm.yyyy', 'dateformat' => gT('dd.mm.yyyy')),
+        2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'DD-MM-YYYY', 'jsdate_original' => 'dd-mm-yyyy', 'dateformat' => gT('dd-mm-yyyy')),
+        3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'YYYY.MM.DD', 'jsdate_original' => 'yyyy.mm.dd', 'dateformat' => gT('yyyy.mm.dd')),
+        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'D.M.YYYY',   'jsdate_original' => 'd.m.yyyy',   'dateformat' => gT('d.m.yyyy')),
+        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'DD/MM/YYYY', 'jsdate_original' => 'dd/mm/yyyy', 'dateformat' => gT('dd/mm/yyyy')),
+        6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'YYYY-MM-DD', 'jsdate_original' => 'yyyy-mm-dd', 'dateformat' => gT('yyyy-mm-dd')),
+        7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'YYYY/MM/DD', 'jsdate_original' => 'yyyy/mm/dd', 'dateformat' => gT('yyyy/mm/dd')),
+        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'D/M/YYYY',   'jsdate_original' => 'd/m/yyyy',   'dateformat' => gT('d/m/yyyy')),
+        9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'MM-DD-YYYY', 'jsdate_original' => 'mm-dd-yyyy', 'dateformat' => gT('mm-dd-yyyy')),
+        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'MM.DD.YYYY', 'jsdate_original' => 'mm.dd.yyyy', 'dateformat' => gT('mm.dd.yyyy')),
+        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'MM/DD/YYYY', 'jsdate_original' => 'mm/dd/yyyy', 'dateformat' => gT('mm/dd/yyyy')),
+        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'D-M-YYYY',   'jsdate_original' => 'd-m-yyyy',   'dateformat' => gT('d-m-yyyy'))
         );
 
         if ($iDateFormat > 12 || $iDateFormat<0) {
@@ -369,13 +371,6 @@
         $supportedLanguages['ja']['dateformat'] = 6;
         $supportedLanguages['ja']['radixpoint'] = 0;
 
-        // Kazakh
-        $supportedLanguages['kk']['description'] = gT('Kazakh');
-        $supportedLanguages['kk']['nativedescription'] = 'Qazaq&#351;a';
-        $supportedLanguages['kk']['rtl'] = false;
-        $supportedLanguages['kk']['dateformat'] = 1;
-        $supportedLanguages['kk']['radixpoint'] = 1;
-
         // Kinyarwanda
         $supportedLanguages['rw']['description'] = gT('Kinyarwanda');
         $supportedLanguages['rw']['nativedescription'] = 'Kinyarwanda';
@@ -541,13 +536,6 @@
         $supportedLanguages['pa']['dateformat'] = 2;
         $supportedLanguages['pa']['radixpoint'] = 0;
 
-        // Russian
-        $supportedLanguages['ru']['description'] = gT('Russian');
-        $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
-        $supportedLanguages['ru']['rtl'] = false;
-        $supportedLanguages['ru']['dateformat'] = 1;
-        $supportedLanguages['ru']['radixpoint'] = 1;
-
         // Romanian
         $supportedLanguages['ro']['description'] = gT('Romanian');
         $supportedLanguages['ro']['nativedescription'] = 'Rom&#226;na';
@@ -555,12 +543,12 @@
         $supportedLanguages['ro']['dateformat'] = 1;
         $supportedLanguages['ro']['radixpoint'] = 1;
 
-        // Slovak
-        $supportedLanguages['sk']['description'] = gT('Slovak');
-        $supportedLanguages['sk']['nativedescription'] = 'Sloven&#269;ina';
-        $supportedLanguages['sk']['rtl'] = false;
-        $supportedLanguages['sk']['dateformat'] = 4;
-        $supportedLanguages['sk']['radixpoint'] = 1;
+        // Russian
+        $supportedLanguages['ru']['description'] = gT('Russian');
+        $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
+        $supportedLanguages['ru']['rtl'] = false;
+        $supportedLanguages['ru']['dateformat'] = 1;
+        $supportedLanguages['ru']['radixpoint'] = 1;
 
         // Sinhala
         $supportedLanguages['si']['description'] = gT('Sinhala');
@@ -568,6 +556,13 @@
         $supportedLanguages['si']['rtl'] = false;
         $supportedLanguages['si']['dateformat'] = 5;
         $supportedLanguages['si']['radixpoint'] = 0;
+
+        // Slovak
+        $supportedLanguages['sk']['description'] = gT('Slovak');
+        $supportedLanguages['sk']['nativedescription'] = 'Sloven&#269;ina';
+        $supportedLanguages['sk']['rtl'] = false;
+        $supportedLanguages['sk']['dateformat'] = 4;
+        $supportedLanguages['sk']['radixpoint'] = 1;
 
         // Slovenian
         $supportedLanguages['sl']['description'] = gT('Slovenian');
@@ -665,7 +660,7 @@
         //Ukrainian
         $supportedLanguages['uk']['description'] = gT('Ukrainian');
         $supportedLanguages['uk']['nativedescription'] = 'ukrayins&#x2B9;kyy';
-      	$supportedLanguages['uk']['rtl'] = false;
+          $supportedLanguages['uk']['rtl'] = false;
         $supportedLanguages['uk']['dateformat'] = 1;
         $supportedLanguages['uk']['radixpoint'] = 1;
 
@@ -788,16 +783,20 @@
 
 
     /**
-    * Convert a 'dateformat' format string to a 'jsdate' format.
-    *
-    * @param $sDateformat string
-    * @returns string
-    *
-    */
+     * Convert a 'dateformat' format string to a 'jsdate' format.
+     * For Bootstrap, that means using capital letters, e.g.
+     * MM/DD/YYYY instead of mm/dd/yyyy.
+     *
+     * @param $sDateformat string
+     * @returns string
+     *
+     */
     function getJSDateFromDateFormat($sDateformat)
     {
-        // The only difference from dateformat is that Jsdate does not support truncated years
-        return str_replace(array('yy'), array('y'), $sDateformat);
+        // Reverse case, trick from here: http://stackoverflow.com/a/6612519/2138090
+        $newDateFormat = strtolower($sDateformat) ^ strtoupper($sDateformat) ^ $sDateformat;
+        $newDateFormat = str_replace("hh", "HH", $newDateFormat);  // HH (hours) need still be in upper-case for 00-23 representation (not AM/PM)
+        return $newDateFormat;
     }
 
 
@@ -817,6 +816,7 @@
             $aDateFormatDetails['dateformat'] = trim($aQidAttributes['date_format']);
             $aDateFormatDetails['phpdate'] = getPHPDateFromDateFormat($aDateFormatDetails['dateformat']);
             $aDateFormatDetails['jsdate'] = getJSDateFromDateFormat($aDateFormatDetails['dateformat']);
+            $aDateFormatDetails['jsdate_original'] = $aDateFormatDetails['dateformat'];  // In dropdown, this is fed to Date in Javascript, not Bootstrap
         }
         else
         {
@@ -917,15 +917,15 @@
             else { return $detaillanguages[$codetosearch]['description'];}
         }
         else
-            // else return default en code
-            return false;
+            // else return code
+            return $codetosearch;
     }
 
 
     function getLanguageRTL($sLanguageCode)
     {
         $aLanguageData= getLanguageData(false,$sLanguageCode);
-        if (isset($aLanguageData[$sLanguageCode]['rtl']))
+        if (isset($aLanguageData[$sLanguageCode]) && isset($aLanguageData[$sLanguageCode]['rtl']))
         {
             return $aLanguageData[$sLanguageCode]['rtl'];
         }
@@ -956,31 +956,55 @@
     }
 
     /**
-    * This functions translates LimeSurvey specific locale code to match a Yii locale
+    * This functions translates LimeSurvey specific locale code to a matching datetimepicker locale
     *
     * @param mixed $sLocale LimeSurvey locale code
     */
-    function translateLStoYiiLocale($sLocale)
+    function convertLStoDateTimePickerLocale($sLocale)
     {
-        // Strip informal string
+        // Strip informal string always for easier matching
         $sLocale=str_replace('-informal','',$sLocale);
-        return $sLocale;
+        $aConversions=array('ca-valencia'=>'ca',
+                            'hy'=>'hy-am',
+                            'zh-Hans'=>'zh-cn',
+                            'zh-Hant-HK'=>'zh-cn',
+                            'zh-Hant-TW'=>'zh-tw',
+                            'prs'=>'fa',
+                            'pa'=>'pa-in',
+                            'sr'=>'sr-cyrl',
+                            'es-AR'=>'es',
+                            'es-CL'=>'es',
+                            'es-MX'=>'es',
+                            'swh'=>'sw'
+                            );
+        if (isset($aConversions[$sLocale])){
+            $sLocale=$aConversions[$sLocale];
+        }
+        return strtolower($sLocale);
     }
 
-    function getLanguageDataRestricted($bOrderByNative=false,$sLanguageCode='en') {
-        $aLanguageData=getLanguageData($bOrderByNative, $sLanguageCode);
+    function getLanguageDataRestricted($bOrderByNative=false, $sDetail='full') {
+        $aLanguageData=getLanguageData($bOrderByNative);
 
         if (trim(Yii::app()->getConfig('restrictToLanguages'))!='')
         {
             foreach(explode(' ',trim(Yii::app()->getConfig('restrictToLanguages'))) AS $key) {
-                $aArray[$key] = $aLanguageData[$key];
+                $aResult[$key] = $aLanguageData[$key];
             }
         }
         else
         {
-            $aArray=$aLanguageData;
+            $aResult=$aLanguageData;
         }
-        return $aArray;
+        if ($sDetail=='short')
+        {
+            foreach ($aResult as $sKey=>$aLanguageData)
+            {
+                $aNewArray[$sKey]=$aLanguageData['description'];
+            }
+            $aResult=$aNewArray;
+        }
+        return $aResult;
     }
 
 

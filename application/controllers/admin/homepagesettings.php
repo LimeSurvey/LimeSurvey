@@ -31,7 +31,12 @@ class homepagesettings extends Survey_Common_Action
      */
     public function view($id)
     {
-        $this->_renderWrappedTemplate('homepagesettings', 'view', array(
+        if (!Permission::model()->hasGlobalPermission('settings', 'read') )
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect(App()->createUrl("/admin"));
+        }
+        $this->_renderWrappedTemplate('homepagesettings', 'read', array(
             'model'=>$this->loadModel($id),
         ));
     }
@@ -42,6 +47,12 @@ class homepagesettings extends Survey_Common_Action
      */
     public function create()
     {
+        if (! Permission::model()->hasGlobalPermission('settings', 'update') )
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect($this->createUrl("/admin/homepagesettings"));
+        }
+
         $model=new Boxes;
         if(isset($_POST['Boxes']))
         {
@@ -77,6 +88,12 @@ class homepagesettings extends Survey_Common_Action
      */
     public function update($id)
     {
+        if (! Permission::model()->hasGlobalPermission('settings', 'update') )
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect($this->createUrl("/admin/homepagesettings"));
+        }
+
         $model=$this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
@@ -113,6 +130,12 @@ class homepagesettings extends Survey_Common_Action
      */
     public function delete($id)
     {
+        if (! Permission::model()->hasGlobalPermission('settings', 'update') )
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect($this->createUrl("/admin/homepagesettings"));
+        }
+
         $this->loadModel($id)->delete();
         Yii::app()->user->setFlash('success', gT('Box deleted'));
 
@@ -128,6 +151,12 @@ class homepagesettings extends Survey_Common_Action
      */
     public function index()
     {
+        if (! Permission::model()->hasGlobalPermission('settings', 'read') )
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect(App()->createUrl("/admin"));
+        }
+
         $dataProvider=new CActiveDataProvider('Boxes');
         $aData = array(
             'dataProvider'=>$dataProvider,
@@ -303,7 +332,7 @@ class homepagesettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'homepagesettings.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'homepagesettings.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

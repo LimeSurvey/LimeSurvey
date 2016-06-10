@@ -10,14 +10,12 @@ $(document).ready(function(){
  * Function to launch timepicker in question id
  */
 function doPopupDate(qId){
-    console.log('doPopupDate qId:'+qId);
+
     if($("#question"+qId+" .popupdate").length){
-        console.log($("#question"+qId+" .popupdate"));
         var basename = $("#question"+qId+" .popupdate").attr("id").substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
         $("#question"+qId+" .popupdate").datetimepicker({
-            showOn: 'both',
             changeYear: true,
             changeMonth: true,
             defaultDate: +0,
@@ -28,6 +26,7 @@ function doPopupDate(qId){
             beforeShow: setPickerOptions
         }, $.datepicker.regional[language]);
     }
+
 }
 /*
  * Function to launch timepicker in question id

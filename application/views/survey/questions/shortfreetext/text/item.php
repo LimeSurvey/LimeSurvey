@@ -14,20 +14,22 @@
  */
 ?>
 
-<div class="question answer-item text-item <?php echo $extraclass; ?>">
+<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal short-free-text">
 
     <div class='form-group'>
 
         <!-- Label -->
-        <label class='control-label col-xs-12 col-sm-2' for='answer<?php echo $name; ?>' class='hide label'>
+        <label class='control-label col-xs-12 col-sm-2 hide label' for='answer<?php echo $name; ?>' >
             <?php eT('Your answer'); ?>
         </label>
 
         <!-- Prefix -->
-        <?php echo $prefix; ?>
+        <?php if ($prefix !== ''): ?>
+            <span class='col-xs-12 col-sm-2 prefix-text-right prefix'><?php echo $prefix; ?></span>
+        <?php endif; ?>
 
         <!-- Input -->
-        <div class='col-xs-12 col-sm-10'>
+        <div class='col-xs-12 col-sm-<?php echo max($sm_col - 5, 6); ?>'>
             <input
                 class="form-control text <?php echo $kpclass;?>"
                 type="text"
@@ -41,7 +43,9 @@
         </div>
 
         <!-- Suffix -->
-        <?php echo $suffix; ?>
+        <?php if ($suffix !== ''): ?>
+            <span class='col-xs-12 col-sm-2 text-left suffix'><?php echo $suffix; ?></span>
+        <?php endif; ?>
 
     </div>
 </div>

@@ -1,13 +1,13 @@
 <?php
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * Offer some way to validate Expression in survey
- * 
- * @copyright 2014 The LimeSurvey Project Team
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
- * @todo : Add any expression
- * @version : 1.1
- */
+* Offer some way to validate Expression in survey
+*
+* @copyright 2014 The LimeSurvey Project Team
+* @license http://www.gnu.org/licenses/gpl-3.0.txt
+* @todo : Add any expression
+* @version : 1.1
+*/
 class ExpressionValidate extends Survey_Common_Action {
 
     /**
@@ -34,7 +34,7 @@ class ExpressionValidate extends Survey_Common_Action {
     * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
     * @param integer $quota : the quota id
     * @param string $lang : the survey language, optional : if not set get all language of survey
-    * 
+    *
     * @author Denis Chenu
     * @version 1.0
     */
@@ -62,20 +62,20 @@ class ExpressionValidate extends Survey_Common_Action {
             {
                 $this->sLang=$sLang;
                 $aExpressions['name_'.$sLang]=array(
-                    'title'=>sprintf("Quota name (%s)",$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_name,array(),__METHOD__), 
+                    'title'=>sprintf(gT("Quota name (%s)"),$sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_name,array(),__METHOD__),
                 );
                 $aExpressions['message_'.$sLang]=array(
-                    'title'=>sprintf("Quota message (%s)",$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_message,array(),__METHOD__), 
+                    'title'=>sprintf(gT("Quota message (%s)"),$sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_message,array(),__METHOD__),
                 );
                 $aExpressions['url_'.$sLang]=array(
-                    'title'=>sprintf("URL (%s)",$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url,array(),__METHOD__), 
+                    'title'=>sprintf(gT("URL (%s)"),$sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url,array(),__METHOD__),
                 );
                 $aExpressions['urldescrip_'.$sLang]=array(
-                    'title'=>sprintf("URL description (%s)",$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_urldescrip,array(),__METHOD__), 
+                    'title'=>sprintf(gT("URL description (%s)"),$sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_urldescrip,array(),__METHOD__),
                 );
             }
         }
@@ -91,7 +91,7 @@ class ExpressionValidate extends Survey_Common_Action {
     * Check the Expression in email
     * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
     * @param string $lang : the mail language
-    * 
+    *
     * @author Denis Chenu
     * @version 1.1
     */
@@ -174,7 +174,7 @@ class ExpressionValidate extends Survey_Common_Action {
         // Not needed : templatereplace do the job : but this can/must be fixed for invitaton/reminder/registration (#9424)
         $aReplacement["SURVEYNAME"] = gT("Name of the survey");
         $aReplacement["SURVEYDESCRIPTION"] =  gT("Description of the survey");
-        // Replaced when sending email with Survey 
+        // Replaced when sending email with Survey
         $aAttributes = getTokenFieldsAndNames($iSurveyId,true);
         $aReplacement["TOKEN"] = gT("Token code for this participant");
         $aReplacement["TOKEN:EMAIL"] = gT("Email from the token");

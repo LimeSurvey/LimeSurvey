@@ -93,7 +93,7 @@
             <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                 <span class="glyphicon glyphicon-backward"></span>
                 &nbsp;&nbsp;
-                <?php eT('Return to admin panel'); ?>
+                <?php eT('Return to admin home'); ?>
             </a>
         </div>
     </div>

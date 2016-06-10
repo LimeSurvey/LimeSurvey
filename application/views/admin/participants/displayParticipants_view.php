@@ -223,7 +223,7 @@ echo $colModels;
             <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
             <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>  id="addbutton" style="margin-bottom:4px" alt='<?php eT("Add search condition"); ?>'></td>
+            <td>&nbsp;<span class='icon-add text-success' id="addbutton" alt='<?php eT("Add search condition"); ?>'></span></td>
         </tr>
     </table>
     <br/>
@@ -287,8 +287,8 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 <!--<div id="addsurvey" title="addsurvey" style="display:none">-->
 
 <!-- Add To Survey Popup Window -->
-<div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
-    <?php echo CHtml::form(array("admin/participants/sa/attributeMap"), 'post', array('id'=>'addsurvey','name'=>'addsurvey', 'class' => 'form-horizonta')); ?>
+<div id="client-script-return-msg" style="display:none">
+    <?php echo CHtml::form(array("admin/participants/sa/attributeMap"), 'post', array('id'=>'addsurvey','name'=>'addsurvey','class'=>'form-horizontal')); ?>
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
         <fieldset class='popupgroup'>
@@ -310,7 +310,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
                 {
                     $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
                 }
-                echo CHtml::listBox('survey_id', 'id="survey_id"', $option, array('style'=>'width: 400px; border: 0px; cursor: pointer', 'size'=>10));
+                echo CHtml::listBox('survey_id', 'id="survey_id"', $option, array('class'=>'form-control', 'size'=>8));
             }
             ?>
           </p><br />
@@ -319,27 +319,22 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
           <legend>
             <?php eT("Options") ?>
           </legend>
-          <div class='row'>
-            <div class='form-group'>
-                <label class='control-label col-sm-8' for='redirect'><?php eT("Display survey tokens after adding?"); ?></label>
-                <div class='col-sm-4'>
-                    <?php
-                    $data = array(
-                        'id' => 'redirect',
-                        'value' => 'TRUE',
-                        'style' => 'margin:10px',
-                    );
-
-                    echo CHtml::checkBox('redirect', TRUE, $data);
-                    ?>
-                </div>
+        <div class='form-group'>
+            <label class='control-label col-sm-8' for='redirect'><?php eT("Display survey participants after adding?"); ?></label>
+            <div class='col-sm-4'>
+                <?php
+                echo CHtml::checkBox('redirect', TRUE,  array(
+                    'id' => 'redirect',
+                    'value' => 'TRUE',
+                    'class' => '',
+                ));
+                ?>
             </div>
-          </div>
+        </div>
+
         </fieldset>
     </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
-    <p>
-<?php eT("You do not have the permission to edit this participant."); ?></p>
-
+    <p><?php eT("You do not have the permission to edit this participant."); ?></p>
 </div>

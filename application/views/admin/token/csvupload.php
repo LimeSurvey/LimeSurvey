@@ -5,8 +5,9 @@
  */
 ?>
 
-<div class="side-body">
-    <h3><?php eT("Import tokens from CSV file"); ?></h3>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Import survey participants from CSV file"))); ?>
+    <h3><?php eT("Import survey participants from CSV file"); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -24,7 +25,9 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='csvcharset'><?php eT("Character set of the file:"); ?></label>
                     <div class="col-sm-5">
-                        <?php echo CHtml::dropDownList('csvcharset', 'auto', $aEncodings, array('size' => '1', 'class'=>'form-control')); ?>
+                        <?php
+                            echo CHtml::dropDownList('csvcharset', $thischaracterset, $aEncodings, array('size' => '1', 'class'=>'form-control'));
+                        ?>
                     </div>
                 </div>
 
@@ -32,10 +35,15 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='separator'><?php eT("Separator used:"); ?> </label>
                     <div class="col-sm-3">
-                        <?php
-                            $aSeparator = array('auto' => gT("(Autodetect)",'unescaped'), 'comma' => gT("Comma",'unescaped'), 'semicolon' => gT("Semicolon",'unescaped'));
-                            echo CHtml::dropDownList('separator', returnGlobal('separator'), $aSeparator, array('size' => '1','class'=>'form-control'));
-                        ?>
+                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'separator',
+                            'value'=> 'auto',
+                            'selectOptions'=>array(
+                                "auto"=>gT("Automatic",'unescaped'),
+                                "comma"=>gT("Comma",'unescaped'),
+                                "semicolon"=>gT("Semicolon",'unescaped')
+                            )
+                        ));?>
                     </div>
                 </div>
 
@@ -43,7 +51,14 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
                     <div class="col-sm-10">
-                        <?php echo CHtml::checkBox('filterblankemail', true); ?>
+                            <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => "filterblankemail",
+                                'id'=>"filterblankemail",
+                                'value' => '1',
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off')));
+                            ?>
                     </div>
                 </div>
 
@@ -51,7 +66,14 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
                     <div class="col-sm-10">
-                        <?php echo CHtml::checkBox('allowinvalidemail', false); ?>
+                        <?php
+                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => "allowinvalidemail",
+                            'id'=>"allowinvalidemail",
+                            'value' => '0',
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')));
+                        ?>
                     </div>
                 </div>
 
@@ -59,7 +81,14 @@
                 <div class="form-group">
                             <label class="col-sm-2 control-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
                     <div class="col-sm-10">
-                           <?php echo CHtml::checkBox('showwarningtoken'); ?>
+                        <?php
+                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => "showwarningtoken",
+                            'id'=>"showwarningtoken",
+                            'value' => '0',
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')));
+                        ?>
                     </div>
                 </div>
 
@@ -67,16 +96,23 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
                     <div class="col-sm-10">
-                        <?php echo CHtml::checkBox('filterduplicatetoken', true); ?>
+                    <?php
+                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => "filterduplicatetoken",
+                            'id'=>"filterduplicatetoken",
+                            'value' => '1',
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')));
+                        ?>
                     </div>
                 </div>
 
                 <!-- Duplicates are determined by -->
                 <div class="form-group" id='lifilterduplicatefields'>
                     <label class="col-sm-2 control-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <?php
-                            echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7'));
+                            echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7','class'=>'form-control'));
                         ?>
                     </div>
                 </div>
@@ -100,4 +136,3 @@
         </div>
     </div>
 </div>
-

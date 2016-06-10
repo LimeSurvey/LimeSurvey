@@ -1,6 +1,7 @@
-<div class="side-body col-lg-8">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
+            <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=> gT("Survey quotas"))); ?>
             <h3>
                 <?php eT("Survey quotas");?>
             </h3>
@@ -18,7 +19,7 @@
                     <th style="width:20%"><?php eT("Quota name");?></th>
                     <th style="width:20%"><?php eT("Status");?></th>
                     <th style="width:30%"><?php eT("Quota action");?></th>
-                    <th style="width:5%"><?php eT("Completed");?></th>
+                    <th style="width:5%; padding-right: 1em;"><?php eT("Completed");?></th>
                     <th style="width:5%"><?php eT("Limit");?></th>
                     <th style="width:20%"><?php eT("Action");?></th>
                 </tr>
@@ -35,8 +36,3 @@
                 </tr>
                 </tfoot>
                 <tbody>
-
-
-
-
-

@@ -94,9 +94,12 @@ class Template extends LSActiveRecord
 
     public static function checkIfTemplateExists($sTemplateName)
     {
-        $sTemplatePath = self::getTemplatePath($sTemplateName);
-
-        return is_dir($sTemplatePath);
+        $aTemplates=self::getTemplateList();
+        if (array_key_exists($sTemplateName, $aTemplates))
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -185,34 +188,38 @@ class Template extends LSActiveRecord
         }
     }
 
+    /**
+    * Returns an array of all available template names - does a basic check if the template might be valid
+    *
+    */
     public static function getTemplateList()
     {
-        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+        $sUserTemplateRootDir=Yii::app()->getConfig("usertemplaterootdir");
         $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
 
         $aTemplateList=array();
 
         if ($handle = opendir($standardtemplaterootdir))
         {
-            while (false !== ($file = readdir($handle)))
+            while (false !== ($sFileName = readdir($handle)))
             {
                 // Why not return directly standardTemplate list ?
-                if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
+                if (!is_file("$standardtemplaterootdir/$sFileName") && self::isStandardTemplate($sFileName))
                 {
-                    $aTemplateList[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                    $aTemplateList[$sFileName] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$sFileName;
                 }
             }
             closedir($handle);
         }
 
-        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
+        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir))
         {
-            while (false !== ($file = readdir($handle)))
+            while (false !== ($sFileName = readdir($handle)))
             {
                 // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+                if (!is_file("$sUserTemplateRootDir/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName!=".svn" && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") || file_exists("{$sUserTemplateRootDir}/{$sFileName}/startpage.pstpl")))
                 {
-                    $aTemplateList[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                    $aTemplateList[$sFileName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sFileName;
                 }
             }
             closedir($handle);
@@ -226,6 +233,8 @@ class Template extends LSActiveRecord
     {
         $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
         $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
+        $usertemplaterooturl = Yii::app()->getConfig("usertemplaterooturl");
+        $standardtemplaterooturl=Yii::app()->getConfig("standardtemplaterooturl");
 
         $aTemplateList=array();
 
@@ -237,7 +246,7 @@ class Template extends LSActiveRecord
                 if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
                 {
                     $aTemplateList[$file]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                    $aTemplateList[$file]['preview'] = Yii::app()->request->baseUrl.'/templates/'.$file.'/preview.png';
+                    $aTemplateList[$file]['preview'] = $standardtemplaterooturl.'/'.$file.'/preview.png';
                 }
             }
             closedir($handle);
@@ -251,7 +260,7 @@ class Template extends LSActiveRecord
                 if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
                 {
                     $aTemplateList[$file]['directory']  = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                    $aTemplateList[$file]['preview'] = Yii::app()->request->baseUrl.'/upload/templates/'.$file.'/preview.png';
+                    $aTemplateList[$file]['preview'] = $usertemplaterooturl.'/'.$file.'/'.'preview.png';
                 }
             }
             closedir($handle);
@@ -294,7 +303,24 @@ class Template extends LSActiveRecord
         {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
         }
-
         return self::$instance;
+    }
+
+    /**
+     * Touch each directory in standard template directory to force assset manager to republish them
+     */
+    public static function forceAssets()
+    {
+        // Don't touch symlinked assets because it won't work
+        if (App()->getAssetManager()->linkAssets) return;
+        $standardTemplatesPath = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR;
+        $Resource = opendir($standardTemplatesPath);
+        while ($Item = readdir($Resource))
+        {
+            if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..")
+            {
+                touch($standardTemplatesPath . $Item);
+            }
+        }
     }
 }

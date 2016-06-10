@@ -6,27 +6,35 @@
  * @var obj $clang : the translate object, now moved to global function TODO : remove it
  */
 ?>
+<?php
+    // First we check if the server provided a specific HTML message
+    if(isset($updateInfos->html))
+    {
+        if($updateInfos->html != "")
+            echo $updateInfos->html;
+        // And we unset this html message for the loop on update versions don't crush on it
+        unset($updateInfos->html);
+    }
+?>
 
-<!-- Updates available -->
-<label>
-    <span style="font-weight: bold;"><?php echo gT('The following LimeSurvey updates are available:');?></span>
-</label>
+<?php if(isset($updateInfos->alert)): // First we check if the server provided a specific alert message ?>
+    <?php if($updateInfos->alert != ""):?>
+        <!-- Alert from server -->
+        <div class="alert alert-warning" role="alert">
+            <?php echo $updateInfos->alert; ?>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+
+
+<div>
+    <strong><?php echo gT('The following LimeSurvey updates are available:');?></strong>
+</div>
 <br/>
 <br/>
 
-<!-- table -->
+
 <table class="items table">
-    <?php
-        // First we check if the server provided a specific HTML message
-        if(isset($updateInfos->html))
-        {
-            if($updateInfos->html != "")
-                echo '<tr><td>'.$updateInfos->html.'</tr></td>';
-            // And we unset this html message for the loop on update versions don't crush on it
-            unset($updateInfos->html);
-        }
-    ?>
-
     <!-- header -->
     <thead>
         <tr>
@@ -55,6 +63,12 @@
                  <?php
                      // display infos about the update. e.g : "2.05+ (150508) (stable)"
                      echo $aUpdateVersion['versionnumber'];?> (<?php echo $aUpdateVersion['build'];?>)
+
+                <?php if(isset($aUpdateVersion['html'])):?>
+                    <?php if($aUpdateVersion['html']!=''):?>
+                        <?php echo $aUpdateVersion['html'];?>
+                    <?php endif;?>
+                <?php endif;?>
             </td>
 
             <!-- stable / unstable -->

@@ -920,7 +920,7 @@ class Participant extends LSActiveRecord
             ->db
             ->createCommand()
             ->select('count(*)')
-            ->where('participant_id = :participant_id AND ( share_uid = :userid oOR share_uid = 0)')
+            ->where('participant_id = :participant_id AND ( share_uid = :userid OR share_uid = 0)')
             ->from('{{participant_shares}}')
             ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
             ->bindParam(":userid", $userid, PDO::PARAM_INT)

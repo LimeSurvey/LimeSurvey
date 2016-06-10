@@ -1,6 +1,3 @@
-<?php
-App()->getClientScript()->registerPackage('jqueryui-timepicker');
-?>
 <div class='menubar surveybar' id="tokenbarid">
     <div class='row container-fluid'>
 
@@ -14,7 +11,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>' role="button">
                         <span class="glyphicon glyphicon-list-alt text-success"></span>
-                        <?php eT("Display tokens"); ?>
+                        <?php eT("Display participants"); ?>
                     </a>
                 <?php endif; ?>
 
@@ -22,7 +19,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="icon-add text-success"></span>
-                    <?php eT("Create tokens");?> <span class="caret"></span>
+                    <?php eT("Create...");?> <span class="caret"></span>
                 </button>
 
                 <!-- Add new token entry -->
@@ -31,7 +28,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <li>
                     <a href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>" >
                         <span class="icon-add"></span>
-                        <?php eT("Add token entry"); ?>
+                        <?php eT("Add participant"); ?>
                     </a>
                 </li>
 
@@ -39,7 +36,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <li>
                     <a href="<?php echo $this->createUrl("admin/tokens/sa/adddummies/surveyid/$surveyid"); ?>" >
                        <span class="fa fa-plus-square"></span>
-                       <?php eT("Create dummy tokens"); ?>
+                       <?php eT("Create dummy participants"); ?>
                     </a>
                 </li>
                 <?php endif; ?>
@@ -47,7 +44,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Import tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'import')): ?>
                     <li role="separator" class="divider"></li>
-                    <small><?php eT("Import tokens from:"); ?></small>
+                    <small><?php eT("Import participants from:"); ?></small>
 
                     <!-- from CSV file -->
                     <li>
@@ -72,7 +69,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$surveyid"); ?>' role="button">
                        <span class="icon-token_manage text-success"></span>
-                       <?php eT("Manage additional attributes"); ?>
+                       <?php eT("Manage attributes"); ?>
                     </a>
                 <?php endif; ?>
 
@@ -80,7 +77,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'export')): ?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid"); ?>" role="button">
                        <span class="icon-exportcsv"></span>
-                       <?php eT("Export tokens"); ?>
+                       <?php eT("Export"); ?>
                     </a>
                 <?php endif; ?>
 
@@ -136,7 +133,13 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Generate tokens -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/tokenify/surveyid/$surveyid"); ?>" role="button">
                     <span class="icon-do text-success"></span>
-                    <?php eT("Generate access token"); ?>
+                    <?php eT("Generate tokens"); ?>
+                </a>
+
+                <!-- View participants of this survey in CPDB -->
+                <a class="btn btn-default" href="#" role="button" onclick="sendPost('<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>','',['searchcondition'],['surveyid||equal|| <?php echo $surveyid ?>']);">
+                    <span class="ui-icon ui-participant-link"></span>
+                    <?php eT("View in CPDB"); ?>
                 </a>
                 <?php endif; ?>
             <?php endif;?>
@@ -151,13 +154,32 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Delete tokens table -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($surveyid, 'tokens','delete')): ?>
                     <a class="btn btn-danger" href="<?php echo $this->createUrl("admin/tokens/sa/kill/surveyid/$surveyid"); ?>" role="button">
-                        <?php eT("Delete tokens table"); ?>
+                        <?php eT("Delete participants table"); ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
 
+
+            <!-- Send invitations buttons -->
+            <?php if(isset($token_bar['sendinvitationbutton'])):?>
+                <a class="btn btn-default" href="#" role="button" id="send-invitation-button">
+                    <span class="icon-invite" ></span>
+                    <?php eT("Send invitations");?>
+                </a>
+            <?php endif;?>
+
+            <!-- Send reminder buttons -->
+            <?php if(isset($token_bar['sendreminderbutton'])):?>
+                <a class="btn btn-default" href="#" role="button" id="send-reminders-button">
+                    <span class="icon-invite" ></span>
+                    <?php eT("Send reminders");?>
+                </a>
+            <?php endif;?>
+
+
             <!-- Save buttons -->
             <?php if(isset($token_bar['savebutton']['form'])):?>
+
                 <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
                     <span class="glyphicon glyphicon-ok" ></span>
                     <?php eT("Save");?>
@@ -167,7 +189,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
             <?php if(isset($token_bar['exportbutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon glyphicon-export" ></span>
-                    <?php eT("Export tokens");?>
+                       <?php eT("Download CSV file"); ?>
                 </a>
             <?php endif;?>
 

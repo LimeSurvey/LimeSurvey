@@ -42,58 +42,84 @@ $(document).ready(function(){
 */
 
 
-
-function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
-{
-   var arVersion = navigator.appVersion.split("MSIE")
-   var version = parseFloat(arVersion[1])
-   if ((version >= 5.5) && (version<7) && (document.body.filters))
-   {
-      for(var i=0; i<document.images.length; i++)
-      {
-         var img = document.images[i]
-         var imgName = img.src.toUpperCase()
-         if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
-         {
-            var imgID = (img.id) ? "id='" + img.id + "' " : "";
-            var imgClass = (img.className) ? "class='" + img.className + "' " : "";
-            var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' ";
-            var imgStyle = "display:inline-block;" + img.style.cssText;
-            if (img.align == "left") imgStyle = "float:left;" + imgStyle;
-            if (img.align == "right") imgStyle = "float:right;" + imgStyle;
-            if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle;
-            var strNewHTML = "<span " + imgID + imgClass + imgTitle
-            + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
-            + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
-            + "(src='" + img.src + "', sizingMethod='scale');\"></span>"
-            img.outerHTML = strNewHTML
-            i = i-1
-         }
-      }
-   }
+/**
+ * Remake table @that with divs, by column
+ * Used by array-by-column question type on
+ * small screen
+ *
+ * TODO: remove all the HTML from this function.
+ *
+ * @param {object} that The table jQuery object
+ * @return void
+ */
+function replaceColumnWithDiv(that) {
+    var newHtml = '';
+    var nrOfColumns = $(that).find('tr:first th').length;
+    newHtml += "<div class='array-by-columns-div'>";
+    for (var i = 0; i < nrOfColumns; i++)
+    {
+        // Fetch each column from the table and put content in div
+        newHtml += "<div class='well radio-list array" + (i % 2 === 0 ? "2" : "1") + " '>";
+        $(that).find('tr > *:nth-child('+ (i + 2) + ')').each(function(j) {
+            // First one is header
+            if (j === 0) {
+                newHtml += "<div class='answertext'>";
+                newHtml += $(this).html();
+                newHtml += "</div>";
+            }
+            else {
+                newHtml += "<div class='radio-item radio'>";
+                newHtml += $(this).html();
+                newHtml += "</div>";
+            }
+        });
+        newHtml += "</div>";
+    }
+    newHtml += "</div>";
+    $(that).replaceWith(newHtml);
 }
 
-$(document).ready(function(){
 
-    if($(window).width() < 800)
+
+
+$(document).ready(function()
+{
+
+    // Scroll to first error
+    if($(".input-error").length > 0) {
+        $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
+            console.log('answer error found');
+            $firstError = $(".input-error").first();
+            $pixToScroll = ( $firstError.offset().top - 100 );
+            $('html, body').animate({
+                 scrollTop: $pixToScroll + 'px'
+             }, 'fast');
+        });
+    }
+
+
+    // Make the label clickable
+    $('.label-clickable').each(function(){
+        var $that    = $(this);
+        var $inputEl = $("#"+$that.attr('id').replace("label-", ""));
+        $that.on('click', function(){
+            console.log($inputEl.attr('id'));
+            $inputEl.trigger( "click" );
+        });
+    });
+
+    $('.if-no-js').hide();
+
+    // iPad has width 768, Google Nexus 10 width 800
+    // It's OK to keep tables on pads.
+    if($(window).width() < 768)
     {
-        if($('.no-more-tables').length > 0)
-        {
-            $('.no-more-tables').find('td').each(function(){
-                $that = $(this);
-                $label = $that.data('title');
-                $input = $that.find('input');
-                if($input.is(':checkbox'))
-                {
-                    $that.find('label').removeClass('hide');
-                }
-                else
-                {
-                    $that.find('label').prepend($label);
-                }
+        // Brutally remake the array-by-columns question type to divs,
+        // because you can't wrap table columns
+        $('.array-by-columns-table').each(function() {
+            replaceColumnWithDiv(this);
+        });
 
-            });
-        }
     }
 
     //var outerframeDistanceFromTop = 50;
@@ -141,6 +167,7 @@ $(document).ready(function(){
         }
     });
 
+    // Hide question help container if empty
     $('.questionhelp').each(function(){
         $that = $(this);
         if(!$.trim($that.html()))
@@ -184,24 +211,24 @@ $(document).ready(function(){
         });
     }
 
+
+    // Errors
     if($('.emtip').length>0)
     {
         // On Document Load
         $('.emtip').each(function(){
             if($(this).hasClass('error'))
             {
-                $(this).parents('div.alert.questionhelp').removeClass('alert-info').addClass('alert-danger');
-                $(this).addClass('strong');
+                $(this).parents('div.questionhelp').removeClass('text-info').addClass('text-danger');
             }
         });
 
         // On em change
         $('.emtip').each(function(){
-
             $(this).on('classChangeError', function() {
-                $parent = $(this).parent('div.alert.questionhelp');
-                $parent.removeClass('alert').removeClass('alert-info',1);
-                $parent.addClass('alert-danger',1).addClass('alert');
+                $parent = $(this).parent('div.questionhelp');
+                $parent.removeClass('text-info',1);
+                $parent.addClass('text-danger',1);
 
                 if ($parent.hasClass('hide-tip'))
                 {
@@ -209,21 +236,20 @@ $(document).ready(function(){
                     $parent.addClass('tip-was-hidden',1);
                 }
 
-                $(this).addClass('strong');
-
-
+                $questionContainer = $(this).parents('div.question-container');
+                $questionContainer.addClass('input-error');
             });
 
             $(this).on('classChangeGood', function() {
-                $parent = $(this).parents('div.alert.questionhelp');
-                $parent.removeClass('alert-danger');
-                $(this).removeClass('strong');
-                $parent.addClass('alert-info');
+                $parent = $(this).parents('div.questionhelp');
+                $parent.removeClass('text-danger');
+                $parent.addClass('text-info');
                 if ($parent.hasClass('tip-was-hidden'))
                 {
                     $parent.removeClass('tip-was-hidden').addClass('hide-tip');
                 }
-
+                $questionContainer = $(this).parents('div.question-container');
+                $questionContainer.removeClass('input-error');
             });
         });
     }
@@ -240,4 +266,37 @@ $(document).ready(function(){
         $surveyListFooter = $('#surveyListFooter');
         $('#outerframeContainer').after($surveyListFooter);
     }
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
 });
+
+
+window.alert = function(message, title) {
+    if($("#bootstrap-alert-box-modal").length == 0) {
+        $("body").append('<div id="bootstrap-alert-box-modal" class="modal fade">\
+            <div class="modal-dialog">\
+                <div class="modal-content">\
+                    <div class="modal-header" style="min-height:40px;">\
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
+                        <h4 class="modal-title"></h4>\
+                    </div>\
+                    <div class="modal-body"><p></p></div>\
+                    <div class="modal-footer">\
+                        <a href="#" data-dismiss="modal" class="btn btn-default">Close</a>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>');
+    }
+    $("#bootstrap-alert-box-modal .modal-header h4").text(title || "");
+    $("#bootstrap-alert-box-modal .modal-body p").text(message || "");
+
+    $(document).ready(function()
+    {
+        $("#bootstrap-alert-box-modal").modal('show');
+    });
+};

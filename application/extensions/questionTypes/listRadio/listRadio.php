@@ -4,7 +4,6 @@ class listRadio extends CApplicationComponent
 {
     public function doQuestion($ia)
     {
-        global $dropdownthreshold;
         global $thissurvey;
         if ($thissurvey['nokeyboard']=='Y')
         {

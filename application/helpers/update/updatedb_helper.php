@@ -1387,6 +1387,15 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>257),"stg_name='DBVersion'");
         }
 
+        /**
+         * Remove adminimageurl from global settings
+         */
+        if ($iOldDBVersion < 258) {
+            Yii::app()->getDb()->createCommand(
+                "DELETE FROM {{settings_global}} WHERE stg_name='adminimageurl'"
+            )->execute();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>258),"stg_name='DBVersion'");
+        }
 
         $oTransaction->commit();
         // Activate schema caching
@@ -1418,10 +1427,12 @@ function db_upgrade_all($iOldDBVersion) {
 function upgradeTokenTables256()
 {
     $surveyidresult = dbGetTablesLike("tokens%");
+    $oDB = Yii::app()->getDb();
     if ($surveyidresult)
     {
         foreach ( $surveyidresult as $sTableName )
         {
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_lime_{$sTableName}_efl",$sTableName); } catch(Exception $e) { rollBackToTransactionBookmark();}
             alterColumn($sTableName, 'email', "text");
             alterColumn($sTableName, 'firstname', "string(150)");
             alterColumn($sTableName, 'lastname', "string(150)");
@@ -1735,9 +1746,9 @@ function upgradeTokenTables179()
             }
             $oDB->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,1,254)")->execute();
             try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_{$sTableName}_efl",$sTableName); } catch(Exception $e) { rollBackToTransactionBookmark();}
-            alterColumn($sTableName, 'email', "string(254)");
-            alterColumn($sTableName, 'firstname', "string(150)");
-            alterColumn($sTableName, 'lastname', "string(150)");
+            try { setTransactionBookmark(); alterColumn($sTableName, 'email', "string(254)"); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); alterColumn($sTableName, 'firstname', "string(150)"); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); alterColumn($sTableName, 'lastname', "string(150)"); } catch(Exception $e) { rollBackToTransactionBookmark();}
         }
     }
 }

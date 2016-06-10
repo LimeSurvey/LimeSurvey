@@ -23,7 +23,11 @@ $(document).ready(function(){
 
 function KCFinder_callback(url)
 {
-    addAttachment(window.KCFinder.target, url);
+    // Get target table with class "attachments"
+    var target = $.grep(window.KCFinder.target, function(e) {
+        return e.className === 'attachments';
+    });
+    addAttachment(target, url);
     window.KCFinder = null;
 }
 

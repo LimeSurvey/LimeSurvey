@@ -1,3 +1,4 @@
+<?php /*
 <tr class='<?php echo $bgcc; ?>' valign='top'>
     <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id']; ?>' name='markedresponses[]' /></td>
     <td align='center'>
@@ -27,3 +28,35 @@
     ?>
 
 </tr>
+*/ ?>
+
+<?php
+    $this->widget('bootstrap.widgets.TbGridView', array(
+        'dataProvider' => $model->search($iSurveyID, $language),
+
+        'id' => 'time-grid',
+        'emptyText'=>gT('No surveys found.'),
+        'itemsCssClass' => 'table-striped',
+        'htmlOptions' => array('class' => 'time-statistics-table'),
+
+        'ajaxUpdate' => true,
+        'afterAjaxUpdate' => 'doToolTip',
+
+        // Number of row per page selection
+        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+            CHtml::dropDownList(
+                'pageSize',
+                $pageSize,
+                Yii::app()->params['pageSizeOptions'],
+                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+
+        'columns' => array_merge(
+            array(array(
+                'header' => '',
+                'name' => 'actions',
+                'value'=>'$data->buttons',
+                'type'=>'raw',
+                'htmlOptions' => array('class' => 'time-statistics-row-buttons'),
+            )),
+            $columns)
+    ));

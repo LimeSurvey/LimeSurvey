@@ -24,44 +24,7 @@ $(document).ready(function(){
     initializeAjaxProgress();
     tableCellAdapters();
     linksInDialog();
-
-    if($('.htmleditor').length>0)
-    {
-        setTimeout(function(){
-            $('.cke_contents').width('580px');
-            $iframes = $('.htmleditor').find('iframe');
-            //console.log('OK '+JSON.stringify($iframes));
-            $iframes.each(function(){
-                $(this).width('500px').zIndex('10000');
-            });
-        },500);
-    }
-
-    if(typeof(userdateformat) !== 'undefined')
-        {
-        $(".popupdate").each(function(i,e) {
-            format=$('#dateformat'+e.name).val();
-            if(!format) format = userdateformat;
-            $(e).datepicker({ dateFormat: format,
-                showOn: 'button',
-                changeYear: true,
-                changeMonth: true,
-                duration: 'fast'
-            }, $.datepicker.regional[LS.data.language]);
-        });
-        $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',
-            showOn: 'button',
-            changeYear: true,
-            changeMonth: true,
-            duration: 'fast'
-        }, $.datepicker.regional[LS.data.language]);
-    }
     doToolTip();
-    $('.btntooltip').tooltip();
-
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
 
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
@@ -79,6 +42,155 @@ $(document).ready(function(){
 
         $("div",this).html(pValue + "%");
     });
+
+
+
+    if($('#survey-grid').length>0)
+    {
+        $(document).on('click', '.has-link', function () {
+            $linkUrl = $(this).find('a').attr('href');
+            window.location.href=$linkUrl;
+            console.log($linkUrl);
+        });
+    }
+
+    /*
+     * List mass actions
+     * TODO: refactore it to handle the different possible actions (modal, redirect with post, redirect with session,etc. ) in cleanest way
+     */
+    if($('.listActions').length>0){
+        // Define what should be done when clicking on a action link
+        $(document).on('click', '.listActions a', function () {
+                $that        = $(this);
+                $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
+                $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
+                $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
+                $gridid      = $('.listActions').data('grid-id');
+
+                $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));                   // List of the clicked checkbox
+
+                // For actions without modal, doing a redirection
+                // TODO: replace all of them with the method above
+                if($that.data('post-redirect'))
+                {
+                    var newForm = jQuery('<form>', {
+                        'action': $actionUrl,
+                        'target': '_blank',
+                        'method': 'POST'
+                    }).append(jQuery('<input>', {
+                        'name': $that.data('input-name'),
+                        'value': $oCheckedItems.join("|"),
+                        'type': 'hidden'
+                    })).append(jQuery('<input>', {
+                        'name': 'YII_CSRF_TOKEN',
+                        'value': LS.data.csrfToken,
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();
+                    return;
+                }
+
+                // For actions without modal, doing a redirection
+                // Using session before redirect rather than form submission
+                if($that.data('fill-session-and-redirect'))
+                {
+                    // postUrl is defined as a var in the View
+                    $(this).load(postUrl, {
+                        participantid:$oCheckedItems},function(){
+                            $(location).attr('href',$actionUrl);
+                    });
+                    return;
+                }
+
+                $oCheckedItems  = JSON.stringify($oCheckedItems);
+                $modal       = $('#confirmation-modal');                        // The modal we want to use
+                $actionUrl   = $actionUrl;
+                // Do we need to post sid?
+                if($that.data('sid'))
+                {
+                    $iSid = $that.data('sid');
+                    $postDatas   = {sItems:$oCheckedItems, iSid:$iSid};
+                }
+                else
+                {
+                    $postDatas   = {sItems:$oCheckedItems};
+                }
+
+                // Do we want to update the modal content after confirmation?
+                if($that.data('keepopen'))
+                {
+                    $keepopen = ($that.data('keepopen')==='yes');
+                }
+                else
+                {
+                    $keepopen = true;
+                }
+                $modal.data('keepopen', $keepopen);
+
+                // Needed modal elements
+                $modalTitle    = $modal.find('.modal-title');                   // Modal Title
+                $modalBody     = $modal.find('.modal-body-text');               // Modal Body
+                $modalYesNo    = $modal.find('.modal-footer-yes-no');           // Modal footer with yes/no buttons
+                $modalClose    = $modal.find('.modal-footer-close');            // Modal footer with close button
+                $ajaxLoader    = $("#ajaxContainerLoading");                    // Ajax loader
+
+                // Original modal state
+                $oldModalTitle  = $modalTitle.text();
+                $oldModalBody   = $modalBody.html();
+
+                // New modal contents
+                $modalWarningTitle  = $that.data('modal-warning-title');        // The action string, to display in the modal body (eg: sure you wann $action?)
+                $modalWarningText   = $that.data('modal-warning-text');
+
+                // We update the modal
+                $modal.find('.modal-title').text($modalWarningTitle);
+                $modal.find('.modal-body-text').text($modalWarningText);
+
+                // When user close the modal, we put it back to its original state
+                $modal.on('hidden.bs.modal', function (e) {
+                    $modal.data('onclick', null);                   // We reset the onclick event
+                    $modalTitle.text($oldModalTitle);               // the modal title
+                    $modalBody.empty().append($oldModalBody);       // modal body
+                    $modalClose.hide();                             // Hide the 'close' button
+                    $modalYesNo.show();                             // Show the 'Yes/No' buttons
+                })
+
+                // Define what should be done when user confirm the mass action
+                $modal.data('onclick', function(){
+                    // Update the modal elements
+                    $modalTitle.text($actionTitle);                             // Change the modal title to the action title
+                    $modalBody.empty();                                         // Empty the modal body
+                    $modalYesNo.hide();                                         // Hide the 'Yes/No' buttons
+                    $modalClose.show();                                         // Show the 'close' button
+                    $ajaxLoader.show();                                         // Show the ajax loader
+
+                    // Ajax request
+                    $.ajax({
+                        url : $actionUrl,
+                        type : 'POST',
+                        data :  $postDatas,
+
+                        // html contains the buttons
+                        success : function(html, statut){
+                            $.fn.yiiGridView.update($gridid);                   // Update the surveys list
+                            $ajaxLoader.hide();                                 // Hide the ajax loader
+                            $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
+                        },
+                        error :  function(html, statut){
+                            $ajaxLoader.hide();
+                            $modal.find('.modal-body-text').empty().html(html.responseText);
+                            console.log(html);
+                        }
+                    });
+                });
+
+                // open the modal
+                if(!$.isEmptyObject($oCheckedItems))
+                {
+                    $modal.modal();
+                }
+            });
+    }
 
 
     /* Switch format group */
@@ -118,8 +230,10 @@ $(document).ready(function(){
 
             // html contains the buttons
             success : function(html, statut){
-                $('#survey-action-container').toggle();
-                $('#survey-action-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+                $('#survey-action-container').animate({
+            "height": "toggle", "opacity": "toggle"
+        });
+                $('#survey-action-chevron').toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-chevron-down');
             },
             error :  function(html, statut){
                 alert('error');
@@ -192,6 +306,71 @@ $(document).ready(function(){
         });
         $("#question_type.none").change();
     }
+
+    /**
+     * Confirmation modal
+     *
+     * Either provide a data-href to redirect after OK button is clicked,
+     * or data-onclick to be run when OK is clicked.
+     */
+    $('#confirmation-modal').on('show.bs.modal', function(e) {
+
+        var onclick = null;
+        var href = null;
+        if($(this).data('href'))
+        {
+            var href = $(this).data('href');    // When calling modal from javascript
+        }
+        else
+        {
+            var href = $(e.relatedTarget).data('href');
+        }
+
+        if($(this).data('onclick'))
+        {
+            var onclick = $(this).data('onclick');
+        }
+        else
+        {
+            var onclick = $(e.relatedTarget).data('onclick');
+        }
+
+        $keepopen = $(this).data('keepopen');
+        if (href != '' && href !== undefined)
+        {
+            $(this).find('.btn-ok').attr('href', href);
+        }
+        else if (onclick != '' && onclick !== undefined) {
+
+            var onclick_fn = eval(onclick);
+
+            if (typeof onclick_fn == 'function') {
+                $(this).find('.btn-ok').off('click');
+                $(this).find('.btn-ok').on('click', function(ev) {
+                    if(! $keepopen )
+                    {
+                        $('#confirmation-modal').modal('hide');
+                    }
+                    onclick_fn();
+                });
+            }
+            else {
+                throw "Confirmation modal: onclick is not a function.";
+            }
+
+        }
+        else {
+            throw "Confirmation modal: Found neither data-href or data-onclick.";
+        }
+
+        $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
+    });
+
+    // Error modal
+    $('#error-modal').on('show.bs.modal', function(e) {
+        $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
+    });
+
 });
 
 function qTypeDropdownInit()
@@ -309,6 +488,17 @@ function validatefilename (form, strmessage )
 
 function doToolTip()
 {
+    $('.btntooltip').tooltip();
+
+    // Since you can only have one option per data-toggle,
+    // we need this to enable both modal and toggle on one
+    // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
+    $('[data-tooltip="true"]').tooltip();
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
     // ToolTip on menu
     $(".sf-menu li").each(function() {
         tipcontent=$(this).children("a").children("img").attr('alt');
@@ -352,6 +542,23 @@ function arrHasDupes( A ) {                          // finds any duplicate arra
     for (i=0; i<n; i++) {                        // outer loop uses each item i at 0 through n
         for (j=i+1; j<n; j++) {              // inner loop only compares items j at i+1 to n
             if (A[i]==A[j]) return true;
+    }}
+    return false;
+}
+
+/**
+ * Like arrHasDupes, but returns the duplicated item
+ *
+ * @param {array} A
+ * @return {mixed|boolean} Array item] or false if no duplicate is found
+ */
+function arrHasDupesWhich(A) {
+    var i, j, n;
+    n=A.length;
+    // to ensure the fewest possible comparisons
+    for (i=0; i<n; i++) {                        // outer loop uses each item i at 0 through n
+        for (j=i+1; j<n; j++) {              // inner loop only compares items j at i+1 to n
+            if (A[i]==A[j]) return A[i];
     }}
     return false;
 }
@@ -674,7 +881,8 @@ function linksInDialog()
             iframe.attr({
                 src: src,
             });
-            dialog.dialog("option", "title", title).dialog("open");
+            dialog.dialog("option", "title", title);
+            dialog.dialog("open");
         });
     });
 }

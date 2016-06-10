@@ -1,0 +1,72 @@
+/*
+.organizer{
+    list-style-position: inside;
+}
+*/
+.group-item{
+border:1px solid;
+padding:1em;
+}
+/* Hide and show content of element */
+
+.organizer .question-item{
+    max-height:6em;
+    overflow-y:hidden;
+    overflow-x:visible;
+    text-overflow: ellipsis;
+}
+
+.organizer .question-item.opened{
+    max-height:none;
+    overflow-y:visible;
+}
+.organizer .question-item{
+-webkit-transition: height 500ms ease; transition: height 500ms ease;
+}
+.hide-button{
+  display: inline-block;
+  visibility: visible;
+}/* See bug #10365 */
+
+.organizer .question-item.stretched .hide-button,.organizer .question-item.opened .hide-button{
+display:inline-block;
+}
+.organizer .question-item.stretched .glyphicon-chevron-down{
+display:none;
+}
+.organizer .question-item.opened .glyphicon-chevron-up{
+display:none;
+}
+
+/* To be able to drag-n-drop to empty question group */
+.question-list {
+    min-height: 50px;
+}
+
+.organizer .panel-heading {
+    cursor: move;
+}
+
+.organizer .question-list .well {
+    cursor: move;
+}
+
+li.mjs-nestedSortable-collapsed > ol {
+    display: none;
+}
+
+.organiser .caret {
+    cursor: pointer;
+}
+
+.organizer .well {
+    margin-bottom: 5px;
+}
+
+.organizer .well-sm {
+    padding: 5px;
+}
+
+.organizer .panel {
+    margin-bottom: 10px;
+}

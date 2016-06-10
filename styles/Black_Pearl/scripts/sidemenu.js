@@ -9,6 +9,7 @@ $(document).ready(function(){
     var absoluteWrapper = $('.absolute-wrapper');
     var sidemenusContainer = $('.sidemenuscontainer');
     var accordionContainer = $('#accordion-container');
+    var quickmenuContainer = $('#quick-menu-container');
 
     // Check if we have a right-to-left language
     var rtl = $("html").attr('dir') === "rtl";
@@ -16,10 +17,12 @@ $(document).ready(function(){
     if (rtl) {
         var left_or_right_250 = {right: -250};
         var left_or_right_0 = {right: 0};
+        var margin_left_or_right = {'margin-right': '320px'};
     }
     else {
         var left_or_right_250 = {left: -250};
         var left_or_right_0 = {left: 0};
+        var margin_left_or_right = {'margin-left': '320px'};
     }
 
     /**
@@ -35,27 +38,29 @@ $(document).ready(function(){
         $that = $('.toggleside');
 
         $('.side-menu').css($.extend({
-          opacity: 0.5
+          //opacity: 0.5
         }, left_or_right_250));
 
         $thatWidth = sideBody.width();
         sideBody.width($thatWidth);
 
-        sideBody.css($.extend({
-          width: $thatWidth + 250
-        }, left_or_right_250));
+        //sideBody.css($.extend({
+          //width: $thatWidth + 250
+        //}, left_or_right_250));
         sideBody.parent().css( "overflow-x", "hidden" );
 
         $that.removeClass("hideside");
         $that.addClass("showside");
 
         absoluteWrapper.css($.extend({
-          opacity: 0.5
+          //opacity: 0.5
         }, left_or_right_250));
 
-        sidemenusContainer.css({
-            opacity: 0,
-        });
+        sidemenusContainer.hide();
+        quickmenuContainer.show();
+    }
+    else {
+        quickmenuContainer.hide();
     }
 
     // To prevent the user to try to open or close it before the animation ended (because of  $('.side-body').width())
@@ -86,7 +91,6 @@ $(document).ready(function(){
         setTimeout(function(){
             sideBodyHeight = sideBody.height();
             targetHeight = $target.height();
-            console.log('targetHeight: '+targetHeight);
             //alert(sidemenuHeight);
             if( sideBodyHeight < ( targetHeight + $correction ) )
             {
@@ -103,7 +107,7 @@ $(document).ready(function(){
 
         // Move the side menu
         sideMenu.animate($.extend({
-            opacity: 0.5
+            //opacity: 0.5
             }, left_or_right_250),
             500,
             function() {}
@@ -115,24 +119,25 @@ $(document).ready(function(){
 
         // Move the side body
         sideBody.animate(
-                   $.extend({
-                       width: $thatWidth + 250
-                   }, left_or_right_250),
-                   500, function() {
-                   });
+           $.extend({
+               width: $thatWidth + 250
+           }, left_or_right_250),
+           500,
+           function() {}
+       );
 
-                   absoluteWrapper.animate($.extend({
-                       opacity: 0.5
-                   }, left_or_right_250),
-                   500, function() {
-                   });
+       absoluteWrapper.animate($.extend({
+           //opacity: 0.5
+           }, left_or_right_250),
+           500,
+           function() {}
+       );
 
-                   sidemenusContainer.animate({
-                       opacity: 0,
-                   }, 500);
+       sidemenusContainer.fadeOut();
+       quickmenuContainer.fadeIn();
 
-                   chevronChangeState('opened', 'closed');
-                   enableChevrons();
+       chevronChangeState('opened', 'closed');
+       enableChevrons();
     });
 
     /**
@@ -165,32 +170,31 @@ $(document).ready(function(){
         disableChevrons();
 
         sideMenu.animate($.extend({
-                opacity: 1
+                //opacity: 1
             }, left_or_right_0),
             500, function() {
-            });
+        });
 
-            $thatWidth = sideBody.width();
-            sideBody.width($thatWidth);
+        $thatWidth = sideBody.width();
+        sideBody.width($thatWidth);
 
-            sideBody.animate($.extend({
-                width: $thatWidth - 250
-            }, left_or_right_0),
-            500, function() {
-            });
+        sideBody.animate($.extend({
+            width: $thatWidth - 250
+        }, left_or_right_0, margin_left_or_right),
+        500, function() {
+        });
 
-            absoluteWrapper.animate($.extend({
-                opacity: 1
-            }, left_or_right_0),
-            500, function() {
-            });
+        absoluteWrapper.animate($.extend({
+            //opacity: 1
+        }, left_or_right_0),
+        500, function() {
+        });
 
-            sidemenusContainer.animate({
-                opacity: 1,
-            }, 500);
+        sidemenusContainer.fadeIn();
+        quickmenuContainer.fadeOut();
 
-            chevronChangeState('closed', 'opened');
-            enableChevrons();
+        chevronChangeState('closed', 'opened');
+        enableChevrons();
     });
 
     /**
@@ -201,13 +205,13 @@ $(document).ready(function(){
 
         sideMenu.animate({
                 backgroundColor: "white",
-                opacity: 1,
+                //opacity: 1,
                 width: $('body').width(),
             }, 500, function() {
             });
 
             absoluteWrapper.animate({
-                opacity: 1,
+                //opacity: 1,
                 backgroundColor: "white",
                 width: $('body').width(),
             }, 500, function() {
@@ -227,7 +231,6 @@ $(document).ready(function(){
     * Stretch the accordion
     */
     jQuery(document).on('click', '.handleAccordion.opened', function(){
-                console.log('stretched accordion');
         // Disable this feature for RTL for now
         if (rtl) {
             return;
@@ -352,14 +355,10 @@ $(document).ready(function(){
 
           var windowswidth = window.innerWidth;
           var sideBodyWidth = sideBody.width();
-          console.log('sideBodyWidth start: '+sideBodyWidth);
           $( window ).resize(function() {
-              //console.log('sideBodyWidth before: '+sideBodyWidth);
-              //console.log( windowswidth - window.innerWidth);
               sideBody.width( sideBodyWidth - (windowswidth - window.innerWidth) );
               windowswidth = window.innerWidth;
               sideBodyWidth = sideBody.width();
-              //console.log('sideBodyWidth after: '+sideBodyWidth);
 
               if( sideBodyWidth < 1420 )
               {
@@ -416,7 +415,6 @@ $(function()
             if (sidemenu.hasClass('exploring'))
             {
                 $sideMenutoTop = (sidemenu.offset().top - $(window).scrollTop());
-                console.log($sideMenutoTop);
 
                 if ($sideMenutoTop > 0 && surveybar.hasClass('navbar-fixed-top') )
                 {
@@ -427,3 +425,75 @@ $(function()
         });
     }
 });
+
+var drop_delete_fn = function () {};
+
+/**
+ * Drag-n-drop functionality for quick-menu
+ * @todo Add this to plugin ExtraQuickMenuItems? Needs to be on every admin page.
+ */
+function dragstart_handler(ev) {
+
+    // Use to set a image during dragging
+    //var img = new Image();
+    //img.src = '/limesurvey/styles/Sea_Green/images/donate.png';
+    //ev.dataTransfer.setDragImage(img, 10, 10);
+
+    ev.dataTransfer.dropEffect = 'move';
+    ev.dataTransfer.effectAllowed = 'move';
+    var html = $(ev.target).prop('outerHTML');
+    ev.dataTransfer.setData("text/plain", html);
+
+    drop_delete_fn = function () {
+        $(ev.target).remove();
+    }
+}
+
+function dragover_handler(ev) {
+    ev.preventDefault();
+    $(ev.target).css('background-color', 'black');
+    return false;
+}
+
+function dragleave_handler(ev) {
+    $(ev.target).css('background-color', 'white');
+    ev.preventDefault();
+    return false;
+}
+
+function drop_handler(ev) {
+    ev.preventDefault();
+    // TODO: Why is ev.target not <a>, but <div>?
+    var $target = $(ev.target).parent().parent();
+    var data = ev.dataTransfer.getData("text");
+    $(ev.target).css('background-color', 'white');
+
+    if (data.indexOf("quick-menu-item") < 0)
+    {
+        return;
+    }
+
+    $target.after(data);
+    drop_delete_fn();
+
+    // Delete left-over tooltip
+    $('.tooltip.fade').remove();
+    doToolTip();
+
+    // Collect button name and order number
+    var data = {};
+    $('.quick-menu-item').each(function(i, item) {
+        var name = $(item).data('button-name');
+        data[name] = i;
+    });
+
+    $.ajax({
+        method: 'POST',
+        url: saveQuickMenuButtonOrderLink,
+        data: {buttons: data}
+    }).done(function(response) {
+        // Show save confirmation?
+    });
+
+    //ev.dataTransfer.clearData();
+}

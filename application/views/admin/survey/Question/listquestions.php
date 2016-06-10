@@ -5,8 +5,14 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
-<div class="side-body">
-    <h3><?php eT('Questions in this survey'); ?></h3>
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Questions in this survey"))); ?>
+    <?php if(App()->request->getParam('group_name')!=''):?>        
+        <h3><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></h3>
+    <?php else:?>
+        <h3><?php eT('Questions in this survey'); ?></h3>
+    <?php endif;?>
+
 
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -76,7 +82,7 @@
                             array(
                                 'header' => gt('Question'),
                                 'name' => 'question',
-                                'value'=>'strip_tags($data->question)',
+                                'value'=>'viewHelper::flatEllipsizeText($data->question,true,0)',
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
@@ -97,7 +103,7 @@
                                 'name'=>'actions',
                                 'type'=>'raw',
                                 'value'=>'$data->buttons',
-                                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
+                                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right nowrap'),
                             ),
 
                         );
@@ -117,7 +123,6 @@
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
                                 'columns' => $columns,
                                 'ajaxUpdate' => true,
                             ));

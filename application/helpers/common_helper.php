@@ -203,7 +203,7 @@ function isStandardTemplate($sTemplateName)
 function getSurveyList($returnarray=false, $surveyid=false)
 {
     static $cached = null;
-
+    $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
 
@@ -220,11 +220,11 @@ function getSurveyList($returnarray=false, $surveyid=false)
             {
                 $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
             }
-            elseif(empty($bCheckIntegrity))
+            elseif(!($bCheckIntegrity))
             {
                 $bCheckIntegrity=true;
                 Yii::app()->setFlashMessage(
-                    CHtml::link(gT("One or more surveys seem to be broken, please check data integrity of the LimeSurvey database."),array("admin/checkintegrity"))
+                    CHtml::link(gT("One or more surveys seem to be broken - please use the data integrity check tool to fix this."),array("admin/checkintegrity"))
                     ,
                     'error');
             }
@@ -245,9 +245,9 @@ function getSurveyList($returnarray=false, $surveyid=false)
         {
 
             $surveylstitle=flattenText($sv['surveyls_title']);
-            if (strlen($surveylstitle)>45)
+            if (strlen($surveylstitle)>70)
             {
-                $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
+                $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 70, 'UTF-8'))."...";
             }
 
             if($sv['active']!='Y')
@@ -325,29 +325,6 @@ function getTemplateListWithPreviews()
 {
     return Template::getTemplateListWithPreviews();
 }
-
-
-
-function getAdminThemeList()
-{
-    $sStandardTemplateRootDir=Yii::app()->getConfig("styledir");
-    $aListOfFiles = array();
-    if ($sStandardTemplateRootDir && $pHandle = opendir($sStandardTemplateRootDir))
-    {
-        while (false !== ($file = readdir($pHandle)))
-        {
-            if (is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file) && is_file($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file.DIRECTORY_SEPARATOR.'config.xml'))
-            {
-                $oTemplateConfig = simplexml_load_file($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
-                $aListOfFiles[$file] = $oTemplateConfig;
-            }
-        }
-        closedir($pHandle);
-    }
-    ksort($aListOfFiles);
-    return $aListOfFiles;
-}
-
 
 /**
 * getQuestions() queries the database for an list of all questions matching the current survey and group id
@@ -996,7 +973,7 @@ function getGroupList3($gid,$surveyid)
         $gv = $gv->attributes;
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; }
-        $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
+        $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])." (ID:".$gv['gid'].")</option>\n";
     }
 
 
@@ -1577,16 +1554,24 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case "|": //File upload
                 if (substr($sFieldCode, -9) != 'filecount') {
                     //Show the filename, size, title and comment -- no link!
-                    $files = json_decode($sValue);
+                    $files = json_decode($sValue,true);
                     $sValue = '';
                     if (is_array($files)) {
                         foreach ($files as $file) {
-                            $sValue .= rawurldecode($file->name) .
-                            ' (' . round($file->size) . 'KB) ' .
-                            strip_tags($file->title);
-                            if (trim(strip_tags($file->comment))!="")
+                            if (!isset($file['title']))
                             {
-                                $sValue .=' - ' . strip_tags($file->comment);
+                                $file['title']='';
+                            }
+                            if (!isset($file['comment']))
+                            {
+                                $file['comment']='';
+                            }
+                            $sValue .= rawurldecode($file['name']) .
+                            ' (' . round($file['size']) . 'KB) ' .
+                            strip_tags($file['title']);
+                            if (trim(strip_tags($file['comment']))!="")
+                            {
+                                $sValue .=' - ' . strip_tags($file['comment']);
                             }
 
                         }
@@ -1802,8 +1787,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
-    $sOldLanguage=App()->language;
-    App()->setLanguage($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
@@ -1904,6 +1887,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
     }
 
+    $sOldLanguage=App()->language;
+    App()->setLanguage($sLanguage);
     // Collect all default values once so don't need separate query for each question with defaults
     // First collect language specific defaults
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
@@ -2672,7 +2657,7 @@ function questionAttributes($returnByName=false)
         "types"=>"!LOWZ",
         'category'=>gT('Display'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -2718,9 +2703,9 @@ function questionAttributes($returnByName=false)
         "types"=>"1ABCEF:;MPLKQR",
         'category'=>gT('Logic'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Hidden'),
-        1=>gT('Disabled')),
+        'inputtype'=>'buttongroup',
+        'options'=>array(0=>gT('Hidden','unescaped'),
+        1=>gT('Disabled','unescaped')),
         'default'=>0,
         "help"=>gT("Specify how array-filtered sub-questions should be displayed"),
         "caption"=>gT('Array filter style'));
@@ -2768,7 +2753,7 @@ function questionAttributes($returnByName=false)
         "types"=>"P",
         'category'=>gT('Logic'),
         'sortorder'=>111,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(
             "0"=>gT('No'),
             "1"=>gT('Yes'),
@@ -2783,7 +2768,7 @@ function questionAttributes($returnByName=false)
         'sortorder'=>100,
         //'inputtype'=>'integer',
         'inputtype'=>'columns',
-        'default'=>'6',
+        'default'=>'1',
         'min'=>'1',
         'max'=>'12',
         "help"=>gT('The answer options will be distributed across the number of columns set here'),
@@ -2801,7 +2786,7 @@ function questionAttributes($returnByName=false)
         "types"=>"D",
         'category'=>gT('Display'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -2909,7 +2894,7 @@ function questionAttributes($returnByName=false)
         "caption"=>gT('Sub-question validation tip'));
 
         $qattributes["exclude_all_others"]=array(
-        "types"=>":ABCEFMPKQ",
+        "types"=>"ABCEFMPKQ",
         'category'=>gT('Logic'),
         'sortorder'=>130,
         'inputtype'=>'text',
@@ -2920,7 +2905,7 @@ function questionAttributes($returnByName=false)
         "types"=>"MP",
         'category'=>gT('Logic'),
         'sortorder'=>131,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -2980,7 +2965,7 @@ function questionAttributes($returnByName=false)
         $qattributes["statistics_showmap"]=array(
         "types"=>"S",
         'category'=>gT('Statistics'),
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'sortorder'=>100,
         'options'=>array(1=>gT('Yes'), 0=>gT('No')),
         'help'=>gT("Show a map in the statistics?"),
@@ -2991,7 +2976,7 @@ function questionAttributes($returnByName=false)
         $qattributes["statistics_showgraph"]=array(
         'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
         'category'=>gT('Statistics'),
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'sortorder'=>101,
         'options'=>array(1=>gT('Yes'), 0=>gT('No')),
         'help'=>gT("Display a chart in the statistics?"),
@@ -3021,10 +3006,10 @@ function questionAttributes($returnByName=false)
         "types"=>"S",
         'category'=>gT('Location'),
         'sortorder'=>90,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'buttongroup',
         'options'=>array(0=>gT('Off'),
-            100=>gT('Open Layer (OpenStreetMap via mapquest)'),
-            1=>gT('Google Maps')
+            100=>gT('OpenStreetMap via MapQuest','unescaped'),
+            1=>gT('Google Maps','unescaped')
         ),
         'default' => 0,
         "help"=>gT("Activate this to show a map above the input field where the user can select a location"),
@@ -3082,7 +3067,7 @@ function questionAttributes($returnByName=false)
         "types"=>"15ABCDEFGHIKLMNOPQRSTUXY!:;|",
         'category'=>gT('Display'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3093,7 +3078,7 @@ function questionAttributes($returnByName=false)
         'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
         'category'=>gT('Display'),
         'sortorder'=>101,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3208,7 +3193,7 @@ function questionAttributes($returnByName=false)
         "types"=>":",
         'category'=>gT('Display'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3219,7 +3204,7 @@ function questionAttributes($returnByName=false)
         "types"=>"D:",
         'category'=>gT('Display'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3235,10 +3220,10 @@ function questionAttributes($returnByName=false)
         //    "caption"=>gT('Value equals SGQA'));
 
         $qattributes["num_value_int_only"]=array(
-        "types"=>"N",
+        "types"=>"NK",
         'category'=>gT('Input'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(
         0=>gT('No'),
         1=>gT('Yes')),
@@ -3250,7 +3235,7 @@ function questionAttributes($returnByName=false)
         "types"=>"Q;S*",
         'category'=>gT('Other'),
         'sortorder'=>150,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(
         0=>gT('No'),
         1=>gT('Yes')
@@ -3264,12 +3249,12 @@ function questionAttributes($returnByName=false)
         'types' =>    ';',
         'category' =>    gT('Other'),
         'sortorder' =>    151,
-        'inputtype'    => 'singleselect',
+        'inputtype'    => 'buttongroup',
         'options' =>    array(
-        'X' =>    gT('Off'),
-        'R' =>    gT('Rows'),
-        'C' =>    gT('Columns'),
-        'B' =>    gT('Both rows and columns')
+        'X' =>    gT('Off','unescaped'),
+        'R' =>    gT('Rows','unescaped'),
+        'C' =>    gT('Columns','unescaped'),
+        'B' =>    gT('Rows & columns','unescaped')
         ),
         'default' =>    'X',
         'help' =>    gT('Show totals for either rows, columns or both rows and columns'),
@@ -3280,7 +3265,7 @@ function questionAttributes($returnByName=false)
         'types' =>    ';',
         'category' =>    gT('Other'),
         'sortorder' =>    152,
-        'inputtype' =>    'singleselect',
+        'inputtype' =>    'switch',
         'options' =>    array(
         0 =>    gT('No'),
         1 =>    gT('Yes')
@@ -3294,7 +3279,7 @@ function questionAttributes($returnByName=false)
         "types"=>":",
         'category'=>gT('Display'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3305,7 +3290,7 @@ function questionAttributes($returnByName=false)
         "types"=>"PLW!Z",
         'category'=>gT('Logic'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3316,7 +3301,7 @@ function questionAttributes($returnByName=false)
         "types"=>"LMP",
         'category'=>gT('Logic'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3336,7 +3321,7 @@ function questionAttributes($returnByName=false)
         "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
         'category'=>gT('Other'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3366,7 +3351,7 @@ function questionAttributes($returnByName=false)
         "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
         'category'=>gT('Statistics'),
         'sortorder'=>80,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3403,7 +3388,7 @@ function questionAttributes($returnByName=false)
         "types"=>"R",
         'category'=>gT('Display'),
         'sortorder'=>110,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>1,
@@ -3413,7 +3398,7 @@ function questionAttributes($returnByName=false)
         "types"=>"R",
         'category'=>gT('Display'),
         'sortorder'=>120,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>1,
@@ -3423,7 +3408,7 @@ function questionAttributes($returnByName=false)
         "types"=>"R",
         'category'=>gT('Display'),
         'sortorder'=>121,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>1,
@@ -3442,7 +3427,7 @@ function questionAttributes($returnByName=false)
         "types"=>"K",
         'category'=>gT('Slider'),
         'sortorder'=>1,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3485,7 +3470,7 @@ function questionAttributes($returnByName=false)
         "types"=>"K",
         'category'=>gT('Slider'),
         'sortorder'=>40,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3496,9 +3481,9 @@ function questionAttributes($returnByName=false)
         "types"=>"K",
         'category'=>gT('Slider'),
         'sortorder'=>2,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Horizontal'),
-        1=>gT('Vertical')),
+        'inputtype'=>'buttongroup',
+        'options'=>array(0=>gT('Horizontal','unescaped'),
+        1=>gT('Vertical','unescaped')),
         'default'=>0,
         "help"=>gT('Set the orientation.'),
         "caption"=>gT('Orientation'));
@@ -3527,11 +3512,11 @@ function questionAttributes($returnByName=false)
         "types"=>"5",
         'category'=>gT('Display'),
         'sortorder'=>90,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'buttongroup',
         'options'=>array(
-        0=>gT('No'),
-        1=>gT('Yes - stars'),
-        2=>gT('Yes - slider with emoticon'),
+        0=>gT('Off','unescaped'),
+        1=>gT('Stars','unescaped'),
+        2=>gT('Slider with emoticon','unescaped'),
         ),
         'default'=>0,
         "help"=>gT('Use slider layout'),
@@ -3541,7 +3526,7 @@ function questionAttributes($returnByName=false)
         "types"=>"K",
         'category'=>gT('Slider'),
         'sortorder'=>50,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(
         0=>gT('No'),
         1=>gT('Yes'),
@@ -3554,7 +3539,7 @@ function questionAttributes($returnByName=false)
         "types"=>"K",
         'category'=>gT('Slider'),
         'sortorder'=>100,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3580,45 +3565,80 @@ function questionAttributes($returnByName=false)
         "caption"=>gT('Answer suffix'));
 
         $qattributes["text_input_width"]=array(
-        "types"=>"KNSTUQ;",
+        "types"=>"KNSTU;",
         'category'=>gT('Display'),
         'sortorder'=>100,
-        //'inputtype'=>'text',
-        'inputtype'=>'columns',
-        'default'=>'6',
-        'min'=>'1',
-        'max'=>'12',
-        "help"=>gT('Number of Bootstrap columns for the input box'),
-        "caption"=>gT('Input box columns'));
+        'inputtype'=>'singleselect',
+        'default'=>'12',
+        'options'=>array(
+            1=>'8%',
+            2=>'17%',
+            3=>'25%',
+            4=>'33%',
+            5=>'41%',
+            6=>'50%',
+            7=>'58%',
+            8=>'67%',
+            9=>'75%',
+            10=>'83%',
+            11=>'92%',
+            12=>'100%'
+        ),
+        "help"=>gT('Relative width of the input element'),
+        "caption"=>gT('Input box width'));
 
         $qattributes["text_input_columns"]=array(
         "types"=>"Q",
         'category'=>gT('Display'),
         'sortorder'=>90,
-        'inputtype'=>'columns',
+        'inputtype'=>'singleselect',
         'default'=>'6',
-        'min'=>'1',
-        'max'=>'12',
-        "help"=>gT('Number of Bootstrap columns for the input box'),
-        "caption"=>gT('Input box columns'));
+        'options'=>array(
+            1=>'8%',
+            2=>'17%',
+            3=>'25%',
+            4=>'33%',
+            5=>'41%',
+            6=>'50%',
+            7=>'58%',
+            8=>'67%',
+            9=>'75%',
+            10=>'83%',
+            11=>'92%',
+            12=>'100%'
+        ),
+        "help"=>gT('Relative width of the input element'),
+        "caption"=>gT('Input box width'));
 
         $qattributes["label_input_columns"]=array(
         "types"=>"Q",
         'category'=>gT('Display'),
         'sortorder'=>90,
-        'inputtype'=>'columns',
+        'inputtype'=>'singleselect',
         'default'=>'6',
-        'min'=>'1',
-        'max'=>'12',
-        "help"=>gT('Number of Bootstrap columns for the label'),
-        "caption"=>gT('Label columns'));
+        'options'=>array(
+            1=>'8%',
+            2=>'17%',
+            3=>'25%',
+            4=>'33%',
+            5=>'41%',
+            6=>'50%',
+            7=>'58%',
+            8=>'67%',
+            9=>'75%',
+            10=>'83%',
+            11=>'92%',
+            12=>'100%'
+        ),
+        "help"=>gT('Relative width of the labels'),
+        "caption"=>gT('Label column width'));
 
 
         $qattributes["use_dropdown"]=array(
         "types"=>"1FO",
         'category'=>gT('Display'),
         'sortorder'=>112,
-        'inputtype'=>'singleselect',
+        'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3639,9 +3659,9 @@ function questionAttributes($returnByName=false)
         "types"=>"!",   // TODO add these later?  "1F",
         'category'=>gT('Display'),
         'sortorder'=>201,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('None'),
-        1=>gT('Order - like 3)'),
+        'inputtype'=>'buttongroup',
+        'options'=>array(0=>gT('None','unescaped'),
+        1=>gT('Order - like 3)','unescaped'),
         ),
         'default'=>0,
         "help"=>gT('Accelerator keys for list items'),
@@ -3667,7 +3687,7 @@ function questionAttributes($returnByName=false)
         "inputtype"=>"text",
         'i18n'=>true,
         'default'=>"",
-        "help"=>sprintf(gT("Replace choice header (default: \"%s\")",'js'),gT("Your Choices")),
+        "help"=>sprintf(gT("Replace choice header (default: \"%s\")"),gT("Your choices")),
         "caption"=>gT("Choice header"));
 
         $qattributes["rank_title"]=array(
@@ -3677,7 +3697,7 @@ function questionAttributes($returnByName=false)
         "inputtype"=>"text",
         'i18n'=>true,
         'default'=>"",
-        "help"=>sprintf(gT("Replace rank header (default: \"%s\")",'js'),gT("Your Ranking")),
+        "help"=>sprintf(gT("Replace rank header (default: \"%s\")"),gT("Your ranking")),
         "caption"=>gT("Rank header"));
 
         //Timer attributes
@@ -3705,7 +3725,7 @@ function questionAttributes($returnByName=false)
         "types"=>"STUXL!",
         'category'=>gT('Timer'),
         'sortorder'=>94,
-        "inputtype"=>"singleselect",
+        "inputtype"=>"switch",
         'default'=>0,
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
@@ -3716,7 +3736,7 @@ function questionAttributes($returnByName=false)
         "types"=>"STUXL!",
         'category'=>gT('Timer'),
         'sortorder'=>96,
-        "inputtype"=>"singleselect",
+        "inputtype"=>"switch",
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>0,
@@ -3852,10 +3872,10 @@ function questionAttributes($returnByName=false)
         "types"=>"D",
         'category'=>gT('Display'),
         'sortorder'=>100,
-        "inputtype"=>"singleselect",
-        'options'=>array(0=>gT('Short names'),
-        1=>gT('Full names'),
-        2=>gT('Numbers')),
+        "inputtype"=>"buttongroup",
+        'options'=>array(0=>gT('Short names','unescaped'),
+        1=>gT('Full names','unescaped'),
+        2=>gT('Numbers','unescaped')),
         'default'=>0,
         "help"=>gT("Change the display style of the month when using select boxes"),
         "caption"=>gT("Month display style"));
@@ -3864,7 +3884,7 @@ function questionAttributes($returnByName=false)
         "types"=>"|",
         'category'=>gT('File metadata'),
         'sortorder'=>124,
-        "inputtype"=>"singleselect",
+        "inputtype"=>"switch",
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>1,
@@ -3875,7 +3895,7 @@ function questionAttributes($returnByName=false)
         "types"=>"|",
         'category'=>gT('File metadata'),
         'sortorder'=>126,
-        "inputtype"=>"singleselect",
+        "inputtype"=>"switch",
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>1,
@@ -3935,12 +3955,14 @@ function questionAttributes($returnByName=false)
         "types"=>"K",
         'category'=>gT('Input'),
         'sortorder'=>100,
-        "inputtype"=>"singleselect",
+        "inputtype"=>"switch",
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
         'default'=>1,
         "help"=>gT("Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"),
         "caption"=>gT("Value range allows missing"));
+        /*
+        Deactivated because it does not work properly
         $qattributes["thousands_separator"] = array(
             'types' => 'NK',
             "help" => gT("Show a thousands separator when the user enters a value"),
@@ -3954,14 +3976,15 @@ function questionAttributes($returnByName=false)
             ),
             'default'=>0,
         );
+        */
 
         $qattributes["display_type"]=array(
         "types"=>"YG",
         'category'=>gT('Display'),
         'sortorder'=>90,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Button group'),
-        1=>gT('Radio list')),
+        'inputtype'=>'buttongroup',
+        'options'=>array(0=>gT('Button group','unescaped'),
+        1=>gT('Radio list','unescaped')),
         'default'=>0,
         "help"=>gT('Use button group or radio list'),
         "caption"=>gT('Display type'));
@@ -5314,6 +5337,30 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
     Yii::import('application.libraries.Date_Time_Converter', true);
     $date = new Date_Time_Converter($value, $fromdateformat);
     return $date->convert($todateformat);
+}
+
+/**
+* This is a convenience function to convert any date, in any date format, to the global setting date format
+*
+* @param string $sDate
+* @return string
+*/
+function convertToGlobalSettingFormat($sDate)
+{
+    try
+    {
+        $oDate           = new DateTime($sDate);                                    // We generate the Date object (PHP will deal with the format of the string)
+        $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
+        $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+        return $sDate;                                                              // We return the string date
+    }
+    catch(Exception $e) {
+        $oDate           = new DateTime('1/1/1980');                                    // We generate the Date object (PHP will deal with the format of the string)
+        $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
+        $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+        return $sDate;                                                              // We return the string date
+
+    }
 }
 
 /**
@@ -7047,6 +7094,7 @@ function getLabelSets($languages = null)
 
 function getHeader($meta = false)
 {
+    /* Todo : move this to layout/public.html */
     global $embedded,$surveyid ;
     Yii::app()->loadHelper('surveytranslator');
 
@@ -7063,7 +7111,7 @@ function getHeader($meta = false)
     {
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
-
+    App()->getClientScript()->registerPackage('fontawesome');
     $header=  "<!DOCTYPE html>\n"
     . "<html lang=\"{$languagecode}\"";
 
@@ -7082,7 +7130,7 @@ function getHeader($meta = false)
         return $header;
     }
 
-    global $embedded_headerfunc;
+    global $embedded_headerfunc; // Did this work ? Can be removed or not ?
 
     if ( function_exists( $embedded_headerfunc ) )
         return $embedded_headerfunc($header);
@@ -7102,10 +7150,7 @@ function doHeader()
 function getPrintableHeader()
 {
     global $rooturl,$homeurl;
-    $headelements = '
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.Yii::app()->getConfig('adminscripts').'printablesurvey.js"></script>
-    ';
+    $headelements = App()->getController()->renderPartial('/survey/system/print_survey/header', array(), true, true);
     return $headelements;
 }
 
@@ -7436,11 +7481,9 @@ function json_decode_ls($jsonString)
  */
 function aEncodingsArray()
     {
-
-        return array(
+        $aEncodings= array(
         "armscii8" => gT("ARMSCII-8 Armenian"),
         "ascii" => gT("US ASCII"),
-        "auto" => gT("Automatic"),
         "big5" => gT("Big5 Traditional Chinese"),
         "binary" => gT("Binary pseudo charset"),
         "cp1250" => gT("Windows Central European (Windows-1250)"),
@@ -7476,6 +7519,10 @@ function aEncodingsArray()
         "ujis" => gT("EUC-JP Japanese"),
         "utf8" => gT("UTF-8 Unicode"),
         );
+        // Sort list of encodings
+        asort($aEncodings);
+        $aEncodings=array("auto" => gT("(Automatic)"))+$aEncodings;
+        return $aEncodings;
     }
 /**
 * Swaps two positions in an array

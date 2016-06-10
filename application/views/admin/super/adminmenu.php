@@ -33,7 +33,7 @@
             <?php if ($activesurveyscount > 0): ?>
                 <li>
                     <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
-                        <?php neT("{n} active survey|{n} active surveys",$activesurveyscount); ?>
+                        <?php eT("Active surveys");?> <span class="badge badge-success"><?php echo $activesurveyscount ?></span>
                     </a>
                 </li>
             <?php endif;?>
@@ -106,6 +106,50 @@
                      </li>
 
             <!-- user menu -->
+            <!-- active surveys -->
+            <?php if ($activesurveyscount > 0): ?>
+                <li>
+                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
+                        <?php eT("Active surveys");?> <span class="badge badge-success"> <?php echo $activesurveyscount ?> </span>
+                    </a>
+                </li>
+            <?php endif;?>
+
+            <!-- Extra menus from plugins -->
+            <?php // TODO: This views should be in same module as ExtraMenu and ExtraMenuItem classes (not plugin) ?>
+            <?php foreach ($extraMenus as $menu): ?>
+                <li class="dropdown">
+                    <?php if ($menu->isDropDown()): ?>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          <?php echo $menu->getLabel(); ?>
+                          &nbsp;
+                          <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <?php foreach ($menu->getMenuItems() as $menuItem): ?>
+                                <?php if ($menuItem->isDivider()): ?>
+                                    <li class="divider"></li>
+                                <?php elseif ($menuItem->isSmallText()): ?>
+                                    <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>
+                                <?php else: ?>
+                                    <li>
+                                        <a href="<?php echo $menuItem->getHref(); ?>">
+                                            <!-- Spit out icon if present -->
+                                            <?php if ($menuItem->getIconClass() != ''): ?>
+                                              <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
+                                            <?php endif; ?>
+                                            <?php echo $menuItem->getLabel(); ?>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <a href="<?php echo $menu->getHref(); ?>"><?php echo $menu->getLabel(); ?></a>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -130,35 +174,6 @@
                     </li>
                 </ul>
             </li>
-
-            <!-- active surveys -->
-            <?php if ($activesurveyscount > 0): ?>
-                <li>
-                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
-                        <?php neT("{n} active survey|{n} active surveys",$activesurveyscount); ?>
-                    </a>
-                </li>
-            <?php endif;?>
-
-            <?php if($showupdate): ?>
-            <li class="">
-                <a href="#notifications">
-                    <?php if($showupdate): ?>
-                        <span class=" label update-small-notification <?php if(Yii::app()->session['notificationstate']=='1' || Yii::app()->session['unstable_update'] ){echo 'hidden';};?>" >1</span>
-                    <?php endif;?>
-                    <i class="nav-icon fa fa-bullhorn"></i>
-                </a>
-
-                <!-- NOTIFICATIONS -->
-                <?php if($showupdate): ?>
-                <ul class="dropdown-menu update-small-notification <?php if(Yii::app()->session['notificationstate']=='1' || Yii::app()->session['unstable_update'] ){echo 'hidden';};?>" role="menu">
-                    <li class="hidden-xs  notifications-list " id="main-navbar-notifications" >
-                        <strong><?php eT("A new update is available.");?> </strong> <a href="<?php echo Yii::app()->createUrl("admin/update"); ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
-                    </li>
-                </ul> <!-- / .dropdown-menu -->
-                <?php endif;?>
-            </li>
-            <?php endif;?>
         </ul>
     </div><!-- /.nav-collapse -->
 </nav>

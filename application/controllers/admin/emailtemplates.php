@@ -73,8 +73,14 @@ class emailtemplates extends Survey_Common_Action {
             $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 
+
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
+            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
+            {
+                unset($aData['surveybar']['savebutton']);
+                unset($aData['surveybar']['saveandclosebutton']);
+            }
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId;  // Close button
 
         $aData['surveyid'] = $iSurveyId;
@@ -171,10 +177,8 @@ class emailtemplates extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'emailtemplates.js' ));
-
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'emailtemplates.js');
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
-
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

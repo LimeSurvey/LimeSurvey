@@ -43,6 +43,7 @@ $(function() {
     /* Launch jqgrid */
 
     jQuery("#displayresponses").jqGrid({
+        altRows : true,
         recordtext : sRecordText,
         emptyrecords : sEmptyRecords,
         pgtext : sPageText,
@@ -64,7 +65,7 @@ $(function() {
         sortable : true,
         hidegrid : false,
         sortname : 'id',
-        sortorder : 'asc',
+        sortorder : 'desc',
         viewrecords : true,
         rowList : [ 10, 25, 50, 100, 250, 500, 1000 ],
         multiselect : true,
@@ -88,7 +89,12 @@ $(function() {
             if($(event.target).is("a") || $(event.target).closest("a").length )
                 return false;
             return true;
-        }
+        },
+        gridComplete: function() {
+            $("#displayresponses_cb").css("width","35px");
+            $("#displayresponses tbody tr").children().first("td").css("width","35px");
+            $("#displayresponses tbody tr td").css("text-align","center");
+         }
     });
 
     /* Add navgrid */
@@ -127,16 +133,12 @@ $(function() {
             caption : sSearchCaption,
             Find : sFind,
             multipleSearch: true,
-            odata : [ sOperator1, sOperator2, sOperator3,
-                sOperator4, sOperator5, sOperator6,
-                sOperator7, sOperator8, sOperator9,
-                sOperator10, sOperator11, sOperator12,
-                sOperator13, sOperator14 ],
             Reset : sReset,
             width: 700
         }
 
     );
+    $.jgrid.search.odata= [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14, sOperator15, sOperator16  ],
 
     /* quick search toolbar */
     jQuery("#displayresponses").jqGrid('filterToolbar', {
@@ -148,7 +150,7 @@ $(function() {
         'navButtonAdd',
         '#pager',
         {
-            buttonicon : "ui-icon-calculator",
+            buttonicon : "fa fa-columns",
             caption : "",
             title : sSelectColumns,
             onClickButton : function() {
@@ -181,18 +183,19 @@ $(function() {
             //caption:sDownLoad, // Remove it ? no it's more clear ;)
             caption:'',
             title:sDownLoad, // Todo dynamically update download selected , download all
-            buttonicon:"glyphicon glyphicon-download-alt",
+            buttonicon:"fa fa-download",
             onClickButton: function(){
                 selectedlist=jQuery("#displayresponses").getGridParam('selarrrow').join(",");//  Or send like an array ?
                 if(selectedlist!="")
                 {
-                    sendPost(jsonActionUrl,null,["oper","responseid"],["downloadzip",selectedlist]);
+                    sendPost(jsonActionUrl,null,["oper","id"],["downloadzip",selectedlist]);
                 }
                 else
                 {
                     if(confirm(sConfirmationArchiveMessage))
-                        sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);;
-                    //sendPost(sDownloadUrl,null,"responseid",0);
+                    {
+                        sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);
+                    }
                 }
             },
             position:"last",

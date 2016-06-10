@@ -93,7 +93,7 @@ class conditionsaction extends Survey_Common_Action {
             $method = array(
             "<"      => gT("Less than"),
             "<="     => gT("Less than or equal to"),
-            "=="     => gT("equals"),
+            "=="     => gT("Equals"),
             "!="     => gT("Not equal to"),
             ">="     => gT("Greater than or equal to"),
             ">"      => gT("Greater than"),
@@ -1142,12 +1142,15 @@ class conditionsaction extends Survey_Common_Action {
 
         $aViewUrls = array();
 
+        $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
+        $aData['oQuestion']=$oQuestion;
+
         $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
         $aData['gid'] = $gid;
         $aData['imageurl'] = $imageurl;
         $aData['extraGetParams'] = $extraGetParams;
-        $aData['quesitonNavOptions'] = $questionNavOptions;
+        $aData['questionNavOptions'] = $questionNavOptions;
         $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
         $aData['javascriptpre'] = $javascriptpre;
 
@@ -1180,7 +1183,7 @@ class conditionsaction extends Survey_Common_Action {
 
             $aData['conditionsoutput'] = '';
             $aData['extraGetParams'] = $extraGetParams;
-            $aData['quesitonNavOptions'] = $questionNavOptions;
+            $aData['questionNavOptions'] = $questionNavOptions;
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
             $aData['onlyshow'] = sprintf(gT("Only show question %s IF"),$questiontitle .': '. $sCurrentFullQuestionText);
@@ -1192,8 +1195,7 @@ class conditionsaction extends Survey_Common_Action {
 
             if ($scenariocount > 0)
             {
-
-                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'checkgroup.js');
+                $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
                 foreach ($scenarioresult as $scenarionr)
                 {
                     $scenariotext = "";
@@ -1224,7 +1226,7 @@ class conditionsaction extends Survey_Common_Action {
                     {
                         $img_tag = '<span class="glyphicon glyphicon-trash"></span>';
                         $additional_main_content = CHtml::link($img_tag, '#', array(
-                        'onclick'     =>     "if ( confirm('".gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}"
+                            'onclick'     =>     "if ( confirm('".gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}"
                         ));
 
                         $img_tag = '<span class="glyphicon glyphicon-pencil"></span>';
@@ -1617,7 +1619,8 @@ class conditionsaction extends Survey_Common_Action {
             if (isset($conditionsList) && is_array($conditionsList))
             {
                 //TIBO
-                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
+                $this->registerScriptFile( 'SCRIPT_PATH', 'jquery.multiselect.min.js');
+                $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
 
                 // TODO
                 $aViewUrls['output'] .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".gT("No questions selected")."', checkAllText: '".gT("Check all")."', uncheckAllText: '".gT("Uncheck all")."', selectedText: '# ".gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
@@ -1748,7 +1751,7 @@ class conditionsaction extends Survey_Common_Action {
             ."</div>\n";
 
             // Source token Tab
-            $aViewUrls['output'] .= "<div id='SRCTOKENATTRS' class='tab-pane fade in'><select class='form-control' name='csrctoken' id='csrctoken' size='".($qcount+1)."' >\n";
+            $aViewUrls['output'] .= "<div id='SRCTOKENATTRS' class='tab-pane fade in'><select class='form-control' name='csrctoken' id='csrctoken' >\n";
             foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
             {
                 // Check to select
@@ -1859,6 +1862,7 @@ class conditionsaction extends Survey_Common_Action {
             ."\t</div>\n";
             // Previous answers tab @SGQA@ placeholders
             $aViewUrls['output'] .= "\t<div id='PREVQUESTIONS'  class='tab-pane fade in'>\n"
+            ."\t\t<br /><label for='prevQuestionSGQA'>".gT("Answer from previous question")."</label>\n"
             ."\t\t<select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>\n";
             foreach ($cquestions as $cqn)
             { // building the @SGQA@ placeholders options
@@ -1873,11 +1877,11 @@ class conditionsaction extends Survey_Common_Action {
                 }
             }
             $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t\t<br /><span id='prevQuestionSGQALabel'>".gT("Answer from previous questions")."</span>\n"
             ."\t</div>\n";
 
             // Token tab
             $aViewUrls['output'] .= "\t<div id='TOKENATTRS'  class='tab-pane fade in'>\n"
+            ."\t\t<br /><label for='tokenAttr'>".gT("Attributes of the survey participant")."</label>\n"
             ."\t\t<select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>\n";
             foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
             {
@@ -1885,7 +1889,6 @@ class conditionsaction extends Survey_Common_Action {
             }
 
             $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t\t<br /><span id='tokenAttrLabel'>".gT("Attributes values from the participant's token")."</span>\n"
             ."\t</div>\n";
 
             // Regexp Tab
@@ -1896,9 +1899,8 @@ class conditionsaction extends Survey_Common_Action {
 
             $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div
 
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'conditions.js');
 
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'conditions.js');
-            //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
 
             if ($subaction == "editthiscondition" && isset($p_cid))
             {

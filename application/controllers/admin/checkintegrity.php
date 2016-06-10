@@ -41,7 +41,7 @@ class CheckIntegrity extends Survey_Common_Action
 
 
         $aData['fullpagebar']['returnbutton']['url']='admin/index';
-        $aData['fullpagebar']['returnbutton']['text']=gT('Return to admin panel');
+        $aData['fullpagebar']['returnbutton']['text']=gT('Return to admin home');
 
         $this->_renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
@@ -262,7 +262,7 @@ class CheckIntegrity extends Survey_Common_Action
     private function _deleteQuotaLanguageSettings()
     {
         $oCriteria = new CDbCriteria;
-        $oCriteria->join = 'LEFT JOIN {{quota}} q ON t.quotals_quota_id=q.id';
+        $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
         $oCriteria->condition = '(q.id IS NULL)';
         QuotaLanguageSetting::model()->deleteAll($oCriteria);
         if (QuotaLanguageSetting::model()->hasErrors()) safeDie(QuotaLanguageSetting::model()->getError());
@@ -276,7 +276,7 @@ class CheckIntegrity extends Survey_Common_Action
     private function _deleteQuotas(array $aData)
     {
         $oCriteria = new CDbCriteria;
-        $oCriteria->join = 'LEFT JOIN {{surveys}} q ON t.sid=q.sid';
+        $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
         $oCriteria->condition = '(q.sid IS NULL)';
         Quota::model()->deleteAll($oCriteria);
         if (Quota::model()->hasErrors()) safeDie(Quota::model()->getError());
@@ -681,7 +681,13 @@ class CheckIntegrity extends Survey_Common_Action
                     $iDay = substr($sDateTime, 6, 2);
                     $iHour = substr($sDateTime, 8, 2);
                     $iMinute = substr($sDateTime, 10, 2);
-                    $sDate = date('d M Y  H:i', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+                    $sDate = date('Y-m-d H:i:s', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+
+                    $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+                    Yii::app()->loadLibrary('Date_Time_Converter');
+                    $datetimeobj = new date_time_converter(dateShift($sDate,'Y-m-d H:i:s',getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+                    $sDate=$datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
+
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
                     if ($aFirstRow['recordcount']==0) { // empty table - so add it to immediate deletion

@@ -10,17 +10,25 @@
 
             <!-- Select file -->
             <div class='form-group '>
-                <label class='control-label col-sm-3' for='the_file'><?php  eT("Select survey structure file (*.lss, *.csv, *.txt) or survey archive (*.lsa):");  ?> </label>
+                <label class='control-label col-sm-3' for='the_file'>
+                    <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
+                </label>
                 <div class='col-sm-4'>
-                    <input id='the_file' name="the_file" type="file" />
+                    <input id='the_file' name="the_file" type="file" accept='.lss,.lsa,.tsv,.txt'/>
                 </div>
             </div>
 
             <!-- Convert resource links and INSERTANS fields? -->
             <div class='form-group'>
-                <label class='control-label col-sm-3' for='translinksfields'><?php  eT("Convert resource links and INSERTANS fields?"); ?> </label>
+                <label class='control-label col-sm-3' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
                 <div class='col-sm-4'>
-                    <input id='translinksfields' name="translinksfields" type="checkbox" checked='checked'/>
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'translinksfields',
+                    'value'=> "1",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
                 </div>
             </div>
 

@@ -342,6 +342,52 @@ use SurveyDynamic;
         {
             return App()->getDb()->getSchema()->getTable($table);
         }
+
+        /**
+         * Returns true if a plugin exists with name $name (active or not)
+         *
+         * @param string $name Name of plugin
+         * @return boolean
+         * @throws InvalidArgumentException if $name is not a string
+         */
+        public function pluginExists($name)
+        {
+            if (!is_string($name))
+            {
+                throw new InvalidArgumentException('$name must be a string');
+            }
+
+            $plugin = \Plugin::model()->findByAttributes(array('name' => $name));
+
+            return !empty($plugin);
+        }
+
+        /**
+         * Returns true if plugin with name $name is active; otherwise false
+         *
+         * @param string $name Name of plugin
+         * @return boolean
+         * @throws InvalidArgumentException if $name is not a string
+         * @throws Exception if no plugin with name $name is found
+         */
+        public function pluginIsActive($name)
+        {
+            if (!is_string($name))
+            {
+                throw new InvalidArgumentException('$name must be a string');
+            }
+
+            $plugin = \Plugin::model()->findByAttributes(array('name' => $name));
+
+            if ($plugin)
+            {
+                return $plugin->active == 1;
+            }
+            else
+            {
+                throw new Exception("Can't find a plugin with name " . $name);
+            }
+        }
         
     }
 

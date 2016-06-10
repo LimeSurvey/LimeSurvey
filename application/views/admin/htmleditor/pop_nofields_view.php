@@ -5,9 +5,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="noindex, nofollow" />
         <?php
-        App()->getClientScript()->registerPackage('jqueryui');
-        App()->getClientScript()->registerPackage('jquery-superfish');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
+            App()->getClientScript()->registerPackage('jqueryui');
+            $this->registerCssFile( 'PUBLIC', 'jquery-ui.css' );
         ?>
     </head>
 

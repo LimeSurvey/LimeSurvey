@@ -2,10 +2,10 @@
     echo PrepareEditorScript(false, $this);
     $count = 0;
 ?>
-
-<div class="side-body" id="edit-group">
+<div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-sm-12 content-right">
+            <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Edit Group"))); ?>
             <h3><?php eT("Edit Group"); ?></h3>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
                 <?php foreach ($tabtitles as $i=>$eachtitle):?>
@@ -18,7 +18,7 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
                 <?php echo CHtml::form(array("admin/questiongroups/sa/update/gid/{$gid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 form-horizontal')); ?>
 
                     <div class="tab-content">
@@ -35,9 +35,11 @@
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="description_<?php echo $aGroupData[$i]['language']; ?>"><?php eT("Description:"); ?></label>
-                                    <div class="col-sm-3 htmleditorboot input-group">
-                                        <?php echo CHtml::textArea("description_{$aGroupData[$i]['language']}",$aGroupData[$i]['description'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"description_{$aGroupData[$i]['language']}")); ?>
-                                        <?php echo getEditor("group-desc","description_".$aGroupData[$i]['language'], "[".gT("Description:", "js")."](".$aGroupData[$i]['language'].")",$surveyid,$gid,'',$action); ?>
+                                    <div class="col-sm-5">
+                                        <div class="htmleditor input-group">
+                                            <?php echo CHtml::textArea("description_{$aGroupData[$i]['language']}",$aGroupData[$i]['description'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"description_{$aGroupData[$i]['language']}")); ?>
+                                            <?php echo getEditor("group-desc","description_".$aGroupData[$i]['language'], "[".gT("Description:", "js")."](".$aGroupData[$i]['language'].")",$surveyid,$gid,'',$action); ?>
+                                        </div>
                                     </div>
 
                                 </div>

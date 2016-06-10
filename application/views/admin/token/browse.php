@@ -40,7 +40,7 @@
             if($aData['mandatory'] == 'Y'){
                 $customEdit = ', editrules:{custom:true, custom_func:checkMandatoryAttr}';
             }
-            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":75' . $customEdit . '}';
+            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":100' . $customEdit . '}';
             $aColumnHeaders[]=$aData['description'];
         }
         $columnNames='"'.implode('","',$aColumnHeaders).'"';
@@ -120,7 +120,7 @@
     { "name":"emailstatus", "index":"emailstatus","align":"left","width": 80,"sorttype":"string", "sortable": true, "editable":true},
     { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":150,"editable":true},
     { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
-    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":130,"editable":true},
+    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
     { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
     { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true, "classes": "jqgrid-tokens-number-padding"},
     { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
@@ -138,92 +138,97 @@
     }
 </script>
 
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Display"))); ?>
+    <h3><?php eT("Survey participants",'js'); ?></h3>
 
-<div class="side-body">
-	<h3><?php eT("Survey participants",'js'); ?></h3>
+        <p class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+            <span class="fa fa-info-circle"></span>
+            <?php eT("You can use operators in the search filters (eg: >, <, >=, <=, = )");?>
+        </p>
 
-    <div class='scrolling-wrapper'
-        <div  class="row">
-            <div class="col-lg-12" style="margin-top: 1em;">
+
+    <!-- CGridView -->
+    <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+
+        <!-- Todo : search boxes -->
+
+        <!-- Grid -->
+        <div class="row">
+            <div class="content-right scrolling-wrapper"    >
                 <?php
-                    // Add some script for gridsearch
-                    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
-                    App()->getClientScript()->registerPackage('jqgrid.addons');
+                    $this->widget('bootstrap.widgets.TbGridView', array(
+                        'dataProvider' => $model->search(),
+                        'filter'=>$model,
+                        'id' => 'token-grid',
+                        'emptyText'=>gT('No survey participants found.'),
+                        'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptionsTokens'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+                        'itemsCssClass' =>'table-striped',
+                        'columns' => $model->attributesForGrid,
+
+                        'ajaxUpdate'=>true,
+                    ));
                 ?>
-                <table id="displaytokens"></table>
-                <div id="pager"></div>
-
-                <div id="search">
-                    <?php
-                        $aOptionSearch = array('' => gT('Select...','unescaped'));
-                        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
-                        {
-                            if($aTokenInformation['search'])
-                            {
-                                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
-                            }
-                        }
-                        $aOptionCondition = array('' => gT('Select...','unescaped'),
-                        'equal' => gT("Equals",'unescaped'),
-                        'contains' => gT("Contains",'unescaped'),
-                        'notequal' => gT("Not equal",'unescaped'),
-                        'notcontains' => gT("Not contains",'unescaped'),
-                        'greaterthan' => gT("Greater than",'unescaped'),
-                        'lessthan' => gT("Less than",'unescaped'));
-                    ?>
-                    <table id='searchtable'>
-                        <tr>
-                            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch, array('class' => 'form-control')); ?></td>
-                            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition, array('class' => 'form-control')); ?></td>
-                            <td><input class='form-control' type="text" id="conditiontext_1" /></td>
-                            <td>
-                                <span data-toggle='tooltip' title='<?php eT("Add another search criteria");?>' class="ui-pg-button addcondition-button icon-add text-success" style="">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
-                    <div id="addcpdb" title="addsurvey" style="display:none">
-                        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
-                        <p>
-                            <select id="attributeid" name="attributeid" multiple="multiple">
-                                <?php
-                                    if(!empty($attrfieldnames))
-                                    {
-                                        foreach($attrfieldnames as $key=>$value)
-                                        {
-                                            echo "<option value='".$key."'>".$value."</option>";
-                                        }
-                                    }
-
-                                ?>
-                            </select>
-                        </p>
-
-                    </div>
-                <?php } ?>
-
-                <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
-                    <p>
-                        <?php eT("Please select a field."); ?>
-                    </p>
-                </div>
-                <div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
-                    <p>
-                        <?php eT("Please select a condition."); ?>
-                    </p>
-                </div>
-                <div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
-                    <p>
-                        <?php eT("Please select at least one participant."); ?>
-                    </p>
-                </div>
-                <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
-                <div>
-                <div id ='dialog-modal'></div>
-            </div>
             </div>
         </div>
+
+        <!-- To update rows per page via ajax -->
+        <script type="text/javascript">
+            jQuery(function($) {
+                jQuery(document).on("change", '#pageSize', function(){
+                    $.fn.yiiGridView.update('token-grid',{ data:{ pageSize: $(this).val() }});
+                });
+            });
+        </script>
     </div>
+</div>
+
+
+<!-- Edit Token Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
+    <div class="modal-dialog" style="width: 1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php eT('Edit survey participant');?></h4>
+            </div>
+            <div class="modal-body">
+                <!-- the ajax loader -->
+                <div id="ajaxContainerLoading2" class="ajaxLoading" >
+                    <p><?php eT('Please wait, loading data...');?></p>
+                    <div class="preloader loading">
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                    </div>
+                </div>
+                <div id="modal-content">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save");?></button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div style="display: none;">
+<?php
+Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+    'name' => "no",
+    'id'   => "no",
+    'value' => '',
+
+));
+?>
 </div>

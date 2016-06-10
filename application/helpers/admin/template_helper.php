@@ -13,7 +13,9 @@
 */
 
 
-function doreplacement($file,$data, $oTemplate='') { //Produce sample page from template file
+function doreplacement($file,$data, $oTemplate='')
+{
+    //Produce sample page from template file
     $aReplacements=isset($data['aReplacements']) ? $data['aReplacements'] : array();
     return (array)templatereplace(file_get_contents($file),$aReplacements,$data, 'Unspecified', false, NULL, array(), false, $oTemplate);
 }
@@ -34,14 +36,6 @@ function getListOfFiles($wh){
     $arr=explode("\n",$files);
     sort($arr);
     return $arr;
-}
-
-function textarea_encode($html_code)
-{
-    $from = array('<', '>');
-    $to = array('&lt;', '&gt;');
-    $html_code = str_replace($from, $to, $html_code);
-    return $html_code;
 }
 
 /**
@@ -98,35 +92,12 @@ function makeoptions($array, $value, $text, $selectedvalue) {
 /**
  * Index is the file index in the Template configuration file
  */
-function makeoptionswithindex($array, $value, $text, $selectedvalue, $prefix)
+function makeoptionswithindex($array, $prefix)
 {
-
-    if(isset( $_GET['editfile']))
-    {
-        $editfile = (string) $_GET['editfile'];
-        $editfile_infos = explode('_',$editfile);
-
-    // If user is editing a file requiring an index, $_GET['editfile'] will have a prefix (like css or js)
-    // If it's the same prefix than the one asked here, then it means he's editing one of the files of the list
-    // The edited file will have an index corresponding to the suffix of $_GET['editfile']
-    // e.g : admin/templates/sa/view/editfile/css_1/ ....
-    // Mean user is editing a css file with index 1 in the template's configuration file
-        if(isset($editfile_infos[0]) && $editfile_infos[0] == $prefix)
-            $selectedindex = $editfile_infos[1];
-    }
-    $selectedindex = (isset($selectedindex))?$selectedindex:-1;
-
-    $return='';
+    $return=array();
     foreach ($array as $index => $ar)
     {
-        $return .= "<option value='".HTMLEscape($prefix.'_'.$index)."'";
-
-        if ($index == $selectedindex)
-        {
-            $return .= " selected='selected'";
-        }
-
-        $return .= '>'.$ar[$text]."</option>\n";
+        $return[$prefix.'_'.$index]=$ar['name'];
     }
     return $return;
 }
@@ -204,14 +175,31 @@ function templateExtractFilter($p_event, &$p_header)
 
 /**
  * Determine the storage path for a file
+ * TODO: remove all that logic.
  *
  * @param string $template
  * @param string $templatefile
  */
 function gettemplatefilename($template, $templatefile) {
-    switch (pathinfo($templatefile, PATHINFO_EXTENSION)) {
+    switch (pathinfo($templatefile, PATHINFO_EXTENSION))
+    {
         case 'pstpl':
-            return $template.'/views/'.$templatefile;
+            // Default 2.5 templates
+            if (file_exists($template.'/views/'.$templatefile))
+            {
+                return $template.'/views/'.$templatefile;
+            }
+            // Default 2.06 templates
+            elseif(file_exists($template.'/'.$templatefile))
+            {
+                return $template.'/'.$templatefile;
+            }
+            // Something else
+            else
+            {
+                $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+                return $template.'/'.$oEditedTemplate->viewPath.'/'.$templatefile;
+            }
             break;
         case 'css':
             return $template.'/'.$templatefile;

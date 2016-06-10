@@ -8,7 +8,7 @@
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
 
-<div class="side-body" id="statisticsview">
+<div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
         <?php eT("Statistics"); ?>
@@ -28,21 +28,18 @@
 
                             <div class="col-sm-6">
                                 <!-- Data Selection -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage)) ; ?>
-
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyinfo'=>$surveyinfo)) ; ?>
                                 <!-- Response ID -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()) ; ?>
-
-                                <!-- Submission date -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp'=>$datestamp)) ; ?>
+                                <!-- Output format -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_outputformat', array()) ; ?>
                             </div>
 
                             <div class="col-sm-6">
                                 <!-- Output options -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array('error'=>$error, 'showtextinline'=>$showtextinline, 'usegraph'=>$usegraph, 'showtextinline'=>$showtextinline)) ; ?>
-
-                                <!-- Output format -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_outputformat', array()) ; ?>
+                                <!-- Submission date -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp'=>$datestamp, 'dateformatdetails' => $dateformatdetails)) ; ?>
                             </div>
                         </div>
 
@@ -65,7 +62,7 @@
                     <?php $this->renderPartial('/admin/export/statistics_subviews/_response_filter_header', array()) ; ?>
 
                     <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
-                    <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
+                    <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400'>
                         <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
                         <?php

@@ -521,15 +521,8 @@ class database extends Survey_Common_Action
                     Yii::app()->setFlashMessage(gT("Question could not be created."),'error');
 
                 } else {
-
-                    /**
-                     *
-                     * Copy Question
-                     *
-                     */
-
                     if ($sAction == 'copyquestion') {
-                        if (returnGlobal('copysubquestions') == "Y")
+                        if (returnGlobal('copysubquestions') == 1)
                         {
                             $aSQIDMappings = array();
                             $r1 = Question::model()->getSubQuestions(returnGlobal('oldqid'));
@@ -553,7 +546,7 @@ class database extends Survey_Common_Action
                                 }
                             }
                         }
-                        if (returnGlobal('copyanswers') == "Y")
+                        if (returnGlobal('copyanswers') == 1)
                         {
                             $r1 = Answer::model()->getAnswers(returnGlobal('oldqid'));
                             $aAnswerOptions = $r1->readAll();
@@ -574,7 +567,7 @@ class database extends Survey_Common_Action
                         /**
                          * Copy attribute
                          */
-                        if (returnGlobal('copyattributes') == "Y")
+                        if (returnGlobal('copyattributes') == 1)
                         {
                             $oOldAttributes = QuestionAttribute::model()->findAll("qid=:qid",array("qid"=>returnGlobal('oldqid')));
                             foreach($oOldAttributes as $oOldAttribute)
@@ -587,74 +580,6 @@ class database extends Survey_Common_Action
                                 $attribute->save();
                             }
                         }
-
-                        // Since 2.5, user can edit attribute while copying
-                        $qattributes = questionAttributes();
-                        $validAttributes = $qattributes[Yii::app()->request->getPost('type')];
-                        $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
-                        foreach ($validAttributes as $validAttribute)
-                        {
-                            if ($validAttribute['i18n'])
-                            {
-                                foreach ($aLanguages as $sLanguage)
-                                {
-                                    $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID, 'language'=>$sLanguage));
-                                    if (count($iInsertCount)>0)
-                                    {
-                                        if ($value!='')
-                                        {
-                                            QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage));
-                                        }
-                                        else
-                                        {
-                                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage));
-                                        }
-                                    }
-                                    elseif($value!='')
-                                    {
-                                        $attribute = new QuestionAttribute;
-                                        $attribute->qid = $iQuestionID;
-                                        $attribute->value = $value;
-                                        $attribute->attribute = $validAttribute['name'];
-                                        $attribute->language = $sLanguage;
-                                        $attribute->save();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                $value=Yii::app()->request->getPost($validAttribute['name']);
-
-                                if ($validAttribute['name']=='multiflexible_step' && trim($value)!='') {
-                                    $value=floatval($value);
-                                    if ($value==0) $value=1;
-                                };
-
-                                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID));
-                                if (count($iInsertCount)>0)
-                                {
-                                    if($value!=$validAttribute['default'] && trim($value)!="")
-                                    {
-                                        QuestionAttribute::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
-                                    }
-                                    else
-                                    {
-                                        QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
-                                    }
-                                }
-                                elseif($value!=$validAttribute['default'] && trim($value)!="")
-                                {
-                                    $attribute = new QuestionAttribute;
-                                    $attribute->qid = $iQuestionID;
-                                    $attribute->value = $value;
-                                    $attribute->attribute = $validAttribute['name'];
-                                    $attribute->save();
-                                }
-                            }
-                        }
-
                     } else {
                         $qattributes = questionAttributes();
                         $validAttributes = $qattributes[Yii::app()->request->getPost('type')];
@@ -1148,7 +1073,7 @@ class database extends Survey_Common_Action
             // Preload survey
             $oSurvey=Survey::model()->findByPk($iSurveyID);
 
-             // Save plugin settings.
+             // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
             $pluginSettings = App()->request->getPost('plugin', array());
             foreach($pluginSettings as $plugin => $settings)
             {
@@ -1193,46 +1118,51 @@ class database extends Survey_Common_Action
             $oSurvey->faxto = App()->request->getPost('faxto');
             $oSurvey->format = App()->request->getPost('format');
             $oSurvey->template = Yii::app()->request->getPost('template');
-            $oSurvey->assessments = App()->request->getPost('assessments');
-            $oSurvey->additional_languages =  Yii::app()->request->getPost('languageids');
+            $oSurvey->assessments = App()->request->getPost('assessments')=='1'?'Y':'N';
+            $oSurvey->additional_languages =  implode(' ',Yii::app()->request->getPost('additional_languages',array()));
             if ($oSurvey->active!='Y')
             {
-                $oSurvey->anonymized = App()->request->getPost('anonymized');
-                $oSurvey->savetimings = App()->request->getPost('savetimings');
-                $oSurvey->datestamp = App()->request->getPost('datestamp');
-                $oSurvey->ipaddr = App()->request->getPost('ipaddr');
-                $oSurvey->refurl = App()->request->getPost('refurl');
+                $oSurvey->anonymized = App()->request->getPost('anonymized')=='1'?'Y':'N';
+                $oSurvey->savetimings = App()->request->getPost('savetimings')=='1'?'Y':'N';
+                $oSurvey->datestamp = App()->request->getPost('datestamp')=='1'?'Y':'N';
+                $oSurvey->ipaddr = App()->request->getPost('ipaddr')=='1'?'Y':'N';
+                $oSurvey->refurl = App()->request->getPost('refurl')=='1'?'Y':'N';
             }
-            $oSurvey->publicgraphs = App()->request->getPost('publicgraphs');
-            $oSurvey->usecookie = App()->request->getPost('usecookie');
-            $oSurvey->allowregister = App()->request->getPost('allowregister');
-            $oSurvey->allowsave = App()->request->getPost('allowsave');
+            $oSurvey->publicgraphs = App()->request->getPost('publicgraphs')=='1'?'Y':'N';
+            $oSurvey->usecookie = App()->request->getPost('usecookie')=='1'?'Y':'N';
+            $oSurvey->allowregister = App()->request->getPost('allowregister')=='1'?'Y':'N';
+            $oSurvey->allowsave = App()->request->getPost('allowsave')=='1'?'Y':'N';
             $oSurvey->navigationdelay = App()->request->getPost('navigationdelay');
-            $oSurvey->printanswers = App()->request->getPost('printanswers');
-            $oSurvey->publicstatistics = App()->request->getPost('publicstatistics');
-            $oSurvey->autoredirect = App()->request->getPost('autoredirect');
-            $oSurvey->showxquestions = App()->request->getPost('showxquestions');
+            $oSurvey->printanswers = App()->request->getPost('printanswers')=='1'?'Y':'N';
+            $oSurvey->publicstatistics = App()->request->getPost('publicstatistics')=='1'?'Y':'N';
+            $oSurvey->autoredirect = App()->request->getPost('autoredirect')=='1'?'Y':'N';
+            $oSurvey->showxquestions = App()->request->getPost('showxquestions')=='1'?'Y':'N';
             $oSurvey->showgroupinfo = App()->request->getPost('showgroupinfo');
             $oSurvey->showqnumcode = App()->request->getPost('showqnumcode');
-            $oSurvey->shownoanswer = App()->request->getPost('shownoanswer');
-            $oSurvey->showwelcome = App()->request->getPost('showwelcome');
-            $oSurvey->allowprev = App()->request->getPost('allowprev');
+            $oSurvey->shownoanswer = App()->request->getPost('shownoanswer')=='1'?'Y':'N';
+            $oSurvey->showwelcome = App()->request->getPost('showwelcome')=='1'?'Y':'N';
+            $oSurvey->allowprev = App()->request->getPost('allowprev')=='1'?'Y':'N';
             $oSurvey->questionindex = App()->request->getPost('questionindex');
-            $oSurvey->nokeyboard = App()->request->getPost('nokeyboard');
-            $oSurvey->showprogress = App()->request->getPost('showprogress');
-            $oSurvey->listpublic = App()->request->getPost('public');
-            $oSurvey->htmlemail = App()->request->getPost('htmlemail');
-            $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation');
-            $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence');
-            $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion');
+            $oSurvey->nokeyboard = App()->request->getPost('nokeyboard')=='1'?'Y':'N';
+            $oSurvey->showprogress = App()->request->getPost('showprogress')=='1'?'Y':'N';
+            $oSurvey->listpublic = App()->request->getPost('listpublic')=='1'?'Y':'N';
+            $oSurvey->htmlemail = App()->request->getPost('htmlemail')=='1'?'Y':'N';
+            $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation')=='1'?'Y':'N';
+            $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence')=='1'?'Y':'N';
+            $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion')=='1'?'Y':'N';
             $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
             $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
             $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
             $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
             $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
-            $oSurvey->tokenlength = App()->request->getPost('tokenlength');
+            $oSurvey->tokenlength = (App()->request->getPost('tokenlength')<5  || App()->request->getPost('tokenlength')>36)?15:App()->request->getPost('tokenlength');
             $oSurvey->adminemail = App()->request->getPost('adminemail');
             $oSurvey->bounce_email = App()->request->getPost('bounce_email');
+
+            $event = new PluginEvent('beforeSurveySettingsSave');
+            $event->set('modifiedSurvey', $oSurvey);
+            App()->getPluginManager()->dispatchEvent($event);
+
             if ($oSurvey->save())
             {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));

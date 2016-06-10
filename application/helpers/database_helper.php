@@ -40,7 +40,8 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 
     if (!$dataset && (Yii::app()->getConfig('debug') >0 || !$silent))
     {
-        safeDie('Error executing query in dbExecuteAssoc:'.$error);
+        // Exception is better than safeDie, because you can see the backtrace.
+        throw new \Exception('Error executing query in dbExecuteAssoc:'.$error);
     }
     return $dataset;
 }

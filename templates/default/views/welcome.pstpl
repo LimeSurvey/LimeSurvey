@@ -1,16 +1,14 @@
+<div class="alert alert-danger" role="alert"  id="checkjavascript">
+    {CHECKJAVASCRIPT}
+</div>
+<script>
+document.getElementById("checkjavascript").style.display = 'none';
+</script>
 <!-- Survey Description -->
 <div class="row" id="welcome-container">
     <div class="col-sm-12 ">
-        {CHECKJAVASCRIPT}
         <h1>{SURVEYNAME}</h1><br />
         <p class='surveydescription text-info'>{SURVEYDESCRIPTION}</p>
-    </div>
-</div>
-
-<!-- Language Changer -->
-<div class="row language-changer">
-    <div class="col-sm-12 ">
-        {LANGUAGECHANGER}
     </div>
 </div>
 

@@ -112,9 +112,30 @@ class responses extends Survey_Common_Action
         return $aData;
     }
 
+
+    public function viewbytoken($iSurveyID, $token, $sBrowseLang = '')
+    {
+        // Get Response ID from token
+        $oResponse = SurveyDynamic::model($iSurveyID)->findByAttributes(array('token'=>$token));
+        if (!$oResponse){
+            Yii::app()->setFlashMessage(gT("Sorry, this response was not found."),'error');
+            $this->getController()->redirect(array("admin/responses/sa/browse/surveyid/{$iSurveyID}"));
+        }
+        else
+        {
+            $this->getController()->redirect(array("admin/responses/sa/view/surveyid/{$iSurveyID}/id/{$oResponse->id}"));
+        }
+
+    }
+
+
     /**
-     * @todo View what?
-     */
+    * View a single response in detail
+    *
+    * @param mixed $iSurveyID
+    * @param mixed $iId
+    * @param mixed $sBrowseLang
+    */
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
@@ -294,7 +315,7 @@ class responses extends Survey_Common_Action
             {
                 Yii::app()->session['flashmessage'] = gT("This response ID is invalid.");
             }
-			
+
             $aViewUrls[] = 'browseidfooter_view';
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
@@ -369,8 +390,8 @@ class responses extends Survey_Common_Action
         }
         App()->getClientScript()->registerPackage('jqgrid');
 
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "listresponse.js" ));
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid.css" );
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
+        $this->registerCssFile( 'ADMIN', 'jqgrid.css' );
 
         $aData = $this->_getData($iSurveyId);
         $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
@@ -387,6 +408,7 @@ class responses extends Survey_Common_Action
         );
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         $column_model = array();
+
         // The first few colums are fixed.
         $column_model[] = array(
             'name' => 'actions',
@@ -410,7 +432,7 @@ class responses extends Survey_Common_Action
             'width'=>'100',
             'resizable' => true,
             'align'=>'right',
-            'label'=>viewHelper::getFieldText($fields['id']),
+            'title'=>viewHelper::getFieldText($fields['id']),
             'hidedlg'=>true,
         );
         $column_model[] = array(
@@ -421,7 +443,7 @@ class responses extends Survey_Common_Action
             'width'=>'100',
             'resizable' => true,// Strangely : don't work
             'align'=>'right',
-            'label'=>viewHelper::getFieldText($fields['lastpage']),
+            'title'=>viewHelper::getFieldText($fields['lastpage']),
         );
 
         $bHidden=false;
@@ -446,7 +468,7 @@ class responses extends Survey_Common_Action
             'hidden'=>$bHidden,
             'width'=>'100',
             'align'=>'left',
-            'label' => gT("Completed"),
+            'title' => gT("Completed"),
         );
 
         // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
@@ -472,7 +494,7 @@ class responses extends Survey_Common_Action
                 'sorttype'=>'string',
                 'sortable'=>true, 'width'=>'150',
                 'align'=>'left',
-                'label'=>gT('Token')
+                'title'=>gT('Token')
             );
             $column_model[] = array(
                 'name'=>'firstname',
@@ -481,7 +503,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'label'=>gT('First name'),
+                'title'=>gT('First name'),
             );
             $column_model[] = array(
                 'name'=>'lastname',
@@ -490,7 +512,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'label'=>gT('Last Name'),
+                'title'=>gT('Last Name'),
             );
             $column_model[] = array(
                 'name'=>'email',
@@ -499,7 +521,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'label'=>gT('Email'),
+                'title'=>gT('Email')
             );
             // If token exist, test if token is set in params, add it to defaultSearch
             if($sTokenSearch= Yii::app()->request->getQuery('token'))
@@ -512,10 +534,10 @@ class responses extends Survey_Common_Action
             'index'=>'startlanguage',
             'sorttype'=>'string',
             'sortable'=>true,
-            'width'=>'50',
+            'width'=>'150',
             'resizable' => true,// Strangely : don't work
             'align'=>'left',
-            'label'=>viewHelper::getFieldText($fields['startlanguage']),
+            'title'=>viewHelper::getFieldText($fields['startlanguage']),
         );
 
         // All other columns are based on the questions.
@@ -846,8 +868,16 @@ class responses extends Survey_Common_Action
                     {
                         if (isset($aFilesInfo[$iFileIndex]))
                         {
-                            $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8');
-                            $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8');
+                            if ($aQuestionAttributes['show_title'])
+                            {
+                                if (!isset($aFilesInfo[$iFileIndex]['title'])) $aFilesInfo[$iFileIndex]['title']='';
+                                $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8');
+                            }
+                            if ($aQuestionAttributes['show_comment'])
+                            {
+                                if (!isset($aFilesInfo[$iFileIndex]['comment'])) $aFilesInfo[$iFileIndex]['comment']='';
+                                $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8');
+                            }
                             $aSurveyEntry[] = CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$row['id'],"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) );
                             $aSurveyEntry[] = sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2));
                         }
@@ -1223,9 +1253,17 @@ class responses extends Survey_Common_Action
         }
     }
 
+    /**
+     * Time statistics for responses
+     *
+     * @param int $iSurveyID
+     * @return void
+     */
     public function time($iSurveyID)
     {
         $aData = $this->_getData(array('iSurveyId' => $iSurveyID));
+
+        /*
         extract($aData);
         $aViewUrls = array();
 
@@ -1253,23 +1291,59 @@ class responses extends Survey_Common_Action
                 }
             }
         }
+        */
+
+        $aData['columns'] = array(
+            array(
+                'header' => gT('ID'),
+                'name' => 'id',
+                'value'=> '$data->id',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs')
+            ),
+            array(
+                'header' => gT('Total time'),
+                'name' => 'interviewtime',
+                'value' => '$data->interviewtime'
+            )
+        );
 
         $fields = createTimingsFieldMap($iSurveyID, 'full',true,false,$aData['language']);
-
+        //echo '<pre>'; var_dump($fields); echo '</pre>';
         foreach ($fields as $fielddetails)
         {
             // headers for answer id and time data
             if ($fielddetails['type'] == 'id')
+            {
                 $fnames[] = array($fielddetails['fieldname'], $fielddetails['question']);
+            }
+
             if ($fielddetails['type'] == 'interview_time')
+            {
                 $fnames[] = array($fielddetails['fieldname'], gT('Total time'));
+            }
+
             if ($fielddetails['type'] == 'page_time')
+            {
                 $fnames[] = array($fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']);
+                $aData['columns'][] = array(
+                    'header' => gT('Group: ') . $fielddetails['group_name'],
+                    'name' => $fielddetails['fieldname']
+                );
+            }
+
             if ($fielddetails['type'] == 'answer_time')
+            {
                 $fnames[] = array($fielddetails['fieldname'], gT('Question') . ": " . $fielddetails['title']);
+                $aData['columns'][] = array(
+                    'header' => gT('Question: ') . $fielddetails['title'],
+                    'name' => $fielddetails['fieldname']
+                );
+            }
         }
         $fncount = count($fnames);
 
+        /*
         //NOW LETS CREATE A TABLE WITH THOSE HEADINGS
         foreach ($fnames as $fn)
         {
@@ -1344,7 +1418,9 @@ class responses extends Survey_Common_Action
         $aData['last'] = $last;
         $aData['next'] = $next;
         $aData['end'] = $end;
+        */
         $aViewUrls[] = 'browsetimeheader_view';
+        /*
 
         $aData['fncount'] = $fncount;
         $bgcc = 'oddrow';
@@ -1377,15 +1453,29 @@ class responses extends Survey_Common_Action
             $aData['browsedatafield'] = $browsedatafield;
             $aData['bgcc'] = $bgcc;
             $aData['dtrow'] = $dtrow;
+            */
             $aViewUrls['browsetimerow_view'][] = $aData;
+            /*
+        }
+        */
+
+        // Set number of page
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
 
+
         //interview Time statistics
-        $aData['statistics'] = SurveyTimingDynamic::model($iSurveyId)->statistics();
+        $aData['model'] = SurveyTimingDynamic::model($iSurveyID);
+        $aData['menu']['edition'] = false;
+
+        $aData['pageSize'] = 10;
+        $aData['statistics'] = SurveyTimingDynamic::model($iSurveyID)->statistics();
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
         $aViewUrls[] = 'browsetimefooter_view';
-        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
+        $this->_renderWrappedTemplate('', $aViewUrls, $aData);
     }
 
     /**
@@ -1464,17 +1554,15 @@ class responses extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'browse.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'browse.js');
+        $this->registerCssFile( 'PUBLIC', 'browse.css' );
 
         $iSurveyId = $aData['iSurveyId'];
-
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
-
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }
 

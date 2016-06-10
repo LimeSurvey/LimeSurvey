@@ -86,7 +86,10 @@ class QuestionGroup extends LSActiveRecord
     */
     public function relations()
     {
-        return array('questions' => array(self::HAS_MANY, 'Question', 'gid, language'));
+        return array(
+            'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
+            'questions' => array(self::HAS_MANY, 'Question', 'gid, language')
+        );
     }
 
     function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
@@ -211,26 +214,33 @@ class QuestionGroup extends LSActiveRecord
         // Find out if the survey is active to disable add-button
         $oSurvey=Survey::model()->findByPk($this->sid);
         $surveyIsActive = $oSurvey->active !== 'N';
-        $baselang = $oSurvey->language;
+        $button = '';
 
         // Add question to this group
-        $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
-        $button = '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        {
+            $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
+            $button .= '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
+        }
 
         // Group edition
         // Edit
-        $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
-        $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil " ></span></a>';
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        {
+            $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil " ></span></a>';
+        }
 
         // View summary
-        $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
-        $url .= '/'.$this->sid.'/gid/'.$this->gid;
-        $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
-
-        $iQuestionsInGroup = Question::model()->countByAttributes(array('sid' => $this->sid, 'gid' => $this->gid, 'language' => $baselang));
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'))
+        {
+            $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
+            $url .= '/'.$this->sid.'/gid/'.$this->gid;
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
+        }
 
         // Delete
-        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ) && $iQuestionsInGroup > 0)
+        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ))
         {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if(is_null($condarray))

@@ -84,6 +84,12 @@ class WhSwitch extends CInputWidget
         if (!$this->animated) {
             $this->htmlOptions['data-animate'] = 'false';
         }
+
+        if (!isset($this->htmlOptions['uncheckValue']))
+        {
+            $this->htmlOptions['uncheckValue']='0';
+        }
+
         $this->htmlOptions['data-on-text'] = $this->onLabel;
         $this->htmlOptions['data-off-text'] = $this->offLabel;
         $this->htmlOptions['data-label-text'] = $this->textLabel;

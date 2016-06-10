@@ -439,6 +439,17 @@ class STATAxmlWriter extends Writer
                         case "D": //replace in customResponsemap: date/time as string with STATA-timestamp
                             $response = strtotime($response . ' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
                             break;
+                        case "L":
+                            // For radio lists, user wants code, not label
+                            // TODO: We could skip this loop if we had answer code
+                            foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
+                                if ($answer['answer'] == $response)
+                                {
+                                    $response = $answer['code'];
+                                    break;
+                                }
+                            }
+                            break;
                     }
                     
                     /* look at each of the responses and determine STATA data type and format of the respective variables

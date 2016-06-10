@@ -76,6 +76,7 @@ if ($('#save-and-close-button').length > 0){
         var $form = getForm(this);
         closeAfterSaveInput.val("true");
         $form.append(closeAfterSaveInput);
+        formSubmitting = true;
         $form.find('[type="submit"]').first().trigger('click');
     });
 }

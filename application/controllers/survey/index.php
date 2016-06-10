@@ -36,19 +36,8 @@ class index extends CAction {
         $param = $this->_getParameters(func_get_args(), $_POST);
         $surveyid = $param['sid'];
 
-        // Font awesome
-        if(!YII_DEBUG)
-        {
-            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/font-awesome-43.min.css') );
-        }
-        else
-        {
-            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43-debugmode.min.css' );
-        }
-
         $oTemplate = Template::model()->getInstance('', $surveyid);
         $this->oTemplate = $oTemplate;
-
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
 
@@ -56,21 +45,27 @@ class index extends CAction {
         {
             App()->getClientScript()->registerPackage($package);
         }
-
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+
 
         if($oTemplate->cssFramework == 'bootstrap')
         {
-            App()->bootstrap->register();
+            // We now use the bootstrap package isntead of the Yiistrap TbApi::register() method
+            // Then instead of using the composer dependency system for templates
+            // We can use the package dependency system
+            Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
+            App()->bootstrap->registerAllScripts();
         }
 
         useFirebug();
 
-        ob_start(function($buffer, $phase) {
+        ob_start(function($buffer, $phase)
+        {
             App()->getClientScript()->render($buffer);
             App()->getClientScript()->reset();
             return $buffer;
         });
+
         ob_implicit_flush(false);
         $this->action();
         ob_flush();
@@ -84,7 +79,8 @@ class index extends CAction {
 
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
-        if(isset(Yii::app()->session->connectionID)) {
+        if(isset(Yii::app()->session->connectionID))
+        {
             @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
         }
 

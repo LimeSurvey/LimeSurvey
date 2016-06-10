@@ -35,6 +35,705 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.50+ (build 160603) to 2.50+ (build 160606) June 6, 2016
+-Fixed issue #11144: Response view shifted when file upload question is used and description/title attribute is disabled (Carsten Schmitz)
+-Fixed issue #11155: Survey start and end dates are loaded into the form incorrectly (Carsten Schmitz)
+-Fixed issue #11174: Config menu is shown without content to user without config permissions (LouisGac)
+-Fixed issue #11309: Email separator demikolon or comma not allowed in survey participants edition (Carsten Schmitz)
+-Fixed issue #11321: Mandatory question not working ( array, drop down presentation ) (LouisGac)
+-Fixed issue #11323: Radio buttons at array questions are not aligned properly (LouisGac)
+-Fixed issue #11342: Owner list is not sorted alphabetically (Carsten Schmitz)
+-Fixed issue #11343: Pie graph in statistics showing count for comments (LouisGac)
+-Fixed issue #8958: Unable to reinstall with another dbPrefix (Carsten Schmitz)
+-Fixed issue #9498: Error message when try to import a big LSA file can be an error (Carsten Schmitz)
+-Fixed issue #9498: Wrong error message when trying to import a file that is too big (Carsten Schmitz)
+-Fixed issue: [security] Disallowed files can be uploaded in template editor (Carsten Schmitz)
+-Fixed issue: Unstyled error in label sets if no permissions (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by tdombos, pszilard
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Persian by  moohebat, blackeve, ardalan, ehsan, delarammahdaviii, ahadzadeh
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by ecocitizen, aesteban, larjona
+
+Changes from 2.50+ (build 160602) to 2.50+ (build 160603) June 3, 2016
+-Fixed issue #11038: Change of attribute content from <some content> to <blank/nothing> doesn't stick (LouisGac)
+-Fixed issue #11218: Statistics general filters does not remember base language of the survey (LouisGac)
+-Fixed issue #11254: wrong default language in statistics expert mode (LouisGac)
+-Fixed issue #11273: Theme permissions still show restricted themes in Survey quick actions (LouisGac)
+-Fixed issue #11274: PHP notice after template import (LouisGac)
+-Fixed issue #11287: Cannot Delete Users From User Groups Unless Having Superadministrator Permission (LouisGac)
+-Fixed issue #11298: Endless loop. From survey list, add question (+ icon in right part of the screen) -> Import question -> Close -> Close (LouisGac)
+-Fixed issue #11324: Sorting of "last 50" answers is wrong (LouisGac)
+-Fixed issue #11326: Copy surveys: dropdown menu is not wide enough to show the whole title of the source survey (LouisGac)
+-Fixed issue #11327: Number of avtive surveys for non admin users (LouisGac)
+-Fixed issue #11328: Unable to select mandatory date field if the survey is viewed in Arabic Language (Olle Haerstedt)
+-Fixed issue #11331: Statistics show error (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+
+Changes from 2.50+ (build 160529) to 2.50+ (build 160602) June 2, 2016
+-New feature: Edit participant (former token) information in popup window, revamped browsing (LouisGac)
+-Fixed issue #10299: template preview not found on Survey quick actions (Bert Hankes)
+-Fixed issue #11280: Multiple choice with comments - Other option breaks if comment is entered (LouisGac)
+-Fixed issue #11281: Missing translation (Carsten Schmitz)
+-Fixed issue #11289: User can't see their own surveys anymore (admin can't filter) (LouisGac)
+-Fixed issue #11295: Response for a ranking question cannot be edited by admin (LouisGac)
+-Fixed issue #11296: Asset directory clearing
+-Fixed issue #11300: Switches not used in advanced question settings (Carsten Schmitz)
+-Fixed issue #11311: Label set quick insert popup display is garbled. (LouisGac)
+-Fixed issue: HTML editor too wide when sending invitations (Carsten Schmitz)
+-Fixed issue: On survey copy fields are translinked even when chosen not to (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Danish by SigneT, antispam
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by thiagosmartins, mauriciofurtado
+
+Changes from 2.50+ (build 160526) to 2.50+ (build 160529) May 30, 2016
+-Fixed issue #10838: Wrong decimal separator for total in "array text" (Carsten Schmitz)
+-Fixed issue #11124: AuditLog breaks when delete multiple list particpants. (Alfredo Esteban)
+-Fixed issue #11210: Error on installation (Carsten Schmitz)
+-Fixed issue #11254: Wrong default language in statistics expert mode (LouisGac)
+-Fixed issue #11276: Google Analytics code not running (Carsten Schmitz)
+-Fixed issue #11278: Unable to upload templates (Carsten Schmitz)
+-Fixed issue #11288: Cannot edit/update oarticipants unless having superadministrator permission (Carsten Schmitz)
+-Fixed issue #11289: User can't see their own surveys anymore (admin can't filter) (LouisGac)
+-Fixed issue #11291: cron event never happen (Denis Chenu)
+-Fixed issue #11262: No save button after editing a token
+-Fixed issue: Notice when saving a token from token edition page. (LouisGac)
+-Fixed issue: Question timers not working properly (Carsten Schmitz)
+-Fixed issue: Survey settings modifications not logged in AuditLog (Alfredo Esteban)
+-Fixed issue: Removed additional left spaces within textareas of "List with comment"(Marcel Minke)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Mexican)
+
+Changes from 2.50+ (build 160525) to 2.50+ (build 160526) May 25, 2016
+-New feature: Question List, user can search over qid, code, question and question type (LouisGac)
+-New feature: Response Excel format now exports xlsx files (Carsten Schmitz)
+-Fixed issue #10803: Can't search by question id in question list (LouisGac)
+-Fixed issue #11184: Date question are not validated (LouisGac)
+-Fixed issue #11190: The Donate link in footer opens in parent window (LouisGac)
+-Fixed issue #11245: Email Reminders Screen Layout, information off screen (LouisGac)
+-Fixed issue #11246: Theme Bay Of Many - Layer for adding an url parameter below other elements on page (LouisGac)
+-Fixed issue #11256: Certain area in "Save & activate survey" button are covered by the footer area (LouisGac)
+-Fixed issue #11259: Confirmation window always closes automatically in survey permissions page (LouisGac)
+-Fixed issue #11260: Response View - Title "Actions" duplicated (LouisGac)
+-Fixed issue #11261: Printable survey javascript/jquery error (LouisGac)
+-Fixed issue #11264: Token attributes management button colors don't match the function (Carsten Schmitz)
+-Fixed issue #11265: When activating a survey with existing token table the information shown is wrong (Carsten Schmitz)
+-Fixed issue #11268: Comfort update shows different valid date to my account on Limesurvey.org (LouisGac)
+-Fixed issue: Missing space between survey title and survey ID. (Marcel Minke)
+-Fixed issue: Missing default values for certain global settings (Carsten Schmitz)
+-Removed feature: Thousands separator on input in numeric questions (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160523) to 2.50+ (build 160525) May 25, 2016
+-Fixed issue #10724: Date Question Default value inconsistent behavior w/ token persistence enabled (LouisGac)
+-Fixed issue #10725: ComfortUpdate message, hide "ComfortUpdate" message for users who does not have rights to update the limesurvey. (LouisGac)
+-Fixed issue #11033: Slider question shows flash of text input on submit (LouisGac)
+-Fixed issue #11219: Missing translation (Carsten Schmitz)
+-Fixed issue #11221: Response filters cannot be opened after clicking view statistics (LouisGac)
+-Fixed issue #11223: Certain region in time statistics page are not displayed correctly (covered by side-menu) (LouisGac)
+-Fixed issue #11227: [security] XSS in template editing (Denis Chenu)
+-Fixed issue #11247: Columns in response browsing not aligned (LouisGac)
+-Fixed issue #11248: Saving plugin survey settings send PHP notice (Denis Chenu)
+-Fixed issue #11252: Consistent description for links to admin home (Carsten Schmitz)
+-Fixed issue #11253: Relation "correct_relation_defaultlanguage, permissions" is not defined in active record class "Survey". (LouisGac)
+-Fixed issue #11254: Wrong default language in statistics expert mode (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+
+Changes from 2.50+ (build 160517) to 2.50+ (build 160523) May 23, 2016
+-New feature : Mass actions for survey list: Export archives, export structure, delete surveys (LouisGac)
+-New feature: User can choose how many columns are used to display advanced statistics (LouisGac)
+-New feature: User can choose to display Question Code or Question Text for graphs labels in advanced statistics (LouisGac)
+-Fixed issue #10104: failed authentication with LDAP shows "success" message (Alfredo Esteban)
+-Fixed issue #10986: Plugin survey setting type "checkbox" does not properly save (Denis Chenu)
+-Fixed issue #11173: Inconsistent use of on/off yes/no (Carsten Schmitz)
+-Fixed issue #11186: User can only see one survey on which he has permissions (LouisGac)
+-Fixed issue #11200: Last option in dropdown list is saved uncorrectly (Olle Haerstedt)
+-Fixed issue #11207: Interface changes in global settings (Carsten Schmitz)
+-Fixed issue #11229: 2.06+ template does not show in template editor (Carsten Schmitz)
+-Fixed issue: Undefined group for position selector when creating a new question (LouisGac)
+-Fixed issue: CSS file yiistrap.css not found (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by zhoubin86282972, yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by Calidonia
+#Updated translation: German by c_schmitz
+#Updated translation: Hebrew by devbyu
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Latvian by c_schmitz, vipgroup, marcic
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160516) to 2.50+ (build 160517) May 17, 2016
+-Fixed issue: Can't add answer options
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by c_schmitz, hunkissleslie, Kengo06
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+
+Changes from 2.50+ (build 160512) to 2.50+ (build 160516) May 17, 2016
+-Fixed issue #10323: LDAP Authentication not working (Carsten Schmitz)
+-Fixed issue #11128: Browse button cosmetic isssue (Carsten Schmitz)
+-Fixed issue #11132: When copying a question question attributes are not copied (Carsten Schmitz)
+-Fixed issue #11161: Error when clicking "Import a question" button (Carsten Schmitz)
+-Fixed issue #11162: Display sid, gid and qid in admin panel (question summary) (LouisGac)
+-Fixed issue #11163: Survey response marked as 'finished' after opening email link/password twice (Denis Chenu)
+-Fixed issue #11165: Text strings are missing colons (Carsten Schmitz)
+-Fixed issue #11166: Missing build number info last stage ComfortUpdate (LouisGac)
+-Fixed issue #11170: Template CSS cannot be loaded (Olle Haerstedt)
+-Fixed issue #11173: Inconsistent use of on/off yes/no (Carsten Schmitz)
+-Fixed issue #11176: Endless redirect loop (LouisGac)
+-Fixed issue #11195: Expression Manager : bad comparaison with numeric value (Denis Chenu)
+-Fixed issue #11196: Sliders don't save negative values (Denis Chenu)
+-Fixed issue: Add subquestion in dual scales didn't work anymore (LouisGac)
+-Fixed issue: Bootstrap load order in admin GUI (LouisGac)
+-Fixed issue: Delete question button was invisible in active survey (LouisGac)
+-Fixed issue: HTML Editor display was wrong (LouisGac)
+-Fixed issue: Weird looking "copy" button while editing a question in active survey (LouisGac)
+-New feature #10051: Enable / disable quotas (Denis Chenu)
+-New feature: Breadcrumb for question edition and question group (LouisGac)
+-New feature: Button to group summary in question explorer (LouisGac)
+-New feature: Question Position Widget, ajax reload on group selector changes (LouisGac)
+-New feature: Question position widget when copying a question (LouisGac)
+-New feature: Show "Questions in group:{name}" instead of "Questions in this survey" in question list when group filter is on (LouisGac)
+-New feature: "Test/Execute" this survey from group edition (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by nasprok, kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Romanian
+
+Changes from 2.50+ (build 160506) to 2.50+ (build 160512) May 12, 2016
+-Fixed issue #10500: "Now" - "Tomorrow" used as min/max dates disfunction (LouisGac)
+-Fixed issue #10545: Add question icon looks enabled on active survey (LouisGac)
+-Fixed issue #10566: Design: move button Send invitations/reminders etc (LouisGac)
+-Fixed issue #10757: Design: too different layout in adding user groups and users (LouisGac)
+-Fixed issue #10783: Footer at survey list is incorrect on phone screen (LouisGac)
+-Fixed issue #10791: Duplicate subquestion id at arrary-by-column gives Javascript error (LouisGac)
+-Fixed issue #11031: HTML email is set to No by default (Denis Chenu)
+-Fixed issue #11070: Missing translation/error in ComfortUpdate (LouisGac)
+-Fixed issue #11101: Sending invitation/reminder to tokens open a new tab (LouisGac)
+-Fixed issue #11103: Design: Blacklist breaks gui consistancy (Olle Haerstedt)
+-Fixed issue #11111: Is it possible to hide the title bar in LimeSurvey with GUI-SETTINGS? (Olle Haerstedt)
+-Fixed issue #11123: In survey list, number of survey list display wrong (LouisGac)
+-Fixed issue #11130: Cannot create custom admin template (LouisGac)
+-Fixed issue #11135: Renaming default user template can broke (LouisGac)
+-Fixed issue #11143: Password save notification when saving global settings (Carsten Schmitz)
+-Fixed issue #11145: PHP memory_limit being set too low even though php.in defines a higher one (Carsten Schmitz)
+-Fixed issue #11148: Response detail view in participant list does not show the related response in detail (Carsten Schmitz)
+-Fixed issue #11151: Graphs behaving weird, in export mode, if there is only one question, graph wasn't shown (LouisGac)
+-Fixed issue #11152: Confusing advanced question attribute settings (Carsten Schmitz)
+-Fixed issue #11155: Survey start and end dates are loaded into the form incorrectly (Carsten Schmitz)
+-Fixed issue #11162: Display sid, gid and qid in question edition (LouisGac)
+-Fixed issue #9118:  Image Browse Server not working due to incorrect cookieDomain when using reverse proxy URL (Carsten Schmitz)
+-Fixed issue: Remove unclose div from admin, full page layout (LouisGac)
+-New feature: Hyphenation for survey content on small screens (very long words will be break with hyphens on recent navigators, or with word-wrap on old ones) (LouisGac)
+-New feature: New core plugin: QuickMenu (Olle Haerstedt)
+-New feature: User can add its own admin theme in upload directory (LouisGac)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by korina, kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by vipgroup
+
+Changes from 2.50+ (build 160504) to 2.50+ (build 160506) May 6, 2016
+-Fixed issue #10103: W3C compatiblity check fails (LouisGac)
+-Fixed issue #10792: Date format which is used in the bubble help in survey list is not formatted according to global settings (LouisGac)
+-Fixed issue #10822: Groups Edit-Form while no Rights to edit? When accessing the User-Groups Lists, a User can see the "Edit User-Group" Button and (after clicking) the Form, even if he has no rights for that group. (LouisGac)
+-Fixed issue #10859: Wronge date format in ComfortUpdate, 	The date for the Expiry is not in correct date format according to global settings. See screenshot. My global format is dd.mm.yyyy (LouisGac)
+-Fixed issue #11001: Selecting a theme in the theme editor does not function properly (Carsten Schmitz)
+-Fixed issue #11081: Select box in condition manager too low (Carsten Schmitz)
+-Fixed issue #11106: Question type dropdown overlays question menu bar (Carsten Schmitz)
+-Fixed issue #11109: labels.js error (LouisGac)
+-Fixed issue #11113: Wrong date format in use in token table (LouisGac)
+-Fixed issue: After editing profile, user was redirected to User control even if no right to access it. (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Danish by antispam
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160503) to 2.50+ (build 160504) May 3, 2016
+-Fixed issue #11089: When side-menu is closed, the side-body shifts from right to left at page load (Olle Haerstedt)
+-Fixed issue #11107: Display tokens/responses/CPDB participants doesn't work anymore (LouisGac)
+-New feature: Added a config setting to disable by default the possibility for templates to overwrite the views (LouisGac)
+-New feature: In template editor, added a tip to explain how to display pictures in pstpl/css files (LouisGac)
+-New feature: Templates can now overwrite the question views (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+
+Changes from 2.50+ (build 160430) to 2.50+ (build 160503) May 3, 2016
+-Fixed issue #10589: OSM - Aerial View Limited To Specific Zoom Level 10 (tpartner)
+-Fixed issue #10794: Missing translation in template editor (LouisGac)
+-Fixed issue #10918: Template example not styled, the correct fonts are not loaded (LouisGac)
+-Fixed issue #11088: Do not show all javascript in question overview (Denis Chenu)
+-Fixed issue #11094: Database update does not kick in on authentication (Carsten Schmitz)
+-Fixed issue #11095: Group Names not displayed (Olle Haerstedt)
+-Fixed issue #11098: Error on survey creation when languages are restricted to only one (Carsten Schmitz)
+-Fixed issue: JS hint when saving survey settings even if additional languages were empty (Carsten Schmitz)
+-Fixed issue: Navigator rendering was wrong in template editor (welcome page) (LouisGac)
+-Fixed issue: Template editor question page not up to date with current templates (LouisGac)
+-Fixed issue: Template editor survey list page not up to date with current templates (LouisGac)
+-Fixed issue: Update fails if we don't have plugins table (Denis Chenu)
+-New feature: Disable asset management for admin gui when debug mode is on, included for CSS and JS files loaded from the subcontrollers (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by vipgroup
+
+Changes from 2.50+ (build 160428) to 2.50+ (build 160430) Apr 30, 2016
+-Fixed issue #10944: Replace language selector in survey settings with a more space-saving select box (Carsten Schmitz)
+-Fixed issue #10998: Simple statistic graphics wrong when label is too long (LouisGac)
+-Fixed issue #11016: 10 point array does not fit on tablet screen (LouisGac)
+-Fixed issue #11024: missing a translation for close button in modal (survey taking) (LouisGac)
+-Fixed issue #11035: Group name and group description styling shown (Olle Haerstedt)
+-Fixed issue #11039: Labels are of non-equal weigth (LouisGac)
+-Fixed issue #11042: Sorting of questions in the limesurvey view (LouisGac)
+-Fixed issue #11051: wrong alignment of label when multilines (LouisGac)
+-Fixed issue #11058: endless loop between assesments and edit settings (LouisGac)
+-Fixed issue #11067: Number of active surveys is shown to a user without own surveys (Carsten Schmitz)
+-Fixed issue #11072: slider numerical input does not update expression (Olle Haerstedt)
+-Fixed issue #11080: Minor spelling mistake (Carsten Schmitz)
+-Fixed issue: Admin survey list not displaying owned surveys (Carsten Schmitz)
+-Fixed issue: Checkjavascript alert wasn't hidden enough quickly (LouisGac)
+-Fixed issue: Close button looping after creating a survey (LouisGac)
+-Fixed issue: Incorrect rendering of advanced statistics for Sum Answers and extralines (LouisGac)
+-Fixed issue: Loop on save and close button on new survey creation. (LouisGac)
+-Fixed issue: Simple stats wasn't loading all graphs when too many questions (LouisGac)
+-Fixed issue: Statistics, "Subtotals based on displayed questions" switch not respected (LouisGac)
+-Fixed issue: Sum(Answers) shown twice in statistics (LouisGac)
+-Fixed issue: Survey list not properly paginating when using MSSQL (Carsten Schmitz)
+-Fixed issue: When editing users the buttons don't display correctly for non-admin users (Carsten Schmitz)
+-New feature: Choose if side-menu should be always hidden, always closed or adaptive (default) (Olle Harstedt)
+-New feature: Double column to display advanced statistics (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160426) to 2.50+ (build 160428) Apr 28, 2016
+-Fixed issue #10997: Update-message corrupts menu on top of the page (LouisGac)
+-Fixed issue #11052: JS error with Date/Time question (Olle Haerstedt)
+-Fixed issue #11054: Template editor crashing. When an admin copies a template and deletes logo.png the template editor is crashing and the template cannot be opened anymore. (LouisGac)
+-Fixed issue #11056: Missing translation (Carsten Schmitz)
+-Fixed issue #11057: Missing smilies in content editor (Carsten Schmitz)
+-Fixed issue #11064: JavaScript code in source code not visible (Carsten Schmitz)
+-Fixed issue: Bad link for Browse uploaded ressources if publicurl is set (Denis Chenu)
+-Fixed issue: survey taking, random javascript error about modal function on console (LouisGac)
+-New feature #10958: Add btn-primary to next and submit (Denis Chenu)
+-New feature: ComfortUpdate improvements (LouisGac)
+-New feature: Disable comfortUpdate alerts from version.php (LouisGac)
+-New feature: Syntaxhighlighting in source code view when editing survey content (Carsten Schmitz)
+-Removed feature: Obsolete setting dropdownthreshold (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by aqualam
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Thai by tomzt
+
+Changes from 2.50+ (build 160425) to 2.50+ (build 160426) Apr 26, 2016
+-Fixed issue: Date picker not properly working in administration (Carsten Schmitz)
+-Fixed issue #10972: Unable to edit pstpl files located at template root (2.06 templates) (LouisGac)
+-Fixed issue #11016: 10 point array does not fit on tablet screen (LouisGac)
+-Fixed issue #11027: Better styling of progress bar in 2.5 templates (Olle Haerstedt)
+-Fixed issue #11034: No javascript warning is not viewable (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Latvian (Informal) by marcic
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+
+Changes from 2.50+ (build 160421) to 2.50+ (build 160425) Apr 25, 2016
+-Fixed issue #11004: [security] Unauthorized access to certain admin pages by restricted admins (Carsten Schmitz)
+-Fixed issue #10274: Bad layout of mini calendar in statistics (Olle Haerstedt)
+-Fixed issue #10474: Characters not accepted for "save & resume later" passwords in links sent by email (Carsten Schmitz)
+-Fixed issue #10704: Missing translation in response filter (Carsten Schmitz)
+-Fixed issue #10748: Mix of languages in response browsing (Carsten Schmitz)
+-Fixed issue #10886: Export to XML: question type List Radio not exported (Olle Haerstedt)
+-Fixed issue #10939: Public Survey List (root of app) includes a different set of CSS files from the Survey itself, and in the wrong order (LouisGac)
+-Fixed issue #10946: Design issue when entering answer options on double matrix question (LouisGac)
+-Fixed issue #10949: Numbering of sub questions The first subquestion is numbered with leading 0, like SQ001, while the following is numbered SQ2, SQ3 etc. (LouisGac)
+-Fixed issue #11000: Slider question rendered too small (LouisGac)
+-Fixed issue #11001: Selecting a screen in the template editor fails (Carsten Schmitz)
+-Fixed issue #11005: Button link error (Carsten Schmitz)
+-Fixed issue #11010: PHP notice when create a new survey (Olle Haerstedt)
+-Fixed issue #11011: Blank screen after adding new group (Olle Haerstedt)
+-Fixed issue #11012: Delete Group button in group list view (Olle Haerstedt)
+-Fixed issue #11013: Small editor when adding/editing a question group (Carsten Schmitz)
+-Fixed issue #11014: Multiple numeric input with narrow colum is aligned too right (LouisGac)
+-Fixed issue #11017: Missing Save and Close button (Olle Haerstedt)
+-Fixed issue #11018: User with only statistics access can see survey in list (Denis Chenu)
+-Fixed issue #11022: Better alignment of the percent in the progress bar (Olle Haerstedt)
+-Fixed issue: If an invalid admin theme is set (e.g. after upgrade) the global settings are not properly read (Carsten Schmitz)
+-Fixed issue: template.js path forced in uploader controller (LouisGac)
+-New feature #10571: beforeController event (for web) (Denis Chenu)
+-New feature #10954: Always add font-awesome in public and admin (Denis Chenu)
+#Updated translation: Basque by zubiegi
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by t6nnp6nn
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by dariogomez, Calidonia, monfero
+#Updated translation: German by HonkXL
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Argentina) by fvergniaud
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.50+ (build 160418) to 2.50+ (build 160421) Apr 21, 2016
+-New feature: Configuration AuditLog config page + new log survey settings change event (Daniel Gimeno)
+-New feature: Enable integer-only answers in multiple numeric fields (Daniel Gimeno)
+-Fixed issue #10390: Commit to set default charset at global settings got (Olle Haerstedt)
+-Fixed issue #10712: Some screens are not disabled if user doesn't have permissions to update a survey (Carsten Schmitz)
+-Fixed issue #10846: Checked responses are not read when load "surveys file" (Denis Chenu)
+-Fixed issue #10941: Two problems in statistics PDF export (Olle Haerstedt)
+-Fixed issue #10956: Double inclusion of language selector in welcome (Olle Haerstedt)
+-Fixed issue #10969: Slider call out only shows up after sliding and releasing the slider (Olle Haerstedt)
+-Fixed issue #10976: Empty help string/info icon on numerical input with (Olle Haerstedt)
+-Fixed issue #10982: Theme/Template Editor adds whitespace to the beginning and end of loaded/saved files (Carsten Schmitz)
+-Fixed issue #10985: Theme editor  unable to handle theme names with special characters (Carsten Schmitz)
+-Fixed issue #10990: Pasting text not possible in Internet Explorer 11 (Carsten Schmitz)
+-Fixed issue #10993: Alignment of radio buttons (Olle Haerstedt)
+-Fixed issue #10988: Undefined variable: sMandatoryText - crashing survey on start (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by rachelfeiya, yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Portugal) by sazevedo, valins, anticorpo, devUSIT, samarta
+#Updated translation: Russian by vipgroup
+
+Changes from 2.50+ (build 160415) to 2.50+ (build 160418) Apr 18, 2016
+-Fixed issue #10829: Survey admins presented with inappropriate control (Olle Haerstedt)
+-Fixed issue #10908: Disable next button with time limit is not working (Olle Haerstedt)
+-Fixed issue #10928: Adding Conditions in the Conditions Designer does not work for Conditions based on Token Fields (Olle Haerstedt)
+-Fixed issue #10929: Missing translation in home page configuration (Carsten Schmitz)
+-Fixed issue #10944: Bad design when designing a survey on 1366x768 resolution (Carsten Schmitz)
+-Fixed issue #10945: Add button Save and close when creating a new group (Olle Haerstedt)
+-Fixed issue #10959: Missing translation (Carsten Schmitz)
+-Fixed issue #10960: Dual-scale dropdown looks weird (Olle Haerstedt)
+-Fixed issue #10961: bad layout quota design (Olle Haerstedt)
+-Fixed issue #10962: adding answer to quota seems odd (Olle Haerstedt)
+-Fixed issue #10964: Bad layout on narrow screens in statistics (Carsten Schmitz)
+-Fixed issue #10965: Tiny caption text issue (Carsten Schmitz)
+-Fixed issue #10966: Donate link in footer opens in parent window (Carsten Schmitz)
+-Fixed issue #10967: Non-formatted date format in data integrity check (Carsten Schmitz)
+-Fixed issue #10968: Slider reset button wrongly styled (Olle Haerstedt)
+-Dixed issue: ComfortUpdate colors in lime-admin-comon (LouisGac)
+-Fixed issue: Internal server error at then end of the update process from 2.06 (LouisGac)
+-Fixed update #10829: Survey admins presented with inappropriate control (Olle Haerstedt)
+-New feature: Default template errors/alerts system enhanced (LouisGac)
+-New feature: Frontend, scroll to first error (LouisGac)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Korean by spn
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Portugal) by anticorpo, devUSIT, samarta
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.50+ (build 160414) to 2.50+ (build 160415) Apr 14, 2016
+-Fixed issue #10222: Attachments for registration emails don't get attached (Carsten Schmitz)
+-Fixed issue #10774: Column header at wrong position (Olle Haerstedt)
+-Fixed issue #10933: The Maximum characters on array(Texts) Type not working (Olle Haerstedt)
+-Fixed issue #10934: EM regexMatch function don't show pattern error (Denis Chenu)
+-Fixed issue #10936: FileUpload doesn't work correctly when there's two in same group (Olle Haerstedt)
+-Fixed issue #10953: Using mktime() EM function broke survey administration (Denis Chenu)
+-Fixed issue: Srray number wrong header alignment (LouisGac)
+-Fixed issue: Headers were right align in arrays text (LouisGac)
+-Fixed issue: No column for suffix in array 5 point choice (LouisGac)
+-Fixed issue: Short free text, prefix and suffix not centered (LouisGac)
+-Fixed issue: Text in headers and input left align in arrays text with number only option (LouisGac)
+-New feature: Arrays, mute headers when exlusive option is choosen (LouisGac)
+-New feature: Better display for Open Layer map (LouisGac)
+-New feature: Force asset manager to republish assets for manual updates (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Ukrainian
+
+Changes from 2.50+ (build 160413) to 2.50+ (build 160414) Apr 13, 2016
+-Fixed issue: Error when running integrity check and trying to remove orphan quotas (Carsten Schmitz)
+-Fixed issue #10860 : Regular expression fail with specific value (Denis Chenu)
+-Fixed issue #10921: Questiontype Array (numbers) with checkbox-layout (Olle Haerstedt)
+-Fixed issue #10923: statistics of questiontype array(numbers) not (Olle Haerstedt)
+-Fixed issue: Accessibilty issues when filling out survey (Louis Gac)
+
+Changes from 2.50+ (build 160412) to 2.50+ (build 160413) Apr 12, 2016
+-Fixed issue #10795: Label text in statistics graph is missing a space (Carsten Schmitz)
+-Fixed issue #10844: Various issues using the LS 2.50 default template (Olle Haerstedt)
+-Fixed issue #10901: Cannot open a survey in RTL Language (Olle Haerstedt)
+-Fixed issue: Various issues using the LS 2.50 default template (Olle Haerstedt)
+-Fixed issue: Global settings being randomly deleted (Louis Gac)
+-Removed translation: Kazakh (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow
+
+Changes from 2.50+ (build 160411) to 2.50+ (build 160412) Apr 11, 2016
+-Fixed issue #10755: Return to admin panel button do not work (Olle Haerstedt)
+-Fixed issue #10901: I cant open a survey in RTL Language (Olle Haerstedt)
+-Fixed issue: Saving global settings didn't submit (LouisGac)
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+
+Changes from 2.50+ (build 160408) to 2.50+ (build 160411) Apr 11, 2016
+-Fixed issue #10844: Various issues using the LS 2.50 default template (Olle Haerstedt)
+-Fixed issue #10893: Error when saving survey settings (LouisGac)
+-Fixed issue #10899: Kcfinder browse.php is shown, not executed (Carsten Schmitz)
+-Fixed issue #10901: I cant open a survey in RTL Language (Olle Haerstedt)
+-Fixed issue #10904: Installer not styled anymore (LouisGac)
+-Fixed issue #10905: Too many leading zeros in CSS for answer cells (Carsten Schmitz)
+-Fixed issue #10907: Display columns error (LouisGac)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+
+Changes from 2.50+ (build 160407) to 2.50+ (build 160408) Apr 08, 2016
+-Fixed issue #10776: Quick Add not working for x-scale in Array (Numbers) (Olle Haerstedt)
+-Fixed issue #10820: kcfinder not working with symlinked /upload (reverted from commit 36c988bc75dcc680d7bf20c6df6f6d5e27ad6c3d) (Carsten Schmitz)
+-Fixed issue #10889: When importing a group in the wrong language, error (Olle Haerstedt)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Portugal) by susete
+
+Changes from 2.50+ (build 160405) to 2.50+ (build 160407) Apr 07, 2016
+-Fixed issue #10816: Entry box for Subquestion relevance equations is to (Olle Haerstedt)
+-Fixed issue #10844: Various issues using the LS 2.50 default template (Olle Haerstedt)
+-Fixed issue #10850: Questions attributes "Display columns:" wrong default value 6->1 (t6nnp6nn)
+-Fixed issue #10861: Second label of bipolar marix question does not (Olle Haerstedt)
+-Fixed issue #10871: Invitation/Reminder buttons at bottom of token table do not function (Olle Haerstedt)
+-Fixed issue #10875: Remote control list_surveys can list whole surveys, and not only needed (Denis Chenu)
+-Fixed issue #10883: Error 500 survey permission (Olle Haerstedt)
+-Fixed issue #10884: Ranking question always in error when filled in (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by mdekker, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160404) to 2.50+ (build 160405) Apr 05, 2016
+-Fixed issue #10654: Notice messages shown when disabling update (Carsten Schmitz)
+-Fixed issue #10474: Some characters not accepted for "save & resume later" passwords in links sent by email (Carsten Schmitz)
+-Fixed issue #10572: Error during update when updating token table field sizes (Carsten Schmitz)
+-Fixed issue #10586: Multiple choice exported to R, levels are wrong on factor() syntax file (Carsten Schmitz)
+-Fixed issue #10628: Mixed content error for image in administration (Carsten Schmitz)
+-Fixed issue #10823: Can't read the timing data (Olle Haerstedt)
+-Fixed issue #10824: Broken list in survey privileges (Olle Haerstedt)
+-Fixed issue #10848: Can't edit quota (Olle Haerstedt)
+-Fixed issue #10866: PHP fatal error at data entry for multiple choice checkbox (Olle Haerstedt)
+-Fixed issue #10867: Missing statistics buttons (Olle Haerstedt)
+-Fixed issue #10869: "Thank you" after submit is written in white color (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Taiwan) (Traditional) by terrywei
+#Updated translation: Danish by SigneT
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, actxcellence
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kurdish (Sorani) by RastiK5
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160401) to 2.50+ (build 160404) Apr 04, 2016
+-Fixed issue #10847: Unable to add attachement in an invitation Mail (Olle Haerstedt)
+-Fixed issue #10784: Small translation issue (Carsten Schmitz)
+-Fixed issue #10819: Display tokens rows too high (Carsten Schmitz)
+-Fixed issue #10820: kcfinder not working with symlinked /upload (Carsten Schmitz)
+-Fixed issue #10823: Can't read the timing data (Olle Haerstedt)
+-Fixed issue #10848: Can't edit quota (Carsten Schmitz)
+-Fixed issue #10851: Short free text question - Prefix and Suffix text (Olle Haerstedt)
+-Fixed issue #10858: Notifications overlap menus (Carsten Schmitz)
+-Fixed issue #10847: Unable to add attachement in an invitation Mail (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Russian by ddrmoscow, vipgroup
+
+Changes from 2.50+ (build 160330) to 2.50+ (build 160401) Apr 01, 2016
+-Fixed issue #10817: Testing 2.50 default template on mobile devices (Olle Haerstedt)
+-Fixed issue #10818: Subquestion relevance not working on runtime (Olle Haerstedt)
+-Fixed issue #10841: Prefilling a survey using GET parameters (Olle Haerstedt)
+-Fixed issue: event for beforeTokenEmail for register is not dispatched (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Russian by vipgroup
+
+Changes from 2.50+ (build 160323) to 2.50+ (build 160330) Mar 30, 2016
+-Fixed issue #10817: Testing 2.50 default template on mobile devices (Olle Haerstedt)
+-Fixed issue #10825: No filter on number is done before try to save in DB (Denis Chenu)
+-Fixed issue #10817: Testing 2.50 default template on mobile devices (Olle Haerstedt)
+-New feature : newUnsecureRequest event : same than direct request but without CRSF (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by rovinj
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence
+#Updated translation: German (Informal) by plusQ, cbloecher, actxcellence
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by KingAsghar
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, ilgizy, vipgroup
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.50+ (build 160317) to 2.50+ (build 160323) Mar 23, 2016
 -Fixed issue: Missing queXML PDF export (Adam Zammit)
 -Fixed issue #10269: Plugin setting type html is broken (Olle Haerstedt)
@@ -44,7 +743,6 @@ Changes from 2.50+ (build 160317) to 2.50+ (build 160323) Mar 23, 2016
 -Fixed issue #10649: LDAP pluging - Default setting 'LDAP authentication' does not apply (Alfredo Esteban)
 -Fixed issue #10730: Default templates errors with (dual) matrix on small (Olle Haerstedt)
 -Fixed issue #10744: Numeric slider : no difference between unanswered + no reset (LouisGac)
--Fixed issue #10744: Numeric slider : no difference between unanswered + (Olle Haerstedt)
 -Fixed issue #10760: TSV export : Conditions truncated at "<=" (Denis Chenu)
 -Fixed issue #10768: Missing translation (Carsten Schmitz)
 -Fixed issue #10785: A warning in upper case (Carsten Schmitz)

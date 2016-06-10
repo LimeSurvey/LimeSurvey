@@ -8,6 +8,14 @@
 ?>
 
 <!-- Configuration -->
+<?php if(Permission::model()->hasGlobalPermission('superadmin','read')
+            || Permission::model()->hasGlobalPermission('templates','read')
+            || Permission::model()->hasGlobalPermission('labelsets','read')
+            || Permission::model()->hasGlobalPermission('users','read')
+            || Permission::model()->hasGlobalPermission('usergroups','read')
+            || Permission::model()->hasGlobalPermission('participantpanel','read')
+            || Permission::model()->hasGlobalPermission('settings','read') ): ?>
+
 <li class="dropdown mega-dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <span class="icon-settings" ></span>
@@ -42,7 +50,7 @@
                         </dl>
                     </div>
                 </div>
-                <?php endif; ?>
+            <?php endif; ?>
         </li>
 
         <!-- Expression Manager -->
@@ -240,9 +248,10 @@
                             <?php eT("Plugin manager");?>
                         </a>
                     </li>
-                    <?php endif;?>
+                <?php endif;?>
 
             </ul>
         </li>
     </ul>
 </li>
+<?php endif;?>

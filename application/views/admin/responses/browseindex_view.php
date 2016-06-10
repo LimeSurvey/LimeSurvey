@@ -3,7 +3,7 @@
 * Response Summary view
 */
 ?>
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT("Response summary"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -17,16 +17,16 @@
         </div>
     </div>
     <?php if(isset($with_token)): ?>
-        <h3><?php eT("Token summary"); ?></h3>
+        <h3><?php eT("Survey participant summary"); ?></h3>
         <div class="row">
             <div class="col-lg-12 content-right">
                 <table class='statisticssummary table'>
                     <tbody>
                         <tr><th><?php eT("Total invitations sent"); ?></th><td><?php echo $tokeninfo['sent']; ?></td></tr>
                         <tr><th><?php eT("Total surveys completed"); ?></th><td><?php echo $tokeninfo['completed']; ?></td></tr>
-                        <tr><th><?php eT("Total with no unique Token"); ?></th><td><?php echo $tokeninfo['invalid'] ?></td></tr>
+                        <tr><th><?php eT("Total with no unique token"); ?></th><td><?php echo $tokeninfo['invalid'] ?></td></tr>
                     </tbody>
-                    <tr><th><?php eT("Total records in this token table"); ?></th><td><?php echo $tokeninfo['count']; ?></td></tr>
+                    <tr><th><?php eT("Total records"); ?></th><td><?php echo $tokeninfo['count']; ?></td></tr>
                 </table>
             </div>
         </div>

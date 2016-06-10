@@ -3,12 +3,12 @@
 ?>
 
 <?php if(!$fullPage):?>
-<div class="side-body" id="edit-survey-text-element">
+<div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
 <?php endif;?>
-	<h3><?php eT("Edit survey settings");?></h3>
+    <h3><?php eT("Edit survey settings");?></h3>
 
-	<div class="row">
-		<div class="col-lg-12 content-right">
+    <div class="row">
+        <div class="col-lg-12 content-right">
 
 
 
@@ -77,8 +77,8 @@ else {
     $language = (isset($_REQUEST['lang']) ? sanitize_languagecode($_REQUEST['lang']) : NULL);
     $gid = (isset($_REQUEST['gid']) ? sanitize_int($_REQUEST['gid']) : NULL);
     $qid = (isset($_REQUEST['qid']) ? sanitize_int($_REQUEST['qid']) : NULL);
-
-    App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . 'expressionlogicfile.css');
+    $oAdminTheme = AdminTheme::getInstance();
+    $oAdminTheme->registerCssFile( 'PUBLIC', 'expressionlogicfile.css' );
     SetSurveyLanguage($surveyid, $language);
     LimeExpressionManager::SetDirtyFlag();
     Yii::app()->setLanguage(Yii::app()->session['adminlang']);
@@ -87,33 +87,9 @@ else {
 
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		</div>
-	</div>
+        </div>
+    </div>
 
 <?php if(!$fullPage):?>
 </div>
 <?php endif;?>
-
-

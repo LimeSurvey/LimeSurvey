@@ -188,6 +188,10 @@ function selectTabFromOper() {
 }
 
 $(document).ready(function(){
+
+    // We must run this to enable the tabsactivate event
+    $('#conditiontarget, #conditionsource').tabs();
+
 	$('#conditiontarget').on('tabsactivate', function(event, ui) {
 		$('#editTargetTab').val('#' + ui.newPanel.prop("id"));	
 	});
@@ -271,17 +275,23 @@ $(document).ready(function(){
 		$('#cqid').val(0);
 	});
 
-	// At edition time, a hidden field gives the Tab that should be selected
+	// At editing, a hidden field gives the Tab that should be selected
 	// Louis : that suppose to be a numerical input not a string !!!
 	if ($('#editTargetTab').val() != '') {
 		$('#conditiontarget').bootTabs('option','active', $('#editTargetTab').val());
 	}
-	// At edition time, a hidden field gives the Tab that should be selected
+
+	// At editing, a hidden field gives the Tab that should be selected
 	if ($('#editSourceTab').val() != '') {
-		$('#conditionsource').bootTabs('option','active', $('#editSourceTab').val());
+        var val = $('#editSourceTab').val();
+
+        // Only two tabs: SRCPREVQUEST, SRCTOKENATTRS
+        var nr = (val === '#SRCPREVQUEST' ? 0 : 1);
+		$('#conditionsource').bootTabs('option','active', val);
+		$('#conditionsource').tabs({active: nr});
 	}
 	
-	// At edition time, if cquestions is set, populate answers
+	// At editing, if cquestions is set, populate answers
 	if ($('#cquestions').val() != '') {
 		populateCanswersSelect(null);
 	}

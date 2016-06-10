@@ -1,6 +1,10 @@
 /**
- * OBS : COLOURS IN THIS FILE.
+ * Lime Admin Common CSS File
+ *
+ * This file contain all the common css definitions for the different admin theme.
+ * It should not contain color definition (grey, blacks, and white are acceptable)
  */
+
 
 .ui-datepicker {
   width: 17em;
@@ -152,13 +156,14 @@
 .side-body, .full-page-wrapper {
   min-height: 100%;
   position: relative;
-  margin-bottom: 65px; }
+  margin-bottom: 65px;
+}
 
 .side-body h3, .pagetitle, .list-surveys h3 {
   position: relative;
   padding: 0.5em;
   margin-bottom: 1em;
-  animation: fadein 1s; }
+}
 
 body {
   font-size: 14px;
@@ -268,9 +273,16 @@ html {
 
 #update-container {
   margin-top: 10px;
-  z-index: 10100; }
+   z-index: 999; }
   #update-container .alert {
     margin-bottom: 5px; }
+
+#ajaxupdaterLayoutLoading{
+    text-align : center;
+    margin-top: 200px;
+    margin-bottom: 200px;
+    display: none;
+}
 
 .box {
   border-radius: 3px;
@@ -502,7 +514,8 @@ div.panel.disabled {
   position: fixed;
   left: 0;
   width: 300px;
-  height: 100%; }
+  height: 100%;
+}
 
 .side-menu {
   position: absolute;
@@ -685,9 +698,18 @@ div.panel.disabled {
   #sideMenu .sidemenuscontainer li:hover > a {
     font-weight: 700; }
 
+.side-menu-hidden {
+    left: -250px;
+}
+
 .side-body {
-  min-height: 700px;
-  margin-left: 320px; }
+  min-height: 800px;
+  margin-left: 320px;
+}
+
+.side-body-margin {
+    margin-left: 70px;
+}
 
 .question-group-collapse-title {
   display: block;
@@ -813,11 +835,11 @@ div.panel.disabled {
 .content-right {
   padding-left: 0;
   padding-right: 0;
-  animation: fadein 1s; }
+}
   .content-right .col-lg-12 {
     padding-left: 0;
     padding-right: 0;
-    animation: fadein 1s; }
+}
 
 .toWhite a:hover {
   font-weight: 700; }
@@ -825,7 +847,7 @@ div.panel.disabled {
 .col-lg-12.content-right {
   padding-left: 0;
   padding-right: 0;
-  animation: fadein 1s; }
+}
 
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
   color: #fff; }
@@ -1217,7 +1239,10 @@ input[type="checkbox"]:disabled:checked:after,
   padding: 1em; }
 
 .container-fluid .ui-widget-content .ui-state-default, .container-fluid .ui-jqgrid .ui-jqgrid-bdiv {
-  padding: 0.5em; }
+  padding: 0.5em;
+  /* Too much padding for tabs (both bootstrap and jquery ui) */
+  padding-bottom: 0;
+}
 
 .ui-dialog, .ui-jqdialog, .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
   border-radius: 4px;
@@ -1310,9 +1335,6 @@ input:focus, textarea:focus {
   overflow: hidden;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
 
-[aria-hidden=true] {
-  display: none;
-  visibility: hidden; }
 
 .modal-22 {
   position: absolute;
@@ -1363,12 +1385,12 @@ input:focus, textarea:focus {
 .data-entry-tbl tr.odd td, .data-entry-tbl tr.even td {
   padding: 20px 0 20px 0; }
 
-h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
+h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-right {
   position: absolute;
   right: 1em;
   top: 10px; }
 
-h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
+h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-right {
   cursor: pointer; }
 
 /**
@@ -1495,7 +1517,7 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
 /**
  * comfortUpdate
  */
-#ajaxContainerLoading {
+#ajaxContainerLoading, .ajaxLoading {
   height: 130px;
   text-align: center;
   margin-top: 70px;
@@ -1508,8 +1530,7 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
 
 #comfortUpdateGeneralWrap h3.maintitle {
   background-color: transparent;
-  color: #328637;
-  border-bottom: 1px solid #328637; }
+ }
 
 #comfortUpdateGeneralWrap .on {
   font-weight: bold;
@@ -1519,8 +1540,6 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
 
 #comfortUpdateGeneralWrap .on span {
   display: block;
-  background-color: #328637;
-  color: #fff;
   padding: 0.1em;
   padding-left: 0.5em;
   width: 40%; }
@@ -1542,7 +1561,7 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
   color: #A0352F;
   margin-top: 1em; }
 
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+html body .nav-tabs > li.active > a,html body  .nav-tabs > li.active > a:hover,html body  .nav-tabs > li.active > a:focus {
   border-bottom-color: transparent;
   cursor: default; }
 
@@ -1724,8 +1743,7 @@ iframe#dialog {
     overflow-x: hidden;
 }
 
-#labelsetbrowserModal .modal-dialog
-{
+#labelsetbrowserModal .modal-dialog {
     width: 80%;
 }
 
@@ -1737,19 +1755,242 @@ iframe#dialog {
 }
 
 /* Subquestion */
-td.subquestion-actions span:hover
-{
+td.subquestion-actions span:hover {
     cursor: pointer;
 }
 
 /* edit survey */
-.template-img
-{
+.template-img {
     padding-top: 0;
 }
 
 /* Accordion*/
- .full-page-wrapper .handleAccordion
- {
-     display: none;
- }
+.full-page-wrapper .handleAccordion {
+    display: none;
+}
+
+/* Box in resopnses list need a little more space */
+div#gview_displayresponses th#displayresponses_cb {
+    width: 35px;  /* Override jQgrid stuff */
+}
+
+/* View detail response, make sure left column is not too wide*/
+.detailbrowsetable tr th {
+    width: 50%;
+}
+
+.lead {
+    font-weight: 300;
+}
+
+/* Make sure buttons is onw row */
+.time-statistics-row-buttons, .nowrap {
+    white-space: nowrap;
+}
+
+/* Proper overflow */
+.time-statistics-table {
+    overflow: auto;
+}
+
+/* In survey permissions, make grey check icon if only partial permissions */
+.mixed {
+    opacity: 0.4;
+}
+
+#sidemenu-home {
+    padding-left: 15px;
+}
+
+#quick-menu-container {
+    position: absolute;
+    width: 50px;
+    right: 0;
+    top: 50px;
+}
+
+.quick-icon-wrapper {
+    padding: 15px;
+    height: 50px;
+}
+
+#quick-menu-container .glyphicon {
+    font-size: 18px;
+}
+
+#quick-menu-container .navbar-brand {
+    padding: 0
+}
+
+/* Needed for DateTimePicker in survey settings */
+.panel-group .panel {
+    overflow: visible;
+}
+
+a.explorer-group:hover,a.explorer-group:focus{
+text-decoration:none;
+}
+
+.question-explorer-question {
+
+        display: inline-block;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+}
+
+.question-explorer-group-name{
+    display: inline-block;
+    max-width: 140px;
+    overflow: hidden;
+    position: relative;
+    top: 5px;
+    text-overflow: ellipsis;
+}
+
+.question-explorer-add-question {
+    position: relative;
+    top: 5px;
+}
+
+.explorer-group-title a.disabled {
+    opacity: 0.5;
+}
+
+
+.btn.readonly,.btn.readonly:hover {
+    cursor: not-allowed;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+}
+
+#displayResponsesContainer .ui-jqgrid-bdiv, #gbox_displaytokens .ui-jqgrid-bdiv {
+    overflow: hidden;
+}
+
+h1,.h1{
+    font-size: 24px;
+}
+h2,.h2{
+    font-size: 22px;
+}
+h3,.h3 {
+    font-size: 20px;
+}
+
+.statisticstable {
+    word-wrap: break-word;
+}
+
+.summary-container, .summary, #massive-action-container, #surveyListActions, .listActions, .pager-container .pager, .pager-container .pager .pagination{
+    margin: 0;
+    margin-bottom: 20px;
+}
+.summary-container{
+    text-align: right;
+}
+
+#massive-action-container, #surveyListActions, .listActions{
+    padding-left: 0px;
+    text-align: left;
+}
+
+.has-link
+{
+    cursor: pointer;
+}
+.has-link a:hover
+{
+    text-decoration: none;
+}
+
+.has-link a {
+    color: black;
+}
+
+.hoverAction .table-striped > tbody > tr:hover > td {
+  background-color: transparent;
+}
+
+.hoverAction .table-striped > tbody > tr:hover > td > a:not(.btn) {
+    color: white;
+}
+
+.ui-priority-secondary
+{
+    background-color: #f5f5f5;
+}
+
+
+#token-grid .table .filters > td .filter-container {
+    padding: 0px;
+}
+
+#token-grid table.table {
+    width: none;
+    max-width: none;
+}
+
+#token-grid table thead tr #action {
+    min-width: 150px;
+}
+
+#token-grid .filter-container{
+    min-width: 50px;
+}
+
+#token-grid table thead tr th {
+    /*white-space: nowrap;*/
+}
+
+#token-grid table tr.odd .blank_button
+{
+    border-color: #f9f9f9;
+    background-color: #f9f9f9;
+}
+
+#token-grid table tr .blank_button
+{
+    border-color: white;
+    background-color: white;
+}
+
+#token-grid table tr.selected .blank_button
+{
+
+    border-color: #eee; /* from yiistrap.css*/
+    background-color: #eee;
+}
+
+#token-grid .name {
+    min-width: 150px;
+}
+
+.scrolling-wrapper
+{
+    overflow-x: scroll;
+}
+
+#tokenListPager
+{
+    position: relative;
+}
+
+.blank_button span
+{
+    max-width: 12px;
+}
+
+#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-4, #edittoken .tab-content #general .form-group .col-sm-4 .col-sm-8
+{
+    padding: 0;
+}
+
+div[id^="alertmod_"]
+{
+    display: none;
+}

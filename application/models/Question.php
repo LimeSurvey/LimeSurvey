@@ -66,7 +66,8 @@
             $alias = $this->getTableAlias();
             return array(
 
-                'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language'),
+                'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
+                'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
 
                 // Seriously ????
                 //'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
@@ -773,8 +774,16 @@
         $editurl = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
 
         $button = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
-        $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
-        $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Question summary").'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        {
+            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        }
+
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'))
+        {
+            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Question summary").'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+        }
 
         $oSurvey = Survey::model()->findByPk($this->sid);
 
@@ -861,51 +870,51 @@
         $sort = new CSort();
         $sort->attributes = array(
           'question_id'=>array(
-            'asc'=>'qid',
-            'desc'=>'qid desc',
+            'asc'=>'t.qid asc',
+            'desc'=>'t.qid desc',
           ),
           'question_order'=>array(
-            'asc'=>'question_order',
-            'desc'=>'question_order desc',
+            'asc'=>'t.question_order asc',
+            'desc'=>'t.question_order desc',
           ),
           'title'=>array(
-            'asc'=>'title',
-            'desc'=>'title desc',
+            'asc'=>'t.title asc',
+            'desc'=>'t.title desc',
           ),
           'question'=>array(
-            'asc'=>'question',
-            'desc'=>'question desc',
+            'asc'=>'t.question asc',
+            'desc'=>'t.question desc',
           ),
 
           'group'=>array(
-            'asc'=>'groups.group_name',
+            'asc'=>'groups.group_name asc',
             'desc'=>'groups.group_name desc',
           ),
         );
+        //$sort->defaultOrder = array('t.question_order' => CSort::SORT_ASC, 'groups.group_order' => CSort::SORT_ASC);
+        $sort->defaultOrder = array('question_order' => CSort::SORT_ASC );
 
         $criteria = new CDbCriteria;
-        $criteria->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=0";
-        $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
-        $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language AND groups.sid = t.sid)';
-
-
-        $criteria->compare('title', $this->title, true, 'AND');
+        $criteria->with=array('groups');
+        $criteria->compare("t.sid", $this->sid, false, 'AND' );
+        $criteria->compare("t.language", $this->language, false, 'AND' );
+        $criteria->compare("t.parent_qid", 0, false, 'AND' );
 
         $criteria2 = new CDbCriteria;
-        $criteria2->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=0";
-        $criteria2->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
-        $criteria2->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language AND groups.sid = t.sid)';
+        $criteria2->compare('t.title', $this->title, true, 'OR');
+        $criteria2->compare('t.question', $this->title, true, 'OR');
+        $criteria2->compare('t.type', $this->title, true, 'OR');
 
+        $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.qid::varchar' : 't.qid');
+        $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
 
         if($this->group_name != '')
         {
-            $criteria->addCondition("groups.group_name = '$this->group_name'");
-            $criteria2->addCondition("groups.group_name = '$this->group_name'");
+            $criteria->compare('groups.group_name', $this->group_name, true, 'AND');
         }
 
-        $criteria2->compare('question', $this->title, true, 'AND');
-        $criteria->mergeWith($criteria2, 'OR');
+        $criteria->mergeWith($criteria2, 'AND');
 
         $dataProvider=new CActiveDataProvider('Question', array(
             'criteria'=>$criteria,

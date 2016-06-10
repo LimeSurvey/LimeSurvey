@@ -26,8 +26,10 @@ class GlobalSettings extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('settings','read')) {
-            die();
+        if (! Permission::model()->hasGlobalPermission('settings', 'read') )
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect(App()->createUrl("/admin"));
         }
     }
 
@@ -98,6 +100,14 @@ class GlobalSettings extends Survey_Common_Action
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
 
+        // List of available encodings
+        $data['aEncodings'] = aEncodingsArray();
+
+        // Get current setting from DB
+        $data['thischaracterset'] = getGlobalSetting('characterset');
+        $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+        $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
+
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
 
@@ -144,8 +154,8 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
-        setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string($_POST['defaultquestionselectormode']));
-        setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string($_POST['defaulttemplateeditormode']));
+        setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultquestionselectormode','default')));
+        setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaulttemplateeditormode','default')));
         if (!Yii::app()->getConfig('demoMode'))
         {
             $sTemplate=Yii::app()->getRequest()->getPost("defaulttemplate");
@@ -160,21 +170,6 @@ class GlobalSettings extends Survey_Common_Action
         $sAdmintheme = sanitize_paranoid_string($_POST['admintheme']);
         setGlobalSetting('admintheme', $sAdmintheme);
 
-        // we check if it's a user theme
-        $usertemplatethemerootdir = Yii::app()->getConfig("uploaddir").'/admintheme/'.$sAdmintheme;
-        if ($usertemplatethemerootdir && file_exists($usertemplatethemerootdir) && is_dir($usertemplatethemerootdir) )
-        {
-            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/upload/admintheme/$sAdmintheme/images/";
-            setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
-            setGlobalSetting('adminimageurl', $adminimagebaseurl.'images/14/');
-        }
-        else
-        {
-            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/images/";
-            setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
-            setGlobalSetting('adminimageurl', $adminimagebaseurl.'/14/');
-        }
-
         //setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
         setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
@@ -182,8 +177,8 @@ class GlobalSettings extends Survey_Common_Action
             setGlobalSetting('emailsmtppassword', strip_tags(returnGlobal('emailsmtppassword')));
         }
         setGlobalSetting('bounceaccounthost', strip_tags(returnGlobal('bounceaccounthost')));
-        setGlobalSetting('bounceaccounttype', strip_tags(returnGlobal('bounceaccounttype')));
-        setGlobalSetting('bounceencryption', strip_tags(returnGlobal('bounceencryption')));
+        setGlobalSetting('bounceaccounttype', Yii::app()->request->getPost('bounceaccounttype','off'));
+        setGlobalSetting('bounceencryption', Yii::app()->request->getPost('bounceencryption','off'));
         setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
@@ -221,7 +216,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
         setGlobalSetting('pdffontsize', $iPDFFontSize);
-        setGlobalSetting('pdfshowheader', $_POST['pdfshowheader']);
+        setGlobalSetting('pdfshowheader', $_POST['pdfshowheader']=='1'?'Y':'N');
         setGlobalSetting('pdflogowidth', $iPDFLogoWidth);
         setGlobalSetting('pdfheadertitle', $_POST['pdfheadertitle']);
         setGlobalSetting('pdfheaderstring', $_POST['pdfheaderstring']);
@@ -236,6 +231,8 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
         setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
         setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);
+        setGlobalSetting('characterset', $_POST['characterset']);
+        setGlobalSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour','adaptive'));
         $savetime = ((float)$_POST['timeadjust'])*60 . ' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;
@@ -250,6 +247,10 @@ class GlobalSettings extends Survey_Common_Action
         {
             $url = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'));
             Yii::app()->getController()->redirect($url);
+        }
+        else
+        {
+            Yii::app()->getController()->redirect(App()->createUrl('admin/globalsettings'));
         }
     }
 
@@ -318,7 +319,7 @@ class GlobalSettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "globalsettings.js" ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'globalsettings.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

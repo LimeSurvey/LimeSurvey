@@ -2,14 +2,14 @@
   font-family: 'Noto Sans';
   font-weight: 300;
   font-style: normal;
-  src: url('../../../fonts/Noto/NotoSans-Regular.ttf');
+  src: url('../fonts/Noto/NotoSans-Regular.ttf');
 }
 
 @font-face {
   font-family: 'Noto Sans';
   font-weight: 600;
   font-style: bold;
-  src: url('../../../fonts/Noto/NotoSans-Bold.ttf');
+  src: url('../fonts/Noto/NotoSans-Bold.ttf');
 }
 
 
@@ -17,23 +17,23 @@
   font-family: 'Noto Sans';
   font-weight: 300;
   font-style: italic;
-  src: url('../../../fonts/Noto/NotoSans-Italic');
+  src: url('../fonts/Noto/NotoSans-Italic');
 }
 
 @font-face {
   font-family: 'Noto Sans';
   font-weight: 400;
   font-style: italic;
-  src: url('../../../fonts/Noto/NotoSans-BoldItalic.ttf');
+  src: url('../fonts/Noto/NotoSans-BoldItalic.ttf');
 }
 
 @font-face {
     font-family: 'icomoon';
-    src:url('../../../fonts/icomoon.eot?wnghtv');
-    src:url('../../../fonts/icomoon.eot?wnghtv#iefix') format('embedded-opentype'),
-        url('../../../fonts/icomoon.ttf?wnghtv') format('truetype'),
-        url('../../../fonts/icomoon.woff?wnghtv') format('woff'),
-        url('../../../fonts/icomoon.svg?wnghtv#icomoon') format('svg');
+    src:url('../fonts/icomoon.eot?wnghtv');
+    src:url('../fonts/icomoon.eot?wnghtv#iefix') format('embedded-opentype'),
+        url('../fonts/icomoon.ttf?wnghtv') format('truetype'),
+        url('../fonts/icomoon.woff?wnghtv') format('woff'),
+        url('../fonts/icomoon.svg?wnghtv#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }

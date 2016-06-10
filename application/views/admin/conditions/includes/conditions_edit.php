@@ -1,8 +1,25 @@
-
-<a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to delete this condition?","js"); ?>')) { $('#editModeTargetVal<?php echo $rows['cid']; ?>').remove(); $('#cquestions<?php echo $rows['cid']; ?>').remove(); document.getElementById('conditionaction<?php echo $rows['cid']; ?>').submit();}">
-    <span class="glyphicon glyphicon-trash"></span>
+<a
+    class="btn btn-default"
+    data-target="#confirmation-modal"
+    data-toggle="modal"
+    data-tooltip="true"
+    data-title="<?php eT("Delete condition"); ?>"
+    data-message="<?php eT("Are you sure you want to delete this condition?"); ?>"
+    data-onclick="(function() {
+            $('#editModeTargetVal<?php echo $rows['cid']; ?>').remove();
+            $('#cquestions<?php echo $rows['cid']; ?>').remove();
+            document.getElementById('conditionaction<?php echo $rows['cid']; ?>').submit();
+        });"
+    >
+    <span class="glyphicon glyphicon-trash text-danger"></span>
 </a>
-<a href='#' onclick='document.getElementById("subaction<?php echo $rows['cid']; ?>").value="editthiscondition"; document.getElementById("conditionaction<?php echo $rows['cid']; ?>").submit();'>
+<a
+    class="btn btn-default"
+    data-toggle="tooltip"
+    data-title="<?php eT("Edit condition"); ?>"
+    href='#' 
+    onclick='document.getElementById("subaction<?php echo $rows['cid']; ?>").value="editthiscondition"; document.getElementById("conditionaction<?php echo $rows['cid']; ?>").submit();'
+>
     <span class="glyphicon glyphicon-pencil"></span>
 </a>
         <input type='hidden' name='subaction' id='subaction<?php echo $rows['cid']; ?>' value='delete' />

@@ -19,24 +19,22 @@ function openUploadModalDialog(){
         var windowwidth = $(window).width()-30;
         var dialogwidth= Math.min(windowwidth, 940);
 
-        //$('#uploader').dialog('destroy').remove(); // destroy the old modal dialog
-        //$('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-        console.log('fieldname', fieldname);
         $('#file-upload-modal-' + fieldname).modal();
         $('#file-upload-modal-' + fieldname).on('show.bs.modal', function() {
             $('#file-upload-modal-' + fieldname).find('iframe').css('height', 'inherit');
         });
         $('#file-upload-modal-' + fieldname).on('hide.bs.modal', function() {
             var pass;
-            if(document.getElementById('uploader').contentDocument) {
-                if(document.getElementById('uploader').contentDocument.defaultView)
+            var uploaderId = 'uploader' + fieldname;
+            if(document.getElementById(uploaderId).contentDocument) {
+                if(document.getElementById(uploaderId).contentDocument.defaultView)
                     {       /*Firefox*/
-                    pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);
+                    pass=document.getElementById(uploaderId).contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);
                 }else{       /*IE8*/
-                    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
+                    pass=document.getElementById(uploaderId).contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                 }
             }else{    /*IE6*/
-                pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
+                pass=document.getElementById(uploaderId).contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
             }
             return pass;
         });
@@ -104,7 +102,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
                 display += '<td class="upload title">'+jsonobj[i].title+'</td>';
             if (show_comment != 0)                                                                                                  
                 display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="btn btn-default fa fa-pencil" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();">&nbsp;'+uploadLang.editFile+'</a></td></tr>';
+            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="btn btn-default" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
         }
         display += '</tbody></table>';
 

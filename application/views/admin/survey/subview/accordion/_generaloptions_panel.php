@@ -9,11 +9,40 @@
     <?php
         $yii = Yii::app();
         $controller = $yii->getController();
-        $sConfirmLanguage="$(document).on('submit','#addnewsurvey',function(){\n"
-                        . "  if(!UpdateLanguageIDs(mylangs,'".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){\n"
+        $sConfirmLanguage="$(document).on('submit','#globalsetting',function(){\n"
+                        . "  if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){\n"
                         . "    return false;\n"
                         . "  }\n"
-                        . "});\n";
+                        . "});
+                            function ConfirmLanguageChange(confirmtxt)
+                        {
+                           if ($('#oldlanguages').val().trim()=='')
+                           {
+                                mylangs= []
+                           }
+                           else{
+                                mylangs=$('#oldlanguages').val().split(' ');
+                           }
+                            if (checkSelect2Languages(mylangs))
+                                {
+                                return true;
+                            } else
+                                {
+                                return confirm(confirmtxt);
+                            }
+                        };
+    function checkSelect2Languages(mylangs)
+    {
+        newLanguages=$('#additional_languages').val();
+        for (x = 0; x < mylangs.length; x++)
+        {
+            if ($.inArray(mylangs[x],newLanguages)==-1)
+            {
+                return false;
+            }
+        }
+        return true;
+    };";
         Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
     ?>
 
@@ -27,61 +56,22 @@
 
     <!-- Additional Languages -->
     <div class="form-group">
-        <label class="col-sm-3 text-right"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
+        <label class="col-sm-3 control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
         <div class="col-sm-9">
-            <table>
-                <tr>
-                    <td style='text-align:left'>
-                        <select class="form-control " style='' size='5' id='additional_languages' name='additional_languages'>
-                            <?php $jsX=0;
-                                $jsRemLang ="<script type=\"text/javascript\">
-                                var mylangs = new Array();
-                                standardtemplaterooturl='".$yii->getConfig('standardtemplaterooturl')."';
-                                templaterooturl='".$yii->getConfig('usertemplaterooturl')."';\n";
-
-                                foreach (Survey::model()->findByPk($surveyid)->additionalLanguages as $langname) {
-                                    if ($langname && $langname != $esrow['language']) {
-                                        $jsRemLang .=" mylangs[$jsX] = \"$langname\"\n"; ?>
-                                    <option id='<?php echo $langname; ?>' value='<?php echo $langname; ?>'><?php echo getLanguageNameFromCode($langname,false); ?>
-                                    </option>
-                                    <?php $jsX++; ?>
-                                    <?php }
-                                }
-                                $jsRemLang .= "</script>";
-                            ?>
-
-                        </select>
-                        <input type='hidden' name='languageids' id='languageids' value="<?php echo $esrow['additional_languages'];?>" />
-                    </td>
-
-                    <!-- Arrows -->
-                    <td style='text-align:left'>
-                        <div class="col-sm-4">
-                            <button class="btn btn-default btn-xs" onclick="DoAdd()" id="AddBtn" type="button"  data-toggle="tooltip" data-placement="top" title="<?php eT("Add"); ?>">
-                                <span class="fa fa-backward"></span>  <?php eT("Add"); ?>
-                            </button>
-                            <br /><br />
-                            <button class="btn btn-default btn-xs" type="button" onclick="DoRemove(0,'')" id="RemoveBtn"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Remove"); ?>" >
-                                <?php eT("Remove"); ?>  <span class="fa fa-forward"></span>
-                            </button>
-                        </div>
-                    </td>
-
-
-                    <td style='text-align:left'>
-                        <select class="form-control input-xlarge" size='5'  id='available_languages' name='available_languages'>
-                            <?php $tempLang=Survey::model()->findByPk($surveyid)->additionalLanguages;
-                                foreach (getLanguageDataRestricted (false, Yii::app()->session['adminlang']) as $langkey2 => $langname) {
-                                    if ($langkey2 != $esrow['language'] && in_array($langkey2, $tempLang) == false) {  // base languag must not be shown here ?>
-                                    <option id='<?php echo $langkey2 ; ?>' value='<?php echo $langkey2; ?>'>
-                                    <?php echo $langname['description']; ?></option>
-                                    <?php }
-                            } ?>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            <br/>
+            <?php
+            $aAllLanguages=getLanguageDataRestricted (false,'short');
+            unset($aAllLanguages[$esrow['language']]);
+            Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                'asDropDownList' => true,
+                'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
+                'data' => $aAllLanguages,
+                'value' => Survey::model()->findByPk($surveyid)->additionalLanguages,
+                'name' => 'additional_languages',
+                'pluginOptions' => array(
+                    'placeholder' => gt('Select additional languages','unescaped'),
+            )));
+            ?>
+            <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ',Survey::model()->findByPk($surveyid)->additionalLanguages); ?>'>
         </div>
     </div>
 
@@ -89,11 +79,7 @@
     <div class="form-group">
         <label class="col-sm-3 control-label"  for='owner_id'><?php  eT("Survey owner:"); ?></label>
         <div class="col-sm-9">
-            <select class="form-control" id='owner_id' name='owner_id'>
-                <?php foreach ($users as $user): ?>
-                    <option value="<?php echo $user['uid']; ?>" <?php if ($user['uid'] === $esrow['owner_id']) { echo "selected"; } ?>><?php echo $user['username']; ?></option>
-                <?php endforeach; ?>
-            </select>
+            <?php echo CHtml::dropDownList('owner_id', $esrow['owner_id'],$users,array('class'=>"form-control")); ?>
         </div>
     </div>
 
@@ -193,4 +179,44 @@
             <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
         </div>
     </div>
+
 <?php endif;?>
+
+    <!-- Format -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='format'><?php  eT("Format:"); ?></label>
+        <div class="col-sm-9">
+        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'format',
+                'value'=> $esrow['format'] ,
+                'selectOptions'=>array(
+                    'S' => gT('Question by Question','unescaped'),
+                    'G' => gT('Group by Group','unescaped'),
+                    'A' => gT('All in one','unescaped'))
+                ));?>
+        </div>
+    </div>
+
+    <!-- Template -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='template'><?php  eT("Template:"); ?></label>
+        <div class="col-sm-5">
+            <select id='template' class="form-control"  name='template'>
+                <?php foreach (array_keys(getTemplateList()) as $tname) {
+
+                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $esrow['template']==htmlspecialchars($tname) ) { ?>
+                        <option value='<?php echo $tname; ?>'
+                            <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
+                                selected='selected'
+                                <?php   } elseif (!$esrow['template'] && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
+                                selected='selected'
+                                <?php } ?>
+                            ><?php echo $tname; ?></option>
+                        <?php }
+                } ?>
+            </select>
+        </div>
+        <div class="col-sm-4 template-img">
+            <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
+        </div>
+    </div>

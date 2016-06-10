@@ -91,7 +91,6 @@
                         <div  class="form-group">
                             <label for='gid'><?php eT("Question group:"); ?></label>
                             <select name='gid' id='gid' class="form-control">
-
                                 <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                             </select>
                         </div>

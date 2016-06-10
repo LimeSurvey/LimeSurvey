@@ -231,6 +231,20 @@ class dataentry extends Survey_Common_Action
     {
         unset($aEncodings['auto']);
         asort($aEncodings);
+
+        // Get default character set from global settings
+        $thischaracterset = getGlobalSetting('characterset');
+
+        // If no encoding was set yet, use the old "utf8" default
+        if($thischaracterset == "")
+        {
+            $thischaracterset = "utf8";
+        }
+
+        // Create encodings list using the Yii's CHtml helper
+        $charsetsout = CHtml::listOptions($thischaracterset, $aEncodings, $aEncodings);
+
+        $aData['charsetsout'] = $charsetsout;
         $aData['aEncodings']=$aEncodings;
         $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
 
@@ -716,6 +730,32 @@ class dataentry extends Survey_Common_Action
                                 'onkeypress' => 'return goodchars(event,\''.$goodchars.'\')'
                                 )
                                 );
+                                /*
+                                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                                    'name' => $fname['fieldname'],
+                                    'value' => $thisdate,
+                                    'pluginOptions' => array(
+                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                        'allowInputToggle' =>true,
+                                        'showClear' => true,
+                                        'tooltips' => array(
+                                            'clear'=> gT('Clear selection'),
+                                            'prevMonth'=> gT('Previous month'),
+                                            'nextMonth'=> gT('Next month'),
+                                            'selectYear'=> gT('Select year'),
+                                            'prevYear'=> gT('Previous year'),
+                                            'nextYear'=> gT('Next year'),
+                                            'selectDecade'=> gT('Select decade'),
+                                            'prevDecade'=> gT('Previous decade'),
+                                            'nextDecade'=> gT('Next decade'),
+                                            'prevCentury'=> gT('Previous century'),
+                                            'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
+                                        ),
+                                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                                    )
+                                ));
+                                */
                                 $aDataentryoutput .= CHtml::hiddenField('dateformat'.$fname['fieldname'], $dateformatdetails['jsdate'],
                                 array( 'id' => "dateformat{$fname['fieldname']}" )
                                 );
@@ -846,7 +886,7 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             $currentvalues=array();
                             $myfname=$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid'];
-                            $aDataentryoutput .= '<div id="question'.$thisqid.'" class="ranking-answers"><ul class="answers-list">';
+                            $aDataentryoutput .= '<div id="question'.$thisqid.'" class="ranking-answers"><ul class="answers-list select-list">';
                             while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid']==$thisqid)
                             {
                                 //Let's get all the existing values into an array
@@ -899,8 +939,10 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= '</div>';
                             App()->getClientScript()->registerPackage('jquery-actual');
 
-                            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH.'ranking.js' ));
-                            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/ranking.css') );
+                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
+                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
+                            $this->registerCssFile( 'PUBLIC', 'jquery-ui-custom.css' );
+
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
                                 . "var aRankingTranslations = {
@@ -1841,7 +1883,7 @@ class dataentry extends Survey_Common_Action
                                 VALUES
                                 (".implode(',',$values).")";
                                 dbExecuteAssoc($SQL);
-                                $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A token entry for the saved survey has been created too."));
+                                $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
                                 //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
                             }
                             if ($saver['email'])
@@ -1855,11 +1897,10 @@ class dataentry extends Survey_Common_Action
                                     $message .= gT("Name").": ".$saver['identifier']."\n";
                                     $message .= gT("Password").": ".$saver['password']."\n\n";
                                     $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                                    $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($saver['identifier'])."/loadpass/".rawurlencode ($saver['password'])."/lang/".rawurlencode($saver['language']));
-                                    if (isset($tokendata['token'])) { $message .= "/token/".rawurlencode($tokendata['token']); }
-
+                                    $aParams=array('lang'=>$saver['language'],'loadname'=>$saver['identifier'],'loadpass'=>$saver['password']);
+                                    if (isset($tokendata['token'])) { $aParams['token']= $tokendata['token']; }
+                                    $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/",$aParams);
                                     $from = $thissurvey['adminemail'];
-
                                     if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
                                     {
                                         $emailsent="Y";
@@ -2156,8 +2197,8 @@ class dataentry extends Survey_Common_Action
                                 }
                             $cdata['answers']=$answers;
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
+                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
+                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)
