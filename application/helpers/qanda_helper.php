@@ -3864,7 +3864,7 @@ function do_array_5point($ia)
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass              = "";
-    $caption                 = gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. ");
+    $caption                 = gT("A table with a subquestion on each row. The answer options are values from 1 to 5 and are contained in the table header.");
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
@@ -4066,7 +4066,7 @@ function do_array_10point($ia)
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
-    $caption=gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. ");
+    $caption=gT("A table with a subquestion on each row. The answers are values from 1 to 10 and are contained in the table header.");
     $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -4085,7 +4085,7 @@ function do_array_10point($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
-        $caption.=gT("The last cell are for no answer. ");
+        $caption.=gT("The last cell is for 'No answer'.");
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -4213,7 +4213,7 @@ function do_array_yesnouncertain($ia)
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass              = "";
-    $caption                 = gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. ");
+    $caption                 = gT("A table with a subquestion on each row. The answers are 'Yes', 'No', and 'Uncertain' and are in the table header.");
     $checkconditionFunction  = "checkconditions";
     $qquery                  = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult                 = dbExecuteAssoc($qquery);    //Checked
@@ -4226,7 +4226,7 @@ function do_array_yesnouncertain($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
-        $caption.=gT("The last cell are for no answer. ");
+        $caption.=gT("The last cell is for 'No answer'.");
     }
 
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
@@ -4326,7 +4326,7 @@ function do_array_increasesamedecrease($ia)
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass              = "";
-    $caption                 = gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. ");
+    $caption                 = gT("A table with a subquestion on each row. The answers are 'Increase', 'Same', 'Decrease' and are contained in the table header.");
     $checkconditionFunction  = "checkconditions";
     $qquery                  = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult                 = dbExecuteAssoc($qquery);   //Checked
@@ -4337,7 +4337,7 @@ function do_array_increasesamedecrease($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
-        $caption.=gT("The last cell are for no answer. ");
+        $caption.=gT("The last cell is for 'No answer'.");
     }
 
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
@@ -4449,12 +4449,12 @@ function do_array($ia)
     {
         $useDropdownLayout = true;
         $extraclass       .= " dropdown-list";
-        $caption           = gT("An array with sub-question on each line. You have to select your answer.");
+        $caption           = gT("A table with a subquestion on each row. You have to select your answer.");
     }
     else
     {
         $useDropdownLayout = false;
-        $caption           = gT("An array with sub-question on each line. The answers are contained in the table header. ");
+        $caption           = gT("A table with a subquestion on each row. The answer options are contained in the table header.");
     }
 
     if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
@@ -4507,12 +4507,12 @@ function do_array($ia)
         if ($right_exists)
         {
             ++$numrows;
-            $caption .= gT("After answers, a cell give some information. ");
+            $caption .= gT("After the answer options a cell does give some information.");
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             ++$numrows;
-            $caption .= gT("The last cell are for no answer. ");
+            $caption .= gT("The last cell is for 'No answer'.");
         }
 
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
@@ -4816,7 +4816,7 @@ function do_array_texts($ia)
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $extraclass                 = "";
-    $caption                    = gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. ");
+    $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -4877,7 +4877,7 @@ function do_array_texts($ia)
 
         $num_class   = ' numbers-only';
         $extraclass .= " numberonly";
-        $caption    .= gT("Each answer is a number. ");
+        $caption    .= gT("Each answer may only be a number.");
         $col_head    = '';
 
         switch ($aQuestionAttributes['show_totals'])
@@ -4894,7 +4894,7 @@ function do_array_texts($ia)
                     $grand_total = doRender('/survey/questions/arrays/texts/rows/cells/td_grand_total', array('empty'=>false),  true);
                 };
 
-                $caption    .=gT("The last row shows the total for the column. ");
+                $caption    .=gT("The last row shows the total for the column.");
                 break;
 
             case 'C':
@@ -4908,7 +4908,7 @@ function do_array_texts($ia)
                     $col_head    = doRender('/survey/questions/arrays/texts/rows/cells/thead', array('totalText'=>gT('Grand total'), 'classes'=>''),  true);
                     $grand_total = doRender('/survey/questions/arrays/texts/rows/cells/td_grand_total', array('empty'=>false),  true);
                 };
-                $caption    .= gT("The last column shows the total for the row. ");
+                $caption    .= gT("The last column shows the total for the row.");
                 break;
 
             case 'B':
@@ -4927,7 +4927,7 @@ function do_array_texts($ia)
                     $grand_total = doRender('/survey/questions/arrays/texts/rows/cells/td_grand_total', array('empty'=>true),  true);
                 };
 
-                $caption    .= gT("The last row shows the total for the column and the last column shows the total for the row. ");
+                $caption    .= gT("The last row shows the total for the column and the last column shows the total for the row.");
                 break;
         };
 
@@ -4990,7 +4990,7 @@ function do_array_texts($ia)
         {
             $right_exists = true;
             $answerwidth  = $answerwidth/2;
-            $caption     .= gT("The last cell give some information. ");
+            $caption     .= gT("The last cell gives some information.");
         }
         else
         {
@@ -5194,7 +5194,7 @@ function do_array_multiflexi($ia)
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $extraclass                 = "";
     $answertypeclass            = "";
-    $caption                    = gT("An array of subquestions on each cell. The subquestion texts are in the table header and concern the line header.");
+    $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
     $checkconditionFunction     = "fixnum_checkconditions";
     $defaultvaluescript         = '';
     $qquery                     = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
@@ -5275,7 +5275,7 @@ function do_array_multiflexi($ia)
     else
     {
         $answertypeclass     = " dropdown";
-        $caption            .= gT("Please select an answer for each combination. ");
+        $caption            .= gT("Please select an answer for each combination.");
     }
 
     if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
@@ -5346,7 +5346,7 @@ function do_array_multiflexi($ia)
         {
             $right_exists    =  true;
             $answerwidth     =  $answerwidth/2;
-            $caption        .=  gT("The last cell give some information. ");
+            $caption        .=  gT("The last cell gives some information.");
         }
         else
         {
@@ -5585,7 +5585,7 @@ function do_arraycolumns($ia)
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
-    $caption=gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
+    $caption=gT("A table with subquestions on each column. The subquestions are on the column header, the answer options are in row headers.");
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -5770,7 +5770,7 @@ function do_array_dual($ia)
         $extraclass .=" dropdown-list";
         $answertypeclass .=" dropdown";
         $doDualScaleFunction="doDualScaleDropDown";// javascript funtion to lauch at end of answers
-        $caption=gT("An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer.");
+        $caption=gT("A table with a subquestion on each row, with two answers to provide on each line.  Please select the answers.");
     }
     else
     {
@@ -5778,7 +5778,7 @@ function do_array_dual($ia)
         $extraclass .=" radio-list";
         $answertypeclass .=" radio";
         $doDualScaleFunction="doDualScaleRadio";
-        $caption=gT("An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. ");
+        $caption=gT("A table with a subquestion on each row, with two answers to provide on each row. The related answer options table header row.");
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -5841,7 +5841,7 @@ function do_array_dual($ia)
             $shownoanswer=($ia[6] != "Y" && SHOW_NO_ANSWER == 1);
             if($shownoanswer) {
                 $numrows++;
-                $caption.=gT("The last cell are for no answer. ");
+                $caption.=gT("The last cell is for 'No answer'.");
             }
             if($rightexists) {$numrows++;}
             if($centerexists) {$numrows++;}
