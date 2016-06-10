@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-10 07:37:31+00:00\n"
+"POT-Creation-Date: 2016-06-10 07:47:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9021,7 +9021,7 @@ msgid "Please select an answer for each combination."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5588
-msgid "A table with subquestions on each column. The subquestions are on the column header, the answer options are in row headers."
+msgid "A table with subquestions on each column. The subquestions texts are on the column header, the answer options are in row headers."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5714
@@ -9041,7 +9041,7 @@ msgid "A table with a subquestion on each row, with two answers to provide on ea
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5781
-msgid "A table with a subquestion on each row, with two answers to provide on each row. The related answer options table header row."
+msgid "A table with one subquestion on each row and two answers to provide on each row. The related answer options are in the top table header row."
 msgstr ""
 
 #: application/helpers/replacements_helper.php:281
