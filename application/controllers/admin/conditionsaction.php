@@ -12,7 +12,7 @@
 *
 */
 /**
-* Condition Controller
+* Condition  Controller
 *
 * This controller performs token actions
 *
@@ -1192,7 +1192,6 @@ class conditionsaction extends Survey_Common_Action {
             $aData['scenariocount'] = $scenariocount;
 
             $aViewUrls['conditionslist_view'][] = $aData;
-
             if ($scenariocount > 0)
             {
                 $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
@@ -1265,6 +1264,7 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->queryRow();
                     $conditionscount=(int)$result['recordcount'];
+
                     $query = "SELECT c.cid, c.scenario, c.cqid, c.cfieldname, c.method, c.value, q.type
                     FROM {{conditions}} c, {{questions}} q, {{groups}} g
                     WHERE c.cqid=q.qid "
@@ -1277,13 +1277,13 @@ class conditionsaction extends Survey_Common_Action {
                     ."AND c.cfieldname NOT LIKE '{%' " // avoid catching SRCtokenAttr conditions
                     ."ORDER BY g.group_order, q.question_order, c.cfieldname";
                     $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
-                    $result=Yii::app()->db->createCommand($query)
+                    $result2=Yii::app()->db->createCommand($query)
                     ->bindValue(":scenario", $scenarionr['scenario'])
                     ->bindValue(":qid", $qid, PDO::PARAM_INT)
                     ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-
+                    $result2=$result2->readAll();
                     $querytoken = "SELECT count(*) as recordcount "
                     ."FROM {{conditions}} "
                     ."WHERE "
@@ -1326,11 +1326,10 @@ class conditionsaction extends Survey_Common_Action {
                         {
                             $aConditionsMerged[]=$arow;
                         }
-                        foreach ($result->readAll() as $arow)
+                        foreach ($result2 as $arow)
                         {
                             $aConditionsMerged[]=$arow;
                         }
-
                         foreach ($aConditionsMerged as $rows)
                         {
                             if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
