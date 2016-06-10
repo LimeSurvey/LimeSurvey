@@ -186,8 +186,7 @@ class Survey extends LSActiveRecord
             array('expires', 'default','value'=>NULL),
             array('admin,faxto','LSYii_Validators'),
             array('adminemail','filter', 'filter'=>'trim'),
-            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
-            array('adminemail','filter', 'filter'=>'trim'),
+            array('bounce_email','filter', 'filter'=>'trim'),
             array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
             array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
@@ -468,6 +467,7 @@ class Survey extends LSActiveRecord
         if (!$sResult)
         {
             tracevar($survey->getErrors());
+            tracevar($aData);
             return false;
         }
         else return $aData['sid'];
