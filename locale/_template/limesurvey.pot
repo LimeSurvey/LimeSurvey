@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-10 07:47:27+00:00\n"
+"POT-Creation-Date: 2016-06-10 10:06:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1322,8 +1322,8 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3599
 #: application/helpers/userstatistics_helper.php:1332
 #: application/helpers/userstatistics_helper.php:1465
-#: application/models/Survey.php:432 application/models/Survey.php:638
-#: application/models/Survey.php:644
+#: application/models/Survey.php:431 application/models/Survey.php:639
+#: application/models/Survey.php:645
 #: application/views/admin/dataentry/content_view.php:626
 #: application/views/admin/dataentry/content_view.php:694
 #: application/views/admin/export/statistics_subviews/_question.php:303
@@ -1563,8 +1563,8 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3600
 #: application/helpers/userstatistics_helper.php:1333
 #: application/helpers/userstatistics_helper.php:1466
-#: application/models/Survey.php:436 application/models/Survey.php:638
-#: application/models/Survey.php:644
+#: application/models/Survey.php:435 application/models/Survey.php:639
+#: application/models/Survey.php:645
 #: application/views/admin/dataentry/content_view.php:627
 #: application/views/admin/dataentry/content_view.php:696
 #: application/views/admin/export/statistics_subviews/_question.php:309
@@ -3125,7 +3125,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:70
 #: application/core/Survey_Common_Action.php:649
 #: application/core/Survey_Common_Action.php:967
-#: application/models/Survey.php:619
+#: application/models/Survey.php:620
 msgid "Invalid survey ID"
 msgstr ""
 
@@ -5235,7 +5235,7 @@ msgid "List question groups"
 msgstr ""
 
 #: application/core/plugins/QuickMenu/QuickMenu.php:262
-#: application/models/Survey.php:876
+#: application/models/Survey.php:877
 #: application/views/admin/survey/surveybar_view.php:165
 msgid "General settings & texts"
 msgstr ""
@@ -5270,7 +5270,7 @@ msgstr ""
 #: application/helpers/common_helper.php:2989
 #: application/helpers/common_helper.php:3352
 #: application/helpers/userstatistics_helper.php:2934
-#: application/models/Permission.php:84 application/models/Survey.php:881
+#: application/models/Permission.php:84 application/models/Survey.php:882
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:14
 #: application/views/admin/export/statistics_view.php:14
@@ -6006,18 +6006,18 @@ msgstr ""
 msgid "One or more surveys seem to be broken - please use the data integrity check tool to fix this."
 msgstr ""
 
-#: application/helpers/common_helper.php:296 application/models/Survey.php:750
+#: application/helpers/common_helper.php:296 application/models/Survey.php:751
 #: application/views/admin/quotas/viewquotasrow_view.php:10
 #: application/views/admin/survey/listSurveys_view.php:86
 msgid "Active"
 msgstr ""
 
-#: application/helpers/common_helper.php:301 application/models/Survey.php:733
+#: application/helpers/common_helper.php:301 application/models/Survey.php:734
 #: application/views/admin/survey/listSurveys_view.php:39
 msgid "Expired"
 msgstr ""
 
-#: application/helpers/common_helper.php:306 application/models/Survey.php:710
+#: application/helpers/common_helper.php:306 application/models/Survey.php:711
 msgid "Inactive"
 msgstr ""
 
@@ -10243,15 +10243,15 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:732
+#: application/models/Survey.php:733
 msgid "Expire"
 msgstr ""
 
-#: application/models/Survey.php:734
+#: application/models/Survey.php:735
 msgid "Start"
 msgstr ""
 
-#: application/models/Survey.php:891
+#: application/models/Survey.php:892
 #: application/views/admin/survey/surveySummary_view.php:125
 #: application/views/admin/survey/surveySummary_view.php:163
 #: application/views/admin/survey/surveySummary_view.php:181
@@ -10261,7 +10261,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:895
+#: application/models/Survey.php:896
 #: application/views/admin/survey/surveySummary_view.php:108
 #: application/views/admin/survey/surveySummary_view.php:145
 #: application/views/admin/survey/surveybar_view.php:25
