@@ -977,59 +977,33 @@ function buildsurveysession($surveyid,$preview=false)
             echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1594]');
             //echo makedropdownlist();
             echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1596]');
-            // ->renderPartial('entertoken_view');
-            if (isset($secerror)) echo "<span class='error'>".$secerror."</span><br />";
-            echo '<div id="wrapper"><p id="tokenmessage">'.gT("This is a controlled survey. You need a valid token to participate.")."<br />";
-            echo gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
-            <script type='text/javascript'>var focus_element='#token';</script>"
-            .CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'tokenform', 'class'=>'form-horizontal col-sm-4', 'autocomplete'=>'off'))."
 
-            <div class='form-group'>";?>
-            <label class="col-sm-6 control-label" for='token'><?php eT("Token:");?></label>
-            <div class="col-sm-6">
-                <input class='text form-control <?php echo $kpclass?>' id='token' type='password' name='token' value='' />
-            </div>
-            <?php
-            echo "
-            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-            <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
-            if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
-            {
-                echo "  <input type='hidden' name='newtest' value='Y' id='newtest' />";
+            $aEnterTokenData = array();
+            $aEnterTokenData['bNewTest'] =  false;
+            $aEnterTokenData['bDirectReload'] =  false;
+            $aEnterTokenData['error'] = $secerror;
+            $aEnterTokenData['iSurveyId'] = $surveyid;
+            $aEnterTokenData['sKpClass'] = $kpclass; // ???
+            $aEnterTokenData['sLangCode'] = $sLangCode;
+            $aEnterTokenData['bCaptchaEnabled'] = false;
+            $aEnterTokenData['bCaptchaImgSrc'] = Yii::app()->getController()->createUrl('/verification/image/sid/' . $surveyid);
 
+            if (isset($_GET['bNewTest']) && $_GET['newtest'] == "Y"){
+                $aEnterTokenData['bNewTest'] =  true;
             }
-
+            if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha'])){
+                $aEnterTokenData['bCaptchaEnabled'] = true; // ???
+            }
             // If this is a direct Reload previous answers URL, then add hidden fields
-            if (isset($_GET['loadall']) && isset($_GET['scid'])
-            && isset($_GET['loadname']) && isset($_GET['loadpass']))
-            {
-                echo "
-                <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
-                <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
-                <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
+            if (isset($loadall) && isset($scid) && isset($loadname) && isset($loadpass)) {
+                $aEnterTokenData['bDirectReload'] =  true;
+                $aEnterTokenData['sCid'] =  $scid;
+                $aEnterTokenData['sLoadname'] =  htmlspecialchars($loadname);
+                $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
             }
-            echo "</div>";
+            // render token form
+            App()->getController()->renderPartial('/surveys/enterToken', $aEnterTokenData);
 
-            if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
-            {
-                echo "
-                <div class='form-group'>
-                    <label class='col-sm-6 control-label' for='captchaimage'>".gT("Security Question")."</label>
-                    <div class='col-sm-6'>
-                        <img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' />
-                        <input class='form-control' type='text' size='5' maxlength='3' name='loadsecurity' value='' />
-                    </div>
-                </div>";
-            }
-            echo "
-            <div class='form-group'>
-                <div class='col-sm-3'>
-                    <input class='submit btn btn-default button' type='submit' value='".gT("Continue")."' />
-                </div>
-            </div>
-
-            </form></div>";
             echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
             doFooter();
             exit;
