@@ -11,6 +11,8 @@ Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But
 
 
 ## Improvement and history ##
+* 1.0.19
+    * Better loading of plugins for command
 * 1.0.17
     * Merge from core lts
 * 1.0.15/1.0.16
