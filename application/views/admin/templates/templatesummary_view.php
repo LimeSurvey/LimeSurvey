@@ -25,25 +25,15 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <?php eT("Standard files:"); ?><br>
                 <?php
                 $aSelectOptions=array(
-                    gT("Screen part files")=>makeoptionswithindex($files,'pstpl'),
-                    gT("JavaScript files")=>makeoptionswithindex($jsfiles,'js'),
-                    gT("CSS files")=>makeoptionswithindex($cssfiles,'css'));
-                $editindex='';
-                foreach($aSelectOptions as $optgroup=>$options)
-                {
-                    if (array_search($editfile,$options)!==false)
-                    {
-                        $editindex=array_search($editfile,$options);
-                        break;
-                    }
-                }
-                echo CHtml::form(array('admin/templates/sa/view'), 'post', array('id'=>'general', 'class'=>'form-inline'));
-                echo CHtml::listBox('editfile',$editindex,$aSelectOptions,
-                    array('class'=>'form-control','size'=>'20','onchange'=>"javascript: this.form.submit();"));
-                echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
-                echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename')); ?>
+                    gT("Screen part files")=>array_combine($files,$files),
+                    gT("JavaScript files")=>array_combine($jsfiles,$jsfiles),
+                    gT("CSS files")=>array_combine($cssfiles,$cssfiles));
 
-                </form>
+                echo CHtml::listBox('editfile',$editfile,$aSelectOptions,
+                    array('class'=>'form-control','size'=>'20',
+                        'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename))."'); uri.addQueryParam('editfile',this.value); window.open(uri.toString(), '_top')"
+                ));
+                ?>
             </div>
         </div>
         <div class="col-lg-8 templateeditor">
@@ -51,16 +41,15 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
             <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
             echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
-            echo CHtml::hiddenField('editfile', $editindex);
             echo CHtml::hiddenField('editfilename', $editfile);
             echo CHtml::hiddenField('action', 'templatesavechanges');
             echo CHtml::textArea('changes', isset($editfile)?filetext($templatename,$editfile,$templates):'',array('rows'=>'20',
-                                                                                                                   'cols'=>'40',
-                                                                                                                   'data-filetype'=>$sEditorFileType,
-                                                                                                                   'class'=>'ace '.$sTemplateEditorMode,
-                                                                                                                    'style'=>'width:100%'
-                                                                                                                    ));
-                                                                                                                    ?>
+                'cols'=>'40',
+                'data-filetype'=>$sEditorFileType,
+                'class'=>'ace '.$sTemplateEditorMode,
+                'style'=>'width:100%'
+            ));
+            ?>
             <p class='text-center'>
                 <br/>
                 <?php if (Permission::model()->hasGlobalPermission('templates','update')):?>
@@ -83,10 +72,10 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <?php eT("Other files:"); ?>
                 <br/>
                 <?php // TODO printf(gT("(path for css: %s)"), $filespath) ?>
-                <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
-                <select size='11' class="form-control" name='otherfile' id='otherfile'>
-                    <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
-                </select><br>
+                <?php
+                echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post');
+                echo CHtml::listBox('otherfile','',array_combine($otherfiles,$otherfiles),array('size'=>11,'class'=>"form-control")); ?>
+                <br>
                 <?php
                 if (Permission::model()->hasGlobalPermission('templates','delete'))
                 { ?>
@@ -94,11 +83,11 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <input type='submit' class='btn btn-default' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT("Are you sure you want to delete this file?","js"); ?>')"/>
                     <?php
                 }
-                echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
-                echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname')); ?>
-                <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
+                ?>
+                <input type='hidden' name='screenname' value='<?php echo htmlspecialchars($screenname); ?>' />
+                <input type='hidden' name='templatename' value='<?php echo htmlspecialchars($templatename); ?>' />
+                <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($editfile); ?>' />
                 <input type='hidden' name='action' value='templatefiledelete' />
-
                 </form>
             </div>
             <div style='margin-top:1em;'>
@@ -116,9 +105,16 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                             <?php endif; ?>
                         />
                     <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
-                    <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
-                    echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname')); ?>
+                    <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
+                    <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                     <input type='hidden' name='action' value='templateuploadfile' />
+                    <?php if(isset($_GET['editfile'])):?>
+                        <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
+                        <?php endif;?>
+                    <?php if(isset($_GET['useindex'])):?>
+                        <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
+                        <?php endif;?>
+
                     </form>
                     <?php
                 }
@@ -162,15 +158,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
     </div>
     </div>
-    <?php else:?>
-            <?php echo CHtml::form(array('admin/templates/sa/view'), 'post', array('id'=>'general', 'style'=>'display:none;', 'class'=>'form-inline')); ?>
-                <?php
-                echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
-                echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename')); ?>
-
-            </form>
     <?php endif;?>
-
 
 <div class="row template-sum" style="margin-bottom: 100px;">
     <div class="col-lg-12">

@@ -253,5 +253,11 @@ return array(
         'css' => array(
             'leaflet.css'
         ),
+    ),
+    'jsuri' => array(
+        'basePath' => 'third_party.jsUri',
+        'js' => array(
+            'Uri.js'
+        ),
     )
 );
