@@ -288,7 +288,6 @@ class templates extends Survey_Common_Action
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
-        $aScreenFiles = $this->getValidScreenFiles($templatename);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
         $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
         $tempdir = Yii::app()->getConfig('tempdir');
@@ -643,9 +642,9 @@ class templates extends Survey_Common_Action
             {
                 // Check if someone tries to submit a file other than one of the allowed filenames
                 if (
-                in_array($editfile,$aScreenFiles)==false &&
-                multiarray_search($cssfiles, 'name', $editfile) === false &&
-                multiarray_search($jsfiles, 'name', $editfile) === false
+                in_array($editfile,$aScreenFiles)===false &&
+                in_array($editfile,$cssfiles)===false &&
+                in_array($editfile,$jsfiles)===false
                 )
                 {
                     Yii::app()->user->setFlash('error',gT('Invalid template name'));
@@ -697,6 +696,7 @@ class templates extends Survey_Common_Action
     */
     protected function _templatebar($screenname, $editfile, $screens, $tempdir, $templatename)
     {
+        $aData=array();
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['screens'] = $screens;
@@ -817,7 +817,7 @@ class templates extends Survey_Common_Action
     */
     protected function getValidScreenFiles($templatename)
     {
-        $aScreenFiles[] = array('assessment.pstpl',
+        $aScreenFiles = array('assessment.pstpl',
             'clearall.pstpl',
             'completed.pstpl',
             'endgroup.pstpl',
@@ -926,6 +926,7 @@ class templates extends Survey_Common_Action
 
         // Standard screens
         // Only these may be viewed
+        $screens=array();
         $screens['surveylist'] =  gT('Survey List Page','unescaped');
         $screens['welcome'] = gT('Welcome Page','unescaped');
         $screens['question'] = gT('Question Page','unescaped');
