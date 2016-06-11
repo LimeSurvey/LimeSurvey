@@ -555,51 +555,7 @@ class responses extends Survey_Common_Action
                 continue;
             if ($fielddetails['type'] == 'answer_time')
                 continue;
-            if ($fielddetails['type'] == "|")
-            {
-                $fnames=array();
-                $code=viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true));// This must be unique ......
 
-                if ($fielddetails['aid'] !== 'filecount')
-                {
-                    $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
-
-                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-                    {
-                        if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($code.'_'.$i.'_title', "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
-
-                        if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($code.'_'.$i.'_comment', "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
-
-                        $fnames[] = array($code.'_'.$i.'_name', "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($code.'_'.$i.'_size', "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
-                    }
-                }
-                else
-                    $fnames[] = array($code.'_count', "File count");
-                $bHidden=false;
-                if (isset($_SESSION['survey_'.$iSurveyId]['HiddenFields']))
-                {
-                    $bHidden=in_array($fielddetails['fieldname'],$_SESSION['survey_'.$iSurveyId]['HiddenFields']);
-                }
-                foreach ($fnames as $aFileInfoField)
-                {
-                    $column_model[] = array(
-                        'name' => $aFileInfoField[0],
-                        'index' => $aFileInfoField[0],
-                        'sortable' => false,
-                        'width' => '150',
-                        'align' => 'left',
-                        'editable' => false,
-                        'search' => false,
-                        'hidden' => $bHidden,
-                        'title' => $aFileInfoField[1],
-                    );
-                }
-                continue;
-
-            }
 
             // TODO: upload question type have more than one column (see before)
             // Construction of clean name and title
@@ -860,41 +816,38 @@ class responses extends Survey_Common_Action
                 if(in_array($aFieldName,$aSpecificColumns))
                     continue;
                 $sSurveyEntry=strip_tags(getExtendedAnswer($iSurveyID, $aFieldName, $mFieldValue, $sBrowseLanguage)); // This fix XSS and get the value
+                // Special treatment for file upload fields
                 if($aFieldmap[$aFieldName]['type']=='|' && strpos($aFieldName,'filecount')===false)
                 {
+                    $sSurveyEntry="<table class='table table-condensed'><tr>";
                     $aQuestionAttributes = getQuestionAttributeValues($aFieldmap[$aFieldName]['qid']);
                     $aFilesInfo = json_decode_ls($mFieldValue);
                     for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++)
                     {
+                            $sSurveyEntry .='<tr>';
                         if (isset($aFilesInfo[$iFileIndex]))
                         {
+                            $sSurveyEntry.= '<td>'.CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$row['id'],"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) ).'</td>';
+                            $sSurveyEntry.= '<td>'.sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2)).'</td>';
+
                             if ($aQuestionAttributes['show_title'])
                             {
                                 if (!isset($aFilesInfo[$iFileIndex]['title'])) $aFilesInfo[$iFileIndex]['title']='';
-                                $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8');
+                                $sSurveyEntry.= '<td>'.htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8').'</td>';
                             }
                             if ($aQuestionAttributes['show_comment'])
                             {
                                 if (!isset($aFilesInfo[$iFileIndex]['comment'])) $aFilesInfo[$iFileIndex]['comment']='';
-                                $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8');
+                                $sSurveyEntry.= '<td>'.htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8').'</td>';
                             }
-                            $aSurveyEntry[] = CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$row['id'],"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) );
-                            $aSurveyEntry[] = sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2));
                         }
-                        else
-                        {
-                            $aSurveyEntry[] = "";
-                            $aSurveyEntry[] = "";
-                            $aSurveyEntry[] = "";
-                            $aSurveyEntry[] = "";
-                        }
-
+                            $sSurveyEntry .='</tr>';
                     }
+                    $sSurveyEntry.='</table>';
                 }
-                else
-                {
-                    $aSurveyEntry[] = $sSurveyEntry;
-                }
+
+                $aSurveyEntry[] = $sSurveyEntry;
+
             }
             $all_rows[] = array('id' => $row['id'], 'cell' =>  $aSurveyEntry);
         }
