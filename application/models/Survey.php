@@ -952,6 +952,7 @@ class Survey extends LSActiveRecord
         $aWithRelations[] = 'owner';
         $criteria->compare($sid_reference, $this->searched_value, true);
         $criteria->compare('t.admin', $this->searched_value, true, 'OR');
+        $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
 
 
@@ -1007,7 +1008,7 @@ class Survey extends LSActiveRecord
             ),
         ));
 
-        $dataProvider->setTotalItemCount(count($this->findAll($criteria)));
+        $dataProvider->setTotalItemCount($this->count($criteria));
 
         return $dataProvider;
     }
