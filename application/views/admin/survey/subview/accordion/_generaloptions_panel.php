@@ -78,8 +78,18 @@
     <!-- Survey owner -->
     <div class="form-group">
         <label class="col-sm-3 control-label"  for='owner_id'><?php  eT("Survey owner:"); ?></label>
-        <div class="col-sm-9">
-            <?php echo CHtml::dropDownList('owner_id', $esrow['owner_id'],$users,array('class'=>"form-control")); ?>
+        <div class="col-sm-9"><?php
+            Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                'asDropDownList' => true,
+                'htmlOptions'=>array('style'=>"width: 80%"),
+                'data' => $users,
+                'value' => $esrow['owner_id'],
+                'name' => 'owner_id',
+                'pluginOptions' => array()
+            ));
+
+            // echo CHtml::dropDownList('owner_id', $esrow['owner_id'],$users,array('class'=>"form-control"));
+            ?>
         </div>
     </div>
 

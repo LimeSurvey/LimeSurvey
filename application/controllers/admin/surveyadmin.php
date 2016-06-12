@@ -1446,7 +1446,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['users'] = array();
         foreach ($users as $user)
         {
-            $aData['users'][$user['uid']] = $user['user'];
+            $aData['users'][$user['uid']] = $user['user'].($user['full_name']?' - '.$user['full_name']:'');
         }
         // Sort users by name
         asort($aData['users']);
