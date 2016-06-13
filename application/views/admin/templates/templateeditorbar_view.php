@@ -55,7 +55,7 @@
 
             <!-- Create -->
             <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
-                <?php if(is_writable($usertemplaterootdir)):?>
+                <?php if(is_writable($usertemplaterootdir) ):?>
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
                         <span class="icon-add text-success"></span>
                         <?php eT("Create"); ?>
@@ -72,16 +72,23 @@
 
             <!-- Import -->
             <?php $importModal=false;?>
-            <?php if(is_writable($tempdir) && function_exists("zip_open")):?>
+            <?php if(is_writable($tempdir)):?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
-                    <?php if (is_writable($usertemplaterootdir)):?>
+                    <?php if (is_writable($usertemplaterootdir) && function_exists("zip_open")):?>
                         <?php $importModal=true;?>
                         <a class="btn btn-default" href="" role="button" data-toggle="modal" data-target="#importModal">
                             <span class="icon-import text-success"></span>
                             <?php eT("Import"); ?>
                         </a>
-                        <?php else: ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                        <?php else:
+                        if (function_exists("zip_open")){
+                            $sMessage=gT("The template upload directory doesn't exist or is not writable.");
+                        }
+                        else{
+                            $sMessage=gT("You do not have the required ZIP library installed in PHP.");
+                        }
+                        ?>
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
                             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="icon-import text-success"></span>
                                 <?php eT("Import"); ?>
@@ -98,7 +105,7 @@
                     <?php endif;?>
 
                 <!-- Export -->
-                <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>" role="button">
                         <span class="icon-export text-success"></span>
                         <?php eT("Export"); ?>
@@ -185,7 +192,6 @@
                     <?php endif;?>
                 <?php endif;?>
         </div>
-
 
         <!-- Right Menu -->
         <div class="col-md-7 text-right form-inline">

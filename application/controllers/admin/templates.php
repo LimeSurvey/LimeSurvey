@@ -1002,7 +1002,16 @@ class templates extends Survey_Common_Action
             $files[] = 'question_start.pstpl';
             $Question[] = 'question_start.pstpl';
         }
-        $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile);
+        $sEditFile='';
+        if (file_exists(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile))
+        {
+            $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile);
+        }
+        elseif (file_exists(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.'views'. DIRECTORY_SEPARATOR.$editfile))
+        {
+            $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.'views'. DIRECTORY_SEPARATOR.$editfile);
+        }
+
         // Make sure file is within the template path
         if (strpos($sEditFile,realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename))===false)
         {
