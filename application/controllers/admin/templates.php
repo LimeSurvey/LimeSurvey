@@ -1151,10 +1151,10 @@ class templates extends Survey_Common_Action
 
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
-                    'QUESTION_CODE' => '1a ',
+                    'QUESTION_CODE' => 'Q1 ',
                     'QUESTIONHELP' => '<div class="text-info questionhelp">
                     <span class="fa fa-question-circle" aria-hidden="true"></span>
-                    &nbsp;helpful text
+                    &nbsp;'. gT("This is some helpful text.").'
                     </div>', // Normally output by survey_runtime
                     'QUESTION_MANDATORY' => '<span class="text-danger asterisk"></span>',//gT("*"),  // Normally output by survey_runtime
                     'QUESTION_MAN_CLASS' => ' mandatory',
@@ -1176,7 +1176,7 @@ class templates extends Survey_Common_Action
 
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT('Please explain something in detail:'),
-                    'QUESTION_CODE' => '2a ',
+                    'QUESTION_CODE' => 'Q2 ',
                     'QUESTION_ESSENTIALS' => 'id="question2"',
                     'QUESTION_CLASS' => 'text-long input-error',
                     'QUESTION_NUMBER' => '2',
