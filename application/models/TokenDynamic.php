@@ -944,6 +944,11 @@ class TokenDynamic extends LSActiveRecord
       $criteria->compare('validfrom',$this->validfrom,true);
       $criteria->compare('validuntil',$this->validuntil,true);
 
+      foreach($this->custom_attributes as $sColName => $oColumn)
+      {
+          $criteria->compare($sColName,$this->$sColName,true);
+      }
+
       $dataProvider=new CActiveDataProvider('TokenDynamic', array(
           'sort'=>$sort,
           'criteria'=>$criteria,
