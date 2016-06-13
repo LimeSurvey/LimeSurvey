@@ -35,6 +35,76 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160606) to 2.50+ (build 160613) June 13, 2016
+-New feature: HMTL5 video plugin for question editor (Carsten Schmitz)
+-New feature: Youtube plugin for question editor (Carsten Schmitz)
+-Fixed issue #11363: Import old *.lss (version 1.92) to version 2.5 limesurvey (LouisGac)
+-Fixed issue #10704: Missing translation in table filter (Carsten Schmitz)
+-Fixed issue #10761: Question index menu doesn't work for this survey (incremental index) (LouisGac)
+-Fixed issue #10808: Array (5 point choice) Answers dissapear @ less than 800px viewport width (LouisGac)
+-Fixed issue #10952: Conditions do not show up in conditions designer after creation if using MSSQL and connecting from Linux using FreeTDS (Carsten Schmitz)
+-Fixed issue #11139: Subquestion: add error, more than 1 subquestion will be added (LouisGac)
+-Fixed issue #11157: Error when trying to edit email templates and using PHP7 (Carsten Schmitz)
+-Fixed issue #11159: Some untranslated strings in template preview (Carsten Schmitz)
+-Fixed issue #11197: Quota Action it cant't go back for participant when a quota is full (LouisGac)
+-Fixed issue #11240: Numerical statistics not working (LouisGac)
+-Fixed issue #11283: pagination in Questions in this survey causes a SQL error (MSSQL) (LouisGac)
+-Fixed issue #11285: Export results to .xslx not working under certain server environments (Carsten Schmitz)
+-Fixed issue #11299: 5 point choice - advanced settings - slider with emoticon not working (LouisGac)
+-Fixed issue #11304: PDF export function: (queXML PDF-Export) not working (LouisGac)
+-Fixed issue #11306: Survey list filtering does not find survey owner usernames (Carsten Schmitz)
+-Fixed issue #11319: Risk of template mismanagement when working in several browser windows (Carsten Schmitz)
+-Fixed issue #11320: When clicking "Insert new answer option" Two new rows are added to the answers table (LouisGac)
+-Fixed issue #11320: When clicking "Insert new answer option" Two new rows are added to the answers table (multilang) (LouisGac)
+-Fixed issue #11336: Bad text display when adding participant from CPDB to survey participants (Carsten Schmitz)
+-Fixed issue #11338: List of surveys pagination problem for a limited user (LouisGac)
+-Fixed issue #11340: Yes/no question type buttons too tight on smartphones (Carsten Schmitz)
+-Fixed issue #11341: How do I delete a file once it is uploaded? (Olle Haerstedt)
+-Fixed issue #11346: Better selectbox for survey owner in survey settings (Carsten Schmitz)
+-Fixed issue #11348: sql error with apostrophe in group names (LouisGac)
+-Fixed issue #11350: Using EM in answer can broke Array question type (LouisGac)
+-Fixed issue #11351: Column width of answering statistics is wrong (LouisGac)
+-Fixed issue #11353: Unable to movbe to next page on survey list (LouisGac)
+-Fixed issue #11353: Unable to move to next page on survey list (MSSQL) (LouisGac)
+-Fixed issue #11358: problem with fixed-point number when comma user as separator (Olle Haerstedt)
+-Fixed issue #11359: Token display doesn't search for additional attributes (LouisGac)
+-Fixed issue #11361: progress bar counts hidden questions (LouisGac)
+-Fixed issue #11363: Import old *.lss (version 1.92) to version 2.5 limesurvey (LouisGac)
+-Fixed issue #11366: Survey response table is slow when maximmum number if files in a file upload question is set to a high number (Carsten Schmitz)
+-Fixed issue: Enter token view layout (kairavesloot)
+-Fixed issue: Non-survey owner can change owner (Carsten Schmitz)
+-Fixed issue: Permissions for survey texts and survey settings now properly differentiate (Carsten Schmitz)
+-Fixed issue: Problems at update if non-standard dbprefix is used (Carsten Schmitz)
+-Fixed issue: Question index menu doesn't show active item. (LouisGac)
+-Fixed issue: Survey list, sort arrow direction not updated when sorting by a column (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by c_schmitz, yooyooh, yanglaw, zhoubin86282972
+#Updated translation: Croatian by c_schmitz, rovinj
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by t6nnp6nn
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by Calidonia
+#Updated translation: German by c_schmitz, surveyunihi
+#Updated translation: German (Informal) by HonkXL, c_schmitz, actxcellence, hermann
+#Updated translation: Greek by kiolalis
+#Updated translation: Hindi by ajparag
+#Updated translation: Hungarian by hunkissleslie
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by rhnascimento, mauriciofurtado, holch, thiagosmartins
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Tamil by apmuthu
+#Updated translation: Thai by tomzt, adzpire
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.50+ (build 160603) to 2.50+ (build 160606) June 6, 2016
 -Fixed issue #11144: Response view shifted when file upload question is used and description/title attribute is disabled (Carsten Schmitz)
