@@ -51,7 +51,7 @@ if (isset($alt))
          This field is related to the input thanks to attribute aria-labelledby
     -->
     <div class="label-text label-clickable" id="label-answer319974X233X4277A1">
-        One
+        <?php eT('One'); ?>
     </div>
 </div>
 <!-- end of answer_row -->
@@ -75,7 +75,7 @@ if (isset($alt))
          This field is related to the input thanks to attribute aria-labelledby
     -->
     <div class="label-text label-clickable" id="label-answer319974X233X4277A2">
-        Two
+        <?php eT('Two'); ?>
     </div>
 </div>
 <!-- end of answer_row -->
@@ -99,7 +99,7 @@ if (isset($alt))
          This field is related to the input thanks to attribute aria-labelledby
     -->
     <div class="label-text label-clickable" id="label-answer319974X233X4277A3">
-        Three
+        <?php eT('Three'); ?>
     </div>
 </div>
 <!-- end of answer_row -->

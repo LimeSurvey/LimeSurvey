@@ -1128,7 +1128,7 @@ class templates extends Survey_Common_Action
                 $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array(), true);
 
                 $aData['aReplacements'] = array(
-                    'SAVE_LINKS' => '<li><a href="#" id="saveallbtnlink">Resume later</a></li>',
+                    'SAVE_LINKS' => '<li><a href="#" id="saveallbtnlink">'.gT("Resume later").'</a></li>',
                     'CLEARALL_LINKS' => '<li><a href="#" id="clearallbtnlink">'.gT("Exit and clear survey").'</a></li>'
                 );
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startpage.pstpl", $aData, $oEditedTemplate));
@@ -1142,7 +1142,7 @@ class templates extends Survey_Common_Action
 
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
-                    'QUESTION_CODE' => '1a',
+                    'QUESTION_CODE' => '1a ',
                     'QUESTIONHELP' => '<div class="text-info questionhelp">
                     <span class="fa fa-question-circle" aria-hidden="true"></span>
                     &nbsp;helpful text
@@ -1167,7 +1167,7 @@ class templates extends Survey_Common_Action
 
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT('Please explain something in detail:'),
-                    'QUESTION_CODE' => '2a',
+                    'QUESTION_CODE' => '2a ',
                     'QUESTION_ESSENTIALS' => 'id="question2"',
                     'QUESTION_CLASS' => 'text-long input-error',
                     'QUESTION_NUMBER' => '2',
