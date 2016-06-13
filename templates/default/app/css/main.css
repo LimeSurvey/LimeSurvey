@@ -1,4 +1,45 @@
 img {
     max-width: 150px;
 }
+@media screen and (max-width: 767px) {
+    .array-flexible-row table.questions-list .dontread
+    {
+        display: none;
+    }
+
+    .js td.radio-item label:before {
+        display: none;
+    }
+
+    td.radio-item label.hide.read {
+        left: 0;
+        width: 100%;
+        display: block;
+        height: 100%;
+    }
+
+    .js table.question tbody tr td.radio-item:hover {
+        background: #f9f9f9;
+    }
+
+    .js td.radio-item.checked {
+        background-color: #c6c6c6;
+    }
+
+    .js td.radio-item.checked label {
+        color: #fff;
+    }
+
+    .js td.radio-item input {
+        display: none;
+    }
+}
+
+td.radio-item label.hide.read {
+    left: 0;
+}
+
+.radio-item input[type=radio] {
+    display: none;
+}
 
