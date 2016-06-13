@@ -953,3 +953,8 @@ label, th {
 div.yes-no .btn-group label {
   white-space:normal;
 }
+
+
+.multipleco-other-topic {
+    max-width: 150px;
+}
