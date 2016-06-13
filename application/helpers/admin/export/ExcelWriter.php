@@ -40,6 +40,10 @@ class ExcelWriter extends Writer
         $this->workbook->setTempDir(Yii::app()->getConfig('tempdir'));
         $worksheetName = $survey->languageSettings['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
+        if ($worksheetName=='')
+        {
+            $worksheetName='survey_'.$survey->id;
+        }
         $this->currentSheet = $worksheetName;
         $this->forceDownload=!($oOptions->output=='file');
     }
