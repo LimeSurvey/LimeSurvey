@@ -2,13 +2,7 @@ img {
     max-width: 150px;
 }
 @media screen and (max-width: 767px) {
-    .array-10-pt table.questions-list .dontread
-    , .array-5-pt table.questions-list .dontread
-    ,
     .array-flexible-row table.questions-list .dontread
-    , .array-increase-same-decrease table.questions-list .dontread
-    ,
-    .array-yes-uncertain-no table.questions-list .dontread
     {
         display: none;
     }
