@@ -27,8 +27,3 @@
     ?>
 <?php endforeach; ?>
 </div>
-<p>   kljöjklöjklöjklö
-    <input type="hidden" name="action" value="updatesurveylocalesettings" />
-    <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" />
-    <input type="hidden" name="language" value="<?php echo $surveyls_language; ?>" />
-</p>
