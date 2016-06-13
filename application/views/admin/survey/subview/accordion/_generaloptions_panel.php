@@ -1,49 +1,49 @@
 <?php
 /**
- * General options
- */
+* General options
+*/
 ?>
 <!-- General options -->
 
 <?php if($action=='editsurveysettings'):?>
     <?php
-        $yii = Yii::app();
-        $controller = $yii->getController();
-        $sConfirmLanguage="$(document).on('submit','#globalsetting',function(){\n"
-                        . "  if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){\n"
-                        . "    return false;\n"
-                        . "  }\n"
-                        . "});
-                            function ConfirmLanguageChange(confirmtxt)
-                        {
-                           if ($('#oldlanguages').val().trim()=='')
-                           {
-                                mylangs= []
-                           }
-                           else{
-                                mylangs=$('#oldlanguages').val().split(' ');
-                           }
-                            if (checkSelect2Languages(mylangs))
-                                {
-                                return true;
-                            } else
-                                {
-                                return confirm(confirmtxt);
-                            }
-                        };
+    $yii = Yii::app();
+    $controller = $yii->getController();
+    $sConfirmLanguage="$(document).on('submit','#globalsetting',function(){\n"
+    . "  if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){\n"
+    . "    return false;\n"
+    . "  }\n"
+    . "});
+    function ConfirmLanguageChange(confirmtxt)
+    {
+    if ($('#oldlanguages').val().trim()=='')
+    {
+    mylangs= []
+    }
+    else{
+    mylangs=$('#oldlanguages').val().split(' ');
+    }
+    if (checkSelect2Languages(mylangs))
+    {
+    return true;
+    } else
+    {
+    return confirm(confirmtxt);
+    }
+    };
     function checkSelect2Languages(mylangs)
     {
-        newLanguages=$('#additional_languages').val();
-        for (x = 0; x < mylangs.length; x++)
-        {
-            if ($.inArray(mylangs[x],newLanguages)==-1)
-            {
-                return false;
-            }
-        }
-        return true;
+    newLanguages=$('#additional_languages').val();
+    for (x = 0; x < mylangs.length; x++)
+    {
+    if ($.inArray(mylangs[x],newLanguages)==-1)
+    {
+    return false;
+    }
+    }
+    return true;
     };";
-        Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
+    Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
     ?>
 
     <!-- Base language -->
@@ -76,22 +76,25 @@
     </div>
 
     <!-- Survey owner -->
-    <div class="form-group">
-        <label class="col-sm-3 control-label"  for='owner_id'><?php  eT("Survey owner:"); ?></label>
-        <div class="col-sm-9"><?php
-            Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                'asDropDownList' => true,
-                'htmlOptions'=>array('style'=>"width: 80%"),
-                'data' => $users,
-                'value' => $esrow['owner_id'],
-                'name' => 'owner_id',
-                'pluginOptions' => array()
-            ));
-
-            // echo CHtml::dropDownList('owner_id', $esrow['owner_id'],$users,array('class'=>"form-control"));
-            ?>
+    <?php
+    if (Yii::app()->session['loginID']==$esrow['owner_id'] || Permission::model()->hasGlobalPermission('superadmin','read')):?>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"  for='owner_id'><?php  eT("Survey owner:"); ?></label>
+            <div class="col-sm-9"><?php
+                Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                    'asDropDownList' => true,
+                    'htmlOptions'=>array('style'=>"width: 80%"),
+                    'data' => $users,
+                    'value' => $esrow['owner_id'],
+                    'name' => 'owner_id',
+                    'pluginOptions' => array(
+                    )
+                ));
+                ?>
+            </div>
         </div>
-    </div>
+        <?php endif;?>
+
 
     <!-- Administrator -->
     <div class="form-group">
@@ -125,7 +128,7 @@
         </div>
     </div>
 
-<?php else: ?>
+    <?php else: ?>
     <!-- End URL -->
     <div class="form-group">
         <label class="col-sm-3 control-label" for='url'><?php  eT("End URL:"); ?></label>
@@ -190,43 +193,43 @@
         </div>
     </div>
 
-<?php endif;?>
+    <?php endif;?>
 
-    <!-- Format -->
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for='format'><?php  eT("Format:"); ?></label>
-        <div class="col-sm-9">
+<!-- Format -->
+<div class="form-group">
+    <label class="col-sm-3 control-label" for='format'><?php  eT("Format:"); ?></label>
+    <div class="col-sm-9">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                'name' => 'format',
-                'value'=> $esrow['format'] ,
-                'selectOptions'=>array(
-                    'S' => gT('Question by Question','unescaped'),
-                    'G' => gT('Group by Group','unescaped'),
-                    'A' => gT('All in one','unescaped'))
-                ));?>
-        </div>
+            'name' => 'format',
+            'value'=> $esrow['format'] ,
+            'selectOptions'=>array(
+                'S' => gT('Question by Question','unescaped'),
+                'G' => gT('Group by Group','unescaped'),
+                'A' => gT('All in one','unescaped'))
+        ));?>
     </div>
+</div>
 
-    <!-- Template -->
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for='template'><?php  eT("Template:"); ?></label>
-        <div class="col-sm-5">
-            <select id='template' class="form-control"  name='template'>
-                <?php foreach (array_keys(getTemplateList()) as $tname) {
+<!-- Template -->
+<div class="form-group">
+    <label class="col-sm-3 control-label" for='template'><?php  eT("Template:"); ?></label>
+    <div class="col-sm-5">
+        <select id='template' class="form-control"  name='template'>
+            <?php foreach (array_keys(getTemplateList()) as $tname) {
 
-                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $esrow['template']==htmlspecialchars($tname) ) { ?>
-                        <option value='<?php echo $tname; ?>'
-                            <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
-                                selected='selected'
-                                <?php   } elseif (!$esrow['template'] && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
-                                selected='selected'
-                                <?php } ?>
-                            ><?php echo $tname; ?></option>
-                        <?php }
-                } ?>
-            </select>
-        </div>
-        <div class="col-sm-4 template-img">
-            <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
-        </div>
+                if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $esrow['template']==htmlspecialchars($tname) ) { ?>
+                    <option value='<?php echo $tname; ?>'
+                        <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
+                            selected='selected'
+                            <?php   } elseif (!$esrow['template'] && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
+                            selected='selected'
+                            <?php } ?>
+                        ><?php echo $tname; ?></option>
+                    <?php }
+            } ?>
+        </select>
     </div>
+    <div class="col-sm-4 template-img">
+        <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
+    </div>
+</div>

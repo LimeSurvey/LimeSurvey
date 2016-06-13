@@ -123,7 +123,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
-            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
         $oSurvey=Survey::model()->findByPk($iSurveyID);
@@ -755,143 +755,6 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * Returns surveys in json format
-    *
-    * @access public
-    * @return void
-    */
-    public function getSurveys_json()
-    {
-        $this->getController()->loadHelper('surveytranslator');
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-
-        $oSurvey = new Survey;
-        $oSurvey->permission(Yii::app()->user->getId());
-
-        $aSurveys = $oSurvey->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
-        $aSurveyEntries = new stdClass();
-        $aSurveyEntries->page = 1;
-        foreach ($aSurveys as $rows)
-        {
-            if (!isset($rows->owner->attributes)) $aOwner=array('users_name'=>gT('(None)')); else $aOwner=$rows->owner->attributes;
-            $rows = array_merge($rows->attributes, $rows->defaultlanguage->attributes, $aOwner);
-            $aSurveyEntry = array();
-            // Set status
-            if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
-            {
-                $aSurveyEntry[] = '<!--a--><span class="icon-expired text-warning" title="' . gT("This survey is active but expired.") . '"></span>';
-            }
-            elseif ($rows['active'] == "Y" && $rows['startdate'] != '' && $rows['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
-            {
-                $aSurveyEntry[] = '<!--b--><span class="icon-notyetstarted text-warning" title="' . gT("This survey is active but has a start date.") . '"></span>';
-            }
-            elseif ($rows['active'] == "Y")
-            {
-                if (Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
-                {
-                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/sa/deactivate/surveyid/' . $rows['sid']) . '">
-                    <span class="icon-active text-success" title="' . gT("This survey is active - click here to stop this survey.") . '"></span></a>';
-                }
-                else
-                {
-                    $aSurveyEntry[] = '<!--d-->
-                    <span class="icon-active text-success" title="' . gT("This survey is currently active.") . '"></span>';
-                }
-            }
-            else
-            {
-                $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
-                $questionsCountResult = Question::model()->count($condition);
-
-                if ($questionsCountResult>0 && Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
-                {
-                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><span class="icon-inactive text-warning" title="' . gT("This survey is currently not active - click here to activate this survey.") . '"></span></a>';
-                }
-                else
-                {
-                    $aSurveyEntry[] = '<!--f--><span class="icon-inactive text-warning" class="' . gT("This survey is currently not active.") . '"></span>';
-                }
-            }
-
-            //Set SID
-            $aSurveyEntry[] = $rows['sid'];
-            '<a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
-
-            //Set Title
-            $aSurveyEntry[] = '<a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '">' . CHtml::encode($rows['surveyls_title'])  . '</a>';
-
-            //Set Date
-            Yii::import('application.libraries.Date_Time_Converter', true);
-            $datetimeobj = new Date_Time_Converter($rows['datecreated'], "Y-m-d H:i:s");
-            $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
-
-            //Set Owner
-            if(Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID']==$rows['owner_id'])
-            {
-                $aSurveyEntry[] = $rows['users_name'] . ' (<a class="ownername_edit" translate_to="' . gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. gT('Edit') .'</a>)';
-            }
-            else
-            {
-                $aSurveyEntry[] = $rows['users_name'];
-            }
-            //Set Access
-            if (tableExists('tokens_' . $rows['sid'] ))
-            {
-                $aSurveyEntry[] = gT("Closed");
-            }
-            else
-            {
-                $aSurveyEntry[] = gT("Open");
-            }
-
-            //Set Anonymous
-            if ($rows['anonymized'] == "Y")
-            {
-                $aSurveyEntry[] = gT("Yes");
-            }
-            else
-            {
-                $aSurveyEntry[] = gT("No");
-            }
-
-            //Set Responses
-            if ($rows['active'] == "Y")
-            {
-                $cntResult = SurveyDynamic::countAllAndPartial($rows['sid']);
-                $all = $cntResult['cntall'];
-                $partial = $cntResult['cntpartial'];
-
-                $aSurveyEntry[] = $all - $partial;
-                $aSurveyEntry[] = $partial;
-                $aSurveyEntry[] = $all;
-
-
-                $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']);
-                if (tableExists('tokens_' . $rows['sid'] ))
-                {
-                    $summary = Token::model($rows['sid'])->summary();
-                    $tokens = $summary['count'];
-                    $tokenscompleted = $summary['completed'];
-
-                    $aSurveyEntry[] = $tokens;
-                    $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1).' %';
-                }
-                else
-                {
-                    $aSurveyEntry[] = $aSurveyEntry[] = '';
-                }
-            }
-            else
-            {
-                $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = '';
-            }
-            $aSurveyEntries->rows[] = array('id' => $rows['sid'], 'cell' => $aSurveyEntry);
-        }
-        header('Content-type: application/json');
-        echo ls_json_encode($aSurveyEntries);
-    }
-
-    /**
     * Function responsible to delete a survey.
     *
     * @access public
@@ -963,7 +826,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
         {
             $this->_registerScriptFiles();
 
@@ -1031,7 +894,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'globalsetting';
             $aData['surveybar']['savebutton']['useformid'] = 'true';
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
             {
                 $aData['surveybar']['saveandclosebutton']['form'] = true;
             }
@@ -1046,8 +909,8 @@ class SurveyAdmin extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);

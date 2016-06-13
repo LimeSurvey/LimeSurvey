@@ -33,7 +33,7 @@ class printablesurvey extends Survey_Common_Action
         {
             $aData['surveyid'] = $surveyid;
             $message['title']= gT('Access denied!');
-            $message['message']= gT('You do not have sufficient rights to access this page.');
+            $message['message']= gT('You do not have permission to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }

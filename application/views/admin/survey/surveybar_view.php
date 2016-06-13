@@ -156,7 +156,8 @@
                         </button>
 
                         <ul class="dropdown-menu">
-                            <?php if($surveylocale && $surveysettings): ?>
+                            <?php
+                            if($surveylocale || $surveysettings): ?>
 
                                 <!-- Edit text elements and general settings -->
                                 <li>

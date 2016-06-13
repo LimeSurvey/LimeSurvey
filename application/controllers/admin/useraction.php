@@ -38,7 +38,7 @@ class UserAction extends Survey_Common_Action
     public function index()
     {
         if (!Permission::model()->hasGlobalPermission('users','read')) {
-            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array("admin/"));
         }
 
@@ -96,7 +96,7 @@ class UserAction extends Survey_Common_Action
     public function adduser()
     {
         if (!Permission::model()->hasGlobalPermission('users','create')) {
-            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
 
@@ -196,7 +196,7 @@ class UserAction extends Survey_Common_Action
     {
 
         if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
-            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $action = Yii::app()->request->getPost("action");
@@ -261,7 +261,7 @@ class UserAction extends Survey_Common_Action
                 }
                 else
                 {
-                    Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+                    Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
                     $this->getController()->redirect(array("admin/user/sa/index"));
                 }
             }
@@ -284,7 +284,7 @@ class UserAction extends Survey_Common_Action
     public function deleteFinalUser($result, $transfer_surveys_to)
     {
         if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
-            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $postuserid = (int) Yii::app()->request->getPost("uid");
@@ -362,7 +362,7 @@ class UserAction extends Survey_Common_Action
             }
             else
             {
-                Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+                Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
@@ -575,7 +575,7 @@ class UserAction extends Survey_Common_Action
             }
             else
             {
-                Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+                Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
@@ -659,7 +659,7 @@ class UserAction extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
     }
