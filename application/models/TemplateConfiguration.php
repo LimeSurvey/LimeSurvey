@@ -198,8 +198,8 @@ class TemplateConfiguration extends CFormModel
         // It will create the asset directory, and publish the css and js files
         Yii::app()->clientScript->addPackage( 'survey-template', array(
             'basePath'    => 'survey.template.path',
-            'css'         => $this->config->files->css->filename,
-            'js'          => $this->config->files->js->filename,
+            'css'         => $aCssFiles,
+            'js'          => $aJsFiles,
             'depends'     => $this->depends,
         ) );
     }
