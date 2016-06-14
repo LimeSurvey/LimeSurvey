@@ -263,6 +263,15 @@
                         <img src='<?php echo $sImageURL;?>tokens.png' alt='<?php eT("Token management");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                 </li>
                 <?php } ?>
+
+            <?php foreach ($menu as $menuItem): ?>
+                <li>
+                    <a href="<?php echo $menuItem['href']; ?>">
+                        <img src="<?php echo $sImageURL; ?><?php echo $menuItem['image']; ?>" alt="<?php echo $menuItem['alt']; ?>"/>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+
         </ul>
 
         <div class='menubar-right'>
