@@ -357,6 +357,44 @@ function activateSurvey($iSurveyID, $simulate = false)
             case '*': // Equation
                 $createsurvey[$arow['fieldname']] = "text";
                 break;
+            case 'R':
+
+                /**
+                 * Patch for bug #09828: Ranking question : update allowed can broke Survey DB
+                 *
+                 * Solution is to store number of answers as max answers (hidden attribute),
+                 * then check this attribute when answer options is saved.
+                 *
+                 * The longterm solution is to make answer options subquestions instead.
+                 */
+
+                $nrOfAnswers = Answer::model()->countByAttributes(
+                    array('qid' => $arow['qid'])
+                );
+
+                $oQuestionAttribute = QuestionAttribute::model()->find(
+                    "qid = :qid AND attribute = '__max_db_answers'",
+                    array(':qid' => $arow['qid'])
+                );
+
+                if (empty($oQuestionAttribute))
+                {
+                    $oQuestionAttribute = new QuestionAttribute();
+                    $oQuestionAttribute->qid = $arow['qid'];
+                    $oQuestionAttribute->attribute = '__max_db_answers';
+                    $oQuestionAttribute->value = $nrOfAnswers;
+                    $oQuestionAttribute->language = getBaseLanguageFromSurveyID($iSurveyID);
+                    $oQuestionAttribute->save();
+                }
+                else
+                {
+                    $oQuestionAttribute->value = $nrOfAnswers;
+                    $oQuestionAttribute->save();
+                }
+
+                $createsurvey[$arow['fieldname']] = "string(5)";
+
+                break;
             default:
                 $createsurvey[$arow['fieldname']] = "string(5)";
         }
