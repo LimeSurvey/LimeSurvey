@@ -1212,19 +1212,6 @@ function buildsurveysession($surveyid,$preview=false)
     ." AND {{questions}}.parent_qid=0\n";
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    // We can't count the non-hidden questions doing a join on previous query, because if a question is not hidden, it can have no "hidden" attribute
-    $sQuery = "SELECT count(*)\n"
-    ." FROM {{questions}} \n"
-    ." JOIN {{question_attributes}} ON {{question_attributes}}.qid = {{questions}}.qid"
-    ." WHERE {{questions}}.sid=".$surveyid."\n"
-    ." AND {{question_attributes}}.attribute='hidden'"
-    ." AND {{question_attributes}}.value='1'"
-    ." AND {{questions}}.language='".App()->getLanguage()."'\n"
-    ." AND {{questions}}.parent_qid=0\n";
-    $totalHiddenQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
-
-    $totalquestions = $totalquestions - $totalHiddenQuestions;
-
     $sQuery= "select count(*) from {{groups}}
         left join {{questions}} on  {{groups}}.gid={{questions}}.gid
         where {{groups}}.sid={$surveyid} and qid is null";
