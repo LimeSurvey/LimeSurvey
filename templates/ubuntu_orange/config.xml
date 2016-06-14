@@ -48,6 +48,7 @@
                 <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
                 <filename>css/ubuntu_orange-rtl.css</filename>
                 <filename>css/template-rtl.css</filename>
+                <filename>css/template-ubuntu-orange.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>
