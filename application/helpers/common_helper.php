@@ -5347,8 +5347,14 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 */
 function convertToGlobalSettingFormat($sDate)
 {
+
     try
     {
+        // Workaround for bug in older PHP version (confirmed for 5.5.9)
+        // The bug is causing invalid dates to create an internal server error which cannot not be caught by try.. catch
+        if (@strtotime($sDate) === false) {
+            throw new Exception("Failed to parse date string ({$sDate})");
+        }
         $oDate           = new DateTime($sDate);                                    // We generate the Date object (PHP will deal with the format of the string)
         $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
         $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
