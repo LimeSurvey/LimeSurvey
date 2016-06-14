@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-13 10:17:12+00:00\n"
+"POT-Creation-Date: 2016-06-14 14:09:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -348,7 +348,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:385
 #: application/controllers/admin/responses.php:1202
 #: application/controllers/admin/usergroups.php:268
-#: application/helpers/common_helper.php:6175
+#: application/helpers/common_helper.php:6181
 msgid "Access denied!"
 msgstr ""
 
@@ -1821,7 +1821,7 @@ msgstr ""
 #: application/views/admin/dataentry/content_view.php:327
 #: application/views/admin/dataentry/content_view.php:374
 #: application/views/survey/questions/listradio/rows/answer_row_other.php:53
-#: application/views/survey/questions/multiplechoice_with_comments/rows/answer_row_other.php:49
+#: application/views/survey/questions/multiplechoice_with_comments/rows/answer_row_other.php:50
 msgid "Other"
 msgstr ""
 
@@ -2181,7 +2181,7 @@ msgstr ""
 #: application/controllers/admin/pluginmanager.php:89
 #: application/controllers/admin/pluginmanager.php:136
 #: application/controllers/admin/pluginmanager.php:178
-#: application/controllers/admin/pluginmanager.php:198
+#: application/controllers/admin/pluginmanager.php:196
 #: application/core/Survey_Common_Action.php:75
 msgid "No permission"
 msgstr ""
@@ -2279,8 +2279,8 @@ msgstr ""
 #: application/helpers/common_helper.php:949
 #: application/helpers/common_helper.php:1019
 #: application/helpers/common_helper.php:3663
-#: application/helpers/common_helper.php:7356
-#: application/helpers/common_helper.php:7396
+#: application/helpers/common_helper.php:7362
+#: application/helpers/common_helper.php:7402
 #: application/views/admin/dataentry/content_view.php:239
 #: application/views/admin/token/bounce.php:31
 msgid "None"
@@ -2797,15 +2797,15 @@ msgstr ""
 msgid "Plugin was deactivated."
 msgstr ""
 
-#: application/controllers/admin/pluginmanager.php:189
+#: application/controllers/admin/pluginmanager.php:187
 msgid "The plugin was not found."
 msgstr ""
 
-#: application/controllers/admin/pluginmanager.php:208
+#: application/controllers/admin/pluginmanager.php:206
 msgid "The plugin settings were saved."
 msgstr ""
 
-#: application/controllers/admin/pluginmanager.php:220
+#: application/controllers/admin/pluginmanager.php:218
 msgid "This plugin has no settings."
 msgstr ""
 
@@ -3677,29 +3677,29 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2746
 #: application/controllers/admin/tokens.php:2788
 #: application/controllers/admin/useraction.php:821
-#: application/helpers/common_helper.php:6181
-#: application/helpers/common_helper.php:6186
-#: application/helpers/common_helper.php:6191
-#: application/helpers/common_helper.php:6196
-#: application/helpers/common_helper.php:6201
-#: application/helpers/common_helper.php:6206
-#: application/helpers/common_helper.php:6211
-#: application/helpers/common_helper.php:6216
-#: application/helpers/common_helper.php:6221
+#: application/helpers/common_helper.php:6187
+#: application/helpers/common_helper.php:6192
+#: application/helpers/common_helper.php:6197
+#: application/helpers/common_helper.php:6202
+#: application/helpers/common_helper.php:6207
+#: application/helpers/common_helper.php:6212
+#: application/helpers/common_helper.php:6217
+#: application/helpers/common_helper.php:6222
 #: application/helpers/common_helper.php:6227
 #: application/helpers/common_helper.php:6233
-#: application/helpers/common_helper.php:6238
-#: application/helpers/common_helper.php:6243
-#: application/helpers/common_helper.php:6248
-#: application/helpers/common_helper.php:6253
-#: application/helpers/common_helper.php:6258
+#: application/helpers/common_helper.php:6239
+#: application/helpers/common_helper.php:6244
+#: application/helpers/common_helper.php:6249
+#: application/helpers/common_helper.php:6254
+#: application/helpers/common_helper.php:6259
 #: application/helpers/common_helper.php:6264
-#: application/helpers/common_helper.php:6269
-#: application/helpers/common_helper.php:6278
-#: application/helpers/common_helper.php:6283
-#: application/helpers/common_helper.php:6290
-#: application/helpers/common_helper.php:6294
-#: application/helpers/common_helper.php:6298
+#: application/helpers/common_helper.php:6270
+#: application/helpers/common_helper.php:6275
+#: application/helpers/common_helper.php:6284
+#: application/helpers/common_helper.php:6289
+#: application/helpers/common_helper.php:6296
+#: application/helpers/common_helper.php:6300
+#: application/helpers/common_helper.php:6304
 #: application/helpers/frontend_helper.php:936
 #: application/helpers/frontend_helper.php:1165
 #: application/views/admin/authentication/message.php:35
@@ -4048,6 +4048,10 @@ msgstr ""
 msgid "How many roads must a man walk down?"
 msgstr ""
 
+#: application/controllers/admin/templates.php:1157
+msgid "This is some helpful text."
+msgstr ""
+
 #: application/controllers/admin/templates.php:1168
 msgid "Hint when response is valid"
 msgstr ""
@@ -4061,8 +4065,8 @@ msgid "Hint when response is not valid"
 msgstr ""
 
 #: application/controllers/admin/templates.php:1202
-#: application/helpers/frontend_helper.php:1692
-#: application/helpers/frontend_helper.php:2085
+#: application/helpers/frontend_helper.php:1679
+#: application/helpers/frontend_helper.php:2072
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:62
 #: application/views/installer/dbsettings_view.php:12
@@ -4074,7 +4078,7 @@ msgstr ""
 
 #: application/controllers/admin/templates.php:1203
 #: application/controllers/admin/templates.php:1211
-#: application/helpers/frontend_helper.php:1707
+#: application/helpers/frontend_helper.php:1694
 #: application/views/admin/participants/displayParticipants_view.php:134
 #: application/views/admin/quotas/newanswer_view.php:29
 #: application/views/admin/quotas/newanswertwo_view.php:35
@@ -4556,10 +4560,10 @@ msgstr ""
 #: application/helpers/common_helper.php:368
 #: application/helpers/common_helper.php:948
 #: application/helpers/common_helper.php:1018
-#: application/helpers/common_helper.php:6931
-#: application/helpers/common_helper.php:6968
-#: application/helpers/common_helper.php:7355
-#: application/helpers/common_helper.php:7395
+#: application/helpers/common_helper.php:6937
+#: application/helpers/common_helper.php:6974
+#: application/helpers/common_helper.php:7361
+#: application/helpers/common_helper.php:7401
 #: application/helpers/qanda_helper.php:1236
 #: application/helpers/qanda_helper.php:1915
 #: application/helpers/qanda_helper.php:4765
@@ -4921,7 +4925,7 @@ msgstr ""
 #: application/controllers/survey/index.php:430
 #: application/helpers/frontend_helper.php:1038
 #: application/helpers/frontend_helper.php:1079
-#: application/helpers/frontend_helper.php:1282
+#: application/helpers/frontend_helper.php:1269
 msgid "For further information please contact %s"
 msgstr ""
 
@@ -5315,7 +5319,7 @@ msgstr ""
 #: application/helpers/SurveyRuntimeHelper.php:178
 #: application/helpers/SurveyRuntimeHelper.php:179
 #: application/helpers/SurveyRuntimeHelper.php:331
-#: application/helpers/frontend_helper.php:1704
+#: application/helpers/frontend_helper.php:1691
 #: application/helpers/replacements_helper.php:324
 #: application/views/admin/dataentry/active_html_view.php:72
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
@@ -7614,246 +7618,246 @@ msgstr ""
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:6180
+#: application/helpers/common_helper.php:6186
 msgid "You are not allowed dump the database!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6185
+#: application/helpers/common_helper.php:6191
 msgid "You are not allowed export a label set!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6190
+#: application/helpers/common_helper.php:6196
 msgid "You are not allowed to change user data!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6195
+#: application/helpers/common_helper.php:6201
 msgid "You are not allowed to create surveys!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6200
+#: application/helpers/common_helper.php:6206
 msgid "You are not allowed to delete this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6205
+#: application/helpers/common_helper.php:6211
 msgid "You are not allowed to add new questions for this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6210
+#: application/helpers/common_helper.php:6216
 msgid "You are not allowed to activate this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6215
+#: application/helpers/common_helper.php:6221
 msgid "You are not allowed to stop this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6220
+#: application/helpers/common_helper.php:6226
 msgid "You are not allowed to add a group to this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6226
+#: application/helpers/common_helper.php:6232
 msgid "You are not allowed to order groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6232
+#: application/helpers/common_helper.php:6238
 msgid "You are not allowed to edit this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6237
+#: application/helpers/common_helper.php:6243
 msgid "You are not allowed to edit groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6242
+#: application/helpers/common_helper.php:6248
 msgid "You are not allowed to browse responses!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6247
+#: application/helpers/common_helper.php:6253
 msgid "You are not allowed to set assessment rules!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6252
+#: application/helpers/common_helper.php:6258
 msgid "You are not allowed to delete this group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6257
+#: application/helpers/common_helper.php:6263
 msgid "You are not allowed to import a survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6263
+#: application/helpers/common_helper.php:6269
 msgid "You are not allowed to import a group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6268
+#: application/helpers/common_helper.php:6274
 msgid "You are not allowed to to import a question!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6277
-#: application/helpers/common_helper.php:6282
+#: application/helpers/common_helper.php:6283
+#: application/helpers/common_helper.php:6288
 msgid "Security alert"
 msgstr ""
 
-#: application/helpers/common_helper.php:6277
-#: application/helpers/common_helper.php:6282
+#: application/helpers/common_helper.php:6283
+#: application/helpers/common_helper.php:6288
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
-#: application/helpers/common_helper.php:6277
-#: application/helpers/common_helper.php:6282
+#: application/helpers/common_helper.php:6283
+#: application/helpers/common_helper.php:6288
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
-#: application/helpers/common_helper.php:6287
+#: application/helpers/common_helper.php:6293
 msgid "You are not allowed to perform this operation!"
 msgstr ""
 
-#: application/helpers/common_helper.php:7041
+#: application/helpers/common_helper.php:7047
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:7485
+#: application/helpers/common_helper.php:7491
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:7486
+#: application/helpers/common_helper.php:7492
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:7487
+#: application/helpers/common_helper.php:7493
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7488
+#: application/helpers/common_helper.php:7494
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:7489
+#: application/helpers/common_helper.php:7495
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7490
+#: application/helpers/common_helper.php:7496
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7491
+#: application/helpers/common_helper.php:7497
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7492
+#: application/helpers/common_helper.php:7498
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7493
+#: application/helpers/common_helper.php:7499
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7494
+#: application/helpers/common_helper.php:7500
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7495
+#: application/helpers/common_helper.php:7501
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7496
+#: application/helpers/common_helper.php:7502
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7497
+#: application/helpers/common_helper.php:7503
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:7498
+#: application/helpers/common_helper.php:7504
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7499
+#: application/helpers/common_helper.php:7505
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:7500
+#: application/helpers/common_helper.php:7506
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7501
+#: application/helpers/common_helper.php:7507
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7502
+#: application/helpers/common_helper.php:7508
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:7503
+#: application/helpers/common_helper.php:7509
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:7504
+#: application/helpers/common_helper.php:7510
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:7505
+#: application/helpers/common_helper.php:7511
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:7506
+#: application/helpers/common_helper.php:7512
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7507
+#: application/helpers/common_helper.php:7513
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:7508
+#: application/helpers/common_helper.php:7514
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:7509
+#: application/helpers/common_helper.php:7515
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7510
+#: application/helpers/common_helper.php:7516
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7511
+#: application/helpers/common_helper.php:7517
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7512
+#: application/helpers/common_helper.php:7518
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7513
+#: application/helpers/common_helper.php:7519
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:7514
+#: application/helpers/common_helper.php:7520
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:7515
+#: application/helpers/common_helper.php:7521
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7516
+#: application/helpers/common_helper.php:7522
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:7517
+#: application/helpers/common_helper.php:7523
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:7518
+#: application/helpers/common_helper.php:7524
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:7519
+#: application/helpers/common_helper.php:7525
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7520
+#: application/helpers/common_helper.php:7526
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:7524
+#: application/helpers/common_helper.php:7530
 msgid "(Automatic)"
 msgstr ""
 
@@ -8696,15 +8700,15 @@ msgstr ""
 msgid "Security Question"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1273
+#: application/helpers/frontend_helper.php:1260
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1276
+#: application/helpers/frontend_helper.php:1263
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1279
+#: application/helpers/frontend_helper.php:1266
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
