@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-14 14:05:56+00:00\n"
+"POT-Creation-Date: 2016-06-14 14:09:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18191,14 +18191,6 @@ msgstr ""
 
 #: application/views/survey/questions/file_upload/answer.php:20
 msgid "Upload files"
-msgstr ""
-
-#: application/views/survey/questions/multiplechoice_with_comments/rows/answer_row_other.php:46
-msgid "Insert topic here"
-msgstr ""
-
-#: application/views/survey/questions/multiplechoice_with_comments/rows/answer_row_other.php:75
-msgid "Elaborate here"
 msgstr ""
 
 #: application/views/survey/questions/multiplenumeric/answer.php:31
