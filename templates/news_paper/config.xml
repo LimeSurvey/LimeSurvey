@@ -31,6 +31,7 @@
             <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
             <filename>css/news_paper.css</filename>
             <filename>css/template.css</filename>
+            <filename>css/template-news-paper.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
