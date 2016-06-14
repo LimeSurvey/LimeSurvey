@@ -260,4 +260,5 @@ return array(
             'Uri.js'
         ),
     )
+
 );

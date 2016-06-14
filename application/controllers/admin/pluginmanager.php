@@ -179,8 +179,6 @@ class PluginManager extends Survey_Common_Action
             $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
         }
 
-        App()->getClientScript()->registerPackage('select2');
-
         $arPlugin      = Plugin::model()->findByPk($id)->attributes;
         $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
 
