@@ -80,6 +80,10 @@ class LSYii_Application extends CWebApplication
         {
             $this->setLanguage($this->request->getParam('lang'));
         }
+        elseif (isset(App()->session['_lang']))                                 // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
+        {
+            $this->setLanguage(App()->session['_lang']);
+        }
 
     }
     /**
@@ -182,6 +186,7 @@ class LSYii_Application extends CWebApplication
     {
         $sLanguage=preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
         $this->messages->catalog = $sLanguage;
+        App()->session['_lang'] = $sLanguage;                                   // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
         parent::setLanguage($sLanguage);
     }
 
