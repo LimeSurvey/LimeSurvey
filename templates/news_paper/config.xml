@@ -55,6 +55,7 @@
                 <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
                 <filename>css/news_paper-rtl.css</filename>
                 <filename>css/template-rtl.css</filename>
+                <filename>css/template-news-paper.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>
