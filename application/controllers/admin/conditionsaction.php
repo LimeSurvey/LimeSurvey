@@ -795,13 +795,9 @@ class conditionsaction extends Survey_Common_Action {
                         {
                             $shortquestion=$rows['title'].":{$yrow['title']}:$key: [".strip_tags($yrow['question']). "][" .strip_tags($val). "] " . flattenText($rows['question']);
                             $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key);
-
-                            if ($rows['type'] == ":")
+                            if ($rows['mandatory'] != 'Y')
                             {
-                                for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
-                                {
-                                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key, $ii, $ii);
-                                }
+                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key, "", gT("No answer"));
                             }
                         }
                     }
@@ -1101,9 +1097,9 @@ class conditionsaction extends Survey_Common_Action {
             foreach($canswers as $can)
             {
                 $an = ls_json_encode(flattenText($can[2]));
-                $javascriptpre .= "Fieldnames[$jn]='$can[0]';\n"
-                . "Codes[$jn]='$can[1]';\n"
-                . "Answers[$jn]={$an};\n";
+                $javascriptpre .= "Fieldnames[{$jn}]='{$can[0]}';\n"
+                . "Codes[{$jn}]='{$can[1]}';\n"
+                . "Answers[{$jn}]={$an};\n";
                 $jn++;
             }
         }
