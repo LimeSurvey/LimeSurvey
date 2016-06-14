@@ -76,13 +76,13 @@
                             />
 
                             <?php if($slider_showminmax): ?>
-                                <div class='pull-left slider-min-badge'>
+                                <div class='pull-<?php if (getLanguageRTL(App()->language)): echo 'right'; else: echo 'left'; endif; ?> '>
                                     <span class='help-block'><?php echo $slider_min; ?></span>
                                 </div>
                             <?php endif; ?>
 
                             <?php if($slider_showminmax): ?>
-                                <div class='pull-right'>
+                                <div class='pull-<?php if (getLanguageRTL(App()->language)): echo 'left'; else: echo 'right'; endif; ?> '>
                                     <span class='help-block'><?php echo $slider_max; ?></span>
                                 </div>
                             <?php endif; ?>
