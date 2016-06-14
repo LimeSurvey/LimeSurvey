@@ -43,7 +43,7 @@
 
         <input
            class="text other form-control input-sm  multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
-           placeholder="<?php eT('Insert topic here'); ?>"
+
            type="text"
            name="<?php echo $name; ?>"
            id="<?php echo $id;?>"
@@ -72,7 +72,7 @@
 
         <input
             class='form-control text input-sm <?php echo $kpclass; ?>'
-            placeholder="<?php eT('Elaborate here'); ?>"
+            
             type='text'
             size='40'
             id='<?php echo $inputCommentId;?>'
