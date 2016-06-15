@@ -311,11 +311,36 @@ class database extends Survey_Common_Action
                 foreach ($aSurveyLanguages as $sLanguage)
                 {
                     $iPosition=0;
+
+                    // Give to subquestions to edit a temporary random title to avoid title duplication on update
+                    foreach ($aRows[$iScaleID][$sLanguage] as $subquestionkey=>$subquestionvalue)
+                    {
+                        if (substr($subquestionkey,0,3)!='new')
+                        {
+                            $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$sLanguage));
+
+                            $bAnswerSave = false;
+
+                            while( !$bAnswerSave )
+                            {
+                                $oSubQuestion->title       = rand ( 11111 , 99999 );  // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                                if($oSubQuestion->save())
+                                {
+                                    $bAnswerSave = true;
+                                }
+                            }
+                        }
+                    }
+
+
                     foreach ($aRows[$iScaleID][$sLanguage] as $subquestionkey=>$subquestionvalue)
                     {
 
                         if (substr($subquestionkey,0,3)!='new')           //update record
                         {
+
+                            //
+
                             $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$sLanguage));
                             if(!is_object($oSubQuestion))
                             {
