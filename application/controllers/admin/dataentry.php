@@ -209,7 +209,7 @@ class dataentry extends Survey_Common_Action
                     gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
                     Yii::app()->getConfig('tempdir')
                 );
-                $aData['aResult']['errors'][] = "<pre>".
+                //$aData['aResult']['errors'][] = "<pre>".
                 $aData['aUrls'][] = array(
                     'link'=>$this->getController()->createUrl('admin/dataentry/sa/vvimport/surveyid/'.$aData['surveyid']),
                     'text'=>$aData['aUrlText'][] = gT("Back to Response Import"),
