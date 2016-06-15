@@ -296,7 +296,6 @@ return array(
             'Uri.js'
         ),
     ),
-
     'bootstrap-datetimepicker' => array(
         'basePath' => 'third_party.bootstrap-datetimepicker',
         'css' => array(
@@ -325,7 +324,15 @@ return array(
             'bootstrap',
             'moment'
         )
-    )
-
-
+    ),
+    
+    'fancytree' => array(
+        'basePath' => 'third_party.fancytree',
+        'js' => array(
+            'jquery.fancytree-all.min.js'
+        ),
+        'css' => array(
+            'skin-bootstrap-n/ui.fancytree.min.css'
+        ),
+    ),
 );
