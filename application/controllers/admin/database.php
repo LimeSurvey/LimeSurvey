@@ -176,7 +176,7 @@ class database extends Survey_Common_Action
                 for ($iSortOrderID=1;$iSortOrderID<$iMaxCount;$iSortOrderID++)
                 {
                     $sCode=sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
-
+                    //var_dump($sCode);
                     $iAssessmentValue=(int) Yii::app()->request->getPost('assessment_'.$iSortOrderID.'_'.$iScaleID);
                     foreach ($aSurveyLanguages as $sLanguage)
                     {
@@ -184,6 +184,7 @@ class database extends Survey_Common_Action
 
                         // Fix bug with FCKEditor saving strange BR types
                         $sAnswerText=$oFixCKeditor->fixCKeditor($sAnswerText);
+                        
                         // Now we insert the answers
                         $iInsertCount=Answer::model()->insertRecords(array('code'=>$sCode,
                             'answer'=>$sAnswerText,
