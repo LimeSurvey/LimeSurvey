@@ -160,6 +160,7 @@
                         $('#javatbd' + myfname).find('div.tooltip').show(); // Show the tooltip
                         $sliderNoActionEl.val(0); // The user did an action
                         value = $inputEl.val(); // We get the current value of the bootstrapSlider
+                        console.log('value', value);
                         displayValue = value.toString().replace('.',$separator); // We format it with the right separator
                         $inputEl.val(displayValue); // We parse it to the element
                     });

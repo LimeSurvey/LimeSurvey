@@ -147,7 +147,7 @@
                             <?php echo $labelcode0_checked[$ansrow['title']][$ld]; ?>
                         />
                         <label for="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>">
-                            <span class="visible-xs-block label-text"><?php echo $ld;?></span>
+                            <span class="visible-xs-block label-text"><?php echo $labelans0[$j];?></span>
                         </label>
                     </td>
                 <?php endforeach; ?>
@@ -183,7 +183,7 @@
                                 <?php echo $labelcode1_checked[$ansrow['title']][$ld]; ?>
                             />
                             <label for="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>">
-                                <span class="visible-xs-block label-text"><?php echo $ld;?></span>
+                                <span class="visible-xs-block label-text"><?php echo $labelans1[$k];?></span>
                             </label>
                         </td>
                     <?php endforeach; ?>
