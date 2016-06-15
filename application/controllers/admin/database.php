@@ -195,7 +195,7 @@ class database extends Survey_Common_Action
                         $oAnswer->assessment_value  = $iAssessmentValue;
                         $oAnswer->scale_id          = $iScaleID;
 
-                        if (!$oAnswer->save()) // Checked
+                        if (!$oAnswer->save())
                         {
                             $sErrors = '<br/>';
                             foreach ( $oAnswer->getErrors() as $sError)
@@ -381,15 +381,30 @@ class database extends Survey_Common_Action
                         }
                         else
                         {
+
                             $aErrors=$oSubQuestion->getErrors();
                             if(count($aErrors))
                             {
-                                //$sErrorMessage=gT("Question could not be updated with this errors:");
                                 foreach($aErrors as $sAttribute=>$aStringErrors)
                                 {
                                     foreach($aStringErrors as $sStringErrors)
                                         Yii::app()->setFlashMessage(sprintf(gT("Error on %s for subquestion %s: %s"), $sAttribute,$aCodes[$iScaleID][$iPosition],$sStringErrors),'error');
                                 }
+
+                                // Let's give a new to code to the answer to save it, so user entries are not lost
+                                $bAnswerSave = false;
+
+                                while( !$bAnswerSave )
+                                {
+                                    $oSubQuestion->title       = rand ( 11111 , 99999 );  // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                                    if($oSubQuestion->save())
+                                    {
+                                        $sErrors = '<strong>'.gT('answer code has been updated to: ').$oSubQuestion->title.'</strong><br/>';
+                                        Yii::app()->setFlashMessage($sErrors,'error');
+                                        $bAnswerSave = true;
+                                    }
+                                }
+
                             }
                             else
                             {
