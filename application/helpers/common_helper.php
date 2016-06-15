@@ -3132,8 +3132,8 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Logic'),
         'sortorder'=>12,
         'inputtype'=>'integer',
-        "help"=>gT('Limit the number of possible answers fixed by number of columns in DB'),
-        "caption"=>gT('Maximum DB answers'));
+        "help"=>gT('Limit the number of possible answers fixed by number of columns in database'),
+        "caption"=>gT('Maximum columns for answers'));
 
         $qattributes["maximum_chars"]=array(
         "types"=>"STUNQK:;",
