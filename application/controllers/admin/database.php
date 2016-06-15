@@ -184,7 +184,7 @@ class database extends Survey_Common_Action
 
                         // Fix bug with FCKEditor saving strange BR types
                         $sAnswerText=$oFixCKeditor->fixCKeditor($sAnswerText);
-                        
+
                         // Now we insert the answers
                         $oAnswer = new Answer;
                         $oAnswer->code              = $sCode;
@@ -201,6 +201,22 @@ class database extends Survey_Common_Action
                             foreach ( $oAnswer->getErrors() as $sError)
                             {
                                 $sErrors .= $sError[0].'<br/>';
+                            }
+
+
+                            $bAnswerSave = false;
+                            while( !$bAnswerSave )
+                            {
+                                $oAnswer->code       = rand ( 11111 , 99999 );
+                                if($oAnswer->save())
+                                {
+                                    $sErrors .= '<strong>'.gT('answer code has been updated to: ').$oAnswer->code.'</strong><br/>';
+                                    $bAnswerSave = true;
+                                }
+                                else
+                                {
+                                    die();
+                                }
                             }
 
                             Yii::app()->setFlashMessage(gT("Failed to update answer: ").$sCode.$sErrors,'error');
