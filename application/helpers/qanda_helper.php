@@ -1861,23 +1861,23 @@ function do_ranking($ia)
 
     $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();
     $anscount  = count($ansresult);
-
+    $maxDbAnswer = intval($aQuestionAttributes['maxDBanswers']) > 0 ? intval($aQuestionAttributes['maxDBanswers']) : $anscount;
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
         $max_answers = trim($aQuestionAttributes["max_answers"]);
     }
     else
     {
-        $max_answers = $anscount;
+        $max_answers = $maxDbAnswer;
     }
     // Get the max number of line needed
-    if(ctype_digit($max_answers) && intval($max_answers)<$anscount)
+    if(ctype_digit($max_answers) && intval($max_answers)<$maxDbAnswer)
     {
         $iMaxLine = $max_answers;
     }
     else
     {
-        $iMaxLine = $anscount;
+        $iMaxLine = $maxDbAnswer;
     }
     if (trim($aQuestionAttributes["min_answers"])!='')
     {

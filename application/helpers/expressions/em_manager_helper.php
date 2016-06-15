@@ -2144,7 +2144,11 @@
                 {
                     $max_answers='';
                 }
+                /* @todo : Specific with Ranking question : $max_answers is not set but $maxDBanswers < $answerCount OR $maxDBanswers < max_answres (maybe) */
+                if (isset($qattr['maxDBanswers']) && trim($qattr['maxDBanswers']) != '')
+                {
 
+                }
                 // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
                 if($type=="K" && isset($qattr['slider_min']) && ( !isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n'])==''))
                     $qattr['min_num_value_n']=$qattr['slider_min'];
