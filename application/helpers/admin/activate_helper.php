@@ -383,7 +383,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                     $oQuestionAttribute->qid = $arow['qid'];
                     $oQuestionAttribute->attribute = '__max_db_answers';
                     $oQuestionAttribute->value = $nrOfAnswers;
-                    $oQuestionAttribute->language = getBaseLanguageFromSurveyID($iSurveyID);
+                    $oQuestionAttribute->language = Survey::model()->findByPk($iSurveyID)->language;
                     $oQuestionAttribute->save();
                 }
                 else
