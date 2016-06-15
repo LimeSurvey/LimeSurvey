@@ -186,16 +186,24 @@ class database extends Survey_Common_Action
                         $sAnswerText=$oFixCKeditor->fixCKeditor($sAnswerText);
                         
                         // Now we insert the answers
-                        $iInsertCount=Answer::model()->insertRecords(array('code'=>$sCode,
-                            'answer'=>$sAnswerText,
-                            'qid'=>$iQuestionID,
-                            'sortorder'=>$iSortOrderID,
-                            'language'=>$sLanguage,
-                            'assessment_value'=>$iAssessmentValue,
-                            'scale_id'=>$iScaleID));
-                        if (!$iInsertCount) // Checked
+                        $oAnswer = new Answer;
+                        $oAnswer->code              = $sCode;
+                        $oAnswer->answer            = $sAnswerText;
+                        $oAnswer->qid               = $iQuestionID;
+                        $oAnswer->sortorder         = $iSortOrderID;
+                        $oAnswer->language          = $sLanguage;
+                        $oAnswer->assessment_value  = $iAssessmentValue;
+                        $oAnswer->scale_id          = $iScaleID;
+
+                        if (!$oAnswer->save()) // Checked
                         {
-                            Yii::app()->setFlashMessage(gT("Failed to update answers"),'error');
+                            $sErrors = '<br/>';
+                            foreach ( $oAnswer->getErrors() as $sError)
+                            {
+                                $sErrors .= $sError[0].'<br/>';
+                            }
+
+                            Yii::app()->setFlashMessage(gT("Failed to update answer: ").$sCode.$sErrors,'error');
                         }
                     }
                     // Updating code (oldcode!==null) => update condition with the new code
