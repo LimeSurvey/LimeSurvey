@@ -365,7 +365,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                  */
 
                 $nrOfAnswers = Answer::model()->countByAttributes(
-                    array('qid' => $arow['qid'],'language'=>Survey::model()->findByPk($iSurveyID)->language;)
+                    array('qid' => $arow['qid'],'language'=>Survey::model()->findByPk($iSurveyID)->language)
                 );
 
                 $oQuestionAttribute = QuestionAttribute::model()->find(
@@ -381,7 +381,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                     $oQuestionAttribute->value = $nrOfAnswers;
                     $oQuestionAttribute->save();
                 }
-                elseif(int_val($oQuestionAttribute->value)<1)) // Fix it if invalid : disallow 0, but need a sub question minimum for EM
+                elseif(intval($oQuestionAttribute->value)<1) // Fix it if invalid : disallow 0, but need a sub question minimum for EM
                 {
                     $oQuestionAttribute->value = $nrOfAnswers;
                     $oQuestionAttribute->save();

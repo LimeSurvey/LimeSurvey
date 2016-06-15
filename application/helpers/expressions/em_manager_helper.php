@@ -2137,6 +2137,7 @@
                             'eqn' => '(if(is_empty('.$max_answers.'),1,count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . ')))',
                             'qid' => $questionNum,
                             );
+
                         }
                     }
                 }
@@ -2144,10 +2145,23 @@
                 {
                     $max_answers='';
                 }
-                /* @todo : Specific with Ranking question : $max_answers is not set but $maxDBanswers < $answerCount OR $maxDBanswers < max_answres (maybe) */
-                if (isset($qattr['maxDBanswers']) && trim($qattr['maxDBanswers']) != '')
+                /* Specific for ranking : fix only the alert : test if needed (maxDBanswers < count(answers) )*/
+                if($type=='R' && (isset($qattr['maxDBanswers']) && intval($qattr['maxDBanswers'])>0))
                 {
-
+                    $maxDBanswer=intval($qattr['maxDBanswers']);
+                    // We don't have another answer count in EM ?
+                    $answerCount=Answer::model()->count("qid=:qid and language=:language",array(":qid"=>$questionNum,'language'=>$_SESSION['LEMlang']));
+                    if($maxDBanswer < $answerCount)
+                    {
+                        if($max_answers!='')
+                        {
+                            $max_answers='min('.$max_answers.','.$maxDBanswer.')';
+                        }
+                        else
+                        {
+                            $max_answers=intval($qattr['maxDBanswers']);
+                        }
+                    }
                 }
                 // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
                 if($type=="K" && isset($qattr['slider_min']) && ( !isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n'])==''))

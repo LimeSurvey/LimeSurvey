@@ -1864,7 +1864,14 @@ function do_ranking($ia)
     $maxDbAnswer = intval($aQuestionAttributes['maxDBanswers']) > 0 ? intval($aQuestionAttributes['maxDBanswers']) : $anscount;
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
-        $max_answers = trim($aQuestionAttributes["max_answers"]);
+        if($maxDbAnswer < $anscount)
+        {
+            $max_answers = "min(".trim($aQuestionAttributes["max_answers"]).",".$maxDbAnswer.")";
+        }
+        else
+        {
+            $max_answers = trim($aQuestionAttributes["max_answers"]);
+        }
     }
     else
     {
