@@ -540,8 +540,8 @@ class conditionsaction extends Survey_Common_Action {
         }
         //END PROCESS ACTIONS
 
-        $cquestions = Array();
-        $canswers     = Array();
+        $cquestions = array();
+        $canswers   = array();
 
         //BEGIN: GATHER INFORMATION
         // 1: Get information for this question
@@ -757,30 +757,6 @@ class conditionsaction extends Survey_Common_Action {
                 elseif ($rows['type'] == ":" || $rows['type'] == ";")
                 { // Multiflexi
 
-                    //Get question attribute for $canswers
-                    $qidattributes=getQuestionAttributeValues($rows['qid']);
-                    if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
-                        $maxvalue=floatval($qidattributes['multiflexible_max']);
-                    } else {
-                        $maxvalue=10;
-                    }
-                    if (isset($qidattributes['multiflexible_min']) && trim($qidattributes['multiflexible_min'])!='') {
-                        $minvalue=floatval($qidattributes['multiflexible_min']);
-                    } else {
-                        $minvalue=1;
-                    }
-                    if (isset($qidattributes['multiflexible_step']) && trim($qidattributes['multiflexible_step'])!='') {
-                        $stepvalue=floatval($qidattributes['multiflexible_step']);
-                        if ($stepvalue==0) $stepvalue=1;
-                    } else {
-                        $stepvalue=1;
-                    }
-
-                    if (isset($qidattributes['multiflexible_checkbox']) && $qidattributes['multiflexible_checkbox']!=0) {
-                        $minvalue=0;
-                        $maxvalue=1;
-                        $stepvalue=1;
-                    }
                     // Get the Y-Axis
 
                     $fquery = "SELECT sq.*, q.other"
@@ -1166,6 +1142,7 @@ class conditionsaction extends Survey_Common_Action {
 
             //3: Get other conditions currently set for this question
             $conditionscount = 0;
+            $conditionsList=array();
             $s=0;
             $criteria=new CDbCriteria;
             $criteria->select='scenario';  // only select the 'scenario' column
@@ -1186,8 +1163,8 @@ class conditionsaction extends Survey_Common_Action {
             $aData['sCurrentQuestionText'] = $questiontitle .': '.viewHelper::flatEllipsizeText($sCurrentFullQuestionText,true,'120');
             $aData['subaction'] = $subaction;
             $aData['scenariocount'] = $scenariocount;
-
             $aViewUrls['conditionslist_view'][] = $aData;
+
             if ($scenariocount > 0)
             {
                 $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
@@ -1611,7 +1588,7 @@ class conditionsaction extends Survey_Common_Action {
                 ."</div>\n";
             }
 
-            if (isset($conditionsList) && is_array($conditionsList))
+            if (count($conditionsList))
             {
                 //TIBO
                 $this->registerScriptFile( 'SCRIPT_PATH', 'jquery.multiselect.min.js');
