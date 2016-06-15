@@ -10,7 +10,7 @@ return array(
     'jquery' => array(
         'basePath' => 'third_party.jquery',
         'js' => array(
-            'jquery-2.2.3.min.js'
+            'jquery-2.2.4.min.js'
         ),
     ),
 
