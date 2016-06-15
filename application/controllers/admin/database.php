@@ -203,19 +203,16 @@ class database extends Survey_Common_Action
                                 $sErrors .= $sError[0].'<br/>';
                             }
 
-
+                            // Let's give a new to code to the answer to save it, so user entries are not lost
                             $bAnswerSave = false;
+
                             while( !$bAnswerSave )
                             {
-                                $oAnswer->code       = rand ( 11111 , 99999 );
+                                $oAnswer->code       = rand ( 11111 , 99999 );  // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                                 if($oAnswer->save())
                                 {
                                     $sErrors .= '<strong>'.gT('answer code has been updated to: ').$oAnswer->code.'</strong><br/>';
                                     $bAnswerSave = true;
-                                }
-                                else
-                                {
-                                    die();
                                 }
                             }
 
