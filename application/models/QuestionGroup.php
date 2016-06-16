@@ -298,6 +298,26 @@ class QuestionGroup extends LSActiveRecord
     }
 
 
+    public function getGroupExplorerDatas($iSurveyID, $language )
+    {
+        $aGroups = self::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $language),array('order'=>'group_order ASC'));
+        if(count($aGroups))
+        {
+            foreach($aGroups as $group)
+            {
+                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$language), array('order'=>'question_order ASC'));
+
+                foreach($group->aQuestions as $question)
+                {                
+                    if(is_object($question))
+                    {
+                        $question->question = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
+                    }
+                }
+            }
+        }
+        return $aGroups;
+    }
 
     public function search()
     {

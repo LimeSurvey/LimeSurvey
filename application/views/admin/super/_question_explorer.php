@@ -7,7 +7,9 @@
 * @var $iSurveyId
 */
 ?>
-
+<?php
+    App()->getClientScript()->registerPackage('fancytree');
+?>
 <!-- State when page is loaded : for JavaScript-->
 <li id="explorer" class="dropdownlvl2 dropdownstyle panel panel-default">
 <?php if(isset($sidemenu['explorer']['state']) && $sidemenu['explorer']['state']==true):?>
@@ -18,10 +20,12 @@
         <?php endif;?>
     <?php endif;?>
 
+<li id="explorer" class="dropdownlvl2 dropdownstyle panel panel-default">
 <a data-toggle="collapse" id="explorer-collapse" href="#explorer-lvl1">
     <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Question explorer');?>
     <span class="caret" ></span>
 </a>
+
 
     <div id="explorer-lvl1" class="panel-collapse collapse" >
         <div class="panel-body">
