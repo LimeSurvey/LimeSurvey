@@ -1644,13 +1644,14 @@ class remotecontrol_handle
                     return array('status' => 'Error: No token table');
 
                 if(is_array($aTokenQueryProperties)){
-		    $tokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
-		    if(count($tokens) == 0){
+            $tokenCount = Token::model($iSurveyID)->countByAttributes($aTokenQueryProperties);
+		    
+		    if($tokenCount == 0){
 			return array('status' => 'Error: No results were found based on your attributes.');
-		    }else if(count($tokens) > 1){
+		    }else if($tokenCount > 1){
 			return array('status' => 'Error: More than 1 result was found based on your attributes.');
 		    }
-		    $token = $tokens[0];
+		    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
 		}else{
                     // If aTokenQueryProperties is not an array, it's an integer
                     $iTokenID = $aTokenQueryProperties;
@@ -1703,13 +1704,13 @@ class remotecontrol_handle
                     return array('status' => 'Error: No token table');
 
                 if(is_array($aTokenQueryProperties)){
-		    $tokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
-		    if(count($tokens) == 0){
+		    $tokenCount = Token::model($iSurveyID)->countByAttributes($aTokenQueryProperties);
+		    if($tokenCount == 0){
 			return array('status' => 'Error: No results were found based on your attributes.');
-		    }else if(count($tokens) > 1){
+		    }else if($tokenCount > 1){
 			return array('status' => 'Error: More than 1 result was found based on your attributes.');
 		    }
-		    $oToken = $tokens[0];
+            $oToken = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
 		}else{
                     // If aTokenQueryProperties is not an array, it's an integer
                     $iTokenID = $aTokenQueryProperties;
