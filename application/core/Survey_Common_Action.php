@@ -695,6 +695,16 @@ class Survey_Common_Action extends CAction
         $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
 
+        $event = new PluginEvent('afterSurveyMenuLoad', $this);
+        $event->set('menu', array());
+        $event->set('surveyId', $iSurveyID);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $aData['menu'] = $result->get('menu');
+        if (empty($aData['menu']))
+        {
+            $aData['menu'] = array();
+        }
+
         $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
     }
 
