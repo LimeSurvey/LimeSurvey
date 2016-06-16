@@ -24,6 +24,76 @@ $surveyid = $surveyinfo['sid'];
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
     <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="glyphicon glyphicon-chevron-right"></span></h3>
+    <div class="row">
+        <div class="col-sm-12 content-right">
+            <?php
+            $aGroups =    QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $surveyinfo['language']);
+            ?>
+    <!-- fancy tree -->
+        <div id="tree">
+          <ul id="treeData" style="display: none;">
+
+                <?php $count=1; ?>
+                <?php foreach($aGroups as $aGroup):?>
+                    <li id="<?php echo $count;?>">
+                        <?php echo $aGroup->group_name;?>
+                        <ul>
+                            <?php $count++; ?>
+                            <?php foreach($aGroup['aQuestions'] as $question):?>
+                                <?php if(!$question->parent_qid == 0):?>
+                                <li id="<?php echo $count;?>">
+                                    <?php echo sanitize_html_string(strip_tags($question->title));?>
+                                </li>
+                                <?PHP endif;?>
+                            <?php $count++; ?>
+                            <?php endforeach;?>
+                        </ul>
+                    </li>
+                    <?php $count++; ?>
+                <?php endforeach;?>
+          </ul>
+        </div>
+        <script>
+
+        glyph_opts = {
+            map: {
+              doc: "fa fa-file",
+              docOpen: "fa fa-file",
+              checkbox: "fa fa-square-o",
+              checkboxSelected: "fa fa-check-square-o",
+              checkboxUnknown: "fa fa-share",
+              dragHelper: "glyphicon glyphicon-play",
+              dropMarker: "glyphicon glyphicon-arrow-right",
+              error: "glyphicon glyphicon-warning-sign",
+              expanderClosed: "fa fa-caret-right",
+              expanderLazy: "fa fa-caret-right",  // glyphicon-plus-sign
+              expanderOpen: "fa fa-caret-down",  // glyphicon-collapse-down
+              folder: "glyphicon glyphicon-folder-close",
+              folderOpen: "glyphicon glyphicon-folder-open",
+              loading: "glyphicon glyphicon-refresh glyphicon-spin"
+            }
+          };
+        $("#tree").fancytree({
+      extensions: [ "glyph", "wide"],
+      glyph: glyph_opts,
+      selectMode: 2,
+      //toggleEffect: { effect: "drop", options: {direction: "left"}, duration: 400 },
+      wide: {
+        iconWidth: "1em",     // Adjust this if @fancy-icon-width != "16px"
+        iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
+        levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
+      },
+
+      icon: function(event, data){
+        // if( data.node.isFolder() ) {
+        //   return "glyphicon glyphicon-book";
+        // }
+      },
+    });
+        </script>
+</div>
+</div>
+
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
 
