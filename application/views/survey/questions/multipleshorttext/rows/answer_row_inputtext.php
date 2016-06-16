@@ -19,17 +19,21 @@
 
 <!--answer_row_inputtext -->
 <div id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-horizontal <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
-    <?php if($alert):?>
-        <!--  color code missing mandatory questions red -->
-        <div class="label label-danger errormandatory" role="alert">
-            <?php echo $question; ?>
-        </div>
-    <?php endif;?>
-
     <div class="form-group row">
-        <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
-            <?php echo $question; ?>
-        </label>
+
+        <?php if ($alert):?>
+            <!--  color code missing mandatory questions red -->
+            <div class="col-xs-12 col-sm-<?php echo $sLabelWidth; ?> control-label">
+                <div class="label label-danger errormandatory pull-right" role="alert">
+                    <?php echo $question; ?>
+                </div>
+            </div>
+        <?php else:?>
+            <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
+                <?php echo $question; ?>
+            </label>
+        <?php endif;?>
+
         <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
             <?php echo $prefix; ?>
             <input
