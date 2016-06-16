@@ -4676,7 +4676,7 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
         //if it is a multi item question, change the template so that it is a series of panels instead of one table
-        if ($anscount > 1) {
+        if ($aQuestions[0]['question'] != '') {
             $answer = "";
             foreach ($aQuestions as $subQuestion) {
                 $subQuestionStart = "\n<div class=\"question-wrapper array-flexible-row mandatory required\">\n";
