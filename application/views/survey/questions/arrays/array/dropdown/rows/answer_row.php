@@ -29,7 +29,7 @@
         />
     </th>
     <td>
-        <select class="form-control" name="answer<?php echo $myfname; ?>" id="answer<?php echo $myfname; ?>" onchange="checkconditions(this.value, this.name, this.type);">
+        <select class="form-control" name="<?php echo $myfname; ?>" id="answer<?php echo $myfname; ?>" onchange="checkconditions(this.value, this.name, this.type);">
             <?php foreach($options as $option):?>
                 <option value="<?php echo $option['value'];?>" <?php echo $option['selected'];?>>
                     <?php echo $option['text'];?>
