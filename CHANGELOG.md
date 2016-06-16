@@ -1,6 +1,13 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## [Unreleased]
+### Feature
+- afterSurveyMenuLoad event to add survey specific menu items
+### Fix
+- Improvement on Conditions page with array (number) questions
+- Google Analytics code not running
+
 ## [1.0.19] - 2016-06-09
 ### Fix
 - Better loading of plugins for command
