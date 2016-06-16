@@ -315,7 +315,15 @@ class QuestionGroup extends LSActiveRecord
         {
             foreach($aGroups as $group)
             {
-                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$language, "parent_qid"=>'0'), array('order'=>'question_order ASC'));
+                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$language), array('order'=>'question_order ASC'));
+
+                foreach($group->aQuestions as $question)
+                {                
+                    if(is_object($question))
+                    {
+                        $question->question = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
+                    }
+                }
             }
         }
         return $aGroups;
