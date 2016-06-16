@@ -1877,6 +1877,7 @@ function do_ranking($ia)
     {
         $max_answers = $max_subquestions;
     }
+    $max_answers = LimeExpressionManager::ProcessString("{{$max_answers}}",$ia[0]);
     // Get the max number of line needed
     if(ctype_digit($max_answers) && intval($max_answers)<$max_subquestions)
     {
@@ -1893,6 +1894,8 @@ function do_ranking($ia)
     {
         $min_answers = 0;
     }
+    $min_answers = LimeExpressionManager::ProcessString("{{$min_answers}}",$ia[0]);
+
     $answer = '';
     // First start by a ranking without javascript : just a list of select box
     // construction select box
