@@ -1633,7 +1633,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the Survey to get token properties
-    * @param array|struct|int Array of participant properties used to query the participant, or the token id as an integer 
+    * @param array|struct|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer 
     * @param array $aTokenProperties The properties to get
     * @return array The requested values
     */
