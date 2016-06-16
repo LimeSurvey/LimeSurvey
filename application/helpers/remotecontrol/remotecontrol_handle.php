@@ -1651,18 +1651,18 @@ class remotecontrol_handle
                     return array('status' => 'Error: No token table');
 
                 if(is_array($aTokenQueryProperties)){
-					$tokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
-					if(count($tokens) == 0){
-						return array('status' => 'Error: No results were found based on your attributes.');
-					}else if(count($tokens) > 1){
-						return array('status' => 'Error: More than 1 result was found based on your attributes.');
-					}
-					$token = $tokens[0];
-				}else{
+		    $tokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
+		    if(count($tokens) == 0){
+			return array('status' => 'Error: No results were found based on your attributes.');
+		    }else if(count($tokens) > 1){
+			return array('status' => 'Error: More than 1 result was found based on your attributes.');
+		    }
+		    $token = $tokens[0];
+		}else{
                     // If aTokenQueryProperties is not an array, it's an integer
                     $iTokenID = $aTokenQueryProperties;
-					$token = Token::model($iSurveyID)->findByPk($iTokenID);
-				}
+		    $token = Token::model($iSurveyID)->findByPk($iTokenID);
+		}
                 if (!isset($token))
                     return array('status' => 'Error: Invalid tokenid');
 
@@ -1710,18 +1710,18 @@ class remotecontrol_handle
                     return array('status' => 'Error: No token table');
 
                 if(is_array($aTokenQueryProperties)){
-					$tokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
-					if(count($tokens) == 0){
-						return array('status' => 'Error: No results were found based on your attributes.');
-					}else if(count($tokens) > 1){
-						return array('status' => 'Error: More than 1 result was found based on your attributes.');
-					}
-					$oToken = $tokens[0];
-				}else{
+		    $tokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
+		    if(count($tokens) == 0){
+			return array('status' => 'Error: No results were found based on your attributes.');
+		    }else if(count($tokens) > 1){
+			return array('status' => 'Error: More than 1 result was found based on your attributes.');
+		    }
+		    $oToken = $tokens[0];
+		}else{
                     // If aTokenQueryProperties is not an array, it's an integer
                     $iTokenID = $aTokenQueryProperties;
-					$oToken = Token::model($iSurveyID)->findByPk($iTokenID);
-				}
+	  	    $oToken = Token::model($iSurveyID)->findByPk($iTokenID);
+		}
                 if (!isset($oToken))
                     return array('status' => 'Error: Invalid tokenid');
 
