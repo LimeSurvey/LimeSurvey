@@ -988,15 +988,13 @@ class Survey extends LSActiveRecord
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
         {
             $criteriaPerm = new CDbCriteria;
-            $criteriaPerm->with=array('permissions');
-            $criteriaPerm->compare('permissions.permission', 'survey', false);
-            $criteriaPerm->compare('permissions.entity', 'survey', false);
-            $criteriaPerm->compare('permissions.uid', Yii::app()->user->id, false);
 
-            $criteriaOwner = new CDbCriteria;
-            $criteriaOwner->compare('t.owner_id', Yii::app()->user->id, false);
-
-            $criteriaOwner->mergeWith($criteriaPerm, 'OR');
+            // Multiple ON conditions with string values such as 'survey'
+            $criteriaPerm->mergeWith(array(
+                'join'=>"LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
+            ));
+            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
+            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
             $criteria->mergeWith($criteriaPerm, 'AND');
         }
 
