@@ -4675,132 +4675,189 @@ function do_array($ia)
             $caption.=gT("The last cell are for no answer. ");
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
+        //if it is a multi item question, change the template so that it is a series of panels instead of one table
+        if ($anscount > 1) {
+            $answer = "";
+            foreach ($aQuestions as $subQuestion) {
+                $subQuestionStart = "\n<div class=\"question-wrapper array-flexible-row mandatory required\">\n";
+                $labelSubQuestion = $subQuestion['question'];
+                $trbc = '';
+                $trbc = alternation($trbc, 'row');
+                $myfname = $ia[1] . $subQuestion['title'];
+                list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $subQuestion, $myfname, $trbc, $myfname, "tr", "$trbc answers-list radio-list");
+                $fn++;
+                $subQuestionHead = "\n<div class=\"question-text\">\n" . $labelSubQuestion
+                . $hiddenfield
+                . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+                if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
+                    $subQuestionHead .= $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
+                }
+                $subQuestionHead .= "\" />\n\t</div>\n";
+                $subQuestionAnswersWrapper = "\n<div class=\"answers-wrapper clearfix\">\n";
+                $tableStart = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
+                $answer_head_line = "";
+                foreach ($labelans as $ld) {
+                    $answer_head_line .= "\t<th>" . $ld . "</th>\n";
+                }
+                if ($right_exists) {
+                    $answer_head_line .= "\t<td>&nbsp;</td>\n";
+                }
+                if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
+                {
+                    $answer_head_line .= "\t<th>" . gT('No answer') . "</th>\n";
+                }
+                $tableHead = "\t<thead><tr class=\"dontread\">\n" . $answer_head_line . "</tr></thead>\n\t\n";
+                $tableBody = '<tbody>';
+                $tableBody .= $htmltbody2;
+                $thiskey = 0;
+                foreach ($labelcode as $ld) {
+                    $tableBody .= "\t\t\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
+                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\"";
+                    if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == $ld) {
+                        $tableBody .= CHECKED;
+                    }
+                    // --> START NEW FEATURE - SAVE
+                    $tableBody .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+                        . "<label class=\"hide read\" for=\"answer$myfname-$ld\">{$labelans[$thiskey]}</label>\n"
+                        . "\t</td>\n";
+                    // --> END NEW FEATURE - SAVE
 
-        $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
-        $answer_head_line= "\t<td>&nbsp;</td>\n";
-            foreach ($labelans as $ld)
-            {
-                $answer_head_line .= "\t<th>".$ld."</th>\n";
+                    $thiskey++;
+                }
+                if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+                    $tableBody .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
+                    if (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') {
+                        $tableBody .= CHECKED;
+                    }
+                    // --> START NEW FEATURE - SAVE
+                    $tableBody .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n"
+                        . "<label class=\"hide read\" for=\"answer$myfname-\">" . gT('No answer') . "</label>\n"
+                        . "\t</td>\n";
+                    // --> END NEW FEATURE - SAVE
+                }
+                $tableBody .= "</tr>\n";
+                $tableBody .= "</tbody>\n";
+                $subQuestionEnd = "\n</table>\n". "\n</div>\n". "\n</div>\n";
+
+                $answer .= $subQuestionStart . $subQuestionHead . $subQuestionAnswersWrapper . $tableStart . $tableHead . $tableBody . $subQuestionEnd;
             }
-            if ($right_exists) {$answer_head_line .= "\t<td>&nbsp;</td>\n";}
+        }
+        else { //only one question, keep regular way of dealing with it
+            $answer_start = "\n<table class=\"question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
+            $answer_head_line = "\t<td>&nbsp;</td>\n";
+            foreach ($labelans as $ld) {
+                $answer_head_line .= "\t<th>" . $ld . "</th>\n";
+            }
+            if ($right_exists) {
+                $answer_head_line .= "\t<td>&nbsp;</td>\n";
+            }
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
             {
-                $answer_head_line .= "\t<th>".gT('No answer')."</th>\n";
+                $answer_head_line .= "\t<th>" . gT('No answer') . "</th>\n";
             }
-        $answer_head = "\t<thead><tr class=\"dontread\">\n".$answer_head_line."</tr></thead>\n\t\n";
+            $answer_head = "\t<thead><tr class=\"dontread\">\n" . $answer_head_line . "</tr></thead>\n\t\n";
 
-        $answer = '<tbody>';
-        $trbc = '';
-        $inputnames=array();
-        foreach($aQuestions as $ansrow)
-        {
-            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
-            {
-                if ( ($anscount - $fn + 1) >= $minrepeatheadings )
-                {
-                    $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "<tr class=\"dontread repeat headings\">{$answer_head_line}</tr>";
+            $answer = '<tbody>';
+            $trbc = '';
+            $inputnames = array();
+            foreach ($aQuestions as $ansrow) {
+                if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
+                    if (($anscount - $fn + 1) >= $minrepeatheadings) {
+                        $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
+                        $answer .= "<tr class=\"dontread repeat headings\">{$answer_head_line}</tr>";
+                    }
                 }
-            }
-            $myfname = $ia[1].$ansrow['title'];
-            $answertext = $ansrow['question'];
-            $answertextsave=$answertext;
-            if (strpos($answertext,'|'))
-            {
-                $answertext=substr($answertext,0, strpos($answertext,'|'));
-            }
-            if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
-            /* Check the mandatory sub Q violation */
-            if (in_array($myfname, $aMandatoryViolationSubQ))
-            {
-                $answertext = '<span class="errormandatory">'.$answertext.'</span>';
-            }
-            // Get array_filter stuff
-            //
-            // TMSW - is this correct?
-            $trbc = alternation($trbc , 'row');
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
-            $fn++;
-            $answer .= $htmltbody2;
-
-            $answer .= "\t<th class=\"answertext\">\n$answertext"
-            . $hiddenfield
-            . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-            {
-                $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            }
-            $answer .= "\" />\n\t</th>\n";
-
-            $thiskey=0;
-            foreach ($labelcode as $ld)
-            {
-                $answer .= "\t\t\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
-                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)
-                {
-                    $answer .= CHECKED;
+                $myfname = $ia[1] . $ansrow['title'];
+                $answertext = $ansrow['question'];
+                $answertextsave = $answertext;
+                if (strpos($answertext, '|')) {
+                    $answertext = substr($answertext, 0, strpos($answertext, '|'));
                 }
-                // --> START NEW FEATURE - SAVE
-                $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-                . "<label class=\"hide read\" for=\"answer$myfname-$ld\">{$labelans[$thiskey]}</label>\n"
-                . "\t</td>\n";
-                // --> END NEW FEATURE - SAVE
-
-                $thiskey++;
-            }
-            if (strpos($answertextsave,'|'))
-            {
-                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer .= "\t<th class=\"answertextright\">$answertext</th>\n";
-            }
-            elseif ($right_exists)
-            {
-                $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
-            }
-
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-            {
-                $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-                ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
-                if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
-                {
-                    $answer .= CHECKED;
+                if (strpos($answertext, '|')) {
+                    $answerwidth = $answerwidth / 2;
                 }
-                // --> START NEW FEATURE - SAVE
-                $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n"
-                ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
-                . "\t</td>\n";
-                // --> END NEW FEATURE - SAVE
+                /* Check the mandatory sub Q violation */
+                if (in_array($myfname, $aMandatoryViolationSubQ)) {
+                    $answertext = '<span class="errormandatory">' . $answertext . '</span>';
+                }
+                // Get array_filter stuff
+                //
+                // TMSW - is this correct?
+                $trbc = alternation($trbc, 'row');
+                list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "tr", "$trbc answers-list radio-list");
+                $fn++;
+                $answer .= $htmltbody2;
+
+                $answer .= "\t<th class=\"answertext\">\n$answertext"
+                    . $hiddenfield
+                    . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+                if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
+                    $answer .= $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
+                }
+                $answer .= "\" />\n\t</th>\n";
+
+                $thiskey = 0;
+                foreach ($labelcode as $ld) {
+                    $answer .= "\t\t\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
+                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\"";
+                    if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == $ld) {
+                        $answer .= CHECKED;
+                    }
+                    // --> START NEW FEATURE - SAVE
+                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+                        . "<label class=\"hide read\" for=\"answer$myfname-$ld\">{$labelans[$thiskey]}</label>\n"
+                        . "\t</td>\n";
+                    // --> END NEW FEATURE - SAVE
+
+                    $thiskey++;
+                }
+                if (strpos($answertextsave, '|')) {
+                    $answertext = substr($answertextsave, strpos($answertextsave, '|') + 1);
+                    $answer .= "\t<th class=\"answertextright\">$answertext</th>\n";
+                } elseif ($right_exists) {
+                    $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
+                }
+
+                if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+                    $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
+                    if (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') {
+                        $answer .= CHECKED;
+                    }
+                    // --> START NEW FEATURE - SAVE
+                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n"
+                        . "<label class=\"hide read\" for=\"answer$myfname-\">" . gT('No answer') . "</label>\n"
+                        . "\t</td>\n";
+                    // --> END NEW FEATURE - SAVE
+                }
+
+                $answer .= "</tr>\n";
+                $inputnames[] = $myfname;
+                //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             }
+            $answer .= "</tbody>\n";
+            $answer_cols = "\t<colgroup class=\"col-responses\">\n"
+                . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 
-            $answer .= "</tr>\n";
-            $inputnames[]=$myfname;
-            //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
-        }
-        $answer .= "</tbody>\n";
-        $answer_cols = "\t<colgroup class=\"col-responses\">\n"
-        ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;
+            $odd_even = '';
+            foreach ($labelans as $c) {
+                $odd_even = alternation($odd_even);
+                $answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            }
+            if ($right_exists) {
+                $odd_even = alternation($odd_even);
+                $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            }
+            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+            {
+                $odd_even = alternation($odd_even);
+                $answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+            }
+            $answer_cols .= "\t</colgroup>\n";
 
-        $odd_even = '';
-        foreach ($labelans as $c)
-        {
-            $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $answer = $answer_start . $answer_cols . $answer_head . $answer . "</table>\n";
         }
-        if ($right_exists)
-        {
-            $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
-        }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-        {
-            $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-        }
-        $answer_cols .= "\t</colgroup>\n";
-
-        $answer = $answer_start . $answer_cols . $answer_head .$answer ."</table>\n";
     }
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
