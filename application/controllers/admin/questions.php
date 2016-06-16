@@ -195,7 +195,7 @@ class questions extends Survey_Common_Action
             }
             elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
             {
-                $fatalerror = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')).'<br>';
+                $fatalerror = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.").'<br>';
             }
 
             // validate that we have a SID and GID

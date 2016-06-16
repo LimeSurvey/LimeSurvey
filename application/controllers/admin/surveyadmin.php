@@ -331,8 +331,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             else
             {
-
-                Yii::app()->user->setFlash('error',sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
+                Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),'error');
                 $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/' . $iSurveyID));
             }
             $aData = array(
@@ -971,7 +970,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
                 elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
                 {
-                    $aData['sErrorMessage'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
+                    $aData['sErrorMessage'] = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                     $aData['bFailed'] = true;
                 }
             }

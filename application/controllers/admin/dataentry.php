@@ -206,7 +206,7 @@ class dataentry extends Survey_Common_Action
                 $aData['class']='error warningheader';
                 $aData['title']=gT("Error");
                 $aData['aResult']['errors'][] = sprintf(
-                    gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
+                    gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
                     Yii::app()->getConfig('tempdir')
                 );
                 //$aData['aResult']['errors'][] = "<pre>".

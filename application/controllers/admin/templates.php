@@ -189,7 +189,7 @@ class templates extends Survey_Common_Action
             }
             else
             {
-                Yii::app()->user->setFlash('error',sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('usertemplaterootdir')));
+                Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),'error');
                 rmdirr($destdir);
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
@@ -329,7 +329,7 @@ class templates extends Survey_Common_Action
             {
                 //Uploads the file into the appropriate directory
                 if (!@move_uploaded_file($_FILES['upload_file']['tmp_name'], $fullfilepath)) {
-                    $uploadresult = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir);
+                    $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                 }
                 else
                 {

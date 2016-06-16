@@ -1147,7 +1147,7 @@ class participantsaction extends Survey_Common_Action
         }
         if (!$bMoveFileResult)
         {
-            Yii::app()->setFlashMessage(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')),'error');
+            Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             exit;
         }
