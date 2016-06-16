@@ -361,7 +361,7 @@ function activateSurvey($iSurveyID, $simulate = false)
 
                 /**
                  * See bug #09828: Ranking question : update allowed can broke Survey DB
-                 * If maxDBanswers is not set or is invalid : set it to actual answers numbers
+                 * If max_subquestions is not set or is invalid : set it to actual answers numbers
                  */
 
                 $nrOfAnswers = Answer::model()->countByAttributes(
@@ -369,7 +369,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 );
 
                 $oQuestionAttribute = QuestionAttribute::model()->find(
-                    "qid = :qid AND attribute = 'maxDBanswers'",
+                    "qid = :qid AND attribute = 'max_subquestions'",
                     array(':qid' => $arow['qid'])
                 );
 
@@ -377,7 +377,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 {
                     $oQuestionAttribute = new QuestionAttribute();
                     $oQuestionAttribute->qid = $arow['qid'];
-                    $oQuestionAttribute->attribute = 'maxDBanswers';
+                    $oQuestionAttribute->attribute = 'max_subquestions';
                     $oQuestionAttribute->value = $nrOfAnswers;
                     $oQuestionAttribute->save();
                 }

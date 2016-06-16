@@ -154,7 +154,7 @@ class database extends Survey_Common_Action
             if($sQuestionType=="R" && Survey::model()->findByPk($iSurveyID)->active=="Y")
             {
                 $oQuestionAttributeMaxDBanswers = QuestionAttribute::model()->find(
-                    "qid = :qid AND attribute = 'maxDBanswers'",
+                    "qid = :qid AND attribute = 'max_subquestions'",
                     array(':qid' => $iQuestionID)
                 );
                 if (empty($oQuestionAttribute))
@@ -162,7 +162,7 @@ class database extends Survey_Common_Action
                     $answerCount=Answer::model()->countByAttributes(array('qid' => $iQuestionID,'language'=>Survey::model()->findByPk($iSurveyID)->language));
                     $oQuestionAttribute = new QuestionAttribute();
                     $oQuestionAttribute->qid = $iQuestionID;
-                    $oQuestionAttribute->attribute = 'maxDBanswers';
+                    $oQuestionAttribute->attribute = 'max_subquestions';
                     $oQuestionAttribute->value = $answerCount;
                     $oQuestionAttribute->save();
                 }

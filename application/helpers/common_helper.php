@@ -2153,7 +2153,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         {
             // Sub question by answer number OR attribute
             $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage)));
-            $maxDbAnswer=QuestionAttribute::model()->find("qid = :qid AND attribute = 'maxDBanswers'",array(':qid' => $arow['qid']));
+            $maxDbAnswer=QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'",array(':qid' => $arow['qid']));
             $columnsCount=(!$maxDbAnswer || intval($maxDbAnswer->value)<1) ? $answersCount : intval($maxDbAnswer->value);
             for ($i=1; $i<=$columnsCount; $i++)
             {
@@ -3126,7 +3126,7 @@ function questionAttributes($returnByName=false)
         //    "caption"=>gT('Max value from SGQA'));
 
         /* Ranking specific : max DB answer */
-        $qattributes["maxDBanswers"]=array(
+        $qattributes["max_subquestions"]=array(
         "types"=>"R",
         'readonly_when_active'=>true,
         'category'=>gT('Logic'),

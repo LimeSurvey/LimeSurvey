@@ -1861,12 +1861,12 @@ function do_ranking($ia)
 
     $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();
     $anscount  = count($ansresult);
-    $maxDbAnswer = intval($aQuestionAttributes['maxDBanswers']) > 0 ? intval($aQuestionAttributes['maxDBanswers']) : $anscount;
+    $max_subquestions = intval($aQuestionAttributes['max_subquestions']) > 0 ? intval($aQuestionAttributes['max_subquestions']) : $anscount;
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
-        if($maxDbAnswer < $anscount)
+        if($max_subquestions < $anscount)
         {
-            $max_answers = "min(".trim($aQuestionAttributes["max_answers"]).",".$maxDbAnswer.")";
+            $max_answers = "min(".trim($aQuestionAttributes["max_answers"]).",".$max_subquestions.")";
         }
         else
         {
@@ -1875,16 +1875,16 @@ function do_ranking($ia)
     }
     else
     {
-        $max_answers = $maxDbAnswer;
+        $max_answers = $max_subquestions;
     }
     // Get the max number of line needed
-    if(ctype_digit($max_answers) && intval($max_answers)<$maxDbAnswer)
+    if(ctype_digit($max_answers) && intval($max_answers)<$max_subquestions)
     {
         $iMaxLine = $max_answers;
     }
     else
     {
-        $iMaxLine = $maxDbAnswer;
+        $iMaxLine = $max_subquestions;
     }
     if (trim($aQuestionAttributes["min_answers"])!='')
     {

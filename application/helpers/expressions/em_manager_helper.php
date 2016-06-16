@@ -2145,21 +2145,21 @@
                 {
                     $max_answers='';
                 }
-                /* Specific for ranking : fix only the alert : test if needed (maxDBanswers < count(answers) )*/
-                if($type=='R' && (isset($qattr['maxDBanswers']) && intval($qattr['maxDBanswers'])>0))
+                /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(answers) )*/
+                if($type=='R' && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions'])>0))
                 {
-                    $maxDBanswer=intval($qattr['maxDBanswers']);
+                    $max_subquestions=intval($qattr['max_subquestions']);
                     // We don't have another answer count in EM ?
                     $answerCount=Answer::model()->count("qid=:qid and language=:language",array(":qid"=>$questionNum,'language'=>$_SESSION['LEMlang']));
-                    if($maxDBanswer < $answerCount)
+                    if($max_subquestions < $answerCount)
                     {
                         if($max_answers!='')
                         {
-                            $max_answers='min('.$max_answers.','.$maxDBanswer.')';
+                            $max_answers='min('.$max_answers.','.$max_subquestions.')';
                         }
                         else
                         {
-                            $max_answers=intval($qattr['maxDBanswers']);
+                            $max_answers=intval($qattr['max_subquestions']);
                         }
                     }
                 }
