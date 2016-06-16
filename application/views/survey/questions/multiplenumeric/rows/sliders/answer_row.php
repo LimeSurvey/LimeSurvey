@@ -29,15 +29,17 @@
 ?>
 
 <div  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item <?php echo $extraclass;?> col-sm-12" <?php echo $sDisplayStyle;?>>
-    <?php if($alert):?>
-        <div class="label label-danger errormandatory"  role="alert">
-            <?php echo $labelText;?>
-        </div> <!-- alert -->
-    <?php endif;?>
+
     <div class="form-group row">
-        <label class='control-label col-xs-12 numeric-label' for="answer<?php echo $myfname; ?>">
-            <?php echo $labelText;?>
-        </label>
+        <?php if($alert):?>
+            <div class="label label-danger errormandatory"  role="alert">
+                <?php echo $labelText;?>
+            </div> <!-- alert -->
+        <?php else:?>
+            <label class='control-label col-xs-12 numeric-label' for="answer<?php echo $myfname; ?>">
+                <?php echo $labelText;?>
+            </label>
+        <?php endif;?>
         <div>
 
         <div class='slider-container row'>
