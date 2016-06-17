@@ -723,7 +723,7 @@ class index extends CAction {
     function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
 
-        //killSurveySession($surveyid);
+        killSurveySession($surveyid);
         $thissurvey=getSurveyInfo($surveyid);
         if($thissurvey)
         {
