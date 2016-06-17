@@ -211,7 +211,7 @@ class database extends Survey_Common_Action
                                 $oAnswer->code       = rand ( 11111 , 99999 );  // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                                 if($oAnswer->save())
                                 {
-                                    $sErrors .= '<strong>'.gT('answer code has been updated to: ').$oAnswer->code.'</strong><br/>';
+                                    $sError = '<strong>'.sprintf (gT('A code has been updated to %s.'),$oAnswer->code).'</strong><br/>';
                                     $bAnswerSave = true;
                                 }
                             }
@@ -424,8 +424,8 @@ class database extends Survey_Common_Action
                                     $oSubQuestion->title       = rand ( 11111 , 99999 );  // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                                     if($oSubQuestion->save())
                                     {
-                                        $sErrors = '<strong>'.gT('answer code has been updated to: ').$oSubQuestion->title.'</strong><br/>';
-                                        Yii::app()->setFlashMessage($sErrors,'error');
+                                        $sError = '<strong>'.sprintf (gT('A code has been updated to %s.'),$oSubQuestion->title).'</strong><br/>';
+                                        Yii::app()->setFlashMessage($sError,'error');
                                         $bAnswerSave = true;
                                     }
                                 }
