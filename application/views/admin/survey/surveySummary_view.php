@@ -35,16 +35,21 @@ $surveyid = $surveyinfo['sid'];
 
                 <?php $count=1; ?>
                 <?php foreach($aGroups as $aGroup):?>
-                    <li id="<?php echo $count;?>">
-                        <?php echo $aGroup->group_name;?>
+                    <li id="<?php echo $count;?>" class="folder">
+                        <a href="<?php echo $this->createUrl("/admin/questiongroups/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid); ?>" target="_self">
+                            <?php echo sanitize_html_string(strip_tags($aGroup->group_name));?>
+                        </a>
+
                         <ul>
                             <?php $count++; ?>
                             <?php foreach($aGroup['aQuestions'] as $question):?>
-                                <?php if(!$question->parent_qid == 0):?>
+
                                 <li id="<?php echo $count;?>">
-                                    <?php echo sanitize_html_string(strip_tags($question->title));?>
+                                    <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" target="_self">
+                                        <?php echo sanitize_html_string(strip_tags($question->title)). sanitize_html_string(strip_tags($question->question));?>
+                                    </a>
                                 </li>
-                                <?PHP endif;?>
+
                             <?php $count++; ?>
                             <?php endforeach;?>
                         </ul>
@@ -57,8 +62,8 @@ $surveyid = $surveyinfo['sid'];
 
         glyph_opts = {
             map: {
-              doc: "fa fa-file",
-              docOpen: "fa fa-file",
+              doc: "fa fa-file-o",
+              docOpen: "fa fa-file-o",
               checkbox: "fa fa-square-o",
               checkboxSelected: "fa fa-check-square-o",
               checkboxUnknown: "fa fa-share",
@@ -68,27 +73,32 @@ $surveyid = $surveyinfo['sid'];
               expanderClosed: "fa fa-caret-right",
               expanderLazy: "fa fa-caret-right",  // glyphicon-plus-sign
               expanderOpen: "fa fa-caret-down",  // glyphicon-collapse-down
-              folder: "glyphicon glyphicon-folder-close",
-              folderOpen: "glyphicon glyphicon-folder-open",
+              folder: "fa fa-folder-o",
+              folderOpen: "fa fa-folder-open-o",
               loading: "glyphicon glyphicon-refresh glyphicon-spin"
             }
           };
         $("#tree").fancytree({
-      extensions: [ "glyph", "wide"],
-      glyph: glyph_opts,
-      selectMode: 2,
-      //toggleEffect: { effect: "drop", options: {direction: "left"}, duration: 400 },
-      wide: {
-        iconWidth: "1em",     // Adjust this if @fancy-icon-width != "16px"
-        iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
-        levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
-      },
 
-      icon: function(event, data){
-        // if( data.node.isFolder() ) {
-        //   return "glyphicon glyphicon-book";
-        // }
-      },
+            extensions: [ "glyph", "wide"],
+            glyph: glyph_opts,
+            selectMode: 2,
+            clickFolderMode: 3,
+            dblclick: function(event, data) {
+
+                    var node = data.node;
+                    // Use <a> href and target attributes to load the content:
+                    if( node.data.href ){
+                      // Open target
+                      window.open(node.data.href, node.data.target);
+                    }
+            },
+            wide: {
+                iconWidth: "1em",     // Adjust this if @fancy-icon-width != "16px"
+                iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
+                levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
+            },
+
     });
         </script>
 </div>
