@@ -323,7 +323,7 @@ class database extends Survey_Common_Action
 
                             while( !$bAnswerSave )
                             {
-                                $oSubQuestion->title       = rand ( 11111 , 99999 );  // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                                $oSubQuestion->title       = (string) rand ( 11111 , 99999 );  // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                                 if($oSubQuestion->save())
                                 {
                                     $bAnswerSave = true;
