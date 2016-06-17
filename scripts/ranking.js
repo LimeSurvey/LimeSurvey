@@ -14,7 +14,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   if (typeof showpopups === 'undefined'){showpopups=true;}
   if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
   if (typeof samelistheight === 'undefined'){ samelistheight=true;}
-  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);// Must be update each time we get it : EM can be used
   var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
   var rankingnamewidth=rankingname.length;
   //Add a class to the question
@@ -51,7 +51,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     </div>';
   $(htmlCode).insertAfter('#question'+qID+' .answers-list');
   $('#sortable-choice-'+qID+' li, #sortable-rank-'+qID+' li').remove();
-  
+
   // Get the list of choices from the LimeSurvey question and copy them as items into the sortable choices list
   var ranked =[];
   $('#question'+qID+' .answers-list .select-item option:selected').each(function(index, Element) {
@@ -72,7 +72,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   });
   loadDragDropRank(qID);
 
-  // Set up the connected sortable			
+  // Set up the connected sortable
   $('#sortable-choice-'+qID+', #sortable-rank-'+qID+'').sortable({
     connectWith: '.connectedSortable'+qID+'',
     forceHelperSize: true,
@@ -82,6 +82,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     delay: 200,
     revert: 50,
     receive: function(event, ui) {
+      maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
       if($(this).attr("id")=='sortable-rank-'+qID && $(maxanswers>0 && '#sortable-rank-'+qID+' li').length > maxanswers) {
         sortableAlert (qID,showpopups,maxanswers);
         if(showpopups){$(ui.sender).sortable('cancel');}
@@ -97,6 +98,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   fixChoiceListHeight(qID,samechoiceheight,samelistheight);
   // Allow users to double click to move to selections from list to list
     $('#sortable-choice-'+qID).delegate('li','dblclick', function() {
+      maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
       if($(maxanswers>0 && '#sortable-rank-'+qID+' li').length >= maxanswers) {
         sortableAlert (qID,showpopups,maxanswers);
         if(showpopups){return false;}
@@ -116,7 +118,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     });
   $(function() { // Update height for IE7, maybe for other function too
     fixChoiceListHeight(qID,samechoiceheight,samelistheight);
-  }); 
+  });
   }
 
 /**
@@ -173,7 +175,7 @@ function loadDragDropRank(qID){
   var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
   var relevancename= "relevance"+$("#ranking-"+qID+"-name").text();
   var rankingnamewidth=rankingname.length;
-  // Update #relevance 
+  // Update #relevance
   $("[id^=" + relevancename + "]").val('0');
   $('#sortable-rank-'+qID+' li').each(function(){
     $(this).appendTo('#sortable-choice-'+qID+'');

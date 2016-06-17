@@ -3,7 +3,8 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ## [not releazed]
 ### Fix
-- Ranking question : update allowed can broke Survey DB
+- Ranking question : Alert are not show every time
+- Ranking question : Add answers can broke Survey DB
 
 ## [1.0.20] - 2016-06-16
 ### Feature
