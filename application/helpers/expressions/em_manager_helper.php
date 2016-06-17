@@ -9216,7 +9216,7 @@ EOD;
                     $LEM->ProcessString($sGroupText, $qid,NULL,false,1,1,false,false);
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
                     $sGroupText= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
+                    $editlink = Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                     if($bGroupHaveError)
                     {
                         $errClass='text-danger';
@@ -9606,12 +9606,12 @@ EOD;
 
                 if ($varNameErrorMsg == '')
                 {
-                    $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
+                    $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
                     $questionRow .= $rootVarName;
                 }
                 else
                 {
-                    $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
+                    $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
                     $questionRow .= "<span class='highlighterror' title='" . $varNameError['message'] . "' "
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";

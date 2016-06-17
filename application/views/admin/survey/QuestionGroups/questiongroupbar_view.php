@@ -117,7 +117,7 @@
                         <?php else: ?>
 
                             <!-- there is at least one question having a condition on its content -->
-                            <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$gid"); ?>'  class="btn btn-default" onclick="alert('<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
+                            <a href='<?php echo $this->createUrl("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$gid"); ?>'  class="btn btn-default" onclick="alert('<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
                                 <span class="glyphicon glyphicon-trash"></span>
                                 <?php eT("Delete current question group"); ?>
                             </a>
