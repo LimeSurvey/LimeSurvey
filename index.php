@@ -10,7 +10,7 @@
  * as this file.
  *
  */
-	$system_path = "framework";
+    $system_path = "framework";
 
 /*
  *---------------------------------------------------------------
@@ -26,7 +26,7 @@
  * NO TRAILING SLASH!
  *
  */
-	$application_folder = dirname(__FILE__) . "/application";
+    $application_folder = dirname(__FILE__) . "/application";
 
 /*
  * --------------------------------------------------------------------
@@ -48,15 +48,15 @@
  * Un-comment the $routing array below to use this feature
  *
  */
-	// The directory name, relative to the "controllers" folder.  Leave blank
-	// if your controller is not in a sub-folder within the "controllers" folder
-	// $routing['directory'] = '';
+    // The directory name, relative to the "controllers" folder.  Leave blank
+    // if your controller is not in a sub-folder within the "controllers" folder
+    // $routing['directory'] = '';
 
-	// The controller class file name.  Example:  Mycontroller.php
-	// $routing['controller'] = '';
+    // The controller class file name.  Example:  Mycontroller.php
+    // $routing['controller'] = '';
 
-	// The controller function you wish to be called.
-	// $routing['function']	= '';
+    // The controller function you wish to be called.
+    // $routing['function']    = '';
 
 
 /*
@@ -74,7 +74,7 @@
  * Un-comment the $assign_to_config array below to use this feature
  *
  */
-	// $assign_to_config['name_of_config_item'] = 'value of config item';
+    // $assign_to_config['name_of_config_item'] = 'value of config item';
 
 
 
@@ -90,19 +90,19 @@
  *  Resolve the system path for increased reliability
  * ---------------------------------------------------------------
  */
-	if (realpath($system_path) !== FALSE)
-	{
-		$system_path = realpath($system_path).'/';
-	}
+    if (realpath($system_path) !== FALSE)
+    {
+        $system_path = realpath($system_path).'/';
+    }
 
-	// ensure there's a trailing slash
-	$system_path = rtrim($system_path, '/').'/';
+    // ensure there's a trailing slash
+    $system_path = rtrim($system_path, '/').'/';
 
-	// Is the system path correct?
-	if (!is_dir($system_path))
-	{
-		exit("Your system folder path does not appear to be set correctly. Please open the following file and correct this: ".pathinfo(__FILE__, PATHINFO_BASENAME));
-	}
+    // Is the system path correct?
+    if (!is_dir($system_path))
+    {
+        exit("Your system folder path does not appear to be set correctly. Please open the following file and correct this: ".pathinfo(__FILE__, PATHINFO_BASENAME));
+    }
 
 /*
  * -------------------------------------------------------------------
@@ -111,38 +111,38 @@
  */
 
 
-	// The name of THIS file
-	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
+    // The name of THIS file
+    define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
-	define('ROOT', dirname(__FILE__));
+    define('ROOT', dirname(__FILE__));
 
-	// The PHP file extension
-	define('EXT', '.php');
+    // The PHP file extension
+    define('EXT', '.php');
 
-	// Path to the system folder
-	define('BASEPATH', str_replace("\\", "/", $system_path));
+    // Path to the system folder
+    define('BASEPATH', str_replace("\\", "/", $system_path));
 
-	// Path to the front controller (this file)
-	define('FCPATH', str_replace(SELF, '', __FILE__));
+    // Path to the front controller (this file)
+    define('FCPATH', str_replace(SELF, '', __FILE__));
 
-	// Name of the "system folder"
-	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
+    // Name of the "system folder"
+    define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
 
-	// The path to the "application" folder
-	if (is_dir($application_folder))
-	{
-		define('APPPATH', $application_folder.'/');
-	}
-	else
-	{
-		if (!is_dir(BASEPATH . $application_folder . '/'))
-		{
-			exit("Your application folder path does not appear to be set correctly. Please open the following file and correct this: ".SELF);
-		}
+    // The path to the "application" folder
+    if (is_dir($application_folder))
+    {
+        define('APPPATH', $application_folder.'/');
+    }
+    else
+    {
+        if (!is_dir(BASEPATH . $application_folder . '/'))
+        {
+            exit("Your application folder path does not appear to be set correctly. Please open the following file and correct this: ".SELF);
+        }
 
-		define('APPPATH', BASEPATH . $application_folder . '/');
-	}
+        define('APPPATH', BASEPATH . $application_folder . '/');
+    }
     if (file_exists(APPPATH.'config'.DIRECTORY_SEPARATOR.'config.php'))
     {
         $aSettings= include(APPPATH.'config'.DIRECTORY_SEPARATOR.'config.php');
@@ -157,10 +157,10 @@
         if ($aSettings['config']['debug']>0)
         {
             define('YII_DEBUG', true);
-	    if($aSettings['config']['debug']>1)
-		error_reporting(E_ALL);
-	    else
-		error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+        if($aSettings['config']['debug']>1)
+        error_reporting(E_ALL);
+        else
+        error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
         }
         else
         {
@@ -201,10 +201,10 @@ $config = require_once(APPPATH . 'config/internal' . EXT);
 
 if (!file_exists(APPPATH . 'config/config' . EXT)) {
     // If Yii can not start due to unwritable runtimePath, present an error
-    $runtimePath = $config['runtimePath'];
-    if (!is_dir($runtimePath) || !is_writable($runtimePath)) {
+    $sDefaultRuntimePath = dirname(__FILE__).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime';
+    if (!is_dir($sDefaultRuntimePath) || !is_writable($sDefaultRuntimePath)) {
         // @@TODO: present html page styled like the installer
-        die (sprintf('%s should be writable by the webserver (766 or 776).', $runtimePath));
+        die (sprintf('%s should be writable by the webserver (766 or 776).', $sDefaultRuntimePath));
     }
 }
 

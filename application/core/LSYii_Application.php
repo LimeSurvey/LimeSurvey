@@ -56,13 +56,15 @@ class LSYii_Application extends CWebApplication
                 $settings = array_merge($settings, $ls_config['config']);
             }
         }
-
         foreach ($settings as $key => $value)
+        {
             $this->setConfig($key, $value);
+        }
+        App()->getAssetManager()->setBaseUrl($settings['tempurl'] . '/assets');
+        App()->getAssetManager()->setBasePath($settings['tempdir'] . '/assets');
+        App()->setRuntimePath($settings['tempdir'] . '/runtime');
 
-        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
     }
-
 
     public function init() {
         parent::init();
