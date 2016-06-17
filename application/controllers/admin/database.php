@@ -149,12 +149,24 @@ class database extends Survey_Common_Action
             $sQuestionType = $arQuestion['type'];    // Checked)
             $aQuestionTypeList=getQuestionTypeList('','array');
             $iScaleCount=$aQuestionTypeList[$sQuestionType]['answerscales'];
-
-            // This is needed for ranking question. See issue #09828
-            $__max_db_answers = QuestionAttribute::model()->findByAttributes(array(
-                'qid' => $iQuestionID,
-                'attribute' => '__max_db_answers'
-            ));
+            /* for already activated survey and rank question type : fix the maxDbAnswer before deleting answers */
+            /* @todo : add it to upgrage DB system, and see for the lsa */
+            if($sQuestionType=="R" && Survey::model()->findByPk($iSurveyID)->active=="Y")
+            {
+                $oQuestionAttributeMaxDBanswers = QuestionAttribute::model()->find(
+                    "qid = :qid AND attribute = 'max_subquestions'",
+                    array(':qid' => $iQuestionID)
+                );
+                if (empty($oQuestionAttribute))
+                {
+                    $answerCount=Answer::model()->countByAttributes(array('qid' => $iQuestionID,'language'=>Survey::model()->findByPk($iSurveyID)->language));
+                    $oQuestionAttribute = new QuestionAttribute();
+                    $oQuestionAttribute->qid = $iQuestionID;
+                    $oQuestionAttribute->attribute = 'max_subquestions';
+                    $oQuestionAttribute->value = $answerCount;
+                    $oQuestionAttribute->save();
+                }
+            }
 
             //First delete all answers
             Answer::model()->deleteAllByAttributes(array('qid'=>$iQuestionID));
@@ -162,17 +174,6 @@ class database extends Survey_Common_Action
             for ($iScaleID=0;$iScaleID<$iScaleCount;$iScaleID++)
             {
                 $iMaxCount=(int) Yii::app()->request->getPost('answercount_'.$iScaleID);
-
-                // This is needed for ranking question. See issue #09828
-                if (!empty($__max_db_answers))
-                {
-                    if ($iMaxCount > $__max_db_answers->value + 1)
-                    {
-                        Yii::app()->setFlashMessage(gT("You cannot add more answer options while the survey is active."), 'error');
-                    }
-                    $iMaxCount = min($iMaxCount, $__max_db_answers->value + 1);
-                }
-
                 for ($iSortOrderID=1;$iSortOrderID<$iMaxCount;$iSortOrderID++)
                 {
                     $sCode=sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));

@@ -360,20 +360,16 @@ function activateSurvey($iSurveyID, $simulate = false)
             case 'R':
 
                 /**
-                 * Patch for bug #09828: Ranking question : update allowed can broke Survey DB
-                 *
-                 * Solution is to store number of answers as max answers (hidden attribute),
-                 * then check this attribute when answer options is saved.
-                 *
-                 * The longterm solution is to make answer options subquestions instead.
+                 * See bug #09828: Ranking question : update allowed can broke Survey DB
+                 * If max_subquestions is not set or is invalid : set it to actual answers numbers
                  */
 
                 $nrOfAnswers = Answer::model()->countByAttributes(
-                    array('qid' => $arow['qid'])
+                    array('qid' => $arow['qid'],'language'=>Survey::model()->findByPk($iSurveyID)->language)
                 );
 
                 $oQuestionAttribute = QuestionAttribute::model()->find(
-                    "qid = :qid AND attribute = '__max_db_answers'",
+                    "qid = :qid AND attribute = 'max_subquestions'",
                     array(':qid' => $arow['qid'])
                 );
 
@@ -381,12 +377,11 @@ function activateSurvey($iSurveyID, $simulate = false)
                 {
                     $oQuestionAttribute = new QuestionAttribute();
                     $oQuestionAttribute->qid = $arow['qid'];
-                    $oQuestionAttribute->attribute = '__max_db_answers';
+                    $oQuestionAttribute->attribute = 'max_subquestions';
                     $oQuestionAttribute->value = $nrOfAnswers;
-                    $oQuestionAttribute->language = Survey::model()->findByPk($iSurveyID)->language;
                     $oQuestionAttribute->save();
                 }
-                else
+                elseif(intval($oQuestionAttribute->value)<1) // Fix it if invalid : disallow 0, but need a sub question minimum for EM
                 {
                     $oQuestionAttribute->value = $nrOfAnswers;
                     $oQuestionAttribute->save();
