@@ -4,6 +4,12 @@ $(document).ready(function(){
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
         distance:3});
+
+
+    $('.btnquickadd').click(function(){
+        scale_id = $(this).data('scale-id');
+    });
+
     $('#editanswersform').submit(checkForDuplicateCodes);
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
