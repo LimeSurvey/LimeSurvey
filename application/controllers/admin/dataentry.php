@@ -163,6 +163,15 @@ class dataentry extends Survey_Common_Action
         if(isset($aResult['success'])){
             $aData['aResult']['success']=array_merge($aData['aResult']['success'],$aResult['success']);
         }
+        if(isset($aResult['warnings']))
+        {
+            $aData['class']="message-box-warning";
+        }
+        if(isset($aResult['errors']))
+        {
+            $aData['class']="message-box-error";
+        }
+
         $aData['aResult']['errors']=(isset($aResult['errors'])) ? $aResult['errors'] : false;
         $aData['aResult']['warnings']=(isset($aResult['warnings'])) ? $aResult['warnings'] : false;
 
