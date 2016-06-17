@@ -484,6 +484,15 @@ table > tbody > tr > td.ddprefix {
  */
 @media only screen and (max-width: 801px) {
 
+    /*
+        No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
+        whereas visible-xs-block respect bootstrap standards (767px)
+        If too many bugs of this kind appears in the future, we should just refuse to support weird exotic tablet screens. 
+    */
+    .visible-xs-block{
+        display: block !important;
+    }
+
     /* Remove margin */
     .row {
         margin: 0;
