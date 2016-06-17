@@ -14,9 +14,8 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   if (typeof showpopups === 'undefined'){showpopups=true;}
   if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
   if (typeof samelistheight === 'undefined'){ samelistheight=true;}
-  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);// We need to test it each time : because it can be dynamic
   var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
-  console.log('rankingname: '+rankingname);
   var rankingnamewidth=rankingname.length;
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
@@ -83,6 +82,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     delay: 200,
     revert: 50,
     receive: function(event, ui) {
+      maxanswers=parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
       if($(this).attr("id")=='sortable-rank-'+qID && $(maxanswers>0 && '#sortable-rank-'+qID+' li').length > maxanswers) {
         sortableAlert (qID,showpopups,maxanswers);
         if(showpopups){$(ui.sender).sortable('cancel');}
@@ -98,6 +98,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   fixChoiceListHeight(qID,samechoiceheight,samelistheight);
   // Allow users to double click to move to selections from list to list
     $('#sortable-choice-'+qID).delegate('li','dblclick', function() {
+      maxanswers=parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
       if($(maxanswers>0 && '#sortable-rank-'+qID+' li').length >= maxanswers) {
         sortableAlert (qID,showpopups,maxanswers);
         if(showpopups){return false;}
