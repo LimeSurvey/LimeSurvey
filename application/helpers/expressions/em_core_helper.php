@@ -1636,8 +1636,8 @@ class ExpressionManager {
             $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'expression.js');
             */
 
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "expressions.css" );
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true) . Yii::app()->getConfig('publicstyleurl') . "expressions.css" );
+            App()->getClientScript()->registerScriptFile(Yii::app()->getBaseUrl(true) . Yii::app()->getConfig('adminscripts') . "expression.js");
 
         }
         $sClass='em-expression';
