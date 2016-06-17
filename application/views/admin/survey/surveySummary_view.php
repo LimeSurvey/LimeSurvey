@@ -32,6 +32,78 @@ $surveyid = $surveyinfo['sid'];
             <?php
             $aGroups =    QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $surveyinfo['language']);
             ?>
+    <!-- fancy tree -->
+        <div id="tree">
+          <ul id="treeData" style="display: none;">
+
+                <?php $count=1; ?>
+                <?php foreach($aGroups as $aGroup):?>
+                    <li id="<?php echo $count;?>" class="folder">
+                        <a href="<?php echo $this->createUrl("/admin/questiongroups/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid); ?>" target="_self">
+                            <?php echo sanitize_html_string(strip_tags($aGroup->group_name));?>
+                        </a>
+
+                        <ul>
+                            <?php $count++; ?>
+                            <?php foreach($aGroup['aQuestions'] as $question):?>
+
+                                <li id="<?php echo $count;?>">
+                                    <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" target="_self">
+                                        <?php echo sanitize_html_string(strip_tags($question->title)). sanitize_html_string(strip_tags($question->question));?>
+                                    </a>
+                                </li>
+
+                            <?php $count++; ?>
+                            <?php endforeach;?>
+                        </ul>
+                    </li>
+                    <?php $count++; ?>
+                <?php endforeach;?>
+          </ul>
+        </div>
+        <script>
+
+        glyph_opts = {
+            map: {
+              doc: "fa fa-file-o",
+              docOpen: "fa fa-file-o",
+              checkbox: "fa fa-square-o",
+              checkboxSelected: "fa fa-check-square-o",
+              checkboxUnknown: "fa fa-share",
+              dragHelper: "glyphicon glyphicon-play",
+              dropMarker: "glyphicon glyphicon-arrow-right",
+              error: "glyphicon glyphicon-warning-sign",
+              expanderClosed: "fa fa-caret-right",
+              expanderLazy: "fa fa-caret-right",  // glyphicon-plus-sign
+              expanderOpen: "fa fa-caret-down",  // glyphicon-collapse-down
+              folder: "fa fa-folder-o",
+              folderOpen: "fa fa-folder-open-o",
+              loading: "glyphicon glyphicon-refresh glyphicon-spin"
+            }
+          };
+        $("#tree").fancytree({
+
+            extensions: [ "glyph", "wide"],
+            glyph: glyph_opts,
+            selectMode: 2,
+            clickFolderMode: 3,
+            dblclick: function(event, data) {
+
+                    var node = data.node;
+                    // Use <a> href and target attributes to load the content:
+                    if( node.data.href ){
+                      // Open target
+                      window.open(node.data.href, node.data.target);
+                    }
+            },
+            wide: {
+                iconWidth: "1em",     // Adjust this if @fancy-icon-width != "16px"
+                iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
+                levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
+            },
+
+    });
+        </script>
 </div>
 </div>
 
