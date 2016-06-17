@@ -3,6 +3,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ## [not releazed]
 ### Fix
+- EM tips are empty after reloading page via browser (F5)
 - Ranking question : Alert are not show every time
 - Ranking question : Add answers can broke Survey DB
 
