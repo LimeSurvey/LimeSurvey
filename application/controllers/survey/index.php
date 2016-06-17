@@ -115,6 +115,31 @@ class index extends CAction {
 
         $this->_loadLimesurveyLang($surveyid);
 
+
+        // Set the language of the survey, either from POST, GET parameter of session var
+        // Keep the old value, because SetSurveyLanguage update $_SESSION
+        $sOldLang=isset($_SESSION['survey_'.$surveyid]['s_lang'])?$_SESSION['survey_'.$surveyid]['s_lang']:"";// Keep the old value, because SetSurveyLanguage update $_SESSION
+        if (!empty($param['lang']))
+        {
+            $sDisplayLanguage = $param['lang'];// $param take lang from returnGlobal and returnGlobal sanitize langagecode
+        }
+        elseif (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+        {
+            $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
+        }
+        elseif(Survey::model()->findByPk($surveyid))
+        {
+            $sDisplayLanguage=Survey::model()->findByPk($surveyid)->language;
+        }
+        else
+        {
+            $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
+        }
+        if ($surveyid && $surveyExists)
+        {
+            SetSurveyLanguage( $surveyid, $sDisplayLanguage);
+        }
+
         if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) )
         {
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>App()->language,'newtest'=>'Y'));
@@ -194,30 +219,11 @@ class index extends CAction {
             $this->_niceExit($redata, __LINE__, null, $asMessage);
         };
 
-        // Set the language of the survey, either from POST, GET parameter of session var
-        // Keep the old value, because SetSurveyLanguage update $_SESSION
-        $sOldLang=isset($_SESSION['survey_'.$surveyid]['s_lang'])?$_SESSION['survey_'.$surveyid]['s_lang']:"";// Keep the old value, because SetSurveyLanguage update $_SESSION
-        if (!empty($param['lang']))
-        {
-            $sDisplayLanguage = $param['lang'];// $param take lang from returnGlobal and returnGlobal sanitize langagecode
-        }
-        elseif (isset($_SESSION['survey_'.$surveyid]['s_lang']))
-        {
-            $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        }
-        elseif(Survey::model()->findByPk($surveyid))
-        {
-            $sDisplayLanguage=Survey::model()->findByPk($surveyid)->language;
-        }
-        else
-        {
-            $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
-        }
+
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {
             LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
-            SetSurveyLanguage( $surveyid, $sDisplayLanguage);
             if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
             if (App()->language != $sOldLang)  // Update the Session var only if needed
             {
@@ -717,7 +723,7 @@ class index extends CAction {
     function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
 
-        killSurveySession($surveyid);
+        //killSurveySession($surveyid);
         $thissurvey=getSurveyInfo($surveyid);
         if($thissurvey)
         {
