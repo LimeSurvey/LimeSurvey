@@ -143,6 +143,24 @@ class database extends Survey_Common_Action
             $sQuestionType = $arQuestion['type'];    // Checked)
             $aQuestionTypeList=getQuestionTypeList('','array');
             $iScaleCount=$aQuestionTypeList[$sQuestionType]['answerscales'];
+            /* for already activated survey and rank question type : fix the maxDbAnswer before deleting answers */
+            /* @todo : add it to upgrage DB system, and see for the lsa */
+            if($sQuestionType=="R" && Survey::model()->findByPk($iSurveyID)->active=="Y")
+            {
+                $oQuestionAttributeMaxDBanswers = QuestionAttribute::model()->find(
+                    "qid = :qid AND attribute = 'max_subquestions'",
+                    array(':qid' => $iQuestionID)
+                );
+                if (empty($oQuestionAttribute))
+                {
+                    $answerCount=Answer::model()->countByAttributes(array('qid' => $iQuestionID,'language'=>Survey::model()->findByPk($iSurveyID)->language));
+                    $oQuestionAttribute = new QuestionAttribute();
+                    $oQuestionAttribute->qid = $iQuestionID;
+                    $oQuestionAttribute->attribute = 'max_subquestions';
+                    $oQuestionAttribute->value = $answerCount;
+                    $oQuestionAttribute->save();
+                }
+            }
             //First delete all answers
             Answer::model()->deleteAllByAttributes(array('qid'=>$iQuestionID));
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);

@@ -2144,7 +2144,24 @@
                 {
                     $max_answers='';
                 }
-
+                /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(answers) )*/
+                if($type=='R' && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions'])>0))
+                {
+                    $max_subquestions=intval($qattr['max_subquestions']);
+                    // We don't have another answer count in EM ?
+                    $answerCount=Answer::model()->count("qid=:qid and language=:language",array(":qid"=>$questionNum,'language'=>$_SESSION['LEMlang']));
+                    if($max_subquestions < $answerCount)
+                    {
+                        if($max_answers!='')
+                        {
+                            $max_answers='min('.$max_answers.','.$max_subquestions.')';
+                        }
+                        else
+                        {
+                            $max_answers=intval($qattr['max_subquestions']);
+                        }
+                    }
+                }
                 // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
                 if($type=="K" && isset($qattr['slider_min']) && ( !isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n'])==''))
                     $qattr['min_num_value_n']=$qattr['slider_min'];

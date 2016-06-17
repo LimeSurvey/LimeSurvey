@@ -2126,11 +2126,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
         elseif ($arow['type'] == "R")
         {
-            //MULTI ENTRY
-            $data = Answer::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage));
-            $data = count($data);
-            $slots=$data;
-            for ($i=1; $i<=$slots; $i++)
+            // Sub question by answer number OR attribute
+            $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage)));
+            $maxDbAnswer=QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'",array(':qid' => $arow['qid']));
+            $columnsCount=(!$maxDbAnswer || intval($maxDbAnswer->value)<1) ? $answersCount : intval($maxDbAnswer->value);
+            for ($i=1; $i<=$columnsCount; $i++)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
@@ -3076,13 +3076,15 @@ function questionAttributes($returnByName=false)
         "help"=>gT('Maximum value of the numeric input'),
         "caption"=>gT('Maximum value'));
 
-        //    $qattributes["max_num_value_sgqa"]=array(
-        //    "types"=>"K",
-        //    'category'=>gT('Logic'),
-        //    'sortorder'=>100,
-        //    'inputtype'=>'text',
-        //    "help"=>gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
-        //    "caption"=>gT('Max value from SGQA'));
+        /* Ranking specific : max DB answer */
+        $qattributes["max_subquestions"]=array(
+        "types"=>"R",
+        'readonly_when_active'=>true,
+        'category'=>gT('Logic'),
+        'sortorder'=>12,
+        'inputtype'=>'integer',
+        "help"=>gT('Limit the number of possible answers fixed by number of columns in database'),
+        "caption"=>gT('Maximum columns for answers'));
 
         $qattributes["maximum_chars"]=array(
         "types"=>"STUNQK:;",

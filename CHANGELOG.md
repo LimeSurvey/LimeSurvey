@@ -1,6 +1,10 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## [not releazed]
+### Fix
+- Ranking question : update allowed can broke Survey DB
+
 ## [1.0.20] - 2016-06-16
 ### Feature
 - afterSurveyMenuLoad event to add survey specific menu items

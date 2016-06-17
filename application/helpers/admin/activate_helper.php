@@ -357,6 +357,33 @@ function activateSurvey($iSurveyID, $simulate = false)
             case '*': // Equation
                 $createsurvey[$arow['fieldname']] = "text";
                 break;
+            case 'R':
+                /**
+                 * See bug #09828: Ranking question : update allowed can broke Survey DB
+                 * If max_subquestions is not set or is invalid : set it to actual answers numbers
+                 */
+                $nrOfAnswers = Answer::model()->countByAttributes(
+                    array('qid' => $arow['qid'],'language'=>Survey::model()->findByPk($iSurveyID)->language)
+                );
+                $oQuestionAttribute = QuestionAttribute::model()->find(
+                    "qid = :qid AND attribute = 'max_subquestions'",
+                    array(':qid' => $arow['qid'])
+                );
+                if (empty($oQuestionAttribute))
+                {
+                    $oQuestionAttribute = new QuestionAttribute();
+                    $oQuestionAttribute->qid = $arow['qid'];
+                    $oQuestionAttribute->attribute = 'max_subquestions';
+                    $oQuestionAttribute->value = $nrOfAnswers;
+                    $oQuestionAttribute->save();
+                }
+                elseif(intval($oQuestionAttribute->value)<1) // Fix it if invalid : disallow 0, but need a sub question minimum for EM
+                {
+                    $oQuestionAttribute->value = $nrOfAnswers;
+                    $oQuestionAttribute->save();
+                }
+                $createsurvey[$arow['fieldname']] = "string(5)";// Default
+                break;
             default:
                 $createsurvey[$arow['fieldname']] = "string(5)";
         }
