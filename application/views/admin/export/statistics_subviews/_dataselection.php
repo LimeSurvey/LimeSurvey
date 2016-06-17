@@ -7,20 +7,15 @@
 
         <div class='form-group'>
             <label for='completionstate' class="col-sm-4 control-label"><?php eT("Include:"); ?> </label>
-            <div class="btn-group hidden-sm hidden-xs  pull-left" data-toggle="buttons">
-                <label class="btn btn-default active">
-                    <input name="completionstate" value="all" type="radio"  checked >
-                    <?php eT("All responses"); ?>
-                </label>
-                <label class="btn btn-default">
-                    <input name="completionstate" value="complete" type="radio"   >
-                    <?php eT("Completed responses only"); ?>
-                </label>
-                <label class="btn btn-default">
-                    <input name="completionstate" value="incomplete" class="active" type="radio" >
-                    <?php eT("Incomplete responses only"); ?>
-                </label>
-            </div>
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'completionstate',
+                'value'=> 'all' ,
+                'selectOptions'=>array(
+                    "all"=>gT("All responses",'unescaped'),
+                    "complete"=>gT("Complete only",'unescaped'),
+                    "incomplete"=>gT("Incomplete only",'unescaped'),
+                )
+            ));?>
         </div>
 
         <div class='form-group'>

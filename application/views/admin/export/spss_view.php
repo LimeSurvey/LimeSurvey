@@ -6,7 +6,7 @@
         <div class="col-sm-10">
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'completionstate',
-                'value'=> incompleteAnsFilterState() ,
+                'value'=> 'all' ,
                 'selectOptions'=>array(
                     "all"=>gT("All responses",'unescaped'),
                     "complete"=>gT("Complete only",'unescaped'),
