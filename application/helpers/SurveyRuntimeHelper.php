@@ -464,7 +464,7 @@ class SurveyRuntimeHelper {
             {
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
                 // Does not try to save anything from the page to the database
-                $moveResult = LimeExpressionManager::GetLastMoveResult(true);
+                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step : see bug #11404
                 if (isset($_POST['thisstep']) && isset($moveResult['seq']) && $_POST['thisstep'] == $moveResult['seq'])
                 {
                     // then pressing F5 or otherwise refreshing the current page, which is OK
