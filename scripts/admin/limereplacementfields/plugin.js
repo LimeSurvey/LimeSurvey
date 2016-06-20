@@ -130,37 +130,13 @@ CKEDITOR.plugins.limereplacementfields =
 {
     createlimereplacementfields : function( editor, oldElement, text, isGet )
     {
-        var element = new CKEDITOR.dom.element( 'span', editor.document );
-        element.setAttributes(
-            {
-                contentEditable        : 'false',
-                'data-cke-limereplacementfields'    : 1,
-                'class'            : 'cke_limereplacementfields'
-            }
-        );
-
-        text && element.setText( text );
 
         if ( isGet )
-            return element.getOuterHtml();
-
-        if ( oldElement )
         {
-            if ( CKEDITOR.env.ie )
-            {
-                element.insertAfter( oldElement );
-                // Some time is required for IE before the element is removed.
-                setTimeout( function()
-                    {
-                        oldElement.remove();
-                        element.focus();
-                    }, 10 );
-            }
-            else
-                element.replace( oldElement );
+            return text;
         }
-        else
-            editor.insertElement( element );
+
+        editor.insertText(text);
 
         return null;
     },
