@@ -122,5 +122,39 @@ class LSHttpRequest extends CHttpRequest {
     }
 
 
+    public function getPathInfo()
+    {
+        if($this->_pathInfo===null)
+        {
+            $pathInfo=$this->getRequestUri();
+
+            if(($pos=strpos($pathInfo,'?'))!==false)
+                $pathInfo=substr($pathInfo,0,$pos);
+
+            $pathInfo=$this->decodePathInfo($pathInfo);
+
+            $scriptUrl=$this->getScriptUrl();
+            $baseUrl=$this->getBaseUrl();
+            if(strpos($pathInfo,$scriptUrl)===0)
+                $pathInfo=substr($pathInfo,strlen($scriptUrl));
+            elseif($baseUrl==='' || strpos($pathInfo,$baseUrl)===0)
+                $pathInfo=substr($pathInfo,strlen($baseUrl));
+            elseif(strpos($_SERVER['PHP_SELF'],$scriptUrl)===0)
+                $pathInfo=substr($_SERVER['PHP_SELF'],strlen($scriptUrl));
+            else
+                throw new CException(Yii::t('yii','CHttpRequest is unable to determine the path info of the request.'));
+
+            if($pathInfo==='/')
+                $pathInfo='';
+            elseif(!empty($pathInfo) && $pathInfo[0]==='/')
+                $pathInfo=substr($pathInfo,1);
+
+            if(($posEnd=strlen($pathInfo)-1)>0 && $pathInfo[$posEnd]==='/')
+                $pathInfo=substr($pathInfo,0,$posEnd);
+
+            $this->_pathInfo=$pathInfo;
+        }
+        return $this->_pathInfo;
+    }
 
 }
