@@ -35,6 +35,37 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160616) to 2.50+ (build 160620) June 20, 2016
+-Fixed issue #11016: 10 point array does not fit on tablet screen (LouisGac)
+-Fixed issue #11269: Using EM Expressions in welcome-text is mixed with html (LouisGac)
+-Fixed issue #11335: Wrong language when resuming saved survey (LouisGac)
+-Fixed issue #11380: Yii::log table is hidden (LouisGac)
+-Fixed issue #11391: Clicking a question code in EM expression opens survey home page instead of particular question (Carsten Schmitz)
+-Fixed issue #11392: Message after import partly visible (LouisGac)
+-Fixed issue #11396: Expression manager in max_answers for ranking don't show error (Denis Chenu)
+-Fixed issue #11398: Tmp folder is not read from config-defaults.php (Carsten Schmitz)
+-Fixed issue #11400: Loosing Array text when changing width of browser-window (LouisGac)
+-Fixed issue #11403: Problem to proceed in question with <video> (LouisGac)
+-Fixed issue #11405: .css and .js not loading on public pages (on specific servers) (LouisGac)
+-Fixed issue #9205: Optout (and optin) page produce js error (no jquery inside) (LouisGac)
+-Fixed issue #9828: Ranking question : update allowed can broke Survey DB (Denis Chenu)
+-Fixed issue: Quickadd not working for dual scale question, subanwsers (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.50+ (build 160614) to 2.50+ (build 160616) June 16, 2016
 -Fixed issue #11394: [security] File upload error path revelation (Carsten Schmitz)
 -Fixed issue #10914: Slider is not reversed in RTL (conflicts with help-text below) (Olle Haerstedt)
