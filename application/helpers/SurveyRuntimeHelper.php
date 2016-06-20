@@ -460,14 +460,16 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['maxstep'] = 0;
             }
 
-            if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION[$LEMsessid]['LEMpostKey'])
+            if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey') != $_SESSION[$LEMsessid]['LEMpostKey'])
             {
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
-                // Does not try to save anything from the page to the database
-                $moveResult = LimeExpressionManager::GetLastMoveResult(true);
-                if (isset($_POST['thisstep']) && isset($moveResult['seq']) && $_POST['thisstep'] == $moveResult['seq'])
+                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
+                if (isset($moveResult['seq']) && App()->request->getPost('thisstep') == $moveResult['seq'])
                 {
-                    // then pressing F5 or otherwise refreshing the current page, which is OK
+
+                    /* then pressing F5 or otherwise refreshing the current page, which is OK
+                     * Seems OK only when movenext but not with move by index : same with $moveResult = LimeExpressionManager::GetLastMoveResult(true);
+                     */
                     $LEMskipReprocessing=true;
                     $move = "movenext"; // so will re-display the survey
                 }
