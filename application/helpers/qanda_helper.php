@@ -1254,7 +1254,7 @@ function do_list_dropdown($ia)
             $sOptions .= doRender('/survey/questions/list_dropdown/rows/option', array(
                 'value'=>$ansrow['code'],
                 'opt_select'=>$opt_select,
-                'answer'=>flattenText($_prefix.$ansrow['answer'])
+                'answer'=>$_prefix.$ansrow['answer'],
             ), true);
         }
     }
