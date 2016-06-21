@@ -704,7 +704,7 @@ class templates extends Survey_Common_Action
         $aData['templatename'] = $templatename;
         $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
 
-        $this->getController()->render("/admin/templates/templatebar_view", $aData);
+        $this->getController()->renderPartial("/admin/templates/templatebar_view", $aData);
     }
 
     /**
@@ -1067,15 +1067,15 @@ class templates extends Survey_Common_Action
         $groupname = gT("Group 1: The first lot of questions");
         $groupdescription = gT("This group description is fairly vacuous, but quite important.");
 
-        $navigator = $this->getController()->render('/admin/templates/templateeditor_navigator_view', array(
+        $navigator = $this->getController()->renderPartial('/admin/templates/templateeditor_navigator_view', array(
             'screenname' => $screenname
             ), true);
 
-        $completed = $this->getController()->render('/admin/templates/templateeditor_completed_view', array(), true);
+        $completed = $this->getController()->renderPartial('/admin/templates/templateeditor_completed_view', array(), true);
 
-        $assessments = $this->getController()->render('/admin/templates/templateeditor_assessments_view', array(), true);
+        $assessments = $this->getController()->renderPartial('/admin/templates/templateeditor_assessments_view', array(), true);
 
-        $printoutput = $this->getController()->render('/admin/templates/templateeditor_printoutput_view', array(), true);
+        $printoutput = $this->getController()->renderPartial('/admin/templates/templateeditor_printoutput_view', array(), true);
 
         $totalquestions = '10';
         $surveyformat = 'Format';
@@ -1119,7 +1119,7 @@ class templates extends Survey_Common_Action
                     "nosid" => gT("You have not provided a survey identification number"),
                     "contact" => sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
                     "listheading" => gT("The following surveys are available:"),
-                    "list" => $this->getController()->render('/admin/templates/templateeditor_surveylist_view', array(), true),
+                    "list" => $this->getController()->renderPartial('/admin/templates/templateeditor_surveylist_view', array(), true),
                 );
                 $aData['surveylist'] = $aSurveyListTexts;
 
@@ -1134,7 +1134,7 @@ class templates extends Survey_Common_Action
 
             case 'question':
                 $files=$Question;
-                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array(), true);
+                $myoutput[] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_meta_view', array(), true);
 
                 $aData['aReplacements'] = array(
                     'SAVE_LINKS' => '<li><a href="#" id="saveallbtnlink">'.gT("Resume later").'</a></li>',
@@ -1170,7 +1170,7 @@ class templates extends Survey_Common_Action
                     </div>
                     ',
                 );
-                $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
+                $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = $aReplacements;
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
 
@@ -1189,7 +1189,7 @@ class templates extends Survey_Common_Action
                     </div>
                     '
                 );
-                $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
+                $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['aReplacements'] = $aReplacements;
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
 
@@ -1230,10 +1230,10 @@ class templates extends Survey_Common_Action
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
 
                 $aData['aReplacements'] = array(
-                    'REGISTERERROR' => gT('Example error message'),
-                    'REGISTERMESSAGE1' => gT('Register message 1'),
-                    'REGISTERMESSAGE2' => gT('Register message 2'),
-                    'REGISTERFORM' => $this->getController()->render('/admin/templates/templateeditor_register_view', array('alt' => true), true),
+                    'REGISTERERROR' => 'Example error message',
+                    'REGISTERMESSAGE1' => 'Register message 1',
+                    'REGISTERMESSAGE2' => 'Register message 2',
+                    'REGISTERFORM' => $this->getController()->renderPartial('/admin/templates/templateeditor_register_view', array('alt' => true), true),
                 );
 
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/register.pstpl", $aData, $oEditedTemplate));
@@ -1296,7 +1296,7 @@ class templates extends Survey_Common_Action
                         'QUESTION_TEXT' => gT('This is a sample question text. The user was asked to pick an entry.'),
                         'QUESTIONHELP' => gT('This is some help text for this question.'),
                         'ANSWER' =>
-                        $this->getController()->render('/admin/templates/templateeditor_printablesurvey_quesanswer_view', array(
+                        $this->getController()->renderPartial('/admin/templates/templateeditor_printablesurvey_quesanswer_view', array(
                             'templateurl' => $templateurl
                             ), true),
                         ), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
