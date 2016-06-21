@@ -1230,9 +1230,9 @@ class templates extends Survey_Common_Action
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
 
                 $aData['aReplacements'] = array(
-                    'REGISTERERROR' => 'Example error message',
-                    'REGISTERMESSAGE1' => 'Register message 1',
-                    'REGISTERMESSAGE2' => 'Register message 2',
+                    'REGISTERERROR' => gT('Example error message'),
+                    'REGISTERMESSAGE1' => gT('Register message 1'),
+                    'REGISTERMESSAGE2' => gT('Register message 2'),
                     'REGISTERFORM' => $this->getController()->render('/admin/templates/templateeditor_register_view', array('alt' => true), true),
                 );
 
