@@ -47,7 +47,7 @@ $surveyid = $surveyinfo['sid'];
                             <?php $count++; ?>
                             <?php foreach($aGroup['aQuestions'] as $question):?>
 
-                                <li id="<?php echo $count;?>">
+                                <li id="<?php echo $count;?>" title="TOTO" data-toggle="tooltip">
                                     <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" target="_self">
                                         <?php echo sanitize_html_string(strip_tags($question->title)). sanitize_html_string(strip_tags($question->question));?>
                                     </a>
@@ -101,8 +101,42 @@ $surveyid = $surveyinfo['sid'];
                 iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
                 levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
             },
+            expand: function(event, data){
+                console.log("expand");
+                if( data.node.isFolder() ){
+                    console.log("isFolder");
+                    //console.log(data.node.children);
+                    data.node.children.forEach(function(node) {
 
-    });
+                        // Add bootstrap tooltip
+                        if(node.data.toggle=='tooltip')
+                        {
+                            console.log(node);
+                            //node.attr('data-toggle', 'tooltip');
+                            node.tooltip();
+                            //node.addClass('hidden');
+                        }
+
+                    });
+                }
+
+
+            }
+
+    });/*.on("mouseover", "span.fancytree-title", function(event){
+        // Add a hover handler to all node titles (using event delegation)
+        var node = $.ui.fancytree.getNode(event);
+        node.info(event.type);
+
+        // Add bootstrap tooltip
+        if(node.data.toggle=='tooltip')
+        {
+            //$(this).addClass('hidden')
+            $(this).attr('data-toggle', 'tooltip');
+            $(this).tooltip();
+        }
+        //console.log(node.toggle)
+    });;*/
         </script>
 </div>
 </div>
