@@ -137,7 +137,8 @@ class TemplateConfiguration extends CFormModel
         $this->overwrite_question_views    = (isset($this->config->engine->overwrite_question_views))? ( $this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
 
         $this->cssFramework = $this->config->engine->cssframework;
-        $this->packages     = (array) $this->config->engine->packages->package;
+        $oPackages      =  $this->config->engine->packages->package;
+        $this->packages =  (array) $oPackages;
         $this->otherFiles   = $this->setOtherFiles();
         $this->depends      = $this->packages;
         //$this->depends[]    = (string) $this->cssFramework;                   // Bootstrap CSS is no more needed for Bootstrap templates (their custom css like "flat_and_modern.css" is a custom version of bootstrap.css )
@@ -184,14 +185,19 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias('survey.template.path', $this->path);                                   // The package creation/publication need an alias
         Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);
 
-        $aCssFiles   = (array) $this->config->files->css->filename;                                 // The CSS files of this template
-        $aJsFiles    = (array) $this->config->files->js->filename;                                  // The JS files of this template
+        $oCssFiles   = $this->config->files->css->filename;                                 // The CSS files of this template
+        $oJsFiles    = $this->config->files->js->filename;                                  // The JS files of this template
+
 
         if (getLanguageRTL(App()->language))
         {
-            $aCssFiles = (array) $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
-            $aJsFiles  = (array) $this->config->files->rtl->js->filename;   // In RTL mode,
+            $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
+            $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
         }
+
+        $aCssFiles = (array) $oCssFiles;
+        $aJsFiles  = (array) $oJsFiles;
+
 
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
