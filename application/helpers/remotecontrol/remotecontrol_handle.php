@@ -1214,6 +1214,7 @@ class remotecontrol_handle
                         $oGroup->$sFieldName=$aGroupAttributes[$sFieldName];
                     }
                 }
+		Question::model()->updateQuestionOrder($iGroupID, $sGroupLanguage);
                 return $aResult;
             }
             else
@@ -1821,7 +1822,8 @@ class remotecontrol_handle
                     try
                     {
                         $bSaveResult=$oQuestion->save(false); // save the change to database
-                        Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
+			// Line below has been commented : moved to set_group_properties
+                        //Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
                         $aResult[$sFieldName]=$bSaveResult;
                         //unset fields that failed
                         if (!$bSaveResult)
