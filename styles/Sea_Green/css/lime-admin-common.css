@@ -2024,3 +2024,8 @@ div[id^="alertmod_"]
     float: right;
 }
 .yiiLog{margin-bottom:70px}
+
+table#responsedetail tr td{
+    max-width: 100px;
+     word-wrap:break-word;
+}
