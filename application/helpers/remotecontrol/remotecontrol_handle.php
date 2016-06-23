@@ -1214,6 +1214,7 @@ class remotecontrol_handle
                         $oGroup->$sFieldName=$aGroupAttributes[$sFieldName];
                     }
                 }
+		Question::model()->updateQuestionOrder($iGroupID, $sGroupLanguage);
                 return $aResult;
             }
             else
@@ -1692,6 +1693,7 @@ class remotecontrol_handle
                 $aDestinationFields=array_flip(Question::model()->tableSchema->columnNames);
                 $aDestinationFields['answeroptions'] = count($aDestinationFields);
                 $aDestinationFields['subquestions'] = count($aDestinationFields);
+		$aDestinationFields['hidden'] = count($aDestinationFields);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
@@ -1704,6 +1706,15 @@ class remotecontrol_handle
                     //all dependencies by other questions to this question
                     $is_criteria_question = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, "all", $iQuestionID, "by-targqid");
                     //We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies
+
+		    if (('hidden' == $sFieldName)) {
+                        $oQuestionAttribute            = new QuestionAttribute;
+                        $oQuestionAttribute->qid       = $oQuestion->qid;
+                        $oQuestionAttribute->attribute = 'hidden';
+                        $oQuestionAttribute->value     = 1;
+                        $oQuestionAttribute->save();
+                    }
+
 
                     if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order') {
                         $aResult[$sFieldName] = 'Questions with dependencies - Order cannot be changed';
@@ -1821,7 +1832,8 @@ class remotecontrol_handle
                     try
                     {
                         $bSaveResult=$oQuestion->save(false); // save the change to database
-                        Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
+			// Line below has been commented : moved to set_group_properties
+                        //Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
                         $aResult[$sFieldName]=$bSaveResult;
                         //unset fields that failed
                         if (!$bSaveResult)
