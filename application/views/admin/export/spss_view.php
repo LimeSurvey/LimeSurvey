@@ -40,6 +40,15 @@
             <input class="form-control" type='text' name='offset' value='<?php echo App()->getRequest()->getParam('offset');?>' />
         </div>
     </div>
+
+    <div class="form-group row">
+        <label for='offset' class='col-sm-2  form-control-label'><?php eT("No answer:");?></label>
+        <div class="col-sm-1">
+            <input class="form-control" type='text' name='noanswervalue' value='<?php echo App()->getRequest()->getParam('noanswervalue');?>' />
+        </div>
+    </div>
+
+
     <div class="form-group row">
         <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
         <input type='hidden' name='action' value='exportspss' />
@@ -68,5 +77,3 @@
     <?php eT("Your data should be imported now.");?></div>
 </div>
 <p>
-
-

@@ -445,7 +445,8 @@ class export extends Survey_Common_Action {
                 echo "\xEF\xBB\xBF";
             }
 
-            SPSSExportData($iSurveyID, $iLength);
+            $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '' )?'\''.$_POST['noanswervalue'].'\'':'';
+            SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue);
 
             exit;
         }
