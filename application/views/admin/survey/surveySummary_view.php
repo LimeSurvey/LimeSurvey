@@ -47,10 +47,11 @@ $surveyid = $surveyinfo['sid'];
                             <?php $count++; ?>
                             <?php foreach($aGroup['aQuestions'] as $question):?>
 
-                                <li id="<?php echo $count;?>" title="TOTO" data-toggle="tooltip">
+                                <li id="<?php echo $count;?>" title="<?php echo $question->sanitized_question;?>" data-toggle="tooltip" data-placement="right" >
                                     <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" target="_self">
-                                        <?php echo sanitize_html_string(strip_tags($question->title)). sanitize_html_string(strip_tags($question->question));?>
+                                        <?php echo $question->sanitized_title . ' : ' . $question->ellipsized_question;?>
                                     </a>
+
                                 </li>
 
                             <?php $count++; ?>
@@ -62,6 +63,8 @@ $surveyid = $surveyinfo['sid'];
           </ul>
         </div>
         <script>
+
+
 
         glyph_opts = {
             map: {
@@ -83,7 +86,7 @@ $surveyid = $surveyinfo['sid'];
           };
         $("#tree").fancytree({
 
-            extensions: [ "glyph", "wide"],
+            extensions: [ "glyph",  "bstooltip"],
             glyph: glyph_opts,
             selectMode: 2,
             clickFolderMode: 3,
@@ -103,22 +106,6 @@ $surveyid = $surveyinfo['sid'];
             },
             expand: function(event, data){
                 console.log("expand");
-                if( data.node.isFolder() ){
-                    console.log("isFolder");
-                    //console.log(data.node.children);
-                    data.node.children.forEach(function(node) {
-
-                        // Add bootstrap tooltip
-                        if(node.data.toggle=='tooltip')
-                        {
-                            console.log(node);
-                            //node.attr('data-toggle', 'tooltip');
-                            node.tooltip();
-                            //node.addClass('hidden');
-                        }
-
-                    });
-                }
 
 
             }
