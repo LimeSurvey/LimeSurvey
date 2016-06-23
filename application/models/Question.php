@@ -20,6 +20,10 @@ class Question extends LSActiveRecord
     // Stock the active group_name for questions list filtering
     public $group_name;
 
+    private $ellipsized_question=null;
+    private $sanitized_question=null;
+    private $sanitized_title = null;
+
     /**
     * Returns the static model of Settings table
     *
@@ -802,6 +806,7 @@ class Question extends LSActiveRecord
         return $ansresult;
     }
 
+
     public function getMandatoryIcon()
     {
         if ($this->type != "X"  && $this->type != "|")
@@ -827,6 +832,34 @@ class Question extends LSActiveRecord
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
         }
         return $sIcon;
+    }
+    public function getEllipsized_question()
+    {
+        if(!isset($this->ellipsized_question))
+        {
+            $this->ellipsized_question = viewHelper::flatEllipsizeText($this->sanitized_question,true,60,'[...]',0.5);
+        }
+        return $this->ellipsized_question;
+    }
+
+    public function getSanitized_question()
+    {
+        if(!isset($this->sanitized_question))
+        {
+            $this->sanitized_question = str_replace( '<br />', ' ', sanitize_html_string(strip_tags($this->question)));
+            //$this->sanitized_question = sanitize_html_string(strip_tags($this->question));
+        }
+        return $this->sanitized_question;
+
+    }
+
+    public function getSanitized_title()
+    {
+        if(!isset($this->sanitized_title))
+        {
+            $this->sanitized_title = sanitize_html_string(strip_tags($this->title));
+        }
+        return $this->sanitized_title;
     }
 
     /**
