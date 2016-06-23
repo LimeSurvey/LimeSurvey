@@ -1693,6 +1693,7 @@ class remotecontrol_handle
                 $aDestinationFields=array_flip(Question::model()->tableSchema->columnNames);
                 $aDestinationFields['answeroptions'] = count($aDestinationFields);
                 $aDestinationFields['subquestions'] = count($aDestinationFields);
+		$aDestinationFields['hidden'] = count($aDestinationFields);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
@@ -1705,6 +1706,15 @@ class remotecontrol_handle
                     //all dependencies by other questions to this question
                     $is_criteria_question = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, "all", $iQuestionID, "by-targqid");
                     //We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies
+
+		    if (('hidden' == $sFieldName)) {
+                        $oQuestionAttribute            = new QuestionAttribute;
+                        $oQuestionAttribute->qid       = $oQuestion->qid;
+                        $oQuestionAttribute->attribute = 'hidden';
+                        $oQuestionAttribute->value     = 1;
+                        $oQuestionAttribute->save();
+                    }
+
 
                     if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order') {
                         $aResult[$sFieldName] = 'Questions with dependencies - Order cannot be changed';
