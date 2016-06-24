@@ -1,7 +1,16 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## [1.0.21]] - 2016-06-17
+## [unreleased]
+
+### Feature
+- Log error and warning in tmp/runtime/application.log by default
+
+### Fix
+- Improvement on error when DB save for public survey
+- Fix DECIMAL value before try to save
+
+## [1.0.21] - 2016-06-17
 
 ### Feature
 - Allow to set column number on ranking question

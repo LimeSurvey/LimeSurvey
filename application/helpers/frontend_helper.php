@@ -787,7 +787,7 @@ function sendSubmitNotifications($surveyid)
 /**
 * submitfailed : used in em_manager_helper.php
 */
-function submitfailed($errormsg='')
+function submitfailed($errormsg='', $query = null)
 {
     global $debug;
     global $thissurvey;
@@ -795,12 +795,10 @@ function submitfailed($errormsg='')
 
 
 
-    $completed = "<br /><strong><font size='2' color='red'>"
-    . gT("Did Not Save")."</strong></font><br /><br />\n\n"
-    . gT("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
+    $completed = gT("An unexpected error has occurred and your responses cannot be saved.")."\n";
     if ($thissurvey['adminemail'])
     {
-        $completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
+        //$completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
         if ($debug>0)
         {
             $completed.='Error message: '.htmlspecialchars($errormsg).'<br />';
@@ -809,21 +807,26 @@ function submitfailed($errormsg='')
         $email .= gT("DATA TO BE ENTERED","unescaped").":\n";
         foreach ($_SESSION['survey_'.$surveyid]['insertarray'] as $value)
         {
-            $email .= "$value: {$_SESSION['survey_'.$surveyid][$value]}\n";
+            if(isset($_SESSION['survey_'.$surveyid][$value]))
+            {
+                $email .= "$value: {$_SESSION['survey_'.$surveyid][$value]}\n";
+            }else{
+                //$email .= "$value NULL\n";
+            }
+
         }
         $email .= "\n".gT("SQL CODE THAT FAILED","unescaped").":\n"
-        . "$subquery\n\n"
-        . gT("ERROR MESSAGE","unescaped").":\n"
-        . $errormsg."\n\n";
+        . ($subquery ? "{$subquery}\n" : '')
+        . ($query ? "{$query}\n" : '')  // In case we have no global subquery, but an argument to the function
+        . ($errormsg ? "\n".gT("ERROR MESSAGE","unescaped").":\n" : '')
+        . ($errormsg ? "{$errormsg}\n" : '');
         SendEmailMessage($email, gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
-        //echo "<!-- EMAIL CONTENTS:\n$email -->\n";
-        //An email has been sent, so we can kill off this session.
-        killSurveySession($surveyid);
+        $completed .= "<br>".gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.");
+
     }
     else
     {
-        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
-        $completed .= $subquery;
+        $completed .= gT("Try to submit again");
     }
     return $completed;
 }

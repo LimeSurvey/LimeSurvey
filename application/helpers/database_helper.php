@@ -35,10 +35,11 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
         }
     } catch(CDbException $e) {
         $error = $e->getMessage();
+        tracevar($error);
+        Yii::log($error, 'error', 'system.db');
         $dataset=false;
     }
-
-    if (!$dataset && (Yii::app()->getConfig('debug') >0 || !$silent))
+    if (!$dataset && !$silent)
     {
         safeDie('Error executing query in dbExecuteAssoc:'.$error);
     }

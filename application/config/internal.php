@@ -67,7 +67,12 @@ $internalConfig = array(
                 ),
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
-                )
+                ),
+                /* Adding app warning and error to ./tmp/runtime/application.log, can be replaced in config */
+                'fileError' => array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'warning, error',
+                ),
             )
         ),
         'cache'=>array(

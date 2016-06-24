@@ -476,7 +476,6 @@ class SurveyRuntimeHelper {
             //Now, we check mandatory questions if necessary
             //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
             global $notanswered;
-
             if (isset($moveResult) && !$moveResult['finished'])
             {
                 $unansweredSQList = $moveResult['unansweredSQs'];
@@ -994,6 +993,11 @@ class SurveyRuntimeHelper {
         // echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
 
         $showpopups=Yii::app()->getConfig('showpopups');
+        if(Yii::app()->user->hasState('dberror_'.$surveyid))
+        {
+            echo "<p class='errormandatory alert alert-danger' role='alert'>" . Yii::app()->user->getState('dberror_'.$surveyid) . "</p>";
+            Yii::app()->user->setState('dberror_'.$surveyid,null);
+        }
         //Display the "mandatory" message on page if necessary
         if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
         {
