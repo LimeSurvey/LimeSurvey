@@ -542,8 +542,10 @@ class questiongroups extends Survey_Common_Action
 
             foreach ($aGroup['aQuestions'] as $oQuestion)
             {
-                $aDatasQ[$countQ]["key"]   = $oQuestion->qid;
-                $aDatasQ[$countQ]["title"] = $oQuestion->sanitized_title . ' : ' . $oQuestion->getEllipsized_question();
+                $aDatasQ[$countQ]["key"]      = $oQuestion->qid;
+                $aDatasQ[$countQ]["title"]    = $oQuestion->sanitized_title . ' : ' . $oQuestion->getEllipsized_question();
+                $aDatasQ[$countQ]['tooltip']  = $oQuestion->getSanitized_question();
+                $aDatasQ[$countQ]['toggle']   = 'tooltip';
                 $aDatas[$count]["children"][] = $aDatasQ[$countQ];              // Doing that, we push the questions in the children array, as an unindexed array (no count)
                 $countQ++;
             }
