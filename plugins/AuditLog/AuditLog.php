@@ -31,14 +31,24 @@
                 'label' => 'Log if a user was deleted',
                 'default' => '1',
             ),
+            'AuditLog_Log_TokenSave' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a survey participant was modified or created',
+                'default' => '1',
+            ),
+            'AuditLog_Log_TokenDelete' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a survey participant was deleted',
+                'default' => '1',
+            ),
             'AuditLog_Log_ParticipantSave' => array(
                 'type' => 'checkbox',
-                'label' => 'Log if a participant was modified or created',
+                'label' => 'Log if a central database participant was modified or created',
                 'default' => '1',
             ),
             'AuditLog_Log_ParticipantDelete' => array(
                 'type' => 'checkbox',
-                'label' => 'Log if a participant was deleted',
+                'label' => 'Log if a central database participant was deleted',
                 'default' => '1',
             ),
             'AuditLog_Log_UserPermissionsChanged' => array(
@@ -62,6 +72,8 @@
             $this->subscribe('beforeUserSave');
             $this->subscribe('beforeUserDelete');
             $this->subscribe('beforePermissionSetSave');
+            $this->subscribe('beforeTokenSave');
+            $this->subscribe('beforeTokenDelete');
             $this->subscribe('beforeParticipantSave');
             $this->subscribe('beforeParticipantDelete');
             $this->subscribe('beforeLogout');
@@ -173,15 +185,14 @@
         }
 
         /**
-        * Function catches if a participant was modified or created
+        * Function catches if a participant of a particular survey was modified or created
         * All data is saved - only the password hash is anonymized for security reasons
         */
-        public function beforeParticipantSave()
+        public function beforeTokenSave()
         {
-
             $event = $this->getEvent();
             $iSurveyID=$event->get('iSurveyID');
-            if (!$this->checkSetting('AuditLog_Log_ParticipantSave') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
+            if (!$this->checkSetting('AuditLog_Log_TokenSave') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
                 return;
             }
 
@@ -192,23 +203,71 @@
             }
             $oCurrentUser=$this->api->getCurrentUser();
 
-            if (is_null($oNewParticipant->participant_id)){   // Token not participant
-                $newValues=$oNewParticipant->getAttributes();
+            $newValues=$oNewParticipant->getAttributes();
+            $oldvalues= $this->api->getToken($iSurveyID, $oNewParticipant->token)->getAttributes();
+            if (count(array_diff_assoc($newValues,$oldvalues))){
+                $oAutoLog = $this->api->newModel($this, 'log');
+                $oAutoLog->uid=$oCurrentUser->uid;
+                $oAutoLog->entity='token';
+                $oAutoLog->action='update';
+                $oAutoLog->entityid=$newValues['tid'];
+                $oAutoLog->oldvalues=json_encode(array_diff_assoc($oldvalues,$newValues));
+                $oAutoLog->newvalues=json_encode(array_diff_assoc($newValues,$oldvalues));
+                $oAutoLog->fields=implode(',',array_keys(array_diff_assoc($newValues,$oldvalues)));
+                $oAutoLog->save();
+            }
+        }
 
-                $oldvalues= $this->api->getToken($iSurveyID, $oNewParticipant->token)->getAttributes();
-                if (count(array_diff_assoc($newValues,$oldvalues))){
+        /**
+        * Function catches if a participant of a particular survey was modified or created
+        * All data is saved - only the password hash is anonymized for security reasons
+        */
+        public function beforeTokenDelete()
+        {
+            $event = $this->getEvent();
+            $iSurveyID=$event->get('iSurveyID');
+            if (!$this->checkSetting('AuditLog_Log_TokenDelete') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+                return;
+            }
+
+            $sTokenIds=$this->getEvent()->get('sTokenIds');
+            $aTokenIds = explode(',', $sTokenIds);
+            $oCurrentUser=$this->api->getCurrentUser();
+
+            foreach ($aTokenIds as $tokenId)
+            {
+                $token = Token::model($iSurveyID)->find('tid=' . $tokenId);
+
+                if (!is_null($token))
+                {
+                    $aValues=$token->getAttributes();
                     $oAutoLog = $this->api->newModel($this, 'log');
                     $oAutoLog->uid=$oCurrentUser->uid;
                     $oAutoLog->entity='token';
-                    $oAutoLog->action='update';
-                    $oAutoLog->entityid=$newValues['tid'];
-                    $oAutoLog->oldvalues=json_encode(array_diff_assoc($oldvalues,$newValues));
-                    $oAutoLog->newvalues=json_encode(array_diff_assoc($newValues,$oldvalues));
-                    $oAutoLog->fields=implode(',',array_keys(array_diff_assoc($newValues,$oldvalues)));
+                    $oAutoLog->action='delete';
+                    $oAutoLog->entityid=$aValues['participant_id'];
+                    $oAutoLog->oldvalues=json_encode($aValues);
+                    $oAutoLog->fields=implode(',',array_keys($aValues));
                     $oAutoLog->save();
                 }
+            }
+        }
+
+        /**
+        * Function catches if a central database participant was modified or created
+        * All data is saved - only the password hash is anonymized for security reasons
+        */
+        public function beforeParticipantSave()
+        {
+            if (!$this->checkSetting('AuditLog_Log_ParticipantSave')) {
                 return;
             }
+            $oNewParticipant=$this->getEvent()->get('model');
+            if ($oNewParticipant->isNewRecord)
+            {
+                return;
+            }
+            $oCurrentUser=$this->api->getCurrentUser();
 
             $aOldValues=$this->api->getParticipant($oNewParticipant->participant_id)->getAttributes();
             $aNewValues=$oNewParticipant->getAttributes();
@@ -228,40 +287,28 @@
         }
 
         /**
-        * Function catches if a participant was modified or created
+        * Function catches if a central database participant was modified or created
         * All data is saved - only the password hash is anonymized for security reasons
         */
         public function beforeParticipantDelete()
         {
-            $event = $this->getEvent();
-            $iSurveyID=$event->get('iSurveyID');
-            if (!$this->checkSetting('AuditLog_Log_ParticipantDelete') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+            if (!$this->checkSetting('AuditLog_Log_ParticipantDelete')) {
                 return;
             }
-
-            $sTokenIds=$this->getEvent()->get('sTokenIds');
-            $aTokenIds = explode(',', $sTokenIds);
+            $oNewParticipant=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
 
-            foreach ($aTokenIds as $tokenId)
-            {
-                $token = Token::model($iSurveyID)->find('tid=' . $tokenId);
+            $aValues=$oNewParticipant->getAttributes();
 
-                if (!is_null($token))
-                {
-                    $aValues=$token->getAttributes();
-                    $oAutoLog = $this->api->newModel($this, 'log');
-                    $oAutoLog->uid=$oCurrentUser->uid;
-                    $oAutoLog->entity='participant';
-                    $oAutoLog->action='delete';
-                    $oAutoLog->entityid=$aValues['participant_id'];
-                    $oAutoLog->oldvalues=json_encode($aValues);
-                    $oAutoLog->fields=implode(',',array_keys($aValues));
-                    $oAutoLog->save();
-                }
-            }
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid=$oCurrentUser->uid;
+            $oAutoLog->entity='participant';
+            $oAutoLog->action='delete';
+            $oAutoLog->entityid=$aValues['participant_id'];
+            $oAutoLog->oldvalues=json_encode($aValues);
+            $oAutoLog->fields=implode(',',array_keys($aValues));
+            $oAutoLog->save();
         }
-
 
         /**
         * Function catches if a user was modified or created
@@ -350,8 +397,6 @@
                 $oAutoLog->save();
             }
         }
-
-
 
         public function beforeActivate()
         {

@@ -669,10 +669,10 @@ class tokens extends Survey_Common_Action
             foreach ($aData as $k => $v)
                 $token->$k = $v;
 
-            $beforeParticipantSave = new PluginEvent('beforeParticipantSave');
-            $beforeParticipantSave->set('model',$token );
-            $beforeParticipantSave->set('iSurveyID',$iSurveyId );
-            App()->getPluginManager()->dispatchEvent($beforeParticipantSave);
+            $beforeTokenSave = new PluginEvent('beforeTokenSave');
+            $beforeTokenSave->set('model',$token );
+            $beforeTokenSave->set('iSurveyID',$iSurveyId );
+            App()->getPluginManager()->dispatchEvent($beforeTokenSave);
 
             echo $token->update();
         }
@@ -957,10 +957,10 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyID);
         }
 
-        $beforeParticipantDelete = new PluginEvent('beforeParticipantDelete');
-        $beforeParticipantDelete->set('sTokenIds',$sTokenIDs );
-        $beforeParticipantDelete->set('iSurveyID',$iSurveyID );
-        App()->getPluginManager()->dispatchEvent($beforeParticipantDelete);
+        $beforeTokenDelete = new PluginEvent('beforeTokenDelete');
+        $beforeTokenDelete->set('sTokenIds',$sTokenIDs );
+        $beforeTokenDelete->set('iSurveyID',$iSurveyID );
+        App()->getPluginManager()->dispatchEvent($beforeTokenDelete);
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
         {
