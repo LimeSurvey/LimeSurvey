@@ -32,6 +32,7 @@ class Question extends LSActiveRecord
     * @param string $class
     * @return CActiveRecord
     */
+
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
@@ -835,9 +836,9 @@ class Question extends LSActiveRecord
     }
     public function getEllipsized_question()
     {
-        if(!isset($this->ellipsized_question))
+        if(!isset($this->ellipsized_question) )
         {
-            $this->ellipsized_question = viewHelper::flatEllipsizeText($this->sanitized_question,true,60,'[...]',0.5);
+            $this->ellipsized_question = viewHelper::flatEllipsizeText($this->getSanitized_question(),true,60,'[...]',0.5);
         }
         return $this->ellipsized_question;
     }
@@ -846,8 +847,7 @@ class Question extends LSActiveRecord
     {
         if(!isset($this->sanitized_question))
         {
-            $this->sanitized_question = str_replace( '<br />', ' ', sanitize_html_string(strip_tags($this->question)));
-            //$this->sanitized_question = sanitize_html_string(strip_tags($this->question));
+            $this->sanitized_question = str_replace( '<br />', ' ', sanitize_html_string(strip_tags($this->question)));            
         }
         return $this->sanitized_question;
 

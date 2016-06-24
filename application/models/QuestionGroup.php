@@ -15,6 +15,9 @@
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
+
+    private $sanitized_group_name;
+
     /**
     * Returns the static model of Settings table
     *
@@ -311,11 +314,15 @@ class QuestionGroup extends LSActiveRecord
         return $aGroups;
     }
 
-    public function getGroupExplorerDatasJson($iSurveyID, $language )
+    public function getSanitized_group_name()
     {
+        if(!isset($this->sanitized_group_name))
+        {
+            $this->sanitized_group_name = str_replace( '<br />', ' ', sanitize_html_string(strip_tags($this->group_name)));
+        }
+        return $this->sanitized_group_name;
 
     }
-
 
     public function search()
     {
