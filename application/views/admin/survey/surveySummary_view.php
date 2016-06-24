@@ -36,11 +36,18 @@ $surveyid = $surveyinfo['sid'];
             ?>
     <!-- fancy tree -->
         <div id="tree">
+
+            <?php
+            /*
           <ul id="treeData" style="display: none;">
 
                 <?php $count=1; ?>
                 <?php foreach($aGroups as $aGroup):?>
-                    <li id="<?php echo $count;?>" class="folder">
+                    <li
+                        id="<?php echo $count;?>"
+                        class="folder"
+                        data-buttons="[ ['id'] ]"
+                    >
                         <a href="<?php echo $this->createUrl("/admin/questiongroups/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid); ?>" target="_self">
                             <?php echo sanitize_html_string(strip_tags($aGroup->group_name));?>
                         </a>
@@ -49,7 +56,10 @@ $surveyid = $surveyinfo['sid'];
                             <?php $count++; ?>
                             <?php foreach($aGroup['aQuestions'] as $question):?>
 
-                                <li id="<?php echo $count;?>" title="<?php echo $question->sanitized_question;?>" data-toggle="tooltip" data-placement="right" >
+                                <li id="<?php echo $count;?>"
+                                    title="<?php echo $question->sanitized_question;?>"
+                                    data-toggle="tooltip"
+                                    data-placement="right" >
                                     <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" target="_self">
                                         <?php echo $question->sanitized_title . ' : ' . $question->ellipsized_question;?>
                                     </a>
@@ -63,6 +73,8 @@ $surveyid = $surveyinfo['sid'];
                     <?php $count++; ?>
                 <?php endforeach;?>
           </ul>
+          */
+          ?>
         </div>
         <script>
 
@@ -89,6 +101,12 @@ $surveyid = $surveyinfo['sid'];
         $("#tree").fancytree({
 
             extensions: [ "glyph",  "bstooltip"],
+
+            source: {
+                url: "<?php echo  Yii::app()->urlManager->createUrl("admin/questiongroups/sa/getGroupExplorerDatas/surveyid/$iSurveyID/langage/".$surveyinfo['language']);?>",
+                cache: false
+            },
+
             glyph: glyph_opts,
             selectMode: 2,
             clickFolderMode: 3,

@@ -506,6 +506,59 @@ class questiongroups extends Survey_Common_Action
         }
     }
 
+
+    /**
+     * Generate the json array for question explorer tree.
+     * Fancy Tree is waiting for a unindexed array (no count)
+     * So we must build an array without index ($jDatas) and export it as Json
+     * For readability, we first build an indexed array ($aDatas)
+     *
+     * @see: http://php.net/manual/en/function.json-encode.php#example-4325  (Non-associative array output as array)
+     * @see: https://github.com/mar10/fancytree/wiki/TutorialLoadData#pass-a-javascript-array
+     *
+     * @param int $surveyid
+     * @param string $langage
+     * @return string (json array)
+     */
+    public function getGroupExplorerDatas($surveyid, $langage)
+    {
+        $iSurveyID = (int) $surveyid;
+        $aGroups   = QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $langage);   // Get an array of Groups and questions
+        $count     = 1;                                                                     // @see : http://www.explainxkcd.com/wiki/index.php/163
+        $aDatas    = array();                                                               // The indexed array
+
+        // Two task :
+        // Clean the datas (ellipsize etc)
+        // Build the unindexed array that will be converted to jSon
+        foreach($aGroups as $aGroup)
+        {
+
+            $aDatas[$count]["key"]    = $aGroup->gid;                           // The key is used by fancy tree to build the node id.
+            $aDatas[$count]["title"]  = $aGroup->sanitized_group_name;          // The title will be shown as text
+            $aDatas[$count]["folder"] = true;                                   // Means it's a node with children
+
+            $countQ = 1;
+            $aDatasQ = array();                                                 // The indexed array that will contain questions
+
+            foreach ($aGroup['aQuestions'] as $oQuestion)
+            {
+                $aDatasQ[$countQ]["key"]   = $oQuestion->qid;
+                $aDatasQ[$countQ]["title"] = $oQuestion->sanitized_title . ' : ' . $oQuestion->getEllipsized_question();
+                $aDatas[$count]["children"][] = $aDatasQ[$countQ];              // Doing that, we push the questions in the children array, as an unindexed array (no count)
+                $countQ++;
+            }
+
+            $jDatas[] = $aDatas[$count];                                        // Doing that, we push the Group as an unindexed array to jDatas
+            $count++;
+        }
+
+        // If you need to understand the difference between indexed/non indexed result,
+        // Uncoment the folowing line and go to : {YOUR_URL}/admin/questiongroups/sa/getGroupExplorerDatas/surveyid/{YOUR_SURVEY_ID}/langage/{YOUR_BASE_LANGUAGE}
+        // echo '<h1>INDEXED:</h1>';echo json_encode($aDatas); echo '<hr/>';echo '<h1>NOT INDEXED:</h1>';
+
+        echo json_encode($jDatas);
+    }
+
     /**
      * Renders template(s) wrapped in header and footer
      *
