@@ -39,6 +39,69 @@
                 $("span.fancytree-title", node.span).tooltip(options);
             }
 
+            if (node.data.buttonlinks)
+            {
+                //console.log(node.data.buttons);
+                $.each( node.data.buttonlinks, function( key, button ){
+                    //console.log(button);
+
+                    var buttonHtml = '<a href="'+button.url+'" role="button"';
+
+                    if (button.cssclasses)
+                    {
+                        buttonHtml += ' class="'+button.cssclasses+'"';
+                    }
+                    else
+                    {
+                        buttonHtml += ' class="btn btn-xs btn-default" ';
+                    }
+
+                    if (button.toggle)
+                    {
+                        buttonHtml += ' data-toggle="'+button.toggle+'"';
+                    }
+
+                    if (button.placement)
+                    {
+                        buttonHtml += ' data-placement="'+button.placement+'"';
+                    }
+
+                    if (button.title)
+                    {
+                        buttonHtml += ' title="'+button.title+'"';
+                    }
+
+                    buttonHtml += '>';
+
+                    if (button.icon)
+                    {
+                        buttonHtml += '<span class="'+button.icon+'"></span>';
+                    }
+
+                    if (button.buttontext)
+                    {
+                        buttonHtml += button.buttontext;
+                    }
+
+                    buttonHtml += '</a>';
+
+                    var $elButton = $(buttonHtml)
+
+                    $("span.fancytree-title", node.span).append(' ').append( $elButton );
+
+                    if (button.toggle=='tooltip')
+                    {
+                        $elButton.tooltip();
+                    }
+
+                    if (button.toggle=='popover')
+                    {
+                        $elButton.popover();
+                    }
+
+                } );
+            }
+
          }
      });
  }(jQuery));

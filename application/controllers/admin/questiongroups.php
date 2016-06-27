@@ -536,6 +536,21 @@ class questiongroups extends Survey_Common_Action
             $aDatas[$count]["key"]    = $aGroup->gid;                           // The key is used by fancy tree to build the node id.
             $aDatas[$count]["title"]  = $aGroup->sanitized_group_name;          // The title will be shown as text
             $aDatas[$count]["folder"] = true;                                   // Means it's a node with children
+            $aDatas[$count]['buttonlinks'] = array(
+                array(
+                    'title'  => gT('Add a question to this group'),
+                    'url'    => 'someurl',
+                    'icon'   => 'glyphicon glyphicon-plus-sign',
+                    'toggle' => 'tooltip',
+
+                ),
+                array(
+                    'title'    => 'test',
+                    'url'   => 'someurlTEST',
+                    'icon'  => 'glyphicon glyphicon-trash',
+                    'cssclasses' => 'btn btn-xs btn-danger',
+                ),
+            );
 
             $countQ = 1;
             $aDatasQ = array();                                                 // The indexed array that will contain questions
