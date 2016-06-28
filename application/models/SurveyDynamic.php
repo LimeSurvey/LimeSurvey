@@ -282,6 +282,48 @@ class SurveyDynamic extends LSActiveRecord
         return $button;
     }
 
+
+    function getExtendedData($colName, $sLanguage, $base64jsonFieldMap)
+    {
+        $oFieldMap = json_decode( base64_decode($base64jsonFieldMap) );
+        $value     = $this->$colName;
+        $sValue    = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
+
+        //var_dump($oFieldMap);
+
+        if($oFieldMap->type =='|' && strpos($oFieldMap->fieldname,'filecount')===false)
+        {
+            $sSurveyEntry="<table class='table table-condensed'><tr>";
+            $aQuestionAttributes = getQuestionAttributeValues($oFieldMap->qid);
+            $aFilesInfo = json_decode_ls($this->$colName);
+            for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++)
+            {
+                $sSurveyEntry .='<tr>';
+                if (isset($aFilesInfo[$iFileIndex]))
+                {
+                    $sSurveyEntry.= '<td>'.CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), App()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>self::$sid,"iResponseId"=>$this->id,"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) ).'</td>';
+                    $sSurveyEntry.= '<td>'.sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2)).'</td>';
+
+                    if ($aQuestionAttributes['show_title'])
+                    {
+                        if (!isset($aFilesInfo[$iFileIndex]['title'])) $aFilesInfo[$iFileIndex]['title']='';
+                        $sSurveyEntry.= '<td>'.htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8').'</td>';
+                    }
+                    if ($aQuestionAttributes['show_comment'])
+                    {
+                        if (!isset($aFilesInfo[$iFileIndex]['comment'])) $aFilesInfo[$iFileIndex]['comment']='';
+                        $sSurveyEntry.= '<td>'.htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8').'</td>';
+                    }
+                }
+                    $sSurveyEntry .='</tr>';
+            }
+            $sSurveyEntry.='</table>';
+            $sValue = $sSurveyEntry;
+        }
+
+        return $sValue;
+    }
+
     /**
      * Return true if actual respnse exist in database
      *

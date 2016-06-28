@@ -101,15 +101,15 @@ $columns[array_search('column_name', $columns)] = array(
                             'name' => 'id',
                         ));
 
+                        $aColumns[] = array(
+                            'header'=>'lastpage',
+                            'name'=>'lastpage',
+                        );
+
                     $aColumns[] = array(
                         'header'=>gT("completed"),
                         'name'=>'submitdate',
                         'value'=>'$data->completed'
-                    );
-
-                    $aColumns[] = array(
-                        'header'=>'lastpage',
-                        'name'=>'lastpage',
                     );
 
                     if ($bHaveToken)
@@ -132,10 +132,14 @@ $columns[array_search('column_name', $columns)] = array(
                         if(!in_array($column->name, $aDefaultColumns))
                         {
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true));
+                            $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
+
                             $aColumns[]=
                                 array(
                                     'header' => $colName,
                                     'name' => $column->name,
+                                    'type' => 'raw',
+                                    'value' => '$data->getExtendedData("'.$column->name.'", "'.$language.'", "'.$base64jsonFieldMap.'")',
                                 );
                         }
                     }
