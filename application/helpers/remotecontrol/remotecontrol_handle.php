@@ -1694,12 +1694,12 @@ class remotecontrol_handle
                 $aDestinationFields['answeroptions'] = count($aDestinationFields);
                 $aDestinationFields['subquestions'] = count($aDestinationFields);
 		$aDestinationFields['hidden'] = count($aDestinationFields);
+                $aDestinationFields['defaultvalue'] = count($aDestinationFields);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
                 if (empty($aQuestionData))
                     return array('status' => 'No valid Data');
-
                 foreach($aQuestionData as $sFieldName=>$sValue) {
                     //all the dependencies that this question has to other questions
                     $dependencies = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, $iQuestionID);
@@ -1714,6 +1714,17 @@ class remotecontrol_handle
                         $oQuestionAttribute->value     = 1;
                         $oQuestionAttribute->save();
                     }
+		    if (('defaultvalue' == $sFieldName)) {
+			$oDefaultValue = DefaultValue::model()->findByAttributes(array('qid' => $oQuestion->qid));
+			if (null != $oDefaultValue) {
+			    DefaultValue::model()->deleteAllByAttributes(array('qid' => $oQuestion->qid));
+			}
+			$oDefaultValue = new DefaultValue();
+			$oDefaultValue->qid = $oQuestion->qid;
+			$oDefaultValue->language = $sLanguage;
+			$oDefaultValue->defaultvalue = $sValue;
+			$oDefaultValue->save();
+		    }
 
 
                     if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order') {
