@@ -591,6 +591,7 @@ class responses extends Survey_Common_Action
 
         }
 
+
         $column_model_txt = ls_json_encode($column_model);
         $column_names = array();
         foreach ($column_model as $column)
@@ -628,6 +629,13 @@ class responses extends Survey_Common_Action
             $aViewUrls[] = 'filterListResponses_view';
         }
         $aViewUrls[] = 'listResponses_view';
+
+        /// FOR GRID View
+        $model =  SurveyDynamic::model($iSurveyId);
+        //var_dump($model->metaData->columns); die();
+        $aData['model'] = $model;
+
+
         $this->_renderWrappedTemplate('responses', $aViewUrls, $aData);
 
     }

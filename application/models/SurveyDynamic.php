@@ -237,6 +237,27 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
+     * Nice way of doing
+     */
+    public function getCompleted()
+    {
+        return ($this->submitdate != '')?gT('Y'):gT('N');
+    }
+
+    public function getButtons()
+    {
+        /*
+        <td role="gridcell" style="text-align: center;" title="
+
+                        " aria-describedby="displayresponses_actions"><a href="/LimeSurveyNext/index.php/admin/responses/sa/view/surveyid/332523/id/8"><span class="glyphicon glyphicon-list-alt text-success" title="View response details"></span></a><a href="/LimeSurveyNext/index.php/admin/dataentry/sa/editdata/subaction/edit/surveyid/332523/id/8">
+                        <span class="glyphicon glyphicon-pencil text-success" title="Edit this response"></span></a><a href="/LimeSurveyNext/index.php/admin/responses?sa=actionDelete&amp;surveyid=332523&amp;sResponseId=8" data-delete="8">
+                        <span title="Delete response 8" class="deleteresponse glyphicon glyphicon-trash text-warning"></span></a></td>
+
+        */
+        return 'button';
+    }
+
+    /**
      * Return true if actual respnse exist in database
      *
      * @param $srid : actual save survey id
@@ -372,6 +393,13 @@ class SurveyDynamic extends LSActiveRecord
 
             return array_count_values($aRes);
         }
+    }
+
+    public function search()
+    {
+
+        $dataProvider=new CActiveDataProvider('SurveyDynamic');
+       return $dataProvider;
     }
 }
 ?>

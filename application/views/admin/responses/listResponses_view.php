@@ -63,4 +63,92 @@
             <table id="displayresponses"></table> <div id="pager" style="position: relative;"></div>
         </div>
     </div>
+
+<?php
+$columns = array_keys($model->metaData->columns);
+$columns[array_search('column_name', $columns)] = array(
+    'name' => 'column_name',
+    'value' => '',
+);
+?>
+
+    <div class="row">
+            <div class="content-right scrolling-wrapper"    >
+                <?php
+                    // List of answers
+                    $bHaveToken=$surveyinfo['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
+
+
+                    $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage');
+
+                    $aColumns = array(
+                        array(
+                            'id'=>'id',
+                            'class'=>'CCheckBoxColumn',
+                            'selectableRows' => '100',
+                        ),
+
+                        array(
+                            'header' => '',
+                            'name' => 'actions',
+                            'value'=>'$data->buttons',
+                            'type'=>'raw',
+                            'htmlOptions' => array('class' => 'text-right'),
+                        ),
+                        
+                        array(
+                            'header' => 'id',
+                            'name' => 'id',
+                        ));
+
+                    $aColumns[] = array(
+                        'header'=>gT("completed"),
+                        'name'=>'submitdate',
+                        'value'=>'$data->completed'
+                    );
+
+                    $aColumns[] = array(
+                        'header'=>'lastpage',
+                        'name'=>'lastpage',
+                    );
+
+                    if ($bHaveToken)
+                    {
+                        $aColumns[] = array(
+                                'header'=>'token',
+                                'name'=>'token',
+                            );
+                    }
+
+                    $aColumns[] = array(
+                        'header'=>'startlanguage',
+                        'name'=>'startlanguage',
+                    );
+
+
+                    $fieldmap=createFieldMap($surveyid, 'full', true, false, $language);
+                    foreach($model->metaData->columns as $column)
+                    {
+                        if(!in_array($column->name, $aDefaultColumns))
+                        {
+                            $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true));
+                            $aColumns[]=
+                                array(
+                                    'header' => $colName,
+                                    'name' => $column->name,
+                                );
+                        }
+                    }
+
+                    $this->widget('bootstrap.widgets.TbGridView', array(
+                        'dataProvider' => $model->search(),
+                        'columns' => $aColumns,
+                    ));
+
+/*
+    var_dump($language);
+*/
+                ?>
+            </div>
+    </div>
 </div>
