@@ -93,9 +93,9 @@ $columns[array_search('column_name', $columns)] = array(
                             'name' => 'actions',
                             'value'=>'$data->buttons',
                             'type'=>'raw',
-                            'htmlOptions' => array('class' => 'text-right'),
+                            'htmlOptions' => array('class' => 'text-left'),
                         ),
-                        
+
                         array(
                             'header' => 'id',
                             'name' => 'id',
@@ -143,11 +143,9 @@ $columns[array_search('column_name', $columns)] = array(
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
                         'columns' => $aColumns,
+                        'id' => 'responses-grid',
                     ));
 
-/*
-    var_dump($language);
-*/
                 ?>
             </div>
     </div>

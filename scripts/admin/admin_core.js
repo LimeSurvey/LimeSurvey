@@ -359,7 +359,32 @@ $(document).ready(function(){
             }
 
         }
-        else {
+        else if($(e.relatedTarget).data('ajax-url'))
+        {
+            var postDatas   = $(e.relatedTarget).data('post');
+            var gridid      = $(e.relatedTarget).data('gridid');
+
+            $(this).find('.btn-ok').on('click', function(ev)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: $(e.relatedTarget).data('ajax-url'),
+                    data: postDatas,
+
+                    success : function(html, statut)
+                    {
+                        $.fn.yiiGridView.update(gridid);                   // Update the surveys list
+                        $('#confirmation-modal').modal('hide');
+                    },
+                    error :  function(html, statut){
+                        $('#confirmation-modal .modal-body-text').append(html.responseText);
+                    }
+
+                });
+            });
+        }
+        else
+        {
             throw "Confirmation modal: Found neither data-href or data-onclick.";
         }
 

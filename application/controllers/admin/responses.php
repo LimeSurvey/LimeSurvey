@@ -911,17 +911,19 @@ class responses extends Survey_Common_Action
 
     /**
     * Delete response
-    * Allow to delete directly : leave it ? Can take $sResponseId by POST
     * @access public
     * @param $iSurveyId : survey id
     * @param $sResponseId : list of response
     * @return void
     */
-    public function actionDelete($iSurveyId,$sResponseId)
+    public function actionDelete($surveyid)
     {
+        $iSurveyId = (int) $surveyid;
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
         {
-            $aResponseId=explode(",",$sResponseId); // deleteByPk lust work with array, but seems don't work ? Maybe before delete broke this ?column_model_txt
+            $ResponseId = json_decode($_POST['sResponseId'], true);
+            $aResponseId = (is_array($ResponseId))?$ResponseId:array($ResponseId);
+
             foreach($aResponseId as $iResponseId)
             {
                 Response::model($iSurveyId)->findByPk($iResponseId)->delete(true);
@@ -930,6 +932,7 @@ class responses extends Survey_Common_Action
                     SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
                 }
             }
+            return $aResponseId;
         }
     }
 
