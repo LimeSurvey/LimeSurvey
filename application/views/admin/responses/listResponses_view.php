@@ -106,24 +106,40 @@ $columns[array_search('column_name', $columns)] = array(
                             'name'=>'lastpage',
                         );
 
-                    $aColumns[] = array(
-                        'header'=>gT("completed"),
-                        'name'=>'submitdate',
-                        'value'=>'$data->completed'
-                    );
-
-                    if ($bHaveToken)
-                    {
                         $aColumns[] = array(
+                            'header'=>gT("completed"),
+                            'name'=>'submitdate',
+                            'value'=>'$data->completed'
+                        );
+
+                        if ($bHaveToken)
+                        {
+                            $aColumns[] = array(
                                 'header'=>'token',
                                 'name'=>'token',
                             );
-                    }
 
-                    $aColumns[] = array(
-                        'header'=>'startlanguage',
-                        'name'=>'startlanguage',
-                    );
+                            $aColumns[] = array(
+                                'header'=>gT("First name"),
+                                'name'=>'tokens.firstname',
+
+                            );
+
+                            $aColumns[] = array(
+                                'header'=>gT("Last name"),
+                                'name'=>'tokens.lastname',
+                            );
+
+                            $aColumns[] = array(
+                                'header'=>gT("Email"),
+                                'name'=>'tokens.email',
+                            );
+                        }
+
+                        $aColumns[] = array(
+                            'header'=>'startlanguage',
+                            'name'=>'startlanguage',
+                        );
 
 
                     $fieldmap=createFieldMap($surveyid, 'full', true, false, $language);

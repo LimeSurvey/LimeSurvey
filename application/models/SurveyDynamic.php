@@ -15,7 +15,7 @@
 class SurveyDynamic extends LSActiveRecord
 {
     protected static $sid = 0;
-
+    protected $bHaveToken;
     /**
      * Returns the static model of Settings table
      *
@@ -36,6 +36,7 @@ class SurveyDynamic extends LSActiveRecord
 
         //We need to refresh if we changed sid
         if ($refresh === true) $model->refreshMetaData();
+
         return $model;
     }
 
@@ -62,6 +63,27 @@ class SurveyDynamic extends LSActiveRecord
     {
         $refresh = true;
         return '{{survey_' . self::$sid . '}}';
+    }
+
+    /**
+    * Returns this model's relations
+    *
+    * @access public
+    * @return array
+    */
+    public function relations()
+    {
+        if($this->getbHaveToken())
+        {
+            TokenDynamic::sid(self::$sid);
+            return array(
+                'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token'))
+            );
+        }
+        else
+        {
+            return array();
+        }
     }
 
     /**
@@ -462,10 +484,34 @@ class SurveyDynamic extends LSActiveRecord
         }
     }
 
+    private function getbHaveToken()
+    {
+        if (!isset($this->bHaveToken))
+        {
+            $this->bHaveToken = tableExists('tokens_' . self::$sid) && Permission::model()->hasSurveyPermission(self::$sid,'tokens','read');// Boolean : show (or not) the token;
+        }
+        return $this->bHaveToken;
+    }
+
     public function search()
     {
+       $criteria = new CDbCriteria;
 
-        $dataProvider=new CActiveDataProvider('SurveyDynamic');
+
+       if($this->bHaveToken)
+       {
+            $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
+       }
+
+       $pageSize = 5;
+       $dataProvider=new CActiveDataProvider('SurveyDynamic', array(
+           //'sort'=>$sort,
+           'criteria'=>$criteria,
+           'pagination'=>array(
+               'pageSize'=>$pageSize,
+           ),
+       ));
+
        return $dataProvider;
     }
 }
