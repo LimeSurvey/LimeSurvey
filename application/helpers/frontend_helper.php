@@ -680,7 +680,8 @@ function sendSubmitNotifications($surveyid)
         $ResultTableText ="\n\n";
         $oldgid = 0;
         $oldqid = 0;
-        include_once(Yii::app()->getConfig('tempdir').'/../application/helpers/viewHelper.php');
+
+        Yii::import('application.helpers.viewHelper');
         foreach ($aFullResponseTable as $sFieldname=>$fname)
         {
             if (substr($sFieldname,0,4)=='gid_')
