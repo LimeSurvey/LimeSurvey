@@ -117,6 +117,8 @@ $columns[array_search('column_name', $columns)] = array(
                             $aColumns[] = array(
                                 'header'=>'token',
                                 'name'=>'token',
+                                'type'=>'raw',
+                                'value'=>'$data->tokenForGrid'
                             );
 
                             $aColumns[] = array(

@@ -493,6 +493,23 @@ class SurveyDynamic extends LSActiveRecord
         return $this->bHaveToken;
     }
 
+    public function getTokenForGrid()
+    {
+        if(is_object($this->tokens))
+        {
+            if( ! is_null($this->tokens->tid))
+            {
+                $sToken = "<a href='".App()->createUrl("admin/tokens",array("sa"=>"edit","surveyid"=>self::$sid,"tokenid"=>$this->tokens->tid))."'>".strip_tags($this->token)."</a>";
+            }
+        }
+        else
+        {
+            $sToken = strip_tags($this->token);            
+        }
+
+        return $sToken;
+    }
+
     public function search()
     {
        $criteria = new CDbCriteria;
