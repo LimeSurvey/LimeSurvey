@@ -504,7 +504,7 @@ class SurveyDynamic extends LSActiveRecord
         }
         else
         {
-            $sToken = strip_tags($this->token);            
+            $sToken = strip_tags($this->token);
         }
 
         return $sToken;
@@ -514,13 +514,29 @@ class SurveyDynamic extends LSActiveRecord
     {
        $criteria = new CDbCriteria;
 
-
        if($this->bHaveToken)
        {
             $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
        }
 
        $pageSize = 5;
+
+       $criteria->compare('t.id',$this->id, true);
+       $criteria->compare('t.lastpage',$this->lastpage, true);
+       $criteria->compare('t.submitdate',$this->submitdate, true);
+       $criteria->compare('t.startlanguage',$this->startlanguage, true);
+       $criteria->compare('t.token',$this->token, true);
+
+       $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage');
+       foreach($this->metaData->columns as $column)
+       {
+           if(!in_array($column->name, $aDefaultColumns))
+           {
+               $c1 = (string) $column->name;
+               $criteria->compare($c1, $this->$c1, true);
+           }
+       }
+
        $dataProvider=new CActiveDataProvider('SurveyDynamic', array(
            //'sort'=>$sort,
            'criteria'=>$criteria,

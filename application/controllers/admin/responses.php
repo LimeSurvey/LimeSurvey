@@ -632,7 +632,12 @@ class responses extends Survey_Common_Action
 
         /// FOR GRID View
         $model =  SurveyDynamic::model($iSurveyId);
-        //var_dump($model->metaData->columns); die();
+
+        if(isset($_GET['SurveyDynamic']))
+        {
+            $model->setAttributes($_GET['SurveyDynamic'],false);
+        }
+
         $aData['model'] = $model;
 
 

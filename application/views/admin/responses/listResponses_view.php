@@ -94,6 +94,7 @@ $columns[array_search('column_name', $columns)] = array(
                             'value'=>'$data->buttons',
                             'type'=>'raw',
                             'htmlOptions' => array('class' => 'text-left'),
+                            'filter'=>false,
                         ),
 
                         array(
@@ -164,8 +165,12 @@ $columns[array_search('column_name', $columns)] = array(
 
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
+                        'filter'=>$model,
                         'columns' => $aColumns,
+                        'itemsCssClass' =>'table-striped',
                         'id' => 'responses-grid',
+                        'ajaxUpdate' => false,
+
                     ));
 
                 ?>
