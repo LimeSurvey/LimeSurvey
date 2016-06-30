@@ -521,7 +521,7 @@ class SurveyDynamic extends LSActiveRecord
         {
             if( ! is_null($this->tokens->tid))
             {
-                $sToken = "<a class='btn btn-default btn-xs' href='".App()->createUrl("admin/tokens",array("sa"=>"edit","surveyid"=>self::$sid,"tokenid"=>$this->tokens->tid))."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
+                $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens",array("sa"=>"edit","iSurveyId"=>self::$sid,"iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
             }
         }
         else
