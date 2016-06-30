@@ -44,9 +44,10 @@
                             'header'=>gT("completed"),
                             'name'=>'completed_filter',
                             'value'=>'$data->completed',
-                            'filter' => CHtml::activeTextField($model,'completed_filter'),
-
-                            //'filter'=>CHtml::dropDownList('completedFilter', $model->completedFilter, array('0'=>gT('No'),'1'=>gT('Yes')))
+                            'filter'=>TbHtml::dropDownList(
+                                'SurveyDynamic[completed_filter]',
+                                $model->completed_filter,
+                                array(''=>gT('all'),'Y'=>gT('Yes'),'N'=>gT('No')))
                         );
 
                         if ($bHaveToken)
