@@ -1,3 +1,14 @@
+
+/*!
+ * Style for browsing response : in Cgrid
+ */
+
+ #responses-grid table thead tr th {
+     min-width: 100px;
+ }
+
+
+
 /*!
  * Style for browsing response : in jqgrid
  */
