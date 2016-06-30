@@ -66,8 +66,10 @@
                                 'name'=>'tokens.firstname',
                                 'id'=>'firstname',
                                 'type'=>'raw',
-                                'value'=>'$data->firstNameForGrid'
-
+                                'value'=>'$data->firstNameForGrid',
+                                'filter'=>TbHtml::textField(
+                                    'SurveyDynamic[firstname_filter]',
+                                    $model->firstname_filter)
                             );
 
                             $aColumns[] = array(
@@ -75,13 +77,19 @@
                                 'name'=>'tokens.lastname',
                                 'type'=>'raw',
                                 'id'=>'lastname',
-                                'value'=>'$data->lastNameForGrid'
+                                'value'=>'$data->lastNameForGrid',
+                                'filter'=>TbHtml::textField(
+                                    'SurveyDynamic[lastname_filter]',
+                                    $model->lastname_filter)
                             );
 
                             $aColumns[] = array(
                                 'header'=>gT("Email"),
                                 'name'=>'tokens.email',
-                                'id'=>'email'
+                                'id'=>'email',
+                                'filter'=>TbHtml::textField(
+                                    'SurveyDynamic[email_filter]',
+                                    $model->email_filter)
                             );
                         }
 

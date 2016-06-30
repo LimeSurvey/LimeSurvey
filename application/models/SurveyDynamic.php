@@ -15,6 +15,9 @@
 class SurveyDynamic extends LSActiveRecord
 {
     public  $completed_filter;
+    public $firstname_filter;
+    public $lastname_filter;
+    public $email_filter;
 
     protected static $sid = 0;
     protected $bHaveToken;
@@ -539,6 +542,10 @@ class SurveyDynamic extends LSActiveRecord
        if($this->bHaveToken)
        {
             $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
+
+            $criteria->compare('tokens.firstname',$this->firstname_filter, true);
+            $criteria->compare('tokens.lastname',$this->lastname_filter, true);
+            $criteria->compare('tokens.email',$this->email_filter, true);
        }
 
        $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
@@ -550,6 +557,7 @@ class SurveyDynamic extends LSActiveRecord
        $criteria->compare('t.startdate',$this->startdate);
        $criteria->compare('t.token',$this->token, true);
 
+
         //var_dump($this->completedFilter);
         if($this->completed_filter == "Y")
         {
@@ -560,8 +568,6 @@ class SurveyDynamic extends LSActiveRecord
         {
             $criteria->addCondition('t.submitdate IS NULL');
         }
-
-
 
 
        $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage', 'completed');

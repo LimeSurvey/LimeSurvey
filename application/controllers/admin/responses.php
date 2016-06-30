@@ -644,12 +644,27 @@ class responses extends Survey_Common_Action
             $model->setAttributes($_GET['SurveyDynamic'],false);
         }
 
-        // Virtual attribute
+        // Virtual attributes
         if(isset($_GET['SurveyDynamic']['completed_filter']))
         {
             $model->completed_filter = $_GET['SurveyDynamic']['completed_filter'];
         }
 
+        if(isset($_GET['SurveyDynamic']['firstname_filter']))
+        {
+            $model->firstname_filter = $_GET['SurveyDynamic']['firstname_filter'];
+        }
+
+        if(isset($_GET['SurveyDynamic']['lastname_filter']))
+        {
+            $model->lastname_filter = $_GET['SurveyDynamic']['lastname_filter'];
+        }
+
+        if(isset($_GET['SurveyDynamic']['email_filter']))
+        {
+            $model->email_filter = $_GET['SurveyDynamic']['email_filter'];
+        }
+        
 
 
         $aData['model'] = $model;
