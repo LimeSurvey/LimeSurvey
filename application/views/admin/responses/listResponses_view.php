@@ -44,6 +44,7 @@
                             'header'=>gT("completed"),
                             'name'=>'completed_filter',
                             'value'=>'$data->completed',
+                            'type'=>'raw',
                             'filter'=>TbHtml::dropDownList(
                                 'SurveyDynamic[completed_filter]',
                                 $model->completed_filter,
@@ -63,14 +64,18 @@
                             $aColumns[] = array(
                                 'header'=>gT("First name"),
                                 'name'=>'tokens.firstname',
-                                'id'=>'firstname'
+                                'id'=>'firstname',
+                                'type'=>'raw',
+                                'value'=>'$data->firstNameForGrid'
 
                             );
 
                             $aColumns[] = array(
                                 'header'=>gT("Last name"),
                                 'name'=>'tokens.lastname',
-                                'id'=>'lastname'
+                                'type'=>'raw',
+                                'id'=>'lastname',
+                                'value'=>'$data->lastNameForGrid'
                             );
 
                             $aColumns[] = array(

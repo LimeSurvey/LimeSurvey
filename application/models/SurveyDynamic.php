@@ -14,8 +14,12 @@
  */
 class SurveyDynamic extends LSActiveRecord
 {
+    public  $completed_filter;
+
     protected static $sid = 0;
     protected $bHaveToken;
+
+
     /**
      * Returns the static model of Settings table
      *
@@ -263,7 +267,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getCompleted()
     {
-        return ($this->submitdate != '')?gT('Y'):gT('N');
+        return ($this->submitdate != '')?'<span class="text-success fa fa-check"></span>':'<span class="text-warning fa fa-times"></span>';
     }
 
     public function getButtons()
@@ -493,18 +497,36 @@ class SurveyDynamic extends LSActiveRecord
         return $this->bHaveToken;
     }
 
+
+    public function getFirstNameForGrid()
+    {
+        if(is_object($this->tokens))
+        {
+            return '<strong>'.$this->tokens->firstname.'</strong>';
+        }
+
+    }
+
+    public function getLastNameForGrid()
+    {
+        if(is_object($this->tokens))
+        {
+            return '<strong>'.$this->tokens->lastname.'</strong>';
+        }
+    }
+
     public function getTokenForGrid()
     {
         if(is_object($this->tokens))
         {
             if( ! is_null($this->tokens->tid))
             {
-                $sToken = "<a href='".App()->createUrl("admin/tokens",array("sa"=>"edit","surveyid"=>self::$sid,"tokenid"=>$this->tokens->tid))."'>".strip_tags($this->token)."</a>";
+                $sToken = "<a class='btn btn-default btn-xs' href='".App()->createUrl("admin/tokens",array("sa"=>"edit","surveyid"=>self::$sid,"tokenid"=>$this->tokens->tid))."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
             }
         }
         else
         {
-            $sToken = strip_tags($this->token);
+            $sToken = '<span class="badge badge-success">'.strip_tags($this->token).'</span>';
         }
 
         return $sToken;
@@ -519,15 +541,30 @@ class SurveyDynamic extends LSActiveRecord
             $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
        }
 
-       $pageSize = 5;
+       $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
        $criteria->compare('t.id',$this->id, true);
        $criteria->compare('t.lastpage',$this->lastpage, true);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
+       $criteria->compare('t.startdate',$this->startdate);
        $criteria->compare('t.token',$this->token, true);
 
-       $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage');
+        //var_dump($this->completedFilter);
+        if($this->completed_filter == "Y")
+        {
+            $criteria->addCondition('t.submitdate IS NOT NULL');
+        }
+
+        if($this->completed_filter == "N")
+        {
+            $criteria->addCondition('t.submitdate IS NULL');
+        }
+
+
+
+
+       $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage', 'completed');
        foreach($this->metaData->columns as $column)
        {
            if(!in_array($column->name, $aDefaultColumns))
