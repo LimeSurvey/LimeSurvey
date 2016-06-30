@@ -631,6 +631,12 @@ class responses extends Survey_Common_Action
         $aViewUrls[] = 'listResponses_view';
 
         /// FOR GRID View
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+        }
+
+
         $model =  SurveyDynamic::model($iSurveyId);
 
         if(isset($_GET['SurveyDynamic']))
@@ -639,7 +645,7 @@ class responses extends Survey_Common_Action
         }
 
         $aData['model'] = $model;
-
+        $aData['sidemenu']['state'] = false;
 
         $this->_renderWrappedTemplate('responses', $aViewUrls, $aData);
 
@@ -926,7 +932,10 @@ class responses extends Survey_Common_Action
         $iSurveyId = (int) $surveyid;
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
         {
-            $ResponseId = json_decode($_POST['sResponseId'], true);
+
+            $ResponseId  = (isset($_POST['sItems'])) ? json_decode($_POST['sItems']):json_decode($_POST['sResponseId'], true);
+
+            //$ResponseId  = json_decode($_POST['sResponseId'], true);
             $aResponseId = (is_array($ResponseId))?$ResponseId:array($ResponseId);
 
             foreach($aResponseId as $iResponseId)

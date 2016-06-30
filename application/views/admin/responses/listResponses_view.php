@@ -56,7 +56,7 @@
     <?php } ?>
 </script>
 
-<div class='side-body <?php echo getSideBodyClass(true); ?>'>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT('Survey responses'); ?></h3>
     <div class="row">
         <div id="displayResponsesContainer" class="content-right" style="overflow-x: scroll; padding-bottom: 2em">
@@ -75,9 +75,11 @@ $columns[array_search('column_name', $columns)] = array(
     <div class="row">
             <div class="content-right scrolling-wrapper"    >
                 <?php
-                    // List of answers
-                    $bHaveToken=$surveyinfo['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
 
+                    $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
+                    $bHaveToken=$surveyinfo['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
+                    $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
 
                     $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage');
 
@@ -91,6 +93,7 @@ $columns[array_search('column_name', $columns)] = array(
                         array(
                             'header' => '',
                             'name' => 'actions',
+                            'id'=>'action',
                             'value'=>'$data->buttons',
                             'type'=>'raw',
                             'htmlOptions' => array('class' => 'text-left'),
@@ -125,17 +128,20 @@ $columns[array_search('column_name', $columns)] = array(
                             $aColumns[] = array(
                                 'header'=>gT("First name"),
                                 'name'=>'tokens.firstname',
+                                'id'=>'firstname'
 
                             );
 
                             $aColumns[] = array(
                                 'header'=>gT("Last name"),
                                 'name'=>'tokens.lastname',
+                                'id'=>'lastname'
                             );
 
                             $aColumns[] = array(
                                 'header'=>gT("Email"),
                                 'name'=>'tokens.email',
+                                'id'=>'email'
                             );
                         }
 
@@ -169,11 +175,26 @@ $columns[array_search('column_name', $columns)] = array(
                         'columns' => $aColumns,
                         'itemsCssClass' =>'table-striped',
                         'id' => 'responses-grid',
-                        'ajaxUpdate' => false,
-
+                        'ajaxUpdate' => true,
+                        'template'  => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                     ));
 
                 ?>
             </div>
+            <!-- To update rows per page via ajax -->
+            <script type="text/javascript">
+                jQuery(function($) {
+                    jQuery(document).on("change", '#pageSize', function(){
+                        $.fn.yiiGridView.update('responses-grid',{ data:{ pageSize: $(this).val() }});
+                    });
+                });
+            </script>
+
     </div>
 </div>

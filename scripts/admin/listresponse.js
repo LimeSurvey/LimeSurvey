@@ -10,11 +10,22 @@
  * Scroll the pager and the footer when scrolling horizontally
  */
 $(document).ready(function(){
+    $('#ListPager').css({
+        position: 'relative'
+    });
+
     $('#displayResponsesContainer').scroll(function(){
         $('#pager').css({
             'left': $(this).scrollLeft() ,
         });
     });
+
+    $('.scrolling-wrapper').scroll(function(){
+        $('#ListPager').css({
+            'left': $(this).scrollLeft() ,
+        });
+    });
+
 });
 
 $(document).on("click","[data-delete]",function(event){
