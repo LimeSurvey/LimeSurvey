@@ -92,6 +92,7 @@
                                     if (isset($completed) && $completed!='N')
                                     {
                                         $bCompletedValue       = "1";
+                                        $completedDBFormat     = $completed;
                                         $completed             = convertToGlobalSettingFormat($completed);
                                     }
                                 ?>
@@ -125,7 +126,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)){echo $completed;}else{echo "N";}?>" />
+                            <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completedDBFormat)){echo $completedDBFormat;}else{echo "N";}?>" />
                         </div>
 
                     </div>
@@ -197,6 +198,7 @@
                                         if (isset($sent) && $sent!='N')
                                         {
                                             $bSwitchValue     = "1";
+                                            $sentDBValue      = $sent;
                                             $sent             = convertToGlobalSettingFormat($sent);
                                         }
 
@@ -204,6 +206,7 @@
                                         if (isset($remindersent) && $remindersent!='N')
                                         {
                                             $bRemindSwitchValue       = "1";
+                                            $remindersentDBValue      = $remindersent;
                                             $remindersent             = convertToGlobalSettingFormat($remindersent);
                                         }
                                     ?>
@@ -228,7 +231,7 @@
                                                 id="sent-date"
                                                 type="text"
                                                 value="<?php echo isset($sent) ? $sent : ''?>"
-                                                name="completed-date"
+                                                name="sent-date"
                                                 data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
                                             >
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -236,7 +239,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)){echo $sent;}else{echo "N";}?>" />
+                            <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sentDBValue)){echo $sentDBValue;}else{echo "N";}?>" />
                         </div>
 
                         <!-- Reminder sent -->
@@ -274,7 +277,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent)){echo $remindersent;}else{echo "N";}?>" />
+                            <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersentDBValue)){echo $remindersentDBValue;}else{echo "N";}?>" />
                         </div>
                     </div>
 
