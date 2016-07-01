@@ -215,7 +215,8 @@ class viewHelper
     * @param $fPosition if abbreviated position to split (in % : 0 to 1)
     *
     */
-    public static function flatEllipsizeText($sString,$bFlat,$iAbbreviated,$sEllipsis='...',$fPosition = 1){
+    public static function flatEllipsizeText($sString,$bFlat=true,$iAbbreviated=0,$sEllipsis='...',$fPosition = 1)
+    {
         if($bFlat || $iAbbreviated)
         {
             $sString = flattenText($sString, false, true);
