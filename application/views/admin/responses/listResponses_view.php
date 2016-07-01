@@ -2,6 +2,12 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT('Survey responses'); ?></h3>
 
+    <p class="alert alert-info alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+        <span class="fa fa-info-circle"></span>
+        <?php eT("You can use operators in the search filters (eg: >, <, >=, <=, = )");?>
+    </p>
+
     <div class="row">
             <div class="content-right scrolling-wrapper"    >
                 <?php
