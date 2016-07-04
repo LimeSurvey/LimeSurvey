@@ -376,258 +376,39 @@ class responses extends Survey_Common_Action
      */
     public function browse($iSurveyId)
     {
+        $aData['surveyid']  = $iSurveyId;
 
         if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-            $aData = array();
-            $aData['surveyid'] = $iSurveyId;
-            $message = array();
-            $message['title']= gT('Access denied!');
-            $message['message']= gT('You do not have permission to access this page.');
-            $message['class']= "error";
+            $aData              = array();
+
+            $message            = array();
+            $message['title']   = gT('Access denied!');
+            $message['message'] = gT('You do not have permission to access this page.');
+            $message['class']   = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
             Yii::app()->end();
         }
-        App()->getClientScript()->registerPackage('jqgrid');
 
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
-        $this->registerCssFile( 'ADMIN', 'jqgrid.css' );
 
-        $aData = $this->_getData($iSurveyId);
-        $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
+        $aData                    = $this->_getData($iSurveyId);
+        $bHaveToken               =$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
         $aData['menu']['edition'] = false;
+
         extract($aData);
-        $sBrowseLanguage = $aData['language'];
-        // Some specific column
-        $aSpecificColumns=array(
-            'submitdate', // Replaced by completed : TODO : add it if is a real date
-            'token', // Replaced by tokens.token
-            'id', // Allways adding it at start
-            'lastpage', // After id, before completed
-            'startlanguage'
-        );
-        // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
-        $column_model = array();
 
-        // The first few colums are fixed.
-        $column_model[] = array(
-            'name' => 'actions',
-            'index'=> 'actions',
-            'sorttype' => 'string',
-            'sortable' => false,
-            'width' => '100',
-            'resizable' => true,
-            'align' => 'left',
-            'label' => gT("Actions"),
-            'search' => false,
-            'hidedlg'=>true,
-        );
-        $fields = createFieldMap($iSurveyId,'full', true, false, $aData['language']);
-        // Specific columns at start
-        $column_model[] = array(
-            'name'=>'id',
-            'index'=>'id',
-            'sorttype'=>'integer',
-            'sortable'=>true,
-            'width'=>'100',
-            'resizable' => true,
-            'align'=>'right',
-            'title'=>viewHelper::getFieldText($fields['id']),
-            'hidedlg'=>true,
-        );
-        $column_model[] = array(
-            'name'=>'lastpage',
-            'index'=>'lastpage',
-            'sorttype'=>'integer',
-            'sortable'=>true,
-            'width'=>'100',
-            'resizable' => true,// Strangely : don't work
-            'align'=>'right',
-            'title'=>viewHelper::getFieldText($fields['lastpage']),
-        );
-
-        $bHidden=false;
-        if (isset($_SESSION['survey_'.$iSurveyId]['HiddenFields']))
-        {
-            $bHidden=in_array('completed',$_SESSION['survey_'.$iSurveyId]['HiddenFields']);
-        }
-        $column_model[] = array(
-            'name' => 'completed',
-            'index'=>'completed',
-            'sorttype'=>'string',
-            'stype'=>'select',
-            'editoptions'=>array(
-                'value'=>array(
-                    ""=>gT("All"),
-                    "Y"=>gT("Yes"),
-                    "N"=>gT("No"),
-                ),
-            ),
-
-            'sortable'=>true,
-            'hidden'=>$bHidden,
-            'width'=>'100',
-            'align'=>'left',
-            'title' => gT("Completed"),
-        );
-
-        // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
-        $defaultSearch=array();
-        if (incompleteAnsFilterState() == "incomplete")
-        {
-            $defaultSearch['completed']="N";
-        }
-        elseif (incompleteAnsFilterState() == "complete")
-        {
-            $defaultSearch['completed']="Y";
-        }
-        else
-        {
-            $defaultSearch['completed']="";
-        }
-        //add token to top of list if survey is not private
-        if ($bHaveToken)
-        {
-            $column_model[] = array(
-                'name'=>'token',
-                'index'=>'token',
-                'sorttype'=>'string',
-                'sortable'=>true, 'width'=>'150',
-                'align'=>'left',
-                'title'=>gT('Token')
-            );
-            $column_model[] = array(
-                'name'=>'firstname',
-                'index'=>'firstname',
-                'sorttype'=>'string',
-                'sortable'=>true,
-                'width'=>'150',
-                'align'=>'left',
-                'title'=>gT('First name'),
-            );
-            $column_model[] = array(
-                'name'=>'lastname',
-                'index'=>'lastname',
-                'sorttype'=>'string',
-                'sortable'=>true,
-                'width'=>'150',
-                'align'=>'left',
-                'title'=>gT('Last Name'),
-            );
-            $column_model[] = array(
-                'name'=>'email',
-                'index'=>'email',
-                'sorttype'=>'string',
-                'sortable'=>true,
-                'width'=>'150',
-                'align'=>'left',
-                'title'=>gT('Email')
-            );
-            // If token exist, test if token is set in params, add it to defaultSearch
-            if($sTokenSearch= Yii::app()->request->getQuery('token'))
-            {
-                $defaultSearch['token']=$sTokenSearch;
-            }
-        }
-        $column_model[] = array(
-            'name'=>'startlanguage',
-            'index'=>'startlanguage',
-            'sorttype'=>'string',
-            'sortable'=>true,
-            'width'=>'150',
-            'resizable' => true,// Strangely : don't work
-            'align'=>'left',
-            'title'=>viewHelper::getFieldText($fields['startlanguage']),
-        );
-
-        // All other columns are based on the questions.
-        // An array to control unicity of $code (EM code)
-        $aCodes=array();
-        foreach ($fields as $fielddetails)
-        {
-            if(in_array($fielddetails['fieldname'],$aSpecificColumns))
-                continue;
-
-            // no headers for time data
-            if ($fielddetails['type'] == 'interview_time')
-                continue;
-            if ($fielddetails['type'] == 'page_time')
-                continue;
-            if ($fielddetails['type'] == 'answer_time')
-                continue;
+        $sBrowseLanguage          = $aData['language'];
 
 
-            // TODO: upload question type have more than one column (see before)
-            // Construction of clean name and title
-            $code=viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true));// This must be unique ......
-            //fix unicity of $code
-            if(isset($aCodes[$code]))
-            {
-                $aCodes[$code]++;
-                $code="{$code}-{$aCodes[$code]}";
-            }
-            else
-            {
-                $aCodes[$code]=0;
-            }
-            $text=viewHelper::getFieldText($fielddetails);
-            $textabb=viewHelper::getFieldText($fielddetails,array('abbreviated'=>10));
-            $bHidden=false;
-            if (isset($_SESSION['survey_'.$iSurveyId]['HiddenFields']))
-            {
-                $bHidden=in_array($fielddetails['fieldname'],$_SESSION['survey_'.$iSurveyId]['HiddenFields']);
-            }
-            $column_model[] = array(
-                'name' => $code,
-                'index' => $fielddetails['fieldname'],
-                'sorttype' => 'string',// Depend of question type can be excellent
-                'sortable' => true,
-                'width' => '200',
-                'align' => 'left',
-                'editable' => false,
-                'hidden' => (bool)$bHidden,
-                'title' => $text,
-            );
-
-        }
-
-
-        $column_model_txt = ls_json_encode($column_model);
-        $column_names = array();
-        foreach ($column_model as $column)
-        {
-            if(isset($column['title']))
-                $column_names[] = "<strong class='qcode'>{$column['name']}</strong> <span class='separator hidden'>:</span> <span class='questiontext'>".ellipsize($column['title'],30,0.6,"...")."</span>";
-            elseif(isset($column['label']))
-                $column_names[] = $column['label'];
-            else
-                $column_names[] = $column['name'];
-        }
+/*
         $aData['sortorder']= Yii::app()->request->getQuery('order', 'asc');
         $aData['limit']= Yii::app()->request->getQuery('limit', 25);
         $aData['page']= intval(Yii::app()->request->getQuery('start', 0))+1;
-
+*/
         $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
-        $aData['surveyid']= $iSurveyId;
-        $aData['column_model_txt']= $column_model_txt;
-        $aData['column_names_txt']= ls_json_encode($column_names);;
+
         $aData['hasUpload']=hasFileUploadQuestion($iSurveyId);
-
-        $aData['jsonBaseUrl']=App()->createUrl('/admin/responses', array('surveyid'=>$iSurveyId, 'browselang'=>$sBrowseLanguage));
-        $aData['jsonUrl']=App()->createUrl('/admin/responses', array(
-            'sa'=> 'getResponses_json',
-            'surveyid' => $iSurveyId,
-            'browselang'=>$sBrowseLanguage,
-            'statfilter'=>App()->request->getQuery('statfilter',0)
-        ));
-        $aData['jsonActionUrl']=App()->createUrl('/admin/responses', array('sa'=> 'actionResponses', 'surveyid' => $iSurveyId,'browselang'=>$sBrowseLanguage));
-
-        $aData['defaultSearch']=json_encode($defaultSearch);
-        $aViewUrls = array();
-        if (App()->request->getQuery('statfilter'))
-        {
-            $aViewUrls[] = 'filterListResponses_view';
-        }
         $aViewUrls[] = 'listResponses_view';
 
         /// FOR GRID View
@@ -635,8 +416,6 @@ class responses extends Survey_Common_Action
         {
             Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
-
-
         $model =  SurveyDynamic::model($iSurveyId);
 
         if(isset($_GET['SurveyDynamic']))
@@ -664,8 +443,6 @@ class responses extends Survey_Common_Action
         {
             $model->email_filter = $_GET['SurveyDynamic']['email_filter'];
         }
-        
-
 
         $aData['model'] = $model;
         $aData['sidemenu']['state'] = false;
@@ -1056,201 +833,6 @@ class responses extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("The requested files do not exist on the server."),'error');
                 $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$iSurveyId));
             }
-        }
-    }
-    /**
-    * @deprecated
-    * */
-    function oldbrowse($iSurveyID)
-    {
-        $aData = $this->_getData($iSurveyID);
-        extract($aData);
-        $aViewUrls = array();
-        $sBrowseLanguage = $aData['language'];
-        $tokenRequest = Yii::app()->request->getParam('token', null);
-
-
-        /**
-        * fnames is used as informational array
-        * it containts
-        *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
-        */
-        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
-        {
-            if (Yii::app()->request->getPost('sql'))
-            {
-                $aViewUrls[] = 'browseallfiltered_view';
-            }
-            //add token to top of list if survey is not private
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) ) //add token to top of list if survey is not private
-            {
-                if(Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
-                {
-                    $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
-                    $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname');// or token:firstname ?
-                    $fnames[] = array("lastname", gT("Last name"), 'code'=>'lastname');
-                    $fnames[] = array("email", gT("Email"), 'code'=>'email');
-                }
-            }
-
-            $fnames[] = array("submitdate", gT("Completed"), gT("Completed"), "0", 'D');
-            $fields = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
-
-            foreach ($fields as $fielddetails)
-            {
-                if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
-                    continue;
-
-                $question = $fielddetails['question'];
-                if ($fielddetails['type'] != "|")
-                {
-                    if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
-                        continue;
-
-                    // no headers for time data
-                    if ($fielddetails['type'] == 'interview_time')
-                        continue;
-                    if ($fielddetails['type'] == 'page_time')
-                        continue;
-                    if ($fielddetails['type'] == 'answer_time')
-                        continue;
-                    $fnames[] = array($fielddetails['fieldname'], viewHelper::getFieldText($fielddetails),'code'=>viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true)));
-                }
-                elseif ($fielddetails['aid'] !== 'filecount')
-                {
-                    $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
-                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-                    {
-                        $filenum=sprintf(gT("File %s"),$i + 1);
-                        if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".gT('Title').")",'code'=>viewHelper::getFieldCode($fielddetails).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
-                        if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".gT('Comment').")",'code'=>viewHelper::getFieldCode($fielddetails).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
-
-                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($fielddetails).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".gT('File size').")",'code'=>viewHelper::getFieldCode($fielddetails).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
-
-                        //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
-                    }
-                }
-                else
-                {
-                    $fnames[] = array($fielddetails['fieldname'], gT("File count"), 'code'=>viewHelper::getFieldCode($fielddetails));
-                }
-            }
-
-            $fncount = count($fnames);
-
-            $start = (int)Yii::app()->request->getParam('start', 0);
-            $limit = (int)Yii::app()->request->getParam('limit', 50);
-            $order =  Yii::app()->request->getParam('order', 'asc');
-            if(!$limit){$limit=50;}
-            $oCriteria = new CDbCriteria;
-            //Create the query
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
-            {
-                $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
-            }
-
-            if (incompleteAnsFilterState() == "incomplete")
-            {
-                $oCriteria->addCondition("submitdate IS NULL");
-            }
-            elseif (incompleteAnsFilterState() == "complete")
-            {
-                $oCriteria->addCondition("submitdate IS NOT NULL");
-            }
-
-            $dtcount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
-
-            if ($limit > $dtcount)
-            {
-                $limit = $dtcount;
-            }
-
-            //NOW LETS SHOW THE DATA
-            if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
-                $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
-
-            if (!is_null($tokenRequest)) {
-                $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
-            }
-
-            $oCriteria->order = 'id ' . ($order == 'desc' ? 'desc' : 'asc');
-            $oCriteria->offset = $start;
-            $oCriteria->limit = $limit;
-
-            $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
-
-            $dtcount2 = count($dtresult);
-            // Fix start if order is desc, only if actual start is 0
-            if($order == 'desc' && $start==0)
-            {
-                $start=$dtcount-count($dtresult);
-            }
-
-            //CONTROL MENUBAR
-            $last = $start - $limit;
-            $next = $start + $limit;
-            $end = $dtcount - $limit;
-            if ($end < 0)
-            {
-                $end = 0;
-            }
-            if ($last < 0)
-            {
-                $last = 0;
-            }
-            if ($next >= $dtcount)
-            {
-                $next = $dtcount - $limit;
-            }
-            if ($end < 0)
-            {
-                $end = 0;
-            }
-
-            $aData['dtcount2'] = $dtcount2;
-            $aData['sCompletionStateValue']=incompleteAnsFilterState();
-
-            $aData['start'] = $start;
-            $aData['limit'] = $limit;
-            $aData['last'] = $last;
-            $aData['next'] = $next;
-            $aData['end'] = $end;
-            $aData['fncount'] = $fncount;
-            $aData['fnames'] = $fnames;
-            $aData['bHasFileUploadQuestion'] = hasFileUploadQuestion($iSurveyID);
-
-            $aViewUrls[] = 'browseallheader_view';
-
-            $bgcc = 'even';
-            foreach ($dtresult as $dtrow)
-            {
-                if ($bgcc == "even")
-                {
-                    $bgcc = "odd";
-                }
-                else
-                {
-                    $bgcc = "even";
-                }
-                $aData['dtrow'] = $dtrow;
-                $aData['bgcc'] = $bgcc;
-                $aData['sBrowseLanguage']=$sBrowseLanguage;
-                $aViewUrls['browseallrow_view'][] = $aData;
-            }
-
-            $aViewUrls[] = 'browseallfooter_view';
-            $this->_renderWrappedTemplate('',$aViewUrls, $aData);
-        }
-        else
-        {
-            $aData['surveyid'] = $iSurveyID;
-            $message['title']= gT('Access denied!');
-            $message['message']= gT('You do not have permission to access this page.');
-            $message['class']= "error";
-            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
     }
 

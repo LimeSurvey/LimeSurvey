@@ -17,8 +17,11 @@
                     $bHaveToken=$surveyinfo['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
                     $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
 
+                    // Some specific column
                     $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage');
 
+                    // The first few colums are fixed.
+                    // Specific columns at start
                     $aColumns = array(
                         array(
                             'id'=>'id',
@@ -54,9 +57,10 @@
                             'filter'=>TbHtml::dropDownList(
                                 'SurveyDynamic[completed_filter]',
                                 $model->completed_filter,
-                                array(''=>gT('all'),'Y'=>gT('Yes'),'N'=>gT('No')))
+                                array(''=>gT('All'),'Y'=>gT('Yes'),'N'=>gT('No')))
                         );
 
+                        //add token to top of list if survey is not private
                         if ($bHaveToken)
                         {
                             $aColumns[] = array(
@@ -105,12 +109,16 @@
                         );
 
 
+                   // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
+                   // All other columns are based on the questions.
+                   // An array to control unicity of $code (EM code)
+
                     $fieldmap=createFieldMap($surveyid, 'full', true, false, $language);
                     foreach($model->metaData->columns as $column)
                     {
                         if(!in_array($column->name, $aDefaultColumns))
                         {
-                            $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true));
+                            $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
                             $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
 
                             $aColumns[]=

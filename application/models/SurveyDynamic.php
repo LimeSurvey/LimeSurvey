@@ -266,7 +266,7 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
-     * Nice way of doing
+     * For grid list
      */
     public function getCompleted()
     {
@@ -318,8 +318,7 @@ class SurveyDynamic extends LSActiveRecord
         $value     = $this->$colName;
         $sValue    = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
 
-        //var_dump($oFieldMap);
-
+        // Upload question
         if($oFieldMap->type =='|' && strpos($oFieldMap->fieldname,'filecount')===false)
         {
             $sSurveyEntry="<table class='table table-condensed'><tr>";
@@ -554,7 +553,6 @@ class SurveyDynamic extends LSActiveRecord
        $criteria->compare('t.lastpage',$this->lastpage, true);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
-       $criteria->compare('t.startdate',$this->startdate);
        $criteria->compare('t.token',$this->token, true);
 
 
