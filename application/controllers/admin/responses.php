@@ -423,25 +423,15 @@ class responses extends Survey_Common_Action
             $model->setAttributes($_GET['SurveyDynamic'],false);
         }
 
-        // Virtual attributes
-        if(isset($_GET['SurveyDynamic']['completed_filter']))
+        // Virtual attributes filters
+        // Filters on related tables need virtual filters attributes in main model (class variables)
+        // Those virtual filters attributes are not set by the setAttributes, they must be set manually
+        // @see: http://www.yiiframework.com/wiki/281/searching-and-sorting-by-related-model-in-cgridview/
+        $aVirtualFilters = array('completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter');
+        foreach($aVirtualFilters as $sFilterName)
+        if(isset($_GET['SurveyDynamic'][$sFilterName]))
         {
-            $model->completed_filter = $_GET['SurveyDynamic']['completed_filter'];
-        }
-
-        if(isset($_GET['SurveyDynamic']['firstname_filter']))
-        {
-            $model->firstname_filter = $_GET['SurveyDynamic']['firstname_filter'];
-        }
-
-        if(isset($_GET['SurveyDynamic']['lastname_filter']))
-        {
-            $model->lastname_filter = $_GET['SurveyDynamic']['lastname_filter'];
-        }
-
-        if(isset($_GET['SurveyDynamic']['email_filter']))
-        {
-            $model->email_filter = $_GET['SurveyDynamic']['email_filter'];
+            $model->$sFilterName = $_GET['SurveyDynamic'][$sFilterName];
         }
 
         $aData['model'] = $model;
