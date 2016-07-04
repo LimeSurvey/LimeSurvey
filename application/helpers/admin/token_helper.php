@@ -13,11 +13,11 @@
 */
 
 /**
-* Sends email to tokens - invitation and reminders
+* Sends email to tokens - invitations, reminders, registers, and confirmations
 *
 * @param mixed $iSurveyID
 * @param array  $aResultTokens
-* @param string $sType type of notification invite|register|remind
+* @param string $sType type of notification invite|register|remind|confirm
 * @return array of results
 */
 function emailTokens($iSurveyID,$aResultTokens,$sType)
@@ -118,10 +118,23 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite_subj'];
 			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite'];
 		}
-		else
+		elseif ($sType == 'remind')
 		{
 			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind_subj'];
 			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind'];
+		}
+		elseif ($sType == 'register')
+		{
+			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register_subj'];
+			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register'];
+		}
+		elseif ($sType == 'confirm')
+		{
+			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm_subj'];
+			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm'];
+		}
+		else {
+			throw new Exception('Invalid template name');
 		}
 
 		$modsubject = Replacefields($sSubject, $fieldsarray);
