@@ -546,8 +546,9 @@ class SurveyDynamic extends LSActiveRecord
        $criteria = new CDbCriteria;
        $sort     = new CSort;
 
+       // Make all the model's columns sortable (default behaviour)
        $sort->attributes = array(
-           '*', // preserve sorting capability
+           '*',
        );
 
 
@@ -559,6 +560,7 @@ class SurveyDynamic extends LSActiveRecord
             $criteria->compare('tokens.lastname',$this->lastname_filter, true);
             $criteria->compare('tokens.email',$this->email_filter, true);
 
+            // Add the related token model's columns sortable
             $aSortVirtualAttributes = array(
                 'tokens.firstname'=>array(
                            'asc'=>'tokens.firstname ASC',
