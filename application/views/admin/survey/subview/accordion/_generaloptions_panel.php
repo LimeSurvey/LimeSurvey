@@ -60,7 +60,15 @@
         <div class="col-sm-9">
             <?php
             $aAllLanguages=getLanguageDataRestricted (false,'short');
+            foreach(Survey::model()->findByPk($surveyid)->additionalLanguages as $sSurveyLang)
+            {
+                if(!array_key_exists($sSurveyLang,$aAllLanguages))
+                {
+                    $aAllLanguages[$sSurveyLang]=getLanguageNameFromCode($sSurveyLang,false);
+                }
+            }
             unset($aAllLanguages[$esrow['language']]);
+
             Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                 'asDropDownList' => true,
                 'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
