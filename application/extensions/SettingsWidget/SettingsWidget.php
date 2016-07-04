@@ -358,8 +358,10 @@ class SettingsWidget extends CWidget
             $this->widget('yiiwheels.widgets.html5editor.WhHtml5Editor', array(
                 'name' => $name,
                 'value' => $value,
-                'width' => '100%',
-                //'editorOptions' =>  $editorOptions,
+                'width' => isset($metaData['width']) ? $metaData['width'] : '100%',
+                'height' => isset($metaData['height']) ? $metaData['height'] : '400px',
+                'editorOptions' =>  $editorOptions,
+                'htmlOptions' => $htmlOptions,
             ), true)
         );
     }
