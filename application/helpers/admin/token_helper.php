@@ -113,28 +113,25 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		global $maildebug;
 
 		//choose appriopriate email message
-		if($sType == 'invite')
-		{
-			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite_subj'];
-			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite'];
-		}
-		elseif ($sType == 'remind')
-		{
-			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind_subj'];
-			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind'];
-		}
-		elseif ($sType == 'register')
-		{
-			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register_subj'];
-			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register'];
-		}
-		elseif ($sType == 'confirm')
-		{
-			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm_subj'];
-			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm'];
-		}
-		else {
-			throw new Exception('Invalid template name');
+		switch ($sType) {
+			case 'invite':
+				$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite_subj'];
+				$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite'];
+				break;
+			case 'remind':
+				$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind_subj'];
+				$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind'];
+				break;
+			case 'register':
+				$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register_subj'];
+				$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register'];
+				break;
+			case 'confirm':
+				$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm_subj'];
+				$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm'];
+				break;
+			default:
+				throw new Exception('Invalid template name');
 		}
 
 		$modsubject = Replacefields($sSubject, $fieldsarray);
