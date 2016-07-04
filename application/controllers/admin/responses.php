@@ -376,68 +376,62 @@ class responses extends Survey_Common_Action
      */
     public function browse($iSurveyId)
     {
-        $aData['surveyid']  = $iSurveyId;
-
-        if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-            $aData              = array();
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
 
-            $message            = array();
-            $message['title']   = gT('Access denied!');
-            $message['message'] = gT('You do not have permission to access this page.');
-            $message['class']   = "error";
-            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
-            Yii::app()->end();
+            // Basic datas for the view
+            $aData                      = $this->_getData($iSurveyId);
+            $aData['surveyid']          = $iSurveyId;
+            $aData['menu']['edition']   = false;
+            $aData['sidemenu']['state'] = false;
+            $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
+            $aData['hasUpload']         = hasFileUploadQuestion($iSurveyId);
+
+            ////////////////////
+            // Setting the grid
+
+            // Basic variables
+            $bHaveToken                 = $aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
+            $sBrowseLanguage            = $aData['language'];
+            $aViewUrls[]                = 'listResponses_view';
+            $model                      =  SurveyDynamic::model($iSurveyId);
+
+            // Page size
+            if (isset($_GET['pageSize']))
+            {
+                Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            }
+
+            // Model filters
+            // Using safe search on dynamic column names would be far too much complex.
+            // So we pass over the safe validation and directly set attributes.
+            // see: http://www.yiiframework.com/wiki/161/understanding-safe-validation-rules/
+            // see: http://www.yiiframework.com/doc/api/1.1/CModel#setAttributes-detail
+            if(isset($_GET['SurveyDynamic']))
+            {
+                $model->setAttributes($_GET['SurveyDynamic'],false);
+            }
+
+            // Virtual attributes filters
+            // Filters on related tables need virtual filters attributes in main model (class variables)
+            // Those virtual filters attributes are not set by the setAttributes, they must be set manually
+            // @see: http://www.yiiframework.com/wiki/281/searching-and-sorting-by-related-model-in-cgridview/
+            $aVirtualFilters = array('completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter');
+            foreach($aVirtualFilters as $sFilterName)
+            if(isset($_GET['SurveyDynamic'][$sFilterName]))
+            {
+                $model->$sFilterName = $_GET['SurveyDynamic'][$sFilterName];
+            }
+
+            $aData['model'] = $model;
+            $this->_renderWrappedTemplate('responses', $aViewUrls, $aData);
         }
-
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
-
-        $aData                    = $this->_getData($iSurveyId);
-        $bHaveToken               =$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
-        $aData['menu']['edition'] = false;
-
-        extract($aData);
-
-        $sBrowseLanguage          = $aData['language'];
-
-
-/*
-        $aData['sortorder']= Yii::app()->request->getQuery('order', 'asc');
-        $aData['limit']= Yii::app()->request->getQuery('limit', 25);
-        $aData['page']= intval(Yii::app()->request->getQuery('start', 0))+1;
-*/
-        $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
-
-        $aData['hasUpload']=hasFileUploadQuestion($iSurveyId);
-        $aViewUrls[] = 'listResponses_view';
-
-        /// FOR GRID View
-        if (isset($_GET['pageSize']))
+        else
         {
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+                Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+                $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyId));
         }
-        $model =  SurveyDynamic::model($iSurveyId);
-
-        if(isset($_GET['SurveyDynamic']))
-        {
-            $model->setAttributes($_GET['SurveyDynamic'],false);
-        }
-
-        // Virtual attributes filters
-        // Filters on related tables need virtual filters attributes in main model (class variables)
-        // Those virtual filters attributes are not set by the setAttributes, they must be set manually
-        // @see: http://www.yiiframework.com/wiki/281/searching-and-sorting-by-related-model-in-cgridview/
-        $aVirtualFilters = array('completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter');
-        foreach($aVirtualFilters as $sFilterName)
-        if(isset($_GET['SurveyDynamic'][$sFilterName]))
-        {
-            $model->$sFilterName = $_GET['SurveyDynamic'][$sFilterName];
-        }
-
-        $aData['model'] = $model;
-        $aData['sidemenu']['state'] = false;
-
-        $this->_renderWrappedTemplate('responses', $aViewUrls, $aData);
 
     }
 
