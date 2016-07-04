@@ -542,8 +542,14 @@ class SurveyDynamic extends LSActiveRecord
 
     public function search()
     {
-       $criteria = new CDbCriteria;
        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+       $criteria = new CDbCriteria;
+       $sort     = new CSort;
+
+       $sort->attributes = array(
+           '*', // preserve sorting capability
+       );
+
 
        // Join the token table and filter tokens if needed
        if ($this->bHaveToken)
@@ -552,6 +558,23 @@ class SurveyDynamic extends LSActiveRecord
             $criteria->compare('tokens.firstname',$this->firstname_filter, true);
             $criteria->compare('tokens.lastname',$this->lastname_filter, true);
             $criteria->compare('tokens.email',$this->email_filter, true);
+
+            $aSortVirtualAttributes = array(
+                'tokens.firstname'=>array(
+                           'asc'=>'tokens.firstname ASC',
+                           'desc'=>'tokens.firstname DESC',
+                       ),
+                'tokens.lastname' => array(
+                    'asc'=>'lastname ASC',
+                    'desc'=>'lastname DESC'
+                ),
+                'tokens.email' => array(
+                    'asc'=>'email ASC',
+                    'desc'=>'email DESC'
+                ),
+            );
+
+            $sort->attributes = array_merge($sort->attributes, $aSortVirtualAttributes);
        }
 
        // Basic filters
@@ -583,7 +606,7 @@ class SurveyDynamic extends LSActiveRecord
        }
 
        $dataProvider=new CActiveDataProvider('SurveyDynamic', array(
-           //'sort'=>$sort,
+           'sort'=>$sort,
            'criteria'=>$criteria,
            'pagination'=>array(
                'pageSize'=>$pageSize,
