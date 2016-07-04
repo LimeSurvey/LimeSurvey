@@ -534,44 +534,48 @@ class SurveyDynamic extends LSActiveRecord
         return $sToken;
     }
 
+    // Get the list of default columns for surveys
+    public function getDefaultColumns()
+    {
+        return array('id', 'token', 'submitdate', 'lastpage','startlanguage', 'completed');
+    }
+
     public function search()
     {
        $criteria = new CDbCriteria;
+       $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
-       if($this->bHaveToken)
+       // Join the token table and filter tokens if needed
+       if ($this->bHaveToken)
        {
             $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
-
             $criteria->compare('tokens.firstname',$this->firstname_filter, true);
             $criteria->compare('tokens.lastname',$this->lastname_filter, true);
             $criteria->compare('tokens.email',$this->email_filter, true);
        }
 
-       $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
-
+       // Basic filters
        $criteria->compare('t.id',$this->id, true);
        $criteria->compare('t.lastpage',$this->lastpage, true);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
        $criteria->compare('t.token',$this->token, true);
 
+       // Completed filters
+       if($this->completed_filter == "Y")
+       {
+           $criteria->addCondition('t.submitdate IS NOT NULL');
+       }
 
-        //var_dump($this->completedFilter);
-        if($this->completed_filter == "Y")
-        {
-            $criteria->addCondition('t.submitdate IS NOT NULL');
-        }
+       if($this->completed_filter == "N")
+       {
+           $criteria->addCondition('t.submitdate IS NULL');
+       }
 
-        if($this->completed_filter == "N")
-        {
-            $criteria->addCondition('t.submitdate IS NULL');
-        }
-
-
-       $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage', 'completed');
+       // Filters for responses
        foreach($this->metaData->columns as $column)
        {
-           if(!in_array($column->name, $aDefaultColumns))
+           if(!in_array($column->name, $this->defaultColumns))
            {
                $c1 = (string) $column->name;
                $criteria->compare($c1, $this->$c1, true);

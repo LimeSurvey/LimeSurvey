@@ -369,7 +369,7 @@ class responses extends Survey_Common_Action
     }
 
     /**
-     * Show responses for survey using jQgrid
+     * Show responses for survey
      *
      * @param int $iSurveyId
      * @return void
@@ -387,8 +387,7 @@ class responses extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
             $aData['hasUpload']         = hasFileUploadQuestion($iSurveyId);
-            $aData['aDefaultColumns']   = array('id', 'token', 'submitdate', 'lastpage','startlanguage');            // Some specific columns
-            $aData['fieldmap']          = createFieldMap($surveyid, 'full', true, false, $language);
+            $aData['fieldmap']          = createFieldMap($iSurveyId, 'full', true, false, $aData['language']);
 
             ////////////////////
             // Setting the grid
@@ -426,9 +425,12 @@ class responses extends Survey_Common_Action
                 $model->$sFilterName = $_GET['SurveyDynamic'][$sFilterName];
             }
 
-            $aData['model']      = $model;
-            $aData['bHaveToken'] = $bHaveToken;
-            $aData['pageSize']   = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);      // Page size
+            // rendering
+            $aData['model']             = $model;
+            $aData['bHaveToken']        = $bHaveToken;
+            $aData['aDefaultColumns']   = $model->defaultColumns;            // Some specific columns
+            $aData['pageSize']          = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);      // Page size
+
             $this->_renderWrappedTemplate('responses', $aViewUrls, $aData);
         }
         else
