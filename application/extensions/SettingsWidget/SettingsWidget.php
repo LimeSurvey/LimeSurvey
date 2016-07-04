@@ -312,8 +312,10 @@
                 $this->widget('bootstrap.widgets.TbHtml5Editor', array(
                     'name' => $name,
                     'value' => $value,
-                    'width' => '100%',
+                    'width' => isset($metaData['width']) ? $metaData['width'] : '100%',
+                    'height' => isset($metaData['height']) ? $metaData['height'] : '400px',
                     'editorOptions' =>  $editorOptions,
+                    'htmlOptions' => $htmlOptions,
                 ), true)
             );
         }

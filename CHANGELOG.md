@@ -5,6 +5,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ### Feature
 - Log error and warning in tmp/runtime/application.log by default
+- Allow plugin to set more option when using renderHtml
 
 ### Fix
 - Improvement on error when DB save for public survey
