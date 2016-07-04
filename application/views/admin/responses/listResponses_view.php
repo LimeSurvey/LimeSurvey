@@ -11,14 +11,8 @@
     <div class="row">
             <div class="content-right scrolling-wrapper"    >
                 <?php
-
-                    $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
-
-                    $bHaveToken=$surveyinfo['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
+                    // the massive actions dropup button
                     $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
-
-                    // Some specific column
-                    $aDefaultColumns = array('id', 'token', 'submitdate', 'lastpage','startlanguage');
 
                     // The first few colums are fixed.
                     // Specific columns at start
@@ -112,8 +106,6 @@
                    // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
                    // All other columns are based on the questions.
                    // An array to control unicity of $code (EM code)
-
-                    $fieldmap=createFieldMap($surveyid, 'full', true, false, $language);
                     foreach($model->metaData->columns as $column)
                     {
                         if(!in_array($column->name, $aDefaultColumns))
@@ -132,23 +124,25 @@
                     }
 
                     $this->widget('bootstrap.widgets.TbGridView', array(
-                        'dataProvider' => $model->search(),
-                        'filter'=>$model,
-                        'columns' => $aColumns,
+                        'dataProvider'  => $model->search(),
+                        'filter'        => $model,
+                        'columns'       => $aColumns,
                         'itemsCssClass' =>'table-striped',
-                        'id' => 'responses-grid',
-                        'ajaxUpdate' => false,
-                        'template'  => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                        'id'            => 'responses-grid',
+                        'ajaxUpdate'    => false,
+                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
-                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
+                            ),
                     ));
 
                 ?>
             </div>
+
             <!-- To update rows per page via ajax -->
             <script type="text/javascript">
                 jQuery(function($) {
@@ -157,7 +151,6 @@
                     });
                 });
             </script>
-
     </div>
 </div>
 

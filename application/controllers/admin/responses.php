@@ -387,6 +387,8 @@ class responses extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
             $aData['hasUpload']         = hasFileUploadQuestion($iSurveyId);
+            $aData['aDefaultColumns']   = array('id', 'token', 'submitdate', 'lastpage','startlanguage');            // Some specific columns
+            $aData['fieldmap']          = createFieldMap($surveyid, 'full', true, false, $language);
 
             ////////////////////
             // Setting the grid
@@ -405,7 +407,7 @@ class responses extends Survey_Common_Action
 
             // Model filters
             // Using safe search on dynamic column names would be far too much complex.
-            // So we pass over the safe validation and directly set attributes.
+            // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
             // see: http://www.yiiframework.com/wiki/161/understanding-safe-validation-rules/
             // see: http://www.yiiframework.com/doc/api/1.1/CModel#setAttributes-detail
             if(isset($_GET['SurveyDynamic']))
@@ -424,7 +426,9 @@ class responses extends Survey_Common_Action
                 $model->$sFilterName = $_GET['SurveyDynamic'][$sFilterName];
             }
 
-            $aData['model'] = $model;
+            $aData['model']      = $model;
+            $aData['bHaveToken'] = $bHaveToken;
+            $aData['pageSize']   = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);      // Page size
             $this->_renderWrappedTemplate('responses', $aViewUrls, $aData);
         }
         else
