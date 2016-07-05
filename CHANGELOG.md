@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## [unreleased]
+## [1.0.22] - 2016-07-05
 
 ### Feature
 - Log error and warning in tmp/runtime/application.log by default
