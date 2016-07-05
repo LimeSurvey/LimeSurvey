@@ -95,7 +95,7 @@
                         'header' => gT('Title'),
                         'name' => 'title',
                         'type' => 'raw',
-                        'value'=>'CHtml::link($data->defaultlanguage->surveyls_title, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'value'=>'CHtml::link($data->defaultlanguage->flatten_surveyls_title, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'htmlOptions' => array('class' => 'col-md-4 has-link'),
                         'header' => gT('Title'),
                         'headerHtmlOptions'=>array('class' => 'col-md-4'),

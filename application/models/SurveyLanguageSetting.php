@@ -110,6 +110,11 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
 
+    public function getFlatten_surveyls_title()
+    {
+        return flattenText($this->surveyls_title);
+    }
+
     /**
     * Defines the customs validation rule lsdefault
     *
