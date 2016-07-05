@@ -4,7 +4,7 @@
             <ol class="breadcrumb">
                 <li>
                     <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oQuestion->sid );?>">
-                        <?php echo $oQuestion->survey->defaultlanguage->flatten_surveyls_title;?>
+                        <?php echo flattenText($oQuestion->survey->defaultlanguage->surveyls_title);;?>
                     </a>
                 </li>
 
@@ -34,7 +34,7 @@
             <ol class="breadcrumb">
               <li>
                   <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oQuestionGroup->sid );?>">
-                      <?php echo $oQuestionGroup->survey->defaultlanguage->flatten_surveyls_title;?>
+                      <?php echo flattenText($oQuestionGroup->survey->defaultlanguage->surveyls_title);?>
                   </a>
               </li>
 
@@ -59,7 +59,7 @@
             <ol class="breadcrumb">
               <li>
                   <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oSurvey->sid );?>">
-                      <?php echo $oSurvey->defaultlanguage->flatten_surveyls_title;?>
+                      <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
                   </a>
               </li>
               <li>
@@ -77,12 +77,12 @@
             <ol class="breadcrumb">
               <?php if(!isset($active)): ?>
                   <li>
-                      <?php echo $oSurvey->defaultlanguage->flatten_surveyls_title;?>
+                      <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
                   </li>
               <?php else: ?>
               <li>
                   <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oSurvey->sid );?>">
-                      <?php echo $oSurvey->defaultlanguage->flatten_surveyls_title;?>
+                      <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
                   </a>
               </li>
                   <li class="active">
