@@ -7,7 +7,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Questions in this survey"))); ?>
-    <?php if(App()->request->getParam('group_name')!=''):?>        
+    <?php if(App()->request->getParam('group_name')!=''):?>
         <h3><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></h3>
     <?php else:?>
         <h3><?php eT('Questions in this survey'); ?></h3>
@@ -64,6 +64,11 @@
                     <?php
                         $columns = array(
                             array(
+                                'id'=>'id',
+                                'class'=>'CCheckBoxColumn',
+                                'selectableRows' => '100',
+                            ),
+                            array(
                                 'header' => gt('Question ID'),
                                 'name' => 'question_id',
                                 'value'=>'$data->qid',
@@ -110,6 +115,7 @@
                     ?>
 
                     <?php
+                    $massiveAction = 'TOTO';
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
 
@@ -117,6 +123,7 @@
                         'id' => 'question-grid',
                         'type'=>'striped',
                         'emptyText'=>gT('No questions found.'),
+                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
