@@ -12,35 +12,41 @@
     <ul class="dropdown-menu listActions" aria-labelledby="surveyListActions">
         <li>
             <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultiple/');?>"
+            data-url="<?php echo App()->createUrl('/admin/question/sa/deleteMultiple/');?>"
             data-action="delete"
-            data-action-title="<?php eT('Delete surveys'); ?>"
+            data-action-title="<?php eT('Delete questions'); ?>"
             data-modal-warning-title="<?php eT('Warning');?>"
-            data-modal-warning-text="<?php eT('Are you sure you want to delete all those surveys?');?>">
+            data-modal-warning-text="<?php eT('Are you sure you want to delete all those questions?');?>">
                 <span class="text-danger glyphicon glyphicon-trash"></span>
                 <?php eT('Delete');?>
             </a>
         </li>
         <li role="separator" class="divider"></li>
-        <li class="dropdown-header"> <?php eT("Export as...");?></li>
+        <li class="dropdown-header"> <?php eT("Mandatory state");?></li>
         <li>
             <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/');?>"
-            data-action="export"
-            data-modal-warning-title="<?php eT('Export survey archive');?>"
-            data-modal-warning-text="<?php eT('This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive.');?> <?php eT('Continue?');?>">
-            <span class="icon-export" ></span>
-            <?php eT("Survey archive (.lsa)");?>
+            data-url="<?php echo App()->createUrl('/admin/question/sa/setMultipleMandatory/');?>"
+            data-action="set-mandatory"
+            data-modal-warning-title="<?php eT('Set questions to mandatory ');?>"
+            data-modal-warning-text="<?php eT('This will make all those question mandatories.');?> <?php eT('Continue?');?>">
+
+            <span class="fa fa-asterisk text-danger"></span>
+
+            <?php eT("Mandatory");?>
             </a>
         </li>
         <li>
             <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/export/sa/exportMultipleStructureSurveys/');?>"
-            data-action="export"
-            data-modal-warning-title="<?php eT('Export survey structure');?>"
-            data-modal-warning-text="<?php eT('This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive.');?> <?php eT('Continue?');?>">
-            <span class="icon-export" ></span>
-            <?php eT("Survey structure (.lss)");?>
+            data-url="<?php echo App()->createUrl('/admin/question/sa/setMultipleNonMandatory/');?>"
+            data-action="set-non-mandatory"
+            data-modal-warning-title="<?php eT('Set questions to non mandatory ');?>"
+            data-modal-warning-text="<?php eT('This will make all those question NON mandatories.');?> <?php eT('Continue?');?>">
+
+            <span class="fa-stack">
+              <i class="fa fa-asterisk fa-stack-1x"></i>
+              <i class="fa fa-ban fa-stack-2x text-danger"></i>
+            </span>
+            <?php eT("Non mandatory");?>
             </a>
         </li>
     </ul>
