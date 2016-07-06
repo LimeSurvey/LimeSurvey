@@ -16,12 +16,16 @@
 
         <!-- error message -->
         <p>
-			<?php
-            if (is_string($sErrorMessage))
-                echo $sErrorMessage;
-            else
-                print_r($sErrorMessage);
-            ?>
+		<?php
+ -        	if(is_array($aImportResults['error']))
+			{
+				foreach($aImportResults['error'] as $error) 
+					echo $error."<br/>";
+			} else 
+			{
+				echo $aImportResults['error'];
+			} 
+     		?>
         </p>
 
         <!-- buttons -->
