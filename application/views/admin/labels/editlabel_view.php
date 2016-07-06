@@ -46,10 +46,12 @@
                                 <label class="col-sm-1 control-label"><?php eT("Languages:"); ?></label>
                                 <div class="col-sm-4"><?php
                                 $aAllLanguages=getLanguageDataRestricted (false,'short');
-                                unset($aAllLanguages[$esrow['language']]);
+                                if (isset($esrow)) {
+                                    unset($aAllLanguages[$esrow['language']]);
+                                }
                                 Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
-                                    'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 80%"),
+                                    'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 80%",'required'=>'required'),
                                     'data' => $aAllLanguages,
                                     'value' => $langidsarray,
                                     'name' => 'languageids',
