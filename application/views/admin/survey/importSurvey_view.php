@@ -16,7 +16,12 @@
 
         <!-- error message -->
         <p>
-            <?php echo $sErrorMessage; ?>
+            <?php 
+            if (is_string($sErrorMessage))
+            	echo $sErrorMessage;
+            else
+            	print_r($sErrorMessage);
+            ?>
         </p>
 
         <!-- buttons -->
