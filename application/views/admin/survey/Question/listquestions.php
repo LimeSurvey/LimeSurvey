@@ -168,3 +168,5 @@ jQuery(document).on("change", '#pageSize', function(){
     </div>
   </div>
 </div>
+
+<?php $this->renderPartial('/admin/survey/Question/massive_actions/_set_question_group'); ?>

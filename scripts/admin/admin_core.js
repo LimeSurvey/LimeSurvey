@@ -56,11 +56,13 @@ $(document).ready(function(){
 
     /*
      * List mass actions
-     * TODO: refactore it to handle the different possible actions (modal, redirect with post, redirect with session,etc. ) in cleanest way
+     * TODO: refactore with fire this procedural code to handle the different possible actions (modal, redirect with post, redirect with session,etc. ) in cleanest way
      */
     if($('.listActions').length>0){
+        console.log('listActions found');
         // Define what should be done when clicking on a action link
         $(document).on('click', '.listActions a', function () {
+                console.log('listActions click');
                 $that        = $(this);
                 $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
                 $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
@@ -68,11 +70,14 @@ $(document).ready(function(){
                 $gridid      = $('.listActions').data('grid-id');
 
                 $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));                   // List of the clicked checkbox
+                $oCheckedItems  = JSON.stringify($oCheckedItems);
+                console.log($oCheckedItems);
 
                 // For actions without modal, doing a redirection
                 // TODO: replace all of them with the method above
                 if($that.data('post-redirect'))
                 {
+                    console.log('post-redirect');
                     var newForm = jQuery('<form>', {
                         'action': $actionUrl,
                         'target': '_blank',
@@ -94,6 +99,7 @@ $(document).ready(function(){
                 // Using session before redirect rather than form submission
                 if($that.data('fill-session-and-redirect'))
                 {
+                    console.log('fill-session-and-redirect');
                     // postUrl is defined as a var in the View
                     $(this).load(postUrl, {
                         participantid:$oCheckedItems},function(){
@@ -102,12 +108,10 @@ $(document).ready(function(){
                     return;
                 }
 
-                $oCheckedItems  = JSON.stringify($oCheckedItems);
-                $modal       = $('#confirmation-modal');                        // The modal we want to use
-                $actionUrl   = $actionUrl;
                 // Do we need to post sid?
                 if($that.data('sid'))
                 {
+                    console.log('sid');
                     $iSid = $that.data('sid');
                     $postDatas   = {sItems:$oCheckedItems, iSid:$iSid};
                 }
@@ -117,14 +121,32 @@ $(document).ready(function(){
                 }
 
                 // Do we want to update the modal content after confirmation?
+                // Default to yes
                 if($that.data('keepopen'))
                 {
+                    console.log('keeopen');
                     $keepopen = ($that.data('keepopen')==='yes');
                 }
                 else
                 {
+                    console.log('keeopen not defined so true');
                     $keepopen = true;
                 }
+
+                $actionUrl      = $actionUrl;// ????
+
+                // The modal we want to use
+                if($that.data('custom-modal'))
+                {
+                    console.log('custom-modal');
+                    $modal  = $('#'+$that.data('custom-modal')+"-modal");
+                    console.log($modal);
+                }
+                else
+                {
+                    $modal  = $('#confirmation-modal');
+                }
+
                 $modal.data('keepopen', $keepopen);
 
                 // Needed modal elements
@@ -139,21 +161,30 @@ $(document).ready(function(){
                 $oldModalBody   = $modalBody.html();
 
                 // New modal contents
-                $modalWarningTitle  = $that.data('modal-warning-title');        // The action string, to display in the modal body (eg: sure you wann $action?)
-                $modalWarningText   = $that.data('modal-warning-text');
+                if( $that.data('modal-warning-title') || $that.data('modal-warning-text'))
+                {
+                    $modalWarningTitle  = $that.data('modal-warning-title');    // The action string, to display in the modal body (eg: sure you wann $action?)
+                    $modalWarningText   = $that.data('modal-warning-text');
+                    // We update the modal
+                    $modal.find('.modal-title').text($modalWarningTitle);
+                    $modal.find('.modal-body-text').text($modalWarningText);
 
-                // We update the modal
-                $modal.find('.modal-title').text($modalWarningTitle);
-                $modal.find('.modal-body-text').text($modalWarningText);
+                    // When user close the modal, we put it back to its original state
+                    $modal.on('hidden.bs.modal', function (e) {
+                        $modal.data('onclick', null);                   // We reset the onclick event
+                        $modalTitle.text($oldModalTitle);               // the modal title
+                        $modalBody.empty().append($oldModalBody);       // modal body
+                        $modalClose.hide();                             // Hide the 'close' button
+                        $modalYesNo.show();                             // Show the 'Yes/No' buttons
+                    })
+                }
 
-                // When user close the modal, we put it back to its original state
-                $modal.on('hidden.bs.modal', function (e) {
-                    $modal.data('onclick', null);                   // We reset the onclick event
-                    $modalTitle.text($oldModalTitle);               // the modal title
-                    $modalBody.empty().append($oldModalBody);       // modal body
-                    $modalClose.hide();                             // Hide the 'close' button
-                    $modalYesNo.show();                             // Show the 'Yes/No' buttons
-                })
+                $modal.find('.modal-body-text').append('<!--$actionUrl:'+$actionUrl+'-->');
+
+                console.log('Ajax actionUrl:');
+                console.log($actionUrl);
+                console.log('Ajax datas:');
+                console.log($postDatas);
 
                 // Define what should be done when user confirm the mass action
                 $modal.data('onclick', function(){

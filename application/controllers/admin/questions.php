@@ -1390,6 +1390,30 @@ class questions extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
+
+    public function deleteMultiple()
+    {
+
+        $aQidsAndLang = json_decode($_POST['sItems']);
+
+        foreach ($aQidsAndLang as $sQidAndLang)
+        {
+            $aQidAndLang = explode(',', $sQidAndLang);
+            $iQid        = $aQidAndLang[0];
+            $sLanguage   = $aQidAndLang[1];
+
+            $oQuestion   = Question::model()->find('qid=:qid and language=:language',array(":qid"=>$iQid,":language"=>$sLanguage));
+
+            if (is_object($oQuestion))
+            {
+                $aResults[$iQid]['question']  = viewHelper::flatEllipsizeText($oQuestion->question,true,0);
+                $aResults[$iQid]['result'] = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
+            }
+        }
+
+        Yii::app()->getController()->renderPartial('/admin/survey/Question/massive_actions/_delete_results', array('aResults'=>$aResults));
+    }
+
     /**
     * Function responsible for deleting a question.
     *
@@ -1400,7 +1424,7 @@ class questions extends Survey_Common_Action
     * @param int $qid
     * @return void
     */
-    public function delete($surveyid, $gid, $qid)
+    public function delete($surveyid, $gid, $qid, $ajax=false)
     {
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
@@ -1428,9 +1452,18 @@ class questions extends Survey_Common_Action
                 }
                 if (isset($qidarray))
                     $qidlist = implode(", ", $qidarray);
-                $message =gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
-                 Yii::app()->setFlashMessage($message,'error');
-                 $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
+
+                $sMessage =gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
+
+                if(!$ajax)
+                {
+                    Yii::app()->setFlashMessage($sMessage,'error');
+                    $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
+                }
+                else
+                {
+                    return array('status'=>false, 'message'=>$sMessage);
+                }
             }
             else
             {
@@ -1459,7 +1492,7 @@ class questions extends Survey_Common_Action
                 $_GET['qid'] = "";
             }
 
-            Yii::app()->session['flashmessage'] = gT("Question was successfully deleted.");
+            $sMessage = gT("Question was successfully deleted.");
 
             // remove question from lastVisited
             $oCriteria = new CDbCriteria();
@@ -1467,12 +1500,28 @@ class questions extends Survey_Common_Action
             $oCriteria->compare('stg_value',$rqid,false,'AND');
             SettingGlobal::model()->deleteAll($oCriteria);
 
-            $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
+            if(!$ajax)
+            {
+                Yii::app()->session['flashmessage'] = $sMessage;
+                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
+            }
+            else
+            {
+                return array('status'=>true, 'message'=>$sMessage);
+            }
         }
         else
         {
-            Yii::app()->session['flashmessage'] = gT("You are not authorized to delete questions.");
-            $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
+            $sMessage = gT("You are not authorized to delete questions.");
+            if(!$ajax)
+            {
+                Yii::app()->session['flashmessage'] = $sMessage;
+                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
+            }
+            else
+            {
+                return array('status'=>false, 'message'=>$sMessage);
+            }
         }
     }
 
