@@ -51,7 +51,7 @@
                                 }
                                 Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
-                                    'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 80%"),
+                                    'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 80%",'required'=>'required'),
                                     'data' => $aAllLanguages,
                                     'value' => $langidsarray,
                                     'name' => 'languageids',
