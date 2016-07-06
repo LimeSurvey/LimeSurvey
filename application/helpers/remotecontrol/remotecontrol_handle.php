@@ -192,8 +192,8 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth Credentials
-    * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,xls or survey zip archive
-    * @param string $sImportDataType  lss,csv,txt or zip
+    * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,txt or survey lsa archive
+    * @param string $sImportDataType  lss,csv,txt or lsa
     * @param string $sNewSurveyName The optional new name of the survey
     * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
     * @return array|integer iSurveyID  - ID of the new survey
