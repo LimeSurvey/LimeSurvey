@@ -31,6 +31,7 @@
         public $oSurvey             = '';
         public $reloadAction        = 'admin/questions/sa/ajaxReloadPositionWidget';    // In ajax mode, name of the controller/action to call to reload the widget. Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module)
         public $dataGroupSelectorId = 'gid';                                            // In ajax mode, the id of the group selector the widget is listening to.
+        public $classes             = '';
 
         public function run()
         {
