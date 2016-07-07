@@ -16,7 +16,16 @@
 
         <!-- error message -->
         <p>
-            <?php echo $sErrorMessage; ?>
+		<?php
+ -        	if(is_array($sErrorMessage))
+			{
+				foreach($sErrorMessage as $error) 
+					echo $error."<br/>";
+			} else 
+			{
+				echo $sErrorMessage;
+			} 
+     		?>
         </p>
 
         <!-- buttons -->
