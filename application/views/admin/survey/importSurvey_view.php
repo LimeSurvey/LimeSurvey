@@ -17,13 +17,13 @@
         <!-- error message -->
         <p>
 		<?php
- -        	if(is_array($aImportResults['error']))
+ -        	if(is_array($sErrorMessage))
 			{
-				foreach($aImportResults['error'] as $error) 
+				foreach($sErrorMessage as $error) 
 					echo $error."<br/>";
 			} else 
 			{
-				echo $aImportResults['error'];
+				echo $sErrorMessage;
 			} 
      		?>
         </p>
