@@ -1391,6 +1391,12 @@ class questions extends Survey_Common_Action
     }
 
 
+    /**
+     * Delete multiple questions.
+     * Called by ajax from question list.
+     * Permission check is done by questions::delete()
+     * @return HTML
+     */
     public function deleteMultiple()
     {
 
