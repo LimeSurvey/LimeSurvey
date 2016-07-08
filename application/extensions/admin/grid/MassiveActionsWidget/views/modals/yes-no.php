@@ -33,13 +33,29 @@
                 <?php endif; ?>
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("No"); ?></button>
+                <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>
+                    &nbsp;
+                    <?php if(isset($aAction['yes'])):?>
+                        <?php echo $aAction['yes'];?>
+                    <?php else:?>
+                        <?php eT("Yes"); ?>
+                    <?php endif;?>
+                </a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>
+                    &nbsp;
+                    <?php if(isset($aAction['no'])):?>
+                        <?php echo $aAction['no'];?>
+                    <?php else:?>
+                        <?php eT("No"); ?>
+                    <?php endif;?>
+                </button>
             </div>
 
             <?php if($aAction['keepopen']=="yes"):?>
                 <div class="modal-footer modal-footer-close" style="display: none;">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("Close"); ?></button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>
+                        &nbsp;<?php eT("Close"); ?>
+                    </button>
                 </div>
             <?php endif; ?>
         </div>
