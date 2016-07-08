@@ -1413,7 +1413,7 @@ class questions extends Survey_Common_Action
             if (is_object($oQuestion))
             {
                 $aResults[$iQid]['question']  = viewHelper::flatEllipsizeText($oQuestion->question,true,0);
-                $aResults[$iQid]['result'] = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
+                $aResults[$iQid]['result']    = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
             }
         }
 
@@ -1531,16 +1531,87 @@ class questions extends Survey_Common_Action
         }
     }
 
+    /**
+     * Change the question group/order position of multiple questions
+     *
+     */
+    public function setMultipleQuestionGroup()
+    {
+        $aQidsAndLang   = json_decode($_POST['sItems']);                                    // List of question ids to update
+        $iGid           = $_POST['group_gid'];                                              // New Group ID  (can be same group for a simple position change)
+        $iQuestionOrder = $_POST['questionposition'];                                       // Wanted position
 
-    public function ajaxReloadPositionWidget($gid)
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$iGid));   // The New Group object
+        $oSurvey        = $oQuestionGroup->survey;                                          // The Survey associated with this group
+
+        if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent','update'))  // Permissions check
+        {
+            if ($oSurvey->active == 'N')                                                        // If survey is active it should not be possible to update
+            {
+                if ($iQuestionOrder=="")                                                        // If asked "at the endd"
+                {
+                    $iQuestionOrder=(getMaxQuestionOrder($oQuestionGroup->gid,$oSurvey->sid));
+
+                    // We get the last question order, so we want the number just after it
+                    // Unless it's 0
+                    if ($iQuestionOrder > 0)
+                    {
+                        $iQuestionOrder++;
+                    }
+
+                }
+
+                // Now, we push each question to the new question group
+                // And update positions
+                foreach ($aQidsAndLang as $sQidAndLang)
+                {
+                    // Question basic infos
+                    $aQidAndLang = explode(',', $sQidAndLang);
+                    $iQid        = $aQidAndLang[0];
+                    $sLanguage   = $aQidAndLang[1];
+
+                    $oQuestion = Question::model()->findByAttributes(array('qid' => $iQid)); // Question object
+                    $oldGid    = $oQuestion->gid;                                            // The current GID of the question
+                    $oldOrder  = $oQuestion->question_order;                                 // Its current order
+
+                    // First, we update all the positions of the questions in the current group of the question
+                    // If they were after the question, we must decrease by one their position
+                    $sQuery = "UPDATE {{questions}} SET question_order=question_order-1 WHERE gid=:gid AND question_order >= :order";
+                    Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$oldGid, ':order'=>$oldOrder))->query();
+
+                    // Then, we must update all the position of the question in the new group of the question
+                    // If they will be after the question, we must increase their position
+                    $sQuery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=:gid AND question_order >= :order";
+                    Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$oQuestionGroup->gid, ':order'=>$iQuestionOrder))->query();
+
+                    // Then we move all the questions with the request QID (same question in different langagues) to the new group, with the righ postion
+                    Question::model()->updateAll(array('question_order' => $iQuestionOrder, 'gid' => $oQuestionGroup->gid), 'qid=:qid', array(':qid' => $iQid));
+                    // Then we update its subquestions
+                    Question::model()->updateAll(array('gid' => $oQuestionGroup->gid), 'parent_qid=:parent_qid', array(':parent_qid' => $iQid));
+
+                    $iQuestionOrder++;
+                }
+            }
+        }
+    }
+
+    public function ajaxReloadPositionWidget($gid, $classes='')
     {
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
         if ( is_a($oQuestionGroup, 'QuestionGroup') && Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read'))
         {
-            return App()->getController()->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
+            $aOptions = array(
                         'display'           => 'form_group',
                         'oQuestionGroup'    => $oQuestionGroup,
-                ));
+
+            );
+
+            if ($classes!='')
+            {
+                $aOptions['classes'] = $classes;
+            }
+
+            return App()->getController()->widget('ext.admin.survey.question.PositionWidget.PositionWidget', $aOptions);
         }
     }
 

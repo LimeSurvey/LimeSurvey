@@ -56,28 +56,29 @@ $(document).ready(function(){
 
     /*
      * List mass actions
-     * TODO: refactore with fire this procedural code to handle the different possible actions (modal, redirect with post, redirect with session,etc. ) in cleanest way
+     * TODO: Using the footer confirmation-modal for such an advanced feature was a mistake and bring way too much complexity
+     *       Instead of writting different easy to read modal in plain HTML, we're taking a single existing modal and editing its content in JS.
+     *       That makes JS too much complex and hard to read, and the code hard to maintaint.
+     *       Various custom modals as subviews would make the JS much easier, focused on logic, and the modals easy to edit/maintain etc
+     *
+     * TODO: All this begin used in different list depending on different controller, a widget become necessary.  
      */
     if($('.listActions').length>0){
-        console.log('listActions found');
         // Define what should be done when clicking on a action link
-        $(document).on('click', '.listActions a', function () {
-                console.log('listActions click');
-                $that        = $(this);
-                $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
-                $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
-                $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
-                $gridid      = $('.listActions').data('grid-id');
-
-                $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));                   // List of the clicked checkbox
-                $oCheckedItems  = JSON.stringify($oCheckedItems);
-                console.log($oCheckedItems);
+        $(document).on('click', '.listActions a', function ()
+        {
+                $that          = $(this);
+                $action        = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
+                $actionTitle   = $that.data('action-title');                                          // The action title, to display in the modal title
+                $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
+                $gridid        = $('.listActions').data('grid-id');
+                $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // List of the clicked checkbox
+                $oCheckedItems = JSON.stringify($oCheckedItems);
 
                 // For actions without modal, doing a redirection
                 // TODO: replace all of them with the method above
                 if($that.data('post-redirect'))
                 {
-                    console.log('post-redirect');
                     var newForm = jQuery('<form>', {
                         'action': $actionUrl,
                         'target': '_blank',
@@ -109,11 +110,11 @@ $(document).ready(function(){
                 }
 
                 // Do we need to post sid?
+                // TODO: move to ajax part, so the postDatas are defined in a single place
                 if($that.data('sid'))
                 {
-                    console.log('sid');
-                    $iSid = $that.data('sid');
-                    $postDatas   = {sItems:$oCheckedItems, iSid:$iSid};
+                    $iSid       = $that.data('sid');
+                    $postDatas  = {sItems:$oCheckedItems, iSid:$iSid};
                 }
                 else
                 {
@@ -124,29 +125,26 @@ $(document).ready(function(){
                 // Default to yes
                 if($that.data('keepopen'))
                 {
-                    console.log('keeopen');
                     $keepopen = ($that.data('keepopen')==='yes');
                 }
                 else
                 {
-                    console.log('keeopen not defined so true');
                     $keepopen = true;
                 }
 
-                $actionUrl      = $actionUrl;// ????
-
                 // The modal we want to use
+                // TODO: force the defition of modal in element
+                // TODO: remove the use of confirmation modal. It brings too much JS complexity to avoid simple HTML writting. Custom modal should always be used
                 if($that.data('custom-modal'))
                 {
-                    console.log('custom-modal');
                     $modal  = $('#'+$that.data('custom-modal')+"-modal");
-                    console.log($modal);
                 }
                 else
                 {
                     $modal  = $('#confirmation-modal');
                 }
 
+                //TODO: Using custom modal, keepopen can directly be defined at the modal definition
                 $modal.data('keepopen', $keepopen);
 
                 // Needed modal elements
@@ -161,6 +159,7 @@ $(document).ready(function(){
                 $oldModalBody   = $modalBody.html();
 
                 // New modal contents
+                // TODO: using custom modals, all this code can be removed
                 if( $that.data('modal-warning-title') || $that.data('modal-warning-text'))
                 {
                     $modalWarningTitle  = $that.data('modal-warning-title');    // The action string, to display in the modal body (eg: sure you wann $action?)
@@ -181,12 +180,8 @@ $(document).ready(function(){
 
                 $modal.find('.modal-body-text').append('<!--$actionUrl:'+$actionUrl+'-->');
 
-                console.log('Ajax actionUrl:');
-                console.log($actionUrl);
-                console.log('Ajax datas:');
-                console.log($postDatas);
-
                 // Define what should be done when user confirm the mass action
+                // TODO: this should be a separated jQuery plugin applied to each custom modal to keep it simple.
                 $modal.data('onclick', function(){
                     // Update the modal elements
                     $modalTitle.text($actionTitle);                             // Change the modal title to the action title
@@ -194,6 +189,16 @@ $(document).ready(function(){
                     $modalYesNo.hide();                                         // Hide the 'Yes/No' buttons
                     $modalClose.show();                                         // Show the 'close' button
                     $ajaxLoader.show();                                         // Show the ajax loader
+
+                    // TODO: always using custom modals, this condition can be removed.
+                    // TODO: bring here the whole postDatas defintion
+                    if($that.data('custom-modal'))
+                    {
+                        $modal.find('.custom-modal-datas .custom-data').each(function(i, el)
+                        {
+                            $postDatas[$(this).attr('name')]=$(this).val();
+                        });
+                    }
 
                     // Ajax request
                     $.ajax({
@@ -214,6 +219,21 @@ $(document).ready(function(){
                         }
                     });
                 });
+
+                // TODO: not using the confirmation modal script but custom one, all the data.onclick logic can be removed
+                if($that.data('custom-modal'))
+                {
+                    var onclick_fn = eval($modal.data('onclick'));
+                    $modal.find('.btn-ok').on('click', function(ev)
+                    {
+                        if(! $keepopen )
+                        {
+                            $modal.modal('hide');
+                        }
+                        onclick_fn();
+                    });
+                }
+
 
                 // open the modal
                 if(!$.isEmptyObject($oCheckedItems))

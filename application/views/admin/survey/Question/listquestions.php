@@ -169,4 +169,4 @@ jQuery(document).on("change", '#pageSize', function(){
   </div>
 </div>
 
-<?php $this->renderPartial('/admin/survey/Question/massive_actions/_set_question_group'); ?>
+<?php $this->renderPartial('/admin/survey/Question/massive_actions/_set_question_group', array('model'=>$model, 'oSurvey'=>$oSurvey)); ?>

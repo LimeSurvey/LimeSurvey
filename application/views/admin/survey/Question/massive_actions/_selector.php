@@ -37,12 +37,13 @@
                 data-url           = "<?php echo App()->createUrl('/admin/questions/sa/setMultipleQuestionGroup/');?>"
                 data-action        = "set-group"
                 data-custom-modal  = "setquestiongroup"
+                data-keepopen      = "no"
             >
             <span class="fa-stack small">
               <i class="fa fa-folder-open fa-stack-1x small"></i>
               <i class="fa fa-circle-o fa-stack-2x hidden"></i>
             </span>
-            <?php eT("Set question group");?>
+            <?php eT("Set question group and position");?>
             </a>
         </li>
 
