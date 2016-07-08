@@ -1,5 +1,5 @@
-<!-- Modal for confirmation -->
-<div id="massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>">
+<!-- Modal confirmation for <?php echo $aAction['action'];?> -->
+<div id="massive-actions-modal-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -23,17 +23,25 @@
                     </div>
                 </div>
 
-                <!-- Custom datas needed for action. Always hidden in Yes/No case. -->
-                <div class="custom-modal-datas hidden">
-                    <?php foreach($aAction['aCustomDatas'] as $aCustomData):?>
-                        <input type="hidden" name="<?php echo $aCustomData['name'];?>" value="<?php echo $aCustomData['value'];?>" />
-                    <?php endforeach;?>
-                </div>
+                <?php if (isset($aAction['aCustomDatas'])):?>
+                    <!-- Custom datas needed for action. Always hidden in Yes/No case. -->
+                    <div class="custom-modal-datas hidden">
+                        <?php foreach($aAction['aCustomDatas'] as $aCustomData):?>
+                            <input type="hidden" name="<?php echo $aCustomData['name'];?>" value="<?php echo $aCustomData['value'];?>" />
+                        <?php endforeach;?>
+                    </div>
+                <?php endif; ?>
             </div>
             <div class="modal-footer modal-footer-buttons">
                 <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("No"); ?></button>
             </div>
+
+            <?php if($aAction['keepopen']=="yes"):?>
+                <div class="modal-footer modal-footer-close" style="display: none;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("Close"); ?></button>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

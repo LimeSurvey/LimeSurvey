@@ -51,7 +51,7 @@
 
 
          // TODO: switch case "Modal"
-         $modal  = $that.data('modal-id');  // massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>
+         $modal  = $('#'+$that.data('modal-id'));   // massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>
 
          // Needed modal elements
          $modalTitle    = $modal.find('.modal-title');                   // Modal Title
@@ -68,24 +68,34 @@
 
          // When user close the modal, we put it back to its original state
          $modal.on('hidden.bs.modal', function (e) {
-             $modal.data('onclick', null);                   // We reset the onclick event
              $modalTitle.text($oldModalTitle);               // the modal title
              $modalBody.empty().append($oldModalBody);       // modal body
              $modalClose.hide();                             // Hide the 'close' button
              $oldModalButtons.show();                        // Show the 'Yes/No' buttons
+
+             if ($that.data('grid-reload') == "yes")
+             {
+                $.fn.yiiGridView.update($gridid);               // Update the surveys list
+             }
+
          })
 
          // Define what should be done when user confirm the mass action
          $modalButton.on('click', function(){
 
+             if( $modal.data('keepopen') != 'yes' )
+             {
+                 $modal.modal('hide');
+             }
+
              // Update the modal elements
              // TODO: ALL THIS DEPEND ON KEEPOPEN OR NOT
-             $modalTitle.text($actionTitle);                             // Change the modal title to the action title
              $modalBody.empty();                                         // Empty the modal body
-             $modalYesNo.hide();                                         // Hide the 'Yes/No' buttons
+             $oldModalButtons.hide();                                    // Hide the 'Yes/No' buttons
              $modalClose.show();                                         // Show the 'close' button
              $ajaxLoader.show();                                         // Show the ajax loader
 
+             $postDatas  = {sItems:$oCheckedItems};
              $modal.find('.custom-modal-datas .custom-data').each(function(i, el)
              {
                  $postDatas[$(this).attr('name')]=$(this).val();
@@ -99,7 +109,6 @@
 
                  // html contains the buttons
                  success : function(html, statut){
-                     $.fn.yiiGridView.update($gridid);                   // Update the surveys list
                      $ajaxLoader.hide();                                 // Hide the ajax loader
 
                      // This depend on keepopen

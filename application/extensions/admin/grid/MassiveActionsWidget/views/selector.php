@@ -39,15 +39,16 @@
                 <!-- Action -->
                 <li>
                     <a href="#"
-                        data-url="<?php $aAction['url'];?>"
-                        data-action="<?php $aAction['action'];?>"
+                        data-url="<?php echo $aAction['url'];?>"
+                        data-action="<?php echo $aAction['action'];?>"
                         data-type="<?php echo $aAction['actionType']; //Direct action, or modal ?>"
-                        <?php if ($this->type=="modal"):?>
-                            data-modal-id="massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>"
+                        data-grid-reload="<?php if(isset($aAction['grid-reload'])){echo $aAction['grid-reload'];}else{echo "no";}?>"
+                        <?php if ($aAction['actionType']=="modal"):?>
+                            data-modal-id="massive-actions-modal-<?php echo $aAction['action'];?>-<?php echo $key; ?>"
                         <?php endif;?>
                     >
-                        <span class="<?php $aAction['iconClasses'];?>"></span>
-                        <?php $aAction['text'];?>
+                        <span class="<?php echo $aAction['iconClasses'];?>"></span>
+                        <?php echo $aAction['text'];?>
                     </a>
                 </li>
             <?php break;?>

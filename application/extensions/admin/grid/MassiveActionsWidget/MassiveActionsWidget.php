@@ -34,21 +34,22 @@
         public function run()
         {
             // Render the selector
-            $this->render('views/selector', array('aQuestions' => $aQuestions));
+            $this->render('selector');
 
             // Render the modal for each action
             foreach($this->aActions as $key => $aAction)
             {
                 // Not all action require a modal (eg: downloads, etc)
-                if($aAction['actionType']=='modal')
+                if( isset($aAction['actionType']) && $aAction['actionType']=='modal')
                 {
                     // Modal type define the view to render in views/modal
                     if ($this->isView($aAction['modalType']))
                     {
                         //TODO: common view for all modal types.
                         $this->render(
-                            $aAction['modalType'],array(
-                                'aAction'=>$aAction,
+                            'modals/'.$aAction['modalType'],array(
+                                'aAction' => $aAction,
+                                'key'     => $key,
                             )
                         );
                     }
