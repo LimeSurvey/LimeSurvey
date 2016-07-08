@@ -24,13 +24,6 @@
         public $dropUpText    = '';         // The wanted text for the dropup button
         public $aActions;                   // Array of actions
 
-        // Modal variable: PS ALL MOVED TO $aActions defintion
-        public $sType         = "yesNo";    // Type of the modal (define the view to use)
-        public $sModalTitle   = "";         // Title of the modal
-        public $htmlModalBody = "";         // Content of the modal (can be a simple text or HTML)
-        public $keepopen      = "";         // Should the modal keepopen to show result of action after ajax request
-        // + aCustomDatas
-
         public function run()
         {
             // Render the selector
@@ -60,7 +53,6 @@
                     }
                 }
             }
-
 
             Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/listActions.js'));
         }

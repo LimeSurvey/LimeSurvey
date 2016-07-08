@@ -18,8 +18,9 @@
          // TODO: replace all of them with the method above
 
          // TODO : Switch case "redirection (with 2 type; post or fill session)"
-         if($that.data('post-redirect'))
+         if($that.data('actionType')=="redirect")
          {
+             $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // So we can join
              var newForm = jQuery('<form>', {
                  'action': $actionUrl,
                  'target': '_blank',
@@ -39,7 +40,7 @@
 
          // For actions without modal, doing a redirection
          // Using session before redirect rather than form submission
-         if($that.data('fill-session-and-redirect'))
+         if($that.data('actionType') == 'fill-session-and-redirect')
          {
              // postUrl is defined as a var in the View
              $(this).load(postUrl, {

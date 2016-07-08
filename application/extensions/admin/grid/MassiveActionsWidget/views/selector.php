@@ -48,6 +48,8 @@
                             data-modal-id="massive-actions-modal-<?php echo $aAction['action'];?>-<?php echo $key; ?>"
                         <?php endif;?>
 
+                        data-action-type='<?php echo $aAction['actionType'];?>'
+
                         <?php
                             // Specific datas needed for the js
                             // See token grid emails for an example
