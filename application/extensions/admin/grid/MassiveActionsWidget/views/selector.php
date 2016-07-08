@@ -43,8 +43,19 @@
                         data-action="<?php echo $aAction['action'];?>"
                         data-type="<?php echo $aAction['actionType']; //Direct action, or modal ?>"
                         data-grid-reload="<?php if(isset($aAction['grid-reload'])){echo $aAction['grid-reload'];}else{echo "no";}?>"
+
                         <?php if ($aAction['actionType']=="modal"):?>
                             data-modal-id="massive-actions-modal-<?php echo $aAction['action'];?>-<?php echo $key; ?>"
+                        <?php endif;?>
+
+                        <?php
+                            // Specific datas needed for the js
+                            // See token grid emails for an example
+                        ?>
+                        <?php if (isset($aAction['aLinkSpecificDatas'])):?>
+                            <?php foreach($aAction['aLinkSpecificDatas'] as $sDataName => $sDataValue ):?>
+                                data-<?php echo $sDataName; ?> = "<?php echo $sDataValue;?>"
+                            <?php endforeach;?>
                         <?php endif;?>
                     >
                         <span class="<?php echo $aAction['iconClasses'];?>"></span>
