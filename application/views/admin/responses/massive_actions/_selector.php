@@ -4,24 +4,39 @@
  *
  */
 ?>
-<div class="col-sm-4 pull-left dropup listActions" data-pk="id"  data-grid-id="responses-grid" id="responsesListActions">
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      <?php eT('Selected response(s)...');?>
-    <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="responsesListActions">
-        <li>
-            <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/responses/sa/actionDelete/surveyid/'.$_GET['surveyid']);?>"
-            data-keepopen="no"
-            data-sid="<?php echo $_GET['surveyid']?>"
-            data-action="delete"
-            data-action-title="<?php eT('Delete reponses'); ?>"
-            data-modal-warning-title="<?php eT('Warning');?>"
-            data-modal-warning-text="<?php eT('Are you sure you want to delete the selected responses?');?>">
-                <span class="text-danger glyphicon glyphicon-trash"></span>
-                <?php eT('Delete');?>
-            </a>
-        </li>
-    </ul>
-</div>
+
+
+<!-- Rendering massive action widget -->
+<?php
+    $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
+            'pk'          => 'id',
+            'gridid'      => 'responses-grid',
+            'dropupId'    => 'responsesListActions',
+            'dropUpText'  => gT('Selected response(s)...'),
+
+            'aActions'    => array(
+
+                // Delete
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'delete',
+                    'url'         =>  App()->createUrl('/admin/responses/sa/actionDelete/surveyid/'.$_GET['surveyid']),
+                    'iconClasses' => 'text-danger glyphicon glyphicon-trash',
+                    'text'        =>  gT('Delete'),
+                    'grid-reload' => 'yes',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'keepopen'      => 'no',
+                    'sModalTitle'   => gT('Delete reponses'),
+                    'htmlModalBody' => gT('Are you sure you want to delete the selected responses?'),
+                    'aCustomDatas'  => array(
+                        array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
+                    ),
+                ),
+            ),
+
+    ));
+?>
