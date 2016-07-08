@@ -1,0 +1,39 @@
+<!-- Modal for confirmation -->
+<div id="massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><?php echo $aAction['sModalTitle']; ?></h4>
+            </div>
+            <div class="modal-body">
+                <p class='modal-body-text'><?php echo $aAction['htmlModalBody']; ?></p>
+
+                <!-- the ajax loader -->
+                <div id="ajaxContainerLoading" >
+                    <p><?php eT('Please wait, loading data...');?></p>
+                    <div class="preloader loading">
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                    </div>
+                </div>
+
+                <!-- Custom datas needed for action. Always hidden in Yes/No case. -->
+                <div class="custom-modal-datas hidden">
+                    <?php foreach($aAction['aCustomDatas'] as $aCustomData):?>
+                        <input type="hidden" name="<?php echo $aCustomData['name'];?>" value="<?php echo $aCustomData['value'];?>" />
+                    <?php endforeach;?>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-buttons">
+                <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("No"); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
