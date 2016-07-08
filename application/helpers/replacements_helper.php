@@ -49,7 +49,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         'showgroupinfo',
         'showqnumcode',
         'showxquestions',
-        'sitename',
         'sitelogo',
         'surveylist',
         'templatedir',
@@ -83,7 +82,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $thissurvey=getSurveyInfo($_surveyid,$s_lang);
     }
     if (!isset($captchapath)) { $captchapath = ''; }
-    if (!isset($sitename)) { $sitename=Yii::app()->getConfig('sitename'); }
     if (!isset($saved_id) && isset(Yii::app()->session['survey_'.$_surveyid]['srid'])) { $saved_id=Yii::app()->session['survey_'.$_surveyid]['srid'];}
 
 
@@ -692,7 +690,7 @@ EOD;
     $coreReplacements['SAVEHEADING'] = gT("Save your unfinished survey");
     $coreReplacements['SAVEMESSAGE'] = gT("Enter a name and password for this survey and click save below.")."<br />\n".gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n<span class='emailoptional'>".gT("If you give an email address, an email containing the details will be sent to you.")."</span><br /><br />\n".gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
-    $coreReplacements['SITENAME'] = isset($sitename) ? $sitename : '';  // global
+    $coreReplacements['SITENAME'] = Yii::app()->getConfig('sitename');
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;
     $coreReplacements['SUBMITCOMPLETE'] = "<strong>".gT("Thank you!")."<br /><br />".gT("You have completed answering the questions in this survey.")."</strong><br /><br />".gT("Click on 'Submit' now to complete the process and save your answers.");
@@ -703,7 +701,7 @@ EOD;
     $coreReplacements['SURVEYLANGUAGE'] = App()->language;
     $coreReplacements['SURVEYLIST'] = (isset($surveylist))?$surveylist['list']:'';
     $coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';
-    $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : 'Surveys list');
+    $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
     $coreReplacements['TEMPLATECSS'] = $_templatecss;
     $coreReplacements['TEMPLATEJS'] = $_templatejs;
