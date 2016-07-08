@@ -115,7 +115,7 @@
                     ?>
 
                     <?php
-                    $massiveAction = App()->getController()->renderPartial('/admin/survey/Question/massive_actions/_selector', array(), true, false);
+                    $massiveAction = App()->getController()->renderPartial('/admin/survey/Question/massive_actions/_selector', array('model'=>$model, 'oSurvey'=>$oSurvey), true, false);
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
 

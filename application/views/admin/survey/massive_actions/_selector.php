@@ -23,7 +23,7 @@
                     'iconClasses' => 'text-danger glyphicon glyphicon-trash',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
-                    
+
                     // modal
                     'actionType'    => 'modal',
                     'modalType'     => 'yes-no',
@@ -34,11 +34,15 @@
 
                 // Separator
                 array(
+
+                    // li element
                     'type'  => 'separator',
                 ),
 
                 // Download header
                 array(
+
+                    // li element
                     'type' => 'dropdown-header',
                     'text' => gT("Export as..."),
                 ),
@@ -62,12 +66,15 @@
 
                 // Export multiple survey archive
                 array(
+
+                    // li element
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultipleStructureSurveys/'),
                     'iconClasses' => 'icon-export',
                     'text'        =>  gT("Survey structure (.lss)"),
 
+                    // modal
                     'actionType'  => 'modal',
                     'modalType'   => 'yes-no',
                     'keepopen'    => 'yes',
