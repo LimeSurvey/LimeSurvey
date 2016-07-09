@@ -199,17 +199,21 @@
             $oNewParticipant=$this->getEvent()->get('model');
             if ($oNewParticipant->isNewRecord)
             {
-                return;
+                $sAction = 'create';
+                $oldvalues = array();
             }
-            $oCurrentUser=$this->api->getCurrentUser();
-
+            else
+            {
+                $sAction = 'update';
+                $oCurrentUser=$this->api->getCurrentUser();
+                $oldvalues= $this->api->getToken($iSurveyID, $oNewParticipant->token)->getAttributes();
+            }
             $newValues=$oNewParticipant->getAttributes();
-            $oldvalues= $this->api->getToken($iSurveyID, $oNewParticipant->token)->getAttributes();
             if (count(array_diff_assoc($newValues,$oldvalues))){
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='token';
-                $oAutoLog->action='update';
+                $oAutoLog->action=$sAction;
                 $oAutoLog->entityid=$newValues['tid'];
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc($oldvalues,$newValues));
                 $oAutoLog->newvalues=json_encode(array_diff_assoc($newValues,$oldvalues));
