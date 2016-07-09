@@ -265,19 +265,22 @@
             $oNewParticipant=$this->getEvent()->get('model');
             if ($oNewParticipant->isNewRecord)
             {
-                return;
+                $sAction = 'create';
+                $aOldValues = array();
             }
-            $oCurrentUser=$this->api->getCurrentUser();
-
-            $aOldValues=$this->api->getParticipant($oNewParticipant->participant_id)->getAttributes();
+            else
+            {
+                $sAction = 'update';
+                $oCurrentUser=$this->api->getCurrentUser();
+                $aOldValues=$this->api->getParticipant($oNewParticipant->participant_id)->getAttributes();
+            }
             $aNewValues=$oNewParticipant->getAttributes();
-
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$oCurrentUser->uid;
                 $oAutoLog->entity='participant';
-                $oAutoLog->action='update';
+                $oAutoLog->action=$sAction;
                 $oAutoLog->entityid=$aNewValues['participant_id'];
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc($aOldValues,$aNewValues));
                 $oAutoLog->newvalues=json_encode(array_diff_assoc($aNewValues,$aOldValues));
