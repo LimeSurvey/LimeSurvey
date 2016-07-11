@@ -43,7 +43,7 @@ class index extends CAction {
 
         foreach($oTemplate->packages as $package)
         {
-            App()->getClientScript()->registerPackage($package);
+            App()->getClientScript()->registerPackage((string) $package);
         }
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
