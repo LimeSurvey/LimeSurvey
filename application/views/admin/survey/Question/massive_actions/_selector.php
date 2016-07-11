@@ -59,7 +59,27 @@
                     'yes'           => gT('apply'),
                     'no'            => gT('cancel'),
                     'sModalTitle'   => gT('Set question group'),
-                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_question_group_modal_body', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
+                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_question_group_position', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
+                ),
+
+                // Set question and group
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'set-mandatory',
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleMandatory/'),
+                    'iconClasses' => 'fa fa-asterisk text-danger',
+                    'text'        =>  gT('Set mandatory state'),
+                    'grid-reload' => 'yes',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'yes'           => gT('apply'),
+                    'no'            => gT('cancel'),
+                    'keepopen'      => 'no',
+                    'sModalTitle'   => gT('Set mandatory state'),
+                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
 
             ),

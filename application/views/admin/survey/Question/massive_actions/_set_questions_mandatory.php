@@ -1,0 +1,16 @@
+<?php
+/**
+ * Set question group and position modal body (parsed to massive action widget)
+ * @var $model      The question model
+ * @var $oSurvey    The survey object
+ */
+?>
+<form class="custom-modal-datas">
+    <div id='MandatorySelection' class="form-group">
+        <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
+        <div class="col-sm-8">
+            <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> '', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+        </div>
+    </div>
+</form>
