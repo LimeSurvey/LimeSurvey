@@ -130,6 +130,8 @@
          }
          else
          {
-            // Modal: please, first select something
+            //If no item selected, the error modal "please select first an item" is shown
+            // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
+            $('#error-first-select').modal();
          }
      });

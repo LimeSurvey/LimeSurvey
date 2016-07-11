@@ -54,6 +54,9 @@
                 }
             }
 
+            // The error modal rendered if no item is selected in the grid
+            $this->render('modals/first-select',array());
+
             Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/listActions.js'));
         }
 
