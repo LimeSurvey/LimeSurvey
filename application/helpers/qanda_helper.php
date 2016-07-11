@@ -5386,21 +5386,24 @@ function do_array_multiflexi($ia)
         {
             $iParentQID = (int) $aQuestionAttributes['parent_order'];
             $aResult    = array();
-            $sessionao  = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order'];
+            $sessionao  = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order']) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order'] : array();
 
-            foreach ($sessionao[$iParentQID] as $aOrigRow)
+            if(isset($sessionao[$iParentQID]))
             {
-                $sCode  = $aOrigRow['title'];
-
-                foreach ($ansresult as $aRow)
+                foreach ($sessionao[$iParentQID] as $aOrigRow)
                 {
-                    if ($sCode==$aRow['title'])
+                    $sCode  = $aOrigRow['title'];
+
+                    foreach ($ansresult as $aRow)
                     {
-                        $aResult[]=$aRow;
+                        if ($sCode==$aRow['title'])
+                        {
+                            $aResult[]=$aRow;
+                        }
                     }
                 }
+                $ansresult  = $aResult;
             }
-            $ansresult  = $aResult;
         }
         $anscount = count($ansresult);
         $fn=1;
