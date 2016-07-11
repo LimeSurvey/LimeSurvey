@@ -76,7 +76,9 @@
 
              if ($that.data('grid-reload') == "yes")
              {
-                $.fn.yiiGridView.update($gridid);               // Update the surveys list
+                $.fn.yiiGridView.update($gridid);                         // Update the surveys list
+                setTimeout(function(){
+                    $('#'+$gridid).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
              }
 
          })

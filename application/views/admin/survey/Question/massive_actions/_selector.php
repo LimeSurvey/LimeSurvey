@@ -67,6 +67,18 @@
     ));
 ?>
 
+<script>
+//
+$(document).ready(function() {
+
+    $('#question-grid').on('actions-updated', function(){
+        loadPositionWidget();
+    });
+
+
+});
+</script>
+
 <?php /*
 <div class="col-sm-4 pull-left dropup listActions" data-pk="id"  data-grid-id="question-grid" id="questionListActions">
     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
