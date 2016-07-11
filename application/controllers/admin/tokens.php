@@ -86,11 +86,12 @@ class tokens extends Survey_Common_Action
             eT("We are sorry but you don't have permissions to do this.");
             return;
         }
+
         if ($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off'))
         {
             if (!function_exists('imap_open'))
             {
-                   eT("The imap PHP library is not installed. Please contact your system administrator.");
+                   eT("The imap PHP library is not installed or not activated. Please contact your system administrator.");
                    return;
             }
             $bouncetotal = 0;

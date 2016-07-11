@@ -212,7 +212,32 @@ $(document).ready(function(){
     });
 
 
+    $('#startbounceprocessing').click(function(){
 
+        $that               = $(this);
+        $url                = $that.data('url');
+        $modal              = $('#tokenBounceModal');
+        $ajaxLoader         = $('#ajaxContainerLoading');
+        $modalBodyText      = $modal.find('.modal-body-text');
+
+        $modalBodyText.empty();
+        $ajaxLoader.show();
+        $modal.modal();
+
+        $.ajax({
+            url: $url,
+            type: 'get',
+            success: function(html) {
+                $ajaxLoader.hide();
+                $modalBodyText.append(html);
+            },
+            error :  function(html, statut){
+                $ajaxLoader.hide();
+                $modalBodyText.append(html);
+            },
+
+        });
+    });
 });
 
 var conditionid=1;

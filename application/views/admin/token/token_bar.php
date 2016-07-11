@@ -120,13 +120,42 @@
 
                         <li role="separator" class="divider"></li>
 
+                        <!-- Bounce processing -->
+                        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')):?>
+                            <?php if($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off')):?>
+                                <?php if (function_exists('imap_open')):?>
+                                    <li>
+                                        <a href="#" id="startbounceprocessing" data-url="<?php echo $this->createUrl("admin/tokens/sa/bounceprocessing/surveyid/$surveyid"); ?>" >
+                                            <span class="ui-bounceprocessing"></span>
+                                            <?php eT("Start bounce processing"); ?>
+                                        </a>
+                                    </li>
+                                <?php else: ?>
+                                    <?php $eMessage = gT("The imap PHP library is not installed or not activated. Please contact your system administrator."); ?>
+                                <?php endif;?>
+                            <?php else: ?>
+                                <?php $eMessage = gT("Bounce processing is deactivated either application-wide or for this survey in particular."); ?>
+                            <?php endif;?>
+                        <?php else:?>
+                            <?php $eMessage = gT("We are sorry but you don't have permissions to do this."); ?>
+                        <?php endif;?>
+
+                        <?php if (isset($eMessage)):?>
+                            <li>
+                                <a  href="#" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title='<?php echo $eMessage; ?>'>
+                                    <span class="ui-bounceprocessing"></span>
+                                    <?php eT("Start bounce processing"); ?>
+                                </a>
+                            </li>
+                        <?php endif;?>
+
                         <!-- Bounce settings -->
                         <li>
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid"); ?>" >
-                                <span class="fa fa-cogs"></span>
+                                <span class="icon-settings"></span>
                                 <?php eT("Bounce settings"); ?>
                             </a>
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
 
@@ -212,3 +241,38 @@
 
     </div>
 </div>
+
+<!-- Token Bounce -->
+<div id="tokenBounceModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php eT('Bounce processing');?></h4>
+            </div>
+            <div class="modal-body">
+                <!-- Here will come the result of the ajax request -->
+                <p class='modal-body-text'>
+
+                </p>
+
+                <!-- the ajax loader -->
+                <div id="ajaxContainerLoading" >
+                    <p><?php eT('Please wait, loading data...');?></p>
+                    <div class="preloader loading">
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT("Cancel");?></button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
