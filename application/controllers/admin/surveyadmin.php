@@ -1029,10 +1029,11 @@ class SurveyAdmin extends Survey_Common_Action
             if ($action == 'importsurvey' && !$aData['bFailed'])
             {
                 $aImportResults=importSurveyFile($sFullFilepath,($_POST['translinksfields']=='1'));
-                if (is_null($aImportResults) || !empty($aImportResults['error']))
+                if (is_null($aImportResults))
                 {
-                    $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gT("Unknown error.");
-                    $aData['bFailed'] = true;
+                    $aImportResults=array(
+                        'error'=>gT("Unknown error while reading the file, no survey created.")
+                    );
                 }
             }
             elseif ($action == 'copysurvey' && !$aData['bFailed'])
@@ -1058,10 +1059,14 @@ class SurveyAdmin extends Survey_Common_Action
             }
             if (!$aData['bFailed'])
             {
-                $aData['action'] = $action;
-                $aData['sLink'] = $this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $aImportResults['newsid']);
                 $aData['aImportResults'] = $aImportResults;
+                $aData['action'] = $action;
+                if(isset($aImportResults['newsid']))
+                {
+                    $aData['sLink'] = $this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $aImportResults['newsid']);
+                }
             }
+
         }
 
         $this->_renderWrappedTemplate('survey', 'importSurvey_view', $aData);

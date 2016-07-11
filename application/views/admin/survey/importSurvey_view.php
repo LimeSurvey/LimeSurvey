@@ -13,21 +13,10 @@
         <p class="lead danger">
             <?php eT("Error"); ?>
         </p>
-
         <!-- error message -->
         <p>
-		<?php
- -        	if(is_array($sErrorMessage))
-			{
-				foreach($sErrorMessage as $error) 
-					echo $error."<br/>";
-			} else 
-			{
-				echo $sErrorMessage;
-			} 
-     		?>
+        <?php echo $sErrorMessage; ?>
         </p>
-
         <!-- buttons -->
         <p>
             <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/'); ?>', '_top')" />
@@ -41,7 +30,6 @@
         <h2 class="text-success"> <?php eT("Success"); ?></h2>
         <p class="lead"><?php eT("File upload succeeded.");?> </p>
             <h2 class="warning"><?php eT("Error");?></h2>
-
             <!-- errors -->
             <?php
             if(is_array($aImportResults['error']))
