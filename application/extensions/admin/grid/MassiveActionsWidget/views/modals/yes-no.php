@@ -8,7 +8,7 @@
                 <h4 class="modal-title"><?php echo $aAction['sModalTitle']; ?></h4>
             </div>
             <div class="modal-body">
-                <p class='modal-body-text'><?php echo $aAction['htmlModalBody']; ?></p>
+                <div class='modal-body-text'><?php echo $aAction['htmlModalBody']; ?></div>
 
                 <!-- the ajax loader -->
                 <div id="ajaxContainerLoading" >

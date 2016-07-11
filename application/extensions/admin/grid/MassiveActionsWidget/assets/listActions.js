@@ -89,18 +89,18 @@
                  $modal.modal('hide');
              }
 
+             $postDatas  = {sItems:$oCheckedItems};
+             $modal.find('.custom-data').each(function(i, el)
+             {
+                $postDatas[$(this).attr('name')]=$(this).val();
+             });
+
              // Update the modal elements
              // TODO: ALL THIS DEPEND ON KEEPOPEN OR NOT
              $modalBody.empty();                                         // Empty the modal body
              $oldModalButtons.hide();                                    // Hide the 'Yes/No' buttons
              $modalClose.show();                                         // Show the 'close' button
              $ajaxLoader.show();                                         // Show the ajax loader
-
-             $postDatas  = {sItems:$oCheckedItems};
-             $modal.find('.custom-modal-datas .custom-data').each(function(i, el)
-             {
-                 $postDatas[$(this).attr('name')]=$(this).val();
-             });
 
              // Ajax request
              $.ajax({
