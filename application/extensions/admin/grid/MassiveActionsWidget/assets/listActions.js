@@ -124,8 +124,12 @@
          });
 
          // open the modal
-         if(!$.isEmptyObject($oCheckedItems))
+         if( $oCheckedItems !== '[]' )
          {
              $modal.modal();
+         }
+         else
+         {
+            // Modal: please, first select something
          }
      });
