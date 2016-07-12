@@ -1531,6 +1531,9 @@ class questions extends Survey_Common_Action
         }
     }
 
+
+    /// TODO: refactore multiple function to call the model, and then push all the common stuff to a model function for a dry code
+
     /**
      * Change the question group/order position of multiple questions
      *
@@ -1595,6 +1598,80 @@ class questions extends Survey_Common_Action
         }
     }
 
+
+    public function setMultipleMandatory()
+    {
+        $aQidsAndLang   = json_decode($_POST['sItems']);                        // List of question ids to update
+        $iSid           = $_POST['sid'];
+        $bMandatory     = ( Yii::app()->request->getPost('mandatory') === 'true' ) ? 'Y' : 'N' ;
+
+
+
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
+        {
+            $oSurvey          = Survey::model()->findByPk($iSid);
+            $aSurveyLanguages = $oSurvey->additionalLanguages;
+            $sBaseLanguage    = $oSurvey->language;
+
+            array_push($aSurveyLanguages,$sBaseLanguage);
+
+            foreach ($aQidsAndLang as $sQidAndLang)
+            {
+                $aQidAndLang = explode(',', $sQidAndLang);
+                $iQid        = $aQidAndLang[0];
+
+                foreach ($aSurveyLanguages as $sAdditionalLanguage)
+                {
+                    $oQuestion = Question::model()->findByPk(array("qid"=>$iQid,'language'=>$sAdditionalLanguage));
+
+                    // These are the questions types that have no mandatory property - so zap it accordingly
+                    if ($oQuestion->type != "X"  && $oQuestion->type != "|")
+                    {
+                        $oQuestion->mandatory = $bMandatory;
+                        $oQuestion->save();
+                    }
+                }
+            }
+        }
+    }
+
+    public function setMultipleOther()
+    {
+        $aQidsAndLang   = json_decode($_POST['sItems']);                        // List of question ids to update
+        $iSid           = $_POST['sid'];
+        $bOther     = ( Yii::app()->request->getPost('other') === 'true' ) ? 'Y' : 'N' ;
+
+        var_dump($_POST);
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
+        {
+            $oSurvey          = Survey::model()->findByPk($iSid);
+            $aSurveyLanguages = $oSurvey->additionalLanguages;
+            $sBaseLanguage    = $oSurvey->language;
+
+            array_push($aSurveyLanguages,$sBaseLanguage);
+
+            foreach ($aQidsAndLang as $sQidAndLang)
+            {
+                $aQidAndLang = explode(',', $sQidAndLang);
+                $iQid        = $aQidAndLang[0];
+
+                foreach ($aSurveyLanguages as $sAdditionalLanguage)
+                {
+                    $oQuestion = Question::model()->findByPk(array("qid"=>$iQid,'language'=>$sAdditionalLanguage));
+
+                    // These are the questions types that have the other option therefore we set everything else to 'No Other'
+                    if (( $oQuestion->type == "L") || ($oQuestion->type == "!") || ($oQuestion->type == "P") || ($oQuestion->type=="M"))
+                    {
+                        $oQuestion->other = $bOther;
+                        $oQuestion->save();
+
+
+                    }
+
+                }
+            }
+        }
+    }
     public function ajaxReloadPositionWidget($gid, $classes='')
     {
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));

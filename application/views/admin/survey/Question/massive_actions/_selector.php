@@ -69,7 +69,7 @@
                     'action'      => 'set-mandatory',
                     'url'         => App()->createUrl('/admin/questions/sa/setMultipleMandatory/'),
                     'iconClasses' => 'fa fa-asterisk text-danger',
-                    'text'        =>  gT('Set mandatory state'),
+                    'text'        =>  gT('Set "mandatory" state'),
                     'grid-reload' => 'yes',
 
                     // modal
@@ -82,20 +82,60 @@
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
 
+                // Set question and group
+
+                // DEPEND IF SURVEY IS ACTIVE !!!!
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'set-other',
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleOther/'),
+                    'iconClasses' => 'fa fa-dot-circle-o',
+                    'text'        =>  gT('Set "other" state'),
+                    'grid-reload' => 'yes',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'yes'           => gT('apply'),
+                    'no'            => gT('cancel'),
+                    'keepopen'      => 'yes',
+                    'sModalTitle'   => gT('Set "other" state'),
+                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_other', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
+                ),
+
+
             ),
 
     ));
 ?>
 
+<!--
+    Some widgets in the modals need to be reloaded after grid update
+-->
 <script>
-//
 $(document).ready(function() {
+    $('#mandatory').on('switchChange.bootstrapSwitch', function(event, state) {
+        $('#mandatory').attr('value', state);
+    });
+
+    $('#other').on('switchChange.bootstrapSwitch', function(event, state) {
+        $('#other').attr('value', state);
+        console.log(state);
+    });
 
     $('#question-grid').on('actions-updated', function(){
         loadPositionWidget();
+        $('#mandatory').bootstrapSwitch();
+
+        $('#mandatory').on('switchChange.bootstrapSwitch', function(event, state) {
+            $('#mandatory').attr('value', state);
+        });
+
+        $('#other').on('switchChange.bootstrapSwitch', function(event, state) {
+            $('#other').attr('value', state);
+        });
     });
-
-
 });
 </script>
 

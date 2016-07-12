@@ -824,6 +824,35 @@ class Question extends LSActiveRecord
         return $ansresult;
     }
 
+    public function getMandatoryIcon()
+    {
+        if ($this->type != "X"  && $this->type != "|")
+        {
+            $sIcon = ($this->other=="Y")?'<span class="fa fa-asterisk text-danger"></span>':'<span></span>';
+        }
+        else
+        {
+            $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
+        }
+        return $sIcon;
+    }
+
+    public function getOtherIcon()
+    {
+        //return $this->mandatory;
+        if (( $this->type == "L") || ($this->type == "!") || ($this->type == "P") || ($this->type=="M"))
+        {
+            $sIcon = ($this->other==="Y")?'<span class="fa fa-dot-circle-o"></span>':'<span></span>';
+        }
+        else
+        {
+            $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
+        }
+        return $sIcon;
+    }
+
+
+
     public function search()
     {
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
@@ -850,6 +879,16 @@ class Question extends LSActiveRecord
             'group'=>array(
                 'asc'=>'groups.group_name asc',
                 'desc'=>'groups.group_name desc',
+            ),
+
+            'mandatory'=>array(
+                'asc'=>'t.mandatory asc',
+                'desc'=>'t.mandatory desc',
+            ),
+
+            'other'=>array(
+                'asc'=>'t.other asc',
+                'desc'=>'t.other desc',
             ),
         );
 
