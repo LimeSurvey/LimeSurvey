@@ -1742,6 +1742,59 @@ class questions extends Survey_Common_Action
         }
     }
 
+    public function setMultipleStatistics()
+    {
+        // TODO:  Keep in controler as setMultiple ; add an action paramater (here: statitsitcs)
+        $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
+        $iSid         = $_POST['sid'];
+
+        $_POST['public_statistics'] = ( Yii::app()->request->getPost('public_statistics') === 'true' ) ? '1' : '0' ;
+        $_POST['statistics_showgraph'] = ( Yii::app()->request->getPost('statistics_showgraph') === 'true' ) ? '1' : '0' ;
+
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
+        {
+            foreach ($aQidsAndLang as $sQidAndLang)
+            {
+
+                $aQidAndLang  = explode(',', $sQidAndLang);
+                $iQid         = $aQidAndLang[0];
+                $sLanguage    = $aQidAndLang[1];
+
+                $oQuestion    = Question::model()->find('qid=:qid and language=:language',array(":qid"=>$iQid,":language"=>$sLanguage));
+
+                // TODO:  here, call to a modal function depending on action
+                $aAttributesToUpdate = array('public_statistics', 'statistics_showgraph', 'statistics_graphtype' );
+
+                foreach($aAttributesToUpdate as $sAttribute)
+                {
+                    //TODO: move to a separate method in model
+                    $sValue         = Yii::app()->request->getPost($sAttribute);
+                    $iInsertCount   = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$sAttribute, 'qid'=>$iQid));
+
+                    $aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
+
+                    if (in_array($oQuestion->type, $aValidQuestionTypes))
+                    {
+                        if (count($iInsertCount)>0)
+                        {
+                            $result = QuestionAttribute::model()->updateAll(array('value'=>$sValue),'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
+                        }
+                        else
+                        {
+                            $oAttribute            = new QuestionAttribute;
+                            $oAttribute->qid       = $iQid;
+                            $oAttribute->value     = $sValue;
+                            $oAttribute->attribute = $sAttribute;
+                            $oAttribute->save();
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
     public function ajaxReloadPositionWidget($gid, $classes='')
     {
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));

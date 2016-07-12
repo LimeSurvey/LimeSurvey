@@ -62,7 +62,7 @@
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_question_group_position', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
 
-                // Set question and group
+                // Set mandatory
                 array(
                     // li element
                     'type'        => 'action',
@@ -81,6 +81,48 @@
                     'sModalTitle'   => gT('Set mandatory state'),
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
+
+                // Set CSS Class
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'set-css',
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleCSS/'),
+                    'iconClasses' => 'fa fa-css3',
+                    'text'        =>  gT('Set CSS class'),
+                    'grid-reload' => 'no',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'yes'           => gT('apply'),
+                    'no'            => gT('cancel'),
+                    'keepopen'      => 'no',
+                    'sModalTitle'   => gT('Set "CSS" class'),
+                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_css_class', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
+                ),
+
+                // Set Statistics
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'set-statistics',
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleStatistics/'),
+                    'iconClasses' => 'fa fa-bar-chart',
+                    'text'        =>  gT('Set statistics options'),
+                    'grid-reload' => 'no',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'yes'           => gT('apply'),
+                    'no'            => gT('cancel'),
+                    'keepopen'      => 'no',
+                    'sModalTitle'   => gT('Set statistics options'),
+                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_statistics_options', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
+                ),
+
+
 
                 // Separator
                 array(
@@ -119,26 +161,6 @@
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_other', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
 
-                // Set CSS Class
-                array(
-                    // li element
-                    'type'        => 'action',
-                    'action'      => 'set-css',
-                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleCSS/'),
-                    'iconClasses' => 'fa fa-css3',
-                    'text'        =>  gT('Set "CSS" class'),
-                    'grid-reload' => 'yes',
-
-                    // modal
-                    'actionType'    => 'modal',
-                    'modalType'     => 'yes-no',
-                    'yes'           => gT('apply'),
-                    'no'            => gT('cancel'),
-                    'keepopen'      => 'no',
-                    'sModalTitle'   => gT('Set "CSS" class'),
-                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_css_class', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
-                ),
-
                 // Set subquestions/answers sort options
                 array(
                     // li element
@@ -147,7 +169,7 @@
                     'url'         => App()->createUrl('/admin/questions/sa/setMultipleSubQuestionOrAnswerOrder/'),
                     'iconClasses' => 'fa fa-sort',
                     'text'        =>  gT('Present subquestions/answer options in random order'),
-                    'grid-reload' => 'yes',
+                    'grid-reload' => 'no',
 
                     // modal
                     'actionType'    => 'modal',
@@ -171,18 +193,31 @@
 -->
 <script>
 $(document).ready(function() {
+    // We're not posting a form, but getting the values to submit them with ajax
+    // So we must set the attribute value, not only element val().
     $('#mandatory').on('switchChange.bootstrapSwitch', function(event, state) {
         $('#mandatory').attr('value', state);
     });
 
     $('#other').on('switchChange.bootstrapSwitch', function(event, state) {
         $('#other').attr('value', state);
-        console.log(state);
     });
+
+    $('#public_statistics').on('switchChange.bootstrapSwitch', function(event, state) {
+        $('#public_statistics').attr('value', state);
+    });
+
+    $('#statistics_showgraph').on('switchChange.bootstrapSwitch', function(event, state) {
+        $('#statistics_showgraph').attr('value', state);
+    });
+
 
     $('#question-grid').on('actions-updated', function(){
         loadPositionWidget();
         $('#mandatory').bootstrapSwitch();
+        $('#other').bootstrapSwitch();
+        $('#public_statistics').bootstrapSwitch();
+        $('#statistics_showgraph').bootstrapSwitch();
 
         $('#mandatory').on('switchChange.bootstrapSwitch', function(event, state) {
             $('#mandatory').attr('value', state);
