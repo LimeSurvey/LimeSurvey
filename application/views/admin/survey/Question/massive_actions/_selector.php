@@ -87,7 +87,7 @@
                     // li element
                     'type'        => 'action',
                     'action'      => 'set-css',
-                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleCSS/'),
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
                     'iconClasses' => 'fa fa-css3',
                     'text'        =>  gT('Set CSS class'),
                     'grid-reload' => 'yes',
@@ -166,7 +166,7 @@
                     // li element
                     'type'        => 'action',
                     'action'      => 'set-subquestions-answers-sort',
-                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleSubQuestionOrAnswerOrder/'),
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
                     'iconClasses' => 'fa fa-sort',
                     'text'        =>  gT('Present subquestions/answer options in random order'),
                     'grid-reload' => 'yes',

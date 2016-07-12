@@ -1669,62 +1669,22 @@ class questions extends Survey_Common_Action
     }
 
 
+    /**
+     * Set attributes for multiple questions
+     */
     public function setMultipleAttributes()
     {
-        $aQidsAndLang        = json_decode($_POST['sItems']);                        // List of question ids to update
-        $iSid                = $_POST['sid'];
-        $aAttributesToUpdate = json_decode ( $_POST['aAttributesToUpdate'] );
+        $aQidsAndLang        = json_decode($_POST['sItems']);                   // List of question ids to update
+        $iSid                = $_POST['sid'];                                   // The survey (for permission check)
+        $aAttributesToUpdate = json_decode ( $_POST['aAttributesToUpdate'] );   // The list of attributes to updates
         // TODO: this should be get from the question model
-        $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']);
+        $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']);        // The valid question types for thoses attributes
 
-        // TODO: use an array like for a form submit, so we can parse it to the model instead of using $_POST directly in the model
-        //$aAttributesToUpdate = array('public_statistics', 'statistics_showgraph', 'statistics_graphtype' );
-        //$aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
-
+        // Calling th model
         QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
     }
 
-    /**
-     * Set CSS attribute for multiple questions
-     */
-    public function setMultipleCSS()
-    {
-        $aQidsAndLang        = json_decode($_POST['sItems']);                        // List of question ids to update
-        $iSid                = $_POST['sid'];
-        $aAttributesToUpdate = array('cssclass');
-        $aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
 
-        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
-    }
-
-    /**
-     * Set random sort attribute for multiple questions
-     */
-    public function setMultipleSubQuestionOrAnswerOrder()
-    {
-        $aQidsAndLang        = json_decode($_POST['sItems']);                        // List of question ids to update
-        $iSid                = $_POST['sid'];
-        $aAttributesToUpdate = array('random_order' );
-        $aValidQuestionTypes = str_split('!ABCEFHKLMOPQRWZ1:;');
-
-        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
-    }
-
-    /**
-     * Set CSS attribute for multiple questions
-     * NOTE: here, we need to clean/convert the datas coming from
-     */
-    public function setMultipleStatistics()
-    {
-        $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
-        $iSid         = $_POST['sid'];
-
-        // TODO: use an array like for a form submit, so we can parse it to the model instead of using $_POST directly in the model
-        $aAttributesToUpdate = array('public_statistics', 'statistics_showgraph', 'statistics_graphtype' );
-        $aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
-
-        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
-    }
 
     public function ajaxReloadPositionWidget($gid, $classes='')
     {
