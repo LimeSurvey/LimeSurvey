@@ -1641,7 +1641,6 @@ class questions extends Survey_Common_Action
         $iSid           = $_POST['sid'];
         $bOther     = ( Yii::app()->request->getPost('other') === 'true' ) ? 'Y' : 'N' ;
 
-        var_dump($_POST);
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
         {
             $oSurvey          = Survey::model()->findByPk($iSid);
@@ -1664,14 +1663,46 @@ class questions extends Survey_Common_Action
                     {
                         $oQuestion->other = $bOther;
                         $oQuestion->save();
-
-
                     }
 
                 }
             }
         }
     }
+
+    public function setMultipleCSS()
+    {
+
+        echo "start";
+        $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
+        $iSid         = $_POST['sid'];
+        $sCssClass    = Yii::app()->request->getPost('cssclass');
+
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
+        {
+            foreach ($aQidsAndLang as $sQidAndLang)
+            {
+
+                $aQidAndLang  = explode(',', $sQidAndLang);
+                $iQid         = $aQidAndLang[0];
+                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>'cssclass', 'qid'=>$iQid));
+
+                if (count($iInsertCount)>0)
+                {
+                    $result = QuestionAttribute::model()->updateAll(array('value'=>$sCssClass),'attribute=:attribute AND qid=:qid', array(':attribute'=>'cssclass', ':qid'=>$iQid));
+                }
+                elseif(trim($sCssClass)!="")
+                {
+                    $oAttribute            = new QuestionAttribute;
+                    $oAttribute->qid       = $iQid;
+                    $oAttribute->value     = $sCssClass;
+                    $oAttribute->attribute = 'cssclass';
+                    $oAttribute->save();
+                }
+            }
+        }
+    }
+
     public function ajaxReloadPositionWidget($gid, $classes='')
     {
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));

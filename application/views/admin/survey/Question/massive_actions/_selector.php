@@ -82,8 +82,23 @@
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
 
-                // Set question and group
+                // Separator
+                array(
 
+                    // li element
+                    'type'  => 'separator',
+                ),
+
+                // Download header
+                array(
+
+                    // li element
+                    'type' => 'dropdown-header',
+                    'text' => gT("Advanced"),
+                ),
+
+
+                // Set other
                 // DEPEND IF SURVEY IS ACTIVE !!!!
                 array(
                     // li element
@@ -102,6 +117,26 @@
                     'keepopen'      => 'yes',
                     'sModalTitle'   => gT('Set "other" state'),
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_other', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
+                ),
+
+                // Set CSS Class
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'set-css',
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleCSS/'),
+                    'iconClasses' => 'fa fa-css3',
+                    'text'        =>  gT('Set "CSS" class'),
+                    'grid-reload' => 'yes',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'yes'           => gT('apply'),
+                    'no'            => gT('cancel'),
+                    'keepopen'      => 'no',
+                    'sModalTitle'   => gT('Set "CSS" class'),
+                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_css_class', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
 
 
