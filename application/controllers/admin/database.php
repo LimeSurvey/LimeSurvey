@@ -790,6 +790,7 @@ class database extends Survey_Common_Action
 
 
             //now save all valid attributes
+            // eg: other_replace_text ; other_replace_text_en
             $validAttributes=$qattributes[$sQuestionType];
 
             foreach ($validAttributes as $validAttribute)
