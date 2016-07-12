@@ -94,7 +94,7 @@
 
                     // li element
                     'type' => 'dropdown-header',
-                    'text' => gT("Advanced"),
+                    'text' => gT("Advanced").' '.'('.gT("only apply to certain question types").')',
                 ),
 
 
@@ -139,11 +139,32 @@
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_css_class', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
 
+                // Set subquestions/answers sort options
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'set-subquestions-answers-sort',
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleSubQuestionOrAnswerOrder/'),
+                    'iconClasses' => 'fa fa-sort',
+                    'text'        =>  gT('Present subquestions/answer options in random order'),
+                    'grid-reload' => 'yes',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'yes'           => gT('apply'),
+                    'no'            => gT('cancel'),
+                    'keepopen'      => 'false',
+                    'sModalTitle'   => gT('Present subquestions/answer options in random order'),
+                    'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_subquestansw_order', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
+                    // for question types : !ABCEFHKLMOPQRWZ1:;
+                ),
 
             ),
 
     ));
 ?>
+
 
 <!--
     Some widgets in the modals need to be reloaded after grid update

@@ -1672,8 +1672,6 @@ class questions extends Survey_Common_Action
 
     public function setMultipleCSS()
     {
-
-        echo "start";
         $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
         $iSid         = $_POST['sid'];
         $sCssClass    = Yii::app()->request->getPost('cssclass');
@@ -1698,6 +1696,47 @@ class questions extends Survey_Common_Action
                     $oAttribute->value     = $sCssClass;
                     $oAttribute->attribute = 'cssclass';
                     $oAttribute->save();
+                }
+            }
+        }
+    }
+
+    // TODO: refactoring become more and more necessary
+    public function setMultipleSubQuestionOrAnswerOrder()
+    {
+        $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
+        $iSid         = $_POST['sid'];
+        $iRandomOrder = Yii::app()->request->getPost('random_order');
+
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
+        {
+            foreach ($aQidsAndLang as $sQidAndLang)
+            {
+
+                $aQidAndLang  = explode(',', $sQidAndLang);
+                $iQid         = $aQidAndLang[0];
+                $sLanguage    = $aQidAndLang[1];
+
+                $oQuestion    = Question::model()->find('qid=:qid and language=:language',array(":qid"=>$iQid,":language"=>$sLanguage));
+                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>'random_order', 'qid'=>$iQid));
+
+                // These are the questions types that have the other option therefore we set everything else to 'No Other'
+                $aValidQuestionTypes = str_split('!ABCEFHKLMOPQRWZ1:;');
+
+                if (in_array($oQuestion->type, $aValidQuestionTypes))
+                {
+                    if (count($iInsertCount)>0)
+                    {
+                        $result = QuestionAttribute::model()->updateAll(array('value'=>$iRandomOrder),'attribute=:attribute AND qid=:qid', array(':attribute'=>'random_order', ':qid'=>$iQid));
+                    }
+                    else
+                    {
+                        $oAttribute            = new QuestionAttribute;
+                        $oAttribute->qid       = $iQid;
+                        $oAttribute->value     = $iRandomOrder;
+                        $oAttribute->attribute = 'random_order';
+                        $oAttribute->save();
+                    }
                 }
             }
         }
