@@ -15,11 +15,3 @@
         </div>
     </div>
 </form>
-
-<script>
-$(document).ready(function() {
-    $('#mandatory').on('switchChange.bootstrapSwitch', function(event, state) {
-        $('#mandatory').attr('value', state);
-    });
-}
-</script>

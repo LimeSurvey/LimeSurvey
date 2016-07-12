@@ -14,11 +14,3 @@
         <input type="hidden" name="sid" value="<?php echo $_GET['surveyid']; ?>" class="custom-data"/>
     </div>
 </form>
-<script>
-$(document).ready(function() {
-    $('#other').on('switchChange.bootstrapSwitch', function(event, state) {
-        $('#other').attr('value', state);
-        console.log(state);
-    });
-}
-</script>
