@@ -1668,6 +1668,9 @@ class questions extends Survey_Common_Action
         }
     }
 
+    /**
+     * Set CSS attribute for multiple questions
+     */
     public function setMultipleCSS()
     {
         $aQidsAndLang        = json_decode($_POST['sItems']);                        // List of question ids to update
@@ -1678,7 +1681,9 @@ class questions extends Survey_Common_Action
         QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
     }
 
-    // TODO: refactoring become more and more necessary
+    /**
+     * Set random sort attribute for multiple questions
+     */
     public function setMultipleSubQuestionOrAnswerOrder()
     {
         $aQidsAndLang        = json_decode($_POST['sItems']);                        // List of question ids to update
@@ -1689,15 +1694,16 @@ class questions extends Survey_Common_Action
         QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
     }
 
+    /**
+     * Set CSS attribute for multiple questions
+     * NOTE: here, we need to clean/convert the datas coming from
+     */
     public function setMultipleStatistics()
     {
         $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
         $iSid         = $_POST['sid'];
 
         // TODO: use an array like for a form submit, so we can parse it to the model instead of using $_POST directly in the model
-        $_POST['public_statistics']   = ( Yii::app()->request->getPost('public_statistics') === 'true' ) ? '1' : '0' ;
-        $_POST['statistics_showgraph'] = ( Yii::app()->request->getPost('statistics_showgraph') === 'true' ) ? '1' : '0' ;
-
         $aAttributesToUpdate = array('public_statistics', 'statistics_showgraph', 'statistics_graphtype' );
         $aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
 

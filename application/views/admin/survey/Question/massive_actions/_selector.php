@@ -90,7 +90,7 @@
                     'url'         => App()->createUrl('/admin/questions/sa/setMultipleCSS/'),
                     'iconClasses' => 'fa fa-css3',
                     'text'        =>  gT('Set CSS class'),
-                    'grid-reload' => 'no',
+                    'grid-reload' => 'yes',
 
                     // modal
                     'actionType'    => 'modal',
@@ -110,7 +110,7 @@
                     'url'         => App()->createUrl('/admin/questions/sa/setMultipleStatistics/'),
                     'iconClasses' => 'fa fa-bar-chart',
                     'text'        =>  gT('Set statistics options'),
-                    'grid-reload' => 'no',
+                    'grid-reload' => 'yes',
 
                     // modal
                     'actionType'    => 'modal',
@@ -169,7 +169,7 @@
                     'url'         => App()->createUrl('/admin/questions/sa/setMultipleSubQuestionOrAnswerOrder/'),
                     'iconClasses' => 'fa fa-sort',
                     'text'        =>  gT('Present subquestions/answer options in random order'),
-                    'grid-reload' => 'no',
+                    'grid-reload' => 'yes',
 
                     // modal
                     'actionType'    => 'modal',
@@ -192,9 +192,17 @@
     Some widgets in the modals need to be reloaded after grid update
 -->
 <script>
+function changeSwitchValue(el, state)
+{
+    var intValue = (state==true)?'1':'0';
+    el.attr('value', intValue);
+}
+
 $(document).ready(function() {
     // We're not posting a form, but getting the values to submit them with ajax
     // So we must set the attribute value, not only element val().
+
+    // TODO: create a jQuery plugin to make it dryer....
     $('#mandatory').on('switchChange.bootstrapSwitch', function(event, state) {
         $('#mandatory').attr('value', state);
     });
@@ -204,13 +212,16 @@ $(document).ready(function() {
     });
 
     $('#public_statistics').on('switchChange.bootstrapSwitch', function(event, state) {
-        $('#public_statistics').attr('value', state);
+        changeSwitchValue($('#public_statistics'), state);
     });
+
 
     $('#statistics_showgraph').on('switchChange.bootstrapSwitch', function(event, state) {
-        $('#statistics_showgraph').attr('value', state);
+        changeSwitchValue($('#statistics_showgraph'), state);
     });
 
+    changeSwitchValue($('#statistics_showgraph'), false);
+    changeSwitchValue($('#public_statistics'), false);
 
     $('#question-grid').on('actions-updated', function(){
         loadPositionWidget();
@@ -219,13 +230,16 @@ $(document).ready(function() {
         $('#public_statistics').bootstrapSwitch();
         $('#statistics_showgraph').bootstrapSwitch();
 
-        $('#mandatory').on('switchChange.bootstrapSwitch', function(event, state) {
-            $('#mandatory').attr('value', state);
+        $('#public_statistics').on('switchChange.bootstrapSwitch', function(event, state) {
+            changeSwitchValue($('#public_statistics'), state);
         });
 
-        $('#other').on('switchChange.bootstrapSwitch', function(event, state) {
-            $('#other').attr('value', state);
+        $('#statistics_showgraph').on('switchChange.bootstrapSwitch', function(event, state) {
+            changeSwitchValue($('#statistics_showgraph'), state);
         });
+
+        changeSwitchValue($('#statistics_showgraph'), false);
+        changeSwitchValue($('#public_statistics'), false);
     });
 });
 </script>
