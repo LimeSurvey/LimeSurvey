@@ -1605,8 +1605,6 @@ class questions extends Survey_Common_Action
         $iSid           = $_POST['sid'];
         $bMandatory     = ( Yii::app()->request->getPost('mandatory') === 'true' ) ? 'Y' : 'N' ;
 
-
-
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
         {
             $oSurvey          = Survey::model()->findByPk($iSid);
@@ -1672,127 +1670,38 @@ class questions extends Survey_Common_Action
 
     public function setMultipleCSS()
     {
-        $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
-        $iSid         = $_POST['sid'];
-        $sCssClass    = Yii::app()->request->getPost('cssclass');
+        $aQidsAndLang        = json_decode($_POST['sItems']);                        // List of question ids to update
+        $iSid                = $_POST['sid'];
+        $aAttributesToUpdate = array('cssclass');
+        $aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
 
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
-        {
-            foreach ($aQidsAndLang as $sQidAndLang)
-            {
-
-                $aQidAndLang  = explode(',', $sQidAndLang);
-                $iQid         = $aQidAndLang[0];
-                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>'cssclass', 'qid'=>$iQid));
-
-                if (count($iInsertCount)>0)
-                {
-                    $result = QuestionAttribute::model()->updateAll(array('value'=>$sCssClass),'attribute=:attribute AND qid=:qid', array(':attribute'=>'cssclass', ':qid'=>$iQid));
-                }
-                elseif(trim($sCssClass)!="")
-                {
-                    $oAttribute            = new QuestionAttribute;
-                    $oAttribute->qid       = $iQid;
-                    $oAttribute->value     = $sCssClass;
-                    $oAttribute->attribute = 'cssclass';
-                    $oAttribute->save();
-                }
-            }
-        }
+        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
     }
 
     // TODO: refactoring become more and more necessary
     public function setMultipleSubQuestionOrAnswerOrder()
     {
-        $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
-        $iSid         = $_POST['sid'];
-        $iRandomOrder = Yii::app()->request->getPost('random_order');
+        $aQidsAndLang        = json_decode($_POST['sItems']);                        // List of question ids to update
+        $iSid                = $_POST['sid'];
+        $aAttributesToUpdate = array('random_order' );
+        $aValidQuestionTypes = str_split('!ABCEFHKLMOPQRWZ1:;');
 
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
-        {
-            foreach ($aQidsAndLang as $sQidAndLang)
-            {
-
-                $aQidAndLang  = explode(',', $sQidAndLang);
-                $iQid         = $aQidAndLang[0];
-                $sLanguage    = $aQidAndLang[1];
-
-                $oQuestion    = Question::model()->find('qid=:qid and language=:language',array(":qid"=>$iQid,":language"=>$sLanguage));
-                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>'random_order', 'qid'=>$iQid));
-
-                // These are the questions types that have the other option therefore we set everything else to 'No Other'
-                $aValidQuestionTypes = str_split('!ABCEFHKLMOPQRWZ1:;');
-
-                if (in_array($oQuestion->type, $aValidQuestionTypes))
-                {
-                    if (count($iInsertCount)>0)
-                    {
-                        $result = QuestionAttribute::model()->updateAll(array('value'=>$iRandomOrder),'attribute=:attribute AND qid=:qid', array(':attribute'=>'random_order', ':qid'=>$iQid));
-                    }
-                    else
-                    {
-                        $oAttribute            = new QuestionAttribute;
-                        $oAttribute->qid       = $iQid;
-                        $oAttribute->value     = $iRandomOrder;
-                        $oAttribute->attribute = 'random_order';
-                        $oAttribute->save();
-                    }
-                }
-            }
-        }
+        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
     }
 
     public function setMultipleStatistics()
     {
-        // TODO:  Keep in controler as setMultiple ; add an action paramater (here: statitsitcs)
         $aQidsAndLang = json_decode($_POST['sItems']);                        // List of question ids to update
         $iSid         = $_POST['sid'];
 
-        $_POST['public_statistics'] = ( Yii::app()->request->getPost('public_statistics') === 'true' ) ? '1' : '0' ;
+        // TODO: use an array like for a form submit, so we can parse it to the model instead of using $_POST directly in the model
+        $_POST['public_statistics']   = ( Yii::app()->request->getPost('public_statistics') === 'true' ) ? '1' : '0' ;
         $_POST['statistics_showgraph'] = ( Yii::app()->request->getPost('statistics_showgraph') === 'true' ) ? '1' : '0' ;
 
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
-        {
-            foreach ($aQidsAndLang as $sQidAndLang)
-            {
+        $aAttributesToUpdate = array('public_statistics', 'statistics_showgraph', 'statistics_graphtype' );
+        $aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
 
-                $aQidAndLang  = explode(',', $sQidAndLang);
-                $iQid         = $aQidAndLang[0];
-                $sLanguage    = $aQidAndLang[1];
-
-                $oQuestion    = Question::model()->find('qid=:qid and language=:language',array(":qid"=>$iQid,":language"=>$sLanguage));
-
-                // TODO:  here, call to a modal function depending on action
-                $aAttributesToUpdate = array('public_statistics', 'statistics_showgraph', 'statistics_graphtype' );
-
-                foreach($aAttributesToUpdate as $sAttribute)
-                {
-                    //TODO: move to a separate method in model
-                    $sValue         = Yii::app()->request->getPost($sAttribute);
-                    $iInsertCount   = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$sAttribute, 'qid'=>$iQid));
-
-                    $aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
-
-                    if (in_array($oQuestion->type, $aValidQuestionTypes))
-                    {
-                        if (count($iInsertCount)>0)
-                        {
-                            $result = QuestionAttribute::model()->updateAll(array('value'=>$sValue),'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
-                        }
-                        else
-                        {
-                            $oAttribute            = new QuestionAttribute;
-                            $oAttribute->qid       = $iQid;
-                            $oAttribute->value     = $sValue;
-                            $oAttribute->attribute = $sAttribute;
-                            $oAttribute->save();
-                        }
-                    }
-
-                }
-
-            }
-        }
+        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
     }
 
     public function ajaxReloadPositionWidget($gid, $classes='')
