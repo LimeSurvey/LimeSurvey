@@ -86,16 +86,21 @@
          // Define what should be done when user confirm the mass action
          $modalButton.on('click', function(){
 
-             if( $modal.data('keepopen') != 'yes' )
-             {
-                 $modal.modal('hide');
-             }
-
+             // Custom datas comming from the modal (like sid)
              $postDatas  = {sItems:$oCheckedItems};
              $modal.find('.custom-data').each(function(i, el)
              {
                 $postDatas[$(this).attr('name')]=$(this).val();
              });
+
+             // Custom attributes to updates (like question attributes)
+             $aAttributesToUpdate = [];
+             $modal.find('.attributes-to-update').each(function(i, el)
+             {
+                $aAttributesToUpdate.push($(this).attr('name'));
+             });
+             $postDatas['aAttributesToUpdate'] = JSON.stringify($aAttributesToUpdate);
+
 
              // Update the modal elements
              // TODO: ALL THIS DEPEND ON KEEPOPEN OR NOT
@@ -116,6 +121,11 @@
 
                      // This depend on keepopen
                      $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
+
+                     if( $modal.data('keepopen') != 'yes' )
+                     {
+                        $modal.modal('hide');
+                     }
                  },
                  error :  function(html, statut){
                      $ajaxLoader.hide();

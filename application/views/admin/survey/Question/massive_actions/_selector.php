@@ -107,7 +107,7 @@
                     // li element
                     'type'        => 'action',
                     'action'      => 'set-statistics',
-                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleStatistics/'),
+                    'url'         => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
                     'iconClasses' => 'fa fa-bar-chart',
                     'text'        =>  gT('Set statistics options'),
                     'grid-reload' => 'yes',

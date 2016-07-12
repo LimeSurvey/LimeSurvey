@@ -1668,6 +1668,22 @@ class questions extends Survey_Common_Action
         }
     }
 
+
+    public function setMultipleAttributes()
+    {
+        $aQidsAndLang        = json_decode($_POST['sItems']);                        // List of question ids to update
+        $iSid                = $_POST['sid'];
+        $aAttributesToUpdate = json_decode ( $_POST['aAttributesToUpdate'] );
+        // TODO: this should be get from the question model
+        $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']);
+
+        // TODO: use an array like for a form submit, so we can parse it to the model instead of using $_POST directly in the model
+        //$aAttributesToUpdate = array('public_statistics', 'statistics_showgraph', 'statistics_graphtype' );
+        //$aValidQuestionTypes = str_split('15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*');
+
+        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
+    }
+
     /**
      * Set CSS attribute for multiple questions
      */
