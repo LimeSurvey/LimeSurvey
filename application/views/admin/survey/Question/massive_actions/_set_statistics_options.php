@@ -1,7 +1,6 @@
 <?php
 /**
  * Set subquestion/answer order
- * @var $oSurvey    The survey object
  */
 ?>
 <form class="custom-modal-datas">

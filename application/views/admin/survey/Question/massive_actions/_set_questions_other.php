@@ -1,8 +1,6 @@
 <?php
 /**
  * Set question group and position modal body (parsed to massive action widget)
- * @var $model      The question model
- * @var $oSurvey    The survey object
  */
 ?>
 <form class="custom-modal-datas">
