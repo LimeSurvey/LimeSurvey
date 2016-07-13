@@ -156,7 +156,7 @@
                     'modalType'     => 'yes-no',
                     'yes'           => gT('apply'),
                     'no'            => gT('cancel'),
-                    'keepopen'      => 'yes',
+                    'keepopen'      => 'no',
                     'sModalTitle'   => gT('Set "other" state'),
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_other', array('model'=>$model, 'oSurvey'=>$oSurvey), true),
                 ),
@@ -192,54 +192,10 @@
     Some widgets in the modals need to be reloaded after grid update
 -->
 <script>
-function changeSwitchValue(el, state)
-{
-    var intValue = (state==true)?'1':'0';
-    el.attr('value', intValue);
-}
-
 $(document).ready(function() {
-    // We're not posting a form, but getting the values to submit them with ajax
-    // So we must set the attribute value, not only element val().
-
-    // TODO: create a jQuery plugin to make it dryer....
-    $('#mandatory').on('switchChange.bootstrapSwitch', function(event, state) {
-        $('#mandatory').attr('value', state);
-    });
-
-    $('#other').on('switchChange.bootstrapSwitch', function(event, state) {
-        $('#other').attr('value', state);
-    });
-
-    $('#public_statistics').on('switchChange.bootstrapSwitch', function(event, state) {
-        changeSwitchValue($('#public_statistics'), state);
-    });
-
-
-    $('#statistics_showgraph').on('switchChange.bootstrapSwitch', function(event, state) {
-        changeSwitchValue($('#statistics_showgraph'), state);
-    });
-
-    changeSwitchValue($('#statistics_showgraph'), false);
-    changeSwitchValue($('#public_statistics'), false);
 
     $('#question-grid').on('actions-updated', function(){
         loadPositionWidget();
-        $('#mandatory').bootstrapSwitch();
-        $('#other').bootstrapSwitch();
-        $('#public_statistics').bootstrapSwitch();
-        $('#statistics_showgraph').bootstrapSwitch();
-
-        $('#public_statistics').on('switchChange.bootstrapSwitch', function(event, state) {
-            changeSwitchValue($('#public_statistics'), state);
-        });
-
-        $('#statistics_showgraph').on('switchChange.bootstrapSwitch', function(event, state) {
-            changeSwitchValue($('#statistics_showgraph'), state);
-        });
-
-        changeSwitchValue($('#statistics_showgraph'), false);
-        changeSwitchValue($('#public_statistics'), false);
     });
 });
 </script>

@@ -70,6 +70,8 @@
         <?php endforeach;?>
     </ul>
 </div>
-
+<script>
+    var gridId = "<?php  echo $this->gridid;?>";
+</script>
 
 <!-- End of Massive actions widget : selector view -->
