@@ -10,7 +10,17 @@
     <div  class="form-group" id="PublicStatistcs">
         <label class="col-sm-4 control-label" for="public_statistics"><?php eT("Show in public statistics:"); ?></label>
         <div class="col-sm-8">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'public_statistics', 'htmlOptions'=>array('class'=>'custom-data attributes-to-update'),'value'=> '', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+            <?php $this->widget(
+                    'yiiwheels.widgets.switch.WhSwitch',
+                    array(
+                        'name' => 'public_statistics',
+                        'htmlOptions'=> array(
+                            'class'=>'custom-data attributes-to-update bootstrap-switch-integer'
+                        ),
+                    'value'=> '',
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')));
+            ?>
         </div>
     </div>
 <br/><br/>
@@ -18,7 +28,17 @@
     <div  class="form-group" id="StatisticsShowgraph">
         <label class="col-sm-4 control-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
         <div class="col-sm-8">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'statistics_showgraph', 'htmlOptions'=>array('class'=>'custom-data attributes-to-update'),'value'=> '', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+            <?php $this->widget(
+                'yiiwheels.widgets.switch.WhSwitch',
+                array(
+                    'name' => 'statistics_showgraph',
+                    'htmlOptions'=>array(
+                        'class'=>'custom-data attributes-to-update bootstrap-switch-integer'
+                    ),
+                'value'=> '',
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')));
+            ?>
         </div>
     </div>
 <br/><br/>
