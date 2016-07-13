@@ -28,6 +28,7 @@ class tokens extends Survey_Common_Action
     */
     function index($iSurveyId)
     {
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         $iSurveyId = sanitize_int($iSurveyId);
         //// TODO : check if it does something different than the model function
         $thissurvey = getSurveyInfo($iSurveyId);
@@ -606,6 +607,7 @@ class tokens extends Survey_Common_Action
     */
     function editToken($iSurveyId)
     {
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
         {
             eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
@@ -727,6 +729,7 @@ class tokens extends Survey_Common_Action
     */
     function addnew($iSurveyId)
     {
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
@@ -840,6 +843,7 @@ class tokens extends Survey_Common_Action
     */
     function edit($iSurveyId, $iTokenId, $ajax=false)
     {
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         $iSurveyId = sanitize_int($iSurveyId);
         $iTokenId = sanitize_int($iTokenId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -955,6 +959,7 @@ class tokens extends Survey_Common_Action
     */
     function delete($iSurveyID)
     {
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         $iSurveyID = sanitize_int($iSurveyID);
         $sTokenIDs = Yii::app()->request->getPost('tid');
         /* Check permissions */
