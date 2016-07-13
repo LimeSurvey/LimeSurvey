@@ -103,6 +103,7 @@
                         );
 
 
+
                    // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
                    // All other columns are based on the questions.
                    // An array to control unicity of $code (EM code)
@@ -115,7 +116,8 @@
 
                             $aColumns[]=
                                 array(
-                                    'header' => $colName,
+                                    'header' => '<span data-toggle="tooltip" data-placement="bottom" title="'.quoteText(strip_tags($fieldmap[$column->name]['question'])).'">'.$colName.' <br/> '.ellipsize($fieldmap[$column->name]['question'], 30).'</span>',
+                                    'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
                                     'name' => $column->name,
                                     'type' => 'raw',
                                     'value' => '$data->getExtendedData("'.$column->name.'", "'.$language.'", "'.$base64jsonFieldMap.'")',

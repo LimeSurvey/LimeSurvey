@@ -316,7 +316,17 @@ class SurveyDynamic extends LSActiveRecord
     {
         $oFieldMap = json_decode( base64_decode($base64jsonFieldMap) );
         $value     = $this->$colName;
-        $sValue    = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
+
+        $sFullValue      = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
+        if (strlen($sFullValue) > 50)
+        {
+            $sElipsizedValue = ellipsize($sFullValue, 50 );
+            $sValue          = '<span data-toggle="tooltip" data-placement="left" title="'.quoteText($sFullValue).'">'.$sElipsizedValue.'</span>';
+        }
+        else
+        {
+            $sValue          = $sFullValue;
+        }
 
         // Upload question
         if($oFieldMap->type =='|' && strpos($oFieldMap->fieldname,'filecount')===false)
