@@ -57,7 +57,7 @@ $(document).ready(function() {
 
     /**
      * CintLink widget supports a couple of languages.
-     * Get one of those.
+     * Get one of those. Default to English.
      * 
      * @param {string} surveyLanguage
      * @return {string}
@@ -65,7 +65,22 @@ $(document).ready(function() {
     function getWidgetLanguage(surveyLanguage)
     {
         var supportedLanguages = [
+            'en',
+            'de',
+            'es',
+            'fi',
+            'fr',
+            'ja',
+            'ru',
+            'sv'
         ];
+
+        if (supportedLanguages.indexOf(surveyLanguage) === -1) {
+            return 'en';
+        }
+        else {
+            return surveyLanguage;
+        }
     }
 
     /**
@@ -88,8 +103,8 @@ $(document).ready(function() {
             console.log('survey', survey);
 
             var options = {
-                locale: "en",
-                introText: "My Survey Company Name",
+                locale: getWidgetLanguage(survey.surveyls_language),
+                introText: "LimeSurvey",
                 surveyLink: {
                     value: "http://mysurveycompany.example.com/takesurvey/15",
                     readOnly: true
