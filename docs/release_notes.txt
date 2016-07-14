@@ -35,6 +35,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160714) to 2.50+ (build 160715) July 14, 2016
+-Fixed issue #11450: Unable to browse response (LouisGac)
+-Fixed issue #7908: When entering the token for a survey the text field is readable (Carsten Schmitz)
 
 Changes from 2.50+ (build 160620) to 2.50+ (build 160714) July 14, 2016
 -New feature: Extended mode for responses grid (LouisGac)
