@@ -7,7 +7,17 @@
 ?>
 
 <!-- Rendering massive action widget -->
+
 <?php
+
+    /**
+     * Here are defined the different massive actions for question grid.
+     * To add a new massive action, just create a new entry in the aActions array, and write its related method in questions controller.
+     * If the action need a form inside the modal so the user can set some values, please, use a subview (e.g: _set_question_group_position.php)
+     *
+     * @see documentation: https://github.com/LimeSurvey/LimeSurvey/tree/master/application/extensions/admin/grid/MassiveActionsWidget/README.md
+     */
+
     $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'pk'          => 'id',
             'gridid'      => 'question-grid',
@@ -176,7 +186,6 @@
                     'keepopen'      => 'false',
                     'sModalTitle'   => gT('Present subquestions/answer options in random order'),
                     'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_subquestansw_order', array(), true),
-                    // for question types : !ABCEFHKLMOPQRWZ1:;
                 ),
 
             ),
