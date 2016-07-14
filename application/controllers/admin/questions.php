@@ -911,8 +911,6 @@ class questions extends Survey_Common_Action
 
         // TODO: calcul correct value
         $oldCode  = false;
-        $position = $position;
-        $scale_id = $scale_id ;
 
 
         // We get the numerical part of each code and we store them in Arrays
@@ -944,7 +942,7 @@ class questions extends Survey_Common_Action
         // Let's get the greatest code
         $greatestNumCode          = max ($numCodes);                            // greatest code
         $key                      = array_keys($numCodes, max($numCodes));      // its key (same key in all tables)
-        $greatesNumCodeWithZeros  = $numCodesWithZero[$key[0]];                 // its value with prefixed 0 (like : 001)
+        $greatesNumCodeWithZeros  = (isset($numCodesWithZero))?$numCodesWithZero[$key[0]]:'';                 // its value with prefixed 0 (like : 001)
         $stringCodeOfGreatestCode = $stringCodes[$key[0]];                      // its original submited  string (like: SQ001)
 
         // We get the string part of it: it's the original string code, without the greates code with its 0 :
@@ -1133,9 +1131,6 @@ class questions extends Survey_Common_Action
         // sidemenu
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
-        $aData['sidemenu']['explorer']['qid'] = (isset($qid))?$qid:false;
-
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -1570,7 +1565,7 @@ class questions extends Survey_Common_Action
                 {
                     // Question basic infos
                     $aQidAndLang = explode(',', $sQidAndLang);
-                    $iQid        = $aQidAndLang[0];                    
+                    $iQid        = $aQidAndLang[0];
 
                     $oQuestion = Question::model()->findByAttributes(array('qid' => $iQid)); // Question object
                     $oldGid    = $oQuestion->gid;                                            // The current GID of the question

@@ -110,6 +110,7 @@
                 return false;
 
             $users = $oUsergroup->users;
+            $aUids = array();
             foreach($users as $user)
             {
                 $aUids[]=$user->uid;

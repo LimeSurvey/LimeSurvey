@@ -172,7 +172,7 @@ function gettemplatefilename($template, $templatefile) {
             // Something else
             else
             {
-                $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+                $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
                 return $template.'/'.$oEditedTemplate->viewPath.'/'.$templatefile;
             }
             break;

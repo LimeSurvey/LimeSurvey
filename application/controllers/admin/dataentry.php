@@ -566,6 +566,7 @@ class dataentry extends Survey_Common_Action
                 'access_code' => $password)
                 );
 
+                $saver = array();
                 foreach($svresult as $svrow)
                 {
                     $saver['email'] = $svrow['email'];
@@ -573,10 +574,6 @@ class dataentry extends Survey_Common_Action
                     $saver['ip'] = $svrow['ip'];
                 }
 
-                if(!isset($saver) || !array_key_exists('scid', $saver))
-                {
-                    $saver['scid'] = '';
-                }
                 $svresult = SavedControl::model()->findAllByAttributes(array('scid'=>$saver['scid']));
                 foreach($svresult as $svrow)
                 {
@@ -1391,6 +1388,7 @@ class dataentry extends Survey_Common_Action
     */
     public function delete()
     {
+        $surveyid= '';
         if (isset($_REQUEST['surveyid']) && !empty($_REQUEST['surveyid']))
         {
             $surveyid = $_REQUEST['surveyid'];
@@ -2295,10 +2293,28 @@ class dataentry extends Survey_Common_Action
 
                             $lquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $lresult=dbExecuteAssoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
+
+                            $lresult=dbExecuteAssoc($lquery);
+                            if( !$lresult)
+                            {
+                                $eMessage = "Couldn't get labels, Type \":\"<br />$lquery<br />";
+                                Yii::app()->setFlashMessage($eMessage );
+                                $this->getController()->redirect($this->getController()->createUrl("/admin/"));
+                            }
+
+
                             $cdata['lresult'] = $lresult->readAll();
 
                             $meaquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=dbExecuteAssoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
+                            $mearesult=dbExecuteAssoc($meaquery);
+
+                            if( !$mearesult)
+                            {
+                                $eMessage = "Couldn't get answers, Type \":\"<br />$meaquery<br />";
+                                Yii::app()->setFlashMessage($eMessage );
+                                $this->getController()->redirect($this->getController()->createUrl("/admin/"));
+                            }
+
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;

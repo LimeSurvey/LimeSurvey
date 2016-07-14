@@ -910,7 +910,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             // Start the HTML
             $sExtension = "";
-            
+
             if ($action == 'importsurvey')
             {
                 $aData                    = array();
@@ -932,7 +932,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             // Start traitment and messagebox
             $aData['bFailed'] = false; // Put a var for continue
-
+            $sFullFilepath = '';
             if ($action == 'importsurvey')
             {
 

@@ -647,7 +647,7 @@ class Question extends LSActiveRecord
                 {
                     //$list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
                     $oQuestionTypeConfig = simplexml_load_file($sQuestionTypeDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
-                    $aQuestionModules[$file] = $oQuestionTypeConfig->type;
+                    //$aQuestionModules[$file] = $oQuestionTypeConfig->type;
                     //var_dump($oQuestionTypeConfig->type);
                 }
             }
