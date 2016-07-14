@@ -584,6 +584,8 @@ class SurveyDynamic extends LSActiveRecord
        // Join the token table and filter tokens if needed
        if ($this->bHaveToken)
        {
+            $criteria->compare('t.token',$this->token, true);
+
             $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
             $criteria->compare('tokens.firstname',$this->firstname_filter, true);
             $criteria->compare('tokens.lastname',$this->lastname_filter, true);
@@ -613,7 +615,7 @@ class SurveyDynamic extends LSActiveRecord
        $criteria->compare('t.lastpage',$this->lastpage, true);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
-       $criteria->compare('t.token',$this->token, true);
+
 
        // Completed filters
        if($this->completed_filter == "Y")
