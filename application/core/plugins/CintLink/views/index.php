@@ -14,5 +14,6 @@ LS.plugin = LS.plugin || {};
 LS.plugin.cintlink = LS.plugin.cintlink || {};
 
 LS.plugin.cintlink.pluginBaseUrl = '<?php echo $pluginBaseUrl; ?>';
+LS.plugin.cintlink.surveyId = '<?php echo $surveyId; ?>';
 
 </script>

@@ -56,6 +56,19 @@ $(document).ready(function() {
     }
 
     /**
+     * CintLink widget supports a couple of languages.
+     * Get one of those.
+     * 
+     * @param {string} surveyLanguage
+     * @return {string}
+     */
+    function getWidgetLanguage(surveyLanguage)
+    {
+        var supportedLanguages = [
+        ];
+    }
+
+    /**
      * Show the CintLink widget
      *
      * @return void
@@ -63,36 +76,57 @@ $(document).ready(function() {
     function showWidget()
     {
         console.log("showWidget");
-        var options = {
-            locale: "en",
-            introText: "My Survey Company Name",
-            surveyLink: {
-                value: "http://mysurveycompany.example.com/takesurvey/15",
-                readOnly: true
-            },
-            surveyTitle: {
-                value: "My Survey",
-               readOnly: true
-            }
-        };
 
-        CintLink.show(options, function(hold, release) {
-            // A purchase was made, and we're going to POST the hold URL back to ourselves
-            console.log("purchase was made");
-            /*
-            $.ajax("<?php echo addslashes(htmlentities($_SERVER['PHP_SELF'])); ?>", {
-                data: {purchaseRequest: hold},
-                type: "POST",
-                dataType: "json",
-                success: function(data) {
-                    $('#order').text(data.text);
-                    orderUrl = data.id;
-                    $('#release-order').show();
-                    CintLink.close();
+        $.ajax({
+            method: 'POST',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getSurvey&surveyId=' + LS.plugin.cintlink.surveyId
+        }).done(function(response) {
+            console.log(response);
+            var response = JSON.parse(response);
+            console.log('response', response);
+            var survey = JSON.parse(response.result);
+            console.log('survey', survey);
+
+            var options = {
+                locale: "en",
+                introText: "My Survey Company Name",
+                surveyLink: {
+                    value: "http://mysurveycompany.example.com/takesurvey/15",
+                    readOnly: true
+                },
+                surveyTitle: {
+                    value: survey.surveyls_title,
+                    readOnly: true
+                },
+                contactName: {
+                    value: response.name,
+                    readOnly: false
+                },
+                contactEmail: {
+                    value: response.email,
+                    readOnly: false
                 }
+            };
+
+            CintLink.show(options, function(hold, release) {
+                // A purchase was made, and we're going to POST the hold URL back to ourselves
+                console.log("purchase was made");
+                $.ajax({
+                    url: LS.plugin.cintlink.pluginBaseUrl + '&function=purchaseRequest',
+                    data: {purchaseRequest: hold},
+                    type: "POST",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#order').text(data.text);
+                        orderUrl = data.id;
+                        $('#release-order').show();
+                        CintLink.close();
+                    }
+                });
             });
-            */
+
         });
+
     }
 
     // Check if user is logged in on limesurvey.org

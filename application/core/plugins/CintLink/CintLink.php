@@ -98,6 +98,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         );
 
         $data['pluginBaseUrl'] = $pluginBaseUrl;
+        $data['surveyId'] = $surveyId;
 
         Yii::setPathOfAlias('cintLink', dirname(__FILE__));
         $content = Yii::app()->controller->renderPartial('cintLink.views.index', $data, true);
@@ -105,20 +106,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
         App()->clientScript->registerScriptFile("http://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
-
-        /*
-        $curl = new Curl();
-        $response = $curl->post(
-            $this->baseURL,
-            array(
-                'app' => 'cintlinklimesurveyrestapi',
-                'format' => 'raw',
-                'resource' => 'test',
-                'key' => 'fbc4607979c0292465185aae3422c93b'
-            )
-        );
-        var_dump($response->body);
-        */
 
         return $content;
     }
@@ -131,7 +118,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function checkIfUserIsLoggedInOnLimesurveyorg(LSHttpRequest $request)
     {
-        if (empty($this->limesurveyOrgKey))
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+        if (empty($limesurveyOrgKey))
         {
             return json_encode(array('result' => false));
         }
@@ -144,11 +132,12 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     'app' => 'cintlinklimesurveyrestapi',
                     'format' => 'raw',
                     'resource' => 'test',
-                    'key' => $this->limesurveyOrgKey
+                    'key' => $limesurveyOrgKey
                 )
             );
+            $response = json_decode($response);
 
-            if ($response->body == "post ok")
+            if ($response == "post ok")
             {
                 return json_encode(array('result' => true));
             }
@@ -174,7 +163,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Login to limesurvey.org
+     * Login to limesurvey.org using com_api
+     *
+     * @param LSHttpRequest $request
+     * @return string JSON
      */
     public function login(LSHttpRequest $request)
     {
@@ -200,12 +192,48 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
         else if ($result->code == 200)
         {
+            Yii::app()->user->setState('limesurveyOrgKey', $result->auth);
+            $this->limesurveyOrgKey = $result->auth;
+
             return json_encode(array('result' => true));
         }
         else
         {
             return json_encode(array('error' => 'Unknown return code: ' . $result->code));
         }
+    }
+
+    /**
+     * When user click "Place order" in the widget,
+     * this function is called to contact limesurvey.org.
+     *
+     * @param LSHttpRequest $request
+     * @return string JSON
+     */
+    public function purchaseRequest(LSHttpRequest $request)
+    {
+        return json_encode(array('result' => 'hello'));
+    }
+
+    /**
+     * Get survey information
+     */
+    public function getSurvey(LSHttpRequest $request)
+    {
+        $surveyId = $request->getParam('surveyId');
+        $survey = Survey::model()->findByPk($surveyId);
+        $data = $survey->getAttributes();
+        $surveyLanguage = SurveyLanguageSetting::model()->findByPk(array(
+            'surveyls_survey_id' => $surveyId,
+            'surveyls_language' => $survey->language
+        ));
+        $data = array_merge($data, $surveyLanguage->getAttributes());
+        $user = $this->api->getCurrentUser();
+        return json_encode(array(
+            'result' => json_encode($data),
+            'name' => $user->full_name,
+            'email' => $user->email
+        ));
     }
 
     public function newDirectRequest()
@@ -222,7 +250,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
             }
             else if ($functionToCall == 'checkIfUserIsLoggedInOnLimesurveyorg'
                     || $functionToCall == 'getLoginForm'
-                    || $functionToCall == "login")
+                    || $functionToCall == "login"
+                    || $functionToCall == "purchaseRequest"
+                    || $functionToCall == "getSurvey")
             {
                 echo $this->$functionToCall($request);
             }
