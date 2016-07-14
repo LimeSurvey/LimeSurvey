@@ -11,7 +11,13 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 } else {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
-@date_default_timezone_set(@date_default_timezone_get());
+
+if (! @date_default_timezone_set(@date_default_timezone_get()))
+{
+
+    @date_default_timezone_set('Europe/London');
+}
+
 
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc

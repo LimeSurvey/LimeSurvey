@@ -137,8 +137,6 @@ class dataentry extends Survey_Common_Action
 
     private function _handleFileUpload($iSurveyId, $aData)
     {
-        $vvoutput = '';
-        $donotimport = array();
         $filePath = $this->_moveUploadedFile($aData);
         //$aFileContents = $this->_readFile($filePath);
 
@@ -194,6 +192,7 @@ class dataentry extends Survey_Common_Action
     private function _readFile($filePath)
     { // Open the file for reading
         $handle = fopen($filePath, "r");
+        $bigarray = array();
         // Read the file
         while (!feof($handle))
         {
@@ -224,7 +223,6 @@ class dataentry extends Survey_Common_Action
                     'text'=>$aData['aUrlText'][] = gT("Back to Response Import"),
                     );
                 $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
-                die;
             }
             else
             {
@@ -350,7 +348,6 @@ class dataentry extends Survey_Common_Action
                     continue;
                 }
 
-                $sourceColumn = $sourceSchema->getColumn($name);
                 $matches = array();
                 // Exact match.
                 if ($targetSchema->getColumn($name))
@@ -394,7 +391,6 @@ class dataentry extends Survey_Common_Action
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
             {
                 // Import timings
-                $arDestination=SurveyTimingDynamic::model($surveyid);
                 $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
                 $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
 
@@ -501,21 +497,12 @@ class dataentry extends Survey_Common_Action
     */
     public function editdata($subaction, $id, $surveyid, $language='')
     {
-        if ($language == '') {
-            $language = Survey::model()->findByPk($surveyid)->language;
-        }
 
         $surveyid = sanitize_int($surveyid);
         $id = sanitize_int($id);
         $aViewUrls = array();
+        $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
 
-        if (!isset($sDataEntryLanguage))
-        {
-            $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
-        }
-
-
-        $surveyinfo = getSurveyInfo($surveyid);
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
@@ -531,15 +518,12 @@ class dataentry extends Survey_Common_Action
             order by group_order, question_order";
             $fnresult = dbExecuteAssoc($fnquery);
             $fnresult=$fnresult->readAll();
-            $fncount = count($fnresult);
 
             $fnrows = array(); //Create an empty array in case FetchRow does not return any rows
             foreach ($fnresult as $fnrow)
             {
                 $fnrows[] = $fnrow;
                 $private=$fnrow['anonymized'];
-                $datestamp=$fnrow['datestamp'];
-                $ipaddr=$fnrow['ipaddr'];
             } // Get table output into array
 
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
@@ -554,7 +538,7 @@ class dataentry extends Survey_Common_Action
             $nfncount = count($fnames)-1;
 
             //SHOW INDIVIDUAL RECORD
-
+            $results = array();
             if ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
             {
                 $idquery = "SELECT * FROM $surveytable WHERE id=$id";
@@ -589,6 +573,10 @@ class dataentry extends Survey_Common_Action
                     $saver['ip'] = $svrow['ip'];
                 }
 
+                if(!isset($saver) || !array_key_exists('scid', $saver))
+                {
+                    $saver['scid'] = '';
+                }
                 $svresult = SavedControl::model()->findAllByAttributes(array('scid'=>$saver['scid']));
                 foreach($svresult as $svrow)
                 {
@@ -596,6 +584,7 @@ class dataentry extends Survey_Common_Action
                 } // while
 
                 $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+                $results1 = array();
                 foreach($fieldmap as $fm)
                 {
                     if (isset($responses[$fm['fieldname']]))
@@ -643,10 +632,6 @@ class dataentry extends Survey_Common_Action
 
                 do
                 {
-                    if (isset($idrow[$fname['fieldname']]) )
-                    {
-                        $answer = $idrow[ $fname['fieldname'] ];
-                    }
                     $question = $fname['question'];
                     $aDataentryoutput .= "\t<tr";
                     if ($highlight) $aDataentryoutput .=" class='odd'";
@@ -668,7 +653,7 @@ class dataentry extends Survey_Common_Action
                     {
                         case "completed":
                             // First compute the submitdate
-                            if ($private == "Y")
+                            if ( isset($private) && $private == "Y")
                             {
                                 // In case of anonymized responses survey with no datestamp
                                 // then the the answer submitdate gets a conventional timestamp
@@ -715,7 +700,6 @@ class dataentry extends Survey_Common_Action
                             }
                             break;
                         case "D": //DATE
-                            $thisdate='';
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid)
                             ;
                             if ($idrow[$fname['fieldname']]!='')

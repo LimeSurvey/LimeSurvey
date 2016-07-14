@@ -92,7 +92,7 @@
                          eT("Responses will have their referring URL logged.");
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('refurl',$esrow['refurl']); // Maybe use a readonly dropdown ??>
+                <?php echo CHtml::hiddenField('refurl',$esrow['refurl']);?>
                 <?php } else {
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'refurl',
