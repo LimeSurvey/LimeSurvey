@@ -8,6 +8,30 @@
         <?php eT("You can use operators in the search filters (eg: >, <, >=, <=, = )");?>
     </p>
 
+    <!-- Display mode -->
+    <div class="row">
+        <div class="pull-right">
+            <div class="form text-right">
+                <div class="form-group">
+                    <?php $this->widget(
+                        'yiiwheels.widgets.switch.WhSwitch',
+                        array(
+                            'name'     => 'reponses-display-mode',
+                            'onLabel'  => gT('Extended'),
+                            'offLabel' => gT('Compact'),
+                            'offColor' => 'default',
+                            'value'    => Yii::app()->user->getState('responsesGridSwitchDisplayState'),
+                            'htmlOptions'=> array(
+                                'data-url'=>App()->createUrl('/admin/responses/set_grid_display/')
+                            ),
+                        ));
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row">
             <div class="content-right scrolling-wrapper"    >
                 <?php
@@ -116,7 +140,7 @@
 
                             $aColumns[]=
                                 array(
-                                    'header' => '<span data-toggle="tooltip" data-placement="bottom" title="'.quoteText(strip_tags($fieldmap[$column->name]['question'])).'">'.$colName.' <br/> '.ellipsize($fieldmap[$column->name]['question'], 30).'</span>',
+                                    'header' => '<span data-toggle="tooltip" data-placement="bottom" title="'.quoteText(strip_tags($fieldmap[$column->name]['question'])).'">'.$colName.' <br/> '.ellipsize($fieldmap[$column->name]['question'], $model->ellipsize_header_value).'</span>',
                                     'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
                                     'name' => $column->name,
                                     'type' => 'raw',
@@ -195,7 +219,6 @@ Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTime
     'name' => "no",
     'id'   => "no",
     'value' => '',
-
 ));
 ?>
 </div>

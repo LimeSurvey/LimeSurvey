@@ -368,6 +368,27 @@ class responses extends Survey_Common_Action
         $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
+
+    /**
+     * Change the value of the max characters to elipsize headers/questions in reponse grid.
+     * It's called via ajax request
+     */
+    public function set_grid_display()
+    {
+        if($_POST['state']=='extended')
+        {
+            Yii::app()->user->setState('responsesGridSwitchDisplayState',true);
+            Yii::app()->user->setState('defaultEllipsizeHeaderValue',1000);
+            Yii::app()->user->setState('defaultEllipsizeQuestionValue',1000);
+        }
+        else
+        {
+            Yii::app()->user->setState('responsesGridSwitchDisplayState',false);
+            Yii::app()->user->setState('defaultEllipsizeHeaderValue',Yii::app()->params['defaultEllipsizeHeaderValue']);
+            Yii::app()->user->setState('defaultEllipsizeQuestionValue',Yii::app()->params['defaultEllipsizeQuestionValue']);
+        }
+    }
+
     /**
      * Show responses for survey
      *

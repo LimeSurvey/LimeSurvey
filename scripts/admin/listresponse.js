@@ -19,4 +19,24 @@ $(document).ready(function(){
         });
     });
 
+
+    $('#reponses-display-mode').on('switchChange.bootstrapSwitch', function(event, state) {
+        $actionUrl = $(this).data('url');
+        $display = (state==true)?'extended':'compact';
+        console.log($display);
+        $postDatas  = {state:$display};
+        $.ajax({
+            url : $actionUrl,
+            type : 'POST',
+            data :  $postDatas,
+
+            // html contains the buttons
+            success : function(html, statut){
+                $.fn.yiiGridView.update('responses-grid');
+            },
+            error :  function(html, statut){
+                console.log(html);
+            }
+        });
+    });
 });

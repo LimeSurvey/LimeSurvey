@@ -22,7 +22,6 @@ class SurveyDynamic extends LSActiveRecord
     protected static $sid = 0;
     protected $bHaveToken;
 
-
     /**
      * Returns the static model of Settings table
      *
@@ -320,7 +319,7 @@ class SurveyDynamic extends LSActiveRecord
         $sFullValue      = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
         if (strlen($sFullValue) > 50)
         {
-            $sElipsizedValue = ellipsize($sFullValue, 50 );
+            $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value );
             $sValue          = '<span data-toggle="tooltip" data-placement="left" title="'.quoteText($sFullValue).'">'.$sElipsizedValue.'</span>';
         }
         else
@@ -548,6 +547,28 @@ class SurveyDynamic extends LSActiveRecord
     public function getDefaultColumns()
     {
         return array('id', 'token', 'submitdate', 'lastpage','startlanguage', 'completed');
+    }
+
+    /**
+     * Define what value to use to ellipsize the headers of the grid
+     * It's using user state/default config, like for pagination
+     * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
+     * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
+     */
+    public function getEllipsize_header_value()
+    {
+        return Yii::app()->user->getState('defaultEllipsizeHeaderValue',Yii::app()->params['defaultEllipsizeHeaderValue']);
+    }
+
+    /**
+     * Define what value to use to ellipsize the question in the grid
+     * It's using user state/default config, like for pagination.
+     * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
+     * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
+     */
+    public function getEllipsize_question_value()
+    {
+        return Yii::app()->user->getState('defaultEllipsizeQuestionValue',Yii::app()->params['defaultEllipsizeQuestionValue']);
     }
 
     public function search()
