@@ -12,8 +12,15 @@ function loadPositionWidget()
     $elPositionInput = $('#question_position_container');                       // The hidden input containing the necessary datas for the widget
     $url             = $elPositionInput.data('url');                            // The url to call via Ajax to get the Widget Html
     $gid             = $elPositionInput.data('gid');                            // The question group to load
+    $classes         = $elPositionInput.data('classes');
 
     $datas           = 'gid='+$gid;
+
+    if ($classes!='')
+    {
+        $datas      += '&classes='+$classes+''
+    }
+
     $.ajax({
         type: "GET",
         url: $url,

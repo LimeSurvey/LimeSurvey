@@ -54,145 +54,6 @@ $(document).ready(function(){
         });
     }
 
-    /*
-     * List mass actions
-     * TODO: refactore it to handle the different possible actions (modal, redirect with post, redirect with session,etc. ) in cleanest way
-     */
-    if($('.listActions').length>0){
-        // Define what should be done when clicking on a action link
-        $(document).on('click', '.listActions a', function () {
-                $that        = $(this);
-                $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
-                $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
-                $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
-                $gridid      = $('.listActions').data('grid-id');
-
-                $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));                   // List of the clicked checkbox
-
-                // For actions without modal, doing a redirection
-                // TODO: replace all of them with the method above
-                if($that.data('post-redirect'))
-                {
-                    var newForm = jQuery('<form>', {
-                        'action': $actionUrl,
-                        'target': '_blank',
-                        'method': 'POST'
-                    }).append(jQuery('<input>', {
-                        'name': $that.data('input-name'),
-                        'value': $oCheckedItems.join("|"),
-                        'type': 'hidden'
-                    })).append(jQuery('<input>', {
-                        'name': 'YII_CSRF_TOKEN',
-                        'value': LS.data.csrfToken,
-                        'type': 'hidden'
-                    })).appendTo('body');
-                    newForm.submit();
-                    return;
-                }
-
-                // For actions without modal, doing a redirection
-                // Using session before redirect rather than form submission
-                if($that.data('fill-session-and-redirect'))
-                {
-                    // postUrl is defined as a var in the View
-                    $(this).load(postUrl, {
-                        participantid:$oCheckedItems},function(){
-                            $(location).attr('href',$actionUrl);
-                    });
-                    return;
-                }
-
-                $oCheckedItems  = JSON.stringify($oCheckedItems);
-                $modal       = $('#confirmation-modal');                        // The modal we want to use
-                $actionUrl   = $actionUrl;
-                // Do we need to post sid?
-                if($that.data('sid'))
-                {
-                    $iSid = $that.data('sid');
-                    $postDatas   = {sItems:$oCheckedItems, iSid:$iSid};
-                }
-                else
-                {
-                    $postDatas   = {sItems:$oCheckedItems};
-                }
-
-                // Do we want to update the modal content after confirmation?
-                if($that.data('keepopen'))
-                {
-                    $keepopen = ($that.data('keepopen')==='yes');
-                }
-                else
-                {
-                    $keepopen = true;
-                }
-                $modal.data('keepopen', $keepopen);
-
-                // Needed modal elements
-                $modalTitle    = $modal.find('.modal-title');                   // Modal Title
-                $modalBody     = $modal.find('.modal-body-text');               // Modal Body
-                $modalYesNo    = $modal.find('.modal-footer-yes-no');           // Modal footer with yes/no buttons
-                $modalClose    = $modal.find('.modal-footer-close');            // Modal footer with close button
-                $ajaxLoader    = $("#ajaxContainerLoading");                    // Ajax loader
-
-                // Original modal state
-                $oldModalTitle  = $modalTitle.text();
-                $oldModalBody   = $modalBody.html();
-
-                // New modal contents
-                $modalWarningTitle  = $that.data('modal-warning-title');        // The action string, to display in the modal body (eg: sure you wann $action?)
-                $modalWarningText   = $that.data('modal-warning-text');
-
-                // We update the modal
-                $modal.find('.modal-title').text($modalWarningTitle);
-                $modal.find('.modal-body-text').text($modalWarningText);
-
-                // When user close the modal, we put it back to its original state
-                $modal.on('hidden.bs.modal', function (e) {
-                    $modal.data('onclick', null);                   // We reset the onclick event
-                    $modalTitle.text($oldModalTitle);               // the modal title
-                    $modalBody.empty().append($oldModalBody);       // modal body
-                    $modalClose.hide();                             // Hide the 'close' button
-                    $modalYesNo.show();                             // Show the 'Yes/No' buttons
-                })
-
-                // Define what should be done when user confirm the mass action
-                $modal.data('onclick', function(){
-                    // Update the modal elements
-                    $modalTitle.text($actionTitle);                             // Change the modal title to the action title
-                    $modalBody.empty();                                         // Empty the modal body
-                    $modalYesNo.hide();                                         // Hide the 'Yes/No' buttons
-                    $modalClose.show();                                         // Show the 'close' button
-                    $ajaxLoader.show();                                         // Show the ajax loader
-
-                    // Ajax request
-                    $.ajax({
-                        url : $actionUrl,
-                        type : 'POST',
-                        data :  $postDatas,
-
-                        // html contains the buttons
-                        success : function(html, statut){
-                            $.fn.yiiGridView.update($gridid);                   // Update the surveys list
-                            $ajaxLoader.hide();                                 // Hide the ajax loader
-                            $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
-                        },
-                        error :  function(html, statut){
-                            $ajaxLoader.hide();
-                            $modal.find('.modal-body-text').empty().html(html.responseText);
-                            console.log(html);
-                        }
-                    });
-                });
-
-                // open the modal
-                if(!$.isEmptyObject($oCheckedItems))
-                {
-                    $modal.modal();
-                }
-            });
-    }
-
-
     /* Switch format group */
     if ($('#switchchangeformat').length>0){
         $('#switchchangeformat button').on('click', function(event, state) {
@@ -359,7 +220,32 @@ $(document).ready(function(){
             }
 
         }
-        else {
+        else if($(e.relatedTarget).data('ajax-url'))
+        {
+            var postDatas   = $(e.relatedTarget).data('post');
+            var gridid      = $(e.relatedTarget).data('gridid');
+
+            $(this).find('.btn-ok').on('click', function(ev)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: $(e.relatedTarget).data('ajax-url'),
+                    data: postDatas,
+
+                    success : function(html, statut)
+                    {
+                        $.fn.yiiGridView.update(gridid);                   // Update the surveys list
+                        $('#confirmation-modal').modal('hide');
+                    },
+                    error :  function(html, statut){
+                        $('#confirmation-modal .modal-body-text').append(html.responseText);
+                    }
+
+                });
+            });
+        }
+        else
+        {
             throw "Confirmation modal: Found neither data-href or data-onclick.";
         }
 
@@ -958,9 +844,221 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-/** For homepagesettings button edit */
-$(document).ready(function() {
+/**
+ * jQuery Plugin to manage the date in token modal edition.
+ * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
+ * They are displayed via a switch hidding or showing a date picker.
+ */
+$.fn.YesNoDate = function(options)
+{
+    var that            = $(this);                                              // calling element
+    $(document).ready(function(){
+        var $elSwitch        = that.find('.YesNoDateSwitch').first();           // switch element (generated with YiiWheels widgets)
+        var $elDateContainer = that.find('.date-container').first();            // date time picker container (to show/hide)
+        var $elDate          = that.find('.YesNoDatePicker').first();           // date time picker element (generated with YiiWheels widgets)
+        var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
+
+        // The view is called without processing output (no javascript)
+        // So we must apply js to widget elements
+        $elSwitch.bootstrapSwitch();                                            // Generate the switch
+        $elDate.datetimepicker({locale: that.data('locale')})                   // Generate the date time picker
+
+        // When user switch
+        $(document).on( 'switchChange.bootstrapSwitch', '#'+$elSwitch.attr('id'), function(event, state)
+        {
+            if (state==true)
+            {
+                // Show date
+                $elDateContainer.show();
+            }
+            else
+            {
+                // Hide date, set hidden input to "N"
+                $elDateContainer.hide();
+                $elHiddenInput.attr('value', 'N');
+            }
+        });
+
+        // When user change date
+        $(document).on('dp.change', '#'+$elDate.attr('id')+'_datetimepicker', function(e){
+            $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:MM'));
+        })
+    });
+}
+
+
+// Calculate width of text from DOM element or string. By Phil Freo <http://philfreo.com>
+$.fn.textWidth = function(text, font) {
+    if (!$.fn.textWidth.fakeEl) $.fn.textWidth.fakeEl = $('<span>').hide().appendTo(document.body);
+    $.fn.textWidth.fakeEl.text(text || this.val() || this.text()).css('font', font || this.css('font'));
+    return $.fn.textWidth.fakeEl.width();
+};
+
+
+/**
+ * Provide to this function a element containing form-groups,
+ * it will stick the text labels on its border
+ */
+$.fn.stickLabelOnLeft  = function(options)
+{
+    var that = $(this);
+    var formgroups = that.find('.form-group');
+    $maxWidth  = 0;
+    $elWidestLeftLabel = '';
+    formgroups.each( function() {
+        var elLeftLabel = $(this).find('label').first();
+        $LeftLabelWidth = elLeftLabel.textWidth();
+
+        if ($LeftLabelWidth > $maxWidth )
+        {
+            $maxWidth =$LeftLabelWidth;
+            $elWidestLeftLabel = elLeftLabel;
+        }
+    });
+
+    $distanceFromBorder = ( $maxWidth - $elWidestLeftLabel.width());
+    if ( $distanceFromBorder < 0)
+    {
+        that.css({
+            position: "relative",
+            left: $distanceFromBorder,
+        });
+    }
+
+}
+
+$(document).ready(function(){
+
+    /**
+     * Scroll the pager and the footer when scrolling horizontally
+     */
+    $('.scrolling-wrapper').scroll(function(){
+        $('#tokenListPager').css({
+            'left': $(this).scrollLeft() ,
+        });
+    });
+
+    if($('#sent-yes-no-date-container').length > 0)
+    {
+        $('#general').stickLabelOnLeft();
+        $('#sent-yes-no-date-container').YesNoDate();
+        $('#remind-yes-no-date-container').YesNoDate();
+        $('#completed-yes-no-date-container').YesNoDate();
+
+        $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
+        $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+
+        $('.date .input-group-addon').on('click', function(){
+            $prev = $(this).siblings();
+            console.log($prev.attr('class'));
+            $prev.data("DateTimePicker").show();
+        });
+    }
+
+    /**
+     * Token edition
+     */
+    $(document).on( 'click', '.edit-token', function(){
+        $that       = $(this);
+        $sid        = $that.data('sid');
+        $tid        = $that.data('tid');
+        $actionUrl  = $that.data('url');
+        $modal      = $('#editTokenModal');
+        $modalBody  = $modal.find('.modal-body');
+        $ajaxLoader = $('#ajaxContainerLoading2');
+        $oldModalBody   = $modalBody.html();
+
+
+        $ajaxLoader.show();
+        $modal.modal('show');
+        // Ajax request
+        $.ajax({
+            url : $actionUrl,
+            type : 'GET',
+
+            // html contains the buttons
+            success : function(html, statut){
+
+                $('#modal-content').empty().append(html);                       // Inject the returned HTML in the modal body
+
+                // Apply the yes/no/date jquery plugin to the elements loaded via ajax
+                $('#sent-yes-no-date-container').YesNoDate();
+                $('#remind-yes-no-date-container').YesNoDate();
+                $('#completed-yes-no-date-container').YesNoDate();
+
+                $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
+                $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+
+                $('.date .input-group-addon').on('click', function(){
+                    $prev = $(this).siblings();
+                    console.log($prev.attr('class'));
+                    $prev.data("DateTimePicker").show();
+                });
+
+                var elGeneral  = $('#general');
+
+                // Fake hide of modal content, so we can still get width of inner elements like labels
+                var previousCss  = $("#modal-content").attr("style");
+                $("#modal-content")
+                    .css({
+                        position:   'absolute', // Optional if #myDiv is already absolute
+                        visibility: 'hidden',
+                        display:    'block'
+                    });
+
+                // Stick the labels on the left side
+                // Sometime, the content is loaded after modal is shown, sometimes not. So, we wait 200ms just in case (For label width)
+                setTimeout(function(){
+                    elGeneral.stickLabelOnLeft();
+                    $ajaxLoader.hide();
+                    // Remove fake hide
+                    $("#modal-content").attr("style", previousCss ? previousCss : "");
+                }, 200);
+
+            },
+            error :  function(html, statut){
+                $ajaxLoader.hide();
+                $('#modal-content').empty().append(html);
+                console.log(html);
+            }
+        });
+    });
+
+    /**
+     * Save token
+     */
+    $("#save-edittoken").click(function(){
+        $form       = $('#edittoken');
+        $datas      = $form.serialize();
+        $actionUrl  = $form.attr('action');
+        $gridid     = $('.listActions').data('grid-id');
+        $modal      = $('#editTokenModal');
+
+        $ajaxLoader = $('#ajaxContainerLoading2');
+        $('#modal-content').empty();
+        $ajaxLoader.show();                                         // Show the ajax loader
+
+        // Ajax request
+        $.ajax({
+            url  : $actionUrl,
+            type : 'POST',
+            data : $datas,
+
+            // html contains the buttons
+            success : function(html, statut){
+                $ajaxLoader.hide();
+                $.fn.yiiGridView.update('token-grid');                   // Update the surveys list
+                $modal.modal('hide');
+            },
+            error :  function(html, statut){
+                $ajaxLoader.hide();
+                $('#modal-content').empty().append(html);
+                console.log(html);
+            }
+        });
+
+    });
+
+
 
 });
-
-// @license-end

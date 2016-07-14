@@ -28,15 +28,25 @@
     {
         public $display             = 'form_group';                                     // What kind of rendering to use. For now, only form_group, to display inside right menu
         public $oQuestionGroup      = '';                                               // Which question group the position is related to
+        public $oSurvey             = '';
         public $reloadAction        = 'admin/questions/sa/ajaxReloadPositionWidget';    // In ajax mode, name of the controller/action to call to reload the widget. Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module)
         public $dataGroupSelectorId = 'gid';                                            // In ajax mode, the id of the group selector the widget is listening to.
+        public $classes             = '';
 
         public function run()
         {
             // We first check if a question group object has been provided
-            if ( is_a($this->oQuestionGroup, 'QuestionGroup') )
+            if ( is_a($this->oQuestionGroup, 'QuestionGroup') || is_a($this->oSurvey, 'Survey') )
             {
+                // If oQuestionGroup is not defined, we take the first group in the survey
+                if (!is_a($this->oQuestionGroup, 'QuestionGroup'))
+                {
+                    $aGroups              = $this->oSurvey->groups;
+                    $this->oQuestionGroup = $aGroups[0];
+                }
+
                 $aQuestions = $this->oQuestionGroup->questions; // Get the list of questions in this group
+
 
                 // We check if the required view exists. In the future, if we want other type of rendering could be useful
                 if ($this->isView($this->display))

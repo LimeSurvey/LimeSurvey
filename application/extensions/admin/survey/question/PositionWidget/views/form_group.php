@@ -11,7 +11,7 @@
 <div id='PositionWidget' class='form-group'>
     <label class="col-sm-4 control-label" for='pos'><?php eT("Position:"); ?></label>
     <div class="col-sm-8">
-        <select class='form-control' name='questionposition' id='questionposition'>
+        <select class='form-control <?php echo $this->classes;?>' name='questionposition' id='questionposition'>
             <option value=''><?php eT("At end"); ?></option>
             <option value='0'><?php eT("At beginning"); ?></option>
             <?php foreach ($aQuestions as $oq): ?>

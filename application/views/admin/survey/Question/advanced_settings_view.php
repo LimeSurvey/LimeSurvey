@@ -4,10 +4,10 @@
  */
 $currentfieldset='';
 ?>
-
+<!-- Advanced Settings -->
 <?php foreach ($attributedata as $index=>$aAttribute):?>
 
-    <!-- Fieldset -->
+    <!-- Fieldsets -->
     <?php if ($currentfieldset!=$aAttribute['category']): ?>
         <?php if ($currentfieldset!=''): ?>
             </fieldset>
@@ -21,8 +21,11 @@ $currentfieldset='';
     <div class="form-group">
 
         <!-- Label -->
-        <label class="col-sm-4 control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'><?php echo $aAttribute['caption'];
-            if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }?>:
+        <label class="col-sm-4 control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
+            <?php
+                echo $aAttribute['caption'];
+                if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
+            ?>:
         </label>
 
         <!-- Input -->
@@ -103,3 +106,5 @@ foreach (Yii::app()->clientScript->scripts as $index=>$script)
 }
 Yii::app()->clientScript->reset();
 ?>
+</fieldset>
+<!-- end of Advanced Settings -->
