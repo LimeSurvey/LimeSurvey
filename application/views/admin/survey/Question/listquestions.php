@@ -7,7 +7,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Questions in this survey"))); ?>
-    <?php if(App()->request->getParam('group_name')!=''):?>        
+    <?php if(App()->request->getParam('group_name')!=''):?>
         <h3><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></h3>
     <?php else:?>
         <h3><?php eT('Questions in this survey'); ?></h3>
@@ -32,13 +32,13 @@
 
                             <!-- search input -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'search', array('label'=>gt('Search:'),'class'=>'control-label' )); ?>
+                                <?php echo $form->label($model, 'search', array('label'=>gT('Search:'),'class'=>'control-label' )); ?>
                                 <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
                             </div>
 
                             <!-- select group -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'group', array('label'=>gt('Group:'),'class'=>'control-label')); ?>
+                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
                                     <select name="group_name" class="form-control">
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
@@ -64,39 +64,58 @@
                     <?php
                         $columns = array(
                             array(
-                                'header' => gt('Question ID'),
+                                'id'=>'id',
+                                'class'=>'CCheckBoxColumn',
+                                'selectableRows' => '100',
+                            ),
+                            array(
+                                'header' => gT('Question ID'),
                                 'name' => 'question_id',
                                 'value'=>'$data->qid',
                             ),
                             array(
-                                'header' => gt('Question order'),
+                                'header' => gT('Question order'),
                                 'name' => 'question_order',
                                 'value'=>'$data->question_order',
                             ),
                             array(
-                                'header' => gt('Code'),
+                                'header' => gT('Code'),
                                 'name' => 'title',
                                 'value'=>'$data->title',
                                 'htmlOptions' => array('class' => 'col-md-1'),
                             ),
                             array(
-                                'header' => gt('Question'),
+                                'header' => gT('Question'),
                                 'name' => 'question',
                                 'value'=>'viewHelper::flatEllipsizeText($data->question,true,0)',
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
-                                'header' => gt('Question type'),
+                                'header' => gT('Question type'),
                                 'name' => 'type',
                                 'type'=>'raw',
                                 'value'=>'$data->typedesc',
                                 'htmlOptions' => array('class' => 'col-md-1'),
                             ),
                             array(
-                                'header' => gt('Group'),
+                                'header' => gT('Group'),
                                 'name' => 'group',
                                 'value'=>'$data->groups->group_name',
                             ),
+                            array(
+                                'header' => gT('Mandatory'),
+                                'type' => 'raw',
+                                'name' => 'mandatory',
+                                'value'=> '$data->mandatoryIcon',
+                            ),
+
+                            array(
+                                'header' => gT('Other'),
+                                'type' => 'raw',
+                                'name' => 'other',
+                                'value'=> '$data->otherIcon',
+                            ),
+
 
                             array(
                                 'header'=>'',
@@ -110,6 +129,7 @@
                     ?>
 
                     <?php
+                    $massiveAction = App()->getController()->renderPartial('/admin/survey/Question/massive_actions/_selector', array('model'=>$model, 'oSurvey'=>$oSurvey), true, false);
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
 
@@ -117,6 +137,7 @@
                         'id' => 'question-grid',
                         'type'=>'striped',
                         'emptyText'=>gT('No questions found.'),
+                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
@@ -161,3 +182,5 @@ jQuery(document).on("change", '#pageSize', function(){
     </div>
   </div>
 </div>
+
+<?php // $this->renderPartial('/admin/survey/Question/massive_actions/_set_question_group', array('model'=>$model, 'oSurvey'=>$oSurvey)); ?>

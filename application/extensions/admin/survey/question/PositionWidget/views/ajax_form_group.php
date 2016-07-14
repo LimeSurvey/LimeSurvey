@@ -13,6 +13,7 @@
     id="question_position_container"
     data-gid="<?php echo $this->oQuestionGroup->gid; ?>"
     data-url="<?php echo App()->createUrl($this->reloadAction);?>"
+    data-classes="<?php echo $this->classes;?>"
     data-group-selector-id = "<?php echo $this->dataGroupSelectorId; ?>"
 />
 

@@ -4,63 +4,121 @@
  *
  */
 ?>
-<div class="col-sm-4 pull-left dropup listActions" data-pk="tid"  data-grid-id="token-grid" id="tokenListActions">
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      <?php eT('Selected participant(s)...');?>
-    <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="tokenListActions">
-        <li>
-            <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/tokens/sa/deleteMultiple/');?>"
-            data-keepopen="no"
-            data-sid="<?php echo $_GET['surveyid']?>"
-            data-action="delete"
-            data-action-title="<?php eT('Delete survey participants'); ?>"
-            data-modal-warning-title="<?php eT('Warning');?>"
-            data-modal-warning-text="<?php eT('Are you sure you want to delete the selected participants?');?>">
-                <span class="text-danger glyphicon glyphicon-trash"></span>
-                <?php eT('Delete');?>
-            </a>
-        </li>
-        <li role="separator" class="divider"></li>
-        <li class="dropdown-header"> <?php eT("Email");?></li>
-        <li>
-            <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/tokens/sa/email/surveyid/'.$_GET['surveyid']);?>"
-            data-input-name="tokenids"
-            data-post-redirect="true"
-            data-action="invite"
-            data-modal-warning-title="<?php eT('Send email invitations');?>"
-            data-modal-warning-text="<?php eT('Send an invitation email to the selected entries (if they have not yet been sent an invitation email)');?> <?php eT('Continue?');?>">
-            <span class="icon-invite text-success" ></span>
-            <?php eT('Send email invitations');?>
-            </a>
-        </li>
-        <li>
-            <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$_GET['surveyid']);?>"
-            data-input-name="tokenids"
-            data-post-redirect="true"
-            data-action="remind"
-            data-modal-warning-title="<?php eT('Send email reminder');?>"
-            data-modal-warning-text="<?php eT('Send a reminder email to the selected entries (if they have already received the invitation email)');?> <?php eT('Continue?');?>">
-            <span class="icon-remind text-success" ></span>
-            <?php eT('Send email reminder');?>
-            </a>
-        </li>
-        <li role="separator" class="divider"></li>
-        <li class="dropdown-header"> <?php eT("Central participant database/panel");?></li>
-        <li>
-            <a href="#"
-            data-url="<?php echo App()->createUrl('admin/participants/sa/attributeMapToken/sid/'.$_GET['surveyid']);?>"
-            data-action="addCPDB"
-            data-fill-session-and-redirect="true"
-            data-modal-warning-title="<?php eT('Add participants to central database');?>"
-            data-modal-warning-text="<?php eT('This will add the selected participants to the central participant database (CPDB).');?> <?php eT('Continue?');?>">
-            <span class="ui-icon ui-add-to-cpdb-link" ></span>
-            <?php eT('Add participants to central database');?>
-            </a>
-        </li>
-    </ul>
-</div>
+
+
+<!-- Rendering massive action widget -->
+<?php
+    $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
+            'pk'          => 'tid',
+            'gridid'      => 'token-grid',
+            'dropupId'    => 'tokenListActions',
+            'dropUpText'  => gT('Selected participant(s)...'),
+
+            'aActions'    => array(
+
+                // Delete
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'delete',
+                    'url'         =>  App()->createUrl('/admin/tokens/sa/deleteMultiple/'),
+                    'iconClasses' => 'text-danger glyphicon glyphicon-trash',
+                    'text'        =>  gT('Delete'),
+                    'grid-reload' => 'yes',
+
+                    // modal
+                    'actionType'    => 'modal',
+                    'modalType'     => 'yes-no',
+                    'keepopen'      => 'no',
+                    'sModalTitle'   => gT('Delete survey participants'),
+                    'htmlModalBody' => gT('Are you sure you want to delete the selected participants?'),
+                    'aCustomDatas'  => array(
+                        array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
+                    ),
+                ),
+
+                // Separator
+                array(
+
+                    // li element
+                    'type'  => 'separator',
+                ),
+
+                // Download header
+                array(
+
+                    // li element
+                    'type' => 'dropdown-header',
+                    'text' => gT("Email"),
+                ),
+
+                // Send email invitation
+                array(
+                    // li element
+                    'type'            => 'action',
+                    'action'          => 'invite',
+                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$_GET['surveyid']),
+                    'iconClasses'     => 'icon-invite text-success',
+                    'text'            =>  gT('Send email invitations'),
+
+                    'aLinkSpecificDatas'  => array(
+                        'input-name'     => 'tokenids',
+                    ),
+
+                    // modal
+                    'actionType'    => 'redirect',
+                ),
+
+                // Send email reminder
+                array(
+                    // li element
+                    'type'            => 'action',
+                    'action'          => 'remind',
+                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$_GET['surveyid']),
+                    'iconClasses'     => 'icon-remind text-success',
+                    'text'            =>  gT('Send email reminder'),
+
+                    'aLinkSpecificDatas'  => array(
+                        'input-name'     => 'tokenids',
+                    ),
+
+                    // modal
+                    'actionType'    => 'redirect',
+                ),
+
+                // Separator
+                array(
+
+                    // li element
+                    'type'  => 'separator',
+                ),
+
+                // Central participant database/panel header
+                array(
+
+                    // li element
+                    'type' => 'dropdown-header',
+                    'text' => gT("Central participant database/panel"),
+                ),
+
+                // Send email reminder
+                array(
+                    // li element
+                    'type'            => 'action',
+                    'action'          => 'addCPDB',
+                    'url'             =>  App()->createUrl('admin/participants/sa/attributeMapToken/sid/'.$_GET['surveyid']),
+                    'iconClasses'     => 'ui-icon ui-add-to-cpdb-link',
+                    'text'            =>  gT('Add participants to central database'),
+
+                    'aLinkSpecificDatas'  => array(
+                        'input-name'     => 'tokenids',
+                    ),
+
+                    // modal
+                    'actionType'    => 'fill-session-and-redirect',
+                ),
+
+            ),
+
+    ));
+?>

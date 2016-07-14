@@ -520,19 +520,19 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false,true);
 
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
-        $aData['surveyid'] = $iSurveyID;
+        $aData['oSurvey']                               = $oSurvey;
+        $aData['surveyid']                              = $iSurveyID;
         $aData['display']['menu_bars']['listquestions'] = true;
-        $aData['sidemenu']['listquestions'] = true;
-        $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
-        $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
-        $aData['surveybar']['buttons']['newquestion']=true;
+        $aData['sidemenu']['listquestions']             = true;
+        $aData['surveybar']['returnbutton']['url']      = $this->getController()->createUrl("admin/survey/sa/listsurveys");
+        $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
+        $aData['surveybar']['buttons']['newquestion']   = true;
 
-
-        $surveyinfo = $survey->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData["surveyHasGroup"] = $survey->groups;
+        $surveyinfo = $oSurvey->surveyinfo;
+        $aData["surveyinfo"]         = $surveyinfo;
+        $aData["surveyHasGroup"]     = $oSurvey->groups;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
         $this->_renderWrappedTemplate('survey', array(), $aData);

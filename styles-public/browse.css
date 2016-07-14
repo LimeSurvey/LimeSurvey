@@ -1,3 +1,31 @@
+
+/*!
+ * Style for browsing response : in Cgrid
+ */
+
+ #responses-grid table thead tr th {
+     min-width: 120px;
+     text-align: center;
+ }
+
+ .grid-view .table .filters > td .filter-container
+ {
+     padding: 0;
+ }
+
+#responses-grid table tbody tr td  {
+    text-align: center;
+}
+
+#responses-grid table thead tr th.checkbox-column {
+    min-width: 40px;
+}
+
+#responses-grid table tbody tr td.checkbox-column {
+    text-align: left;
+}
+
+
 /*!
  * Style for browsing response : in jqgrid
  */
