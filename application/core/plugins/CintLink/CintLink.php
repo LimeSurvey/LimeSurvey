@@ -174,6 +174,41 @@ class CintLink extends \ls\pluginmanager\PluginBase
         return $content;
     }
 
+    /**
+     * Login to limesurvey.org
+     */
+    public function login(LSHttpRequest $request)
+    {
+        $username = $request->getParam('username');
+        $password = $request->getParam('password');
+
+        $curl = new Curl();
+        $response = $curl->post(
+            $this->baseURL,
+            array(
+                'app' => 'cintlinklimesurveyrestapi',
+                'format' => 'raw',
+                'resource' => 'login',
+                'username' => $username,
+                'password' => $password
+            )
+        );
+        $result = json_decode($response->body);
+
+        if ($result->code == 403)
+        {
+            return json_encode(array('result' => false));
+        }
+        else if ($result->code == 200)
+        {
+            return json_encode(array('result' => true));
+        }
+        else
+        {
+            return json_encode(array('error' => 'Unknown return code: ' . $result->code));
+        }
+    }
+
     public function newDirectRequest()
     {
         $event = $this->event;
@@ -187,7 +222,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 $event->setContent($this, $content);
             }
             else if ($functionToCall == 'checkIfUserIsLoggedInOnLimesurveyorg'
-                    || $functionToCall == 'getLoginForm')
+                    || $functionToCall == 'getLoginForm'
+                    || $functionToCall == "login")
             {
                 echo $this->$functionToCall($request);
             }

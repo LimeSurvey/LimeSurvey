@@ -17,6 +17,35 @@ $(document).ready(function() {
             url: LS.plugin.cintlink.pluginBaseUrl + '&function=getLoginForm'
         }).done(function(response) {
             $('#cintlink-container').html(response);
+
+            $('#cintlink-login-submit').on('click', function(ev) {
+                ev.preventDefault();
+
+                var formValues = $('#cintlink-login-form').serialize();
+
+                $.ajax({
+                    method: 'POST',
+                    url: LS.plugin.cintlink.pluginBaseUrl + '&function=login&' + formValues
+                }).done(function(response) {
+                    console.log(response);
+
+                    var response = JSON.parse(response);
+
+                    if (response.error) {
+                        $('#error-modal .modal-body-text').html(response.error);
+                        $('#error-modal').modal();
+                    }
+                    else if (response.result) {
+                        // Login OK
+                    }
+                    else {
+                        $('#error-modal .modal-body-text').html("Could not login. Please make sure username and password is correct.");
+                        $('#error-modal').modal();
+                    }
+
+                });
+
+            });
         });
     }
     
@@ -29,7 +58,7 @@ $(document).ready(function() {
     }).done(function(response) {
         console.log(response);
 
-        response = JSON.parse(response);
+        var response = JSON.parse(response);
 
         if (response.result)
         {

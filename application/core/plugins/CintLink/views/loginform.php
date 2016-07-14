@@ -1,4 +1,4 @@
-<form class='form-horizontal'>
+<form id='cintlink-login-form' class='form-horizontal'>
     <div class='col-sm-4'></div>
     <div class='col-sm-8'>
         <p class='help-block'><?php eT("Log in to your limesurvey.org account to buy participants."); ?></p>
@@ -18,7 +18,7 @@
     <div class='form-group'>
         <div class='col-sm-4'></div>
         <div class='col-sm-4'>
-            <input class='btn btn-default' type='submit' value='Login' />
+            <input id='cintlink-login-submit' class='btn btn-default' type='submit' value='Login' />
         </div>
     </div>
 </form>
