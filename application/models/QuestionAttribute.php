@@ -143,7 +143,7 @@ class QuestionAttribute extends LSActiveRecord
                         if (count($iInsertCount)>0)
                         {
                             // Update
-                            $result = QuestionAttribute::model()->updateAll(array('value'=>$sValue),'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
+                             QuestionAttribute::model()->updateAll(array('value'=>$sValue),'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
                         }
                         else
                         {

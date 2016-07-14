@@ -375,7 +375,7 @@ class responses extends Survey_Common_Action
      */
     public function set_grid_display()
     {
-        if($_POST['state']=='extended')
+        if (Yii::app()->request->getPost('state')=='extended')
         {
             Yii::app()->user->setState('responsesGridSwitchDisplayState',true);
             Yii::app()->user->setState('defaultEllipsizeHeaderValue',1000);
@@ -415,8 +415,7 @@ class responses extends Survey_Common_Action
 
             // Basic variables
             $bHaveToken                 = $aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
-            $sBrowseLanguage            = $aData['language'];
-            $aViewUrls[]                = 'listResponses_view';
+            $aViewUrls                  = array('listResponses_view');
             $model                      =  SurveyDynamic::model($iSurveyId);
 
             // Page size
@@ -741,12 +740,9 @@ class responses extends Survey_Common_Action
     public function actionDelete($surveyid)
     {
         $iSurveyId = (int) $surveyid;
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
         {
-
-            $ResponseId  = (isset($_POST['sItems'])) ? json_decode($_POST['sItems']):json_decode($_POST['sResponseId'], true);
-
-            //$ResponseId  = json_decode($_POST['sResponseId'], true);
+            $ResponseId  = ( Yii::app()->request->getPost('sItems') != '') ? json_decode(Yii::app()->request->getPost('sItems')):json_decode(Yii::app()->request->getPost('sResponseId'), true);
             $aResponseId = (is_array($ResponseId))?$ResponseId:array($ResponseId);
 
             foreach($aResponseId as $iResponseId)
@@ -757,6 +753,7 @@ class responses extends Survey_Common_Action
                     SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
                 }
             }
+
             return $aResponseId;
         }
     }
