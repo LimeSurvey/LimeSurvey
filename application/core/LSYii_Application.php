@@ -51,7 +51,7 @@ class LSYii_Application extends CWebApplication
             }
         }
         // Runtime path has to be set before  parent constructor is executed
-        $aApplicationConfig['runtimePath']=$settings['tempdir'] . '/runtime';
+        $aApplicationConfig['runtimePath']=$settings['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
 
         parent::__construct($aApplicationConfig);
 
