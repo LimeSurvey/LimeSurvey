@@ -24,7 +24,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      *
      * @var string
      */
-    private $cintApiKey = "";
+    private $cintApiKey = "7809687755495";  // Sandbox
 
     /**
      * This is the key handed to you from the
@@ -46,8 +46,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('newDirectRequest');
-
-        $this->cintApiKey = "7809687755495";  // Sandbox
 
         // Login session key from com_api at limesurvey.org
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
@@ -106,6 +104,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
+        App()->clientScript->registerScriptFile("http://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
 
         /*
         $curl = new Curl();
