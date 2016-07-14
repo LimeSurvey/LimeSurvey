@@ -35,6 +35,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     private $limesurveyOrgKey = "";
 
+    /**
+     * What URL to call for Rest API (limesurvey.org or limeservice.com for testing)
+     *
+     * @var string
+     */
+    private $baseURL = "https://www.limeservice.com/v2/index.php?option=>com_api";
+
     public function init()
     {
         $this->subscribe('beforeToolsMenuRender');
@@ -83,12 +90,36 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function actionIndex($surveyId)
     {
         $data = array();
-        $data['limesurveyOrgKey'] = $this->limesurveyOrgKey;
+
+        $pluginBaseUrl = Yii::app()->createUrl(
+            'plugins/direct',
+            array(
+                'plugin' => 'CintLink',
+                'surveyId' => $surveyId,
+            )
+        );
+
+        $data['pluginBaseUrl'] = $pluginBaseUrl;
 
         Yii::setPathOfAlias('cintLink', dirname(__FILE__));
         $content = Yii::app()->controller->renderPartial('cintLink.views.index', $data, true);
 
+        $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
+        App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
+
+        /*
         $curl = new Curl();
+        $response = $curl->post(
+            $this->baseURL,
+            array(
+                'app' => 'cintlinklimesurveyrestapi',
+                'format' => 'raw',
+                'resource' => 'test',
+                'key' => 'fbc4607979c0292465185aae3422c93b'
+            )
+        );
+        var_dump($response->body);
+        */
 
         return $content;
     }
@@ -107,7 +138,40 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
         else
         {
+            $curl = new Curl();
+            $response = $curl->post(
+                $this->baseURL,
+                array(
+                    'app' => 'cintlinklimesurveyrestapi',
+                    'format' => 'raw',
+                    'resource' => 'test',
+                    'key' => $this->limesurveyOrgKey
+                )
+            );
+
+            if ($response->body == "post ok")
+            {
+                return json_encode(array('result' => true));
+            }
+            else
+            {
+                return json_encode(array('result' => false));
+            }
         }
+    }
+
+    /**
+     * Return HTMl for login form
+     * Called by Ajax
+     *
+     * @return string
+     */
+    public function getLoginForm(LSHttpRequest $request)
+    {
+        $data = array();
+        Yii::setPathOfAlias('cintLink', dirname(__FILE__));
+        $content = Yii::app()->controller->renderPartial('cintLink.views.loginform', $data, true);
+        return $content;
     }
 
     public function newDirectRequest()
@@ -115,17 +179,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $event = $this->event;
         if ($event->get('target') == "CintLink")
         {
-            $request = $event->get('request');
+            $request = $event->get('request');  // request = survey id for actionIndex?
             $functionToCall = $event->get('function');
             if ($functionToCall == "actionIndex")
             {
                 $content = $this->actionIndex($request);
                 $event->setContent($this, $content);
             }
-            else if ($functionToCall == 'checkIfUserIsLoggedInOnLimesurveyorg')
+            else if ($functionToCall == 'checkIfUserIsLoggedInOnLimesurveyorg'
+                    || $functionToCall == 'getLoginForm')
             {
-                $content = $this->checkIfUserIsLoggedInOnLimesurveyorg($request);
-                $event->setContent($this, $content);
+                echo $this->$functionToCall($request);
             }
         }
     }
