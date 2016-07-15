@@ -566,8 +566,15 @@ class TokenDynamic extends LSActiveRecord
     {
         if ( $field != 'N' && $field != '')
         {
-            $field = convertToGlobalSettingFormat($field);
-            $field = '<span class="text-success">'.$field.'</span>';
+            if ($field != 'Y')
+            {
+                $fieldDate = convertToGlobalSettingFormat($field);
+                $field     = '<span class="text-success">'.$fieldDate.'</span>';
+            }
+            else
+            {
+                $field     = '<span class="text-success fa fa-check"></span>';
+            }
         }
         elseif( $field != '')
         {
