@@ -161,11 +161,14 @@ class index extends CAction {
 
         if ( $this->_didSessionTimeOut($surveyid) )
         {
-            // @TODO is this still required ?
+            $aReloadUrlParam=array('lang'=>App()->language,'newtest'=>'Y');
+            if($clienttoken){$aReloadUrlParam['token']=$clienttoken;}
+            $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam);
             $asMessage = array(
                 gT("Error"),
                 gT("We are sorry but your session has expired."),
                 gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
+                "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>",
                 sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
             $this->_niceExit($redata, __LINE__, null, $asMessage);
