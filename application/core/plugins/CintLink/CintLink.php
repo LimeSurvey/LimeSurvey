@@ -279,8 +279,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $order = new CintLinkOrder();
         $order->url = $result->url;
-        $order->raw = $result->raw;
-        $order->status = '?';
+        $order->raw = json_encode(get_object_vars($result->raw));
+        $order->status = (string) $result->raw->state;  // 'hold' means waiting for payment
         $order->save();
 
         return json_encode(array('result' => $response->body));
