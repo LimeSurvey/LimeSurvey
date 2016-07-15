@@ -88,7 +88,36 @@ class index extends CAction {
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
 
-        $this->_loadLimesurveyLang($surveyid);
+        /**
+         *  Set the language of the page , either from POST, GET parameter of session var
+         * Set it before all errors page
+         * Keep the old value, because SetSurveyLanguage update $_SESSION
+         */
+        $sOldLang=isset($_SESSION['survey_'.$surveyid]['s_lang'])?$_SESSION['survey_'.$surveyid]['s_lang']:null;
+        if (!empty($param['lang']))
+        {
+            $sDisplayLanguage = $param['lang'];// $param take lang from returnGlobal and returnGlobal sanitize langagecode
+        }
+        elseif (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+        {
+            $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
+        }
+        elseif(Survey::model()->findByPk($surveyid))
+        {
+            $sDisplayLanguage=Survey::model()->findByPk($surveyid)->language;
+        }
+        else
+        {
+            $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
+        }
+        if ($surveyid && $surveyExists)
+        {
+            SetSurveyLanguage( $surveyid, $sDisplayLanguage);
+        }
+        else
+        {
+            SetSurveyLanguage( 0, $sDisplayLanguage);
+        }
 
         if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) )
         {
@@ -158,7 +187,6 @@ class index extends CAction {
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
 
-
         if ( $this->_didSessionTimeOut($surveyid) )
         {
             $aReloadUrlParam=array('lang'=>App()->language,'newtest'=>'Y');
@@ -174,25 +202,6 @@ class index extends CAction {
             $this->_niceExit($redata, __LINE__, null, $asMessage);
         };
 
-        // Set the language of the survey, either from POST, GET parameter of session var
-        // Keep the old value, because SetSurveyLanguage update $_SESSION
-        $sOldLang=isset($_SESSION['survey_'.$surveyid]['s_lang'])?$_SESSION['survey_'.$surveyid]['s_lang']:"";// Keep the old value, because SetSurveyLanguage update $_SESSION
-        if (!empty($param['lang']))
-        {
-            $sDisplayLanguage = $param['lang'];// $param take lang from returnGlobal and returnGlobal sanitize langagecode
-        }
-        elseif (isset($_SESSION['survey_'.$surveyid]['s_lang']))
-        {
-            $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        }
-        elseif(Survey::model()->findByPk($surveyid))
-        {
-            $sDisplayLanguage=Survey::model()->findByPk($surveyid)->language;
-        }
-        else
-        {
-            $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
-        }
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {
@@ -616,23 +625,6 @@ class index extends CAction {
         Yii::app()->loadHelper("surveytranslator");
     }
 
-    function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
-    {
-        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang))
-        {
-            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
-        }
-        elseif (!empty($mvSurveyIdOrBaseLang))
-        {
-            $baselang = $mvSurveyIdOrBaseLang;
-        }
-        else
-        {
-            $baselang = Yii::app()->getConfig('defaultlang');
-        }
-        App()->setLanguage($baselang);
-    }
-
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
@@ -651,7 +643,7 @@ class index extends CAction {
 
     function _didSessionTimeout($surveyid)
     {
-        return !isset($_SESSION['survey_'.$surveyid]['s_lang']) && isset($_POST['thisstep']);
+        return !isset($_SESSION['survey_'.$surveyid]['step']) && isset($_POST['thisstep']);
     }
 
     function _canUserPreviewSurvey($iSurveyID)
