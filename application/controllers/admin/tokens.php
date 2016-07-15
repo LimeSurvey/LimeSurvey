@@ -114,7 +114,7 @@ class tokens extends Survey_Common_Action
                 $hostencryption = strtoupper($thissurvey['bounceaccountencryption']);
             }
 
-            list($hostname, $port) = split(':', $hostname);
+            list($hostname, $port) = explode(':', $hostname); // deprecated: split(':', $hostname);
 
             if (empty($port))
             {
@@ -179,7 +179,8 @@ class tokens extends Survey_Common_Action
                     break;
             }
 
-            if ($mbox = imap_open('{' . $hostname . $flags . '}INBOX', $username, $pass))
+            $mbox = @imap_open('{' . $hostname . $flags . '}INBOX', $username, $pass);
+            if ($mbox)
             {
                 imap_errors();
                 $count = imap_num_msg($mbox);
@@ -254,6 +255,13 @@ class tokens extends Survey_Common_Action
             else
             {
                 eT("Please check your settings");
+                $aErrors = @imap_errors();
+
+                foreach ($aErrors as $sError)
+                {
+                    echo '<br/>'.$sError;
+                }
+
             }
         }
         else

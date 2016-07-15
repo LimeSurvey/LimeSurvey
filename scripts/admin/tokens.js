@@ -282,6 +282,7 @@ $(document).ready(function(){
             error :  function(html, statut){
                 $ajaxLoader.hide();
                 $modalBodyText.append(html);
+                console.log(html);
             },
 
         });
