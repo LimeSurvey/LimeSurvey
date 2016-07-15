@@ -205,14 +205,29 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * When user click "Place order" in the widget,
-     * this function is called to contact limesurvey.org.
+     * this function is called to contact limesurvey.org
+     * and place an order.
      *
      * @param LSHttpRequest $request
      * @return string JSON
      */
     public function purchaseRequest(LSHttpRequest $request)
     {
-        return json_encode(array('result' => 'hello'));
+        $purchaseRequest = $request->getParam('purchaseRequest');
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+
+        $curl = new Curl();
+        $response = $curl->post(
+            $this->baseURL,
+            array(
+                'app' => 'cintlinklimesurveyrestapi',
+                'format' => 'raw',
+                'resource' => 'order',
+                'purchaseRequest' => $purchaseRequest,
+                'key' => $limesurveyOrgKey
+            )
+        );
+        return json_encode(array('result' => $response->body));
     }
 
     /**
@@ -232,13 +247,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $user = $this->api->getCurrentUser();
 
-        $link = Yii::app()->createUrl(
+        $link = Yii::app()->createAbsoluteUrl(
             'survey/index',
             array(
-                'sid' => 'sidebody',
-                'plugin' => 'MassAction',
-                'method' => 'actionIndex',
-                'surveyId' => $surveyId
+                'sid' => $surveyId,
+                'lang' => $data['surveyls_language']
             )
         );
 
@@ -246,7 +259,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'result' => json_encode($data),
             'name' => $user->full_name,
             'email' => $user->email,
-            'link' => $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language']))
+            'link' => $link
         ));
     }
 

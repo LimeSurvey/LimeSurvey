@@ -106,7 +106,7 @@ $(document).ready(function() {
                 locale: getWidgetLanguage(survey.surveyls_language),
                 introText: "LimeSurvey",
                 surveyLink: {
-                    value: "http://mysurveycompany.example.com/takesurvey/15",
+                    value: response.link,
                     readOnly: true
                 },
                 surveyTitle: {
@@ -132,9 +132,14 @@ $(document).ready(function() {
                     type: "POST",
                     dataType: "json",
                     success: function(data) {
+                        console.log(data);
+
                         $('#order').text(data.text);
+
                         orderUrl = data.id;
+
                         $('#release-order').show();
+
                         CintLink.close();
                     }
                 });
