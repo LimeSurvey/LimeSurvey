@@ -17,7 +17,7 @@
 *
 * This controller performs token actions
 *
-* @package        LimeSurvey
+* @package       LimeSurvey
 * @subpackage    Backend
 */
 class tokens extends Survey_Common_Action
@@ -266,8 +266,8 @@ class tokens extends Survey_Common_Action
     public function deleteMultiple()
     {
         // TODO: permission checks
-        $aTokenIds = json_decode($_POST['sItems']);
-        $iSid = $_POST['iSid'];
+        $aTokenIds = json_decode(Yii::app()->getRequest()->getPost('sItems'));
+        $iSid = Yii::app()->getRequest()->getPost('sid');
         TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
         return true;
     }
