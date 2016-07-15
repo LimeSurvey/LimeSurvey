@@ -333,7 +333,7 @@ class UploaderController extends SurveyController {
         $oTemplate = Template::model()->getInstance('', $aSurveyInfo['sid']);
         foreach ($oTemplate->packages as $package)
         {
-            App()->getClientScript()->registerPackage($package);
+            App()->getClientScript()->registerPackage((string) $package);
         }
         foreach ($oTemplate->config->files->css->filename as $cssFile)
         {

@@ -23,9 +23,9 @@
                 ?>
             </div>
             <div class="col-xs-12 col-sm-6">
-                <?php echo CHtml::textField('token', '', array(
+                <?php echo CHtml::passwordField('token', '', array(
                     'class' => 'text form-control ' + '$sKpClass',
-                    'id' => 'token'))
+                    'id' => 'token'));
                 ?>
                 <?php echo CHtml::hiddenField('sid', $iSurveyId, array('id' => 'sid')); ?>
                 <?php echo CHtml::hiddenField('lang', $sLangCode, array('id' => 'lang')); ?>

@@ -311,7 +311,7 @@ class SurveyDynamic extends LSActiveRecord
     }
 
 
-    function getExtendedData($colName, $sLanguage, $base64jsonFieldMap)
+    public function getExtendedData($colName, $sLanguage, $base64jsonFieldMap)
     {
         $oFieldMap = json_decode( base64_decode($base64jsonFieldMap) );
         $value     = $this->$colName;
@@ -528,12 +528,10 @@ class SurveyDynamic extends LSActiveRecord
 
     public function getTokenForGrid()
     {
-        if(is_object($this->tokens))
+        $sToken = '';
+        if(is_object($this->tokens) && ! is_null($this->tokens->tid) )
         {
-            if( ! is_null($this->tokens->tid))
-            {
-                $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens",array("sa"=>"edit","iSurveyId"=>self::$sid,"iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
-            }
+            $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens",array("sa"=>"edit","iSurveyId"=>self::$sid,"iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
         }
         else
         {
@@ -586,6 +584,8 @@ class SurveyDynamic extends LSActiveRecord
        // Join the token table and filter tokens if needed
        if ($this->bHaveToken)
        {
+            $criteria->compare('t.token',$this->token, true);
+
             $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
             $criteria->compare('tokens.firstname',$this->firstname_filter, true);
             $criteria->compare('tokens.lastname',$this->lastname_filter, true);
@@ -615,7 +615,7 @@ class SurveyDynamic extends LSActiveRecord
        $criteria->compare('t.lastpage',$this->lastpage, true);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
-       $criteria->compare('t.token',$this->token, true);
+
 
        // Completed filters
        if($this->completed_filter == "Y")

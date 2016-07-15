@@ -35,6 +35,65 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160714) to 2.50+ (build 160715) July 14, 2016
+-Fixed issue #11450: Unable to browse response (LouisGac)
+-Fixed issue #7908: When entering the token for a survey the text field is readable (Carsten Schmitz)
+
+Changes from 2.50+ (build 160620) to 2.50+ (build 160714) July 14, 2016
+-New feature: Extended mode for responses grid (LouisGac)
+-New feature: In "Export result data to SPSS" view, user can define what value should be use for "No Answer". If not set, usual behavior will apply. (LouisGac)
+-New feature: Massive actions for question list (LouisGac)
+-Fixed issue #11405: For PHP compatibility-reasons use xpath() instead of '->' to retrieve array of settings from config.xml (Hermann Schwärzler)
+-Fixed issue #11305: Saved survey responses empty when equation questions are enabled (LouisGac)
+-Fixed issue #11402: Cannot Delete Participant in CPDB (Alfredo Esteban)
+-Fixed issue #11404: EM tips sent to empty after reloading page (F5) (Denis Chenu)
+-Fixed issue #11405: .css and .js not loading on public pages (LouisGac)
+-Fixed issue #11407: Less than sign ( < ) is not displayed properly in "list dropdown" question type. (LouisGac)
+-Fixed issue #11408: missing translation in template preview (LouisGac)
+-Fixed issue #11409: Icons are missing (LouisGac)
+-Fixed issue #11428: Update survey settings can remove existing language (Denis Chenu)
+-Fixed issue #11429: Crash with "Undefined variable: esrow" while trying to create a label set (Robert Loomans)
+-Fixed issue #11431: Surveys list page name and title not tranlated (Denis Chenu)
+-Fixed Issue #11435: Sometimes importing errors are not shown correctly (Gabriel Jenik)
+-Fixed issue: Exclusive option not working in "Multiple Choice with Comments" (LouisGac)
+-Fixed issue: Html entities not decoded in token list (should be ported to 2.06lts) (LouisGac)
+-Fixed issue: Html entities not decoded in token list (should be ported to 2.06lts) (reverted from commit e3c40b919768c3c3724af9ec02f9ddd4e5a18d62) (LouisGac)
+-Fixed issue: In "Multiple Choice" question type, when a subquestion is not checked by participant, '0' is exported to SPSS data ; but, if 'other' option is not checked, null is exported to SPSS data (LouisGac)
+-Fixed issue: inserting "<<" break surveys list and survey edition. (LouisGac)
+-Fixed issue: In some situations, token creation or update were not logged (Alfredo Esteban)
+-Fixed issue: Participant creation was not logged (Alfredo Esteban)
+-Fixed issue: question position selector show subquestions , and doesn't respect question order. (LouisGac)
+-Fixed issue: RemoteControl 2 API (mail_registered_participants) sending 'reminder' instead of 'register' emails (Laurent Hubert-Vaillant)
+-Fixed issue: "Start bounce processing" button missing (LouisGac)
+-Fixed issue: styles and scripts loaded twice in template editor (LouisGac)
+-Fixed issue: Token grid, dates changed to 1.1.1980 if token is edited and date unchanged. (LouisGac)
+-Fixed issue: RPC 2 API: import_survey documentation was referencing zip instead of lsa format (Laurent Hubert-Vaillant)
+#Updated translation: Basque by ikt
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by wksosam
+#Updated translation: Chinese (Taiwan) (Traditional) by jayhsu21, joyce
+#Updated translation: Danish by lovepade
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by surveyunihi, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by radhwaw, ysulistya
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, thiagosmartins
+#Updated translation: Portuguese (Brazil) by thiagosmartins
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.50+ (build 160616) to 2.50+ (build 160620) June 20, 2016
 -Fixed issue #11016: 10 point array does not fit on tablet screen (LouisGac)
 -Fixed issue #11269: Using EM Expressions in welcome-text is mixed with html (LouisGac)

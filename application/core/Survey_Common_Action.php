@@ -444,7 +444,7 @@ class Survey_Common_Action extends CAction
     * @global string $surveyid
     * @global string $setfont
     * @global string $imageurl
-    * @param int $surveyid
+    * @global int $surveyid
     * @return string $adminmenu
     */
     public function _showadminmenu()
@@ -882,7 +882,7 @@ class Survey_Common_Action extends CAction
                 $aForbiddenWordsInUrl[]='editlocalsettings';
                 $aForbiddenWordsInUrl[]='setsurveysecurity';
                 $aForbiddenWordsInUrl[]='importsurveyresources';
-                $aForbiddenWordsInUrl[]='newquestion';                
+                $aForbiddenWordsInUrl[]='newquestion';
                 $aForbiddenWordsInUrl[]='add';
                 $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl), $aForbiddenWordsInUrl );
             }

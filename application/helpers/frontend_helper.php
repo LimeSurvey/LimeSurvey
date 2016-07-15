@@ -219,6 +219,7 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             $route="/survey/index/sid/{$surveyid}";
         }
         $sTargetURL=Yii::app()->getController()->createUrl($route);
+        $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
         {
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');

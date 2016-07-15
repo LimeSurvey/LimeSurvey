@@ -11,7 +11,13 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 } else {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
-@date_default_timezone_set(@date_default_timezone_get());
+
+if (! date_default_timezone_set(@date_default_timezone_get()))
+{
+
+    date_default_timezone_set('Europe/London');
+}
+
 
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc
@@ -56,7 +62,7 @@ $internalConfig = array(
         'pageSizeOptions'=>array(5=>5,10=>10,20=>20,50=>50,100=>100),                                                                                 // Default page size options for most of the grids
         'pageSizeOptionsTokens'=>array(5=>5,10=>10,25=>25,50=>50,100=>100, 250=>250, 500=>500, 1000=>1000, 2500=>2500, 5000=>5000, 10000=>10000),     // Tokens needs different options
         'defaultEllipsizeHeaderValue'=>30,                                                                                                            // Default max characters before ellipsizing the headers of responses grid
-        'defaultEllipsizeQuestionValu'=>50,                                                                                                           // Default max characters before ellipsizing the questions inside responses grid
+        'defaultEllipsizeQuestionValue'=>50,                                                                                                           // Default max characters before ellipsizing the questions inside responses grid
     ),
 
     'import' => array(

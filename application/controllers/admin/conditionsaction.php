@@ -1680,7 +1680,8 @@ class conditionsaction extends Survey_Common_Action {
         $subaction == "editthiscondition" || $subaction == "delete")
         {
             $mytitle = ($subaction == "editthiscondition" &&  isset($p_cid))?gT("Edit condition"):gT("Add condition");
-            $showScenario = ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) || ( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )?true:false;
+            $scenario = '';
+            $showScenario = ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) || ( $subaction == "editthiscondition" && $scenario == 1) )?true:false;
 
             $aDataEditconditions = array(
                 'subaction'=>$subaction,

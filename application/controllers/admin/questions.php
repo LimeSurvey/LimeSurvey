@@ -911,8 +911,6 @@ class questions extends Survey_Common_Action
 
         // TODO: calcul correct value
         $oldCode  = false;
-        $position = $position;
-        $scale_id = $scale_id ;
 
 
         // We get the numerical part of each code and we store them in Arrays
@@ -944,7 +942,7 @@ class questions extends Survey_Common_Action
         // Let's get the greatest code
         $greatestNumCode          = max ($numCodes);                            // greatest code
         $key                      = array_keys($numCodes, max($numCodes));      // its key (same key in all tables)
-        $greatesNumCodeWithZeros  = $numCodesWithZero[$key[0]];                 // its value with prefixed 0 (like : 001)
+        $greatesNumCodeWithZeros  = (isset($numCodesWithZero))?$numCodesWithZero[$key[0]]:'';                 // its value with prefixed 0 (like : 001)
         $stringCodeOfGreatestCode = $stringCodes[$key[0]];                      // its original submited  string (like: SQ001)
 
         // We get the string part of it: it's the original string code, without the greates code with its 0 :
@@ -1133,9 +1131,6 @@ class questions extends Survey_Common_Action
         // sidemenu
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
-        $aData['sidemenu']['explorer']['qid'] = (isset($qid))?$qid:false;
-
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -1399,8 +1394,8 @@ class questions extends Survey_Common_Action
      */
     public function deleteMultiple()
     {
-
-        $aQidsAndLang = json_decode($_POST['sItems']);
+        $aQidsAndLang = json_decode(Yii::app()->request->getPost('sItems'));
+        $aResults     = array();
 
         foreach ($aQidsAndLang as $sQidAndLang)
         {
@@ -1540,9 +1535,9 @@ class questions extends Survey_Common_Action
      */
     public function setMultipleQuestionGroup()
     {
-        $aQidsAndLang   = json_decode($_POST['sItems']);                                    // List of question ids to update
-        $iGid           = $_POST['group_gid'];                                              // New Group ID  (can be same group for a simple position change)
-        $iQuestionOrder = $_POST['questionposition'];                                       // Wanted position
+        $aQidsAndLang   = json_decode(Yii::app()->request->getPost('sItems'));                // List of question ids to update
+        $iGid           = Yii::app()->request->getPost('group_gid');                          // New Group ID  (can be same group for a simple position change)
+        $iQuestionOrder = Yii::app()->request->getPost('questionposition');                   // Wanted position
 
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$iGid));   // The New Group object
         $oSurvey        = $oQuestionGroup->survey;                                          // The Survey associated with this group
@@ -1571,7 +1566,6 @@ class questions extends Survey_Common_Action
                     // Question basic infos
                     $aQidAndLang = explode(',', $sQidAndLang);
                     $iQid        = $aQidAndLang[0];
-                    $sLanguage   = $aQidAndLang[1];
 
                     $oQuestion = Question::model()->findByAttributes(array('qid' => $iQid)); // Question object
                     $oldGid    = $oQuestion->gid;                                            // The current GID of the question
@@ -1602,7 +1596,7 @@ class questions extends Survey_Common_Action
     public function setMultipleMandatory()
     {
         $aQidsAndLang   = json_decode($_POST['sItems']);                        // List of question ids to update
-        $iSid           = $_POST['sid'];
+        $iSid           = Yii::app()->request->getPost('sid');
         $bMandatory     = ( Yii::app()->request->getPost('mandatory') === 'true' ) ? 'Y' : 'N' ;
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent','update'))  // Permissions check
@@ -1675,7 +1669,7 @@ class questions extends Survey_Common_Action
     public function setMultipleAttributes()
     {
         $aQidsAndLang        = json_decode($_POST['sItems']);                   // List of question ids to update
-        $iSid                = $_POST['sid'];                                   // The survey (for permission check)
+        $iSid                = Yii::app()->request->getPost('sid');                                   // The survey (for permission check)
         $aAttributesToUpdate = json_decode ( $_POST['aAttributesToUpdate'] );   // The list of attributes to updates
         // TODO: this should be get from the question model
         $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']);        // The valid question types for thoses attributes

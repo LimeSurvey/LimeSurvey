@@ -956,6 +956,7 @@ function do_date($ia)
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'],-1,PREG_SPLIT_DELIM_CAPTURE );
 
         $sRows = '';
+        $montharray = array();
         foreach($dateorder as $datepart)
         {
             switch($datepart)
@@ -1399,7 +1400,7 @@ function do_list_dropdown($ia)
     //Time Limit Code
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
-        $sselect .= return_timer_script($aQuestionAttributes, $ia);
+        $sselect = return_timer_script($aQuestionAttributes, $ia);
     }
     //End Time Limit Code
 
@@ -1446,6 +1447,7 @@ function do_list_radio($ia)
     $iRowCount        = 0;
     $isOpen           = false;       // Is a column opened
 
+    $iColumnWidth = '';
     if ($iNbCols > 1)
     {
         // First we calculate the width of each column
@@ -1677,11 +1679,7 @@ function do_listwithcomment($ia)
     $checkconditionFunction = "checkconditions";
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
-
-    if (!isset($maxoptionsize))
-    {
-        $maxoptionsize=35;
-    }
+    $maxoptionsize          = 35;
 
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);                       // Question attribute variables
@@ -1717,6 +1715,7 @@ function do_listwithcomment($ia)
         }
 
         // ==> rows
+        $check_ans = '';
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
@@ -1907,7 +1906,8 @@ function do_ranking($ia)
     }
 
     $inputnames = array();
-    $sSelects = '';
+    $sSelects   = '';
+    $myfname    = '';
 
     for ($i=1; $i<=$iMaxLine; $i++)
     {
@@ -1990,7 +1990,7 @@ function do_ranking($ia)
                     'thisvalue'         => $thisvalue,
                     'answers'           => $answers,
                     'myfname'           => $myfname,
-                    'labeltext'         => $labeltext,
+                    'labeltext'         => (isset($labeltext))?$labeltext:'',
                     'rankId'            => $ia[0],
                     'rankingName'       => $ia[1],
                     'max_answers'       => $max_answers,
@@ -2117,8 +2117,9 @@ function do_multiplechoice($ia)
         if($iNbCols > 1 && $iRowCount == 1 )
         {
             $sRows .= doRender('/survey/questions/multiplechoice/columns/column_header', array(
-                'iColumnWidth' => $iColumnWidth,
-                'first'        => $first), true);
+                'iColumnWidth' => (isset($iColumnWidth))?$iColumnWidth:'',
+                'first'        => (isset($first ))?$first:''),
+            true);
             $isOpen  = true;  // If a column is not closed, it will be closed at the end of the process
             $first   = false; // The row containing the column has been opened at the first call.
         }
@@ -2208,7 +2209,7 @@ function do_multiplechoice($ia)
         // Display the answer row
         $sRows .= doRender('/survey/questions/multiplechoice/rows/answer_row_other', array(
             'myfname'                    => $myfname,
-            'sDisplayStyle'              => $sDisplayStyle,
+            'sDisplayStyle'              => (isset($sDisplayStyle))?$sDisplayStyle:'',
             'othertext'                  => $othertext,
             'checkedState'               => $checkedState,
             'kpclass'                    => $kpclass,
@@ -2362,7 +2363,7 @@ function do_multiplechoice_withcomments($ia)
 
         $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);
         $sRows .= doRender('/survey/questions/multiplechoice_with_comments/rows/answer_row', array(
-            'sDisplayStyle'                 => $sDisplayStyle,
+            'sDisplayStyle'                 => (isset($sDisplayStyle))?$sDisplayStyle:'',
             'kpclass'                       => $kpclass,
             'title'                         => '',
             'liclasses'                     => 'responsive-content question-item answer-item checkbox-text-item',
@@ -2376,11 +2377,11 @@ function do_multiplechoice_withcomments($ia)
             'javainput'                     => true,
             'javaname'                      => 'java'.$myfname,
             'javavalue'                     => $javavalue,
-            'checked'                       => $checked,
+            'checked'                       => (isset( $checked))? $checked:'',
             'inputCommentId'                => 'answer'.$myfname2,
             'commentLabelText'              => gT('Make a comment on your choice here:'),
             'inputCommentName'              => $myfname2,
-            'inputCOmmentValue'             => $inputCOmmentValue,
+            'inputCOmmentValue'             => (isset( $inputCOmmentValue))?$inputCOmmentValue :'',
         ), true);
 
     }
@@ -3121,7 +3122,7 @@ function do_multiplenumeric($ia)
                     'slider_max'             => $slider_max     ,
                     'slider_maxtext'         => $slider_maxtext ,
                     'slider_default'         => $slider_default ,
-                    'slider_handle'          => $slider_handle,
+                    'slider_handle'          => (isset($slider_handle ))? $slider_handle:'',
                     'slider_reset'           => $slider_reset,
                     'slider_custom_handle'   => $slider_custom_handle,
                     'slider_user_no_action'  => $slider_user_no_action,
@@ -3488,7 +3489,7 @@ function do_shortfreetext($ia)
             'location_mapzoom'       => $aQuestionAttributes['location_mapzoom'],
             'location_mapheight'     => $aQuestionAttributes['location_mapheight'],
             'questionHelp'           => $questionHelp,
-            'question_text_help'     => $question_text['help'],
+            'question_text_help'     => (isset( $question_text ))? $question_text['help']:'',
             'sm_col'                 => decide_sm_col($prefix, $suffix)
         ), true);
 
@@ -3553,7 +3554,7 @@ function do_shortfreetext($ia)
             'location_mapservice'=>$aQuestionAttributes['location_mapservice'],
             'location_mapzoom'=>$aQuestionAttributes['location_mapzoom'],
             'location_mapheight'=>$aQuestionAttributes['location_mapheight'],
-            'questionHelp'=>$questionHelp,
+            'questionHelp'=>(isset($questionHelp))?$questionHelp:'',
             'question_text_help'=>$question_text['help'],
             'location_value'=> $currentLatLong[0].' '.$currentLatLong[1],
             'currentLat'=>$currentLatLong[0],
@@ -4329,7 +4330,7 @@ function do_array_yesnouncertain($ia)
                     'extraclass'  => $extraclass,
                     'sColumns'    => $sColumns,
                     'sHeaders'    => $sHeaders,
-                    'sRows'       => $sRows,
+                    'sRows'       => (isset($sRows))?$sRows:'',
                     'anscount'    => $anscount,
                 ), true);
 
@@ -5191,7 +5192,7 @@ function do_array_texts($ia)
     }
     else
     {
-        $answer    .= doRender('/survey/questions/arrays/texts/empty_error', array(), true);
+        $answer    = doRender('/survey/questions/arrays/texts/empty_error', array(), true);
         $inputnames ='';
     }
     return array($answer, $inputnames);
@@ -5226,7 +5227,7 @@ function do_array_multiflexi($ia)
     if (trim($aQuestionAttributes['multiflexible_max'])!='' && trim($aQuestionAttributes['multiflexible_min']) =='')
     {
         $maxvalue    =  $aQuestionAttributes['multiflexible_max'];
-        $minvalue    = (isset($minvalue['value']) && $minvalue['value'] == 0)?0:1;
+        $minvalue    = 1;
         $extraclass .= " maxvalue maxvalue-".trim($aQuestionAttributes['multiflexible_max']);
     }
 

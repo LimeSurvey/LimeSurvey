@@ -888,7 +888,6 @@ class export extends Survey_Common_Action {
 
     /**
      * Export multiple surveys structure. Called via ajax from surveys list massive action
-     * @param string $sSurveys  :json string containing the list of survey to delete
      */
     public function exportMultipleStructureSurveys()
     {
@@ -899,7 +898,6 @@ class export extends Survey_Common_Action {
 
     /**
      * Export multiple surveys archives. Called via ajax from surveys list massive action
-     * @param string $sSurveys  :json string containing the list of survey to delete
      */
     public function exportMultipleArchiveSurveys()
     {

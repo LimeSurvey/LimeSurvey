@@ -159,7 +159,8 @@
                                         </label>
                                         <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
                                             <?php
-                                            foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                            $aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
+                                            foreach ( $aQuestionTypeList as $key=> $questionType)
                                             {
                                                 if (!isset($groups[$questionType['group']]))
                                                 {

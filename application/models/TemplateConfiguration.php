@@ -65,7 +65,7 @@ class TemplateConfiguration extends CFormModel
         }
 
         $this->sTemplateName = $sTemplateName;
-        $this->iSurveyId     = $iSurveyId;
+        $this->iSurveyId     = (int) $iSurveyId;
 
         if ($sTemplateName=='')
         {
@@ -102,7 +102,7 @@ class TemplateConfiguration extends CFormModel
 
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
-        $this->hasConfigFile = is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
+        $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
         $this->isOldTemplate = ( !$this->hasConfigFile && is_file($this->path.DIRECTORY_SEPARATOR.'startpage.pstpl')); // TODO: more complex checks
 
         if (!$this->hasConfigFile)

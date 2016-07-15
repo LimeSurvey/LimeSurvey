@@ -1,5 +1,6 @@
 <?php
-use ls\pluginmanager\PluginEvent;
+// see: https://scrutinizer-ci.com/g/LimeSurvey/LimeSurvey/issues/master/files/application/controllers/admin/authentication.php?selectedSeverities[0]=10&orderField=path&order=asc&honorSelectedPaths=0
+// use ls\pluginmanager\PluginEvent;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -33,6 +34,8 @@ class Authentication extends Survey_Common_Action
     public function index()
     {
         $this->_redirectIfLoggedIn();
+
+        $aData = array();
 
         // Make sure after first run / update the authdb plugin is registered and active
         // it can not be deactivated
@@ -74,7 +77,6 @@ class Authentication extends Survey_Common_Action
             App()->getPluginManager()->dispatchEvent($newLoginForm);
             $aData['summary'] = $this->_getSummary('logout');
             $aData['pluginContent'] = $newLoginForm->getAllContent();
-            //$this->_renderWrappedTemplate('authentication', 'login', $aData);
         }
         else
         {
@@ -194,7 +196,6 @@ class Authentication extends Survey_Common_Action
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
         $username = sprintf(gT('Username: %s'), $aFields[0]['users_name']);
-        $email    = sprintf(gT('Email: %s'), $sEmailAddr);
         $password = sprintf(gT('New password: %s'), $sNewPass);
 
         $body   = array();
@@ -301,7 +302,6 @@ class Authentication extends Survey_Common_Action
     {
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
-        die();
     }
 
 }
