@@ -223,16 +223,30 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $surveyId = $request->getParam('surveyId');
         $survey = Survey::model()->findByPk($surveyId);
         $data = $survey->getAttributes();
+
         $surveyLanguage = SurveyLanguageSetting::model()->findByPk(array(
             'surveyls_survey_id' => $surveyId,
             'surveyls_language' => $survey->language
         ));
         $data = array_merge($data, $surveyLanguage->getAttributes());
+
         $user = $this->api->getCurrentUser();
+
+        $link = Yii::app()->createUrl(
+            'survey/index',
+            array(
+                'sid' => 'sidebody',
+                'plugin' => 'MassAction',
+                'method' => 'actionIndex',
+                'surveyId' => $surveyId
+            )
+        );
+
         return json_encode(array(
             'result' => json_encode($data),
             'name' => $user->full_name,
-            'email' => $user->email
+            'email' => $user->email,
+            'link' => $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language']))
         ));
     }
 
