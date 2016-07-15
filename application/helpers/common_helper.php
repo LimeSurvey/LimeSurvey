@@ -3999,6 +3999,26 @@ function questionAttributes($returnByName=false)
         "help"=>gT('Use button group or radio list'),
         "caption"=>gT('Display type'));
 
+        /**
+         * New event to allow plugin to add own question attribute (settings)
+         * Using $event->append('questionAttributes', $questionAttributes);
+         * $questionAttributes=[
+         *  attributeName=>[
+         *      'types' : Aply to this question type
+         *      'category' : Where to put it
+         *      'sortorder' : Qort order in this category
+         *      'inputtype' : type of input
+         *      'options' : optionnal options if input type need it*
+         *      'default' : the defaumt value
+         *      'caption' : the label
+         *      'help' : an help]
+         *  ]
+         */
+        $event = new PluginEvent('newQuestionAttributes');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $questionAttributes = $result->get('questionAttributes');
+        $qattributes=array_merge($qattributes,$questionAttributes);
+
     }
     //This builds a more useful array (don't modify)
     if ($returnByName==false)
