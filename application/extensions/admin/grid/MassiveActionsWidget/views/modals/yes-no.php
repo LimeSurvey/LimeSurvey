@@ -24,7 +24,12 @@
                 </div>
 
                 <?php if (isset($aAction['aCustomDatas'])):?>
-                    <!-- Custom datas needed for action. Always hidden in Yes/No case. -->
+                    <!--
+                        Custom datas needed for action defined directly in the widget call.
+                        Always hidden in Yes/No case.
+                        For specific input (like text, selector, etc) that should be filled by user
+                        parse a form to htmlModalBody and attribute to the wanted input the class "custom-data"
+                    -->
                     <div class="custom-modal-datas hidden">
                         <?php foreach($aAction['aCustomDatas'] as $aCustomData):?>
                             <input type="hidden" name="<?php echo $aCustomData['name'];?>" value="<?php echo $aCustomData['value'];?>" />

@@ -34,9 +34,9 @@ This will generate a dropup button of this kind :
 ### Array of actions:
 The array of actions and modals can accept different types of items :
 
-- separator: generates a separator in the dropup list
-- dropdown-header: generates a header un the dropup list
-- action: generates an action link, and the modal associated to it (if needed).
+- **separator**: generates a separator in the dropup list
+- **dropdown-header**: generates a header un the dropup list
+- **action**: generates an action link, and the modal associated to it (if needed).
 
 ```php
     'aActions'    => array(
@@ -96,7 +96,7 @@ array(
     'type'        => 'action',                                                        
     'action'      => 'set-muhvalue',
     'url'         => App()->createUrl('/admin/muhController/sa/setMultipleMuhValue/'),     // The url to reach the action method
-    'iconClasses' => 'fa fa-muh-icon',                                                  // The class to define the icon that will be show net to the action link in the dropUp button
+    'iconClasses' => 'fa fa-muh-icon',                                                  // The class to define the icon that will be show next to the action link in the dropUp button
     'text'        => gT('Set muh value'),                                               // The text of the action link in the dropUp button
 
     // modal
@@ -138,8 +138,8 @@ array(
     ...
 
     'aLinkSpecificDatas'  => array(
-        'specific-data'     => 'specific-data-value',
-        'another-specific-data'     => 'another-specific-data-value',
+        'specific-data'         => 'specific-data-value',
+        'another-specific-data' => 'another-specific-data-value',
     ),
 
 ),

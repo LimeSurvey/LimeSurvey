@@ -44,6 +44,12 @@
                         data-type="<?php echo $aAction['actionType']; //Direct action, or modal ?>"
                         data-grid-reload="<?php if(isset($aAction['grid-reload'])){echo $aAction['grid-reload'];}else{echo "no";}?>"
 
+                        <?php
+                            /**
+                             * It the action type is 'modal', a modal will be generated for this action, with the id: massive-actions-modal- $aAction['action'] -  $key
+                             * It will be shown by a javascript call in listAction.js
+                             */
+                        ?>
                         <?php if ($aAction['actionType']=="modal"):?>
                             data-modal-id="massive-actions-modal-<?php echo $aAction['action'];?>-<?php echo $key; ?>"
                         <?php endif;?>
