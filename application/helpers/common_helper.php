@@ -3998,6 +3998,26 @@ function questionAttributes($returnByName=false)
         'default'=>0,
         "help"=>gT('Use button group or radio list'),
         "caption"=>gT('Display type'));
+        /* Find all plugin with questionAttributes */
+        $aPlugins = App()->getPluginManager()->getInstalledPlugins();
+        foreach ($aPlugins as $oPlugin)
+        {
+            $aPluginQuestionAttributes = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id)->getQuestionAttributes();
+            foreach($aPluginQuestionAttributes as &$aPluginQuestionAttribute)
+            {
+                $aPluginQuestionAttribute['category']=gT($aPluginQuestionAttribute['category']);
+                $aPluginQuestionAttribute['caption']=gT($aPluginQuestionAttribute['caption']);
+                $aPluginQuestionAttribute['help']=gT($aPluginQuestionAttribute['help']);
+                if(isset($aPluginQuestionAttribute['options']))
+                {
+                    foreach($aPluginQuestionAttribute['options'] as $option=>$text)
+                    {
+                        $aPluginQuestionAttribute['options'][$option]=gT($text);
+                    }
+                }
+            }
+            $qattributes=array_merge($qattributes,$aPluginQuestionAttributes); // We allow to replace core question attribute : must fix some part
+        }
 
     }
     //This builds a more useful array (don't modify)
