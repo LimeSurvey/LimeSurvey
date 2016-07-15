@@ -40,6 +40,34 @@ $.fn.YesNoDate = function(options)
     });
 }
 
+$.fn.YesNo = function(options)
+{
+    var that              = $(this);                                            // calling element
+    var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
+
+
+    $(document).ready(function(){
+        var $elSwitch        = that.find('.YesNoSwitch').first();               // switch element (generated with YiiWheels widgets)
+        $elSwitch.bootstrapSwitch();                                            // Generate the switch
+
+        // When user change date
+        $(document).on( 'switchChange.bootstrapSwitch', '#'+$elSwitch.attr('id'), function(event, state)
+        {
+            if (state==true)
+            {
+                $elHiddenInput.attr('value', 'Y');
+            }
+            else
+            {
+                $elHiddenInput.attr('value', 'N');
+            }
+
+
+        })
+
+    });
+}
+
 /**
  * Provide to this function a element containing form-groups,
  * it will stick the text labels on its border
@@ -87,9 +115,18 @@ $(document).ready(function(){
     if($('#sent-yes-no-date-container').length > 0)
     {
         $('#general').stickLabelOnLeft();
+/*
         $('#sent-yes-no-date-container').YesNoDate();
         $('#remind-yes-no-date-container').YesNoDate();
         $('#completed-yes-no-date-container').YesNoDate();
+*/
+        $('.yes-no-date-container').each(function(el){
+            $(this).YesNoDate();
+        });
+
+        $('.yes-no-container').each(function(el){
+            $(this).YesNo();
+        });
 
         $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
         $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
@@ -134,9 +171,20 @@ $(document).ready(function(){
                 $('#modal-content').empty().append(html);                       // Inject the returned HTML in the modal body
 
                 // Apply the yes/no/date jquery plugin to the elements loaded via ajax
-                $('#sent-yes-no-date-container').YesNoDate();
-                $('#remind-yes-no-date-container').YesNoDate();
-                $('#completed-yes-no-date-container').YesNoDate();
+                /*
+                    $('#sent-yes-no-date-container').YesNoDate();
+                    $('#remind-yes-no-date-container').YesNoDate();
+                    $('#completed-yes-no-date-container').YesNoDate();
+                */
+
+                $('.yes-no-date-container').each(function(el){
+                    $(this).YesNoDate();
+                });
+
+
+                $('.yes-no-container').each(function(el){
+                    $(this).YesNo();
+                });
 
                 $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
                 $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
