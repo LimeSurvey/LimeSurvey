@@ -34,9 +34,9 @@ This will generate a dropup button of this kind :
 ### Array of actions:
 The array of actions and modals can accept different types of items :
 
-    * separator: generates a separator in the dropup list
-    * dropdown-header: generates a header un the dropup list
-    * action: generates an action link, and the modal associated to it (if needed).
+- separator: generates a separator in the dropup list
+- dropdown-header: generates a header un the dropup list
+- action: generates an action link, and the modal associated to it (if needed).
 
 ```php
     'aActions'    => array(
@@ -77,10 +77,11 @@ This will generate a dropup button of this kind :
 ### Actions:
 The action definition consists in two parts: defining the link in the dropup list and the modal (if needed).
 The link, to be defined, need:
-    * a text for the Actions (eg: *Set muh value*)
-    * a classes for the icon in front of the text (eg: *fa fa-muh-icon*)
-    * the url of the action to apply (for redirection, or ajax request. eg: */admin/muhController/sa/setMultipleMuhValue/*)
-    * the action type (redirect, fill sessions and redirect, or modal).
+
+- a text for the Actions (eg: *Set muh value*)
+- a classes for the icon in front of the text (eg: *fa fa-muh-icon*)
+- the url of the action to apply (for redirection, or ajax request. eg: */admin/muhController/sa/setMultipleMuhValue/*)
+- the action type (redirect, fill sessions and redirect, or modal).
 
 There is currently 3 action types (they are the result of the refactorisation of the old jQgrid massive actions) :
 
@@ -188,7 +189,7 @@ The modal accepts a parameter **grid-reload** to define if the grid should be re
 The modals accepts a parameter **keepopen**. If it's set to true, the modal will remain opened after the ajax request, and its content will be updated to show the HTML returned by the controller. For now, in LS, this behavior is used only for survey list (export) and for question deletion (a question deletion can failed if conditions depends on it, so a result table must be shown). Of course, this should be used for all the actions, because users love feedbacks, and that's a TODO task for LS.
 
 ### Form in modal:
-Of course, the main interest of using a modal after clicking an action is to show a form so the user can set some values. This form, with its value, will be parsed to 'htmlModalBody'. For readability, in LS, this is done using a renderPartial :
+Of course, the main interest of using a modal after clicking an action is to show a form so the user can set some values. This form, with its values, will be parsed to 'htmlModalBody'. For readability, in LS, this is done using a renderPartial :
 
 ```php
 // modal
@@ -200,7 +201,7 @@ Of course, the main interest of using a modal after clicking an action is to sho
 The form will not be posted to the url directly by the ajax request. Indeed, the listActions.js script will build its own post by aggregating the checked items and the data from inputs in the modals having the class "custom-data".
 
 *my_view.php:*
-```php
+```html
 <!-- The form itself is optional-->
 <form class="custom-modal-datas">                                               
     <div class="form-group">
@@ -235,5 +236,5 @@ To reload automatically the bootrstrap switches on grid reload, and/or convert i
 See Questions massive actions for detailed example.
 
 
-## Special cases with special classes:
+## More...
 The code of the widget itself, and of its scripts, is widely commented and can complete this short documentation.
