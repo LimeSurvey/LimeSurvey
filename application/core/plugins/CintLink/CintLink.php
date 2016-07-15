@@ -3,6 +3,7 @@
 use \ls\menu\MenuItem;
 
 require_once(__DIR__ . "/CintLinkAPI.php");
+require_once(__DIR__ . "/model/CintLinkOrder.php");
 
 /**
  * CintLink integration to be able to buy respondents
@@ -44,6 +45,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     public function init()
     {
+        $this->subscribe('beforeActivate');
         $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('newDirectRequest');
 
@@ -52,6 +54,52 @@ class CintLink extends \ls\pluginmanager\PluginBase
         if (!empty($limesurveyOrgKey))
         {
             $this->limesurveyOrgKey = $limesurveyOrgKey;
+        }
+    }
+
+    /**
+     * Add database tables to store information from CintLink
+     *
+     * @return void
+     */
+    public function beforeActivate()
+    {
+        $oDB = Yii::app()->getDb();
+
+        if ($oDB->schema->getTable("{{plugin_cintlink_orders}}") === null)
+        {
+            $oDB->schemaCachingDuration = 0;  // Deactivate schema caching
+            $oTransaction = $oDB->beginTransaction();
+            try
+            {
+                $aFields = array(
+                    'url' => 'string primary key',
+                    'raw' => 'text',
+                    'status' => 'string',
+                );
+                $oDB->createCommand()->createTable('{{plugin_cintlink_orders}}', $aFields);
+                $oTransaction->commit();
+            }
+            catch(Exception $e)
+            {
+                $oTransaction->rollback();
+                // Activate schema caching
+                $oDB->schemaCachingDuration = 3600;
+                // Load all tables of the application in the schema
+                $oDB->schema->getTables();
+                // Clear the cache of all loaded tables
+                $oDB->schema->refresh();
+                $event = $this->getEvent();
+                $event->set('success', false);
+                $event->set(
+                    'message',
+                    gT('An non-recoverable error happened during the update. Error details:')
+                    . "<p>"
+                    . htmlspecialchars($e->getMessage())
+                    . "</p>"
+                );
+                return;
+            }
         }
     }
 
@@ -227,6 +275,14 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'key' => $limesurveyOrgKey
             )
         );
+        $result = json_decode($response->body);
+
+        $order = new CintLinkOrder();
+        $order->url = $result->url;
+        $order->raw = $result->raw;
+        $order->status = '?';
+        $order->save();
+
         return json_encode(array('result' => $response->body));
     }
 
