@@ -583,6 +583,30 @@ class TokenDynamic extends LSActiveRecord
         return $field;
     }
 
+    public function getEmailFormated()
+    {
+        if ($this->emailstatus=="bounced")
+        {
+            return '<span class="text-warning"><strong> '.$this->email.'</strong></span>';
+        }
+        else
+        {
+            return $this->email;
+        }
+    }
+
+    public function getEmailstatusFormated()
+    {
+        if ($this->emailstatus=="bounced")
+        {
+            return '<span class="text-warning"><strong> '.$this->emailstatus.'</strong></span>';
+        }
+        else
+        {
+            return $this->emailstatus;
+        }
+    }
+
     public function getStandardColsForGrid()
     {
         return array(
@@ -631,7 +655,8 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Email address'),
                 'name' => 'email',
-                'value'=>'$data->email',
+                'type' => 'raw',
+                'value'=>'$data->emailFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
@@ -639,7 +664,8 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Email status'),
                 'name' => 'emailstatus',
-                'value'=>'$data->emailstatus',
+                'value'=>'$data->emailstatusFormated',
+                'type' => 'raw',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             ),
