@@ -792,6 +792,12 @@ table.array-no-dropdown  td.answer-item.text-center
     margin-left: 20px;
 }
 
+/* ...except for dual-scale and array-by-column */
+.table-dual-scale .label-text, .array-by-columns-div .label-text {
+    margin-top: 0px;
+    margin-left: 0px;
+}
+
 .label-clickable:hover
 {
     cursor: pointer;
