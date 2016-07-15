@@ -15,7 +15,7 @@ class WipeCommand extends CConsoleCommand
 
     public function run($sArgument)
     {
-        if (!isset($sArgument) || !isset($sArgument[0]) || $sArgument[0]!='yes')
+        if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0]='yes')
         {
 
             Yii::import('application.helpers.common_helper', true);
