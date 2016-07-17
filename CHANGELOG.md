@@ -8,7 +8,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ### Fix
 - Language is not correct when session timed out  or other error page
-
+- Allow plugin to allow preview question or group without admin rights
 
 ## [1.0.22] - 2016-07-05
 
