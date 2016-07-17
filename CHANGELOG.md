@@ -1,6 +1,15 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## Not released
+
+### Feature
+- Allow plugin to set more option when using renderHtml
+
+### Fix
+- Language is not correct when session timed out  or other error page
+
+
 ## [1.0.22] - 2016-07-05
 
 ### Feature
