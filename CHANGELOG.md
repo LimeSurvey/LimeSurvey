@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## Not released
+## [1.0.23] - 2016-07-17
 
 ### Feature
 - Allow plugin to set more option when using renderHtml
