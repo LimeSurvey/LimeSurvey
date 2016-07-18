@@ -107,6 +107,38 @@ $.fn.textWidth = function(text, font) {
     return $.fn.textWidth.fakeEl.width();
 };
 
+
+function submitEditToken(){
+    $form       = $('#edittoken');
+    $datas      = $form.serialize();
+    $actionUrl  = $form.attr('action');
+    $gridid     = $('.listActions').data('grid-id');
+    $modal      = $('#editTokenModal');
+
+    $ajaxLoader = $('#ajaxContainerLoading2');
+    $('#modal-content').empty();
+    $ajaxLoader.show();                                         // Show the ajax loader
+
+    // Ajax request
+    $.ajax({
+        url  : $actionUrl,
+        type : 'POST',
+        data : $datas,
+
+        // html contains the buttons
+        success : function(html, statut){
+            $ajaxLoader.hide();
+            $.fn.yiiGridView.update('token-grid');                   // Update the surveys list
+            $modal.modal('hide');
+        },
+        error :  function(html, statut){
+            $ajaxLoader.hide();
+            $('#modal-content').empty().append(html);
+            console.log(html);
+        }
+    });
+}
+
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
@@ -115,11 +147,7 @@ $(document).ready(function(){
     if($('#sent-yes-no-date-container').length > 0)
     {
         $('#general').stickLabelOnLeft();
-/*
-        $('#sent-yes-no-date-container').YesNoDate();
-        $('#remind-yes-no-date-container').YesNoDate();
-        $('#completed-yes-no-date-container').YesNoDate();
-*/
+
         $('.yes-no-date-container').each(function(el){
             $(this).YesNoDate();
         });
@@ -133,7 +161,6 @@ $(document).ready(function(){
 
         $('.date .input-group-addon').on('click', function(){
             $prev = $(this).siblings();
-            console.log($prev.attr('class'));
             $prev.data("DateTimePicker").show();
         });
     }
@@ -224,39 +251,17 @@ $(document).ready(function(){
         });
     });
 
+
+    $(document).on('submit','#edittoken',function(){
+        event.preventDefault();
+        submitEditToken();
+    });
+
     /**
      * Save token
      */
     $("#save-edittoken").click(function(){
-        $form       = $('#edittoken');
-        $datas      = $form.serialize();
-        $actionUrl  = $form.attr('action');
-        $gridid     = $('.listActions').data('grid-id');
-        $modal      = $('#editTokenModal');
-
-        $ajaxLoader = $('#ajaxContainerLoading2');
-        $('#modal-content').empty();
-        $ajaxLoader.show();                                         // Show the ajax loader
-
-        // Ajax request
-        $.ajax({
-            url  : $actionUrl,
-            type : 'POST',
-            data : $datas,
-
-            // html contains the buttons
-            success : function(html, statut){
-                $ajaxLoader.hide();
-                $.fn.yiiGridView.update('token-grid');                   // Update the surveys list
-                $modal.modal('hide');
-            },
-            error :  function(html, statut){
-                $ajaxLoader.hide();
-                $('#modal-content').empty().append(html);
-                console.log(html);
-            }
-        });
-
+        submitEditToken();
     });
 
 
