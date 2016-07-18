@@ -185,9 +185,12 @@ $(document).ready(function() {
     if ($('#completionstateSimpleStat').length>0)
     {
         $actionUrl = $('#completionstateSimpleStat').data('grid-display-url');
-        $("#completionstate > .btn").on("click", function(){
-            $display = $(this).find('input').val();
-            $postDatas = {state:$display};
+
+        $(document).on("change", '#completionstate', function(){
+            $that = $(this);
+            $actionUrl = $(this).data('url');
+            $display = $that.val();
+            $postDatas  = {state:$display};
 
             $.ajax({
                 url : $actionUrl,
@@ -205,7 +208,7 @@ $(document).ready(function() {
                 }
             });
 
-        });
+        });        
     }
 
     if($('.chartjs-container').length>0)
