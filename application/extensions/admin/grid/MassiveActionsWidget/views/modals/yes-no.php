@@ -32,7 +32,7 @@
                     -->
                     <div class="custom-modal-datas hidden">
                         <?php foreach($aAction['aCustomDatas'] as $aCustomData):?>
-                            <input type="hidden" name="<?php echo $aCustomData['name'];?>" value="<?php echo $aCustomData['value'];?>" />
+                            <input class="custom-data" type="hidden" name="<?php echo $aCustomData['name'];?>" value="<?php echo $aCustomData['value'];?>" />
                         <?php endforeach;?>
                     </div>
                 <?php endif; ?>

@@ -27,13 +27,13 @@ class SurveyDynamic extends LSActiveRecord
      *
      * @static
      * @access public
-     * @param int $surveyid
      * @return SurveyDynamic
      */
     public static function model($sid = NULL)
     {
         $refresh = false;
-        if (!is_null($sid)) {
+        if (!is_null($sid))
+        {
             self::sid($sid);
             $refresh = true;
         }
@@ -67,7 +67,6 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function tableName()
     {
-        $refresh = true;
         return '{{survey_' . self::$sid . '}}';
     }
 
@@ -162,7 +161,6 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return criteria updated with the ones needed for including results from the timings table
      *
-     * @param CDbCriteria|string $criteria
      *
      * @return CDbCriteria
      */
@@ -187,7 +185,6 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return criteria updated with the ones needed for including results from the token table
      *
-     * @param CDbCriteria|string $criteria
      *
      * @return CDbCriteria
      */
@@ -371,7 +368,6 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function exist($srid)
     {
-        $sid = self::$sid;
         $exist=false;
 
         if(Yii::app()->db->schema->getTable($this->tableName())){
@@ -398,7 +394,6 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function next($srid,$usefilterstate=false)
     {
-        $sid = self::$sid;
         $next=false;
         if ($usefilterstate && incompleteAnsFilterState() == 'incomplete')
             $wherefilterstate='submitdate IS NULL';
@@ -432,7 +427,6 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function previous($srid,$usefilterstate=false)
     {
-        $sid = self::$sid;
         $previous=false;
         if ($usefilterstate && incompleteAnsFilterState() == 'incomplete')
             $wherefilterstate='submitdate IS NULL';

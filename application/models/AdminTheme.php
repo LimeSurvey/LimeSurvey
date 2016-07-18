@@ -306,7 +306,7 @@ class AdminTheme extends CFormModel
         self::touchSubDirectories($sPath);
     }
 
-    static function touchSubDirectories( $sPath )
+    public static function touchSubDirectories( $sPath )
     {
         $Resource = opendir($sPath);
         while ($Item = readdir($Resource))
@@ -319,7 +319,7 @@ class AdminTheme extends CFormModel
         }
     }
 
-    static function getOtherAssets()
+    public static function getOtherAssets()
     {
         return array(
             // Extension assets

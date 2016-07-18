@@ -17,7 +17,7 @@
 *
 * This controller performs token actions
 *
-* @package        LimeSurvey
+* @package       LimeSurvey
 * @subpackage    Backend
 */
 class tokens extends Survey_Common_Action
@@ -26,7 +26,7 @@ class tokens extends Survey_Common_Action
     /**
     * Show token index page, handle token database
     */
-    function index($iSurveyId)
+    public function index($iSurveyId)
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         $iSurveyId = sanitize_int($iSurveyId);
@@ -71,7 +71,7 @@ class tokens extends Survey_Common_Action
     *
     * @return void
     */
-    function bounceprocessing($iSurveyId)
+    public function bounceprocessing($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
@@ -99,22 +99,23 @@ class tokens extends Survey_Common_Action
             $checktotal = 0;
             if ($thissurvey['bounceprocessing'] == 'G')
             {
-                $accounttype=strtoupper(getGlobalSetting('bounceaccounttype'));
-                $hostname = getGlobalSetting('bounceaccounthost');
-                $username = getGlobalSetting('bounceaccountuser');
-                $pass = getGlobalSetting('bounceaccountpass');
-                $hostencryption=strtoupper(getGlobalSetting('bounceencryption'));
+                $accounttype    = strtoupper(getGlobalSetting('bounceaccounttype'));
+                $hostname       = getGlobalSetting('bounceaccounthost');
+                $username       = getGlobalSetting('bounceaccountuser');
+                $pass           = getGlobalSetting('bounceaccountpass');
+                $hostencryption = strtoupper(getGlobalSetting('bounceencryption'));
             }
             else
             {
-                $accounttype=strtoupper($thissurvey['bounceaccounttype']);
-                $hostname = $thissurvey['bounceaccounthost'];
-                $username = $thissurvey['bounceaccountuser'];
-                $pass = $thissurvey['bounceaccountpass'];
-                $hostencryption=strtoupper($thissurvey['bounceaccountencryption']);
+                $accounttype    = strtoupper($thissurvey['bounceaccounttype']);
+                $hostname       = $thissurvey['bounceaccounthost'];
+                $username       = $thissurvey['bounceaccountuser'];
+                $pass           = $thissurvey['bounceaccountpass'];
+                $hostencryption = strtoupper($thissurvey['bounceaccountencryption']);
             }
 
-            @list($hostname, $port) = split(':', $hostname);
+            list($hostname, $port) = explode(':', $hostname); // deprecated: split(':', $hostname);
+
             if (empty($port))
             {
                 if ($accounttype == "IMAP")
@@ -159,10 +160,12 @@ class tokens extends Survey_Common_Action
                 case "IMAP":
                     $flags.="/imap";
                     break;
+
                 case "POP":
                     $flags.="/pop3";
                     break;
             }
+
             switch ($hostencryption) // novalidate-cert to have personal CA , maybe option.
             {
                 case "OFF":
@@ -176,41 +179,49 @@ class tokens extends Survey_Common_Action
                     break;
             }
 
-            if ($mbox = @imap_open('{' . $hostname . $flags . '}INBOX', $username, $pass))
+            $mbox = @imap_open('{' . $hostname . $flags . '}INBOX', $username, $pass);
+            if ($mbox)
             {
                 imap_errors();
                 $count = imap_num_msg($mbox);
                 if ($count>0)
                 {
-                    $lasthinfo = imap_headerinfo($mbox, $count);
-                    $datelcu = strtotime($lasthinfo->date);
+                    $lasthinfo      = imap_headerinfo($mbox, $count);
+                    $datelcu        = strtotime($lasthinfo->date);
                     $datelastbounce = $datelcu;
-                    $lastbounce = $thissurvey['bouncetime'];
+                    $lastbounce     = $thissurvey['bouncetime'];
+
                     while ($datelcu > $lastbounce)
                     {
-                        @$header = explode("\r\n", imap_body($mbox, $count, FT_PEEK)); // Don't mark messages as read
+                        $header = explode("\r\n", imap_body($mbox, $count, FT_PEEK)); // Don't mark messages as read
+
                         foreach ($header as $item)
                         {
                             if (preg_match('/^X-surveyid/', $item))
                             {
                                 $iSurveyIdBounce = explode(": ", $item);
                             }
+
                             if (preg_match('/^X-tokenid/', $item))
                             {
                                 $tokenBounce = explode(": ", $item);
+
                                 if ($iSurveyId == $iSurveyIdBounce[1])
                                 {
                                     $aData = array(
-                                    'emailstatus' => 'bounced'
+                                        'emailstatus' => 'bounced'
                                     );
-                                    $condn = array('token' => $tokenBounce[1]);
+
+                                    $condn  = array('token' => $tokenBounce[1]);
                                     $record = Token::model($iSurveyId)->findByAttributes($condn);
+
                                     if ($record->emailstatus != 'bounced')
                                     {
                                         $record->emailstatus = 'bounced';
                                         $record->save();
                                         $bouncetotal++;
                                     }
+
                                     $readbounce = imap_body($mbox, $count); // Put read
                                     if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
                                     {
@@ -220,13 +231,13 @@ class tokens extends Survey_Common_Action
                             }
                         }
                         $count--;
-                        @$lasthinfo = imap_headerinfo($mbox, $count);
-                        @$datelc = $lasthinfo->date;
+                        $lasthinfo = imap_headerinfo($mbox, $count);
+                        $datelc = $lasthinfo->date;
                         $datelcu = strtotime($datelc);
                         $checktotal++;
                     }
                 }
-                @imap_close($mbox);
+                imap_close($mbox);
                 $condn = array('sid' => $iSurveyId);
                 $survey = Survey::model()->findByAttributes($condn);
                 $survey->bouncetime = $datelastbounce;
@@ -244,6 +255,13 @@ class tokens extends Survey_Common_Action
             else
             {
                 eT("Please check your settings");
+                $aErrors = @imap_errors();
+
+                foreach ($aErrors as $sError)
+                {
+                    echo '<br/>'.$sError;
+                }
+
             }
         }
         else
@@ -251,17 +269,13 @@ class tokens extends Survey_Common_Action
             eT("Bounce processing is deactivated either application-wide or for this survey in particular.");
             return;
         }
-
-
-        exit; // if bounceprocessing : javascript : no more todo
     }
-
 
     public function deleteMultiple()
     {
         // TODO: permission checks
-        $aTokenIds = json_decode($_POST['sItems']);
-        $iSid = $_POST['iSid'];
+        $aTokenIds = json_decode(Yii::app()->getRequest()->getPost('sItems'));
+        $iSid = Yii::app()->getRequest()->getPost('sid');
         TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
         return true;
     }
@@ -269,7 +283,7 @@ class tokens extends Survey_Common_Action
     /**
     * Browse Tokens
     */
-    function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
+    public function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         /* Check permissions */
@@ -396,7 +410,7 @@ class tokens extends Survey_Common_Action
     * @param it takes the session user data loginID
     * @return JSON encoded string containg sharing information
     */
-    function getTokens_json($iSurveyId, $search = null)
+    public function getTokens_json($iSurveyId, $search = null)
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
@@ -591,7 +605,7 @@ class tokens extends Survey_Common_Action
         echo ls_json_encode($aData);
     }
 
-    function getSearch_json($iSurveyId)
+    public function getSearch_json($iSurveyId)
     {
         $searchcondition = Yii::app()->request->getQuery('search');
         $searchcondition = urldecode($searchcondition);
@@ -605,7 +619,7 @@ class tokens extends Survey_Common_Action
     *
     * @param mixed $iSurveyId The Survey ID
     */
-    function editToken($iSurveyId)
+    public function editToken($iSurveyId)
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
@@ -727,8 +741,9 @@ class tokens extends Survey_Common_Action
     /**
     * Add new token form
     */
-    function addnew($iSurveyId)
+    public function addnew($iSurveyId)
     {
+        $aData = array();
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $iSurveyId = sanitize_int($iSurveyId);
@@ -841,7 +856,7 @@ class tokens extends Survey_Common_Action
     /**
     * Edit Tokens
     */
-    function edit($iSurveyId, $iTokenId, $ajax=false)
+    public function edit($iSurveyId, $iTokenId, $ajax=false)
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         $iSurveyId = sanitize_int($iSurveyId);
@@ -957,7 +972,7 @@ class tokens extends Survey_Common_Action
     /**
     * Delete tokens
     */
-    function delete($iSurveyID)
+    public function delete($iSurveyID)
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         $iSurveyID = sanitize_int($iSurveyID);
@@ -995,7 +1010,7 @@ class tokens extends Survey_Common_Action
     /**
     * Add dummy tokens form
     */
-    function addDummies($iSurveyId, $subaction = '')
+    public function addDummies($iSurveyId, $subaction = '')
     {
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
@@ -1022,6 +1037,7 @@ class tokens extends Survey_Common_Action
 
         if (!empty($subaction) && $subaction == 'add')
         {
+            $message = '';
             $this->getController()->loadLibrary('Date_Time_Converter');
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
@@ -1156,7 +1172,7 @@ class tokens extends Survey_Common_Action
     /**
     * Handle managetokenattributes action
     */
-    function managetokenattributes($iSurveyId)
+    public function managetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
@@ -1173,6 +1189,7 @@ class tokens extends Survey_Common_Action
         Yii::app()->loadHelper("surveytranslator");
 
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
@@ -1213,7 +1230,7 @@ class tokens extends Survey_Common_Action
     /**
     * Update token attributes
     */
-    function updatetokenattributes($iSurveyId)
+    public function updatetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
@@ -1253,7 +1270,7 @@ class tokens extends Survey_Common_Action
     /**
     * Delete token attributes
     */
-    function deletetokenattributes($iSurveyId)
+    public function deletetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
@@ -1318,7 +1335,7 @@ class tokens extends Survey_Common_Action
     /**
     * updatetokenattributedescriptions action
     */
-    function updatetokenattributedescriptions($iSurveyId)
+    public function updatetokenattributedescriptions($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
@@ -1366,15 +1383,17 @@ class tokens extends Survey_Common_Action
     /**
     * Handle email action
     */
-    function email($iSurveyId, $tokenids = null)
+    public function email($iSurveyId, $tokenids = null)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+        $aData = array();
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
+
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -1767,9 +1786,11 @@ class tokens extends Survey_Common_Action
     * Export Dialog
      *
     */
-    function exportdialog($iSurveyId)
+    public function exportdialog($iSurveyId)
     {
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData = array();
+
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=true;
@@ -1878,6 +1899,7 @@ class tokens extends Survey_Common_Action
     public function importldap($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
+        $aData = array();
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
@@ -2151,8 +2173,9 @@ class tokens extends Survey_Common_Action
     /**
     * import from csv
     */
-    function import($iSurveyId)
+    public function import($iSurveyId)
     {
+        $aData = array();
         $iSurveyId = (int) $iSurveyId;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import'))
         {
@@ -2494,7 +2517,7 @@ class tokens extends Survey_Common_Action
     /**
     * Generate tokens
     */
-    function tokenify($iSurveyId)
+    public function tokenify($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -2560,7 +2583,7 @@ class tokens extends Survey_Common_Action
     /**
     * Remove Token Database
     */
-    function kill($iSurveyId)
+    public function kill($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete'))
@@ -2617,7 +2640,7 @@ class tokens extends Survey_Common_Action
         }
     }
 
-    function bouncesettings($iSurveyId)
+    public function bouncesettings($iSurveyId)
     {
         $iSurveyId = $iSurveyID = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -2674,7 +2697,7 @@ class tokens extends Survey_Common_Action
     * Handle token form for addnew/edit actions
     * @param string $subaction
     */
-    function _handletokenform($iSurveyId, $subaction, $iTokenId="", $ajax=false)
+    public function _handletokenform($iSurveyId, $subaction, $iTokenId="", $ajax=false)
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
@@ -2743,7 +2766,7 @@ class tokens extends Survey_Common_Action
     /**
     * Show dialogs and create a new tokens table
     */
-    function _newtokentable($iSurveyId)
+    public function _newtokentable($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens','create'))
@@ -2810,6 +2833,7 @@ class tokens extends Survey_Common_Action
             //Add any survey_links from the renamed table
             SurveyLink::model()->rebuildLinksFromTokenTable($iSurveyId);
 
+            $aData = array();
             $aData['sidemenu']['state'] = false;
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Import old tokens"),

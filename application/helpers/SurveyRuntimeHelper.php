@@ -1361,6 +1361,7 @@ class SurveyRuntimeHelper {
                 $this->createFullQuestionIndexMenu($LEMsessid, $surveyMode);
             }
 
+            echo "<!-- generated in SurveyRuntimeHelper -->";
             echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
             echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
             echo "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
