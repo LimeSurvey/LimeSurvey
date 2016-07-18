@@ -1008,7 +1008,7 @@ class dataentry extends Survey_Common_Action
                             break;
 
                         case "P": //Multiple choice with comments checkbox + text
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             while (isset($fname) && $fname['type'] == "P")
                             {
                                 $thefieldname=$fname['fieldname'];
@@ -1045,7 +1045,7 @@ class dataentry extends Survey_Common_Action
                             $fname=prev($fnames);
                             break;
                         case "|": //FILE UPLOAD
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             if ($fname['aid']!=='filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0))
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
@@ -1123,7 +1123,7 @@ class dataentry extends Survey_Common_Action
                             ."\t</select>\n";
                             break;
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
@@ -1146,7 +1146,7 @@ class dataentry extends Survey_Common_Action
                             $fname=prev($fnames);
                             break;
                         case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
@@ -1169,7 +1169,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
@@ -1193,7 +1193,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
@@ -1219,7 +1219,7 @@ class dataentry extends Survey_Common_Action
                         case "F": //ARRAY (Flexible Labels)
                         case "H":
                         case "1":
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
@@ -1285,7 +1285,7 @@ class dataentry extends Survey_Common_Action
                                 $maxvalue=1;
                                 $stepvalue=1;
                             }
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
@@ -1315,7 +1315,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case ";": //ARRAY (Multi Flexi)
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
