@@ -23,7 +23,6 @@ $(document).ready(function(){
         $that = $(this);
         $actionUrl = $(this).data('url');
         $display = ($that.val()=='extended')?'extended':'compact';
-        console.log('select value:'+$display);
         $postDatas  = {state:$display};
         $.ajax({
             url : $actionUrl,

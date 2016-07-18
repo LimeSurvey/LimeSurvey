@@ -182,6 +182,32 @@ function init_chart_js_graph_with_datas($type,$qid)
 
 $(document).ready(function() {
 
+    if ($('#completionstateSimpleStat').length>0)
+    {
+        $actionUrl = $('#completionstateSimpleStat').data('grid-display-url');
+        $("#completionstate > .btn").on("click", function(){
+            $display = $(this).find('input').val();
+            $postDatas = {state:$display};
+
+            $.ajax({
+                url : $actionUrl,
+                type : 'POST',
+                data :  $postDatas,
+
+                // html contains the buttons
+                success : function(html, statut){
+                    // Reload page
+                    location.reload();
+                },
+                error :  function(html, statut){
+                    console.log('error');
+                    console.log(html);
+                }
+            });
+
+        });
+    }
+
     if($('.chartjs-container').length>0)
     {
         $elChartJsContainer = $('.chartjs-container').first();

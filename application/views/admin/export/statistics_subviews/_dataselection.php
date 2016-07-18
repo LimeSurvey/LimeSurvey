@@ -9,7 +9,7 @@
             <label for='completionstate' class="col-sm-4 control-label"><?php eT("Include:"); ?> </label>
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'completionstate',
-                'value'=> 'all' ,
+                'value'=> incompleteAnsFilterState(),
                 'selectOptions'=>array(
                     "all"=>gT("All responses",'unescaped'),
                     "complete"=>gT("Complete only",'unescaped'),
