@@ -13,18 +13,26 @@
         <div class="pull-right">
             <div class="form text-right">
                 <div class="form-group">
-                    <?php $this->widget(
-                        'yiiwheels.widgets.switch.WhSwitch',
+
+                    <label for="display-mode">
+                        <?php
+                            eT('Display mode:');
+                        ?>
+                    </label>
+
+                    <?php
+                    echo CHtml::dropDownList(
+                        'display-mode',
+                        Yii::app()->user->getState('responsesGridSwitchDisplayState'),
                         array(
-                            'name'     => 'reponses-display-mode',
-                            'onLabel'  => gT('Extended'),
-                            'offLabel' => gT('Compact'),
-                            'offColor' => 'default',
-                            'value'    => Yii::app()->user->getState('responsesGridSwitchDisplayState'),
-                            'htmlOptions'=> array(
-                                'data-url'=>App()->createUrl('/admin/responses/set_grid_display/')
-                            ),
-                        ));
+                            'extended'=>gT('Extended'),
+                            'compact'=>gT('Compact')),
+                        array(
+                            'class'=>'form-control',
+                            'style'=>'display: inline;width: auto',
+                            'data-url'=>App()->createUrl('/admin/responses/set_grid_display/')
+                        ))
+                    ;
                     ?>
                 </div>
             </div>

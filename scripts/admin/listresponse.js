@@ -19,11 +19,11 @@ $(document).ready(function(){
         });
     });
 
-
-    $('#reponses-display-mode').on('switchChange.bootstrapSwitch', function(event, state) {
+    $(document).on("change", '#display-mode', function(){
+        $that = $(this);
         $actionUrl = $(this).data('url');
-        $display = (state==true)?'extended':'compact';
-        console.log($display);
+        $display = ($that.val()=='extended')?'extended':'compact';
+        console.log('select value:'+$display);
         $postDatas  = {state:$display};
         $.ajax({
             url : $actionUrl,
@@ -38,5 +38,6 @@ $(document).ready(function(){
                 console.log(html);
             }
         });
+
     });
 });
