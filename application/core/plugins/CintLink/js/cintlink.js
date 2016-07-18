@@ -15,8 +15,7 @@ $(document).ready(function() {
      *
      * @return void
      */
-    function showLoginForm()
-    {
+    function showLoginForm() {
         $.ajax({
             method: 'POST',
             url: LS.plugin.cintlink.pluginBaseUrl + '&function=getLoginForm'
@@ -41,8 +40,8 @@ $(document).ready(function() {
                         $('#error-modal').modal();
                     }
                     else if (response.result) {
-                        // Login OK, show widget
-                        showWidget();
+                        // Login OK
+                        showDashboard();
                     }
                     else {
                         $('#error-modal .modal-body-text').html("Could not login. Please make sure username and password is correct.");
@@ -62,8 +61,7 @@ $(document).ready(function() {
      * @param {string} surveyLanguage
      * @return {string}
      */
-    function getWidgetLanguage(surveyLanguage)
-    {
+    function getWidgetLanguage(surveyLanguage) {
         var supportedLanguages = [
             'en',
             'de',
@@ -84,12 +82,27 @@ $(document).ready(function() {
     }
 
     /**
+     * Fetch dashboard HTMl from server and inject it
+     *
+     * @return void
+     */
+    function showDashboard() {
+        console.log('showDashboard');
+        $.ajax({
+            method: 'POST',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getDashboard'
+        }).done(function(response) {
+            console.log('response', response);
+            $('#cintlink-container').html(response);
+        });
+    }
+
+    /**
      * Show the CintLink widget
      *
      * @return void
      */
-    function showWidget()
-    {
+    function showWidget() {
         console.log("showWidget");
 
         $.ajax({
@@ -148,6 +161,7 @@ $(document).ready(function() {
         });
 
     }
+    LS.plugin.cintlink.showWidget = showWidget;  // Needs to be accessed from the outside (dashboard)
 
     // Check if user is logged in on limesurvey.org
     // If yes, show widget
@@ -162,8 +176,8 @@ $(document).ready(function() {
 
         if (response.result)
         {
-            // User logged in, show Cint widget
-            showWidget();
+            // User logged in
+            showDashboard();
         }
         else
         {

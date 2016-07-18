@@ -76,6 +76,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     'url' => 'string primary key',
                     'raw' => 'text',
                     'status' => 'string',
+                    'created' => 'datetime',
+                    'modified' => 'datetime',
                 );
                 $oDB->createCommand()->createTable('{{plugin_cintlink_orders}}', $aFields);
                 $oTransaction->commit();
@@ -200,6 +202,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * Return HTMl for login form
      * Called by Ajax
      *
+     * @param LSHttpRequest $request
      * @return string
      */
     public function getLoginForm(LSHttpRequest $request)
@@ -207,6 +210,25 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data = array();
         Yii::setPathOfAlias('cintLink', dirname(__FILE__));
         $content = Yii::app()->controller->renderPartial('cintLink.views.loginform', $data, true);
+        return $content;
+    }
+
+    /**
+     * Return HTML for dashboard
+     * Called by Ajax
+     *
+     * @param LSHttpRequest $request
+     * @return string
+     */
+    public function getDashboard(LSHttpRequest $request)
+    {
+        $data = array();
+
+        $orders = $this->getOrders();
+        $data['orders'] = $orders;
+
+        Yii::setPathOfAlias('cintLink', dirname(__FILE__));
+        $content = Yii::app()->controller->renderPartial('cintLink.views.dashboard', $data, true);
         return $content;
     }
 
@@ -281,6 +303,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $order->url = $result->url;
         $order->raw = json_encode(get_object_vars($result->raw));
         $order->status = (string) $result->raw->state;  // 'hold' means waiting for payment
+        $order->created = date('Y-m-d H:i:m', time());
         $order->save();
 
         return json_encode(array('result' => $response->body));
@@ -333,6 +356,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             }
             else if ($functionToCall == 'checkIfUserIsLoggedInOnLimesurveyorg'
                     || $functionToCall == 'getLoginForm'
+                    || $functionToCall == 'getDashboard'
                     || $functionToCall == "login"
                     || $functionToCall == "purchaseRequest"
                     || $functionToCall == "getSurvey")
@@ -340,5 +364,16 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 echo $this->$functionToCall($request);
             }
         }
+    }
+
+    /**
+     * Get all Cint orders saved on client
+     *
+     * @return array<CintLinkOrder>
+     */
+    private function getOrders()
+    {
+        $orders = CintLinkOrder::model()->findAll();
+        return $orders;
     }
 }
