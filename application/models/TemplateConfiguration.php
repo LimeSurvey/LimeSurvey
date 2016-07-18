@@ -53,7 +53,7 @@ class TemplateConfiguration extends CFormModel
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed pstpl files, if the files refered in css exist, etc.
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param integer $iSurveyId        the id of the survey. If
+     * @param string $iSurveyId        the id of the survey. If
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
