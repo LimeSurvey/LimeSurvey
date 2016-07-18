@@ -636,7 +636,7 @@ EOD;
     {
         if (file_exists ($oTemplate->path.'/'.$oTemplate->siteLogo ))
         {
-            $sitelogo= '<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt="site-logo"/>';
+            $sitelogo= '<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt=""/>';
         }
     }
 

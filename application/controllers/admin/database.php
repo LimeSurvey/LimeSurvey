@@ -1189,7 +1189,7 @@ class database extends Survey_Common_Action
                 }
 
                 // Only owner and superadmins may change the survey owner
-                if ($oSurvey->owner_id==Yii::app()->request->getPost('owner_id') || Permission::model()->hasGlobalPermission('superadmin','read'))
+                if ($oSurvey->owner_id == Yii::app()->session['loginID'] || Permission::model()->hasGlobalPermission('superadmin','read'))
                 {
                     $oSurvey->owner_id = Yii::app()->request->getPost('owner_id');
                 }

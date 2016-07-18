@@ -400,7 +400,8 @@ class responses extends Survey_Common_Action
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
-
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+            
             // Basic datas for the view
             $aData                      = $this->_getData($iSurveyId);
             $aData['surveyid']          = $iSurveyId;

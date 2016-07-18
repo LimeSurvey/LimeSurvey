@@ -62,6 +62,6 @@
 
         private function isView($display)
         {
-            return in_array($display, array('yes-no', 'ajax_form_group'));
+            return in_array($display, array('yes-no'));
         }
     }

@@ -83,6 +83,7 @@ class SurveyDynamic extends LSActiveRecord
         {
             TokenDynamic::sid(self::$sid);
             return array(
+                'survey'   => array(self::HAS_ONE, 'Survey', array(), 'condition'=>('sid = '.self::$sid)),
                 'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token'))
             );
         }
@@ -582,10 +583,9 @@ class SurveyDynamic extends LSActiveRecord
 
 
        // Join the token table and filter tokens if needed
-       if ($this->bHaveToken)
+       if ($this->bHaveToken && $this->survey->anonymized != 'Y')
        {
             $criteria->compare('t.token',$this->token, true);
-
             $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
             $criteria->compare('tokens.firstname',$this->firstname_filter, true);
             $criteria->compare('tokens.lastname',$this->lastname_filter, true);

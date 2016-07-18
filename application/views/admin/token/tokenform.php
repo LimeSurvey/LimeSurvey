@@ -83,22 +83,40 @@
                             </p>
                         </div>
 
+                        <!--
+                            TODO:
+                                To take in account the anonomyzed survey case (completed field contain no date, but a {Y,N}), the code become more complexe
+                                It will need a refactorisation .
+                                maybe a widget? At least, a lot of variable should be set in the controller (classes etc)
+                        -->
+                        <?php
+                            if ($oSurvey->anonymized != 'Y')
+                            {
+                                $sCointainerClass = 'yes-no-date-container';
+                            }
+                            else
+                            {
+                                $sCointainerClass = 'yes-no-container';
+                            }
+                        ?>
                         <!-- Completed -->
                         <label class="col-sm-2 control-label"  for='completed'><?php eT("Completed?"); ?></label>
-                        <div class="col-sm-4" id="completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
+                        <div class="col-sm-4 <?php echo $sCointainerClass;?>" id="completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
                             <div class="row">
-                                <?php
-                                    $bCompletedValue = "0";
-                                    if (isset($completed) && $completed!='N')
-                                    {
-                                        $bCompletedValue       = "1";
-                                        $completedDBFormat     = $completed;
-                                        $completed             = convertToGlobalSettingFormat($completed);
-                                    }
-                                ?>
+                                <?php if ($oSurvey->anonymized != 'Y'):?>
 
-                                <div class="col-sm-4">
                                     <?php
+                                        $bCompletedValue = "0";
+                                        if (isset($completed) && $completed!='N')
+                                        {
+                                            $completedDBFormat     = $completed;
+                                            $bCompletedValue       = "1";
+                                            $completed             = convertToGlobalSettingFormat($completed);
+                                        }
+                                    ?>
+
+                                    <div class="col-sm-4">
+                                        <?php
                                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => "completed-switch",
                                             'id'=>"completed-switch",
@@ -106,24 +124,44 @@
                                             'value' => $bCompletedValue,
                                             'onLabel'=>gT('Yes'),
                                             'offLabel' => gT('No')));
-                                    ?>
-                                </div>
+                                            ?>
+                                    </div>
+                                <?php else:?>
+                                    <div class="col-sm-4">
+                                        <?php
+                                            $completedDBFormat = $completed;
+                                            $bCompletedValue   = (isset($completed) && $completed!='N')?"1":"0";
+                                            $completed         = (isset($completed) && $completed!='N')?'Y':'N';
+                                        ?>
+
+                                        <?php
+                                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => "completed-switch",
+                                            'id'=>"completed-switch",
+                                            'htmlOptions'=>array('class'=>"YesNoSwitch"),
+                                            'value' => $bCompletedValue,
+                                            'onLabel'=>gT('Yes'),
+                                            'offLabel' => gT('No')));
+                                            ?>
+                                    </div>
+                                <?php endif;?>
 
                                 <div class="col-sm-8">
-
-                                    <div id="sent-date-container" class="date-container"  <?php if(!$bCompletedValue):?>style="display: none;"<?php endif;?>>
-                                        <div id="completed-date_datetimepicker" class="input-group date">
-                                            <input
-                                                class="YesNoDatePicker form-control"
-                                                id="completed-date"
-                                                type="text"
-                                                value="<?php echo isset($completed) ? $completed : ''?>"
-                                                name="completed-date"
-                                                data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
-                                            >
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    <?php if ($oSurvey->anonymized != 'Y'):?>
+                                        <div id="sent-date-container" class="date-container"  <?php if(!$bCompletedValue):?>style="display: none;"<?php endif;?>>
+                                            <div id="completed-date_datetimepicker" class="input-group date">
+                                                <input
+                                                    class="YesNoDatePicker form-control"
+                                                    id="completed-date"
+                                                    type="text"
+                                                    value="<?php echo isset($completed) ? $completed : ''?>"
+                                                    name="completed-date"
+                                                    data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                                    >
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <?php endif;?>
                                 </div>
                             </div>
                             <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completedDBFormat)){echo $completedDBFormat;}else{echo "N";}?>" />
@@ -186,40 +224,59 @@
 
                         <!-- Invitation sent -->
                         <label class="col-sm-2 control-label"  for='sent'><?php eT("Invitation sent?"); ?></label>
-                        <div class="col-sm-4" id="sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
+                        <div class="col-sm-4 <?php echo $sCointainerClass;?>" id="sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <?php
-                                        // TODO: move to controller
-                                        $bSwitchValue       = (isset($sent) && $sent!='N')?"1":"0";
-                                        $bRemindSwitchValue = (isset($remindersent) && $remindersent!='N')?"1":"0";
+                                    <?php if ($oSurvey->anonymized != 'Y'):?>
+                                        <?php
+                                            // TODO: move to controller
+                                            $bSwitchValue       = (isset($sent) && $sent!='N')?"1":"0";
+                                            $bRemindSwitchValue = (isset($remindersent) && $remindersent!='N')?"1":"0";
 
-                                        $bSwitchValue  = "0";
-                                        if (isset($sent) && $sent!='N')
-                                        {
-                                            $bSwitchValue     = "1";
-                                            $sentDBValue      = $sent;
-                                            $sent             = convertToGlobalSettingFormat($sent);
-                                        }
+                                            $bSwitchValue  = "0";
+                                            if (isset($sent) && $sent!='N')
+                                            {
+                                                $bSwitchValue     = "1";
+                                                $sentDBValue      = $sent;
+                                                $sent             = convertToGlobalSettingFormat($sent);
+                                            }
 
-                                        $bRemindSwitchValue  = "0";
-                                        if (isset($remindersent) && $remindersent!='N')
-                                        {
-                                            $bRemindSwitchValue       = "1";
-                                            $remindersentDBValue      = $remindersent;
-                                            $remindersent             = convertToGlobalSettingFormat($remindersent);
-                                        }
-                                    ?>
+                                            $bRemindSwitchValue  = "0";
+                                            if (isset($remindersent) && $remindersent!='N')
+                                            {
+                                                $bRemindSwitchValue       = "1";
+                                                $remindersentDBValue      = $remindersent;
+                                                $remindersent             = convertToGlobalSettingFormat($remindersent);
+                                            }
+                                        ?>
 
-                                    <?php
-                                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            'name' => "sent-switch",
-                                            'id'=>"sent-switch",
-                                            'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
-                                            'value' => $bSwitchValue,
-                                            'onLabel'=>gT('Yes'),
-                                            'offLabel' => gT('No')));
-                                    ?>
+                                        <?php
+                                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                'name' => "sent-switch",
+                                                'id'=>"sent-switch",
+                                                'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
+                                                'value' => $bSwitchValue,
+                                                'onLabel'=>gT('Yes'),
+                                                'offLabel' => gT('No')));
+                                        ?>
+                                    <?php else:?>
+                                            <?php
+                                                $sentDBValue      = $sent;
+                                                $remindersentDBValue      = $remindersent;
+                                                $bSwitchValue       = (isset($sent) && $sent!='N')?"1":"0";
+                                                $bRemindSwitchValue = (isset($remindersent) && $remindersent!='N')?"1":"0";
+                                            ?>
+
+                                            <?php
+                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                    'name' => "sent-switch",
+                                                    'id'=>"sent-switch",
+                                                    'htmlOptions'=>array('class'=>"YesNoSwitch"),
+                                                    'value' => $bSwitchValue,
+                                                    'onLabel'=>gT('Yes'),
+                                                    'offLabel' => gT('No')));
+                                            ?>
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="col-sm-8">
@@ -244,19 +301,31 @@
 
                         <!-- Reminder sent -->
                         <label class="col-sm-2 control-label"  for='remindersent'><?php eT("Reminder sent?"); ?></label>
-                        <div class="col-sm-4" id="remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
+                        <div class="col-sm-4 <?php echo $sCointainerClass;?>" id="remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
 
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <?php
-                                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            'name' => "remind-switch",
-                                            'id'=>"remind-switch",
-                                            'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
-                                            'value' => $bRemindSwitchValue,
-                                            'onLabel'=>gT('Yes'),
-                                            'offLabel' => gT('No')));
-                                    ?>
+                                    <?php if ($oSurvey->anonymized != 'Y'):?>
+                                        <?php
+                                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                'name' => "remind-switch",
+                                                'id'=>"remind-switch",
+                                                'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
+                                                'value' => $bRemindSwitchValue,
+                                                'onLabel'=>gT('Yes'),
+                                                'offLabel' => gT('No')));
+                                        ?>
+                                    <?php else:?>
+                                        <?php
+                                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                'name' => "sent-switch",
+                                                'id'=>"sent-switch",
+                                                'htmlOptions'=>array('class'=>"YesNoSwitch"),
+                                                'value' => $bSwitchValue,
+                                                'onLabel'=>gT('Yes'),
+                                                'offLabel' => gT('No')));
+                                        ?>
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="col-sm-8">
