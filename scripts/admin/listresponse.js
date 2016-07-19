@@ -19,19 +19,24 @@ $(document).ready(function(){
         });
     });
 
-    $(document).on("change", '#display-mode', function(){
+    $('#display-mode').click(function(event){
+        event.preventDefault();
         $that = $(this);
         $actionUrl = $(this).data('url');
-        $display = ($that.val()=='extended')?'extended':'compact';
+        $display = $that.find('input').val();
         $postDatas  = {state:$display};
         $.ajax({
-            url : $actionUrl,
+            url : encodeURI($actionUrl),
             type : 'POST',
             data :  $postDatas,
 
             // html contains the buttons
             success : function(html, statut){
-                $.fn.yiiGridView.update('responses-grid');
+                $.fn.yiiGridView.update('responses-grid', {
+                    success: function(s){
+                        console.log(s);
+                    }
+                });
             },
             error :  function(html, statut){
                 console.log(html);

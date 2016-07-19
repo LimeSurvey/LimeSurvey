@@ -16,18 +16,19 @@
                     </label>
 
                     <?php
-                    echo CHtml::dropDownList(
-                        'display-mode',
-                        Yii::app()->user->getState('responsesGridSwitchDisplayState'),
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', 
                         array(
+                        'name' => 'display-mode',
+                        'value'=> Yii::app()->user->getState('responsesGridSwitchDisplayState'),
+                        'selectOptions'=>array(
                             'extended'=>gT('Extended'),
-                            'compact'=>gT('Compact')),
-                        array(
-                            'class'=>'form-control',
-                            'style'=>'display: inline;width: auto',
+                            'compact'=>gT('Compact')
+                            ),
+                        'htmlOptions' => array(
                             'data-url'=>App()->createUrl('/admin/responses/set_grid_display/')
-                        ))
-                    ;
+                            )
+                        )
+                    );
                     ?>
                 </div>
             </div>
