@@ -1249,8 +1249,16 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
+            $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo = getSurveyInfo($surveyid);
-            $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
+
+            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings 
+            if(($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')){
+                $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
+            } else {
+                $showgroupinfo_ = $showgroupinfo_global_;
+            }
+
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
             if (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_)
@@ -1361,6 +1369,7 @@ class SurveyRuntimeHelper {
                 $this->createFullQuestionIndexMenu($LEMsessid, $surveyMode);
             }
 
+            echo "<!-- generated in SurveyRuntimeHelper -->";
             echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
             echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
             echo "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
@@ -1462,38 +1471,36 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION_CODE']=$aReplacement['QUESTION_NUMBER']="";
         $sCode=$aQuestionQanda[5];
         $iNumber=$aQuestionQanda[0]['number'];
-        switch (Yii::app()->getConfig('showqnumcode'))
+
+        $showqnumcode_global_ = getGlobalSetting('showqnumcode');
+        $aSurveyinfo = getSurveyInfo($iSurveyId); 
+        // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings 
+        if(($aSurveyinfo['showqnumcode'] == $showqnumcode_global_) || ($showqnumcode_global_ == 'choose')){
+            $showqnumcode_ = $aSurveyinfo['showqnumcode']; 
+        } else {
+            $showqnumcode_ = $showqnumcode_global_; 
+        }
+
+        switch ($showqnumcode_)
         {
             case 'both':
+            case 'B': // Both
                 $aReplacement['QUESTION_CODE']=$sCode;
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
                 break;
             case 'number':
+            case 'N':
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
                 break;
             case 'number':
                 $aReplacement['QUESTION_CODE']=$sCode;
                 break;
             case 'choose':
+            case 'C':
             default:
-                switch($oSurveyId->showqnumcode)
-                {
-                    case 'B': // Both
-                        $aReplacement['QUESTION_CODE']=$sCode;
-                        $aReplacement['QUESTION_NUMBER']=$iNumber;
-                        break;
-                    case 'N':
-                        $aReplacement['QUESTION_NUMBER']=$iNumber;
-                        break;
-                    case 'C':
-                        $aReplacement['QUESTION_CODE']=$sCode;
-                        break;
-                    case 'X':
-                    default:
-                        break;
-                }
                 break;
         }
+
         $aReplacement['QUESTION']=$aQuestionQanda[0]['all'] ; // Deprecated : only used in old template (very old)
         // Core value : user text
         $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];

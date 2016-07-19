@@ -2029,3 +2029,9 @@ table#responsedetail tr td{
     max-width: 100px;
      word-wrap:break-word;
 }
+
+.in-title {
+    position: relative;
+    top: -65px;
+    right: 15px;
+}

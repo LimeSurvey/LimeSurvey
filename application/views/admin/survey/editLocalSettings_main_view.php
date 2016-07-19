@@ -52,7 +52,7 @@ $data = array('aTabTitles'=>$aTabTitles, 'aTabContents'=>$aTabContents, 'has_per
                 ?>
 
                 <!-- settings -->
-                <div class="col-sm-12 col-md-5" id="accordion-container" style="background-color: #fff;">
+                <div class="col-sm-12 col-md-5" id="accordion-container" style="background-color: #fff; z-index: 2;">
                     <?php
                     if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
                     {

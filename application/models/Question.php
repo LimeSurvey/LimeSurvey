@@ -348,6 +348,28 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Delete a bunch of questions in one go
+     *
+     * @param mixed $questionsIds
+     * @return void
+     */
+    public static function deleteAllById($questionsIds)
+    {
+        if ( !is_array($questionsIds) )
+        {
+            $questionsIds = array($questionsIds);
+        }
+
+        Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(Answer::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'parent_qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
+    }
+
+    /**
      * This function is called from everywhere, which is quiet weird...
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
      */
