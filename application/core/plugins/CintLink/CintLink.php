@@ -74,8 +74,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
             {
                 $aFields = array(
                     'url' => 'string primary key',
+                    'sid' => 'int',  // Survey id
                     'raw' => 'text',
                     'status' => 'string',
+                    'ordered_by' => 'int',  // User id
                     'created' => 'datetime',
                     'modified' => 'datetime',
                 );
