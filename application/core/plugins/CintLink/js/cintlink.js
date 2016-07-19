@@ -98,6 +98,54 @@ $(document).ready(function() {
     }
 
     /**
+     * Fetch nBill order form HTML and put it in iframe
+     *
+     * @return void
+     */
+    function showNBillOrderForm() {
+        console.log('showNBillOrderForm');
+        //$('#cintlink-iframe').attr('src', "https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&tmpl=component");
+        //$('#cintlink-iframe').toggleClass('hidden');
+        return;
+        $.ajax({
+            method: 'POST',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getNBillOrderForm'
+        }).done(function(response) {
+            //console.log('response', response);
+            var response = JSON.parse(response);
+
+            // If we use an iframe, we can't hack into the form and submit it using curl
+
+            /*
+            var orderForm = $(response.result);
+            $('#cintlink-container').html($('#order_form', orderForm));
+            $('input[name="ctl_next_1"]').attr('class', 'btn btn-default');
+            $('.componentheading').hide();
+            $('input[name="ctl_next_1"]').on('click', function(ev) {
+                ev.preventDefault();
+                var formValues = $('form[name="order_form"]').serialize();
+                console.log('formValues', formValues);
+
+                // Submit form using Ajax
+                $.ajax({
+                     method: 'POST',
+                     url: LS.plugin.cintlink.pluginBaseUrl + '&function=submitFirstNBillPage',
+                     data: {
+                        'formValues': formValues
+                     }
+                }).done(function(response) {
+                    console.log('response', response);
+                    var response = JSON.parse(response);
+                    $('#cintlink-iframe').attr('src', 'data:text/html;charset=utf-8,' + response.result);
+                    $('#cintlink-iframe').toggleClass('hidden');
+                });
+
+            });
+            */
+        });
+    }
+
+    /**
      * Show the CintLink widget
      *
      * @return void

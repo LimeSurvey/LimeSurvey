@@ -41,7 +41,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      *
      * @var string
      */
-    private $baseURL = "https://www.limeservice.com/v2/index.php?option=>com_api";
+    private $baseURL = "https://www.limesurvey.org/index.php?option=com_api";
 
     public function init()
     {
@@ -157,6 +157,22 @@ class CintLink extends \ls\pluginmanager\PluginBase
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
         App()->clientScript->registerScriptFile("http://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
 
+        //$response = json_decode($response);
+        /*
+        $c = curl_init("https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10");
+        curl_setopt($c, CURLOPT_COOKIEJAR, './cookie.txt');
+        curl_setopt($c, CURLOPT_COOKIEFILE, './cookie.txt');
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_HEADER, true);
+        //curl_setopt($c, CURLOPT_HTTPHEADER, array("Cookie: aeca3d1c1ce0a356a06332c24d79aa4e=eela13alsi3g7uc052nupk12b2"));
+        $output = curl_exec($c);
+        $headers = curl_getinfo($c, CURLINFO_HEADER_OUT);
+        curl_close($c);
+
+        //var_dump(htmlspecialchars($output));
+        var_dump($headers);
+        */
+
         return $content;
     }
 
@@ -265,7 +281,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             Yii::app()->user->setState('limesurveyOrgKey', $result->auth);
             $this->limesurveyOrgKey = $result->auth;
 
-            return json_encode(array('result' => true));
+            return json_encode(array('result' => true, 'response' => $response));
         }
         else
         {
@@ -307,6 +323,53 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $order->save();
 
         return json_encode(array('result' => $response->body));
+    }
+
+    /**
+     * After order is placed, show nBill order form to
+     * make payment
+     *
+     * @return string JSON
+     */
+    public function getNBillOrderForm()
+    {
+        $curl = new Curl();
+        $response = $curl->get(
+            "https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&tmpl=component",
+            array()
+        );
+
+        return json_encode(array('result' => $response->body));
+    }
+
+    /**
+     * Submit first page of two-page form from nBill.
+     * The first page selects payment type (Skrill, Payone, ...)
+     *
+     * @todo Can't work because of login cookies, third-party cookies etc; must use link to payment site
+     * @param LSHttpRequest $request
+     * @return string JSON
+     */
+    public function submitFirstNBillPage(LSHttpRequest $request)
+    {
+        /*
+        $formValues = $request->getParam('formValues');
+        $formValues = explode("&", $formValues);
+        $formValues2 = array();
+        foreach ($formValues as $value)
+        {
+            $keyAndValue = explode("=", $value);
+            $formValues2[$keyAndValue[0]] = $keyAndValue[1];
+        }
+
+
+        $curl = new Curl();
+        $response = $curl->post(
+            "https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&tmpl=component",
+            $formValues2
+        );
+        */
+        return json_encode(array('result' => false));
     }
 
     /**
@@ -357,6 +420,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
             else if ($functionToCall == 'checkIfUserIsLoggedInOnLimesurveyorg'
                     || $functionToCall == 'getLoginForm'
                     || $functionToCall == 'getDashboard'
+                    || $functionToCall == 'getNBillOrderForm'
+                    || $functionToCall == 'submitFirstNBillPage'
                     || $functionToCall == "login"
                     || $functionToCall == "purchaseRequest"
                     || $functionToCall == "getSurvey")

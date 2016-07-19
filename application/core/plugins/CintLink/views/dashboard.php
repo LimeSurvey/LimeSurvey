@@ -7,12 +7,14 @@
         <thead>
             <td>Url</td>
             <td>Status</td>
+            <td></td>
         </thead>
         <tbody>
             <?php foreach($orders as $order): ?>
                 <tr>
                     <td><?php echo $order->url ;?></td>
                     <td><?php echo $order->status; ?></td>
+                    <td><a class='btn btn-default btn-sm' href="https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10" target="_blank"><?php eT("Pay now"); ?></a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

@@ -344,6 +344,10 @@ class Curl {
         curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->request, CURLOPT_USERAGENT, $this->user_agent);
         if ($this->referer) curl_setopt($this->request, CURLOPT_REFERER, $this->referer);
+
+        # Cookies
+        curl_setopt($this->request, CURLOPT_COOKIEJAR, './cookie.txt');
+        curl_setopt($this->request, CURLOPT_COOKIEFILE, './cookie.txt');
         
         # Set any custom CURL options
         foreach ($this->options as $option => $value) {
