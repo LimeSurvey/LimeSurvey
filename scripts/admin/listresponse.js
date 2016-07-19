@@ -34,7 +34,6 @@ $(document).ready(function(){
             success : function(html, statut){
                 $.fn.yiiGridView.update('responses-grid', {
                     success: function(s){
-                        console.log(s);
                     }
                 });
             },
