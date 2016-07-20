@@ -128,9 +128,10 @@ function submitEditToken(){
         success : function(html, statut){
             $ajaxLoader.hide();
             //Using Try/Catch here to catch errors if there is no grid
+            
             try{
                 $.fn.yiiGridView.update('token-grid', {
-                    completed: function(s){
+                    complete: function(s){
                         $modal.modal('hide');
                     } // Update the surveys list
                 });                   
@@ -139,8 +140,6 @@ function submitEditToken(){
             }finally{
                 $ajaxLoader.hide();
             }
-                
-            $modal.modal('hide');
         },
         error :  function(html, statut){
             $ajaxLoader.hide();

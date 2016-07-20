@@ -202,7 +202,7 @@ class TemplateConfiguration extends CFormModel
             $aJsFiles  = $this->config->xpath('files/rtl/js/filename');  // In RTL mode,
         }   
         if(Yii::app()->getConfig('debug') == 0){
-            array_unshift($aJsFiles,"../../../scripts/deactivatedebug.js");
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/scripts/deactivatedebug.js', CClientScript::POS_END);
         }
 
         // The package "survey-template" will be available from anywhere in the app now.
