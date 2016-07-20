@@ -112,6 +112,10 @@ class responses extends Survey_Common_Action
         return $aData;
     }
 
+    public function getActionParams()
+	{
+		return array_merge($_GET,$_POST);
+	}
 
     public function viewbytoken($iSurveyID, $token, $sBrowseLang = '')
     {

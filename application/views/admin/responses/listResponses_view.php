@@ -14,18 +14,19 @@
                             eT('Display mode:');
                         ?>
                     </label>
-
                     <?php
+                        $state = Yii::app()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : Yii::app()->user->getState('responsesGridSwitchDisplayState');
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', 
                         array(
                         'name' => 'display-mode',
-                        'value'=> Yii::app()->user->getState('responsesGridSwitchDisplayState'),
+                        'value'=> $state,
                         'selectOptions'=>array(
                             'extended'=>gT('Extended'),
                             'compact'=>gT('Compact')
                             ),
                         'htmlOptions' => array(
-                            'data-url'=>App()->createUrl('/admin/responses/set_grid_display/')
+                            'data-url'=>App()->createUrl('/admin/responses/sa/set_grid_display/'),
+                            'data-value' => $state
                             )
                         )
                     );
