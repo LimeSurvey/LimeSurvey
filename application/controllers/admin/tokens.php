@@ -215,7 +215,7 @@ class tokens extends Survey_Common_Action
                                     $condn  = array('token' => $tokenBounce[1]);
                                     $record = Token::model($iSurveyId)->findByAttributes($condn);
 
-                                    if ($record->emailstatus != 'bounced')
+                                    if (!empty($record) && $record->emailstatus != 'bounced')
                                     {
                                         $record->emailstatus = 'bounced';
                                         $record->save();
@@ -231,8 +231,8 @@ class tokens extends Survey_Common_Action
                             }
                         }
                         $count--;
-                        $lasthinfo = imap_headerinfo($mbox, $count);
-                        $datelc = $lasthinfo->date;
+                        @$lasthinfo = imap_headerinfo($mbox, $count);
+                        @$datelc = $lasthinfo->date;
                         $datelcu = strtotime($datelc);
                         $checktotal++;
                     }
