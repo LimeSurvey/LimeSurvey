@@ -253,7 +253,7 @@
                                             </div>
                                             <?php else:?>
                                             <?php eT("Cannot be changed (survey is active)");?>
-                                            <input type='hidden' name='other' value="<?php echo $eqrow['other']; ?>" />
+                                            <input type='hidden' name='other' value="<?php echo ($eqrow['other']=='Y' ? 1 : 0); ?>" />
                                             <?php endif;?>
                                     </div>
 
