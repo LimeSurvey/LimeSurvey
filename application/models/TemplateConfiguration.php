@@ -187,11 +187,22 @@ class TemplateConfiguration extends CFormModel
         $aCssFiles   = $this->config->xpath('files/css/filename');                                  // The CSS files of this template
         $aJsFiles    = $this->config->xpath('files/js/filename');                                   // The JS files of this template
 
+        $jsDeactivateConsole = "
+            <script> var dummyConsole = {
+                log : function(){},
+                error : function(){}
+            };
+            console = dummyConsole;
+            window.console = dummyConsole;
+        </script>";
 
         if (getLanguageRTL(App()->language))
         {
             $aCssFiles = $this->config->xpath('files/rtl/css/filename'); // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
             $aJsFiles  = $this->config->xpath('files/rtl/js/filename');  // In RTL mode,
+        }   
+        if(Yii::app()->getConfig('debug') == 0){
+            array_unshift($aJsFiles,"../../../scripts/deactivatedebug.js");
         }
 
         // The package "survey-template" will be available from anywhere in the app now.
