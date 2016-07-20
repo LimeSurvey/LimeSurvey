@@ -189,7 +189,10 @@ $(document).ready(function() {
                 console.log("purchase was made");
                 $.ajax({
                     url: LS.plugin.cintlink.pluginBaseUrl + '&function=purchaseRequest',
-                    data: {purchaseRequest: hold},
+                    data: {
+                        purchaseRequest: hold,
+                        surveyId: LS.plugin.cintlink.surveyId
+                    },
                     type: "POST",
                     dataType: "json",
                     success: function(data) {

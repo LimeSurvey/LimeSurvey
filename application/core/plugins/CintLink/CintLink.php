@@ -302,7 +302,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function purchaseRequest(LSHttpRequest $request)
     {
         $purchaseRequest = $request->getParam('purchaseRequest');
+        $surveyId = $request->getParam('surveyId');
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+        $userId = Yii::app()->user->getId();
 
         $curl = new Curl();
         $response = $curl->post(
@@ -315,12 +317,23 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'key' => $limesurveyOrgKey
             )
         );
-        $result = json_decode($response->body);
+        $body = json_decode($response->body);
+
+        // Abort if we got nothing
+        if ($body === null)
+        {
+            return json_encode(array(
+                'result' => 'false',
+                'error' => 'Got NULL from server. Please check error logs.'
+            ));
+        }
 
         $order = new CintLinkOrder();
-        $order->url = $result->url;
-        $order->raw = json_encode(get_object_vars($result->raw));
-        $order->status = (string) $result->raw->state;  // 'hold' means waiting for payment
+        $order->url = $body->url;
+        $order->sid = $surveyId;
+        $order->ordered_by = $userId;
+        $order->raw = json_encode(get_object_vars($body->raw));
+        $order->status = (string) $body->raw->state;  // 'hold' means waiting for payment
         $order->created = date('Y-m-d H:i:m', time());
         $order->save();
 
