@@ -126,6 +126,8 @@ class TemplateConfiguration extends CFormModel
 
         // We load the config file
         // $this->config = simplexml_load_file(realpath ($this->xmlFile));
+        // Simple Xml is buggy on PHP < 5.4. The json_encode/decode workaround seems to be the most used one.
+        // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
         $this->config  = json_decode( json_encode ( ( array ) simplexml_load_file(realpath ($this->xmlFile)), 1));
         // Template configuration.
         $this->viewPath = $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
