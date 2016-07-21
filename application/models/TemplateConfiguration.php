@@ -125,8 +125,10 @@ class TemplateConfiguration extends CFormModel
         }
 
         // We load the config file
-        $this->config = simplexml_load_file(realpath ($this->xmlFile));
-
+        // $this->config = simplexml_load_file(realpath ($this->xmlFile));
+        // Simple Xml is buggy on PHP < 5.4. The json_encode/decode workaround seems to be the most used one.
+        // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
+        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_file(realpath ($this->xmlFile)), 1));
         // Template configuration.
         $this->viewPath = $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
         $this->siteLogo = (isset($this->config->files->logo))?$this->config->files->logo->filename:'';
@@ -137,7 +139,8 @@ class TemplateConfiguration extends CFormModel
         $this->overwrite_question_views    = (isset($this->config->engine->overwrite_question_views))? ( $this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
 
         $this->cssFramework = $this->config->engine->cssframework;
-        $this->packages     = $this->config->xpath('engine/packages/package');
+        $oPackages      =  $this->config->engine->packages->package;
+        $this->packages =  (array) $oPackages;
         $this->otherFiles   = $this->setOtherFiles();
         $this->depends      = $this->packages;
         //$this->depends[]    = (string) $this->cssFramework;                   // Bootstrap CSS is no more needed for Bootstrap templates (their custom css like "flat_and_modern.css" is a custom version of bootstrap.css )
@@ -184,8 +187,8 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias('survey.template.path', $this->path);                                   // The package creation/publication need an alias
         Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);
 
-        $aCssFiles   = $this->config->xpath('files/css/filename');                                  // The CSS files of this template
-        $aJsFiles    = $this->config->xpath('files/js/filename');                                   // The JS files of this template
+        $oCssFiles   = $this->config->files->css->filename;                                 // The CSS files of this template
+        $oJsFiles    = $this->config->files->js->filename;                                  // The JS files of this template
 
         $jsDeactivateConsole = "
             <script> var dummyConsole = {
@@ -198,12 +201,18 @@ class TemplateConfiguration extends CFormModel
 
         if (getLanguageRTL(App()->language))
         {
-            $aCssFiles = $this->config->xpath('files/rtl/css/filename'); // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
-            $aJsFiles  = $this->config->xpath('files/rtl/js/filename');  // In RTL mode,
-        }   
-        if(Yii::app()->getConfig('debug') == 0){
+            $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
+            $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
+        }
+
+        if (Yii::app()->getConfig('debug') == 0)
+        {
             Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/scripts/deactivatedebug.js', CClientScript::POS_END);
         }
+
+        $aCssFiles = (array) $oCssFiles;
+        $aJsFiles  = (array) $oJsFiles;
+
 
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );

@@ -1222,9 +1222,12 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
         }
+
         if($oSurvey)
         {
-            return $oSurvey->attributes;
+            $attribs = $oSurvey->attributes;
+            $attribs['googleanalyticsapikeysetting'] = $oSurvey->getGoogleanalyticsapikeysetting();
+            return $attribs;
         }
     }
 

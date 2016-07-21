@@ -553,14 +553,18 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_assessment_current_total = '';
     }
-
-    if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '')
+    if($thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
+    {
+        $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
+    } 
+    else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '')
     {
         $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
     }
-    else
+    else 
     {
-        $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
+        $_googleAnalyticsAPIKey = "";
+
     }
     $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '1');
     $_googleAnalyticsJavaScript = '';

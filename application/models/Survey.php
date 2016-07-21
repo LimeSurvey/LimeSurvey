@@ -436,6 +436,51 @@ class Survey extends LSActiveRecord
         }
     }
 
+     /**
+     * Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
+     *
+     */
+    public function getGoogleanalyticsapikeysetting(){
+        if($this->googleanalyticsapikey === "9999useGlobal9999")
+        {
+            return "G";
+        } 
+        else if($this->googleanalyticsapikey == "")
+        {
+            return "N";
+        }
+        else 
+        {
+            return "Y";
+        }
+    }
+    public function setGoogleanalyticsapikeysetting($value){
+        if($value == "G")
+        {
+            $this->googleanalyticsapikey = "9999useGlobal9999";
+        } 
+        else if($value == "N")
+        {
+           $this->googleanalyticsapikey = "";
+        }
+    }
+
+     /**
+     * Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
+     *
+     */
+    public function getGoogleanalyticsapikey(){
+        if($this->googleanalyticsapikey === "9999useGlobal9999")
+        {
+            return getGlobalSetting(googleanalyticsapikey);
+        } 
+        else 
+        {
+            return $this->googleanalyticsapikey;
+        }
+    }
+
+
 
     /**
     * Creates a new survey - does some basic checks of the suppplied data
