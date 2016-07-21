@@ -272,6 +272,9 @@ class Curl {
         $this->error = '';
         $this->request = curl_init();
         if (is_array($vars)) $vars = http_build_query($vars, '', '&');
+
+        Yii::log('url = ' . $url, CLogger::LEVEL_TRACE, 'cintlink');
+        Yii::log('vars = ' . print_r($vars, true), CLogger::LEVEL_TRACE, 'cintlink');
         
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
@@ -301,6 +304,7 @@ class Curl {
         foreach ($this->headers as $key => $value) {
             $headers[] = $key.': '.$value;
         }
+        Yii::log('headers = ' . print_r($headers, true), CLogger::LEVEL_TRACE, 'cintlink');
         curl_setopt($this->request, CURLOPT_HTTPHEADER, $headers);
     }
     
@@ -344,10 +348,6 @@ class Curl {
         curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->request, CURLOPT_USERAGENT, $this->user_agent);
         if ($this->referer) curl_setopt($this->request, CURLOPT_REFERER, $this->referer);
-
-        # Cookies
-        curl_setopt($this->request, CURLOPT_COOKIEJAR, './cookie.txt');
-        curl_setopt($this->request, CURLOPT_COOKIEFILE, './cookie.txt');
         
         # Set any custom CURL options
         foreach ($this->options as $option => $value) {
@@ -393,6 +393,7 @@ class CurlResponse {
      * @param string $response
     **/
     function __construct($response) {
+        Yii::log('CurlResponse response = ' . $response, CLogger::LEVEL_TRACE, 'cintlink');
         # Headers regex
         $pattern = '#HTTP/\d\.\d.*?$.*?\r\n\r\n#ims';
         

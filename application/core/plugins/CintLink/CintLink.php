@@ -348,6 +348,45 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * Cancel order
+     * Run when user click "Cancel" in order table
+     * Contact limesurvey.org, because cancel order needs access
+     * to secret.
+     *
+     * @param LSHttpRequest $request
+     * @return string JSON
+     */
+    public function cancelOrder(LSHttpRequest $request)
+    {
+        $orderUrl = $request->getParam('orderUrl');
+
+        if (empty($orderUrl))
+        {
+            return json_encode(array('error' => 'Missing order url'));
+        }
+
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+
+        if (empty($limesurveyOrgKey))
+        {
+            return json_encode(array('error' => 'Missing limesurveyOrgKey - user not logged in?'));
+        }
+
+        // DELETE does not support CURLOPT_POSTFIELDS?
+        $url = $this->baseURL;
+        $url .= '&app=cintlinklimesurveyrestapi';
+        $url .= '&format=raw';
+        $url .= '&resource=order';
+        $url .= '&key=' . $limesurveyOrgKey;
+        $url .= '&order_url=' . htmlspecialchars($orderUrl);
+
+        $curl = new Curl();
+        $response = $curl->delete($url, array());
+
+        return json_encode(array('result' => $response->body));
+    }
+
+    /**
      * After order is placed, show nBill order form to
      * make payment
      *
@@ -397,6 +436,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Get survey information
+     *
+     * @param LSHttpRequest $request
+     * @return string JSON
      */
     public function getSurvey(LSHttpRequest $request)
     {
@@ -447,6 +489,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     || $functionToCall == 'submitFirstNBillPage'
                     || $functionToCall == "login"
                     || $functionToCall == "purchaseRequest"
+                    || $functionToCall == "cancelOrder"
                     || $functionToCall == "getSurvey")
             {
                 echo $this->$functionToCall($request);

@@ -1,4 +1,3 @@
-
 <button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'><?php eT("Show widget"); ?></button>
 <p class='help-block'>Use the Cint widget to buy participants</p>
 
@@ -19,7 +18,7 @@
                         <td>
                             <a class='btn btn-default btn-sm' href="https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=<?php echo htmlspecialchars($order->url); ?>" target="_blank"><?php eT("Pay now"); ?></a>
                             &nbsp;
-                            <a class='btn btn-default btn-sm' href=""><?php eT("Cancel"); ?></a>
+                            <button class='btn btn-default btn-sm' onclick='LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>");' ><?php eT("Cancel"); ?></button>
                         </td>
                     <?php elseif ($order->status == 'new'): ?>
                         <td></td>
@@ -29,6 +28,5 @@
         </tbody>
     </table>
 <?php else: ?>
-    <i>No orders made yet</i>
+    <i><?php eT("No orders made yet"); ?></i>
 <?php endif; ?>
-

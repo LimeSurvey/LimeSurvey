@@ -235,7 +235,30 @@ $(document).ready(function() {
         });
 
     }
-    LS.plugin.cintlink.showWidget = showWidget;  // Needs to be accessed from the outside (dashboard)
+
+    /**
+     * Cancel an order at Cint
+     *
+     * @param {string} orderUrl
+     */
+    function cancelOrder(orderUrl) {
+        showLoader();
+
+        $.ajax({
+            method: 'POST',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&function=cancelOrder',
+            data: {orderUrl: orderUrl},
+        }).done(function(response) {
+            hideLoader();
+            console.log(response);
+            var response = JSON.parse(response);
+            console.log(response);
+        });
+    }
+
+    // Needs to be accessed from the outside (dashboard)
+    LS.plugin.cintlink.showWidget = showWidget;
+    LS.plugin.cintlink.cancelOrder = cancelOrder;
 
     // Check if user is logged in on limesurvey.org
     // If yes, show widget
