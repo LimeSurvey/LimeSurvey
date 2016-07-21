@@ -27,3 +27,4 @@ application/config/_config.php
 !readme.txt
 /tmp/runtime/URI/*.ser
 /tmp/runtime/CSS/*.ser
+launch.json

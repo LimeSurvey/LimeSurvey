@@ -71,7 +71,7 @@
                                                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                     'name' => "show_register_{$sTokenField}",
                                                     'id'=>"show_register_{$sTokenField}",
-                                                    'value' => $tokenvalues['mandatory']=='Y'?'1':'0',
+                                                    'value' => $tokenvalues['show_register']=='Y'?'1':'0',
                                                     'onLabel'=>gT('On'),
                                                     'offLabel' => gT('Off')));
                                                 ?>

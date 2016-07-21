@@ -118,7 +118,6 @@ function submitEditToken(){
     $ajaxLoader = $('#ajaxContainerLoading2');
     $('#modal-content').empty();
     $ajaxLoader.show();                                         // Show the ajax loader
-
     // Ajax request
     $.ajax({
         url  : $actionUrl,
@@ -128,8 +127,19 @@ function submitEditToken(){
         // html contains the buttons
         success : function(html, statut){
             $ajaxLoader.hide();
-            $.fn.yiiGridView.update('token-grid');                   // Update the surveys list
-            $modal.modal('hide');
+            //Using Try/Catch here to catch errors if there is no grid
+            
+            try{
+                $.fn.yiiGridView.update('token-grid', {
+                    complete: function(s){
+                        $modal.modal('hide');
+                    } // Update the surveys list
+                });                   
+            } catch(e){
+                if(e){console.log(e); $modal.modal('hide');}
+            }finally{
+                $ajaxLoader.hide();
+            }
         },
         error :  function(html, statut){
             $ajaxLoader.hide();
@@ -218,7 +228,6 @@ $(document).ready(function(){
 
                 $('.date .input-group-addon').on('click', function(){
                     $prev = $(this).siblings();
-                    console.log($prev.attr('class'));
                     $prev.data("DateTimePicker").show();
                 });
 
@@ -253,8 +262,10 @@ $(document).ready(function(){
 
 
     $(document).on('submit','#edittoken',function(){
-        event.preventDefault();
-        submitEditToken();
+        if($('#editTokenModal').length > 0 ){
+            event.preventDefault();
+            submitEditToken();
+        }
     });
 
     /**

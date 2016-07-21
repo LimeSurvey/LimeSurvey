@@ -132,9 +132,16 @@ class AdminController extends LSYii_Controller
         if (Yii::app()->db->schema->getTable('{{surveys}}') )
         {
             $sDBVersion = getGlobalSetting('DBVersion');
-            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate')
-                $this->redirect(array('/admin/databaseupdate/sa/db'));
         }
+        if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate')
+        {
+            // Try a silent update first
+            Yii::app()->loadHelper('update/updatedb');
+            if (!db_upgrade_all(intval($sDBVersion),true)){
+                $this->redirect(array('/admin/databaseupdate/sa/db'));
+            }
+        }
+
 
         if ($action != "databaseupdate" && $action != "db")
             if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
