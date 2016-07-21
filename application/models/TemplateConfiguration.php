@@ -125,8 +125,8 @@ class TemplateConfiguration extends CFormModel
         }
 
         // We load the config file
-        $this->config = simplexml_load_file(realpath ($this->xmlFile));
-
+        // $this->config = simplexml_load_file(realpath ($this->xmlFile));
+        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_file(realpath ($this->xmlFile)), 1));
         // Template configuration.
         $this->viewPath = $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
         $this->siteLogo = (isset($this->config->files->logo))?$this->config->files->logo->filename:'';
@@ -202,7 +202,7 @@ class TemplateConfiguration extends CFormModel
             $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
             $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
         }
-        
+
         if (Yii::app()->getConfig('debug') == 0)
         {
             Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/scripts/deactivatedebug.js', CClientScript::POS_END);
