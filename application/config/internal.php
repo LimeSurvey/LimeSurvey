@@ -126,6 +126,13 @@ $internalConfig = array(
                 ),
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
+                ),
+                // Log file saved in /tmp/runtime/cint.loh
+                'cintlog' => array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'trace, info, error, warning',
+                    'logFile' => 'cint.log',
+                    'categories' => 'cintlink'
                 )
             )
         ),
