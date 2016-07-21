@@ -1,3 +1,4 @@
+
 <button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'><?php eT("Show widget"); ?></button>
 <p class='help-block'>Use the Cint widget to buy participants</p>
 
@@ -30,3 +31,4 @@
 <?php else: ?>
     <i>No orders made yet</i>
 <?php endif; ?>
+

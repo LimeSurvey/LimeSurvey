@@ -159,6 +159,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
         App()->clientScript->registerScriptFile("http://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
 
+        $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
+        App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
+
         //$response = json_decode($response);
         /*
         $c = curl_init("https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10");
