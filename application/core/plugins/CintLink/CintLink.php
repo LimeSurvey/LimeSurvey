@@ -243,10 +243,14 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data = array();
 
         $orders = $this->getOrders();
+        $orders = $this->updateOrders($orders);
+
         $data['orders'] = $orders;
 
         Yii::setPathOfAlias('cintLink', dirname(__FILE__));
         $content = Yii::app()->controller->renderPartial('cintLink.views.dashboard', $data, true);
+
+        Yii::trace('getDashboard end');
         return $content;
     }
 
@@ -344,6 +348,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * After order is placed, show nBill order form to
      * make payment
      *
+     * @todo Remove, use link to open payment in other tab
      * @return string JSON
      */
     public function getNBillOrderForm()
@@ -455,5 +460,50 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $orders = CintLinkOrder::model()->findAll();
         return $orders;
+    }
+
+    /**
+     * Call limesurvey.org to update orders in database
+     *
+     * @param array<CintLinkOrder> $orders
+     * @return array<CintLinkOrder>|false - Returns false if some fetching goes amiss
+     */
+    private function updateOrders(array $orders)
+    {
+        Yii::log('updateOrder begin', CLogger::LEVEL_TRACE, 'cintlink');
+
+        $newOrders;
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+
+        // Loop through orders and get updated info from Cint
+        foreach ($orders as $order)
+        {
+            Yii::log('loop order ' . $order->url, CLogger::LEVEL_TRACE, 'cintlink');
+            $curl = new Curl();
+            $response = $curl->get(
+                $order->url,
+                array()
+            );
+
+            // Abort if we got nothing
+            if (empty($response))
+            {
+                Yii::log('updateOrder end with false, empty response', CLogger::LEVEL_TRACE, 'cintlink');
+                return false;
+            }
+
+            $orderXml = new SimpleXmlElement($response->body);
+
+            $order->raw = $response->body;
+            $order->status = (string) $orderXml->state;  // 'hold' means waiting for payment
+            $order->modified = date('Y-m-d H:i:m', time());
+            $order->save();
+
+            $newOrders[] = $order;
+
+        }
+
+        Yii::log('updateOrder end', CLogger::LEVEL_TRACE, 'cintlink');
+        return $newOrders;
     }
 }

@@ -14,7 +14,15 @@
                 <tr>
                     <td><?php echo $order->url ;?></td>
                     <td><?php echo $order->status; ?></td>
-                    <td><a class='btn btn-default btn-sm' href="https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=<?php echo htmlspecialchars($order->url); ?>" target="_blank"><?php eT("Pay now"); ?></a></td>
+                    <?php if ($order->status == 'hold'): ?>
+                        <td>
+                            <a class='btn btn-default btn-sm' href="https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=<?php echo htmlspecialchars($order->url); ?>" target="_blank"><?php eT("Pay now"); ?></a>
+                            &nbsp;
+                            <a class='btn btn-default btn-sm' href=""><?php eT("Cancel"); ?></a>
+                        </td>
+                    <?php elseif ($order->status == 'new'): ?>
+                        <td></td>
+                    <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>
