@@ -169,18 +169,6 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
     return $qtypeselecter;
 }
 
-function getQuestionModuleList($SelectedCode = "T", $ReturnType = "selector")
-{
-    $publicurl = Yii::app()->getConfig('publicurl');
-    $qtypes = Question::questionModuleList();
-
-    if ($ReturnType == "array")
-        return $qtypes;
-
-    else return null;
-
-}
-
 /**
 * isStandardTemplate returns true if a template is a standard template
 * This function does not check if a template actually exists
