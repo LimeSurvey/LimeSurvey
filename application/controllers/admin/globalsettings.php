@@ -59,7 +59,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
 
         // Save refurl from where global settings screen is called!
-        $refurl = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'), array('globalsettings'));
+        $refurl = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'));
 
         // Some URLs are not to be allowed to refered back to.
         // These exceptions can be added to the $aReplacements array
