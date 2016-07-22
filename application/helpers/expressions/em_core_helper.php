@@ -1269,7 +1269,7 @@ class ExpressionManager {
                     elseif ($i+1<$numTokens && $tokens[$i+1][2] == 'ASSIGN')
                     {
                         $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $stringParts[] = "$('" . $jsName . "').val()";
+                        $stringParts[] = "document.getElementById('" . $jsName . "').value";
                         if ($tokens[$i+1][0] == '+=')
                         {
                             // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
@@ -1361,8 +1361,8 @@ class ExpressionManager {
         $jsParts = array();
         $jsParts[] = "val = " . $jsmultiline_expr . ";\n";
         $jsParts[] = "klass = (LEMeq(addslashes(val),'" . $jsmultiline_expected . "')) ? 'ok' : 'error';\n";
-        $jsParts[] = "$('test_" . $num . "').html(val);\n";
-        $jsParts[] = "$('test_" . $num . "').addClass(klass);\n";
+        $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=(val);\n";
+        $jsParts[] = "document.getElementById('test_" . $num . "').className=klass;\n";
         return implode('',$jsParts);
 
     }
@@ -1377,9 +1377,9 @@ class ExpressionManager {
         $jsParts = array();
 //        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
         $jsParts[] = "  try{\n";
-        $jsParts[] = "  $('" . $name . "').html(LEMfixnum(\n    ";
+        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=LEMfixnum(\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
-        $jsParts[] = "));\n";
+        $jsParts[] = ");\n";
         $jsParts[] = "  } catch (e) { console.log(e); }\n";
         return implode('',$jsParts);
     }
