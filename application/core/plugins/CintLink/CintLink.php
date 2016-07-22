@@ -525,6 +525,14 @@ class CintLink extends \ls\pluginmanager\PluginBase
         foreach ($orders as $order)
         {
             Yii::log('loop order ' . $order->url, CLogger::LEVEL_TRACE, 'cintlink');
+
+            if ($order->status == 'cancelled')
+            {
+                Yii::log('Don\'t fetch anything for cancelled order, skipped', CLogger::LEVEL_TRACE, 'cintlink');
+                $newOrders[] = $order;
+                continue;
+            }
+
             $curl = new Curl();
             $response = $curl->get(
                 $order->url,
