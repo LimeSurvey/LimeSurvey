@@ -82,18 +82,22 @@ class LSHttpRequest extends CHttpRequest
     {
 
        $referrer = parent::getUrlReferrer();
+       $this->updateNavigationStack($referrer);
        $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
        $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
        $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
 
+       App()->session['foo'] = 'bar';
+
        // Checks if the alternative url should be used
        if(isset($sAlternativeUrl))
        {
-           // Use alternative url if the referrer is equal to current url.
-           if(is_null($referrer))
+           //Use alternative url if the $referrer is still available in the checkLoopInNavigationStack
+           if( ($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer)) )
            {
                $referrer = $sAlternativeUrl;
            }
+
 
            // Use alternative url if a forbidden word appears in the referrer
            foreach($aForbiddenWordsInUrl as $sForbiddenWord)
@@ -103,8 +107,30 @@ class LSHttpRequest extends CHttpRequest
                    $referrer = $sAlternativeUrl;
                }
            }
+
        }
        return $referrer;
+    }
+
+    /**
+    * Method to update the LimeSurvey Navigation Stack to prevent looping
+    */
+    protected function updateNavigationStack($referrerURL){
+        $navStack = App()->session['LSNAVSTACK'];
+        array_unshift($navStack,$referrerURL);
+        if(count($navstack)>5){
+            array_pop($navstack);
+        }
+        App()->session['LSNAVSTACK'] = $navStack;
+    }
+
+    /**
+    * Method to check if an url is part of the stack
+    * Returns true, when an url is saved in the stack
+    */
+    protected function checkLoopInNavigationStack($referrerURL){
+        $navStack = App()->session['LSNAVSTACK'];
+        return (array_search($referrerURL,  $navStack) === false);
     }
 
     protected function normalizeRequest(){
