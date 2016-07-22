@@ -1,0 +1,14 @@
+.ajaxLoading {
+    display: block;
+    position: absolute;
+    min-height: 99%;
+    min-width: 100%;
+    background-color: white;
+    opacity: 0.9;
+    top: 0;
+    z-index: 10;
+}
+
+.ajaxLoading .preloader {
+    position: relative;
+}
