@@ -197,7 +197,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $surveyformat = "";
     }
-    if($oTemplate->config->engine->cssframework)
+    if( isset($oTemplate->config->engine->cssframework) && $oTemplate->config->engine->cssframework)
     {
         $surveyformat .= " ".$oTemplate->config->engine->cssframework."-engine ";
     }
@@ -553,15 +553,15 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_assessment_current_total = '';
     }
-    if($thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
+    if(isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
     {
         $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
-    } 
+    }
     else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '')
     {
         $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
     }
-    else 
+    else
     {
         $_googleAnalyticsAPIKey = "";
 

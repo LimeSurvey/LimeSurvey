@@ -94,14 +94,25 @@ class AdminTheme extends CFormModel
         // TODO: replace everywhere the call to Yii::app()->getConfig('adminstyleurl) by $oAdminTheme->sTemplateUrl;
         Yii::app()->setConfig('adminstyleurl', $this->sTemplateUrl );
 
-        // We load the admin theme's configuration file.
-        $this->config = simplexml_load_file($this->path.'/config.xml');
+
+        //////////////////////
+        // Config file loading
+
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        $sXMLConfigFile        = file_get_contents( realpath ($this->path.'/config.xml'));  // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+
+        // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
+        // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
+        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
 
         // If developers want to test asset manager with debug mode on
-        $this->use_asset_manager = ( $this->config->engine->use_asset_manager_in_debug_mode == 'true');
+        $this->use_asset_manager = isset($this->config->engine->use_asset_manager_in_debug_mode)?( $this->config->engine->use_asset_manager_in_debug_mode == 'true'):'false';
 
         $this->defineConstants();           // Define the (still) necessary constants
         $this->registerStylesAndScripts();  // Register all CSS and JS
+
+        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+
         return $this;
     }
 
@@ -353,6 +364,8 @@ class AdminTheme extends CFormModel
             'application/extensions/SettingsWidget/assets',
             'application/extensions/FlashMessage/assets',
             'application/extensions/admin/survey/question/PositionWidget/assets',
+            'application/extensions/admin/grid/MassiveActionsWidget/assets',
+            'application/extensions/admin/survey/question/PositionWidget/assets',
             //'application/extensions/bootstrap/', we'll touch all the subdirectories of extensions
 
             // Third party assets
@@ -369,6 +382,7 @@ class AdminTheme extends CFormModel
      */
     static private function getThemeList($sDir)
     {
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
         $aListOfFiles = array();
         if ($sDir && $pHandle = opendir($sDir))
         {
@@ -376,12 +390,18 @@ class AdminTheme extends CFormModel
             {
                 if (is_dir($sDir.DIRECTORY_SEPARATOR.$file) && is_file($sDir.DIRECTORY_SEPARATOR.$file.DIRECTORY_SEPARATOR.'config.xml'))
                 {
-                    $oTemplateConfig = simplexml_load_file($sDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
+                    $sXMLConfigFile        = file_get_contents( realpath ($sDir.DIRECTORY_SEPARATOR.$file.'/config.xml'));  // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+
+                    // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
+                    // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
+                    $oTemplateConfig = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
+
                     $aListOfFiles[$file] = $oTemplateConfig;
                 }
             }
             closedir($pHandle);
         }
+        libxml_disable_entity_loader($bOldEntityLoaderState);
         return $aListOfFiles;
     }
 
@@ -401,7 +421,7 @@ class AdminTheme extends CFormModel
         }
 
         // Define presentation text on welcome page
-        if($this->config->metadatas->presentation)
+        if (isset($this->config->metadatas->presentation) && $this->config->metadatas->presentation)
         {
             define('PRESENTATION', $this->config->metadatas->presentation);
         }

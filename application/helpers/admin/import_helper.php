@@ -19,14 +19,19 @@
 */
 function XMLImportGroup($sFullFilePath, $iNewSID)
 {
-    $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
+    $aLanguagesSupported   = array();  // this array will keep all the languages supported for the survey
+    $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
+    $aLanguagesSupported[] = $sBaseLanguage;     // adds the base language to the list of supported languages
+    $aLanguagesSupported   = array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
 
-    $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
-    $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
-    $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
-    $sXMLdata = file_get_contents($sFullFilePath);
-    $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
+    $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+
+    $sXMLdata              = file_get_contents($sFullFilePath);
+    $xml                   = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
+
+
     if ($xml==false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
+
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $results['defaultvalues']=0;
@@ -330,6 +335,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $results['newgid']=$newgid;
     $results['labelsets']=0;
     $results['labels']=0;
+
+    libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
     return $results;
 }
 
@@ -1607,7 +1614,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
     }
 
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,true);
-	foreach ($xml->tokens->rows->row as $row)
+    foreach ($xml->tokens->rows->row as $row)
     {
         $insertdata=array();
 
@@ -1616,8 +1623,8 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-		$token = Token::create($iSurveyID);
-		$token->setAttributes($insertdata, false);
+        $token = Token::create($iSurveyID);
+        $token->setAttributes($insertdata, false);
         if (!$token->save())
         {
             $results['warnings'][]=gT("Skipped tokens entry:").' '. implode('. ',$token->errors['token']);
