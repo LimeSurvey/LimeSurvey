@@ -1380,7 +1380,7 @@ class ExpressionManager {
         $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=LEMfixnum(\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
         $jsParts[] = ");\n";
-        $jsParts[] = "  } catch (e) { }\n";
+        $jsParts[] = "  } catch (e) { console.log(e); }\n";
         return implode('',$jsParts);
     }
 
