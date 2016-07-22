@@ -22,6 +22,8 @@
                         </td>
                     <?php elseif ($order->status == 'new'): ?>
                         <td></td>
+                    <?php elseif ($order->status == 'cancelled'): ?>
+                        <td></td>
                     <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
