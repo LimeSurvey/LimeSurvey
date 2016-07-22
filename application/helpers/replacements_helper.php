@@ -553,7 +553,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_assessment_current_total = '';
     }
-    if($thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
+    if(isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
     {
         $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
     }
