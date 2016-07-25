@@ -305,15 +305,14 @@ abstract class PluginBase implements iPlugin {
         \Yii::setPathOfAlias($alias, $this->getDir());
         $fullAlias = $alias . '.views.' . $viewfile;
 
-        $data['gT'] = function($toTranslate, $escapeMode = 'html', $langauge = null) {
-            // TODO: Won't work on 5.3 because of $this (since 5.4)
-            // Solution: Make PluginBase a controller instead, so that each plugin is its own controller, with
-            // own view space. Then gT() in view will always call that plugin controller instead of a generic
-            // PluginController.
-            return $this->gT($toTranslate, $escapeMode, $langauge);
-        };
+        if (isset($data['__plugin']))
+        {
+            throw new InvalidArgumentException("Key '__plugin' in data variable is for plugin base only. Please use another key name.");
+        }
 
-        $data['pluginId'] = $this->id;
+        // Provide this so we can use $plugin->gT() in plugin views
+        $data['__plugin'] = $this;
+
         return \Yii::app()->controller->renderPartial($fullAlias, $data, $return, $processOutput);
     }
 
