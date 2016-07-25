@@ -785,7 +785,7 @@ function quickaddlabels(scale_id, addOrReplace)
                 var idAndScale = '' + randomid + '_' + scale_id;
 
                 tablerows=tablerows+
-                '<tr id="row_'+k+'" class="row_'+k+'">'+
+                '<tr id="row_'+idAndScale+'" class="row_'+randomid+'" data-common-id="'+idAndScale+'">'+
                 '   <td>'+
                 '       <span class="glyphicon glyphicon-move"></span>'+
                 '   </td>'+
@@ -796,14 +796,14 @@ function quickaddlabels(scale_id, addOrReplace)
                 '           type="text" maxlength="20" size="20" '+
                 '           pattern="^([a-zA-Z0-9]*|12)$"'+
                 '           value="'+thisrow[0]+'" pattern="^[a-zA-Z0-9]*$"  '+
-                '           id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" '+
+                '           id="code_'+idAndScale+'" name="code_'+idAndScale+'" '+
                 '           value="'+htmlspecialchars(thisrow[0],'ENT_QUOTES')+'" '+
                 '       />'+
                 '   </td>'+
 
                 '   <td style="vertical-align: middle;">'+
                 '       <div class="">'+
-                '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
+                '           <input type="text" size="20" id="answer_'+languages[x]+'_'+idAndScale+'" name="answer_'+languages[x]+'_'+idAndScale+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
                 '       </div>'+
                 '   </td>'+
 
@@ -827,13 +827,13 @@ function quickaddlabels(scale_id, addOrReplace)
                 {
 
                     tablerows=tablerows+
-                    '<tr id="row_'+k+'" class="row_'+k+'" >'+
+                    '<tr id="row_'+idAndScale+'" class="row_'+randomid+'" data-common-id="'+idAndScale+'">'+
                     '   <td>&nbsp;</td>'+
                     '   <td>&nbsp;</td>'+
 
                     '   <td style="vertical-align: middle;">'+
                     '       <div class="">'+
-                    '          <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
+                    '          <input type="text" size="20" id="answer_'+languages[x]+'_'+idAndScale+'" name="answer_'+languages[x]+'_'+idAndScale+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
                     '       </div>'+
                     '   </td>'+
 
