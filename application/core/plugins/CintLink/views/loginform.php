@@ -1,7 +1,7 @@
 <form id='cintlink-login-form' class='form-horizontal'>
     <div class='col-sm-4'></div>
     <div class='col-sm-8'>
-        <p class='help-block'><?php eT("Log in to your limesurvey.org account to buy participants."); ?></p>
+        <p class='help-block'><?php echo $gT("Log in to your limesurvey.org account to buy participants."); ?></p>
     </div>
     <div class='form-group'>
         <label class='control-label col-sm-4'><?php eT("Username:"); ?></label>

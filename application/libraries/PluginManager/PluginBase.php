@@ -291,7 +291,7 @@ abstract class PluginBase implements iPlugin {
     }
 
     /**
-     * Look for views in plugin views/ folder and render it (no echo)
+     * Look for views in plugin views/ folder and render it
      *
      * @param string $viewfile Filename of view in views/ folder
      * @param array $data
@@ -303,7 +303,18 @@ abstract class PluginBase implements iPlugin {
     {
         $alias = 'plugin_views_folder' . $this->id;
         \Yii::setPathOfAlias($alias, $this->getDir());
-        return \Yii::app()->controller->renderPartial($alias .'.views.' . $viewfile, $data, $return, $processOutput);
+        $fullAlias = $alias . '.views.' . $viewfile;
+
+        $data['gT'] = function($toTranslate, $escapeMode = 'html', $langauge = null) {
+            // TODO: Won't work on 5.3 because of $this (since 5.4)
+            // Solution: Make PluginBase a controller instead, so that each plugin is its own controller, with
+            // own view space. Then gT() in view will always call that plugin controller instead of a generic
+            // PluginController.
+            return $this->gT($toTranslate, $escapeMode, $langauge);
+        };
+
+        $data['pluginId'] = $this->id;
+        return \Yii::app()->controller->renderPartial($fullAlias, $data, $return, $processOutput);
     }
 
     /**
