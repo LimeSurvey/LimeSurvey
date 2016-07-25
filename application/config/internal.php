@@ -128,12 +128,12 @@ $internalConfig = array(
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
                 ),
-                // Log file saved in /tmp/runtime/cint.log
-                'cintlog' => array(
+                // Log file saved in /tmp/runtime/plugin.log
+                'plugin' => array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'trace, info, error, warning',
-                    'logFile' => 'cint.log',
-                    'categories' => 'cintlink'
+                    'logFile' => 'plugin.log'
+                    // The category will be the name of the plugin
                 )
             )
         ),

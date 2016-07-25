@@ -358,4 +358,18 @@ abstract class PluginBase implements iPlugin {
 
     }
 
+    /**
+     * Call the Yii::log function to log into tmp/runtime/plugin.log
+     * The plugin name is the category.
+     *
+     * @param string $message
+     * @param string $level From CLogger, defaults to CLogger::LEVEL_TRACE
+     * @return void
+     */
+    public function log($message, $level = \CLogger::LEVEL_TRACE)
+    {
+        $category = $this->getName();
+        \Yii::log($message, $level, $category);
+    }
+
 }
