@@ -677,7 +677,7 @@ function transferlabels()
                     for (k in lsrows)
                     {
                         tablerows=tablerows+
-                        '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" >'+
+                        '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" data-common-id="'+k+'_'+scale_id+'">'+
                         '   <td>&nbsp;</td>'+
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
