@@ -152,7 +152,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data['pluginBaseUrl'] = $pluginBaseUrl;
         $data['surveyId'] = $surveyId;
 
-        $content = $this->renderPartial('index', $data);
+        $content = $this->renderPartial('index', $data, true);
 
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
@@ -228,7 +228,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function getLoginForm(LSHttpRequest $request)
     {
         $data = array();
-        $content = $this->renderPartial('loginform', $data);
+        $content = $this->renderPartial('loginform', $data, true);
         return $content;
     }
 
@@ -248,7 +248,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $data['orders'] = $orders;
 
-        $content = $this->renderPartial('dashboard', $data);
+        $content = $this->renderPartial('dashboard', $data, true);
 
         Yii::trace('getDashboard end');
         return $content;
