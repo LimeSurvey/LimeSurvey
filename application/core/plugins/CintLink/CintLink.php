@@ -97,7 +97,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 $event->set('success', false);
                 $event->set(
                     'message',
-                    gT('An non-recoverable error happened during the update. Error details:')
+                    $this->gT('An non-recoverable error happened during the update. Error details:')
                     . "<p>"
                     . htmlspecialchars($e->getMessage())
                     . "</p>"
@@ -126,7 +126,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         );
 
         $menuItem = new MenuItem(array(
-            'label' => gT('CintLink'),
+            'label' => $this->gT('CintLink'),
             'iconClass' => 'fa fa-table',
             'href' => $href
         ));
@@ -152,8 +152,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data['pluginBaseUrl'] = $pluginBaseUrl;
         $data['surveyId'] = $surveyId;
 
-        Yii::setPathOfAlias('cintLink', dirname(__FILE__));
-        $content = Yii::app()->controller->renderPartial('cintLink.views.index', $data, true);
+        $content = $this->renderPartial('index', $data);
 
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
@@ -229,8 +228,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function getLoginForm(LSHttpRequest $request)
     {
         $data = array();
-        Yii::setPathOfAlias('cintLink', dirname(__FILE__));
-        $content = Yii::app()->controller->renderPartial('cintLink.views.loginform', $data, true);
+        $content = $this->renderPartial('loginform', $data);
         return $content;
     }
 
@@ -250,8 +248,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $data['orders'] = $orders;
 
-        Yii::setPathOfAlias('cintLink', dirname(__FILE__));
-        $content = Yii::app()->controller->renderPartial('cintLink.views.dashboard', $data, true);
+        $content = $this->renderPartial('dashboard', $data);
 
         Yii::trace('getDashboard end');
         return $content;
