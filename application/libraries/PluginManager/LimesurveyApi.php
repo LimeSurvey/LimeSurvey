@@ -394,31 +394,4 @@ class LimesurveyApi
         }
     }
 
-    /**
-     * Translation for plugin
-     *
-     * @param string $sToTranslate The message that are being translated
-     * @param string $sEscapeMode
-     * @param string $sLanguage
-     * @return string
-     */
-    public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
-    {
-        $translation = \quoteText(Yii::t('', $sToTranslate, array(), 'pluginMessages', $sLanguage), $sEscapeMode);
-
-        // If we don't have a translation from the plugin, check core translations
-        if ($translation == $sToTranslate)
-        {
-            $translationFromCore = \quoteText(Yii::t('', $sToTranslate, array(), null, $sLanguage), $sEscapeMode);
-
-            if ($translationFromCore != $sToTranslate)
-            {
-                return $translationFromCore;
-            }
-        }
-
-        return $translation;
-
-    }
-    
 }

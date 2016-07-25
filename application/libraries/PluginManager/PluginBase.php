@@ -45,13 +45,32 @@ abstract class PluginBase implements iPlugin {
         $this->id = $id;
         $this->api = $manager->getAPI();
 
+        $this->setLocaleComponent();
+    }
+
+    /**
+     * We need a component for each plugin to load correct
+     * locale file.
+     *
+     * @return void
+     */
+    protected function setLocaleComponent()
+    {
+        $basePath = $this->getDir() . DIRECTORY_SEPARATOR . 'locale';
+
+        // No need to load a component if there is no locale files
+        if (!file_exists($basePath))
+        {
+            return;
+        }
+
         // Set plugin specific locale file to locale/<lang>/<lang>.mo
-        \Yii::app()->setComponent('pluginMessages', array(
+        \Yii::app()->setComponent('pluginMessages' . $this->id, array(
             'class' => 'LSCGettextMessageSource',
             'cachingDuration' => 3600,
             'forceTranslation' => true,
             'useMoFile' => true,
-            'basePath' => $this->getDir() . DIRECTORY_SEPARATOR . 'locale'
+            'basePath' => $basePath
         ));
     }
     
@@ -269,6 +288,48 @@ abstract class PluginBase implements iPlugin {
         $reflObj = new \ReflectionObject($this);
         $fileName = $reflObj->getFileName();
         return dirname($fileName);
+    }
+
+    /**
+     * Translation for plugin
+     *
+     * @param string $sToTranslate The message that are being translated
+     * @param string $sEscapeMode
+     * @param string $sLanguage
+     * @return string
+     */
+    public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
+    {
+        $translation = \quoteText(
+            \Yii::t(
+                self::getName(),
+                $sToTranslate,
+                array(),
+                'pluginMessages' . $this->id,
+                $sLanguage
+            ),
+            $sEscapeMode
+        );
+
+        // If we don't have a translation from the plugin, check core translations
+        if ($translation == $sToTranslate)
+        {
+            $translationFromCore = \quoteText(
+                \Yii::t(
+                    self::getName(),
+                    $sToTranslate,
+                    array(),
+                    null,
+                    $sLanguage
+                ),
+                $sEscapeMode
+            );
+
+            return $translationFromCore;
+        }
+
+        return $translation;
+
     }
 
 }

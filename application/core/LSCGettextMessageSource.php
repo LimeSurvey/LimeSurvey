@@ -39,9 +39,9 @@ class LSCGettextMessageSource extends CGettextMessageSource
 		if (is_file($messageFile))
 		{
 			if($this->useMoFile)
-				$file=new CGettextMoFile($this->useBigEndian);
+				$file=new LSCGettextMoFile($this->useBigEndian);
 			else
-				$file=new CGettextPoFile();
+				$file=new LSCGettextPoFile();
 			$messages=$file->load($messageFile,$category);
 			if(isset($cache))
 			{
