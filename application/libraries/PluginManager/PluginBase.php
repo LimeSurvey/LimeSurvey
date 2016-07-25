@@ -302,7 +302,7 @@ abstract class PluginBase implements iPlugin {
     {
         $translation = \quoteText(
             \Yii::t(
-                self::getName(),
+                '',
                 $sToTranslate,
                 array(),
                 'pluginMessages' . $this->id,
@@ -316,7 +316,7 @@ abstract class PluginBase implements iPlugin {
         {
             $translationFromCore = \quoteText(
                 \Yii::t(
-                    self::getName(),
+                    '',
                     $sToTranslate,
                     array(),
                     null,
