@@ -44,6 +44,15 @@ abstract class PluginBase implements iPlugin {
         $this->pluginManager = $manager;
         $this->id = $id;
         $this->api = $manager->getAPI();
+
+        // Set plugin specific locale file to locale/<lang>/<lang>.mo
+        \Yii::app()->setComponent('pluginMessages', array(
+            'class' => 'LSCGettextMessageSource',
+            'cachingDuration' => 3600,
+            'forceTranslation' => true,
+            'useMoFile' => true,
+            'basePath' => $this->getDir() . DIRECTORY_SEPARATOR . 'locale'
+        ));
     }
     
     /**
@@ -247,6 +256,19 @@ abstract class PluginBase implements iPlugin {
     protected function unsubscribe($event)
     {
         return $this->pluginManager->unsubscribe($this, $event);
+    }
+
+    /**
+     * To find the plugin locale file, we need late runtime result of __DIR__.
+     * Solution copied from http://stackoverflow.com/questions/18100689/php-dir-evaluated-runtime-late-binding
+     *
+     * @return string
+     */
+    protected function getDir()
+    {
+        $reflObj = new \ReflectionObject($this);
+        $fileName = $reflObj->getFileName();
+        return dirname($fileName);
     }
 
 }

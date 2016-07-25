@@ -6,10 +6,10 @@ use PluginDynamic;
 use SurveyDynamic;
 
 /**
-* Class exposing a Limesurvey API to plugins.
-* This class is instantiated by the plugin manager,
-* plugins can obtain it by calling getAPI() on the plugin manager.
-*/
+ * Class exposing a Limesurvey API to plugins.
+ * This class is instantiated by the plugin manager,
+ * plugins can obtain it by calling getAPI() on the plugin manager.
+ */
 class LimesurveyApi
 {
     /**
@@ -24,20 +24,24 @@ class LimesurveyApi
     {
         return App()->getConfig($key, $defaultValue);
     }
-    
+
     /**
      * Generates the real table name from plugin and tablename.
      * @param iPlugin $plugin
      * @param string $tableName
+     * @return string
      */
     protected function getTableName(iPlugin $plugin, $tableName)
     {
         return App()->getDb()->tablePrefix . strtolower($plugin->getName()) . "_$tableName";
     }
+
     /**
-    * Sets a flash message to be shown to the user.
-    * @param html $message
-    */
+     * Sets a flash message to be shown to the user.
+     *
+     * @param string $message HTML
+     * @return void
+     */
     public function setFlash($message, $key ='api')
     {
         // @todo Remove direct session usage.
@@ -388,6 +392,33 @@ class LimesurveyApi
         {
             throw new Exception("Can't find a plugin with name " . $name);
         }
+    }
+
+    /**
+     * Translation for plugin
+     *
+     * @param string $sToTranslate The message that are being translated
+     * @param string $sEscapeMode
+     * @param string $sLanguage
+     * @return string
+     */
+    public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
+    {
+        $translation = \quoteText(Yii::t('', $sToTranslate, array(), 'pluginMessages', $sLanguage), $sEscapeMode);
+
+        // If we don't have a translation from the plugin, check core translations
+        if ($translation == $sToTranslate)
+        {
+            $translationFromCore = \quoteText(Yii::t('', $sToTranslate, array(), null, $sLanguage), $sEscapeMode);
+
+            if ($translationFromCore != $sToTranslate)
+            {
+                return $translationFromCore;
+            }
+        }
+
+        return $translation;
+
     }
     
 }
