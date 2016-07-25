@@ -261,4 +261,17 @@ namespace ls\pluginmanager;
             return \Yii::app()->controller->renderPartial($alias .'.views.' . $viewfile, $data, true);
         }
 
+        /**
+         * To find the plugin locale file, we need late runtime result of __DIR__.
+         * Solution copied from http://stackoverflow.com/questions/18100689/php-dir-evaluated-runtime-late-binding
+         *
+         * @return string
+         */
+        protected function getDir()
+        {
+            $reflObj = new \ReflectionObject($this);
+            $fileName = $reflObj->getFileName();
+            return dirname($fileName);
+        }
+
     }
