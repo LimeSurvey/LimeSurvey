@@ -252,13 +252,15 @@ namespace ls\pluginmanager;
          *
          * @param string $viewfile Filename of view in views/ folder
          * @param array $data
+         * @param boolean $return
+         * @param boolean $processOutput
          * @return string;
          */
-        public function renderPartial($viewfile, $data)
+        public function renderPartial($viewfile, $data, $return = false, $processOutput = false)
         {
             $alias = 'plugin_views_folder' . $this->id;
             \Yii::setPathOfAlias($alias, $this->getDir());
-            return \Yii::app()->controller->renderPartial($alias .'.views.' . $viewfile, $data, true);
+            return \Yii::app()->controller->renderPartial($alias .'.views.' . $viewfile, $data, $return, $processOutput);
         }
 
         /**
