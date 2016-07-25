@@ -7,6 +7,10 @@ $(document).ready(function(){
 
 
     $('.btnquickadd').click(function(){
+        var helper = $("<span style='display:none;' id='hash_helper_method_container'></span>");
+        $('body').append(helper);
+        helper.data('scale-id', $(this).data('scale-id'));
+        helper.data('table-id', $(this).sibling('table.answertable').attr('id'));
         scale_id = $(this).data('scale-id');
     });
 
@@ -627,6 +631,9 @@ function transferlabels()
 
 function quickaddlabels()
 {
+    var scale_id = $('#hash_helper_method_container').data('scale-id'),
+        table_id = $('#hash_helper_method_container').data('table-id');
+        
     if ($(this).attr('id')=='btnqareplace')
     {
         var lsreplace=true;
