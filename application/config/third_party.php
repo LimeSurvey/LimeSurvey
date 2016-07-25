@@ -129,7 +129,7 @@ return array(
 
     // jQuery blockUI
     'jquery-blockUI' => array(
-        'basePath' => 'third_party.jquery-json',
+        'basePath' => 'third_party.jquery-blockui',
         'js' => array(
             'jquery.blockUI.js'
         ),
