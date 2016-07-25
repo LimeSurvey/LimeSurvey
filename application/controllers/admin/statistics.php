@@ -825,7 +825,7 @@ class statistics extends Survey_Common_Action {
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'bootstrap-switch.min.js');
 
-        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']), array('simpleStatistics', 'admin/statistics/sa/index') );
+        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']) );
 
         $aData['display'] = array();
         $aData['display']['menu_bars'] = false;

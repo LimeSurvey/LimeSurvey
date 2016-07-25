@@ -113,7 +113,7 @@ class Usergroups extends Survey_Common_Action
             $aViewUrls = 'mailUserGroup_view';
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();  // Close button, UrlReferrer
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, UrlReferrer
 
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
@@ -202,7 +202,7 @@ class Usergroups extends Survey_Common_Action
         }
         $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
         $aData['usergroupbar']['savebutton']['text']= gT('Save');
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();  // Close button, urlReferrer
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, urlReferrer
         $aData['usergroupbar']['add'] = 'admin/usergroups';
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
@@ -247,7 +247,7 @@ class Usergroups extends Survey_Common_Action
             }
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();  // Close button, urlReferrer
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, urlReferrer
         $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
         $aData['usergroupbar']['savebutton']['text']= gT("Update user group");
 
