@@ -7623,6 +7623,12 @@ function getBrowserLanguage()
     if (!isset($aLanguages[$sLanguage]))
     {
         $sLanguage=str_replace('_','-',$sLanguage);
+        if (strpos($sLanguage,'-')!==false)
+        {
+          $aLanguage=explode('-',$sLanguage);
+          $aLanguage[1]=strtoupper($aLanguage[1]);
+          $sLanguage=implode('-',$aLanguage);
+        }
         if (!isset($aLanguages[$sLanguage]))
         {
             $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
