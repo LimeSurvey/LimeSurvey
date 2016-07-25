@@ -247,4 +247,18 @@ namespace ls\pluginmanager;
             return $this->pluginManager->unsubscribe($this, $event);
         }
 
+        /**
+         * Look for views in plugin views/ folder and render it (no echo)
+         *
+         * @param string $viewfile Filename of view in views/ folder
+         * @param array $data
+         * @return string;
+         */
+        public function renderPartial($viewfile, $data)
+        {
+            $alias = 'plugin_views_folder' . $this->id;
+            \Yii::setPathOfAlias($alias, $this->getDir());
+            return \Yii::app()->controller->renderPartial($alias .'.views.' . $viewfile, $data, true);
+        }
+
     }
