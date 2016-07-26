@@ -230,9 +230,12 @@ class TemplateConfiguration extends CFormModel
         {
             while (false !== ($file = readdir($handle)))
             {
-                if (!is_dir($file))
+                if($file!='.' && $file!='..')
                 {
-                    $otherfiles[] = array("name" => $file);
+                    if (!is_dir($file))
+                    {
+                        $otherfiles[] = array("name" => $file);
+                    }
                 }
             }
             closedir($handle);
