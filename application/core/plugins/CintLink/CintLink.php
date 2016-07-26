@@ -75,9 +75,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 $aFields = array(
                     'url' => 'string primary key',
                     'sid' => 'int',  // Survey id
-                    'raw' => 'text',
+                    'raw' => 'text',  // Order xml
                     'status' => 'string',
                     'ordered_by' => 'int',  // User id
+                    'deleted' => 'bool',  // Soft delete
                     'created' => 'datetime',
                     'modified' => 'datetime',
                 );
@@ -245,7 +246,14 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $data = array();
 
-        $orders = $this->getOrders();
+        $surveyId = $request->getParam('surveyId');
+
+        if (empty($surveyId))
+        {
+            throw new InvalidArgumentException('surveyId is empty');
+        }
+
+        $orders = $this->getOrders($surveyId);
         $orders = $this->updateOrders($orders);
 
         $data['orders'] = $orders;
@@ -499,11 +507,18 @@ class CintLink extends \ls\pluginmanager\PluginBase
     /**
      * Get all Cint orders saved on client
      *
+     * @param int $surveyId
      * @return array<CintLinkOrder>
      */
-    private function getOrders()
+    private function getOrders($surveyId)
     {
-        $orders = CintLinkOrder::model()->findAll();
+        $orders = CintLinkOrder::model()->findAllByAttributes(
+            array(
+                'sid' => $surveyId,
+                'deleted' => false
+            ),
+            array('order' => 'url DESC')
+        );
         return $orders;
     }
 

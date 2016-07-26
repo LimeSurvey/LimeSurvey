@@ -112,7 +112,8 @@ $(document).ready(function() {
         showLoader();
         $.ajax({
             method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getDashboard'
+            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getDashboard',
+            surveyId: LS.plugin.cintlink.surveyId
         }).done(function(response) {
             console.log('response', response);
             hideLoader();

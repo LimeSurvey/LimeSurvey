@@ -1,4 +1,8 @@
-<button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'><?php echo $__plugin->gT("Show widget"); ?></button>
+<button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'>
+    <span class='fa fa-bars'></span>
+    &nbsp;
+    <?php echo $__plugin->gT("Show widget"); ?>
+</button>
 <p class='help-block'>Use the Cint widget to buy participants</p>
 
 <h4>Orders</h4>
@@ -26,7 +30,15 @@
                     <!-- Button column -->
                     <?php if ($order->status == 'hold'): ?>
                         <td>
-                            <a class='btn btn-default btn-sm' href="https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=<?php echo htmlspecialchars($order->url); ?>" target="_blank"><?php echo $__plugin->gT("Pay now"); ?></a>
+                            <a 
+                                class='btn btn-default btn-sm' 
+                                href="https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=<?php echo htmlspecialchars($order->url); ?>" 
+                                target="_blank"
+                            >
+                                <span class='fa fa-credit-card'></span>
+                                &nbsp;
+                                <?php echo $__plugin->gT("Pay now"); ?>
+                            </a>
                             &nbsp;
                             <button class='btn btn-warning btn-sm' onclick='LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>");' >
                                 <span class='fa fa-ban'></span>
