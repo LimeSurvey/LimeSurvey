@@ -1090,58 +1090,37 @@ function buildsurveysession($surveyid,$preview=false)
         }
         // IF CAPTCHA ANSWER IS NOT CORRECT
         else if (!isset($move) || is_null($move))
+        {
+            unset($_SESSION['survey_'.$surveyid]['srid']);
+            $gettoken = $clienttoken;
+            sendCacheHeaders();
+            doHeader();
+            // No or bad answer to required security question
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1745]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1746]');
+            // If token wasn't provided and public registration
+            // is enabled then show registration form
+            if ( !isset($gettoken) && isset($thissurvey) && $thissurvey['allowregister'] == "Y")
             {
-                unset($_SESSION['survey_'.$surveyid]['srid']);
-                $gettoken = $clienttoken;
-                sendCacheHeaders();
-                doHeader();
-                // No or bad answer to required security question
-                $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1745]');
-                echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1746]');
-                // If token wasn't provided and public registration
-                // is enabled then show registration form
-                if ( !isset($gettoken) && isset($thissurvey) && $thissurvey['allowregister'] == "Y")
-                {
-                    echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
+                echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
+            }
+            else
+            { // only show CAPTCHA
+
+                echo '<div id="wrapper" class="container col-md-8 col-md-offset-2"><p id="tokenmessage">';
+                if (isset($loadsecurity))
+                { // was a bad answer
+                    echo "<span class='error'>".gT("The answer to the security question is incorrect.")."</span><br />";
                 }
-                else
-                { // only show CAPTCHA
 
-                    echo '<div id="wrapper"><p id="tokenmessage">';
-                    if (isset($loadsecurity))
-                    { // was a bad answer
-                        echo "<span class='error'>".gT("The answer to the security question is incorrect.")."</span><br />";
-                    }
-
-                    echo gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
-                    // IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
-                    // AND HIDE ENTRY FIELD
-                    if (!isset($gettoken))
-                    {
-                        echo gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
-                        <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
-                        <ul>
-                        <li>
-                        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-                        <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
-                        if (isset($_GET['loadall']) && isset($_GET['scid'])
-                        && isset($_GET['loadname']) && isset($_GET['loadpass']))
-                        {
-                            echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
-                            <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                            <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
-                            <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
-                        }
-
-                        echo '<label for="token">'.gT("Token")."</label><input class='text' type='password' id='token' name='token'></li>";
-                }
-                else
+                echo gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
+                // IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
+                // AND HIDE ENTRY FIELD
+                if (!isset($gettoken))
                 {
-                    echo gT("Please confirm the token by answering the security question below and click continue.")."</p>
-                    <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
-                    <ul>
-                    <li>
+                    echo gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
+                    <form id='tokenform' class='form-horizontal' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
                     <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
                     <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
                     if (isset($_GET['loadall']) && isset($_GET['scid'])
@@ -1152,21 +1131,50 @@ function buildsurveysession($surveyid,$preview=false)
                         <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
                         <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
                     }
-                    echo '<label for="token">'.gT("Token:")."</label><span id='token'>$gettoken</span>"
-                    ."<input type='hidden' name='token' value='$gettoken'></li>";
+                    echo "<div class='form-group'>"
+                            . "<label for='token' class='col-md-3 control-label'>".gT("Token")."</label>"
+                            . "<div class='col-md-9'><input class='text form-control' type='password' id='token' name='token'></div>"
+                        . "</div>";
+                }
+                else
+                {
+                    echo gT("Please confirm the token by answering the security question below and click continue.")."</p>
+                    <form id='tokenform' class='form-horizontal col-md-12 ' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
+                    <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+                    <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
+                    if (isset($_GET['loadall']) && isset($_GET['scid'])
+                    && isset($_GET['loadname']) && isset($_GET['loadpass']))
+                    {
+                        echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
+                        <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
+                        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
+                        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
+                    }
+                    echo "<div class='form-group'>"
+                    . "<label for='token' class='col-md-3 control-label'>".gT("Token:")."</label>"
+                    . "<div class='col-md-9'><input class='text form-control' type='text' id='tokenXXXX' name='xxxToken' disabled value='".$gettoken."'></div>"
+                    . "</div>"
+                    . "<input type='hidden' name='token' value='".$gettoken."'></li>";
                 }
 
 
                 if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 {
-                    echo "<li>
-                    <label for='captchaimage'>".gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
-                    </li>";
+                    echo "<div class='form-group'>"
+                    . "<label for='captchaimage' class='col-md-4 control-label'>"
+                        . "<span class='col-sm-8'>".gT("Security Question:")."</span>"
+                        . "<span class='col-sm-4 text-right'>"
+                        . "<img id='captchaimage' class='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' />"
+                        . "</span>"
+                    . "</label>"
+                    . "<div class='col-md-8''><input class='form-control' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></div>"
+                    . "</div>";
                 }
-                echo "<li><input class='submit' type='submit' value='".gT("Continue")."' /></li>
-                </ul>
-                </form>
-                </id>";
+                echo "<div class='form-group'>"
+                . "<span class='col-md-4 col-md-offset-8'><input class='btn btn-primary btn-block' type='submit' value='".gT("Continue")."' /></span>"
+                . "</div>"
+                . "</form>"
+                . "</div>";
             }
 
             echo '</div>'.templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1817]');
