@@ -305,13 +305,13 @@ abstract class PluginBase implements iPlugin {
         \Yii::setPathOfAlias($alias, $this->getDir());
         $fullAlias = $alias . '.views.' . $viewfile;
 
-        if (isset($data['__plugin']))
+        if (isset($data['plugin']))
         {
-            throw new InvalidArgumentException("Key '__plugin' in data variable is for plugin base only. Please use another key name.");
+            throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
         }
 
         // Provide this so we can use $plugin->gT() in plugin views
-        $data['__plugin'] = $this;
+        $data['plugin'] = $this;
 
         return \Yii::app()->controller->renderPartial($fullAlias, $data, $return, $processOutput);
     }
