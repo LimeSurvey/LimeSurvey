@@ -47,7 +47,7 @@ class PluginHelper extends Survey_Common_Action
         $content = $this->getContent(null, $plugin, $method);
 
         $aData['content'] = $content;
-        $this->_renderWrappedTemplate(null, array(), $aData);
+        $this->_renderWrappedTemplate(null, 'super/dummy', $aData);
     }
 
     /**
