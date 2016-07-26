@@ -1,6 +1,7 @@
 <?php
 
 use \ls\menu\MenuItem;
+use \ls\menu\Menu;
 
 require_once(__DIR__ . "/CintLinkAPI.php");
 require_once(__DIR__ . "/model/CintLinkOrder.php");
@@ -46,6 +47,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function init()
     {
         $this->subscribe('beforeActivate');
+        $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('newDirectRequest');
 
@@ -136,14 +138,37 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * @todo Maybe place somewhere else
+     */
+    public function beforeAdminMenuRender()
+    {
+        $event = $this->getEvent();
+        $surveyId = $event->get('surveyId');
+
+        $href = $this->api->createUrl(
+            'admin/pluginhelper',
+            array(
+                'sa' => 'fullpagewrapper',
+                'plugin' => $this->getName(),
+                'method' => 'actionIndexGlobal'
+            )
+        );
+
+        // Return new menu
+        $event = $this->getEvent();
+        $event->append('extraMenus', array(
+          new Menu(array(
+            'label' => $this->gT('CintLink'),
+            'href' => $href
+          ))
+        ));
+    }
+
+    /**
      * @return string
      */
     public function actionIndex($surveyId)
     {
-        $data = array();
-
-        $this->log("blaha");
-
         $pluginBaseUrl = Yii::app()->createUrl(
             'plugins/direct',
             array(
@@ -152,35 +177,55 @@ class CintLink extends \ls\pluginmanager\PluginBase
             )
         );
 
+        $data = array();
         $data['pluginBaseUrl'] = $pluginBaseUrl;
         $data['surveyId'] = $surveyId;
+        $data['common'] = $this->renderPartial('common', $data, true);
 
         $content = $this->renderPartial('index', $data, true);
 
+        $this->registerCssAndJs();
+
+        return $content;
+    }
+
+    /**
+     * As actionIndex but survey agnostic
+     *
+     * @return string
+     */
+    public function actionIndexGlobal()
+    {
+        $pluginBaseUrl = Yii::app()->createUrl(
+            'plugins/direct',
+            array(
+                'plugin' => 'CintLink'
+            )
+        );
+
+        $data = array();
+        $data['pluginBaseUrl'] = $pluginBaseUrl;
+        $data['common'] = $this->renderPartial('common', $data, true);
+
+        $content = $this->renderPartial('indexGlobal', $data, true);
+
+        $this->registerCssAndJs();
+
+        return $content;
+    }
+
+    /**
+     * Register CSS and JS
+     *
+     * @return void
+     */
+    protected function registerCssAndJs() {
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
         App()->clientScript->registerScriptFile("http://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
 
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
         App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
-
-        //$response = json_decode($response);
-        /*
-        $c = curl_init("https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10");
-        curl_setopt($c, CURLOPT_COOKIEJAR, './cookie.txt');
-        curl_setopt($c, CURLOPT_COOKIEFILE, './cookie.txt');
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($c, CURLOPT_HEADER, true);
-        //curl_setopt($c, CURLOPT_HTTPHEADER, array("Cookie: aeca3d1c1ce0a356a06332c24d79aa4e=eela13alsi3g7uc052nupk12b2"));
-        $output = curl_exec($c);
-        $headers = curl_getinfo($c, CURLINFO_HEADER_OUT);
-        curl_close($c);
-
-        //var_dump(htmlspecialchars($output));
-        var_dump($headers);
-        */
-
-        return $content;
     }
 
     /**
@@ -236,7 +281,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Return HTML for dashboard
+     * Return HTML for survey specific dashboard
      * Called by Ajax
      *
      * @param LSHttpRequest $request
@@ -246,12 +291,37 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $surveyId = $request->getParam('surveyId');
 
+        // If surveyId is empty, assume this is the global dashboard
         if (empty($surveyId))
         {
-            throw new InvalidArgumentException('surveyId is empty');
+            return $this->getGlobalDashboard();
         }
 
-        $orders = $this->getOrders($surveyId);
+        $orders = $this->getOrders(array(
+            'sid' => $surveyId,
+            'deleted' => false
+        ));
+        $orders = $this->updateOrders($orders);
+
+        $data = array();
+        $data['orders'] = $orders;
+        $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+
+        $content = $this->renderPartial('dashboard', $data, true);
+
+        return $content;
+    }
+
+    /**
+     * Return HTML for global dashboard
+     *
+     * @return string
+     */
+    public function getGlobalDashboard()
+    {
+        $orders = $this->getOrders(array(
+            'deleted' => false
+        ));
         $orders = $this->updateOrders($orders);
 
         $data = array();
@@ -527,9 +597,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
         {
             $request = $event->get('request');  // request = survey id for actionIndex?
             $functionToCall = $event->get('function');
-            if ($functionToCall == "actionIndex")
+            if ($functionToCall == 'actionIndex' 
+                || $functionToCall == 'actionIndexGlobal')
             {
-                $content = $this->actionIndex($request);
+                $content = $this->$functionToCall($request);
                 $event->setContent($this, $content);
             }
             else if ($functionToCall == 'checkIfUserIsLoggedInOnLimesurveyorg'
@@ -551,16 +622,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
     /**
      * Get all Cint orders saved on client
      *
-     * @param int $surveyId
+     * @param array $conditions Like array('deleted' => false, ...)
      * @return array<CintLinkOrder>
      */
-    private function getOrders($surveyId)
+    protected function getOrders($conditions)
     {
         $orders = CintLinkOrder::model()->findAllByAttributes(
-            array(
-                'sid' => $surveyId,
-                'deleted' => false
-            ),
+            $conditions,
             array('order' => 'url DESC')
         );
         return $orders;
@@ -572,7 +640,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * @param array<CintLinkOrder> $orders
      * @return array<CintLinkOrder>|false - Returns false if some fetching goes amiss
      */
-    private function updateOrders(array $orders)
+    protected function updateOrders(array $orders)
     {
         $this->log('updateOrder begin');
 
@@ -584,9 +652,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
         {
             $this->log('loop order ' . $order->url);
 
-            if ($order->status == 'cancelled')
+            if ($order->status == 'cancelled'
+                || $order->status == 'completed'
+                || $order->status == 'closed')
             {
-                $this->log('Don\'t fetch anything for cancelled order, skipped');
+                $this->log('Don\'t fetch anything for cancelled/completed/closed order, skipped');
                 $newOrders[] = $order;
                 continue;
             }
@@ -618,4 +688,5 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->log('updateOrder end');
         return $newOrders;
     }
+
 }

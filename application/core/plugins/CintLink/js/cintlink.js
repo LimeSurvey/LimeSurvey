@@ -108,7 +108,6 @@ $(document).ready(function() {
      * @return
      */
     function showDashboard() {
-        console.log('showDashboard');
         showLoader();
         $.ajax({
             method: 'POST',

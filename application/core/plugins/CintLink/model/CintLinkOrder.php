@@ -24,4 +24,19 @@ class CintLinkOrder extends CActiveRecord
     {
         return 'url';
     }
+
+    /**
+     * Get survey URL for belonging survey
+     */
+    public function getSurveyUrl() {
+        return Yii::app()->createUrl('admin/survey/sa/view', array('surveyid' => $this->sid));
+    }
+
+    public function relations()
+    {
+        return array(
+            'user' => array(self::BELONGS_TO, 'User', 'ordered_by'),
+        );
+    }
+
 }
