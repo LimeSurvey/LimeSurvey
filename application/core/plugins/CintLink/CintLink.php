@@ -305,6 +305,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $data = array();
         $data['orders'] = $orders;
+        $data['surveyId'] = $surveyId;
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $content = $this->renderPartial('dashboard', $data, true);

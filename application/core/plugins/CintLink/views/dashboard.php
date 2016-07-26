@@ -11,7 +11,7 @@
         &nbsp;
         <?php echo $plugin->gT('Choose participants'); ?>
     </button>
-    <p class='help-block'><?php $plugin->gT('Use the Cint widget to buy participants'); ?></p>
+    <p class='help-block'><?php echo $plugin->gT('Use the Cint widget to buy participants'); ?></p>
 <?php endif; ?>
 
 <h4>Orders</h4>
