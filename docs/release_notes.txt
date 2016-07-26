@@ -35,6 +35,15 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160725) to 2.50+ (build 160726) July 26, 2016
+-Fixed issue #11488: HTML editor in "Edit subquestions" (Array numbers) not working correctly (markusfluer)
+-Fixed issue #11492: Answer Lists (DropDowns) disappeared from all my surveys (markusfluer)
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
 
 Changes from 2.50+ (build 160718) to 2.50+ (build 160725) July 25, 2016
 -Fixed issue: [security] Better check on XML uploads 
