@@ -4,6 +4,12 @@
      padding-bottom: 10px;
  }
 
+.remove-margins {
+    margin: 0;
+}
+.remove-padding {
+    padding: 0;
+}
 div[id^="group-"]>div {
     background-color: #fff;
     margin-bottom: 1em;

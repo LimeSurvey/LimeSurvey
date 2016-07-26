@@ -204,6 +204,7 @@ class AdminTheme extends CFormModel
         Yii::app()->clientScript->addPackage( 'admin-theme', $package);         // add the package
         Yii::app()->clientScript->registerPackage('admin-theme');               // register the package
         Yii::app()->clientScript->registerPackage('moment');                    // register moment for correct dateTime calculation
+
     }
 
 
