@@ -28,4 +28,7 @@ LS.plugin.cintlink = LS.plugin.cintlink || {};
 LS.plugin.cintlink.pluginBaseUrl = '<?php echo $pluginBaseUrl; ?>';
 LS.plugin.cintlink.surveyId = '<?php echo $surveyId; ?>';
 
+LS.plugin.cintlink.lang = {}
+LS.plugin.cintlink.lang.orderPlacedOnHold = '<?php echo $__plugin->gT('Order placed on hold. Pay to start the review process.'); ?>';
+
 </script>

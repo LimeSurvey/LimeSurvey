@@ -10,13 +10,15 @@
     <table class='table table-striped'>
         <thead>
             <th>Url</th>
-            <th>Status</th>
+            <th><?php echo $__plugin->gT('Created'); ?></th>
+            <th><?php echo $__plugin->gT('Status'); ?></th>
             <th></th>
         </thead>
         <tbody>
             <?php foreach($orders as $order): ?>
                 <tr>
                     <td><?php echo $order->url ;?></td>
+                    <td><?php echo $order->created ;?></td>
 
                     <!-- Status column -->
                     <?php if ($order->status == 'live'): ?>

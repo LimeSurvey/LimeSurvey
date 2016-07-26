@@ -230,7 +230,9 @@ $(document).ready(function() {
 
                         CintLink.close();
 
-                        showDashboard();
+                        showErrorOrSuccessModal({
+                            result: LS.plugin.cintlink.lang.orderPlacedOnHold
+                        });
                     }
                 });
             });
