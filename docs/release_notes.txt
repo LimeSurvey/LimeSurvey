@@ -35,7 +35,11 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.50+ (build 160726) to 2.50+ (build 160727) July 27, 2016
+Changes from 2.50+ (build 160727) to 2.50+ (build 160728) July 26, 2016
+-Fixed issue #11484: PHP error when adding participants to CPDB (markusfluer)
+-Fixed issue: Manually adding subquestions did not work correctly (markusfluer)
+      
+Changes from 2.50+ (build 160726) to 2.50+ (build 160727) July 26, 2016
 -Fixed issue #11496: Numbers not adding correctly (markusfluer)
 -Fixed issue: Z-index problems in survey editing (markusfluer)
 
