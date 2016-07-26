@@ -262,6 +262,28 @@ class AdminTheme extends CFormModel
     }
 
     /**
+     * TODO: merge both registerScript methods
+     */
+    static public function staticRegisterScriptFile( $cPATH, $sFile )
+    {
+        $sAdminScriptPath = realpath ( Yii::app()->basePath .'/../scripts/admin/') . '/';
+        $sScriptPath      = realpath ( Yii::app()->basePath .'/../scripts/') . '/';
+        $path = ($cPATH == 'ADMIN_SCRIPT_PATH')?$sAdminScriptPath:$sScriptPath;                                                 // We get the wanted path
+        $url  = ($cPATH == 'ADMIN_SCRIPT_PATH')?Yii::app()->getConfig('adminscripts'):Yii::app()->getConfig('generalscripts');  // We get the wanted url defined in config
+
+        // We check if we should use the asset manager or not
+        if (!YII_DEBUG)
+        {
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $path . $sFile ));                      // We publish the asset
+        }
+        else
+        {
+            App()->getClientScript()->registerScriptFile( $url . $sFile );                                                          // We publish the script
+        }
+
+    }
+
+    /**
      * Get instance of theme object.
      * Will instantiate the Admin Theme object first time it is called.
      * Please use this instead of global variable.
