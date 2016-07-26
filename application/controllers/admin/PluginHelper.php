@@ -37,6 +37,20 @@ class PluginHelper extends Survey_Common_Action
     }
 
     /**
+     * Helper function to let a plugin put content
+     * into the full page wrapper easily.
+     */
+    public function fullpagewrapper($plugin, $method)
+    {
+        $aData = array();
+
+        $content = $this->getContent(null, $plugin, $method);
+
+        $aData['content'] = $content;
+        $this->_renderWrappedTemplate(null, array(), $aData);
+    }
+
+    /**
      * Get HTML content for side-body
      *
      * @param string $plugin Name of the plugin class
