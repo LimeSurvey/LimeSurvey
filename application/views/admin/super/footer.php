@@ -32,6 +32,20 @@
 </footer>
 
 <!-- Modal for confirmation -->
+<?php
+/**
+
+    Example of use:
+
+    <button 
+        data-toggle='modal'
+        data-target='#confirmation-modal'
+        data-onclick='(function() { LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>"); })'
+        class='btn btn-warning btn-sm' 
+    >
+
+ */
+?>
 <div id="confirmation-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
