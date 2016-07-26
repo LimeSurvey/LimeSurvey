@@ -920,8 +920,9 @@ class questions extends Survey_Common_Action
         $oldCode  = false;
 
         //Capture "true" and "false" as strings
-        $first = ($first == "false" ? false : true);
-
+        if(is_string($first)){
+            $first = ($first == "false" ? false : true);
+        }
         // We get the numerical part of each code and we store them in Arrays
         // One array is to store the pure numerical values (so we can search in it for the greates value, and increment it)
         // Another array is to store the string values (so we keep all the prefixed "0")
