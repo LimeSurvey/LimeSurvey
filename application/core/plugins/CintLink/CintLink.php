@@ -141,6 +141,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $data = array();
 
+        $this->log("blaha");
+
         $pluginBaseUrl = Yii::app()->createUrl(
             'plugins/direct',
             array(

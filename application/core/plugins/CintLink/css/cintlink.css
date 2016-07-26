@@ -12,3 +12,8 @@
 .ajaxLoading .preloader {
     position: relative;
 }
+
+/* Don't shrink font in label */
+.label {
+    font-size: 100%;
+}
