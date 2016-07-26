@@ -244,8 +244,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function getDashboard(LSHttpRequest $request)
     {
-        $data = array();
-
         $surveyId = $request->getParam('surveyId');
 
         if (empty($surveyId))
@@ -256,11 +254,12 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $orders = $this->getOrders($surveyId);
         $orders = $this->updateOrders($orders);
 
+        $data = array();
         $data['orders'] = $orders;
+        $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $content = $this->renderPartial('dashboard', $data, true);
 
-        Yii::trace('getDashboard end');
         return $content;
     }
 

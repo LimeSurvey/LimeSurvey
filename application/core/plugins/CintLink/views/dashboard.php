@@ -18,15 +18,15 @@
             <?php foreach($orders as $order): ?>
                 <tr>
                     <td><?php echo $order->url ;?></td>
-                    <td><?php echo $order->created ;?></td>
+                    <td><?php echo convertDateTimeFormat($order->created, 'Y-m-d', $dateformatdata['phpdate']) ;?></td>
 
                     <!-- Status column -->
                     <?php if ($order->status == 'live'): ?>
-                        <td><span class='label label-success'><?php echo ucfirst($order->status); ?></span></td>
+                        <td><span class='label label-success'><?php echo $__plugin->gT(ucfirst($order->status)); ?></span></td>
                     <?php elseif ($order->status == 'denied'): ?>
-                        <td><span class='label label-danger'><?php echo ucfirst($order->status); ?></span></td>
+                        <td><span class='label label-danger'><?php echo $__plugin->gT(ucfirst($order->status)); ?></span></td>
                     <?php else: ?>
-                        <td><?php echo ucfirst($order->status); ?></td>
+                        <td><?php echo $__plugin->gT(ucfirst($order->status)); ?></td>
                     <?php endif; ?>
 
                     <!-- Button column -->

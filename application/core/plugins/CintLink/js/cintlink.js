@@ -210,7 +210,6 @@ $(document).ready(function() {
 
             CintLink.show(options, function(hold, release) {
                 // A purchase was made, and we're going to POST the hold URL back to ourselves
-                console.log("purchase was made");
                 $.ajax({
                     url: LS.plugin.cintlink.pluginBaseUrl + '&function=purchaseRequest',
                     data: {
