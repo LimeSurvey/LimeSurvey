@@ -30,5 +30,6 @@ LS.plugin.cintlink.surveyId = '<?php echo $surveyId; ?>';
 
 LS.plugin.cintlink.lang = {}
 LS.plugin.cintlink.lang.orderPlacedOnHold = '<?php echo $__plugin->gT('Order placed on hold. Pay to start the review process.'); ?>';
+LS.plugin.cintlink.lang.couldNotLogin = '<?php echo $__plugin->gT('Could not login. Please make sure username and password is correct.'); ?>';
 
 </script>

@@ -51,7 +51,7 @@ $(document).ready(function() {
                 showDashboard();
             }
             else {
-                $('#error-modal .modal-body-text').html("Could not login. Please make sure username and password is correct.");
+                $('#error-modal .modal-body-text').html(LS.plugin.cintlink.lang.couldNotLogin);
                 $('#error-modal').modal();
             }
         })
