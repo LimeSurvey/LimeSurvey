@@ -214,8 +214,8 @@ class listRadio extends CApplicationComponent
             }
 
             $answer .= '<div  class="form-group">';
-            $answer .= '    <label for="answer'.$ia[1].'NANS" class="answertext control-label">'.gT('No answer').'</label>';
-            $answer .= '        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />';
+            $answer .= '    <label for="answer'.$ia[1].'" class="answertext control-label">'.gT('No answer').'</label>';
+            $answer .= '        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />';
             $answer .=          $wrapper['item-end'];
             $answer .= '</div>';
 

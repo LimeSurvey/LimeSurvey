@@ -818,7 +818,7 @@ function do_5pointchoice($ia)
         $aData = array(
             'name'                   => $ia[1],
             'value'                  => $fp,
-            'id'                     => $ia[1].'NANS',
+            'id'                     => $ia[1],
             'labelText'              => gT('No answer'),
             'itemExtraClass'         => 'noanswer-item',
             'checkedState'           => $checkedState,

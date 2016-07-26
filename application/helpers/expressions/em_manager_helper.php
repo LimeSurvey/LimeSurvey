@@ -7294,8 +7294,7 @@
                                     $relParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
                                 }
                                 $relParts[] = "){\n";
-                                $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
-                                $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
+                                $relParts[] = "      $('#answer" . $sq['sgqa'] . "').click();\n"; // trigger click : no need other think, and whole event happen
                                 $relParts[] = "    }\n";
                                 break;
                             case 'R':
