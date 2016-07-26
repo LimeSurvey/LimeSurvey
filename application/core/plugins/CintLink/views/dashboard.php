@@ -25,6 +25,8 @@
                         <td><span class='label label-success'><?php echo $__plugin->gT(ucfirst($order->status)); ?></span></td>
                     <?php elseif ($order->status == 'denied'): ?>
                         <td><span class='label label-danger'><?php echo $__plugin->gT(ucfirst($order->status)); ?></span></td>
+                    <?php elseif ($order->status == 'new'): ?>
+                        <td><?php echo $__plugin->gT('Under review'); ?></td>
                     <?php else: ?>
                         <td><?php echo $__plugin->gT(ucfirst($order->status)); ?></td>
                     <?php endif; ?>
