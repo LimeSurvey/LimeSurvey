@@ -15,6 +15,7 @@
             </p>
         </div>
     </div>
+    <div class="row">Clienttoken: <?php echo $token ?> </div>
     <div class="row">
         <?php echo CHtml::beginForm(array("/survey/index/sid/.$iSurveyId."), 'post', array(
             'id' => 'tokenform',
@@ -23,27 +24,29 @@
         <div class="row form-group">
             <div class="col-xs-12 col-sm-4">
                 <?php echo CHtml::label(eT("Token"), 'token', array(
-                    'class' => '"control-label '.'$sKpClass"'
+                    'class' => '"control-label '.$sKpClass
                     ));
                 ?>
             </div>
             <div class="col-xs-12 col-sm-8">
                 <?php if(!isset($token)): ?>
                 <?php echo CHtml::passwordField('token', '', array(
-                    'class' => '"text form-control '.'$sKpClass"',
+                    'class' => 'text form-control '.$sKpClass,
                     'id' => 'token'));
                 ?>
                 <?php else: ?>
-                <?php echo CHtml::passwordField('tokenXX', '', array(
-                    'id' => 'tokenXXX',
-                    'class' => '"text form-control '.'$sKpClass"',
+                <?php echo CHtml::textField('visibleToken', $visibleToken, array(
+                    'id' => 'visibleToken',
+                    'class' => '"text form-control '.$sKpClass,
                     'disabled'=>'disabled',
-                    'value' => $token
+                    'data-value' => $visibleToken,
+                    'value' => $visibleToken,
                     ));
                 ?>
-                <?php echo CHtml::hiddenField('token', '', array(
-                    'class'=>'"$sKpClass"',
+                <?php echo CHtml::hiddenField('token', $token, array(
+                    'class'=>$sKpClass,
                     'id' => 'token',
+                    'data-value' => $token,
                     'value' => $token));
                 ?>
                 <?php endif; ?>
@@ -69,7 +72,7 @@
         <div class="row form-group">
             <div class="col-xs-12 col-sm-4">
                 <?php echo CHtml::label(eT("Security question"), 'captchafield', array(
-                    'class' => '"col-sm-6 control-label captchaimage' + '$sKpClass"'
+                    'class' => 'col-sm-6 control-label captchaimage '.$sKpClass
                     ));
                 ?>
             </div>
@@ -78,14 +81,15 @@
                 <div class="row form-group">
                     <div class="col-xs-4">
                         <?php echo CHtml::image($bCaptchaImgSrc, 'DORE', array(
-                            'class' => 'col-sm-12 control-label ', //+ '$sKpClass"',
+                            'class' => 'col-sm-12 control-label '.$sKpClass,
                             'id' => 'captchaimage',
                             'alt' => 'captcha'
-                        )); ?></div>
+                        )); ?>
+                    </div>
                     <div class="col-xs-8">
                         <?php echo CHtml::textField('loadsecurity', '', array(
                             'id' => 'captchafield',
-                            'class' => 'text form-control ',// + '$sKpClass',
+                            'class' => 'text form-control '.$sKpClass,
                             'size' => 5,
                             'maxlength' => 3
                         )) ?>
