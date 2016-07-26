@@ -102,5 +102,24 @@
     </div>
 </div>
 
+<!-- Modal for success -->
+<div id="success-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content panel-success">
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><?php eT("Success"); ?></h4>
+            </div>
+            <div class="modal-body">
+                <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
