@@ -394,6 +394,42 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * Soft delete an order
+     *
+     * @param LSHttpRequest $request
+     * @return void
+     */
+    public function softDeleteOrder(LSHttpRequest $request)
+    {
+        $this->log('softDeleteOrder begin');
+
+        $surveyId = $request->getParam('surveyId');
+        $url = $request->getParam('orderUrl');
+
+        $this->log('url = ' . $url);
+        $this->log('surveyId = ' . $surveyId);
+
+        $order = CintLinkOrder::model()->findByAttributes(
+            array(
+                'url' => $url,
+                'sid' => $surveyId,
+                'deleted' => false
+            )
+        );
+
+        if (empty($order))
+        {
+            return json_encode(array('error' => $this->gT('Found no order')));
+        }
+
+        $order->deleted = true;
+        $order->save();
+
+        $this->log("softDeleteOrder end");
+        return json_encode(array('result' => $this->gT('Order was deleted')));
+    }
+
+    /**
      * After order is placed, show nBill order form to
      * make payment
      *
@@ -497,6 +533,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     || $functionToCall == "login"
                     || $functionToCall == "purchaseRequest"
                     || $functionToCall == "cancelOrder"
+                    || $functionToCall == "softDeleteOrder"
                     || $functionToCall == "getSurvey")
             {
                 echo $this->$functionToCall($request);
@@ -530,19 +567,19 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     private function updateOrders(array $orders)
     {
-        Yii::log('updateOrder begin', CLogger::LEVEL_TRACE, 'cintlink');
+        $this->log('updateOrder begin');
 
-        $newOrders;
+        $newOrders = array();
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
 
         // Loop through orders and get updated info from Cint
         foreach ($orders as $order)
         {
-            Yii::log('loop order ' . $order->url, CLogger::LEVEL_TRACE, 'cintlink');
+            $this->log('loop order ' . $order->url);
 
             if ($order->status == 'cancelled')
             {
-                Yii::log('Don\'t fetch anything for cancelled order, skipped', CLogger::LEVEL_TRACE, 'cintlink');
+                $this->log('Don\'t fetch anything for cancelled order, skipped');
                 $newOrders[] = $order;
                 continue;
             }
@@ -556,7 +593,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             // Abort if we got nothing
             if (empty($response))
             {
-                Yii::log('updateOrder end with false, empty response', CLogger::LEVEL_TRACE, 'cintlink');
+                $this->log('updateOrder end with false, empty response');
                 return false;
             }
 
@@ -571,7 +608,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         }
 
-        Yii::log('updateOrder end', CLogger::LEVEL_TRACE, 'cintlink');
+        $this->log('updateOrder end');
         return $newOrders;
     }
 }

@@ -24,7 +24,7 @@ $(document).ready(function() {
      * Run when user click "Login"
      *
      * @param {object} ev - Event
-     * @return void
+     * @return
      */
     function onLoginClick(ev) {
         ev.preventDefault();
@@ -60,7 +60,7 @@ $(document).ready(function() {
     /**
      * Show the login form if user is not already logged in
      *
-     * @return void
+     * @return
      */
     function showLoginForm() {
         $.ajax({
@@ -105,7 +105,7 @@ $(document).ready(function() {
     /**
      * Fetch dashboard HTMl from server and inject it
      *
-     * @return void
+     * @return
      */
     function showDashboard() {
         console.log('showDashboard');
@@ -124,7 +124,7 @@ $(document).ready(function() {
     /**
      * Fetch nBill order form HTML and put it in iframe
      *
-     * @return void
+     * @return
      */
     function showNBillOrderForm() {
         console.log('showNBillOrderForm');
@@ -172,7 +172,7 @@ $(document).ready(function() {
     /**
      * Show the CintLink widget
      *
-     * @return void
+     * @return
      */
     function showWidget() {
         console.log("showWidget");
@@ -241,6 +241,7 @@ $(document).ready(function() {
      * Cancel an order at Cint
      *
      * @param {string} orderUrl
+     * @return
      */
     function cancelOrder(orderUrl) {
         showLoader();
@@ -248,7 +249,7 @@ $(document).ready(function() {
         $.ajax({
             method: 'POST',
             url: LS.plugin.cintlink.pluginBaseUrl + '&function=cancelOrder',
-            data: {orderUrl: orderUrl},
+            data: {orderUrl: orderUrl}
         }).done(function(response) {
             hideLoader();
             console.log(response);
@@ -257,9 +258,45 @@ $(document).ready(function() {
         });
     }
 
+    /**
+     * Soft deletes an order so it no longer shows up
+     * in dashboard.
+     *
+     * @param {string} orderUrl
+     * @return
+     */
+    function softDeleteOrder(orderUrl) {
+        showLoader();
+
+        $.ajax({
+            method: 'POST',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&function=softDeleteOrder',
+            data: {
+                orderUrl: orderUrl,
+                surveyId: LS.plugin.cintlink.surveyId
+            }
+        }).done(function(response) {
+            hideLoader();
+            console.log(response);
+            var response = JSON.parse(response);
+            console.log(response);
+
+            if (response.error) {
+                $('#error-modal .modal-body-text').html(response.error);
+                $('#error-modal').modal();
+            }
+            else if (response.result) {
+                $('#success-modal .modal-body-text').html(response.result);
+                $('#success-modal').modal();
+                showDashboard();
+            }
+        });
+    }
+
     // Needs to be accessed from the outside (dashboard)
     LS.plugin.cintlink.showWidget = showWidget;
     LS.plugin.cintlink.cancelOrder = cancelOrder;
+    LS.plugin.cintlink.softDeleteOrder = softDeleteOrder;
 
     // Check if user is logged in on limesurvey.org
     // If yes, show widget

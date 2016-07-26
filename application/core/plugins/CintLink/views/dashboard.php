@@ -40,7 +40,12 @@
                                 <?php echo $__plugin->gT("Pay now"); ?>
                             </a>
                             &nbsp;
-                            <button class='btn btn-warning btn-sm' onclick='LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>");' >
+                            <button
+                                data-toggle='modal'
+                                data-target='#confirmation-modal'
+                                data-onclick='(function() { LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>"); })'
+                                class='btn btn-warning btn-sm'
+                            >
                                 <span class='fa fa-ban'></span>
                                 &nbsp;
                                 <?php echo $__plugin->gT("Cancel"); ?>
@@ -50,7 +55,12 @@
                         <td></td>
                     <?php elseif ($order->status == 'cancelled'): ?>
                         <td>
-                            <button class='btn btn-warning btn-sm' onclick='LS.plugin.cintlink.deleteOrder("<?php echo $order->url; ?>");'>
+                            <button
+                                data-toggle='modal'
+                                data-target='#confirmation-modal'
+                                data-onclick='(function() { LS.plugin.cintlink.softDeleteOrder("<?php echo $order->url; ?>"); })'
+                                class='btn btn-warning btn-sm'
+                            >
                                 <span class='fa fa-trash'></span>
                                 &nbsp;
                                 <?php echo $__plugin->gT("Delete"); ?>
