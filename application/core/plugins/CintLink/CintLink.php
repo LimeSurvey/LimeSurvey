@@ -390,7 +390,15 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $curl = new Curl();
         $response = $curl->delete($url, array());
 
-        return json_encode(array('result' => $response->body));
+        if (empty($response->body))
+        {
+            return json_encode(array('result' => $this->gT('Order was cancelled')));
+        }
+        else
+        {
+            return json_encode(array('result' => $response->body));
+        }
+
     }
 
     /**

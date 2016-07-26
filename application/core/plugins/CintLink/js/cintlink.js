@@ -229,12 +229,34 @@ $(document).ready(function() {
                         $('#release-order').show();
 
                         CintLink.close();
+
+                        showDashboard();
                     }
                 });
             });
 
         });
 
+    }
+
+    /**
+     * After e.g. cancellation, depending on response,
+     * show either error modal or success modal.
+     * Reloads the dashboard.
+     *
+     * @param {object} response Expected to have response.error or response.result
+     * @return
+     */
+    function showErrorOrSuccessModal(response) {
+        if (response.error) {
+            $('#error-modal .modal-body-text').html(response.error);
+            $('#error-modal').modal();
+        }
+        else if (response.result) {
+            $('#success-modal .modal-body-text').html(response.result);
+            $('#success-modal').modal();
+            showDashboard();
+        }
     }
 
     /**
@@ -255,6 +277,8 @@ $(document).ready(function() {
             console.log(response);
             var response = JSON.parse(response);
             console.log(response);
+
+            showErrorOrSuccessModal(response);
         });
     }
 
@@ -281,15 +305,7 @@ $(document).ready(function() {
             var response = JSON.parse(response);
             console.log(response);
 
-            if (response.error) {
-                $('#error-modal .modal-body-text').html(response.error);
-                $('#error-modal').modal();
-            }
-            else if (response.result) {
-                $('#success-modal .modal-body-text').html(response.result);
-                $('#success-modal').modal();
-                showDashboard();
-            }
+            showErrorOrSuccessModal(response);
         });
     }
 
