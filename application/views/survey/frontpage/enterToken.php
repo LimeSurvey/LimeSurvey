@@ -4,7 +4,7 @@
     <?php endif; ?>
     <script type='text/javascript'>var focus_element = '#token';</script>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
             <p id="tokenmessage">
                 <?php eT("This is a controlled survey. You need a valid token to participate."); ?><br/>
                 <?php if(!isset($token)): ?>
@@ -15,7 +15,7 @@
             </p>
         </div>
     </div>
-    <div class="row">Clienttoken: <?php echo $token ?> </div>
+
     <div class="row">
         <?php echo CHtml::beginForm(array("/survey/index/sid/.$iSurveyId."), 'post', array(
             'id' => 'tokenform',
@@ -23,8 +23,8 @@
         )); ?>
         <div class="row form-group">
             <div class="col-xs-12 col-sm-4">
-                <?php echo CHtml::label(eT("Token"), 'token', array(
-                    'class' => '"control-label '.$sKpClass
+                <?php echo CHtml::label(gT("Token"), 'token', array(
+                    'class' => 'control-label '.$sKpClass,
                     ));
                 ?>
             </div>
@@ -71,8 +71,8 @@
         <?php if ($bCaptchaEnabled): ?>
         <div class="row form-group">
             <div class="col-xs-12 col-sm-4">
-                <?php echo CHtml::label(eT("Security question"), 'captchafield', array(
-                    'class' => 'col-sm-6 control-label captchaimage '.$sKpClass
+                <?php echo CHtml::label(gT("Security question"), 'captchafield', array(
+                    'class' => ' control-label captchaimage '.$sKpClass
                     ));
                 ?>
             </div>
@@ -81,7 +81,7 @@
                 <div class="row form-group">
                     <div class="col-xs-4">
                         <?php echo CHtml::image($bCaptchaImgSrc, 'DORE', array(
-                            'class' => 'col-sm-12 control-label '.$sKpClass,
+                            'class' => 'col-sm-12 center-block '.$sKpClass,
                             'id' => 'captchaimage',
                             'alt' => 'captcha'
                         )); ?>

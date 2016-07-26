@@ -939,7 +939,7 @@ function buildsurveysession($surveyid,$preview=false)
                 $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
             }
             // render token form
-            App()->getController()->renderPartial('/surveys/enterCaptcha', $aEnterTokenData);
+            App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
 
             echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
             doFooter();
@@ -996,7 +996,7 @@ function buildsurveysession($surveyid,$preview=false)
                 $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
             }
             // render token form
-            App()->getController()->renderPartial('/surveys/enterToken', $aEnterTokenData);
+            App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
 
             echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
             doFooter();
@@ -1131,7 +1131,7 @@ function buildsurveysession($surveyid,$preview=false)
                     $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
                 }
                 // render token form
-                App()->getController()->renderPartial('/surveys/enterToken', $aEnterTokenData);
+                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
             }
 
             echo '</div>'.templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1817]');
