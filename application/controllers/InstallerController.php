@@ -333,8 +333,8 @@ class InstallerController extends CController {
                         {
                             die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version:".$sMySQLVersion);
                         }
-                        @$this->connection->createCommand("SET CHARACTER SET 'utf8'")->execute();  //Checked
-                        @$this->connection->createCommand("SET NAMES 'utf8'")->execute();  //Checked
+                        @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute();  //Checked
+                        @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();  //Checked
                     }
 
                     // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
@@ -1036,7 +1036,12 @@ class InstallerController extends CController {
             {
                 $sURLFormat='get'; // Fall back to get if an Apache server cannot be determined reliably
             }
+            $sCharset='utf8';
+            if (in_array($sDatabaseType,array('mysql', 'mysqli'))) {
+                $sCharset='utf8mb4';
+            }
 
+            if ($sDatabaseType)
             $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             ."/*"."\n"
             ."| -------------------------------------------------------------------"."\n"
@@ -1086,8 +1091,8 @@ class InstallerController extends CController {
             }
             $sConfig .="\t\t\t" . "'username' => '".addcslashes ($sDatabaseUser,"'")."',"  . "\n"
             ."\t\t\t" . "'password' => '".addcslashes ($sDatabasePwd,"'")."',"            . "\n"
-            ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
-            ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n";
+            ."\t\t\t" . "'charset' => '{$sCharset}',"                      . "\n"
+            ."\t\t\t" . "'tablePrefix' => '{$sDatabasePrefix}',"      . "\n";
 
             if (in_array($sDatabaseType, array('mssql', 'sqlsrv', 'dblib'))) {
                 $sConfig .="\t\t\t" ."'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),"    . "\n";
@@ -1117,7 +1122,7 @@ class InstallerController extends CController {
             ."\t\t\t" . "'rules' => array("                         . "\n"
             ."\t\t\t\t" . "// You can add your own rules here"      . "\n"
             ."\t\t\t" . "),"                                        . "\n"
-            ."\t\t\t" . "'showScriptName' => $sShowScriptName,"     . "\n"
+            ."\t\t\t" . "'showScriptName' => {$sShowScriptName},"   . "\n"
             ."\t\t"   . "),"                                        . "\n"
             ."\t"     . ""                                          . "\n"
 

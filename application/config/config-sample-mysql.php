@@ -28,17 +28,17 @@ return array(
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => '',
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
             'tablePrefix' => 'lime_',
         ),
-		
+
 		// Uncomment the following line if you need table-based sessions
 		// 'session' => array (
 			// 'class' => 'application.core.web.DbHttpSession',
 			// 'connectionID' => 'db',
 			// 'sessionTableName' => '{{sessions}}',
 		// ),
-		
+
         'urlManager' => array(
 			'urlFormat' => 'get',
 			'rules' => array(
@@ -46,7 +46,7 @@ return array(
 			),
             'showScriptName' => true,
         ),
-	
+
 	),
     // Use the following config variable to set modified optional settings copied from config-defaults.php
     'config'=>array(
