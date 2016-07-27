@@ -48,17 +48,25 @@ class PluginHelper extends Survey_Common_Action
 
         $aData['content'] = $content;
         $this->_renderWrappedTemplate(null, 'super/dummy', $aData);
+
     }
 
     /**
-     * Get HTML content for side-body
-     *
-     * @param string $plugin Name of the plugin class
-     * @param string $method Name of the plugin method
-     * @return string
+     * At ajax, just echo content
+     * @param string $plugin
+     * @param string $method
      */
-    protected function getContent($surveyId, $plugin, $method)
+    public function ajax($plugin, $method)
     {
+        list($pluginInstance, $refMethod) = $this->getPluginInstanceAndMethod($plugin, $method);
+        $request = Yii::app()->request;
+        echo $refMethod->invoke($pluginInstance, $request);
+    }
+
+    /**
+     * 
+     */
+    protected function getPluginInstanceAndMethod($plugin, $method) {
         // Get plugin class, abort if not found
         try
         {
@@ -72,6 +80,8 @@ class PluginHelper extends Survey_Common_Action
         $pluginManager = App()->getPluginManager();
         $pluginInstance = $refClass->newInstance($pluginManager, 0);
 
+        Yii::app()->setPlugin($pluginInstance);
+
         // Get plugin method, abort if not found
         try
         {
@@ -82,6 +92,19 @@ class PluginHelper extends Survey_Common_Action
             throw new \CException("Plugin $plugin has no method $method");
         }
 
+        return array($pluginInstance, $refMethod);
+    }
+
+    /**
+     * Get HTML content for side-body
+     *
+     * @param string $plugin Name of the plugin class
+     * @param string $method Name of the plugin method
+     * @return string
+     */
+    protected function getContent($surveyId, $plugin, $method)
+    {
+        list($pluginInstance, $refMethod) = $this->getPluginInstanceAndMethod($plugin, $method);
         return $refMethod->invoke($pluginInstance, $surveyId);
 
     }
