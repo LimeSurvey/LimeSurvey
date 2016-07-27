@@ -211,7 +211,7 @@ class remotecontrol_handle
                 file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
                 $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
                 unlink($sFullFilePath);
-                if (isset($aImportResults['error'])) return array('status' => 'Error: '.$aImportResults['error']);
+                if (isset($aImportResults['error']) && $aImportResults['error']) return array('status' => 'Error: '.$aImportResults['error']);
                 else
                 {
                     return (int)$aImportResults['newsid'];
