@@ -5,10 +5,45 @@
 ?>
 
 <div class="container-fluid welcome full-page-wrapper">
+    <?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 form-horizontal', 'id'=>'personalsettings','autocomplete'=>"off")); ?>
+    <h3 class="pagetitle"><?php eT("Your profile"); ?></h3>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("User name:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::textField('username', $sUsername,array('class'=>'form-control','readonly'=>'readonly')); ?>
+             </div>
+             <div class="col-sm-3">
+                <span class='annotation'><?php eT("The user name cannot be changed."); ?></span>
+             </div>
+        </div>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("Email:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::emailField('email', $sEmailAdress,array('class'=>'form-control','maxlength'=>254)); ?>
+             </div>
+        </div>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("Full name:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::textField('fullname', $sFullname ,array('class'=>'form-control','maxlength'=>50)); ?>
+             </div>
+        </div>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("Password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::passwordField('password', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode("&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"))); ?>
+             </div>
+        </div>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("Repeat password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::passwordField('repeatpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode("&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"))); ?>
+             </div>
+        </div>
+    <!-- form -->
     <h3 class="pagetitle"><?php eT("Your personal settings"); ?></h3>
 
     <!-- form -->
-    <?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 form-horizontal', 'id'=>'personalsettings')); ?>
 
         <!-- Interface language -->
         <div class="form-group">
