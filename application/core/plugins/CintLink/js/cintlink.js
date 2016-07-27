@@ -117,6 +117,7 @@ $(document).ready(function() {
             console.log('response', response);
             hideLoader();
             $('#cintlink-container').html(response);
+            doToolTip();
         });
     }
 

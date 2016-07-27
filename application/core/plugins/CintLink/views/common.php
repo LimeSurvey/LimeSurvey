@@ -27,7 +27,7 @@ LS.plugin.cintlink = LS.plugin.cintlink || {};
 
 LS.plugin.cintlink.pluginBaseUrl = '<?php echo $pluginBaseUrl; ?>';
 
-<?php if(isset($surveyid)): ?>
+<?php if(isset($surveyId)): ?>
     LS.plugin.cintlink.surveyId = '<?php echo $surveyId; ?>';
 <?php endif; ?>
 

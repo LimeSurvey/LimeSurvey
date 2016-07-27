@@ -306,6 +306,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data = array();
         $data['orders'] = $orders;
         $data['surveyId'] = $surveyId;
+        $data['user'] = Yii::app()->user;
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $content = $this->renderPartial('dashboard', $data, true);
@@ -327,6 +328,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $data = array();
         $data['orders'] = $orders;
+        $data['user'] = Yii::app()->user;
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $content = $this->renderPartial('dashboard', $data, true);

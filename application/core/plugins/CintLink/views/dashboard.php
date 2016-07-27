@@ -56,9 +56,14 @@
                     <?php if ($order->status == 'hold'): ?>
                         <td>
                             <a 
-                                class='btn btn-default btn-sm' 
+                                class='btn btn-default btn-sm <?php if ($order->ordered_by != $user->id): echo 'readonly'; endif; ?>' 
                                 href='https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=<?php echo htmlspecialchars($order->url); ?>' 
                                 target='_blank'
+                                <?php if ($order->ordered_by != $user->id): ?>
+                                    data-toggle='tooltip'
+                                    title='<?php echo $plugin->gT('You can only pay for orders you placed your self.'); ?>'
+                                    onclick='return false;'
+                                <?php endif; ?>
                             >
                                 <span class='fa fa-credit-card'></span>
                                 &nbsp;
