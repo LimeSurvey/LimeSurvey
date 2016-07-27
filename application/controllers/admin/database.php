@@ -658,7 +658,7 @@ class database extends Survey_Common_Action
                             }
                         }
                     } else {
-                        $validAttributes=QuestionAttribute::getQuestionAttributesSettings(Yii::app()->request->getPost('type');
+                        $validAttributes=QuestionAttribute::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
                         $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
 
                         foreach ($validAttributes as $validAttribute)

@@ -1675,22 +1675,26 @@ class QuestionAttribute extends LSActiveRecord
         if(!self::$questionAttributesSettings)
         {
             self::$questionAttributesSettings=array();
-
             foreach(self::getAttributesDefinitions() as $qname=>$qvalue)
             {
                 for ($i=0; $i<=strlen($qvalue['types'])-1; $i++)
                 {
-                    self::$questionAttributesSettings[substr($qvalue['types'], $i, 1)][$qname]=array(
-                        "name"=>$qname,
-                        "inputtype"=>isset($qvalue['inputtype']) ? $qvalue['inputtype'] : "text",
-                        "category"=>isset($qvalue['category']) ? $qvalue['category'] : gT("Plugins"),
-                        "sortorder"=>isset($qvalue['sortorder']) ? $qvalue['sortorder'] : 1000,
-                        "i18n"=>isset($qvalue['i18n'])?$qvalue['i18n']:false,
-                        "readonly"=>isset($qvalue['readonly_when_active'])?$qvalue['readonly_when_active']:false,
-                        "options"=>isset($qvalue['options'])?$qvalue['options']:'',
-                        "default"=>isset($qvalue['default'])?$qvalue['default']:'',
-                        "help"=>$qvalue['help'],
-                        "caption"=>$qvalue['caption']
+
+                    self::$questionAttributesSettings[substr($qvalue['types'], $i, 1)][$qname]=array_merge(
+                        /* default settings */
+                        array(
+                            "name"=>$qname,
+                            "inputtype"=>"text",
+                            "category"=>gT("Plugins"),
+                            "sortorder"=>1000,
+                            "i18n"=>false,
+                            "readonly"=>false,
+                            "options"=>'',
+                            "default"=>'',
+                            "help"=>'',
+                            "caption"=>''
+                        ),
+                        $qvalue
                     );
                 }
             }
