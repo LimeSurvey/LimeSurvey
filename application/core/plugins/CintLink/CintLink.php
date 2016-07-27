@@ -510,54 +510,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * After order is placed, show nBill order form to
-     * make payment
-     *
-     * @todo Remove, use link to open payment in other tab
-     * @return string JSON
-     */
-    public function getNBillOrderForm()
-    {
-        $curl = new Curl();
-        $response = $curl->get(
-            "https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&tmpl=component",
-            array()
-        );
-
-        return json_encode(array('result' => $response->body));
-    }
-
-    /**
-     * Submit first page of two-page form from nBill.
-     * The first page selects payment type (Skrill, Payone, ...)
-     *
-     * @todo Can't work because of login cookies, third-party cookies etc; must use link to payment site
-     * @param LSHttpRequest $request
-     * @return string JSON
-     */
-    public function submitFirstNBillPage(LSHttpRequest $request)
-    {
-        /*
-        $formValues = $request->getParam('formValues');
-        $formValues = explode("&", $formValues);
-        $formValues2 = array();
-        foreach ($formValues as $value)
-        {
-            $keyAndValue = explode("=", $value);
-            $formValues2[$keyAndValue[0]] = $keyAndValue[1];
-        }
-
-
-        $curl = new Curl();
-        $response = $curl->post(
-            "https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&tmpl=component",
-            $formValues2
-        );
-        */
-        return json_encode(array('result' => false));
-    }
-
-    /**
      * Get survey information
      *
      * @param LSHttpRequest $request
