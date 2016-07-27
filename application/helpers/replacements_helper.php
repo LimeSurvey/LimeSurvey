@@ -126,7 +126,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if(stripos ($line,"{TEMPLATECSS}"))
     {
         // This package is created in model TemplateConfiguration::createTemplatePackage
-        if(!YII_DEBUG)
+        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager'))
         {
             Yii::app()->clientScript->registerPackage( 'survey-template' );
         }
