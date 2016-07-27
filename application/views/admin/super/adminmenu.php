@@ -62,7 +62,7 @@
 
             <!-- Surveys menus -->
             <li class="dropdown-split-left">
-                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>"><span class="icon-list" ></span>
                     <?php eT("Surveys");?>
                 </a>
             </li>
@@ -150,29 +150,8 @@
                 </li>
             <?php endforeach; ?>
 
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-
-                    <!-- Edit your profile -->
-                    <li>
-                        <a href="<?php echo $this->createUrl("/admin/user/sa/modifyuser/uid/".Yii::app()->user->getId()); ?>"><?php eT("Edit your profile");?></a>
-                    </li>
-
-                    <!-- Edit your personal preferences -->
-                    <li>
-                        <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>"><?php eT("Edit your personal preferences");?></a>
-                    </li>
-
-                    <li class="divider"></li>
-
-                    <!-- Logout -->
-                    <li>
-                        <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
-                            <?php eT("Logout");?>
-                        </a>
-                    </li>
-                </ul>
+            <li>
+                <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>" role="button" ><span class="icon-user" ></span> <?php echo Yii::app()->session['user'];?> </a>
             </li>
         </ul>
     </div><!-- /.nav-collapse -->

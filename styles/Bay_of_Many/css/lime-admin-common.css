@@ -1286,7 +1286,6 @@ input[type="checkbox"]:disabled:checked:after,
 
 input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input {
   display: inline-block;
-  padding: 4px;
   font-size: 14px;
   line-height: 18px;
   border: 1px solid #ccc;

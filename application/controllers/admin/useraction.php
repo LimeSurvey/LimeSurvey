@@ -676,9 +676,22 @@ class UserAction extends Survey_Common_Action
             'dateformat' => Yii::app()->request->getPost('dateformat'),
             'htmleditormode' => Yii::app()->request->getPost('htmleditormode'),
             'questionselectormode' => Yii::app()->request->getPost('questionselectormode'),
-            'templateeditormode' => Yii::app()->request->getPost('templateeditormode')
+            'templateeditormode' => Yii::app()->request->getPost('templateeditormode'),
+            'full_name'=> Yii::app()->request->getPost('fullname'),
+            'email'=> Yii::app()->request->getPost('email')
             );
-
+            $sPassword=Yii::app()->request->getPost('password');
+            if (Yii::app()->request->getPost('password')!='')
+            {
+                if (Yii::app()->request->getPost('password')==Yii::app()->request->getPost('repeatpassword'))
+                {
+                    $aData['password']=hash( "sha256",Yii::app()->request->getPost('password'));
+                }
+                else
+                {
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."),'error');
+                }
+            }
             $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
 
             if (Yii::app()->request->getPost('lang')=='auto')
@@ -697,7 +710,7 @@ class UserAction extends Survey_Common_Action
             Yii::app()->session['questionselectormode'] = Yii::app()->request->getPost('questionselectormode');
             Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');
             Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
-            Yii::app()->session['flashmessage'] = gT("Your personal settings were successfully saved.");
+            Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             if (Yii::app()->request->getPost("saveandclose")) {
                 $this->getController()->redirect(array("admin/survey/sa/index"));
             }
@@ -709,6 +722,9 @@ class UserAction extends Survey_Common_Action
         // Get user lang
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $aData['sSavedLanguage'] = $user->lang;
+        $aData['sUsername'] = $user->users_name;
+        $aData['sFullname'] = $user->full_name;
+        $aData['sEmailAdress'] = $user->email;
 
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
