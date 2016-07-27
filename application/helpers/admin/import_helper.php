@@ -220,7 +220,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     {
 
 
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=QuestionAttribute::getAttributesDefinitions();
 
         foreach ($xml->question_attributes->rows->row as $row)
         {
@@ -518,7 +518,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     {
 
 
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=QuestionAttribute::getAttributesDefinitions();
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -1266,7 +1266,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import questionattributes -------------------------------------------------
     if(isset($xml->question_attributes))
     {
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=QuestionAttribute::getAttributesDefinitions();
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -2074,7 +2074,7 @@ function TSVImportSurvey($sFullFilePath)
     $handle = fopen($sFullFilePath, 'r');
     $bom = fread($handle, 2);
     rewind($handle);
-    $aAttributeList = questionAttributes();
+    $aAttributeList = QuestionAttribute::getQuestionAttributesSettings();
 
     // Excel tends to save CSV as UTF-16, which PHP does not properly detect
     if($bom === chr(0xff).chr(0xfe)  || $bom === chr(0xfe).chr(0xff)){
