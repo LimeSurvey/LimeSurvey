@@ -13,7 +13,7 @@
                 <?php echo CHtml::textField('username', $sUsername,array('class'=>'form-control','readonly'=>'readonly')); ?>
              </div>
              <div class="col-sm-3">
-                <span class='annotation'><?php eT("The user name cannot be changed."); ?></span>
+                <span class='text-info'><?php eT("The user name cannot be changed."); ?></span>
              </div>
         </div>
         <div class="form-group">

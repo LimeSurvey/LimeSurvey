@@ -680,7 +680,6 @@ class UserAction extends Survey_Common_Action
             'full_name'=> Yii::app()->request->getPost('fullname'),
             'email'=> Yii::app()->request->getPost('email')
             );
-            $sPassword=Yii::app()->request->getPost('password');
             if (Yii::app()->request->getPost('password')!='')
             {
                 if (Yii::app()->request->getPost('password')==Yii::app()->request->getPost('repeatpassword'))
