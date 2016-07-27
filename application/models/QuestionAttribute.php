@@ -1658,7 +1658,8 @@ class QuestionAttribute extends LSActiveRecord
          */
         $event = new PluginEvent('newQuestionAttributes');
         $result = App()->getPluginManager()->dispatchEvent($event);
-        $questionAttributes = $result->get('questionAttributes');
+        /* Cast as array , or test if exist , or set to an empty array at start (or to $qattributes : and do $qattributes=$result->get('questionAttributes') directly ) ? */
+        $questionAttributes =(array) $result->get('questionAttributes');
         $qattributes=array_merge($qattributes,$questionAttributes);
 
         self::$attributesDefinitions = $qattributes;
