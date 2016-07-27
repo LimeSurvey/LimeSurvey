@@ -22,6 +22,7 @@
             <th><?php echo $plugin->gT('Created'); ?></th>
             <th><?php echo $plugin->gT('Survey ID'); ?></th>
             <th><?php echo $plugin->gT('Ordered by'); ?></th>
+            <th></th>  <!-- Check icon column -->
             <th><?php echo $plugin->gT('Status'); ?></th>
             <th></th>
         </thead>
@@ -35,14 +36,19 @@
 
                     <!-- Status column -->
                     <?php if ($order->status == 'live'): ?>
+                        <td></td>
                         <td><span class='label label-success'><?php echo $plugin->gT(ucfirst($order->status)); ?></span></td>
                     <?php elseif ($order->status == 'denied'): ?>
+                        <td></td>
                         <td><span class='label label-danger'><?php echo $plugin->gT(ucfirst($order->status)); ?></span></td>
                     <?php elseif ($order->status == 'new'): ?>
+                        <td></td>
                         <td><?php echo $plugin->gT('Under review'); ?></td>
                     <?php elseif ($order->status == 'completed'): ?>
-                        <td><span class='fa fa-check'></span>&nbsp;<?php echo $plugin->gT(ucfirst($order->status)); ?></td>
+                        <td class='cintlink-completed-check-column'><span class='fa fa-check'></span></td>
+                        <td><?php echo $plugin->gT(ucfirst($order->status)); ?></td>
                     <?php else: ?>
+                        <td></td>
                         <td><?php echo $plugin->gT(ucfirst($order->status)); ?></td>
                     <?php endif; ?>
 

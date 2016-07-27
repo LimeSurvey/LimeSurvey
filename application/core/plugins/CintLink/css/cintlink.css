@@ -17,3 +17,7 @@
 .label {
     font-size: 100%;
 }
+
+.cintlink-completed-check-column {
+    width: 20px;
+}
