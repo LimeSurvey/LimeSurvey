@@ -184,7 +184,7 @@ class AdminTheme extends CFormModel
         // When defining the package with a base path (a directory on the file system), the asset manager is used
         // When defining the package with a base url, the file is directly registerd without the asset manager
         // See : http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
-        if( !YII_DEBUG || self::$use_asset_manager)
+        if( !YII_DEBUG || self::$use_asset_manager || Yii::app()->getConfig('use_asset_manager'))
         {
             Yii::setPathOfAlias('admin.theme.path', $this->path);
             $package['basePath'] = 'admin.theme.path';                          // add the base path to the package, so it will use the asset manager
@@ -214,7 +214,7 @@ class AdminTheme extends CFormModel
     public function registerCssFile( $sPath='template', $sFile='' )
     {
         // We check if we should use the asset manager or not
-        if (!YII_DEBUG || self::$use_asset_manager)
+        if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager'))
         {
             $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':$this->path . '/css/';         // We get the wanted path
             App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
@@ -257,7 +257,7 @@ class AdminTheme extends CFormModel
         }
 
         // We check if we should use the asset manager or not
-        if (!YII_DEBUG || self::$use_asset_manager)
+        if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager'))
         {
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $path . $sFile ));                      // We publish the asset
         }
@@ -417,7 +417,7 @@ class AdminTheme extends CFormModel
     private function defineConstants()
     {
         // Define images url
-        if (!YII_DEBUG || self::$use_asset_manager )
+        if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager'))
         {
             define('LOGO_URL', App()->getAssetManager()->publish( $this->path . '/images/logo.png'));
         }

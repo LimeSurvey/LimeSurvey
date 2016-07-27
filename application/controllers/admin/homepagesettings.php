@@ -88,10 +88,15 @@ class homepagesettings extends Survey_Common_Action
      */
     public function update($id)
     {
-        if (! Permission::model()->hasGlobalPermission('settings', 'update') )
+        if (! Permission::model()->hasGlobalPermission('settings', 'update'))
         {
-            Yii::app()->session['flashmessage'] =gT('Access denied!');
-            $this->getController()->redirect($this->createUrl("/admin/homepagesettings"));
+            Yii::app()->setFlashMessage(gT('Access denied!'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+        }
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
         }
 
         $model=$this->loadModel($id);
@@ -135,6 +140,12 @@ class homepagesettings extends Survey_Common_Action
             Yii::app()->session['flashmessage'] =gT('Access denied!');
             $this->getController()->redirect($this->createUrl("/admin/homepagesettings"));
         }
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+        }
+
 
         $this->loadModel($id)->delete();
         Yii::app()->user->setFlash('success', gT('Box deleted'));
@@ -203,6 +214,11 @@ class homepagesettings extends Survey_Common_Action
      */
     public function toggleShowLogoStatus()
     {
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+        }
         if ( Permission::model()->hasGlobalPermission('settings', 'update') )
         {
             $bNewShowLogo = (getGlobalSetting('show_logo')=="show")?"hide":"show";
@@ -216,6 +232,11 @@ class homepagesettings extends Survey_Common_Action
      */
     public function toggleShowLastSurveyAndQuestion()
     {
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+        }
         if ( Permission::model()->hasGlobalPermission('settings', 'update') )
         {
             $bNewShowLastSurveyAndQuestion = (getGlobalSetting('show_last_survey_and_question')=="show")?"hide":"show";
@@ -229,6 +250,11 @@ class homepagesettings extends Survey_Common_Action
      */
     public function setBoxesSettings($boxesbyrow, $boxesoffset)
     {
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+        }
         if ( Permission::model()->hasGlobalPermission('settings', 'update') )
         {
             setGlobalSetting('boxes_by_row', $boxesbyrow);
