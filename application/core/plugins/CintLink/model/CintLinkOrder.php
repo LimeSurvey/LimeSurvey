@@ -39,4 +39,30 @@ class CintLinkOrder extends CActiveRecord
         );
     }
 
+    /**
+     * Search method provided to TbGridView widget
+
+     * @return CActiveDataProvider
+     */
+    public function search()
+    {
+        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
+        $sort = new CSort();
+        $sort->attributes = array(
+            'url'=>array(
+            'desc'=>'url desc'
+        ));
+
+        $dataProvider = new CActiveDataProvider('CintLinkOrder', array(
+            'sort' => $sort,
+            'pagination' => array(
+                'pageSize' => $pageSize,
+            ),
+        ));
+
+        return $dataProvider;
+
+    }
+
 }

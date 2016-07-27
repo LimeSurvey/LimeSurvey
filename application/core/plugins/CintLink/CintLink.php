@@ -224,8 +224,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
         App()->clientScript->registerScriptFile("http://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
 
+        // Need to include this manually so Ajax loading of gridview will work
+        App()->clientScript->registerScriptFile('/framework/zii/widgets/assets/gridview/jquery.yiigridview.js');
+        App()->clientScript->registerScriptFile('/framework/web/js/source/jquery.ba-bbq.min.js');
+
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
         App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
+
     }
 
     /**
@@ -329,11 +334,24 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data = array();
         $data['orders'] = $orders;
         $data['user'] = Yii::app()->user;
+        $data['model'] = CintLinkOrder::model();
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $content = $this->renderPartial('dashboard', $data, true);
+        $content = $this->renderPartial('global_dashboard', $data, true, true);
 
         return $content;
+    }
+
+    /**
+     * gridview stuff
+     */
+    public function renderClientScripts()
+    {
+        foreach (Yii::app()->clientScript->scripts as $index=>$script)
+        {
+            echo CHtml::script(implode("\n",$script));
+        }
+        Yii::app()->clientScript->reset();
     }
 
     /**
