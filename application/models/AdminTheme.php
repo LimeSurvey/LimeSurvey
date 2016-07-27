@@ -133,12 +133,16 @@ class AdminTheme extends CFormModel
         // and move the rest to the bootstrap package.
         // NB: registerAllScripts could be replaced by js definition in package. If needed: not a problem to do it
 
-        Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
-        App()->bootstrap->registerAllScripts();                                                              // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
+        if (!Yii::app()->request->isAjaxRequest)
+        {
+            Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
+            App()->bootstrap->registerAllScripts();                                                               // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
 
-        App()->getClientScript()->registerPackage('jqueryui');          // jqueryui
-        App()->getClientScript()->registerPackage('jquery-cookie');     // jquery-cookie
-        App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if needed
+            App()->getClientScript()->registerPackage('jqueryui');          // jqueryui
+            App()->getClientScript()->registerPackage('jquery-cookie');     // jquery-cookie
+            App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if needed
+            
+        }
 
         $aCssFiles = array();
         $aJsFiles= array();
