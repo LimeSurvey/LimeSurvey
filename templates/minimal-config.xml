@@ -11,14 +11,12 @@
             <filename>template.css</filename>
         </css>
         <js>
-            <filename>template.js</filename>
+            <filename>template.js</filename>            
         </js>
         <rtl>
             <css>
                 <filename>template-rtl.css</filename>
             </css>
-            <js>
-            </js>
         </rtl>
     </files>
 
@@ -37,7 +35,7 @@
 
     <engine>
         <filesdirectory>.</filesdirectory>
-        <cssframework></cssframework>
+        <cssframework>206</cssframework>
         <pstpldirectory>.</pstpldirectory> <!-- Broken edit pstpl file in template editor actually -->
         <packages>
             <package>jqueryui</package>

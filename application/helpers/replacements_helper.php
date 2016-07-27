@@ -165,8 +165,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             }
             else
             {
-                $aCssFiles = $oTemplate->config->files->css->filename;
-                $aJsFiles = $oTemplate->config->files->js->filename;
+                $aCssFiles = (array) $oTemplate->config->files->css->filename;
+                $aJsFiles  = (array) $oTemplate->config->files->js->filename;
 
                 foreach($aCssFiles as $sCssFile)
                 {
