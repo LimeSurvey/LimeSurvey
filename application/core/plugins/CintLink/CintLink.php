@@ -170,8 +170,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function actionIndex($surveyId)
     {
         $pluginBaseUrl = Yii::app()->createUrl(
-            'plugins/direct',
+            'admin/pluginhelper',
             array(
+                'sa' => 'ajax',
                 'plugin' => 'CintLink',
                 'surveyId' => $surveyId,
             )
@@ -197,8 +198,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function actionIndexGlobal()
     {
         $pluginBaseUrl = Yii::app()->createUrl(
-            'plugins/direct',
+            'admin/pluginhelper',
             array(
+                'sa' => 'ajax',
                 'plugin' => 'CintLink'
             )
         );
@@ -329,7 +331,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $orders = $this->getOrders(array(
             'deleted' => false
         ));
-        $orders = $this->updateOrders($orders);
+        //$orders = $this->updateOrders($orders);
 
         $data = array();
         $data['orders'] = $orders;
@@ -343,7 +345,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * gridview stuff
+     * Hack to make gridview not include too much javascript
+     * Used in dashboard view
+     *
+     * @return void
      */
     public function renderClientScripts()
     {

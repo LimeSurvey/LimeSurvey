@@ -35,7 +35,7 @@ $(document).ready(function() {
 
         $.ajax({
             method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&function=login&' + formValues
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=login&' + formValues
         }).done(function(response) {
             console.log(response);
             hideLoader();
@@ -65,7 +65,7 @@ $(document).ready(function() {
     function showLoginForm() {
         $.ajax({
             method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getLoginForm'
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=getLoginForm'
         }).done(function(response) {
             $('#cintlink-container').html(response);
 
@@ -111,7 +111,7 @@ $(document).ready(function() {
         showLoader();
         $.ajax({
             method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getDashboard',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=getDashboard',
             surveyId: LS.plugin.cintlink.surveyId
         }).done(function(response) {
             console.log('response', response);
@@ -133,7 +133,7 @@ $(document).ready(function() {
         return;
         $.ajax({
             method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getNBillOrderForm'
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=getNBillOrderForm'
         }).done(function(response) {
             //console.log('response', response);
             var response = JSON.parse(response);
@@ -153,7 +153,7 @@ $(document).ready(function() {
                 // Submit form using Ajax
                 $.ajax({
                      method: 'POST',
-                     url: LS.plugin.cintlink.pluginBaseUrl + '&function=submitFirstNBillPage',
+                     url: LS.plugin.cintlink.pluginBaseUrl + '&method=submitFirstNBillPage',
                      data: {
                         'formValues': formValues
                      }
@@ -179,7 +179,7 @@ $(document).ready(function() {
 
         $.ajax({
             method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&function=getSurvey&surveyId=' + LS.plugin.cintlink.surveyId
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=getSurvey&surveyId=' + LS.plugin.cintlink.surveyId
         }).done(function(response) {
             console.log(response);
             var response = JSON.parse(response);
@@ -211,7 +211,7 @@ $(document).ready(function() {
             CintLink.show(options, function(hold, release) {
                 // A purchase was made, and we're going to POST the hold URL back to ourselves
                 $.ajax({
-                    url: LS.plugin.cintlink.pluginBaseUrl + '&function=purchaseRequest',
+                    url: LS.plugin.cintlink.pluginBaseUrl + '&method=purchaseRequest',
                     data: {
                         purchaseRequest: hold,
                         surveyId: LS.plugin.cintlink.surveyId
@@ -271,7 +271,7 @@ $(document).ready(function() {
 
         $.ajax({
             method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&function=cancelOrder',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=cancelOrder',
             data: {orderUrl: orderUrl}
         }).done(function(response) {
             hideLoader();
@@ -295,7 +295,7 @@ $(document).ready(function() {
 
         $.ajax({
             method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&function=softDeleteOrder',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=softDeleteOrder',
             data: {
                 orderUrl: orderUrl,
                 surveyId: LS.plugin.cintlink.surveyId
@@ -320,7 +320,7 @@ $(document).ready(function() {
     // If no, show login form
     $.ajax({
         method: 'POST',
-        url: LS.plugin.cintlink.pluginBaseUrl + '&function=checkIfUserIsLoggedInOnLimesurveyorg'
+        url: LS.plugin.cintlink.pluginBaseUrl + '&method=checkIfUserIsLoggedInOnLimesurveyorg'
     }).done(function(response) {
         console.log(response);
 
