@@ -1,16 +1,16 @@
 <form id='cintlink-login-form' class='form-horizontal'>
     <div class='col-sm-4'></div>
     <div class='col-sm-8'>
-        <p class='help-block'><?php echo $__plugin->gT("Log in to your limesurvey.org account to buy participants."); ?></p>
+        <p class='help-block'><?php echo $plugin->gT("Log in to your limesurvey.org account to buy participants."); ?></p>
     </div>
     <div class='form-group'>
-        <label class='control-label col-sm-4'><?php echo $__plugin->gT("Username:"); ?></label>
+        <label class='control-label col-sm-4'><?php echo $plugin->gT("Username:"); ?></label>
         <div class='col-sm-4'>
             <input class='form-control' type='text' name='username' />
         </div>
     </div>
     <div class='form-group'>
-        <label class='control-label col-sm-4'><?php echo $__plugin->gT("Password:"); ?></label>
+        <label class='control-label col-sm-4'><?php echo $plugin->gT("Password:"); ?></label>
         <div class='col-sm-4'>
             <input class='form-control' type='password' name='password' />
         </div>
@@ -18,7 +18,7 @@
     <div class='form-group'>
         <div class='col-sm-4'></div>
         <div class='col-sm-4'>
-            <input id='cintlink-login-submit' class='btn btn-default' type='submit' value='<?php echo $__plugin->gT('Log in'); ?>' />
+            <input id='cintlink-login-submit' class='btn btn-default' type='submit' value='<?php echo $plugin->gT('Log in'); ?>' />
         </div>
     </div>
 </form>
