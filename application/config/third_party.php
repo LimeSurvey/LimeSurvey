@@ -4,15 +4,31 @@
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
  */
-return array(
 
-    // jQuery
-    'jquery' => array(
+
+if (!isset($_GET['isAjax']))
+{
+    $aJquery = array(
         'basePath' => 'third_party.jquery',
         'js' => array(
             'jquery-2.2.4.min.js'
+        ));
+}
+else
+{
+    $aJquery = array(
+        'basePath' => 'third_party.jquery',
+        'js' => array(
+
         ),
-    ),
+        );
+}
+
+return array(
+
+    // jQuery
+    'jquery' => $aJquery,
+
 
     // Bootstrap
     // This package replace the Yiistrap register() function
