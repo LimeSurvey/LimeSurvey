@@ -72,7 +72,7 @@
         </div>
 
         <!-- The Accordion -->
-        <div class="col-sm-12 col-md-5" id="accordion-container" style="background-color: #fff;">
+        <div class="col-sm-12 col-md-5" id="accordion-container" style="background-color: #fff; z-index: 2;">
             <?php // TODO : find why the $groups can't be generated from controller?>
             <div id='questionbottom'>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -253,7 +253,7 @@
                                             </div>
                                             <?php else:?>
                                             <?php eT("Cannot be changed (survey is active)");?>
-                                            <input type='hidden' name='other' value="<?php echo $eqrow['other']; ?>" />
+                                            <input type='hidden' name='other' value="<?php echo ($eqrow['other']=='Y' ? 1 : 0); ?>" />
                                             <?php endif;?>
                                     </div>
 

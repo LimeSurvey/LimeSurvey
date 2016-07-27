@@ -45,9 +45,12 @@ class LSHttpRequest extends CHttpRequest
      * If it the case, a paramater can be set to tell what referrer to return.
      * If the referrer is an external url, Yii return by default the current url.
      *
-     * To avoid looping between two urls (like simpleStatistics <=> Expert Statistics),
-     * it can be necessary to check if the referrer contains a specific word (an action in general)
-     * So if you want to forbid a return to a certain page, just provide an alternative url, and the forbidden key world
+     * DEPRECATED
+     * #To avoid looping between two urls (like simpleStatistics <=> Expert Statistics),
+     * #it can be necessary to check if the referrer contains a specific word (an action in general)
+     * #So if you want to forbid a return to a certain page, just provide an alternative url, and the forbidden key world
+     *
+     * The checkLoopInNavigationStack-Method will check for looping, though the forbiddenUrl array is not required anymore
      *
      * Not all "close" and "save and close" buttons should use it.
      * Only close button for pages that can be accessed since different places.
@@ -75,36 +78,70 @@ class LSHttpRequest extends CHttpRequest
      * TODO : Each time a new quick action or button is added to access an existing page, the "close" & "save and close" button should be updated to use getUrlReferrer()
      *
      * @param $sAlternativeUrl string, the url to return if referrer url is the same than current url.
-     * @param $aForbiddenWordsInUrl array, an array containing forbidden words in url
      * @return string if success, else null
      */
-    public function getUrlReferrer($sAlternativeUrl=null, $aForbiddenWordsInUrl=array())
+    public function getUrlReferrer($sAlternativeUrl=null)
     {
 
        $referrer = parent::getUrlReferrer();
        $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
        $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
        $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
-
-       // Checks if the alternative url should be used
-       if(isset($sAlternativeUrl))
-       {
-           // Use alternative url if the referrer is equal to current url.
-           if(is_null($referrer))
-           {
-               $referrer = $sAlternativeUrl;
-           }
-
-           // Use alternative url if a forbidden word appears in the referrer
-           foreach($aForbiddenWordsInUrl as $sForbiddenWord)
-           {
-               if (strpos($referrer, $sForbiddenWord) !== false)
-               {
-                   $referrer = $sAlternativeUrl;
-               }
-           }
+        //Use alternative url if the $referrer is still available in the checkLoopInNavigationStack
+        if( ($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer)) )
+        {
+            // Checks if the alternative url should be used
+            if(isset($sAlternativeUrl))
+            {
+                $referrer = $sAlternativeUrl;
+            }
+            else 
+            {
+               return App()->createUrl('admin/index');
+            }
        }
        return $referrer;
+    }
+
+    /**
+    * Method to update the LimeSurvey Navigation Stack to prevent looping
+    */
+    public function updateNavigationStack()
+    {
+        $referrer = parent::getUrlReferrer();
+        $navStack = App()->session['LSNAVSTACK'];
+
+        if(!is_array($navStack))
+        {
+            $navStack = array();
+        }
+
+        array_unshift($navStack,$referrer);
+
+        if(count($navStack)>5)
+        {
+            array_pop($navStack);
+        }
+        App()->session['LSNAVSTACK'] = $navStack;
+    }
+
+    /**
+    * Method to check if an url is part of the stack
+    * Returns true, when an url is saved in the stack
+    * @param $referrerURL The URL that is checked against the stack 
+    */
+    protected function checkLoopInNavigationStack($referrerURL)
+    {
+        $navStack = App()->session['LSNAVSTACK'];
+        foreach($navStack as $url)
+        {
+            $refEqualsUrl = ($referrerURL == $url);
+              if ($refEqualsUrl)
+              {
+                  return true;
+              }
+        }
+        return false;  
     }
 
     protected function normalizeRequest(){

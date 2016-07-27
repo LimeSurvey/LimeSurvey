@@ -19,24 +19,28 @@ $(document).ready(function(){
         });
     });
 
-
-    $('#reponses-display-mode').on('switchChange.bootstrapSwitch', function(event, state) {
+    $('#display-mode').click(function(event){
+        event.preventDefault();
+        $that = $(this);
         $actionUrl = $(this).data('url');
-        $display = (state==true)?'extended':'compact';
-        console.log($display);
+        $display = $that.find('input').val();
         $postDatas  = {state:$display};
         $.ajax({
-            url : $actionUrl,
+            url : encodeURI($actionUrl),
             type : 'POST',
             data :  $postDatas,
 
             // html contains the buttons
             success : function(html, statut){
-                $.fn.yiiGridView.update('responses-grid');
+                $.fn.yiiGridView.update('responses-grid', {
+                    success: function(s){
+                    }
+                });
             },
             error :  function(html, statut){
                 console.log(html);
             }
         });
+
     });
 });

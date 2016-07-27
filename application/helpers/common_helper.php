@@ -169,18 +169,6 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
     return $qtypeselecter;
 }
 
-function getQuestionModuleList($SelectedCode = "T", $ReturnType = "selector")
-{
-    $publicurl = Yii::app()->getConfig('publicurl');
-    $qtypes = Question::questionModuleList();
-
-    if ($ReturnType == "array")
-        return $qtypes;
-
-    else return null;
-
-}
-
 /**
 * isStandardTemplate returns true if a template is a standard template
 * This function does not check if a template actually exists
@@ -7655,6 +7643,12 @@ function getBrowserLanguage()
     if (!isset($aLanguages[$sLanguage]))
     {
         $sLanguage=str_replace('_','-',$sLanguage);
+        if (strpos($sLanguage,'-')!==false)
+        {
+          $aLanguage=explode('-',$sLanguage);
+          $aLanguage[1]=strtoupper($aLanguage[1]);
+          $sLanguage=implode('-',$aLanguage);
+        }
         if (!isset($aLanguages[$sLanguage]))
         {
             $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));

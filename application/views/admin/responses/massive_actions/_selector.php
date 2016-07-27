@@ -30,7 +30,7 @@
                     'actionType'    => 'modal',
                     'modalType'     => 'yes-no',
                     'keepopen'      => 'no',
-                    'sModalTitle'   => gT('Delete reponses'),
+                    'sModalTitle'   => gT('Delete responses'),
                     'htmlModalBody' => gT('Are you sure you want to delete the selected responses?'),
                     'aCustomDatas'  => array(
                         array( 'name'=>'sid',  'value'=> $_GET['surveyid']),

@@ -348,6 +348,28 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Delete a bunch of questions in one go
+     *
+     * @param mixed $questionsIds
+     * @return void
+     */
+    public static function deleteAllById($questionsIds)
+    {
+        if ( !is_array($questionsIds) )
+        {
+            $questionsIds = array($questionsIds);
+        }
+
+        Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(Answer::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'parent_qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
+        Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
+    }
+
+    /**
      * This function is called from everywhere, which is quiet weird...
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
      */
@@ -631,41 +653,6 @@ class Question extends LSActiveRecord
         asort($questionTypes);
 
         return $questionTypes;
-    }
-
-    public static function questionModuleList()
-    {
-        // For external question types
-        $sQuestionTypeDir=Yii::app()->getConfig("questiontypedir");
-        $aQuestionModules = array();
-
-        if ($sQuestionTypeDir && $handle = opendir($sQuestionTypeDir))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
-                if (!is_file("$sQuestionTypeDir/$file") && $file != "." && $file != ".." && $file!=".svn")
-                {
-                    //$list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                    $oQuestionTypeConfig = simplexml_load_file($sQuestionTypeDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
-                    //$aQuestionModules[$file] = $oQuestionTypeConfig->type;
-                    //var_dump($oQuestionTypeConfig->type);
-                }
-            }
-            closedir($handle);
-        }
-
-        // Array of question type
-        return $aQuestionModules;
-
-    }
-
-    public static function getQuestionModule($typename)
-    {
-        $sQuestionTypeDir=Yii::app()->getConfig("questiontypedir");
-        $aQuestionModules = array();
-
-        $oQuestionTypeConfig = simplexml_load_file($sQuestionTypeDir.DIRECTORY_SEPARATOR.$typename.'/config.xml');
-        return $oQuestionTypeConfig->type;
     }
 
     /**

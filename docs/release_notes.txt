@@ -35,6 +35,68 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160727) to 2.50+ (build 160728) July 26, 2016
+-Fixed issue #11484: PHP error when adding participants to CPDB (markusfluer)
+-Fixed issue: Manually adding subquestions did not work correctly (markusfluer)
+      
+Changes from 2.50+ (build 160726) to 2.50+ (build 160727) July 26, 2016
+-Fixed issue #11496: Numbers not adding correctly (markusfluer)
+-Fixed issue: Z-index problems in survey editing (markusfluer)
+
+Changes from 2.50+ (build 160725) to 2.50+ (build 160726) July 26, 2016
+-Fixed issue #11488: HTML editor in "Edit subquestions" (Array numbers) not working correctly (markusfluer)
+-Fixed issue #11492: Answer lists (dropDowns) disappeared from all my surveys (markusfluer)
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160718) to 2.50+ (build 160725) July 25, 2016
+-Fixed issue: [security] Better check on XML uploads 
+-Fixed issue #11416: Google Analytics Global Configuration is not being used by survey (Markus Flür)
+-Fixed issue #11405: .css and .js not loading on public pages (LouisGac)
+-Fixed issue #11412: When Using token conditions across scenarios the final condition becomes ORed (Carsten Schmitz)
+-Fixed issue #11415: SQL error when filling token id in survey participant list (Olle Haerstedt)
+-Fixed issue #11417: Dates not calculating properly (Markus Flür)
+-Fixed issue #11445: Better identification of language variants for automatic language detection in administration (Carsten Schmitz)
+-Fixed issue #11456: Enabled the SurveyController to recognize the global settings (Markus Flür)
+-Fixed Issue #11464: Corrected value definition of show_register switch (Markus Flür)
+-Fixed issue #11470: Setting Question To "Mandatory" after a publish deletes the "Other" answer option (Markus Flür)
+-Fixed issue #11476: CSS and JS files not included at "default" template though {TEMPLATECSS} and {TEMPLATEJS} placeholders exist (LouisGac)
+-Fixed issue #11479: Response View toggeling compact/extended now works (Markus Flür¼r)
+-Fixed issue #11480 Capsuled error in try/catch Block (Markus Flür)
+-Fixed issue: Bounce handling doesn't work if the related participant of a bounced email was deleted (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160715) to 2.50+ (build 160718) July 18, 2016
+-New feature: Completion selector for simple stats (LouisGac)
+-Fixed issue #11434: The numbers of the statistics are wrong (no completion selector) (LouisGac)
+-Fixed issue #11439: Survey Owners that are not Superadmins can't change ownership of surveys (Markus Flür)
+-Fixed issue #11450: Unable to browse response (LouisGac)
+-Fixed issue #11453: text string not visible on buttons compact/extended (LouisGac)
+-Fixed Issue #11454: Audit Log plugin fire a notice when adding a new token (Markus Flür)
+-Fixed Issue #11455: MapQuest discontinued their free services (Markus Flür)
+-Fixed Issue #11460: Corrected z-index on right collapsible layer (Markus Flür)
+-Fixed issue: Tokens edition for anonymized survey offer to submit date. (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
 Changes from 2.50+ (build 160714) to 2.50+ (build 160715) July 14, 2016
 -Fixed issue #11450: Unable to browse response (LouisGac)
 -Fixed issue #7908: When entering the token for a survey the text field is readable (Carsten Schmitz)

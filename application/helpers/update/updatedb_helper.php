@@ -17,9 +17,24 @@
 // For this there will be a settings table which holds the last time the database was upgraded
 
 /**
- * @param integer $iOldDBVersion
+ * @param integer $iOldDBVersion The previous database version
+ * @param boolean $bSilent Run update silently with no output - this checks if the update can be run silently at all. If not it will not run any updates at all.
  */
-function db_upgrade_all($iOldDBVersion) {
+function db_upgrade_all($iOldDBVersion, $bSilent=false) {
+
+    /**
+    * If you add a new database version add any critical database version numbers to this array. See link
+    * @link https://manual.limesurvey.org/Database_versioning for explanations
+    * @var array $aCriticalDBVersions An array of cricital database version.
+    */
+    $aCriticalDBVersions=array();
+    $aAllUpdates=range($iOldDBVersion+1,Yii::app()->getConfig('dbversionnumber'));
+    // If trying to update silenty check if it is really possible
+    if ($bSilent && ($iOldDBVersion<258 || count(array_intersect($aCriticalDBVersions,$aAllUpdates))>0))
+    {
+        return false;
+    }
+
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput;

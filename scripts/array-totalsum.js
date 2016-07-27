@@ -11,18 +11,20 @@ $( document ).ready(function() {
 
 function updatetotals()
 {
-    sRadix=LSvar.sLEMradix;
-    sTableID=$(this).closest('table').attr('id')
-    iGrandTotal=0;
+    var sRadix=LSvar.sLEMradix;
+    var sTableID=$(this).closest('table').attr('id');
+    var sTable=$(this).closest('table');
+    var iGrandTotal=0;
 
     // Sum all rows
-    $('#'+sTableID+' tr').each(function () {
+    sTable.find('tr').each(function () {
         //the value of sum needs to be reset for each row, so it has to be set inside the row loop
-        var sum = 0
+        var sum = new Number(0);
         //find the elements in the current row and sum it
         $(this).find('input:enabled:visible').each(function () {
             //sum the values
-            sum +=normalizeValue($(this).val());
+            var value = normalizeValue($(this).val());
+            sum += value;
         });
         //set the value of currents rows sum to the total-combat element in the current row
         $(this).find('input:disabled').val(formatValue(sum));
@@ -30,61 +32,47 @@ function updatetotals()
     });
     // Sum all columns
     // First get number of columns (only visible and enabled inputs)
-    iColumns=$('#'+sTableID+' tbody tr:first-child input:enabled:visible').length;
-    for (i = 1; i <= iColumns; i++) {
+    var iColumnNum=$('#'+sTableID+' tbody tr:first-child input:enabled:visible').length;
+    //Get An array of jQuery Objects
+    var $iRow = sTable.find('tr'); 
+    //Iterate through the columns
+    for (var i = 1; i <= iColumnNum; i++) 
+    {
         var sum = 0;
-        $('#'+sTableID+' tbody tr td.text-item:nth-of-type('+i+') input:enabled:visible').each(function () {
+        $iRow.each(function(){
+            var item = $($(this).find('td').get((i-1))).find('input:enabled:visible'),
+            	val = normalizeValue($(item).val());
             //sum the values
-            sum +=normalizeValue($(this).val());
+            sum += val;
         });
-        $('#'+sTableID+' tr td.total:nth-of-type('+i+') input:disabled').val(formatValue(sum));
+        $($iRow.last().find('td').get((i-1))).find('input:disabled').val(formatValue(sum));
     }
-    iColumns++;
-    $('#'+sTableID+' tr:last-child td.total:nth-of-type('+iColumns+') input:disabled').val(formatValue(iGrandTotal));
+
+    //$('#'+sTableID+' tr:last-child td.total:nth-of-type('+iColumns+') input:disabled').val(formatValue(iGrandTotal));
+    //$iRow.last().find('td.total').find('input:disabled').val(formatValue(iGrandTotal,numberOfDecimals));
     // Grand total
 }
 function formatValue(sValue)
 {
-    sValue=''+sValue;
-    sRadix=LSvar.sLEMradix;
-    sValue=sValue.replace('.',sRadix)
+    
+    sValue=Number(sValue).toString();
+    var sRadix=LSvar.sLEMradix;
+    sValue=sValue.replace('.',sRadix);
     return sValue;
 }
 
 function normalizeValue(aValue)
 {
-    var numRegex;
-    var sRadix;
-
-    sRadix=LSvar.sLEMradix;
-    if (sRadix=='.')
+    aValue = aValue || 0;
+    var number = new Number(aValue);
+    if(isNaN(number))
     {
-        numRegex = /^[+-]?((\d+(\.\d*)?)|(\.\d+))$/;
+        var numReplaced = aValue.replace(/,/g, ".");
+        var number = new Number(numReplaced);
+        return number;
+    } else {
+        return number;
     }
-    else
-    {
-        numRegex = /^-?\d{1,3}(?:\.\d{3})*(?:,\d+)?$/;
-    }
-    if (aValue.slice(-1)==sRadix)
-    {
-        aValue=aValue.slice(0, -1);
-    }
-    if (numRegex.test(aValue))
-    {
-        if (sRadix==',')
-        {
-            aValue=aValue.replace(/ \./g,'')
-            aValue=aValue.replace(/,/g,'.')
-        }
-        else{
-            aValue=aValue.replace(/ ,/g,'')
-        }
-    }
-    else
-    {
-      aValue=0;
-    }
-    return +aValue || 0;
 }
 
 

@@ -60,12 +60,16 @@ class WhButtonGroup extends CInputWidget
      */
     public function renderButtons()
     {
+        
         list($name, $id) = $this->resolveNameID();
-        echo CHtml::openTag('div', array(
-            'class'=>"btn-group",
-            'id'=>$name,
-            'data-toggle'=>"buttons"
-        )). "\n";
+
+        $html_array = $this->htmlOptions;
+        $html_array['class'] = isset($html_array['class']) ? $html_array['class']." btn-group" : "btn-group";
+        $html_array['id'] = $name;
+        $html_array['data-toggle'] = "buttons";
+
+        echo CHtml::openTag('div', $html_array). "\n";
+
         $i=1;
         foreach( $this->selectOptions as $value=>$caption )
         {

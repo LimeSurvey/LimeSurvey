@@ -24,10 +24,10 @@ function CheckForDBUpgrades($subaction = null)
     $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
-        if(isset($subaction) && $subaction=="yes")
+        Yii::app()->loadHelper('update/updatedb');
+         if(isset($subaction) && $subaction=="yes")
         {
             echo Yii::app()->getController()->_getAdminHeader();
-            Yii::app()->loadHelper('update/updatedb');
             $result=db_upgrade_all(intval($currentDBVersion));
             if ($result)
             {
@@ -59,15 +59,19 @@ function ShowDBUpgradeNotice() {
         <div class="jumbotron message-box">
             <h2 class="">'.gT('Database upgrade').'</h2>
             <p class="lead">'.gT('Please verify the following information before continuing with the database upgrade:').'</p>
-            <p>
-                <ul class="list-unstyled">
-                    <li><b>' .gT('Database type') . ':</b> ' . Yii::app()->db->getDriverName() . '</li>
-                    <li><b>' .gT('Database name') . ':</b> ' . getDBConnectionStringProperty('dbname') . '</li>
-                    <li><b>' .gT('Table prefix') . ':</b> ' . Yii::app()->db->tablePrefix . '</li>
-                    <li><b>' .gT('Site name') . ':</b> ' . Yii::app()->getConfig("sitename") . '</li>
-                    <li><b>' .gT('Root URL') . ':</b> ' . Yii::app()->getController()->createUrl('') . '</li>
-                </ul>
-            </p>
+            <div class="row">
+            <div class="col-md-offset-4 col-md-4">
+                <table class="table table-striped">
+                    <tr><th>'.gT('Database type:') . '</th><td>' . Yii::app()->db->getDriverName() . '</td></tr>
+                    <tr><th>'.gT('Database name:') . '</th><td>' . getDBConnectionStringProperty('dbname') . '</td></tr>
+                    <tr><th>'.gT('Table prefix:') . '</th><td>' . Yii::app()->db->tablePrefix . '</td></tr>
+                    <tr><th>'.gT('Site name:') . '</th><td>' . Yii::app()->getConfig("sitename") . '</td></tr>
+                    <tr><th>'.gT('Root URL:') . '</th><td>' . Yii::app()->getController()->createUrl('') . '</td></tr>
+                    <tr><th>'.gT('Current database version:') . '</th><td>' . GetGlobalSetting('DBVersion') . '</td></tr>
+                    <tr><th>'.gT('Target database version:') . '</th><td>' . Yii::app()->getConfig('dbversionnumber'). '</td></tr>
+                </table>
+            </div>
+            </div>
 
             <p>
                 <a class="btn btn-lg btn-success" href="'.Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes").'" role="button">

@@ -42,7 +42,7 @@
         $oAdminTheme = AdminTheme::getInstance();
         $oAdminTheme->registerStylesAndScripts();
     ?>
-    <?php if(!YII_DEBUG): ?>
+    <?php if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')): ?>
         <!-- Debug mode is off, so the asset manager will be used-->
     <?php else: ?>
         <!-- Debug mode is on, so the asset manager will not be used -->

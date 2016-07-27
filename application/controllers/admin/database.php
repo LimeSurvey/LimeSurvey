@@ -1234,7 +1234,20 @@ class database extends Survey_Common_Action
                 $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
                 $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
                 $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
-                $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+                $oSurvey->googleanalyticsapikeysetting = App()->request->getPost('googleanalyticsapikeysetting');
+                if( $oSurvey->googleanalyticsapikeysetting == "Y")
+                {
+                    $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+                } 
+                else if( $oSurvey->googleanalyticsapikeysetting == "G")
+                {
+                    $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
+                } 
+                else if( $oSurvey->googleanalyticsapikeysetting == "N")
+                {
+                    $oSurvey->googleanalyticsapikey = "";
+                } 
+
                 $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
                 $oSurvey->tokenlength = (App()->request->getPost('tokenlength')<5  || App()->request->getPost('tokenlength')>36)?15:App()->request->getPost('tokenlength');
                 $oSurvey->adminemail = App()->request->getPost('adminemail');

@@ -108,23 +108,24 @@
     <div class="form-group">
         <label class="col-sm-5 control-label" for='savetimings'><?php  eT("Save timings:"); ?></label>
         <div class="col-sm-7">
-            <?php
-            if ($esrow['active']=="Y")
-                { ?>
-                <?php if ($esrow['savetimings'] != "Y") {   eT("Timings will not be saved.");}
-                    else {  eT("Timings will be saved.");} ?>
-                <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ??>
-                <?php }
-                else
-                {
+            <?php if ($esrow['active']=="Y"): ?>
+                <?php if ($esrow['savetimings'] != "Y"): ?>
+                    <?php  eT("Timings will not be saved."); ?>
+                <?php else: ?>
+                    <?php  eT("Timings will be saved."); ?>
+                    <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
+                    <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ??>
+                <?php endif;?>
+            <?php else: ?>
+                <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    'name' => 'savetimings',
-                    'value'=> $esrow['savetimings'] == "Y",
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                        'name' => 'savetimings',
+                        'value'=> $esrow['savetimings'] == "Y",
+                        'onLabel'=>gT('On'),
+                        'offLabel'=>gT('Off')
                     ));
-                } ?>
+                ?>
+            <?php endif;?>            
         </div>
     </div>
 
@@ -156,6 +157,23 @@
         </div>
     </div>
 
+    <!-- GoogleAnalytics settings to be used -->
+    <div class="form-group">
+        <label class="col-sm-5 control-label" for="googleanalyticsapikeysetting">
+            <?php echo gT('Google Analytics settings:');?>
+        </label>
+        <div class="col-sm-7">
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'googleanalyticsapikeysetting',
+                'value'=>  $esrow['googleanalyticsapikeysetting'],
+                'selectOptions'=>array(
+                    "N"=>gT("None",'unescaped'),
+                    "Y"=>gT("Use settings below",'unescaped'),
+                    "G"=>gT("Use global settings",'unescaped')
+                )
+            ));?>
+        </div>
+    </div>
     <!-- Google Analytics -->
     <div class="form-group">
         <label class="col-sm-5 control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics API key:"); ?></label>
@@ -163,7 +181,6 @@
             <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20), array('class'=>"form-control")); ?>
         </div>
     </div>
-
     <!-- Google Analytics style -->
     <div class="form-group">
         <label class="col-sm-5 control-label" for='googleanalyticsstyle'><?php  eT("Google Analytics style:"); ?></label>
@@ -179,3 +196,7 @@
         </div>
     </div>
 </div>
+<?php
+$oAdminTheme = AdminTheme::getInstance();
+$oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'survey_edit_notificationpanel.js');
+?>

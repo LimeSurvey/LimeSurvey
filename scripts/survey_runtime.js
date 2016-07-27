@@ -599,3 +599,22 @@ function doToolTipTable()
         }
     });
 }
+//Hide the Answer and the helper field in an 
+$(document).ready(
+    function(){
+        $('.question-container').each(function(){
+            if($(this).find('div.answer-container').find('input').length == 1)
+            {
+                if($(this).find('div.answer-container').find('input[type=hidden]').length >0 
+                    && $(this).find('div.answer-container').find('select').length < 1)
+                {
+                    $(this).find('div.answer-container').css({display: 'none'});
+                }
+                if(trim($(this).find('div.question-help-container').find('div').html()) == "")
+                {
+                    $(this).find('div.question-help-container').css({display: 'none'});
+                }
+            }
+        });
+    }
+);

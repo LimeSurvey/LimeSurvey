@@ -841,13 +841,13 @@
         public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
             $query = LimeExpressionManager::getConditionsForEM($surveyId,$qid);
-
+            $aConditions=$query->readAll();
             $_qid = -1;
             $relevanceEqns = array();
             $scenarios = array();
             $relAndList = array();
             $relOrList = array();
-            foreach($query->readAll() as $row)
+            foreach($aConditions as $row)
             {
                 $row['method']=trim($row['method']); //For Postgres
                 if ($row['qid'] != $_qid)
@@ -1004,10 +1004,10 @@
                         }
                     }
                 }
-
-                if (($row['cqid'] == 0 && !preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'])) || substr($row['cfieldname'],0,1) == '+') {
-                    $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields)
+                if (($row['cqid'] == 0 && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname']) && preg_match('/^{TOKEN:([^}]*)}$/',isset($previousCondition)?$previousCondition['cfieldname']:'')) || substr($row['cfieldname'],0,1) == '+') {
+                    $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a a token field)
                 }
+                $previousCondition=$row;
             }
             // output last one
             if ($_qid != -1)
@@ -7294,8 +7294,7 @@
                                     $relParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
                                 }
                                 $relParts[] = "){\n";
-                                $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
-                                $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
+                                $relParts[] = "      $('#answer" . $sq['sgqa'] . "').click();\n"; // trigger click : no need other think, and whole event happen
                                 $relParts[] = "    }\n";
                                 break;
                             case 'R':
@@ -8229,7 +8228,7 @@ EOD;
             return $usingCommaAsRadix;
         }
 
-        private static function getConditionsForEM($surveyid=NULL, $qid=NULL)
+        private static function getConditionsForEM($surveyid, $qid=NULL)
         {
             if (!is_null($qid)) {
                 $where = " c.qid = ".$qid." AND ";
@@ -8256,11 +8255,11 @@ EOD;
             $databasetype = Yii::app()->db->getDriverName();
             if ($databasetype=='mssql' || $databasetype=='dblib')
             {
-                $query .= " order by c.qid, sid, scenario, cqid, cfieldname, value";
+                $query .= " order by c.qid, scenario, cqid, cfieldname, value";
             }
             else
             {
-                $query .= " order by qid, sid, scenario, cqid, cfieldname, value";
+                $query .= " order by qid, scenario, cqid, cfieldname, value";
             }
 
             return Yii::app()->db->createCommand($query)->query();

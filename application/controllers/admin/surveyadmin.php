@@ -158,6 +158,13 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_registerScriptFiles();
         Yii::app()->loadHelper('surveytranslator');
         $esrow = $this->_fetchSurveyInfo('newsurvey');
+        // Default setting is to use the global Google Analytics key If one exists
+        $globalKey = getGlobalSetting('googleanalyticsapikey');
+        if($globalKey != ""){
+            $esrow['googleanalyticsapikey'] = "9999useGlobal9999";
+            $esrow['googleanalyticsapikeysetting'] = "G";
+        }
+
         Yii::app()->loadHelper('admin/htmleditor');
 
         $aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
@@ -1222,9 +1229,12 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
         }
+
         if($oSurvey)
         {
-            return $oSurvey->attributes;
+            $attribs = $oSurvey->attributes;
+            $attribs['googleanalyticsapikeysetting'] = $oSurvey->getGoogleanalyticsapikeysetting();
+            return $attribs;
         }
     }
 
@@ -1611,7 +1621,7 @@ class SurveyAdmin extends Survey_Common_Action
             'publicgraphs' => App()->request->getPost('publicgraphs')=='1'?'Y':'N',
             'assessments' => App()->request->getPost('assessments')=='1'?'Y':'N',
             'emailresponseto' => App()->request->getPost('emailresponseto'),
-            'tokenlength' => $iTokenLength
+            'tokenlength' => $iTokenLength,
             );
 
             $warning = '';

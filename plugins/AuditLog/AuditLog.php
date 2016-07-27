@@ -201,17 +201,21 @@
             {
                 $sAction = 'create';
                 $oldvalues = array();
+                $currentUID = false; 
             }
             else
             {
                 $sAction = 'update';
-                $oCurrentUser=$this->api->getCurrentUser();
+                $oCurrentUser = $this->api->getCurrentUser();
+                $currentUID = $oCurrentUser->uid;
                 $oldvalues= $this->api->getToken($iSurveyID, $oNewParticipant->token)->getAttributes();
             }
+
             $newValues=$oNewParticipant->getAttributes();
+
             if (count(array_diff_assoc($newValues,$oldvalues))){
                 $oAutoLog = $this->api->newModel($this, 'log');
-                $oAutoLog->uid=$oCurrentUser->uid;
+                $oAutoLog->uid=$currentUID;
                 $oAutoLog->entity='token';
                 $oAutoLog->action=$sAction;
                 $oAutoLog->entityid=$newValues['tid'];

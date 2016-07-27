@@ -9,10 +9,40 @@
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
 
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3>
-        <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
-        <?php eT("Statistics"); ?>
-    </h3>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>
+                <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
+                <?php eT("Statistics"); ?>
+            </h3>
+        </div>
+
+
+            <div class="text-right in-title">
+                <div class="form-group">
+                    <label for='completionstate' class="control-label"><?php eT("Include:"); ?> </label>
+                    <?php
+                    echo CHtml::dropDownList(
+                        'completionstate',
+                        incompleteAnsFilterState(),
+                        array(
+                            "all"=>gT("All responses",'unescaped'),
+                            "complete"=>gT("Complete only",'unescaped'),
+                            "incomplete"=>gT("Incomplete only",'unescaped'),
+                        ),
+                        array(
+                            'class'=>'form-control',
+                            'style'=>'display: inline;width: auto',
+                            'data-url'=>App()->createUrl('/admin/statistics/sa/setIncompleteanswers/')
+                        ))
+                    ;
+                    ?>
+                </div>
+            </div>
+
+    </div>
+
 
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -23,3 +53,5 @@
         </div>
     </div>
 </div>
+
+<input type="hidden" id="completionstateSimpleStat"  />

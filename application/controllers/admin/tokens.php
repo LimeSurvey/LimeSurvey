@@ -215,7 +215,7 @@ class tokens extends Survey_Common_Action
                                     $condn  = array('token' => $tokenBounce[1]);
                                     $record = Token::model($iSurveyId)->findByAttributes($condn);
 
-                                    if ($record->emailstatus != 'bounced')
+                                    if (!empty($record) && $record->emailstatus != 'bounced')
                                     {
                                         $record->emailstatus = 'bounced';
                                         $record->save();
@@ -231,8 +231,8 @@ class tokens extends Survey_Common_Action
                             }
                         }
                         $count--;
-                        $lasthinfo = imap_headerinfo($mbox, $count);
-                        $datelc = $lasthinfo->date;
+                        @$lasthinfo = imap_headerinfo($mbox, $count);
+                        @$datelc = $lasthinfo->date;
                         $datelcu = strtotime($datelc);
                         $checktotal++;
                     }
@@ -743,6 +743,7 @@ class tokens extends Survey_Common_Action
     */
     public function addnew($iSurveyId)
     {
+        $aData = array();
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $iSurveyId = sanitize_int($iSurveyId);
@@ -1036,6 +1037,7 @@ class tokens extends Survey_Common_Action
 
         if (!empty($subaction) && $subaction == 'add')
         {
+            $message = '';
             $this->getController()->loadLibrary('Date_Time_Converter');
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
@@ -1187,6 +1189,7 @@ class tokens extends Survey_Common_Action
         Yii::app()->loadHelper("surveytranslator");
 
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
@@ -1383,12 +1386,14 @@ class tokens extends Survey_Common_Action
     public function email($iSurveyId, $tokenids = null)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+        $aData = array();
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
+
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -1784,6 +1789,8 @@ class tokens extends Survey_Common_Action
     public function exportdialog($iSurveyId)
     {
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData = array();
+
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=true;
@@ -1892,6 +1899,7 @@ class tokens extends Survey_Common_Action
     public function importldap($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
+        $aData = array();
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
@@ -2167,6 +2175,7 @@ class tokens extends Survey_Common_Action
     */
     public function import($iSurveyId)
     {
+        $aData = array();
         $iSurveyId = (int) $iSurveyId;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import'))
         {
@@ -2824,6 +2833,7 @@ class tokens extends Survey_Common_Action
             //Add any survey_links from the renamed table
             SurveyLink::model()->rebuildLinksFromTokenTable($iSurveyId);
 
+            $aData = array();
             $aData['sidemenu']['state'] = false;
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Import old tokens"),

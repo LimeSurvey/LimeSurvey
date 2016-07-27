@@ -1175,8 +1175,8 @@ fieldset[disabled] .btn-link:focus {
 
 .alert-info {
   background-color: #ffffff;
-  border: 1px solid #0d0d0d;
-  color: #0d0d0d; }
+  border: 1px solid #1a1a56;
+  color: #1a1a56; }
   .alert-info hr {
     border-top-color: #454545; }
   .alert-info .alert-link {

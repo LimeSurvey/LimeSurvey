@@ -96,7 +96,10 @@
                 $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'numberformat_'.$esrow['surveyls_language'],
                 'value'=> $esrow['surveyls_numberformat'] ,
-                'selectOptions'=>$aRadixPoint
+                'selectOptions'=>$aRadixPoint,
+                'htmlOptions' => array(
+                    "style" => "z-index:-1"
+                )
                 ));
             ?>
         </div>

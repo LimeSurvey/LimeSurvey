@@ -53,7 +53,7 @@ class TemplateConfiguration extends CFormModel
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed pstpl files, if the files refered in css exist, etc.
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param integer $iSurveyId        the id of the survey. If
+     * @param string $iSurveyId        the id of the survey. If
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
@@ -69,24 +69,15 @@ class TemplateConfiguration extends CFormModel
 
         if ($sTemplateName=='')
         {
-            $this->oSurvey = Survey::model()->findByPk($iSurveyId);
+            $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
             $this->sTemplateName = $this->oSurvey->template;
         }
 
         // We check if  it's a CORE template
         $this->isStandard = $this->setIsStandard();
 
-        // If the template is standard, its root is based on standardtemplaterootdir
-        if($this->isStandard)
-        {
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-        }
-        // Else, it's a user template, its root is based on usertemplaterootdir
-        else
-        {
-            $this->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-        }
-
+        // If the template is standard, its root is based on standardtemplaterootdir, else, it's a user template, its root is based on usertemplaterootdir
+        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
 
         // If the template directory doesn't exist, it can be that:
         // - user deleted a custom theme
@@ -98,7 +89,6 @@ class TemplateConfiguration extends CFormModel
             $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
             setGlobalSetting('defaulttemplate', 'default');
         }
-
 
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
@@ -117,33 +107,41 @@ class TemplateConfiguration extends CFormModel
                 $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
                 $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
             }
-
         }
         else
         {
             $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
         }
 
-        // We load the config file
-        $this->config = simplexml_load_file(realpath ($this->xmlFile));
 
-        // Template configuration.
-        $this->viewPath = $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
-        $this->siteLogo = (isset($this->config->files->logo))?$this->config->files->logo->filename:'';
+        //////////////////////
+        // Config file loading
 
-        // condition for user's template prior to 160219 (before this build, this configuration field wasn't present in the config.xml)
-        $this->filesPath    = (isset($this->config->engine->filesdirectory))? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR : $this->path . '/files/';
-        // condition for user's template prior to 160504
-        $this->overwrite_question_views    = (isset($this->config->engine->overwrite_question_views))? ( $this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
-        $this->cssFramework = $this->config->engine->cssframework;
-        $this->packages     = $this->config->xpath('engine/packages/package');
-        $this->otherFiles   = $this->setOtherFiles();
-        $this->depends      = $this->packages;
-        //$this->depends[]    = (string) $this->cssFramework;                   // Bootstrap CSS is no more needed for Bootstrap templates (their custom css like "flat_and_modern.css" is a custom version of bootstrap.css )
+        // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
+        // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
+        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
 
+        // Template configuration
+        // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
+        $this->viewPath                 = (isset($this->config->engine->pstpldirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR                            : $this->path;
+        $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                                                 : '';
+        $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
+        $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
+        $this->packages                 = (isset($this->config->engine->packages->package))        ? $this->config->engine->packages->package                                                                             : array();
+
+        // overwrite_question_views accept different values : "true" or "yes"
+        $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
+
+        $this->otherFiles               = $this->setOtherFiles();
+        $this->depends                  = $this->packages;  // TODO: remove
+
+        // Package creation
         $this->createTemplatePackage();
 
+        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         return $this;
     }
 
@@ -184,15 +182,32 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias('survey.template.path', $this->path);                                   // The package creation/publication need an alias
         Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);
 
-        $aCssFiles   = $this->config->xpath('files/css/filename');                                  // The CSS files of this template
-        $aJsFiles    = $this->config->xpath('files/js/filename');                                   // The JS files of this template
+        $oCssFiles   = $this->config->files->css->filename;                                 // The CSS files of this template
+        $oJsFiles    = $this->config->files->js->filename;                                  // The JS files of this template
 
+        $jsDeactivateConsole = "
+            <script> var dummyConsole = {
+                log : function(){},
+                error : function(){}
+            };
+            console = dummyConsole;
+            window.console = dummyConsole;
+        </script>";
 
         if (getLanguageRTL(App()->language))
         {
-            $aCssFiles = $this->config->xpath('files/rtl/css/filename'); // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
-            $aJsFiles  = $this->config->xpath('files/rtl/js/filename');  // In RTL mode,
+            $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
+            $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
         }
+
+        if (Yii::app()->getConfig('debug') == 0)
+        {
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/scripts/deactivatedebug.js', CClientScript::POS_END);
+        }
+
+        $aCssFiles = (array) $oCssFiles;
+        $aJsFiles  = (array) $oJsFiles;
+
 
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
@@ -215,9 +230,12 @@ class TemplateConfiguration extends CFormModel
         {
             while (false !== ($file = readdir($handle)))
             {
-                if (!is_dir($file))
+                if($file!='.' && $file!='..')
                 {
-                    $otherfiles[] = array("name" => $file);
+                    if (!is_dir($file))
+                    {
+                        $otherfiles[] = array("name" => $file);
+                    }
                 }
             }
             closedir($handle);

@@ -112,6 +112,10 @@ class responses extends Survey_Common_Action
         return $aData;
     }
 
+    public function getActionParams()
+	{
+		return array_merge($_GET,$_POST);
+	}
 
     public function viewbytoken($iSurveyID, $token, $sBrowseLang = '')
     {
@@ -377,13 +381,13 @@ class responses extends Survey_Common_Action
     {
         if (Yii::app()->request->getPost('state')=='extended')
         {
-            Yii::app()->user->setState('responsesGridSwitchDisplayState',true);
+            Yii::app()->user->setState('responsesGridSwitchDisplayState','extended');
             Yii::app()->user->setState('defaultEllipsizeHeaderValue',1000);
             Yii::app()->user->setState('defaultEllipsizeQuestionValue',1000);
         }
         else
         {
-            Yii::app()->user->setState('responsesGridSwitchDisplayState',false);
+            Yii::app()->user->setState('responsesGridSwitchDisplayState','compact');
             Yii::app()->user->setState('defaultEllipsizeHeaderValue',Yii::app()->params['defaultEllipsizeHeaderValue']);
             Yii::app()->user->setState('defaultEllipsizeQuestionValue',Yii::app()->params['defaultEllipsizeQuestionValue']);
         }
