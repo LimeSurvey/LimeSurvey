@@ -18,7 +18,7 @@
 <div id='cintlink-gridview'>
 <?php 
     $widget = $this->widget('bootstrap.widgets.TbGridView', array(
-        'dataProvider' => $model->search(),
+        'dataProvider' => $model->search($surveyId),
         'id' => 'url',
         'itemsCssClass' =>'table-striped',
         'emptyText' => $plugin->gT('No order made yet'),

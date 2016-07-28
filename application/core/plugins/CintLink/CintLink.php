@@ -314,9 +314,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data['orders'] = $orders;
         $data['surveyId'] = $surveyId;
         $data['user'] = Yii::app()->user;
+        $data['model'] = CintLinkOrder::model();  // TODO: Only show orders for this survey
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $content = $this->renderPartial('dashboard', $data, true);
+        $content = $this->renderPartial('global_dashboard', $data, true);
 
         return $content;
     }
@@ -335,6 +336,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $data = array();
         $data['orders'] = $orders;
+        $data['surveyId'] = null;
         $data['user'] = Yii::app()->user;
         $data['model'] = CintLinkOrder::model();
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);

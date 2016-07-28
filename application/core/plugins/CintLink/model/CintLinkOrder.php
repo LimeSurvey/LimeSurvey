@@ -44,7 +44,7 @@ class CintLinkOrder extends CActiveRecord
 
      * @return CActiveDataProvider
      */
-    public function search()
+    public function search($surveyId = null)
     {
         $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
@@ -57,6 +57,11 @@ class CintLinkOrder extends CActiveRecord
 
         $criteria = new CDbCriteria;
         $criteria->addCondition('deleted = false');
+
+        if ($surveyId !== null)
+        {
+            $criteria->addCondition('sid = ' . $surveyId);
+        }
 
         $dataProvider = new CActiveDataProvider('CintLinkOrder', array(
             'sort' => $sort,
