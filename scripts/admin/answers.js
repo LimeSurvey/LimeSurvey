@@ -94,7 +94,7 @@ function deleteinput()
 /**
  * add addinputQuickEdit : for usage with the quickAdd Button
  */
-function addinputQuickEdit($currentTable, subquestionText, language, first, scale_id)
+function addinputQuickEdit($currentTable, subquestionText, subquestionCode, language, first, scale_id)
 {
     var $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
         $url                   = $elDatas.data('quickurl'),         // Url for the request
@@ -760,7 +760,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             }
                 
             var lang_active = languages[x];
-            addinputQuickEdit(closestTable, thisrow[(parseInt(x)+1)], lang_active, (x==0), scale_id);
+            addinputQuickEdit(closestTable, thisrow[(parseInt(x)+1)], thisrow[0], lang_active, (x==0), scale_id);
         }
 
         promises.push(
