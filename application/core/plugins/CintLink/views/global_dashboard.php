@@ -3,7 +3,7 @@
     <p class='alert alert-info'>
         <span class='fa fa-info-circle'></span>
         &nbsp;
-        <?php echo $plugin->gT('To buy participants, please go to the survey specific CintLink view.'); ?>
+        <?php echo $plugin->gT('To order participants, please go to the survey specific CintLink view.'); ?>
     </p>
 <?php else: ?>
     <button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'>
