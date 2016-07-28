@@ -311,7 +311,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $orders = $this->updateOrders($orders);
 
         $data = array();
-        $data['orders'] = $orders;
         $data['surveyId'] = $surveyId;
         $data['user'] = Yii::app()->user;
         $data['model'] = CintLinkOrder::model();  // TODO: Only show orders for this survey
@@ -335,7 +334,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
         //$orders = $this->updateOrders($orders);
 
         $data = array();
-        $data['orders'] = $orders;
         $data['surveyId'] = null;
         $data['user'] = Yii::app()->user;
         $data['model'] = CintLinkOrder::model();
