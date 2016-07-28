@@ -27,7 +27,7 @@ class CheckIntegrity extends Survey_Common_Action
         parent::__construct($controller, $id);
 
         if (!Permission::model()->hasGlobalPermission('settings','read')){
-            Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect($this->getController()->createUrl("/admin/"));
         }
 
@@ -748,7 +748,7 @@ class CheckIntegrity extends Survey_Common_Action
         $sQuery = dbSelectTablesLike('{{old_token}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
 
-        
+
         $aTokenSIDs = array();
         $aFullOldTokenSIDs = array();
 

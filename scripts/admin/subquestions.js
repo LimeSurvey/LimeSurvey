@@ -177,7 +177,7 @@ function deleteinput()
 /**
  * add addinputQuickEdit : for usage with the quickAdd Button
  */
-function addinputQuickEdit($currentTable, subquestionText, language, first, scale_id)
+function addinputQuickEdit($currentTable, subquestionText, subquestionCode, language, first, scale_id)
 {
     var $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
         $url                   = $elDatas.data('quickurl'),         // Url for the request
@@ -203,10 +203,8 @@ function addinputQuickEdit($currentTable, subquestionText, language, first, scal
     datas                 += '&type=subquestion',
     datas                 += '&position=',
     datas                 += '&first='+first,
-    datas                 += '&language="'+language+'"';
+    datas                 += '&language='+language+'';
 
-    console.log('datas', datas);
-    console.log({currentTable:$currentTable, subquestionText:subquestionText, language:language});
     // We get the HTML of the new row to insert
     return $.ajax({
         type: "GET",
@@ -216,6 +214,14 @@ function addinputQuickEdit($currentTable, subquestionText, language, first, scal
             var $lang_table = $('#answers_'+language+'_'+scale_id);
             var htmlRowObject = $(htmlrow);
             htmlRowObject.find('input.answer').val(subquestionText);
+            if(htmlRowObject.find('input.code').length > 0)
+            {
+                htmlRowObject.find('input.code').val(subquestionCode);
+            } 
+            else 
+            {
+                htmlRowObject.find('td.code-title').text(subquestionCode);
+            }
             $lang_table.find('tbody').append(htmlRowObject);                                  // We insert the HTML of the new row after this one
         },
         error :  function(html, statut){
@@ -260,7 +266,6 @@ function addinput()
     datas                 += '&position=',
     datas                 += '&languages='+$languages;
 
-    //console.log('datas', datas);
 
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
@@ -273,7 +278,6 @@ function addinput()
             // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
             $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
-            //console.log('$arrayOfHtml', $arrayOfHtml);
 
             // We insert each row for each language
             $.each($arrayOfHtml, function(lang, htmlRow){
@@ -804,7 +808,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     }
 
     languages=langs.split(';');
-    console.log(languages);
     var promises = [];
         var separatorchar;
         var lsrows=$('#quickaddarea').val().split("\n");
@@ -821,7 +824,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     for (var k in lsrows)
     {
         var thisrow=lsrows[k].splitCSV(separatorchar);
-        console.log(thisrow);
 
         if (thisrow.length<=languages.length)
         {
@@ -842,7 +844,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             }
                 
             var lang_active = languages[x];
-            addinputQuickEdit(closestTable, thisrow[(parseInt(x)+1)], lang_active, (x==0), scale_id);
+            addinputQuickEdit(closestTable, thisrow[(parseInt(x)+1)], thisrow[0] ,lang_active, (x==0), scale_id);
         }
 
         promises.push(
@@ -863,7 +865,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     }
     $.when.apply($,promises).done(
             function(){
-                console.log(arguments);
                 /*$('#quickadd').dialog('close');*/
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');
