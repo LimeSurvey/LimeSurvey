@@ -304,12 +304,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
             return $this->getGlobalDashboard();
         }
 
-
         $orders = $this->getOrders(array(
             'sid' => $surveyId,
             'deleted' => false
         ));
-        $orders = $this->updateOrders($orders);
+
+        // Only update when request is not pagination request from grid
+        $ajax = Yii::app()->request->getParam('ajax');
+        if ($ajax != 'url')
+        {
+            $orders = $this->updateOrders($orders);
+        }
 
         $data = array();
         $data['surveyId'] = $surveyId;
@@ -332,7 +337,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $orders = $this->getOrders(array(
             'deleted' => false
         ));
-        //$orders = $this->updateOrders($orders);
+
+        // Only update when request is not pagination request from grid
+        $ajax = Yii::app()->request->getParam('ajax');
+        if ($ajax != 'url')
+        {
+            $orders = $this->updateOrders($orders);
+        }
 
         $data = array();
         $data['surveyId'] = null;
@@ -463,6 +474,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $orderUrl = $request->getParam('orderUrl');
 
+        $this->log('order url = ' . $orderUrl);
+
         if (empty($orderUrl))
         {
             return json_encode(array('error' => 'Missing order url'));
@@ -486,12 +499,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $curl = new Curl();
         $response = $curl->delete($url, array());
 
+        // Always update order no matter the result
+        $order = CintLinkOrder::model()->findByAttributes(array('url' => $orderUrl));
+        $this->updateOrder($order);
+
         if (empty($response->body))
         {
             return json_encode(array('result' => $this->gT('Order was cancelled')));
         }
         else
         {
+            // TODO: Body can be false if ordered was already cancelled
             return json_encode(array('result' => $response->body));
         }
 
@@ -618,6 +636,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      *
      * @param array<CintLinkOrder> $orders
      * @return array<CintLinkOrder>|false - Returns false if some fetching goes amiss
+     * @throws Exception if Cint returns empty response
      */
     protected function updateOrders(array $orders)
     {
@@ -640,32 +659,43 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 continue;
             }
 
-            $curl = new Curl();
-            $response = $curl->get(
-                $order->url,
-                array()
-            );
-
-            // Abort if we got nothing
-            if (empty($response))
-            {
-                $this->log('updateOrder end with false, empty response');
-                return false;
-            }
-
-            $orderXml = new SimpleXmlElement($response->body);
-
-            $order->raw = $response->body;
-            $order->status = (string) $orderXml->state;  // 'hold' means waiting for payment
-            $order->modified = date('Y-m-d H:i:m', time());
-            $order->save();
-
-            $newOrders[] = $order;
-
+            $newOrders[] = $this->updateOrder($order);
         }
 
         $this->log('updateOrder end');
         return $newOrders;
+    }
+
+    /**
+     * Update a single order with data from Cint
+     *
+     * @param CintLinkOrder $order
+     * @return CintLinkOrder $order
+     * @throws Exception if response from Cint is empty
+     */
+    protected function updateOrder($order) {
+        $curl = new Curl();
+        $response = $curl->get(
+            $order->url,
+            array()
+        );
+
+        // Abort if we got nothing
+        if (empty($response))
+        {
+            $this->log('Got empty response from Cint while update');
+            throw new Exception('Got empty response from Cint while update');
+        }
+
+        $orderXml = new SimpleXmlElement($response->body);
+
+        $order->raw = $response->body;
+        $order->status = (string) $orderXml->state;  // 'hold' means waiting for payment
+        $order->modified = date('Y-m-d H:i:m', time());
+        $order->save();
+
+        return $order;
+
     }
 
     /**

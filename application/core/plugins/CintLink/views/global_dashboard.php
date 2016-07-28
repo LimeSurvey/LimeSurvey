@@ -23,6 +23,7 @@
         'itemsCssClass' =>'table-striped',
         'emptyText' => $plugin->gT('No order made yet'),
         'afterAjaxUpdate' => 'doToolTip',
+        'ajaxUpdate' => true,
         'columns' => array(
             array(
                 'name' => 'url',
