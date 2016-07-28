@@ -96,6 +96,7 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
     var $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
         $url                   = $elDatas.data('quickurl'),         // Url for the request
         $errormessage          = $elDatas.data('errormessage'),     // the error message if the AJAX request failed
+        $defer                 = $.Deferred(),
         $codes, datas;
 
     // We get all the subquestion codes currently displayed
@@ -118,7 +119,7 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
     datas                 += '&language='+language+'';
 
     // We get the HTML of the new row to insert
-    return $.ajax({
+     $.ajax({
         type: "GET",
         url: $url,
         data: datas,
@@ -126,7 +127,6 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
             var $lang_table = $('#answers_'+language+'_'+scale_id);
             var htmlRowObject = $(htmlrow);
             htmlRowObject.find('input.answer').val(subquestionText);
-
             if(htmlRowObject.find('input.code').length > 0)
             {
                 htmlRowObject.find('input.code').val(subquestionCode);
@@ -135,12 +135,14 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
             {
                 htmlRowObject.find('td.code-title').text(subquestionCode);
             }
-            $lang_table.find('tbody').append(htmlRowObject);                                  // We insert the HTML of the new row after this one
+            $defer.resolve({langtable: $lang_table, html: htmlRowObject});
         },
         error :  function(html, statut){
             alert($errormessage);
+            $defer.reject([html, statut, $errormessage]);
         }
     });
+    return $defer.promise();
 }
 
 
@@ -779,6 +781,9 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     $.when.apply($,promises).done(
             function(){
                 /*$('#quickadd').dialog('close');*/
+                $.each(arguments, function(i,item){
+                        item.langtable.find('tbody').append(item.html);
+                });
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');
                 updaterowproperties();

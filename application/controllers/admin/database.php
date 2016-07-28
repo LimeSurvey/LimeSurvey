@@ -370,11 +370,12 @@ class database extends Survey_Common_Action
                             else                                                //new record: additional language
                             {
                                 $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$aInsertQID[$iScaleID][$iPosition],':language'=>$sLanguage));
-                                if(!$oSubQuestion)
+                                if(!$oSubQuestion){
                                     $oSubQuestion=new Question;
+                                }
                                 $oSubQuestion->sid=$iSurveyID;
-                                $oSubQuestion->qid=$aInsertQID[$iScaleID][$iPosition];
                                 $oSubQuestion->gid=$iQuestionGroupID;
+                                $oSubQuestion->qid=$aInsertQID[$iScaleID][$iPosition];
                                 $oSubQuestion->question_order=$iPosition+1;
                                 $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
                                 $oSubQuestion->question=$subquestionvalue;

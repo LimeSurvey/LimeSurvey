@@ -184,6 +184,7 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
         $url                   = $elDatas.data('quickurl'),         // Url for the request
         $errormessage          = $elDatas.data('errormessage'),     // the error message if the AJAX request failed
         qid = "new"+Math.floor(Math.random()*10000),
+        $defer                 = $.Deferred(),
         $codes, datas;
 
     // We get all the subquestion codes currently displayed
@@ -195,18 +196,18 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
     $codes = JSON.stringify(codes);
 
     //We build the datas for the request
-    datas                  = 'surveyid='+$elDatas.data('surveyid'),
-    datas                 += '&gid='+$elDatas.data('gid'),
-    datas                 += '&qid='+qid,
-    datas                 += '&codes='+$codes,
-    datas                 += '&scale_id='+scale_id,
-    datas                 += '&type=subquestion',
-    datas                 += '&position=',
-    datas                 += '&first='+first,
+    datas                  = 'surveyid='+$elDatas.data('surveyid');
+    datas                 += '&gid='+$elDatas.data('gid');
+    datas                 += '&qid='+qid;
+    datas                 += '&codes='+$codes;
+    datas                 += '&scale_id='+scale_id;
+    datas                 += '&type=subquestion';
+    datas                 += '&position=';
+    datas                 += '&first='+first;
     datas                 += '&language='+language+'';
 
     // We get the HTML of the new row to insert
-    return $.ajax({
+     $.ajax({
         type: "GET",
         url: $url,
         data: datas,
@@ -222,12 +223,14 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
             {
                 htmlRowObject.find('td.code-title').text(subquestionCode);
             }
-            $lang_table.find('tbody').append(htmlRowObject);                                  // We insert the HTML of the new row after this one
+            $defer.resolve({langtable: $lang_table, html: htmlRowObject});                                // We insert the HTML of the new row after this one
         },
         error :  function(html, statut){
             alert($errormessage);
+            $defer.reject([html, statut, $errormessage]);
         }
     });
+    return $defer.promise();
 }
 
 
@@ -874,6 +877,9 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     $.when.apply($,promises).done(
             function(){
                 /*$('#quickadd').dialog('close');*/
+                $.each(arguments, function(i,item){
+                        item.langtable.find('tbody').append(item.html);
+                });
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');
                 updaterowproperties();
