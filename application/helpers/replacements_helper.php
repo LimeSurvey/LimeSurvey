@@ -199,7 +199,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if( isset($oTemplate->config->engine->cssframework) && $oTemplate->config->engine->cssframework)
     {
-        $surveyformat .= " ".$oTemplate->config->engine->cssframework."-engine ";
+        $aCssFramework = (array) $oTemplate->config->engine->cssframework;
+        if( ! empty($aCssFramework) )
+        {
+            $surveyformat .= " ".$oTemplate->config->engine->cssframework."-engine ";
+        }
+
     }
 
     if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat!="allinone")
