@@ -474,6 +474,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $orderUrl = $request->getParam('orderUrl');
 
+        if (!$this->checkPermission(null, $url))
+        {
+            return json_encode(array('error' => $this->gT('No permission')));
+        }
+
         $this->log('order url = ' . $orderUrl);
 
         if (empty($orderUrl))
@@ -528,13 +533,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $surveyId = $request->getParam('surveyId');
         $url = $request->getParam('orderUrl');
 
+        if (!$this->checkPermission($surveyId, $url))
+        {
+            return json_encode(array('error' => $this->gT('No permission')));
+        }
+
         $this->log('url = ' . $url);
         $this->log('surveyId = ' . $surveyId);
 
         $order = CintLinkOrder::model()->findByAttributes(
             array(
                 'url' => $url,
-                'sid' => $surveyId,
                 'deleted' => false
             )
         );
@@ -700,37 +709,34 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * User has permission to Cint if he/she is super admin or
-     * he/she has ownership of the survey.
-     * This function will straight out die if permission is wrong.
+     * he/she is owner of the survey.
      *
-     * @todo Not used since permission is only checked while fetching orders to grid
      * @param int|null $surveyId
-     * @return void
+     * @return boolean True if user has permission
      */
-    protected function checkPermission($surveyId = null)
+    protected function checkPermission($surveyId = null, $orderUrl = null)
     {
-        $survey = Survey::model()->findByPk($surveyId);
-        $ownSurvey = $survey->owner_id == Yii::app()->user->id;
-        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
-
-        // When survey id is null we're watching the global dashboard
-        if ($surveyId === null)
+        if (empty($surveyId) && empty($orderUrl))
         {
-            if ($isSuperAdmin)
-            {
-                return true;
-            }
+            // You don't own survey if there is no survey
+            $ownSurvey = false;
+        }
+        else if (empty($surveyId))
+        {
+            // In case we have url but no survey id (global dashboard), check ownership
+            $order = CintLinkOrder::model()->findByAttributes(array('url' => $orderUrl));
+            $survey = Survey::model()->findByPk($order->sid);
+            $ownSurvey = $survey->owner_id == Yii::app()->user->id;
         }
         else
         {
-        }
-        if (!$ownSurvey && !$isSuperAdmin)
-        {
-            // Neither superadmin or owner, abort
-            die('No permission');
+            $survey = Survey::model()->findByPk($surveyId);
+            $ownSurvey = $survey->owner_id == Yii::app()->user->id;
         }
 
-        return false;
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
+
+        return $ownSurvey || $isSuperAdmin;
     }
 
 }
