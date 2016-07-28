@@ -1543,13 +1543,13 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 * This function returns a new random sid if the existing one is taken,
 * otherwise it returns the old one.
 *
-* @param mixed $iOldSID
+* @param mixed $iDesiredSurveyId
 */
-function GetNewSurveyID($iOldSID)
+function GetNewSurveyID($iDesiredSurveyId)
 {
     Yii::app()->loadHelper('database');
-    $aSurvey=Survey::model()->findByPk($iOldSID);
-    if(!empty($aSurvey))
+    $aSurvey=Survey::model()->findByPk($iDesiredSurveyId);
+    if(!empty($aSurvey) || $iDesiredSurveyId == 0)
     {
         // Get new random ids until one is found that is not used
         do
@@ -1563,7 +1563,7 @@ function GetNewSurveyID($iOldSID)
     }
     else
     {
-        return $iOldSID;
+        return $iDesiredSurveyId;
     }
 }
 

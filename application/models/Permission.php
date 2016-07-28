@@ -440,6 +440,11 @@ class Permission extends LSActiveRecord
 
     public function giveAllSurveyPermissions($iUserID, $iSurveyID)
     {
+        if ($iSurveyID == 0)
+        {
+            throw new InvalidArgumentException('Survey ID cannot be 0 (collides with superadmin permission entity id)');
+        }
+
         $aPermissions=$this->getSurveyBasePermissions();
         $aPermissionsToSet=array();
         foreach ($aPermissions as $sPermissionName=>$aPermissionDetails)
