@@ -53,9 +53,14 @@ class CintLinkOrder extends CActiveRecord
             'url'=>array(
             'desc'=>'url desc'
         ));
+        $sort->defaultOrder = array('url' => CSort::SORT_DESC);
+
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('deleted = false');
 
         $dataProvider = new CActiveDataProvider('CintLinkOrder', array(
             'sort' => $sort,
+            'criteria'=>$criteria,
             'pagination' => array(
                 'pageSize' => $pageSize,
             ),
