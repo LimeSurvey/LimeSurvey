@@ -155,10 +155,10 @@ class LSYii_Application extends CWebApplication
      * </code>
      *
      * @param string $message The message you want to show on next page load
-     * @param string $type Type can be 'success','info','warning','danger','error' which correalate to the particular bootstrap alert classes - see http://getbootstrap.com/components/#alerts . Note: Option 'error' is synonymous to 'danger'
+     * @param string $type Type can be 'success','info','warning','danger','error' which relate to the particular bootstrap alert classes - see http://getbootstrap.com/components/#alerts . Note: Option 'error' is synonymous to 'danger'
      * @return LSYii_Application Provides a fluent interface
      */
-    public function setFlashMessage($message,$type='default')
+    public function setFlashMessage($message,$type='success')
     {
         $aFlashMessage=$this->session['aFlashMessage'];
         $aFlashMessage[]=array('message'=>$message,'type'=>$type);
