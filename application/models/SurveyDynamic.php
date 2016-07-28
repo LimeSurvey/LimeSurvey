@@ -631,7 +631,11 @@ class SurveyDynamic extends LSActiveRecord
                $c1 = (string) $column->name;
                if (!empty($this->$c1))
                {
-                    $criteria->compare($c1, $this->$c1, false);
+                   if ($column->dbType=='decimal')
+                   {
+                        $this->$c1=(float)$this->$c1;
+                   }
+                    $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
                }
            }
        }
