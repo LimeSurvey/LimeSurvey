@@ -41,7 +41,7 @@ class PluginsController extends LSYii_Controller
     {
         if(!Permission::model()->hasGlobalPermission('settings','update'))
         {
-            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            Yii::app()->setFlashMessage(gT("Access denied!"),'error');
             $this->redirect($this->createUrl("/admin/plugins"));
         }
         $oPlugin = Plugin::model()->findByPk($id);
@@ -79,7 +79,7 @@ class PluginsController extends LSYii_Controller
     {
         if(!Permission::model()->hasGlobalPermission('settings','update'))
         {
-            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            Yii::app()->setFlashMessage(gT("Access denied!"),'error');
             $this->redirect($this->createUrl("/admin/plugins"));
         }
         $arPlugin      = Plugin::model()->findByPk($id)->attributes;
@@ -134,7 +134,7 @@ class PluginsController extends LSYii_Controller
     {
         if(!Permission::model()->hasGlobalPermission('settings','update'))
         {
-            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            Yii::app()->setFlashMessage(gT("Access denied!"),'error');
             $this->redirect($this->createUrl("/admin/plugins"));
         }
         $oPlugin = Plugin::model()->findByPk($id);
@@ -221,7 +221,7 @@ class PluginsController extends LSYii_Controller
     {
         if(!Permission::model()->hasGlobalPermission('settings','read'))
         {
-            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            Yii::app()->setFlashMessage(gT("Access denied!"),'error');
             $this->redirect($this->createUrl("/admin"));
         }
 
