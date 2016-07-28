@@ -55,13 +55,7 @@ class CintLinkOrder extends CActiveRecord
         ));
         $sort->defaultOrder = array('url' => CSort::SORT_DESC);
 
-        $criteria = new CDbCriteria;
-        $criteria->addCondition('deleted = false');
-
-        if ($surveyId !== null)
-        {
-            $criteria->addCondition('sid = ' . $surveyId);
-        }
+        $criteria = $this->getCriteria($surveyId);
 
         $dataProvider = new CActiveDataProvider('CintLinkOrder', array(
             'sort' => $sort,
@@ -73,6 +67,62 @@ class CintLinkOrder extends CActiveRecord
 
         return $dataProvider;
 
+    }
+
+    /**
+     * Get search criteria for dashboard
+     *
+     * @param int|null $surveyId
+     * @return CDbCriteria
+     */
+    protected function getCriteria($surveyId) {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('deleted = false');
+
+        // In survey specific dashboard we will have survey id
+        if ($surveyId !== null)
+        {
+            $criteria->addCondition('sid = ' . $surveyId);
+        }
+        else
+        {
+            // In global dashboard, if you're super admin you
+            // will see all surveys, but if not, show only
+            // Cint orders for the surveys you own.
+            if (Permission::model()->hasGlobalPermission('superadmin'))
+            {
+                // Don't add more conditions, superadmin sees all
+            }
+            else
+            {
+                // Find all surveys the user own
+                $surveysUserOwns = Survey::model()->findAllByAttributes(
+                    array(
+                        'owner_id' => Yii::app()->user->id
+                    )
+                );
+
+                if (empty($surveysUserOwns))
+                {
+                    // No superadmin and no owner, so make impossible condition
+                    $criteria->addCondition('sid = -1');
+                }
+                else
+                {
+                    // Add conditions like (sid = 1 OR sid = 2 OR ...)
+                    $sidCriteria = new CDbCriteria;
+                    foreach ($surveysUserOwns as $survey)
+                    {
+                        $sidCriteria->addCondition('sid = ' . $survey->sid, 'OR');
+                    }
+                    $criteria->mergeWith($sidCriteria);
+                }
+            }
+        }
+
+        Yii::app()->getPlugin()->log('criteria = ' . json_encode($criteria));
+
+        return $criteria;
     }
 
     /**

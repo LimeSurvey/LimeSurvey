@@ -304,6 +304,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             return $this->getGlobalDashboard();
         }
 
+
         $orders = $this->getOrders(array(
             'sid' => $surveyId,
             'deleted' => false
@@ -665,6 +666,41 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $this->log('updateOrder end');
         return $newOrders;
+    }
+
+    /**
+     * User has permission to Cint if he/she is super admin or
+     * he/she has ownership of the survey.
+     * This function will straight out die if permission is wrong.
+     *
+     * @todo Not used since permission is only checked while fetching orders to grid
+     * @param int|null $surveyId
+     * @return void
+     */
+    protected function checkPermission($surveyId = null)
+    {
+        $survey = Survey::model()->findByPk($surveyId);
+        $ownSurvey = $survey->owner_id == Yii::app()->user->id;
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
+
+        // When survey id is null we're watching the global dashboard
+        if ($surveyId === null)
+        {
+            if ($isSuperAdmin)
+            {
+                return true;
+            }
+        }
+        else
+        {
+        }
+        if (!$ownSurvey && !$isSuperAdmin)
+        {
+            // Neither superadmin or owner, abort
+            die('No permission');
+        }
+
+        return false;
     }
 
 }
