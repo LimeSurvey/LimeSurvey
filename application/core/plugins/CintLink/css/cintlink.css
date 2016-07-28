@@ -21,3 +21,22 @@
 .cintlink-completed-check-column {
     width: 20px;
 }
+
+@font-face {
+    font-family: 'CintFont';
+	src:  url('icomoon.eot?gsq6lm');
+	src:  url('icomoon.eot?gsq6lm#iefix') format('embedded-opentype'),
+    url('icomoon.ttf?gsq6lm') format('truetype'),
+    url('icomoon.woff?gsq6lm') format('woff'),
+    url('icomoon.svg?gsq6lm#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.cintlink-icons {
+    font: normal normal normal 14px/1 'CintFont';
+}
+
+.cinticon:before {
+	content: '\e900';
+}

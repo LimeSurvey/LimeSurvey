@@ -49,6 +49,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->subscribe('beforeActivate');
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('beforeToolsMenuRender');
+        $this->subscribe('afterQuickMenuLoad');
         $this->subscribe('newDirectRequest');
 
         // Login session key from com_api at limesurvey.org
@@ -130,7 +131,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $menuItem = new MenuItem(array(
             'label' => $this->gT('CintLink'),
-            'iconClass' => 'fa fa-table',
+            'iconClass' => 'cintlink-icons cinticon',
             'href' => $href
         ));
 
@@ -162,6 +163,54 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'href' => $href
           ))
         ));
+    }
+
+    /**
+     * Add quick menu icon
+     */
+    public function afterQuickMenuLoad()
+    {
+        // Do nothing if QuickMenu plugin is not active
+        $quickMenuExistsAndIsActive = $this->api->pluginExists('QuickMenu')
+            && $this->api->pluginIsActive('QuickMenu');
+        if (!$quickMenuExistsAndIsActive)
+        {
+            return;
+        }
+
+        $event = $this->getEvent();
+        $settings = $this->getPluginSettings(true);
+
+        $data = $event->get('aData');
+        $activated = $data['activated'];
+        $surveyId = $data['surveyid'];
+
+        $href = Yii::app()->createUrl(
+            'admin/pluginhelper',
+            array(
+                'sa' => 'sidebody',
+                'plugin' => 'CintLink',
+                'method' => 'actionIndex',
+                'surveyId' => $surveyId
+            )
+        );
+
+        $button = new QuickMenuButton(array(
+            'name' => 'cintLink',
+            'href' => $href,
+            'tooltip' => $this->gT('CintLink'),
+            'iconClass' => 'cintlink-icons cinticon',
+            'neededPermission' => array('surveycontent', 'update')
+        ));
+        $db = Yii::app()->db;
+        $userId = Yii::app()->user->getId();
+        $orderings = QuickMenu::getOrder($userId);
+        if (isset($orderings['cintLink']))
+        {
+            $button->setOrder($orderings['cintLink']);
+        }
+
+        $event->append('quickMenuItems', array($button));
     }
 
     /**
