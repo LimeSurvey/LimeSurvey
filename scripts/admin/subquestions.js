@@ -205,8 +205,6 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
     datas                 += '&first='+first,
     datas                 += '&language='+language+'';
 
-    // console.log('datas', datas);
-    // console.log({currentTable:$currentTable, subquestionText:subquestionText, language:language});
     // We get the HTML of the new row to insert
     return $.ajax({
         type: "GET",
@@ -268,7 +266,6 @@ function addinput()
     datas                 += '&position=',
     datas                 += '&languages='+$languages;
 
-    //console.log('datas', datas);
 
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
@@ -281,7 +278,6 @@ function addinput()
             // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
             $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
-            //console.log('$arrayOfHtml', $arrayOfHtml);
 
             // We insert each row for each language
             $.each($arrayOfHtml, function(lang, htmlRow){
@@ -812,7 +808,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     }
 
     languages=langs.split(';');
-    console.log(languages);
     var promises = [];
         var separatorchar;
         var lsrows=$('#quickaddarea').val().split("\n");
@@ -829,7 +824,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     for (var k in lsrows)
     {
         var thisrow=lsrows[k].splitCSV(separatorchar);
-        console.log(thisrow);
 
         if (thisrow.length<=languages.length)
         {
@@ -871,7 +865,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     }
     $.when.apply($,promises).done(
             function(){
-                console.log(arguments);
                 /*$('#quickadd').dialog('close');*/
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');

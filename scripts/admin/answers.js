@@ -122,8 +122,6 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
     datas                 += '&first='+first,
     datas                 += '&language='+language+'';
 
-    console.log('datas', datas);
-    console.log({currentTable:$currentTable, subquestionText:subquestionText, language:language});
     // We get the HTML of the new row to insert
     return $.ajax({
         type: "GET",
@@ -132,6 +130,8 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
         success: function(htmlrow) {
             var $lang_table = $('#answers_'+language+'_'+scale_id);
             var htmlRowObject = $(htmlrow);
+            htmlRowObject.find('input.answer').val(subquestionText);
+
             if(htmlRowObject.find('input.code').length > 0)
             {
                 htmlRowObject.find('input.code').val(subquestionCode);
@@ -199,8 +199,6 @@ function addinput()
 
             $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
 
-            //console.log($arrayOfHtml);
-
             // We insert each row for each language
             $.each($arrayOfHtml, function(lang, htmlRow){
                 $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
@@ -209,8 +207,6 @@ function addinput()
             });
 
             $('#answercount_'+$scaleId).val($position+2);
-            //console.log('scale: '+$scaleId);
-            //console.log('position: '+$position);
 
         },
         error :  function(html, statut){
@@ -706,7 +702,6 @@ function transferlabels()
 
 function quickaddlabels(scale_id, addOrReplace, table_id)
 {
-    console.log('quickaddlabels');
     var sID=$('input[name=sid]').val(),
         gID=$('input[name=gid]').val(),
         qID=$('input[name=qid]').val(),
@@ -722,7 +717,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     }
 
     languages=langs.split(';');
-    console.log(languages);
     var promises = [];
         var separatorchar;
         var lsrows=$('#quickaddarea').val().split("\n");
@@ -739,7 +733,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     for (var k in lsrows)
     {
         var thisrow=lsrows[k].splitCSV(separatorchar);
-        console.log(thisrow);
+
 
         if (thisrow.length<=languages.length)
         {
@@ -781,7 +775,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     }
     $.when.apply($,promises).done(
             function(){
-                console.log(arguments);
                 /*$('#quickadd').dialog('close');*/
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');
@@ -790,7 +783,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
                 bindClickIfNotExpanded();
             },
             function(){
-                 console.log(arguments);
                 /*$('#quickadd').dialog('close');*/
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');
