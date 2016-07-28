@@ -203,7 +203,7 @@ function addinputQuickEdit($currentTable, subquestionText, language, first, scal
     datas                 += '&type=subquestion',
     datas                 += '&position=',
     datas                 += '&first='+first,
-    datas                 += '&language="'+language+'"';
+    datas                 += '&language='+language+'';
 
     console.log('datas', datas);
     console.log({currentTable:$currentTable, subquestionText:subquestionText, language:language});
