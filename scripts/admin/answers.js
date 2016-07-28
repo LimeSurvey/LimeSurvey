@@ -99,10 +99,17 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
         $defer                 = $.Deferred(),
         $codes, datas;
 
+
     // We get all the subquestion codes currently displayed
-    $currentTable.find('.code').each(function(){
-        codes.push($(this).val());
-    });
+    if($currentTable.find('.code').length>0){
+        $currentTable.find('.code').each(function(){
+            codes.push($(this).val());
+        });
+    } else {
+        $currentTable.find('.code-title').each(function(){
+            codes.push($(this).text().trim());
+        });
+    }
 
     // We convert them to json for the request
     $codes = JSON.stringify(codes);
@@ -711,11 +718,16 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             var aRowInfo=this.id.split('_');
             $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
         });
+    }
 
+    if(closestTable.find('.code').length<0){
+        closestTable.find('.code-title').each(function(){
+            codes.push($(this).text());
+        });
+    } else {
         closestTable.find('.code').each(function(){
             codes.push($(this).val());
         });
-
     }
 
     languages=langs.split(';');
@@ -732,6 +744,24 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     {
         separatorchar="\t";
     }
+
+        var numericSuffix = '', 
+        n = 1, 
+        numeric = true, 
+        codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("A01").split(""));
+    while(numeric == true && n <= codeSigil.length){
+        var currentCharacter = codeSigil.pop()                // get the current character
+        if ( !isNaN(Number(currentCharacter)) )                               // check if it's numerical
+        {
+            numericSuffix    = currentCharacter+""+numericSuffix;       // store it in a string
+            n++;
+        }
+        else
+        {
+            $numeric = false;                                           // At first non numeric character found, the loop is stoped
+        }
+    }
+    codeSigil = codeSigil.join("");
     var tablerows = "";
     for (var k in lsrows)
     {

@@ -188,9 +188,16 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
         $codes, datas;
 
     // We get all the subquestion codes currently displayed
-    $currentTable.find('.code').each(function(){
-        codes.push($(this).val());
-    });
+        // We get all the subquestion codes currently displayed
+    if($currentTable.find('.code').length>0){
+        $currentTable.find('.code').each(function(){
+            codes.push($(this).val());
+        });
+    } else {
+        $currentTable.find('.code-title').each(function(){
+            codes.push($(this).text().trim());
+        });
+    }
 
     // We convert them to json for the request
     $codes = JSON.stringify(codes);
@@ -810,17 +817,23 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             var aRowInfo=this.id.split('_');
             $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
         });
+    }
 
+    if(closestTable.find('.code').length<0){
+        closestTable.find('.code-title').each(function(){
+            codes.push($(this).text());
+        });
+    } else {
         closestTable.find('.code').each(function(){
             codes.push($(this).val());
         });
-
     }
 
     languages=langs.split(';');
     var promises = [];
     var separatorchar;
     var lsrows=$('#quickaddarea').val().split("\n");
+    var allrows = $('.answertable:eq('+scale_id+') tbody tr').length;
 
     if (lsrows[0].indexOf("\t")==-1)
     {
@@ -830,15 +843,37 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     {
         separatorchar="\t";
     }
+
+    var numericSuffix = '', 
+        n = 1, 
+        numeric = true, 
+        codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("SQ0001").split(""));
+    while(numeric == true && n <= codeSigil.length){
+        var currentCharacter = codeSigil.pop()                // get the current character
+        if ( !isNaN(Number(currentCharacter)) )                               // check if it's numerical
+        {
+            numericSuffix    = currentCharacter+""+numericSuffix;       // store it in a string
+            n++;
+        }
+        else
+        {
+            $numeric = false;                                           // At first non numeric character found, the loop is stoped
+        }
+    }
+    codeSigil = codeSigil.join("");
     var tablerows = "";
     for (var k in lsrows)
     {
         var thisrow=lsrows[k].splitCSV(separatorchar);
+        
 
         if (thisrow.length<=languages.length)
         {
-            var qCode = "0000"+(parseInt(k)+1)
-            thisrow.unshift("SQ"+qCode.slice(-4));
+            var qCode = (parseInt(k)+(1+parseInt(allrows)));
+            while(qCode.length < numericSuffix.length){
+                qCode = "0"+qCode;
+            }
+            thisrow.unshift(codeSigil+qCode);
         }
         else
         {
