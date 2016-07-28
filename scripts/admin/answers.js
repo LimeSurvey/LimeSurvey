@@ -120,7 +120,7 @@ function addinputQuickEdit($currentTable, subquestionText, language, first, scal
     datas                 += '&type=answer',
     datas                 += '&position=',
     datas                 += '&first='+first,
-    datas                 += '&language="'+language+'"';
+    datas                 += '&language='+language+'';
 
     console.log('datas', datas);
     console.log({currentTable:$currentTable, subquestionText:subquestionText, language:language});
@@ -132,7 +132,14 @@ function addinputQuickEdit($currentTable, subquestionText, language, first, scal
         success: function(htmlrow) {
             var $lang_table = $('#answers_'+language+'_'+scale_id);
             var htmlRowObject = $(htmlrow);
-            htmlRowObject.find('input.answer').val(subquestionText);
+            if(htmlRowObject.find('input.code').length > 0)
+            {
+                htmlRowObject.find('input.code').val(subquestionCode);
+            } 
+            else 
+            {
+                htmlRowObject.find('td.code-title').text(subquestionCode);
+            }
             $lang_table.find('tbody').append(htmlRowObject);                                  // We insert the HTML of the new row after this one
         },
         error :  function(html, statut){

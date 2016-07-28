@@ -177,7 +177,7 @@ function deleteinput()
 /**
  * add addinputQuickEdit : for usage with the quickAdd Button
  */
-function addinputQuickEdit($currentTable, subquestionText, language, first, scale_id)
+function addinputQuickEdit($currentTable, subquestionText, subquestionCode, language, first, scale_id)
 {
     var $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
         $url                   = $elDatas.data('quickurl'),         // Url for the request
@@ -205,8 +205,8 @@ function addinputQuickEdit($currentTable, subquestionText, language, first, scal
     datas                 += '&first='+first,
     datas                 += '&language='+language+'';
 
-    console.log('datas', datas);
-    console.log({currentTable:$currentTable, subquestionText:subquestionText, language:language});
+    // console.log('datas', datas);
+    // console.log({currentTable:$currentTable, subquestionText:subquestionText, language:language});
     // We get the HTML of the new row to insert
     return $.ajax({
         type: "GET",
@@ -216,6 +216,14 @@ function addinputQuickEdit($currentTable, subquestionText, language, first, scal
             var $lang_table = $('#answers_'+language+'_'+scale_id);
             var htmlRowObject = $(htmlrow);
             htmlRowObject.find('input.answer').val(subquestionText);
+            if(htmlRowObject.find('input.code').length > 0)
+            {
+                htmlRowObject.find('input.code').val(subquestionCode);
+            } 
+            else 
+            {
+                htmlRowObject.find('td.code-title').text(subquestionCode);
+            }
             $lang_table.find('tbody').append(htmlRowObject);                                  // We insert the HTML of the new row after this one
         },
         error :  function(html, statut){
@@ -842,7 +850,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             }
                 
             var lang_active = languages[x];
-            addinputQuickEdit(closestTable, thisrow[(parseInt(x)+1)], lang_active, (x==0), scale_id);
+            addinputQuickEdit(closestTable, thisrow[(parseInt(x)+1)], thisrow[0] ,lang_active, (x==0), scale_id);
         }
 
         promises.push(
