@@ -351,8 +351,13 @@ class UserAction extends Survey_Common_Action
             (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) )
             {
                 $sresult = User::model()->parentAndUser($postuserid);
+                if(empty($sresult))
+                {
+                    Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+                    $this->getController()->redirect(array("admin/user/sa/index"));
+                }
                 $aData = array();
-                $aData['mur'] = $sresult;
+                $aData['aUserData'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
                 $aData['fullpagebar']['closebutton']['url'] = 'admin';  // Close button
@@ -391,9 +396,8 @@ class UserAction extends Survey_Common_Action
         {
             $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
             $email = html_entity_decode($postemail, ENT_QUOTES, 'UTF-8');
-            $sPassword = html_entity_decode(Yii::app()->request->getPost('pass'), ENT_QUOTES, 'UTF-8');
-            if ($sPassword == '%%unchanged%%')
-                $sPassword = '';
+            $sPassword = Yii::app()->request->getPost('password');
+
             $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
 
             if (!validateEmailAddress($email))
@@ -404,8 +408,8 @@ class UserAction extends Survey_Common_Action
             else
             {
                 $oRecord = User::model()->findByPk($postuserid);
-                $oRecord->email= $this->escape($email);
-                $oRecord->full_name= $this->escape($full_name);
+                $oRecord->email= $email;
+                $oRecord->full_name= $full_name;
                 if (!empty($sPassword))
                 {
                     $oRecord->password= hash('sha256', $sPassword);
@@ -419,19 +423,13 @@ class UserAction extends Survey_Common_Action
                 }
                 elseif ($uresult && !empty($sPassword)) // When saved successfully
                 {
-                    if ($sPassword != 'password')
-                        Yii::app()->session['pw_notify'] = FALSE;
-                    if ($sPassword == 'password')
-                        Yii::app()->session['pw_notify'] = TRUE;
-
+                    Yii::app()->session['pw_notify'] = $sPassword != '';
                     if ($display_user_password_in_html === true) {
                         $displayedPwd = htmlentities($sPassword);
                     }
-                    else
-                    {
+                    else {
                         $displayedPwd = preg_replace('/./', '*', $sPassword);
                     }
-
                     Yii::app()->setFlashMessage( gT("Success!") .' <br/> '.gT("Password") . ": " . $displayedPwd, 'success');
                     $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
                 }

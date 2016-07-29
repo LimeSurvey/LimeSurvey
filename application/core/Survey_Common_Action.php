@@ -164,10 +164,13 @@ class Survey_Common_Action extends CAction
         // iGroupId/gid can be found with qid/iQuestionId
         if(isset($params['iQuestionId']))
         {
-            $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
-            if($oQuestion)
-            {
-                $params['iGroupId']=$params['gid']=$oQuestion->gid;
+            if((int) $params['iQuestionId'] >0 )
+            { //Check if the transfered iQuestionId is numeric to prevent Errors with postgresql
+                $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
+                if($oQuestion)
+                {
+                    $params['iGroupId']=$params['gid']=$oQuestion->gid;
+                }
             }
         }
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId

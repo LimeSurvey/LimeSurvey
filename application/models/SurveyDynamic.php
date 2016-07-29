@@ -605,8 +605,9 @@ class SurveyDynamic extends LSActiveRecord
        }
 
        // Basic filters
-       $criteria->compare('t.id',$this->id, false);
-       $criteria->compare('t.lastpage',$this->lastpage, true);
+
+       $criteria->compare('t.id',empty($this->id)?null:(int)$this->id, false);
+       $criteria->compare('t.lastpage',empty($this->lastpage)?null:(int)$this->lastpage, true);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
 
@@ -628,7 +629,14 @@ class SurveyDynamic extends LSActiveRecord
            if(!in_array($column->name, $this->defaultColumns))
            {
                $c1 = (string) $column->name;
-               $criteria->compare($c1, $this->$c1, true);
+               if (!empty($this->$c1))
+               {
+                   if ($column->dbType=='decimal')
+                   {
+                        $this->$c1=(float)$this->$c1;
+                   }
+                    $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
+               }
            }
        }
 
