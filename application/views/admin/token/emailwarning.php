@@ -1,4 +1,5 @@
-<div class="jumbotron message-box message-box-warning">
+<div class='side-body  <?php echo getSideBodyClass(false); ?>'>
+    <div class="jumbotron message-box message-box-warning">
             <h2><?php eT("Warning"); ?></h2>
 
             <?php echo CHtml::form(array("admin/tokens/sa/email/action/{$sSubAction}/surveyid/{$surveyid}"), 'post'); ?>
@@ -39,4 +40,5 @@
                     echo CHtml::hiddenField('message_'.$language, Yii::app()->request->getPost('message_' . $language));
                 } ?>
             </form>
+    </div>
 </div>
