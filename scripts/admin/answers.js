@@ -758,7 +758,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         }
         else
         {
-            codesigil.push(currentCharacter);
+            codeSigil.push(currentCharacter);
             $numeric = false;                                           // At first non numeric character found, the loop is stoped
         }
     }
