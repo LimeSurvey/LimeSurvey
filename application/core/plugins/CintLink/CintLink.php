@@ -247,6 +247,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $this->registerCssAndJs();
 
+        //$this->showActivateMessage($surveyId, $orders);
+
         return $content;
     }
 
@@ -289,7 +291,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
         // Need to include this manually so Ajax loading of gridview will work
         App()->clientScript->registerScriptFile('/framework/zii/widgets/assets/gridview/jquery.yiigridview.js');
         App()->clientScript->registerScriptFile('/framework/web/js/source/jquery.ba-bbq.min.js');
-
     }
 
     /**
@@ -378,6 +379,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data['user'] = Yii::app()->user;
         $data['model'] = CintLinkOrder::model();  // TODO: Only show orders for this survey
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $data['survey'] = Survey::model()->findByPk($surveyId);
 
         $content = $this->renderPartial('global_dashboard', $data, true);
 
@@ -794,6 +796,39 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
 
         return $ownSurvey || $isSuperAdmin;
+    }
+
+    /**
+     * If any order is 'new' or 'live', survey must be active.
+     *
+     * @return void
+     */
+    protected function showActivateMessage($surveyId) {
+        $survey = Survey::model()->findByPk($surveyId);
+        $orders = $this->getOrders(array(
+            'sid' => $surveyId,
+            'deleted' => false
+        ));
+
+        if ($survey->active != 'Y')
+        {
+            Yii::app()->user->setFlash(
+                'warning',
+                $this->gT('This survey is live or under review by Cint. Please activate the survey as soon as possible.')
+            );
+        }
+        
+    }
+
+    /**
+     * 
+     */
+    protected function anyOrderIsNewOrLive($surveyId) {
+        $orders = CintLinkOrder::model()->findAllByAttributes(
+            $conditions,
+            array('order' => 'url DESC')
+        );
+        return $orders;
     }
 
 }

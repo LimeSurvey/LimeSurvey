@@ -5,6 +5,12 @@
         &nbsp;
         <?php echo $plugin->gT('To order participants, please go to the survey specific CintLink view.'); ?>
     </p>
+<?php elseif (!empty($survey) && $survey->active != 'Y'):  ?>
+    <p class='alert alert-info'>
+        <span class='fa fa-info-circle'></span>
+        &nbsp;
+        <?php echo $plugin->gT('Please activate the survey before you can order participants.'); ?>
+    </p>
 <?php else: ?>
     <button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'>
         <span class='fa fa-bars'></span>
