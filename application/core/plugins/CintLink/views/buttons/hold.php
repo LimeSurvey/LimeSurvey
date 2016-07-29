@@ -6,6 +6,10 @@
         data-toggle='tooltip'
         title='<?php echo $plugin->gT('You can only pay for orders you placed your self.'); ?>'
         onclick='return false;'
+    <?php elseif ($survey->active != 'Y'): ?>
+        data-toggle='tooltip'
+        title='<?php echo $plugin->gT('You can only pay for an order when the survey is active.'); ?>'
+        onclick='return false;'
     <?php endif; ?>
 >
     <span class='fa fa-credit-card'></span>

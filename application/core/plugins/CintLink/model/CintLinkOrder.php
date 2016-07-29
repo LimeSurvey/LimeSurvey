@@ -199,9 +199,11 @@ class CintLinkOrder extends CActiveRecord
                 $data = array();
                 $data['order'] = $this;
                 $data['user'] = Yii::app()->user;
+                $data['survey'] = Survey::model()->findByPk($this->sid);
 
                 $orderedByMe = $this->ordered_by == $data['user']->id;
-                $data['readonly'] = $orderedByMe ? '' : 'readonly';
+                $surveyIsActive = $data['survey']->active != 'N';
+                $data['readonly'] = $orderedByMe && $surveyIsActive ? '' : 'readonly';
 
                 return $plugin->renderPartial('buttons.hold', $data, true);
 
