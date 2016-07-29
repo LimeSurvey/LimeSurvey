@@ -186,6 +186,8 @@
     $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
     $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager/Storage');
     $loader->addNamespace('ls\\menu', __DIR__ . '/application/libraries/MenuObjects');
+    $loader->addNamespace('ls\\helpers', __DIR__ . '/application/helpers');
+
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
