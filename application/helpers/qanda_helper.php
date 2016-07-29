@@ -1225,7 +1225,6 @@ function do_list_dropdown($ia)
     $_prefix = '';
 
     $value            = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-    $select_show_hide = (isset($other) && $other=='Y')?' showhideother(this.name, this.value);':'';
     $sOptions         = '';
 
     // If no answer previously selected
@@ -1373,6 +1372,7 @@ function do_list_dropdown($ia)
         $aData['name']= $ia[1];
         $aData['checkconditionFunction']=$checkconditionFunction;
         $aData['display'] = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '-oth-')?'display: none;':'';
+        $aData['label'] = $othertext;
         $thisfieldname="$ia[1]other";
         $aData['value'] = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES):'';
 
@@ -1391,7 +1391,6 @@ function do_list_dropdown($ia)
         'dropdownSize'           => $dropdownSize,
         'checkconditionFunction' => $checkconditionFunction,
         'value'                  => $value,
-        'select_show_hide'       => $select_show_hide,
     ), true);
 
 
