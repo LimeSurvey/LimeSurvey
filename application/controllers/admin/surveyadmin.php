@@ -537,6 +537,8 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function deactivate($iSurveyID = null)
     {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die('No permission');
+
         $iSurveyID  = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID  = sanitize_int($iSurveyID);
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
