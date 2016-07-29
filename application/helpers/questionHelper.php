@@ -19,16 +19,16 @@ namespace ls\helpers;
 class questionHelper
 {
     /**
-     * The attribute definition for this LimeSurvey installation
+     * The question attribute definition for this LimeSurvey installation
      */
-    public static $attributes;
+    protected static $attributes;
     /**
-     * The attribute/settings by question type
+     * The question attribute (settings) by question type
      */
-    public static $questionAttributesSettings=array();
+    protected static $questionAttributesSettings=array();
 
     /**
-     * Return the definitions of Question attributes core+extended value
+     * Return all the definitions of Question attributes core+extended value
      */
     public static function getAttributesDefinitions()
     {
@@ -1392,15 +1392,15 @@ class questionHelper
 
     /**
      * Return the question attributes definition by question type
-     * @param $sType: always used except for TSV import : @todo must fix here, but must update to don't get all question type everytime ... : must review the attributeDefinitions
-     * @return array
+     * @param $sType: type pof question
+     * @return array : the attribute settings for this question type
      */
     public static function getQuestionAttributesSettings($sType)
     {
         if(!isset(self::$questionAttributesSettings[$sType]))
         {
             self::$questionAttributesSettings[$sType]=array();
-            self::getAttributesDefinitions(); /* we need to have self::$attributesDefinitions */
+            self::getAttributesDefinitions(); /* we need to have self::$attributes */
             /* Filter to get this question type setting */
             $aQuestionTypeAttribute=array_filter(self::$attributes,function($attribute) use ($sType){
                 return stripos($attribute['types'],$sType)!==false;
