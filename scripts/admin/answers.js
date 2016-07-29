@@ -748,6 +748,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         var numericSuffix = '', 
         n = 1, 
         numeric = true, 
+        codeAlphaPart = "",
         codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("A01").split(""));
     while(numeric == true && n <= codeSigil.length){
         var currentCharacter = codeSigil.pop()                // get the current character
@@ -758,11 +759,10 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         }
         else
         {
-            codeSigil.push(currentCharacter);
+            codeAlphaPart = codeSigil.join("")+currentCharacter;
             $numeric = false;                                           // At first non numeric character found, the loop is stoped
         }
     }
-    codeSigil = codeSigil.join("");
     var tablerows = "";
     for (var k in lsrows)
     {
@@ -772,7 +772,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         if (thisrow.length<=languages.length)
         {
             var qCode = (parseInt(k)+(1+parseInt(allrows)));
-            thisrow.unshift("A"+qCode);
+            thisrow.unshift(codeAlphaPart+qCode);
         }
         else
         {

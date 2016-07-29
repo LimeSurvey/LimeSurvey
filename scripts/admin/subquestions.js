@@ -846,7 +846,8 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 
     var numericSuffix = '', 
         n = 1, 
-        numeric = true, 
+        numeric = true,  
+        codeAlphaPart = "",
         codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("SQ0001").split(""));
     while(numeric == true && n <= codeSigil.length){
         var currentCharacter = codeSigil.pop()                // get the current character
@@ -857,7 +858,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         }
         else
         {
-            codeSigil.push(currentCharacter);
+            codeAlphaPart = codeSigil.join("")+currentCharacter;
             $numeric = false;                                           // At first non numeric character found, the loop is stoped
         }
     }
@@ -874,7 +875,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             while(qCode.length < numericSuffix.length){
                 qCode = "0"+qCode;
             }
-            thisrow.unshift(codeSigil+qCode);
+            thisrow.unshift(codeAlphaPart+qCode);
         }
         else
         {
