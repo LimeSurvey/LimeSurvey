@@ -279,6 +279,14 @@ class tokens extends Survey_Common_Action
         TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
         return true;
     }
+    public function deleteToken()
+    {
+        // TODO: permission checks
+        $aTokenId = Yii::app()->getRequest()->getParam('sItem');
+        $iSid = Yii::app()->getRequest()->getParam('sid');
+        TokenDynamic::model($iSid)->deleteRecords([$aTokenId]);
+        return true;
+    }
 
     /**
     * Browse Tokens
