@@ -9704,7 +9704,7 @@ EOD;
             );
 
             // Advanced question attributes : @todo get used question attribute by question in survey ?
-            $aQuestionAttributes=array_keys(QuestionAttribute::getAttributesDefinitions());
+            $aQuestionAttributes=array_keys(\ls\helpers\questionHelper::getAttributesDefinitions());
             sort($aQuestionAttributes);
             $fields=array_merge($aBaseFields,$aQuestionAttributes);
 

@@ -232,7 +232,7 @@ class Question extends LSActiveRecord
                 }
             }
         }
-        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
+        $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute)
         {

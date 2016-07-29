@@ -658,7 +658,7 @@ class database extends Survey_Common_Action
                             }
                         }
                     } else {
-                        $validAttributes=QuestionAttribute::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
+                        $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
                         $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
 
                         foreach ($validAttributes as $validAttribute)
@@ -775,18 +775,13 @@ class database extends Survey_Common_Action
 
             $criteria = new CDbCriteria;
             $criteria->compare('qid',$iQuestionID);
-            $validAttributes=QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
+            $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
             foreach ($validAttributes as  $validAttribute)
             {
                 $criteria->compare('attribute', '<>'.$validAttribute['name']);
             }
             QuestionAttribute::model()->deleteAll($criteria);
             $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
-
-            //now save all valid attributes
-            // eg: other_replace_text ; other_replace_text_en
-            $validAttributes=$qattributes[$sQuestionType];
 
             foreach ($validAttributes as $validAttribute)
             {
