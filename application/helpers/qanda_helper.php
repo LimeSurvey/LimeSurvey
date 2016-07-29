@@ -802,7 +802,7 @@ function do_5pointchoice($ia)
             'value'                  => $fp,
             'id'                     => $ia[1].$fp,
             'labelText'              => $fp,
-            'itemExtraClass'         => 'col-md-1',
+            'itemExtraClass'         => '',
             'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
         ), true);

@@ -15,33 +15,32 @@
 <!-- 5 point choice -->
 
 <!-- answer -->
-<div id="<?php echo $id; ?>" class="answers-list five-point-choice radio-list">
+<ul id="<?php echo $id; ?>" class="list-unstyled answers-list radio-list form-horizontal">
 
     <?php
         // item_row.php
         echo $sRows;
     ?>
+</ul>
+<!-- 5 point choice footer -->
+<input
+    type="hidden"
+    name="java<?php echo $name;?>"
+    id="java<?php echo $name;?>"
+    value="<?php echo $sessionValue;?>"
+/>
 
-    <!-- 5 point choice footer -->
-    <input
-        type="hidden"
-        name="java<?php echo $name;?>"
-        id="java<?php echo $name;?>"
-        value="<?php echo $sessionValue;?>"
-    />
-
-    <?php if($slider_rating==1):?>
-        <script type='text/javascript'>
-        <!--
-            doRatingStar( <?php echo  $sliderId;?> );
-        -->
-        </script>
-    <?php elseif($slider_rating==2):?>
-        <script type='text/javascript'>
-        <!--
-            doRatingSlider( <?php echo  $sliderId; ?> );
-        -->
-        </script>
-    <?php endif;?>
-</div>
+<?php if($slider_rating==1):?>
+    <script type='text/javascript'>
+    <!--
+        doRatingStar( <?php echo  $sliderId;?> );
+    -->
+    </script>
+<?php elseif($slider_rating==2):?>
+    <script type='text/javascript'>
+    <!--
+        doRatingSlider( <?php echo  $sliderId; ?> );
+    -->
+    </script>
+<?php endif;?>
 <!-- end of answer -->
