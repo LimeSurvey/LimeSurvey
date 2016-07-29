@@ -51,6 +51,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('afterQuickMenuLoad');
         $this->subscribe('newDirectRequest');
+        $this->subscribe('beforeControllerAction');  // To load Cint icon
 
         // Login session key from com_api at limesurvey.org
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
@@ -214,6 +215,16 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * Register Cint icon css
+     *
+     * @return void
+     */
+    public function beforeControllerAction() {
+        $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
+        App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
+    }
+
+    /**
      * @return string
      */
     public function actionIndex($surveyId)
@@ -278,9 +289,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
         // Need to include this manually so Ajax loading of gridview will work
         App()->clientScript->registerScriptFile('/framework/zii/widgets/assets/gridview/jquery.yiigridview.js');
         App()->clientScript->registerScriptFile('/framework/web/js/source/jquery.ba-bbq.min.js');
-
-        $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
-        App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
 
     }
 
