@@ -749,19 +749,23 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         n = 1, 
         numeric = true, 
         codeAlphaPart = "",
+        currentCharacter,
         codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("A01").split(""));
     while(numeric == true && n <= codeSigil.length){
-        var currentCharacter = codeSigil.pop()                // get the current character
-        if ( !isNaN(Number(currentCharacter)) )                               // check if it's numerical
+        currentCharacter = codeSigil.pop()                          // get the current character
+        if ( !isNaN(Number(currentCharacter)) )                         // check if it's numerical
         {
             numericSuffix    = currentCharacter+""+numericSuffix;       // store it in a string
             n++;
         }
         else
         {
-            codeAlphaPart = codeSigil.join("")+currentCharacter;
             $numeric = false;                                           // At first non numeric character found, the loop is stoped
         }
+    }
+    //Sometimes "0" is interpreted as NaN so test if it's just a missing Zero
+    if(isNaN(Number(currentCharacter))){
+        codeSigil.push(currentCharacter);
     }
     var tablerows = "";
     for (var k in lsrows)
@@ -772,7 +776,10 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         if (thisrow.length<=languages.length)
         {
             var qCode = (parseInt(k)+(1+parseInt(allrows)));
-            thisrow.unshift(codeAlphaPart+qCode);
+            while(qCode.toString().length < numericSuffix.length){
+                qCode = "0"+qCode;
+            }
+            thisrow.unshift( codeSigil.join('')+qCode);
         }
         else
         {

@@ -182,17 +182,46 @@ $(document).ready(function(){
     });
 
     /**
+     * Token delete Token
+     */
+    $(document).on('click', '.delete-token', function(){
+        var $that       = $(this),
+            actionUrl  = $that.data('url'),
+            $modal      = $('#confirmation-modal');
+        
+        $modal.data('ajax-url', actionUrl);
+        $modal.data('href', "#");
+        $modal.modal('show');   
+        $modal.find('.modal-footer-yes-no').find('a.btn-ok').on('click', function(click){
+            $.ajax({
+                url: actionUrl,
+                method: "GET",
+                success: function(data){
+                    try{
+                        $.fn.yiiGridView.update('token-grid', {
+                            complete: function(s){
+                                $modal.modal('hide');
+                            } // Update the surveys list
+                        });                   
+                    } catch(e){
+                        if(e){console.log(e); $modal.modal('hide');}
+                    }
+                }
+            });
+        })
+    });
+    /**
      * Token edition
      */
     $(document).on( 'click', '.edit-token', function(){
-        $that       = $(this);
-        $sid        = $that.data('sid');
-        $tid        = $that.data('tid');
-        $actionUrl  = $that.data('url');
-        $modal      = $('#editTokenModal');
-        $modalBody  = $modal.find('.modal-body');
-        $ajaxLoader = $('#ajaxContainerLoading2');
-        $oldModalBody   = $modalBody.html();
+        var $that       = $(this),
+            $sid        = $that.data('sid'),
+            $tid        = $that.data('tid'),
+            $actionUrl  = $that.data('url'),
+            $modal      = $('#editTokenModal'),
+            $modalBody  = $modal.find('.modal-body'),
+            $ajaxLoader = $('#ajaxContainerLoading2'),
+            $oldModalBody   = $modalBody.html();
 
 
         $ajaxLoader.show();
