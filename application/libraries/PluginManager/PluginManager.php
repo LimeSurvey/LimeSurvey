@@ -27,6 +27,9 @@ class PluginManager extends \PluginManager {
 
     protected $stores = array();
 
+    /**
+     * @var array Tuple like ($plugin, $method)
+     */
     protected $subscriptions = array();
 
     /**
