@@ -694,11 +694,6 @@ class tokens extends Survey_Common_Action
             foreach ($aData as $k => $v)
                 $token->$k = $v;
 
-            $beforeTokenSave = new PluginEvent('beforeTokenSave');
-            $beforeTokenSave->set('model',$token );
-            $beforeTokenSave->set('iSurveyID',$iSurveyId );
-            App()->getPluginManager()->dispatchEvent($beforeTokenSave);
-
             echo $token->update();
         }
         // if add it will insert a new row
@@ -728,10 +723,6 @@ class tokens extends Survey_Common_Action
             }
             $token = Token::create($surveyId);
             $token->setAttributes($aData, false);
-            $beforeTokenSave = new PluginEvent('beforeTokenSave');
-            $beforeTokenSave->set('model',$token );
-            $beforeTokenSave->set('iSurveyID',$surveyId );
-            App()->getPluginManager()->dispatchEvent($beforeTokenSave);
             echo $token->save();
         }
         elseif ($sOperation == 'del' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -836,10 +827,6 @@ class tokens extends Survey_Common_Action
                 // AutoExecute
                 $token = Token::create($iSurveyId);
                 $token->setAttributes($aData, false);
-                $beforeTokenSave = new PluginEvent('beforeTokenSave');
-                $beforeTokenSave->set('model',$token );
-                $beforeTokenSave->set('iSurveyID',$iSurveyId );
-                App()->getPluginManager()->dispatchEvent($beforeTokenSave);
                 $inresult = $token->save();
                 $aData['success'] = true;
             }
@@ -948,10 +935,6 @@ class tokens extends Survey_Common_Action
                 $token = Token::model($iSurveyId)->findByPk($iTokenId);
                 foreach ($aTokenData as $k => $v)
                     $token->$k = $v;
-                $beforeTokenSave = new PluginEvent('beforeTokenSave');
-                $beforeTokenSave->set('model',$token );
-                $beforeTokenSave->set('iSurveyID',$iSurveyId );
-                App()->getPluginManager()->dispatchEvent($beforeTokenSave);
                 $token->save();
 
                 $aData['sidemenu']['state'] = false;
@@ -1132,10 +1115,6 @@ class tokens extends Survey_Common_Action
                 }
 
                 $existingtokens[$token->token] = true;
-                $beforeTokenSave = new PluginEvent('beforeTokenSave');
-                $beforeTokenSave->set('model',$token );
-                $beforeTokenSave->set('iSurveyID',$iSurveyId );
-                App()->getPluginManager()->dispatchEvent($beforeTokenSave);
                 $token->save();
                 $newDummyToken++;
             }
@@ -1702,10 +1681,6 @@ class tokens extends Survey_Common_Action
                                 $token->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                                 $token->remindercount++;
                             }
-                            $beforeTokenSave = new PluginEvent('beforeTokenSave');
-                            $beforeTokenSave->set('model',$token );
-                            $beforeTokenSave->set('iSurveyID',$iSurveyId );
-                            App()->getPluginManager()->dispatchEvent($beforeTokenSave);
                             $token->save();
 
                             //Update central participant survey_links
@@ -2454,10 +2429,6 @@ class tokens extends Survey_Common_Action
                             }
                             else
                             {
-                                $beforeTokenSave = new PluginEvent('beforeTokenSave');
-                                $beforeTokenSave->set('model',$oToken );
-                                $beforeTokenSave->set('iSurveyID',$iSurveyId);
-                                App()->getPluginManager()->dispatchEvent($beforeTokenSave);
                                 $iRecordImported++;
                             }
                         }

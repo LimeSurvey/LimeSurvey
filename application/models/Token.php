@@ -252,6 +252,15 @@
             return $result;
         }
 
+        public function save()
+        {
+            $beforeTokenSave = new PluginEvent('beforeTokenSave');
+            $beforeTokenSave->set('model',$this);
+            $beforeTokenSave->set('iSurveyID',$this->dynamicId);
+            App()->getPluginManager()->dispatchEvent($beforeTokenSave);
+            parent::save();
+        }
+
         public function rules()
         {
             $aRules= array(
