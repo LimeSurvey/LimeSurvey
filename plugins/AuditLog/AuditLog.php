@@ -216,7 +216,7 @@
             if (count(array_diff_assoc($newValues,$oldvalues))){
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$currentUID;
-                $oAutoLog->entity='token';
+                $oAutoLog->entity='token_' . $iSurveyID;
                 $oAutoLog->action=$sAction;
                 $oAutoLog->entityid=$newValues['tid'];
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc($oldvalues,$newValues));
