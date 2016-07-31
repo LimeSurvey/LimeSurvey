@@ -208,7 +208,7 @@
                 $sAction = 'update';
                 $oCurrentUser = $this->api->getCurrentUser();
                 $currentUID = $oCurrentUser->uid;
-                $oldvalues= $this->api->getToken($iSurveyID, $oNewParticipant->token)->getAttributes();
+                $oldvalues= $this->api->getTokenById($iSurveyID, $oNewParticipant->tid)->getAttributes();
             }
 
             $newValues=$oNewParticipant->getAttributes();
