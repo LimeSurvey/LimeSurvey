@@ -227,6 +227,17 @@ class LimesurveyApi
         return \Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
     }
 
+    /**
+    * Return a token object from a token id and a survey id
+    *
+    * @param integer $iSurveyId
+    * @param integer $iTokenId
+    * @return object Token
+    */
+    public function getTokenById($iSurveyId, $iTokenId)
+    {
+        return \Token::model($iSurveyId)->findByAttributes(array('tid' => $iTokenId));
+    }
 
     public function getToken($surveyId, $token)
     {

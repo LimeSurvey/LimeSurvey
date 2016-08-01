@@ -659,8 +659,7 @@ class database extends Survey_Common_Action
                             }
                         }
                     } else {
-                        $qattributes = questionAttributes();
-                        $validAttributes = $qattributes[Yii::app()->request->getPost('type')];
+                        $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
                         $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
 
                         foreach ($validAttributes as $validAttribute)
@@ -773,24 +772,17 @@ class database extends Survey_Common_Action
 
 
             // Remove invalid question attributes on saving
-            $qattributes=questionAttributes();
+
 
             $criteria = new CDbCriteria;
             $criteria->compare('qid',$iQuestionID);
-            if (isset($qattributes[$sQuestionType])){
-                $validAttributes=$qattributes[$sQuestionType];
-                foreach ($validAttributes as  $validAttribute)
-                {
-                    $criteria->compare('attribute', '<>'.$validAttribute['name']);
-                }
+            $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
+            foreach ($validAttributes as  $validAttribute)
+            {
+                $criteria->compare('attribute', '<>'.$validAttribute['name']);
             }
             QuestionAttribute::model()->deleteAll($criteria);
             $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
-
-            //now save all valid attributes
-            // eg: other_replace_text ; other_replace_text_en
-            $validAttributes=$qattributes[$sQuestionType];
 
             foreach ($validAttributes as $validAttribute)
             {
@@ -1239,15 +1231,15 @@ class database extends Survey_Common_Action
                 if( $oSurvey->googleanalyticsapikeysetting == "Y")
                 {
                     $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
-                } 
+                }
                 else if( $oSurvey->googleanalyticsapikeysetting == "G")
                 {
                     $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
-                } 
+                }
                 else if( $oSurvey->googleanalyticsapikeysetting == "N")
                 {
                     $oSurvey->googleanalyticsapikey = "";
-                } 
+                }
 
                 $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
                 $oSurvey->tokenlength = (App()->request->getPost('tokenlength')<5  || App()->request->getPost('tokenlength')>36)?15:App()->request->getPost('tokenlength');

@@ -220,7 +220,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     {
 
 
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=\ls\helpers\questionHelper::getAttributesDefinitions();
 
         foreach ($xml->question_attributes->rows->row as $row)
         {
@@ -518,7 +518,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     {
 
 
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=\ls\helpers\questionHelper::getAttributesDefinitions();
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -1266,7 +1266,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import questionattributes -------------------------------------------------
     if(isset($xml->question_attributes))
     {
-        $aAllAttributes=questionAttributes(true);
+        $aAllAttributes=\ls\helpers\questionHelper::getAttributesDefinitions();
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -2074,7 +2074,7 @@ function TSVImportSurvey($sFullFilePath)
     $handle = fopen($sFullFilePath, 'r');
     $bom = fread($handle, 2);
     rewind($handle);
-    $aAttributeList = questionAttributes();
+    $aAttributeList = array(); //QuestionAttribute::getQuestionAttributesSettings();
 
     // Excel tends to save CSV as UTF-16, which PHP does not properly detect
     if($bom === chr(0xff).chr(0xfe)  || $bom === chr(0xfe).chr(0xff)){
@@ -2358,7 +2358,8 @@ function TSVImportSurvey($sFullFilePath)
                                 $insertdata = array();
                                 $insertdata['qid'] = $qid;
                                 // check if attribute is a i18n attribute. If yes, set language, else set language to null in attribute table
-                                if (isset($aAttributeList[$qtype][$key]['i18n']) && $aAttributeList[$qtype][$key]['i18n']==1)
+                                $aAttributeList[$qtype]=\ls\helpers\questionHelper::getQuestionAttributesSettings($qtype);
+                                if ($aAttributeList[$qtype][$key]['i18n'])
                                 {
                                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                                 }
