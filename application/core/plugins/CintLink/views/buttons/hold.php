@@ -6,6 +6,8 @@
         data-toggle='tooltip'
         title='<?php echo $plugin->gT('You can only pay for orders you placed your self.'); ?>'
         onclick='return false;'
+    <?php else: ?>
+        onclick='LS.plugin.cintlink.userTriedToPay();'
     <?php endif; ?>
 >
     <span class='fa fa-credit-card'></span>

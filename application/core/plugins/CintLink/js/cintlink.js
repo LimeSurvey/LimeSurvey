@@ -122,54 +122,6 @@ $(document).ready(function() {
     }
 
     /**
-     * Fetch nBill order form HTML and put it in iframe
-     *
-     * @return
-     */
-    function showNBillOrderForm() {
-        console.log('showNBillOrderForm');
-        //$('#cintlink-iframe').attr('src', "https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&tmpl=component");
-        //$('#cintlink-iframe').toggleClass('hidden');
-        return;
-        $.ajax({
-            method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&method=getNBillOrderForm'
-        }).done(function(response) {
-            //console.log('response', response);
-            var response = JSON.parse(response);
-
-            // If we use an iframe, we can't hack into the form and submit it using curl
-
-            /*
-            var orderForm = $(response.result);
-            $('#cintlink-container').html($('#order_form', orderForm));
-            $('input[name="ctl_next_1"]').attr('class', 'btn btn-default');
-            $('.componentheading').hide();
-            $('input[name="ctl_next_1"]').on('click', function(ev) {
-                ev.preventDefault();
-                var formValues = $('form[name="order_form"]').serialize();
-                console.log('formValues', formValues);
-
-                // Submit form using Ajax
-                $.ajax({
-                     method: 'POST',
-                     url: LS.plugin.cintlink.pluginBaseUrl + '&method=submitFirstNBillPage',
-                     data: {
-                        'formValues': formValues
-                     }
-                }).done(function(response) {
-                    console.log('response', response);
-                    var response = JSON.parse(response);
-                    $('#cintlink-iframe').attr('src', 'data:text/html;charset=utf-8,' + response.result);
-                    $('#cintlink-iframe').toggleClass('hidden');
-                });
-
-            });
-            */
-        });
-    }
-
-    /**
      * Show the CintLink widget
      *
      * @return
@@ -310,10 +262,25 @@ $(document).ready(function() {
         });
     }
 
-    // Needs to be accessed from the outside (dashboard)
+    /**
+     * Run when user clicks 'Pay now'
+     * @return
+     */
+    function userTriedToPay() {
+        $.ajax({
+            method: 'POST',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=userTriedToPay',
+            data: {
+                surveyId: LS.plugin.cintlink.surveyId
+            }
+        });
+    }
+
+    // Needs to be accessed from the outside (dashboard view)
     LS.plugin.cintlink.showWidget = showWidget;
     LS.plugin.cintlink.cancelOrder = cancelOrder;
     LS.plugin.cintlink.softDeleteOrder = softDeleteOrder;
+    LS.plugin.cintlink.userTriedToPay = userTriedToPay;
 
     // Check if user is logged in on limesurvey.org
     // If yes, show widget

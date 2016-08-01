@@ -217,26 +217,58 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Register Cint icon css
+     * Also check if user tried to pay Cint order and if survey is
+     * active. Show warning message if not active.
      *
      * @return void
      */
     public function beforeControllerAction() {
+        // This CSS is always needed (icon)
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
         App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
+
+        return;
+        $surveyId = Yii::app()->request->getParam('surveyid') || Yii::app()->request->getParam('surveyId');
+        echo '<pre>'; var_dump($surveyId); echo '</pre>';
+        $triedToPay = $this->get('triedToPay', 'surveyId', $surveyId);
+        var_dump($triedToPay);
+        if ($triedToPay)
+        {
+            $survey = Survey::model()->findByPk($surveyId);
+            if ($survey->active != 'N')
+            {
+                Yii::app()->user->setFlash('error', $this->gT('User started the payment process of a Cint order, but the survey is not activated. Please activate it as soon as possible to enable the review process.'));
+            }
+        }
     }
 
     /**
-     * When user tries to deactivate, check that no orders have
-     * status 'new' or 'live'
+     * If user tries to deactivate, show a warning if any
+     * order has status 'new' or 'live'.
+     *
+     * @return void
      */
     public function beforeSurveyDeactivate()
     {
         $event = $this->getEvent();
-        $event->set('succes', false);
-        $event->set('message', 'Blaha');
+        $surveyId = $event->get('surveyId');
+
+        $orders = $this->getOrders(array(
+            'sid' => $surveyId,
+            'deleted' => false
+        ));
+        $orders = $this->updateOrders($orders);
+
+        if ($this->anyOrderIsNewOrLive($orders))
+        {
+            $event->set('message', $this->gT('Blaha'));
+        }
     }
 
     /**
+     * Survey dashboard.
+     *
+     * @param int $surveyId
      * @return string
      */
     public function actionIndex($surveyId)
@@ -266,6 +298,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * As actionIndex but survey agnostic
+     * Global dashboard.
      *
      * @return string
      */
@@ -667,6 +700,26 @@ class CintLink extends \ls\pluginmanager\PluginBase
         ));
     }
 
+    /**
+     * Run when user clicks 'Pay now' to store the fact that
+     * user tried to pay and warn him/her if survey is not active.
+     *
+     * @param LSHttpRequest $request
+     * @return void
+     */
+    public function userTriedToPay(LSHttpRequest $request)
+    {
+        // TODO: Permission
+
+        $surveyId = $request->getParam('surveyId');
+        if (!$this->checkPermission($surveyId))
+        {
+            $this->log('Internal error: userTriedToPay but lack permission. survey id = ' . $surveyId);
+        }
+
+        $this->set('triedToPay', true, 'surveyId', $surveyId);
+    }
+
     public function newDirectRequest()
     {
         $event = $this->event;
@@ -689,6 +742,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     || $functionToCall == "purchaseRequest"
                     || $functionToCall == "cancelOrder"
                     || $functionToCall == "softDeleteOrder"
+                    || $functionToCall == "userTriedToPay"
                     || $functionToCall == "getSurvey")
             {
                 echo $this->$functionToCall($request);
@@ -833,14 +887,22 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * 
+     * Returns true if any order in $order is in state 'new' or 'live'
+     * Make sure to run updateOrders on $orders before calling this.
+     *
+     * @param array<CintLinkOrder> $orders
+     * @return boolean
      */
-    protected function anyOrderIsNewOrLive($surveyId) {
-        $orders = CintLinkOrder::model()->findAllByAttributes(
-            $conditions,
-            array('order' => 'url DESC')
-        );
-        return $orders;
+    protected function anyOrderIsNewOrLive(array $orders)
+    {
+        foreach ($orders as $order)
+        {
+            if ($order->status == 'new' || $order->status == 'live')
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
