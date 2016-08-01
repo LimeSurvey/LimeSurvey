@@ -550,6 +550,23 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['title_bar']['title']              = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
+        // Fire event beforeSurveyDeactivate
+        $beforeSurveyDeactivate = new PluginEvent('beforeSurveyDeactivate');
+        $beforeSurveyDeactivate->set('surveyId', $iSurveyID);
+        App()->getPluginManager()->dispatchEvent($beforeSurveyDeactivate);
+        $success = $beforeSurveyDeactivate->get('success');
+        $message = $beforeSurveyDeactivate->get('message');
+        if (!empty($message))
+        {
+            Yii::app()->user->setFlash('error', $message);
+        }
+        if ($success === false)  // TODO: What if two plugins change this?
+        {
+            $aData['nostep'] = true;
+            $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
+            return;
+        }
+
         if (Yii::app()->request->getPost('ok')=='')
         {
             if (!tableExists('survey_'.$iSurveyID))
