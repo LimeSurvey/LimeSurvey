@@ -32,7 +32,7 @@ LS.plugin.cintlink.pluginBaseUrl = '<?php echo $pluginBaseUrl; ?>';
 <?php endif; ?>
 
 LS.plugin.cintlink.lang = {}
-LS.plugin.cintlink.lang.orderPlacedOnHold = '<?php echo $plugin->gT('Order placed on hold. Please pay to start the review process.'); ?>';
+LS.plugin.cintlink.lang.orderPlacedOnHold = '<?php echo $plugin->gT('Order placed on hold. Please pay to start the review process. Make sure the survey is activated before you pay.'); ?>';
 LS.plugin.cintlink.lang.couldNotLogin = '<?php echo $plugin->gT('Could not login. Please make sure username and password is correct.'); ?>';
 
 </script>

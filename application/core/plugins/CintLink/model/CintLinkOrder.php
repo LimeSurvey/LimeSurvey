@@ -203,7 +203,7 @@ class CintLinkOrder extends CActiveRecord
 
                 $orderedByMe = $this->ordered_by == $data['user']->id;
                 $surveyIsActive = $data['survey']->active != 'N';
-                $data['readonly'] = $orderedByMe && $surveyIsActive ? '' : 'readonly';
+                $data['readonly'] = $orderedByMe ? '' : 'readonly';
 
                 return $plugin->renderPartial('buttons.hold', $data, true);
 

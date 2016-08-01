@@ -9,9 +9,11 @@
     <p class='alert alert-info'>
         <span class='fa fa-info-circle'></span>
         &nbsp;
-        <?php echo $plugin->gT('Please activate the survey before you can order participants.'); ?>
+        <?php echo $plugin->gT('Please make sure the survey is activated before paying your Cint order.'); ?>
     </p>
-<?php else: ?>
+<?php endif; ?>
+
+<?php if (!empty($surveyId)): // Widget is not visible on global dashboard ?>
     <button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'>
         <span class='fa fa-bars'></span>
         &nbsp;
