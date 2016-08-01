@@ -493,6 +493,9 @@ table > tbody > tr > td.ddprefix {
     .visible-xs-block{
         display: block !important;
     }
+    .visible-xs-inline-block{
+        display: inline-block !important;
+    }
 
     /* Remove margin */
     .row {

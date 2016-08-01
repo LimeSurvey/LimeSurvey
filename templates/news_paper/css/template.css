@@ -493,6 +493,9 @@ table > tbody > tr > td.ddprefix {
     .visible-xs-block{
         display: block !important;
     }
+    .visible-xs-inline-block{
+        display: inline-block !important;
+    }
 
     /* Remove margin */
     .row {
@@ -790,6 +793,12 @@ table.array-no-dropdown  td.answer-item.text-center
 .label-text{
     margin-top: -24px;
     margin-left: 20px;
+}
+
+/* ...except for dual-scale and array-by-column */
+.table-dual-scale .label-text, .array-by-columns-div .label-text {
+    margin-top: 0px;
+    margin-left: 0px;
 }
 
 .label-clickable:hover
