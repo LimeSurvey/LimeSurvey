@@ -369,7 +369,7 @@ abstract class PluginBase implements iPlugin {
     public function log($message, $level = \CLogger::LEVEL_TRACE)
     {
         $category = $this->getName();
-        \Yii::log($message, $level, $category);
+        \Yii::log($message, $level, 'plugin.' . $category);
     }
 
 }

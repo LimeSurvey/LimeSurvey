@@ -136,7 +136,8 @@ $internalConfig = array(
                 'plugin' => array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'trace, info, error, warning',
-                    'logFile' => 'plugin.log'
+                    'logFile' => 'plugin.log',
+                    'categories' => 'plugin.*'
                     // The category will be the name of the plugin
                 )
             )
