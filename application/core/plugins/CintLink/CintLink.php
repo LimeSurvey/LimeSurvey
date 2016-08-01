@@ -46,12 +46,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     public function init()
     {
-        $this->subscribe('beforeActivate');
+        $this->subscribe('beforeActivate');  // Create db
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('afterQuickMenuLoad');
-        $this->subscribe('newDirectRequest');
+        $this->subscribe('newDirectRequest');  // Ajax calls
         $this->subscribe('beforeControllerAction');  // To load Cint icon
+        $this->subscribe('beforeSurveyDeactivate');
 
         // Login session key from com_api at limesurvey.org
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
@@ -225,6 +226,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * When user tries to deactivate, check that no orders have
+     * status 'new' or 'live'
+     */
+    public function beforeSurveyDeactivate()
+    {
+        $event = $this->getEvent();
+        $event->set('succes', false);
+        $event->set('message', 'Blaha');
+    }
+
+    /**
      * @return string
      */
     public function actionIndex($surveyId)
@@ -381,7 +393,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
         $data['survey'] = Survey::model()->findByPk($surveyId);
 
-        $content = $this->renderPartial('global_dashboard', $data, true);
+        $content = $this->renderPartial('dashboard', $data, true);
 
         return $content;
     }
@@ -410,7 +422,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data['model'] = CintLinkOrder::model();
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $content = $this->renderPartial('global_dashboard', $data, true, true);
+        $content = $this->renderPartial('dashboard', $data, true, true);
 
         return $content;
     }

@@ -3,9 +3,17 @@
     <p class='alert alert-info'>
         <span class='fa fa-info-circle'></span>
         &nbsp;
-        <?php echo $plugin->gT('To buy participants, please go to the survey specific CintLink view.'); ?>
+        <?php echo $plugin->gT('To order participants, please go to the survey specific CintLink view.'); ?>
     </p>
-<?php else: ?>
+<?php elseif (!empty($survey) && $survey->active != 'Y'):  ?>
+    <p class='alert alert-info'>
+        <span class='fa fa-info-circle'></span>
+        &nbsp;
+        <?php echo $plugin->gT('Please make sure the survey is activated before paying your Cint order.'); ?>
+    </p>
+<?php endif; ?>
+
+<?php if (!empty($surveyId)): // Widget is not visible on global dashboard ?>
     <button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'>
         <span class='fa fa-bars'></span>
         &nbsp;
@@ -15,99 +23,59 @@
 <?php endif; ?>
 
 <h4>Orders</h4>
-<?php if (count($orders) > 0): ?>
-    <table class='table table-striped'>
-        <thead>
-            <th><?php echo $plugin->gT('ID'); ?></th>
-            <th><?php echo $plugin->gT('Created'); ?></th>
-            <th><?php echo $plugin->gT('Survey ID'); ?></th>
-            <th><?php echo $plugin->gT('Ordered by'); ?></th>
-            <th></th>  <!-- Check icon column -->
-            <th><?php echo $plugin->gT('Status'); ?></th>
-            <th></th>
-        </thead>
-        <tbody>
-            <?php foreach($orders as $order): ?>
-                <tr>
-                    <td><?php echo substr($order->url, 47); // TODO: This is only correct assuming the base url does not change ?></td>
-                    <td><?php echo convertDateTimeFormat($order->created, 'Y-m-d', $dateformatdata['phpdate']) ;?></td>
-                    <td><a href='<?php echo $order->getSurveyUrl(); ?>'><?php echo $order->sid; ?></a></td>
-                    <td><?php echo $order->user->full_name; ?></td>
+<div id='cintlink-gridview'>
+<?php 
+    $widget = $this->widget('bootstrap.widgets.TbGridView', array(
+        'dataProvider' => $model->search($surveyId),
+        'id' => 'url',
+        'itemsCssClass' =>'table-striped',
+        'emptyText' => $plugin->gT('No order made yet'),
+        'afterAjaxUpdate' => 'doToolTip',
+        'ajaxUpdate' => true,
+        'columns' => array(
+            array(
+                'name' => 'url',
+                'header' => 'ID',
+                'value' => 'substr($data->url, 47)'
+            ),
+            array(
+                'name' => 'created',
+                'header' => $plugin->gT('Created'),
+                'value' => '$data->formattedCreatedDate'
+            ),
+            array(
+                'name' => 'sid',
+                'header' => $plugin->gT('Survey ID'),
+                'value' => '$data->surveyIdLink',
+                'type' => 'raw'
+            ),
+            array(
+                'name' => 'ordered_by',
+                'header' => $plugin->gT('Ordered by'),
+                'value' => '$data->user->full_name'
+            ),
+            array(
+                'name' => '__completedCheck',
+                'header' => '',
+                'value' => '$data->completedCheck',
+                'type' => 'raw'
+            ),
+            array(
+                'name' => 'status',
+                'header' => $plugin->gT('Status'),
+                'value' => '$data->styledStatus',
+                'type' => 'raw'
+            ),
+            array(
+                'name' => 'buttons',
+                'header' => '',
+                'value' => '$data->buttons',
+                'type' => 'raw'
+            )
+        )
+    ));
+?>
+</div>
 
-                    <!-- Status column -->
-                    <?php if ($order->status == 'live'): ?>
-                        <td></td>
-                        <td><span class='label label-success'><?php echo $plugin->gT(ucfirst($order->status)); ?></span></td>
-                    <?php elseif ($order->status == 'denied'): ?>
-                        <td></td>
-                        <td><span class='label label-danger'><?php echo $plugin->gT(ucfirst($order->status)); ?></span></td>
-                    <?php elseif ($order->status == 'new'): ?>
-                        <td></td>
-                        <td><?php echo $plugin->gT('Under review'); ?></td>
-                    <?php elseif ($order->status == 'completed'): ?>
-                        <td class='cintlink-completed-check-column'><span class='fa fa-check'></span></td>
-                        <td><?php echo $plugin->gT(ucfirst($order->status)); ?></td>
-                    <?php else: ?>
-                        <td></td>
-                        <td><?php echo $plugin->gT(ucfirst($order->status)); ?></td>
-                    <?php endif; ?>
-
-                    <!-- Button column -->
-                    <?php if ($order->status == 'hold'): ?>
-                        <td>
-                            <a 
-                                class='btn btn-default btn-sm <?php if ($order->ordered_by != $user->id): echo 'readonly'; endif; ?>' 
-                                href='https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=<?php echo htmlspecialchars($order->url); ?>' 
-                                target='_blank'
-                                <?php if ($order->ordered_by != $user->id): ?>
-                                    data-toggle='tooltip'
-                                    title='<?php echo $plugin->gT('You can only pay for orders you placed your self.'); ?>'
-                                    onclick='return false;'
-                                <?php endif; ?>
-                            >
-                                <span class='fa fa-credit-card'></span>
-                                &nbsp;
-                                <?php echo $plugin->gT('Pay now'); ?>
-                            </a>
-                            &nbsp;
-                            <button
-                                data-toggle='modal'
-                                data-target='#confirmation-modal'
-                                data-onclick='(function() { LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>"); })'
-                                class='btn btn-warning btn-sm'
-                            >
-                                <span class='fa fa-ban'></span>
-                                &nbsp;
-                                <?php echo $plugin->gT('Cancel'); ?>
-                            </button>
-                        </td>
-                    <?php elseif ($order->status == 'new'): ?>
-                        <td></td>
-                    <?php elseif ($order->status == 'cancelled'): ?>
-                        <td>
-                            <button
-                                data-toggle='modal'
-                                data-target='#confirmation-modal'
-                                data-onclick='(function() { LS.plugin.cintlink.softDeleteOrder("<?php echo $order->url; ?>"); })'
-                                class='btn btn-warning btn-sm'
-                            >
-                                <span class='fa fa-trash'></span>
-                                &nbsp;
-                                <?php echo $plugin->gT('Delete'); ?>
-                            </button>
-                        </td>
-                    <?php elseif ($order->status == 'live'): ?>
-                        <td></td>
-                    <?php elseif ($order->status == 'denied'): ?>
-                        <td></td>
-                    <?php elseif ($order->status == 'completed'): ?>
-                        <td></td>
-                    <?php endif; ?>
-
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php else: ?>
-    <i><?php echo $plugin->gT('No orders made yet'); ?></i>
-<?php endif; ?>
+<!-- Hack to not publish jQuery twice -->
+<?php $plugin->renderClientScripts(); ?>
