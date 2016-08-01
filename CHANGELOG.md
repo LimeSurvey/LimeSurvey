@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## unreleased
+
+### Fix
+- Fixed issue #11509: numerical input option integer only leads to positive integer input only
+
 ## [1.0.23] - 2016-07-17
 
 ### Feature
