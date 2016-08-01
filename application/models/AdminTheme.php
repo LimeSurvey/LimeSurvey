@@ -140,8 +140,7 @@ class AdminTheme extends CFormModel
 
             App()->getClientScript()->registerPackage('jqueryui');          // jqueryui
             App()->getClientScript()->registerPackage('jquery-cookie');     // jquery-cookie
-            App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if needed
-
+            App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if neede
         }
 
         $aCssFiles = array();
