@@ -227,17 +227,18 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
         App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
 
-        return;
-        $surveyId = Yii::app()->request->getParam('surveyid') || Yii::app()->request->getParam('surveyId');
-        echo '<pre>'; var_dump($surveyId); echo '</pre>';
+        $surveyId = Yii::app()->request->getParam('surveyid') or Yii::app()->request->getParam('surveyId');
         $triedToPay = $this->get('triedToPay', 'surveyId', $surveyId);
-        var_dump($triedToPay);
         if ($triedToPay)
         {
             $survey = Survey::model()->findByPk($surveyId);
-            if ($survey->active != 'N')
+            if ($survey->active != 'Y')
             {
-                Yii::app()->user->setFlash('error', $this->gT('User started the payment process of a Cint order, but the survey is not activated. Please activate it as soon as possible to enable the review process.'));
+                Yii::app()->user->setFlash('error',
+                    '<span class="fa fa-exclamation-circle"></span>&nbsp;' .
+                    $this->gT(
+                        'User started the payment process of a Cint order, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.',
+                    'js'));
             }
         }
     }
