@@ -59,6 +59,15 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.06LTS (build 160524) to 2.06LTS (build 160801) Aug 1, 2016
+-Fixed issue #10226: {ANSWERTABLE} includes <script> placed in question text (LouisGac)
+-Fixed issue #10952: Conditions do not show up in conditions designer after creation if using MSSQL and connecting from Linux using FreeTDS (Carsten Schmitz)
+-Fixed issue #11490: Wrong language when session time out (PRIJCK Frederik (FPRJ))
+-Fixed issue #9574: Conditions page is huge and slow when rendering condition options for Array (Number) questions (Carsten Schmitz)
+-Fixed issue : Google Analytics code not running (Frederik Prijck)
+-New feature #11378: afterSurveyMenuLoad event to add survey specific menu items (Olle Harstedt)
+
 Changes from 2.06LTS (build 160511) to 2.06LTS (build 160524) May 24, 2016
 -Fixed issue #10104: Failed authentication with LDAP shows "success" message (Alfredo Esteban)
 -Fixed issue #10749: When changing the text area the map and hidden value get updated as well. (Sam Mousa)
