@@ -35,6 +35,45 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160728) to 2.50+ (build 160731) Aug 1, 2016
+-Fixed issue #11414: No delete option in token list (markusfluer)
+-Fixed issue #11475: Message covered with permanent menu selected (markusfluer)
+-Fixed issue #11493: Old templates cause surveys and "Theme Editor" to display an empty page (LouisGac)
+-Fixed issue #11494: NANS code for single radio break HTML (Denis Chenu)
+-Fixed issue #11501: Profile dialog not properly styled - now merged with user preferences (Carsten Schmitz)
+-Fixed issue #11502: Popup editor does not launch. Error in DOM naming (markusfluer)
+-Fixed issue #11505: When browsing survey responses, search fields gives a 404 error (Carsten Schmitz)
+-Fixed issue #11507: Edit user dialog not styled (Carsten Schmitz)
+-Fixed issue #11510: Grand Total not correct on array sum, numbers questions (markusfluer)
+-Fixed issue #11511: Wrong new values in AuditLog logs when modifying token (Alfredo Esteban)
+-Fixed issue: All question attribute is not included in TSV export (cssclass) (Denis Chenu)
+-Fixed issue: Extended editor not working on answeroptions (markusfluer)
+-Fixed issue: Infinite loop on quick add (markusfluer)
+-Fixed issue: PHP warning if cssframework is empty in config gile (LouisGac)
+-Fixed issue: Problems with adding new Questions through quick edit (markusfluer)
+-Fixed issue: Problem with inserting new subquestions in a postgresql environment. (markusfluer)
+-Fixed issue: Problem with quick edit replace (markusfluer)
+-Fixed issue: Question Code not saving with quick edit (markusfluer)
+-Fixed issue: QuickAdd subquestions are not saved (markusfluer)
+-Fixed issue: subquestion code got cut off (markusfluer)
+-Fixed issue: Token import breaking if wrong character set is used for the file (Carsten Schmitz)
+-Fixed issue: RPC method - import_survey always throws error (Tomas Gonzalez Vivo)
+-New feature: Allow adding new question attribute in Plugin (Denis Chenu)
+#Updated translation: Afrikaans by geebee100
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Malayalam by nikhildascl
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Spanish (Spain) by aesteban
+
 Changes from 2.50+ (build 160727) to 2.50+ (build 160728) July 26, 2016
 -Fixed issue #11484: PHP error when adding participants to CPDB (markusfluer)
 -Fixed issue: Manually adding subquestions did not work correctly (markusfluer)
