@@ -3842,26 +3842,52 @@ function questionAttributes($returnByName=false)
             'default'=>0,
         );
 
+        /**
+         * New event to allow plugin to add own question attribute (settings)
+         * Using $event->append('questionAttributes', $questionAttributes);
+         * $questionAttributes=[
+         *  attributeName=>[
+         *      'types' : Aply to this question type
+         *      'category' : Where to put it
+         *      'sortorder' : Qort order in this category
+         *      'inputtype' : type of input
+         *      'options' : optionnal options if input type need it*
+         *      'default' : the defaumt value
+         *      'caption' : the label
+         *      'help' : an help]
+         *  ]
+         */
+        $event = new PluginEvent('newQuestionAttributes');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $questionAttributes = $result->get('questionAttributes');
+        $qattributes=array_merge($qattributes,$questionAttributes);
+
     }
     //This builds a more useful array (don't modify)
     if ($returnByName==false)
     {
         if(!$qat)
         {
+            $default= array(
+                "caption"=>'',
+                "inputtype"=>"text",
+                "options"=>'',
+                "category"=>gT("Plugins"),
+                "default"=>'',
+                "help"=>'',
+                "sortorder"=>1000,
+                "i18n"=>false,
+                "readonly"=>false,
+            );
             foreach($qattributes as $qname=>$qvalue)
             {
                 for ($i=0; $i<=strlen($qvalue['types'])-1; $i++)
                 {
-                    $qat[substr($qvalue['types'], $i, 1)][$qname]=array("name"=>$qname,
-                    "inputtype"=>$qvalue['inputtype'],
-                    "category"=>$qvalue['category'],
-                    "sortorder"=>$qvalue['sortorder'],
-                    "i18n"=>isset($qvalue['i18n'])?$qvalue['i18n']:false,
-                    "readonly"=>isset($qvalue['readonly_when_active'])?$qvalue['readonly_when_active']:false,
-                    "options"=>isset($qvalue['options'])?$qvalue['options']:'',
-                    "default"=>isset($qvalue['default'])?$qvalue['default']:'',
-                    "help"=>$qvalue['help'],
-                    "caption"=>$qvalue['caption']);
+                    $qat[substr($qvalue['types'], $i, 1)][$qname]=array_merge(
+                        array("name"=>$qname),
+                        $default,
+                        $qvalue
+                    );
                 }
             }
         }

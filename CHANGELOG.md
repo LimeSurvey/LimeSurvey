@@ -3,6 +3,9 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ## unreleased
 
+### Feature
+- Allow plugin to add new question attributes
+
 ### Fix
 - Fixed issue #11509: numerical input option integer only leads to positive integer input only
 
