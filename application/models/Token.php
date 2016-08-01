@@ -252,13 +252,13 @@
             return $result;
         }
 
-        public function save()
+        public function save($runValidation = true, $attributes = null)
         {
             $beforeTokenSave = new PluginEvent('beforeTokenSave');
             $beforeTokenSave->set('model',$this);
             $beforeTokenSave->set('iSurveyID',$this->dynamicId);
             App()->getPluginManager()->dispatchEvent($beforeTokenSave);
-            parent::save();
+            parent::save($runValidation, $attributes);
         }
 
         public function rules()
