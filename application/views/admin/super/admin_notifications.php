@@ -2,13 +2,13 @@
 <?php if ($zeroNotifications): ?>
     <li id='notification-li' class='dropdown'>
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
-            <span class='fa fa-bell-o text-muted'></span>
+            <span class='fa fa-bell text-muted'></span>
         </a>
     </li>
 <?php else: ?>
     <li id='notification-li' class='dropdown'>
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
-            <span class='fa fa-bell'></span>
+            <span id='notification-bell' class='fa fa-bell'></span>
             <span class='badge'><?php echo count($notifications); ?></span>
             <span class='caret'></span>
         </a>
@@ -24,6 +24,8 @@
                         href='#'
                     >
                         <?php echo $not->title; ?>
+                        <br />
+                        <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>
                     </a>
                 </li>
             <?php endforeach; ?>

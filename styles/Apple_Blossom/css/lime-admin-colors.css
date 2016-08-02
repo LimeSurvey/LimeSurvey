@@ -1973,4 +1973,19 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 .placeholder {
   background-color: #c6b2a3; }
 
+@keyframes notification-pulse {
+  from {
+    color: #AA4340;
+    text-shadow: 0 0 0px #333; }
+  50% {
+    color: #fee;
+    text-shadow: 0 0 6px #91bd09; }
+  to {
+    color: #AA4340;
+    text-shadow: 0 0 0px #333; } }
+#notification-bell {
+  animation-name: notification-pulse;
+  animation-duration: 1s;
+  animation-iteration-count: 5; }
+
 /*# sourceMappingURL=lime-admin-colors.css.map */
