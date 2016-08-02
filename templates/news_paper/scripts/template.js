@@ -63,12 +63,12 @@ function replaceColumnWithDiv(that) {
         $(that).find('tr > *:nth-child('+ (i + 2) + ')').each(function(j) {
             // First one is header
             if (j === 0) {
-                newHtml += "<div class='answertext'>";
+                newHtml += "<div class='answertext clearfix'>";
                 newHtml += $(this).html();
                 newHtml += "</div>";
             }
-            else {
-                newHtml += "<div class='radio-item radio'>";
+            else {                
+                newHtml += "<div class='radio-item radio clearfix'>";
                 newHtml += $(this).html();
                 newHtml += "</div>";
             }
@@ -76,6 +76,11 @@ function replaceColumnWithDiv(that) {
         newHtml += "</div>";
     }
     newHtml += "</div>";
+    newHtml = $(newHtml);
+    newHtml.find('span.visible-sm-block').each(function(){
+        console.log(this);
+        $(this).removeClass('visible-xs-block').removeClass('visible-sm-block');
+    })
     $(that).replaceWith(newHtml);
 }
 
@@ -112,7 +117,7 @@ $(document).ready(function()
 
     // iPad has width 768, Google Nexus 10 width 800
     // It's OK to keep tables on pads.
-    if($(window).width() < 768)
+    if($(window).width() < 768 && 1===2)
     {
         // Brutally remake the array-by-columns question type to divs,
         // because you can't wrap table columns
