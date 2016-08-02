@@ -2424,8 +2424,8 @@ class tokens extends Survey_Common_Action
                             }
                             if (!$oToken->save())
                             {
-                                tracevar($oToken->getErrors());
-                                $aModelErrorList[] =  sprintf(gT("Line %s : %s"),$iRecordCount,Chtml::errorSummary($oToken));
+                                $errors = ($oToken->getErrors());
+                                $aModelErrorList[] =  sprintf(gT("Line %s : %s"),$iRecordCount,print_r($errors,true));
                             }
                             else
                             {
