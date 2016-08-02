@@ -3,8 +3,22 @@
 /**
  * Mostly for Ajax actions
  */
-class NotificationController extends LSYii_Controller
+class NotificationController extends Survey_Common_Action
 {
+
+    /**
+     * 
+     */
+    public function actionIndex()
+    {
+        $aData = array();
+
+        //$this->_renderWrappedTemplate(null, 'super/dummy', $aData);
+
+        //$SCA = Yii::app()->createController('admin.Survey_Common_Action');
+        //$SCA->_renderWrappedTemplate();
+
+    }
 
     /**
      * Get notification as JSON
@@ -12,7 +26,7 @@ class NotificationController extends LSYii_Controller
      * @param int $notId Notification id
      * @return string JSON
      */
-    public function actionGetNotificationAsJSON($notId)
+    public function getNotificationAsJSON($notId)
     {
         $this->checkPermission();
 
@@ -34,7 +48,7 @@ class NotificationController extends LSYii_Controller
      * @param int $notId Notification id
      * @return string JSON
      */
-    public function actionNotificationRead($notId)
+    public function notificationRead($notId)
     {
         $this->checkPermission();
 
