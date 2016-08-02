@@ -244,7 +244,7 @@ class Survey_Common_Action extends CAction
         ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
 
         $this->_showHeaders($aData); //// THe headers will be called from the layout
-        $this->_showadminmenu(); //// The admin menu will be called from the layout, probably as a widget for dynamic content.
+        $this->_showadminmenu($aData); //// The admin menu will be called from the layout, probably as a widget for dynamic content.
         $this->_userGroupBar($aData);
 
         //// Here will start the rendering from the controller of the main view.
@@ -450,7 +450,7 @@ class Survey_Common_Action extends CAction
     * @global int $surveyid
     * @return string $adminmenu
     */
-    public function _showadminmenu()
+    public function _showadminmenu($aData)
     {
         // We don't wont the admin menu to be shown in login page
         if( !Yii::app()->user->isGuest )
@@ -517,10 +517,13 @@ class Survey_Common_Action extends CAction
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
 
+            // Get notification menu
+            $surveyId = isset($aData['surveyid']) ? $aData['surveyid'] : null;
+            $aData['adminNotifications'] = NotificationController::getMenuWidget($surveyId);
+
             $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
         }
     }
-
 
     function _titlebar($aData)
     {
