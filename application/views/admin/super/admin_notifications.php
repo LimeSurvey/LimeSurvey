@@ -8,7 +8,7 @@
 <?php else: ?>
     <li id='notification-li' class='dropdown'>
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
-            <span id='notification-bell' class='fa fa-bell'></span>
+            <span id='notification-bell' class='fa fa-bell text-warning'></span>
             <span class='badge'><?php echo count($notifications); ?></span>
             <span class='caret'></span>
         </a>
@@ -31,7 +31,7 @@
             <?php endforeach; ?>
             <li class="divider"></li>
             <li>
-                <a href='#'><?php eT('See all notifications'); ?></a>
+                <a href='<?php echo $allNotificationsUrl; ?>'><?php eT('See all notifications'); ?></a>
             </li>
         </ul>
 

@@ -185,6 +185,7 @@ class Notification extends LSActiveRecord
         $criteria2->addCondition('entity = \'user\'');
         $criteria2->addCondition('entity_id = ' . Yii::app()->user->id);  // TODO: Escape
 
+        // Only get new notifications
         $criteria3 = new CDbCriteria();
         $criteria3->addCondition('status = \'new\'');  // TODO: read = null
 

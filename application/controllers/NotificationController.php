@@ -1,10 +1,11 @@
 <?php
 
 /**
- * 
+ * Mostly for Ajax actions
  */
 class NotificationController extends LSYii_Controller
 {
+
     /**
      * Get notification as JSON
      *
@@ -88,6 +89,7 @@ class NotificationController extends LSYii_Controller
         $data['notifications'] = Notification::getNotifications($surveyId);
         $data['zeroNotifications'] = count($data['notifications']) === 0;
         $data['surveyId'] = $surveyId;
+        $data['allNotificationsUrl'] = Yii::app()->createUrl('notification', array());
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/admin_notifications',
