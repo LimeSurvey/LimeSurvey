@@ -164,8 +164,7 @@ class Notification extends LSActiveRecord
 	}
 
     /**
-     * Get latest notifications
-     *
+     * Get latest notifications to show in the menu
      * @param int|null $surveyId
      * @return Notification[]
      */

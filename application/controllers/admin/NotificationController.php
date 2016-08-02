@@ -7,17 +7,16 @@ class NotificationController extends Survey_Common_Action
 {
 
     /**
-     * 
+     * List all notifications for a user
      */
-    public function actionIndex()
+    public function index()
     {
-        $aData = array();
+        $this->checkPermission();
 
-        //$this->_renderWrappedTemplate(null, 'super/dummy', $aData);
+        $data = array();
+        $data['model'] = Notification::model();
 
-        //$SCA = Yii::app()->createController('admin.Survey_Common_Action');
-        //$SCA->_renderWrappedTemplate();
-
+        $this->_renderWrappedTemplate(null, array('notification/index'), $data);
     }
 
     /**
@@ -103,7 +102,7 @@ class NotificationController extends Survey_Common_Action
         $data['notifications'] = Notification::getNotifications($surveyId);
         $data['zeroNotifications'] = count($data['notifications']) === 0;
         $data['surveyId'] = $surveyId;
-        $data['allNotificationsUrl'] = Yii::app()->createUrl('notification', array());
+        $data['allNotificationsUrl'] = Yii::app()->createUrl('admin/notification', array());
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/admin_notifications',

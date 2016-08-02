@@ -1,7 +1,8 @@
 <!-- Admin notification system -->
 <?php if ($zeroNotifications): ?>
     <li id='notification-li' class='dropdown'>
-        <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+        <a aria-expanded='false' 
+            href='<?php echo $allNotificationsUrl; ?>'>
             <span class='fa fa-bell text-muted'></span>
         </a>
     </li>
