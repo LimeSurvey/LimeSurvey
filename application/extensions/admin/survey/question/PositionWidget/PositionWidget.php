@@ -42,7 +42,16 @@
                 if (!is_a($this->oQuestionGroup, 'QuestionGroup'))
                 {
                     $aGroups              = $this->oSurvey->groups;
-                    $this->oQuestionGroup = $aGroups[0];
+
+                    if (count($aGroups) > 0)
+                    {
+                        $this->oQuestionGroup = $aGroups[0];
+                    }
+                    else
+                    {
+                        return;
+                    }
+
                 }
 
                 $aQuestions = $this->oQuestionGroup->questions; // Get the list of questions in this group
