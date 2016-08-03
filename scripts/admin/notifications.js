@@ -11,11 +11,25 @@ var LS = LS || {};
 $(document).ready(function() {
 
     /**
+     * Log stuff
+     */
+    function log(a, b) {
+        return; // Remove to enable logging
+        if (b == undefined) {
+            console.log(a);
+        }
+        else {
+            console.log(a, b);
+        }
+    }
+
+    /**
      * Load widget HTML and inject it
      * @param {string} URL to call
      * @return
      */
     function updateNotificationWidget(updateUrl) {
+        log('updateNotificationWidget');
         // Update notification widget
         return $.ajax({
             url: updateUrl,
@@ -45,6 +59,7 @@ $(document).ready(function() {
      * @return
      */
     function notificationIsRead(that) {
+        log('notificationIsRead');
         $.ajax({
             url: $(that).data('read-url'),
             method: 'GET',
@@ -62,6 +77,7 @@ $(document).ready(function() {
      * @return
      */
     function showNotificationModal(that, url) {
+        log('showNotificationModal');
         $.ajax({
             url: url,
             method: 'GET',
@@ -76,6 +92,7 @@ $(document).ready(function() {
             $('#admin-notification-modal').modal();
             
             // TODO: Will this work in message includes a link that is clicked?
+            $('#admin-notification-modal').unbind('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
                 notificationIsRead(that);
             });
@@ -87,9 +104,10 @@ $(document).ready(function() {
      * @return
      */
     function initNotification() {
+        log('initNotification');
         $('.admin-notification-link').each(function(nr, that) {
             
-            console.log('nr', nr);
+            log('nr', nr);
 
             var url = $(that).data('url');
             var type = $(that).data('type');
@@ -97,7 +115,7 @@ $(document).ready(function() {
             // Important notifications are shown as pop-up on load
             if (type == 'important') {
                 showNotificationModal(that, url);
-                console.log('stoploop');
+                log('stoploop');
                 return false;  // Stop loop
             }
 
