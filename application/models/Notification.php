@@ -319,7 +319,9 @@ class Notification extends LSActiveRecord
     }
 
     /**
-     * 
+     * Criteria to fetch all notifications for this survey and this user
+     * @param int|null $surveyId
+     * @return CDbCriteria
      */
     protected static function getCriteria($surveyId)
     {
@@ -338,11 +340,11 @@ class Notification extends LSActiveRecord
         $criteria2->addCondition('entity_id = ' . Yii::app()->user->id);  // TODO: Escape
 
         // Only get new notifications
-        $criteria3 = new CDbCriteria();
-        $criteria3->addCondition('status = \'new\'');  // TODO: read = null
+        //$criteria3 = new CDbCriteria();
+        //$criteria3->addCondition('status = \'new\'');  // TODO: read = null
 
         $criteria->mergeWith($criteria2, 'OR');
-        $criteria->mergeWith($criteria3, 'AND');
+        //$criteria->mergeWith($criteria3, 'AND');
         $criteria->mergeWith(array(
             'order' => 'id DESC',
             'limit' => 50

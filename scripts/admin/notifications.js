@@ -111,9 +111,10 @@ $(document).ready(function() {
 
             var url = $(that).data('url');
             var type = $(that).data('type');
+            var status = $(that).data('status');
 
             // Important notifications are shown as pop-up on load
-            if (type == 'important') {
+            if (type == 'important' && status == 'new') {
                 showNotificationModal(that, url);
                 log('stoploop');
                 return false;  // Stop loop
@@ -127,6 +128,25 @@ $(document).ready(function() {
 
         });
     }
+
+    /**
+     * Apply styling
+     */
+    function styleNotificationMenu(that)
+    {
+        var height = window.innerHeight - 100;
+        $(that).find('#notification-outer-ul').css('height', '400px');
+        $(that).find('#notification-outer-ul').css('width', '350px');
+        $(that).find('#notification-inner-ul').css('height', '340px');
+        $(that).find('#notification-inner-ul').css('width', '350px');
+        //$(that).find('.dropdown-menu').css('overflow-y', 'scroll');
+
+        //$('#notification-clear-all').css('top', (height + 50) + 'px');
+        //$('#notification-clear-all a').css('padding', '3px 20px');
+        //$('#notification-clear-all').css('width', '333px');
+        //$('#notification-clear-all').css('height', '47');
+    }
+    LS.styleNotificationMenu = styleNotificationMenu;
 
     initNotification();
 

@@ -896,6 +896,35 @@ fieldset[disabled] .btn-link:focus {
     .dropdown-menu > .disabled > a:focus {
       color: #858585; }
 
+/* Notification list immitates the dropdown menu */
+.notification-list {
+  background-color: #ffffff; }
+  .notification-list .divider {
+    background-color: #e6e6e6; }
+  .notification-list > li > a {
+    color: #35363f; }
+    .notification-list > li > a:hover {
+      color: #ffffff;
+      background-color: #501050; }
+    .notification-list > li > a:focus {
+      color: #ffffff;
+      background-color: #501050; }
+  .notification-list > .active > a {
+    color: #ffffff;
+    background-color: #501050; }
+    .notification-list > .active > a:hover {
+      color: #ffffff;
+      background-color: #501050; }
+    .notification-list > .active > a:focus {
+      color: #ffffff;
+      background-color: #501050; }
+  .notification-list > .disabled > a {
+    color: #858585; }
+    .notification-list > .disabled > a:hover {
+      color: #858585; }
+    .notification-list > .disabled > a:focus {
+      color: #858585; }
+
 .dropdown-header {
   color: #858585; }
 
