@@ -19,12 +19,52 @@ $(document).ready(function() {
             url: $(that).data('update-url'),
             method: 'GET'
         }).done(function(response) {
-            console.log('response', response);
 
             $('#notification-li').replaceWith(response);
 
             // Re-bind onclick
             initNotification();
+        });
+    }
+
+    /**
+     * Tell system that notification is read
+     * @param {object} that The notification link
+     * @return
+     */
+    function notificationIsRead(that) {
+        $.ajax({
+            url: $(that).data('read-url'),
+            method: 'GET',
+        }).done(function(response) {
+            // Fetch new HTML for menu widget
+            updateNotificationWidget(that);
+        });
+
+    }
+
+    /**
+     * Fetch notification as JSON and show modal
+     * @param {object} that The notification link
+     * @param {url} URL to fetch notification as JSON
+     * @return
+     */
+    function showNotificationModal(that, url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+        }).done(function(response) {
+
+            var response = JSON.parse(response);
+            var not = response.result;
+
+            $('#admin-notification-modal .modal-title').html(not.title);
+            $('#admin-notification-modal .modal-body-text').html(not.message);
+            $('#admin-notification-modal .modal-content').addClass('panel-' + not.modal_class);
+            $('#admin-notification-modal').modal();
+            $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
+                notificationIsRead(that);
+            });
         });
     }
 
@@ -35,32 +75,7 @@ $(document).ready(function() {
      * @return
      */
     function notificationClicked(that, url) {
-        // Fetch notification as JSON
-        $.ajax({
-            url: url,
-            method: 'GET',
-        }).done(function(response) {
-
-            var response = JSON.parse(response);
-            console.log('response', response);
-            var not = response.result;
-
-            $('#admin-notification-modal .modal-title').html(not.title);
-            $('#admin-notification-modal .modal-body-text').html(not.message);
-            $('#admin-notification-modal .modal-content').addClass('panel-' + not.modal_class);
-            $('#admin-notification-modal').modal();
-        });
-
-        // Tell system that notification is read
-        $.ajax({
-            url: $(that).data('read-url'),
-            method: 'GET',
-        }).done(function(response) {
-            console.log('response', response);
-            updateNotificationWidget(that);
-        });
-
-        console.log('update url', $(that).data('update-url'));
+        showNotificationModal(that, url);
     }
 
     /**
@@ -77,6 +92,8 @@ $(document).ready(function() {
 
             // Important notifications are shown as pop-up on load
             if (type == 'important') {
+                showNotificationModal(that, url);
+                return false;  // Stop loop
             }
 
             // Bind click to notification in drop-down

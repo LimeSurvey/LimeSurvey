@@ -22,6 +22,7 @@
                         data-url='<?php echo $not->ajaxUrl; ?>'
                         data-read-url='<?php echo $not->readUrl; ?>'
                         data-update-url='<?php echo $not->getUpdateUrl($surveyId); ?>'
+                        data-type='<?php echo $not->type; ?>'
                         href='#'
                     >
                         <?php echo $not->title; ?>
