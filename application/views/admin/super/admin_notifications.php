@@ -10,8 +10,8 @@
 <li id='notification-li' class='dropdown' onclick='LS.updateNotificationWidget("<?php echo Notification::getUpdateUrl($surveyId); ?>");'>
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
-            <span id='notification-bell' class='fa fa-bell text-warning'></span>
-            <span class='badge'><?php echo $nrOfNotifications; ?></span>
+            <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
+            <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
             <span class='caret'></span>
         </a>
         <ul class='dropdown-menu' role='menu'>
@@ -24,8 +24,8 @@
     <li id='notification-li' class='dropdown' onclick='LS.styleNotificationMenu(this);'>
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
-            <span id='notification-bell' class='fa fa-bell text-warning'></span>
-            <span class='badge'><?php echo count($notifications); ?></span>
+            <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
+            <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
             <span class='caret'></span>
         </a>
 

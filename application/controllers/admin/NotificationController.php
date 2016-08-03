@@ -126,8 +126,10 @@ class NotificationController extends Survey_Common_Action
             'sa' => 'clearAllNotifications',
             'surveyId' => $surveyId
         ));
+        $data['nrOfNewNotifications'] = Notification::countNewNotifications($surveyId);
         $data['nrOfNotifications'] = Notification::countNotifications($surveyId);
         $data['nrOfImportantNotifications'] = Notification::countImportantNotifications($surveyId);
+        $data['bellColor'] = $data['nrOfNewNotifications'] === 0 ? 'text-success' : 'text-warning';
 
         // If we have any important notification we might as well load everything
         if ($data['nrOfImportantNotifications'] > 0)

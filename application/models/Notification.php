@@ -296,7 +296,7 @@ class Notification extends LSActiveRecord
     /**
      * Count how many notifications we have
      * @param int|null $surveyId
-     * @return array (nr, important notifications)
+     * @return int
      */
     public static function countNotifications($surveyId)
     {
@@ -306,7 +306,26 @@ class Notification extends LSActiveRecord
     }
 
     /**
+     * Returns number of notifications with status 'new'
+     * @param int|null $surveyId
+     * @return int
+     */
+    public static function countNewNotifications($surveyId)
+    {
+        $criteria = self::getCriteria($surveyId);
+
+        $criteria2 = new CDbCriteria();
+        $criteria2->addCondition('status = \'new\'');  // TODO: read = null
+        $criteria->mergeWith($criteria2, 'AND');
+
+        $nr = self::model()->count($criteria);
+        return $nr;
+    }
+
+    /**
      * Count important notifications
+     * @param int|null $surveyId
+     * @return int
      */
     public static function countImportantNotifications($surveyId)
     {
