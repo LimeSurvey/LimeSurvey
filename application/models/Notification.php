@@ -246,7 +246,7 @@ class Notification extends LSActiveRecord
      * @param int|null $surveyId
      * @return string
      */
-    public function getUpdateUrl($surveyId = null) {
+    public static function getUpdateUrl($surveyId = null) {
         return Yii::app()->createUrl(
             'admin/notification/sa/actionGetMenuWidget',
             array(
@@ -273,6 +273,56 @@ class Notification extends LSActiveRecord
      */
     public static function getNotifications($surveyId)
     {
+        $criteria = self::getCriteria($surveyId);
+        $nots = self::model()->findAll($criteria);
+        return $nots;
+    }
+
+    /**
+     * Get notifications of type 'important'
+     * @param int|null $surveyId
+     * @return Notification[]
+     */
+    public static function getImportantNotifications($surveyId)
+    {
+        $criteria = self::getCriteria($surveyId);
+        $criteria2 = new CDbCriteria();
+        $criteria2->addCondition('type = \'important\'');
+        $criteria->mergeWith($criteria2, 'AND');
+
+        return self::model()->findAll($criteria);
+    }
+
+    /**
+     * Count how many notifications we have
+     * @param int|null $surveyId
+     * @return array (nr, important notifications)
+     */
+    public static function countNotifications($surveyId)
+    {
+        $criteria = self::getCriteria($surveyId);
+        $nr = self::model()->count($criteria);
+        return $nr;
+    }
+
+    /**
+     * Count important notifications
+     */
+    public static function countImportantNotifications($surveyId)
+    {
+        $criteria = self::getCriteria($surveyId);
+        $criteria2 = new CDbCriteria();
+        $criteria2->addCondition('type = \'important\'');
+        $criteria->mergeWith($criteria2, 'AND');
+
+        return self::model()->count($criteria);
+    }
+
+    /**
+     * 
+     */
+    protected static function getCriteria($surveyId)
+    {
         $criteria = new CDbCriteria();
 
         // Only fetch survey specific notifications if user is viewing a survey
@@ -298,9 +348,7 @@ class Notification extends LSActiveRecord
             'limit' => 50
         ));
 
-        $nots = self::model()->findAll($criteria);
-
-        return $nots;
+        return $criteria;
     }
 
     /**

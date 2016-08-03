@@ -5,25 +5,38 @@
  * @author Olle Haerstedt
  */
 
+// Namespace
+var LS = LS || {};
+
 $(document).ready(function() {
 
     /**
      * Load widget HTML and inject it
-     * @param {object} that The notification link
+     * @param {string} URL to call
      * @return
      */
-    function updateNotificationWidget(that) {
+    function updateNotificationWidget(updateUrl) {
         // Update notification widget
-        $.ajax({
-            url: $(that).data('update-url'),
-            method: 'GET'
-        }).done(function(response) {
+        return $.ajax({
+            url: updateUrl,
+            method: 'GET',
+            success: function (response) {
+                $('#notification-li').replaceWith(response);
 
-            $('#notification-li').replaceWith(response);
-
-            // Re-bind onclick
-            initNotification();
+                // Re-bind onclick
+                initNotification();
+            }
         });
+    }
+    // Called from outside (update notifications when click
+    LS.updateNotificationWidget = function(url) {
+        // Make sure menu is open after load
+        updateNotificationWidget(url).then(function() {
+            $('#notification-li').addClass('open');
+        });
+
+        // Only update once
+        LS.updateNotificationWidget = function() {};
     }
 
     /**
@@ -37,7 +50,7 @@ $(document).ready(function() {
             method: 'GET',
         }).done(function(response) {
             // Fetch new HTML for menu widget
-            updateNotificationWidget(that);
+            updateNotificationWidget($(that).data('update-url'));
         });
 
     }
@@ -75,6 +88,8 @@ $(document).ready(function() {
      */
     function initNotification() {
         $('.admin-notification-link').each(function(nr, that) {
+            
+            console.log('nr', nr);
 
             var url = $(that).data('url');
             var type = $(that).data('type');
@@ -82,6 +97,7 @@ $(document).ready(function() {
             // Important notifications are shown as pop-up on load
             if (type == 'important') {
                 showNotificationModal(that, url);
+                console.log('stoploop');
                 return false;  // Stop loop
             }
 

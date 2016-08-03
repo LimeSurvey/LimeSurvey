@@ -69,13 +69,33 @@ class NotificationController extends Survey_Common_Action
     /**
      * Spits out html used in admin menu
      * @param int|null $surveyId
+     * @param bool $showLoader Whether or not to show spinning loader instead of notification list
      * @return string
      */
-    public function actionGetMenuWidget($surveyId = null)
+    public function actionGetMenuWidget($surveyId = null, $showLoader = false)
     {
         $this->checkPermission();
 
-        echo self::getMenuWidget($surveyId);
+        echo self::getMenuWidget($surveyId, $showLoader);
+    }
+
+    /**
+     * Delete all notifications for this user and this survey
+     * @param int|null $surveyId
+     * @return void
+     */
+    public function clearAllNotifications($surveyId = null)
+    {
+        Notification::model()->deleteAll(
+            'entity = \'user\' AND entity_id = ' . Yii::app()->user->id
+        );
+
+        if ($surveyId)
+        {
+            Notification::model()->deleteAll(
+                'entity = \'survey\' AND entity_id = ' . $surveyId
+            );
+        }
     }
 
     /**
@@ -95,20 +115,44 @@ class NotificationController extends Survey_Common_Action
      * Get menu HTML for notifications
      *
      * @param int|null $surveyId
+     * @param bool $showLoader Show spinning loader instead of messages (fetch them using ajax)
      * @return string
      */
-    public static function getMenuWidget($surveyId = null) {
+    public static function getMenuWidget($surveyId = null, $showLoader = false) {
         $data = array();
-        $data['notifications'] = Notification::getNotifications($surveyId);
-        $data['zeroNotifications'] = count($data['notifications']) === 0;
         $data['surveyId'] = $surveyId;
-        $data['allNotificationsUrl'] = Yii::app()->createUrl('admin/notification', array());
+        $data['showLoader'] = $showLoader;
+        $data['clearAllNotificationsUrl'] = Yii::app()->createUrl('admin/notification', array(
+            'sa' => 'clearAllNotifications',
+            'surveyId' => $surveyId
+        ));
+        $data['nrOfNotifications'] = Notification::countNotifications($surveyId);
+        $data['nrOfImportantNotifications'] = Notification::countImportantNotifications($surveyId);
+
+        // If we have any important notification we might as well load everything
+        if ($data['nrOfImportantNotifications'] > 0)
+        {
+            $data['showLoader'] = false;
+        }
+
+        // Only load all messages when we're not showing spinning loader
+        if (!$data['showLoader'])
+        {
+            $data['notifications'] = Notification::getNotifications($surveyId);
+        }
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/admin_notifications',
             $data,
             true
         );
+    }
+
+    /**
+     *
+     */
+    public static function getLoadingMenuWidget($surveyId = null)
+    {
     }
 
 }
