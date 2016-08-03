@@ -873,7 +873,7 @@ function do_date($ia)
 
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
-    //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'jstoolbox/date.js');
+    App()->getClientScript()->registerPackage('moment');
 
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='')
@@ -1080,8 +1080,8 @@ function do_date($ia)
             'name'                   => $ia[1],
             'dateoutput'             => htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-            'dateformatdetails'      => $dateformatdetails['jsdate_original'],
-            'dateformat'             => $dateformatdetails['dateformat'],
+            'dateformatdetails'      => $dateformatdetails['jsdate'],
+            'dateformat'             => $dateformatdetails['jsdate'],
         ), true);
 
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
