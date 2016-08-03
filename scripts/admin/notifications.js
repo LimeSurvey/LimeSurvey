@@ -135,10 +135,10 @@ $(document).ready(function() {
     function styleNotificationMenu(that)
     {
         var height = window.innerHeight - 100;
-        $(that).find('#notification-outer-ul').css('height', '400px');
-        $(that).find('#notification-outer-ul').css('width', '350px');
-        $(that).find('#notification-inner-ul').css('height', '340px');
-        $(that).find('#notification-inner-ul').css('width', '340px');
+        //$(that).find('#notification-outer-ul').css('height', '400px');
+        //$(that).find('#notification-outer-ul').css('width', '350px');
+        //$(that).find('#notification-inner-ul').css('height', '340px');
+        //$(that).find('#notification-inner-ul').css('width', '340px');
         //$(that).find('.dropdown-menu').css('overflow-y', 'scroll');
 
         //$('#notification-clear-all').css('top', (height + 50) + 'px');
@@ -147,6 +147,24 @@ $(document).ready(function() {
         //$('#notification-clear-all').css('height', '47');
     }
     LS.styleNotificationMenu = styleNotificationMenu;
+
+    /**
+     * Called when user clicks "Delete all notifications"
+     * @param {string} url
+     * @return
+     */
+    function deleteAllNotifications(url, updateUrl) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function (response) {
+                console.log('response', response);
+            }
+        }).then(function() {
+            updateNotificationWidget(updateUrl);
+        });;
+    }
+    LS.deleteAllNotifications = deleteAllNotifications;
 
     initNotification();
 

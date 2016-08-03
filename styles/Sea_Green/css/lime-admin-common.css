@@ -2052,7 +2052,6 @@ table#responsedetail tr td{
   border-radius: 4px;
   background-clip: padding-box;
   overflow-y: scroll;
-  margin-bottom: 10px;
 }
 
 .notification-list > li > a {
@@ -2084,4 +2083,12 @@ table#responsedetail tr td{
   background-image: none;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   cursor: not-allowed;
+}
+#notification-outer-ul {
+    height: 400px;
+    width: 350px;
+}
+#notification-inner-ul {
+    height: 340px;
+    width: 340px;
 }

@@ -61,7 +61,13 @@
             <li class="divider"></li>
         
             <li id='notification-clear-all'>
-                <a onclick='' href='<?php echo $clearAllNotificationsUrl; ?>'><span class='fa fa-trash text-warning'></span>&nbsp;<?php eT('Delete all notifications'); ?></a>
+                <a 
+                onclick='LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl; ?>", "<?php echo Notification::getUpdateUrl($surveyId); ?>");' 
+                    href='#'
+                >
+                    <span class='fa fa-trash text-warning'></span>&nbsp;
+                    <?php eT('Delete all notifications'); ?>
+                </a>
             </li>
         </ul>
 
