@@ -30,39 +30,38 @@
         </a>
 
         <ul id='notification-outer-ul' class='dropdown-menu' role='menu'>
-            <li>
-            <ul id='notification-inner-ul' class='notification-list'>
-            <?php foreach ($notifications as $not): ?>
-                <?php // <li style='<?php if($not->status != 'new'): echo 'background-color: #f0f0f0;'; endif; '> ?>
-                <li>
-                    <a 
-                        class='admin-notification-link'
-                        data-url='<?php echo $not->ajaxUrl; ?>'
-                        data-read-url='<?php echo $not->readUrl; ?>'
-                        data-update-url='<?php echo Notification::getUpdateUrl($surveyId); ?>'
-                        data-type='<?php echo $not->type; ?>'
-                        data-status='<?php echo $not->status; ?>'
-                        href='#'
-                    >
-                        <?php if ($not->status == 'new'): ?>
-                            <span class='fa fa-circle'></span>&nbsp;
-                            <strong><?php echo $not->title; ?></strong>
-                            <br />
-                            <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>
-                        <?php else: ?>
-                            <span class='text-muted'><?php echo $not->title; ?></span>
-                            <br />
-                            <span class='text-muted' style='opacity: 0.5;'><?php echo ellipsize($not->message, 50); ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
-            <?php endforeach; ?>
-            </ul>
+            <li style='height: 88%;'>
+                <ul id='notification-inner-ul' class='notification-list'>
+                    <?php foreach ($notifications as $not): ?>
+                        <li>
+                            <a 
+                                class='admin-notification-link'
+                                data-url='<?php echo $not->ajaxUrl; ?>'
+                                data-read-url='<?php echo $not->readUrl; ?>'
+                                data-update-url='<?php echo Notification::getUpdateUrl($surveyId); ?>'
+                                data-type='<?php echo $not->type; ?>'
+                                data-status='<?php echo $not->status; ?>'
+                                href='#'
+                            >
+                                <?php if ($not->status == 'new'): ?>
+                                    <span class='fa fa-circle'></span>&nbsp;
+                                    <strong><?php echo $not->title; ?></strong>
+                                    <br />
+                                    <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>
+                                <?php else: ?>
+                                    <span class='text-muted'><?php echo $not->title; ?></span>
+                                    <br />
+                                    <span class='text-muted' style='opacity: 0.5;'><?php echo ellipsize($not->message, 50); ?></span>
+                                <?php endif; ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
             </li>
             <li class="divider"></li>
         
             <li id='notification-clear-all'>
-                <a href='<?php echo $clearAllNotificationsUrl; ?>'><?php eT('Clear all notifications'); ?></a>
+                <a onclick='' href='<?php echo $clearAllNotificationsUrl; ?>'><span class='fa fa-trash text-warning'></span>&nbsp;<?php eT('Delete all notifications'); ?></a>
             </li>
         </ul>
 

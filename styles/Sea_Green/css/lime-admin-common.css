@@ -2052,6 +2052,7 @@ table#responsedetail tr td{
   border-radius: 4px;
   background-clip: padding-box;
   overflow-y: scroll;
+  margin-bottom: 10px;
 }
 
 .notification-list > li > a {
