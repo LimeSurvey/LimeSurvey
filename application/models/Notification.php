@@ -16,6 +16,109 @@
  */
 class Notification extends LSActiveRecord
 {
+
+    /**
+     * @param array<string, mixed>|string|null $options If string then scenario
+     */
+    public function __construct($options = null)
+    {
+        // Don't do anything if this is called from self::model()
+        if (is_string($options) || is_null($options))
+        {
+            parent::__construct($options);  // $options = scenario in this case
+            return;
+        }
+        else
+        {
+            // Why not Zoidberg? (\/) (°,,,°) (\/)
+            parent::__construct();
+        }
+
+        $options = $this->checkShortcuts($options);
+
+        $this->checkMandatoryFields($options, array(
+            'entity',
+            'entity_id',
+            'title',
+            'message',
+        ));
+
+        // Only allow 'survey' or 'user' as entity
+        if ($options['entity'] != 'survey' && $options['entity'] != 'user')
+        {
+            throw new InvalidArgumentException('Invalid entity: ' . $options['entity']);
+        }
+
+        // Default to 'default' modal class
+        if (!isset($options['modal_class']))
+        {
+            $options['modal_class'] = 'default';
+        }
+
+        // Default to 'log' notification type
+        if (!isset($options['type']))
+        {
+            $options['type'] = 'log';
+        }
+
+        // Type must be 'log' or 'important'
+        if ($options['type'] != 'log' && $options['type'] != 'important')
+        {
+            throw new InvalidArgumentException('Invalid type: ' . $options['type']);
+        }
+
+        // Set everything up
+        $this->entity = $options['entity'];
+        $this->entity_id = $options['entity_id'];
+        $this->title = $options['title'];
+        $this->message = $options['message'];
+        $this->modal_class = $options['modal_class'];
+        $this->type = $options['type'];
+        $this->status = 'new';
+        $this->created = date('Y-m-d H:i:s', time());
+        $this->read = null;
+    }
+
+    /**
+     * Some shortcuts for easier use
+     * @param array<string, mixed>
+     */
+    protected function checkShortcuts($options)
+    {
+        // Shortcuts for entity id
+        if (isset($options['survey_id']))
+        {
+            $options['entity'] = 'survey';
+            $options['entity_id'] = $options['survey_id'];
+        }
+        elseif (isset($options['user_id']))
+        {
+            $options['entity'] = 'user';
+            $options['entity_id'] = $options['user_id'];
+        }
+
+        return $options;
+    }
+
+    /**
+     * Check so all mandatory fields are defined when constructing
+     * a new notification.
+     * @param array $fields
+     * @param string[] $mandatory
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    protected function checkMandatoryFields(array $options, array $mandatory)
+    {
+        foreach ($mandatory as $mand)
+        {
+            if (!isset($options[$mand]) || $options[$mand] == '')
+            {
+                throw new InvalidArgumentException('Field ' . $mand . ' is mandatory for notification');
+            }
+        }
+    }
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -192,7 +295,7 @@ class Notification extends LSActiveRecord
         $criteria->mergeWith($criteria3, 'AND');
         $criteria->mergeWith(array(
             'order' => 'id DESC',
-            'limit' => 10
+            'limit' => 50
         ));
 
         $nots = self::model()->findAll($criteria);

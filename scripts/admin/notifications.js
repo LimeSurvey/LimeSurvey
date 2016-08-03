@@ -13,7 +13,6 @@ $(document).ready(function() {
      * @return
      */
     function updateNotificationWidget(that) {
-        console.log('updateNotificationWidget begin');
         // Update notification widget
         $.ajax({
             url: $(that).data('update-url'),
@@ -75,12 +74,10 @@ $(document).ready(function() {
      * @return
      */
     function initNotification() {
-        console.log('initNotification begin');
         $('.admin-notification-link').each(function(nr, that) {
 
             var url = $(that).data('url');
             var type = $(that).data('type');
-            console.log('type', type);
 
             // Important notifications are shown as pop-up on load
             if (type == 'important') {
@@ -89,6 +86,7 @@ $(document).ready(function() {
             }
 
             // Bind click to notification in drop-down
+            $(that).unbind('click');
             $(that).on('click', function() {
                 showNotificationModal(that, url);
             });
