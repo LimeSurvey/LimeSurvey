@@ -62,6 +62,8 @@ $(document).ready(function() {
             $('#admin-notification-modal .modal-body-text').html(not.message);
             $('#admin-notification-modal .modal-content').addClass('panel-' + not.modal_class);
             $('#admin-notification-modal').modal();
+            
+            // TODO: Will this work in message includes a link that is clicked?
             $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
                 notificationIsRead(that);
             });

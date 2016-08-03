@@ -1975,13 +1975,13 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 
 @keyframes notification-pulse {
   from {
-    color: #FE5B35;
+    color: #a15426;
     text-shadow: 0 0 0px #333; }
   50% {
-    color: #fee;
-    text-shadow: 0 0 6px #91bd09; }
+    color: #eee;
+    text-shadow: 0 0 6px #faa; }
   to {
-    color: #FE5B35;
+    color: #a15426;
     text-shadow: 0 0 0px #333; } }
 #notification-bell {
   animation-name: notification-pulse;
