@@ -9,6 +9,7 @@
 <?php else: ?>
     <li id='notification-li' class='dropdown'>
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+            <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell text-warning'></span>
             <span class='badge'><?php echo count($notifications); ?></span>
             <span class='caret'></span>
