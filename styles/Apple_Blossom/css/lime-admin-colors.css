@@ -1983,7 +1983,7 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
   to {
     color: #a15426;
     text-shadow: 0 0 0px #333; } }
-#notification-bell {
+.notification-bell-pulse {
   animation-name: notification-pulse;
   animation-duration: 1s;
   animation-iteration-count: 5; }
