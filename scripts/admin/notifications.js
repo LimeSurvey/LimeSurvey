@@ -69,16 +69,6 @@ $(document).ready(function() {
     }
 
     /**
-     * Event function run when notification is clicked
-     * @param {object} that The notification link
-     * @param {url} URL to fetch notification as JSON
-     * @return
-     */
-    function notificationClicked(that, url) {
-        showNotificationModal(that, url);
-    }
-
-    /**
      * Bind onclick and stuff
      * @return
      */
@@ -98,7 +88,7 @@ $(document).ready(function() {
 
             // Bind click to notification in drop-down
             $(that).on('click', function() {
-                notificationClicked(that, url);
+                showNotificationModal(that, url);
             });
 
         });
