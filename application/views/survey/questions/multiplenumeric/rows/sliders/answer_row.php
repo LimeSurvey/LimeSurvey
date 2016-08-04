@@ -61,10 +61,10 @@
                                 type="text"
                                 name="<?php echo $myfname;?>"
                                 id="answer<?php echo $myfname; ?>"
-                                value="<?php echo $dispVal;?>"
+                                value="<?php echo ($dispVal ? $dispVal : null); ?>"
                                 onkeyup="<?php echo $checkconditionFunction; ?>"
                                 <?php echo $maxlength; ?>
-                                data-slider-value="<?php echo $sUnformatedValue;?>"
+                                data-slider-value="<?php echo ($dispVal ? $dispVal : null); ?>"
                                 data-slider-min='<?php echo $slider_min;?>'
                                 data-slider-max='<?php echo $slider_max;?>'
                                 data-slider-step='<?php echo $slider_step;?>'
@@ -107,7 +107,7 @@
 
 
         </div>
-        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $slider_user_no_action?>" />
+        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo ($dispVal ? 0 : 1);?>" />
     </div> <!-- form group -->
 </div>
 
@@ -131,7 +131,6 @@
     </style>
     </div>
     <script type='text/javascript'>
-        <!--
             // Most of this javascript is here to handle the fact that bootstrapSlider need numerical value in the input
             // It can't accept "NULL" nor anyother thousand separator than "." (else it become a string)
             // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/scripts/bootstrap-slider.js#l1453-l1461
@@ -144,12 +143,15 @@
                 var $prefix = $inputEl.data('slider-prefix');
                 var $suffix = $inputEl.data('slider-suffix');
                 var $separator = $inputEl.data('separator');
-
                 // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
                 // Use closure for namespace, so we can use theSlider variable for all sliders.
                 (function () {
                     var theSlider = $inputEl.bootstrapSlider({
+                        value : <?php echo ($dispVal ? $dispVal : 'null'); ?>,
                         formatter: function (value) {
+                            if($sliderNoActionEl.val()=="1"){
+                               return null;
+                            }
                             displayValue = value.toString().replace('.',$separator);
                             return $prefix + displayValue + $suffix;
                         },
@@ -177,7 +179,7 @@
                     if($sliderNoActionEl.val()=="1")
                     {
                         $('#javatbd' + myfname).find('div.tooltip').hide();
-                        $inputEl.attr('value', '');
+                        $inputEl.attr('value', null);
                     }
 
                     // Click the reset button
@@ -188,13 +190,13 @@
                         $sliderNoActionEl.val("1");
 
                         // Position slider button at beginning
-                        theSlider.bootstrapSlider('setValue', parseFloat($inputEl.attr('data-slider-min')));
+                        theSlider.bootstrapSlider('setValue', null);
 
                         // Set value to null
-                        $inputEl.attr('value', '');
+                        $inputEl.attr('value', null);
 
                         // Why the fuck not?
-                        LEMrel<?php echo $qid; ?>() // We call the EM
+                       // LEMrel<?php echo $qid; ?>() // We call the EM
                     });
 
                     // On form submission, if user action is still on,
@@ -212,14 +214,13 @@
 
                         if($sliderNoActionEl.val()=="1")
                         {
-                            $inputEl.val('');
+                            $inputEl.val(null);
                         }
                         return true;
                     });
                     $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
                 })();
             });
-        -->
     </script>
 <?php endif; ?>
 <!-- end of answer_row -->
