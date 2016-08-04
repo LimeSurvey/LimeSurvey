@@ -148,12 +148,4 @@ class NotificationController extends Survey_Common_Action
             true
         );
     }
-
-    /**
-     *
-     */
-    public static function getLoadingMenuWidget($surveyId = null)
-    {
-    }
-
 }
