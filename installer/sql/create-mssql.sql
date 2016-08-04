@@ -521,7 +521,7 @@ PRIMARY KEY ([ugid],[uid])
 CREATE TABLE [prefix_users] (
 [uid] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
 [users_name] nvarchar(64) NOT NULL UNIQUE default '',
-[password] ntext NOT NULL,
+[password] nvarchar(max) NOT NULL,
 [full_name] nvarchar(50) NOT NULL,
 [parent_id] int NOT NULL,
 [lang] varchar(20) NULL,
@@ -529,7 +529,7 @@ CREATE TABLE [prefix_users] (
 [htmleditormode] varchar(7) NULL default 'default',
 [templateeditormode] varchar(7) NOT NULL default 'default',
 [questionselectormode] varchar(7)  NOT NULL default 'default',
-[one_time_pw] ntext NULL,
+[one_time_pw] nvarchar(max) NULL,
 [dateformat] int NOT NULL DEFAULT 1,
 [created] datetime NULL,
 [modified] datetime NULL
