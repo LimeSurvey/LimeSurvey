@@ -1412,6 +1412,28 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>258),"stg_name='DBVersion'");
         }
 
+        /**
+         * Add table for notifications
+         * @since 2016-08-04
+         * @author Olle Haerstedt
+         */
+        if ($iOldDBVersion < 259) {
+            $oDB->createCommand()->createTable('{{notifications}}', array(
+                'id' => 'pk',
+                'entity' => 'string not null',
+                'entity_id' => 'int not null',
+                'title' => 'string not null',  // varchar(255) in postgres
+                'message' => 'text not null',
+                'status' => 'string default \'new\'',
+                'type' => 'string default \'log\'',
+                'modal_class' => 'string default \'default\'',
+                'created' => 'datetime not null',
+                'read' => 'datetime default null'
+            ));
+            $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
+        }
+
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
