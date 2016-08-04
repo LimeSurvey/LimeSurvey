@@ -605,10 +605,10 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     `title` VARCHAR(255) NOT NULL,
     `message` TEXT NOT NULL,
     `status` VARCHAR(63) NOT NULL DEFAULT 'new' COMMENT 'new or read',
-    `type` VARCHAR(63) NOT NULL DEFAULT 'log' COMMENT 'log or important',
-    `modal_class` VARCHAR(63) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success',
+    `importance` INT(11) NOT NULL DEFAULT 1,
+    `display_class` VARCHAR(63) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success',
     `created` DATETIME NOT NULL,
-    `read` DATETIME DEFAULT NULL,
+    `first_read` DATETIME DEFAULT NULL,
     PRIMARY KEY (`id`),
     INDEX(`entity`, `entity_id`, `status`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

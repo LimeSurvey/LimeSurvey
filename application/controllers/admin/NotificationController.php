@@ -54,9 +54,7 @@ class NotificationController extends Survey_Common_Action
         try
         {
             $not = Notification::model()->findByPk($notId);
-            $not->read = date('Y-m-d H:i:s', time());
-            $not->status = 'read';
-            $result = $not->update();
+            $result = $not->markAsRead();
             echo json_encode(array('result' => $result));
         }
         catch (Exception $ex)

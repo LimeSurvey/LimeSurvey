@@ -599,10 +599,10 @@ CREATE TABLE prefix_notifications (
     [title] nvarchar(255) NOT NULL,
     [message] nvarchar(max) NOT NULL,
     [status] nvarchar(63) NOT NULL DEFAULT 'new',
-    [type] nvarchar(63) NOT NULL DEFAULT 'log',
-    [modal_class] nvarchar(63) DEFAULT 'default',
+    [importance] int NOT NULL DEFAULT 1,
+    [display_class] nvarchar(63) DEFAULT 'default',
     [created] datetime NOT NULL,
-    [read] datetime DEFAULT NULL,
+    [first_read] datetime DEFAULT NULL,
     PRIMARY KEY ([id])
 );
 CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);

@@ -91,7 +91,7 @@ $(document).ready(function() {
 
             $('#admin-notification-modal .modal-title').html(not.title);
             $('#admin-notification-modal .modal-body-text').html(not.message);
-            $('#admin-notification-modal .modal-content').addClass('panel-' + not.modal_class);
+            $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
             $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
             $('#admin-notification-modal').modal();
             
@@ -114,11 +114,11 @@ $(document).ready(function() {
             log('nr', nr);
 
             var url = $(that).data('url');
-            var type = $(that).data('type');
+            var importance = $(that).data('importance');
             var status = $(that).data('status');
 
             // Important notifications are shown as pop-up on load
-            if (type == 'important' && status == 'new') {
+            if (importance == 3 && status == 'new') {
                 showNotificationModal(that, url);
                 log('stoploop');
                 return false;  // Stop loop

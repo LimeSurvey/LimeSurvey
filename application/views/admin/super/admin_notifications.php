@@ -47,7 +47,7 @@
                                 data-url='<?php echo $not->ajaxUrl; ?>'
                                 data-read-url='<?php echo $not->readUrl; ?>'
                                 data-update-url='<?php echo $updateUrl; ?>'
-                                data-type='<?php echo $not->type; ?>'
+                                data-importance='<?php echo $not->importance; ?>'
                                 data-status='<?php echo $not->status; ?>'
                                 href='#'
                             >

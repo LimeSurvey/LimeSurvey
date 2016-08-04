@@ -1425,10 +1425,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'title' => 'string not null',  // varchar(255) in postgres
                 'message' => 'text not null',
                 'status' => 'string default \'new\'',
-                'type' => 'string default \'log\'',
-                'modal_class' => 'string default \'default\'',
+                'importance' => 'int default 1',
+                'display_class' => 'string default \'default\'',
                 'created' => 'datetime not null',
-                'read' => 'datetime default null'
+                'first_read' => 'datetime default null'
             ));
             $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");

@@ -608,10 +608,10 @@ CREATE TABLE prefix_notifications (
     "title" character varying(255) NOT NULL,
     "message" TEXT NOT NULL,
     "status" character varying(63) NOT NULL DEFAULT 'new',
-    "type" character varying(63) NOT NULL DEFAULT 'log',
-    "modal_class" character varying(63) DEFAULT 'default',
+    "importance" integer NOT NULL DEFAULT 1,
+    "display_class" character varying(63) DEFAULT 'default',
     "created" timestamp NOT NULL,
-    "read" timestamp DEFAULT NULL,
+    "first_read" timestamp DEFAULT NULL,
     CONSTRAINT prefix_notifications_pkey PRIMARY KEY (id)
 );
 CREATE INDEX prefix_index ON prefix_notifications USING btree (entity, entity_id, status);

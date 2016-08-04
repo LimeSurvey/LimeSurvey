@@ -9,13 +9,18 @@
  * @property string $entity_id survey id or user id
  * @property string $title
  * @property string $message
- * @property string $type success, warning, danger
+ * @property integer $importance 1 or 3. 3 will show popup on page load, 2 is reserved for future bell animation.
+ * @property string $display_class warning, danger, success
  * @property string $status new, read
  * @property DateTime $created When the notification was created
- * @property DateTime $read When the notification was read
+ * @property DateTime $first_read When the notification was read
  */
 class Notification extends LSActiveRecord
 {
+
+    const NORMAL_IMPORTANCE = 1;  // Just notification in admin menu
+    const BELL_IMPORTANCE = 2;  // TODO: Bell animation
+    const HIGH_IMPORTANCE = 3;  // Popup on page load
 
     /**
      * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
@@ -50,22 +55,22 @@ class Notification extends LSActiveRecord
             throw new InvalidArgumentException('Invalid entity: ' . $options['entity']);
         }
 
-        // Default to 'default' modal class
-        if (!isset($options['modal_class']))
+        // Default to 'default' display class
+        if (!isset($options['display_class']))
         {
-            $options['modal_class'] = 'default';
+            $options['display_class'] = 'default';
         }
 
-        // Default to 'log' notification type
-        if (!isset($options['type']))
+        // Default to 'log' notification importance
+        if (!isset($options['importance']))
         {
-            $options['type'] = 'log';
+            $options['importance'] = self::NORMAL_IMPORTANCE;
         }
 
-        // Type must be 'log' or 'important'
-        if ($options['type'] != 'log' && $options['type'] != 'important')
+        // importance must be between 1 and 3
+        if ($options['importance'] < 1 && $options['importance'] > 3)
         {
-            throw new InvalidArgumentException('Invalid type: ' . $options['type']);
+            throw new InvalidArgumentException('Invalid importance: ' . $options['importance']);
         }
 
         // Set everything up
@@ -73,11 +78,11 @@ class Notification extends LSActiveRecord
         $this->entity_id = $options['entity_id'];
         $this->title = $options['title'];
         $this->message = $options['message'];
-        $this->modal_class = $options['modal_class'];
-        $this->type = $options['type'];
+        $this->display_class = $options['display_class'];
+        $this->importance = $options['importance'];
         $this->status = 'new';
         $this->created = date('Y-m-d H:i:s', time());
-        $this->read = null;
+        $this->first_read = null;
     }
 
     /**
@@ -142,12 +147,11 @@ class Notification extends LSActiveRecord
 		return array(
 			array('entity_id', 'numerical', 'integerOnly'=>true),
 			array('entity', 'length', 'max'=>64),
-			array('type, status', 'length', 'max'=>63),
 			array('title', 'length', 'max'=>255),
-			array('message, created, read', 'safe'),
+			array('message, created, first_read', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, entity, entity_id, message, type, created, read, status, title', 'safe', 'on'=>'search'),
+			array('id, entity, entity_id, message, importance, created, first_read, status, title', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -172,9 +176,9 @@ class Notification extends LSActiveRecord
 			'entity' => 'Entity',
 			'entity_id' => 'Entity',
 			'message' => 'Message',
-			'type' => 'Type',
+			'importance' => 'Importance',
 			'created' => 'Created',
-			'read' => 'Read',
+			'first_read' => 'Read',
 			'status' => 'Status',
 			'title' => 'Title',
 		);
@@ -202,9 +206,9 @@ class Notification extends LSActiveRecord
 		$criteria->compare('entity',$this->entity,true);
 		$criteria->compare('entity_id',$this->entity_id);
 		$criteria->compare('message',$this->message,true);
-		$criteria->compare('type',$this->type,true);
+		$criteria->compare('importance',$this->importance);
 		$criteria->compare('created',$this->created,true);
-		$criteria->compare('read',$this->read,true);
+		$criteria->compare('first_read',$this->first_read);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('title',$this->title,true);
 
@@ -240,6 +244,18 @@ class Notification extends LSActiveRecord
                 'notId' => $this->id
             )
         );
+    }
+
+    /**
+     * Mark notification as read NOW()
+     * @return boolean Result of update
+     */
+    public function markAsRead()
+    {
+        $this->first_read = date('Y-m-d H:i:s', time());
+        $this->status = 'read';
+        $result = $this->update();
+        return $result;
     }
 
     /**
@@ -280,7 +296,7 @@ class Notification extends LSActiveRecord
     }
 
     /**
-     * Get notifications of type 'important'
+     * Get notifications of importance HIGH_IMPORTANCE
      * @param int|null $surveyId
      * @return Notification[]
      */
@@ -288,7 +304,7 @@ class Notification extends LSActiveRecord
     {
         $criteria = self::getCriteria($surveyId);
         $criteria2 = new CDbCriteria();
-        $criteria2->addCondition('type = \'important\'');
+        $criteria2->addCondition('importance = ' . self::HIGH_IMPORTANCE);
         $criteria->mergeWith($criteria2, 'AND');
 
         return self::model()->findAll($criteria);
@@ -316,7 +332,7 @@ class Notification extends LSActiveRecord
         $criteria = self::getCriteria($surveyId);
 
         $criteria2 = new CDbCriteria();
-        $criteria2->addCondition('status = \'new\'');  // TODO: read = null
+        $criteria2->addCondition('status = \'new\'');  // TODO: Check first_read = null instead?
         $criteria->mergeWith($criteria2, 'AND');
 
         $nr = self::model()->count($criteria);
@@ -332,7 +348,7 @@ class Notification extends LSActiveRecord
     {
         $criteria = self::getCriteria($surveyId);
         $criteria2 = new CDbCriteria();
-        $criteria2->addCondition('type = \'important\'');
+        $criteria2->addCondition('importance = ' . self::HIGH_IMPORTANCE);
         $criteria->mergeWith($criteria2, 'AND');
 
         return self::model()->count($criteria);
