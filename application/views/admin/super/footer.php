@@ -96,6 +96,7 @@
             <div class="modal-header panel-heading">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"></h4>
+                <span class='notification-date text-muted'></span>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'></p>

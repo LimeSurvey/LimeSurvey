@@ -92,6 +92,7 @@ $(document).ready(function() {
             $('#admin-notification-modal .modal-title').html(not.title);
             $('#admin-notification-modal .modal-body-text').html(not.message);
             $('#admin-notification-modal .modal-content').addClass('panel-' + not.modal_class);
+            $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
             $('#admin-notification-modal').modal();
             
             // TODO: Will this work in message includes a link that is clicked?
