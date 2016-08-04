@@ -18,6 +18,7 @@ class Notification extends LSActiveRecord
 {
 
     /**
+     * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
      * @param array<string, mixed>|string|null $options If string then scenario
      */
     public function __construct($options = null)
@@ -342,12 +343,12 @@ class Notification extends LSActiveRecord
      * @param int|null $surveyId
      * @return CDbCriteria
      */
-    protected static function getCriteria($surveyId)
+    protected static function getCriteria($surveyId = null)
     {
         $criteria = new CDbCriteria();
 
         // Only fetch survey specific notifications if user is viewing a survey
-        if ($surveyId !== null)
+        if (!empty($surveyId))
         {
             $criteria->addCondition('entity = \'survey\'');
             $criteria->addCondition('entity_id = ' . $surveyId);  // TODO: Escape survey id
@@ -360,7 +361,7 @@ class Notification extends LSActiveRecord
 
         // Only get new notifications
         //$criteria3 = new CDbCriteria();
-        //$criteria3->addCondition('status = \'new\'');  // TODO: read = null
+        //$criteria3->addCondition('status = \'new\'');  // TODO: read = null?
 
         $criteria->mergeWith($criteria2, 'OR');
         //$criteria->mergeWith($criteria3, 'AND');
@@ -370,11 +371,5 @@ class Notification extends LSActiveRecord
         ));
 
         return $criteria;
-    }
-
-    /**
-     * 
-     */
-    public static function addNotification(Notification $not) {
     }
 }

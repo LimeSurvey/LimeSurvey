@@ -2051,7 +2051,7 @@ table#responsedetail tr td{
   font-size: 14px;
   border-radius: 4px;
   background-clip: padding-box;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .notification-list > li > a {
@@ -2083,4 +2083,12 @@ table#responsedetail tr td{
   background-image: none;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   cursor: not-allowed;
+}
+#notification-outer-ul {
+    height: 400px;
+    width: 400px;
+}
+#notification-inner-ul {
+    height: 340px;
+    width: 390px;
 }
