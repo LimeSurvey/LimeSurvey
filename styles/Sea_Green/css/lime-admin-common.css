@@ -2086,9 +2086,9 @@ table#responsedetail tr td{
 }
 #notification-outer-ul {
     height: 400px;
-    width: 350px;
+    width: 400;
 }
 #notification-inner-ul {
     height: 340px;
-    width: 340px;
+    width: 390;
 }
