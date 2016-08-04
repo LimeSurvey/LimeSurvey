@@ -739,7 +739,7 @@ function LEMval(alias)
                     value="";
                 }
                 else {
-                    value= moment(value,sdatetimePattern).format('YYYY-MM-DD HH:mm'); //date('Y-m-d H:i', Date.parseString(trim(value), sdatetimePattern));
+                    value= moment(value,sdatetimePattern).format(sdatetimePattern); 
                 }
                 return value;
             }

@@ -41,6 +41,7 @@ class AdminController extends LSYii_Controller
         if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));} // for html editor integration
 
         AdminTheme::staticRegisterScriptFile('ADMIN_SCRIPT_PATH', 'admin_core.js' );
+        AdminTheme::staticRegisterScriptFile('ADMIN_SCRIPT_PATH', 'notifications.js' );
     }
 
     /**
@@ -221,7 +222,8 @@ class AdminController extends LSYii_Controller
         'tokens'           => 'tokens',
         'translate'        => 'translate',
         'update'           => 'update',
-        'pluginhelper'     => 'PluginHelper'
+        'pluginhelper'     => 'PluginHelper',
+        'notification'     => 'NotificationController'
         );
     }
 

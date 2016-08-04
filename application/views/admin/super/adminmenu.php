@@ -167,6 +167,10 @@
                     </li>
                 </ul>
             </li>
+
+            <!-- Admin notification system -->
+            <?php echo $adminNotifications; ?>
+
         </ul>
     </div><!-- /.nav-collapse -->
 </nav>

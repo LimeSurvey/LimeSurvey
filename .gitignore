@@ -4,6 +4,7 @@
 /upload/templates/*
 /upload/labels/*
 /tmp/runtime/HTML
+/tmp/runtime/*.log*
 /application/controllers/admin/updater.php
 /tmp/*.html
 /tmp/*.lss

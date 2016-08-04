@@ -292,4 +292,17 @@ class User extends LSActiveRecord
 			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
 		);
 	}
+
+    /**
+     * Return all super admins in the system
+     * @return User[]
+     */
+    public function getSuperAdmins()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->join = ' JOIN {{permissions}} AS p ON p.uid = t.uid';
+        $criteria->addCondition('p.permission = \'superadmin\'');
+        $users = $this->findAll($criteria);
+        return $users;
+    }
 }
