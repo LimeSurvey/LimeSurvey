@@ -372,4 +372,21 @@ class Notification extends LSActiveRecord
 
         return $criteria;
     }
+
+    /**
+     * Broadcast a message to all users
+     * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
+     * @param array $options
+     */
+    public static function broadcast(array $options)
+    {
+        // Get all users
+        $users = User::model()->findAll();
+
+        foreach ($users as $user) {
+            $options['user_id'] = $user->uid;
+            $not = new Notification($options);
+            $not->save();
+        }
+    }
 }
