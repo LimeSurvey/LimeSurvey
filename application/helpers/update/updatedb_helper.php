@@ -1461,6 +1461,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         // clear the cache of all loaded tables
         $oDB->schema->refresh();
         echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
+        return false;
     }
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
