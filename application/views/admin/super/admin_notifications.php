@@ -70,8 +70,10 @@
         
             <li id='notification-clear-all'>
                 <a 
-                onclick='LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl; ?>", "<?php echo $updateUrl ?>");'
                     href='#'
+                    data-toggle='modal'
+                    data-target='#confirmation-modal'
+                    data-onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })'
                 >
                     <span class='fa fa-trash text-warning'></span>&nbsp;
                     <?php eT('Delete all notifications'); ?>
