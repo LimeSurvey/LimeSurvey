@@ -7,11 +7,15 @@
         </a>
     </li>
 <?php elseif($showLoader): ?>
-<li id='notification-li' class='dropdown' onclick='LS.updateNotificationWidget("<?php echo Notification::getUpdateUrl($surveyId); ?>");'>
+<li id='notification-li' class='dropdown' onclick='LS.updateNotificationWidget("<?php echo Notification::getUpdateUrl($surveyId); ?>");' >
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
-            <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
+
+            <?php if ($nrOfNewNotifications): ?>
+                <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
+            <?php endif; ?>
+
             <span class='caret'></span>
         </a>
         <ul class='dropdown-menu' role='menu'>
@@ -21,16 +25,20 @@
         </ul>
     </li>
 <?php else: ?>
-    <li id='notification-li' class='dropdown' onclick='LS.styleNotificationMenu(this);'>
+    <li id='notification-li' class='dropdown' onclick='LS.styleNotificationMenu();'>
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
-            <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
+
+            <?php if ($nrOfNewNotifications): ?>
+                <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
+            <?php endif; ?>
+
             <span class='caret'></span>
         </a>
 
         <ul id='notification-outer-ul' class='dropdown-menu' role='menu'>
-            <li style='height: 88%;'>
+            <li id='notification-inner-li' style='height: 88%;'>
                 <ul id='notification-inner-ul' class='notification-list'>
                     <?php foreach ($notifications as $not): ?>
                         <li>
@@ -58,7 +66,7 @@
                     <?php endforeach; ?>
                 </ul>
             </li>
-            <li class="divider"></li>
+            <li id='notification-divider' class="divider"></li>
         
             <li id='notification-clear-all'>
                 <a 
