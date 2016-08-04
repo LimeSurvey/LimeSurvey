@@ -26,7 +26,10 @@ function doPopupDate(qId){
             beforeShow: setPickerOptions
         }, $.datepicker.regional[language]);
     }
-
+    
+    $("#question"+qId).find('div.input-group.date').on('dp.change', function(){
+        $(this).find('input').trigger('change');
+    });
 }
 /*
  * Function to launch timepicker in question id
