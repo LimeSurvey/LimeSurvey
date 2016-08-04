@@ -1,5 +1,5 @@
 <!-- Admin notification system -->
-<?php if ($nrOfNotifications === 0): ?>
+<?php if ($nrOfNotifications == 0): ?>
     <li id='notification-li' class='dropdown'>
         <a aria-expanded='false' 
             href='#'>

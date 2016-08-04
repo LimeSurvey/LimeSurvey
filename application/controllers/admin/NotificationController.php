@@ -115,8 +115,8 @@ class NotificationController extends Survey_Common_Action
      * Get menu HTML for notifications
      *
      * @param int|null $surveyId
-     * @param bool $showLoader Show spinning loader instead of messages (fetch them using ajax)
-     * @return string
+     * @param bool $showLoader If true, show spinning loader instead of messages (fetch them using ajax)
+     * @return string HTML
      */
     public static function getMenuWidget($surveyId = null, $showLoader = false) {
         $data = array();
@@ -130,7 +130,7 @@ class NotificationController extends Survey_Common_Action
         $data['nrOfNewNotifications'] = Notification::countNewNotifications($surveyId);
         $data['nrOfNotifications'] = Notification::countNotifications($surveyId);
         $data['nrOfImportantNotifications'] = Notification::countImportantNotifications($surveyId);
-        $data['bellColor'] = $data['nrOfNewNotifications'] === 0 ? 'text-success' : 'text-warning';
+        $data['bellColor'] = $data['nrOfNewNotifications'] == 0 ? 'text-success' : 'text-warning';
 
         // If we have any important notification we might as well load everything
         if ($data['nrOfImportantNotifications'] > 0)
