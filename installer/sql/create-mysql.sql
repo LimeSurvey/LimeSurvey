@@ -595,8 +595,25 @@ CREATE INDEX `saved_control_idx2` ON `prefix_saved_control` (`sid`);
 CREATE INDEX `quota_idx2` ON `prefix_quota` (`sid`);
 CREATE INDEX `parent_qid_idx` ON `prefix_questions` (`parent_qid`);
 
+--
+-- Notification table
+--
+CREATE TABLE IF NOT EXISTS `prefix_notifications` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `entity` VARCHAR(63) NOT NULL COMMENT 'Should be either survey or user',
+    `entity_id` INT(11) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `message` TEXT NOT NULL,
+    `status` VARCHAR(63) NOT NULL DEFAULT 'new' COMMENT 'new or read',
+    `type` VARCHAR(63) NOT NULL DEFAULT 'log' COMMENT 'log or important',
+    `modal_class` VARCHAR(63) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success',
+    `created` DATETIME NOT NULL,
+    `read` DATETIME DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    INDEX(`entity`, `entity_id`, `status`)
+) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '258');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '259');
