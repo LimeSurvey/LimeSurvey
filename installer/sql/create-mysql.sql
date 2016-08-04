@@ -600,13 +600,13 @@ CREATE INDEX `parent_qid_idx` ON `prefix_questions` (`parent_qid`);
 --
 CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `entity` VARCHAR(63) NOT NULL COMMENT 'Should be either survey or user',
+    `entity` VARCHAR(15) NOT NULL COMMENT 'Should be either survey or user',
     `entity_id` INT(11) NOT NULL,
     `title` VARCHAR(255) NOT NULL,
     `message` TEXT NOT NULL,
-    `status` VARCHAR(63) NOT NULL DEFAULT 'new' COMMENT 'new or read',
+    `status` VARCHAR(15) NOT NULL DEFAULT 'new' COMMENT 'new or read',
     `importance` INT(11) NOT NULL DEFAULT 1,
-    `display_class` VARCHAR(63) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success',
+    `display_class` VARCHAR(31) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success',
     `created` DATETIME NOT NULL,
     `first_read` DATETIME DEFAULT NULL,
     PRIMARY KEY (`id`),

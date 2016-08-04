@@ -594,13 +594,13 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 CREATE TABLE prefix_notifications (
     [id] int NOT NULL IDENTITY,
-    [entity] nvarchar(63) NOT NULL,
+    [entity] nvarchar(15) NOT NULL,
     [entity_id] int NOT NULL,
     [title] nvarchar(255) NOT NULL,
     [message] nvarchar(max) NOT NULL,
-    [status] nvarchar(63) NOT NULL DEFAULT 'new',
+    [status] nvarchar(15) NOT NULL DEFAULT 'new',
     [importance] int NOT NULL DEFAULT 1,
-    [display_class] nvarchar(63) DEFAULT 'default',
+    [display_class] nvarchar(31) DEFAULT 'default',
     [created] datetime NOT NULL,
     [first_read] datetime DEFAULT NULL,
     PRIMARY KEY ([id])

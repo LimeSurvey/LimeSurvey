@@ -603,13 +603,13 @@ create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, u
 --
 CREATE TABLE prefix_notifications (
     "id" SERIAL,
-    "entity" character varying(63) NOT NULL,
+    "entity" character varying(15) NOT NULL,
     "entity_id" integer NOT NULL,
     "title" character varying(255) NOT NULL,
     "message" TEXT NOT NULL,
-    "status" character varying(63) NOT NULL DEFAULT 'new',
+    "status" character varying(15) NOT NULL DEFAULT 'new',
     "importance" integer NOT NULL DEFAULT 1,
-    "display_class" character varying(63) DEFAULT 'default',
+    "display_class" character varying(31) DEFAULT 'default',
     "created" timestamp NOT NULL,
     "first_read" timestamp DEFAULT NULL,
     CONSTRAINT prefix_notifications_pkey PRIMARY KEY (id)
