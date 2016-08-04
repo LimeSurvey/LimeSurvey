@@ -332,11 +332,14 @@ class index extends CAction {
             if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid')))
             {
                 $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
+                $captcha = Yii::app()->getController()->createAction('captcha');
+                $captchaCorrect = $captcha->validate( $sLoadsecurity, false);
+            
                 if(empty($sLoadSecurity))
                 {
                     $errormsg .= gT("You did not answer to the security question.")."<br />\n";
                 }
-                elseif ( (!isset($_SESSION['survey_'.$surveyid]['secanswer']) || $sLoadSecurity != $_SESSION['survey_'.$surveyid]['secanswer']) )
+                elseif ( !$captchaCorrect )
                 {
                     $errormsg .= gT("The answer to the security question is incorrect.")."<br />\n";
                 }
@@ -383,17 +386,17 @@ class index extends CAction {
                 $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
 
-            if (!isset($tokenInstance) && !$previewmode)
-            {
-                //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-                $asMessage = array(
-                null,
-                gT("This is a controlled survey. You need a valid token to participate."),
-                sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
-                );
+            // if (!isset($tokenInstance) && !$previewmode)
+            // {
+            //     //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+            //     $asMessage = array(
+            //     null,
+            //     gT("This is a controlled survey. You need a valid token to participate."),
+            //     sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
+            //     );
 
-                $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
-            }
+            //     $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
+            // }
         }
         if ($tokensexist == 1 && isset($token) && $token!="" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
         {
@@ -425,18 +428,18 @@ class index extends CAction {
                     {
                         $sError = gT("This is a controlled survey. You need a valid token to participate.");
                     }
+                    $asMessage = array(
+                        $sError,
+                        gT("We are sorry but you are not allowed to enter this survey."),
+                        sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
+                    );
+
+                    $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
                 }
                 else
                 {
                     $sError = gT("This is a controlled survey. You need a valid token to participate.");
                 }
-                $asMessage = array(
-                $sError,
-                gT("We are sorry but you are not allowed to enter this survey."),
-                sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
-                );
-
-                $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
 
