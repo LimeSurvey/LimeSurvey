@@ -7,7 +7,7 @@
         </a>
     </li>
 <?php elseif($showLoader): ?>
-<li id='notification-li' class='dropdown' onclick='LS.updateNotificationWidget("<?php echo Notification::getUpdateUrl($surveyId); ?>");' >
+<li id='notification-li' class='dropdown' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
@@ -46,7 +46,7 @@
                                 class='admin-notification-link'
                                 data-url='<?php echo $not->ajaxUrl; ?>'
                                 data-read-url='<?php echo $not->readUrl; ?>'
-                                data-update-url='<?php echo Notification::getUpdateUrl($surveyId); ?>'
+                                data-update-url='<?php echo $updateUrl; ?>'
                                 data-type='<?php echo $not->type; ?>'
                                 data-status='<?php echo $not->status; ?>'
                                 href='#'
@@ -70,7 +70,7 @@
         
             <li id='notification-clear-all'>
                 <a 
-                onclick='LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl; ?>", "<?php echo Notification::getUpdateUrl($surveyId); ?>");' 
+                onclick='LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl; ?>", "<?php echo $updateUrl ?>");'
                     href='#'
                 >
                     <span class='fa fa-trash text-warning'></span>&nbsp;

@@ -126,6 +126,7 @@ class NotificationController extends Survey_Common_Action
             'sa' => 'clearAllNotifications',
             'surveyId' => $surveyId
         ));
+        $data['updateUrl'] = Notification::getUpdateUrl($surveyId);
         $data['nrOfNewNotifications'] = Notification::countNewNotifications($surveyId);
         $data['nrOfNotifications'] = Notification::countNotifications($surveyId);
         $data['nrOfImportantNotifications'] = Notification::countImportantNotifications($surveyId);
