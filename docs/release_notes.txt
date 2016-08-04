@@ -35,6 +35,23 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160731) to 2.50+ (build 160804) Aug 4, 2016
+-Fixed issue #11483: Bad visualization (markusfluer)
+-Fixed issue #11485: Bad styling at add participant confirm message (markusfluer)
+-Fixed Issue #11486: Captcha screen before a token survey looks bad (markusfluer)
+-Fixed issue #11508: Invalid HTML in Word doc export (Carsten Schmitz)
+-Fixed issue #11509: numerical input option integer only leads to positive integer input only (Denis Chenu)
+-Fixed issue #11513: Error 500 after uploading a CSV file with participants into a survey (markusfluer)
+-Fixed issue #9242: PHP and JS difference with numeric value starting by 0 (markusfluer)
+-Fixed issue: Datepicker inputs not propagating change event (markusfluer)
+-Fixed issue: No valid date with dropdown date questions (markusfluer)
+-Fixed issue: PHP notice on question list when no group in survey. (LouisGac)
+-Fixed issue: Problems with yiiwheels and momentjs (markusfluer)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
 Changes from 2.50+ (build 160728) to 2.50+ (build 160731) Aug 1, 2016
 -Fixed issue #11414: No delete option in token list (markusfluer)
 -Fixed issue #11475: Message covered with permanent menu selected (markusfluer)
