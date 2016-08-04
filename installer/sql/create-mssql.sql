@@ -590,6 +590,24 @@ create index [saved_control_idx2] on [prefix_saved_control] ([sid]);
 create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 
 --
+-- Notification table
+--
+CREATE TABLE prefix_notifications (
+    [id] int NOT NULL IDENTITY,
+    [entity] nvarchar(63) NOT NULL,
+    [entity_id] int NOT NULL,
+    [title] nvarchar(255) NOT NULL,
+    [message] nvarchar(max) NOT NULL,
+    [status] nvarchar(63) NOT NULL DEFAULT 'new',
+    [type] nvarchar(63) NOT NULL DEFAULT 'log',
+    [modal_class] nvarchar(63) DEFAULT 'default',
+    [created] datetime NOT NULL,
+    [read] datetime DEFAULT NULL,
+    PRIMARY KEY ([id])
+);
+CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);
+
+--
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '258');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '259');
