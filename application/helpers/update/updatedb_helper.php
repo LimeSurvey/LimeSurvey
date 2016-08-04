@@ -1432,6 +1432,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             ));
             $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
+
+            // Inform superadmin about update
+            $superadmins = User::model()->getSuperAdmins();
+            Notification::broadcast(array(
+                'title' => gT('Database update'),
+                'message' => gT('The database has been updated to version 259. New version includes notification system.')
+            ), $superadmins);
+
         }
 
         $oTransaction->commit();
