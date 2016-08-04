@@ -2245,10 +2245,10 @@ function getMove()
  * on side-menu behaviour config and page (edit or not
  * etc).
  *
- * @param boolean $sideMenustate - False for pages with hidden side-menu
+ * @param boolean $sideMenustate - False for pages with collapsed side-menu
  * @return string
  */
-function getSideBodyClass($sideMenustate)
+function getSideBodyClass($sideMenustate = false)
 {
     $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
 
