@@ -99,6 +99,7 @@ $(document).ready(function() {
             $('#admin-notification-modal').unbind('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
                 notificationIsRead(that);
+                $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
             });
         });
     }
