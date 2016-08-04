@@ -1420,13 +1420,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 259) {
             $oDB->createCommand()->createTable('{{notifications}}', array(
                 'id' => 'pk',
-                'entity' => 'string not null',
+                'entity' => 'string(15) not null',
                 'entity_id' => 'int not null',
                 'title' => 'string not null',  // varchar(255) in postgres
                 'message' => 'text not null',
-                'status' => 'string default \'new\'',
+                'status' => 'string(15) default \'new\'',
                 'importance' => 'int default 1',
-                'display_class' => 'string default \'default\'',
+                'display_class' => 'string(31) default \'default\'',
                 'created' => 'datetime not null',
                 'first_read' => 'datetime default null'
             ));
@@ -1461,7 +1461,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         // clear the cache of all loaded tables
         $oDB->schema->refresh();
         echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
-        return false;
     }
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
