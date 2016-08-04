@@ -52,7 +52,7 @@
                                 href='#'
                             >
                                 <?php if ($not->status == 'new'): ?>
-                                    <span class='fa fa-circle'></span>&nbsp;
+                                    <span class='fa fa-circle text-<?php echo $not->display_class; ?>'></span>&nbsp;
                                     <strong><?php echo $not->title; ?></strong>
                                     <br />
                                     <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>
