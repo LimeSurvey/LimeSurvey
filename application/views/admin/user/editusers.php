@@ -1,7 +1,27 @@
 <h3 class="pagetitle"><?php eT("User control");?></h3>
 
 <div class="row" style="margin-bottom: 100px">
-    <div class="col-lg-12 content-right">
+    <div class="container">
+        <?php
+        $this->widget('zii.widgets.grid.CGridView', array(
+            'id' => 'all_users',
+            'htmlOptions' => array('class'=> 'table-responsive'),
+            'itemsCssClass' => 'table table-striped items',
+            'dataProvider' => $model->search(),
+            'columns' => array(
+                'uid',
+                'users_name',
+                'full_name',
+                'lang',
+                'email',
+                'buttons:raw'
+            )
+        ));
+        ?>
+    </div>
+</div>
+<?php
+/*
 
 <table id='users' class='users table table-striped'>
     <thead>
@@ -12,7 +32,7 @@
             <th class="col-md-2"><?php eT("Full name");?></th>
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
                 <th ><?php eT("No of surveys");?></th>
-                <?php } ?>
+            <?php } ?>
             <th><?php eT("Created by");?></th>
             <th class="col-md-2"><?php eT("Action");?></th>
         </tr>
@@ -187,4 +207,5 @@
 
 
     </div>
-</div>
+</div>*/
+?>

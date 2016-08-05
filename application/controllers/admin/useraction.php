@@ -79,8 +79,8 @@ class UserAction extends Survey_Common_Action
 
         $aData['title_bar']['title'] = gT('User administration');
         $aData['fullpagebar']['closebutton']['url'] = true;
-
-        $this->_renderWrappedTemplate('user', 'editusers', $aData);
+        $model = new User();
+        $this->_renderWrappedTemplate('user', 'editusers',array('model'=>$model));
     }
 
     private function _getSurveyCountForUser(array $user)
@@ -200,13 +200,28 @@ class UserAction extends Survey_Common_Action
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $action = Yii::app()->request->getPost("action");
+        if(!$action)
+        {
+            $action = Yii::app()->request->getParam("action");
+        }
+
         $aViewUrls = array();
 
         // CAN'T DELETE ORIGINAL SUPERADMIN (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
 
         $postuserid = (int) Yii::app()->request->getPost("uid");
+        if(!$postuserid)
+        {
+            $postuserid = (int) Yii::app()->request->getParam("uid");
+        }
+
         $postuser = flattenText(Yii::app()->request->getPost("user"));
+        if(!$postuser)
+        {
+            $postuser = (int) Yii::app()->request->getParam("user");
+        }
+
         if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
         {
             Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"),'error');
@@ -288,6 +303,10 @@ class UserAction extends Survey_Common_Action
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $postuserid = (int) Yii::app()->request->getPost("uid");
+        if(!$postuserid)
+        {
+            $postuserid = (int) Yii::app()->request->getParam("uid");
+        }
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         // Never delete initial admin (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
