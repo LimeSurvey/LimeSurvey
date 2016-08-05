@@ -5,11 +5,11 @@
     <script type='text/javascript'>var focus_element = '#token';</script>
     <div class='jumbotron'>
         <div id="tokenmessage" class="container clearfix">
-            <h3><?php eT("This is a controlled survey, you need a valid token to participate."); ?></h3>
+            <h3><?php eT("To participate in this restricted survey, you need a valid token."); ?></h3>
             <?php if(!isset($token)): ?>
-            <h3><small><?php eT("If you have been issued a token, please enter it in the box below and click continue."); ?></small></h3>
+            <h3><small class='text-info'><?php eT("If you have been issued a token, please enter it in the box below and click continue."); ?></small></h3>
             <?php else: ?>
-            <h3><small><?php eT("Please confirm the token by answering the security question below and click continue."); ?></small></h3>
+            <h3><small class='text-info'><?php eT("Please confirm the token by answering the security question below and click continue."); ?></small></h3>
             <?php endif; ?>
             </p>
         </div>
