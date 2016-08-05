@@ -295,6 +295,21 @@ return array(
         'js' => array(
             'Uri.js'
         ),
+    ),
+
+    'bootstrap-notify' => array(
+        'basePath' => 'third_party.bootstrap-notify',
+        'js' => array(
+            'js/bootstrap-notify.js'
+        ),
+        'css' => array(
+            'css/bootstrap-notify.css',
+            'css/styles/alert-blackgloss.css',
+            'css/styles/alert-bangtidy.css'
+        ),
+        'depends' => array(
+            'jquery'
+        )
     )
 
 );

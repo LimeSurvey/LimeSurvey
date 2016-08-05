@@ -226,19 +226,76 @@ class CintLink extends \ls\pluginmanager\PluginBase
         // This CSS is always needed (icon)
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
         App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
+        App()->clientScript->registerPackage('bootstrap-notify');
 
         $surveyId = Yii::app()->request->getParam('surveyid') or Yii::app()->request->getParam('surveyId');
+
+        // Fetch the flag
         $triedToPay = $this->get('triedToPay', 'surveyId', $surveyId);
+        $surveyMustBeActive = $this->get('surveyMustBeActive', 'surveyId', $surveyId);
+
         if ($triedToPay)
         {
             $survey = Survey::model()->findByPk($surveyId);
-            if ($survey->active != 'Y')
+            $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
+            $orders = $this->getOrders(array(
+                'sid' => $surveyId,
+                'deleted' => false,
+                'status' => 'hold'  // TODO: Also fetch new/live orders?
+            ));
+
+            if (empty($orders))
             {
-                Yii::app()->user->setFlash('error',
-                    '<span class="fa fa-exclamation-circle"></span>&nbsp;' .
-                    $this->gT(
-                        'User started the payment process of a Cint order, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.',
-                    'js'));
+                // Possible?
+                $this->log('Internal error: beforeControllerAction: Looking for Cint orders on hold but found nothing');
+
+                // Unset flags
+                $this->set('triedToPay', false, 'surveyId', $surveyId);
+                $this->set('surveyMustBeActive', false, 'surveyId', $surveyId);
+                return;
+            }
+
+            $orders = $this->updateOrders($orders);
+
+            // Check if any order is paid and/or live
+            if (!$surveyIsActive && $this->anyOrderHasStatus($orders, array('new', 'live')))
+            {
+                $this->showFlashError('A Cint order is paid, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.');
+
+                // At least one order is paid, so unset this
+                $this->set('triedToPay', false, 'surveyId', $surveyId);
+
+                // ...and set new flag
+                $this->set('surveyMustBeActive', true, 'surveyId', $surveyId);
+            }
+            // Check if any order is on hold (trying to pay)
+            else if (!$surveyIsActive && $this->anyOrderHasStatus($orders, 'hold'))
+            {
+                // No order on hold anymore. Can be either cancelled or paid
+                $this->showFlashError('User started the payment process of a Cint order, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.');
+            }
+            else
+            {
+                // No order is on hold, new/review or live. Completed or cancelled? Unset all flags.
+                $this->set('triedToPay', false, 'surveyId', $surveyId);
+                $this->set('surveyMustBeActive', false, 'surveyId', $surveyId);
+            }
+        }
+        elseif ($surveyMustBeActive)
+        {
+            /**
+             * NB: We don't have to fetch and update orders here, because
+             * it will be done when user deactivates survey.
+             */
+
+            // TODO: What if order is completed in this state? Must fetch?
+
+            $survey = Survey::model()->findByPk($surveyId);
+            $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
+
+            if (!$surveyIsActive)
+            {
+                $this->showFlashError('A Cint order is paid, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.');
             }
         }
     }
@@ -260,7 +317,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         ));
         $orders = $this->updateOrders($orders);
 
-        if ($this->anyOrderIsNewOrLive($orders))
+        if ($this->anyOrderHasStatus($orders, array('new', 'live')))
         {
             $event->set('message', $this->gT('Blaha'));
         }
@@ -291,8 +348,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $content = $this->renderPartial('index', $data, true);
 
         $this->registerCssAndJs();
-
-        //$this->showActivateMessage($surveyId, $orders);
 
         return $content;
     }
@@ -579,7 +634,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $orderUrl = $request->getParam('orderUrl');
 
-        if (!$this->checkPermission(null, $url))
+        if (!$this->checkPermission(null, $orderUrl))
         {
             return json_encode(array('error' => $this->gT('No permission')));
         }
@@ -884,26 +939,84 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 $this->gT('This survey is live or under review by Cint. Please activate the survey as soon as possible.')
             );
         }
-        
     }
 
     /**
      * Returns true if any order in $order is in state 'new' or 'live'
      * Make sure to run updateOrders on $orders before calling this.
      *
-     * @param array<CintLinkOrder> $orders
+     * @param array<CintLinkOrder>|CintLinkOrder $orders
+     * @param array|string $statuses Array of status to check for
      * @return boolean
      */
-    protected function anyOrderIsNewOrLive(array $orders)
+    protected function anyOrderHasStatus($orders, $statuses)
     {
+        if (!is_array($orders))
+        {
+            $orders = array($orders);
+        }
+
+        if (!is_array($statuses))
+        {
+            $statuses = array($statuses);
+        }
+
         foreach ($orders as $order)
         {
-            if ($order->status == 'new' || $order->status == 'live')
+            if (in_array($order->status, $statuses))
             {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * As above, but checks so that *all* orders have
+     * *any* of the status in $statuses.
+     *
+     * @param array<CintLinkOrder>|CintLinkOrder $orders
+     * @param array|string $statuses Array of status to check for
+     * @return boolean
+     */
+    protected function allOrdersHaveStatus($order, $statuses)
+    {
+
+        if (!is_array($orders))
+        {
+            $orders = array($orders);
+        }
+
+        if (!is_array($statuses))
+        {
+            $statuses = array($statuses);
+        }
+
+        foreach ($orders as $order)
+        {
+            if (!in_array($order->status, $statuses))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Show flash error message
+     *
+     * @param string $message
+     * @return void
+     */
+    protected function showFlashError($message) {
+        Yii::app()->user->setFlash('error',
+            '<span class="fa fa-exclamation-circle"></span>&nbsp;' .
+            $this->gT(
+                $message,
+                'js'
+            )
+        );
     }
 
 }
