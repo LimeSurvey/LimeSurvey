@@ -134,6 +134,9 @@
 .slider .tooltip-inner {
   white-space: nowrap;
 }
+.slider .tooltip {
+  z-index: 1049;
+}
 .slider .hide {
   display: none;
 }
