@@ -503,6 +503,10 @@ table > tbody > tr > td.ddprefix {
         display: inline-block !important;
     }
 
+    .btn {
+        margin-bottom:5px;
+    }
+
     /* Remove margin */
     .row {
         margin: 0;
