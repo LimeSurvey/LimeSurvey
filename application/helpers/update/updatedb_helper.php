@@ -1437,7 +1437,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $superadmins = User::model()->getSuperAdmins();
             Notification::broadcast(array(
                 'title' => gT('Database update'),
-                'message' => gT(sprintf('The database has been updated from version %s to version %s.', $iOldDBVersion, '259'))
+                'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '259')
             ), $superadmins);
 
         }
