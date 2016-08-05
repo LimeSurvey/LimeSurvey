@@ -226,16 +226,39 @@ class CintLink extends \ls\pluginmanager\PluginBase
         // This CSS is always needed (icon)
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
         App()->clientScript->registerCssFile("$assetsUrl/cintlink.css");
-        App()->clientScript->registerPackage('bootstrap-notify');
 
-        $surveyId = Yii::app()->request->getParam('surveyid') or Yii::app()->request->getParam('surveyId');
+        // Check if any Cint order is active
+        $surveyId = Yii::app()->request->getParam('surveyId');
+        $surveyId = empty($surveyId) ? Yii::app()->request->getParam('surveyid') : $surveyId;
+        $this->checkCintActive($surveyId);
+    }
 
-        // Fetch the flag
-        $triedToPay = $this->get('triedToPay', 'surveyId', $surveyId);
-        $surveyMustBeActive = $this->get('surveyMustBeActive', 'surveyId', $surveyId);
-
-        if ($triedToPay)
+    /**
+     * Check if any Cint order is active and show
+     * warning message if survey is not active.
+     *
+     * @param int $surveyId
+     * @return void
+     */
+    protected function checkCintActive($surveyId)
+    {
+        // No need to nag when user tries to activate survey
+        if ($this->userIsActivatingSurvey())
         {
+            return;
+        }
+
+        $this->log('surveyId = ' . $surveyId);
+        // Fetch Cint active flag
+        $cintActive = $this->get('cint_active_' . $surveyId);
+        $this->log('cintActive = ' . $cintActive);
+
+        if ($cintActive)
+        {
+            // Include Javascript that will update the orders async
+            $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
+            App()->clientScript->registerCssFile("$assetsUrl/checkOrders.js");
+
             $survey = Survey::model()->findByPk($surveyId);
             $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
             $orders = $this->getOrders(array(
@@ -248,56 +271,43 @@ class CintLink extends \ls\pluginmanager\PluginBase
             {
                 // Possible?
                 $this->log('Internal error: beforeControllerAction: Looking for Cint orders on hold but found nothing');
-
-                // Unset flags
-                $this->set('triedToPay', false, 'surveyId', $surveyId);
-                $this->set('surveyMustBeActive', false, 'surveyId', $surveyId);
+                $this->set('cint_active_' . $surveyId, false);
                 return;
             }
 
-            $orders = $this->updateOrders($orders);
-
             // Check if any order is paid and/or live
-            if (!$surveyIsActive && $this->anyOrderHasStatus($orders, array('new', 'live')))
+            if (!$surveyIsActive && $this->anyOrderHasStatus($orders, array('new', 'live', 'hold')))
             {
-                $this->showFlashError('A Cint order is paid, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.');
-
-                // At least one order is paid, so unset this
-                $this->set('triedToPay', false, 'surveyId', $surveyId);
-
-                // ...and set new flag
-                $this->set('surveyMustBeActive', true, 'surveyId', $surveyId);
-            }
-            // Check if any order is on hold (trying to pay)
-            else if (!$surveyIsActive && $this->anyOrderHasStatus($orders, 'hold'))
-            {
-                // No order on hold anymore. Can be either cancelled or paid
-                $this->showFlashError('User started the payment process of a Cint order, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.');
+                $this->showNotification($this->gT('A Cint order is paid or about to be paid, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.', 'js'));
             }
             else
             {
-                // No order is on hold, new/review or live. Completed or cancelled? Unset all flags.
-                $this->set('triedToPay', false, 'surveyId', $surveyId);
-                $this->set('surveyMustBeActive', false, 'surveyId', $surveyId);
+                // No order is on hold, new/review or live. So completed or cancelled. Unset all flags.
+                $this->set('cint_active_' . $surveyId, false);
             }
         }
-        elseif ($surveyMustBeActive)
+
+    }
+
+    /**
+     * Returns true if user is on survey activation page
+     * @return bool
+     */
+    protected function userIsActivatingSurvey()
+    {
+        $event = $this->getEvent();
+        $controller = $event->get('controller');
+        $action = $event->get('action');
+        $subaction = $event->get('subaction');
+        $this->log('controller = ' . $controller . ', action = ' . $action . ', subaction = ' . $subaction);
+
+        $userIsActivatingSurvey = $controller == 'admin' && $action == 'survey' && $subaction == 'activate';
+        if ($userIsActivatingSurvey)
         {
-            /**
-             * NB: We don't have to fetch and update orders here, because
-             * it will be done when user deactivates survey.
-             */
-
-            // TODO: What if order is completed in this state? Must fetch?
-
-            $survey = Survey::model()->findByPk($surveyId);
-            $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
-
-            if (!$surveyIsActive)
-            {
-                $this->showFlashError('A Cint order is paid, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.');
-            }
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -765,15 +775,14 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function userTriedToPay(LSHttpRequest $request)
     {
-        // TODO: Permission
-
         $surveyId = $request->getParam('surveyId');
         if (!$this->checkPermission($surveyId))
         {
             $this->log('Internal error: userTriedToPay but lack permission. survey id = ' . $surveyId);
         }
 
-        $this->set('triedToPay', true, 'surveyId', $surveyId);
+        // Set flag in plugin settings
+        $this->set('cint_active_' . $surveyId, true);
     }
 
     public function newDirectRequest()
@@ -799,6 +808,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     || $functionToCall == "cancelOrder"
                     || $functionToCall == "softDeleteOrder"
                     || $functionToCall == "userTriedToPay"
+                    || $functionToCall == "updateAllOrders"
                     || $functionToCall == "getSurvey")
             {
                 echo $this->$functionToCall($request);
@@ -819,6 +829,30 @@ class CintLink extends \ls\pluginmanager\PluginBase
             array('order' => 'url DESC')
         );
         return $orders;
+    }
+
+    /**
+     * Update all orders for this survey
+     */
+    public function updateAllOrders($surveyId)
+    {
+        $this->log('updateAllOrders begin');
+        try
+        {
+            $orders = CintLinkOrder::model()->findAllByAttributes(
+                array(
+                    'sid' => $surveyId,
+                    'deleted' => false
+                ),
+                array('order' => 'url DESC')
+            );
+            $this->updateOrders($orders);
+        }
+        catch (Exception $ex)
+        {
+            $this->log('Could not update all orders: ' . $ex->getMessage());
+        }
+        $this->log('updateAllOrders end');
     }
 
     /**
@@ -1009,14 +1043,14 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * @param string $message
      * @return void
      */
-    protected function showFlashError($message) {
-        Yii::app()->user->setFlash('error',
-            '<span class="fa fa-exclamation-circle"></span>&nbsp;' .
-            $this->gT(
-                $message,
-                'js'
-            )
-        );
+    protected function showNotification($message) {
+        $not = new Notification(array(
+            'user_id' => Yii::app()->user->id,
+            'importance' => Notification::HIGH_IMPORTANCE,
+            'title' => $this->gT('Cint warning'),
+            'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' . $message
+        ));
+        $not->save();
     }
 
 }
