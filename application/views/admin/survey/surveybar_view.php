@@ -7,7 +7,7 @@
 
 
 <div class='menubar surveybar' id="surveybarid">
-    <div class='row container-fluid'>
+    <div class='row container-fluid row-button-margin-bottom'>
 
         <?php // If there are no save or close buttons, take up some more space (useful for 1366x768 screens) ?>
         <?php if (!isset($surveybar['savebutton']['form']) && (!isset($surveybar['saveandclosebutton'])) && (!isset($surveybar['closebutton']))): ?>
