@@ -1,7 +1,7 @@
 <div class='jumbotron'>
     <div class="container clearfix">
         <h2>{REGISTERMESSAGE1}</h2>
-        <h3><small>{REGISTERMESSAGE2}</small></h3>
+        <h3><small class='text-info'>{REGISTERMESSAGE2}</small></h3>
     </div>
 </div>
 {REGISTERERROR}

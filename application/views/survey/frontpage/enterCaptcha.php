@@ -6,7 +6,7 @@
     <div class='jumbotron'>
         <div id="tokenmessage" class="container clearfix">
             <h3>
-                <?php eT("Please confirm access to survey by answering the security question below."); ?><br/>
+                <?php eT("Before you start, please prove you are human."); ?><br/>
             </h3>
         </div>
     </div>
