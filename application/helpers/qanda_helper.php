@@ -2930,7 +2930,7 @@ function do_multiplenumeric($ia)
         $slider_mintext = '';
         $slider_max     = '';
         $slider_maxtext = '';
-        $slider_default = '';
+        $slider_default = null;
         $slider_orientation= '';
         $slider_handle = '';
         $slider_custom_handle = '';
@@ -3031,24 +3031,34 @@ function do_multiplenumeric($ia)
             // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/scripts/bootstrap-slider.js#l1453-l1461
             // If the bootstrapSlider were updated, most of this javascript would not be necessary.
 
-            $sValue                = $slider_min;
-            $slider_user_no_action =1;
+            $sValue = null;
+            
+            if(App()->request->getPost('slider_user_no_action_'.$myfname))
+            {
+                $slider_user_no_action = App()->request->getPost('slider_user_no_action_'.$myfname);
+            } 
+            else 
+            {
+                $slider_user_no_action = 1;
 
-            // value stored in _SESSION
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-            {
-                $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                $slider_user_no_action = 0;
+                // value stored in _SESSION
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                {
+                    $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    $slider_user_no_action = 0;
+                }
+                elseif( $slider_default != "" )
+                {
+                    $sValue                = $slider_default;
+                    $slider_user_no_action = 0;
+                }
+                elseif( isset($slider_middlestart) && $slider_middlestart!='')
+                {
+                    $sValue = $slider_middlestart;
+                }
+            
             }
-            elseif( $slider_default != "" )
-            {
-                $sValue                = $slider_default;
-                $slider_user_no_action = 0;
-            }
-            elseif( isset($slider_middlestart) && $slider_middlestart!='')
-            {
-                $sValue = $slider_middlestart;
-            }
+
 
             $sUnformatedValue = $sValue;
 

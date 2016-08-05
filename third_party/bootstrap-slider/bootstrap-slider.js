@@ -1,9 +1,9 @@
 /*! =======================================================
-                      VERSION  7.0.1              
+                      VERSION  9.1.1              
 ========================================================= */
 "use strict";
 
-function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 /*! =========================================================
  * bootstrap-slider.js
@@ -52,6 +52,21 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 		window.Slider = factory(window.jQuery);
 	}
 })(function ($) {
+	// Constants
+	var NAMESPACE_MAIN = 'slider';
+	var NAMESPACE_ALTERNATE = 'bootstrapSlider';
+
+	// Polyfill console methods
+	if (!window.console) {
+		window.console = {};
+	}
+	if (!window.console.log) {
+		window.console.log = function () {};
+	}
+	if (!window.console.warn) {
+		window.console.warn = function () {};
+	}
+
 	// Reference to Slider constructor
 	var Slider;
 
@@ -294,7 +309,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 		/*************************************************
   						CONSTRUCTOR
   	**************************************************/
-		Slider = function (element, options) {
+		Slider = function Slider(element, options) {
 			createNewSlider.call(this, element, options);
 			return this;
 		};
@@ -433,19 +448,18 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				/* Create ticks */
 				this.ticks = [];
 				if (Array.isArray(this.options.ticks) && this.options.ticks.length > 0) {
+					this.ticksContainer = document.createElement('div');
+					this.ticksContainer.className = 'slider-tick-container';
+
 					for (i = 0; i < this.options.ticks.length; i++) {
 						var tick = document.createElement('div');
 						tick.className = 'slider-tick';
-
 						this.ticks.push(tick);
-						sliderTrack.appendChild(tick);
+						this.ticksContainer.appendChild(tick);
 					}
 
 					sliderTrackSelection.className += " tick-slider-selection";
 				}
-
-				sliderTrack.appendChild(sliderMinHandle);
-				sliderTrack.appendChild(sliderMaxHandle);
 
 				this.tickLabels = [];
 				if (Array.isArray(this.options.ticks_labels) && this.options.ticks_labels.length > 0) {
@@ -500,6 +514,12 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				if (this.tickLabelContainer) {
 					this.sliderElem.appendChild(this.tickLabelContainer);
 				}
+				if (this.ticksContainer) {
+					this.sliderElem.appendChild(this.ticksContainer);
+				}
+
+				this.sliderElem.appendChild(sliderMinHandle);
+				this.sliderElem.appendChild(sliderMaxHandle);
 
 				/* Append slider element to parent container, right before the original <input> element */
 				parent.insertBefore(this.sliderElem, this.element);
@@ -710,7 +730,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				step: 1,
 				precision: 0,
 				orientation: 'horizontal',
-				value: 5,
+				value: null,
 				range: false,
 				selection: 'before',
 				tooltip: 'show',
@@ -750,7 +770,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 
 			setValue: function setValue(val, triggerSlideEvent, triggerChangeEvent) {
 				if (!val) {
-					val = 0;
+					val = null;
 				}
 				var oldValue = this.getValue();
 				this._state.value = this._validateInputValue(val);
@@ -1177,6 +1197,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 					var diff1 = Math.abs(this._state.percentage[0] - percentage);
 					var diff2 = Math.abs(this._state.percentage[1] - percentage);
 					this._state.dragged = diff1 < diff2 ? 0 : 1;
+					this._adjustPercentageForRangeSliders(percentage);
 				} else {
 					this._state.dragged = 0;
 				}
@@ -1574,20 +1595,20 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				if (this.options.orientation === 'vertical') {
 					var tooltipPos = this.options.tooltip_position || 'right';
 					var oppositeSide = tooltipPos === 'left' ? 'right' : 'left';
-					tooltips.forEach((function (tooltip) {
+					tooltips.forEach(function (tooltip) {
 						this._addClass(tooltip, tooltipPos);
 						tooltip.style[oppositeSide] = '100%';
-					}).bind(this));
+					}.bind(this));
 				} else if (this.options.tooltip_position === 'bottom') {
-					tooltips.forEach((function (tooltip) {
+					tooltips.forEach(function (tooltip) {
 						this._addClass(tooltip, 'bottom');
 						tooltip.style.top = 22 + 'px';
-					}).bind(this));
+					}.bind(this));
 				} else {
-					tooltips.forEach((function (tooltip) {
+					tooltips.forEach(function (tooltip) {
 						this._addClass(tooltip, 'top');
 						tooltip.style.top = -this.tooltip.outerHeight - 14 + 'px';
-					}).bind(this));
+					}.bind(this));
 				}
 			}
 		};
@@ -1596,13 +1617,23 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
   		Attach to global namespace
   	*********************************/
 		if ($) {
-			var namespace = $.fn.slider ? 'bootstrapSlider' : 'slider';
-			$.bridget(namespace, Slider);
+			(function () {
+				var autoRegisterNamespace = void 0;
 
-			// Auto-Register data-provide="slider" Elements
-			$(function () {
-				$("input[data-provide=slider]")[namespace]();
-			});
+				if (!$.fn.slider) {
+					$.bridget(NAMESPACE_MAIN, Slider);
+					autoRegisterNamespace = NAMESPACE_MAIN;
+				} else {
+					window.console.warn("bootstrap-slider.js - WARNING: $.fn.slider namespace is already bound. Use the $.fn.bootstrapSlider namespace instead.");
+					autoRegisterNamespace = NAMESPACE_ALTERNATE;
+				}
+				$.bridget(NAMESPACE_ALTERNATE, Slider);
+
+				// Auto-Register data-provide="slider" Elements
+				$(function () {
+					$("input[data-provide=slider]")[autoRegisterNamespace]();
+				});
+			})();
 		}
 	})($);
 

@@ -109,7 +109,7 @@ class Notification extends LSActiveRecord
     /**
      * Check so all mandatory fields are defined when constructing
      * a new notification.
-     * @param array $fields
+     * @param array<string, string> $options
      * @param string[] $mandatory
      * @return void
      * @throws InvalidArgumentException
