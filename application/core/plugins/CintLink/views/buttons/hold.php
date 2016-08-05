@@ -1,6 +1,6 @@
 <a 
     class='btn btn-default btn-sm <?php echo $readonly; ?> ' 
-    href='https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=" . htmlspecialchars($this->url) . "' 
+    href='https://www.limesurvey.org/index.php?option=com_nbill&action=orders&task=order&cid=10&ctl_order_id=<?php echo htmlspecialchars($order->url); ?>' 
     target='_blank'
     <?php if ($order->ordered_by != $user->id): ?>
         data-toggle='tooltip'
