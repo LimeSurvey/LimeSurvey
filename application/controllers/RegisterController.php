@@ -144,7 +144,7 @@ class RegisterController extends LSYii_Controller {
             
             if (!$captchaCorrect)
             {
-                $this->aRegisterErrors[] = gT("The answer to the security question is incorrect.");
+                $this->aRegisterErrors[] = gT("Your answer to the security question was not correct - please try again.");
             }
         }
 

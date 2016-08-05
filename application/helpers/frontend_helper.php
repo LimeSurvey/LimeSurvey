@@ -986,7 +986,7 @@ function buildsurveysession($surveyid,$preview=false)
         {
             if (isset($loadsecurity))
             { // was a bad answer
-                $FlashError.=gT("The content of the captcha is incorrect.")."<br/>\n";
+                $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
             }
             $renderCaptcha='main';
         }
