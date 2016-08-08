@@ -234,7 +234,7 @@ class CintLinkOrder extends CActiveRecord
      * Used in grid view.
      * @return string
      */
-    public function getInfo()
+    public function getTargetGroup()
     {
         $result = '';
         $raw = $this->raw;
@@ -258,7 +258,7 @@ class CintLinkOrder extends CActiveRecord
     public function getPrice()
     {
         $xml = new SimpleXmlElement($this->raw);
-        return (string) $xml->quote . ' &#8364;';  // Euro sign
+        return (string) $xml->quote . '&#8364;';  // Euro sign
     }
 
     /**

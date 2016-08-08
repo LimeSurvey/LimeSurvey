@@ -54,9 +54,9 @@
         'value' => '$data->user->full_name'
     );
     $columns[] = array(
-        'name' => 'info',
-        'header' => $plugin->gT('Info'),
-        'value' => '$data->info'
+        'name' => 'target-group',
+        'header' => $plugin->gT('Target group'),
+        'value' => '$data->targetGroup'
     );
     $columns[] = array(
         'name' => 'age',
