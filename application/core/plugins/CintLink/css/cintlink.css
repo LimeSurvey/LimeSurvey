@@ -1,7 +1,7 @@
 .ajaxLoading {
     display: block;
     position: absolute;
-    min-height: 99%;
+    min-height: 99%;  /* TODO: Too long */
     min-width: 100%;
     background-color: white;
     opacity: 0.9;
@@ -11,6 +11,7 @@
 
 .ajaxLoading .preloader {
     position: relative;
+    top: 1%;
 }
 
 /* Don't shrink font in label */

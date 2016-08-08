@@ -242,6 +242,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     protected function checkCintActive($surveyId)
     {
+        $this->log('checkCintActive begin');
+
         // No need to nag when user tries to activate survey
         if ($this->userIsActivatingSurvey())
         {
@@ -264,26 +266,27 @@ class CintLink extends \ls\pluginmanager\PluginBase
             $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
             $orders = $this->getOrders(array(
                 'sid' => $surveyId,
-                'deleted' => false,
-                'status' => 'hold'  // TODO: Also fetch new/live orders?
+                'deleted' => false
             ));
 
             if (empty($orders))
             {
                 // Possible?
-                $this->log('Internal error: beforeControllerAction: Looking for Cint orders on hold but found nothing');
+                $this->log('Internal error: beforeControllerAction: Looking for Cint orders but found nothing');
                 $this->set('cint_active_' . $surveyId, false);
                 return;
             }
 
             // Check if any order is paid and/or live
-            if (!$surveyIsActive && $this->anyOrderHasStatus($orders, array('new', 'live', 'hold')))
+            $anyOrderIsActive = $this->anyOrderHasStatus($orders, array('new', 'live', 'hold'));
+            $this->log('anyOrderIsActive = ' . $anyOrderIsActive);
+            if (!$surveyIsActive && $anyOrderIsActive)
             {
                 $this->showNaggingNotification(
-                    $this->gT(
-                        'A Cint order is paid or about to be paid, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.',
+                    sprintf($this->gT(
+                        'A Cint order is paid or about to be paid, but survey %s is not activated. Please activate it <i>as soon as possible</i> to enable the review process.',
                         'js'
-                    ),
+                    ), $survey->defaultlanguage->surveyls_title),
                     $surveyId
                 );
             }
@@ -371,7 +374,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $data = array();
         $data['common'] = $this->renderPartial('common', $data, true);
-        $this->renderCommonJs($surveyId);
+        $this->renderCommonJs();
 
         $content = $this->renderPartial('indexGlobal', $data, true);
 
@@ -1039,7 +1042,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * @return void
      */
     protected function showNaggingNotification($message, $surveyId) {
-        $nagId = $this->get('nag_id_ ' . $surveyId);
+        $nagId = $this->get('nag_id_' . $surveyId);
 
         if (empty($nagId))
         {
@@ -1075,7 +1078,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     protected function createNewNagNotification($message, $surveyId)
     {
         $not = new Notification(array(
-            'user_id' => Yii::app()->user->id,
+            'survey_id' => $surveyId,
             'importance' => Notification::HIGH_IMPORTANCE,
             'title' => $this->gT('Cint warning'),
             'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' . $message
@@ -1083,16 +1086,16 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $not->save();
 
         // Save the nag notification id in plugin settings
-        $this->set('nag_id_ ' . $surveyId, $not->id);
+        $this->set('nag_id_' . $surveyId, $not->id);
     }
 
     /**
      * Echoes Javascript code that is common for all scripts
      * Only runs if it's NOT an Ajax call
-     * @param int $iSurveyId
+     * @param int $surveyId Null in global view
      * @return void
      */
-    protected function renderCommonJs($surveyId)
+    protected function renderCommonJs($surveyId = null)
     {
         $isAjax = Yii::app()->request->getParam('ajax');
 
