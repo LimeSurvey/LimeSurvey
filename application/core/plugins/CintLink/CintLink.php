@@ -256,8 +256,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
         if ($cintActive)
         {
             // Include Javascript that will update the orders async
+            $this->renderCommonJs($surveyId);  // TODO: This is rendered twice on Cint views
             $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
-            App()->clientScript->registerCssFile("$assetsUrl/checkOrders.js");
+            App()->clientScript->registerScriptFile("$assetsUrl/checkOrders.js");
 
             $survey = Survey::model()->findByPk($surveyId);
             $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
@@ -278,7 +279,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
             // Check if any order is paid and/or live
             if (!$surveyIsActive && $this->anyOrderHasStatus($orders, array('new', 'live', 'hold')))
             {
-                $this->showNotification($this->gT('A Cint order is paid or about to be paid, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.', 'js'));
+                $this->showNaggingNotification(
+                    $this->gT(
+                        'A Cint order is paid or about to be paid, but the survey is not activated. Please activate it <i>as soon as possible</i> to enable the review process.',
+                        'js'
+                    ),
+                    $surveyId
+                );
             }
             else
             {
@@ -290,7 +297,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Returns true if user is on survey activation page
+     * Returns true if user is on survey activation page OR the controller is notification
      * @return bool
      */
     protected function userIsActivatingSurvey()
@@ -302,7 +309,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->log('controller = ' . $controller . ', action = ' . $action . ', subaction = ' . $subaction);
 
         $userIsActivatingSurvey = $controller == 'admin' && $action == 'survey' && $subaction == 'activate';
-        if ($userIsActivatingSurvey)
+        $fetchingNotifications = $controller == 'admin' && $action == 'notification';
+        if ($userIsActivatingSurvey || $fetchingNotifications)
         {
             return true;
         }
@@ -341,19 +349,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function actionIndex($surveyId)
     {
-        $pluginBaseUrl = Yii::app()->createUrl(
-            'admin/pluginhelper',
-            array(
-                'sa' => 'ajax',
-                'plugin' => 'CintLink',
-                'surveyId' => $surveyId,
-            )
-        );
-
         $data = array();
-        $data['pluginBaseUrl'] = $pluginBaseUrl;
         $data['surveyId'] = $surveyId;
         $data['common'] = $this->renderPartial('common', $data, true);
+        $this->renderCommonJs($surveyId);
 
         $content = $this->renderPartial('index', $data, true);
 
@@ -370,17 +369,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function actionIndexGlobal()
     {
-        $pluginBaseUrl = Yii::app()->createUrl(
-            'admin/pluginhelper',
-            array(
-                'sa' => 'ajax',
-                'plugin' => 'CintLink'
-            )
-        );
-
         $data = array();
-        $data['pluginBaseUrl'] = $pluginBaseUrl;
         $data['common'] = $this->renderPartial('common', $data, true);
+        $this->renderCommonJs($surveyId);
 
         $content = $this->renderPartial('indexGlobal', $data, true);
 
@@ -833,10 +824,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Update all orders for this survey
+     *
+     * @param LSHttpRequest $request
      */
-    public function updateAllOrders($surveyId)
+    public function updateAllOrders($request)
     {
         $this->log('updateAllOrders begin');
+        $surveyId = $request->getParam('surveyId');
         try
         {
             $orders = CintLinkOrder::model()->findAllByAttributes(
@@ -1038,12 +1032,48 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Show flash error message
+     * Show a nagging notification
      *
      * @param string $message
+     * @param int $surveyId
      * @return void
      */
-    protected function showNotification($message) {
+    protected function showNaggingNotification($message, $surveyId) {
+        $nagId = $this->get('nag_id_ ' . $surveyId);
+
+        if (empty($nagId))
+        {
+            // Only a popup first time
+            $this->createNewNagNotification($message, $surveyId);
+        }
+        else
+        {
+            // All other times it's a normal notification that is unread
+            $not = Notification::model()->findByPk($nagId);
+
+            // Can still be empty if it's removed by clicking "Delete all notifications"
+            if (empty($not))
+            {
+                $this->createNewNagNotification($message, $surveyId);
+            }
+            else
+            {
+                $not->status = 'new';
+                $not->importance = Notification::NORMAL_IMPORTANCE;
+                $not->save();
+            }
+        }
+    }
+
+    /**
+     * Create a new notification and save its id in plugin settings
+     *
+     * @param string $message
+     * @param int $surveyId
+     * @return void
+     */
+    protected function createNewNagNotification($message, $surveyId)
+    {
         $not = new Notification(array(
             'user_id' => Yii::app()->user->id,
             'importance' => Notification::HIGH_IMPORTANCE,
@@ -1051,6 +1081,37 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' . $message
         ));
         $not->save();
+
+        // Save the nag notification id in plugin settings
+        $this->set('nag_id_ ' . $surveyId, $not->id);
+    }
+
+    /**
+     * Echoes Javascript code that is common for all scripts
+     * Only runs if it's NOT an Ajax call
+     * @param int $iSurveyId
+     * @return void
+     */
+    protected function renderCommonJs($surveyId)
+    {
+        $isAjax = Yii::app()->request->getParam('ajax');
+
+        if (!$isAjax)
+        {
+            $data = array();
+            $data['surveyId'] = $surveyId;
+            $data['pluginBaseUrl'] = Yii::app()->createUrl(
+                'admin/pluginhelper',
+                array(
+                    'sa' => 'ajax',
+                    'plugin' => 'CintLink',
+                    'surveyId' => $surveyId,
+                    'ajax' => 1
+                )
+            );
+
+            $this->renderPartial('common_js', $data);
+        }
     }
 
 }

@@ -7,7 +7,9 @@
  * @since 2016-08-05
  */
 
+var LS = LS || {};
 $(document).ready(function() {
+    console.log('checkOrders');
     $.ajax({
         url: LS.plugin.cintlink.pluginBaseUrl + '&method=updateAllOrders',
         surveyId: LS.plugin.cintlink.surveyId,
