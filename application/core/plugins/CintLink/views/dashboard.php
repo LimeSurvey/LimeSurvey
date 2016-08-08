@@ -59,6 +59,28 @@
         'value' => '$data->info'
     );
     $columns[] = array(
+        'name' => 'age',
+        'header' => $plugin->gT('Age'),
+        'value' => '$data->age',
+        'htmlOptions' => array(
+            'class' => 'cint-age'
+        )
+    );
+    $columns[] = array(
+        'name' => 'price',
+        'header' => $plugin->gT('Price'),
+        'value' => '$data->price',
+        'type' => 'raw',
+        'htmlOptions' => array(
+            'class' => 'cint-price'
+        )
+    );
+    $columns[] = array(
+        'name' => 'completes',
+        'header' => $plugin->gT('Completes'),
+        'value' => '$data->completes',
+    );
+    $columns[] = array(
         'name' => '__completedCheck',
         'header' => '',
         'value' => '$data->completedCheck',
@@ -74,7 +96,10 @@
         'name' => 'buttons',
         'header' => '',
         'value' => '$data->buttons',
-        'type' => 'raw'
+        'type' => 'raw',
+        'htmlOptions' => array(
+            'class' => 'cint-buttons'
+        )
     );
 
     $widget = $this->widget('bootstrap.widgets.TbGridView', array(

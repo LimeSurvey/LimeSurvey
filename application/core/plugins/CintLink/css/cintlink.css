@@ -41,3 +41,7 @@
 .cinticon:before {
 	content: '\e900';
 }
+
+.cint-price, .cint-age, .cint-buttons {
+    white-space: nowrap;
+}

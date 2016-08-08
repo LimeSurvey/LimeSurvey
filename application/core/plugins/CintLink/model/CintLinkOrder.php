@@ -177,8 +177,10 @@ class CintLinkOrder extends CActiveRecord
                 return '<span class="label label-danger">' . $plugin->gT(ucfirst($this->status)) . '</span>';
                 break;
             case 'new':
-                return gT('Under review');
+                return $plugin->gT('Under review');
                 break;
+            case 'hold':
+                return $plugin->gT('Wating for payment');
             default:
                 return $plugin->gT(ucfirst($this->status));
                 break;
@@ -249,4 +251,47 @@ class CintLinkOrder extends CActiveRecord
         return $result;
     }
 
+    /**
+     * Get price from raw XML
+     * @return string
+     */
+    public function getPrice()
+    {
+        $xml = new SimpleXmlElement($this->raw);
+        return (string) $xml->quote . ' &#8364;';  // Euro sign
+    }
+
+    /**
+     * Get number of ordered complete surveys from raw XML
+     * @return string
+     */
+    public function getCompletes()
+    {
+        $xml = new SimpleXmlElement($this->raw);
+        return (string) $xml->{'number-of-completes'};
+    }
+
+    /**
+     * Age
+     * Used in grid view
+     * @return string
+     */
+    protected function getAge()
+    {
+        $minAge = null;
+        $maxAge = null;
+        $xml = new SimpleXmlElement($this->raw);
+        $targetGroup = $xml->{'target-group'};
+        foreach ($targetGroup->children() as $tag => $target) {
+            if ($tag == 'min-age')
+            {
+                $minAge = (string) $target;
+            }
+            else if ($tag == 'max-age')
+            {
+                $maxAge = (string) $target;
+            }
+        }
+        return $minAge . '-' . $maxAge;
+    }
 }
