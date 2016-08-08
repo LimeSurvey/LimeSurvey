@@ -177,13 +177,13 @@ function deleteinput()
 /**
  * add addinputQuickEdit : for usage with the quickAdd Button
  */
-function addinputQuickEdit($currentTable, subquestionText, subquestionCode, language, first, scale_id, codes)
+function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 {
     codes = codes || [];
     var $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
         $url                   = $elDatas.data('quickurl'),         // Url for the request
         $errormessage          = $elDatas.data('errormessage'),     // the error message if the AJAX request failed
-        qid = "new"+Math.floor(Math.random()*10000),
+        qid = "{{quid_placeholder}}",
         $defer                 = $.Deferred(),
         $codes, datas;
 
@@ -220,17 +220,7 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
         data: datas,
         success: function(htmlrow) {
             var $lang_table = $('#answers_'+language+'_'+scale_id);
-            var htmlRowObject = $(htmlrow);
-            htmlRowObject.find('input.answer').val(subquestionText);
-            if(htmlRowObject.find('input.code').length > 0)
-            {
-                htmlRowObject.find('input.code').val(subquestionCode);
-            } 
-            else 
-            {
-                htmlRowObject.find('td.code-title').text(subquestionCode);
-            }
-            $defer.resolve({langtable: $lang_table, html: htmlRowObject});                                // We insert the HTML of the new row after this one
+            $defer.resolve({lng: language, langtable: $lang_table, html: htmlrow});
         },
         error :  function(html, statut){
             alert($errormessage);
@@ -831,6 +821,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 
     languages=langs.split(';');
     var promises = [];
+    var answers = [];
     var separatorchar;
     var lsrows=$('#quickaddarea').val().split("\n");
     var allrows = $('.answertable:eq('+scale_id+') tbody tr').length;
@@ -883,8 +874,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         {
             thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,20);
         }
-        var randomid='new'+Math.floor(Math.random()*111111);
-
+        var quid = "new"+(Math.floor(Math.random()*10000));
         for (var x in languages)
         {
             if (typeof thisrow[parseInt(x)+1]=='undefined')
@@ -893,14 +883,15 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             }
                 
             var lang_active = languages[x];
-        
+            if(!answers[lang_active]){
+                answers[lang_active] = [];
+            }
             if (lsreplace)
             {
                 $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
             }
-            
-            promises.push(
-                addinputQuickEdit(closestTable, thisrow[(parseInt(x)+1)], thisrow[0] ,lang_active, (x==0), scale_id, codes)
+            answers[lang_active].push(
+                {text: thisrow[(parseInt(x)+1)], code: thisrow[0], quid: quid}
             );
         }
         
@@ -913,11 +904,39 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
         $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
     }
+    for (var x in languages)
+    {
+        if (typeof thisrow[parseInt(x)+1]=='undefined')
+        {
+            thisrow[parseInt(x)+1]=thisrow[1];
+        }
+            
+        var lang_active = languages[x];
+        promises.push(
+            addinputQuickEdit(closestTable, lang_active, (x==0), scale_id, codes)
+        );
+    }
     $.when.apply($,promises).done(
             function(){
                 /*$('#quickadd').dialog('close');*/
                 $.each(arguments, function(i,item){
-                        item.langtable.find('tbody').append(item.html);
+                    $.each(answers[item.lng], function(j,row){
+                        var html = item.html;
+                        var html_quid = html.replace(/({{quid_placeholder}})/g,row.quid);
+                        var htmlRowObject = $(html_quid);
+                        htmlRowObject.find('input.answer').val(row.text);
+                        if(htmlRowObject.find('input.code').length > 0)
+                        {
+                            htmlRowObject.find('input.code').val(row.code);
+                        } 
+                        else 
+                        {
+                            htmlRowObject.find('td.code-title').text(row.code);
+                        }
+                        htmlRowObject.find('td.relevance-equation').find('input').val(1);
+
+                        item.langtable.find('tbody').append(htmlRowObject);
+                    })
                 });
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');
