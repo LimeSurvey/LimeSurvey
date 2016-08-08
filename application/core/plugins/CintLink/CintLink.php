@@ -727,6 +727,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Get survey information
+     * Used by Cint widget.
      *
      * @param LSHttpRequest $request
      * @return string JSON

@@ -292,6 +292,13 @@ class CintLinkOrder extends CActiveRecord
                 $maxAge = (string) $target;
             }
         }
-        return $minAge . '-' . $maxAge;
+
+        $result = $minAge . '-' . $maxAge;
+        if (strlen($result) == 3)  // E.g. 15- or 31-
+        {
+            $result[2] = '+';
+        }
+
+        return $result;
     }
 }
