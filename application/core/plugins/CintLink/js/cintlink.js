@@ -18,8 +18,6 @@ $(document).ready(function() {
         $('.ajaxLoading').hide();
     }
 
-    hideLoader();
-
     /**
      * Run when user click "Login"
      *
@@ -63,6 +61,7 @@ $(document).ready(function() {
      * @return
      */
     function showLoginForm() {
+        hideLoader();
         $.ajax({
             method: 'POST',
             url: LS.plugin.cintlink.pluginBaseUrl + '&method=getLoginForm'
