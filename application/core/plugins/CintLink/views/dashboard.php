@@ -54,6 +54,11 @@
         'value' => '$data->user->full_name'
     );
     $columns[] = array(
+        'name' => 'info',
+        'header' => $plugin->gT('Info'),
+        'value' => '$data->info'
+    );
+    $columns[] = array(
         'name' => '__completedCheck',
         'header' => '',
         'value' => '$data->completedCheck',

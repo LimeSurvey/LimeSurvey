@@ -227,4 +227,22 @@ class CintLinkOrder extends CActiveRecord
         
     }
 
+    /**
+     * Traverse raw HTML and get target groups info.
+     * Used in grid view.
+     * @return string
+     */
+    public function getInfo()
+    {
+        $result = '';
+        $raw = $this->raw;
+        $xml = new SimpleXmlElement($raw);
+        $targetGroup = $xml->{'target-group'};
+        foreach ($targetGroup->children() as $target) {
+            $result .= (string) $target->name . ', ';
+        }
+        $result = trim($result, ', ');
+        return $result;
+    }
+
 }
