@@ -293,6 +293,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             else
             {
                 // No order is on hold, new/review or live. So completed or cancelled. Unset all flags.
+                $this->hideNaggingNotication($surveyId);
                 $this->set('cint_active_' . $surveyId, false);
             }
         }
@@ -1063,6 +1064,24 @@ class CintLink extends \ls\pluginmanager\PluginBase
             {
                 $not->status = 'new';
                 $not->importance = Notification::NORMAL_IMPORTANCE;
+                $not->save();
+            }
+        }
+    }
+
+    /**
+     * Set the nagging notification to read
+     * @return void
+     */
+    protected function hideNaggingNotication($surveyId)
+    {
+        $nagId = $this->get('nag_id_' . $surveyId);
+        if (!empty($nagId))
+        {
+            $not = Notification::model()->findByPk($nagId);
+            if (!empty($not))
+            {
+                $not->status = 'read';
                 $not->save();
             }
         }
