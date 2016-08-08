@@ -974,7 +974,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Returns true if any order in $order is in state 'new' or 'live'
+     * Returns true if any order in $orders is in any state in $statuses.
      * Make sure to run updateOrders on $orders before calling this.
      *
      * @param array<CintLinkOrder>|CintLinkOrder $orders

@@ -25,6 +25,53 @@
 <h4>Orders</h4>
 <div id='cintlink-gridview'>
 <?php 
+    $columns = array();
+    $columns[] = array(
+        'name' => 'url',
+        'header' => 'ID',
+        'value' => 'substr($data->url, 47)'
+    );
+    $columns[] = array(
+        'name' => 'created',
+        'header' => $plugin->gT('Created'),
+        'value' => '$data->formattedCreatedDate'
+    );
+
+    // Only needed on global dashboard
+    if (empty($surveyId))
+    {
+        $columns[] = array(
+            'name' => 'sid',
+            'header' => $plugin->gT('Survey ID'),
+            'value' => '$data->surveyIdLink',
+            'type' => 'raw'
+        );
+    }
+
+    $columns[] = array(
+        'name' => 'ordered_by',
+        'header' => $plugin->gT('Ordered by'),
+        'value' => '$data->user->full_name'
+    );
+    $columns[] = array(
+        'name' => '__completedCheck',
+        'header' => '',
+        'value' => '$data->completedCheck',
+        'type' => 'raw'
+    );
+    $columns[] = array(
+        'name' => 'status',
+        'header' => $plugin->gT('Status'),
+        'value' => '$data->styledStatus',
+        'type' => 'raw'
+    );
+    $columns[] = array(
+        'name' => 'buttons',
+        'header' => '',
+        'value' => '$data->buttons',
+        'type' => 'raw'
+    );
+
     $widget = $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider' => $model->search($surveyId),
         'id' => 'url',
@@ -32,47 +79,7 @@
         'emptyText' => $plugin->gT('No order made yet'),
         'afterAjaxUpdate' => 'doToolTip',
         'ajaxUpdate' => true,
-        'columns' => array(
-            array(
-                'name' => 'url',
-                'header' => 'ID',
-                'value' => 'substr($data->url, 47)'
-            ),
-            array(
-                'name' => 'created',
-                'header' => $plugin->gT('Created'),
-                'value' => '$data->formattedCreatedDate'
-            ),
-            array(
-                'name' => 'sid',
-                'header' => $plugin->gT('Survey ID'),
-                'value' => '$data->surveyIdLink',
-                'type' => 'raw'
-            ),
-            array(
-                'name' => 'ordered_by',
-                'header' => $plugin->gT('Ordered by'),
-                'value' => '$data->user->full_name'
-            ),
-            array(
-                'name' => '__completedCheck',
-                'header' => '',
-                'value' => '$data->completedCheck',
-                'type' => 'raw'
-            ),
-            array(
-                'name' => 'status',
-                'header' => $plugin->gT('Status'),
-                'value' => '$data->styledStatus',
-                'type' => 'raw'
-            ),
-            array(
-                'name' => 'buttons',
-                'header' => '',
-                'value' => '$data->buttons',
-                'type' => 'raw'
-            )
-        )
+        'columns' => $columns
     ));
 ?>
 </div>
