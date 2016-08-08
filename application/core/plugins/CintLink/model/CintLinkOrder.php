@@ -239,7 +239,11 @@ class CintLinkOrder extends CActiveRecord
         $xml = new SimpleXmlElement($raw);
         $targetGroup = $xml->{'target-group'};
         foreach ($targetGroup->children() as $target) {
-            $result .= (string) $target->name . ', ';
+            $content = (string) $target->name;
+            if ($content != '')
+            {
+                $result .= (string) $target->name . ', ';
+            }
         }
         $result = trim($result, ', ');
         return $result;
