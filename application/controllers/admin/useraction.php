@@ -379,7 +379,9 @@ class UserAction extends Survey_Common_Action
                 $aData['aUserData'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
-                $aData['fullpagebar']['closebutton']['url'] = 'admin';  // Close button
+                // Close button, UrlReferrer;
+                $aData['fullpagebar']['closebutton']['url_keep'] = true;
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
@@ -586,7 +588,8 @@ class UserAction extends Survey_Common_Action
                 $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'userpermissions.js');
 
                 $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
-                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
+                $aData['fullpagebar']['closebutton']['url_keep'] = true;
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
 
                 $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
             }
@@ -628,7 +631,8 @@ class UserAction extends Survey_Common_Action
         }
 
         $aData['fullpagebar']['savebutton']['form'] = 'modtemplaterightsform';
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
+        $aData['fullpagebar']['closebutton']['url_keep'] = true;
+        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
 
         $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
@@ -744,7 +748,8 @@ class UserAction extends Survey_Common_Action
 
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';  // Close button
+        $aData['fullpagebar']['closebutton']['url_keep'] = true;
+        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
 
         // Render personal settings view
         if (isset($_POST['saveandclose']))

@@ -98,7 +98,7 @@ class GlobalSettings extends Survey_Common_Action
 
         $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
+        $data['fullpagebar']['closebutton']['url'] = Yii::app()->createUrl('admin/');  // Close button
 
         // List of available encodings
         $data['aEncodings'] = aEncodingsArray();

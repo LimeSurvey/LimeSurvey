@@ -108,6 +108,15 @@ class User extends LSActiveRecord
         ->queryRow();
         return $user;
     }
+    public function getParentUser(){
+        $parent_user = $this->parentAndUser( $this->uid );
+        return $parent_user['full_name'];
+    }
+
+    public function getSurveysCreated(){
+        $noofsurveys = Survey::model()->countByAttributes(array("owner_id" =>$this->uid));
+        return $noofsurveys;
+    }
 
     /**
     * Returns onetime password
@@ -328,8 +337,9 @@ class User extends LSActiveRecord
                 title='".gT("Edit this user")."' 
                 data-url='".$editUrl."' 
                 data-uid='".$this->uid."' 
+                data-user='".$this->getName($this->uid)[0]['full_name']."' 
                 data-action='modifyuser' 
-                class='btn btn-default btn-xs user_admin_edit_user'>
+                class='btn btn-default btn-xs action_usercontrol_button'>
                     <span class='fa fa-pencil text-success'></span>
                 </button>";
             if ($this->parent_id != 0 && Permission::model()->hasGlobalPermission('users','delete') ) 
@@ -338,7 +348,7 @@ class User extends LSActiveRecord
                 data-toggle='modal' 
                 data-href='#' 
                 data-onclick='$.post(".$deleteUrl.", 
-                        {action: \"deluser\", uid:\"".$this->uid."\", user: \"".htmlspecialchars(Yii::app()->user->user)."\"});' 
+                        {action: \"deluser\", uid:\"".$this->uid."\", user: \"".htmlspecialchars(Yii::app()->user->users_name)."\"});' 
                 data-target='#confirmation-modal' 
 
                 data-uid='".$this->uid."' 
@@ -354,7 +364,7 @@ class User extends LSActiveRecord
                 || (Permission::model()->hasGlobalPermission('users','update') 
                 && $this->parent_id == Yii::app()->session['loginID'])) 
             {
-                $editUser = "<button data-toggle='tooltip' title='".gT("Edit this user")."' type='submit' class='btn btn-default btn-xs'><span class='fa fa-pencil text-success'></span></button>";
+                $editUser = "<button data-toggle='tooltip' data-url='".$editUrl."' data-user='".$this->getName($this->uid)[0]['full_name']."' data-uid='".$this->uid."' data-action='modifyuser' title='".gT("Edit this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
             }
 
             if (((Permission::model()->hasGlobalPermission('superadmin','read') &&
@@ -363,14 +373,14 @@ class User extends LSActiveRecord
                 $this->parent_id == Yii::app()->session['loginID'])) && $this->uid!=1) 
                 { 
                 //'admin/user/sa/setuserpermissions'
-                    $setPermissionsUser = "<button data-toggle='tooltip' title='".gT("Set global permissions for this user")."' type='submit' class='btn btn-default btn-xs'><span class='icon-security text-success'></span></button>";
+                    $setPermissionsUser = "<button data-toggle='tooltip' data-user='".$this->getName($this->uid)[0]['full_name']."' data-url='".$setPermissionsUrl."' data-uid='".$this->uid."' data-action='setuserpermissions' title='".gT("Set global permissions for this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
                 }
             if ((Permission::model()->hasGlobalPermission('superadmin','read') 
                 || Permission::model()->hasGlobalPermission('templates','read'))  
                 && $this->uid!=1) 
                 { 
                 //'admin/user/sa/setusertemplates')
-                    $setTemplatePermissionUser = "<button type='submit' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs'><span class='icon-templatepermissions text-success'></span></button>";
+                    $setTemplatePermissionUser = "<button type='submit' data-user='".$this->getName($this->uid)[0]['full_name']."' data-url='".$setTemplatePermissionsUrl."' data-uid='".$this->uid."' data-action='setusertemplates' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
                 }
                 if ((Permission::model()->hasGlobalPermission('superadmin','read') 
                     || (Permission::model()->hasGlobalPermission('users','delete')  
@@ -383,19 +393,22 @@ class User extends LSActiveRecord
                     ));
                      //'admin/user/sa/deluser'
                     $deleteUser = "<button 
+                        id='delete_user_".$this->uid."' 
                         data-toggle='modal' 
-                        data-href='".$deleteUrl."' 
                         data-target='#confirmation-modal' 
+                        data-url='".$deleteUrl."' 
                         data-uid='".$this->uid."' 
+                        data-user='".$this->getName($this->uid)[0]['full_name']."' 
                         data-action='deluser' 
+                        data-onclick='triggerRunAction($(\"#delete_user_".$this->uid."\"))' 
                         data-message='".gT("Delete this user")."' 
-                        class='btn btn-default btn-xs'>
+                        class='btn btn-default btn-xs '>
                             <span class='fa fa-trash  text-danger'></span>
                         </button>";
                     }
                 if (Yii::app()->session['loginID'] == "1" && $this->parent_id !=1 ) {
                 //'admin/user/sa/setasadminchild'
-                    $changeOwnership = "<button data-toggle='tooltip' title='".gT("Take ownership")."' class='btn btn-default btn-sm' type='submit'><span class='icon-takeownership text-success'></span></button>";
+                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".$this->getName($this->uid)[0]['full_name']."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-sm action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
                 }
         }
         return "<div>"
@@ -407,6 +420,43 @@ class User extends LSActiveRecord
             . "</div>";
     }
 
+    public function getColums(){
+        $cols = array( 
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Buttons")
+            ),
+            array(
+                "name" => 'uid',
+                "header" => gT("User ID")
+            ),
+            array(
+                "name" => 'users_name',
+                "header" => gT("Username")
+            ),
+            array(
+                "name" => 'email',
+                "header" => gT("Email")
+            ),
+            array(
+                "name" => 'full_name',
+                "header" => gT("Full name")
+            )
+        );
+        if(Permission::model()->hasGlobalPermission('superadmin','read')) {
+            $cols[] = array(
+                "name" => 'surveysCreated',
+                "header" => gT("No of surveys")
+            );
+        }
+
+        $cols[] = array(
+            "name" => 'parentUser',
+            "header" => gT("Created by")
+        );
+        return $cols;
+    }
    /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -439,7 +489,6 @@ class User extends LSActiveRecord
         // $criteria->compare('dateformat',$this->dateformat);
         // $criteria->compare('created',$this->created,true);
         // $criteria->compare('modified',$this->modified,true);
-
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
