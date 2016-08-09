@@ -106,7 +106,13 @@ $(document).ready(function()
     // Make the label clickable
     $('.label-clickable').each(function(){
         var $that    = $(this);
-        var $inputEl = $("#"+$that.attr('id').replace("label-", ""));
+        var attrId = $that.attr('id');
+        if(attrId!=undefined){
+            attrId = attrId.replace("label-", "");
+        } else {
+            attrId = "";
+        }
+        var $inputEl = $("#"+attrId);
         $that.on('click', function(){
             console.log($inputEl.attr('id'));
             $inputEl.trigger( "click" );

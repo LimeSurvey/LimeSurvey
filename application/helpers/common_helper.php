@@ -3951,65 +3951,6 @@ function getUpdateInfo()
 }
 
 /**
-* This function updates the actual global variables if an update is available after using getUpdateInfo
-*
-* Not used anymore.
-*
-* @return Array with update or error information
-*/
-function updateCheck()
-{
-    /*
-    $aUpdateVersions=getUpdateInfo();
-
-    if (isset($aUpdateVersions['errorcode']))
-    {
-        Yii::app()->setFlashMessage(sprintf(gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
-        $aUpdateVersions=array();
-    }
-    if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
-    {
-        $sUpdateNotificationType = getGlobalSetting('updatenotification');
-        switch ($sUpdateNotificationType)
-        {
-            case 'stable':
-                // Only show update if in stable (master) branch
-                if (isset($aUpdateVersions['master'])) {
-                    $aUpdateVersion=$aUpdateVersions['master'];
-                    $aUpdateVersions=array_intersect_key($aUpdateVersions,array('master'=>'1'));
-                }
-                break;
-
-            case 'both':
-                // Show first available update
-                $aUpdateVersion=reset($aUpdateVersions);
-                break;
-
-            default:
-                // Never show a notification
-                $aUpdateVersions=array();
-                break;
-        }
-    }
-
-    setGlobalSetting('updateversions',json_encode($aUpdateVersions));
-
-
-    if (isset($aUpdateVersion)) {
-        setGlobalSetting('updateavailable',1);
-        setGlobalSetting('updatebuild',$aUpdateVersion['build']);
-        setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
-    } else {
-        setGlobalSetting('updateavailable',0);
-        $aUpdateVersions = array();
-    }
-
-    setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
-    return $aUpdateVersions;
-     */
-}
-
-/**
 * Return the goodchars to be used when filtering input for numbers.
 *
 * @param $lang     string    language used, for localisation
