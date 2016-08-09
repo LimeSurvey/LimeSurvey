@@ -140,8 +140,7 @@ class AdminTheme extends CFormModel
 
             App()->getClientScript()->registerPackage('jqueryui');          // jqueryui
             App()->getClientScript()->registerPackage('jquery-cookie');     // jquery-cookie
-            App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if needed
-
+            App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if neede
         }
 
         $aCssFiles = array();
@@ -204,6 +203,8 @@ class AdminTheme extends CFormModel
 
         Yii::app()->clientScript->addPackage( 'admin-theme', $package);         // add the package
         Yii::app()->clientScript->registerPackage('admin-theme');               // register the package
+        Yii::app()->clientScript->registerPackage('moment');                    // register moment for correct dateTime calculation
+
     }
 
 

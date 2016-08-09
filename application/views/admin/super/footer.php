@@ -88,5 +88,25 @@
     </div>
 </div>
 
+<!-- Modal for admin notifications -->
+<div id="admin-notification-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+                <span class='notification-date text-muted'></span>
+            </div>
+            <div class="modal-body">
+                <p class='modal-body-text'></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

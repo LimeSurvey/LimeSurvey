@@ -584,7 +584,12 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    shown = value; // what about "no answer"?
+                    var numtest = new Decimal(value);
+                    if(!numtest.isNaN()){
+                        return parseFloat(numtest.valueOf());
+                    } else {
+                        shown = value; // what about "no answer"?
+                    }
                     break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
@@ -593,7 +598,12 @@ function LEMval(alias)
                     }
                     else {
                         if (attr.type == 'P' && varName.match(/comment$/)) {
-                            shown = value;
+                            var numtest = new Decimal(value);
+                            if(!numtest.isNaN()){
+                                shown = parseFloat(numtest.valueOf());
+                            } else {
+                                shown = value; // what about "no answer"?
+                            }
                         }
                         else {
                             shown = htmlspecialchars_decode(attr.question);
@@ -696,7 +706,7 @@ function LEMval(alias)
                 {
                     if(bNumRealValue)
                     {
-                        return value;
+                        return parseFloat(new Decimal(value).valueOf());
                     }
                     else
                     {
@@ -711,7 +721,7 @@ function LEMval(alias)
 //                if (newval != parseFloat(newval)) {
 //                   return '';
 //                }
-                return +newval;
+                return parseFloat(new Decimal(newval).valueOf());
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
@@ -729,7 +739,7 @@ function LEMval(alias)
                     value="";
                 }
                 else {
-                    value= moment(value,sdatetimePattern).format('YYYY-MM-DD HH:mm'); //date('Y-m-d H:i', Date.parseString(trim(value), sdatetimePattern));
+                    value= moment(value,sdatetimePattern).format(sdatetimePattern); 
                 }
                 return value;
             }
@@ -740,10 +750,8 @@ function LEMval(alias)
                 return value;
             }
             else {
-                if (parseFloat(value)+""===value) {// return numeric only if it don't update string : see bugs #10860 + #08324 + #07805. Still issue with big number : difference in PHp/JS (Firefox) : 1234567890123456
-                    return parseFloat(value);
-                }
-                return value;
+                var decimal_safe = new Decimal(value);
+                return parseFloat(decimal_safe.valueOf());
             }
         }
         case 'rowdivid':

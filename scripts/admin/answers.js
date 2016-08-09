@@ -86,11 +86,10 @@ function deleteinput()
     updaterowproperties();
 }
 
-
 /**
  * add addinputQuickEdit : for usage with the quickAdd Button
  */
-function addinputQuickEdit($currentTable, subquestionText, subquestionCode, language, first, scale_id, codes)
+function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 {
     codes = codes || [];
     var $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
@@ -132,17 +131,7 @@ function addinputQuickEdit($currentTable, subquestionText, subquestionCode, lang
         data: datas,
         success: function(htmlrow) {
             var $lang_table = $('#answers_'+language+'_'+scale_id);
-            var htmlRowObject = $(htmlrow);
-            htmlRowObject.find('input.answer').val(subquestionText);
-            if(htmlRowObject.find('input.code').length > 0)
-            {
-                htmlRowObject.find('input.code').val(subquestionCode);
-            } 
-            else 
-            {
-                htmlRowObject.find('td.code-title').text(subquestionCode);
-            }
-            $defer.resolve({langtable: $lang_table, html: htmlRowObject});
+            $defer.resolve({lng: language, langtable: $lang_table, html: htmlrow});
         },
         error :  function(html, statut){
             alert($errormessage);
@@ -732,6 +721,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 
     languages=langs.split(';');
     var promises = [];
+    var answers = [];
     var separatorchar;
     var lsrows=$('#quickaddarea').val().split("\n");
     var allrows = $('.answertable:eq('+scale_id+') tbody tr').length;
@@ -763,6 +753,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             $numeric = false;                                           // At first non numeric character found, the loop is stoped
         }
     }
+
     //Sometimes "0" is interpreted as NaN so test if it's just a missing Zero
     if(isNaN(Number(currentCharacter))){
         codeSigil.push(currentCharacter);
@@ -771,8 +762,6 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     for (var k in lsrows)
     {
         var thisrow=lsrows[k].splitCSV(separatorchar);
-
-
         if (thisrow.length<=languages.length)
         {
             var qCode = (parseInt(k)+(1+parseInt(allrows)));
@@ -785,7 +774,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         {
             thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,20);
         }
-        var randomid='new'+Math.floor(Math.random()*111111);
+        var quid = "new"+(Math.floor(Math.random()*10000));
 
         for (var x in languages)
         {
@@ -793,19 +782,20 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             {
                 thisrow[parseInt(x)+1]=thisrow[1];
             }
-                
             var lang_active = languages[x];
+
+            if(!answers[lang_active]){
+                answers[lang_active] = [];
+            }
 
             if (lsreplace)
             {
                 $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
             }
-            promises.push(
-                addinputQuickEdit(closestTable, thisrow[(parseInt(x)+1)], thisrow[0], lang_active, (x==0), scale_id, codes)
+            answers[lang_active].push(
+               {text: thisrow[(parseInt(x)+1)], code: thisrow[0], quid: quid}
             );
         }
-
-        
 
         $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
         // Unbind any previous events
@@ -816,17 +806,40 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
     }
 
+for (var x in languages)
+{        
+    var lang_active = languages[x];
+    promises.push(
+        addinputQuickEdit(closestTable, lang_active, (x==0), scale_id, codes)
+    )
+}
+
     $.when.apply($,promises).done(
             function(){
-                /*$('#quickadd').dialog('close');*/
                 $.each(arguments, function(i,item){
-                        item.langtable.find('tbody').append(item.html);
+                    var $table = item.langtable;
+                    $.each(answers[item.lng], function(j,mapObject){
+                        var html = item.html;
+                        var htmlRowObject = $(html);
+                        if(htmlRowObject.find('input.code').length > 0)
+                        {
+                            htmlRowObject.find('input.code').val(mapObject.code);
+                        } 
+                        else 
+                        {
+                            htmlRowObject.find('td.code-title').text(mapObject.text);
+                        }
+
+                        htmlRowObject.find('td.subquestion-text').find('input').val(mapObject.text);
+
+                        $table.find('tbody').append(htmlRowObject);
+                    });
                 });
                 $('#quickaddarea').val('');
                 $('.tab-page:first .answertable tbody').sortable('refresh');
                 updaterowproperties();
                 $('#quickaddModal').modal('hide')
-                bindClickIfNotExpanded();
+                //bindClickIfNotExpanded();
             },
             function(){
                 /*$('#quickadd').dialog('close');*/
@@ -834,7 +847,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
                 $('.tab-page:first .answertable tbody').sortable('refresh');
                 updaterowproperties();
                 $('#quickaddModal').modal('hide')
-                bindClickIfNotExpanded();
+                //bindClickIfNotExpanded();
             }
         )
 }

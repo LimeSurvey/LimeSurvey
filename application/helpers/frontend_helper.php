@@ -858,323 +858,240 @@ function submitfailed($errormsg = '', $query = null)
 * It is called from the related format script (group.php, question.php, survey.php)
 * if the survey has just started.
 */
+
 function buildsurveysession($surveyid,$preview=false)
 {
     Yii::trace('start', 'survey.buildsurveysession');
     global $secerror, $clienttoken;
     global $tokensexist;
-    //global $surveyid;
     global $move, $rooturl;
-
 
     $sLangCode=App()->language;
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
     if(!$preview)
+    {
         $preview=Yii::app()->getConfig('previewmode');
-    $thissurvey = getSurveyInfo($surveyid,$sLangCode);
+    }
 
-    $_SESSION['survey_'.$surveyid]['templatename']=$thissurvey['template'];// $thissurvey['template'] already fixed by model : but why put this in session ?
-    $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
-    $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
+    $thissurvey = getSurveyInfo($surveyid,$sLangCode);
+    
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        includeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = '';
+    }
+
+    // $thissurvey['template'] already fixed by model : but why put this in session ?
+    $_SESSION['survey_'.$surveyid]['templatename'] = $thissurvey['template'];
+    $_SESSION['survey_'.$surveyid]['templatepath'] = getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
+
+    $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
 
-    $loadsecurity = returnGlobal('loadsecurity',true);
+    /**
+    * This method has multiple outcomes that virtually do the same thing
+    * Possible scenarios/subscenarios are => 
+    *   - No token required & no captcha required
+    *   - No token required & captcha required
+    *       > captcha may be wrong
+    *   - token required & captcha required
+    *       > token may be wrong/used
+    *       > captcha may be wrong
+    */
 
-    // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
-    if ($tokensexist == 0 && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !isset($_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen'])&& !$preview)
+    $scenarios = array(
+        "tokenRequired" => ($tokensexist == 1),
+        "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !isset($_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']))
+    );
+
+    /** 
+    *   Set subscenarios depending on scenario outcome
+    */
+    $subscenarios = array(
+        "captchaCorrect" => false,
+        "tokenValid" => false
+    );
+    //Check the scenario for token required
+    if($scenarios['tokenRequired'])
     {
-        // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
-        if (!isset($loadsecurity) ||
-        !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
-        $loadsecurity != $_SESSION['survey_'.$surveyid]['secanswer'])
-        {
-            sendCacheHeaders();
-            doHeader();
-            // No or bad answer to required security question
-
-            $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
-            //echo makedropdownlist();
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
-
-            if (isset($loadsecurity))
-            { // was a bad answer
-                echo "<font color='#FF0000'>".gT("The answer to the security question is incorrect.")."</font><br />";
-            }
-
-            echo "<p class='captcha'>".gT("Please confirm access to survey by answering the security question below and click continue.")."</p>"
-            .CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('class'=>'captcha'))."
-            <table align='center'>
-            <tr>
-            <td align='right' valign='middle'>
-            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-            <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
-            // In case we this is a direct Reload previous answers URL, then add hidden fields
-            if (isset($_GET['loadall']) && isset($_GET['scid'])
-            && isset($_GET['loadname']) && isset($_GET['loadpass']))
-            {
-                echo "
-                <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
-                <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
-                <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
-            }
-
-            echo "
-            </td>
-            </tr>";
-            if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
-            {
-                echo "<tr>
-                <td align='center' valign='middle'><label for='captcha'>".gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /></td>
-                <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
-                </td>
-                </tr>";
-            }
-            echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".gT("Continue")."' /></td></tr>
-            </table>
-            </form>";
-
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1567]');
-            doFooter();
-            exit;
-        }
-        else{
-            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
-        }
-    }
-
-    //BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
-    // TOKEN REQUIRED BUT NO TOKEN PROVIDED
-    if ($tokensexist == 1 && !$clienttoken && !$preview)
-    {
-
-        if ($thissurvey['nokeyboard']=='Y')
-        {
-            includeKeypad();
-            $kpclass = "text-keypad";
-        }
-        else
-        {
-            $kpclass = "";
-        }
-
-        // DISPLAY REGISTER-PAGE if needed
-        // DISPLAY CAPTCHA if needed
-         if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
-         {
-            // Add the event and test if done
-            Yii::app()->runController("register/index/sid/{$surveyid}");
-            Yii::app()->end();
-        }
-        else
-        {
-            sendCacheHeaders();
-            doHeader();
-            $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1594]');
-            //echo makedropdownlist();
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1596]');
-
-            $aEnterTokenData = array();
-            $aEnterTokenData['bNewTest'] =  false;
-            $aEnterTokenData['bDirectReload'] =  false;
-            $aEnterTokenData['error'] = $secerror;
-            $aEnterTokenData['iSurveyId'] = $surveyid;
-            $aEnterTokenData['sKpClass'] = $kpclass; // ???
-            $aEnterTokenData['sLangCode'] = $sLangCode;
-            $aEnterTokenData['bCaptchaEnabled'] = false;
-            $aEnterTokenData['bCaptchaImgSrc'] = Yii::app()->getController()->createUrl('/verification/image/sid/' . $surveyid);
-
-            if (isset($_GET['bNewTest']) && $_GET['newtest'] == "Y"){
-                $aEnterTokenData['bNewTest'] =  true;
-            }
-            if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha'])){
-                $aEnterTokenData['bCaptchaEnabled'] = true; // ???
-            }
-            // If this is a direct Reload previous answers URL, then add hidden fields
-            if (isset($loadall) && isset($scid) && isset($loadname) && isset($loadpass)) {
-                $aEnterTokenData['bDirectReload'] =  true;
-                $aEnterTokenData['sCid'] =  $scid;
-                $aEnterTokenData['sLoadname'] =  htmlspecialchars($loadname);
-                $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
-            }
-            // render token form
-            App()->getController()->renderPartial('/surveys/enterToken', $aEnterTokenData);
-
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
-            doFooter();
-            exit;
-        }
-    }
-    // TOKENS REQUIRED, A TOKEN PROVIDED
-    // SURVEY WITH NO NEED TO USE CAPTCHA
-    elseif ($tokensexist == 1 && $clienttoken &&
-    !isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']))
-    {
-
-        //check if token actually does exist
-        // check also if it is allowed to change survey after completion
+        //Check for the token-validity
         if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
             $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken));
         } else {
             $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
-        if (!isset($oTokenEntry))
-        {
-            //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
-            killSurveySession($surveyid);
-            sendCacheHeaders();
-            doHeader();
-
-            $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1676]');
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1677]');
-            echo '<div id="wrapper"><p id="tokenmessage">'.gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-            ."\t".gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
-            ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
-            ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-            ."{$thissurvey['adminemail']}</a>)</p></div>\n";
-
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1684]');
-            doFooter();
-            exit;
-        }
-   }
-    // TOKENS REQUIRED, A TOKEN PROVIDED
-    // SURVEY CAPTCHA REQUIRED
-    elseif ($tokensexist == 1 && $clienttoken && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']))
+        $subscenarios['tokenValid'] = isset($oTokenEntry);
+    }
+    else 
     {
+        $subscenarios['tokenValid'] = true;
+    }
 
-        // IF CAPTCHA ANSWER IS CORRECT
-        if (isset($loadsecurity) &&
-        isset($_SESSION['survey_'.$surveyid]['secanswer']) &&
-        $loadsecurity == $_SESSION['survey_'.$surveyid]['secanswer'])
+    //Check the scenario for captcha required
+    if($scenarios['captchaRequired'])
+    {
+        //Check if the Captcha was correct
+        $loadsecurity = returnGlobal('loadsecurity',true);
+        $captcha = Yii::app()->getController()->createAction('captcha');
+        $subscenarios['captchaCorrect'] = $captcha->validate($loadsecurity, false);
+    }
+    else 
+    {
+        $subscenarios['captchaCorrect'] = true;
+    }
+
+    //RenderWay defines which html gets rendered to the user_error
+    // Possibilities are main,register,correct
+    $renderCaptcha = "";
+    $renderToken = "";
+    $renderWay = "";
+
+    //Define array to render the partials
+    $aEnterTokenData = array();
+    $aEnterTokenData['bNewTest'] =  false;
+    $aEnterTokenData['bDirectReload'] =  false;
+    $aEnterTokenData['error'] = $secerror;
+    $aEnterTokenData['iSurveyId'] = $surveyid;
+    $aEnterTokenData['sKpClass'] = $kpclass; // ???
+    $aEnterTokenData['sLangCode'] = $sLangCode;
+    if (isset($_GET['bNewTest']) && $_GET['newtest'] == "Y"){
+        $aEnterTokenData['bNewTest'] =  true;
+    }
+    // If this is a direct Reload previous answers URL, then add hidden fields
+    if (isset($loadall) && isset($scid) && isset($loadname) && isset($loadpass)) {
+        $aEnterTokenData['bDirectReload'] =  true;
+        $aEnterTokenData['sCid'] =  $scid;
+        $aEnterTokenData['sLoadname'] =  htmlspecialchars($loadname);
+        $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
+    }
+
+
+    $FlashError = "";
+
+    // Scenario => Captcha required
+   if($scenarios['captchaRequired'] && !$preview)
+    {
+        //Apply the captchaEnabled flag to the partial
+        $aEnterTokenData['bCaptchaEnabled'] = true;
+        // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
+        if (!$subscenarios['captchaCorrect'])
         {
-            if ($thissurvey['alloweditaftercompletion'] == 'Y' )
-            {
-                $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=> $clienttoken));
+            if (isset($loadsecurity))
+            { // was a bad answer
+                $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
             }
-            else
-            {
-                $oTokenEntry = Token::model($surveyid)->incomplete()->findByAttributes(array(
-                    'token' => $clienttoken
-                ));
-           }
-            if (!isset($oTokenEntry))
-            {
-                sendCacheHeaders();
-                doHeader();
-                //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-                $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1719]');
-                echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1720]');
-                echo "\t<div id='wrapper'>\n"
-                ."\t<p id='tokenmessage'>\n"
-                ."\t".gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-                ."\t".gT("The token you have provided is either not valid, or has already been used.")."<br/><br />\n"
-                ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
-                ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-                ."{$thissurvey['adminemail']}</a>)\n"
-                ."\t</p>\n"
-                ."\t</div>\n";
-
-                echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1731]');
-                doFooter();
-                exit;
-            }
+            $renderCaptcha='main';
         }
-        // IF CAPTCHA ANSWER IS NOT CORRECT
-        else if (!isset($move) || is_null($move))
+        else{
+            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
+            $renderCaptcha='correct';
+        }
+    }
+    // Scenario => Token required
+    if ($scenarios['tokenRequired'] && !$preview){
+        //Test if token is valid
+        if(!$subscenarios['tokenValid'])
+        {
+            //Check if there is a clienttoken set
+            if((!isset($clienttoken) || $clienttoken==""))
             {
-                unset($_SESSION['survey_'.$surveyid]['srid']);
-                $gettoken = $clienttoken;
-                sendCacheHeaders();
-                doHeader();
-                // No or bad answer to required security question
-                $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1745]');
-                echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1746]');
-                // If token wasn't provided and public registration
-                // is enabled then show registration form
-                if ( !isset($gettoken) && isset($thissurvey) && $thissurvey['allowregister'] == "Y")
+                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
                 {
-                    echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
-                }
-                else
-                { // only show CAPTCHA
-
-                    echo '<div id="wrapper"><p id="tokenmessage">';
-                    if (isset($loadsecurity))
-                    { // was a bad answer
-                        echo "<span class='error'>".gT("The answer to the security question is incorrect.")."</span><br />";
-                    }
-
-                    echo gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
-                    // IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
-                    // AND HIDE ENTRY FIELD
-                    if (!isset($gettoken))
-                    {
-                        echo gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
-                        <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
-                        <ul>
-                        <li>
-                        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-                        <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
-                        if (isset($_GET['loadall']) && isset($_GET['scid'])
-                        && isset($_GET['loadname']) && isset($_GET['loadpass']))
-                        {
-                            echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
-                            <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                            <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
-                            <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
-                        }
-
-                        echo '<label for="token">'.gT("Token")."</label><input class='text' type='password' id='token' name='token'></li>";
+                    $renderToken='register';
                 }
                 else
                 {
-                    echo gT("Please confirm the token by answering the security question below and click continue.")."</p>
-                    <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
-                    <ul>
-                    <li>
-                    <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-                    <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
-                    if (isset($_GET['loadall']) && isset($_GET['scid'])
-                    && isset($_GET['loadname']) && isset($_GET['loadpass']))
-                    {
-                        echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
-                        <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
-                        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
-                    }
-                    echo '<label for="token">'.gT("Token:")."</label><span id='token'>$gettoken</span>"
-                    ."<input type='hidden' name='token' value='$gettoken'></li>";
+                    $renderToken='main';
                 }
-
-
-                if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
-                {
-                    echo "<li>
-                    <label for='captchaimage'>".gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
-                    </li>";
-                }
-                echo "<li><input class='submit' type='submit' value='".gT("Continue")."' /></li>
-                </ul>
-                </form>
-                </id>";
+            } 
+            else
+            { //token was wrong
+                $errorMsg= ""
+                . gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
+                . sprintf( gT("For further information please contact %s"), $thissurvey['adminname'])
+                . "(<a href='mailto:".$thissurvey['adminemail']."'>"
+                . $thissurvey['adminemail']."</a>)";
+                
+                 $FlashError .= $errorMsg;
+                
+                $renderToken='main';
             }
-
-            echo '</div>'.templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1817]');
-            doFooter();
-            exit;
+        } 
+        else 
+        {
+            $aEnterTokenData['visibleToken'] =  $clienttoken;
+            $aEnterTokenData['token'] =  $clienttoken;
+            $renderToken='correct';
         }
     }
 
+    //If there were errors, display through yii->FlashMessage
+    if($FlashError !== ""){
+        $aEnterTokenData['errorMessage'] = $FlashError;
+    }
+
+    //Check which way should be rendered 
+    if($renderToken!==$renderCaptcha)
+    {
+        if($renderToken==="register")
+        {
+            $renderWay="register";
+        }
+        if($renderCaptcha==="correct" || $renderToken==="correct")
+        {
+            $renderWay="main";
+        }
+        if($renderCaptcha==="")
+        {
+            $renderWay=$renderToken;
+        }
+        else if($renderToken==="")
+        {
+            $renderWay=$renderCaptcha;
+        }
+    }
+    else 
+    {
+        $renderWay=$renderToken;
+    }
+
+    switch($renderWay){
+        case "main": //Token required, maybe Captcha required
+            sendCacheHeaders();
+            doHeader();
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
+
+            // render token form
+            if($scenarios['tokenRequired']){
+                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
+            } else {
+                App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
+            }
+
+            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
+            doFooter();
+            exit; 
+            break;
+        case "register": //Register new user
+            // Add the event and test if done
+            Yii::app()->runController("register/index/sid/{$surveyid}");
+            Yii::app()->end();
+            echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
+            break;
+        case "correct": //Nothing to hold back, render survey
+        default:
+            break;
+    }
     //RESET ALL THE SESSION VARIABLES AND START AGAIN
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
     unset($_SESSION['survey_'.$surveyid]['fieldarray']);
@@ -1630,7 +1547,6 @@ function surveymover()
 {
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getSurveyInfo($surveyid);
-
 
     $sMoveNext="movenext";
     $sMovePrev="";
@@ -2329,10 +2245,10 @@ function getMove()
  * on side-menu behaviour config and page (edit or not
  * etc).
  *
- * @param boolean $sideMenustate - False for pages with hidden side-menu
+ * @param boolean $sideMenustate - False for pages with collapsed side-menu
  * @return string
  */
-function getSideBodyClass($sideMenustate)
+function getSideBodyClass($sideMenustate = false)
 {
     $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
 

@@ -1412,6 +1412,36 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>258),"stg_name='DBVersion'");
         }
 
+        /**
+         * Add table for notifications
+         * @since 2016-08-04
+         * @author Olle Haerstedt
+         */
+        if ($iOldDBVersion < 259) {
+            $oDB->createCommand()->createTable('{{notifications}}', array(
+                'id' => 'pk',
+                'entity' => 'string(15) not null',
+                'entity_id' => 'int not null',
+                'title' => 'string not null',  // varchar(255) in postgres
+                'message' => 'text not null',
+                'status' => 'string(15) default \'new\'',
+                'importance' => 'int default 1',
+                'display_class' => 'string(31) default \'default\'',
+                'created' => 'datetime not null',
+                'first_read' => 'datetime default null'
+            ));
+            $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
+
+            // Inform superadmin about update
+            $superadmins = User::model()->getSuperAdmins();
+            Notification::broadcast(array(
+                'title' => gT('Database update'),
+                'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '259')
+            ), $superadmins);
+
+        }
+
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1430,7 +1460,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         $oDB->schema->getTables();
         // clear the cache of all loaded tables
         $oDB->schema->refresh();
-        echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
+        //echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
+        Yii::app()->user->setFlash('error', gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />');
         return false;
     }
     fixLanguageConsistencyAllSurveys();

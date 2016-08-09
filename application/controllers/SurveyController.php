@@ -36,6 +36,7 @@ class SurveyController extends LSYii_Controller
         if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action'));}          //Desired action
         if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction'));} //Desired subaction
         if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));} // for html editor integration
+        Yii::app()->clientScript->registerPackage('decimal');                  // decimal
     }
 
     /**
@@ -68,7 +69,11 @@ class SurveyController extends LSYii_Controller
             'statistics_user' => 'application.controllers.statistics_user',
             'tcpdf_check' => 'application.controllers.tcpdf_check',
             'uploader' => 'application.controllers.uploader',
-            'verification' => 'application.controllers.verification'
+            'verification' => 'application.controllers.verification',
+            'captcha' => array(
+                'class' => 'CCaptchaAction', 
+                'backColor'=>0xf6f6f6
+            )
         );
     }
 

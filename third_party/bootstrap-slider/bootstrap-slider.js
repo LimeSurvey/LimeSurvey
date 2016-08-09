@@ -1,9 +1,9 @@
 /*! =======================================================
-                      VERSION  7.0.1              
+                      VERSION  9.1.3              
 ========================================================= */
 "use strict";
 
-function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 /*! =========================================================
  * bootstrap-slider.js
@@ -36,6 +36,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
  * v1.0.1
  * MIT license
  */
+var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
@@ -52,6 +53,21 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 		window.Slider = factory(window.jQuery);
 	}
 })(function ($) {
+	// Constants
+	var NAMESPACE_MAIN = 'slider';
+	var NAMESPACE_ALTERNATE = 'bootstrapSlider';
+
+	// Polyfill console methods
+	if (windowIsDefined && !window.console) {
+		window.console = {};
+	}
+	if (windowIsDefined && !window.console.log) {
+		window.console.log = function () {};
+	}
+	if (windowIsDefined && !window.console.warn) {
+		window.console.warn = function () {};
+	}
+
 	// Reference to Slider constructor
 	var Slider;
 
@@ -294,7 +310,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 		/*************************************************
   						CONSTRUCTOR
   	**************************************************/
-		Slider = function (element, options) {
+		Slider = function Slider(element, options) {
 			createNewSlider.call(this, element, options);
 			return this;
 		};
@@ -433,19 +449,18 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				/* Create ticks */
 				this.ticks = [];
 				if (Array.isArray(this.options.ticks) && this.options.ticks.length > 0) {
+					this.ticksContainer = document.createElement('div');
+					this.ticksContainer.className = 'slider-tick-container';
+
 					for (i = 0; i < this.options.ticks.length; i++) {
 						var tick = document.createElement('div');
 						tick.className = 'slider-tick';
-
 						this.ticks.push(tick);
-						sliderTrack.appendChild(tick);
+						this.ticksContainer.appendChild(tick);
 					}
 
 					sliderTrackSelection.className += " tick-slider-selection";
 				}
-
-				sliderTrack.appendChild(sliderMinHandle);
-				sliderTrack.appendChild(sliderMaxHandle);
 
 				this.tickLabels = [];
 				if (Array.isArray(this.options.ticks_labels) && this.options.ticks_labels.length > 0) {
@@ -500,6 +515,12 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				if (this.tickLabelContainer) {
 					this.sliderElem.appendChild(this.tickLabelContainer);
 				}
+				if (this.ticksContainer) {
+					this.sliderElem.appendChild(this.ticksContainer);
+				}
+
+				this.sliderElem.appendChild(sliderMinHandle);
+				this.sliderElem.appendChild(sliderMaxHandle);
 
 				/* Append slider element to parent container, right before the original <input> element */
 				parent.insertBefore(this.sliderElem, this.element);
@@ -710,7 +731,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				step: 1,
 				precision: 0,
 				orientation: 'horizontal',
-				value: 5,
+				value: null,
 				range: false,
 				selection: 'before',
 				tooltip: 'show',
@@ -741,7 +762,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 			},
 
 			getValue: function getValue() {
-				if (this.options.range) {
+				if (this.options.range || this._state.value === null) {
 					return this._state.value;
 				} else {
 					return this._state.value[0];
@@ -750,7 +771,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 
 			setValue: function setValue(val, triggerSlideEvent, triggerChangeEvent) {
 				if (!val) {
-					val = 0;
+					val = null;
 				}
 				var oldValue = this.getValue();
 				this._state.value = this._validateInputValue(val);
@@ -1177,6 +1198,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 					var diff1 = Math.abs(this._state.percentage[0] - percentage);
 					var diff2 = Math.abs(this._state.percentage[1] - percentage);
 					this._state.dragged = diff1 < diff2 ? 0 : 1;
+					this._adjustPercentageForRangeSliders(percentage);
 				} else {
 					this._state.dragged = 0;
 				}
@@ -1273,7 +1295,10 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 						dir = -dir;
 					}
 				}
-
+				if (this._state.value === null) {
+					this._state.value[0] = this._state.min;
+					this._state.value[1] = this._state.max;
+				}
 				var val = this._state.value[handleIdx] + dir * this.options.step;
 				if (this.options.range) {
 					val = [!handleIdx ? val : this._state.value[0], handleIdx ? val : this._state.value[1]];
@@ -1421,6 +1446,9 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				return Math.max(0, (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0));
 			},
 			_applyToFixedAndParseFloat: function _applyToFixedAndParseFloat(num, toFixedInput) {
+				if (num === null) {
+					return null;
+				}
 				var truncatedNum = num.toFixed(toFixedInput);
 				return parseFloat(truncatedNum);
 			},
@@ -1454,6 +1482,8 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				} else if (Array.isArray(val)) {
 					this._validateArray(val);
 					return val;
+				} else if (val === null) {
+					return null;
 				} else {
 					throw new Error(ErrorMsgs.formatInvalidInputErrorMsg(val));
 				}
@@ -1461,7 +1491,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 			_validateArray: function _validateArray(val) {
 				for (var i = 0; i < val.length; i++) {
 					var input = val[i];
-					if (typeof input !== 'number') {
+					if (typeof input !== 'number' && input !== null) {
 						throw new Error(ErrorMsgs.formatInvalidInputErrorMsg(input));
 					}
 				}
@@ -1574,20 +1604,20 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				if (this.options.orientation === 'vertical') {
 					var tooltipPos = this.options.tooltip_position || 'right';
 					var oppositeSide = tooltipPos === 'left' ? 'right' : 'left';
-					tooltips.forEach((function (tooltip) {
+					tooltips.forEach(function (tooltip) {
 						this._addClass(tooltip, tooltipPos);
 						tooltip.style[oppositeSide] = '100%';
-					}).bind(this));
+					}.bind(this));
 				} else if (this.options.tooltip_position === 'bottom') {
-					tooltips.forEach((function (tooltip) {
+					tooltips.forEach(function (tooltip) {
 						this._addClass(tooltip, 'bottom');
 						tooltip.style.top = 22 + 'px';
-					}).bind(this));
+					}.bind(this));
 				} else {
-					tooltips.forEach((function (tooltip) {
+					tooltips.forEach(function (tooltip) {
 						this._addClass(tooltip, 'top');
 						tooltip.style.top = -this.tooltip.outerHeight - 14 + 'px';
-					}).bind(this));
+					}.bind(this));
 				}
 			}
 		};
@@ -1596,13 +1626,25 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
   		Attach to global namespace
   	*********************************/
 		if ($) {
-			var namespace = $.fn.slider ? 'bootstrapSlider' : 'slider';
-			$.bridget(namespace, Slider);
+			(function () {
+				var autoRegisterNamespace = void 0;
 
-			// Auto-Register data-provide="slider" Elements
-			$(function () {
-				$("input[data-provide=slider]")[namespace]();
-			});
+				if (!$.fn.slider) {
+					$.bridget(NAMESPACE_MAIN, Slider);
+					autoRegisterNamespace = NAMESPACE_MAIN;
+				} else {
+					if (windowIsDefined) {
+						//window.console.warn("bootstrap-slider.js - WARNING: $.fn.slider namespace is already bound. Use the $.fn.bootstrapSlider namespace instead.");
+					}
+					autoRegisterNamespace = NAMESPACE_ALTERNATE;
+				}
+				$.bridget(NAMESPACE_ALTERNATE, Slider);
+
+				// Auto-Register data-provide="slider" Elements
+				$(function () {
+					$("input[data-provide=slider]")[autoRegisterNamespace]();
+				});
+			})();
 		}
 	})($);
 

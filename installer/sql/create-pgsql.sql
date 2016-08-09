@@ -598,8 +598,25 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 create index labels_code_idx on prefix_labels (code);
 create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, uid, permission);
 
+--
+-- Notification table
+--
+CREATE TABLE prefix_notifications (
+    "id" SERIAL,
+    "entity" character varying(15) NOT NULL,
+    "entity_id" integer NOT NULL,
+    "title" character varying(255) NOT NULL,
+    "message" TEXT NOT NULL,
+    "status" character varying(15) NOT NULL DEFAULT 'new',
+    "importance" integer NOT NULL DEFAULT 1,
+    "display_class" character varying(31) DEFAULT 'default',
+    "created" timestamp NOT NULL,
+    "first_read" timestamp DEFAULT NULL,
+    CONSTRAINT prefix_notifications_pkey PRIMARY KEY (id)
+);
+CREATE INDEX prefix_index ON prefix_notifications USING btree (entity, entity_id, status);
 
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '258');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '259');

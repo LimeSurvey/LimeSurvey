@@ -1,25 +1,38 @@
 $(document).ready(function(){
-    $('#create_survey,#configurator,#participant_panel,#create_user,#delete_user,#manage_template,#manage_label').click(function() {
-        if($(this).attr('checked')==false)
-        {
-            $('#superadmin').attr('checked', false);
-        }
-    });    
-    $("#users").tablesorter({
-        widgets: ['zebra'],            
-        sortList: [[2,0]]});
-    $("#user-template-permissions").tablesorter({
-        widgets: ['zebra'],            
-        sortList: [[0,0]]});
-    var tog=false;
-    $("#checkall").click(function() {
-        $("input[type=checkbox]").prop("checked",!tog);
-        tog=!tog;
-    });
+
+    bindButtons();
 
     $("#user_type").change(UsertypeChange);
     UsertypeChange();
 });
+
+function triggerRunAction(el){
+    return function(){
+        runAction(el);
+    }
+}
+function runAction(el){
+    var url = $(el).data('url'),
+            action = $(el).data('action'),
+            user = $(el).data('user'),
+            uid = $(el).data('uid');
+        var form = $('<form></form>');
+        form.attr('method','post');
+        form.attr('action',url);
+        form.append('<input name="uid" value="'+uid+'" />');
+        form.append('<input name="action" value="'+action+'" />');
+        form.append('<input name="user" value="'+user+'" />');
+        form.append('<input name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'" />');
+        form.submit();
+}
+
+function bindButtons(){
+
+    $('.action_usercontrol_button').on('click', function(){
+        runAction(this);
+    });
+
+}
 
 
 function UsertypeChange(ui,evt)

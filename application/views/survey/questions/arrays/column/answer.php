@@ -7,64 +7,52 @@
  * @var $cellwidth
  */
  ?>
-
-<table class="array-by-columns-table table-array-by-column table question subquestion-list questions-list">
-    <colgroup class="col-responses">
-        <col class="col-answers" style='width: 50%' />
-
-        <?php for ($i = 0; $i < $anscount; $i++): ?>
-            <col class="question-item answers-list radio-list <?php echo ($i % 2 == 0 ? "odd well" : "even"); ?>" style='width: <?php echo $cellwidth; ?>%;' />
-        <?php endfor; ?>
-
-    </colgroup>
-    <thead class='thead-array-by-column'>
-        <tr>
-            <td>&nbsp;</td>
-
-            <?php foreach ($aQuestions as $question): ?>
-                <?php if ($question['errormandatory']): ?>
-                    <th class='text-center'>
-                        <div class="label label-danger" role="alert">
-                            <?php echo $question['question']; ?>
-                        </div>
-                    </th>
-                <?php else: ?>
-                    <th class="text-center">
-                        <?php echo $question['question']; ?>
-                    </th>
-                <?php endif; ?>
-            <?php endforeach; ?>
-
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($labels as $ansrow): ?>
+<div class="no-more-tables">
+    <table class="table question subquestion-list questions-list">
+        <thead class=' array1 dontread'>
             <tr>
-                <th class="arraycaptionleft dontread">
-                    <?php echo $ansrow['answer']; ?>
-                </th>
-                <?php foreach ($anscode as $i => $ld): ?>
-                    <td class="answer-cell-7 answer_cell_<?php echo $ld; ?> answer-item radio-item text-center radio">
-                            <input
-                                class="radio"
-                                type="radio"
-                                name="<?php echo $aQuestions[$i]['myfname']; ?>"
-                                value="<?php echo $ansrow['code']; ?>"
-                                id="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>"
-                                <?php echo $checked[$ansrow['code']][$ld]; ?>
-                                onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
-                            />
-                        <label for="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>">
-                            <span class="visible-xs-block label-text"><?php echo $ansrow['answer'];?></span>
-                        </label>
-                    </td>
+                <th>&nbsp;</th>
+                <?php foreach ($aQuestions as $question): ?>
+                    <?php if ($question['errormandatory']): ?>
+                        <th class='text-center'>
+                            <span class="label label-danger" role="alert">
+                                <?php echo $question['question']; ?>
+                            </span >
+                        </th>
+                    <?php else: ?>
+                        <th class="text-center">
+                            <?php echo $question['question']; ?>
+                        </th>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-
-</table>
-
+        </thead>
+        <tbody>
+            <?php foreach ($labels as $ansrow): ?>
+                <tr id="javatbd<?php echo $ansrow['code'];?>" class="well answers-list radio-list">
+                    <th class="answertext">
+                        <span class="answertextright"><?php echo $ansrow['answer']; ?></span>
+                    </th>
+                    <?php foreach ($anscode as $i => $ld): ?>
+                        <td class="answer-cell-2 answer_cell_<?php echo $ld;?> answer-item radio-item radio text-center">
+                                <input
+                                    class="radio"
+                                    type="radio"
+                                    name="<?php echo $aQuestions[$i]['myfname']; ?>"
+                                    value="<?php echo $ansrow['code']; ?>"
+                                    id="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>"
+                                    <?php echo $checked[$ansrow['code']][$ld]; ?>
+                                    onclick='<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)' />
+                            <label class="" for="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>">
+                                <span class="visible-xs-inline-block label-clickable label-text"><?php echo $aQuestions[$i]['question'];?></span>
+                            </label>
+                        </td>
+                    <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 <?php foreach ($anscode as $i => $ld): ?>
     <input
         type="hidden"

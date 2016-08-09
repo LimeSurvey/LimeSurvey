@@ -1,5 +1,11 @@
-<div class="text-danger">{REGISTERERROR}</div>
-<p class="register-message-1">{REGISTERMESSAGE1}</p>
-<p class="register-message-2">{REGISTERMESSAGE2}</p>
-<div class="register-form">{REGISTERFORM}</div>
+<div class='jumbotron'>
+    <div class="container clearfix">
+        <h2>{REGISTERMESSAGE1}</h2>
+        <h3><small class='text-info'>{REGISTERMESSAGE2}</small></h3>
+    </div>
+</div>
+{REGISTERERROR}
+<div class="register-form">
+    <div class="container">{REGISTERFORM}</div>
+</div>
 <input type='hidden' class='hidemenubutton'/>

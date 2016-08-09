@@ -222,11 +222,23 @@ use SurveyDynamic;
             return \Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
         }
 
-
         public function getToken($surveyId, $token)
         {
             return \Token::model($surveyId)->findByAttributes(array('token' => $token));
         }
+
+        /**
+        * Return a token object from a token id and a survey id
+        *
+        * @param integer $iSurveyId
+        * @param integer $iTokenId
+        * @return object Token
+        */
+        public function getTokenById($iSurveyId, $iTokenId)
+        {
+            return \Token::model($iSurveyId)->findByAttributes(array('tid' => $iTokenId));
+        }
+
         /**
         * Gets a key value list using the group name as value and the group id
         * as key.

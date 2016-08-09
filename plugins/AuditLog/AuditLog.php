@@ -208,7 +208,7 @@
                 $sAction = 'update';
                 $oCurrentUser = $this->api->getCurrentUser();
                 $currentUID = $oCurrentUser->uid;
-                $oldvalues= $this->api->getToken($iSurveyID, $oNewParticipant->token)->getAttributes();
+                $oldvalues= $this->api->getTokenById($iSurveyID, $oNewParticipant->tid)->getAttributes();
             }
 
             $newValues=$oNewParticipant->getAttributes();
@@ -216,7 +216,7 @@
             if (count(array_diff_assoc($newValues,$oldvalues))){
                 $oAutoLog = $this->api->newModel($this, 'log');
                 $oAutoLog->uid=$currentUID;
-                $oAutoLog->entity='token';
+                $oAutoLog->entity='token_' . $iSurveyID;
                 $oAutoLog->action=$sAction;
                 $oAutoLog->entityid=$newValues['tid'];
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc($oldvalues,$newValues));

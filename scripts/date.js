@@ -26,7 +26,10 @@ function doPopupDate(qId){
             beforeShow: setPickerOptions
         }, $.datepicker.regional[language]);
     }
-
+    
+    $("#question"+qId).find('div.input-group.date').on('dp.change', function(){
+        $(this).find('input').trigger('change');
+    });
 }
 /*
  * Function to launch timepicker in question id
@@ -121,8 +124,8 @@ function setPickerOptions(input)
     return {
         // set minimum and maximum date
         // remove the time component for Firefox
-        minDate: Date.parseString(datemin.substr(0,10), "yyyy-mm-dd"),
-        maxDate: Date.parseString(datemax.substr(0,10), "yyyy-mm-dd"),
+        minDate: moment(datemin.substr(0,10), "YYYY-MM-DD"),
+        maxDate: moment(datemax.substr(0,10), "YYYY-MM-DD"),
         yearRange: datemin.substr(0,4)+':'+datemax.substr(0,4),
         //set the other options so datetimepicker is either a datepicker or a timepicker or both
         showTimepicker: bshowTimepicker,
@@ -165,6 +168,7 @@ function validateInput(basename)
 
 
 function dateUpdater() {
+    var thisid = "", iFormatDate = "", iYear,iMonth,iDay,iHour,iMinute,parseddate,format;
     if(this.id.substr(0,3)=='yea')
     {
         thisid=this.id.substr(4);
@@ -249,12 +253,16 @@ function dateUpdater() {
             {
                 iMinute=$('#minute'+thisid).val();
             }
-            ValidDate(this,iYear+'-'+iMonth+'-'+iDay);
-            parseddate=Date.parseString(trim(iDay+'-'+iMonth+'-'+iYear+' '+iHour+':'+iMinute), 'dd-mm-yy H:M');
-            parseddate=parseddate.format($('#dateformat'+thisid).val());
-            $('#answer'+thisid).val(parseddate);
+
+            parseddate= new moment(iDay+'-'+iMonth+'-'+iYear+' '+iHour+':'+iMinute, 'DD-MM-YYYY HH:mm');
+            format = $('#dateformat'+thisid).val();
+
+            iFormatDate = moment(parseddate).format(format);
+
+            $('#answer'+thisid).val(iFormatDate);
             $('#answer'+thisid).change();
         }
+        return true;
 }
 
 function pad (str, max) {

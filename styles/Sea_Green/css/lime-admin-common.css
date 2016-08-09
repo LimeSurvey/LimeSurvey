@@ -4,7 +4,12 @@
  * This file contain all the common css definitions for the different admin theme.
  * It should not contain color definition (grey, blacks, and white are acceptable)
  */
-
+.row-button-margin-bottom {
+  margin-bottom: -5px;
+}
+.row-button-margin-bottom .btn{
+  margin-bottom: 5px;
+}
 
 .ui-datepicker {
   width: 17em;
@@ -2037,4 +2042,58 @@ table#responsedetail tr td{
     position: relative;
     top: -65px;
     right: 15px;
+}
+
+.notification-list {
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  border-radius: 4px;
+  background-clip: padding-box;
+  overflow-y: auto;
+}
+
+.notification-list > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  white-space: nowrap;
+}
+.notification-list > li > a:hover,
+.notification-list > li > a:focus {
+  text-decoration: none;
+}
+.notification-list > .active > a,
+.notification-list > .active > a:hover,
+.notification-list > .active > a:focus {
+  text-decoration: none;
+  outline: 0;
+}
+.notification-list > .disabled > a,
+.notification-list > .disabled > a:hover,
+.notification-list > .disabled > a:focus {
+}
+.notification-list > .disabled > a:hover,
+.notification-list > .disabled > a:focus {
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  cursor: not-allowed;
+}
+#notification-outer-ul {
+    height: 400px;
+    width: 400px;
+}
+#notification-inner-ul {
+    height: 340px;
+    width: 390px;
 }

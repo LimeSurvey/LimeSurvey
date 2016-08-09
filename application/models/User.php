@@ -108,6 +108,15 @@ class User extends LSActiveRecord
         ->queryRow();
         return $user;
     }
+    public function getParentUser(){
+        $parent_user = $this->parentAndUser( $this->uid );
+        return $parent_user['full_name'];
+    }
+
+    public function getSurveysCreated(){
+        $noofsurveys = Survey::model()->countByAttributes(array("owner_id" =>$this->uid));
+        return $noofsurveys;
+    }
 
     /**
     * Returns onetime password
@@ -292,4 +301,197 @@ class User extends LSActiveRecord
 			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
 		);
 	}
+
+    /**
+     * Return all super admins in the system
+     * @return User[]
+     */
+    public function getSuperAdmins()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->join = ' JOIN {{permissions}} AS p ON p.uid = t.uid';
+        $criteria->addCondition('p.permission = \'superadmin\'');
+        $users = $this->findAll($criteria);
+        return $users;
+    }
+    
+    /** 
+    * Gets the buttons for the GridView 
+    */
+    public function getButtons(){
+        $editUser = "";
+        $deleteUser = "";
+        $setPermissionsUser = "";
+        $setTemplatePermissionUser = "";
+        $changeOwnership = "";
+        
+        $editUrl = Yii::app()->getController()->createUrl('admin/user/sa/modifyuser');
+        $setPermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setuserpermissions');
+        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
+        $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
+
+        if($this->uid == Yii::app()->user->getId())
+        {
+                $editUser = "<button 
+                data-toggle='tooltip' 
+                title='".gT("Edit this user")."' 
+                data-url='".$editUrl."' 
+                data-uid='".$this->uid."' 
+                data-user='".$this->getName($this->uid)[0]['full_name']."' 
+                data-action='modifyuser' 
+                class='btn btn-default btn-xs action_usercontrol_button'>
+                    <span class='fa fa-pencil text-success'></span>
+                </button>";
+            if ($this->parent_id != 0 && Permission::model()->hasGlobalPermission('users','delete') ) 
+            {
+                $deleteUser = "<button 
+                data-toggle='modal' 
+                data-href='#' 
+                data-onclick='$.post(".$deleteUrl.", 
+                        {action: \"deluser\", uid:\"".$this->uid."\", user: \"".htmlspecialchars(Yii::app()->user->users_name)."\"});' 
+                data-target='#confirmation-modal' 
+
+                data-uid='".$this->uid."' 
+                data-action='deluser' 
+                data-message='".gT("Delete this user")."' 
+                class='btn btn-default btn-xs'>
+                    <span class='fa fa-trash  text-danger'></span>
+                </button>";
+            }
+        } else {
+            if (Permission::model()->hasGlobalPermission('superadmin','read') 
+                || $this->uid == Yii::app()->session['loginID'] 
+                || (Permission::model()->hasGlobalPermission('users','update') 
+                && $this->parent_id == Yii::app()->session['loginID'])) 
+            {
+                $editUser = "<button data-toggle='tooltip' data-url='".$editUrl."' data-user='".$this->getName($this->uid)[0]['full_name']."' data-uid='".$this->uid."' data-action='modifyuser' title='".gT("Edit this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
+            }
+
+            if (((Permission::model()->hasGlobalPermission('superadmin','read') &&
+                $this->uid != Yii::app()->session['loginID'] ) ||
+                (Permission::model()->hasGlobalPermission('users','update') &&
+                $this->parent_id == Yii::app()->session['loginID'])) && $this->uid!=1) 
+                { 
+                //'admin/user/sa/setuserpermissions'
+                    $setPermissionsUser = "<button data-toggle='tooltip' data-user='".$this->getName($this->uid)[0]['full_name']."' data-url='".$setPermissionsUrl."' data-uid='".$this->uid."' data-action='setuserpermissions' title='".gT("Set global permissions for this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
+                }
+            if ((Permission::model()->hasGlobalPermission('superadmin','read') 
+                || Permission::model()->hasGlobalPermission('templates','read'))  
+                && $this->uid!=1) 
+                { 
+                //'admin/user/sa/setusertemplates')
+                    $setTemplatePermissionUser = "<button type='submit' data-user='".$this->getName($this->uid)[0]['full_name']."' data-url='".$setTemplatePermissionsUrl."' data-uid='".$this->uid."' data-action='setusertemplates' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
+                }
+                if ((Permission::model()->hasGlobalPermission('superadmin','read') 
+                    || (Permission::model()->hasGlobalPermission('users','delete')  
+                    && $this->parent_id == Yii::app()->session['loginID'])) && $this->uid!=1) 
+                    { 
+                    $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
+                        "action"=> "deluser", 
+                        "uid"=>$this->uid, 
+                        "user" => htmlspecialchars(Yii::app()->user->getId())
+                    ));
+                     //'admin/user/sa/deluser'
+                    $deleteUser = "<button 
+                        id='delete_user_".$this->uid."' 
+                        data-toggle='modal' 
+                        data-target='#confirmation-modal' 
+                        data-url='".$deleteUrl."' 
+                        data-uid='".$this->uid."' 
+                        data-user='".$this->getName($this->uid)[0]['full_name']."' 
+                        data-action='deluser' 
+                        data-onclick='triggerRunAction($(\"#delete_user_".$this->uid."\"))' 
+                        data-message='".gT("Delete this user")."' 
+                        class='btn btn-default btn-xs '>
+                            <span class='fa fa-trash  text-danger'></span>
+                        </button>";
+                    }
+                if (Yii::app()->session['loginID'] == "1" && $this->parent_id !=1 ) {
+                //'admin/user/sa/setasadminchild'
+                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".$this->getName($this->uid)[0]['full_name']."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-sm action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
+                }
+        }
+        return "<div>"
+            . $editUser
+            . $deleteUser
+            . $setPermissionsUser
+            . $setTemplatePermissionUser
+            . $changeOwnership
+            . "</div>";
+    }
+
+    public function getColums(){
+        $cols = array( 
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Buttons")
+            ),
+            array(
+                "name" => 'uid',
+                "header" => gT("User ID")
+            ),
+            array(
+                "name" => 'users_name',
+                "header" => gT("Username")
+            ),
+            array(
+                "name" => 'email',
+                "header" => gT("Email")
+            ),
+            array(
+                "name" => 'full_name',
+                "header" => gT("Full name")
+            )
+        );
+        if(Permission::model()->hasGlobalPermission('superadmin','read')) {
+            $cols[] = array(
+                "name" => 'surveysCreated',
+                "header" => gT("No of surveys")
+            );
+        }
+
+        $cols[] = array(
+            "name" => 'parentUser',
+            "header" => gT("Created by")
+        );
+        return $cols;
+    }
+   /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria=new CDbCriteria;
+
+        // $criteria->compare('uid',$this->uid);
+        // $criteria->compare('users_name',$this->users_name,true);
+        // $criteria->compare('password',$this->password,true);
+        // $criteria->compare('full_name',$this->full_name,true);
+        // $criteria->compare('parent_id',$this->parent_id);
+        // $criteria->compare('lang',$this->lang,true);
+        // $criteria->compare('email',$this->email,true);
+        // $criteria->compare('htmleditormode',$this->htmleditormode,true);
+        // $criteria->compare('templateeditormode',$this->templateeditormode,true);
+        // $criteria->compare('questionselectormode',$this->questionselectormode,true);
+        // $criteria->compare('one_time_pw',$this->one_time_pw,true);
+        // $criteria->compare('dateformat',$this->dateformat);
+        // $criteria->compare('created',$this->created,true);
+        // $criteria->compare('modified',$this->modified,true);
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
+
 }

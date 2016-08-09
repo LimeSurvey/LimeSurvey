@@ -260,6 +260,26 @@ return array(
         )
     ),
 
+    // Decimal.js calculate in js 
+    'decimal' => array(
+        'basePath' => 'third_party.decimal',
+        'js' => array(
+            'decimal.js'
+        ),
+        'depends' => array(
+        )
+    ),
+
+    // Moment.js use real simple dateTime modification 
+    'moment' => array(
+        'basePath' => 'third_party.moment',
+        'js' => array(
+            'moment-with-locales.min.js'
+        ),
+        'depends' => array(
+        )
+    ),
+
     // leaflet, needed for short text question with map (OSM)
     'leaflet' => array(
         'basePath' => 'third_party.leaflet',

@@ -519,6 +519,11 @@ class statistics extends Survey_Common_Action {
         $aData['fresults'] = (isset($aData['fresults']))?$aData['fresults']:false;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
+        if (!isset($aData['result']))
+        {
+            $aData['result'] = null;
+        }
+
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 
     }

@@ -23,14 +23,14 @@
 <tr  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item" <?php echo $sDisplayStyle;?>>
     <td class='text-right align-middle'>
         <?php if($alert):?>
-            <div class="label label-danger errormandatory"  role="alert">
+            <label class="control-label numeric-label label label-danger errormandatory"  role="alert">
                 <?php echo $labelText;?>
-            </div> <!-- alert -->
+            </label> <!-- alert -->
+        <?php else:?>
+            <label class='control-label numeric-label' for="answer<?php echo $myfname; ?>">
+                <?php echo $labelText;?>
+            </label>
         <?php endif;?>
-
-        <label class='control-label numeric-label' for="answer<?php echo $myfname; ?>">
-            <?php echo $labelText;?>
-        </label>
     </td>
 
     <?php if (!empty($prefix)): ?>
