@@ -231,6 +231,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $surveyId = Yii::app()->request->getParam('surveyId');
         $surveyId = empty($surveyId) ? Yii::app()->request->getParam('surveyid') : $surveyId;
         $this->checkCintActive($surveyId);
+
+        // Disable all tokens if user has any Cint order
+        $this->disableTokens($surveyId);
     }
 
     /**
@@ -320,6 +323,50 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
 
         return false;
+    }
+
+    /**
+     * Disable use of tokens if there is any Cint orders
+     * @return void
+     */
+    protected function disableTokens($surveyId)
+    {
+        list($contr, $action, $subaction) = $this->getControllerAction();
+        if ($contr == 'admin' && $action == 'tokens')
+        {
+            $not = new Notification(array(
+                'user_id' => Yii::app()->user->id,
+                'title' => $this->gT('Participants disabled'),
+                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' . 
+                    $this->gT('Participants are disabled since you have an active Cint order.'),
+                'importance' => Notification::HIGH_IMPORTANCE,
+            ));
+            $not->save();
+
+            // Redirect back
+            //Yii::app()->end();
+            $url = Yii::app()->createUrl(
+                'admin/survey/sa/view',
+                array(
+                    'surveyid' => $surveyId
+                )
+            );
+            Yii::app()->getController()->redirect($url);
+        }
+    }
+
+    /**
+     * Get controller, action and subaction.
+     * Only works from event beforeControllerAction.
+     * @return array
+     */
+    protected function getControllerAction()
+    {
+        $event = $this->getEvent();
+        $controller = $event->get('controller');
+        $action = $event->get('action');
+        $subaction = $event->get('subaction');
+        return array($controller, $action, $subaction);
     }
 
     /**
@@ -758,6 +805,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'result' => json_encode($data),
             'name' => $user->full_name,
             'email' => $user->email,
+            'nrOfQuestions' => $this->getNrOfQuestions($survey),
             'link' => $link
         ));
     }
@@ -1123,7 +1171,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         {
             $data = array();
             $data['surveyId'] = $surveyId;
-            $data['pluginBaseUrl'] = Yii::app()->createUrl(
+            $pluginBaseUrl = Yii::app()->createUrl(
                 'admin/pluginhelper',
                 array(
                     'sa' => 'ajax',
@@ -1132,9 +1180,41 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     'ajax' => 1
                 )
             );
+            $orderPlaced = $this->gT('Order placed on hold. Please pay to start the review process. Make sure the survey is activated before you pay.');
+            $couldNotLogin = $this->gT('Could not login. Please make sure username and password is correct.');
 
-            $this->renderPartial('common_js', $data);
+            // Code below is WEIRD, but best way to include Javascript settings from PHP?
+            Yii::app()->clientScript->registerScript('cint-common-js', <<<EOT
+                // Namespace
+                var LS = LS || {};
+                LS.plugin = LS.plugin || {};
+                LS.plugin.cintlink = LS.plugin.cintlink || {};
+
+                LS.plugin.cintlink.pluginBaseUrl = '$pluginBaseUrl';
+
+                LS.plugin.cintlink.lang = {}
+                LS.plugin.cintlink.lang.orderPlacedOnHold = '$orderPlaced';
+                LS.plugin.cintlink.lang.couldNotLogin = '$couldNotLogin';
+EOT
+            , CClientScript::POS_END);
+
+            if (!empty($surveyId))
+            {
+                Yii::app()->clientScript->registerScript('cint-common-js-survey-id', <<<EOT
+                    LS.plugin.cintlink.surveyId = '$surveyId';
+EOT
+            , CClientScript::POS_END);
+            }
         }
+    }
+
+    /**
+     * Calculate how many questions the survey contains.
+     * Used by Cint widget.
+     * @param Survey $survey
+     */
+    protected function getNrOfQuestions(Survey $survey)
+    {
     }
 
 }
