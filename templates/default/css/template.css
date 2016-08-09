@@ -494,7 +494,7 @@ table > tbody > tr > td.ddprefix {
         No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
         whereas visible-xs-block respect bootstrap standards (767px)
         If too many bugs of this kind appears in the future, we should just refuse to support weird exotic tablet screens.
-        We should repsect standards, we should not try to fit to non standards devices. 
+        We should repsect standards, we should not try to fit to non standards devices.
     */
     .visible-xs-block{
         display: block !important;
@@ -527,16 +527,17 @@ table > tbody > tr > td.ddprefix {
         display: inline-block;
         width: 100%;
     }
-
+    /* Reset answertext width (inline style)*/
+    .no-more-tables th.answertext  {
+        width: auto !important;
+    }
     .no-more-tables tbody {
         padding: 0 1em 0 1em;
     }
 
-    /* Hide table headers (but not display: none;, for accessibility) */
+    /* Hide table headers display: none; no need for accessibility) */
     .no-more-tables thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
+        display:none;
     }
 
     .no-more-tables tr,
