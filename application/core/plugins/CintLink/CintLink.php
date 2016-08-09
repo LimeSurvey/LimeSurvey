@@ -5,6 +5,7 @@ use \ls\menu\Menu;
 
 require_once(__DIR__ . "/CintLinkAPI.php");
 require_once(__DIR__ . "/model/CintLinkOrder.php");
+require_once(__DIR__ . "/CintXml.php");
 
 /**
  * CintLink integration to be able to buy respondents
@@ -71,50 +72,76 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $oDB = Yii::app()->getDb();
 
-        if ($oDB->schema->getTable("{{plugin_cintlink_orders}}") === null)
+        $tableDoesNotExist = $oDB->schema->getTable("{{plugin_cintlink_orders}}") === null;
+        if ($tableDoesNotExist)
         {
-            $oDB->schemaCachingDuration = 0;  // Deactivate schema caching
-            $oTransaction = $oDB->beginTransaction();
-            try
-            {
-                $aFields = array(
-                    'url' => 'string primary key',
-                    'sid' => 'int',  // Survey id
-                    'raw' => 'text',  // Order xml
-                    'status' => 'string',
-                    'ordered_by' => 'int',  // User id
-                    'deleted' => 'bool',  // Soft delete
-                    'created' => 'datetime',
-                    'modified' => 'datetime',
-                );
-                $oDB->createCommand()->createTable('{{plugin_cintlink_orders}}', $aFields);
-                $oTransaction->commit();
-            }
-            catch(Exception $e)
-            {
-                $oTransaction->rollback();
-                // Activate schema caching
-                $oDB->schemaCachingDuration = 3600;
-                // Load all tables of the application in the schema
-                $oDB->schema->getTables();
-                // Clear the cache of all loaded tables
-                $oDB->schema->refresh();
-                $event = $this->getEvent();
-                $event->set('success', false);
-                $event->set(
-                    'message',
-                    $this->gT('An non-recoverable error happened during the update. Error details:')
-                    . "<p>"
-                    . htmlspecialchars($e->getMessage())
-                    . "</p>"
-                );
-                return;
-            }
+            $this->createDatabase();
+        }
+
+        $this->fetchGlobalVariables();
+    }
+
+    /**
+     * Creates database table for Cint plugin
+     * @return void
+     */
+    protected function createDatabase()
+    {
+        $oDB = Yii::app()->getDb();
+        $oDB->schemaCachingDuration = 0;  // Deactivate schema caching
+        $oTransaction = $oDB->beginTransaction();
+        try
+        {
+            $aFields = array(
+                'url' => 'string primary key',
+                'sid' => 'int',  // Survey id
+                'raw' => 'text',  // Order xml
+                'status' => 'string',
+                'ordered_by' => 'int',  // User id
+                'deleted' => 'bool',  // Soft delete
+                'created' => 'datetime',
+                'modified' => 'datetime',
+            );
+            $oDB->createCommand()->createTable('{{plugin_cintlink_orders}}', $aFields);
+            $oTransaction->commit();
+        }
+        catch(Exception $e)
+        {
+            $oTransaction->rollback();
+            // Activate schema caching
+            $oDB->schemaCachingDuration = 3600;
+            // Load all tables of the application in the schema
+            $oDB->schema->getTables();
+            // Clear the cache of all loaded tables
+            $oDB->schema->refresh();
+            $event = $this->getEvent();
+            $event->set('success', false);
+            $event->set(
+                'message',
+                $this->gT('An non-recoverable error happened during the update. Error details:')
+                . "<p>"
+                . htmlspecialchars($e->getMessage())
+                . "</p>"
+            );
         }
     }
 
     /**
-     * todo place somewhere else
+     * Fetch the global variables from Cint, like number of children,
+     * personal income etc.
+     * @return void
+     */
+    protected function fetchGlobalVariables()
+    {
+        $cintXml = new CintXml($this->cintApiKey);
+        $gv = $cintXml->getGlobalVariables();
+
+        // Store raw XML in plugin settings
+        $this->set('cint-global-variables', $gv);
+    }
+
+    /**
+     * todo Place somewhere else
      */
     public function beforeToolsMenuRender()
     {
@@ -168,7 +195,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Add quick menu icon
+     * Add quick menu icon.
      */
     public function afterQuickMenuLoad()
     {
@@ -447,7 +474,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     protected function registerCssAndJs() {
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
         App()->clientScript->registerScriptFile("$assetsUrl/cintlink.js");
-        App()->clientScript->registerScriptFile("http://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
+        App()->clientScript->registerScriptFile("https://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
 
         // Need to include this manually so Ajax loading of gridview will work
         App()->clientScript->registerScriptFile('/framework/zii/widgets/assets/gridview/jquery.yiigridview.js');
@@ -1236,7 +1263,7 @@ EOT
     {
         try
         {
-            $t = Token::model($surveyId);
+            Token::model($surveyId);
             return true;
         }
         catch (Exception $ex)
