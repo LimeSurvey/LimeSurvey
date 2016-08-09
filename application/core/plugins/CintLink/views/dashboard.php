@@ -1,4 +1,13 @@
-<!-- Cint widget button (not visible from global dashboard) -->
+<!-- Warning if user has a token table created -->
+<?php if (isset($hasTokenTable) && $hasTokenTable): ?>
+    <p class='alert alert-warning'>
+        <span class='fa fa-exclamation-circle'></span>
+        &nbsp;
+        <?php echo $plugin->gT('Please delete your token participant table to be able to use Cint Link.'); ?>
+    </p>
+<?php endif; ?>
+
+<!-- Some info -->
 <?php if (empty($surveyId)): ?>
     <p class='alert alert-info'>
         <span class='fa fa-info-circle'></span>
@@ -13,8 +22,13 @@
     </p>
 <?php endif; ?>
 
+<!-- Cint widget button (not visible from global dashboard) -->
 <?php if (!empty($surveyId)): // Widget is not visible on global dashboard ?>
-    <button class='btn btn-default' onclick='LS.plugin.cintlink.showWidget();'>
+    <button
+        class='btn btn-default'
+        onclick='LS.plugin.cintlink.showWidget();'
+        <?php if ($hasTokenTable): ?> disabled='disabled' <?php endif; ?>
+    >
         <span class='fa fa-bars'></span>
         &nbsp;
         <?php echo $plugin->gT('Choose participants'); ?>

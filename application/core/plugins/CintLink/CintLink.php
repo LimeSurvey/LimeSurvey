@@ -331,15 +331,15 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     protected function disableTokens($surveyId)
     {
-        list($contr, $action, $subaction) = $this->getControllerAction();
+        list($contr, $action, /* subaction not used */) = $this->getControllerAction();
         $isTokenAction = $contr == 'admin' && $action == 'tokens';
 
         // If user has any Cint order, forbid access to participants
         if ($isTokenAction)
         {
 
-            // End if survey has no Cint orders
-            if (!CintLinkOrder::hasAnyOrders($surveyId))
+            // End if survey has no blocking Cint orders
+            if (!CintLinkOrder::hasAnyBlockingOrders($surveyId))
             {
                 return;
             }
@@ -403,6 +403,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function actionIndex($surveyId)
     {
+        if (empty($surveyId))
+        {
+            throw new InvalidArgumentException('surveyId cannot be empty');
+        }
+
         $data = array();
         $data['surveyId'] = $surveyId;
         $data['common'] = $this->renderPartial('common', $data, true);
@@ -536,6 +541,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data['model'] = CintLinkOrder::model();  // TODO: Only show orders for this survey
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
         $data['survey'] = Survey::model()->findByPk($surveyId);
+        $data['hasTokenTable'] = $this->hasTokenTable($surveyId);
 
         $content = $this->renderPartial('dashboard', $data, true);
 
@@ -1218,6 +1224,25 @@ EOT
      */
     protected function getNrOfQuestions(Survey $survey)
     {
+    }
+
+    /**
+     * Return true if this survey has a token table
+     * @param int $surveyId
+     * @return boolean
+     * @todo Never use try-catch as control logic
+     */
+    protected function hasTokenTable($surveyId)
+    {
+        try
+        {
+            $t = Token::model($surveyId);
+            return true;
+        }
+        catch (Exception $ex)
+        {
+            return false;
+        }
     }
 
 }
