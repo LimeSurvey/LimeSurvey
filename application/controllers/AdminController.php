@@ -89,13 +89,6 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * 
-     */
-    public function actionError($message, $url = array())
-    {
-        $this->error($message, $url);
-    }
-    /**
     * Load and set session vars
     *
     * @access protected
