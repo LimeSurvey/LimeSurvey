@@ -527,10 +527,6 @@ table > tbody > tr > td.ddprefix {
         display: inline-block;
         width: 100%;
     }
-    /* Reset answertext width (inline style)*/
-    .no-more-tables th.answertext  {
-        width: auto !important;
-    }
     .no-more-tables tbody {
         padding: 0 1em 0 1em;
     }

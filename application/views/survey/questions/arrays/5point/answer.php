@@ -16,7 +16,7 @@
 
         <!-- Columns -->
         <colgroup class="col-responses">
-            <col class="col-answers" />
+            <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
             <?php
                 // columns/col.php
                 echo $sColumns;

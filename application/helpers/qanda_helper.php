@@ -4054,7 +4054,6 @@ function do_array_5point($ia)
         $sRows .= doRender('/survey/questions/arrays/5point/rows/answer_row', array(
                     'answer_tds'    => $answer_tds,
                     'myfname'       => $myfname,
-                    'answerwidth'   => $answerwidth,
                     'answertext'    => $answertext,
                     'value'         => $value,
                     'error'         => $error,
@@ -4070,6 +4069,7 @@ function do_array_5point($ia)
     $answer = doRender('/survey/questions/arrays/5point/answer', array(
                 'extraclass' => $extraclass,
                 'sColumns'   => $sColumns,
+                'answerwidth'   => $answerwidth,
                 'sHeaders'   => $sHeaders,
                 'sRows'      => $sRows,
             ), true);
