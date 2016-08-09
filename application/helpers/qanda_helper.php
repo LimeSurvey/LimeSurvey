@@ -3031,12 +3031,12 @@ function do_multiplenumeric($ia)
             // If the bootstrapSlider were updated, most of this javascript would not be necessary.
 
             $sValue = null;
-            
+
             if(App()->request->getPost('slider_user_no_action_'.$myfname))
             {
                 $slider_user_no_action = App()->request->getPost('slider_user_no_action_'.$myfname);
-            } 
-            else 
+            }
+            else
             {
                 $slider_user_no_action = 1;
 
@@ -3055,7 +3055,7 @@ function do_multiplenumeric($ia)
                 {
                     $sValue = $slider_middlestart;
                 }
-            
+
             }
 
 
@@ -4010,6 +4010,7 @@ function do_array_5point($ia)
             $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)?'CHECKED':'';
             $answer_tds .= doRender('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>$i,
+                'labelText'=>$i,
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,
@@ -4040,7 +4041,8 @@ function do_array_5point($ia)
         {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
             $answer_tds .= doRender('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
-                'i'=>"NA",
+                'i'=>"",
+                'labelText'=>gT('No answer'),
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,

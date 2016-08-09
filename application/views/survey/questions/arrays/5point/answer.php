@@ -17,25 +17,21 @@
         <!-- Columns -->
         <colgroup class="col-responses">
             <col class="col-answers" />
-
             <?php
                 // columns/col.php
                 echo $sColumns;
             ?>
         </colgroup>
-
         <!-- Table headers -->
         <thead>
             <tr class="array1 dontread">
                 <th>&nbsp;</th>
-
                 <?php
                     // rows/cell/thead.php
                     echo $sHeaders;
                 ?>
             </tr>
         </thead>
-
         <!-- Table Body -->
         <tbody>
             <?php
