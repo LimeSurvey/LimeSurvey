@@ -276,7 +276,7 @@ class CintLinkOrder extends CActiveRecord
      * Used in grid view
      * @return string
      */
-    protected function getAge()
+    public function getAge()
     {
         $minAge = null;
         $maxAge = null;
@@ -301,4 +301,24 @@ class CintLinkOrder extends CActiveRecord
 
         return $result;
     }
+
+    /**
+     * Returns true if survey has any Cint orders, no matter the state.
+     * @param int $surveyId
+     * @return boolean
+     */
+    public static function hasAnyOrders($surveyId)
+    {
+        if (empty($surveyId))
+        {
+            throw new InvalidArgumentException('surveyId cannot be null or empty');
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('deleted = false');
+        $criteria->addCondition('sid = ' . $surveyId);  // TODO: Escape
+        $count = CintLinkOrder::model()->count($criteria);
+        return $count > 0;
+    }
+
 }

@@ -332,25 +332,28 @@ class CintLink extends \ls\pluginmanager\PluginBase
     protected function disableTokens($surveyId)
     {
         list($contr, $action, $subaction) = $this->getControllerAction();
-        if ($contr == 'admin' && $action == 'tokens')
+        $isTokenAction = $contr == 'admin' && $action == 'tokens';
+
+        // If user has any Cint order, forbid access to participants
+        if ($isTokenAction)
         {
+
+            // End if survey has no Cint orders
+            if (!CintLinkOrder::hasAnyOrders($surveyId))
+            {
+                return;
+            }
+
             $not = new Notification(array(
                 'user_id' => Yii::app()->user->id,
                 'title' => $this->gT('Participants disabled'),
                 'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' . 
-                    $this->gT('Participants are disabled since you have an active Cint order.'),
+                    $this->gT('Participants are disabled since you have a Cint order.'),
                 'importance' => Notification::HIGH_IMPORTANCE,
             ));
             $not->save();
 
-            // Redirect back
-            //Yii::app()->end();
-            $url = Yii::app()->createUrl(
-                'admin/survey/sa/view',
-                array(
-                    'surveyid' => $surveyId
-                )
-            );
+            $url = Yii::app()->request->getOriginalUrlReferrer();
             Yii::app()->getController()->redirect($url);
         }
     }
