@@ -1,5 +1,5 @@
 /*! =======================================================
-                      VERSION  9.1.1              
+                      VERSION  9.1.3              
 ========================================================= */
 "use strict";
 
@@ -36,6 +36,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * v1.0.1
  * MIT license
  */
+var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
@@ -57,13 +58,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	var NAMESPACE_ALTERNATE = 'bootstrapSlider';
 
 	// Polyfill console methods
-	if (!window.console) {
+	if (windowIsDefined && !window.console) {
 		window.console = {};
 	}
-	if (!window.console.log) {
+	if (windowIsDefined && !window.console.log) {
 		window.console.log = function () {};
 	}
-	if (!window.console.warn) {
+	if (windowIsDefined && !window.console.warn) {
 		window.console.warn = function () {};
 	}
 
@@ -761,7 +762,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			},
 
 			getValue: function getValue() {
-				if (this.options.range) {
+				if (this.options.range || this._state.value === null) {
 					return this._state.value;
 				} else {
 					return this._state.value[0];
@@ -1294,7 +1295,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						dir = -dir;
 					}
 				}
-
+				if (this._state.value === null) {
+					this._state.value[0] = this._state.min;
+					this._state.value[1] = this._state.max;
+				}
 				var val = this._state.value[handleIdx] + dir * this.options.step;
 				if (this.options.range) {
 					val = [!handleIdx ? val : this._state.value[0], handleIdx ? val : this._state.value[1]];
@@ -1442,6 +1446,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				return Math.max(0, (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0));
 			},
 			_applyToFixedAndParseFloat: function _applyToFixedAndParseFloat(num, toFixedInput) {
+				if (num === null) {
+					return null;
+				}
 				var truncatedNum = num.toFixed(toFixedInput);
 				return parseFloat(truncatedNum);
 			},
@@ -1475,6 +1482,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				} else if (Array.isArray(val)) {
 					this._validateArray(val);
 					return val;
+				} else if (val === null) {
+					return null;
 				} else {
 					throw new Error(ErrorMsgs.formatInvalidInputErrorMsg(val));
 				}
@@ -1482,7 +1491,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			_validateArray: function _validateArray(val) {
 				for (var i = 0; i < val.length; i++) {
 					var input = val[i];
-					if (typeof input !== 'number') {
+					if (typeof input !== 'number' && input !== null) {
 						throw new Error(ErrorMsgs.formatInvalidInputErrorMsg(input));
 					}
 				}
@@ -1624,7 +1633,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					$.bridget(NAMESPACE_MAIN, Slider);
 					autoRegisterNamespace = NAMESPACE_MAIN;
 				} else {
-					window.console.warn("bootstrap-slider.js - WARNING: $.fn.slider namespace is already bound. Use the $.fn.bootstrapSlider namespace instead.");
+					if (windowIsDefined) {
+						//window.console.warn("bootstrap-slider.js - WARNING: $.fn.slider namespace is already bound. Use the $.fn.bootstrapSlider namespace instead.");
+					}
 					autoRegisterNamespace = NAMESPACE_ALTERNATE;
 				}
 				$.bridget(NAMESPACE_ALTERNATE, Slider);
