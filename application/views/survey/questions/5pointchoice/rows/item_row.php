@@ -13,7 +13,7 @@
 ?>
 
 <!-- item_row -->
-<li class="form-group row answer-item radio-item <?php echo $itemExtraClass; ?> radio">
+<li class="form-group answer-item radio-item <?php echo $itemExtraClass; ?> radio">
     <input
         type="radio"
         name="<?php echo $name; ?>"

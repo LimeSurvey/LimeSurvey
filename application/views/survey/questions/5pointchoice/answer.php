@@ -15,7 +15,7 @@
 <!-- 5 point choice -->
 
 <!-- answer -->
-<ul id="<?php echo $id; ?>" class="list-unstyled answers-list radio-list form-horizontal">
+<ul id="<?php echo $id; ?>" class="list-unstyled list-inline answers-list radio-list form-inline">
 
     <?php
         // item_row.php
