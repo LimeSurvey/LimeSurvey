@@ -40,6 +40,9 @@ class PluginHelper extends Survey_Common_Action
     /**
      * Helper function to let a plugin put content
      * into the full page wrapper easily.
+     * @param string $plugin
+     * @param string $method
+     * @return void
      */
     public function fullpagewrapper($plugin, $method)
     {
