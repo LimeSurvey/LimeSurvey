@@ -23,8 +23,8 @@
             ?>
         </colgroup>
         <!-- Table headers -->
-        <thead>
-            <tr class="array1 dontread">
+        <thead aria-hidden="true">
+            <tr class="array1">
                 <th>&nbsp;</th>
                 <?php
                     // rows/cell/thead.php
