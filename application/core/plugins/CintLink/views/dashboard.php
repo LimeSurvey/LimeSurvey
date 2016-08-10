@@ -70,7 +70,10 @@
     $columns[] = array(
         'name' => 'target-group',
         'header' => $plugin->gT('Target group'),
-        'value' => '$data->targetGroup'
+        'value' => '(strlen($data->targetGroup) > 50
+            ? CHtml::tag("span", array("title"=>$data->targetGroup, "data-toggle" => "tooltip"), ellipsize($data->targetGroup, 50))
+            : CHtml::encode($data->targetGroup))',
+        'type' => 'raw'
     );
     $columns[] = array(
         'name' => 'age',
