@@ -718,7 +718,12 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aResult=activateSurvey($iSurveyID);
             $aViewUrls = array();
-            if (isset($aResult['error']))
+            if (isset($aResult['error']) && $aResult['error'] == 'plugin')
+            {
+                // Got false from plugin, redirect to survey front-page
+                $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
+            }
+            else if (isset($aResult['error']))
             {
                 $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n";
                 if ($aResult['error']=='surveytablecreation')

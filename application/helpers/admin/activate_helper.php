@@ -250,10 +250,27 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 * Function to activate a survey
 * @param int $iSurveyID The Survey ID
 * @param bool $simulate
-* @return string
+* @return array
 */
 function activateSurvey($iSurveyID, $simulate = false)
 {
+    // Event beforeSurveyActivate
+    $event = new PluginEvent('beforeSurveyActivate');
+    $event->set('surveyId', $iSurveyID);
+    $event->set('simulate', $simulate);
+    App()->getPluginManager()->dispatchEvent($event);
+    $success = $event->get('success');
+    $message = $event->get('message');
+    if ($success === false)
+    {
+        Yii::app()->user->setFlash('error', $message);
+        return array('error' => 'plugin');
+    }
+    else if (!empty($message))
+    {
+        Yii::app()->user->setFlash('info', $message);
+    }
+
     $createsurvey='';
     $activateoutput='';
     $createsurveytimings='';
