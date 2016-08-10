@@ -43,8 +43,8 @@ final class CintXml
         if ($url !== false)
         {
             $curl = new Curl();
-            $raw = $curl->get($url);
-            return $raw;
+            $curlResponse = $curl->get($url);
+            return $curlResponse->body;
         }
         else
         {

@@ -141,6 +141,15 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * Used from model
+     * @return SimpleXmlElement
+     */
+    public function getGlobalVariables()
+    {
+        return new SimpleXmlElement($this->get('cint-global-variables'));
+    }
+
+    /**
      * todo Place somewhere else
      */
     public function beforeToolsMenuRender()
@@ -196,6 +205,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Add quick menu icon.
+     * @return void
      */
     public function afterQuickMenuLoad()
     {
@@ -246,7 +256,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * Register Cint icon css
      * Also check if user tried to pay Cint order and if survey is
      * active. Show warning message if not active.
-     *
      * @return void
      */
     public function beforeControllerAction() {

@@ -236,19 +236,71 @@ class CintLinkOrder extends CActiveRecord
      */
     public function getTargetGroup()
     {
+
         $result = '';
         $raw = $this->raw;
         $xml = new SimpleXmlElement($raw);
         $targetGroup = $xml->{'target-group'};
-        foreach ($targetGroup->children() as $target) {
-            $content = (string) $target->name;
-            if ($content != '')
+        foreach ($targetGroup->children() as $tagName => $target) {
+            if ($tagName == 'variable')
             {
-                $result .= (string) $target->name . ', ';
+                $result .= $this->formatGlobalVariable($target) . ', ';
+            }
+            else
+            {
+                $content = (string) $target->name;
+                if ($content != '')
+                {
+                    $result .= (string) $target->name . ', ';
+                }
             }
         }
         $result = trim($result, ', ');
         return $result;
+    }
+
+    /**
+     * Format global variable
+     * @param SimpleXmlElement $target
+     * @return string
+     */
+    protected function formatGlobalVariable(SimpleXmlElement $target)
+    {
+        $globalVars = Yii::app()->getPlugin()->getGlobalVariables();
+        $id = (string) $target->id;
+        $allValues = $this->flattenGlobalVariables($globalVars);
+        return $allValues[$id]['text'];
+    }
+
+    /**
+     * Flatten the XML into an array
+     * @param SimpleXmlElement $globalVars
+     * @return array
+     */
+    protected function flattenGlobalVariables($globalVars)
+    {
+        $result = array();
+
+        // Only loop once
+        static $allValues = array();
+
+        if (empty($allValues))
+        {
+            foreach ($globalVars->children() as $vars) {
+                $id = (string) $vars->id;
+                $result[$id]['text'] = $vars->text;
+                $result[$id]['values'] = array();
+
+                foreach ($vars->values->children() as $value) {
+                    $valueId = (string) $value['id'];
+                    $result[$id]['values'][$valueId] = (string) $value;
+
+                    $allValues[$valueId]['text'] = (string) $value;
+                    $allValues[$valueId]['variable-id'] = $id;
+                }
+            }
+        }
+        return $allValues;
     }
 
     /**
