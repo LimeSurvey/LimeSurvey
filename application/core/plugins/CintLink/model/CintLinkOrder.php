@@ -50,9 +50,13 @@ class CintLinkOrder extends CActiveRecord
 
         $sort = new CSort();
         $sort->attributes = array(
-            'url'=>array(
-            'desc'=>'url desc'
-        ));
+            'url' => array(
+                'desc'=>'url desc'
+            ),
+            'created',
+            'ordered_by',
+            'status'
+        );
         $sort->defaultOrder = array('url' => CSort::SORT_DESC);
 
         $criteria = $this->getCriteria($surveyId);
