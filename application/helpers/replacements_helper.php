@@ -352,11 +352,43 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $_clearall=CHtml::htmlButton(gT("Exit and clear survey"),array('type'=>'submit','id'=>"clearall",'value'=>'clearall','name'=>'clearall','class'=>'clearall button  btn btn-default btn-lg  col-xs-4 hidden','data-confirmedby'=>'confirm-clearall','title'=>gT("This action need confirmation.")));
-        $_clearall.=CHtml::checkBox("confirm-clearall",false,array('id'=>'confirm-clearall','value'=>'confirm','class'=>'hide jshide  btn btn-default btn-lg  col-xs-4'));
-        $_clearall.=CHtml::label(gT("Are you sure you want to clear all your responses?"),'confirm-clearall',array('class'=>'hide jshide  btn btn-default btn-lg  col-xs-4'));
+        $_clearall = TbHtml::button('Click me to open modal', array(
+                    'class' => "clearall button  btn btn-default btn-lg  col-xs-4 hidden",
+                    'data-toggle' => 'modal',
+                    'data-target' => '#clearallConfirmation',
+                ));
+        $_clearall .= "
+        <script type='text/javascript'> 
+            $(document).on('exitAndClear', function(){
+                $('#limesurvey').append('<input name=\"clearall\" value=\"clearall\" />');
+                $('#limesurvey').append('<input name=\"confirm-clearall\" value=\"confirm\" />');
+                $('#limesurvey').submit();
+            });
 
-        $_clearalllinks = '<li><a href="#" id="clearallbtnlink">'.gT("Exit and clear survey").'</a></li>';
+        </script>
+        ";
+
+
+        $_clearalllinks = '<li><a href="#" id="clearallbtnlink" data-toggle="modal" data-target="#clearallConfirmation">'.gT("Exit and clear survey").'</a></li>';
+        $_clearalllinks.=""
+                . "<div id='clearallConfirmation' class='modal fade' role='dialog'>"
+                    . '<div class="modal-dialog" role="document">'
+                        . '<div class="modal-content">'
+                        . '<div class="modal-header">'
+                            . '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                            . '<h4 class="modal-title" id="clearallConfirmationLabel">'.gT("Exit and clear survey").'</h4>'
+                        . '</div>'
+                        . '<div class="modal-body">'
+                            . gT("Are you sure you want to clear all your responses?")
+                            .'<input type="checkbox" name="confirm-clearall" id="confirm-clearall" value="confirm" class="hide jshide"/>' 
+                        . '</div>'
+                        . '<div class="modal-footer">'
+                            . '<button type="button" class="btn btn-default" data-dismiss="modal">'.gT("No").'</button>'
+                            . '<button type="submit" value="clearall" name="clearall" class="btn btn-primary" onclick="$(document).trigger(\'exitAndClear\')">'.gT('Yes').'</button>'
+                        . '</div>'
+                        . '</div>'
+                    . '</div>'
+                . '</div>';
     }
     else
     {
