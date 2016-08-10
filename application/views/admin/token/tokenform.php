@@ -156,7 +156,7 @@
                                                     type="text"
                                                     value="<?php echo isset($completed) ? $completed : ''?>"
                                                     name="completed-date"
-                                                    data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                                    data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                                     >
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                             </div>
@@ -289,7 +289,7 @@
                                                 type="text"
                                                 value="<?php echo isset($sent) ? $sent : ''?>"
                                                 name="sent-date"
-                                                data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                                data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                             >
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
@@ -339,7 +339,7 @@
                                                 type="text"
                                                 value="<?php echo isset($remindersent) ? $remindersent : ''?>"
                                                 name="remind-date"
-                                                data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                                data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                             >
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
@@ -374,12 +374,12 @@
                         <?php
                             if( isset($validfrom) && $validfrom!='N')
                             {
-                                $validfrom = convertToGlobalSettingFormat($validfrom);
+                                $validfrom = convertToGlobalSettingFormat($validfrom,true);
                             }
 
                             if( isset($validuntil) && $validuntil!='N')
                             {
-                                $validuntil = convertToGlobalSettingFormat($validuntil);
+                                $validuntil = convertToGlobalSettingFormat($validuntil,true);
                             }
 
                         ?>
@@ -394,7 +394,7 @@
                                     type="text"
                                     value="<?php echo isset($validfrom) ? $validfrom : ''?>"
                                     name="validfrom"
-                                    data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                    data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                     data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
                                 >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -411,7 +411,7 @@
                                         type="text"
                                         value="<?php echo isset($validuntil) ? $validuntil : ''?>"
                                         name="validuntil"
-                                        data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                        data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                         data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
                                     >
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
