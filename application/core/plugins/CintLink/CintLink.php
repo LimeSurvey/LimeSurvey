@@ -990,11 +990,25 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * @throws Exception if response from Cint is empty
      */
     protected function updateOrder($order) {
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+        if (empty($limesurveyOrgKey))
+        {
+            throw new Exception('No limesurveyOrgKey - is user logged in on limesurvey.org?');
+        }
+
         $curl = new Curl();
         $response = $curl->get(
-            $order->url,
-            array()
+            $this->baseURL,
+            array(
+                'app' => 'cintlinklimesurveyrestapi',
+                'format' => 'raw',
+                'resource' => 'order',
+                'orderUrl' => $order->url,
+                'key' => $limesurveyOrgKey
+            )
         );
+        // Double up!
+        $response = json_decode(json_decode($response));
 
         // Abort if we got nothing
         if (empty($response))
@@ -1015,8 +1029,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * User has permission to Cint if he/she is super admin or
-     * he/she is owner of the survey.
+     * User has permission to Cint if he/she is super admin OR
+     * owner of the survey.
      *
      * @param int|null $surveyId
      * @return boolean True if user has permission
