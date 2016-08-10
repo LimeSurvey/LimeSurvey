@@ -2,9 +2,9 @@
 <h3 class="pagetitle"><?php eT("User control");?></h3>
     <div class="row">
         <div class="col-md-2 col-sm-4 col-xs-12  col-md-offset-10 col-sm-offset-8">
-            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-primary btn-block"><?php eT("Add User");?></button>
+            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-primary btn-block"><?php eT("Add user");?></button>
         </div>
-        
+
     </div>
     <div class="row" style="margin-bottom: 100px">
         <div class="container">
@@ -33,13 +33,13 @@
                     <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
                         echo "<div class=\"form-group\">";
                           echo "<label  class='col-md-4 control-label'>";
-                            eT("Central Database");
+                            eT("Central database");
                           echo "</label>";
                           echo "<div class='col-md-8'>";
-                            echo CHtml::dropDownList('user_type', 
-                                'DB', 
+                            echo CHtml::dropDownList('user_type',
+                                'DB',
                                 array(
-                                'DB' => gT("Internal database authentication",'unescaped'), 
+                                'DB' => gT("Internal database authentication",'unescaped'),
                                 'LDAP' => gT("LDAP authentication",'unescaped')
                                 ),
                                 array(
@@ -54,26 +54,26 @@
                     ?>
 
                     <div class="form-group">
-                        <label for="new_user" class="control-label col-md-4"><?php eT("Username:");?></label> 
+                        <label for="new_user" class="control-label col-md-4"><?php eT("Username:");?></label>
                         <div class="col-md-8">
                             <input type='text' class="text input-sm form-control" id='new_user' name='new_user' required />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="new_email" class="control-label col-md-4" ><?php eT("Email:");?></label> 
+                        <label for="new_email" class="control-label col-md-4" ><?php eT("Email:");?></label>
                         <div class="col-md-8">
                             <input type='email' class="text input-sm form-control" id='new_email' name='new_email' required />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="new_full_name" class="control-label col-md-4"><?php eT("Full name:");?></label> 
+                        <label for="new_full_name" class="control-label col-md-4"><?php eT("Full name:");?></label>
                         <div class="col-md-8">
                             <input type='text' class="text input-sm form-control" id='new_full_name' name='new_full_name' required />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-12 text-right">
-                            <?php eT("The password will be generated and sent via email") ?>
+                            <?php eT("The password will be generated and sent by email.") ?>
                         </div>
                     </div>
                     <div class="col-md-12">&nbsp;</div>
