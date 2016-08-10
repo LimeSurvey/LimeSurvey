@@ -721,16 +721,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Get country from Xml
-     * @param SimpleXmlElement $xml Raw order xml
-     * @return string
-     */
-    protected function getCountryFromXml(SimpleXmlElement $xml)
-    {
-        return $xml->{'target-group'}->country->name;
-    }
-
-    /**
      * Cancel order
      * Run when user click "Cancel" in order table
      * Contact limesurvey.org, because cancel order needs access
