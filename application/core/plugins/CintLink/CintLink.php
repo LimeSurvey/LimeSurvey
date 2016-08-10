@@ -96,7 +96,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'url' => 'string primary key',
                 'sid' => 'int',  // Survey id
                 'raw' => 'text',  // Order xml
-                'status' => 'string',
+                'country' => 'string(63)',
+                'status' => 'string(15)',
                 'ordered_by' => 'int',  // User id
                 'deleted' => 'bool',  // Soft delete
                 'created' => 'datetime',
@@ -710,12 +711,23 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $order->url = $body->url;
         $order->sid = $surveyId;
         $order->ordered_by = $userId;
+        $order->country = $body->raw->{'target-group'}->country->name;
         $order->raw = json_encode(get_object_vars($body->raw));
         $order->status = (string) $body->raw->state;  // 'hold' means waiting for payment
         $order->created = date('Y-m-d H:i:m', time());
         $order->save();
 
         return json_encode(array('result' => $response->body));
+    }
+
+    /**
+     * Get country from Xml
+     * @param SimpleXmlElement $xml Raw order xml
+     * @return string
+     */
+    protected function getCountryFromXml(SimpleXmlElement $xml)
+    {
+        return $xml->{'target-group'}->country->name;
     }
 
     /**

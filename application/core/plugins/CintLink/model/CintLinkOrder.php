@@ -55,7 +55,8 @@ class CintLinkOrder extends CActiveRecord
             ),
             'created',
             'ordered_by',
-            'status'
+            'status',
+            'country'
         );
         $sort->defaultOrder = array('url' => CSort::SORT_DESC);
 
@@ -246,6 +247,11 @@ class CintLinkOrder extends CActiveRecord
         $xml = new SimpleXmlElement($raw);
         $targetGroup = $xml->{'target-group'};
         foreach ($targetGroup->children() as $tagName => $target) {
+            if ($tagName == 'country')
+            {
+                // In separate column
+                continue;
+            }
             if ($tagName == 'variable')
             {
                 $result .= $this->formatGlobalVariable($target) . ', ';
@@ -260,6 +266,12 @@ class CintLinkOrder extends CActiveRecord
             }
         }
         $result = trim($result, ', ');
+
+        if ($result == '')
+        {
+            $result = '&#8211;';
+        }
+
         return $result;
     }
 

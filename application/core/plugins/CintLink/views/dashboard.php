@@ -68,11 +68,16 @@
         'value' => '$data->user->full_name'
     );
     $columns[] = array(
+        'name' => 'country',
+        'header' => $plugin->gT('Country'),
+        'value' => '$data->country'
+    );
+    $columns[] = array(
         'name' => 'target-group',
         'header' => $plugin->gT('Target group'),
         'value' => '(strlen($data->targetGroup) > 50
             ? CHtml::tag("span", array("title" => $data->targetGroup, "data-toggle" => "tooltip"), ellipsize($data->targetGroup, 50))
-            : CHtml::encode($data->targetGroup))',
+            : $data->targetGroup)',
         'type' => 'raw'
     );
     $columns[] = array(
