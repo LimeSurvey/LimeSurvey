@@ -45,7 +45,7 @@ Changes from 2.50+ (build 160804) to 2.50+ (build 160810) Aug 10, 2016
 -Fixed issue #11524: Unstyled error message when trying to repeatedly activate a survey (Carsten Schmitz)
 -Fixed issue #11525: Wrong JS at template.js breaks certain survey features (markusfluer)
 -Fixed issue: Corrected wording (markusfluer)
--Fixed issue: csv-paticipant import always fails (markusfluer)
+-Fixed issue: CSV participant import always fails (markusfluer)
 -Fixed issue: Quick add using a single ajax for each row (markusfluer)
 #Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by Han
@@ -54,9 +54,7 @@ Changes from 2.50+ (build 160804) to 2.50+ (build 160810) Aug 10, 2016
 #Updated translation: German by c_schmitz
 #Updated translation: German (Informal) by c_schmitz
 #Updated translation: Indonesian by radhwaw
-#Updated translation: Italian by c_schmitz, lfanfoni
 #Updated translation: Italian by lfanfoni
-#Updated translation: Italian (Informal) by c_schmitz, lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Latvian by marcic
 #Updated translation: Latvian (Informal) by marcic
@@ -64,7 +62,7 @@ Changes from 2.50+ (build 160804) to 2.50+ (build 160810) Aug 10, 2016
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
-#Updated translation: Spanish (Spain) by c_schmitz, aesteban
+#Updated translation: Spanish (Spain) by aesteban
 
 Changes from 2.50+ (build 160731) to 2.50+ (build 160804) Aug 4, 2016
 -Fixed issue #11483: Bad visualization (markusfluer)
