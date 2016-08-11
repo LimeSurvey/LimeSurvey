@@ -425,7 +425,7 @@ class User extends LSActiveRecord
             array(
                 "name" => 'buttons',
                 "type" => 'raw',
-                "header" => gT("Buttons")
+                "header" => gT("Action")
             ),
             array(
                 "name" => 'uid',
