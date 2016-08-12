@@ -32,7 +32,7 @@ class UserAction extends Survey_Common_Action
         Yii::app()->loadHelper('database');
     }
 
-    /** 
+    /**
     * Get Post- or Paramvalue depending on where to get it
     */
     private function _getPostOrParam($param){
@@ -228,7 +228,7 @@ class UserAction extends Survey_Common_Action
             return;
         }
 
-        //If there was no uid transferred  
+        //If there was no uid transferred
         if (!$postuserid)
         {
             Yii::app()->setFlashMessage(gT("Could not delete user. User was not supplied."),'error');
@@ -379,7 +379,7 @@ class UserAction extends Survey_Common_Action
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
                 // Close button, UrlReferrer;
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
@@ -587,7 +587,7 @@ class UserAction extends Survey_Common_Action
 
                 $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
                 $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
             }
@@ -624,13 +624,13 @@ class UserAction extends Survey_Common_Action
                     $templaterights[$srow["permission"]] = array("use"=>$srow["read_p"]);
                 }
                 $templates = Template::model()->findAll();
-                $aData['list'][] = array('templaterights'=>$templaterights,'templates'=>$templates);
+                $aData['data'] = array('templaterights'=>$templaterights,'templates'=>$templates);
             }
         }
 
         $aData['fullpagebar']['savebutton']['form'] = 'modtemplaterightsform';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
-        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
+        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
         $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
@@ -747,7 +747,7 @@ class UserAction extends Survey_Common_Action
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
-        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
+        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
         // Render personal settings view
         if (isset($_POST['saveandclose']))
