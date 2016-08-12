@@ -319,7 +319,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             }
 
             // Check if any order is paid and/or live
-            $anyOrderIsActive = $this->anyOrderHasStatus($orders, array('new', 'live', 'hold'));
+            $anyOrderIsActive = CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live', 'hold'));
             $this->log('anyOrderIsActive = ' . $anyOrderIsActive);
             if (!$surveyIsActive && $anyOrderIsActive)
             {
@@ -426,7 +426,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         ));
         $orders = $this->updateOrders($orders);
 
-        if ($this->anyOrderHasStatus($orders, array('new', 'live')))
+        if (CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live')))
         {
             $event->set('message', $this->gT('You cannot deactivate the survey while any Cint order is live.'));
             $event->set('success', false);
@@ -1164,36 +1164,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 $this->gT('This survey is live or under review by Cint. Please activate the survey as soon as possible.')
             );
         }
-    }
-
-    /**
-     * Returns true if any order in $orders is in any state in $statuses.
-     * Make sure to run updateOrders on $orders before calling this.
-     *
-     * @param array<CintLinkOrder>|CintLinkOrder $orders
-     * @param array|string $statuses Array of status to check for
-     * @return boolean
-     */
-    protected function anyOrderHasStatus($orders, $statuses)
-    {
-        if (!is_array($orders))
-        {
-            $orders = array($orders);
-        }
-
-        if (!is_array($statuses))
-        {
-            $statuses = array($statuses);
-        }
-
-        foreach ($orders as $order)
-        {
-            if (in_array($order->status, $statuses))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

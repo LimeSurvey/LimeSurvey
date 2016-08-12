@@ -82,7 +82,7 @@ class CintLinkOrder extends CActiveRecord
      */
     protected function getCriteria($surveyId) {
         $criteria = new CDbCriteria;
-        $criteria->addCondition('deleted = false');
+        $criteria->addCondition('deleted = 0');
 
         // In survey specific dashboard we will have survey id
         if ($surveyId !== null)
@@ -384,10 +384,40 @@ class CintLinkOrder extends CActiveRecord
         }
 
         $criteria = new CDbCriteria();
-        $criteria->addCondition('deleted = false AND status != \'completed\' AND status != \'cancelled\'');
+        $criteria->addCondition('deleted = 0 AND status != \'completed\' AND status != \'cancelled\'');
         $criteria->addCondition('sid = ' . $surveyId);  // TODO: Escape
         $count = CintLinkOrder::model()->count($criteria);
         return $count > 0;
+    }
+
+    /**
+     * Returns true if any order in $orders is in any state in $statuses.
+     * Make sure to run updateOrders on $orders before calling this.
+     *
+     * @param array<CintLinkOrder>|CintLinkOrder $orders
+     * @param array|string $statuses Array of status to check for
+     * @return boolean
+     */
+    public static function anyOrderHasStatus($orders, $statuses)
+    {
+        if (!is_array($orders))
+        {
+            $orders = array($orders);
+        }
+
+        if (!is_array($statuses))
+        {
+            $statuses = array($statuses);
+        }
+
+        foreach ($orders as $order)
+        {
+            if (in_array($order->status, $statuses))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
