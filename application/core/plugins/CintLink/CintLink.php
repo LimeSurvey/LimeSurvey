@@ -93,7 +93,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         try
         {
             $aFields = array(
-                'url' => 'string primary key',
+                'url' => 'string(127) primary key',
                 'sid' => 'int',  // Survey id
                 'raw' => 'text',  // Order xml
                 'country' => 'string(63)',
