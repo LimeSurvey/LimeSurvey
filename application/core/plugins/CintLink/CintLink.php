@@ -43,7 +43,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      *
      * @var string
      */
-    private $baseURL = "https://www.limesurvey.org/index.php?option=com_api";
+    public $baseURL = "https://www.limesurvey.org/index.php?option=com_api";
 
     public function init()
     {
@@ -424,7 +424,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'sid' => $surveyId,
             'deleted' => 0
         ));
-        $orders = $this->updateOrders($orders);
+        $orders = CintLinkOrder::updateOrders($orders);
 
         if (CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live')))
         {
@@ -444,6 +444,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $event = $this->getEvent();
         $surveyId = $event->get('surveyId');
+
+        if (CintLinkOrder::hasAnyOrders($surveyId))
+        {
+            CintLinkOrder::updateOrders($surveyId);
+        }
+
+        if (!CintLinkOrder::hasAnyBlockingOrders($surveId))
+        {
+            return;
+        }
+
         $survey = Survey::model()->findByPk($surveyId);
         $additionalLanguages = $survey->additionalLanguages;
 
@@ -472,6 +483,35 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     $lang
                 );
             }
+        }
+    }
+
+    /**
+     * Returns true if there is a blocking Cint order.
+     * Blocking in state 'hold', 'new' or 'live'.
+     * @param int $surveyId
+     * @return boolean
+     */
+    protected function shouldWeCreateHiddenQuestion($surveyId)
+    {
+        /*
+        $orders = $this->getOrders(array(
+            'sid' => $surveyId,
+            'deleted' => 0,
+        ));
+        // TODO: What if user is not logged in?
+        CintLinkOrder::updateOrders($orders);
+         */
+
+        $hasBlocking = CintLinkOrder::hasAnyBlockingOrders($surveyId);
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+
+        if ($hasBlocking && empty($limesurveyOrgKey))
+        {
+            // There's a blocking order but user is not logged in at limesurvey.org
+        }
+        else
+        {
         }
     }
 
@@ -650,7 +690,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $ajax = Yii::app()->request->getParam('ajax');
         if ($ajax != 'url')
         {
-            $orders = $this->updateOrders($orders);
+            $orders = CintLinkOrder::updateOrders($orders);
         }
 
         $data = array();
@@ -681,7 +721,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $ajax = Yii::app()->request->getParam('ajax');
         if ($ajax != 'url')
         {
-            $orders = $this->updateOrders($orders);
+            $orders = CintLinkOrder::updateOrders($orders);
         }
 
         $data = array();
@@ -846,7 +886,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         // Always update order no matter the result
         $order = CintLinkOrder::model()->findByAttributes(array('url' => $orderUrl));
-        $this->updateOrder($order);
+        $order->updateFromCint();
 
         if (empty($response->body))
         {
@@ -1023,94 +1063,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 ),
                 array('order' => 'url DESC')
             );
-            $this->updateOrders($orders);
+            CintLinkOrder::updateOrders($orders);
         }
         catch (Exception $ex)
         {
             $this->log('Could not update all orders: ' . $ex->getMessage());
         }
         $this->log('updateAllOrders end');
-    }
-
-    /**
-     * Call limesurvey.org to update orders in database
-     *
-     * @param array<CintLinkOrder> $orders
-     * @return array<CintLinkOrder>|false - Returns false if some fetching goes amiss
-     * @throws Exception if Cint returns empty response
-     */
-    protected function updateOrders(array $orders)
-    {
-        $this->log('updateOrder begin');
-
-        $newOrders = array();
-        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
-
-        // Loop through orders and get updated info from Cint
-        foreach ($orders as $order)
-        {
-            $this->log('loop order ' . $order->url);
-
-            if ($order->status == 'cancelled'
-                || $order->status == 'completed'
-                || $order->status == 'closed')
-            {
-                $this->log('Don\'t fetch anything for cancelled/completed/closed order, skipped');
-                $newOrders[] = $order;
-                continue;
-            }
-
-            $newOrders[] = $this->updateOrder($order);
-        }
-
-        $this->log('updateOrder end');
-        return $newOrders;
-    }
-
-    /**
-     * Update a single order with data from Cint
-     *
-     * @param CintLinkOrder $order
-     * @return CintLinkOrder $order
-     * @throws Exception if response from Cint is empty
-     */
-    protected function updateOrder($order) {
-        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
-        if (empty($limesurveyOrgKey))
-        {
-            throw new Exception('No limesurveyOrgKey - is user logged in on limesurvey.org?');
-        }
-
-        $curl = new Curl();
-        $response = $curl->get(
-            $this->baseURL,
-            array(
-                'app' => 'cintlinklimesurveyrestapi',
-                'format' => 'raw',
-                'resource' => 'order',
-                'orderUrl' => $order->url,
-                'key' => $limesurveyOrgKey
-            )
-        );
-        // Double up!
-        $response = json_decode(json_decode($response));
-
-        // Abort if we got nothing
-        if (empty($response))
-        {
-            $this->log('Got empty response from Cint while update');
-            throw new Exception('Got empty response from Cint while update');
-        }
-
-        $orderXml = new SimpleXmlElement($response->body);
-
-        $order->raw = $response->body;
-        $order->status = (string) $orderXml->state;  // 'hold' means waiting for payment
-        $order->modified = date('Y-m-d H:i:m', time());
-        $order->save();
-
-        return $order;
-
     }
 
     /**

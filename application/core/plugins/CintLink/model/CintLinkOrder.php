@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . "/../CintLinkAPI.php");
+
 /**
  * Order model
  *
@@ -371,6 +373,83 @@ class CintLinkOrder extends CActiveRecord
     }
 
     /**
+     * Updates order with information from Cint via limesurvey.org.
+     * User must be logged in on limesurvey.org.
+     * @return CintLinkOrder
+     * @throws Exception if user is not logged in at limesurvey.org
+     */
+    public function updateFromCint()
+    {
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+
+        if (empty($limesurveyOrgKey))
+        {
+            throw new Exception('User is not logged in at limesurvey.org');
+        }
+
+        // URL to LimeSurvey is stored in Cint plugin
+        $baseURL = Yii::app()->getPlugin()->baseURL;
+
+        $curl = new Curl();
+        $response = $curl->get(
+            $baseURL,
+            array(
+                'app' => 'cintlinklimesurveyrestapi',
+                'format' => 'raw',
+                'resource' => 'order',
+                'orderUrl' => $this->url,
+                'key' => $limesurveyOrgKey
+            )
+        );
+        // Double up!
+        $response = json_decode(json_decode($response));
+
+        // Abort if we got nothing
+        if (empty($response))
+        {
+            $this->log('Got empty response from Cint while update');
+            throw new Exception('Got empty response from Cint while update');
+        }
+
+        $orderXml = new SimpleXmlElement($response->body);
+
+        $this->raw = $response->body;
+        $this->status = (string) $orderXml->state;  // 'hold' means waiting for payment
+        $this->modified = date('Y-m-d H:i:m', time());
+        $this->save();
+
+        return $this;
+    }
+
+    /**
+     * Update a bunch of orders
+     * @param CintLinkOrder[] $orders
+     * @return CintLinkOrder[]
+     */
+    public static function updateOrders(array $orders)
+    {
+        $newOrders = array();
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+
+        // Loop through orders and get updated info from Cint
+        foreach ($orders as $order)
+        {
+            // No need to update these, since they will never change
+            if ($order->status == 'cancelled'
+                || $order->status == 'completed'
+                || $order->status == 'closed')
+            {
+                $newOrders[] = $order;
+                continue;
+            }
+
+            $newOrders[] = $order->updateFromCint();
+        }
+
+        return $newOrders;
+    }
+
+    /**
      * Returns true if survey has any blocking Cint orders, no matter the state.
      * A blocking order is in state hold, new or live (not completed, deleted, or cancelled)
      * @param int $surveyId
@@ -385,6 +464,20 @@ class CintLinkOrder extends CActiveRecord
 
         $criteria = new CDbCriteria();
         $criteria->addCondition('deleted = 0 AND status != \'completed\' AND status != \'cancelled\'');
+        $criteria->addCondition('sid = ' . $surveyId);  // TODO: Escape
+        $count = CintLinkOrder::model()->count($criteria);
+        return $count > 0;
+    }
+
+    /**
+     * Returns true if this survey has ANY Cint order related to it, in any state.
+     * @param int $surveyId
+     * @return boolean
+     */
+    public static function hasAnyOrders($surveyId)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('deleted = 0');
         $criteria->addCondition('sid = ' . $surveyId);  // TODO: Escape
         $count = CintLinkOrder::model()->count($criteria);
         return $count > 0;
