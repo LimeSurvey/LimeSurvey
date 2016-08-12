@@ -12,7 +12,7 @@
 
         <!-- Form -->
         <?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post', array('id'=>'savepermissions'));?>
-            <table style='margin:0 auto;' class='userpermissions activecell table'>
+            <table style='margin:0 auto;' class='userpermissions activecell table table-striped'>
                 <thead>
                     <tr>
                         <th></th>
