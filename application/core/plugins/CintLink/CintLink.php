@@ -43,7 +43,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
      *
      * @var string
      */
-    public $baseURL = "https://www.limesurvey.org/index.php?option=com_api";
+    //public $baseURL = "https://www.limesurvey.org/index.php?option=com_api";
+    public static $baseURL = "https://www.limesurvey.org/index.php?option=com_api";
 
     public function init()
     {
@@ -450,7 +451,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             CintLinkOrder::updateOrders($surveyId);
         }
 
-        if (!CintLinkOrder::hasAnyBlockingOrders($surveId))
+        if (!CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
             return;
         }
@@ -629,7 +630,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         {
             $curl = new Curl();
             $response = $curl->post(
-                $this->baseURL,
+                self::$baseURL,
                 array(
                     'app' => 'cintlinklimesurveyrestapi',
                     'format' => 'raw',
@@ -763,7 +764,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $curl = new Curl();
         $response = $curl->post(
-            $this->baseURL,
+            self::$baseURL,
             array(
                 'app' => 'cintlinklimesurveyrestapi',
                 'format' => 'raw',
@@ -808,7 +809,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $curl = new Curl();
         $response = $curl->post(
-            $this->baseURL,
+            self::$baseURL,
             array(
                 'app' => 'cintlinklimesurveyrestapi',
                 'format' => 'raw',
@@ -874,7 +875,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
 
         // DELETE does not support CURLOPT_POSTFIELDS?
-        $url = $this->baseURL;
+        $url = self::$baseURL;
         $url .= '&app=cintlinklimesurveyrestapi';
         $url .= '&format=raw';
         $url .= '&resource=order';

@@ -388,11 +388,11 @@ class CintLinkOrder extends CActiveRecord
         }
 
         // URL to LimeSurvey is stored in Cint plugin
-        $baseURL = Yii::app()->getPlugin()->baseURL;
+        //$baseURL = Yii::app()->getPlugin()->baseURL;
 
         $curl = new Curl();
         $response = $curl->get(
-            $baseURL,
+            CintLink::$baseURL,
             array(
                 'app' => 'cintlinklimesurveyrestapi',
                 'format' => 'raw',
@@ -423,11 +423,17 @@ class CintLinkOrder extends CActiveRecord
 
     /**
      * Update a bunch of orders
-     * @param CintLinkOrder[] $orders
+     * @param CintLinkOrder[]|int $orders Or survey id
      * @return CintLinkOrder[]
      */
-    public static function updateOrders(array $orders)
+    public static function updateOrders($orders)
     {
+        // If $orders is an int, it's the survey id
+        if (is_int($orders))
+        {
+            $orders = self::getOrders($orders);
+        }
+
         $newOrders = array();
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
 
@@ -447,6 +453,22 @@ class CintLinkOrder extends CActiveRecord
         }
 
         return $newOrders;
+    }
+
+    /**
+     * @param int $surveyId
+     */
+    public static function getOrders($surveyId)
+    {
+        $conditions = array(
+            'sid' => $surveyId,
+            'deleted' => 0
+        );
+        $orders = self::model()->findAllByAttributes(
+            $conditions,
+            array('order' => 'url DESC')
+        );
+        return $orders;
     }
 
     /**
