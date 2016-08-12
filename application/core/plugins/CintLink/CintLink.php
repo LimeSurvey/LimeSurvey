@@ -54,6 +54,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->subscribe('newDirectRequest');  // Ajax calls
         $this->subscribe('beforeControllerAction');  // To load Cint icon
         $this->subscribe('beforeSurveyDeactivate');
+        $this->subscribe('beforeSurveyActivate');
 
         // Login session key from com_api at limesurvey.org
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
@@ -99,7 +100,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'country' => 'string(63)',
                 'status' => 'string(15)',
                 'ordered_by' => 'int',  // User id
-                'deleted' => 'int(1) DEFAULT 0',  // Soft delete
+                'deleted' => 'int DEFAULT 0',  // Soft delete
                 'created' => 'datetime',
                 'modified' => 'datetime',
             );
@@ -412,7 +413,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     /**
      * If user tries to deactivate, show a warning if any
      * order has status 'new' or 'live'.
-     *
      * @return void
      */
     public function beforeSurveyDeactivate()
@@ -428,8 +428,89 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         if ($this->anyOrderHasStatus($orders, array('new', 'live')))
         {
-            $event->set('message', $this->gT('Blaha'));
+            $event->set('message', $this->gT('You cannot deactivate the survey while any Cint order is live.'));
+            $event->set('success', false);
         }
+    }
+
+
+    /**
+     * Before the survey activates, add a new hidden question type
+     * to store participant GUID from Cint.
+     * Code copied from database.php
+     * @return void
+     */
+    public function beforeSurveyActivate()
+    {
+        $event = $this->getEvent();
+        $surveyId = $event->get('surveyId');
+        $survey = Survey::model()->findByPk($surveyId);
+        $additionalLanguages = $survey->additionalLanguages;
+
+        $firstGroup = QuestionGroup::getFirstGroup($surveyId);
+
+        $questionOrder = getMaxQuestionOrder($firstGroup->gid, $surveyId);
+        $questionOrder++;
+
+        // Save base language question
+        $this->createParticipantGUIDQuestion(
+            $surveyId,
+            $firstGroup->gid,
+            $questionOrder,
+            $survey->language
+        );
+
+        // Save question for all other languages
+        if (!empty($additionalLanguages))
+        {
+            foreach ($additionalLanguages as $lang)
+            {
+                $this->createParticipantGUIDQuestion(
+                    $surveyId,
+                    $firstGroup->gid,
+                    $questionOrder,
+                    $lang
+                );
+            }
+        }
+    }
+
+    /**
+      * Create hidden question that will be prefilled with GUID from Cint
+      * or other panel.
+     * @return void
+     */
+    protected function createParticipantGUIDQuestion($surveyId, $groupId, $questionOrder, $lang)
+    {
+
+        // Create new question
+        $question = new Question();
+        $question->sid = $surveyId;
+        $question->gid = $groupId;
+        $question->type = 'S';  // Short text
+        $question->title = 'participantguid';
+        $question->question = 'participantguid';
+        $question->preg = '';
+        $question->help = '';
+        $question->other = 'N';
+        $question->mandatory = 'Y';
+        $question->relevance = 1;
+        $question->question_order = $questionOrder;
+        $question->language = $lang;
+        $question->save();
+
+        $errors = $question->getErrors();
+        if(count($errors))
+        {
+            throw new Exception('Could not create participantguid question while activating survey with Cint order');
+        }
+
+        $attribute = new QuestionAttribute;
+        $attribute->qid = $question->qid;
+        $attribute->value = 'Y';
+        $attribute->attribute = 'hidden';
+        $attribute->language = $lang;
+        $attribute->save();
     }
 
     /**

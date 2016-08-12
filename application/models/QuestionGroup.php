@@ -328,5 +328,19 @@ class QuestionGroup extends LSActiveRecord
         }
     }
 
+    /**
+     * Returns the first question group in the survey
+     * @param int $surveyId
+     * @return QuestionGroup
+     */
+    public static function getFirstGroup($surveyId)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid = ' . $surveyId);
+        $criteria->mergeWith(array(
+          'order' => 'gid DESC'
+        ));
+        return self::model()->find($criteria);
+    }
+
 }
-?>
