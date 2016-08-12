@@ -14,10 +14,27 @@
                 'itemsCssClass' => 'table table-striped items',
                 'dataProvider' => $model->search(),
                 'columns' => $model->colums,
-                'afterAjaxUpdate' => 'bindButtons'
-            ));
-            ?>
-        </div>
+                'afterAjaxUpdate' => 'bindButtons',
+                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
+                            ),
+                    ));
+
+                ?>
+            </div>
+
+            <!-- To update rows per page via ajax -->
+            <script type="text/javascript">
+                jQuery(function($) {
+                    jQuery(document).on("change", '#pageSize', function(){
+                        $.fn.yiiGridView.update('all_users',{ data:{ pageSize: $(this).val() }});
+                    });
+                });
+            </script>
     </div>
 </div>
 <div id='adduser-modal' class="modal fade " tabindex="-1" role="dialog">

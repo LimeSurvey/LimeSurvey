@@ -91,7 +91,12 @@
             return $this->dynamicId;
         }
 
+        public function browse(){
 
+        }
+        public function search(){
+            
+        }
     }
 
 ?>

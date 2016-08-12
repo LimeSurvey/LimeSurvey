@@ -424,9 +424,9 @@ class responses extends Survey_Common_Action
             $model                      =  SurveyDynamic::model($iSurveyId);
 
             // Page size
-            if (isset($_GET['pageSize']))
+            if (!empty(Yii::app()->request->getParam('pageSize')))
             {
-                Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+                Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
             }
 
             // Model filters
@@ -434,9 +434,9 @@ class responses extends Survey_Common_Action
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
             // see: http://www.yiiframework.com/wiki/161/understanding-safe-validation-rules/
             // see: http://www.yiiframework.com/doc/api/1.1/CModel#setAttributes-detail
-            if(isset($_GET['SurveyDynamic']))
+            if(!empty(Yii::app()->request->getParam('SurveyDynamic')))
             {
-                $model->setAttributes($_GET['SurveyDynamic'],false);
+                $model->setAttributes(Yii::app()->request->getParam('SurveyDynamic'),false);
             }
 
             // Virtual attributes filters
@@ -445,9 +445,9 @@ class responses extends Survey_Common_Action
             // @see: http://www.yiiframework.com/wiki/281/searching-and-sorting-by-related-model-in-cgridview/
             $aVirtualFilters = array('completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter');
             foreach($aVirtualFilters as $sFilterName)
-            if(isset($_GET['SurveyDynamic'][$sFilterName]))
+            if(!empty(Yii::app()->request->getParam('SurveyDynamic')[$sFilterName]))
             {
-                $model->$sFilterName = $_GET['SurveyDynamic'][$sFilterName];
+                $model->$sFilterName = Yii::app()->request->getParam('SurveyDynamic')[$sFilterName];
             }
 
             // rendering
@@ -1056,9 +1056,9 @@ class responses extends Survey_Common_Action
         */
 
         // Set number of page
-        if (isset($_GET['pageSize']))
+        if (!empty(Yii::app()->request->getParam('pageSize')))
         {
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
         }
 
 

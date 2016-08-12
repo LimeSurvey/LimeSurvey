@@ -110,7 +110,7 @@ class User extends LSActiveRecord
     }
     public function getParentUser(){
         $parent_user = $this->parentAndUser( $this->uid );
-        return $parent_user['full_name'];
+        return $parent_user['parent'];
     }
 
     public function getSurveysCreated(){
@@ -472,7 +472,7 @@ class User extends LSActiveRecord
     public function search()
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
-
+        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
         $criteria=new CDbCriteria;
 
         // $criteria->compare('uid',$this->uid);
@@ -492,7 +492,7 @@ class User extends LSActiveRecord
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'pagination' => array(
-                'pageSize' => 20
+                'pageSize' => $pageSize
             )
         ));
     }

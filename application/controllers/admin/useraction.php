@@ -56,42 +56,23 @@ class UserAction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'users.js');
 
-
-        $userlist = getUserList();
-        $usrhimself = $userlist[0];
-        unset($userlist[0]);
-
         $aData = array();
-
-        if (Permission::model()->hasGlobalPermission('superadmin','read')) {
-            $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
-            $aData['noofsurveys'] = $noofsurveys;
-        }
-        $aData['row'] = 0;
-        if (isset($usrhimself['parent_id']) && $usrhimself['parent_id'] != 0)
+        // Page size
+        if (!empty(Yii::app()->request->getParam('pageSize')))
         {
-            $aData['row'] = User::model()->findByAttributes(array('uid' => $usrhimself['parent_id']))->users_name;
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
         }
-
-
-        $aData['usrhimself'] = $usrhimself;
-        // other users
-        $aData['usr_arr'] = $userlist;
-        $noofsurveyslist = array();
-
-        //This loops through for each user and checks the amount of surveys against them.
-        $limit = count($userlist);
-        for ($i = 1; $i <= $limit; $i++)
+        else 
         {
-            $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
         }
-
-        $aData['noofsurveyslist'] = $noofsurveyslist;
+        $aData['pageSize']= Yii::app()->user->getState('pageSize');
 
         $aData['title_bar']['title'] = gT('User administration');
         $aData['fullpagebar']['closebutton']['url'] = true;
         $model = new User();
-        $this->_renderWrappedTemplate('user', 'editusers',array('model'=>$model));
+        $aData['model']=$model;
+        $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }
 
     private function _getSurveyCountForUser(array $user)

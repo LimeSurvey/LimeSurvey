@@ -1,10 +1,5 @@
 
 <div id='<?php echo "tab-$grouplang-$tab"; ?>' class="tab-pane fade in <?php echo $active; ?>">
-    <div class='form-group'>
-        <div class='col-sm-6 col-sm-offset-2'>
-            <?php echo CHtml::link(sprintf(gT("Validate expression in %s"),$details['title']),array('admin/validate','sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab),array('title'=>$details['title'],"target"=>"dialog")); ?>
-        </div>
-    </div>
 
     <div class='form-group'>
         <label class='col-sm-2 control-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
@@ -12,9 +7,6 @@
             <?php
             $sSubjectField=$details['field']['subject'];
             echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$sSubjectField,array('class' => 'form-control', 'size'=>80)); ?>
-        </div>
-        <div class='col-sm-1'>
-            <?php echo CHtml::button(gT("Reset"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_subj_{$grouplang}",'data-value'=>$details['default']['subject'])); ?>
         </div>
     </div>
 
@@ -28,16 +20,17 @@
         </div>
         <div class='col-sm-6'></div>
     </div>
-    <div class='form-group'>
-        <div class='col-sm-2'></div>
-        <div class='col-sm-1'>
+    <div class='form-group '>
+        <label class='col-sm-2 control-label'><?php et('Actions:');?></label>
+        <div class='col-sm-6'>
+            <?php echo CHtml::link(gT("Validate expressions"),array('admin/validate','sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab),array('title'=>$details['title'],"target"=>"dialog","class"=>'btn btn-default')); ?>
             <?php
             $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
-            echo CHtml::button(gT("Reset"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
+            echo CHtml::button(gT("Reset this template"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
             ?>
         </div>
-        <div class='col-sm-9'></div>
     </div>
+
     <?php
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
