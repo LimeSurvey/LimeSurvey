@@ -491,6 +491,9 @@ class User extends LSActiveRecord
         // $criteria->compare('modified',$this->modified,true);
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+            'pagination' => array(
+                'pageSize' => 20
+            )
         ));
     }
 

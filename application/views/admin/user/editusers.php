@@ -9,9 +9,8 @@
     <div class="row" style="margin-bottom: 100px">
         <div class="container">
             <?php
-            $this->widget('zii.widgets.grid.CGridView', array(
+            $this->widget('bootstrap.widgets.TbGridView', array(
                 'id' => 'all_users',
-                'htmlOptions' => array('class'=> 'table-responsive'),
                 'itemsCssClass' => 'table table-striped items',
                 'dataProvider' => $model->search(),
                 'columns' => $model->colums,
