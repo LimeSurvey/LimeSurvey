@@ -20,7 +20,7 @@
                 </a>
             </h4>
         </div>
-        <div id="generaloptions" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        <div id="generaloptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $data); ?>
             </div>
@@ -165,4 +165,4 @@
         </div>
     <?php endif;?>
 </div>
-    
+

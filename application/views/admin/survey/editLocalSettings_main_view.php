@@ -7,6 +7,13 @@
 <script type="text/javascript">
     standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
     templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+    $( document ).ready(function() {
+        var anchor = $(location).attr('hash');
+        if (anchor!="")
+            $(anchor).addClass('in');
+        else
+            $("#generaloptions").addClass('in');
+   });
 </script>
 
 <?php
