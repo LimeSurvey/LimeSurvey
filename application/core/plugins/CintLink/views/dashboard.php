@@ -24,6 +24,7 @@
 
 <!-- Cint widget button (not visible from global dashboard) -->
 <?php if (!empty($surveyId)): // Widget is not visible on global dashboard ?>
+  <div class='row'>
     <button
         class='btn btn-default'
         onclick='LS.plugin.cintlink.showWidget();'
@@ -33,7 +34,9 @@
         &nbsp;
         <?php echo $plugin->gT('Choose participants'); ?>
     </button>
-    <p class='help-block'><?php echo $plugin->gT('Use the Cint widget to buy participants'); ?></p>
+    <button class='btn btn-default pull-right' onclick='LS.plugin.cintlink.showDashboard();'><span class='fa fa-refresh'></span>&nbsp;<?php echo $plugin->gT('Refresh'); ?></button>
+  </div>
+  <p class='help-block'><?php echo $plugin->gT('Use the Cint widget to buy participants'); ?></p>
 <?php endif; ?>
 
 <h4>Orders</h4>

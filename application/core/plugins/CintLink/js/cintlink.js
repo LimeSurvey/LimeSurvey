@@ -280,6 +280,7 @@ $(document).ready(function() {
     LS.plugin.cintlink.cancelOrder = cancelOrder;
     LS.plugin.cintlink.softDeleteOrder = softDeleteOrder;
     LS.plugin.cintlink.userTriedToPay = userTriedToPay;
+    LS.plugin.cintlink.showDashboard = showDashboard;
 
     // Check if user is logged in on limesurvey.org
     // If yes, show widget
