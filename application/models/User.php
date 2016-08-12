@@ -348,7 +348,7 @@ class User extends LSActiveRecord
                 data-toggle='modal' 
                 data-href='#' 
                 data-onclick='$.post(".$deleteUrl.", 
-                        {action: \"deluser\", uid:\"".$this->uid."\", user: \"".htmlspecialchars(Yii::app()->user->users_name)."\"});' 
+                        {action: \"deluser\", uid:\"".$this->uid."\", user: \"".htmlspecialchars($this->getName($this->uid)[0]['full_name'])."\"});' 
                 data-target='#confirmation-modal' 
 
                 data-uid='".$this->uid."' 
