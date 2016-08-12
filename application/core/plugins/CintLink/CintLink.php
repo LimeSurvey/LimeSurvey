@@ -530,7 +530,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $question->gid = $groupId;
         $question->type = 'S';  // Short text
         $question->title = 'participantguid';
-        $question->question = 'participantguid';
+        $question->question = $this->gT('This is the GUID (global unique identifier) of the participant. The question is automatically created by the Cint plugin, and should always be hidden.');
         $question->preg = '';
         $question->help = '';
         $question->other = 'N';
