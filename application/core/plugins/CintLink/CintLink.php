@@ -99,7 +99,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'country' => 'string(63)',
                 'status' => 'string(15)',
                 'ordered_by' => 'int',  // User id
-                'deleted' => 'bool',  // Soft delete
+                'deleted' => 'int(1) DEFAULT 0',  // Soft delete
                 'created' => 'datetime',
                 'modified' => 'datetime',
             );
@@ -306,7 +306,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
             $orders = $this->getOrders(array(
                 'sid' => $surveyId,
-                'deleted' => false
+                'deleted' => 0
             ));
 
             if (empty($orders))
@@ -422,7 +422,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $orders = $this->getOrders(array(
             'sid' => $surveyId,
-            'deleted' => false
+            'deleted' => 0
         ));
         $orders = $this->updateOrders($orders);
 
@@ -562,7 +562,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $orders = $this->getOrders(array(
             'sid' => $surveyId,
-            'deleted' => false
+            'deleted' => 0
         ));
 
         // Only update when request is not pagination request from grid
@@ -593,7 +593,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function getGlobalDashboard()
     {
         $orders = $this->getOrders(array(
-            'deleted' => false
+            'deleted' => 0
         ));
 
         // Only update when request is not pagination request from grid
@@ -803,7 +803,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $order = CintLinkOrder::model()->findByAttributes(
             array(
                 'url' => $url,
-                'deleted' => false
+                'deleted' => 0
             )
         );
 
@@ -812,7 +812,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             return json_encode(array('error' => $this->gT('Found no order')));
         }
 
-        $order->deleted = true;
+        $order->deleted = 1;
         $order->save();
 
         $this->log("softDeleteOrder end");
@@ -915,10 +915,12 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     protected function getOrders($conditions)
     {
+        $this->log('getOrders');
         $orders = CintLinkOrder::model()->findAllByAttributes(
             $conditions,
             array('order' => 'url DESC')
         );
+        $this->log('got ' . count($orders) . ' orders');
         return $orders;
     }
 
@@ -936,7 +938,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             $orders = CintLinkOrder::model()->findAllByAttributes(
                 array(
                     'sid' => $surveyId,
-                    'deleted' => false
+                    'deleted' => 0
                 ),
                 array('order' => 'url DESC')
             );
@@ -1071,7 +1073,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $survey = Survey::model()->findByPk($surveyId);
         $orders = $this->getOrders(array(
             'sid' => $surveyId,
-            'deleted' => false
+            'deleted' => 0
         ));
 
         if ($survey->active != 'Y')
