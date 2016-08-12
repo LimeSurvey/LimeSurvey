@@ -51,7 +51,6 @@
                         LimeReplacementFieldsQID : "<?php echo $iQuestionId; ?>",
                         LimeReplacementFieldsType: "<?php echo $sFieldType; ?>",
                         LimeReplacementFieldsAction: "<?php echo $sAction; ?>",
-                        smiley_path: "<?php echo Yii::app()->getConfig('rooturl') . '/upload/images/smiley/msn/'; ?>",
                         LimeReplacementFieldsPath : "<?php echo $this->createUrl("/admin/limereplacementfields/sa/index"); ?>",
                         language : "<?php echo $ckLanguage ?>"
                         <?php echo $htmlformatoption; ?> });
