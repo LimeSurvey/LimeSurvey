@@ -645,13 +645,10 @@ class UserAction extends Survey_Common_Action
         {
             $aTemplatePermissions = array();
             $tresult = Template::model()->findAll();
-            $postvalue= array_flip($_POST);
             foreach ($tresult as $trow)
             {
-                if (isset($postvalue[$trow["folder"] . "_use"]))
-                    $aTemplatePermissions[$trow["folder"]] = 1;
-                else
-                    $aTemplatePermissions[$trow["folder"]] = 0;
+                if (isset($_POST[$trow["folder"] . "_use"]))
+                    $aTemplatePermissions[$trow["folder"]] = $_POST[$trow["folder"] . "_use"];
             }
             foreach ($aTemplatePermissions as $key => $value)
             {
