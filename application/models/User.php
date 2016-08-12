@@ -110,7 +110,7 @@ class User extends LSActiveRecord
     }
     public function getParentUser(){
         $parent_user = $this->parentAndUser( $this->uid );
-        return $parent_user['full_name'];
+        return $parent_user['parent'];
     }
 
     public function getSurveysCreated(){
