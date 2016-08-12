@@ -275,12 +275,33 @@ $(document).ready(function() {
         });
     }
 
+    /**
+     * When survey has more than one language, show a
+     * popup to let user choose lang before ordering
+     * participants.
+     * @return
+     */
+    function showLangWizard() {
+        showLoader();
+        $.ajax({
+            method: 'POST',
+            url: LS.plugin.cintlink.pluginBaseUrl + '&method=getLangWizard',
+            surveyId: LS.plugin.cintlink.surveyId
+        }).done(function(response) {
+            console.log('response', response);
+            hideLoader();
+            //$('#cintlink-container').html(response);
+            //doToolTip();
+        });
+    }
+
     // Needs to be accessed from the outside (dashboard view)
     LS.plugin.cintlink.showWidget = showWidget;
     LS.plugin.cintlink.cancelOrder = cancelOrder;
     LS.plugin.cintlink.softDeleteOrder = softDeleteOrder;
     LS.plugin.cintlink.userTriedToPay = userTriedToPay;
     LS.plugin.cintlink.showDashboard = showDashboard;
+    LS.plugin.cintlink.showLangWizard = showLangWizard;
 
     // Check if user is logged in on limesurvey.org
     // If yes, show widget

@@ -668,13 +668,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
     /**
      * Return HTML for survey specific dashboard
      * Called by Ajax
-     *
      * @param LSHttpRequest $request
      * @return string
      */
     public function getDashboard(LSHttpRequest $request)
     {
         $surveyId = $request->getParam('surveyId');
+        $survey = Survey::model()->findByPk($surveyId);
 
         // If surveyId is empty, assume this is the global dashboard
         if (empty($surveyId))
@@ -696,6 +696,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $data = array();
         $data['surveyId'] = $surveyId;
+        $data['additionalLanguages'] = empty($survey->additionalLanguages) ? null : $survey->additionalLanguages;
         $data['user'] = Yii::app()->user;
         $data['model'] = CintLinkOrder::model();  // TODO: Only show orders for this survey
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
@@ -709,7 +710,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Return HTML for global dashboard
-     *
      * @return string
      */
     public function getGlobalDashboard()

@@ -24,17 +24,22 @@
 
 <!-- Cint widget button (not visible from global dashboard) -->
 <?php if (!empty($surveyId)): // Widget is not visible on global dashboard ?>
-  <div class='row'>
-    <button
-        class='btn btn-default'
-        onclick='LS.plugin.cintlink.showWidget();'
-        <?php if ($hasTokenTable): ?> disabled='disabled' <?php endif; ?>
-    >
-        <span class='fa fa-bars'></span>
-        &nbsp;
-        <?php echo $plugin->gT('Choose participants'); ?>
-    </button>
-    <button class='btn btn-default pull-right' onclick='LS.plugin.cintlink.showDashboard();'><span class='fa fa-refresh'></span>&nbsp;<?php echo $plugin->gT('Refresh'); ?></button>
+    <div class='row'>
+
+        <!-- Show Cint widget -->
+        <button
+            class='btn btn-default'
+              onclick='<?php if ($additionalLanguages === null): echo 'LS.plugin.cintlink.showWidget();'; else: echo 'LS.plugin.cintlink.showLangWizard();'; endif; ?>'
+            <?php if ($hasTokenTable): ?> disabled='disabled' <?php endif; ?>
+        >
+            <span class='fa fa-bars'></span>
+            &nbsp;
+            <?php echo $plugin->gT('Choose participants'); ?>
+        </button>
+
+        <!-- Refresh -->
+        <button class='btn btn-default pull-right' onclick='LS.plugin.cintlink.showDashboard();'><span class='fa fa-refresh'></span>&nbsp;<?php echo $plugin->gT('Refresh'); ?></button>
+
   </div>
   <p class='help-block'><?php echo $plugin->gT('Use the Cint widget to buy participants'); ?></p>
 <?php endif; ?>
