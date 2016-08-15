@@ -58,11 +58,11 @@ class UserAction extends Survey_Common_Action
 
         $aData = array();
         // Page size
-        if (!empty(Yii::app()->request->getParam('pageSize')))
+        if (Yii::app()->request->getParam('pageSize'))
         {
             Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
         }
-        else 
+        else
         {
             Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
         }
