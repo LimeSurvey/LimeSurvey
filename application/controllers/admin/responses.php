@@ -405,7 +405,7 @@ class responses extends Survey_Common_Action
         {
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
-            
+
             // Basic datas for the view
             $aData                      = $this->_getData($iSurveyId);
             $aData['surveyid']          = $iSurveyId;
@@ -424,7 +424,7 @@ class responses extends Survey_Common_Action
             $model                      =  SurveyDynamic::model($iSurveyId);
 
             // Page size
-            if (!empty(Yii::app()->request->getParam('pageSize')))
+            if (Yii::app()->request->getParam('pageSize'))
             {
                 Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
             }
@@ -1056,7 +1056,7 @@ class responses extends Survey_Common_Action
         */
 
         // Set number of page
-        if (!empty(Yii::app()->request->getParam('pageSize')))
+        if (Yii::app()->request->getParam('pageSize'))
         {
             Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
         }
