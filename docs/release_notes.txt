@@ -35,6 +35,23 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160812) to 2.50+ (build 160816) Aug 16, 2016
+-Fixed issue #11545: Not possible to edit administrators (Carsten Schmitz)
+-Fixed issue #11547: Not possible to view responses on PHP version <5.5 (Carsten Schmitz)
+-Fixed issue #11551: [security] Usage of external font libraries in survey templates(Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by rnck, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by valdomir, aesteban
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.50+ (build 160810) to 2.50+ (build 160812) Aug 12, 2016
 -Fixed issue #11373: Duplicate labels in Matrix (markusfluer)
 -Fixed issue #11529: Token validity time invalid (markusfluer)
