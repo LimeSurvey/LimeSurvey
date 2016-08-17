@@ -601,13 +601,15 @@ CREATE TABLE prefix_notifications (
     [status] nvarchar(15) NOT NULL DEFAULT 'new',
     [importance] int NOT NULL DEFAULT 1,
     [display_class] nvarchar(31) DEFAULT 'default',
+    [hash] nvarchar(64) DEFAULT NULL,
     [created] datetime NOT NULL,
     [first_read] datetime DEFAULT NULL,
     PRIMARY KEY ([id])
 );
 CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);
+CREATE INDEX [notif_hash_index] ON [prefix_notifications] ([hash]);
 
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '259');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '260');

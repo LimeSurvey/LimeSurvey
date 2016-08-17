@@ -1442,6 +1442,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         }
 
+        if ($iOldDBVersion < 260)
+        {
+            addColumn('{{notifications}}', 'hash', 'string(64)');
+
+            // Inform superadmin about update
+            $superadmins = User::model()->getSuperAdmins();
+            Notification::broadcast(array(
+                'title' => gT('Database update'),
+                'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '259')
+            ), $superadmins);
+        }
+
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
