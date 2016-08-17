@@ -18,6 +18,20 @@
                         <?php eT('Access');?>
                     </th>
                 </tr>
+                <tr>
+                    <th>
+                        &nbsp;
+                    </th>
+                    <th>
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'alltemplates',
+                            'id'=>'alltemplates',
+                            'value' => 0,
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')));
+                        ?>
+                    </th>
+                </tr>
             </thead>
 
             <tfoot>
@@ -48,7 +62,6 @@
                                 'onLabel'=>gT('On'),
                                 'offLabel' => gT('Off')));
                             ?>
-
                         </td>
                     </tr>
                     <?php } ?>
