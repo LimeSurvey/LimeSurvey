@@ -440,12 +440,6 @@ class CintLinkOrder extends CActiveRecord
         }
 
         $newOrders = array();
-        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
-
-        if (empty($limesurveyOrgKey))
-        {
-            throw new Exception('Not logged in on limesurvey.org');
-        }
 
         // Loop through orders and get updated info from Cint
         foreach ($orders as $order)
@@ -499,6 +493,35 @@ class CintLinkOrder extends CActiveRecord
         $criteria->addCondition('sid = ' . $surveyId);  // TODO: Escape
         $count = CintLinkOrder::model()->count($criteria);
         return $count > 0;
+    }
+
+    /**
+     * Returns true if ALL orders are completed OR cancelled.
+     * Returns false if there are no orders.
+     *
+     * All orders are complete if:
+     *   there are any orders
+     *   at least one order is completed.
+     *   no order is blocking (meaning all orders are 'completed' or 'cancelled')
+     *
+     * @param int $surveyId
+     * @return boolean
+     * @todo Can this be done in one query?
+     */
+    public function allOrdersAreCompleted($surveyId)
+    {
+        $orders = self::getOrders($surveyId);
+
+        if (self::hasAnyOrders($surveyId) &&
+            self::anyOrderHasStatus($orders, 'completed') &&
+            !self::hasAnyBlockingOrders($surveyId))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**

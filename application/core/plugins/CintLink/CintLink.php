@@ -11,6 +11,10 @@ require_once(__DIR__ . "/CintXml.php");
  * CintLink integration to be able to buy respondents
  * from within LimeSurvey.
  *
+ * About the Cint active flag: The flag is set to true
+ * when user clicks "Pay now" on a Cint order. It is
+ * deactivated when all orders are completed or cancelled.
+ *
  * @since 2016-07-13
  * @author Olle Härstedt
  */
@@ -270,6 +274,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $surveyId = Yii::app()->request->getParam('surveyId');
         $surveyId = empty($surveyId) ? Yii::app()->request->getParam('surveyid') : $surveyId;
         $this->checkCintActive($surveyId);
+        $this->checkCintCompleted($surveyId);
 
         // Disable all tokens if user has any Cint order
         $this->disableTokens($surveyId);
@@ -305,12 +310,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             App()->clientScript->registerScriptFile("$assetsUrl/checkOrders.js");
 
             $survey = Survey::model()->findByPk($surveyId);
-            $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
-            $orders = $this->getOrders(array(
-                'sid' => $surveyId,
-                'deleted' => 0
-            ));
-
+            $orders = CintLinkOrder::getOrders($surveyId);
             if (empty($orders))
             {
                 // Possible?
@@ -321,6 +321,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
             // Check if any order is paid and/or live
             $anyOrderIsActive = CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live', 'hold'));
+            $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
             $this->log('anyOrderIsActive = ' . $anyOrderIsActive);
             if (!$surveyIsActive && $anyOrderIsActive)
             {
@@ -340,6 +341,33 @@ class CintLink extends \ls\pluginmanager\PluginBase
             }
         }
 
+    }
+
+    /**
+     * Check if all Cint orders are completed. If yes,
+     * show a notification to user that survey can be
+     * deactivated.
+     * @param int $surveyId
+     * @return void
+     */
+    protected function checkCintCompleted($surveyId)
+    {
+        // Check flag
+        $cintActive = $this->get('cint_active_' . $surveyId);
+        if ($cintActive &&
+            CintLinkOrder::allOrdersAreCompleted($surveyId))
+        {
+            $not = new Notification(array(
+                'survey_id' => $surveyId,
+                'importance' => Notification::NORMAL_IMPORTANCE,
+                'title' => $this->gT('Cint'),
+                'message' => $this->gT('All Cint orders are completed.')
+            ));
+            $not->save();
+
+            // Disable flag
+            $this->set('cint_active_' . $surveyId, false);
+        }
     }
 
     /**
@@ -374,15 +402,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $isTokenAction = $contr == 'admin' && $action == 'tokens';
 
         // If user has any Cint order, forbid access to participants
-        if ($isTokenAction)
+        // Only if survey has blocking Cint orders (hold, live, new/review)
+        if ($isTokenAction &&
+            CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
-
-            // End if survey has no blocking Cint orders
-            if (!CintLinkOrder::hasAnyBlockingOrders($surveyId))
-            {
-                return;
-            }
-
             $not = new Notification(array(
                 'user_id' => Yii::app()->user->id,
                 'title' => $this->gT('Participants disabled'),
@@ -421,16 +444,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $event = $this->getEvent();
         $surveyId = $event->get('surveyId');
 
-        $orders = $this->getOrders(array(
-            'sid' => $surveyId,
-            'deleted' => 0
-        ));
-
-        if (empty($orders))
-        {
-            // Do nothing
-        }
-        else
+        $orders = CintLinkOrder::getOrders($surveyId);
+        if (!empty($orders))
         {
             $orders = CintLinkOrder::updateOrders($orders);
 
