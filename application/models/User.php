@@ -345,6 +345,11 @@ class User extends LSActiveRecord
                 </button>";
             if ($this->parent_id != 0 && Permission::model()->hasGlobalPermission('users','delete') )
             {
+                $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
+                        "action"=> "deluser",
+                        "uid"=>$this->uid,
+                        "user" => htmlspecialchars(Yii::app()->user->getId())
+                    ));
                 $deleteUser = "<button
                 data-toggle='modal'
                 data-href='#'
