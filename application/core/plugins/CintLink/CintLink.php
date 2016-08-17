@@ -451,6 +451,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             CintLinkOrder::updateOrders($surveyId);
         }
 
+        // Abort if survey has no blocking Cint orders (no order is hold, live or new)
         if (!CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
             return;

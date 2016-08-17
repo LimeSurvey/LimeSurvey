@@ -437,6 +437,11 @@ class CintLinkOrder extends CActiveRecord
         $newOrders = array();
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
 
+        if (empty($limesurveyOrgKey))
+        {
+            throw new Exception('Not logged in on limesurvey.org');
+        }
+
         // Loop through orders and get updated info from Cint
         foreach ($orders as $order)
         {
