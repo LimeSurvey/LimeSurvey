@@ -407,7 +407,7 @@ class User extends LSActiveRecord
                         data-user='".htmlspecialchars($oUser['full_name'])."'
                         data-action='deluser'
                         data-onclick='triggerRunAction($(\"#delete_user_".$this->uid."\"))'
-                        data-message='".gT("Delete this user")."'
+                        data-message='".gT("Do you want to delete this user?")."'
                         class='btn btn-default btn-xs '>
                             <span class='fa fa-trash  text-danger'></span>
                         </button>";
