@@ -434,7 +434,7 @@ class responses extends Survey_Common_Action
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
             // see: http://www.yiiframework.com/wiki/161/understanding-safe-validation-rules/
             // see: http://www.yiiframework.com/doc/api/1.1/CModel#setAttributes-detail
-            if(!empty(Yii::app()->request->getParam('SurveyDynamic')))
+            if(Yii::app()->request->getParam('SurveyDynamic'))
             {
                 $model->setAttributes(Yii::app()->request->getParam('SurveyDynamic'),false);
             }
@@ -445,9 +445,10 @@ class responses extends Survey_Common_Action
             // @see: http://www.yiiframework.com/wiki/281/searching-and-sorting-by-related-model-in-cgridview/
             $aVirtualFilters = array('completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter');
             foreach($aVirtualFilters as $sFilterName)
-            if(!empty(Yii::app()->request->getParam('SurveyDynamic')[$sFilterName]))
+            $aParam=Yii::app()->request->getParam('SurveyDynamic');
+            if(!empty($aParam[$sFilterName]))
             {
-                $model->$sFilterName = Yii::app()->request->getParam('SurveyDynamic')[$sFilterName];
+                $model->$sFilterName = $aParam[$sFilterName];
             }
 
             // rendering
