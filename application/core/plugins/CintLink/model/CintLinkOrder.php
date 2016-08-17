@@ -424,7 +424,7 @@ class CintLinkOrder extends CActiveRecord
     /**
      * Update a bunch of orders
      * @param CintLinkOrder[]|int $orders Or survey id
-     * @return CintLinkOrder[]
+     * @return CintLinkOrder[]|null
      */
     public static function updateOrders($orders)
     {
@@ -432,6 +432,11 @@ class CintLinkOrder extends CActiveRecord
         if (is_int($orders))
         {
             $orders = self::getOrders($orders);
+        }
+
+        if (empty($orders))
+        {
+            return null;
         }
 
         $newOrders = array();
@@ -520,6 +525,11 @@ class CintLinkOrder extends CActiveRecord
      */
     public static function anyOrderHasStatus($orders, $statuses)
     {
+        if (empty($orders))
+        {
+            return false;
+        }
+
         if (!is_array($orders))
         {
             $orders = array($orders);

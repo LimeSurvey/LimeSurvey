@@ -425,12 +425,20 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'sid' => $surveyId,
             'deleted' => 0
         ));
-        $orders = CintLinkOrder::updateOrders($orders);
 
-        if (CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live')))
+        if (empty($orders))
         {
-            $event->set('message', $this->gT('You cannot deactivate the survey while any Cint order is live.'));
-            $event->set('success', false);
+            // Do nothing
+        }
+        else
+        {
+            $orders = CintLinkOrder::updateOrders($orders);
+
+            if (CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live')))
+            {
+                $event->set('message', $this->gT('You cannot deactivate the survey while any Cint order is live.'));
+                $event->set('success', false);
+            }
         }
     }
 
