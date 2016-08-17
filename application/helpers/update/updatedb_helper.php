@@ -1446,6 +1446,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         {
             addColumn('{{notifications}}', 'hash', 'string(64)');
 
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
+
             // Inform superadmin about update
             $superadmins = User::model()->getSuperAdmins();
             Notification::broadcast(array(
