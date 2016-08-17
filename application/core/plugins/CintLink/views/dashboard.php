@@ -23,7 +23,7 @@
 <?php endif; ?>
 
 <!-- Cint widget button (not visible from global dashboard) -->
-<?php if (!empty($surveyId)): // Widget is not visible on global dashboard ?>
+<?php if (!empty($surveyId)): ?>
     <div class='row'>
 
         <!-- Show Cint widget -->
@@ -36,6 +36,38 @@
             &nbsp;
             <?php echo $plugin->gT('Choose participants'); ?>
         </button>
+
+        <!-- Modal for Cint language wizard -->
+        <div id="cint-lang-wizard" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
+                    <div class="modal-header panel-heading">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><?php echo $plugin->gT('Choose language'); ?></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class='modal-body-text'><?php echo $plugin->gT('Pick a language that will be used as default for these participants. Make sure your order\'s country represents this language.'); ?></p>
+
+                        <!-- Radio list with languages -->
+                        <form class='form-horizontal'>
+                            <div class='radio'>
+                                <label><input type='radio' name='lang' checked='checked' value='<?php echo $survey->language; ?>' /><?php echo getLanguageNameFromCode($survey->language)[0]; ?></label>
+                            </div>
+                            <?php foreach ($survey->additionalLanguages as $lang): ?>
+                                <div class='radio'>
+                                    <label><input type='radio' name='lang' value='<?php echo $lang; ?>' /><?php echo getLanguageNameFromCode($lang)[0]; ?></label>
+                                </div>
+                            <?php endforeach; ?>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick='LS.plugin.cintlink.langWizardOK();' >&nbsp;<?php eT("OK"); ?></button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Refresh -->
         <button class='btn btn-default pull-right' onclick='LS.plugin.cintlink.showDashboard();'><span class='fa fa-refresh'></span>&nbsp;<?php echo $plugin->gT('Refresh'); ?></button>

@@ -972,8 +972,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $link = Yii::app()->createAbsoluteUrl(
             'survey/index',
             array(
-                'sid' => $surveyId,
-                'lang' => $data['surveyls_language']
+                'sid' => $surveyId
             )
         );
 
@@ -982,7 +981,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'name' => $user->full_name,
             'email' => $user->email,
             'nrOfQuestions' => $this->getNrOfQuestions($survey),
-            'link' => $link
+            'link' => $link,
+            'language' => $survey->language
         ));
     }
 
@@ -1005,6 +1005,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->set('cint_active_' . $surveyId, true);
     }
 
+    /**
+     * Plugin specific code to run a function.
+     * Will echo function result.
+     * @return void
+     */
     public function newDirectRequest()
     {
         $event = $this->event;

@@ -123,10 +123,10 @@ $(document).ready(function() {
     /**
      * Show the CintLink widget
      *
+     * @param {string|undefined} lang Language to put in the survey link
      * @return
      */
-    function showWidget() {
-        console.log("showWidget");
+    function showWidget(lang) {
 
         $.ajax({
             method: 'POST',
@@ -138,11 +138,20 @@ $(document).ready(function() {
             var survey = JSON.parse(response.result);
             console.log('survey', survey);
 
+            var completeLink;
+            if (lang === undefined) {
+                completeLink = response.link + '&lang=' + response.language;
+            }
+            else {
+                completeLink = response.link + '&lang=' + lang;
+            }
+            console.log('completeLink', completeLink);
+
             var options = {
                 locale: getWidgetLanguage(survey.surveyls_language),
                 introText: "LimeSurvey",
                 surveyLink: {
-                    value: response.link,
+                    value: completeLink,
                     readOnly: true
                 },
                 surveyTitle: {
@@ -282,17 +291,16 @@ $(document).ready(function() {
      * @return
      */
     function showLangWizard() {
-        showLoader();
-        $.ajax({
-            method: 'POST',
-            url: LS.plugin.cintlink.pluginBaseUrl + '&method=getLangWizard',
-            surveyId: LS.plugin.cintlink.surveyId
-        }).done(function(response) {
-            console.log('response', response);
-            hideLoader();
-            //$('#cintlink-container').html(response);
-            //doToolTip();
-        });
+        $('#cint-lang-wizard').modal();
+    }
+
+    /**
+     * Fired when user clicks OK in language wizard
+     * @return
+     */
+    function langWizardOK() {
+        var lang = $('#cint-lang-wizard input[name="lang"]:checked').val();
+        showWidget(lang);
     }
 
     // Needs to be accessed from the outside (dashboard view)
@@ -302,6 +310,7 @@ $(document).ready(function() {
     LS.plugin.cintlink.userTriedToPay = userTriedToPay;
     LS.plugin.cintlink.showDashboard = showDashboard;
     LS.plugin.cintlink.showLangWizard = showLangWizard;
+    LS.plugin.cintlink.langWizardOK = langWizardOK;
 
     // Check if user is logged in on limesurvey.org
     // If yes, show widget

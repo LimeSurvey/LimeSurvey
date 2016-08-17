@@ -45,3 +45,17 @@
 .cint-price, .cint-age, .cint-buttons {
     white-space: nowrap;
 }
+
+/* Radio buttons in language wizard is off */
+#cint-lang-wizard .radio input {
+    margin-top: 4px;
+}
+
+#cint-lang-wizard .radio label {
+    padding-left: 6px;
+    font-weight: bold;
+}
+
+#cint-lang-wizard form {
+    padding-left: 20px;
+}
