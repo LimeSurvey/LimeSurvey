@@ -28,7 +28,7 @@
 <div class="form-group">
     <label for="password" class="col-sm-2 control-label"><?php eT("Password");?></label>
     <div class="col-sm-3">
-        <?php echo CHtml::passwordField('password','',array('class'=>"form-control",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10)))); ?>
+        <?php echo CHtml::passwordField('password','',array('class'=>"form-control",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
         <input type='hidden' name='uid' value="<?php echo $aUserData['uid'];?>" />
     </div>
 </div>
