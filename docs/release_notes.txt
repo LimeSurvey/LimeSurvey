@@ -43,7 +43,6 @@ Changes from 2.50+ (build 160816) to 2.50+ (build 160817) Aug 17, 2016
 -Fixed issue #11553: Buttons "Expert mode" and "Close" not clickable (Carsten Schmitz)
 -Fixed issue #11554: Cannot delete users (Carsten Schmitz)
 -Fixed issue: Non-superadmins cannot delete users (markusfluer)
--Updated translation: Kyrgyz by kmaksat
 
 Changes from 2.50+ (build 160812) to 2.50+ (build 160816) Aug 16, 2016
 -Fixed issue #11545: Not possible to edit administrators (Carsten Schmitz)
@@ -54,7 +53,6 @@ Changes from 2.50+ (build 160812) to 2.50+ (build 160816) Aug 16, 2016
 #Updated translation: French (France) by arnaud21
 #Updated translation: German by rnck, c_schmitz
 #Updated translation: German (Informal) by c_schmitz
-#Updated translation: Kyrgyz by kmaksat
 #Updated translation: Norwegian (BokmÃ¥l) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elisa
