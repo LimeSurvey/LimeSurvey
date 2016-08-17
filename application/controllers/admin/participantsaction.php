@@ -1858,7 +1858,7 @@ class participantsaction extends Survey_Common_Action
             {
                 foreach ($CPDBAttributes as $CPDBAttribute)
                 {
-                    if ($CPDBAttribute['attribute_id'] === intval($tokenAttribute['cpdbmap']))
+                    if ($CPDBAttribute['attribute_id'] == intval($tokenAttribute['cpdbmap']))
                     {
                         $result[$attributeId] = array(
                             'tokenAttributeId' => $attributeId,

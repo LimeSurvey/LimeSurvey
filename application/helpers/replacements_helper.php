@@ -358,7 +358,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                     'data-target' => '#clearallConfirmation',
                 ));
         $_clearall .= "
-        <script type='text/javascript'> 
+        <script type='text/javascript'>
             $(document).on('exitAndClear', function(){
                 $('#limesurvey').append('<input name=\"clearall\" value=\"clearall\" />');
                 $('#limesurvey').append('<input name=\"confirm-clearall\" value=\"confirm\" />');
@@ -380,7 +380,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                         . '</div>'
                         . '<div class="modal-body">'
                             . gT("Are you sure you want to clear all your responses?")
-                            .'<input type="checkbox" name="confirm-clearall" id="confirm-clearall" value="confirm" class="hide jshide"/>' 
+                            .'<input type="checkbox" name="confirm-clearall" id="confirm-clearall" value="confirm" class="hide jshide"/>'
                         . '</div>'
                         . '<div class="modal-footer">'
                             . '<button type="button" class="btn btn-default" data-dismiss="modal">'.gT("No").'</button>'
@@ -717,7 +717,7 @@ EOD;
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
-    $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".gT("A Note On Privacy")."</span><br />".gT("This survey is anonymous.")."<br />".gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.");
+    $coreReplacements['PRIVACYMESSAGE'] = "<span class='privacy-title'>".gT("A note on privacy")."</span><span class='privacy-body'><br />".gT("This survey is anonymous.")."<br />".gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.").'</span>';
     $coreReplacements['QUESTION_INDEX']=isset($questionindex) ? $questionindex: '';
     $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
     $coreReplacements['RESTART'] = $_restart;

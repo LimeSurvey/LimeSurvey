@@ -1314,7 +1314,6 @@ class Participant extends LSActiveRecord
      *                overwritest - If true, overwrite standard fields (ie: names, email, participant_id, token)
      *                createautomap - If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
      */
-    //function copyCPBDAttributesToTokens($surveyId, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
     public function copyCPDBAttributesToTokens($surveyId, array $participantIds, array $mappedAttributes, array $newAttributes, array $options)
     {
         Yii::app()->loadHelper('common');

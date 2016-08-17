@@ -444,11 +444,12 @@ class responses extends Survey_Common_Action
             // Those virtual filters attributes are not set by the setAttributes, they must be set manually
             // @see: http://www.yiiframework.com/wiki/281/searching-and-sorting-by-related-model-in-cgridview/
             $aVirtualFilters = array('completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter');
-            foreach($aVirtualFilters as $sFilterName)
-            $aParam=Yii::app()->request->getParam('SurveyDynamic');
-            if(!empty($aParam[$sFilterName]))
-            {
-                $model->$sFilterName = $aParam[$sFilterName];
+            foreach($aVirtualFilters as $sFilterName) {
+                $aParam=Yii::app()->request->getParam('SurveyDynamic');
+                if(!empty($aParam[$sFilterName]))
+                {
+                    $model->$sFilterName = $aParam[$sFilterName];
+                }
             }
 
             // rendering
