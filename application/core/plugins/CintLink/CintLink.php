@@ -460,38 +460,36 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
 
         // Abort if survey has no blocking Cint orders (no order is hold, live or new)
-        if (!CintLinkOrder::hasAnyBlockingOrders($surveyId))
+        if (CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
-            return;
-        }
+            $survey = Survey::model()->findByPk($surveyId);
+            $additionalLanguages = $survey->additionalLanguages;
 
-        $survey = Survey::model()->findByPk($surveyId);
-        $additionalLanguages = $survey->additionalLanguages;
+            $firstGroup = QuestionGroup::getFirstGroup($surveyId);
 
-        $firstGroup = QuestionGroup::getFirstGroup($surveyId);
+            $questionOrder = getMaxQuestionOrder($firstGroup->gid, $surveyId);
+            $questionOrder++;
 
-        $questionOrder = getMaxQuestionOrder($firstGroup->gid, $surveyId);
-        $questionOrder++;
+            // Save base language question
+            $this->createParticipantGUIDQuestion(
+                $surveyId,
+                $firstGroup->gid,
+                $questionOrder,
+                $survey->language
+            );
 
-        // Save base language question
-        $this->createParticipantGUIDQuestion(
-            $surveyId,
-            $firstGroup->gid,
-            $questionOrder,
-            $survey->language
-        );
-
-        // Save question for all other languages
-        if (!empty($additionalLanguages))
-        {
-            foreach ($additionalLanguages as $lang)
+            // Save question for all other languages
+            if (!empty($additionalLanguages))
             {
-                $this->createParticipantGUIDQuestion(
-                    $surveyId,
-                    $firstGroup->gid,
-                    $questionOrder,
-                    $lang
-                );
+                foreach ($additionalLanguages as $lang)
+                {
+                    $this->createParticipantGUIDQuestion(
+                        $surveyId,
+                        $firstGroup->gid,
+                        $questionOrder,
+                        $lang
+                    );
+                }
             }
         }
     }
