@@ -12,6 +12,7 @@ function triggerRunAction(el){
         runAction(el);
     }
 }
+
 function runAction(el){
     var url = $(el).data('url'),
             action = $(el).data('action'),
@@ -32,9 +33,11 @@ function bindButtons(){
     $('.action_usercontrol_button').on('click', function(){
         runAction(this);
     });
+    $('input[name="alltemplates"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        $('input[id$="_use"]').prop('checked',state).trigger('change');
+    });
 
 }
-
 
 function UsertypeChange(ui,evt)
 {
