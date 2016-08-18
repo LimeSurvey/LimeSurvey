@@ -545,7 +545,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     protected function createParticipantGUIDQuestion($surveyId, $groupId, $questionOrder, $lang)
     {
-
         // Create new question
         $question = new Question();
         $question->sid = $surveyId;
@@ -568,12 +567,20 @@ class CintLink extends \ls\pluginmanager\PluginBase
             throw new Exception('Could not create participantguid question while activating survey with Cint order');
         }
 
+        // Hide question
         $attribute = new QuestionAttribute;
         $attribute->qid = $question->qid;
         $attribute->value = 'Y';
         $attribute->attribute = 'hidden';
         $attribute->language = $lang;
         $attribute->save();
+
+        // Create panel parameter
+        $param = new SurveyURLParameter();
+        $param->sid = $surveyId;
+        $param->targetqid = $question->qid;
+        $param->parameter = 'respondent';
+        $param->save();
     }
 
     /**
