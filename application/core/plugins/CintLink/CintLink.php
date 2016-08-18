@@ -995,7 +995,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'result' => json_encode($data),
             'name' => $user->full_name,
             'email' => $user->email,
-            'nrOfQuestions' => $this->getNrOfQuestions($survey),
+            'numberOfQuestions' => $this->calculateNumberOfQuestions($surveyId),
             'link' => $link,
             'language' => $survey->language
         ));
@@ -1223,6 +1223,38 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * Cint need to know how many questions there are in the
+     * survey. I use base questions + (sub questions / 3).
+     * Approx is 3 questions each minute.
+     * @param int $surveyId
+     * @return int
+     */
+    protected function calculateNumberOfQuestions($surveyId)
+    {
+        $survey = Survey::model()->findByPk($surveyId);
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid = ' . $surveyId);
+        $criteria->addCondition('parent_qid = 0');
+        $criteria->addCondition('language = \'' . $survey->language . '\'');
+        $baseQuestions = Question::model()->count($criteria);
+
+        // Note: An array questions with one sub question is fetched as 1 base question + 1 sub question
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid = ' . $surveyId);
+        $criteria->addCondition('parent_qid != 0');
+        $criteria->addCondition('language = \'' . $survey->language . '\'');
+        $subQuestions = Question::model()->count($criteria);
+
+        // Subquestions are worth less "time" than base questions
+        $subQuestions = intval(($subQuestions - $baseQuestions) / 2);
+        $subQuestions = $subQuestions < 0 ? 0 : $subQuestions;
+
+        return $subQuestions + $baseQuestions;
+
+    }
+
+    /**
      * Echoes Javascript code that is common for all scripts
      * Only runs if it's NOT an Ajax call
      * @param int $surveyId Null in global view
@@ -1271,15 +1303,6 @@ EOT
             , CClientScript::POS_END);
             }
         }
-    }
-
-    /**
-     * Calculate how many questions the survey contains.
-     * Used by Cint widget.
-     * @param Survey $survey
-     */
-    protected function getNrOfQuestions(Survey $survey)
-    {
     }
 
     /**

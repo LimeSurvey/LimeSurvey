@@ -146,6 +146,7 @@ $(document).ready(function() {
                 completeLink = response.link + '&lang=' + lang;
             }
             console.log('completeLink', completeLink);
+            console.log('response.numberOfQuestions', response.numberOfQuestions);
 
             var options = {
                 locale: getWidgetLanguage(survey.surveyls_language),
@@ -165,6 +166,10 @@ $(document).ready(function() {
                 contactEmail: {
                     value: response.email,
                     readOnly: false
+                },
+                numberOfQuestions: {
+                    value: response.numberOfQuestions,
+                    readOnly: true
                 }
             };
 
