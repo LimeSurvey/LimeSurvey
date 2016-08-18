@@ -510,35 +510,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Returns true if there is a blocking Cint order.
-     * Blocking in state 'hold', 'new' or 'live'.
-     * @param int $surveyId
-     * @return boolean
-     */
-    protected function shouldWeCreateHiddenQuestion($surveyId)
-    {
-        /*
-        $orders = $this->getOrders(array(
-            'sid' => $surveyId,
-            'deleted' => 0,
-        ));
-        // TODO: What if user is not logged in?
-        CintLinkOrder::updateOrders($orders);
-         */
-
-        $hasBlocking = CintLinkOrder::hasAnyBlockingOrders($surveyId);
-        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
-
-        if ($hasBlocking && empty($limesurveyOrgKey))
-        {
-            // There's a blocking order but user is not logged in at limesurvey.org
-        }
-        else
-        {
-        }
-    }
-
-    /**
       * Create hidden question that will be prefilled with GUID from Cint
       * or other panel.
      * @return void
