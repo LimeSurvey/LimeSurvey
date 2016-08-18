@@ -429,9 +429,10 @@ class CintLinkOrder extends CActiveRecord
     public static function updateOrders($orders)
     {
         // If $orders is an int, it's the survey id
-        if (is_int($orders))
+        if (is_int($orders) || is_string($orders))
         {
-            $orders = self::getOrders($orders);
+            $surveyId = intval($orders);
+            $orders = self::getOrders($surveyId);
         }
 
         if (empty($orders))

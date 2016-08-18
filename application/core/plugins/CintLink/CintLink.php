@@ -267,8 +267,29 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function afterSurveyComplete()
     {
-        header('Location: http://cds.cintworks.net/survey/complete');
-        die();
+        $event = $this->getEvent();
+        $surveyId = $event->get('surveyId');
+
+        if (empty($surveyId))
+        {
+            // Impossible?
+            throw new Exception('Internal error: Can\'t complete survey: surveyId is empty');
+        }
+
+        if (CintLinkOrder::hasAnyOrders($surveyId))
+        {
+            // Must update everytime respondent completes survey?
+            // We can never know if it's out-of-date.
+            // TODO: Can't update unless logged in at limesurvey.org. Never true for participant.
+            //CintLinkOrder::updateOrders($surveyId);
+
+            // No point checking for blocking orders, since we can't know if
+            // local orders are up to date.
+            //if (CintLinkOrder::hasAnyBlockingOrders($surveyId))
+
+            header('Location: http://cds.cintworks.net/survey/complete');
+            die();
+        }
     }
 
     /**
