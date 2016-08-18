@@ -474,7 +474,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             CintLinkOrder::updateOrders($surveyId);
         }
 
-        // Abort if survey has no blocking Cint orders (no order is hold, live or new)
+        // Only run if survey has blocking Cint orders (hold, live or new)
         if (CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
             $survey = Survey::model()->findByPk($surveyId);
@@ -506,7 +506,30 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     );
                 }
             }
+
+            // Show feedback specific to Cint
+            $event->set('pluginFeedback', $this->getFeedback($surveyId));
         }
+    }
+
+    /**
+     * Returns HTML as feedback after survey activation
+     * @param int $surveyId
+     * @return string
+     */
+    protected function getFeedback($surveyId)
+    {
+        $data = array();
+        $data['surveyId'] = $surveyId;
+        $data['hrefHome'] = Yii::app()->createUrl(
+            'admin/survey',
+            array(
+                'sa' => 'view',
+                'surveyid' => $surveyId
+            )
+        );
+
+        return $this->renderPartial('activateFeedback', $data, true);
     }
 
     /**
