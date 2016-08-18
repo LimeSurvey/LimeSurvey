@@ -52,14 +52,15 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     public function init()
     {
+        $this->subscribe('afterQuickMenuLoad');
+        $this->subscribe('afterSurveyComplete');
         $this->subscribe('beforeActivate');  // Create db
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('beforeToolsMenuRender');
-        $this->subscribe('afterQuickMenuLoad');
-        $this->subscribe('newDirectRequest');  // Ajax calls
         $this->subscribe('beforeControllerAction');  // To load Cint icon
         $this->subscribe('beforeSurveyDeactivate');
         $this->subscribe('beforeSurveyActivate');
+        $this->subscribe('newDirectRequest');  // Ajax calls
 
         // Login session key from com_api at limesurvey.org
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
@@ -257,6 +258,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
 
         $event->append('quickMenuItems', array($button));
+    }
+
+    /**
+     * After survey is completed, user MUST be redirected to
+     * Cint.
+     * @return void
+     */
+    public function afterSurveyComplete()
+    {
+        header('Location: http://cds.cintworks.net/survey/complete');
+        die();
     }
 
     /**
