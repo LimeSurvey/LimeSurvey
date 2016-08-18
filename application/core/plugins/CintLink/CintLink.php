@@ -273,6 +273,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         // Check if any Cint order is active
         $surveyId = Yii::app()->request->getParam('surveyId');
         $surveyId = empty($surveyId) ? Yii::app()->request->getParam('surveyid') : $surveyId;
+
         $this->checkCintActive($surveyId);
         $this->checkCintCompleted($surveyId);
 
@@ -336,7 +337,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
             else
             {
                 // No order is on hold, new/review or live. So completed or cancelled. Unset all flags.
-                $this->hideNaggingNotication($surveyId);
                 $this->set('cint_active_' . $surveyId, false);
             }
         }
@@ -361,7 +361,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'survey_id' => $surveyId,
                 'importance' => Notification::NORMAL_IMPORTANCE,
                 'title' => $this->gT('Cint'),
-                'message' => $this->gT('All Cint orders are completed.')
+                'message' => $this->gT('All Cint orders are completed. It is safe to deactivate the survey.')
             ));
             $not->save();
 
@@ -1193,30 +1193,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * @return void
      */
     protected function showNaggingNotification($message, $surveyId) {
-        $nagId = $this->get('nag_id_' . $surveyId);
-
-        if (empty($nagId))
-        {
-            // Only a popup first time
-            $this->createNewNagNotification($message, $surveyId);
-        }
-        else
-        {
-            // All other times it's a normal notification that is unread
-            $not = Notification::model()->findByPk($nagId);
-
-            // Can still be empty if it's removed by clicking "Delete all notifications"
-            if (empty($not))
-            {
-                $this->createNewNagNotification($message, $surveyId);
-            }
-            else
-            {
-                $not->status = 'new';
-                $not->importance = Notification::NORMAL_IMPORTANCE;
-                $not->save();
-            }
-        }
+        $not = new UniqueNotification(array(
+            'survey_id' => $surveyId,
+            'importance' => Notification::HIGH_IMPORTANCE,
+            'title' => $this->gT('Cint warning'),
+            'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' . $message
+        ));
+        $not->save();
     }
 
     /**
@@ -1225,6 +1208,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     protected function hideNaggingNotication($surveyId)
     {
+        /*
         $nagId = $this->get('nag_id_' . $surveyId);
         if (!empty($nagId))
         {
@@ -1235,27 +1219,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 $not->save();
             }
         }
-    }
-
-    /**
-     * Create a new notification and save its id in plugin settings
-     *
-     * @param string $message
-     * @param int $surveyId
-     * @return void
-     */
-    protected function createNewNagNotification($message, $surveyId)
-    {
-        $not = new Notification(array(
-            'survey_id' => $surveyId,
-            'importance' => Notification::HIGH_IMPORTANCE,
-            'title' => $this->gT('Cint warning'),
-            'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' . $message
-        ));
-        $not->save();
-
-        // Save the nag notification id in plugin settings
-        $this->set('nag_id_' . $surveyId, $not->id);
+         */
     }
 
     /**

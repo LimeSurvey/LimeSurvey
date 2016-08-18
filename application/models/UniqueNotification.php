@@ -10,7 +10,7 @@ class UniqueNotification extends Notification
 {
     /**
      * Check for already existing notification and
-     * update that.
+     * update that. Importance will be set to normal.
      * @return void
      */
     public function save($runValidation = true, $attributes = null)
@@ -29,6 +29,7 @@ class UniqueNotification extends Notification
         else
         {
             $duplicate->status = 'new';
+            $duplicate->importance = self::NORMAL_IMPORTANCE;
             $duplicate->update();
         }
 

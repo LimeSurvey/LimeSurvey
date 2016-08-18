@@ -508,7 +508,7 @@ class CintLinkOrder extends CActiveRecord
      * @return boolean
      * @todo Can this be done in one query?
      */
-    public function allOrdersAreCompleted($surveyId)
+    public static function allOrdersAreCompleted($surveyId)
     {
         $orders = self::getOrders($surveyId);
 

@@ -88,8 +88,9 @@ class NotificationController extends Survey_Common_Action
             'entity = \'user\' AND entity_id = ' . Yii::app()->user->id
         );
 
-        if (is_int($surveyId))
+        if (!is_null($surveyId))
         {
+            $surveyId = intval($surveyId);
             Notification::model()->deleteAll(
                 'entity = \'survey\' AND entity_id = ' . $surveyId
             );
