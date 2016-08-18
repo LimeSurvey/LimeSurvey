@@ -555,11 +555,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
 
         // Hide question
+        // NB: This attribute must not have a language
         $attribute = new QuestionAttribute;
         $attribute->qid = $question->qid;
         $attribute->value = 1;
         $attribute->attribute = 'hidden';
-        $attribute->language = $lang;
         $attribute->save();
 
         // Create panel parameter
