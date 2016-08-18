@@ -1433,13 +1433,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
 
-            // Inform superadmin about update
-            $superadmins = User::model()->getSuperAdmins();
-            Notification::broadcast(array(
-                'title' => gT('Database update'),
-                'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '259')
-            ), $superadmins);
-
         }
 
         if ($iOldDBVersion < 260)
@@ -1448,13 +1441,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
 
-            // Inform superadmin about update
-            $superadmins = User::model()->getSuperAdmins();
-            Notification::broadcast(array(
-                'title' => gT('Database update'),
-                'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '259')
-            ), $superadmins);
         }
+
+        // Inform superadmin about update
+        // TODO: DON'T FORGET TO UPDATE THIS
+        $superadmins = User::model()->getSuperAdmins();
+        Notification::broadcast(array(
+            'title' => gT('Database update'),
+            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '260')  // <--- UPDATE THIS
+        ), $superadmins);
 
         $oTransaction->commit();
         // Activate schema caching
