@@ -510,7 +510,10 @@ function activateSurvey($iSurveyID, $simulate = false)
         }
 
     }
-    $aResult=array('status'=>'OK');
+    $aResult = array(
+        'status' => 'OK',
+        'pluginFeedback' => $event->get('pluginFeedback')
+    );
     // create the survey directory where the uploaded files can be saved
     if ($createsurveydirectory)
     {

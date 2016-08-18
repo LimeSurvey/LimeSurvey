@@ -718,10 +718,16 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aResult=activateSurvey($iSurveyID);
             $aViewUrls = array();
-            if (isset($aResult['error']) && $aResult['error'] == 'plugin')
+            if ((isset($aResult['error']) && $aResult['error'] == 'plugin')
+                || (isset($aResult['blockFeedback']) && $aResult['blockFeedback']))
             {
                 // Got false from plugin, redirect to survey front-page
                 $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
+            }
+            else if (isset($aResult['pluginFeedback']))
+            {
+                // Special feedback from plugin
+                $aViewUrls['output'] = $aResult['pluginFeedback'];
             }
             else if (isset($aResult['error']))
             {
