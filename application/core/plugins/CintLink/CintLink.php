@@ -263,6 +263,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     /**
      * After survey is completed, user MUST be redirected to
      * Cint.
+     * This method redirects and dies.
      * @return void
      */
     public function afterSurveyComplete()
@@ -283,12 +284,14 @@ class CintLink extends \ls\pluginmanager\PluginBase
             // TODO: Can't update unless logged in at limesurvey.org. Never true for participant.
             //CintLinkOrder::updateOrders($surveyId);
 
-            // No point checking for blocking orders, since we can't know if
-            // local orders are up to date.
-            //if (CintLinkOrder::hasAnyBlockingOrders($surveyId))
-
-            header('Location: http://cds.cintworks.net/survey/complete');
-            die();
+            /**
+             * If any order is in state 'hold', 'new', 'live'.
+             */
+            if (CintLinkOrder::hasAnyBlockingOrders($surveyId))
+            {
+                header('Location: http://cds.cintworks.net/survey/complete');
+                die();
+            }
         }
     }
 
