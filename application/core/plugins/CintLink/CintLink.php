@@ -510,12 +510,28 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-      * Create hidden question that will be prefilled with GUID from Cint
-      * or other panel.
+     * Create hidden question that will be prefilled with GUID from Cint
+     * or other panel.
+     * @param int $surveyId
+     * @param int $groupId
+     * @param int $questionOrder
+     * @param string $lang
      * @return void
      */
     protected function createParticipantGUIDQuestion($surveyId, $groupId, $questionOrder, $lang)
     {
+        $question = Question::model()->findByAttributes(array(
+            'title' => 'participantguid',
+            'sid' => $surveyId,
+            'language' => $lang
+        ));
+
+        if (!empty($question))
+        {
+            // We already have a question, so nothing to do
+            return;
+        }
+
         // Create new question
         $question = new Question();
         $question->sid = $surveyId;
@@ -526,7 +542,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $question->preg = '';
         $question->help = '';
         $question->other = 'N';
-        $question->mandatory = 'Y';
+        $question->mandatory = 'N';  // TODO: Cannot be both hidden and mandatory?
         $question->relevance = 1;
         $question->question_order = $questionOrder;
         $question->language = $lang;
@@ -541,7 +557,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         // Hide question
         $attribute = new QuestionAttribute;
         $attribute->qid = $question->qid;
-        $attribute->value = 'Y';
+        $attribute->value = 1;
         $attribute->attribute = 'hidden';
         $attribute->language = $lang;
         $attribute->save();
