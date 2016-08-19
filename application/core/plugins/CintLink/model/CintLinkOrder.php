@@ -2,6 +2,8 @@
 
 require_once(__DIR__ . "/../CintLinkAPI.php");
 
+class CintNotLoggedInException extends Exception {}
+
 /**
  * Order model
  *
@@ -384,7 +386,7 @@ class CintLinkOrder extends CActiveRecord
 
         if (empty($limesurveyOrgKey))
         {
-            throw new Exception('User is not logged in at limesurvey.org');
+            throw new CintNotLoggedInException('User is not logged in at limesurvey.org');
         }
 
         // URL to LimeSurvey is stored in Cint plugin

@@ -483,7 +483,29 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $orders = CintLinkOrder::getOrders($surveyId);
         if (!empty($orders))
         {
-            $orders = CintLinkOrder::updateOrders($orders);
+            /**
+             * If user has any Cint orders we HAVE to update to see
+             * if any order has left state 'hold'. So abort if user
+             * is not logged in.
+             */
+            try
+            {
+                $orders = CintLinkOrder::updateOrders($orders);
+            }
+            catch (CintNotLoggedInException $ex)
+            {
+                $event->set('success', false);
+                $not = new Notification(array(
+                    'survey_id' => $surveyId,
+                    'importance' => Notification::HIGH_IMPORTANCE,  // Popup
+                    'title' => 'Cint error',
+                    'message' =>
+                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                        $this->gT('Could not update Cint orders. Please go to the Cint dashboard and login, then try to deactivate the survey again.')
+                ));
+                $not->save();
+                return;
+            }
 
             if (CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live')))
             {
@@ -507,7 +529,29 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         if (CintLinkOrder::hasAnyOrders($surveyId))
         {
-            CintLinkOrder::updateOrders($surveyId);
+            /**
+             * If user has any Cint orders we HAVE to update to see
+             * if any order has left state 'hold'. So abort if user
+             * is not logged in.
+             */
+            try
+            {
+                CintLinkOrder::updateOrders($surveyId);
+            }
+            catch (CintNotLoggedInException $ex)
+            {
+                $event->set('success', false);
+                $not = new Notification(array(
+                    'survey_id' => $surveyId,
+                    'importance' => Notification::HIGH_IMPORTANCE,  // Popup
+                    'title' => 'Cint error',
+                    'message' =>
+                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                        $this->gT('Could not update Cint orders. Please go to the Cint dashboard and login, then try to activate the survey again.')
+                ));
+                $not->save();
+                return;
+            }
         }
 
         // Only run if survey has blocking Cint orders (hold, live or new)
