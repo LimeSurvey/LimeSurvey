@@ -532,6 +532,42 @@ class SettingsWidget extends CWidget
         return $out;
     }
 
+    /**
+     * Date type
+     */
+    public function renderDate($name, array $metadata, $form = null)
+    {
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        $value = isset($metaData['current']) ? $metaData['current'] : '';
+        $html = Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                'name' => $name,
+                'id' => $name,
+                'value' => $value,
+                'pluginOptions' => array(
+                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                    'allowInputToggle' =>true,
+                    'showClear' => true,
+                    'tooltips' => array(
+                        'clear'=> gT('Clear selection'),
+                        'prevMonth'=> gT('Previous month'),
+                        'nextMonth'=> gT('Next month'),
+                        'selectYear'=> gT('Select year'),
+                        'prevYear'=> gT('Previous year'),
+                        'nextYear'=> gT('Next year'),
+                        'selectDecade'=> gT('Select decade'),
+                        'prevDecade'=> gT('Previous decade'),
+                        'nextDecade'=> gT('Next decade'),
+                        'prevCentury'=> gT('Previous century'),
+                        'nextCentury'=> gT('Next century'),
+                        'selectTime'=> gT('Select time')
+                    ),
+                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                )
+            ), true
+        );
+        return $html;
+    }
+
     /* Return htmlOptions for an input od seting
      *
      * @param array metaData : completMetaData of setting
