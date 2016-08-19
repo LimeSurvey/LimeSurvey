@@ -54,6 +54,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $this->subscribe('afterQuickMenuLoad');
         $this->subscribe('afterSurveyComplete');  // Redirect to Cint
+        $this->subscribe('afterSurveyQuota');  // Redirect to Cint, screen out
         $this->subscribe('beforeActivate');  // Create db
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('beforeToolsMenuRender');
@@ -61,7 +62,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->subscribe('beforeSurveyDeactivate');  // Don't deactivate if Cint is active
         $this->subscribe('beforeSurveyActivate');  // Forbid tokens if Cint order
         $this->subscribe('newDirectRequest');  // Ajax calls
-        $this->subscribe('onSurveyDenied');  // To send Cint survey closed redirect
+        $this->subscribe('onSurveyDenied');  // Redirect to Cint, survey closed
 
         // Login session key from com_api at limesurvey.org
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
@@ -297,6 +298,25 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * If participant is screened out, redirect to Cint
+     * @return void
+     */
+    public function afterSurveyQuota()
+    {
+        $event = $this->getEvent();
+        $surveyId = $event->get('surveyId');
+        $matched = $event->get('aMatchedQuotas');
+
+        if (!empty($matched) &&
+            CintLinkOrder::hasAnyBlockingOrders($surveyId))
+        {
+            $url = 'http://cds.cintworks.net/survey/screen_out';
+            $event->set('action', 1);
+            $event->set('url', $url);
+        }
+    }
+
+    /**
      * If survey is closed/deactivated and a participant
      * happens to click on survey link, redirect to Cint.
      */
@@ -315,13 +335,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $request = Yii::app()->request;
         $participantGUID = $request->getParam('respondent');
 
-        if (!empty($participantGUID))
+        if (!empty($participantGUID) &&
+            CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
-            if (CintLinkOrder::hasAnyBlockingOrders($surveyId))
-            {
-                header('Location: http://cds.cintworks.net/survey/closed?respondent=' . $participantGUID);
-                exit;
-            }
+            header('Location: http://cds.cintworks.net/survey/closed?respondent=' . $participantGUID);
+            exit;
         }
     }
 
