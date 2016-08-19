@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	Files Purpose: lots of common functions
+*    Files Purpose: lots of common functions
 */
 class QuestionGroup extends LSActiveRecord
 {
@@ -131,7 +131,7 @@ class QuestionGroup extends LSActiveRecord
     * Insert an array into the groups table
     * Returns false if insertion fails, otherwise the new GID
     *
-    * @param array $data                           array_merge
+    * @param array $data
     */
     public function insertRecords($data)
     {
@@ -140,6 +140,39 @@ class QuestionGroup extends LSActiveRecord
             $group->$k = $v;
         if  (!$group->save()) return false;
         else return $group->gid;
+    }
+
+
+    /**
+    * This functions insert question group data in the form of array('<grouplanguage>'=>array( <array of fieldnames => values >))
+    * It will take care of maintaining the group ID
+    *
+    * @param mixed $aQuestionGroupData
+    */
+    public function insertNewGroup($aQuestionGroupData)
+    {
+        $aFirstRecord=reset($aQuestionGroupData);
+        $iSurveyID=$aFirstRecord['sid'];
+        $sBaseLangauge = Survey::model()->findByPk($iSurveyID)->language;
+        $aAdditionalLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $aSurveyLanguages=array($sBaseLangauge)+$aAdditionalLanguages;
+        $bFirst = true;
+        foreach ($aSurveyLanguages as $sLanguage)
+        {
+            if ($bFirst)
+            {
+                $iGroupID=$this->insertRecords($aQuestionGroupData[$sLanguage]);
+                $bFirst = false;
+            }
+            else
+            {
+                $aQuestionGroupData[$sLanguage]['gid']=$iGroupID;
+                switchMSSQLIdentityInsert('groups',true);
+                $this->insertRecords($aQuestionGroupData[$sLanguage]);
+                switchMSSQLIdentityInsert('groups',false);
+            }
+        }
+        return $iGroupID;
     }
 
     function getGroups($surveyid) {
@@ -247,17 +280,17 @@ class QuestionGroup extends LSActiveRecord
             {
                 $confirm = 'if (confirm(\''.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js").'\')) { window.open(\''.Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid").'\',\'_top\'); };';
                 $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                            onclick="'.$confirm.'">
-                                <span class="text-danger glyphicon glyphicon-trash"></span>
-                            </a>';
+                onclick="'.$confirm.'">
+                <span class="text-danger glyphicon glyphicon-trash"></span>
+                </a>';
             }
             else
             {
                 $alert = 'alert(\''.gT("Impossible to delete this group because there is at least one question having a condition on its content","js").'\'); return false;';
                 $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                            onclick="'.$alert.'">
-                                <span class="text-danger glyphicon glyphicon-trash"></span>
-                            </a>';
+                onclick="'.$alert.'">
+                <span class="text-danger glyphicon glyphicon-trash"></span>
+                </a>';
             }
         }
 

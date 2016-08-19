@@ -1687,11 +1687,36 @@ class SurveyAdmin extends Survey_Common_Action
             $langsettings->insertNewSurvey($aInsertData);
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+            // Now create a new dummy group
+            $aInsertData=array();
+            $aInsertData[Survey::model()->findByPk($iNewSurveyid)->language]=array(
+                'sid' => $iNewSurveyid,
+                'group_name' => gt('My first question group','html',Survey::model()->findByPk($iNewSurveyid)->language),
+                'description' => '',
+                'group_order' => 1,
+                'language' => Survey::model()->findByPk($iNewSurveyid)->language,
+                'grelevance' => '1');
+            $iNewGroupID=QuestionGroup::model()->insertNewGroup($aInsertData);
+            // Now create a new dummy question
+            $oQuestion= new Question;
+            $oQuestion->sid = $iNewSurveyid;
+            $oQuestion->gid = $iNewGroupID;
+            $oQuestion->type = 'T';
+            $oQuestion->title = 'Q001';
+            $oQuestion->question = 'My first example question';
+            $oQuestion->help = 'This is a question help text.';
+            $oQuestion->mandatory = 'N';
+            $oQuestion->relevance = '1';
+            $oQuestion->question_order = 1;
+            $oQuestion->language = Survey::model()->findByPk($iNewSurveyid)->language;
+            $oQuestion->save();
+            $iNewQuestionID=$oQuestion->qid;
 
-            Yii::app()->session['flashmessage'] = $warning.gT("Survey was successfully added.");
+            Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."),'info');
+
             if (App()->request->getPost('saveandclose'))
             {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
+                $this->getController()->redirect(array("admin/questions/sa/view/surveyid/{$iNewSurveyid}/gid/{$iNewGroupID}/qid/{$iNewQuestionID}"));
             }
             else
             {
