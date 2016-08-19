@@ -267,7 +267,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $arSurvey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
     //Get list of questions for the base language
-    $sFieldMap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID));
+    $sFieldMap = createFieldMap($iSurveyID,'full',true,false,$arSurvey->language);
     //For each question, create the appropriate field(s)
     foreach ($sFieldMap as $j=>$aRow)
     {
@@ -408,7 +408,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     Yii::app()->loadHelper("database");
     try
     {
-        $execresult = Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
+        Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
         Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
     }
     catch (CDbException $e)
@@ -472,7 +472,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         $sTableName = "{{survey_{$iSurveyID}_timings}}";
         try
         {
-            $execresult = Yii::app()->db->createCommand()->createTable($sTableName,$aTimingTableDefinition);
+            Yii::app()->db->createCommand()->createTable($sTableName,$aTimingTableDefinition);
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         }
         catch (CDbException $e)

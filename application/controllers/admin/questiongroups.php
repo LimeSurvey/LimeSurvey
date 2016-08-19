@@ -236,30 +236,30 @@ class questiongroups extends Survey_Common_Action
                         'grelevance' => Yii::app()->request->getPost('grelevance')
                     );
                 }
-                $gid=QuestionGroup::model()->insertNewGroup($sInsertArray);
-                if ($gid===false) {
+                $newGroupID=QuestionGroup::model()->insertNewGroup($sInsertArray);
+                if ($newGroupID===false) {
                     // Error, redirect back.
                     Yii::app()->setFlashMessage(gT("Question group was not saved. Please check if the survey is active."), 'error');
                     $this->getController()->redirect(Yii::app()->request->urlReferrer);
                 }
 
                 $questions = new Question('search');
-                $questions->gid = $gid;
+                $questions->gid = $newGroupID;
                 Yii::app()->setFlashMessage(gT("New question group was saved."));
 
                 if($questions->search()->itemCount<1)
                 {
-                    Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'),'<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$gid").'">','</a>'),'info');
+                    Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'),'<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">','</a>'),'info');
                 }
-            }
-            if(Yii::app()->request->getPost('close-after-save') === 'true')
-            {
-                $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
-            }
-            else
-            {
-                // After save, go to edit
-                $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$gid"));
+                if(Yii::app()->request->getPost('close-after-save') === 'true')
+                {
+                    $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
+                }
+                else
+                {
+                    // After save, go to edit
+                    $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$newGroupID"));
+                }
             }
         }
         else
