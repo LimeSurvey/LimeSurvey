@@ -53,14 +53,15 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function init()
     {
         $this->subscribe('afterQuickMenuLoad');
-        $this->subscribe('afterSurveyComplete');
+        $this->subscribe('afterSurveyComplete');  // Redirect to Cint
         $this->subscribe('beforeActivate');  // Create db
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('beforeControllerAction');  // To load Cint icon
-        $this->subscribe('beforeSurveyDeactivate');
-        $this->subscribe('beforeSurveyActivate');
+        $this->subscribe('beforeSurveyDeactivate');  // Don't deactivate if Cint is active
+        $this->subscribe('beforeSurveyActivate');  // Forbid tokens if Cint order
         $this->subscribe('newDirectRequest');  // Ajax calls
+        $this->subscribe('onSurveyDenied');  // To send Cint survey closed redirect
 
         // Login session key from com_api at limesurvey.org
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
@@ -296,6 +297,35 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * If survey is closed/deactivated and a participant
+     * happens to click on survey link, redirect to Cint.
+     */
+    public function onSurveyDenied()
+    {
+        $event = $this->getEvent();
+        $surveyId = $event->get('surveyId');
+        $reason = $event->get('reason');
+
+        // Use default message for this one
+        if ($reason === 'sessionExpired')
+        {
+            return;
+        }
+
+        $request = Yii::app()->request;
+        $participantGUID = $request->getParam('respondent');
+
+        if (!empty($participantGUID))
+        {
+            if (CintLinkOrder::hasAnyBlockingOrders($surveyId))
+            {
+                header('Location: http://cds.cintworks.net/survey/closed?respondent=' . $participantGUID);
+                exit;
+            }
+        }
+    }
+
+    /**
      * Register Cint icon css
      * Also check if user tried to pay Cint order and if survey is
      * active. Show warning message if not active.
@@ -491,6 +521,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
             try
             {
                 $orders = CintLinkOrder::updateOrders($orders);
+                if (CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live')))
+                {
+                    $event->set('message', $this->gT('You cannot deactivate the survey while any Cint order is live.'));
+                    $event->set('success', false);
+                }
             }
             catch (CintNotLoggedInException $ex)
             {
@@ -504,13 +539,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
                         $this->gT('Could not update Cint orders. Please go to the Cint dashboard and login, then try to deactivate the survey again.')
                 ));
                 $not->save();
-                return;
-            }
-
-            if (CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live')))
-            {
-                $event->set('message', $this->gT('You cannot deactivate the survey while any Cint order is live.'));
-                $event->set('success', false);
             }
         }
     }

@@ -480,7 +480,7 @@ class CintLinkOrder extends CActiveRecord
 
     /**
      * Returns true if survey has any blocking Cint orders, no matter the state.
-     * A blocking order is in state hold, new or live (not completed, deleted, or cancelled)
+     * A blocking order is in state hold, new or live (not completed, deleted, denied or cancelled)
      * @param int $surveyId
      * @return boolean
      */
@@ -491,9 +491,11 @@ class CintLinkOrder extends CActiveRecord
             throw new InvalidArgumentException('surveyId cannot be null or empty');
         }
 
+        $surveyId = intval($surveyId);
         $criteria = new CDbCriteria();
-        $criteria->addCondition('deleted = 0 AND status != \'completed\' AND status != \'cancelled\'');
-        $criteria->addCondition('sid = ' . $surveyId);  // TODO: Escape
+        $criteria->addCondition('deleted = 0');
+        $criteria->addCondition('status = \'hold\' OR status = \'new\' OR status = \'live\'');
+        $criteria->addCondition('sid = ' . $surveyId);
         $count = CintLinkOrder::model()->count($criteria);
         return $count > 0;
     }
