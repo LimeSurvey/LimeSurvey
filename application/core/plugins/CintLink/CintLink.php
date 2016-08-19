@@ -307,7 +307,12 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $surveyId = $event->get('surveyId');
         $matched = $event->get('aMatchedQuotas');
 
+        $ses = Yii::app()->session['survey_' . $surveyId];
+        $participantGUIDCode = $this->getParticipantGUIDQuestionCode($surveyId, $ses['fieldarray']);
+        $hasCintParticipantGUID = !empty($ses[$participantGUIDCode]);
+
         if (!empty($matched) &&
+            $hasCintParticipantGUID &&
             CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
             $url = 'http://cds.cintworks.net/survey/screen_out';
@@ -332,10 +337,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
             return;
         }
 
-        $request = Yii::app()->request;
-        $participantGUID = $request->getParam('respondent');
+        $ses = Yii::app()->session['survey_' . $surveyId];
+        $participantGUIDCode = $this->getParticipantGUIDQuestionCode($surveyId, $ses['fieldarray']);
+        $hasCintParticipantGUID = !empty($ses[$participantGUIDCode]);
 
-        if (!empty($participantGUID) &&
+        if ($hasCintParticipantGUID &&
             CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
             header('Location: http://cds.cintworks.net/survey/closed?respondent=' . $participantGUID);
@@ -1444,6 +1450,24 @@ EOT
         {
             return false;
         }
+    }
+
+    /**
+     * Get the question code for participant GUID question.
+     * @param int $surveyId
+     * @param array $fieldarray
+     * @return string|false Question code like 123X234X3345; or false if not found
+     */
+    protected function getParticipantGUIDQuestionCode($surveyId, array $fieldarray)
+    {
+        foreach ($fieldarray as $question) {
+            if ($question[2] === 'participantguid')
+            {
+                return $question[1];
+            }
+        }
+
+        return false;
     }
 
 }
