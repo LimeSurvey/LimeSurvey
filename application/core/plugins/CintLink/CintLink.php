@@ -1230,27 +1230,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * If any order is 'new' or 'live', survey must be active.
-     *
-     * @return void
-     */
-    protected function showActivateMessage($surveyId) {
-        $survey = Survey::model()->findByPk($surveyId);
-        $orders = $this->getOrders(array(
-            'sid' => $surveyId,
-            'deleted' => 0
-        ));
-
-        if ($survey->active != 'Y')
-        {
-            Yii::app()->user->setFlash(
-                'warning',
-                $this->gT('This survey is live or under review by Cint. Please activate the survey as soon as possible.')
-            );
-        }
-    }
-
-    /**
      * As above, but checks so that *all* orders have
      * *any* of the status in $statuses.
      *
