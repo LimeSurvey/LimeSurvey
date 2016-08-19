@@ -60,7 +60,7 @@ class WhDateTimePicker extends CInputWidget
 	public function init()
 	{
 		$this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
-		$this->htmlOptions['id'] = TbArray::getValue('id', $this->htmlOptions, $this->getId());
+		$this->htmlOptions['id'] = TbArray::getValue('id', $this->htmlOptions, $this->getEscapedId());
 	}
 
 	/**
@@ -135,4 +135,15 @@ class WhDateTimePicker extends CInputWidget
 			$this->getApi()->registerEvents($selector, $this->events);
 		}
 	}
+
+    /**
+     * If id contains brackets, we need to double escape it with \\
+     * @return string
+     */
+    protected function getEscapedId()
+    {
+        $id = str_replace('[', '\\\\[',$this->getId());
+        $id = str_replace(']', '\\\\]',$id);
+        return $id;
+    }
 }
