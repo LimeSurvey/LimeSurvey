@@ -193,6 +193,12 @@ class index extends CAction {
                 gT("We are sorry but you don't have permissions to do this."),
                 sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
+
+                $event = new PluginEvent('onSurveyDenied');
+                $event->set('surveyId', $surveyid);
+                $event->set('reason', 'noPreviewPermission');
+                App()->getPluginManager()->dispatchEvent($event);
+
                 $this->_niceExit($redata, __LINE__, null, $asMessage);
             }
         }
@@ -216,6 +222,12 @@ class index extends CAction {
                 gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
                 sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
+
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'sessionExpired');
+            App()->getPluginManager()->dispatchEvent($event);
+
             $this->_niceExit($redata, __LINE__, null, $asMessage);
         };
 
@@ -233,6 +245,11 @@ class index extends CAction {
         }
         else
         {
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'surveyDoesNotExist');
+            App()->getPluginManager()->dispatchEvent($event);
+
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         }
 
@@ -282,6 +299,11 @@ class index extends CAction {
             sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'surveyNoLongerAvailable');
+            App()->getPluginManager()->dispatchEvent($event);
+
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
@@ -294,6 +316,12 @@ class index extends CAction {
             gT("This survey is not yet started."),
             sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
+
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'surveyNotYetStarted');
+            App()->getPluginManager()->dispatchEvent($event);
+
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
@@ -308,6 +336,11 @@ class index extends CAction {
             gT("You have already completed this survey."),
             sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
+
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'alreadyCompleted');
+            App()->getPluginManager()->dispatchEvent($event);
 
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
@@ -433,6 +466,11 @@ class index extends CAction {
                         gT("We are sorry but you are not allowed to enter this survey."),
                         sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                     );
+
+                    $event = new PluginEvent('onSurveyDenied');
+                    $event->set('surveyId', $surveyid);
+                    $event->set('reason', 'invalidToken');
+                    App()->getPluginManager()->dispatchEvent($event);
 
                     $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
                 }
