@@ -360,7 +360,7 @@ class SettingsWidget extends CWidget
                 'value' => $value,
                 'width' => isset($metaData['width']) ? $metaData['width'] : '100%',
                 'height' => isset($metaData['height']) ? $metaData['height'] : '400px',
-                'editorOptions' =>  $editorOptions,
+                'pluginOptions' =>  $editorOptions,
                 'htmlOptions' => $htmlOptions,
             ), true)
         );
