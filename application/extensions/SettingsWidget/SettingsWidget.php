@@ -535,7 +535,7 @@ class SettingsWidget extends CWidget
     /**
      * Date type
      */
-    public function renderDate($name, array $metadata, $form = null)
+    public function renderDate($name, array $metaData, $form = null)
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = isset($metaData['current']) ? $metaData['current'] : '';
