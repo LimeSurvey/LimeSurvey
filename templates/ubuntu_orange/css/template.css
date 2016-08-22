@@ -494,7 +494,7 @@ table > tbody > tr > td.ddprefix {
         No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
         whereas visible-xs-block respect bootstrap standards (767px)
         If too many bugs of this kind appears in the future, we should just refuse to support weird exotic tablet screens.
-        We should repsect standards, we should not try to fit to non standards devices. 
+        We should repsect standards, we should not try to fit to non standards devices.
     */
     .visible-xs-block{
         display: block !important;
@@ -981,4 +981,77 @@ div.yes-no .btn-group label {
 
 .multipleco-other-topic {
     max-width: 150px;
+}
+
+.privacy-header{
+    font-weight: bold;
+    font-style: italic;
+}
+
+/*** Divider for Bootstrap ***/
+
+.horizontal-divider.top{
+  border-top: 3px solid #323232;
+}
+.horizontal-divider.bottom{
+  border-bottom: 3px solid #323232;
+}
+
+.vertical-divider.left {
+  border-left: 3px solid #323232;
+}
+.vertical-divider.right {
+  border-right: 3px solid #323232;
+}
+@media (max-width: 800px){
+    .vertical-divider.left {
+    border: none;
+    }
+    .vertical-divider.right {
+    border: none;
+    }
+}
+/*** Small helper classes, that are not shipped with bootstrap but fit in well***/
+.ls-custom-padding{
+    padding: 1px;
+}
+.ls-custom-padding.two{
+    padding: 2px;
+}
+.ls-custom-padding.three{
+    padding: 3px;
+}
+.ls-custom-padding.four{
+    padding: 4px;
+}
+.ls-custom-padding.five{
+    padding: 5px;
+}
+.ls-custom-padding.fifteen{
+    padding: 15px;
+}
+.ls-custom-padding.eighteen{
+    padding: 18px;
+}
+
+.ls-custom-margin{
+    margin: 1px;
+}
+.ls-custom-margin.two{
+    margin: 2px;
+}
+.ls-custom-margin.three{
+    margin: 3px;
+}
+.ls-custom-margin.four{
+    margin: 4px;
+}
+.ls-custom-margin.five{
+    margin: 5px;
+}
+.ls-custom-margin.fifteen{
+    margin: 15px;
+}
+.ls-custom-margin.eighteen{
+    margin: 18px;
 }
