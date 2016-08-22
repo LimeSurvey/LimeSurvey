@@ -161,7 +161,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function getGlobalVariables()
     {
-        return new SimpleXmlElement($this->get('cint-global-variables'));
+        $gv = $this->get('cint-global-variables');
+        if (empty($gv))
+        {
+            $this->fetchGlobalVariables();
+        }
+
+        return new SimpleXmlElement($gv);
     }
 
     /**
