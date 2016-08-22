@@ -92,6 +92,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Creates database table for Cint plugin
+     * OBS OBS OBS: As this plugin is activated by default,
+     * database table is also created in installation scripts.
+     * If this table is changed after release, changes will have
+     * to be made in those places too.
      * @return void
      */
     protected function createDatabase()

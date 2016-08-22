@@ -618,17 +618,17 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
 --
 -- Cint plugin, active by default
 --
-INSERT INTO `prefix_plugins` (`name`, `active`) VALUES ('CintLInk', 1);
+INSERT INTO `prefix_plugins` (`name`, `active`) VALUES ('CintLink', 1);
 CREATE TABLE IF NOT EXISTS `prefix_plugin_cintlink_orders` (
-    `url` => VARCHAR(127) NOT NULL PRIMARY KEY,
-    `sid` => INT(11) NOT NULL,
-    `raw` => TEXT,
-    `country` => VARCHAR(63),
-    `status` => VARCHAR(15),
-    `ordered_by` => INT(11) NOT NULL,
-    `deleted` => INT DEFAULT 0,
-    `created` => DATETIME NOT NULL,
-    `modified` => DATETIME DEFAULT NULL,
+    `url` VARCHAR(127) NOT NULL PRIMARY KEY,
+    `sid` INT(11) NOT NULL,
+    `raw` TEXT,
+    `country` VARCHAR(63),
+    `status` VARCHAR(15),
+    `ordered_by` INT(11) NOT NULL,
+    `deleted` INT DEFAULT 0,
+    `created` DATETIME NOT NULL,
+    `modified` DATETIME DEFAULT NULL,
     INDEX(`sid`, `deleted`, `status`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

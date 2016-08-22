@@ -621,18 +621,18 @@ CREATE INDEX hash_index ON prefix_notifications USING btree (hash);
 --
 -- Cint plugin, active by default
 --
-INSERT INTO "prefix_plugins" ("name", "active") VALUES ('CintLInk', 1);
-CREATE TABLE IF NOT EXISTS "prefix_plugin_cintlink_orders" (
-    "url" => CHARACTER VARYING(127) NOT NULL,
-    "sid" => INTEGER NOT NULL,
-    "raw" => TEXT,
-    "country" => CHARACTER VARYING(63),
-    "status" => CHARACTER VARYING(15),
-    "ordered_by" => INTEGER NOT NULL,
-    "deleted" => INTEGER DEFAULT 0,
-    "created" => TIMESTAMP NOT NULL,
-    "modified" => TIMESTAMP DEFAULT NULL,
-    PRIMARY KEY(url)
+INSERT INTO "prefix_plugins" ("name", "active") VALUES ('CintLink', 1);
+CREATE TABLE prefix_plugin_cintlink_orders (
+    "url" character varying(127) NOT NULL,
+    "sid" integer NOT NULL,
+    "raw" TEXT,
+    "country" character varying(63),
+    "status" character varying(15),
+    "ordered_by" INTEGER NOT NULL,
+    "deleted" INTEGER DEFAULT 0,
+    "created" TIMESTAMP NOT NULL,
+    "modified" TIMESTAMP DEFAULT NULL,
+    CONSTRAINT prefix_cint_pkey PRIMARY KEY(url)
 );
 CREATE INDEX cint_index ON prefix_plugin_cintlink_orders USING btree (sid, deleted, status);
 
