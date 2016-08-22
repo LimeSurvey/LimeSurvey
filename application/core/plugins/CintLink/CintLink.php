@@ -412,7 +412,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
             // Check if any order is paid and/or live
             $anyOrderIsActive = CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live', 'hold'));
-            $surveyIsActive = $survey->active == 'Y';  // TODO: Not enough! Expired etc.
+            $surveyIsActive = $survey->getState() === 'willExpire' || $survey->getState() === 'running';
             $this->log('anyOrderIsActive = ' . $anyOrderIsActive);
             if (!$surveyIsActive && $anyOrderIsActive)
             {
