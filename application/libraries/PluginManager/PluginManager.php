@@ -18,6 +18,9 @@ class PluginManager extends \PluginManager {
      */
     protected $guidToQuestion = array();
 
+    /**
+     * @var ?
+     */
     protected $plugins = array();
 
     protected $pluginDirs = array(
@@ -322,7 +325,7 @@ class PluginManager extends \PluginManager {
      */
     public function loadPlugins()
     {
-        // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active)
+        // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active).
         $dbVersion=\SettingGlobal::model()->find("stg_name=:name",array(':name'=>'DBVersion'));// Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
         if($dbVersion && $dbVersion->stg_value >= 165)
         {
@@ -339,6 +342,19 @@ class PluginManager extends \PluginManager {
             // Log it ? tracevar ?
         }
         $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this));    // Alow plugins to do stuff after all plugins are loaded
+    }
+
+    /**
+     * Load ALL plugins, active and non-active
+     * @return void
+     */
+    public function loadAllPlugins()
+    {
+        $records = Plugin::model()->findAll();
+        foreach ($records as $record)
+        {
+            $this->loadPlugin($record->name, $record->id);
+        }
     }
 
     /**
@@ -399,5 +415,18 @@ class PluginManager extends \PluginManager {
         }
     }
 
+    /**
+     * Read all plugin config files and updates information
+     * in database
+     * @return void
+     */
+    public function readConfigFiles()
+    {
+        $this->loadAllPlugins();
+        foreach ($this->plugins as $plugin) {
+            $plugin->readConfigFile();
+        }
+        $this->loadPlugins();
+    }
 
 }

@@ -34,6 +34,12 @@ abstract class PluginBase implements iPlugin {
     protected $pluginManager;
 
     /**
+     * If plugin has a config.json file, it will be parsed into this variable.
+     * @var array
+     */
+    protected $config = null;
+
+    /**
      * Constructor for the plugin
      * @todo Add proper type hint in 3.0
      * @param PluginManager $manager    The plugin manager instantiating the object
@@ -372,4 +378,79 @@ abstract class PluginBase implements iPlugin {
         \Yii::log($message, $level, 'plugin.' . $category);
     }
 
+    /**
+     * Read JSON config file and store it in $this->config
+     * Assumes config file is config.json and in plugin root folder.
+     * @return void
+     */
+    public function readConfigFile()
+    {
+        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.json';
+        if (file_exists($file))
+        {
+            $json = file_get_contents($file);
+            $this->config = json_decode($json);
+            $this->checkActive();
+        }
+        else
+        {
+            $this->log('Found no config file');
+        }
+    }
+
+    /**
+     * Check if config field active is 1. If yes and then version differs, activate the plugin.
+     * This is the 'active-by-default' feature.
+     * @return void
+     */
+    protected function checkActive()
+    {
+        // No config? Do nothing.
+        if ($this->config === null)
+        {
+            $this->log('Tried to run active-by-default, but found no config');
+            return;
+        }
+
+        $pluginModel = \Plugin::model()->findByPk($this->id);
+
+        // "Impossible"
+        if (empty($pluginModel))
+        {
+            throw new Exception('Internal error: Found no database entry for plugin id ' . $this->id);
+        }
+
+        // Only activate if plugin version in db diff from config
+        $newVersion = $pluginModel->version !== $this->config->version;
+        $activeByDefault = $this->config->active == 1;
+        if ($newVersion && $activeByDefault)
+        {
+            // Activate plugin
+            $result = App()->getPluginManager()->dispatchEvent(
+                new PluginEvent('beforeActivate', App()->getController()),
+                $this->getName()
+            );
+
+            if ($result->get('success') !== false)
+            {
+                $pluginModel->version = $this->config->version;
+                $pluginModel->active = 1;
+                $pluginModel->update();
+            }
+            else
+            {
+                // Failed. Popup error message.
+                $not = new \Notification(array(
+                    'user_id' => App()->user->id,
+                    'title' => gT('Plugin error'),
+                    'message' =>
+                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                        gT('Could not activate plugin ' . $this->getName()) . '. ' .
+                        gT('Reason:') . ' ' . $result->get('message'),
+                    'importance' => \Notification::HIGH_IMPORTANCE
+                ));
+                $not->save();
+            }
+        }
+    }
 }

@@ -159,6 +159,13 @@ class LSUserIdentity extends CUserIdentity {
 
         Yii::app()->session['adminlang'] = $sLanguage;
         App()->setLanguage($sLanguage);
+
+        // Read all plugin config files if superadmin logged in
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            $pm = Yii::app()->getPluginManager();
+            $pm->readConfigFiles();
+        }
     }
 
     public function setPlugin($name) {
