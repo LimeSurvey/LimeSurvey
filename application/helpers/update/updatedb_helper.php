@@ -1435,12 +1435,33 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         }
 
+        /**
+         * The hash value of a notification is used to calculate uniqueness.
+         * @since 2016-08-10
+         * @author Olle Haerstedt
+         */
         if ($iOldDBVersion < 260)
         {
             addColumn('{{notifications}}', 'hash', 'string(64)');
+            $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
 
+        }
+
+        /**
+         * Cint db version. Cint plugin is activated by default.
+         * @since 2016-08-22
+         * @author Olle Haerstedt
+         */
+        if ($iOldDBVersion < 261)
+        {
+            $oDB->createCommand()->insert('{{plugins}}', array(
+                'name' => 'CintLink',
+                'active' => 1
+            ));
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
         }
 
         // Inform superadmin about update
@@ -1448,7 +1469,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         $superadmins = User::model()->getSuperAdmins();
         Notification::broadcast(array(
             'title' => gT('Database update'),
-            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '260')  // <--- UPDATE THIS
+            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '261')  // <--- UPDATE THIS
         ), $superadmins);
 
         $oTransaction->commit();

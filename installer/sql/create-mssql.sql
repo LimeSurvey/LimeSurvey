@@ -610,6 +610,24 @@ CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[stat
 CREATE INDEX [notif_hash_index] ON [prefix_notifications] ([hash]);
 
 --
+-- Cint plugin, active by default
+--
+INSERT INTO prefix_plugins ([name], [active]) VALUES ('CintLInk', 1);
+CREATE TABLE IF NOT EXISTS prefix_plugin_cintlink_orders (
+    [url] => nvarchar(127) NOT NULL,
+    [sid] => int NOT NULL,
+    [raw] => nvarchar(max),
+    [country] => nvarchar(63),
+    [status] => nvarchar(15),
+    [ordered_by] => int NOT NULL,
+    [deleted] => int DEFAULT 0,
+    [created] => datetime NOT NULL,
+    [modified] => datetime DEFAULT NULL,
+    PRIMARY KEY([url])
+);
+CREATE INDEX [cint_index] ON [prefix_plugin_cintlink_orders] ([sid], [deleted], [status]);
+
+--
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '260');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '261');

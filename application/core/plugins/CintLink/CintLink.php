@@ -113,6 +113,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'modified' => 'datetime',
             );
             $oDB->createCommand()->createTable('{{plugin_cintlink_orders}}', $aFields);
+            $oDB->createCommand()->createIndex('cint_index','{{plugin_cintlink_orders}}','sid, deleted, status',true);
             $oTransaction->commit();
         }
         catch(Exception $e)
@@ -266,6 +267,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
      * After survey is completed, user MUST be redirected to
      * Cint.
      * This method redirects and dies.
+     * @todo Survey session on client is not killed?
      * @return void
      */
     public function afterSurveyComplete()
@@ -279,7 +281,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
             throw new Exception('Internal error: Can\'t complete survey: surveyId is empty');
         }
 
-        if (CintLinkOrder::hasAnyOrders($surveyId))
+        if (CintLinkOrder::hasAnyOrders($surveyId) &&
+            $this->hasCintParticipantGUID($surveyId))
         {
             // Must update everytime respondent completes survey?
             // We can never know if it's out-of-date.
@@ -307,12 +310,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $surveyId = $event->get('surveyId');
         $matched = $event->get('aMatchedQuotas');
 
-        $ses = Yii::app()->session['survey_' . $surveyId];
-        $participantGUIDCode = $this->getParticipantGUIDQuestionCode($surveyId, $ses['fieldarray']);
-        $hasCintParticipantGUID = !empty($ses[$participantGUIDCode]);
-
         if (!empty($matched) &&
-            $hasCintParticipantGUID &&
+            $this->hasCintParticipantGUID($surveyId) &&
             CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
             $url = 'http://cds.cintworks.net/survey/screen_out';
@@ -1352,7 +1351,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Cint need to know how many questions there are in the
-     * survey. I use base questions + (sub questions / 3).
+     * survey. I use base questions + (sub questions / 2).
      * Approx is 3 questions each minute.
      * @param int $surveyId
      * @return int
@@ -1468,6 +1467,24 @@ EOT
         }
 
         return false;
+    }
+
+    /**
+     * True if respondent has a Cint participant guid
+     * @param int $surveyId
+     * @return boolean
+     */
+    protected function hasCintParticipantGUID($surveyId)
+    {
+        $ses = Yii::app()->session['survey_' . $surveyId];
+        $participantGUIDCode = $this->getParticipantGUIDQuestionCode($surveyId, $ses['fieldarray']);
+
+        if ($participantGUIDCode === false)
+        {
+            return false;
+        }
+
+        return !empty($ses[$participantGUIDCode]);
     }
 
 }
