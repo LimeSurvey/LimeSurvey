@@ -2626,11 +2626,8 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
 {
-
     global $maildebug, $maildebugbody;
-
     require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
-    $mail = new PHPMailer;
 
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
