@@ -458,7 +458,14 @@ class Survey_Common_Action extends CAction
             // Default password notification
             if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug") < 2)
             {
-                Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+                $not = new UniqueNotification(array(
+                    'user_id' => App()->user->id,
+                    'importance' => Notification::HIGH_IMPORTANCE,
+                    'title' => 'Password warning',
+                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                        gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
+                ));
+                $not->save();
             }
 
             // Count active survey
