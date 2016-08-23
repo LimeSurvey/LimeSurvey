@@ -460,11 +460,11 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['maxstep'] = 0;
             }
 
-            if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey') != $_SESSION[$LEMsessid]['LEMpostKey'])
+            if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey'])
             {
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
-                if (isset($moveResult['seq']) && App()->request->getPost('thisstep') == $moveResult['seq'])
+                if (isset($moveResult['seq']) &&  App()->request->getPost('thisstep',$moveResult['seq']) == $moveResult['seq'])
                 {
 
                     /* then pressing F5 or otherwise refreshing the current page, which is OK
@@ -1252,7 +1252,7 @@ class SurveyRuntimeHelper {
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo = getSurveyInfo($surveyid);
 
-            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings 
+            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
             if(($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')){
                 $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
             } else {
@@ -1473,12 +1473,12 @@ class SurveyRuntimeHelper {
         $iNumber=$aQuestionQanda[0]['number'];
 
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $aSurveyinfo = getSurveyInfo($iSurveyId); 
-        // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings 
+        $aSurveyinfo = getSurveyInfo($iSurveyId);
+        // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
         if(($aSurveyinfo['showqnumcode'] == $showqnumcode_global_) || ($showqnumcode_global_ == 'choose')){
-            $showqnumcode_ = $aSurveyinfo['showqnumcode']; 
+            $showqnumcode_ = $aSurveyinfo['showqnumcode'];
         } else {
-            $showqnumcode_ = $showqnumcode_global_; 
+            $showqnumcode_ = $showqnumcode_global_;
         }
 
         switch ($showqnumcode_)
