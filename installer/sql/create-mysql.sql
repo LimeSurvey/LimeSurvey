@@ -233,6 +233,7 @@ CREATE TABLE `prefix_plugins` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL,
   `active` int(1) NOT NULL default '0',
+  `version` varchar(32) default null,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -613,23 +614,6 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     PRIMARY KEY (`id`),
     INDEX(`entity`, `entity_id`, `status`),
     INDEX(`hash`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
---
--- Cint plugin, active by default
---
-INSERT INTO `prefix_plugins` (`name`, `active`) VALUES ('CintLink', 1);
-CREATE TABLE IF NOT EXISTS `prefix_plugin_cintlink_orders` (
-    `url` VARCHAR(127) NOT NULL PRIMARY KEY,
-    `sid` INT(11) NOT NULL,
-    `raw` TEXT,
-    `country` VARCHAR(63),
-    `status` VARCHAR(15),
-    `ordered_by` INT(11) NOT NULL,
-    `deleted` INT DEFAULT 0,
-    `created` DATETIME NOT NULL,
-    `modified` DATETIME DEFAULT NULL,
-    INDEX(`sid`, `deleted`, `status`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
