@@ -2626,9 +2626,8 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
 {
-
     global $maildebug, $maildebugbody;
-
+    require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
 
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
@@ -2766,6 +2765,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $body="<html>".$body."</html>";
         }
         $mail->msgHTML($body,App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
+        $html=new \Html2Text\Html2Text($body);
+        $mail->AltBody=$html->getText();
     }
     else
     {
@@ -3868,9 +3869,9 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 /**
 * This is a convenience function to convert any date, in any date format, to the global setting date format
 * Check if the time shoul be rendered also
-* 
+*
 * @param string $sDate
-* @param boolean withTime 
+* @param boolean withTime
 * @return string
 */
 function convertToGlobalSettingFormat($sDate,$withTime=false)

@@ -28,10 +28,43 @@
             $statistics = "";
             $list .= "<div class='col-md-6 col-xs-12 ls-custom-padding five ".$divider."'>";
         }
-        //@TODO Make $allowTooltips a global configuration setting 
-        $allowTooltips = "Y";
 
+        $tooltips = "";
+        if($survey->allowregister == "Y")
+        {
+            $tooltips .= "<i class=\"fa fa-sign-in\" aria-hidden=\"true\">&nbsp;</i>";
+        } 
+        else 
+        {
+            if($survey->hasTokens($survey->sid))
+            {
+                $tooltips .= "<i class=\"fa fa-key\" aria-hidden=\"true\">&nbsp;</i>";
+            }
+        }
+
+        if($survey->usecaptcha == "Y" || $survey->usecaptcha == "A")
+        {
+            $tooltips .= "<i class=\"fa fa-puzzle-piece\" aria-hidden=\"true\">&nbsp;</i>";
+        }
+        if($survey->anonymized == "Y")
+        {
+            $tooltips .= "<i class=\"fa fa-shield\" aria-hidden=\"true\">&nbsp;</i>";
+        }
+        if($survey->allowsave == "Y")
+        {
+            $tooltips .= "<i class=\"fa fa-save\" aria-hidden=\"true\">&nbsp;</i>";
+        }
+        if($survey->allowprev == "Y")
+        {
+            $tooltips .= "<i class=\"fa fa-undo\" aria-hidden=\"true\">&nbsp;</i>";
+        }
+        $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".$survey->calculateEstimatedTime()." ".gt("Minutes");
+        
         $content = $survey->localizedTitle;
+        $content .= "<span class='pull-right clearfix'>"
+                        ."<span href='#' class='fa fa-question-circle' onclick='return false;' data-html='true' data-toggle=\"popover\" title=\"".gT("Survey information")."\" data-content='".$tooltips."'>&nbsp;</span>"
+                        ."</span>";
+
         $list .= CHtml::link(
             $content, 
             array(
@@ -41,7 +74,10 @@
                 'encode' => false
                 ), 
                 array(
-                    'class' => 'surveytitle btn btn-primary btn-block'
+                    'class' => 'surveytitle btn btn-primary btn-block',
+                    'data-html' => true,
+                    'data-toggle' => 'tooltip',
+                    'title' => $tooltips
                 )
                 );
         $list .= "</div>";
@@ -70,11 +106,53 @@
         }
     }
 
+
+    $legendForSurvey_button = "<button class='btn btn-info' data-toggle='modal' href='#legendForSurveys'>".gt("Toggle Legend")."</button>";
+    $legendForSurvey = ""
+    . "<div class='modal fade' id='legendForSurveys'>"
+      . "<div class='modal-dialog' role='document'>"
+      . "<div class='modal-content'>"
+        . "<div class='modal-body'>"
+            . "<div class='row'>"
+                . "<div class='col-xs-3 text-right'><i class='fa fa-sign-in'>&nbsp;</i></div>"
+                . "<div class='col-xs-9'>".gT('You have to register to tage this survey')."</div>"
+            . "</div>"
+            . "<div class='row'>"
+                . "<div class='col-xs-3 text-right'><i class='fa fa-lock'>&nbsp;</i></div>"
+                . "<div class='col-xs-9'>".gT('You need a valid token to take this survey')."</div>"
+            . "</div>"
+            . "<div class='row'>"
+                . "<div class='col-xs-3 text-right'><i class='fa fa-puzzle-piece'>&nbsp;</i></div>"
+                . "<div class='col-xs-9'>".gT('You need to enter a CAPTCHA to take this survey')."</div>"
+            . "</div>"
+            . "<div class='row'>"
+                . "<div class='col-xs-3 text-right'><i class='fa fa-shield'>&nbsp;</i></div>"
+                . "<div class='col-xs-9'>".gT('This survey is anonymized')."</div>"
+            . "</div>"
+            . "<div class='row'>"
+                . "<div class='col-xs-3 text-right'><i class='fa fa-undo'>&nbsp;</i></div>"
+                . "<div class='col-xs-9'>".gT('You may change the answers in this survey')."</div>"
+            . "</div>"
+            . "<div class='row'>"
+                . "<div class='col-xs-3 text-right'><i class='fa fa-clock-o'>&nbsp;</i></div>"
+                . "<div class='col-xs-9'>".gT('The estimated time for this survey')."</div>"
+            . "</div>"
+        . "</div>"
+      . "</div>"
+      . "</div>"
+    . "</div>";
+
+    //@TODO: Create Global configuration for showSurveyInfo
+    $showSurveyInformation = false;
+
+
     $listheading="<div class='container'>
                     <div class='row'>
                     <h3>
                     ".gT("The following surveys are available:")."
+                    <span class='pull-right '>".$legendForSurvey_button."</span>
                     </h3>
+                    ".$legendForSurvey."
                     </div>";
     if( $outputSurveys==0)
     {

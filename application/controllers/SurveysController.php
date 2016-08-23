@@ -30,10 +30,22 @@
                 App()->bootstrap->registerAllScripts();
             }
 
-            $this->render('publicSurveyList', array(
-                'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
-                'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
-            ));
+            $aData = array(
+                    'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
+                    'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
+                );
+            $htmlOut = $this->render('publicSurveyList',  $aData,true );
+
+            $event = new PluginEvent('beforeSurveysStartpageRender', $this);
+            $event->set('aData', $aData);
+            App()->getPluginManager()->dispatchEvent($event);
+
+            if(!empty($event->get('result')))
+            {
+                $htmlFromEvent = $event->get('result');
+                $htmlOut = $htmlFromEvent['html'];
+            }
+            echo $htmlOut;
         }
     }
 ?>
