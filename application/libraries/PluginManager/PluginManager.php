@@ -100,8 +100,9 @@ class PluginManager extends \PluginManager {
      */
     public function getStore($storageClass)
     {
-        if (!class_exists($storageClass)
-                && class_exists('ls\\pluginmanager\\' . $storageClass)) {
+        // TODO: Removed !class_exists($storageClass) because of problems with
+        // include_path /usr/share/pear and open_basedir. Should be fixed.
+        if (class_exists('ls\\pluginmanager\\' . $storageClass)) {
             $storageClass = 'ls\\pluginmanager\\' . $storageClass;
         }
         if (!isset($this->stores[$storageClass]))
