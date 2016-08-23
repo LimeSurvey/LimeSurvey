@@ -417,7 +417,7 @@ class PluginManager extends \PluginManager {
 
     /**
      * Read all plugin config files and updates information
-     * in database
+     * in database if plugin version differs.
      * @return void
      */
     public function readConfigFiles()

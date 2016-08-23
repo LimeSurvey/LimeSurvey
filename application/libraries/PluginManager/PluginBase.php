@@ -35,7 +35,7 @@ abstract class PluginBase implements iPlugin {
 
     /**
      * If plugin has a config.json file, it will be parsed into this variable.
-     * @var array
+     * @var StdObject
      */
     protected $config = null;
 
@@ -390,7 +390,24 @@ abstract class PluginBase implements iPlugin {
         {
             $json = file_get_contents($file);
             $this->config = json_decode($json);
-            $this->checkActive();
+
+            if ($this->config === null)
+            {
+                // Failed. Popup error message.
+                $this->showConfigErrorNotification();
+            }
+            else
+            {
+                if ($this->configIsNewVersion())
+                {
+                    // Do everything related to reading config fields
+                    $this->checkActive();
+                }
+                else
+                {
+                    // Nothing to do, config has not changed
+                }
+            }
         }
         else
         {
@@ -399,31 +416,21 @@ abstract class PluginBase implements iPlugin {
     }
 
     /**
-     * Check if config field active is 1. If yes and then version differs, activate the plugin.
+     * Check if config field active is 1. If yes, activate the plugin.
      * This is the 'active-by-default' feature.
      * @return void
      */
     protected function checkActive()
     {
-        // No config? Do nothing.
-        if ($this->config === null)
-        {
-            $this->log('Tried to run active-by-default, but found no config');
-            return;
-        }
-
         $pluginModel = \Plugin::model()->findByPk($this->id);
 
         // "Impossible"
         if (empty($pluginModel))
         {
-            throw new Exception('Internal error: Found no database entry for plugin id ' . $this->id);
+            throw new \Exception('Internal error: Found no database entry for plugin id ' . $this->id);
         }
 
-        // Only activate if plugin version in db diff from config
-        $newVersion = $pluginModel->version !== $this->config->version;
-        $activeByDefault = $this->config->active == 1;
-        if ($newVersion && $activeByDefault)
+        if ($this->config->active == 1)
         {
             // Activate plugin
             $result = App()->getPluginManager()->dispatchEvent(
@@ -452,5 +459,41 @@ abstract class PluginBase implements iPlugin {
                 $not->save();
             }
         }
+    }
+
+    /**
+     * Show an error message about malformed config.json file.
+     * @return void
+     */
+    protected function showConfigErrorNotification()
+    {
+        $not = new \Notification(array(
+            'user_id' => App()->user->id,
+            'title' => gT('Plugin error'),
+            'message' =>
+                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
+                gT('Config file is malformed or null.'),
+            'importance' => \Notification::HIGH_IMPORTANCE
+        ));
+        $not->save();
+    }
+
+    /**
+     * Returns true if config file has a higher version than database.
+     * Assumes $this->config is set.
+     * @return boolean
+     */
+    protected function configIsNewVersion()
+    {
+        if (empty($this->config))
+        {
+            throw new \InvalidArgumentException('config is not set');
+        }
+
+        $pluginModel = \Plugin::model()->findByPk($this->id);
+
+        return empty($pluginModel->version) ||
+            version_compare($pluginModel->version, $this->config->version) === -1;
     }
 }
