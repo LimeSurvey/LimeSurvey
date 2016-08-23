@@ -59,6 +59,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->subscribe('beforeAdminMenuRender');
         $this->subscribe('beforeControllerAction');  // To load Cint icon
         $this->subscribe('beforeDeactivate');  // Create db
+        $this->subscribe('beforeSideMenuRender');  // Create db
         $this->subscribe('beforeSurveyDeactivate');  // Don't deactivate if Cint is active
         $this->subscribe('beforeSurveyActivate');  // Forbid tokens if Cint order
         $this->subscribe('beforeToolsMenuRender');
@@ -538,6 +539,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $action = $event->get('action');
         $subaction = $event->get('subaction');
         return array($controller, $action, $subaction);
+    }
+
+    /**
+     * Show Cint link orders in side-menu, if any
+     * @return void
+     */
+    public function beforeSideMenuRender()
+    {
+        $event = $this->getEvent();
+        $html = $this->renderPartial('sidemenu', array(), true);
+        $event->set('html', $html);
     }
 
     /**
