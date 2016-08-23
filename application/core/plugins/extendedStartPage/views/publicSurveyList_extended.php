@@ -8,7 +8,7 @@
     {
          $outputSurveys++;
                 //echo "IKI :";var_dump( $survey->localizedTitle);
-        $divider = ($divideToggle ? " vertical-divider right " : ""); 
+        $divider = ($divideToggle ? " vertical-divider right " : "");
         if ($survey->publicstatistics == "Y")
         {
             $statistics = "<div class='col-md-1 col-sm-2 col-xs-2 no-divide ls-custom-padding five ".$divider."'>";
@@ -22,8 +22,8 @@
                     );
             $statistics .= "</div>";
             $list .= "<div class='col-md-5 col-sm-10 col-xs-10 ls-custom-padding five'>";
-        } 
-        else 
+        }
+        else
         {
             $statistics = "";
             $list .= "<div class='col-md-6 col-xs-12 ls-custom-padding five ".$divider."'>";
@@ -33,8 +33,8 @@
         if($survey->allowregister == "Y")
         {
             $tooltips .= "<i class=\"fa fa-sign-in\" aria-hidden=\"true\">&nbsp;</i>";
-        } 
-        else 
+        }
+        else
         {
             if($survey->hasTokens($survey->sid))
             {
@@ -59,20 +59,20 @@
             $tooltips .= "<i class=\"fa fa-undo\" aria-hidden=\"true\">&nbsp;</i>";
         }
         $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".$survey->calculateEstimatedTime()." ".gt("Minutes");
-        
+
         $content = $survey->localizedTitle;
         $content .= "<span class='pull-right clearfix'>"
                         ."<span href='#' class='fa fa-question-circle' onclick='return false;' data-html='true' data-toggle=\"popover\" title=\"".gT("Survey information")."\" data-content='".$tooltips."'>&nbsp;</span>"
                         ."</span>";
 
         $list .= CHtml::link(
-            $content, 
+            $content,
             array(
-                'survey/index', 
-                'sid' => $survey->sid, 
+                'survey/index',
+                'sid' => $survey->sid,
                 'lang' => App()->language,
                 'encode' => false
-                ), 
+                ),
                 array(
                     'class' => 'surveytitle btn btn-primary btn-block',
                     'data-html' => true,
@@ -115,27 +115,27 @@
         . "<div class='modal-body'>"
             . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-sign-in'>&nbsp;</i></div>"
-                . "<div class='col-xs-9'>".gT('You have to register to tage this survey')."</div>"
+                . "<div class='col-xs-9'>".gT('You have to register to take this survey.')."</div>"
             . "</div>"
             . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-lock'>&nbsp;</i></div>"
-                . "<div class='col-xs-9'>".gT('You need a valid token to take this survey')."</div>"
+                . "<div class='col-xs-9'>".gT('You need a valid token to take this survey.')."</div>"
             . "</div>"
             . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-puzzle-piece'>&nbsp;</i></div>"
-                . "<div class='col-xs-9'>".gT('You need to enter a CAPTCHA to take this survey')."</div>"
+                . "<div class='col-xs-9'>".gT('You need to enter a CAPTCHA to take this survey.')."</div>"
             . "</div>"
             . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-shield'>&nbsp;</i></div>"
-                . "<div class='col-xs-9'>".gT('This survey is anonymized')."</div>"
+                . "<div class='col-xs-9'>".gT('This survey is anonymized.')."</div>"
             . "</div>"
             . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-undo'>&nbsp;</i></div>"
-                . "<div class='col-xs-9'>".gT('You may change the answers in this survey')."</div>"
+                . "<div class='col-xs-9'>".gT('You may change the answers in this survey.')."</div>"
             . "</div>"
             . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-clock-o'>&nbsp;</i></div>"
-                . "<div class='col-xs-9'>".gT('The estimated time for this survey')."</div>"
+                . "<div class='col-xs-9'>".gT('Estimated time for this survey')."</div>"
             . "</div>"
         . "</div>"
       . "</div>"
