@@ -182,6 +182,8 @@
                             <?php eT("Return to survey list");?>
                         </a>
                     </li>
+                    
+                    <?php echo $beforeSideMenuRender; ?>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
