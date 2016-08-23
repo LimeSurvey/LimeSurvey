@@ -396,17 +396,12 @@ abstract class PluginBase implements iPlugin {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
             }
-            else
+            else if ($this->configIsNewVersion())
             {
-                if ($this->configIsNewVersion())
-                {
-                    // Do everything related to reading config fields
-                    $this->checkActive();
-                }
-                else
-                {
-                    // Nothing to do, config has not changed
-                }
+                // Do everything related to reading config fields
+                // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
+                $this->checkActive();
+                $this->saveNewVersion();
             }
         }
         else
@@ -440,7 +435,6 @@ abstract class PluginBase implements iPlugin {
 
             if ($result->get('success') !== false)
             {
-                $pluginModel->version = $this->config->version;
                 $pluginModel->active = 1;
                 $pluginModel->update();
             }
@@ -496,4 +490,16 @@ abstract class PluginBase implements iPlugin {
         return empty($pluginModel->version) ||
             version_compare($pluginModel->version, $this->config->version) === -1;
     }
+
+    /**
+     * Saves the new version from config into database
+     * @return void
+     */
+    protected function saveNewVersion()
+    {
+        $pluginModel = \Plugin::model()->findByPk($this->id);
+        $pluginModel->version = $this->config->version;
+        $pluginModel->update();
+    }
+
 }
