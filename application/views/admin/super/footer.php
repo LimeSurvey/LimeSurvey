@@ -25,7 +25,7 @@
 
             <!-- Lime survey website -->
             <div class="col-xs-6 col-md-4 col-lg-6 text-right">
-                <a  title='<?php eT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber." ".$buildtext;?>
+                <a  title='<?php eT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
             </div>
         </div>
     </div>
