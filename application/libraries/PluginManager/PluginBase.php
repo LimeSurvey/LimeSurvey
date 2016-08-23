@@ -400,8 +400,16 @@ abstract class PluginBase implements iPlugin {
             {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
-                $this->checkActive();
-                $this->saveNewVersion();
+                $pluginModel = \Plugin::model()->findByPk($this->id);
+
+                // "Impossible"
+                if (empty($pluginModel))
+                {
+                    throw new \Exception('Internal error: Found no database entry for plugin id ' . $this->id);
+                }
+
+                $this->checkActive($pluginModel);
+                $this->saveNewVersion($pluginModel);
             }
         }
         else
@@ -415,16 +423,8 @@ abstract class PluginBase implements iPlugin {
      * This is the 'active-by-default' feature.
      * @return void
      */
-    protected function checkActive()
+    protected function checkActive($pluginModel)
     {
-        $pluginModel = \Plugin::model()->findByPk($this->id);
-
-        // "Impossible"
-        if (empty($pluginModel))
-        {
-            throw new \Exception('Internal error: Found no database entry for plugin id ' . $this->id);
-        }
-
         if ($this->config->active == 1)
         {
             // Activate plugin
