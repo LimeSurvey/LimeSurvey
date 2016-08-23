@@ -2126,7 +2126,7 @@ class statistics_helper {
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_answer', $aData, true);
 
             }    //end while
-            $statisticsoutput .= '</table>';
+            //$statisticsoutput .= '</table>';
             $aData['showaggregateddata'] = false;
 
             //only show additional values when this setting is enabled

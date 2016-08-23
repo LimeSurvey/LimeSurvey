@@ -19,8 +19,9 @@
         </div>
 
 
-            <div class="text-right in-title">
+            <div class="text-right">
                 <div class="form-group">
+                    <div style="display:inline-block;position:relative;top:-65px;">
                     <label for='completionstate' class="control-label"><?php eT("Include:"); ?> </label>
                     <?php
                     echo CHtml::dropDownList(
@@ -33,11 +34,12 @@
                         ),
                         array(
                             'class'=>'form-control',
-                            'style'=>'display: inline;width: auto',
+                            'style'=>'display: inline;width: auto;',
                             'data-url'=>App()->createUrl('/admin/statistics/sa/setIncompleteanswers/')
                         ))
                     ;
                     ?>
+                </div>
                 </div>
             </div>
 

@@ -8,11 +8,11 @@
 <h3 class="pagetitle"><?php printf(gT("Edit user permissions for user %s"),"<span style='font-style:italic'>".$oUser->users_name."</span>"); ?></h3>
 
 <div class="row" style="margin-bottom: 100px">
-    <div class="col-lg-12 content-right">
+    <div class="col-lg-10 col-lg-offset-1">
 
         <!-- Form -->
         <?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post', array('id'=>'savepermissions'));?>
-            <table style='margin:0 auto;' class='userpermissions activecell table'>
+            <table class='userpermissions activecell table table-striped'>
                 <thead>
                     <tr>
                         <th></th>

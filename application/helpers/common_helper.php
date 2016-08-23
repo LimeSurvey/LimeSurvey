@@ -1352,8 +1352,7 @@ function returnGlobal($stringname,$bRestrictToString=false)
         $stringname == "lid" || $stringname == "ugid"||
         $stringname == "thisstep" || $stringname == "scenario" ||
         $stringname == "cqid" || $stringname == "cid" ||
-        $stringname == "qaid" || $stringname == "scid" ||
-        $stringname == "loadsecurity")
+        $stringname == "qaid" || $stringname == "scid" )
         {
             if($bUrlParamIsArray){
                 return array_map("sanitize_int",$urlParam);
@@ -2627,9 +2626,8 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
 {
-
     global $maildebug, $maildebugbody;
-
+    require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
 
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
@@ -2767,6 +2765,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $body="<html>".$body."</html>";
         }
         $mail->msgHTML($body,App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
+        $html=new \Html2Text\Html2Text($body);
+        $mail->AltBody=$html->getText();
     }
     else
     {
@@ -3868,13 +3868,17 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 
 /**
 * This is a convenience function to convert any date, in any date format, to the global setting date format
+* Check if the time shoul be rendered also
 *
 * @param string $sDate
+* @param boolean withTime
 * @return string
 */
-function convertToGlobalSettingFormat($sDate)
+function convertToGlobalSettingFormat($sDate,$withTime=false)
 {
 
+    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
+    $usedDatetime = ($withTime===true ? $sDateformatdata['phpdate']." H:i" : $sDateformatdata['phpdate']); //return also hours and minutes if asked for
     try
     {
         // Workaround for bug in older PHP version (confirmed for 5.5.9)
@@ -3883,14 +3887,12 @@ function convertToGlobalSettingFormat($sDate)
             throw new Exception("Failed to parse date string ({$sDate})");
         }
         $oDate           = new DateTime($sDate);                                    // We generate the Date object (PHP will deal with the format of the string)
-        $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
-        $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+        $sDate           = $oDate->format($usedDatetime);             // We apply it to the Date object to generate a string date
         return $sDate;                                                              // We return the string date
     }
     catch(Exception $e) {
-        $oDate           = new DateTime('1/1/1980');                                    // We generate the Date object (PHP will deal with the format of the string)
-        $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
-        $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+        $oDate           = new DateTime('1/1/1980 00:00');                                    // We generate the Date object (PHP will deal with the format of the string)
+        $sDate           = $oDate->format($usedDatetime);             // We apply it to the Date object to generate a string date
         return $sDate;                                                              // We return the string date
 
     }
@@ -3949,65 +3951,6 @@ function getUpdateInfo()
         );
     }
     return $updateInfo;
-}
-
-/**
-* This function updates the actual global variables if an update is available after using getUpdateInfo
-*
-* Not used anymore.
-*
-* @return Array with update or error information
-*/
-function updateCheck()
-{
-    /*
-    $aUpdateVersions=getUpdateInfo();
-
-    if (isset($aUpdateVersions['errorcode']))
-    {
-        Yii::app()->setFlashMessage(sprintf(gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
-        $aUpdateVersions=array();
-    }
-    if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
-    {
-        $sUpdateNotificationType = getGlobalSetting('updatenotification');
-        switch ($sUpdateNotificationType)
-        {
-            case 'stable':
-                // Only show update if in stable (master) branch
-                if (isset($aUpdateVersions['master'])) {
-                    $aUpdateVersion=$aUpdateVersions['master'];
-                    $aUpdateVersions=array_intersect_key($aUpdateVersions,array('master'=>'1'));
-                }
-                break;
-
-            case 'both':
-                // Show first available update
-                $aUpdateVersion=reset($aUpdateVersions);
-                break;
-
-            default:
-                // Never show a notification
-                $aUpdateVersions=array();
-                break;
-        }
-    }
-
-    setGlobalSetting('updateversions',json_encode($aUpdateVersions));
-
-
-    if (isset($aUpdateVersion)) {
-        setGlobalSetting('updateavailable',1);
-        setGlobalSetting('updatebuild',$aUpdateVersion['build']);
-        setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
-    } else {
-        setGlobalSetting('updateavailable',0);
-        $aUpdateVersions = array();
-    }
-
-    setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
-    return $aUpdateVersions;
-     */
 }
 
 /**

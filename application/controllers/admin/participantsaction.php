@@ -350,13 +350,13 @@ class participantsaction extends Survey_Common_Action
                 $iShareUserId = $row['share_uid'];
                 if ($iShareUserId != 0) {
                     $oShared = User::model()->getName($iShareUserId);
-                    $sSharename = $oShared[0]['full_name'];
+                    $sSharename = $oShared['full_name'];
                 } else {
                     $sSharename = 'All users';
                 }
                 $owner = User::model()->getName($row['owner_uid']);
                 $aData->rows[$i]['id'] = $row['participant_id']."--".$row['share_uid']; //This is the unique combination per record
-                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner[0]['full_name'], $row['date_added'], $row['can_edit']);
+                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner['full_name'], $row['date_added'], $row['can_edit']);
                 $i++;
             }
 
@@ -375,7 +375,7 @@ class participantsaction extends Survey_Common_Action
                 $iShareUserId = $row['share_uid'];//for conversion of uid to human readable names
                 if ($iShareUserId != 0) {
                     $oShared = User::model()->getName($iShareUserId);
-                    $sSharename = $oShared[0]['full_name'];
+                    $sSharename = $oShared['full_name'];
                 } else {
                     $sSharename = 'All users';
                 }
@@ -1858,7 +1858,7 @@ class participantsaction extends Survey_Common_Action
             {
                 foreach ($CPDBAttributes as $CPDBAttribute)
                 {
-                    if ($CPDBAttribute['attribute_id'] === intval($tokenAttribute['cpdbmap']))
+                    if ($CPDBAttribute['attribute_id'] == intval($tokenAttribute['cpdbmap']))
                     {
                         $result[$attributeId] = array(
                             'tokenAttributeId' => $attributeId,

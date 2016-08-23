@@ -203,113 +203,63 @@ class questiongroups extends Survey_Common_Action
         {
             Yii::app()->loadHelper('surveytranslator');
 
-            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-
-            $grplangs[] = $baselang;
+            $sSurveyLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $sSurveyLanguages[] = Survey::model()->findByPk($surveyid)->language;
             $errorstring = '';
-            foreach ($grplangs as $grouplang)
-                if (empty($_POST['group_name_' . $grouplang]))
-                    $errorstring.= getLanguageNameFromCode($grouplang, false) . "\\n";
+            foreach ($sSurveyLanguages as $sLanguage)
+                if (empty($_POST['group_name_' . $sLanguage]))
+                    $errorstring.= getLanguageNameFromCode($sLanguage, false) . "\\n";
 
             if ($errorstring != '')
                 $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid));
 
             else
             {
-                $first = true;
-                foreach ($grplangs as $grouplang)
+                $sInsertArray=array();
+                foreach ($sSurveyLanguages as $sLanguage)
                 {
-                    //Clean XSS
-                    $group_name = $_POST['group_name_' . $grouplang];
-                    $group_description = $_POST['description_' . $grouplang];
-
-                    $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
-                    $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
-
+                    $sGroupname = Yii::app()->request->getPost('group_name_' . $sLanguage);
+                    $sGroupDescription = Yii::app()->request->getPost('description_' . $sLanguage);
+                    // Decode entities
+                    $sGroupname = html_entity_decode($sGroupname, ENT_QUOTES, "UTF-8");
+                    $sGroupDescription = html_entity_decode($sGroupDescription, ENT_QUOTES, "UTF-8");
                     // Fix bug with FCKEditor saving strange BR types
-                    $group_name = fixCKeditorText($group_name);
-                    $group_description = fixCKeditorText($group_description);
-
-
-                    if ($first)
-                    {
-                        $aData = array(
-                            'sid' => $surveyid,
-                            'group_name' => $group_name,
-                            'description' => $group_description,
-                            'group_order' => getMaxGroupOrder($surveyid),
-                            'language' => $grouplang,
-                            'randomization_group' => $_POST['randomization_group'],
-                            'grelevance' => $_POST['grelevance'],
-                        );
-
-                        $group = new QuestionGroup;
-                        foreach ($aData as $k => $v)
-                        {
-                            $group->$k = $v;
-                        }
-                        $group->save();
-                        $groupid = $group->gid;
-                        $first = false;
-                    }
-                    else
-                    {
-                        switchMSSQLIdentityInsert('groups',true);
-                        $aData = array(
-                            'gid' => $groupid,
-                            'sid' => $surveyid,
-                            'group_name' => $group_name,
-                            'description' => $group_description,
-                            'group_order' => getMaxGroupOrder($surveyid),
-                            'language' => $grouplang,
-                            'randomization_group' => $_POST['randomization_group']
-                        );
-
-                        $group = new QuestionGroup;
-                        foreach ($aData as $k => $v)
-                        {
-                            $group->$k = $v;
-                        }
-                        $group->save();
-                        switchMSSQLIdentityInsert('groups',false);
-                    }
+                    $sGroupname = fixCKeditorText($sGroupname);
+                    $sGroupDescription = fixCKeditorText($sGroupDescription);
+                    $sInsertArray[$sLanguage] = array(
+                        'sid' => $surveyid,
+                        'group_name' => $sGroupname,
+                        'description' => $sGroupDescription,
+                        'group_order' => getMaxGroupOrder($surveyid),
+                        'language' => $sLanguage,
+                        'randomization_group' => Yii::app()->request->getPost('randomization_group'),
+                        'grelevance' => Yii::app()->request->getPost('grelevance')
+                    );
                 }
-                // This line sets the newly inserted group as the new group
-                if (isset($groupid))
-                {
-                    $gid = $groupid;
-                }
-                else
-                {
+                $newGroupID=QuestionGroup::model()->insertNewGroup($sInsertArray);
+                if ($newGroupID===false) {
                     // Error, redirect back.
                     Yii::app()->setFlashMessage(gT("Question group was not saved. Please check if the survey is active."), 'error');
                     $this->getController()->redirect(Yii::app()->request->urlReferrer);
                 }
 
                 $questions = new Question('search');
-                $questions->gid = $gid;
+                $questions->gid = $newGroupID;
                 Yii::app()->setFlashMessage(gT("New question group was saved."));
 
                 if($questions->search()->itemCount<1)
                 {
-                    Yii::app()->setFlashMessage(gT('You can now add a question in this group.'),'warning');
-                    sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>");
+                    Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'),'<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">','</a>'),'info');
                 }
-
-            }
-
-            // http://local.lsinst/LimeSurvey_206/index.php/admin/survey/sa/view/surveyid/282267/gid/10
-            // http://local.lsinst/LimeSurvey_206/index.php//282267/gid/10
-
-            if(Yii::app()->request->getPost('close-after-save') === 'true')
-            {
-                $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
-            }
-            else
-            {
-                // After save, go to edit
-                $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$gid"));
+                if(Yii::app()->request->getPost('close-after-save') === 'true')
+                {
+                    $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
+                }
+                else
+                {
+                    // After save, go to edit
+                    $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$newGroupID"));
+                }
             }
         }
         else
@@ -376,6 +326,7 @@ class questiongroups extends Survey_Common_Action
         $aData['sidemenu']['group_name'] = $grow['group_name'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['surveyIsActive'] = $surveyinfo['active']=='Y';
         $aData['questiongroupbar']['buttons']['view'] = true;
 
         ///////////

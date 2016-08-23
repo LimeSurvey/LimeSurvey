@@ -1,7 +1,112 @@
+<div class="container">
 <h3 class="pagetitle"><?php eT("User control");?></h3>
+    <div class="row">
+        <div class="col-md-2 col-sm-4 col-xs-12  col-md-offset-10 col-sm-offset-8">
+            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-primary btn-block"><?php eT("Add user");?></button>
+        </div>
 
-<div class="row" style="margin-bottom: 100px">
-    <div class="col-lg-12 content-right">
+    </div>
+    <div class="row" style="margin-bottom: 100px">
+        <div class="container">
+            <?php
+            $this->widget('bootstrap.widgets.TbGridView', array(
+                'id' => 'all_users',
+                'itemsCssClass' => 'table table-striped items',
+                'dataProvider' => $model->search(),
+                'columns' => $model->colums,
+                'afterAjaxUpdate' => 'bindButtons',
+                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
+                            ),
+                    ));
+
+                ?>
+            </div>
+
+            <!-- To update rows per page via ajax -->
+            <script type="text/javascript">
+                jQuery(function($) {
+                    jQuery(document).on("change", '#pageSize', function(){
+                        $.fn.yiiGridView.update('all_users',{ data:{ pageSize: $(this).val() }});
+                    });
+                });
+            </script>
+    </div>
+</div>
+<div id='adduser-modal' class="modal fade " tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><?php eT("Add a new survey administrator") ?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                 <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>'form-horizontal'));?>
+                    <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
+                        echo "<div class=\"form-group\">";
+                          echo "<label  class='col-md-4 control-label'>";
+                            eT("Central database");
+                          echo "</label>";
+                          echo "<div class='col-md-8'>";
+                            echo CHtml::dropDownList('user_type',
+                                'DB',
+                                array(
+                                'DB' => gT("Internal database authentication",'unescaped'),
+                                'LDAP' => gT("LDAP authentication",'unescaped')
+                                ),
+                                array(
+                                    'class' => ""
+                                )
+                            );
+                          echo "</div>";
+                        echo "</div>";
+                      } else {
+                          echo "<input type='hidden' id='user_type' name='user_type' value='DB'/>";
+                      }
+                    ?>
+
+                    <div class="form-group">
+                        <label for="new_user" class="control-label col-md-4"><?php eT("Username:");?></label>
+                        <div class="col-md-8">
+                            <input type='text' class="text input-sm form-control" id='new_user' name='new_user' required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_email" class="control-label col-md-4" ><?php eT("Email:");?></label>
+                        <div class="col-md-8">
+                            <input type='email' class="text input-sm form-control" id='new_email' name='new_email' required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_full_name" class="control-label col-md-4"><?php eT("Full name:");?></label>
+                        <div class="col-md-8">
+                            <input type='text' class="text input-sm form-control" id='new_full_name' name='new_full_name' required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 text-right">
+                            <?php eT("The password will be generated and sent by email.") ?>
+                        </div>
+                    </div>
+                    <div class="col-md-12">&nbsp;</div>
+                    <div class="col-md-4 col-md-offset-8">
+                        <input type='submit' id='add_user_btn' class="btn btn-primary btn-block" value='<?php eT("Save");?>' />
+                        <input type='hidden' name='action' value='adduser' />
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<?php
+/*
 
 <table id='users' class='users table table-striped'>
     <thead>
@@ -12,7 +117,7 @@
             <th class="col-md-2"><?php eT("Full name");?></th>
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
                 <th ><?php eT("No of surveys");?></th>
-                <?php } ?>
+            <?php } ?>
             <th><?php eT("Created by");?></th>
             <th class="col-md-2"><?php eT("Action");?></th>
         </tr>
@@ -187,4 +292,5 @@
 
 
     </div>
-</div>
+</div>*/
+?>

@@ -244,7 +244,7 @@ class Survey_Common_Action extends CAction
         ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
 
         $this->_showHeaders($aData); //// THe headers will be called from the layout
-        $this->_showadminmenu(); //// The admin menu will be called from the layout, probably as a widget for dynamic content.
+        $this->_showadminmenu($aData); //// The admin menu will be called from the layout, probably as a widget for dynamic content.
         $this->_userGroupBar($aData);
 
         //// Here will start the rendering from the controller of the main view.
@@ -450,7 +450,7 @@ class Survey_Common_Action extends CAction
     * @global int $surveyid
     * @return string $adminmenu
     */
-    public function _showadminmenu()
+    public function _showadminmenu($aData)
     {
         // We don't wont the admin menu to be shown in login page
         if( !Yii::app()->user->isGuest )
@@ -517,10 +517,14 @@ class Survey_Common_Action extends CAction
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
 
+            // Get notification menu
+            $surveyId = isset($aData['surveyid']) ? $aData['surveyid'] : null;
+            Yii::import('application.controllers.admin.NotificationController');
+            $aData['adminNotifications'] = NotificationController::getMenuWidget($surveyId, true /* show spinner */);
+
             $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
         }
     }
-
 
     function _titlebar($aData)
     {
@@ -709,7 +713,7 @@ class Survey_Common_Action extends CAction
     {
         if((isset($aData['fullpagebar'])))
         {
-            if(isset($aData['fullpagebar']['closebutton']['url']))
+            if(isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep']))
             {
                 $sAlternativeUrl        = '/admin/index';
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl));
@@ -1233,12 +1237,11 @@ class Survey_Common_Action extends CAction
         // If the survey is new (ie: it has no group), it is opened by default
         $setting_entry = 'quickaction_'.Yii::app()->user->getId();
         $aData['quickactionstate'] = ($sumcount2<1)?1:getGlobalSetting($setting_entry);
-        $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
 
         $content = $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
         $this->getController()->renderPartial("/admin/super/sidebody", array(
             'content' => $content,
-            'sideMenuBehaviour' => $sideMenuBehaviour
+            'sideMenuOpen' => true
         ));
     }
 

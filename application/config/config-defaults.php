@@ -574,13 +574,6 @@ $config['iSessionExpirationTime'] = 7200;
 */
 $config['InsertansUnsupportedtypes'] = array();
 
-/**
-* This parameter sets if and what update notifications are shown to the administrator. Valid values are 'never', 'stable', 'both' (for stable and unstable)
-* Default is 'stable'
-* @var string
-*/
-$config['updatenotification'] = 'both';
-
 // Proxy settings for ComfortUpdate
 /**
 * Set these if you are behind a proxy and want to update LS using ComfortUpdate

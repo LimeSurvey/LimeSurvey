@@ -521,7 +521,7 @@ PRIMARY KEY ([ugid],[uid])
 CREATE TABLE [prefix_users] (
 [uid] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
 [users_name] nvarchar(64) NOT NULL UNIQUE default '',
-[password] ntext NOT NULL,
+[password] nvarchar(max) NOT NULL,
 [full_name] nvarchar(50) NOT NULL,
 [parent_id] int NOT NULL,
 [lang] varchar(20) NULL,
@@ -529,7 +529,7 @@ CREATE TABLE [prefix_users] (
 [htmleditormode] varchar(7) NULL default 'default',
 [templateeditormode] varchar(7) NOT NULL default 'default',
 [questionselectormode] varchar(7)  NOT NULL default 'default',
-[one_time_pw] ntext NULL,
+[one_time_pw] nvarchar(max) NULL,
 [dateformat] int NOT NULL DEFAULT 1,
 [created] datetime NULL,
 [modified] datetime NULL
@@ -590,6 +590,24 @@ create index [saved_control_idx2] on [prefix_saved_control] ([sid]);
 create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 
 --
+-- Notification table
+--
+CREATE TABLE prefix_notifications (
+    [id] int NOT NULL IDENTITY,
+    [entity] nvarchar(15) NOT NULL,
+    [entity_id] int NOT NULL,
+    [title] nvarchar(255) NOT NULL,
+    [message] nvarchar(max) NOT NULL,
+    [status] nvarchar(15) NOT NULL DEFAULT 'new',
+    [importance] int NOT NULL DEFAULT 1,
+    [display_class] nvarchar(31) DEFAULT 'default',
+    [created] datetime NOT NULL,
+    [first_read] datetime DEFAULT NULL,
+    PRIMARY KEY ([id])
+);
+CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);
+
+--
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '258');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '259');

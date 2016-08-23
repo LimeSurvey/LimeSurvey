@@ -657,11 +657,13 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
-        // Die if this is not possible
+        // Redirect if this is not possible
         if (!isset($aData['aSurveysettings']['active']) || $aData['aSurveysettings']['active'] == 'Y')
-            $this->getController()->error('Survey not active');
+        {
+            Yii::app()->setFlashMessage(gT("This survey is already active."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
 
-        $qtypes = getQuestionTypeList('', 'array');
+        }        $qtypes = getQuestionTypeList('', 'array');
         Yii::app()->loadHelper("admin/activate");
 
         if (Yii::app()->request->getPost('ok')=='')
@@ -1685,11 +1687,36 @@ class SurveyAdmin extends Survey_Common_Action
             $langsettings->insertNewSurvey($aInsertData);
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+            // Now create a new dummy group
+            $aInsertData=array();
+            $aInsertData[Survey::model()->findByPk($iNewSurveyid)->language]=array(
+                'sid' => $iNewSurveyid,
+                'group_name' => gt('My first question group','html',Survey::model()->findByPk($iNewSurveyid)->language),
+                'description' => '',
+                'group_order' => 1,
+                'language' => Survey::model()->findByPk($iNewSurveyid)->language,
+                'grelevance' => '1');
+            $iNewGroupID=QuestionGroup::model()->insertNewGroup($aInsertData);
+            // Now create a new dummy question
+            $oQuestion= new Question;
+            $oQuestion->sid = $iNewSurveyid;
+            $oQuestion->gid = $iNewGroupID;
+            $oQuestion->type = 'T';
+            $oQuestion->title = 'Q001';
+            $oQuestion->question = 'My first example question';
+            $oQuestion->help = 'This is a question help text.';
+            $oQuestion->mandatory = 'N';
+            $oQuestion->relevance = '1';
+            $oQuestion->question_order = 1;
+            $oQuestion->language = Survey::model()->findByPk($iNewSurveyid)->language;
+            $oQuestion->save();
+            $iNewQuestionID=$oQuestion->qid;
 
-            Yii::app()->session['flashmessage'] = $warning.gT("Survey was successfully added.");
+            Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."),'info');
+
             if (App()->request->getPost('saveandclose'))
             {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
+                $this->getController()->redirect(array("admin/questions/sa/view/surveyid/{$iNewSurveyid}/gid/{$iNewGroupID}/qid/{$iNewQuestionID}"));
             }
             else
             {
