@@ -57,10 +57,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->subscribe('afterSurveyQuota');  // Redirect to Cint, screen out
         $this->subscribe('beforeActivate');  // Create db
         $this->subscribe('beforeAdminMenuRender');
-        $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('beforeControllerAction');  // To load Cint icon
+        $this->subscribe('beforeDeactivate');  // Create db
         $this->subscribe('beforeSurveyDeactivate');  // Don't deactivate if Cint is active
         $this->subscribe('beforeSurveyActivate');  // Forbid tokens if Cint order
+        $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('newDirectRequest');  // Ajax calls
         $this->subscribe('onSurveyDenied');  // Redirect to Cint, survey closed
 
@@ -74,7 +75,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Add database tables to store information from CintLink
-     *
      * @return void
      */
     public function beforeActivate()
@@ -91,11 +91,18 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * Prevent this plugin from being deactivated.
+     * @return void
+     */
+    public function beforeDeactivate()
+    {
+        $event = $this->getEvent();
+        $event->set('success', false);
+        $event->set('message', $this->gT('This plugin cannot be deactivated.'));
+    }
+
+    /**
      * Creates database table for Cint plugin
-     * OBS OBS OBS: As this plugin is activated by default,
-     * database table is also created in installation scripts.
-     * If this table is changed after release, changes will have
-     * to be made in those places too.
      * @return void
      */
     protected function createDatabase()
