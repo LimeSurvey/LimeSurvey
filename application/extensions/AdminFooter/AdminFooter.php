@@ -30,16 +30,16 @@ class AdminFooter extends CWidget
                 $versiontitle = gT('Version');
                 $buildtext = "";
                 if(Yii::app()->getConfig("buildnumber")!="") {
-                   $buildtext = "Build ".Yii::app()->getConfig("buildnumber");
-                }                
+                   $buildtext = "+".Yii::app()->getConfig("buildnumber");
+                }
             }
-            
+
             $aData = array(
                 'versionnumber' => $versionnumber,
                 'versiontitle'  => $versiontitle,
                 'buildtext'     => $buildtext
             );
-        
+
             $this->render('footer', $aData);
         }
 }

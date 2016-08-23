@@ -337,7 +337,7 @@ class AdminController extends LSYii_Controller
 
         $aData['buildtext'] = "";
         if(Yii::app()->getConfig("buildnumber")!="") {
-            $aData['buildtext']= "Build ".Yii::app()->getConfig("buildnumber");
+            $aData['buildtext']= "+".Yii::app()->getConfig("buildnumber");
         }
 
         //If user is not logged in, don't print the version number information in the footer.
