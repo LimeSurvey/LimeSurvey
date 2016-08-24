@@ -383,11 +383,20 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $surveyId = Yii::app()->request->getParam('surveyId');
         $surveyId = empty($surveyId) ? Yii::app()->request->getParam('surveyid') : $surveyId;
 
-        $this->checkCintActive($surveyId);
-        $this->checkCintCompleted($surveyId);
+        // No need to nag when user tries to activate survey
+        if ($this->userIsActivatingSurvey())
+        {
+            return;
+        }
 
-        // Disable all tokens if user has any Cint order
-        $this->disableTokens($surveyId);
+        if (!empty($surveyId))
+        {
+            $this->checkCintActive($surveyId);
+            $this->checkCintCompleted($surveyId);
+
+            // Disable all tokens if user has any Cint order
+            $this->disableTokens($surveyId);
+        }
     }
 
     /**
@@ -401,18 +410,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $this->log('checkCintActive begin');
 
-        // No need to nag when user tries to activate survey
-        if ($this->userIsActivatingSurvey())
-        {
-            return;
-        }
-
         $this->log('surveyId = ' . $surveyId);
-        // Fetch Cint active flag
-        $cintActive = $this->get('cint_active_' . $surveyId);
-        $this->log('cintActive = ' . $cintActive);
 
-        if ($cintActive)
+        if (CintLinkOrder::hasAnyBlockingOrders($surveyId))
         {
             // Include Javascript that will update the orders async
             $this->renderCommonJs($surveyId);  // TODO: This is rendered twice on Cint views
@@ -420,20 +420,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
             App()->clientScript->registerScriptFile("$assetsUrl/checkOrders.js");
 
             $survey = Survey::model()->findByPk($surveyId);
-            $orders = CintLinkOrder::getOrders($surveyId);
-            if (empty($orders))
-            {
-                // Possible?
-                $this->log('Internal error: beforeControllerAction: Looking for Cint orders but found nothing');
-                $this->set('cint_active_' . $surveyId, false);
-                return;
-            }
 
             // Check if any order is paid and/or live
-            $anyOrderIsActive = CintLinkOrder::anyOrderHasStatus($orders, array('new', 'live', 'hold'));
             $surveyIsActive = $survey->getState() === 'willExpire' || $survey->getState() === 'running';
-            $this->log('anyOrderIsActive = ' . $anyOrderIsActive);
-            if (!$surveyIsActive && $anyOrderIsActive)
+            if (!$surveyIsActive)
             {
                 $this->showNaggingNotification(
                     sprintf($this->gT(
@@ -442,11 +432,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     ), $survey->defaultlanguage->surveyls_title),
                     $surveyId
                 );
-            }
-            else
-            {
-                // No order is on hold, new/review or live. So completed or cancelled. Unset all flags.
-                $this->set('cint_active_' . $surveyId, false);
             }
         }
 
@@ -462,8 +447,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
     protected function checkCintCompleted($surveyId)
     {
         // Check flag
-        $cintActive = $this->get('cint_active_' . $surveyId);
-        if ($cintActive &&
+        if (CintLinkorder::hasAnyOrders($surveyId) &&
             CintLinkOrder::allOrdersAreCompleted($surveyId))
         {
             $not = new Notification(array(
