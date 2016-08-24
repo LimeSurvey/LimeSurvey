@@ -47,7 +47,7 @@
                         <h4 class="modal-title"><?php echo $plugin->gT('Choose language'); ?></h4>
                     </div>
                     <div class="modal-body">
-                        <p class='modal-body-text'><?php echo $plugin->gT('Pick a language that will be used as default for these participants. Make sure your order\'s country represents this language.'); ?></p>
+                        <p class='modal-body-text'><?php echo $plugin->gT('Pick a language that will be used as default for this order. Make sure your order\'s country have this language as an official language.'); ?></p>
 
                         <!-- Radio list with languages -->
                         <form class='form-horizontal'>

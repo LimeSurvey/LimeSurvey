@@ -117,6 +117,17 @@ $(document).ready(function() {
             // It's possible that dashboard will add a notification, e.g. tutorial.
             // Make sure notifications are updated even if we are using Ajax.
             LS.updateNotificationWidget(LS.plugin.cintlink.notificationUpdateUrl, false);
+
+            if (LS.plugin.cintlink.surveyId) {
+                var useLangWizard = $('#cint-lang-wizard input[name="lang"]').length > 1 ;
+                if (useLangWizard) {
+                    showLangWizard();
+                }
+                else {
+                    showWidget();
+                }
+            }
+
         });
     }
 
