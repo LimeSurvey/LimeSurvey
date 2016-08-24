@@ -16,7 +16,8 @@
                     </label>
                     <?php
                         $state = Yii::app()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : Yii::app()->user->getState('responsesGridSwitchDisplayState');
-                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', 
+                        var_dump($state);
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
                         array(
                         'name' => 'display-mode',
                         'value'=> $state,
