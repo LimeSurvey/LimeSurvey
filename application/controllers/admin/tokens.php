@@ -1752,7 +1752,7 @@ class tokens extends Survey_Common_Action
             else
             {
                 $aData['sidemenu']['state'] = false;
-                
+
                 $this->_renderWrappedTemplate('token', array( 'message' => array(
                 'title' => gT("Warning"),
                 'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
@@ -2691,6 +2691,12 @@ class tokens extends Survey_Common_Action
         {
             $aData['tokenid'] = $iTokenId;
             $aData['tokendata'] = Token::model($iSurveyId)->findByPk($iTokenId);
+        }
+        else
+        {
+            $aData['completed']=null;
+            $aData['sent']=null;
+            $aData['remindersent']=null;
         }
 
         $thissurvey = getSurveyInfo($iSurveyId);
