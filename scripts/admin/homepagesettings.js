@@ -42,6 +42,26 @@ $(document).ready(function(){
     });
 
     /**
+     * Toggle show survey list value
+     */
+    $('#show_survey_list').on('switchChange.bootstrapSwitch', function(event, state) {
+        $url = $('#show_survey_list-url').attr('data-url');
+        console.log($url);
+        $.ajax({
+            url : $url,
+            type : 'GET',
+            dataType : 'html',
+
+            // html contains the buttons
+            success : function(html, statut){
+            },
+            error :  function(html, statut){
+                alert('error');
+            }
+        });
+    });
+
+    /**
      * Save box settings
      */
     $('#save_boxes_setting').on('click', function(){

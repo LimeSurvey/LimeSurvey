@@ -98,7 +98,6 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $aData['fullpagebar']['button']['newsurvey'] = true;
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/survey/massive_actions/_selector', array(), true, false);
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }
 
