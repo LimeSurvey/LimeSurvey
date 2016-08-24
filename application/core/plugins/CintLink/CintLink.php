@@ -97,9 +97,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function beforeDeactivate()
     {
+        /* Disabled for now
         $event = $this->getEvent();
         $event->set('success', false);
         $event->set('message', $this->gT('This plugin cannot be deactivated.'));
+         */
     }
 
     /**

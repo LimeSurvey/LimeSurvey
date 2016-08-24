@@ -9,7 +9,7 @@
 
 var LS = LS || {};
 $(document).ready(function() {
-    console.log('checkOrders');
+    console.log('CintLink checkOrders');
     $.ajax({
         url: LS.plugin.cintlink.pluginBaseUrl + '&method=updateAllOrders',
         surveyId: LS.plugin.cintlink.surveyId,
