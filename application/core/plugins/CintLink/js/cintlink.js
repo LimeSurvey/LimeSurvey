@@ -119,13 +119,20 @@ $(document).ready(function() {
             LS.updateNotificationWidget(LS.plugin.cintlink.notificationUpdateUrl, false);
 
             if (LS.plugin.cintlink.surveyId) {
+
                 var useLangWizard = $('#cint-lang-wizard input[name="lang"]').length > 1 ;
-                if (useLangWizard) {
-                    showLangWizard();
+                /*
+                var shouldShowWidget = $('#cintlink-gridview table tr').length == 2;
+
+                if (shouldShowWidget) {
+                    if (useLangWizard) {
+                        showLangWizard();
+                    }
+                    else {
+                        showWidget();
+                    }
                 }
-                else {
-                    showWidget();
-                }
+                */
             }
 
         });
