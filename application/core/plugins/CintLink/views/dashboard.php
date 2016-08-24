@@ -83,7 +83,7 @@
     $columns[] = array(
         'name' => 'url',
         'header' => 'ID',
-        'value' => 'substr($data->url, 47)'
+        'value' => '$data->shortId'
     );
     $columns[] = array(
         'name' => 'created',

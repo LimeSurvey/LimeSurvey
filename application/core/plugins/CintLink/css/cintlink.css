@@ -42,6 +42,10 @@
 	content: '\e900';
 }
 
+.cintlink-icon-sidemenu {
+    padding-right: 10px;
+}
+
 .cint-price, .cint-age, .cint-buttons {
     white-space: nowrap;
 }
@@ -58,4 +62,12 @@
 
 #cint-lang-wizard form {
     padding-left: 20px;
+}
+
+.cintlink-sidemenu-table {
+    margin-bottom: 0;
+}
+
+.cintlink-no-hover {
+    pointer-events: none;
 }

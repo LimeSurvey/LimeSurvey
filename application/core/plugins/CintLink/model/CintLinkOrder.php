@@ -176,22 +176,22 @@ class CintLinkOrder extends CActiveRecord
      */
     public function getStyledStatus()
     {
-        $plugin = Yii::app()->getPlugin();
+        // NB: Can't use $plugin->gT here because it will be called for side-menu (not plugin action).
         switch ($this->status)
         {
             case 'live':
-                return '<span class="label label-success">' . $plugin->gT(ucfirst($this->status)) . '</span>';
+                return '<span class="label label-success">' . gT(ucfirst($this->status)) . '</span>';
                 break;
             case 'denied':
-                return '<span class="label label-danger">' . $plugin->gT(ucfirst($this->status)) . '</span>';
+                return '<span class="label label-danger">' . gT(ucfirst($this->status)) . '</span>';
                 break;
             case 'new':
-                return $plugin->gT('Under review');
+                return gT('Under review');
                 break;
             case 'hold':
-                return $plugin->gT('Wating for payment');
+                return gT('Wating for payment');
             default:
-                return $plugin->gT(ucfirst($this->status));
+                return gT(ucfirst($this->status));
                 break;
         }
     }
@@ -375,6 +375,16 @@ class CintLinkOrder extends CActiveRecord
     }
 
     /**
+     * Substring of URL
+     * Used in grid view
+     * @return string
+     */
+    public function getShortId()
+    {
+        return substr($this->url, 47);
+    }
+
+    /**
      * Updates order with information from Cint via limesurvey.org.
      * User must be logged in on limesurvey.org.
      * @return CintLinkOrder
@@ -463,7 +473,9 @@ class CintLinkOrder extends CActiveRecord
     }
 
     /**
+     * Get all orders for this survey that are not deleted
      * @param int $surveyId
+     * @return CintLinkOrder[]
      */
     public static function getOrders($surveyId)
     {

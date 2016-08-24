@@ -548,7 +548,22 @@ class CintLink extends \ls\pluginmanager\PluginBase
     public function beforeSideMenuRender()
     {
         $event = $this->getEvent();
-        $html = $this->renderPartial('sidemenu', array(), true);
+        $data = $event->get('aData');
+
+        // Link to plugin dashboard
+        $href = Yii::app()->createUrl(
+            'admin/pluginhelper',
+            array(
+                'sa' => 'sidebody',
+                'plugin' => 'CintLink',
+                'method' => 'actionIndex',
+                'surveyId' => $data['surveyid']
+            )
+        );
+
+        $data['orders'] = CintLinkOrder::getOrders($data['surveyid']);
+        $data['href'] = $href;
+        $html = $this->renderPartial('sidemenu', $data, true);
         $event->set('html', $html);
     }
 
