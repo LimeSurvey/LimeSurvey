@@ -5,7 +5,16 @@
 /* This can probably be moved into the controller */
 if (Yii::app()->getConfig("userideditable") == 'Y')  //Firstly, if the user has edit rights, make the columns editable
 {
-    $uid = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
+    $uid = '{ 
+        "name":"owner_uid", 
+        "index":"owner_uid", 
+        "width":150, 
+        "sorttype":"int", 
+        "sortable": true, 
+        "align":"center", 
+        "editable":true, 
+        "edittype":"select", 
+        "editoptions":{ "value":"';
     $i = 0;
     foreach ($names as $row)
     {

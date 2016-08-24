@@ -84,6 +84,7 @@ class Participant extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'attributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'attribute_id')
         );
     }
 
@@ -92,7 +93,8 @@ class Participant extends LSActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        $aAllAttributes = ParticipantAttributeName::model()->getParticipantVisibleAttribute($this->participant_id);
+        $returnArray = array(
             'participant_id' => 'Participant',
             'firstname' => 'Firstname',
             'lastname' => 'Lastname',
@@ -101,6 +103,9 @@ class Participant extends LSActiveRecord
             'blacklisted' => 'Blacklisted',
             'owner_uid' => 'Owner Uid',
         );
+        foreach($aAllAttributes as $attribute){
+            $returnArray[$attribute['attribute_id']] = $attribute['attribute_name'];
+        }
     }
 
     /**
