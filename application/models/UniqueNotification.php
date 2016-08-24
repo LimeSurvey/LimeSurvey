@@ -5,12 +5,35 @@
 * If a new message is created exactly like another one,
 * it will be marked as unread.
  */
-
 class UniqueNotification extends Notification
 {
+
+    /**
+     * Whether or not this message should be marked as unread ('new') 
+     * second time it's saved
+     * @var boolean
+     */
+    protected $markAsNew = true;
+
+    /**
+     * As parent constructor but with markAsUndread
+     * @return UniqueNotification
+     */
+    public function __construct($options = null)
+    {
+        parent::__construct($options);
+
+        if (isset($options['markAsNew']))
+        {
+            $this->markAsNew = $options['markAsNew'];
+        }
+    }
+
     /**
      * Check for already existing notification and
      * update that. Importance will be set to normal.
+     * @param boolean $runValidation Yii
+     * @param ? $attributes Yii
      * @return void
      */
     public function save($runValidation = true, $attributes = null)
@@ -28,7 +51,12 @@ class UniqueNotification extends Notification
         }
         else
         {
-            $duplicate->status = 'new';
+
+            if ($this->markAsNew)
+            {
+                $duplicate->status = 'new';
+            }
+
             $duplicate->importance = self::NORMAL_IMPORTANCE;
             $duplicate->update();
         }
