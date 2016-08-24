@@ -140,7 +140,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Display"))); ?>
-    <h3><?php eT("Survey participants",'js'); ?></h3>
+    <h3><?php eT("Survey participants"); ?></h3>
 
         <p class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
