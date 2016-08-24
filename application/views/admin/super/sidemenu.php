@@ -175,6 +175,8 @@
                         </li>
                     <?php endif; ?>
 
+                    <?php echo $beforeSideMenuRender; ?>
+
                     <!-- Survey List -->
                     <li class="toWhite" >
                         <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys/"); ?>" class="" >
@@ -183,7 +185,6 @@
                         </a>
                     </li>
                     
-                    <?php echo $beforeSideMenuRender; ?>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
