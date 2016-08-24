@@ -1495,12 +1495,12 @@ class printablesurvey extends Survey_Common_Action
                         }
 
                         $question['QUESTION_TYPE_HELP'] = self::_star_replace($question['QUESTION_TYPE_HELP']);
-                        $group['QUESTIONS'] .= self::_populate_template( 'question' , $question);
+                        $group['QUESTIONS'] .= self::_populate_template( $oTemplate, 'question' , $question);
 
                     }
                     if ($bGroupHasVisibleQuestions)
                     {
-                        $survey_output['GROUPS'] .= self::_populate_template( 'group' , $group );
+                        $survey_output['GROUPS'] .= self::_populate_template( $oTemplate, 'group' , $group );
                     }
             }
 
@@ -1577,7 +1577,7 @@ class printablesurvey extends Survey_Common_Action
 
             // END recursive empty tag stripping.
 
-            echo self::_populate_template( 'survey' , $survey_output );
+            echo self::_populate_template( $oTemplate, 'survey' , $survey_output );
         }// End print
     }
 
@@ -1594,9 +1594,9 @@ class printablesurvey extends Survey_Common_Action
      * How:
      * @param string $template
      */
-    private function _populate_template( $template , $input  , $line = '')
+    private function _populate_template( $oTemplate, $template , $input  , $line = '')
     {
-        $full_path = PRINT_TEMPLATE_DIR.'views/print_'.$template.'.pstpl';
+        $full_path = $oTemplate->viewPath.DIRECTORY_SEPARATOR.'print_'.$template.'.pstpl';
         $full_constant = 'TEMPLATE'.$template.'.pstpl';
         if(!defined($full_constant))
         {
@@ -1747,13 +1747,13 @@ class printablesurvey extends Survey_Common_Action
             $aFilter=explode(';',$qidattributes['array_filter']);
             $output .= "\n<p class='extrahelp'>";
             foreach ($aFilter as $sFilter)
-            {                       
+            {
                 $oQuestion=Question::model()->findByAttributes(array('title' => $sFilter, 'language' => $sLanguageCode, 'sid' => $surveyid));
                 if ($oQuestion)
                 {
                     $sNewQuestionText = flattenText(breakToNewline($oQuestion->getAttribute('question')));
                     $output .= sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], $sNewQuestionText );
-                    
+
                 }
             }
             $output .= "</p>\n";
@@ -1772,7 +1772,7 @@ class printablesurvey extends Survey_Common_Action
                 }
             }
             $output .= "</p>\n";
-        }        
+        }
         return $output;
     }
 
