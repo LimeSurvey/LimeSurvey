@@ -756,6 +756,15 @@ table > tbody > tr > td.ddprefix {
     .five-point-choice .noanswer-item {
         padding: 0;
     }
+
+
+}
+
+@media only screen and (max-width: 900px) and (min-width: 80px) {
+    .table-10-point-array td.answer-item.text-center
+    {
+        padding-left: 0px;
+    }
 }
 
 
