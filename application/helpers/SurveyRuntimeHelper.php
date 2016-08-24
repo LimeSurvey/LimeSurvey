@@ -1399,6 +1399,7 @@ class SurveyRuntimeHelper {
         doFooter();
 
     }
+
     /**
     * setJavascriptVar
     *
@@ -1415,12 +1416,20 @@ class SurveyRuntimeHelper {
             $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
             $aRadix=getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
+
+
+            $aCfieldnameWithDependences = Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);
+            foreach($aCfieldnameWithDependences as $sCfieldname)
+            {
+                $aLSJavascriptVar['aFieldWithDependencies'][] = $sCfieldname;
+            }
+
             $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         }
         // Maybe remove one from index and allow empty $surveyid here.
     }
-
+    
     /**
     * Construction of replacement array, actually doing it with redata
     *
