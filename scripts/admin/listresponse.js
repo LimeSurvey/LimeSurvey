@@ -21,21 +21,20 @@ $(document).ready(function(){
 
     $('#display-mode').click(function(event){
         event.preventDefault();
-        $that = $(this);
-        $actionUrl = $(this).data('url');
-        $display = $that.find('input').val();
-        $postDatas  = {state:$display};
+
+        var $that        = $(this);
+        var $actionUrl   = $(this).data('url');
+        var $display     = $that.find('input:not(:checked)').val();
+        var $postDatas   = {state:$display};
+
         $.ajax({
-            url : encodeURI($actionUrl),
+            url  : encodeURI($actionUrl),
             type : 'POST',
             data :  $postDatas,
 
             // html contains the buttons
             success : function(html, statut){
-                $.fn.yiiGridView.update('responses-grid', {
-                    success: function(s){
-                    }
-                });
+                location.reload();
             },
             error :  function(html, statut){
                 console.log(html);

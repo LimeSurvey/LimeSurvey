@@ -171,11 +171,11 @@
 
                     <!-- First name, Last name -->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for='firstname'><?php eT("First name"); ?>:</label>
+                        <label class="col-sm-2 control-label" for='firstname'><?php eT("First name:"); ?></label>
                         <div class="col-sm-4">
                             <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php if (isset($firstname)){echo $firstname;} ?>" />
                         </div>
-                        <label class="col-sm-2 control-label"  for='lastname'><?php eT("Last name"); ?>:</label>
+                        <label class="col-sm-2 control-label"  for='lastname'><?php eT("Last name:"); ?></label>
                         <div class="col-sm-4">
                             <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php if (isset($lastname)){echo $lastname;} ?>" />
                         </div>
@@ -185,15 +185,15 @@
 
                     <!-- Token, language -->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"  for='token'><?php eT("Token"); ?>:</label>
+                        <label class="col-sm-2 control-label"  for='token'><?php eT("Token:"); ?></label>
                         <div class="col-sm-4">
-                            <input class='form-control' type='text' size='20' name='token' id='token' value="<?php if (isset($token)){echo $token;} ?>" />
+                            <input class='form-control' type='text' maxlength="<?php echo $iTokenLength; ?>" size='20' name='token' id='token' value="<?php if (isset($token)){echo $token;} ?>" />
                             <?php if ($subaction == "addnew"): ?>
                                 <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
                             <?php endif; ?>
                         </div>
 
-                        <label class="col-sm-2 control-label"  for='language'><?php eT("Language"); ?>:</label>
+                        <label class="col-sm-2 control-label"  for='language'><?php eT("Language:"); ?></label>
                         <div class="col-sm-2">
                             <?php if (isset($language)){echo languageDropdownClean($surveyid, $language);}else{echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language);}?>
                             </div>
@@ -203,14 +203,14 @@
 
                     <!-- Email, Email Status  -->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"  for='email'><?php eT("Email"); ?>:</label>
+                        <label class="col-sm-2 control-label"  for='email'><?php eT("Email:"); ?></label>
                         <div class="col-sm-4">
                             <input class='form-control' type='text' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
                         </div>
 
                         <!-- Email Status -->
 
-                            <label class="col-sm-2 control-label"  for='emailstatus'><?php eT("Email Status"); ?>:</label>
+                            <label class="col-sm-2 control-label"  for='emailstatus'><?php eT("Email status:"); ?></label>
                             <div class="col-sm-4">
                                 <input class='form-control' type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' placeholder='OK' value="<?php if (isset($emailstatus)){echo $emailstatus;}else{echo "OK";}?>" />
                             </div>
