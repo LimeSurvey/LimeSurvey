@@ -450,7 +450,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         if (CintLinkorder::hasAnyOrders($surveyId) &&
             CintLinkOrder::allOrdersAreCompleted($surveyId))
         {
-            $not = new Notification(array(
+            $not = new UniqueNotification(array(
                 'survey_id' => $surveyId,
                 'importance' => Notification::NORMAL_IMPORTANCE,
                 'title' => $this->gT('Cint'),
