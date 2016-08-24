@@ -24,16 +24,16 @@
         </label>
         <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
             <?php echo $prefix;?>
-<textarea
-    class="form-control  textarea <?php echo $kpclass;?>"
-    name="<?php echo $myfname;?>"
-    id="answer<?php echo $myfname;?>"
-    rows="<?php echo $rows;?>"
-    <?php echo $maxlength;?>
-    onkeyup="<?php echo $checkconditionFunction; ?>"
->
-<?php echo $dispVal;?>
-</textarea>
+            <textarea
+                class="form-control  textarea <?php echo $kpclass;?>"
+                name="<?php echo $myfname;?>"
+                id="answer<?php echo $myfname;?>"
+                rows="<?php echo $rows;?>"
+                <?php echo $maxlength;?>
+                onkeyup="<?php echo $checkconditionFunction; ?>"
+                >
+                <?php echo $dispVal;?>
+            </textarea>
             <?php echo $suffix;?>
         </div>
     </div>

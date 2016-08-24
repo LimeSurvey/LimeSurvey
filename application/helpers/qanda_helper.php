@@ -411,12 +411,12 @@ function validation_message($ia,$show)
     if($message != "")
     {
          $tip = doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>$class, 'id'=>$id ), true);
-    } 
-    else 
+    }
+    else
     {
          $tip = "";
     }
-   
+
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
 }
@@ -2721,7 +2721,7 @@ function do_multipleshorttext($ia)
                     {
                         $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
-                    $dispVal .= htmlspecialchars($dispVal);
+                    $dispVal = htmlspecialchars($dispVal);
                 }
 
                 $sRows .= doRender('/survey/questions/multipleshorttext/rows/answer_row_textarea', array(
@@ -3040,12 +3040,12 @@ function do_multiplenumeric($ia)
             // If the bootstrapSlider were updated, most of this javascript would not be necessary.
 
             $sValue = null;
-            
+
             if(App()->request->getPost('slider_user_no_action_'.$myfname))
             {
                 $slider_user_no_action = App()->request->getPost('slider_user_no_action_'.$myfname);
-            } 
-            else 
+            }
+            else
             {
                 $slider_user_no_action = 1;
 
@@ -3064,7 +3064,7 @@ function do_multiplenumeric($ia)
                 {
                     $sValue = $slider_middlestart;
                 }
-            
+
             }
 
 
