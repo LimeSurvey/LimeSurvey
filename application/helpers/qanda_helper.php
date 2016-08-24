@@ -408,7 +408,15 @@ function validation_message($ia,$show)
     $class      = (!$show)?' hide-tip':'';
     $id         = "vmsg_".$ia[0];
     $message    = $qinfo['validTip'];
-    $tip = doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>$class, 'id'=>$id ), true);
+    if($message != "")
+    {
+         $tip = doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>$class, 'id'=>$id ), true);
+    } 
+    else 
+    {
+         $tip = "";
+    }
+   
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
 }
