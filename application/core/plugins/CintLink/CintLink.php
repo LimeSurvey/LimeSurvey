@@ -888,6 +888,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'deleted' => 0
         ));
 
+        if (empty($orders))
+        {
+            (new UniqueNotification(array(
+                'survey_id' => $surveyId,
+                //'importance' => Notification::HIGH_IMPORTANCE,
+                'markAsNew' => false,
+                'title' => $this->gT('Welcome to CintLink LimeSurvey Integration'),
+                'message' => $this->gT('Tutorial')
+            )))->save();
+        }
+
         // Only update when request is not pagination request from grid
         $ajax = Yii::app()->request->getParam('ajax');
         if ($ajax != 'url')
@@ -1437,6 +1448,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             );
             $orderPlaced = $this->gT('Order placed on hold. Please pay to start the review process. Make sure the survey is activated before you pay.');
             $couldNotLogin = $this->gT('Could not login. Please make sure username and password is correct.');
+            $updateUrl = Notification::getUpdateUrl($surveyId);
 
             // Code below is WEIRD, but best way to include Javascript settings from PHP?
             Yii::app()->clientScript->registerScript('cint-common-js', <<<EOT
@@ -1450,6 +1462,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 LS.plugin.cintlink.lang = {}
                 LS.plugin.cintlink.lang.orderPlacedOnHold = '$orderPlaced';
                 LS.plugin.cintlink.lang.couldNotLogin = '$couldNotLogin';
+                LS.plugin.cintlink.notificationUpdateUrl = '$updateUrl';
 EOT
             , CClientScript::POS_END);
 

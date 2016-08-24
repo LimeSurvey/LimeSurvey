@@ -20,7 +20,6 @@ $(document).ready(function() {
 
     /**
      * Run when user click "Login"
-     *
      * @param {object} ev - Event
      * @return
      */
@@ -57,7 +56,6 @@ $(document).ready(function() {
 
     /**
      * Show the login form if user is not already logged in
-     *
      * @return
      */
     function showLoginForm() {
@@ -77,7 +75,6 @@ $(document).ready(function() {
     /**
      * CintLink widget supports a couple of languages.
      * Get one of those. Default to English.
-     * 
      * @param {string} surveyLanguage
      * @return {string}
      */
@@ -103,7 +100,6 @@ $(document).ready(function() {
 
     /**
      * Fetch dashboard HTMl from server and inject it
-     *
      * @return
      */
     function showDashboard() {
@@ -117,12 +113,15 @@ $(document).ready(function() {
             hideLoader();
             $('#cintlink-container').html(response);
             doToolTip();
+
+            // It's possible that dashboard will add a notification, e.g. tutorial.
+            // Make sure notifications are updated even if we are using Ajax.
+            LS.updateNotificationWidget(LS.plugin.cintlink.notificationUpdateUrl, false);
         });
     }
 
     /**
      * Show the CintLink widget
-     *
      * @param {string|undefined} lang Language to put in the survey link
      * @return
      */
@@ -209,7 +208,6 @@ $(document).ready(function() {
      * After e.g. cancellation, depending on response,
      * show either error modal or success modal.
      * Reloads the dashboard.
-     *
      * @param {object} response Expected to have response.error or response.result
      * @return
      */
@@ -227,7 +225,6 @@ $(document).ready(function() {
 
     /**
      * Cancel an order at Cint
-     *
      * @param {string} orderUrl
      * @return
      */
@@ -251,7 +248,6 @@ $(document).ready(function() {
     /**
      * Soft deletes an order so it no longer shows up
      * in dashboard.
-     *
      * @param {string} orderUrl
      * @return
      */
