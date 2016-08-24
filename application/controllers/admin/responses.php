@@ -113,9 +113,9 @@ class responses extends Survey_Common_Action
     }
 
     public function getActionParams()
-	{
-		return array_merge($_GET,$_POST);
-	}
+    {
+        return array_merge($_GET,$_POST);
+    }
 
     public function viewbytoken($iSurveyID, $token, $sBrowseLang = '')
     {
@@ -379,6 +379,7 @@ class responses extends Survey_Common_Action
      */
     public function set_grid_display()
     {
+        var_dump($_POST['state']);
         if (Yii::app()->request->getPost('state')=='extended')
         {
             Yii::app()->user->setState('responsesGridSwitchDisplayState','extended');
