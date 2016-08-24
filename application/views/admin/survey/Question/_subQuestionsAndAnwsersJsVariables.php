@@ -35,6 +35,8 @@
         var strCantDeleteLastAnswer = '<?php eT('You cannot delete the last answer option.','js'); ?>';
         var duplicatesubquestioncode = '<?php eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
         var clickToExpand           = '<?php eT('Click to expand'); ?>';
+        //Érror Code translations
+        var errorReservedWord       = '<?php echo gT("You have used a reserved word as code.")."<br/>".gT("Reserved words are: "); ?>';
     </script>
 <?php elseif($viewType=='answerOptions'):?>
     <script>
@@ -48,6 +50,7 @@
         var duplicateanswercode     = '<?php eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
         var sAssessmentValue        = '<?php eT('Assessment value','js'); ?>';
         var scalecount              = <?php echo $scalecount; ?>;
+
     </script>
 <?php endif; ?>
 
