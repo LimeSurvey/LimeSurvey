@@ -1680,9 +1680,9 @@ class SurveyAdmin extends Survey_Common_Action
             $oQuestion->sid = $iNewSurveyid;
             $oQuestion->gid = $iNewGroupID;
             $oQuestion->type = 'T';
-            $oQuestion->title = 'Q001';
-            $oQuestion->question = 'My first example question';
-            $oQuestion->help = 'This is a question help text.';
+            $oQuestion->title = 'Q00';
+            $oQuestion->question = gt('A first example question. Please answer this question:','html',Survey::model()->findByPk($iNewSurveyid)->language);
+            $oQuestion->help = gt('This is a question help text.','html',Survey::model()->findByPk($iNewSurveyid)->language);
             $oQuestion->mandatory = 'N';
             $oQuestion->relevance = '1';
             $oQuestion->question_order = 1;
