@@ -20,12 +20,12 @@
 
 <!-- _statisticsoutput_answer -->
 <tr>
-    <td align='center' ><?php echo $label[$i]; ?></td>
-    <td align='center' ><?php echo $grawdata[$i]; ?></td>
+    <td align='right' ><?php echo $label[$i]; ?></td>
+    <td align='right' ><?php echo $grawdata[$i]; ?></td>
 
     <?php if ($bNAgData): ?>
 
-        <td  align='center' >
+        <td  align='right' >
             <?php echo sprintf("%01.2f", $gdata[$i]); ?>%
         </td>
 
@@ -34,11 +34,11 @@
         <?php endif;?>
 
         <?php if ($showAggregatedPercentage):?>
-            <td  align='center' >
+            <td  align='right' >
                 <?php echo sprintf("%01.2f", $aggregatedPercentage); ?>%
             </td>
         <?php elseif($showEmptyAggregatedPercentage):?>
-            <td  align='center' >
+            <td  align='right' >
                 &nbsp;
             </td>
         <?php endif;?>
@@ -48,22 +48,22 @@
 
 <?php if ($bShowSumAnswer ):?>
     <tr>
-        <td align='center'>
+        <td align='right'>
             <strong>
                 <?php eT("Sum");?>(<?php eT("Answers"); ?>)
             </strong>
         </td>
-        <td align='center'>
+        <td align='right'>
             <strong>
                 <?php echo $sumitems; ?>
             </strong>
         </td>
-        <td align='center'>
+        <td align='right'>
             <strong>
                 <?php echo $sumpercentage; ?>%
             </strong>
         </td>
-        <td align='center'>
+        <td align='right'>
             <strong>
                 <?php echo $sumpercentage; ?>%
             </strong>
