@@ -10,7 +10,7 @@ Advanced features like branching and multiple question types make it a valuable 
 See our [Administration Demo](http://demo.limesurvey.org/index.php?r=admin/authentication/sa/login).
 The credentials are prefilled, just click **Log in**
 
-Or try taking one our [test surveys](https://survey.limesurvey.org/index.php?sid=78184&lang=en)
+Or try taking one of our [test surveys](https://survey.limesurvey.org/index.php?sid=78184&lang=en)
 
 
 ## How to install
