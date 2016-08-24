@@ -61,7 +61,8 @@ class SurveyAdmin extends Survey_Common_Action
             $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
             $aResults[$iSurveyID]['result'] = $oSurvey->deleteSurvey($iSurveyID, $recursive=true);
         }
-        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_delete_results', array('aResults'=>$aResults));
+
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._delete_results', array('aResults'=>$aResults));
     }
 
     public function listsurveys()
@@ -74,29 +75,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $aData['issuperadmin'] = true;
         }
-
-        $aData['model'] = $model =  new Survey('search');
-
-        // Search
-        if (isset($_GET['Survey']['searched_value']))
-        {
-            $model->searched_value = $_GET['Survey']['searched_value'];
-        }
-
-        $model->active = null;
-
-        // Filter state
-        if (isset($_GET['active']) && !empty($_GET['active']))
-        {
-            $model->active = $_GET['active'];
-        }
-
-        // Set number of page
-        if (isset($_GET['pageSize']))
-        {
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
-        }
-
+        $aData['model'] = new Survey('search');
         $aData['fullpagebar']['button']['newsurvey'] = true;
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }

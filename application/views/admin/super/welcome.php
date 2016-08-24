@@ -108,8 +108,7 @@
         <div class="col-sm-12 list-surveys">
             <h3><?php eT('Survey list'); ?></h3>
             <?php
-                $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
-                            //'pageSize'         => Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']),
+                $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(                        
                             'model'            => $oSurveySearch,
                             'bRenderSearchBox' => false,
                         ));

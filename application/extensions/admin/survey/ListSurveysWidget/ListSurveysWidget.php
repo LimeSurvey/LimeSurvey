@@ -17,25 +17,40 @@
  */
 class ListSurveysWidget extends CWidget
 {
-    public $pageSize;                                                           // Default page size (should be set to Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']))
     public $model;                                                              // Survey model
-    public $massiveAction;                                                      // Used to render massive action in GridViews footer
     public $bRenderFooter    = true;                                            // Should the footer be rendered?
     public $bRenderSearchBox = true;                                            // Should the search box be rendered?
     public $formUrl          = 'admin/survey/sa/listsurveys/';
 
+    public $massiveAction;                                                      // Used to render massive action in GridViews footer
+    public $pageSize;                                                           // Default page size (should be set to Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']))
     public $template;
 
     public function run()
     {
-        // In call of widget? $this->pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
-        //
+
+        // Search
+        if (isset($_GET['Survey']['searched_value']))
+        {
+            $this->model->searched_value = $_GET['Survey']['searched_value'];
+        }
+
+        $this->model->active = null;
+
+        // Filter state
+        if (isset($_GET['active']) && !empty($_GET['active']))
+        {
+            $this->model->active = $_GET['active'];
+        }
+
+
+
         // Set number of page
         if (isset($_GET['pageSize']))
         {
             Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
-        
+
         $this->pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
         Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));

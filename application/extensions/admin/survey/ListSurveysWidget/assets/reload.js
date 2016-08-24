@@ -1,7 +1,7 @@
 /**
- * Position Widget, Ajax Reloader
+ * Survey list Widget, Ajax Reloader
  *
- * This JavaScript will load the position widget on page load, and reload it at each change of the group selector set in question_position_container
+ * This JavaScript will reload the grid on page size change
  */
 
 $(document).ready(function() {
