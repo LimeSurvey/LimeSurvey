@@ -30,11 +30,19 @@
 
             <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLogoStatus');?>" />
         </div>
+
         <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question:");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'id'=>'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
             <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLastSurveyAndQuestion');?>" />
         </div>
+
+        <label class="col-sm-2 control-label"><?php eT("Show survey list:");?> </label>
+        <div class="col-sm-2">
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_survey_list', 'id'=>'show_survey_list', 'value'=>$bShowSurveyList, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+            <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowSurveyList');?>" />
+        </div>
+
         <br/><br/>
     </div>
 

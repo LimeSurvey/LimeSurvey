@@ -173,6 +173,7 @@ class homepagesettings extends Survey_Common_Action
             'dataProvider'=>$dataProvider,
             'bShowLogo'=>(getGlobalSetting('show_logo')=="show"),
             'bShowLastSurveyAndQuestion'=>(getGlobalSetting('show_last_survey_and_question')=="show"),
+            'bShowSurveyList'=>(getGlobalSetting('show_survey_list')=="show"),
             'iBoxesByRow'=>(int) getGlobalSetting('boxes_by_row'),
             'iBoxesOffset'=>(int) getGlobalSetting('boxes_offset'),
         );
@@ -244,6 +245,26 @@ class homepagesettings extends Survey_Common_Action
             echo $bNewShowLastSurveyAndQuestion;
         }
     }
+
+
+        /**
+         * Performs the AJAX toggle of sshow_survey_list
+         */
+        public function toggleShowSurveyList()
+        {
+            if (Yii::app()->getConfig('demoMode'))
+            {
+                Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+            }
+
+            if ( Permission::model()->hasGlobalPermission('settings', 'update') )
+            {
+                $bShowSurveyList = (getGlobalSetting('show_survey_list')=="show")?"hide":"show";
+                setGlobalSetting('show_survey_list', $bShowSurveyList);
+                echo $bShowSurveyList;
+            }
+        }
 
     /**
      * Performs the AJAX update of box setting

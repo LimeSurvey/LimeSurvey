@@ -839,7 +839,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         n = 1, 
         numeric = true,  
         currentCharacter,
-        codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("SQ0001").split(""));
+        codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("001").split(""));
     while(numeric == true && n <= codeSigil.length){
         currentCharacter = codeSigil.pop()                          // get the current character
         if ( !isNaN(Number(currentCharacter)) )                         // check if it's numerical
@@ -864,7 +864,9 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 
         if (thisrow.length<=languages.length)
         {
-            var qCode = (parseInt(k)+(1+parseInt(allrows)));
+            var qCode = (parseInt(k)+1);
+            if (lsreplace===false){
+                qCode+=(parseInt(allrows));}
             while(qCode.toString().length < numericSuffix.length){
                 qCode = "0"+qCode;
             }
