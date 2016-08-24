@@ -21,13 +21,13 @@
     <div class='col-sm-2'></div>
 
     <div class='form-group'>
-        <label class='control-label col-sm-4'><?php echo $plugin->gT("Username:"); ?></label>
+        <label class='control-label col-sm-4'><?php echo $plugin->gT("Username (limesurvey.org):"); ?></label>
         <div class='col-sm-4'>
             <input class='form-control' type='text' name='username' />
         </div>
     </div>
     <div class='form-group'>
-        <label class='control-label col-sm-4'><?php echo $plugin->gT("Password:"); ?></label>
+        <label class='control-label col-sm-4'><?php echo $plugin->gT("Password (limesurvey.org):"); ?></label>
         <div class='col-sm-4'>
             <input class='form-control' type='password' name='password' />
         </div>
