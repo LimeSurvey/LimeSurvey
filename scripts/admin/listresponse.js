@@ -8,16 +8,29 @@
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).ready(function(){
-    $('#ListPager').css({
-        position: 'relative'
+function setListPagerPosition(){
+    var $elListPager = $(document).find('#ListPager');
+    $elListPager.css({
+        position: 'relative',
+        'left': $(document).find('.scrolling-wrapper').scrollLeft() ,
     });
 
-    $('.scrolling-wrapper').scroll(function(){
-        $('#ListPager').css({
-            'left': $(this).scrollLeft() ,
-        });
+}
+
+function bindScrollWrapper(){
+    setListPagerPosition();
+    $(document).find('.scrolling-wrapper').scroll(function(){
+        setListPagerPosition();
     });
+}
+
+$(document).ready(function(){
+
+/*
+
+*/
+
+bindScrollWrapper();
 
     $('#display-mode').click(function(event){
         event.preventDefault();
