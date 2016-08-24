@@ -464,6 +464,37 @@ table > tbody > tr > td.ddprefix {
     vertical-align: middle;
 }
 
+
+/*
+    Arrays Question
+*/
+
+/* center the radio list in the td*/
+td.answer-item.text-center
+{
+    padding-left: 39px;
+}
+
+table.array-no-dropdown  td.answer-item.text-center
+{
+    padding-left: 45px;
+}
+
+.table-5-point-array td.answer-item.text-center
+{
+    padding-left: 54px;
+}
+
+.table-10-point-array  td.answer-item.text-center
+{
+    padding-left: 40px;
+}
+
+.table-10-point-array  thead tr th.text-center
+{
+    padding-left: 0px;
+}
+
 /**
  * On big screen only, iPad and up
  */
@@ -756,6 +787,21 @@ table > tbody > tr > td.ddprefix {
     .five-point-choice .noanswer-item {
         padding: 0;
     }
+
+
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 800px) {
+    .table-10-point-array td.answer-item.text-center
+    {
+        padding-left: 10px;
+    }
+
+    .table-10-point-array  > thead > tr > th
+    {
+        text-align: left;
+        padding-right: 0px;
+    }
 }
 
 
@@ -769,35 +815,6 @@ table > tbody > tr > td.ddprefix {
 }
 
 
-/*
-    Arrays Question
-*/
-
-/* center the radio list in the td*/
-td.answer-item.text-center
-{
-    padding-left: 39px;
-}
-
-table.array-no-dropdown  td.answer-item.text-center
-{
-    padding-left: 45px;
-}
-
-.table-5-point-array td.answer-item.text-center
-{
-    padding-left: 54px;
-}
-
-.table-10-point-array  td.answer-item.text-center
-{
-    padding-left: 40px;
-}
-
-.table-10-point-array  thead tr th.text-center
-{
-    padding-left: 0px;
-}
 
 
 /* center the label text in no more table mode */

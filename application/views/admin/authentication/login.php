@@ -90,8 +90,6 @@
                                 }
                                 echo CHtml::label(gT('Language'), 'loginlang');
 
-                                //$this->widget('bootstrap.widgets.TbSelect2', array(
-
                                 $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'name' => 'loginlang',
                                     'data' => $languageData,
