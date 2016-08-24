@@ -813,11 +813,19 @@ class Survey_Common_Action extends CAction
                 || $aData['quotas']
                 || $aData['assessments'];
 
+            // Put menu items in tools menu
             $event = new PluginEvent('beforeToolsMenuRender', $this);
             $event->set('surveyId', $iSurveyID);
             App()->getPluginManager()->dispatchEvent($event);
             $extraToolsMenuItems = $event->get('menuItems');
             $aData['extraToolsMenuItems'] = $extraToolsMenuItems;
+
+            // Add new menus in survey bar
+            $event = new PluginEvent('beforeSurveyBarRender', $this);
+            $event->set('surveyId', $iSurveyID);
+            App()->getPluginManager()->dispatchEvent($event);
+            $beforeSurveyBarRender = $event->get('menus');
+            $aData['beforeSurveyBarRender'] = $beforeSurveyBarRender ? $beforeSurveyBarRender : array();
 
             // Only show tools menu if at least one item is permitted
             $aData['showToolsMenu'] =
