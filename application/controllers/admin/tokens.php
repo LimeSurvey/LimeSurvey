@@ -700,7 +700,8 @@ class tokens extends Survey_Common_Action
         elseif ($sOperation == 'add'  && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
         {
             if (Yii::app()->request->getPost('language') == '')
-                $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
+            {
+                 $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
                 'lastname' => Yii::app()->request->getPost('lastname'),
                 'email' => Yii::app()->request->getPost('email'),
                 'emailstatus' => Yii::app()->request->getPost('emailstatus'),
@@ -713,6 +714,7 @@ class tokens extends Survey_Common_Action
                 'usesleft' => Yii::app()->request->getPost('usesleft'),
                 'validfrom' => $from,
                 'validuntil' => $until);
+            }
             $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
             foreach ($attrfieldnames as $attr_name => $desc)
             {
@@ -837,6 +839,7 @@ class tokens extends Survey_Common_Action
 
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
+            $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
 
             $aData['sidemenu']['state'] = false;
 
@@ -2698,6 +2701,8 @@ class tokens extends Survey_Common_Action
             $aData['sent']=null;
             $aData['remindersent']=null;
         }
+
+        $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
 
         $thissurvey = getSurveyInfo($iSurveyId);
         $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
