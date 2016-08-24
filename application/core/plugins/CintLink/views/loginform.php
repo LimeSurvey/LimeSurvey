@@ -1,8 +1,25 @@
 <form id='cintlink-login-form' class='form-horizontal'>
+
     <div class='col-sm-4'></div>
-    <div class='col-sm-8'>
-        <p class='help-block'><?php echo $plugin->gT("Log in to your limesurvey.org account to buy participants."); ?></p>
+    <div class='col-sm-6'>
+        <div class='alert alert-info'>
+            <div class='row'>
+                <div class='col-sm-1'>
+                    <span class='fa fa-info-circle' style='font-size: 36px;'></span>
+                </div>
+                <div class='col-sm-11'>
+                <?php
+                    echo sprintf($plugin->gT("Log in to your <b>%s</b> account to buy participants. If you do not have an account, click %s to register.", 'js'),
+                        '<a href="https://www.limesurvey.org">limesurvey.org</a>',
+                        '<a href="https://www.limesurvey.org/cb-registration/registers">' . $plugin->gT('here') . '</a>'
+                    );
+                ?>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class='col-sm-2'></div>
+
     <div class='form-group'>
         <label class='control-label col-sm-4'><?php echo $plugin->gT("Username:"); ?></label>
         <div class='col-sm-4'>
