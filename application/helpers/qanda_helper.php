@@ -3903,7 +3903,7 @@ function do_array_5point($ia)
     }
     else
     {
-        $answerwidth = 50;
+        $answerwidth = 25;
     }
     $cellwidth  = 5; // number of columns
 
@@ -3912,7 +3912,7 @@ function do_array_5point($ia)
         ++$cellwidth; // add another column
     }
 
-    $cellwidth  = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
+    $cellwidth  = round((( 100 - ($answerwidth*2) ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -3939,7 +3939,6 @@ function do_array_5point($ia)
             $right_exists  = true;
         }
     }
-
     for ($xc=1; $xc<=5; $xc++)
     {
         $sColumns  .= doRender('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
@@ -3953,7 +3952,7 @@ function do_array_5point($ia)
     // Column for suffix
     if ($right_exists)
     {
-        $sColumns  .= doRender('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
+        $sColumns  .= doRender('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$answerwidth), true);
     }
 
     for ($xc=1; $xc<=5; $xc++)
@@ -4020,6 +4019,7 @@ function do_array_5point($ia)
 
         // Suffix
         $answertext2   = $ansrow['question'];
+        $textAlignClass = "";
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
@@ -4027,6 +4027,7 @@ function do_array_5point($ia)
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>$answertext2,
             ), true);
+             $textAlignClass = "text-right";
         }
         elseif ($right_exists)
         {
@@ -4034,6 +4035,7 @@ function do_array_5point($ia)
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>'&nbsp;',
             ), true);
+             $textAlignClass = "text-right";
         }
 
         // ==>tds
@@ -4054,6 +4056,7 @@ function do_array_5point($ia)
                     'answer_tds'    => $answer_tds,
                     'myfname'       => $myfname,
                     'answerwidth'   => $answerwidth,
+                    'textAlignClass'=> $textAlignClass,
                     'answertext'    => $answertext,
                     'value'         => $value,
                     'error'         => $error,
