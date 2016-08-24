@@ -60,9 +60,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->subscribe('beforeControllerAction');  // To load Cint icon
         $this->subscribe('beforeDeactivate');  // Create db
         $this->subscribe('beforeSideMenuRender');  // Create db
+        $this->subscribe('beforeSurveyBarRender');  // Add menu
         $this->subscribe('beforeSurveyDeactivate');  // Don't deactivate if Cint is active
         $this->subscribe('beforeSurveyActivate');  // Forbid tokens if Cint order
-        $this->subscribe('beforeToolsMenuRender');
         $this->subscribe('newDirectRequest');  // Ajax calls
         $this->subscribe('onSurveyDenied');  // Redirect to Cint, survey closed
 
@@ -181,9 +181,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * todo Place somewhere else
+     * Add Cint button in survey bar
+     * @return void
      */
-    public function beforeToolsMenuRender()
+    public function beforeSurveyBarRender()
     {
         $event = $this->getEvent();
         $surveyId = $event->get('surveyId');
@@ -198,13 +199,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
             )
         );
 
-        $menuItem = new MenuItem(array(
+        $menu = new Menu(array(
             'label' => $this->gT('CintLink'),
             'iconClass' => 'cintlink-icons cinticon',
             'href' => $href
         ));
 
-        $event->append('menuItems', array($menuItem));
+        $event->append('menus', array($menu));
     }
 
     /**
