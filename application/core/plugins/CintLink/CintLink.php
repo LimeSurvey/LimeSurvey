@@ -777,6 +777,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $this->registerCssAndJs();
 
+        if (!CintLinkOrder::hasAnyOrders($surveyId))
+        {
+            (new UniqueNotification(array(
+                'survey_id' => $surveyId,
+                'importance' => Notification::HIGH_IMPORTANCE,
+                'markAsNew' => false,
+                'title' => $this->gT('Welcome to CintLink LimeSurvey Integration'),
+                'message' => $this->renderPartial('tutorial', array(), true)
+            )))->save();
+        }
+
         return $content;
     }
 
@@ -853,9 +864,8 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Return HTMl for login form
-     * Called by Ajax
-     *
+     * Return HTMl for login form.
+     * Called by Ajax.
      * @param LSHttpRequest $request
      * @return string
      */
@@ -887,17 +897,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'sid' => $surveyId,
             'deleted' => 0
         ));
-
-        if (empty($orders))
-        {
-            (new UniqueNotification(array(
-                'survey_id' => $surveyId,
-                //'importance' => Notification::HIGH_IMPORTANCE,
-                'markAsNew' => false,
-                'title' => $this->gT('Welcome to CintLink LimeSurvey Integration'),
-                'message' => $this->gT('Tutorial')
-            )))->save();
-        }
 
         // Only update when request is not pagination request from grid
         $ajax = Yii::app()->request->getParam('ajax');

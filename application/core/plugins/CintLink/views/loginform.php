@@ -5,7 +5,7 @@
         <div class='alert alert-info'>
             <div class='row'>
                 <div class='col-sm-1'>
-                    <span class='fa fa-info-circle' style='font-size: 36px;'></span>
+                    <span class='fa fa-info-circle fa-2x'></span>
                 </div>
                 <div class='col-sm-11'>
                 <?php
