@@ -523,9 +523,14 @@ table > tbody > tr > td.ddprefix {
         display: block;
     }
 
+    .no-more-tables tbody th,
+    .no-more-tables tbody td,
+    .no-more-tables tbody tr {
+        width: 100% !important;
+    }
+
     .no-more-tables tr {
         display: inline-block;
-        width: 100%;
     }
 
     .no-more-tables tbody {
