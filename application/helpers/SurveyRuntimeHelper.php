@@ -1418,7 +1418,7 @@ class SurveyRuntimeHelper {
             $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
 
 
-            $aCfieldnameWithDependences = Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);
+            $aCfieldnameWithDependences = (array)Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);
             foreach($aCfieldnameWithDependences as $sCfieldname)
             {
                 $aLSJavascriptVar['aFieldWithDependencies'][] = $sCfieldname;
@@ -1429,7 +1429,7 @@ class SurveyRuntimeHelper {
         }
         // Maybe remove one from index and allow empty $surveyid here.
     }
-    
+
     /**
     * Construction of replacement array, actually doing it with redata
     *
