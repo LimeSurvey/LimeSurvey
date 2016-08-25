@@ -127,7 +127,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'modified' => 'datetime',
             );
             $oDB->createCommand()->createTable('{{plugin_cintlink_orders}}', $aFields);
-            $oDB->createCommand()->createIndex('cint_index','{{plugin_cintlink_orders}}','sid, deleted, status',true);
+            $oDB->createCommand()->createIndex('cint_index','{{plugin_cintlink_orders}}','sid, deleted, status', false);
             $oTransaction->commit();
         }
         catch(Exception $e)
