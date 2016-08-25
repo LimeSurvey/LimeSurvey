@@ -1372,15 +1372,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Show a nagging notification
-     *
-     * @param int $surveyId
-     * @return void
-     */
-    protected function showNaggingNotification($surveyId) {
-    }
-
-    /**
      * Set the nagging notification to read
      * @return void
      */
