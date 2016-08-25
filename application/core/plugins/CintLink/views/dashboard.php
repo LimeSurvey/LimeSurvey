@@ -34,7 +34,7 @@
         >
             <span class='fa fa-bars'></span>
             &nbsp;
-            <?php echo $plugin->gT('Choose participants'); ?>
+            <?php echo $plugin->gT('Choose target group'); ?>
         </button>
 
         <!-- Modal for Cint language wizard -->
