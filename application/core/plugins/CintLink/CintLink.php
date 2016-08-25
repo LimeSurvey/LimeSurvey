@@ -757,7 +757,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Survey dashboard.
-     *
      * @param int $surveyId
      * @return string
      */
@@ -777,6 +776,20 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         $this->registerCssAndJs();
 
+        // Show warning if survey is not active
+        $survey = Survey::model()->findByPk($surveyId);
+        $surveyIsActive = $survey->getState() === 'willExpire' || $survey->getState() === 'running';
+        if (!$surveyIsActive)
+        {
+            (new UniqueNotification(array(
+                'survey_id' => $surveyId,
+                'importance' => Notification::HIGH_IMPORTANCE,
+                'title' => $this->gT('Cint warning'),
+                'message' => $this->renderPartial('warning_popup', array(), true)
+            )))->save();
+        }
+
+        // Show tutorial if survey has no orders
         if (!CintLinkOrder::hasAnyOrders($surveyId))
         {
             (new UniqueNotification(array(

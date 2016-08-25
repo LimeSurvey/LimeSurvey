@@ -18,7 +18,7 @@
     <p class='alert alert-info'>
         <span class='fa fa-info-circle'></span>
         &nbsp;
-        <?php echo $plugin->gT('Please make sure the survey is activated before paying your Cint order.'); ?>
+        <?php echo $plugin->gT('Please make sure the survey is activated before placing a Cint order.'); ?>
     </p>
 <?php endif; ?>
 
