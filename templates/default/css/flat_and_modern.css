@@ -7091,6 +7091,17 @@ a.list-group-item-danger.active:focus {
 
 
 /* Errors */
- .input-error {
+ .input-error
+ {
      border: 1px solid #E75041;
  }
+
+ul.dropdown-menu > li.missing
+{
+    background-color: #e74c3c;
+}
+
+ul.dropdown-menu > li.missing > a.linkToButton
+{
+    color: #fff;
+}

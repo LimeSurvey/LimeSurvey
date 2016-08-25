@@ -41,11 +41,6 @@
                 $tooltips .= "<i class=\"fa fa-key\" aria-hidden=\"true\">&nbsp;</i>";
             }
         }
-
-        if($survey->usecaptcha == "Y" || $survey->usecaptcha == "A")
-        {
-            $tooltips .= "<i class=\"fa fa-puzzle-piece\" aria-hidden=\"true\">&nbsp;</i>";
-        }
         if($survey->anonymized == "Y")
         {
             $tooltips .= "<i class=\"fa fa-shield\" aria-hidden=\"true\">&nbsp;</i>";
@@ -58,7 +53,7 @@
         {
             $tooltips .= "<i class=\"fa fa-undo\" aria-hidden=\"true\">&nbsp;</i>";
         }
-        $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".$survey->calculateEstimatedTime()." ".gt("Minutes");
+        $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".sprintf(gt("%s Minutes"),$survey->calculateEstimatedTime());
 
         $content = $survey->localizedTitle;
         $content .= "<span class='pull-right clearfix'>"
@@ -107,7 +102,7 @@
     }
 
 
-    $legendForSurvey_button = "<button class='btn btn-info' data-toggle='modal' href='#legendForSurveys'>".gt("Toggle Legend")."</button>";
+    $legendForSurvey_button = "<button class='btn btn-info' data-toggle='modal' href='#legendForSurveys'>".gt("Toggle legend")."</button>";
     $legendForSurvey = ""
     . "<div class='modal fade' id='legendForSurveys'>"
       . "<div class='modal-dialog' role='document'>"
@@ -122,16 +117,12 @@
                 . "<div class='col-xs-9'>".gT('You need a valid token to take this survey.')."</div>"
             . "</div>"
             . "<div class='row'>"
-                . "<div class='col-xs-3 text-right'><i class='fa fa-puzzle-piece'>&nbsp;</i></div>"
-                . "<div class='col-xs-9'>".gT('You need to enter a CAPTCHA to take this survey.')."</div>"
-            . "</div>"
-            . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-shield'>&nbsp;</i></div>"
                 . "<div class='col-xs-9'>".gT('This survey is anonymized.')."</div>"
             . "</div>"
             . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-undo'>&nbsp;</i></div>"
-                . "<div class='col-xs-9'>".gT('You may change the answers in this survey.')."</div>"
+                . "<div class='col-xs-9'>".gT('You may change your answers in this survey.')."</div>"
             . "</div>"
             . "<div class='row'>"
                 . "<div class='col-xs-3 text-right'><i class='fa fa-clock-o'>&nbsp;</i></div>"

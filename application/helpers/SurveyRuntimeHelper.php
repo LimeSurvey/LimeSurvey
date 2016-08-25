@@ -14,6 +14,7 @@
 
 class SurveyRuntimeHelper {
 
+    private $aStepInfoClass; // The step info class is used to know which group has not been completed correclty (for index only). Because the index is build twice in 2.5 templates, we don't want to redo all the test twices
     protected function createFullQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
@@ -41,9 +42,11 @@ class SurveyRuntimeHelper {
 
             if (LimeExpressionManager::GroupIsRelevant($group['gid']))
             {
+                $classes = ' linkToButton ';
+
                 $group['step'] = $key + 1;
                 $active = ($_SESSION[$LEMsessid]['step'] == $group['step']) ? 'current active' : '';
-                $classes = ' linkToButton ';
+                $stepInfoClass = $this->getClassForCurrentGroup($group, $LEMsessid, $key);
                 $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('id'=>'button-'.$group['gid'],'type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'jshide'));
 
                 // Button
@@ -55,7 +58,8 @@ class SurveyRuntimeHelper {
 
 
 
-                $html .=  CHtml::openTag('li', array('class'=>$active));
+
+                $html .=  CHtml::openTag('li', array('class'=>$active.' '.$stepInfoClass));                    
                 $html .=  CHtml::link($group['group_name'], array('#'), array('class'=>$classes, 'data-button-to-click'=>'#button-'.$group['gid'], ));
                 $html .= CHtml::closeTag('li');
 
@@ -200,6 +204,35 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * AZDAZD
+     */
+    protected function getClassForCurrentGroup($group, $LEMsessid, $key)
+    {
+        if(isset($group['step']))
+        {
+            $iCurrentStep = $_SESSION[$LEMsessid]['step'];
+            $iGroup       = $group['step'];
+
+            if(!isset($this->aStepInfoClass[$iGroup]))
+            {
+                $stepInfoClass = '';
+                if (isset($group['step']))
+                {
+                    if ( $group['step'] < $iCurrentStep )
+                    {
+                        $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+                        $stepInfoClass = $stepInfo['anyUnanswered'] ? 'missing' : '';
+                    }
+                }
+                $this->aStepInfoClass[$iGroup] = $stepInfoClass;
+            }
+
+            return $this->aStepInfoClass[$iGroup];
+        }
+        return '';
+    }
+
     protected function createFullQuestionIndexByGroup($LEMsessid)
     {
         echo "\n\n<!-- PRESENT THE INDEX (full) -->\n";
@@ -217,10 +250,12 @@ class SurveyRuntimeHelper {
             if (LimeExpressionManager::GroupIsRelevant($group['gid']))
             {
                 $group['step'] = $key + 1;
-                $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+
+                $stepInfoClass = $this->getClassForCurrentGroup($group, $LEMsessid, $key);
+
                 $classes = implode(' ', array(
                     'row',
-                    $stepInfo['anyUnanswered'] ? 'missing' : '',
+                    $stepInfoClass,
                     $_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
 
                 ));
@@ -1424,7 +1459,7 @@ class SurveyRuntimeHelper {
                 $aLSJavascriptVar['aFieldWithDependencies'][] = $sCfieldname;
             }
             */
-            
+
             $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         }
