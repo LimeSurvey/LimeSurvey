@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'class'=>'form-horizontal', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".gT("Please select a file to import!",'js')."');")); ?>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for='the_file'><?php eT("Select question file (*.lsq):");
+                    <label class="col-sm-3 control-label" for='the_file'><?php eT("Select question file (*.lsq):");
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);?>
                     </label>
                     <div class="col-sm-3">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for='the_file'><?php eT("Destination question group:"); ?></label>
+                    <label class="col-sm-3 control-label" for='the_file'><?php eT("Destination question group:"); ?></label>
                     <div class="col-sm-3">
                         <select name='gid' id='gid' class="form-control">
                             <?php echo getGroupList3($groupid, $surveyid); ?>
@@ -27,7 +27,19 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
+                    <label class="col-sm-3 control-label" for='translinksfields'><?php eT("Automatically rename question code if already exists?"); ?></label>
+                    <div class="col-sm-3">
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'autorename',
+                            'id'=>'autorename',
+                            'value' => 1,
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')));
+                        ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
                     <div class="col-sm-3">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'translinksfields',

@@ -144,7 +144,16 @@ function checkconditions(value, name, type, evt_type)
         $('#java'+name).val(value);
     }
 
-    $isRelevant = $.inArray(name, LSvar.aFieldWithDependencies);
+    aFieldWithDependencies = $('#aQuestionsWithDependencies').data('qids');
+
+    var result;
+    if(typeof name !== 'undefined')
+    {
+        result = name.split('X');
+        result = result[2]
+    }
+
+    $isRelevant = $.inArray(result, aFieldWithDependencies);
 
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);

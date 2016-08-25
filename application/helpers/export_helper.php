@@ -394,7 +394,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
     }
 
     $tempArray = array();
-    $fieldnames = Yii::app()->db->schema->getTable("{{survey_$iSurveyID}}")->getColumnNames();
+    $fieldnames = array_keys($fieldmap);
     $num_results = count($fieldnames);
     $num_fields = $num_results;
     $diff = 0;

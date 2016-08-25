@@ -1432,7 +1432,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             ));
             $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
-
         }
 
         /**
@@ -1440,13 +1439,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * @since 2016-08-10
          * @author Olle Haerstedt
          */
-        if ($iOldDBVersion < 260)
-        {
+        if ($iOldDBVersion < 260) {
             addColumn('{{notifications}}', 'hash', 'string(64)');
             $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
-
         }
 
         /**
@@ -1460,12 +1457,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
         }
 
+        if ($iOldDBVersion < 262) {
+            alterColumn('{{participant_attribute_names}}','defaultname',"string(255)",false);
+            alterColumn('{{participant_attribute_names_lang}}','attribute_name',"string(255)",false);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
+        }
+
         // Inform superadmin about update
         // TODO: DON'T FORGET TO UPDATE THIS
         $superadmins = User::model()->getSuperAdmins();
         Notification::broadcast(array(
             'title' => gT('Database update'),
-            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '261')  // <--- UPDATE THIS
+            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '262')  // <--- UPDATE THIS
         ), $superadmins);
 
         $oTransaction->commit();

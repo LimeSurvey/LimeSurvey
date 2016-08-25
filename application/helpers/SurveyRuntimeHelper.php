@@ -1417,13 +1417,14 @@ class SurveyRuntimeHelper {
             $aRadix=getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
 
-
-            $aCfieldnameWithDependences = (array)Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);
+            /*
+            $aCfieldnameWithDependences = Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);
             foreach($aCfieldnameWithDependences as $sCfieldname)
             {
                 $aLSJavascriptVar['aFieldWithDependencies'][] = $sCfieldname;
             }
-
+            */
+            
             $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         }
