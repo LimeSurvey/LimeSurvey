@@ -784,6 +784,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             (new UniqueNotification(array(
                 'survey_id' => $surveyId,
                 'importance' => Notification::HIGH_IMPORTANCE,
+                'setNormalImportance' => false,  // Always popup
                 'title' => $this->gT('Cint warning'),
                 'message' => $this->renderPartial('warning_popup', array(), true)
             )))->save();

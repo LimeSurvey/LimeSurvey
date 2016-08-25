@@ -10,10 +10,17 @@ class UniqueNotification extends Notification
 
     /**
      * Whether or not this message should be marked as unread ('new') 
-     * second time it's saved
+     * second time it's saved.
      * @var boolean
      */
     protected $markAsNew = true;
+
+    /**
+     * Wheather or not the importance should be set to normal
+     * second time it's saved.
+     * @var boolean
+     */
+    protected $setNormalImportance = true;
 
     /**
      * As parent constructor but with markAsUndread
@@ -26,6 +33,11 @@ class UniqueNotification extends Notification
         if (isset($options['markAsNew']))
         {
             $this->markAsNew = $options['markAsNew'];
+        }
+
+        if (isset($options['setNormalImportance']))
+        {
+            $this->setNormalImportance = $options['setNormalImportance'];
         }
     }
 
@@ -57,7 +69,11 @@ class UniqueNotification extends Notification
                 $duplicate->status = 'new';
             }
 
-            $duplicate->importance = self::NORMAL_IMPORTANCE;
+            if ($this->setNormalImportance)
+            {
+                $duplicate->importance = self::NORMAL_IMPORTANCE;
+            }
+
             $duplicate->update();
         }
 
