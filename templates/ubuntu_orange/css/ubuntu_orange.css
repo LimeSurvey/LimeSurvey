@@ -6801,3 +6801,15 @@ button.close {
     color: #fff;
   }
 }
+
+
+
+ul.dropdown-menu > li.missing
+{
+    background-color: #f2dede;
+}
+
+ul.dropdown-menu > li.missing > a.linkToButton
+{
+    color: #fff;
+}
