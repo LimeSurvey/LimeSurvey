@@ -1203,7 +1203,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
             'link' => $link,
             'language' => $survey->language,
             'loggedIn' => $limesurveyOrgKey != null,
-            'warningMessage' => $this->gT('PLEASE NOTE THAT YOU CANNOT ORDER CINT PARTICIPANTS UNLESS YOU ARE LOGGED IN AT LIMESURVEY.ORG')
+            'warningMessage' => html_entity_decode('&#9888; ' . $this->gT('Please note that you cannot order Cint participants unless you are logged in at limesurvey.org.'), ENT_COMPAT, 'utf-8')
         ));
     }
 
