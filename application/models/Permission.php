@@ -646,7 +646,7 @@ class Permission extends LSActiveRecord
             return false;
         }
         // If the user has the permission to update all other surveys he may import/export as well
-        if ($this->hasGlobalPermission('surveys', 'update', $iUserID) && $sPermission='token' && ($sCRUD=='import' || $sCRUD=='export'))
+        if ($this->hasGlobalPermission('surveys', 'update', $iUserID) && $sPermission=='token' && ($sCRUD=='import' || $sCRUD=='export'))
         {
            $sCRUD='update';
         }
