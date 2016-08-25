@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-08-25 14:37:24+00:00\n"
+"POT-Creation-Date: 2016-08-25 14:43:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -383,7 +383,7 @@ msgstr ""
 #: application/controllers/survey/index.php:282
 #: application/controllers/survey/index.php:295
 #: application/controllers/survey/index.php:309
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:163
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:154
 #: application/helpers/replacements_helper.php:231
 #: application/views/surveys/publicSurveyList.php:85
 msgid "Please contact %s ( %s ) for further assistance."
@@ -3984,7 +3984,7 @@ msgid "You have not provided a survey identification number"
 msgstr ""
 
 #: application/controllers/admin/templates.php:1121
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:152
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:143
 #: application/views/surveys/publicSurveyList.php:76
 msgid "The following surveys are available:"
 msgstr ""
@@ -5252,48 +5252,44 @@ msgstr ""
 msgid "View statistics"
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:61
-msgid "Minutes"
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:56
+msgid "%s Minutes"
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:65
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:60
 msgid "Survey information"
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:93
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:88
 #: application/views/surveys/publicSurveyList.php:57
 msgid "Following survey(s) are not yet active but you can register for them."
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:110
-msgid "Toggle Legend"
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:105
+msgid "Toggle legend"
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:118
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:113
 msgid "You have to register to take this survey."
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:122
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:117
 msgid "You need a valid token to take this survey."
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:126
-msgid "You need to enter a CAPTCHA to take this survey."
-msgstr ""
-
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:130
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:121
 msgid "This survey is anonymized."
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:134
-msgid "You may change the answers in this survey."
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:125
+msgid "You may change your answers in this survey."
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:138
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:129
 msgid "Estimated time for this survey"
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:159
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:150
 #: application/views/surveys/publicSurveyList.php:81
 msgid "No available surveys"
 msgstr ""
