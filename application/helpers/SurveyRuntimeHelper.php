@@ -217,10 +217,21 @@ class SurveyRuntimeHelper {
             if (LimeExpressionManager::GroupIsRelevant($group['gid']))
             {
                 $group['step'] = $key + 1;
-                $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+
+                $stepInfoClass = '';
+                if (isset($group['step']))
+                {
+                    if ( $group['step'] < $_SESSION[$LEMsessid]['step'])
+                    {
+                        $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+                        $stepInfoClass = $stepInfo['anyUnanswered'] ? 'missing' : '';
+                    }
+                }
+
+
                 $classes = implode(' ', array(
                     'row',
-                    $stepInfo['anyUnanswered'] ? 'missing' : '',
+                    $stepInfoClass,
                     $_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
 
                 ));
@@ -1424,7 +1435,7 @@ class SurveyRuntimeHelper {
                 $aLSJavascriptVar['aFieldWithDependencies'][] = $sCfieldname;
             }
             */
-            
+
             $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         }
