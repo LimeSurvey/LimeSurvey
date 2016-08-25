@@ -57,6 +57,7 @@ class ParticipantAttribute extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'participant' => array(self::HAS_ONE, 'Participant', 'participant_id'),
             'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
         );
     }

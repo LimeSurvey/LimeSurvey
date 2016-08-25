@@ -12,8 +12,14 @@
     var sNSelectedText = "<?php eT("selected", 'js') ?>";
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
 </script>
-
-<div class='menubar' id="participantbar">
+<div class="menubar surveymanagerbar">
+    <div class="row container-fluid">
+        <div class="col-xs-12 col-md-12">
+            <h3 ><?php eT("Central participant panel")?></h3>
+        </div>
+    </div>
+</div>
+<div class='menubar surveybar' id="participantbar">
     <div class='row container-fluid'>
 
         <div class="col-md-9">

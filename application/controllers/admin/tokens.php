@@ -314,7 +314,7 @@ class tokens extends Survey_Common_Action
         $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
 
         // Javascript
-        App()->getClientScript()->registerPackage('jqgrid');
+        //App()->getClientScript()->registerPackage('jqgrid');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
 
 

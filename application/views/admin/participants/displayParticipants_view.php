@@ -5,16 +5,7 @@
 /* This can probably be moved into the controller */
 if (Yii::app()->getConfig("userideditable") == 'Y')  //Firstly, if the user has edit rights, make the columns editable
 {
-    $uid = '{ 
-        "name":"owner_uid", 
-        "index":"owner_uid", 
-        "width":150, 
-        "sorttype":"int", 
-        "sortable": true, 
-        "align":"center", 
-        "editable":true, 
-        "edittype":"select", 
-        "editoptions":{ "value":"';
+    $uid = '{"name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
     $i = 0;
     foreach ($names as $row)
     {
@@ -240,7 +231,45 @@ echo $colModels;
 
 </div>
 <br/>
-<table id="displayparticipants" class="table"></table>
+    <div class="row" style="margin-bottom: 100px">
+        <div class="container-fluid">
+        <div class="row">
+
+        </div>
+        <div class="row">
+            <?php
+            $this->widget('bootstrap.widgets.TbGridView', array(
+                'id' => 'list_central_participants',
+                'itemsCssClass' => 'table table-striped items',
+                'dataProvider' => $model->search(),
+                'columns' => $model->columns,
+                'filter'=>$model,
+                'afterAjaxUpdate' => 'bindButtons',
+                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
+                            ),
+                    ));
+
+            var_dump($model->participantAttributes);
+                ?>
+            </div>
+            <!-- To update rows per page via ajax -->
+            <script type="text/javascript">
+            function bindButtons(){
+                console.log("bind_buttons");
+            }
+                jQuery(function($) {
+                    jQuery(document).on("change", '#pageSize', function(){
+                        $.fn.yiiGridView.update('list_central_participants',{ data:{ pageSize: $(this).val() }});
+                    });
+                });
+            </script>
+    </div>
+</div>
 <div id="pager"></div>
 <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>

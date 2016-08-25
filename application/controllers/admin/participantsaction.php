@@ -204,6 +204,18 @@ class participantsaction extends Survey_Common_Action
             'attributecount' => ParticipantAttributeName::model()->count(),
             'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
         );
+        // Page size
+        if (Yii::app()->request->getParam('pageSize'))
+        {
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
+        }
+        else
+        {
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
+        }
+        $aData['pageSize']= Yii::app()->user->getState('pageSize');
+        $searchstring = Yii::app()->request->getPost('searchstring');
+        $aData['searchstring'] = $searchstring;
         // loads the participant panel and summary view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'summary'), $aData);
     }
@@ -266,7 +278,11 @@ class participantsaction extends Survey_Common_Action
             $iUserId = Yii::app()->user->getId();
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
-
+        $model = new Participant();
+        if(Yii::app()->request->getParam('Participant'))
+        {
+            $model->attributes=Yii::app()->request->getParam('Participant');
+        } 
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -279,8 +295,22 @@ class participantsaction extends Survey_Common_Action
             'sSearchCondition' => $sSearchCondition,
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'totalrecords' => $iTotalRecords,
+            'model' => $model,
+            'debug' => Yii::app()->request->getParam('Participant')
         );
-        App()->getClientScript()->registerPackage('jqgrid');
+        // Page size
+        if (Yii::app()->request->getParam('pageSize'))
+        {
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
+        }
+        else
+        {
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
+        }
+        $aData['pageSize']= Yii::app()->user->getState('pageSize');
+        $searchstring = Yii::app()->request->getPost('searchstring');
+        $aData['searchstring'] = $searchstring;
+        //App()->getClientScript()->registerPackage('jqgrid');
 
         // loads the participant panel view and display participant view
 

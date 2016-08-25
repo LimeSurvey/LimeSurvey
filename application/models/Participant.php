@@ -72,7 +72,7 @@ class Participant extends LSActiveRecord
             array('blacklisted', 'length', 'max' => 1),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('participant_id, firstname, lastname, email, language, blacklisted, owner_uid', 'safe', 'on' => 'search'),
+            array('participant_id, firstname, lastname, email, language, blacklisted, owner.full_name', 'safe', 'on' => 'search'),
         );
     }
 
@@ -84,17 +84,59 @@ class Participant extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'attributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'attribute_id')
+            'owner' => array(self::HAS_ONE, 'User', array('uid' => 'owner_uid')),
+            'surveylinks' => array(self::HAS_ONE, 'SurveyLink', 'participant_id'),
+            'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id', 'with'=>'participant_attribute_names', 'joinType'=> 'LEFT JOIN')
         );
     }
+    public function getSurveylinkcount(){
 
+        $count =  count($this->surveylinks);
+        return ($count!==0 ? $count : '');
+    }
+    public function getButtons(){
+        $buttons = "";
+        $raw_button_template = ""
+            . "<a data-toggle='modal' data-participantid='".$this->participant_id."' data-target='%s'>" //Which modal is to be called?
+            . "<button class='btn btn-default btn-xs %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<span class='fa fa-%s' ></span>" //icon class
+            . "</button></a>";
+        //Edit-button 
+            $editData = array(
+                'editModal',
+                '',
+                gT("Edit this participant"),
+                'edit'
+            );
+            $buttons .= vsprintf($raw_button_template, $editData);
+            $buttons .= "&nbsp;";
+
+        //delete-button
+            $deleteData = array(
+                'deleteParticipant',
+                'btn-danger',
+                gT("Delete this participant"),
+                'trash'
+            );
+            $buttons .= vsprintf($raw_button_template, $deleteData);
+            $buttons .= "&nbsp;";
+        //survey information
+            $infoData = array(
+                'participantInfo',
+                '',
+                gT("List active surveys"),
+                'search'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
+            $buttons .= "</div>";
+        return $buttons;
+    }
     /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels()
     {
-        $aAllAttributes = ParticipantAttributeName::model()->getParticipantVisibleAttribute($this->participant_id);
-        $returnArray = array(
+        return array(
             'participant_id' => 'Participant',
             'firstname' => 'Firstname',
             'lastname' => 'Lastname',
@@ -103,33 +145,155 @@ class Participant extends LSActiveRecord
             'blacklisted' => 'Blacklisted',
             'owner_uid' => 'Owner Uid',
         );
-        foreach($aAllAttributes as $attribute){
-            $returnArray[$attribute['attribute_id']] = $attribute['attribute_name'];
-        }
+        
     }
 
+    public function getAllExtraAttributes(){
+        $allAttributes =  ParticipantAttributeName::model()->getAllAttributes();
+        $extraAttributes = array();
+        foreach($allAttributes  as $attribute){
+            $extraAttributes["ea_".$attribute['attribute_id']] = $attribute;
+        }
+        return $extraAttributes;
+    }
+
+    public function getParticipantAttributeValue($attribute_id){
+        if(!empty($this->participantAttributes))
+        {
+            foreach($this->participantAttributes as $singleAttribute){
+                if($singleAttribute['attribute_id'] == $attribute_id){
+                    return $singleAttribute['value'];
+                } else {
+                    return "noTFittet";
+                }
+            }
+        }
+        else 
+        {
+            return "";
+        }
+    }
+    public function getColumns(){
+        $cols = array(
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
+                "name" => 'firstname',
+                "header" => gT("Firstname")
+            ),
+            array(
+                "name" => 'lastname',
+                "header" => gT("Lastname")
+            ),
+            array(
+                "name" => 'email',
+                "header" => gT("Email")
+            ),
+            array(
+                "name" => 'language',
+                "header" => gT("Language")
+            ),
+            array(
+                "name" => 'surveylinkcount',
+                "header" => gT("Active surveys")
+            ),
+            array(
+                "name" => 'owner.full_name',
+                "header" => gT("Owner"),
+                "filter" => $this->getOwnersList($this->owner_uid)
+            ),
+            array(
+                "name" => 'blacklisted',
+                "header" => gT("Blacklisted"),
+                "filter" => array('N' => gT("No"), 'Y'=>gT('Yes'))
+            )
+        );
+
+        foreach($this->allExtraAttributes as $name => $attribute){
+            
+            $cols[] = array(
+                "name" => $name,
+                "value" => $this->getParticipantAttributeValue($attribute['attribute_id']),
+                "header" => $attribute['defaultname'],
+                "filter" => false
+            );
+        }
+        return $cols;
+    }
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
     public function search()
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
 
+        $sort = new CSort;
+        $sort->defaultOrder = 'lastname ASC';
+        $sort->attributes = array(
+          'lastname'=>array(
+            'asc'=>'lastname',
+            'desc'=>'lastname desc',
+          ),
+          'firstname'=>array(
+            'asc'=>'firstname',
+            'desc'=>'firstname desc',
+          ),
+          'email'=>array(
+            'asc'=>'email',
+            'desc'=>'email desc',
+          ),
+          'language'=>array(
+            'asc'=>'language',
+            'desc'=>'language desc',
+          ),
+
+          'owner.full_name'=>array(
+            'asc'=>'owner.full_name',
+            'desc'=>'owner.full_name desc',
+          ),
+          'blacklisted'=>array(
+            'asc'=>'blacklisted',
+            'desc'=>'blacklisted desc',
+          )
+        );
+        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
-
-        $criteria->compare('participant_id', $this->participant_id, false);
-        $criteria->compare('firstname', $this->firstname, true);
-        $criteria->compare('lastname', $this->lastname, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('language', $this->language, true);
-        $criteria->compare('blacklisted', $this->blacklisted, true);
+        $criteria->together = true;
+        $criteria->with = array('owner','participantAttributes');
+        $criteria->compare('t.firstname', $this->firstname, true);
+        $criteria->compare('t.lastname', $this->lastname, true);
+        $criteria->compare('t.email', $this->email, true);
+        $criteria->compare('t.language', $this->language, true);
+        $criteria->compare('t.blacklisted', $this->blacklisted, true);
         $criteria->compare('owner_uid', $this->owner_uid);
+        
+      
 
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
+            'criteria'=>$criteria,
+            'sort'=>$sort,
+            'pagination' => array(
+                'pageSize' => $pageSize
+            )
         ));
+    }
+
+    public function getOwnersList($selected){
+        $owner_ids = Yii::app()->db->createCommand()
+            ->selectDistinct('owner_uid')
+            ->from('{{participants}}')
+            ->queryAll();
+        $ownerList = array(''=>"");
+        foreach($owner_ids as $id){
+            $user = User::model()->getName($id['owner_uid']);
+            $ownerList[$id['owner_uid']] = $user['full_name'];
+        }
+        return TbHtml::dropDownList('Participant[owner_uid]',$selected, $ownerList);
+        
     }
 
     /*
@@ -1664,5 +1828,9 @@ class Participant extends LSActiveRecord
             'created_by' => $data['owner_uid'],
             'owner_uid' => $data['owner_uid']);
         Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
+    }
+
+    public function browse(){
+
     }
 }

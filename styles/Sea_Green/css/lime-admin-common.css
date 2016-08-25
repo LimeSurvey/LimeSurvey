@@ -162,6 +162,7 @@
   min-height: 100%;
   position: relative;
   margin-bottom: 65px;
+  padding: 0;
 }
 
 .side-body h3, .pagetitle, .list-surveys h3 {
