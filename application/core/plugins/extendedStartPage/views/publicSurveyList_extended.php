@@ -53,7 +53,7 @@
         {
             $tooltips .= "<i class=\"fa fa-undo\" aria-hidden=\"true\">&nbsp;</i>";
         }
-        $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".sprintf(gt("%s Minutes"),$survey->calculateEstimatedTime());
+        $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".sprintf(gt("%s minutes"),$survey->calculateEstimatedTime());
 
         $content = $survey->localizedTitle;
         $content .= "<span class='pull-right clearfix'>"
