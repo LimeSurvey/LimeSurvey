@@ -113,9 +113,9 @@ class responses extends Survey_Common_Action
     }
 
     public function getActionParams()
-	{
-		return array_merge($_GET,$_POST);
-	}
+    {
+        return array_merge($_GET,$_POST);
+    }
 
     public function viewbytoken($iSurveyID, $token, $sBrowseLang = '')
     {
@@ -379,6 +379,7 @@ class responses extends Survey_Common_Action
      */
     public function set_grid_display()
     {
+        var_dump($_POST['state']);
         if (Yii::app()->request->getPost('state')=='extended')
         {
             Yii::app()->user->setState('responsesGridSwitchDisplayState','extended');
@@ -405,7 +406,7 @@ class responses extends Survey_Common_Action
         {
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
-            
+
             // Basic datas for the view
             $aData                      = $this->_getData($iSurveyId);
             $aData['surveyid']          = $iSurveyId;
@@ -424,9 +425,9 @@ class responses extends Survey_Common_Action
             $model                      =  SurveyDynamic::model($iSurveyId);
 
             // Page size
-            if (isset($_GET['pageSize']))
+            if (Yii::app()->request->getParam('pageSize'))
             {
-                Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+                Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
             }
 
             // Model filters
@@ -434,9 +435,9 @@ class responses extends Survey_Common_Action
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
             // see: http://www.yiiframework.com/wiki/161/understanding-safe-validation-rules/
             // see: http://www.yiiframework.com/doc/api/1.1/CModel#setAttributes-detail
-            if(isset($_GET['SurveyDynamic']))
+            if(Yii::app()->request->getParam('SurveyDynamic'))
             {
-                $model->setAttributes($_GET['SurveyDynamic'],false);
+                $model->setAttributes(Yii::app()->request->getParam('SurveyDynamic'),false);
             }
 
             // Virtual attributes filters
@@ -444,10 +445,12 @@ class responses extends Survey_Common_Action
             // Those virtual filters attributes are not set by the setAttributes, they must be set manually
             // @see: http://www.yiiframework.com/wiki/281/searching-and-sorting-by-related-model-in-cgridview/
             $aVirtualFilters = array('completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter');
-            foreach($aVirtualFilters as $sFilterName)
-            if(isset($_GET['SurveyDynamic'][$sFilterName]))
-            {
-                $model->$sFilterName = $_GET['SurveyDynamic'][$sFilterName];
+            foreach($aVirtualFilters as $sFilterName) {
+                $aParam=Yii::app()->request->getParam('SurveyDynamic');
+                if(!empty($aParam[$sFilterName]))
+                {
+                    $model->$sFilterName = $aParam[$sFilterName];
+                }
             }
 
             // rendering
@@ -1056,9 +1059,9 @@ class responses extends Survey_Common_Action
         */
 
         // Set number of page
-        if (isset($_GET['pageSize']))
+        if (Yii::app()->request->getParam('pageSize'))
         {
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
         }
 
 

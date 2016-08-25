@@ -14,7 +14,7 @@
 
 <!-- answer_td -->
 <td class="answer-cell-4 answer_cell_<?php echo $ld;?> answer-item text-item">
-    <label class="hidden-md hidden-lg read" for="answer<?php echo $myfname2; ?>">
+    <label class="visible-xs-block read" for="answer<?php echo $myfname2; ?>">
         <?php echo $labelText;?>
     </label>
 

@@ -35,6 +35,109 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160816) to 2.50.1 (build 160823) Aug 23, 2016
+-New feature: Add example group and question on survey creation (Carsten Schmitz)
+-New translation: Kyrgyz by kmaksat (Carsten Schmitz)
+-Fixed issue #11553: Buttons "Expert mode" and "Close" not clickable (markusfluer)
+-Fixed issue #11558: No obious way to add a new question after question group is added (Carsten Schmitz)
+-Fixed issue #11568: Active surveys list for surveytakers is not properly formatted (markusfluer)
+-Fixed issue #9401: CPDB <> survey participant attribute mapping not automatically used when copying from CPDB to survey (Carsten Schmitz)
+-Fixed issue #9825: Remove hardcoded CSS style from privacy message (Carsten Schmitz)
+-Fixed issue #9957: R Export syntax file does not state UTF-8 encoding (Carsten Schmitz)
+-Fixed issue: Plugin specific settings not working in survey settings (Carsten Schmitz)
+#Updated translation: Afrikaans by geebee100
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Japanese by nomoto
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by thiagosmartins, alantygel, mauriciofurtado
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Thai by adzpire, tomzt
+
+Changes from 2.50+ (build 160816) to 2.50+ (build 160817) Aug 17, 2016
+-Fixed issue #11544: Tick all templates in "Edit template permissions" does not work (Carsten Schmitz)
+-Fixed issue #11547: Not possible to view responses on PHP version <5.5 (Carsten Schmitz)
+-Fixed issue #11550: Comfortupdate - DB Updatescript is missing table notifications (Olle Haerstedt)
+-Fixed issue #11552: Cannot install on PHP 5.3.x due to issue with users (Carsten Schmitz)
+-Fixed issue #11553: Buttons "Expert mode" and "Close" not clickable (Carsten Schmitz)
+-Fixed issue #11554: Cannot delete users (Carsten Schmitz)
+-Fixed issue: Non-superadmins cannot delete users (markusfluer)
+
+Changes from 2.50+ (build 160812) to 2.50+ (build 160816) Aug 16, 2016
+-Fixed issue #11545: Not possible to edit administrators (Carsten Schmitz)
+-Fixed issue #11547: Not possible to view responses on PHP version <5.5 (Carsten Schmitz)
+-Fixed issue #11551: [security] Usage of external font libraries in survey templates(Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by rnck, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by valdomir, aesteban
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.50+ (build 160810) to 2.50+ (build 160812) Aug 12, 2016
+-Fixed issue #11373: Duplicate labels in Matrix (markusfluer)
+-Fixed issue #11529: Token validity time invalid (markusfluer)
+-Fixed issue #11530: "Change the language" button appears on page load (Carsten Schmitz)
+-Fixed issue #11532: "Exit and clear survey" in frontend still uses Javascript confirm, should be BS modal (markusfluer)
+-Fixed issue #11535: some strings not translated and wrong term used (markusfluer)
+-Fixed issue #11536: Checkboxes at array numbers (checkbox layout) misaligned at certain resolutions (markusfluer)
+-Fixed issue #11539: Filtering answers is not working (markusfluer)
+-Fixed issue #11540: Smiley path not correct when using popup HTML editor (Carsten Schmitz)
+-Fixed issue #11541: Link to manage survey administrators does not work (markusfluer)
+-Fixed issue #11541: User created by shows user name (markusfluer)
+-Fixed issue: Template permission screen unstyled (Carsten Schmitz)
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by c_schmitz, kiolalis
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Swedish by c_schmitz, maxzomborszki
+
+Changes from 2.50+ (build 160804) to 2.50+ (build 160810) Aug 10, 2016
+-Fixed issue #11497: Lack of padding when survey menu shrinks to two rows (markusfluer)
+-Fixed issue #11498: Adding a new admin user is weird (markusfluer)
+-Fixed issue #11504: Missing margin on flash message at global settings (markusfluer)
+-Fixed issue #11514: Z-index problem: Slider tooltip above error message (markusfluer)
+-Fixed issue #11516: Sliders (Multiple numerical input). It's possible continue without answering to mandatory question (markusfluer)
+-Fixed issue #11521: Multiple numerical input. Subquestion's labels will be shown twice on error. (markusfluer)
+-Fixed issue #11524: Unstyled error message when trying to repeatedly activate a survey (Carsten Schmitz)
+-Fixed issue #11525: Wrong JS at template.js breaks certain survey features (markusfluer)
+-Fixed issue: Corrected wording (markusfluer)
+-Fixed issue: CSV participant import always fails (markusfluer)
+-Fixed issue: Quick add using a single ajax for each row (markusfluer)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Latvian by marcic
+#Updated translation: Latvian (Informal) by marcic
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by aesteban
+
 Changes from 2.50+ (build 160731) to 2.50+ (build 160804) Aug 4, 2016
 -Fixed issue #11483: Bad visualization (markusfluer)
 -Fixed issue #11485: Bad styling at add participant confirm message (markusfluer)

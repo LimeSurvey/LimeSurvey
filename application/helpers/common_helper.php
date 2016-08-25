@@ -2626,9 +2626,8 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
 {
-
     global $maildebug, $maildebugbody;
-
+    require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
 
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
@@ -2766,6 +2765,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $body="<html>".$body."</html>";
         }
         $mail->msgHTML($body,App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
+        $html=new \Html2Text\Html2Text($body);
+        $mail->AltBody=$html->getText();
     }
     else
     {
@@ -3867,13 +3868,17 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 
 /**
 * This is a convenience function to convert any date, in any date format, to the global setting date format
+* Check if the time shoul be rendered also
 *
 * @param string $sDate
+* @param boolean withTime
 * @return string
 */
-function convertToGlobalSettingFormat($sDate)
+function convertToGlobalSettingFormat($sDate,$withTime=false)
 {
 
+    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
+    $usedDatetime = ($withTime===true ? $sDateformatdata['phpdate']." H:i" : $sDateformatdata['phpdate']); //return also hours and minutes if asked for
     try
     {
         // Workaround for bug in older PHP version (confirmed for 5.5.9)
@@ -3882,14 +3887,12 @@ function convertToGlobalSettingFormat($sDate)
             throw new Exception("Failed to parse date string ({$sDate})");
         }
         $oDate           = new DateTime($sDate);                                    // We generate the Date object (PHP will deal with the format of the string)
-        $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
-        $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+        $sDate           = $oDate->format($usedDatetime);             // We apply it to the Date object to generate a string date
         return $sDate;                                                              // We return the string date
     }
     catch(Exception $e) {
-        $oDate           = new DateTime('1/1/1980');                                    // We generate the Date object (PHP will deal with the format of the string)
-        $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
-        $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+        $oDate           = new DateTime('1/1/1980 00:00');                                    // We generate the Date object (PHP will deal with the format of the string)
+        $sDate           = $oDate->format($usedDatetime);             // We apply it to the Date object to generate a string date
         return $sDate;                                                              // We return the string date
 
     }

@@ -408,7 +408,15 @@ function validation_message($ia,$show)
     $class      = (!$show)?' hide-tip':'';
     $id         = "vmsg_".$ia[0];
     $message    = $qinfo['validTip'];
-    $tip = doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>$class, 'id'=>$id ), true);
+    if($message != "")
+    {
+         $tip = doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>$class, 'id'=>$id ), true);
+    }
+    else
+    {
+         $tip = "";
+    }
+
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
 }
@@ -2712,7 +2720,7 @@ function do_multipleshorttext($ia)
                     {
                         $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
-                    $dispVal .= htmlspecialchars($dispVal);
+                    $dispVal = htmlspecialchars($dispVal);
                 }
 
                 $sRows .= doRender('/survey/questions/multipleshorttext/rows/answer_row_textarea', array(
@@ -3902,7 +3910,7 @@ function do_array_5point($ia)
     }
     else
     {
-        $answerwidth = 50;
+        $answerwidth = 25;
     }
     $cellwidth  = 5; // number of columns
 
@@ -3911,7 +3919,7 @@ function do_array_5point($ia)
         ++$cellwidth; // add another column
     }
 
-    $cellwidth  = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
+    $cellwidth  = round((( 100 - ($answerwidth*2) ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -3938,7 +3946,6 @@ function do_array_5point($ia)
             $right_exists  = true;
         }
     }
-
     for ($xc=1; $xc<=5; $xc++)
     {
         $sColumns  .= doRender('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
@@ -3952,7 +3959,7 @@ function do_array_5point($ia)
     // Column for suffix
     if ($right_exists)
     {
-        $sColumns  .= doRender('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
+        $sColumns  .= doRender('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$answerwidth), true);
     }
 
     for ($xc=1; $xc<=5; $xc++)
@@ -4020,6 +4027,7 @@ function do_array_5point($ia)
 
         // Suffix
         $answertext2   = $ansrow['question'];
+        $textAlignClass = "";
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
@@ -4027,6 +4035,7 @@ function do_array_5point($ia)
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>$answertext2,
             ), true);
+             $textAlignClass = "text-right";
         }
         elseif ($right_exists)
         {
@@ -4034,6 +4043,7 @@ function do_array_5point($ia)
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>'&nbsp;',
             ), true);
+             $textAlignClass = "text-right";
         }
 
         // ==>tds

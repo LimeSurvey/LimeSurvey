@@ -160,7 +160,7 @@ PRIMARY KEY  ([attribute_id],[lang])
 CREATE TABLE [prefix_participant_attribute_names] (
 [attribute_id] int NOT NULL IDENTITY (1,1),
 [attribute_type] varchar(4) NOT NULL,
-[defaultname] nvarchar(50) NOT NULL,
+[defaultname] nvarchar(255) NOT NULL,
 [visible] varchar(5) NOT NULL,
 PRIMARY KEY  ([attribute_id],[attribute_type])
 );
@@ -610,4 +610,4 @@ CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[stat
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '259');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '260');

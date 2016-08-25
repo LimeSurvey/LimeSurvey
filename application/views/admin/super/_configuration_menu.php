@@ -166,8 +166,16 @@
                         </a>
                     </li>
 
-                    <?php endif;?>
-                <!-- Plugin manager -->
+                <?php endif;?>
+
+                <!-- Comfort update -->
+                <?php if(Permission::model()->hasGlobalPermission('superadmin')): ?>
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/update"); ?>">
+                            <?php eT("ComfortUpdate");?>
+                        </a>
+                    </li>
+                <?php endif;?>
             </ul>
 
         </li>
@@ -243,6 +251,7 @@
                             <?php eT("Global settings");?>
                         </a>
                     </li>
+
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("/admin/pluginmanager/sa/index"); ?>">
                             <?php eT("Plugin manager");?>

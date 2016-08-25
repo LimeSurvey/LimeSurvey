@@ -18,6 +18,7 @@ class SurveyDynamic extends LSActiveRecord
     public $firstname_filter;
     public $lastname_filter;
     public $email_filter;
+    public $lastpage;
 
     protected static $sid = 0;
     protected $bHaveToken;
@@ -605,9 +606,8 @@ class SurveyDynamic extends LSActiveRecord
        }
 
        // Basic filters
-
+       $criteria->compare('t.lastpage',empty($this->lastpage)?null:(int)$this->lastpage, false);
        $criteria->compare('t.id',empty($this->id)?null:(int)$this->id, false);
-       $criteria->compare('t.lastpage',empty($this->lastpage)?null:(int)$this->lastpage, true);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
 

@@ -220,7 +220,7 @@ class questions extends Survey_Common_Action
             Yii::app()->loadHelper('admin/import');
 
             if (strtolower($sExtension) == 'lsq')
-                $aImportResults = XMLImportQuestion($sFullFilepath, $surveyid, $gid);
+                $aImportResults = XMLImportQuestion($sFullFilepath, $surveyid, $gid, array('autorename'=>Yii::app()->request->getPost('autorename')=='1'?true:false));
             else
                 $this->getController()->error(gT('Unknown file extension'));
 
@@ -1127,8 +1127,6 @@ class questions extends Survey_Common_Action
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');
 
-        $aViewUrls['editQuestion_view'][] = $aData;
-        $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
         $aData['adding'] = true;
         $aData['copying'] = false;
 
@@ -1141,6 +1139,12 @@ class questions extends Survey_Common_Action
         // sidemenu
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['explorer']['state'] = true;
+
+
+        $aViewUrls['editQuestion_view'][] = $aData;
+        $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
+
+
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 

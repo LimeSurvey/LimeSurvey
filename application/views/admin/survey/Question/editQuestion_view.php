@@ -3,13 +3,18 @@
 
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php
-    if (!$adding)
+
+    if ($adding)
     {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
+        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Add a new question")));
     }
-    elseif(isset($oQuestionGroup)) // NB: Logic is not obvious
+    elseif($copying)
     {
         $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Copy question")));
+    }
+    else
+    {
+        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
     }
     ?>
     <!-- Page Title-->

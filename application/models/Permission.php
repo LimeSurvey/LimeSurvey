@@ -215,8 +215,8 @@ class Permission extends LSActiveRecord
             ),
             'participantpanel' => array(
                 'import' => false,
-                'title' => gT("Participant panel"),
-                'description' => gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
+                'title' => gT("Central participant database"),
+                'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
                 'img' => 'cpdb'
             ),
         );
@@ -642,8 +642,14 @@ class Permission extends LSActiveRecord
     {
         $oSurvey=Survey::Model()->findByPk($iSurveyID);
         if (!$oSurvey)
+        {
             return false;
-
+        }
+        // If the user has the permission to update all other surveys he may import/export as well
+        if ($this->hasGlobalPermission('surveys', 'update', $iUserID) && $sPermission=='token' && ($sCRUD=='import' || $sCRUD=='export'))
+        {
+           $sCRUD='update';
+        }
         // Get global correspondance for surveys rigth
         $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
         return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);

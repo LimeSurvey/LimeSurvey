@@ -32,7 +32,7 @@ class UserAction extends Survey_Common_Action
         Yii::app()->loadHelper('database');
     }
 
-    /** 
+    /**
     * Get Post- or Paramvalue depending on where to get it
     */
     private function _getPostOrParam($param){
@@ -56,42 +56,23 @@ class UserAction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'users.js');
 
-
-        $userlist = getUserList();
-        $usrhimself = $userlist[0];
-        unset($userlist[0]);
-
         $aData = array();
-
-        if (Permission::model()->hasGlobalPermission('superadmin','read')) {
-            $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
-            $aData['noofsurveys'] = $noofsurveys;
-        }
-        $aData['row'] = 0;
-        if (isset($usrhimself['parent_id']) && $usrhimself['parent_id'] != 0)
+        // Page size
+        if (Yii::app()->request->getParam('pageSize'))
         {
-            $aData['row'] = User::model()->findByAttributes(array('uid' => $usrhimself['parent_id']))->users_name;
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
         }
-
-
-        $aData['usrhimself'] = $usrhimself;
-        // other users
-        $aData['usr_arr'] = $userlist;
-        $noofsurveyslist = array();
-
-        //This loops through for each user and checks the amount of surveys against them.
-        $limit = count($userlist);
-        for ($i = 1; $i <= $limit; $i++)
+        else
         {
-            $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
         }
-
-        $aData['noofsurveyslist'] = $noofsurveyslist;
+        $aData['pageSize']= Yii::app()->user->getState('pageSize');
 
         $aData['title_bar']['title'] = gT('User administration');
         $aData['fullpagebar']['closebutton']['url'] = true;
         $model = new User();
-        $this->_renderWrappedTemplate('user', 'editusers',array('model'=>$model));
+        $aData['model']=$model;
+        $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }
 
     private function _getSurveyCountForUser(array $user)
@@ -228,7 +209,7 @@ class UserAction extends Survey_Common_Action
             return;
         }
 
-        //If there was no uid transferred  
+        //If there was no uid transferred
         if (!$postuserid)
         {
             Yii::app()->setFlashMessage(gT("Could not delete user. User was not supplied."),'error');
@@ -379,7 +360,7 @@ class UserAction extends Survey_Common_Action
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
                 // Close button, UrlReferrer;
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
@@ -587,7 +568,7 @@ class UserAction extends Survey_Common_Action
 
                 $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
                 $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
             }
@@ -624,13 +605,13 @@ class UserAction extends Survey_Common_Action
                     $templaterights[$srow["permission"]] = array("use"=>$srow["read_p"]);
                 }
                 $templates = Template::model()->findAll();
-                $aData['list'][] = array('templaterights'=>$templaterights,'templates'=>$templates);
+                $aData['data'] = array('templaterights'=>$templaterights,'templates'=>$templates);
             }
         }
 
         $aData['fullpagebar']['savebutton']['form'] = 'modtemplaterightsform';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
-        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
+        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
         $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
@@ -645,13 +626,10 @@ class UserAction extends Survey_Common_Action
         {
             $aTemplatePermissions = array();
             $tresult = Template::model()->findAll();
-            $postvalue= array_flip($_POST);
             foreach ($tresult as $trow)
             {
-                if (isset($postvalue[$trow["folder"] . "_use"]))
-                    $aTemplatePermissions[$trow["folder"]] = 1;
-                else
-                    $aTemplatePermissions[$trow["folder"]] = 0;
+                if (isset($_POST[$trow["folder"] . "_use"]))
+                    $aTemplatePermissions[$trow["folder"]] = $_POST[$trow["folder"] . "_use"];
             }
             foreach ($aTemplatePermissions as $key => $value)
             {
@@ -699,7 +677,7 @@ class UserAction extends Survey_Common_Action
             'full_name'=> Yii::app()->request->getPost('fullname'),
             'email'=> Yii::app()->request->getPost('email')
             );
-            if (Yii::app()->request->getPost('password')!='')
+            if (Yii::app()->request->getPost('password')!='' && !Yii::app()->getConfig('demoMode'))
             {
                 if (Yii::app()->request->getPost('password')==Yii::app()->request->getPost('repeatpassword'))
                 {
@@ -739,6 +717,12 @@ class UserAction extends Survey_Common_Action
 
         // Get user lang
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        $aLanguageData=array('auto'=>gT("(Autodetect)"));
+        foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
+        {
+           $aLanguageData[$langkey]=html_entity_decode($languagekind['nativedescription'].' - '.$languagekind['description'],ENT_COMPAT,'utf-8');
+        }
+        $aData['aLanguageData'] = $aLanguageData;
         $aData['sSavedLanguage'] = $user->lang;
         $aData['sUsername'] = $user->users_name;
         $aData['sFullname'] = $user->full_name;
@@ -747,7 +731,7 @@ class UserAction extends Survey_Common_Action
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
-        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );  
+        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
         // Render personal settings view
         if (isset($_POST['saveandclose']))

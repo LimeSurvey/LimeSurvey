@@ -143,7 +143,19 @@ function checkconditions(value, name, type, evt_type)
     {
         $('#java'+name).val(value);
     }
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
+
+    aFieldWithDependencies = $('#aQuestionsWithDependencies').data('qids');
+
+    var result;
+    if(typeof name !== 'undefined')
+    {
+        result = name.split('X');
+        result = result[2]
+    }
+
+    $isRelevant = $.inArray(result, aFieldWithDependencies);
+
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
 
@@ -599,13 +611,13 @@ function doToolTipTable()
         }
     });
 }
-//Hide the Answer and the helper field in an 
+//Hide the Answer and the helper field in an
 $(document).ready(
     function(){
         $('.question-container').each(function(){
             if($(this).find('div.answer-container').find('input').length == 1)
             {
-                if($(this).find('div.answer-container').find('input[type=hidden]').length >0 
+                if($(this).find('div.answer-container').find('input[type=hidden]').length >0
                     && $(this).find('div.answer-container').find('select').length < 1)
                 {
                     $(this).find('div.answer-container').css({display: 'none'});

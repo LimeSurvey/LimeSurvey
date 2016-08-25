@@ -8,34 +8,46 @@
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).ready(function(){
-    $('#ListPager').css({
-        position: 'relative'
+function setListPagerPosition(){
+    var $elListPager = $(document).find('#ListPager');
+    $elListPager.css({
+        position: 'relative',
+        'left': $(document).find('.scrolling-wrapper').scrollLeft() ,
     });
 
-    $('.scrolling-wrapper').scroll(function(){
-        $('#ListPager').css({
-            'left': $(this).scrollLeft() ,
-        });
+}
+
+function bindScrollWrapper(){
+    setListPagerPosition();
+    $(document).find('.scrolling-wrapper').scroll(function(){
+        setListPagerPosition();
     });
+}
+
+$(document).ready(function(){
+
+/*
+
+*/
+
+bindScrollWrapper();
 
     $('#display-mode').click(function(event){
         event.preventDefault();
-        $that = $(this);
-        $actionUrl = $(this).data('url');
-        $display = $that.find('input').val();
-        $postDatas  = {state:$display};
+
+        var $that        = $(this);
+        var $actionUrl   = $(this).data('url');
+        var $display     = $that.find('input:not(:checked)').val();
+        var $postDatas   = {state:$display};
+
         $.ajax({
-            url : encodeURI($actionUrl),
+            url  : encodeURI($actionUrl),
             type : 'POST',
             data :  $postDatas,
 
             // html contains the buttons
             success : function(html, statut){
-                $.fn.yiiGridView.update('responses-grid', {
-                    success: function(s){
-                    }
-                });
+                location.reload();
             },
             error :  function(html, statut){
                 console.log(html);

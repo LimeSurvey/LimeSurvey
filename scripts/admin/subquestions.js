@@ -61,7 +61,9 @@ $(document).ready(function(){
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
-
+    $('input.code').on('blur', checkReserved);
+    $('#save-button').off('click');
+    $('#save-button').on('click', checkAllReserved);
     updaterowproperties();
 
     bindExpandRelevanceEquation();
@@ -839,7 +841,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         n = 1, 
         numeric = true,  
         currentCharacter,
-        codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("SQ0001").split(""));
+        codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("001").split(""));
     while(numeric == true && n <= codeSigil.length){
         currentCharacter = codeSigil.pop()                          // get the current character
         if ( !isNaN(Number(currentCharacter)) )                         // check if it's numerical
@@ -864,7 +866,9 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 
         if (thisrow.length<=languages.length)
         {
-            var qCode = (parseInt(k)+(1+parseInt(allrows)));
+            var qCode = (parseInt(k)+1);
+            if (lsreplace===false){
+                qCode+=(parseInt(allrows));}
             while(qCode.toString().length < numericSuffix.length){
                 qCode = "0"+qCode;
             }
@@ -1107,4 +1111,47 @@ function ajaxreqsave() {
             $('#dialog-result').show();
         }
     });
+}
+function warnReserved(word){
+    var errorReservedWordText = $('<p id="reservedError">'+errorReservedWord+'</p>').append("<span>"+reservedWords.join(', ')+"</span>");
+    $('#error-modal').find('div.modal-body').append(errorReservedWordText);
+    $('#error-modal').modal('show');
+    $('#error-modal').on('hidden.bs.modal', function(){
+        $('#error-modal').find('div.modal-body').find('#reservedError').remove();
+    })
+}
+
+/*** Here we check for reserved words in the subquestion codes. ***/
+var reservedWords = [
+        "other",
+        "time",
+        "relevance",
+        "code"
+    ];
+// This method checks if one of the subquestions contains a reserved word on blur
+function checkReserved(){
+    var self = this;
+    console.log('checkReserved');
+    $.each(reservedWords, function(i,word){
+        if($(self).val().search(word) !== -1){
+            warnReserved(word);
+        }
+    });
+}
+// This method checks if any of the subquestions contains a reserved word on submit
+function checkAllReserved(event){
+    console.log('checkAllReserved');
+    $('input.code').each(function(i,item){
+        $.each(reservedWords, function(i,word){
+            if($(item).val().search(word) !== -1){
+                warnReserved(word);
+                return false;
+            }
+        });
+    });
+    var $form = getForm(this);
+    closeAfterSaveInput.val("false");
+    $form.append(closeAfterSaveInput);
+    formSubmitting = true;
+    $form.find('[type="submit"]').first().trigger('click');
 }

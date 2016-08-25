@@ -17,12 +17,12 @@
 
     <?php if (isset($errorMessage)): ?>
     <div class="alert alert-danger" role="alert">
-        <?php echo $errorMessage; ?> 
+        <?php echo $errorMessage; ?>
     </div>
     <?php endif; ?>
 
     <div class="container">
-        <?php echo CHtml::beginForm(array("/survey/index/sid/.$iSurveyId."), 'post', array(
+        <?php echo CHtml::beginForm(array("/survey/index/sid/{$iSurveyId}"), 'post', array(
             'id' => 'tokenform',
             'class' => 'form-horizontal col-sm-12 col-md-10 col-md-offset-1'
         )); ?>
@@ -74,7 +74,7 @@
 
 
         <?php if (isset($bCaptchaEnabled)): ?>
-            <div class="col-sm-12 form-group">        
+            <div class="col-sm-12 form-group">
                 <label class="col-md-4 col-sm-12 control-label">
                     <p class='col-sm-6 col-md-12 remove-padding'><?php eT("Please enter the letters you see below:"); ?></p>
                     <span class="col-sm-6 col-md-12">
@@ -92,7 +92,7 @@
                         'class' => 'text input-sm form-control '.$sKpClass,
                         'required' => 'required'
                     )) ?>
-                </div>     
+                </div>
             </div>
         <?php endif; ?>
         <!-- Submit area -->

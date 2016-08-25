@@ -61,7 +61,7 @@
         */
         public function relations()
         {
-			$alias = $this->getTableAlias();
+            $alias = $this->getTableAlias();
             return array(
             'questions' => array(self::HAS_ONE, 'Question', '',
             'on' => "$alias.cqid = questions.qid",
@@ -95,7 +95,7 @@
 
         /**
         * Updates the group ID for all conditions
-        * 
+        *
         * @param integer $iSurveyID
         * @param integer $iQuestionID
         * @param integer $iOldGroupID
@@ -118,8 +118,8 @@
             }
         }
 
-        
-        
+
+
         public function insertRecords($data, $update=FALSE, $condition=FALSE)
         {
             $record = new self;
@@ -149,7 +149,7 @@
             else
                 return $record->save();
         }
-        
+
         function getScenarios($qid)
         {
 
@@ -157,7 +157,7 @@
 
             return Yii::app()->db->createCommand($scenarioquery)->query();
         }
-        
+
         function getSomeConditions($fields, $condition, $order, $group){
             $record = Yii::app()->db->createCommand()
             ->select($fields)
@@ -175,7 +175,7 @@
 
             return $record->query();
         }
-        
+
         function getConditionsQuestions($distinctrow,$deqrow,$scenariorow,$surveyprintlang)
         {
             $conquery="SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname "
@@ -191,6 +191,18 @@
             ->bindParam(":scenariorow", $scenariorow, PDO::PARAM_INT)
             ->bindParam(":surveyprintlang", $surveyprintlang, PDO::PARAM_STR)
             ->query();
+        }
+
+        function getAllCfieldnameWithDependenciesForOneSurvey($sid)
+        {
+            $Qids = Yii::app()->db->createCommand()
+                    ->select('cfieldname')
+                    ->from('{{questions}} questions')
+                    ->join('{{conditions}} conditions', 'questions.qid=conditions.cqid')
+                    ->where('sid=:sid', array(':sid'=>$sid))
+                    ->queryRow();
+
+            return $Qids;
         }
     }
 

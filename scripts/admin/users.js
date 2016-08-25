@@ -6,11 +6,13 @@ $(document).ready(function(){
     UsertypeChange();
 });
 
+
 function triggerRunAction(el){
     return function(){
         runAction(el);
     }
 }
+
 function runAction(el){
     var url = $(el).data('url'),
             action = $(el).data('action'),
@@ -19,21 +21,23 @@ function runAction(el){
         var form = $('<form></form>');
         form.attr('method','post');
         form.attr('action',url);
-        form.append('<input name="uid" value="'+uid+'" />');
-        form.append('<input name="action" value="'+action+'" />');
-        form.append('<input name="user" value="'+user+'" />');
-        form.append('<input name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'" />');
+        form.append('<input type="hidden" name="uid" value="'+uid+'" />');
+        form.append('<input type="hidden" name="action" value="'+action+'" />');
+        form.append('<input type="hidden" name="user" value="'+user+'" />');
+        form.append('<input type="hidden" name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'" />');
+        form.appendTo('body');
         form.submit();
 }
 
 function bindButtons(){
-
     $('.action_usercontrol_button').on('click', function(){
         runAction(this);
     });
+    $('input[name="alltemplates"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        $('input[id$="_use"]').prop('checked',state).trigger('change');
+    });
 
 }
-
 
 function UsertypeChange(ui,evt)
 {

@@ -765,6 +765,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         if (thisrow.length<=languages.length)
         {
             var qCode = (parseInt(k)+(1+parseInt(allrows)));
+            if (lsreplace){qCode = 1;}
             while(qCode.toString().length < numericSuffix.length){
                 qCode = "0"+qCode;
             }

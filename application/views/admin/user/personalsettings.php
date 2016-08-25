@@ -31,13 +31,13 @@
         <div class="form-group">
             <?php echo CHtml::label(gT("Password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
              <div class="col-sm-3">
-                <?php echo CHtml::passwordField('password', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10)))); ?>
+                <?php echo CHtml::passwordField('password', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
              </div>
         </div>
         <div class="form-group">
             <?php echo CHtml::label(gT("Repeat password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
              <div class="col-sm-3">
-                <?php echo CHtml::passwordField('repeatpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10)))); ?>
+                <?php echo CHtml::passwordField('repeatpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
              </div>
         </div>
     <!-- form -->
@@ -48,20 +48,22 @@
         <!-- Interface language -->
         <div class="form-group">
             <?php echo CHtml::label(gT("Interface language:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
-             <div class="col-sm-3">
-                <select id='lang' name='lang' class="form-control">
-                    <option value='auto'<?php if ($sSavedLanguage == 'auto') { echo " selected='selected'"; } ?>>
-                        <?php eT("(Autodetect)"); ?>
-                    </option>
-                    <?php foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
-                    { ?>
-                    <option value='<?php echo $langkey; ?>'<?php if ($langkey == $sSavedLanguage) {
-                        echo " selected='selected'";
-                    } ?>>
-                    <?php echo $languagekind['nativedescription']; ?> - <?php echo $languagekind['description']; ?>
-                    </option>
-                <?php } ?>
-                </select>
+            <div class="col-sm-3">
+                <?php
+                $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                    'asDropDownList' => true,
+                    'name' => 'lang',
+                    'data' => $aLanguageData,
+                    'pluginOptions' => array(
+                        'htmlOptions' => array(
+                            'id' => 'lang',
+                           'class'=> "form-control"
+                        )
+                    ),
+                    'value' => $sSavedLanguage
+                ));
+
+                ?>
             </div>
         </div>
 

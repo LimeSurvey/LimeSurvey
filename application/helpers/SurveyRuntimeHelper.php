@@ -14,6 +14,7 @@
 
 class SurveyRuntimeHelper {
 
+    private $aStepInfoClass; // The step info class is used to know which group has not been completed correclty (for index only). Because the index is build twice in 2.5 templates, we don't want to redo all the test twices
     protected function createFullQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
@@ -41,9 +42,11 @@ class SurveyRuntimeHelper {
 
             if (LimeExpressionManager::GroupIsRelevant($group['gid']))
             {
+                $classes = ' linkToButton ';
+
                 $group['step'] = $key + 1;
                 $active = ($_SESSION[$LEMsessid]['step'] == $group['step']) ? 'current active' : '';
-                $classes = ' linkToButton ';
+                $stepInfoClass = $this->getClassForCurrentGroup($group, $LEMsessid, $key);
                 $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('id'=>'button-'.$group['gid'],'type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'jshide'));
 
                 // Button
@@ -55,7 +58,8 @@ class SurveyRuntimeHelper {
 
 
 
-                $html .=  CHtml::openTag('li', array('class'=>$active));
+
+                $html .=  CHtml::openTag('li', array('class'=>$active.' '.$stepInfoClass));                    
                 $html .=  CHtml::link($group['group_name'], array('#'), array('class'=>$classes, 'data-button-to-click'=>'#button-'.$group['gid'], ));
                 $html .= CHtml::closeTag('li');
 
@@ -200,6 +204,35 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * AZDAZD
+     */
+    protected function getClassForCurrentGroup($group, $LEMsessid, $key)
+    {
+        if(isset($group['step']))
+        {
+            $iCurrentStep = $_SESSION[$LEMsessid]['step'];
+            $iGroup       = $group['step'];
+
+            if(!isset($this->aStepInfoClass[$iGroup]))
+            {
+                $stepInfoClass = '';
+                if (isset($group['step']))
+                {
+                    if ( $group['step'] < $iCurrentStep )
+                    {
+                        $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+                        $stepInfoClass = $stepInfo['anyUnanswered'] ? 'missing' : '';
+                    }
+                }
+                $this->aStepInfoClass[$iGroup] = $stepInfoClass;
+            }
+
+            return $this->aStepInfoClass[$iGroup];
+        }
+        return '';
+    }
+
     protected function createFullQuestionIndexByGroup($LEMsessid)
     {
         echo "\n\n<!-- PRESENT THE INDEX (full) -->\n";
@@ -217,10 +250,12 @@ class SurveyRuntimeHelper {
             if (LimeExpressionManager::GroupIsRelevant($group['gid']))
             {
                 $group['step'] = $key + 1;
-                $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+
+                $stepInfoClass = $this->getClassForCurrentGroup($group, $LEMsessid, $key);
+
                 $classes = implode(' ', array(
                     'row',
-                    $stepInfo['anyUnanswered'] ? 'missing' : '',
+                    $stepInfoClass,
                     $_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
 
                 ));
@@ -460,11 +495,11 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['maxstep'] = 0;
             }
 
-            if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey') != $_SESSION[$LEMsessid]['LEMpostKey'])
+            if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey'])
             {
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
-                if (isset($moveResult['seq']) && App()->request->getPost('thisstep') == $moveResult['seq'])
+                if (isset($moveResult['seq']) &&  App()->request->getPost('thisstep',$moveResult['seq']) == $moveResult['seq'])
                 {
 
                     /* then pressing F5 or otherwise refreshing the current page, which is OK
@@ -1252,7 +1287,7 @@ class SurveyRuntimeHelper {
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo = getSurveyInfo($surveyid);
 
-            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings 
+            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
             if(($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')){
                 $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
             } else {
@@ -1399,6 +1434,7 @@ class SurveyRuntimeHelper {
         doFooter();
 
     }
+
     /**
     * setJavascriptVar
     *
@@ -1415,6 +1451,15 @@ class SurveyRuntimeHelper {
             $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
             $aRadix=getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
+
+            /*
+            $aCfieldnameWithDependences = Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);
+            foreach($aCfieldnameWithDependences as $sCfieldname)
+            {
+                $aLSJavascriptVar['aFieldWithDependencies'][] = $sCfieldname;
+            }
+            */
+
             $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         }
@@ -1473,12 +1518,12 @@ class SurveyRuntimeHelper {
         $iNumber=$aQuestionQanda[0]['number'];
 
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $aSurveyinfo = getSurveyInfo($iSurveyId); 
-        // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings 
+        $aSurveyinfo = getSurveyInfo($iSurveyId);
+        // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
         if(($aSurveyinfo['showqnumcode'] == $showqnumcode_global_) || ($showqnumcode_global_ == 'choose')){
-            $showqnumcode_ = $aSurveyinfo['showqnumcode']; 
+            $showqnumcode_ = $aSurveyinfo['showqnumcode'];
         } else {
-            $showqnumcode_ = $showqnumcode_global_; 
+            $showqnumcode_ = $showqnumcode_global_;
         }
 
         switch ($showqnumcode_)

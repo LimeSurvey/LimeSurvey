@@ -865,7 +865,7 @@ class TokenDynamic extends LSActiveRecord
         {
             $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ><!-- Display participant in CPDB--></span></span>';
         }
-        return $button;
+        return "<div style='white-space:nowrap'>".$button."</div>";
     }
 
     public function search()

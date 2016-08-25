@@ -61,7 +61,8 @@ class SurveyAdmin extends Survey_Common_Action
             $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
             $aResults[$iSurveyID]['result'] = $oSurvey->deleteSurvey($iSurveyID, $recursive=true);
         }
-        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_delete_results', array('aResults'=>$aResults));
+
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._delete_results', array('aResults'=>$aResults));
     }
 
     public function listsurveys()
@@ -74,31 +75,8 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $aData['issuperadmin'] = true;
         }
-
-        $aData['model'] = $model =  new Survey('search');
-
-        // Search
-        if (isset($_GET['Survey']['searched_value']))
-        {
-            $model->searched_value = $_GET['Survey']['searched_value'];
-        }
-
-        $model->active = null;
-
-        // Filter state
-        if (isset($_GET['active']) && !empty($_GET['active']))
-        {
-            $model->active = $_GET['active'];
-        }
-
-        // Set number of page
-        if (isset($_GET['pageSize']))
-        {
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
-        }
-
+        $aData['model'] = new Survey('search');
         $aData['fullpagebar']['button']['newsurvey'] = true;
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/survey/massive_actions/_selector', array(), true, false);
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }
 
@@ -1687,11 +1665,36 @@ class SurveyAdmin extends Survey_Common_Action
             $langsettings->insertNewSurvey($aInsertData);
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+            // Now create a new dummy group
+            $aInsertData=array();
+            $aInsertData[Survey::model()->findByPk($iNewSurveyid)->language]=array(
+                'sid' => $iNewSurveyid,
+                'group_name' => gt('My first question group','html',Survey::model()->findByPk($iNewSurveyid)->language),
+                'description' => '',
+                'group_order' => 1,
+                'language' => Survey::model()->findByPk($iNewSurveyid)->language,
+                'grelevance' => '1');
+            $iNewGroupID=QuestionGroup::model()->insertNewGroup($aInsertData);
+            // Now create a new dummy question
+            $oQuestion= new Question;
+            $oQuestion->sid = $iNewSurveyid;
+            $oQuestion->gid = $iNewGroupID;
+            $oQuestion->type = 'T';
+            $oQuestion->title = 'Q00';
+            $oQuestion->question = gt('A first example question. Please answer this question:','html',Survey::model()->findByPk($iNewSurveyid)->language);
+            $oQuestion->help = gt('This is a question help text.','html',Survey::model()->findByPk($iNewSurveyid)->language);
+            $oQuestion->mandatory = 'N';
+            $oQuestion->relevance = '1';
+            $oQuestion->question_order = 1;
+            $oQuestion->language = Survey::model()->findByPk($iNewSurveyid)->language;
+            $oQuestion->save();
+            $iNewQuestionID=$oQuestion->qid;
 
-            Yii::app()->session['flashmessage'] = $warning.gT("Survey was successfully added.");
+            Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."),'info');
+
             if (App()->request->getPost('saveandclose'))
             {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
+                $this->getController()->redirect(array("admin/questions/sa/view/surveyid/{$iNewSurveyid}/gid/{$iNewGroupID}/qid/{$iNewQuestionID}"));
             }
             else
             {
