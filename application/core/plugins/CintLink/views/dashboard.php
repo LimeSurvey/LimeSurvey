@@ -29,7 +29,7 @@
         <!-- Show Cint widget -->
         <div class='col-sm-3' style='cursor: pointer;'>
             <div
-                class='panel panel-primary'
+                class='panel panel-primary cintlink-shadow'
                   onclick='<?php if ($additionalLanguages === null): echo 'LS.plugin.cintlink.showWidget();'; else: echo 'LS.plugin.cintlink.showLangWizard();'; endif; ?>'
                 <?php if ($hasTokenTable): ?> disabled='disabled' <?php endif; ?>
             >
@@ -49,7 +49,7 @@
         <?php if (!$loggedIn): ?>
             <div class='col-sm-3' style='cursor: pointer;'>
                 <div
-                    class='panel panel-primary'
+                    class='panel panel-primary cintlink-shadow'
                     onclick='LS.plugin.cintlink.showLoginForm();'
                 >
                     <div class='panel-heading'>
