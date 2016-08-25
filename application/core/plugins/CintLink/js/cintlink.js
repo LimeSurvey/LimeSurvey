@@ -167,7 +167,7 @@ $(document).ready(function() {
 
             var options = {
                 locale: getWidgetLanguage(survey.surveyls_language),
-                introText: "LimeSurvey",
+                introText: response.loggedIn ? 'LimeSurvey' : response.warningMessage,
                 surveyLink: {
                     value: completeLink,
                     readOnly: true
@@ -191,7 +191,7 @@ $(document).ready(function() {
             };
 
             CintLink.show(options, function(hold, release) {
-                // A purchase was made, and we're going to POST the hold URL back to ourselves
+                // An order was made, and we're going to POST the hold URL back to ourselves
                 $.ajax({
                     url: LS.plugin.cintlink.pluginBaseUrl + '&method=purchaseRequest',
                     data: {
@@ -201,6 +201,7 @@ $(document).ready(function() {
                     type: "POST",
                     dataType: "json",
                     success: function(data) {
+                        console.log('here');
                         console.log(data);
 
                         $('#order').text(data.text);
@@ -211,9 +212,14 @@ $(document).ready(function() {
 
                         CintLink.close();
 
-                        showErrorOrSuccessModal({
-                            result: LS.plugin.cintlink.lang.orderPlacedOnHold
-                        });
+                        if (data.error) {
+                            showErrorOrSuccessModal(data);
+                        }
+                        else {
+                            showErrorOrSuccessModal({
+                                result: LS.plugin.cintlink.lang.orderPlacedOnHold
+                            });
+                        }
                     }
                 });
             });
@@ -237,8 +243,8 @@ $(document).ready(function() {
         else if (response.result) {
             $('#success-modal .modal-body-text').html(response.result);
             $('#success-modal').modal();
-            showDashboard();
         }
+        showDashboard();
     }
 
     /**
@@ -324,6 +330,7 @@ $(document).ready(function() {
 
     // Needs to be accessed from the outside (dashboard view)
     LS.plugin.cintlink.showWidget = showWidget;
+    LS.plugin.cintlink.showLoginForm = showLoginForm;
     LS.plugin.cintlink.cancelOrder = cancelOrder;
     LS.plugin.cintlink.softDeleteOrder = softDeleteOrder;
     LS.plugin.cintlink.userTriedToPay = userTriedToPay;
@@ -342,6 +349,9 @@ $(document).ready(function() {
 
         var response = JSON.parse(response);
 
+        showDashboard();
+
+        /*
         if (response.result)
         {
             // User logged in
@@ -352,6 +362,7 @@ $(document).ready(function() {
             // User not logged in, show user form
             showLoginForm();
         }
+        */
     });
 
 });

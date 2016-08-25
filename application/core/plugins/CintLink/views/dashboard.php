@@ -27,15 +27,44 @@
     <div class='row'>
 
         <!-- Show Cint widget -->
-        <button
-            class='btn btn-default'
-              onclick='<?php if ($additionalLanguages === null): echo 'LS.plugin.cintlink.showWidget();'; else: echo 'LS.plugin.cintlink.showLangWizard();'; endif; ?>'
-            <?php if ($hasTokenTable): ?> disabled='disabled' <?php endif; ?>
-        >
-            <span class='fa fa-bars'></span>
-            &nbsp;
-            <?php echo $plugin->gT('Choose target group'); ?>
-        </button>
+        <div class='col-sm-3' style='cursor: pointer;'>
+            <div
+                class='panel panel-primary'
+                  onclick='<?php if ($additionalLanguages === null): echo 'LS.plugin.cintlink.showWidget();'; else: echo 'LS.plugin.cintlink.showLangWizard();'; endif; ?>'
+                <?php if ($hasTokenTable): ?> disabled='disabled' <?php endif; ?>
+            >
+                <div class='panel-heading'>
+                    <h4 class='panel-title'><?php echo $plugin->gT('Choose target group'); ?></h4>
+                </div>
+                <div class='panel-body text-center text-success'>
+                    <span class='fa-stack fa-lg'>
+                        <i class='fa fa-circle fa-stack-2x text-success'></i>
+                        <i class='fa fa-bars fa-stack-1x fa-inverse'></i>
+                    </span>
+                    <p><?php echo $plugin->gT('Add participants to your survey'); ?></p>
+                </div>
+            </div>
+        </div>
+
+        <?php if (!$loggedIn): ?>
+            <div class='col-sm-3' style='cursor: pointer;'>
+                <div
+                    class='panel panel-primary'
+                    onclick='LS.plugin.cintlink.showLoginForm();'
+                >
+                    <div class='panel-heading'>
+                        <h4 class='panel-title'><?php echo $plugin->gT('Login'); ?></h4>
+                    </div>
+                    <div class='panel-body text-center text-success'>
+                        <span class='fa-stack fa-lg'>
+                            <i class='fa fa-circle fa-stack-2x text-success'></i>
+                            <i class='fa fa-sign-in fa-stack-1x fa-inverse'></i>
+                        </span>
+                        <p><?php echo $plugin->gT('Login to limesurvey.org'); ?></p>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <!-- Modal for Cint language wizard -->
         <div id="cint-lang-wizard" class="modal fade" role="dialog">
@@ -73,7 +102,6 @@
         <button class='btn btn-default pull-right' onclick='LS.plugin.cintlink.showDashboard();'><span class='fa fa-refresh'></span>&nbsp;<?php echo $plugin->gT('Refresh'); ?></button>
 
   </div>
-  <p class='help-block'><?php echo $plugin->gT('Use the Cint widget to buy participants'); ?></p>
 <?php endif; ?>
 
 <h4>Orders</h4>

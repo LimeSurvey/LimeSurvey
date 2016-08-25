@@ -36,6 +36,7 @@
         <div class='col-sm-4'></div>
         <div class='col-sm-4'>
             <input id='cintlink-login-submit' class='btn btn-default' type='submit' value='<?php echo $plugin->gT('Log in'); ?>' />
+            <button id='cintlink-login-cancel' class='btn btn-default' onclick='LS.plugin.cintlink.showDashboard(); return false;'><?php echo $plugin->gT('Cancel'); ?></button>
         </div>
     </div>
 </form>

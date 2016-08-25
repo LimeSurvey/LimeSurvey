@@ -34,15 +34,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     private $cintApiKey = "7809687755495";  // Sandbox
 
     /**
-     * This is the key handed to you from the
-     * com_api Joomla component on limesurvey.org
-     * after login, to access Rest plugins
-     *
-     * @var string
-     */
-    private $limesurveyOrgKey = "";
-
-    /**
      * What URL to call for Rest API (limesurvey.org or limeservice.com for testing)
      *
      * @var string
@@ -65,13 +56,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $this->subscribe('beforeSurveyActivate');  // Forbid tokens if Cint order
         $this->subscribe('newDirectRequest');  // Ajax calls
         $this->subscribe('onSurveyDenied');  // Redirect to Cint, survey closed
-
-        // Login session key from com_api at limesurvey.org
-        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
-        if (!empty($limesurveyOrgKey))
-        {
-            $this->limesurveyOrgKey = $limesurveyOrgKey;
-        }
     }
 
     /**
@@ -149,6 +133,58 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 . "</p>"
             );
         }
+    }
+
+    /**
+     * Survey dashboard.
+     * @param int $surveyId
+     * @return string
+     */
+    public function actionIndex($surveyId)
+    {
+        if (empty($surveyId))
+        {
+            throw new InvalidArgumentException('surveyId cannot be empty');
+        }
+
+        $data = array();
+        $data['surveyId'] = $surveyId;
+        $data['common'] = $this->renderPartial('common', $data, true);
+        $this->renderCommonJs($surveyId);
+
+        $content = $this->renderPartial('index', $data, true);
+
+        $this->registerCssAndJs();
+
+        // Show warning if survey is not active
+        /*
+        $survey = Survey::model()->findByPk($surveyId);
+        $surveyIsActive = $survey->getState() === 'willExpire' || $survey->getState() === 'running';
+        if (!$surveyIsActive)
+        {
+            (new UniqueNotification(array(
+                'survey_id' => $surveyId,
+                'importance' => Notification::HIGH_IMPORTANCE,
+                'setNormalImportance' => false,  // Always popup
+                'title' => $this->gT('Cint warning'),
+                'message' => $this->renderPartial('notifications/warning_popup', array(), true)
+            )))->save();
+        }
+         */
+
+        // Show tutorial if survey has no orders
+        if (!CintLinkOrder::hasAnyOrders($surveyId))
+        {
+            (new UniqueNotification(array(
+                'survey_id' => $surveyId,
+                'importance' => Notification::HIGH_IMPORTANCE,
+                'markAsNew' => false,
+                'title' => $this->gT('Welcome to CintLink LimeSurvey Integration'),
+                'message' => $this->renderPartial('tutorial', array(), true)
+            )))->save();
+        }
+
+        return $content;
     }
 
     /**
@@ -429,7 +465,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 (new UniqueNotification(array(
                     'survey_id' => $surveyId,
                     'importance' => Notification::HIGH_IMPORTANCE,
-                    'setNormalImportance' => false,  // Always popup
+                    //'setNormalImportance' => false,  // Always popup
                     'title' => $this->gT('Cint warning'),
                     'message' => $this->renderPartial(
                         'notifications/nagging',
@@ -760,56 +796,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
-     * Survey dashboard.
-     * @param int $surveyId
-     * @return string
-     */
-    public function actionIndex($surveyId)
-    {
-        if (empty($surveyId))
-        {
-            throw new InvalidArgumentException('surveyId cannot be empty');
-        }
-
-        $data = array();
-        $data['surveyId'] = $surveyId;
-        $data['common'] = $this->renderPartial('common', $data, true);
-        $this->renderCommonJs($surveyId);
-
-        $content = $this->renderPartial('index', $data, true);
-
-        $this->registerCssAndJs();
-
-        // Show warning if survey is not active
-        $survey = Survey::model()->findByPk($surveyId);
-        $surveyIsActive = $survey->getState() === 'willExpire' || $survey->getState() === 'running';
-        if (!$surveyIsActive)
-        {
-            (new UniqueNotification(array(
-                'survey_id' => $surveyId,
-                'importance' => Notification::HIGH_IMPORTANCE,
-                'setNormalImportance' => false,  // Always popup
-                'title' => $this->gT('Cint warning'),
-                'message' => $this->renderPartial('notifications/warning_popup', array(), true)
-            )))->save();
-        }
-
-        // Show tutorial if survey has no orders
-        if (!CintLinkOrder::hasAnyOrders($surveyId))
-        {
-            (new UniqueNotification(array(
-                'survey_id' => $surveyId,
-                'importance' => Notification::HIGH_IMPORTANCE,
-                'markAsNew' => false,
-                'title' => $this->gT('Welcome to CintLink LimeSurvey Integration'),
-                'message' => $this->renderPartial('tutorial', array(), true)
-            )))->save();
-        }
-
-        return $content;
-    }
-
-    /**
      * As actionIndex but survey agnostic
      * Global dashboard.
      *
@@ -918,7 +904,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         // Only update when request is not pagination request from grid
         $ajax = Yii::app()->request->getParam('ajax');
-        if ($ajax != 'url')
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+        if ($ajax != 'url'
+            && $limesurveyOrgKey)
         {
             $orders = CintLinkOrder::updateOrders($orders);
         }
@@ -931,6 +919,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         $data['dateformatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
         $data['survey'] = Survey::model()->findByPk($surveyId);
         $data['hasTokenTable'] = $this->hasTokenTable($surveyId);
+        $data['loggedIn'] = $limesurveyOrgKey != null;
 
         $content = $this->renderPartial('dashboard', $data, true);
 
@@ -949,7 +938,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
         // Only update when request is not pagination request from grid
         $ajax = Yii::app()->request->getParam('ajax');
-        if ($ajax != 'url')
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+        if ($ajax != 'url' &&
+            $limesurveyOrgKey)
         {
             $orders = CintLinkOrder::updateOrders($orders);
         }
@@ -1011,11 +1002,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
         else if ($result->code == 200)
         {
             Yii::app()->user->setState('limesurveyOrgKey', $result->auth);
-            $this->limesurveyOrgKey = $result->auth;
 
             return json_encode(array('result' => true, 'response' => $response));
         }
-        else
         {
             return json_encode(array('error' => 'Unknown return code: ' . $result->code));
         }
@@ -1033,8 +1022,16 @@ class CintLink extends \ls\pluginmanager\PluginBase
     {
         $purchaseRequest = $request->getParam('purchaseRequest');
         $surveyId = $request->getParam('surveyId');
-        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
         $userId = Yii::app()->user->getId();
+
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
+        if (empty($limesurveyOrgKey))
+        {
+            return json_encode(array(
+                'result' => 'false',
+                'error' => $this->gT('You cannot order Cint participants unless you are logged in on limesurvey.org.')
+            ));
+        }
 
         $curl = new Curl();
         $response = $curl->post(
@@ -1097,7 +1094,6 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
 
         $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
-
         if (empty($limesurveyOrgKey))
         {
             return json_encode(array('error' => 'Missing limesurveyOrgKey - user not logged in?'));
@@ -1198,13 +1194,16 @@ class CintLink extends \ls\pluginmanager\PluginBase
             )
         );
 
+        $limesurveyOrgKey = Yii::app()->user->getState('limesurveyOrgKey');
         return json_encode(array(
             'result' => json_encode($data),
             'name' => $user->full_name,
             'email' => $user->email,
             'numberOfQuestions' => $this->calculateNumberOfQuestions($surveyId),
             'link' => $link,
-            'language' => $survey->language
+            'language' => $survey->language,
+            'loggedIn' => $limesurveyOrgKey != null,
+            'warningMessage' => $this->gT('PLEASE NOTE THAT YOU CANNOT ORDER CINT PARTICIPANTS UNLESS YOU ARE LOGGED IN AT LIMESURVEY.ORG')
         ));
     }
 
