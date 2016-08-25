@@ -426,13 +426,17 @@ class CintLink extends \ls\pluginmanager\PluginBase
             $surveyIsActive = $survey->getState() === 'willExpire' || $survey->getState() === 'running';
             if (!$surveyIsActive)
             {
-                $this->showNaggingNotification(
-                    sprintf($this->gT(
-                        'A Cint order is paid or about to be paid, but survey %s is not activated. Please activate it <i>as soon as possible</i> to enable the review process.',
-                        'js'
-                    ), $survey->defaultlanguage->surveyls_title),
-                    $surveyId
-                );
+                (new UniqueNotification(array(
+                    'survey_id' => $surveyId,
+                    'importance' => Notification::HIGH_IMPORTANCE,
+                    'setNormalImportance' => false,  // Always popup
+                    'title' => $this->gT('Cint warning'),
+                    'message' => $this->renderPartial(
+                        'notifications/nagging',
+                        array('title' => $survey->defaultlanguage->surveyls_title),
+                        true
+                    )
+                )))->save();
             }
         }
 
@@ -786,7 +790,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'importance' => Notification::HIGH_IMPORTANCE,
                 'setNormalImportance' => false,  // Always popup
                 'title' => $this->gT('Cint warning'),
-                'message' => $this->renderPartial('warning_popup', array(), true)
+                'message' => $this->renderPartial('notifications/warning_popup', array(), true)
             )))->save();
         }
 
@@ -1370,18 +1374,10 @@ class CintLink extends \ls\pluginmanager\PluginBase
     /**
      * Show a nagging notification
      *
-     * @param string $message
      * @param int $surveyId
      * @return void
      */
-    protected function showNaggingNotification($message, $surveyId) {
-        $not = new UniqueNotification(array(
-            'survey_id' => $surveyId,
-            'importance' => Notification::HIGH_IMPORTANCE,
-            'title' => $this->gT('Cint warning'),
-            'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' . $message
-        ));
-        $not->save();
+    protected function showNaggingNotification($surveyId) {
     }
 
     /**
