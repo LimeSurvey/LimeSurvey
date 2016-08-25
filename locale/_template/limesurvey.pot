@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-08-25 14:43:50+00:00\n"
+"POT-Creation-Date: 2016-08-25 15:09:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2465,7 +2465,7 @@ msgstr ""
 #: application/controllers/admin/export.php:217
 #: application/controllers/admin/export.php:414
 #: application/views/admin/export/exportresults_view.php:12
-#: application/views/admin/export/vv_view.php:35
+#: application/views/admin/export/vv_view.php:72
 msgid "Export results"
 msgstr ""
 
@@ -3738,7 +3738,6 @@ msgstr ""
 
 #: application/controllers/admin/surveypermission.php:516
 #: application/helpers/userstatistics_helper.php:3083
-#: application/views/admin/export/vv_view.php:15
 #: application/views/admin/participants/participantsPanel_view.php:8
 #: application/views/admin/participants/participantsPanel_view.php:48
 #: application/views/admin/participants/participantsPanel_view.php:54
@@ -5253,7 +5252,7 @@ msgid "View statistics"
 msgstr ""
 
 #: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:56
-msgid "%s Minutes"
+msgid "%s minutes"
 msgstr ""
 
 #: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:60
@@ -11642,7 +11641,7 @@ msgid "Completion state:"
 msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:114
-#: application/views/admin/export/vv_view.php:17
+#: application/views/admin/export/vv_view.php:31
 #: application/views/admin/responses/browseallheader_view.php:55
 msgid "Completed responses only"
 msgstr ""
@@ -11651,13 +11650,13 @@ msgstr ""
 #: application/views/admin/export/spss_view.php:11
 #: application/views/admin/export/statistics_subviews/_dataselection.php:14
 #: application/views/admin/export/statistics_user_view.php:31
-#: application/views/admin/export/vv_view.php:18
+#: application/views/admin/export/vv_view.php:32
 #: application/views/admin/responses/browseallheader_view.php:54
 msgid "All responses"
 msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:116
-#: application/views/admin/export/vv_view.php:19
+#: application/views/admin/export/vv_view.php:33
 #: application/views/admin/responses/browseallheader_view.php:56
 msgid "Incomplete responses only"
 msgstr ""
@@ -12103,30 +12102,44 @@ msgid "Export a VV survey file"
 msgstr ""
 
 #: application/views/admin/export/vv_view.php:11
-msgid "Export survey"
+msgid "Export survey:"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:23
+#: application/views/admin/export/vv_view.php:18
+msgid "Survey id:"
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:27
+msgid "Export:"
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:44
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:208
+#: application/views/admin/survey/surveySummary_view.php:71
+msgid "Format:"
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:49
 msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:23
-msgid "File extension"
+#: application/views/admin/export/vv_view.php:50
+msgid "File extension:"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:27
+#: application/views/admin/export/vv_view.php:58
 msgid "If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated)."
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:27
-msgid "VV export version"
+#: application/views/admin/export/vv_view.php:59
+msgid "VV export version:"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:29
+#: application/views/admin/export/vv_view.php:63
 msgid "Last VV version"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:30
+#: application/views/admin/export/vv_view.php:64
 msgid "Old VV version"
 msgstr ""
 
@@ -15850,11 +15863,6 @@ msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:190
 msgid "Bounce Email:"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:208
-#: application/views/admin/survey/surveySummary_view.php:71
-msgid "Format:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:214
