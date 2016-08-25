@@ -220,7 +220,7 @@ class questions extends Survey_Common_Action
             Yii::app()->loadHelper('admin/import');
 
             if (strtolower($sExtension) == 'lsq')
-                $aImportResults = XMLImportQuestion($sFullFilepath, $surveyid, $gid);
+                $aImportResults = XMLImportQuestion($sFullFilepath, $surveyid, $gid, array('autorename'=>Yii::app()->request->getPost('autorename')=='1'?true:false));
             else
                 $this->getController()->error(gT('Unknown file extension'));
 

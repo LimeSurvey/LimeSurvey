@@ -347,9 +347,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 * @param mixed $iNewSID The new survey id
 * @param mixed $newgid The new question group id -the question will always be added after the last question in the group
 */
-function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
+function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('autorename'=>false))
 {
-
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
@@ -410,6 +409,14 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
         foreach ($row as $key=>$value)
         {
             $insertdata[(string)$key]=(string)$value;
+        }
+        if ($options['autorename'])
+        {
+            // Check if code already exists
+            while (Question::model()->countByAttributes(array('title'=>$insertdata['title']))>0)
+            {
+                $insertdata['title']=randomChars(5);
+            }
         }
         $iOldSID=$insertdata['sid'];
         $insertdata['sid']=$iNewSID;
