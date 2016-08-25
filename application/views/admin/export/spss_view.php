@@ -1,5 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Export result data to SPSS");?></h3>
+    <h3><?php eT("Export response data to SPSS");?></h3>
     <?php echo CHtml::form(array("admin/export/sa/exportspss/sid/{$surveyid}/"), 'post', array('id'=>'exportspss', 'class'=>''));?>
     <div class="form-group row">
         <label for='completionstate' class='col-sm-2  form-control-label'><?php eT("Data selection:");?></label>
