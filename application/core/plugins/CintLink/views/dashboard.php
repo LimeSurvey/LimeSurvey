@@ -46,11 +46,10 @@
             </div>
         </div>
 
-        <?php if (!$loggedIn): ?>
-            <div class='col-sm-3' style='cursor: pointer;'>
+        <div class='col-sm-3' style='<?php if (!$loggedIn) echo 'cursor: pointer;'; ?>'>
                 <div
-                    class='panel panel-primary cintlink-shadow'
-                    onclick='LS.plugin.cintlink.showLoginForm();'
+                class='panel panel-primary cintlink-shadow <?php if ($loggedIn) echo 'disabled'; ?>'
+                    onclick='<?php if (!$loggedIn) echo 'LS.plugin.cintlink.showLoginForm();'; ?>'
                 >
                     <div class='panel-heading'>
                         <h4 class='panel-title'><?php echo $plugin->gT('Login'); ?></h4>
@@ -64,7 +63,6 @@
                     </div>
                 </div>
             </div>
-        <?php endif; ?>
 
         <!-- Modal for Cint language wizard -->
         <div id="cint-lang-wizard" class="modal fade" role="dialog">
