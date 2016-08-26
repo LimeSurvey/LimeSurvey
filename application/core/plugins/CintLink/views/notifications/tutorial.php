@@ -1,3 +1,7 @@
+<?php
+
+/*
+ *
 <p>
     <?php echo sprintf($plugin->gT('The CintLink Integration makes it easy to order participants from %s.'),
         '<a href="https://www.cint.com">' . $plugin->gT('Cint') . '<a/>'); 
@@ -25,6 +29,10 @@
         '<a href="https://manual.limesurvey.org/CintLink">' . $plugin->gT('LimeSurvey manual') . '</a>'
         ); ?>
 </p>
+
+*/
+
+?>
 
 <div class='alert alert-warning'>
     <div class='row'>
