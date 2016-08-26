@@ -253,8 +253,6 @@ echo $colModels;
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
                             ),
                     ));
-
-            var_dump($model->participantAttributes);
                 ?>
             </div>
             <!-- To update rows per page via ajax -->

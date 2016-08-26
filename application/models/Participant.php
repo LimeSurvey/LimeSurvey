@@ -95,7 +95,7 @@ class Participant extends LSActiveRecord
         return ($count!==0 ? $count : '');
     }
     public function getButtons(){
-        $buttons = "";
+        $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<a data-toggle='modal' data-participantid='".$this->participant_id."' data-target='%s'>" //Which modal is to be called?
             . "<button class='btn btn-default btn-xs %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
@@ -109,7 +109,6 @@ class Participant extends LSActiveRecord
                 'edit'
             );
             $buttons .= vsprintf($raw_button_template, $editData);
-            $buttons .= "&nbsp;";
 
         //delete-button
             $deleteData = array(
@@ -119,7 +118,6 @@ class Participant extends LSActiveRecord
                 'trash'
             );
             $buttons .= vsprintf($raw_button_template, $deleteData);
-            $buttons .= "&nbsp;";
         //survey information
             $infoData = array(
                 'participantInfo',
@@ -157,21 +155,15 @@ class Participant extends LSActiveRecord
         return $extraAttributes;
     }
 
-    public function getParticipantAttributeValue($attribute_id){
-        if(!empty($this->participantAttributes))
-        {
-            foreach($this->participantAttributes as $singleAttribute){
-                if($singleAttribute['attribute_id'] == $attribute_id){
-                    return $singleAttribute['value'];
-                } else {
-                    return "noTFittet";
-                }
+    public function getParticipantAttribute($attribute_textid){
+        list(,$attribute_id) = explode('_',$attribute_textid);
+        $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
+        foreach($participantAttributes as $singleAttribute){
+            if($singleAttribute['attribute_id'] == $attribute_id){
+                return $singleAttribute['value']; 
             }
         }
-        else 
-        {
-            return "";
-        }
+        return "";
     }
     public function getColumns(){
         $cols = array(
@@ -213,13 +205,14 @@ class Participant extends LSActiveRecord
             )
         );
 
+        $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
         foreach($this->allExtraAttributes as $name => $attribute){
-            
             $cols[] = array(
-                "name" => $name,
-                "value" => $this->getParticipantAttributeValue($attribute['attribute_id']),
+                "value" => '$data->getParticipantAttribute($this->id)',
+                "id" => $name,
                 "header" => $attribute['defaultname'],
-                "filter" => false
+                "type" => "raw",
+                "filter" => TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name])
             );
         }
         return $cols;
@@ -233,7 +226,7 @@ class Participant extends LSActiveRecord
 
         $sort = new CSort;
         $sort->defaultOrder = 'lastname ASC';
-        $sort->attributes = array(
+        $sortAttributes = array(
           'lastname'=>array(
             'asc'=>'lastname',
             'desc'=>'lastname desc',
@@ -260,6 +253,7 @@ class Participant extends LSActiveRecord
             'desc'=>'blacklisted desc',
           )
         );
+
         $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
         $criteria->together = true;
@@ -270,9 +264,20 @@ class Participant extends LSActiveRecord
         $criteria->compare('t.language', $this->language, true);
         $criteria->compare('t.blacklisted', $this->blacklisted, true);
         $criteria->compare('owner_uid', $this->owner_uid);
-        
-      
 
+        $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
+        $params = array();
+        $condition = "";
+        foreach($this->allExtraAttributes as $name => $attribute){
+            $value = $extraAttributeParams[$name];
+            if($value != ''){
+                $condition .=' ("participantAttributes"."value" = :'.$name.') ';
+                $criteria->params[$name] = $value;
+                $criteria->addCondition($condition);
+            }
+        }
+
+        $sort->attributes = $sortAttributes;
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'sort'=>$sort,
