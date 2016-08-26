@@ -1,4 +1,16 @@
 /* ==================== */
+/* Overriding Bootstrap ...
+/* ==================== */
+
+@media only screen and (max-width: 801px) {
+    /* Remove margin */
+  .row {
+   margin: 0;
+   padding: 0;
+  }
+}
+
+/* ==================== */
 /* Overall styles
 /* ==================== */
 
@@ -790,12 +802,6 @@ li.responsive-content {
 
   .visible-xs-inline-block{
    display: inline-block !important;
-  }
-
-  /* Remove margin */
-  .row {
-   margin: 0;
-   padding: 0;
   }
 
   /* Add some margin for multiple short text */
