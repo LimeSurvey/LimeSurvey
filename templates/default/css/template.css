@@ -152,7 +152,6 @@ body .navbar-default .navbar-brand:hover {
   top: 10px;
 }
 
-
 /* ==================== */
 /* Helper styles
 /* ==================== */
@@ -325,7 +324,6 @@ table {
   border-right: 3px solid #323232;
 }
 
-
 /* ==================== */
 /* Group styles
 /* ==================== */
@@ -407,8 +405,6 @@ table > tbody > tr > td.ddprefix {
   opacity: 0.25;
 }
 
-
-
 /* center the label text in no more table mode */
 .label-text{
   margin-top: -24px;
@@ -464,8 +460,6 @@ table.numbers-only th, table.numbers-only input {
 .geoname_search {
   margin-bottom: 10px;
 }
-
-
 
 /** Question Design **/
 
@@ -524,9 +518,7 @@ body div.row .question-container {
   border-top-color: #233140;
   border-width: 0.9em;
   margin-left: -0.9em;
-}
-
-*/
+} */
 
 /* Asterix */
 .asterisk {
@@ -746,12 +738,9 @@ table.array-no-dropdown  td.answer-item.text-center {
   margin-bottom: 2.5em;
 }
 
-
 /* ------ */
 /* END Slider
 /* ------ */
-
-
 
 /* ==================== */
 /* Responsive related styles
@@ -763,7 +752,6 @@ li.responsive-content {
   float: left;
   width: 100%;
 }
-
 
 /**
  * On big screen only, iPad and up
@@ -988,7 +976,6 @@ li.responsive-content {
    padding-right: 0;
    padding-left: 0;
   }
-
 }
 
 /** On small phones, leave some more space */
@@ -999,14 +986,6 @@ li.responsive-content {
    padding: 1em;
    margin: 1em;
   }
-
-  /*
-  .col-sm-12.answer {
-   padding-left: 0;
-   padding-right: 0;
-  }
-
-  */
 
   .no-more-tables tbody {
    padding-left: 0;
