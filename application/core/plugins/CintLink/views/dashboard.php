@@ -27,7 +27,7 @@
     <div class='row'>
 
         <!-- Show Cint widget -->
-        <div class='col-sm-3' style='cursor: pointer;'>
+        <div id='cintlink-widget-button' class='col-sm-3' style='cursor: pointer;'>
             <div
                 class='panel panel-primary cintlink-shadow'
                   onclick='<?php if ($additionalLanguages === null): echo 'LS.plugin.cintlink.showWidget();'; else: echo 'LS.plugin.cintlink.showLangWizard();'; endif; ?>'
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class='col-sm-3' style='<?php if (!$loggedIn) echo 'cursor: pointer;'; ?>'>
+        <div id='cintlink-login-button' class='col-sm-3' style='<?php if (!$loggedIn) echo 'cursor: pointer;'; ?>'>
                 <div
                 class='panel panel-primary cintlink-shadow <?php if ($loggedIn) echo 'disabled'; ?>'
                     onclick='<?php if (!$loggedIn) echo 'LS.plugin.cintlink.showLoginForm();'; ?>'
@@ -97,7 +97,7 @@
         </div>
 
         <!-- Refresh -->
-        <button class='btn btn-default pull-right' onclick='LS.plugin.cintlink.showDashboard();'><span class='fa fa-refresh'></span>&nbsp;<?php echo $plugin->gT('Refresh'); ?></button>
+        <button id='cintlink-refresh-button' class='btn btn-default pull-right' onclick='LS.plugin.cintlink.showDashboard();'><span class='fa fa-refresh'></span>&nbsp;<?php echo $plugin->gT('Refresh'); ?></button>
 
   </div>
 <?php endif; ?>
@@ -178,7 +178,10 @@
         'name' => 'status',
         'header' => $plugin->gT('Status'),
         'value' => '$data->styledStatus',
-        'type' => 'raw'
+        'type' => 'raw',
+        'id' => 'cintlink-status-column',
+        'htmlOptions' => array(
+        )
     );
     $columns[] = array(
         'name' => 'buttons',

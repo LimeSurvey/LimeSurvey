@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-12 content-right">
-        <h3><?php eT("CintLink Integration");?></h3>
+        <h3 id='cintlink-header'><?php eT("CintLink Integration");?></h3>
         <div id='cintlink-container'>
         </div>
     </div>

@@ -175,6 +175,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
         // Show tutorial if survey has no orders
         if (!CintLinkOrder::hasAnyOrders($surveyId))
         {
+            /*
             (new UniqueNotification(array(
                 'survey_id' => $surveyId,
                 'importance' => Notification::HIGH_IMPORTANCE,
@@ -182,6 +183,12 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 'title' => $this->gT('Welcome to CintLink LimeSurvey Integration'),
                 'message' => $this->renderPartial('tutorial', array(), true)
             )))->save();
+             */
+            $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
+            App()->clientScript->registerScriptFile("$assetsUrl/bootstrap-tour.min.js");
+            App()->clientScript->registerScriptFile("$assetsUrl/tour.js");
+            $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/css');
+            App()->clientScript->registerCssFile("$assetsUrl/bootstrap-tour.min.css");
         }
 
         return $content;

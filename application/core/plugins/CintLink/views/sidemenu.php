@@ -1,7 +1,7 @@
 <!-- CintLink side-menu content -->
 
 <li>
-    <a href='<?php echo $href; ?>'>
+    <a id='cintlink-sidemenu-button' href='<?php echo $href; ?>'>
         <span class='cintlink-icons cinticon cintlink-icon-sidemenu'></span>
         <?php echo $plugin->gT('CintLink'); ?>
     </a>

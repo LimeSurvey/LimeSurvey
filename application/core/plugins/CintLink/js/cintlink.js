@@ -118,10 +118,15 @@ $(document).ready(function() {
             // Make sure notifications are updated even if we are using Ajax.
             LS.updateNotificationWidget(LS.plugin.cintlink.notificationUpdateUrl, false);
 
+            // If surveyId is defined we have survey specific dashboard
             if (LS.plugin.cintlink.surveyId) {
 
-                var useLangWizard = $('#cint-lang-wizard input[name="lang"]').length > 1 ;
+                if (LS.plugin.cintlink.tour) {
+                    LS.plugin.cintlink.tour.init();
+                    LS.plugin.cintlink.tour.start();
+                }
                 /*
+                var useLangWizard = $('#cint-lang-wizard input[name="lang"]').length > 1 ;
                 var shouldShowWidget = $('#cintlink-gridview table tr').length == 2;
 
                 if (shouldShowWidget) {

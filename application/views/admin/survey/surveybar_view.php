@@ -76,14 +76,14 @@
 
                     <!-- activate -->
                     <?php if($canactivate): ?>
-                        <a class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>" role="button">
+                        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>" role="button">
                             <?php eT("Activate this survey"); ?>
                         </a>
 
                     <!-- can't activate -->
                     <?php elseif (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')): ?>
                         <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-                            <button type="button" class="btn btn-success btntooltip" disabled="disabled">
+                            <button id='ls-activate-survey' type="button" class="btn btn-success btntooltip" disabled="disabled">
                                 <?php eT("Activate this survey"); ?>
                             </button>
                         </span>
