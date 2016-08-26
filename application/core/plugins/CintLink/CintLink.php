@@ -1314,6 +1314,64 @@ class CintLink extends \ls\pluginmanager\PluginBase
     }
 
     /**
+     * Get all texts to the introduction tour
+     * @return string JSON
+     */
+    public function getTourTexts()
+    {
+        $texts = array();
+        $texts['welcome'] = array(
+            'title' => $this->gT('Welcome to the CintLink Tour'),
+            'content' => sprintf($this->gT('This is a short guided tour that will introduce you to the <b>LimeSurvey CintLink plugin</b>. For more detailed information, please visit the %s', 'js'),
+                '<a target="_blank" href="https://manual.limesurvey.org">' . $this->gT('LimeSurvey manual') . '</a>.'
+            )
+        );
+        $texts['widget'] = array(
+            'title' => $this->gT('Cint widget'),
+            'content' => $this->gT('This button opens the Cint widget. From here you can order participant and decide what target group you want.')
+        );
+        $texts['login'] = array(
+            'title' => $this->gT('Login'),
+            'content' => sprintf($this->gT('To be able to order participant, you must first login to %s. If you don\'t have an account, you can register one %s. It\'s completely free.'),
+                '<a target="_blank" href="https://www.limesurvey.org">' . $this->gT('limesurvey.org') . '</a>',
+                '<a target="_blank" href="https://www.limesurvey.org/cb-registration/registers">' . $this->gT('here') . '</a>'
+            )
+        );
+        $texts['orders'] = array(
+            'title' => $this->gT('Orders'),
+            'content' => $this->gT('Your orders will be listed here. They can be in six different states:') . 
+                '<br/><ul><li>' . $this->gT('Waiting for payment') .
+                '</li><li>' . $this->gT('Under review') .
+                '</li><li>' . $this->gT('Live') .
+                '</li><li>' . $this->gT('Completed') .
+                '</li><li>' . $this->gT('Cancelled') .
+                '</li><li>' . $this->gT('Denied') . '</li></ul>'
+        );
+        $texts['payment'] = array(
+            'title' => $this->gT('Payment'),
+            'content' => $this->gT('When your order is waiting for payment, you will see this button:') . 
+                '<br/><button class="btn btn-default btn-sm"><span class="fa fa-credit-card"></span>&nbsp;' . $this->gT('Pay now') .
+                '</button><br/>' . sprintf($this->gT('Clicking this will take you to %s for the payment procedure.'),
+                    '<a target="_blank" href="https://www.limesurvey.org">' . $this->gT('limesurvey.org') . '</a>'
+                )
+        );
+        $texts['refresh'] = array(
+            'title' => $this->gT('Refresh'),
+            'content' => $this->gT('Don\'t forget to refresh or reload the page after you\'ve paid.')
+        );
+        $texts['sidemenu'] = array(
+            'title' => $this->gT('Side-menu'),
+            'content' => $this->gT('Your orders will also be listed here')
+        );
+        $texts['activate'] = array(
+            'title' => $this->gT('Activate survey'),
+            'content' => $this->gT('Before ordering participants from Cint you should make sure your survey is <b>completed</b> and <b>activated</b>', 'js')
+        );
+
+        return json_encode(array('result' => $texts));
+    }
+
+    /**
      * User has permission to Cint if he/she is super admin OR
      * owner of the survey.
      *

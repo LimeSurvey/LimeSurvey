@@ -121,9 +121,11 @@ $(document).ready(function() {
             // If surveyId is defined we have survey specific dashboard
             if (LS.plugin.cintlink.surveyId) {
 
-                if (LS.plugin.cintlink.tour) {
-                    LS.plugin.cintlink.tour.init();
-                    LS.plugin.cintlink.tour.start();
+                if (LS.plugin.cintlink.tourPromise) {
+                    LS.plugin.cintlink.tourPromise.then(function() {
+                        LS.plugin.cintlink.tour.init();
+                        LS.plugin.cintlink.tour.start();
+                    });
                 }
                 /*
                 var useLangWizard = $('#cint-lang-wizard input[name="lang"]').length > 1 ;
