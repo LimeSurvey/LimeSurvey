@@ -1361,11 +1361,11 @@ class CintLink extends \ls\pluginmanager\PluginBase
         );
         $texts['sidemenu'] = array(
             'title' => $this->gT('Side-menu'),
-            'content' => $this->gT('Your orders will also be listed here')
+            'content' => $this->gT('Your orders will also be listed here.')
         );
         $texts['activate'] = array(
             'title' => $this->gT('Activate survey'),
-            'content' => $this->gT('Before ordering participants from Cint you should make sure your survey is <b>completed</b> and <b>activated</b>', 'js')
+            'content' => $this->gT('Before ordering participants from Cint you should make sure your survey is <b>completed</b> and <b>activated</b>. It is <i>not</i> allowed to change the survey once it is reviewed by Cint!', 'js')
         );
 
         return json_encode(array('result' => $texts));
