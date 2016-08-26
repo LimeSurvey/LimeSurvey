@@ -146,8 +146,8 @@ class Question extends LSActiveRecord
         }
         else
         {
+            $aRules[]= array('title', 'compare','compareValue'=>'time','operator'=>'!=', 'message'=> gT("'time' is a reserved word and can not be used for subquestion."), 'except' => 'archiveimport' );
             $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
-
         }
         return $aRules;
     }
