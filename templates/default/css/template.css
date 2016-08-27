@@ -5,8 +5,8 @@
 @media only screen and (max-width: 801px) {
     /* Remove margin */
   .row {
-   margin: 0;
-   padding: 0;
+    margin: 0;
+    padding: 0;
   }
 }
 
