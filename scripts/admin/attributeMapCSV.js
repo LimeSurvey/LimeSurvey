@@ -70,7 +70,7 @@ $(document).ready(function() {
                 newDraggable.html(newDraggable.attr('id').replace('cs_',''));
                 var id = newDraggable.attr('id').replace(/ /g, '');
                 var name = newDraggable.attr('data-name');
-                newDraggable.prepend('<input type="text" id="td_' + id + '" value="' + name + '">');
+                newDraggable.prepend('<input type="text" id="td_' + id + '" value="' + name + '">&nbsp;');
             }  
                         
             // Reset the mappable attribute classes 
@@ -95,6 +95,9 @@ $(document).ready(function() {
             // Physically  move the draggable to the target (the plugin just visually moves it)
             // Need to use a clone for this to fake out iPad
             var newDraggable = $(ui.draggable).clone();
+            newDraggable.css('width', '');
+            newDraggable.css('overflow', 'hidden');
+            newDraggable.css('white-space', 'nowrap');
             newDraggable.appendTo(this);
             $(ui.draggable).remove();
 
