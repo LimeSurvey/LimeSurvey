@@ -1012,14 +1012,8 @@ function buildsurveysession($surveyid,$preview=false)
     $redata = compact(array_keys(get_defined_vars()));
     renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
-    //RESET ALL THE SESSION VARIABLES AND START AGAIN
-    unset($_SESSION['survey_'.$surveyid]['grouplist']);
-    unset($_SESSION['survey_'.$surveyid]['fieldarray']);
-    unset($_SESSION['survey_'.$surveyid]['insertarray']);
-    unset($_SESSION['survey_'.$surveyid]['fieldnamesInfo']);
-    unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
-    unset($_SESSION['survey_'.$surveyid]['groupReMap']);
-    $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
+    // Reset all the session variables and start again
+    resetAllSessionVariables($surveyid);
 
     // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
     if (returnGlobal('lang',true))
@@ -1579,6 +1573,22 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
         default:
             break;
     }
+}
+
+/**
+ * Resets all session variables for this survey
+ * @param int $surveyid
+ * @return void
+ */
+function resetAllSessionVariables($surveyid)
+{
+    unset($_SESSION['survey_'.$surveyid]['grouplist']);
+    unset($_SESSION['survey_'.$surveyid]['fieldarray']);
+    unset($_SESSION['survey_'.$surveyid]['insertarray']);
+    unset($_SESSION['survey_'.$surveyid]['fieldnamesInfo']);
+    unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
+    unset($_SESSION['survey_'.$surveyid]['groupReMap']);
+    $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 }
 
 /**
