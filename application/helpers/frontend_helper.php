@@ -1009,36 +1009,9 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
     $renderWay = getRenderWay($renderToken, $renderCaptcha);
+    $redata = compact(array_keys(get_defined_vars()));
+    renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
-    switch($renderWay){
-        case "main": //Token required, maybe Captcha required
-            sendCacheHeaders();
-            doHeader();
-            $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
-
-            // render token form
-            if($scenarios['tokenRequired']){
-                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
-            } else {
-                App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
-            }
-
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
-            doFooter();
-            exit; 
-            break;
-        case "register": //Register new user
-            // Add the event and test if done
-            Yii::app()->runController("register/index/sid/{$surveyid}");
-            Yii::app()->end();
-            echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
-            break;
-        case "correct": //Nothing to hold back, render survey
-        default:
-            break;
-    }
     //RESET ALL THE SESSION VARIABLES AND START AGAIN
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
     unset($_SESSION['survey_'.$surveyid]['fieldarray']);
@@ -1564,6 +1537,48 @@ function getRenderWay($renderToken, $renderCaptcha)
         $renderWay=$renderToken;
     }
     return $renderWay;
+}
+
+/**
+ * Render token, captcha or register form
+ * @param string $renderWay
+ * @param array $redata
+ * @param array $scenarios
+ * @param string $sTemplateViewPath
+ * @param array $aEnterTokenData
+ * @param int $surveyid
+ * @return void
+ */
+function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid)
+{
+    switch($renderWay){
+        case "main": //Token required, maybe Captcha required
+            sendCacheHeaders();
+            doHeader();
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
+
+            // render token form
+            if($scenarios['tokenRequired']){
+                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
+            } else {
+                App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
+            }
+
+            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
+            doFooter();
+            exit;
+            break;
+        case "register": //Register new user
+            // Add the event and test if done
+            Yii::app()->runController("register/index/sid/{$surveyid}");
+            Yii::app()->end();
+            echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
+            break;
+        case "correct": //Nothing to hold back, render survey
+        default:
+            break;
+    }
 }
 
 /**
