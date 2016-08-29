@@ -154,6 +154,7 @@ $internalConfig = array(
         'session' => array(
             'cookieParams' => array(
                 'httponly' => true,
+                'secure'=> isset($_SERVER['HTTPS']) && ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)
             ),
         ),
         'messages' => array(

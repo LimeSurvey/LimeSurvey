@@ -505,6 +505,15 @@ $config['force_ssl'] = 'neither'; // DO not turn on unless you are sure your ser
 */
 $config['ssl_emergency_override'] = false;
 
+/**
+* Sets if any part of LimeSUrvey may be embedded in an iframe
+* Valid values are allow, sameorigin
+* Default: allow
+* Recommended: sameorigin
+* Using 'deny' is currently not supported as it will disable the template editor preview and probably file upload.
+*/
+$config['x_frame_options'] = 'allow';
+
 
 // Get your IP Info DB key from http://ipinfodb.com/
 // If you have the API key, you can use it to get the approximate location of the user initially.

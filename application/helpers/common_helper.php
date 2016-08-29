@@ -1403,6 +1403,10 @@ function sendCacheHeaders()
     if ( $embedded ) return;
     if (!headers_sent())
     {
+        if (Yii::app()->getConfig('x_frame_options','allow')=='sameorigin')
+        {
+            header('X-Frame-Options: SAMEORIGIN');
+        }
         header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');  // this line lets IE7 run LimeSurvey in an iframe
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
