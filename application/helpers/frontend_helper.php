@@ -1040,30 +1040,7 @@ function buildsurveysession($surveyid,$preview=false)
         $aEnterTokenData['errorMessage'] = $FlashError;
     }
 
-    //Check which way should be rendered 
-    if($renderToken!==$renderCaptcha)
-    {
-        if($renderToken==="register")
-        {
-            $renderWay="register";
-        }
-        if($renderCaptcha==="correct" || $renderToken==="correct")
-        {
-            $renderWay="main";
-        }
-        if($renderCaptcha==="")
-        {
-            $renderWay=$renderToken;
-        }
-        else if($renderToken==="")
-        {
-            $renderWay=$renderCaptcha;
-        }
-    }
-    else 
-    {
-        $renderWay=$renderToken;
-    }
+    $renderWay = getRenderWay($renderToken, $renderCaptcha);
 
     switch($renderWay){
         case "main": //Token required, maybe Captcha required
@@ -1538,6 +1515,40 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
     Yii::trace('end', 'survey.buildsurveysession');
+}
+
+/**
+ * Returns which way should be rendered
+ * @param string $renderToken
+ * @param string $renderCaptcha
+ * @return string
+ */
+function getRenderWay($renderToken, $renderCaptcha)
+{
+    if($renderToken!==$renderCaptcha)
+    {
+        if($renderToken==="register")
+        {
+            $renderWay="register";
+        }
+        if($renderCaptcha==="correct" || $renderToken==="correct")
+        {
+            $renderWay="main";
+        }
+        if($renderCaptcha==="")
+        {
+            $renderWay=$renderToken;
+        }
+        else if($renderToken==="")
+        {
+            $renderWay=$renderCaptcha;
+        }
+    }
+    else
+    {
+        $renderWay=$renderToken;
+    }
+    return $renderWay;
 }
 
 /**
