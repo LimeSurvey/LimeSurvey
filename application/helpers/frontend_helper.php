@@ -1000,39 +1000,7 @@ function buildsurveysession($surveyid,$preview=false)
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
         //Test if token is valid
-        if(!$subscenarios['tokenValid'])
-        {
-            //Check if there is a clienttoken set
-            if((!isset($clienttoken) || $clienttoken==""))
-            {
-                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
-                {
-                    $renderToken='register';
-                }
-                else
-                {
-                    $renderToken='main';
-                }
-            } 
-            else
-            { //token was wrong
-                $errorMsg= ""
-                . gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
-                . sprintf( gT("For further information please contact %s"), $thissurvey['adminname'])
-                . "(<a href='mailto:".$thissurvey['adminemail']."'>"
-                . $thissurvey['adminemail']."</a>)";
-                
-                 $FlashError .= $errorMsg;
-                
-                $renderToken='main';
-            }
-        } 
-        else 
-        {
-            $aEnterTokenData['visibleToken'] =  $clienttoken;
-            $aEnterTokenData['token'] =  $clienttoken;
-            $renderToken='correct';
-        }
+        list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
     }
 
     //If there were errors, display through yii->FlashMessage
@@ -1515,6 +1483,53 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
     Yii::trace('end', 'survey.buildsurveysession');
+}
+
+/**
+ * Test if token is valid
+ * @param array $subscenarios
+ * @param array $thissurvey
+ * @param array $aEnterTokenData
+ * @param string $clienttoken
+ * @return array ($renderToken, $FlashError)
+ */
+function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
+{
+    $FlashError = '';
+    if(!$subscenarios['tokenValid'])
+    {
+        //Check if there is a clienttoken set
+        if((!isset($clienttoken) || $clienttoken==""))
+        {
+            if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
+            {
+                $renderToken='register';
+            }
+            else
+            {
+                $renderToken='main';
+            }
+        }
+        else
+        { //token was wrong
+            $errorMsg= ""
+            . gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
+            . sprintf( gT("For further information please contact %s"), $thissurvey['adminname'])
+            . "(<a href='mailto:".$thissurvey['adminemail']."'>"
+            . $thissurvey['adminemail']."</a>)";
+
+            $FlashError .= $errorMsg;
+
+            $renderToken='main';
+        }
+    }
+    else
+    {
+        $aEnterTokenData['visibleToken'] =  $clienttoken;
+        $aEnterTokenData['token'] =  $clienttoken;
+        $renderToken='correct';
+    }
+    return array($renderToken, $FlashError);
 }
 
 /**
