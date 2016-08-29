@@ -853,12 +853,14 @@ function submitfailed($errormsg = '', $query = null)
 }
 
 /**
-* This function builds all the required session variables when a survey is first started and
-* it loads any answer defaults from command line or from the table defaultvalues
-* It is called from the related format script (group.php, question.php, survey.php)
-* if the survey has just started.
-*/
-
+ * This function builds all the required session variables when a survey is first started and
+ * it loads any answer defaults from command line or from the table defaultvalues
+ * It is called from the related format script (group.php, question.php, survey.php)
+ * if the survey has just started.
+ * @param int $surveyid
+ * @param boolean $preview Defaults to false
+ * @return void
+ */
 function buildsurveysession($surveyid,$preview=false)
 {
     Yii::trace('start', 'survey.buildsurveysession');
