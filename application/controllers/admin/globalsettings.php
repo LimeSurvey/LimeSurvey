@@ -163,7 +163,7 @@ class GlobalSettings extends Survey_Common_Action
             {
                 setGlobalSetting('defaulttemplate', $sTemplate);
             }
-
+            setGlobalSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
         }
 
         // we set the admin theme
@@ -228,7 +228,6 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('googleanalyticsapikey',$_POST['googleanalyticsapikey']);
         setGlobalSetting('googletranslateapikey',$_POST['googletranslateapikey']);
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
-        setGlobalSetting('x_frame_options', $_POST['x_frame_options']);
         setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
         setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
         setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);

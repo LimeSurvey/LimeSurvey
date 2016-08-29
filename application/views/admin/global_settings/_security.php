@@ -49,7 +49,11 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-5 control-label"  for="force_ssl"><?php eT('IFrame embedding allowed:'); ?></label>
+    <label class="col-sm-5 control-label"  for="force_ssl">
+    <?php if (Yii::app()->getConfig("demoMode")==true){ ?>
+    <span class="text-danger asterisk"></span>
+    <?php }; ?>
+     <?php eT('IFrame embedding allowed:'); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
     <div class="col-sm-6">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'x_frame_options',
