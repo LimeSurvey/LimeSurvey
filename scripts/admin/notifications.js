@@ -48,7 +48,7 @@ $(document).ready(function() {
     /**
      * Called from outside (update notifications when click
      * @param {string} url
-     * @param {boolean} openAfter If notification widget should be opened after load; "default" to true
+     * @param {boolean} openAfter If notification widget should be opened after load; default to true
      * @return
      */
     LS.updateNotificationWidget = function(url, openAfter) {
@@ -60,7 +60,7 @@ $(document).ready(function() {
         });
 
         // Only update once
-        LS.updateNotificationWidget = function() {};
+        $('#notification-li').unbind('click');
     }
 
     /**

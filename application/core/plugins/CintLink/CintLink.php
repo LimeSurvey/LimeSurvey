@@ -172,18 +172,9 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
          */
 
-        // Show tutorial if survey has no orders
+        // Show tour if survey has no orders
         if (!CintLinkOrder::hasAnyOrders($surveyId))
         {
-            /*
-            (new UniqueNotification(array(
-                'survey_id' => $surveyId,
-                'importance' => Notification::HIGH_IMPORTANCE,
-                'markAsNew' => false,
-                'title' => $this->gT('Welcome to CintLink LimeSurvey Integration'),
-                'message' => $this->renderPartial('tutorial', array(), true)
-            )))->save();
-             */
             $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/js');
             App()->clientScript->registerScriptFile("$assetsUrl/bootstrap-tour.min.js");
             App()->clientScript->registerScriptFile("$assetsUrl/tour.js");
@@ -192,6 +183,25 @@ class CintLink extends \ls\pluginmanager\PluginBase
         }
 
         return $content;
+    }
+
+    /**
+     * Set tutorial message after tour has ended
+     * Tutorial is for now only a warning message.
+     * @return void
+     */
+    public function setTutorial(LSHttpRequest $request)
+    {
+        $surveyId = $request->getParam('surveyId');
+
+        (new UniqueNotification(array(
+            'survey_id' => $surveyId,
+            'importance' => Notification::HIGH_IMPORTANCE,
+            'markAsNew' => false,
+            'title' => $this->gT('Welcome to CintLink LimeSurvey Integration'),
+            'message' => $this->renderPartial('notifications.tutorial', array(), true)
+        )))->save();
+        return json_encode(array('result' => 'ok'));
     }
 
     /**
@@ -210,6 +220,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
 
     /**
      * Used from model
+     * Global variables are from Cint target group codes, e.g. number of children
      * @return SimpleXmlElement
      */
     public function getGlobalVariables()
@@ -1262,6 +1273,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                     || $functionToCall == "softDeleteOrder"
                     || $functionToCall == "userTriedToPay"
                     || $functionToCall == "updateAllOrders"
+                    || $functionToCall == "setTutorial"
                     || $functionToCall == "getSurvey")
             {
                 echo $this->$functionToCall($request);

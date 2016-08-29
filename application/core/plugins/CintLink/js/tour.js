@@ -11,9 +11,18 @@ $(document).ready(function() {
             var texts = response.result;
             LS.plugin.cintlink.tour = new Tour({
                 name: 'limesurvey-cintlink-tour',
-                //storage: false,  // Enable this for debugging
+                storage: false,  // Enable this for debugging
                 backdrop: true,
                 //debug: true,
+                onEnd: function() {
+                    $.ajax({
+                        url: LS.plugin.cintlink.pluginBaseUrl + '&method=setTutorial',
+                        surveyId: LS.plugin.cintlink.surveyId,
+                        success: function(response) {
+                            LS.updateNotificationWidget(LS.plugin.cintlink.notificationUpdateUrl, false);
+                        }
+                    });
+                },
                 steps: [
                 {
                     element: '#cintlink-header',
