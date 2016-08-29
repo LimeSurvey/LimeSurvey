@@ -617,6 +617,18 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
+-- User settings table
+--
+CREATE TABLE IF NOT EXISTS `prefix_user_settings` (
+    `uid` int(11) NOT NULL,
+    `entity` VARCHAR(15) DEFAULT NULL,
+    `entity_id` VARCHAR(31) DEFAULT NULL,
+    `key` VARCHAR(63) NOT NULL,
+    `value` TEXT DEFAULT NULL,
+    PRIMARY KEY (`id`, `entity`, `entity_id`, `key`)
+) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+--
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '262');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '263');

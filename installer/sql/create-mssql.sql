@@ -611,6 +611,18 @@ CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[stat
 CREATE INDEX [notif_hash_index] ON [prefix_notifications] ([hash]);
 
 --
+-- User settings table
+--
+CREATE TABLE prefix_user_settings (
+    [uid] int NOT NULL,
+    [entity] varchar(15) DEFAULT NULL,
+    [entity_id] varchar(31) DEFAULT NULL,
+    [key] varchar(63) NOT NULL,
+    [value] nvarchar(max) DEFAULT NULL,
+    PRIMARY KEY ([uid], [entity], [entity_id], [key])
+);
+
+--
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '262');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '263');

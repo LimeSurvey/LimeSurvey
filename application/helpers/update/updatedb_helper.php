@@ -1463,12 +1463,28 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
         }
 
+        /**
+         * User settings table
+         * @since 2016-08-29
+         */
+        if ($iOldDBVersion < 263) {
+            $oDB->createCommand()->createTable('{{user_settings}}', array(
+                'uid' => 'integer NOT NULL',
+                'entity' => 'string(15)',
+                'entity_id' => 'string(31)',
+                'key' => 'string(63) not null',
+                'value' => 'text',
+                'PRIMARY KEY (uid, entity, entity_id, key)'
+            ));
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>263),"stg_name='DBVersion'");
+        }
+
         // Inform superadmin about update
         // TODO: DON'T FORGET TO UPDATE THIS
         $superadmins = User::model()->getSuperAdmins();
         Notification::broadcast(array(
             'title' => gT('Database update'),
-            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '262')  // <--- UPDATE THIS
+            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '263')  // <--- UPDATE THIS
         ), $superadmins);
 
         $oTransaction->commit();

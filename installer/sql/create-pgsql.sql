@@ -620,6 +620,18 @@ CREATE INDEX prefix_index ON prefix_notifications USING btree (entity, entity_id
 CREATE INDEX hash_index ON prefix_notifications USING btree (hash);
 
 --
+-- User settings table
+--
+CREATE TABLE prefix_user_settings (
+    "uid" integer NOT NULL,
+    "entity" character varying(15) DEFAULT NULL,
+    "entity_id" character varying(31) DEFAULT NULL,
+    "key" character varying(63) NOT NULL,
+    "value" text NULL,
+    CONSTRAINT prefix_user_settings_pkey PRIMARY KEY (uid, entity, entity_id, key)
+);
+
+--
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '262');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '263');
