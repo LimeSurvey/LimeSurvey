@@ -152,6 +152,11 @@ $(document).ready(function() {
      */
     function showWidget(lang) {
 
+        // Disable tour
+        if (LS.plugin.cintlink.tour) {
+            LS.plugin.cintlink.tour.end();
+        }
+
         $.ajax({
             method: 'POST',
             url: LS.plugin.cintlink.pluginBaseUrl + '&method=getSurvey&surveyId=' + LS.plugin.cintlink.surveyId

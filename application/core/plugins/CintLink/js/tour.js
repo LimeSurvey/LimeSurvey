@@ -15,6 +15,7 @@ $(document).ready(function() {
                 backdrop: true,
                 //debug: true,
                 onEnd: function() {
+                    /*
                     $.ajax({
                         url: LS.plugin.cintlink.pluginBaseUrl + '&method=setTutorial',
                         surveyId: LS.plugin.cintlink.surveyId,
@@ -22,6 +23,7 @@ $(document).ready(function() {
                             LS.updateNotificationWidget(LS.plugin.cintlink.notificationUpdateUrl, false);
                         }
                     });
+                    */
                 },
                 steps: [
                 {
@@ -47,6 +49,21 @@ $(document).ready(function() {
                     placement: 'top'
                 },
                 {
+                    element: '#ls-activate-survey',
+                    title: texts.activate.title,
+                    content: texts.activate.content
+                },
+                {
+                    element: '#cintlink-widget-button',
+                    title: texts.getstarted.title,
+                    content: texts.getstarted.content,
+                    onShow: function() {
+                        // Enable pointer events again
+                        $('#cintlink-widget-button').css('pointer-events', 'all');
+                    }
+                }
+                /*
+                {
                     element: '#cintlink-status-column',
                     title: texts.payment.title,
                     content: texts.payment.content,
@@ -68,6 +85,7 @@ $(document).ready(function() {
                     title: texts.activate.title,
                     content: texts.activate.content
                 }
+                */
             ]});
         }
     });
