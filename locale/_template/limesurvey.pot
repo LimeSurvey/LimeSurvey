@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-08-29 10:18:44+00:00\n"
+"POT-Creation-Date: 2016-08-29 12:27:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1257,7 +1257,6 @@ msgstr ""
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:261
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:272
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:46
-#: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/admin/statistics_helper.php:1339
 #: application/helpers/admin/statistics_helper.php:1472
 #: application/helpers/common_helper.php:1488
@@ -1505,7 +1504,6 @@ msgstr ""
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:265
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:276
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:54
-#: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:41
 #: application/helpers/admin/statistics_helper.php:1340
 #: application/helpers/admin/statistics_helper.php:1473
 #: application/helpers/common_helper.php:1495
@@ -4947,11 +4945,11 @@ msgid "Text needs to be lowercase."
 msgstr ""
 
 #: application/core/LSYii_CompareInsensitiveValidator.php:67
-msgid "%s must be insensitive equal to %s"
+msgid "%s must be case-insensitive equal to %s"
 msgstr ""
 
 #: application/core/LSYii_CompareInsensitiveValidator.php:71
-msgid "%s must be not be insensitive equal to %s"
+msgid "%s must not be case-insensitive equal to %s"
 msgstr ""
 
 #: application/core/LSYii_EmailIDNAValidator.php:41
@@ -5572,9 +5570,14 @@ msgid "Survey ID"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:51
-#: application/helpers/common_helper.php:284 application/models/Survey.php:796
-#: application/views/admin/quotas/viewquotasrow_view.php:10
-msgid "Active"
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_delete_results.php:12
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
+#: application/views/admin/pluginmanager/index.php:51
+#: application/views/admin/quotas/viewquotas_view.php:20
+#: application/views/admin/survey/Question/massive_actions/_delete_results.php:12
+#: application/views/admin/token/massive_actions/_delete_results.php:12
+#: application/views/admin/token/massive_actions/_export_archive_results.php:14
+msgid "Status"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:70
@@ -5627,16 +5630,6 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_delete_results.php:11
 #: application/views/admin/token/massive_actions/_export_archive_results.php:13
 msgid "Survey title"
-msgstr ""
-
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_delete_results.php:12
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
-#: application/views/admin/pluginmanager/index.php:51
-#: application/views/admin/quotas/viewquotas_view.php:20
-#: application/views/admin/survey/Question/massive_actions/_delete_results.php:12
-#: application/views/admin/token/massive_actions/_delete_results.php:12
-#: application/views/admin/token/massive_actions/_export_archive_results.php:14
-msgid "Status"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_delete_results.php:25
@@ -5697,22 +5690,30 @@ msgid "Search:"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:37
-#: application/views/admin/quotas/editquota_view.php:44
-#: application/views/admin/quotas/newquota_view.php:51
-msgid "Active:"
+msgid "Status:"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:39
-msgid "(Any state)"
+msgid "(Any)"
+msgstr ""
+
+#: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
+#: application/helpers/common_helper.php:284 application/models/Survey.php:796
+#: application/views/admin/quotas/viewquotasrow_view.php:10
+msgid "Active"
+msgstr ""
+
+#: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:41
+#: application/helpers/common_helper.php:294 application/models/Survey.php:756
+msgid "Inactive"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:289 application/models/Survey.php:779
-msgid "Expired"
+msgid "Active but expired"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:43
-msgid "Not yet started"
+msgid "Active but not yet started"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:46
@@ -6462,8 +6463,8 @@ msgstr ""
 msgid "One or more surveys seem to be broken - please use the data integrity check tool to fix this."
 msgstr ""
 
-#: application/helpers/common_helper.php:294 application/models/Survey.php:756
-msgid "Inactive"
+#: application/helpers/common_helper.php:289 application/models/Survey.php:779
+msgid "Expired"
 msgstr ""
 
 #: application/helpers/common_helper.php:894
@@ -14004,6 +14005,11 @@ msgstr ""
 #: application/views/admin/quotas/editquota_view.php:32
 #: application/views/admin/quotas/newquota_view.php:39
 msgid "Autoload URL:"
+msgstr ""
+
+#: application/views/admin/quotas/editquota_view.php:44
+#: application/views/admin/quotas/newquota_view.php:51
+msgid "Active:"
 msgstr ""
 
 #: application/views/admin/quotas/editquotalang_view.php:4
