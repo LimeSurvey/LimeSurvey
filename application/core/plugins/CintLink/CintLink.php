@@ -1251,6 +1251,21 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function newDirectRequest()
     {
+        $allowedActions = array(
+            'checkIfUserIsLoggedInOnLimesurveyorg',
+            'getLoginForm',
+            'getDashboard',
+            'getNBillOrderForm',
+            'submitFirstNBillPage',
+            "login",
+            "purchaseRequest",
+            "cancelOrder",
+            "softDeleteOrder",
+            "userTriedToPay",
+            "updateAllOrders",
+            "setTutorial",
+            "getSurvey"
+        );
         $event = $this->event;
         if ($event->get('target') == "CintLink")
         {
@@ -1262,19 +1277,7 @@ class CintLink extends \ls\pluginmanager\PluginBase
                 $content = $this->$functionToCall($request);
                 $event->setContent($this, $content);
             }
-            else if ($functionToCall == 'checkIfUserIsLoggedInOnLimesurveyorg'
-                    || $functionToCall == 'getLoginForm'
-                    || $functionToCall == 'getDashboard'
-                    || $functionToCall == 'getNBillOrderForm'
-                    || $functionToCall == 'submitFirstNBillPage'
-                    || $functionToCall == "login"
-                    || $functionToCall == "purchaseRequest"
-                    || $functionToCall == "cancelOrder"
-                    || $functionToCall == "softDeleteOrder"
-                    || $functionToCall == "userTriedToPay"
-                    || $functionToCall == "updateAllOrders"
-                    || $functionToCall == "setTutorial"
-                    || $functionToCall == "getSurvey")
+            else if (in_array($functionToCall, $allowedActions))
             {
                 echo $this->$functionToCall($request);
             }
