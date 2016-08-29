@@ -57,7 +57,7 @@ class LSYii_CompareInsensitiveValidator extends CValidator
 		}
 		else
 		{
-				throw new CException(gT('compareValue must be set when using LSYii_CompareInsensitiveValidator'));
+				throw new CException('compareValue must be set when using LSYii_CompareInsensitiveValidator');
 		}
 		switch($this->operator)
 		{

@@ -31,7 +31,7 @@ function comparePermission($aPermissionA,$aPermissionB)
 /**
  * Translation helper function
  * @param string $sToTranslate
- * @param string $sEscapeMode
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped
  * @param string $sLanguage
  */
 function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)

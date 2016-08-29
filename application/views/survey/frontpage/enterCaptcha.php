@@ -28,7 +28,7 @@
                     <?php $this->widget('CCaptcha',array(
                         'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
                         'buttonType' => 'button',
-                        'buttonLabel' => gt('Reload image')
+                        'buttonLabel' => gt('Reload image','unescaped')
                     )); ?>
                 </span>
             </label>
