@@ -1028,23 +1028,8 @@ function buildsurveysession($surveyid,$preview=false)
 
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
 
-    //2. SESSION VARIABLE: totalsteps
-    //The number of "pages" that will be presented in this survey
-    //The number of pages to be presented will differ depending on the survey format
-    switch($thissurvey['format'])
-    {
-        case "A":
-            $_SESSION['survey_'.$surveyid]['totalsteps']=1;
-            break;
-        case "G":
-            if (isset($_SESSION['survey_'.$surveyid]['grouplist']))
-            {
-                $_SESSION['survey_'.$surveyid]['totalsteps']=count($_SESSION['survey_'.$surveyid]['grouplist']);
-            }
-            break;
-        case "S":
-            $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
-    }
+    // 2. SESSION VARIABLE: totalsteps
+    setTotalSteps($surveyid, $thissurvey, $totalquestions);
 
     // Break out and crash if there are no questions!
     if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0)
@@ -1563,6 +1548,32 @@ function resetAllSessionVariables($surveyid)
     unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
+}
+
+/**
+ * The number of "pages" that will be presented in this survey
+ * The number of pages to be presented will differ depending on the survey format
+ * Set totalsteps in session
+ * @param int $surveyid
+ * @param array $thissurvey
+ * @return void
+ */
+function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
+{
+    switch($thissurvey['format'])
+    {
+        case "A":
+            $_SESSION['survey_'.$surveyid]['totalsteps']=1;
+            break;
+        case "G":
+            if (isset($_SESSION['survey_'.$surveyid]['grouplist']))
+            {
+                $_SESSION['survey_'.$surveyid]['totalsteps']=count($_SESSION['survey_'.$surveyid]['grouplist']);
+            }
+            break;
+        case "S":
+            $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
+    }
 }
 
 /**
