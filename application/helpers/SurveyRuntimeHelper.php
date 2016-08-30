@@ -379,10 +379,6 @@ class SurveyRuntimeHelper {
     */
     function run($surveyid,$args)
     {
-        traceVar($_SESSION['fieldmap-' . $surveyid . 'en']);
-        traceVar($_SESSION['survey_' . $surveyid]);
-        //traceVar($_SESSION);
-
         global $errormsg;
         extract($args);
 

@@ -1087,6 +1087,19 @@ function buildsurveysession($surveyid,$preview=false)
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
+    checkPassthruLabel($surveyid, $preview, $fieldmap);
+
+    Yii::trace('end', 'survey.buildsurveysession');
+}
+
+/**
+ * Check if a passthru label and value have been included in the query url
+ * @param int $surveyid
+ * @param boolean $preview
+ * @return void
+ */
+function checkPassthruLabel($surveyid, $preview, $fieldmap)
+{
     $oResult=SurveyURLParameter::model()->getParametersForSurvey($surveyid);
     foreach($oResult->readAll() as $aRow)
     {
@@ -1118,7 +1131,6 @@ function buildsurveysession($surveyid,$preview=false)
             }
         }
     }
-    Yii::trace('end', 'survey.buildsurveysession');
 }
 
 /**
