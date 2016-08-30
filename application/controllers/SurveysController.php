@@ -40,7 +40,7 @@
             $event->set('aData', $aData);
             App()->getPluginManager()->dispatchEvent($event);
 
-            if(!empty($event->get('result')))
+            if($event->get('result'))
             {
                 $htmlFromEvent = $event->get('result');
                 $htmlOut = $htmlFromEvent['html'];
