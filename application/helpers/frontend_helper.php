@@ -954,7 +954,6 @@ function buildsurveysession($surveyid,$preview=false)
     // Possibilities are main,register,correct
     $renderCaptcha = "";
     $renderToken = "";
-    $renderWay = "";
 
     //Define array to render the partials
     $aEnterTokenData = array();
