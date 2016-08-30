@@ -1507,6 +1507,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
  */
 function getRenderWay($renderToken, $renderCaptcha)
 {
+    $renderWay = "";
     if($renderToken!==$renderCaptcha)
     {
         if($renderToken==="register")
