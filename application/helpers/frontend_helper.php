@@ -1046,35 +1046,11 @@ function buildsurveysession($surveyid,$preview=false)
             $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
     }
 
-
-    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions>0)    //break out and crash if there are no questions!
+    // Break out and crash if there are no questions!
+    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0)
     {
-        sendCacheHeaders();
-        doHeader();
-
         $redata = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
-        echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
-        echo "\t<div id='wrapper'>\n"
-        ."\t<p id='tokenmessage'>\n"
-        ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
-        echo "<ul>";
-        if ($totalquestions == 0){
-            echo '<li>'.gT("There are no questions in this survey.").'</li>';
-        }
-        if ($iTotalGroupsWithoutQuestions > 0){
-            echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
-        }
-        echo "</ul>"
-        ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
-        ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-        ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-        ."\t</p>\n"
-        ."\t</div>\n";
-
-        echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
-        doFooter();
-        Yii::app()->end();
+        breakOutAndCrash($redata, $sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
@@ -1587,6 +1563,45 @@ function resetAllSessionVariables($surveyid)
     unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
+}
+
+/**
+ * @todo Rename
+ * @todo Move HTML to view
+ * @param array $redata
+ * @param string $sTemplateViewPath
+ * @param int $totalquestions
+ * @param int $iTotalGroupsWithoutQuestions
+ * @param array $thissurvey
+ * @return void
+ */
+function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, array $thissurvey)
+{
+    sendCacheHeaders();
+    doHeader();
+
+    echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
+    echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
+    echo "\t<div id='wrapper'>\n"
+    ."\t<p id='tokenmessage'>\n"
+    ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
+    echo "<ul>";
+    if ($totalquestions == 0){
+        echo '<li>'.gT("There are no questions in this survey.").'</li>';
+    }
+    if ($iTotalGroupsWithoutQuestions > 0){
+        echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
+    }
+    echo "</ul>"
+    ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
+    ." (<a href='mailto:{$thissurvey['adminemail']}'>"
+    ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
+    ."\t</p>\n"
+    ."\t</div>\n";
+
+    echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
+    doFooter();
+    Yii::app()->end();
 }
 
 /**
