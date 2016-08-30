@@ -1059,73 +1059,8 @@ function buildsurveysession($surveyid,$preview=false)
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
-
     // Randomization groups for groups
-    $aRandomGroups=array();
-    $aGIDCompleteMap=array();
-    // first find all groups and their groups IDS
-    $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
-    $criteria->addCondition("randomization_group != ''");
-    $oData = QuestionGroup::model()->findAll($criteria);
-    foreach($oData as $aGroup)
-    {
-        $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
-    }
-    // Shuffle each group and create a map for old GID => new GID
-    foreach ($aRandomGroups as $sGroupName=>$aGIDs)
-    {
-        $aShuffledIDs=$aGIDs;
-        shuffle($aShuffledIDs);
-        $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
-    }
-    $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
-
-    $randomized = false;    // So we can trigger reorder once for group and question randomization
-    // Now adjust the grouplist
-    if (count($aRandomGroups)>0 && !$preview)
-    {
-        $randomized = true;    // So we can trigger reorder once for group and question randomization
-        // Now adjust the grouplist
-        Yii::import('application.helpers.frontend_helper', true);   // make sure frontend helper is loaded
-        UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-        // ... and the fieldmap
-
-        // First create a fieldmap with GID as key
-        foreach ($fieldmap as $aField)
-        {
-            if (isset($aField['gid']))
-            {
-                $GroupFieldMap[$aField['gid']][]=$aField;
-            }
-            else{
-                $GroupFieldMap['other'][]=$aField;
-            }
-        }
-        // swap it
-        foreach ($GroupFieldMap as $iOldGid => $fields)
-        {
-            $iNewGid = $iOldGid;
-            if (isset($aGIDCompleteMap[$iOldGid]))
-            {
-                $iNewGid = $aGIDCompleteMap[$iOldGid];
-            }
-            $newGroupFieldMap[$iNewGid] = $GroupFieldMap[$iNewGid];
-        }
-        $GroupFieldMap = $newGroupFieldMap;
-        // and convert it back to a fieldmap
-        unset($fieldmap);
-        foreach($GroupFieldMap as $aGroupFields)
-        {
-            foreach ($aGroupFields as $aField)
-            {
-                if (isset($aField['fieldname'])) {
-                    $fieldmap[$aField['fieldname']] = $aField;  // isset() because of the shuffled flag above
-                }
-            }
-        }
-        unset($GroupFieldMap);
-    }
+    list($fieldmap, $randomized) = randomizationGroup($surveyid, $fieldmap, $preview);
 
     // Randomization groups for questions
 
@@ -1408,6 +1343,87 @@ function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid)
     }
 
     return array ($renderCaptcha, $FlashError);
+}
+
+/**
+ * Randomization group for groups
+ * @param int $surveyid
+ * @param array $fieldmap
+ * @param boolean $preview
+ * @return array ($fieldmap, $randomized)
+ */
+function randomizationGroup($surveyid, array $fieldmap, $preview)
+{
+    // Randomization groups for groups
+    $aRandomGroups=array();
+    $aGIDCompleteMap=array();
+
+    // First find all groups and their groups IDS
+    $criteria = new CDbCriteria;
+    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
+    $criteria->addCondition("randomization_group != ''");
+    $oData = QuestionGroup::model()->findAll($criteria);
+
+    foreach($oData as $aGroup)
+    {
+        $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
+    }
+
+    // Shuffle each group and create a map for old GID => new GID
+    foreach ($aRandomGroups as $sGroupName=>$aGIDs)
+    {
+        $aShuffledIDs=$aGIDs;
+        shuffle($aShuffledIDs);
+        $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
+    }
+    $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
+
+    $randomized = false;    // So we can trigger reorder once for group and question randomization
+    // Now adjust the grouplist
+    if (count($aRandomGroups)>0 && !$preview)
+    {
+        $randomized = true;    // So we can trigger reorder once for group and question randomization
+        // Now adjust the grouplist
+        Yii::import('application.helpers.frontend_helper', true);   // make sure frontend helper is loaded
+        UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        // ... and the fieldmap
+
+        // First create a fieldmap with GID as key
+        foreach ($fieldmap as $aField)
+        {
+            if (isset($aField['gid']))
+            {
+                $GroupFieldMap[$aField['gid']][]=$aField;
+            }
+            else{
+                $GroupFieldMap['other'][]=$aField;
+            }
+        }
+        // swap it
+        foreach ($GroupFieldMap as $iOldGid => $fields)
+        {
+            $iNewGid = $iOldGid;
+            if (isset($aGIDCompleteMap[$iOldGid]))
+            {
+                $iNewGid = $aGIDCompleteMap[$iOldGid];
+            }
+            $newGroupFieldMap[$iNewGid] = $GroupFieldMap[$iNewGid];
+        }
+        $GroupFieldMap = $newGroupFieldMap;
+        // and convert it back to a fieldmap
+        unset($fieldmap);
+        foreach($GroupFieldMap as $aGroupFields)
+        {
+            foreach ($aGroupFields as $aField)
+            {
+                if (isset($aField['fieldname'])) {
+                    $fieldmap[$aField['fieldname']] = $aField;  // isset() because of the shuffled flag above
+                }
+            }
+        }
+    }
+
+    return array($fieldmap, $randomized);
 }
 
 /**
