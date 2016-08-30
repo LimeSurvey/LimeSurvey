@@ -1561,7 +1561,7 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
 
             echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
             doFooter();
-            exit;
+            Yii::app()->end();
             break;
         case "register": //Register new user
             // Add the event and test if done
