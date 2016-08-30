@@ -974,27 +974,12 @@ function buildsurveysession($surveyid,$preview=false)
         $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
     }
 
-
     $FlashError = "";
 
     // Scenario => Captcha required
    if($scenarios['captchaRequired'] && !$preview)
     {
-        //Apply the captchaEnabled flag to the partial
-        $aEnterTokenData['bCaptchaEnabled'] = true;
-        // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
-        if (!$subscenarios['captchaCorrect'])
-        {
-            if (isset($loadsecurity))
-            { // was a bad answer
-                $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
-            }
-            $renderCaptcha='main';
-        }
-        else{
-            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
-            $renderCaptcha='correct';
-        }
+        list($renderCaptcha, $FlashError) = testCaptcha($aEnterTokenData, $subscenarios, $surveyid);
     }
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
@@ -1449,6 +1434,35 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
     Yii::trace('end', 'survey.buildsurveysession');
+}
+
+/**
+ * @param array $aEnterTokenData
+ * @param array $subscenarios
+ * @param int $surveyid
+ * @return array ($renderCaptcha, $FlashError)
+ */
+function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid)
+{
+    $FlashError = '';
+
+    //Apply the captchaEnabled flag to the partial
+    $aEnterTokenData['bCaptchaEnabled'] = true;
+    // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
+    if (!$subscenarios['captchaCorrect'])
+    {
+        if (isset($loadsecurity))
+        { // was a bad answer
+            $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
+        }
+        $renderCaptcha='main';
+    }
+    else{
+        $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
+        $renderCaptcha='correct';
+    }
+
+    return array ($renderCaptcha, $FlashError);
 }
 
 /**
