@@ -1021,11 +1021,7 @@ function buildsurveysession($surveyid,$preview=false)
 
     $totalquestions = Question::model()->getTotalQuestions($surveyid);
 
-    $sQuery= "select count(*) from {{groups}}
-        left join {{questions}} on  {{groups}}.gid={{questions}}.gid
-        where {{groups}}.sid={$surveyid} and qid is null";
-    $iTotalGroupsWithoutQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
-
+    $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
