@@ -937,4 +937,20 @@ class Question extends LSActiveRecord
             return false;
         }
     }
+
+    /**
+     * Used in frontend helper, buildsurveysession.
+     * @param int $surveyid
+     * @return int
+     */
+    public static function getTotalQuestions($surveyid)
+    {
+        $sQuery = "SELECT count(*)\n"
+        ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
+        ." WHERE {{questions}}.sid=".$surveyid."\n"
+        ." AND {{groups}}.language='".App()->getLanguage()."'\n"
+        ." AND {{questions}}.language='".App()->getLanguage()."'\n"
+        ." AND {{questions}}.parent_qid=0\n";
+        return Yii::app()->db->createCommand($sQuery)->queryScalar();
+    }
 }

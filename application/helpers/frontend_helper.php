@@ -1017,16 +1017,9 @@ function buildsurveysession($surveyid,$preview=false)
     // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
     SetSurveyLanguage($surveyid, $language_to_set);
 
-
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $sQuery = "SELECT count(*)\n"
-    ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
-    ." WHERE {{questions}}.sid=".$surveyid."\n"
-    ." AND {{groups}}.language='".App()->getLanguage()."'\n"
-    ." AND {{questions}}.language='".App()->getLanguage()."'\n"
-    ." AND {{questions}}.parent_qid=0\n";
-    $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
+    $totalquestions = Question::model()->getTotalQuestions($surveyid);
 
     $sQuery= "select count(*) from {{groups}}
         left join {{questions}} on  {{groups}}.gid={{questions}}.gid
