@@ -948,6 +948,7 @@ function buildsurveysession($surveyid,$preview=false)
     else 
     {
         $subscenarios['captchaCorrect'] = true;
+        $loadsecurity = false;
     }
 
     //RenderWay defines which html gets rendered to the user_error
@@ -1242,7 +1243,7 @@ function initFieldArray($surveyid, array $fieldmap)
  * @param array $aEnterTokenData
  * @param array $subscenarios
  * @param int $surveyid
- * @param ? $loadsecurity
+ * @param boolean $loadsecurity
  * @return array ($renderCaptcha, $FlashError)
  */
 function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $loadsecurity)
@@ -1254,7 +1255,7 @@ function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $lo
     // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
     if (!$subscenarios['captchaCorrect'])
     {
-        if (isset($loadsecurity))
+        if ($loadsecurity)
         { // was a bad answer
             $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
         }
