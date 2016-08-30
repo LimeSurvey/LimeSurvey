@@ -1024,12 +1024,7 @@ function buildsurveysession($surveyid,$preview=false)
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
     // Fix totalquestions by substracting Test Display questions
-    $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
-    ." FROM {{questions}}"
-    ." WHERE type in ('X','*')\n"
-    ." AND sid={$surveyid}"
-    ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
-    ." AND parent_qid=0")->read();
+    $iNumberofQuestions = Question::model()->getNumberOfQuestions($surveyid);
 
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
 
