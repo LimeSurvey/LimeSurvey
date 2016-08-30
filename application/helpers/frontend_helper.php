@@ -1079,7 +1079,7 @@ function buildsurveysession($surveyid,$preview=false)
 
         echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
         doFooter();
-        exit;
+        Yii::app()->end();
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
