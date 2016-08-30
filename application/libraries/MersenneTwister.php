@@ -11,8 +11,9 @@ namespace ls\mersenne;
  */
 function getSeed($surveyId, $preview)
 {
-    $columnNames = \SurveyDynamic::model($surveyId)->getTableSchema()->getColumnNames();
-    traceVar($columnNames);
+    $_SESSION['survey_'.$surveyId]['startingValues']['seed'] = 'seed123';
+    //$sd = \SurveyDynamic::model($surveyId)->find
+    //traceVar($columnNames);
     // Get columns
     // Check if we have seed column
     // Yes: check value
