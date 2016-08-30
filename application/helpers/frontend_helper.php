@@ -1060,121 +1060,16 @@ function buildsurveysession($surveyid,$preview=false)
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
     // Randomization groups for groups
-    list($fieldmap, $randomized) = randomizationGroup($surveyid, $fieldmap, $preview);
+    list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview);
 
     // Randomization groups for questions
+    list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview);
 
-    // Find all defined randomization groups through question attribute values
-    $randomGroups=array();
-    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
-    {
-        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
-    }
-    else
-    {
-        $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
-    }
-    $rgresult = dbExecuteAssoc($rgquery);
-    foreach($rgresult->readAll() as $rgrow)
-    {
-        // Get the question IDs for each randomization group
-        $randomGroups[$rgrow['value']][] = $rgrow['qid'];
-    }
-
-    // If we have randomization groups set, then lets cycle through each group and
-    // replace questions in the group with a randomly chosen one from the same group
-    if (count($randomGroups) > 0 && !$preview)
-    {
-        $randomized   = true;    // So we can trigger reorder once for group and question randomization
-        $copyFieldMap = array();
-        $oldQuestOrder = array();
-        $newQuestOrder = array();
-        $randGroupNames = array();
-        foreach ($randomGroups as $key=>$value)
-        {
-            $oldQuestOrder[$key] = $randomGroups[$key];
-            $newQuestOrder[$key] = $oldQuestOrder[$key];
-            // We shuffle the question list to get a random key->qid which will be used to swap from the old key
-            shuffle($newQuestOrder[$key]);
-            $randGroupNames[] = $key;
-        }
-
-        // Loop through the fieldmap and swap each question as they come up
-        foreach ($fieldmap as $fieldkey => $fieldval)
-        {
-            $found = 0;
-            foreach ($randomGroups as $gkey => $gval)
-            {
-                // We found a qid that is in the randomization group
-                if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
-                {
-                    // Get the swapped question
-                    $idx = array_search($fieldval['qid'],$oldQuestOrder[$gkey]);
-                    foreach ($fieldmap as $key => $field)
-                    {
-                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$idx])
-                        {
-                            $field['random_gid'] = $fieldval['gid'];   // It is possible to swap to another group
-                            $copyFieldMap[$key]  = $field;
-                        }
-                    }
-                    $found = 1;
-                    break;
-                } else
-                {
-                    $found = 2;
-                }
-            }
-            if ($found == 2)
-            {
-                $copyFieldMap[$fieldkey]=$fieldval;
-            }
-            reset($randomGroups);
-        }
-        $fieldmap = $copyFieldMap;
-    }
+    $randomized = $randomized1 || $randomized2;;
 
     if ($randomized === true)
     {
-        // reset the sequencing counts
-        $gseq = -1;
-        $_gid = -1;
-        $qseq = -1;
-        $_qid = -1;
-        $copyFieldMap = array();
-        foreach ($fieldmap as $key => $val)
-        {
-            if ($val['gid'] != '')
-            {
-                if (isset($val['random_gid']))
-                {
-                    $gid = $val['random_gid'];
-                } else {
-                    $gid = $val['gid'];
-                }
-                if ($gid != $_gid)
-                {
-                    $_gid = $gid;
-                    ++$gseq;
-                }
-            }
-
-            if ($val['qid'] != '' && $val['qid'] != $_qid)
-            {
-                $_qid = $val['qid'];
-                ++$qseq;
-            }
-
-            if ($val['gid'] != '' && $val['qid'] != '')
-            {
-                $val['groupSeq']    = $gseq;
-                $val['questionSeq'] = $qseq;
-            }
-
-            $copyFieldMap[$key] = $val;
-        }
-        $fieldmap = $copyFieldMap;
-        unset($copyFieldMap);
+        $fieldmap = finalizeRandomization($fieldmap);
 
         $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
         $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
@@ -1425,6 +1320,137 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
     }
 
     return array($fieldmap, $randomized);
+}
+
+/**
+ * Randomization group for questions
+ * @param int $surveyid
+ * @param array $fieldmap
+ * @param boolean $preview
+ * @return array ($fieldmap, $randomized)
+ */
+function randomizationQuestion($surveyid, array $fieldmap, $preview)
+{
+    $randomized = false;
+    // Find all defined randomization groups through question attribute values
+    $randomGroups=array();
+    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
+    {
+        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
+    }
+    else
+    {
+        $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
+    }
+    $rgresult = dbExecuteAssoc($rgquery);
+
+    foreach($rgresult->readAll() as $rgrow)
+    {
+        // Get the question IDs for each randomization group
+        $randomGroups[$rgrow['value']][] = $rgrow['qid'];
+    }
+
+    // If we have randomization groups set, then lets cycle through each group and
+    // replace questions in the group with a randomly chosen one from the same group
+    if (count($randomGroups) > 0 && !$preview)
+    {
+        $randomized   = true;    // So we can trigger reorder once for group and question randomization
+        $copyFieldMap = array();
+        $oldQuestOrder = array();
+        $newQuestOrder = array();
+        $randGroupNames = array();
+        foreach ($randomGroups as $key=>$value)
+        {
+            $oldQuestOrder[$key] = $randomGroups[$key];
+            $newQuestOrder[$key] = $oldQuestOrder[$key];
+            // We shuffle the question list to get a random key->qid which will be used to swap from the old key
+            shuffle($newQuestOrder[$key]);
+            $randGroupNames[] = $key;
+        }
+
+        // Loop through the fieldmap and swap each question as they come up
+        foreach ($fieldmap as $fieldkey => $fieldval)
+        {
+            $found = 0;
+            foreach ($randomGroups as $gkey => $gval)
+            {
+                // We found a qid that is in the randomization group
+                if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
+                {
+                    // Get the swapped question
+                    $idx = array_search($fieldval['qid'],$oldQuestOrder[$gkey]);
+                    foreach ($fieldmap as $key => $field)
+                    {
+                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$idx])
+                        {
+                            $field['random_gid'] = $fieldval['gid'];   // It is possible to swap to another group
+                            $copyFieldMap[$key]  = $field;
+                        }
+                    }
+                    $found = 1;
+                    break;
+                } else
+                {
+                    $found = 2;
+                }
+            }
+            if ($found == 2)
+            {
+                $copyFieldMap[$fieldkey]=$fieldval;
+            }
+            reset($randomGroups);
+        }
+        $fieldmap = $copyFieldMap;
+    }
+
+    return array($fieldmap, $randomized);
+}
+
+/**
+ * Stuff?
+ * @param array $fieldmap
+ * @return array Fieldmap
+ */
+function finalizeRandomization($fieldmap)
+{
+    // reset the sequencing counts
+    $gseq = -1;
+    $_gid = -1;
+    $qseq = -1;
+    $_qid = -1;
+    $copyFieldMap = array();
+    foreach ($fieldmap as $key => $val)
+    {
+        if ($val['gid'] != '')
+        {
+            if (isset($val['random_gid']))
+            {
+                $gid = $val['random_gid'];
+            } else {
+                $gid = $val['gid'];
+            }
+            if ($gid != $_gid)
+            {
+                $_gid = $gid;
+                ++$gseq;
+            }
+        }
+
+        if ($val['qid'] != '' && $val['qid'] != $_qid)
+        {
+            $_qid = $val['qid'];
+            ++$qseq;
+        }
+
+        if ($val['gid'] != '' && $val['qid'] != '')
+        {
+            $val['groupSeq']    = $gseq;
+            $val['questionSeq'] = $qseq;
+        }
+
+        $copyFieldMap[$key] = $val;
+    }
+    return $copyFieldMap;
 }
 
 /**
