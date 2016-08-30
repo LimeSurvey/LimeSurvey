@@ -979,7 +979,7 @@ function buildsurveysession($surveyid,$preview=false)
     // Scenario => Captcha required
    if($scenarios['captchaRequired'] && !$preview)
     {
-        list($renderCaptcha, $FlashError) = testCaptcha($aEnterTokenData, $subscenarios, $surveyid);
+        list($renderCaptcha, $FlashError) = testCaptcha($aEnterTokenData, $subscenarios, $surveyid, $loadsecurity);
     }
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
@@ -1320,9 +1320,10 @@ function buildsurveysession($surveyid,$preview=false)
  * @param array $aEnterTokenData
  * @param array $subscenarios
  * @param int $surveyid
+ * @param ? $loadsecurity
  * @return array ($renderCaptcha, $FlashError)
  */
-function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid)
+function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $loadsecurity)
 {
     $FlashError = '';
 
