@@ -20,7 +20,6 @@ function setSeed($surveyid)
         $seed = mt_rand();
         $_SESSION['survey_' . $surveyid]['startingValues']['seed'] = $seed;
     }
-    //traceVar('seed = ' . $seed);
     MersenneTwister::init($seed);
 }
 

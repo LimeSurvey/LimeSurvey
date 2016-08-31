@@ -1097,6 +1097,7 @@ function buildsurveysession($surveyid,$preview=false)
     checkPassthruLabel($surveyid, $preview, $fieldmap);
 
     Yii::trace('end', 'survey.buildsurveysession');
+
 }
 
 /**
