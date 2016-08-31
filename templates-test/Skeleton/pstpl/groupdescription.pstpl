@@ -1,0 +1,1 @@
+{if(!is_empty(GROUPDESCRIPTION),"<div class='groupdescription text'>"+GROUPDESCRIPTION+"</div>","")}

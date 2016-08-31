@@ -1,0 +1,59 @@
+<!-- startpage.pstl -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>{SURVEYNAME}</title>
+<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+
+<!-- The following line includes jquery-ui.css or jquery-ui-custom.css from template dir, template.css and needed specific css file for survey -->
+{TEMPLATECSS}
+
+<!-- The following line includes jquery.js, jquery-ui.js, survey_runtime.js , template.js and needed specific js file for survey -->
+{TEMPLATEJS}
+<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
+{GOOGLE_ANALYTICS_JAVASCRIPT}
+</head>
+<body class="default lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
+
+    <nav class="navbar navbar-default navbar-fixed-top" id="topsurveymenubar">
+      <div class="container">
+        <div class="navbar-header col-xs-12 col-sm-6 col-lg-8">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand col-xs-10 col-sm-12" >{SURVEYNAME}</span>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse col-xs-12">
+          <ul class="nav navbar-nav">
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {SAVE_LINKS}
+            {CLEARALL_LINKS}
+            {QUESTION_INDEX_MENU}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+    <!-- Top container -->
+    <div id="topContainer" class="jumbotron">
+        <div class="container">
+            {PERCENTCOMPLETE}
+            {LANGUAGECHANGER}
+        </div>
+    </div>
+
+    <div class="outerframe container" id="outerframeContainer">
+
+        <div class="row" id="main-row">
+
+            <div class='col-xs-12' id="yii-flash-message">
+                {FLASHMESSAGE}
+            </div>
+
+            <div class="col-sm-12 col-centered" id="main-col">
+<!-- end of startpage.pstl -->

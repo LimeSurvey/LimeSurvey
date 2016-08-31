@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Default configuration for the template.
+    In future versions of LimeSurvey, it will be used to fill a template table,
+    and to give user control on template configuration (like variables to use to render the questions, banners, background, etc.)
+-->
+
+<config>
+    <!-- Those metadatas will be display in the template configuration page. They are not used for now. -->
+    <metadatas>
+        <name>News Paper</name>
+        <creationDate>08/01/2016</creationDate>
+        <author>Louis-Sébastien Gac Artigas</author>
+        <authorEmail>louis.gac@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <description>News paper LimeSurvey Template.</description>
+        <last_update>2016-05-13 10:46:00</last_update>
+    </metadatas>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager
+    -->
+    <files>
+        <css>
+            <filename>css/jquery-ui-custom.css</filename>
+            <filename>css/bootstrap-slider.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
+            <filename>css/news_paper.css</filename>
+            <filename>css/template.css</filename>
+            <filename>css/template-news-paper.css</filename>
+        </css>
+        <js>
+            <filename>scripts/template.js</filename>
+            <filename>scripts/bootstrap-slider.js</filename>
+        </js>
+        <print_css>
+            <filename>css/print_template.css</filename>
+        </print_css>
+
+        <!--
+            Those files will be loaded for right to left languages only
+            NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the LimeSurvey team about it.
+            We'll be always pleased to make better the right to left display
+
+            NOTE 2: those files are generated with the script R2. See: https://github.com/ded/R2
+        -->
+        <rtl>
+            <css>
+                <filename>css/jquery-ui-custom-rtl.css</filename>
+                <filename>css/bootstrap-slider-rtl.css</filename>
+                <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
+                <filename>css/news_paper-rtl.css</filename>
+                <filename>css/template-rtl.css</filename>
+                <filename>css/template-news-paper.css</filename>
+            </css>
+            <js>
+                <filename>scripts/template.js</filename>
+                <filename>scripts/bootstrap-slider.js</filename>
+            </js>
+            <print_css>
+                <filename>css/print_template-rtl.css</filename>
+            </print_css>
+        </rtl>
+
+        <!-- The logo is used for now only for Surveys List  -->
+        <logo>
+            <filename>files/logo.png</filename>
+        </logo>
+    </files>
+
+    <!--
+        Here the list of the css/js files the user is allowed to edit from the template editor.
+        If the template does not contain any reference to external images, those files will be published one by one with the asset manager.
+        So any edition of those files will update the tmp/asset directory, and users will not need to refresh browser cache
+    -->
+    <files_editable>
+            <css>
+                <filename>css/news_paper.css</filename>
+                <filename>css/template.css</filename>
+            </css>
+            <js>
+                <filename>scripts/template.js</filename>
+                <filename>scripts/bootstrap-slider.js</filename>
+            </js>
+    </files_editable>
+
+    <!-- Here datas about how LimeSurvey should load the template -->
+    <engine>
+        <!-- If empty, bootstrap css/js files will not be loaded. In the future, we could had more engines, like foundation -->
+        <cssframework>bootstrap</cssframework>
+        <!-- Path of the pstpl files -->
+        <pstpldirectory>views</pstpldirectory>
+
+        <!--
+            Set to yes to overwrite the question views,
+            then, just copy application/views/survey/* to template/{your_view_directory}/survey/
+            You also must allow the template to overwrite the views from your site configuration
+            In application/config/config.php, find :     'config'=>array
+            and add this line in it : 'allow_templates_to_overwrite_views'=>1
+        -->
+        <overwrite_question_views>true</overwrite_question_views>
+
+        <!-- Asset manager will copy the whole template directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
+        <filesdirectory>files</filesdirectory>
+
+        <!-- Here, you can publish packages set as third party extensions in application/config/third_party -->
+        <!-- If bootstrap is registred as a css framework, it will be loaded first -->
+        <packages>
+            <package>jqueryui</package>
+            <package>jquery-touch-punch</package>
+        </packages>
+    </engine>
+</config>

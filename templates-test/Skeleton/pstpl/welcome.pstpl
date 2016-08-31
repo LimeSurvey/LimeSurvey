@@ -1,0 +1,7 @@
+{CHECKJAVASCRIPT}
+{if(!is_empty(LANGUAGECHANGER),"<div class='tools languageselect row' id='languageselect-wrapper'>"+LANGUAGECHANGER+"</div>","")}
+<div class="welcome text">
+	<div class="surveywelcome">{WELCOME}
+	{if(!is_empty(THEREAREXQUESTIONS),"<p class='information therearexquestions'>"+THEREAREXQUESTIONS+"</p>","")}
+	</div>
+</div>
