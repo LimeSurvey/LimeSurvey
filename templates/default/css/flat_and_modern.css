@@ -1469,6 +1469,9 @@ ul ol,
 ol ol {
   margin-bottom: 0;
 }
+li {
+  margin-bottom: 15px;
+}
 .list-unstyled {
   padding-left: 0;
   list-style: none;
@@ -2708,7 +2711,7 @@ input[type="search"] {
 .radio-inline + .radio-inline,
 .checkbox-inline + .checkbox-inline {
   margin-top: 0;
-  margin-left: 10px;
+  margin-left: 20px;
 }
 input[type="radio"][disabled],
 input[type="checkbox"][disabled],
