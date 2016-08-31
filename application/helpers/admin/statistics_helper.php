@@ -2444,7 +2444,7 @@ class statistics_helper {
         }
         //loop though the array which contains all answer data
         $ColumnName_RM=array();
-        //var_dump($outputs['alist']); die();
+        //echo '<pre>'; var_dump($outputs['alist']); echo '</pre>';die;
         foreach ($outputs['alist'] as $al)
         {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
