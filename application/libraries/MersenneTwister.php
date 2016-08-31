@@ -3,10 +3,11 @@
 namespace ls\mersenne;
 
 /**
- * Sett seed for this response
+ * Set seed for this response
  * If there is no seed, create a new one
+ * Also inits the twister.
  * @param int $surveyid
- * @return int
+ * @return void
  */
 function setSeed($surveyid)
 {
@@ -68,7 +69,7 @@ class MersenneTwister
     {
         if (empty(self::$instance))
         {
-            throw new \Exception('Must init MersenneTwister before use. Should be done in buildsurveysession.');
+            throw new \Exception('Must init MersenneTwister before use. Should be done in randomizationGroupsAndQuestions.');
         }
 
         return self::$instance;

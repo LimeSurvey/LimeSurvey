@@ -347,13 +347,15 @@ class index extends CAction {
 
             if ($errormsg == "") {
                 LimeExpressionManager::SetDirtyFlag();
+                buildsurveysession($surveyid);
                 if (loadanswers()){
                     Yii::app()->setConfig('move','reload');
                     $move = "reload";// veyRunTimeHelper use $move in $arg
                 } else {
                     $errormsg .= gT("There is no matching saved survey");
                 }
-                buildsurveysession($surveyid);
+                randomizationGroupsAndQuestions($surveyid, $preview);
+                initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
             }
             if ($errormsg) {
                 Yii::app()->setConfig('move',"loadall");// Show loading form
@@ -580,6 +582,8 @@ class index extends CAction {
                             $_SESSION['survey_'.$surveyid]['maxstep'] = $_SESSION['survey_'.$surveyid]['totalsteps'];
                         }
                         loadanswers();
+                        randomizationGroupsAndQuestions($surveyid, $preview);
+                        initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
                     }
                 }
             }
@@ -599,6 +603,8 @@ class index extends CAction {
                 $thissurvey['format'] = 'S';
             }
             buildsurveysession($surveyid,true);
+            randomizationGroupsAndQuestions($surveyid, $preview);
+            initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
         }
 
         sendCacheHeaders();

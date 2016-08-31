@@ -1063,28 +1063,9 @@ function buildsurveysession($surveyid,$preview=false)
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
-    // Initialize the randomizer. Seed will be stored in response.
-    ls\mersenne\setSeed($surveyid);
+    //$fieldmap = randomizationGroupsAndQuestions($surveyid, $preview, $fieldmap);
 
-    // Randomization groups for groups
-    list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview);
-
-    // Randomization groups for questions
-    list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview);
-
-    $randomized = $randomized1 || $randomized2;;
-
-    if ($randomized === true)
-    {
-        $fieldmap = finalizeRandomization($fieldmap);
-
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
-    }
-
-    // TMSW Condition->Relevance:  don't need hasconditions, or usedinconditions
-
-    $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
+    $_SESSION['survey_'.$surveyid]['fieldmap'] = $fieldmap;
 
     initFieldArray($surveyid, $fieldmap);
 
@@ -1182,6 +1163,9 @@ function prefillFromCommandLine($surveyid)
  */
 function initFieldArray($surveyid, array $fieldmap)
 {
+    // Reset field array if called more than once (should not happen)
+    $_SESSION['survey_' . $surveyid]['fieldarray'] = array();
+
     foreach ($fieldmap as $key => $field)
     {
         if (isset($field['qid']) && $field['qid']!='')
@@ -1278,6 +1262,43 @@ function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $lo
     }
 
     return array ($renderCaptcha, $FlashError);
+}
+
+/**
+ * Apply randomizationGroup and randomizationQuestion to session fieldmap
+ * @param int $surveyid
+ * @param boolean $preview
+ * @return void
+ */
+function randomizationGroupsAndQuestions($surveyid, $preview, $fieldmap = array())
+{
+    // Initialize the randomizer. Seed will be stored in response.
+    ls\mersenne\setSeed($surveyid);
+
+    if (empty($fieldmap))
+    {
+        $fieldmap = $_SESSION['survey_' . $surveyid]['fieldmap'];
+    }
+
+    // Randomization groups for groups
+    list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview);
+
+    // Randomization groups for questions
+    list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview);
+
+    $randomized = $randomized1 || $randomized2;;
+
+    if ($randomized === true)
+    {
+        $fieldmap = finalizeRandomization($fieldmap);
+
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
+    }
+
+    $_SESSION['survey_' . $surveyid]['fieldmap'] = $fieldmap;
+
+    return $fieldmap;
 }
 
 /**
