@@ -1063,7 +1063,8 @@ function buildsurveysession($surveyid,$preview=false)
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $seed = ls\mersenne\getSeed($surveyid, $preview);
+    // Initialize the randomizer. Seed will be stored in response.
+    ls\mersenne\setSeed($surveyid);
 
     // Randomization groups for groups
     list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview);
@@ -1094,6 +1095,8 @@ function buildsurveysession($surveyid,$preview=false)
 
     //Check if a passthru label and value have been included in the query url
     checkPassthruLabel($surveyid, $preview, $fieldmap);
+
+    traceVar($_SESSION['survey_' . $surveyid]);
 
     Yii::trace('end', 'survey.buildsurveysession');
 }
@@ -1146,7 +1149,7 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
 function prefillFromCommandLine($surveyid)
 {
     $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
-    $startingValues=$_SESSION['survey_' . $surveyid]['startingValues'];
+    $startingValues= $_SESSION['survey_' . $surveyid]['startingValues'];
     if (empty($startingValues))
     {
         $startingValues=array();
@@ -1306,7 +1309,7 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
     foreach ($aRandomGroups as $sGroupName=>$aGIDs)
     {
         $aShuffledIDs=$aGIDs;
-        shuffle($aShuffledIDs);
+        $aShuffledID = ls\mersenne\shuffle($aShuffledIDs);
         $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
     }
     $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
@@ -1401,7 +1404,7 @@ function randomizationQuestion($surveyid, array $fieldmap, $preview)
             $oldQuestOrder[$key] = $randomGroups[$key];
             $newQuestOrder[$key] = $oldQuestOrder[$key];
             // We shuffle the question list to get a random key->qid which will be used to swap from the old key
-            shuffle($newQuestOrder[$key]);
+            $newQuestOrder[$key] = ls\mersenne\shuffle($newQuestOrder[$key]);
             $randGroupNames[] = $key;
         }
 
