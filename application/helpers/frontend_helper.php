@@ -1096,7 +1096,6 @@ function buildsurveysession($surveyid,$preview=false)
     checkPassthruLabel($surveyid, $preview, $fieldmap);
 
     Yii::trace('end', 'survey.buildsurveysession');
-    //traceVar($_SESSION['survey_' . $surveyid]);
 }
 
 /**
@@ -1147,7 +1146,11 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
 function prefillFromCommandLine($surveyid)
 {
     $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
-    $startingValues=array();
+    $startingValues=$_SESSION['survey_' . $surveyid]['startingValues'];
+    if (empty($startingValues))
+    {
+        $startingValues=array();
+    }
     if (isset($_GET))
     {
         foreach ($_GET as $k=>$v)
