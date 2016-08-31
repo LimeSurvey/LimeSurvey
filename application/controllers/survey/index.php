@@ -347,13 +347,13 @@ class index extends CAction {
 
             if ($errormsg == "") {
                 LimeExpressionManager::SetDirtyFlag();
-                buildsurveysession($surveyid);
                 if (loadanswers()){
                     Yii::app()->setConfig('move','reload');
                     $move = "reload";// veyRunTimeHelper use $move in $arg
                 } else {
                     $errormsg .= gT("There is no matching saved survey");
                 }
+                buildsurveysession($surveyid);
             }
             if ($errormsg) {
                 Yii::app()->setConfig('move',"loadall");// Show loading form

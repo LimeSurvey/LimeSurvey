@@ -10,6 +10,7 @@ namespace ls\mersenne;
  */
 function setSeed($surveyid)
 {
+    //traceVar(@$_SESSION['survey_' . $surveyid]['srid']);
     if (isset($_SESSION['survey_' . $surveyid]['srid']))
     {
         $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_' . $surveyid]['srid']);
