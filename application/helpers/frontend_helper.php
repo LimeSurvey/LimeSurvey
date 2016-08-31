@@ -1096,8 +1096,6 @@ function buildsurveysession($surveyid,$preview=false)
     //Check if a passthru label and value have been included in the query url
     checkPassthruLabel($surveyid, $preview, $fieldmap);
 
-    traceVar($_SESSION['survey_' . $surveyid]);
-
     Yii::trace('end', 'survey.buildsurveysession');
 }
 
