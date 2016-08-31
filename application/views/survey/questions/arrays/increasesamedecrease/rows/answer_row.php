@@ -28,9 +28,8 @@
     </th>
 
     <!-- Increase -->
-    <td class="answer_cell_I answer-item radio-item radio text-center">
+    <td class="answer_cell_I answer-item radio-item text-center">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname;?>-I"
@@ -44,9 +43,8 @@
     </td>
 
     <!-- Same -->
-    <td class="answer_cell_S answer-item radio-item radio text-center">
+    <td class="answer_cell_S answer-item radio-item text-center">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname; ?>"
             id="answer<?php echo $myfname;?>-S"
@@ -60,9 +58,8 @@
     </td>
 
     <!-- Decrease -->
-    <td class="answer_cell_D answer-item radio-item radio  text-center">
+    <td class="answer_cell_D answer-item radio-item text-center">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname;?>-D"
@@ -77,9 +74,8 @@
 
     <!-- No Answer -->
     <?php if($no_answer):?>
-        <td class="answer-item radio-item noanswer-item radio text-center">
+        <td class="answer-item radio-item noanswer-item text-center">
             <input
-                class="radio"
                 type="radio"
                 name="<?php echo $myfname;?>"
                 id="answer<?php echo $myfname;?>-"

@@ -15,9 +15,8 @@
 
 <!-- answer_row -->
 <div class="col-sm-12">
-        <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group <?php echo $extra_class; ?> checkbox' <?php echo $sDisplayStyle; ?> >
+        <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group <?php echo $extra_class; ?>' <?php echo $sDisplayStyle; ?> >
             <input
-                class="checkbox"
                 type="checkbox"
                 name="<?php echo $name.$title; ?>"
                 id="answer<?php echo $name.$title; ?>"

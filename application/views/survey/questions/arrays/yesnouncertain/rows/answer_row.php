@@ -31,9 +31,8 @@
     </th>
 
     <!-- Yes -->
-    <td class="answer_cell_Y answer-item radio-item text-center radio">
+    <td class="answer_cell_Y answer-item radio-item text-center">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname;?>-Y"
@@ -53,9 +52,8 @@
     </td>
 
     <!-- Uncertain -->
-    <td class="answer_cell_U answer-item radio-item text-center radio">
+    <td class="answer_cell_U answer-item radio-item text-center">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname; ?>"
             id="answer<?php echo $myfname;?>-U"
@@ -75,9 +73,8 @@
     </td>
 
     <!-- No -->
-    <td class="answer_cell_N answer-item radio-item text-center radio">
+    <td class="answer_cell_N answer-item radio-item text-center">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname;?>-N"
@@ -98,9 +95,8 @@
 
     <!-- No Answer -->
     <?php if($no_answer):?>
-        <td class="answer-item radio-item noanswer-item text-center radio">
+        <td class="answer-item radio-item noanswer-item text-center">
             <input
-                class="radio"
                 type="radio"
                 name="<?php echo $myfname;?>"
                 id="answer<?php echo $myfname;?>-"

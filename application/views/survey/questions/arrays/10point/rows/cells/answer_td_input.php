@@ -10,9 +10,8 @@
 ?>
 
 <!-- answer_td_input -->
-<td class="answer_cell_<?php echo $i;?> answer-item radio-item radio text-center">
+<td class="answer_cell_<?php echo $i;?> answer-item radio-item text-center">
     <input
-        class="radio"
         type="radio"
         name="<?php echo $myfname; ?>"
         id="answer<?php echo $myfname; ?>-<?php echo $i;?>"

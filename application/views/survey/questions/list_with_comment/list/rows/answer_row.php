@@ -12,7 +12,7 @@
  */
 ?>
 <!-- answer_row -->
-<div class="answer-item radio-item <?php if(isset($li_classes)){echo $li_classes;}?> radio">
+<div class="answer-item radio-item <?php if(isset($li_classes)){echo $li_classes;}?>">
     <div class='form-group'>
         <input
             type="radio"

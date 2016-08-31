@@ -17,7 +17,7 @@
 <ul class="list-unstyled answers-list radio-list form-horizontal">
 
     <!-- Female -->
-    <li class="form-group row answer-item radio-item radio">
+    <li class="form-group row answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $name;?>"
@@ -32,7 +32,7 @@
     </li>
 
     <!-- Male -->
-    <li class="form-group row answer-item radio-item radio">
+    <li class="form-group row answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $name;?>"
@@ -48,7 +48,7 @@
 
     <!-- No answer -->
     <?php if($noAnswer):?>
-        <li class="form-group row answer-item radio-item noanswer-item radio">
+        <li class="form-group row answer-item radio-item noanswer-item">
             <input
                 type="radio"
                 name="<?php echo $name;?>"

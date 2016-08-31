@@ -11,7 +11,7 @@
 ?>
 
 <!-- answer_td -->
-<td class="answer_cell_<?php echo $ld;?> answer-item radio-item text-center radio">
+<td class="answer_cell_<?php echo $ld;?> answer-item radio-item text-center">
     <input
         type="radio"
         name="<?php echo $myfname;?>"

@@ -15,9 +15,8 @@
 <ul class="list-unstyled answers-list radio-list">
 
     <!-- Yes -->
-    <li class="answer-item radio-item radio">
+    <li class="answer-item radio-item">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $name;?>"
             id="answer<?php echo $name;?>Y"
@@ -38,9 +37,8 @@
     </li>
 
     <!-- No -->
-    <li class="answer-item radio-item  radio">
+    <li class="answer-item radio-item">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $name;?>"
             id="answer<?php echo $name;?>N"
@@ -62,9 +60,8 @@
 
     <!-- No answer -->
     <?php if($noAnswer):?>
-        <li class="answer-item radio-item noanswer-item  radio">
+        <li class="answer-item radio-item noanswer-item">
             <input
-                class="radio"
                 type="radio"
                 name="<?php echo $name;?>"
                 id="answer<?php echo $name;?>"

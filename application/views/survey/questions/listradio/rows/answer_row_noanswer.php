@@ -9,9 +9,8 @@
 ?>
 
 <!-- answer_row_noanswer -->
-<div  class="col-xs-12 form-group answer-item radio-item no-anwser-item radio">
+<div  class="col-xs-12 form-group answer-item radio-item no-anwser-item">
     <input
-    class="radio"
     type="radio"
     name="<?php echo $name; ?>"
     id="answer<?php echo $name; ?>"
