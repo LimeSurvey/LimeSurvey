@@ -671,8 +671,8 @@ $config['defaulttemplateeditormode']='default';
 $config['sideMenuBehaviour']='adaptive';
 
 // Temporary set own template dor and url
-$config['standardtemplaterooturl']=>$config['publicurl'].'templates-test';
-$config['standardtemplaterootdir']=>$config['rootdir'].DIRECTORY_SEPARATOR."templates-test";
+$config['standardtemplaterooturl']=$config['publicurl'].'templates-test';
+$config['standardtemplaterootdir']=$config['rootdir'].DIRECTORY_SEPARATOR."templates-test";
 /**
  * PS : for testing : i set it to another directory, using my clean with default dir name
  */
