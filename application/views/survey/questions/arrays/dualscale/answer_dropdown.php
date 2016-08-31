@@ -61,9 +61,9 @@
 
         <thead>
             <tr>
-                <td>&nbsp;</td>
+                <th>&nbsp;</th>
                 <th  class='th-14 text-center' <?php echo $colspan; ?>><?php echo $leftheader; ?></th>
-                <td>&nbsp;</td>
+                <th>&nbsp;</th>
                 <th class='th-15 text-center' <?php echo $colspan; ?>><?php echo $rightheader; ?></th>
             </tr>
         </thead>

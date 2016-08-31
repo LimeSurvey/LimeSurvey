@@ -51,9 +51,9 @@
 
         <thead>
             <tr class="dontread">
-                <td style='width: <?php echo $answerwidth;?>%;'>
+                <th style='width: <?php echo $answerwidth;?>%;'>
                     &nbsp;
-                </td>
+                </th>
                 <?php foreach ($labelans as $i=>$ld):?>
                     <th class="answertext">
                         <?php echo $ld;?>
@@ -61,7 +61,7 @@
                 <?php endforeach;?>
 
                 <?php if ($right_exists):?>
-                    <td>&nbsp;</td>
+                    <th>&nbsp;</th>
                 <?php endif;?>
 
                 <?php
