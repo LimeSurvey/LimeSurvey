@@ -80,7 +80,7 @@ class MersenneTwister
      * @param $seed
      * @return array
      */
-    public static function shuffle($arr)
+    public function shuffle($arr)
     {
         $mt = self::$instance;
         $new = $arr;

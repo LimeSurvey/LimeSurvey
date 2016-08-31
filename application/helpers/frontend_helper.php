@@ -1307,7 +1307,7 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
     foreach ($aRandomGroups as $sGroupName=>$aGIDs)
     {
         $aShuffledIDs=$aGIDs;
-        $aShuffledID = ls\mersenne\shuffle($aShuffledIDs);
+        $aShuffledIDs = ls\mersenne\shuffle($aShuffledIDs);
         $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
     }
     $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
