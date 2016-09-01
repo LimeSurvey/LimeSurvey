@@ -857,14 +857,15 @@ class templates extends Survey_Common_Action
     protected function _initcssfiles(TemplateConfiguration $oEditedTemplate, $editable=false)
     {
         // If editable CSS files are required, and if they are defined in the template config file
-        if($editable && is_object($oEditedTemplate->config->files_editable->css))
+        $editable_css = $oEditedTemplate->config->xpath('files_editable/css');
+        if($editable && is_object($editable_css[0]))
         {
-            $aCssFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
+            $aCssFiles = $editable_css[0]->xpath('filename');
         }
         // Else we get all the CSS files
         else
         {
-            $aCssFiles = (array) $oEditedTemplate->config->files->css->filename;
+            $aCssFiles = (array) $oEditedTemplate->config->xpath('files/css/filename');
         }
         return $aCssFiles;
     }
@@ -872,14 +873,15 @@ class templates extends Survey_Common_Action
     protected function _getEditableJsFiles($oEditedTemplate)
     {
         // If editable JS files are defined in the template config file
-        if(is_object($oEditedTemplate->config->files_editable->js))
+        $editable_js = $oEditedTemplate->config->xpath('files_editable/js');
+        if(is_object($editable_js[0]))
         {
-            $aJsFiles = (array) $oEditedTemplate->config->files_editable->js->filename;
+            $aJsFiles = $editable_js[0]->xpath('filename');
         }
         // Else we get all the JS files
         else
         {
-            $aJsFiles = (array) $oEditedTemplate->config->files->js->filename;
+            $aJsFiles = (array) $oEditedTemplate->config->xpath('files/js/filename');
         }
         return $aJsFiles;
     }
