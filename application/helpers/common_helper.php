@@ -1810,6 +1810,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['group_name']="";
     }
 
+    /*
     $fieldmap['seed'] = array('fieldname' => 'seed', 'sid' => $surveyid, 'type' => 'seed', 'gid' => '', 'qid' => '', 'aid' => '');
     if ($style == 'full')
     {
@@ -1817,6 +1818,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["seed"]['question']=gT("Seed");
         $fieldmap["seed"]['group_name']="";
     }
+    */
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
