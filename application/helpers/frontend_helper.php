@@ -1127,10 +1127,13 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
 function prefillFromCommandLine($surveyid)
 {
     $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
-    $startingValues= $_SESSION['survey_' . $surveyid]['startingValues'];
-    if (empty($startingValues))
+    if (!isset($_SESSION['survey_' . $surveyid]['startingValues']))
     {
         $startingValues=array();
+    }
+    else
+    {
+        $startingValues= $_SESSION['survey_' . $surveyid]['startingValues'];
     }
     if (isset($_GET))
     {
@@ -1268,7 +1271,7 @@ function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $lo
  * @param boolean $preview
  * @return void
  */
-function randomizationGroupsAndQuestions($surveyid, $preview, $fieldmap = array())
+function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap = array())
 {
     // Initialize the randomizer. Seed will be stored in response.
     ls\mersenne\setSeed($surveyid);

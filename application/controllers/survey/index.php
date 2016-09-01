@@ -354,7 +354,7 @@ class index extends CAction {
                 } else {
                     $errormsg .= gT("There is no matching saved survey");
                 }
-                randomizationGroupsAndQuestions($surveyid, $preview);
+                randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
             }
             if ($errormsg) {
@@ -582,7 +582,7 @@ class index extends CAction {
                             $_SESSION['survey_'.$surveyid]['maxstep'] = $_SESSION['survey_'.$surveyid]['totalsteps'];
                         }
                         loadanswers();
-                        randomizationGroupsAndQuestions($surveyid, $preview);
+                        randomizationGroupsAndQuestions($surveyid);
                         initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
                     }
                 }
@@ -603,7 +603,7 @@ class index extends CAction {
                 $thissurvey['format'] = 'S';
             }
             buildsurveysession($surveyid,true);
-            randomizationGroupsAndQuestions($surveyid, $preview);
+            randomizationGroupsAndQuestions($surveyid, true);
             initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
         }
 
