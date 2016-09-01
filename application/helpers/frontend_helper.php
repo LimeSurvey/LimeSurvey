@@ -1063,7 +1063,7 @@ function buildsurveysession($surveyid,$preview=false)
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $seed = ls\mersenne\getSeed($surveyid, $preview);
+    //$seed = ls\mersenne\getSeed($surveyid, $preview);
 
     // Randomization groups for groups
     list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview);
