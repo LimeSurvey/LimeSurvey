@@ -138,11 +138,10 @@
 
 
     $listheading="<div class='container'>
-                    <div class='row'>
-                    <h3>
+                    <div class='h3'>
                     ".gT("The following surveys are available:")."
-                    <span class='pull-right '>".$legendForSurvey_button."</span>
-                    </h3>
+                    <span class='pull-right'>".$legendForSurvey_button."</span>
+                    </div>
                     ".$legendForSurvey."
                     </div>";
     if( $outputSurveys==0)
