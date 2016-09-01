@@ -1063,8 +1063,6 @@ function buildsurveysession($surveyid,$preview=false)
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
-    //$fieldmap = randomizationGroupsAndQuestions($surveyid, $preview, $fieldmap);
-
     $_SESSION['survey_'.$surveyid]['fieldmap'] = $fieldmap;
 
     initFieldArray($surveyid, $fieldmap);
