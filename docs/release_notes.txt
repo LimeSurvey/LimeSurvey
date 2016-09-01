@@ -35,6 +35,31 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from  2.51.0 (build 160829) to 2.51.1 (build 160901) Sept 01, 2016
+-Fixed issue #11565: When importing participants, can't un-set attribute match once set (Olle Haerstedt)
+-Fixed issue #11581: Active label on survey list is confusing (Carsten Schmitz)
+-Fixed issue #11591: Typing mistake in text string (Carsten Schmitz)
+-Fixed issue #11592: Fatal error with clean 160829 (Olle Haerstedt)
+-Fixed issue #11598: Some survey responses cannot be exported to SPSS (Carsten Schmitz)
+-Fixed issue #11603: Upgrading from 2.50-160616 to 2.51-160829 fails with database error on MS-SQL (Olle Haerstedt)
+-Fixed issue: Renew key message even though there is no manual renewal possible (Carsten Schmitz)
+-Fixed issue: Statistics show more than allowed filter for ranking question type (Denis Chenu)
+-Fixed issue: Survey cannot proceed anymore (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by NdK, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by aesteban
+
 Changes from  2.50.1 (build 160823) to 2.51.0 (build 160829) Aug 29, 2016
 -New feature: Option to automatically rename colliding question codes on question import (Carsten Schmitz)
 -New feature: Set X-Frame-Options in global settings to restrict iframe embedding to the same server (Carsten Schmitz)
