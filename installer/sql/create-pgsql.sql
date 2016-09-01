@@ -619,4 +619,4 @@ CREATE INDEX prefix_index ON prefix_notifications USING btree (entity, entity_id
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '260');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '261');
