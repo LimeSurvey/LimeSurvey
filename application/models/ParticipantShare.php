@@ -69,6 +69,11 @@ class ParticipantShare extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'participant' => array(self::HAS_ONE, 'Participant', array('participant_id' => 'participant_id')), 
+            'owner' => array(self::HAS_ONE, 'User', array('uid' => 'participant.owner_uid')),
+            'shared_with' => array(self::HAS_ONE, 'User', array('uid' => 'share_uid')),
+            'surveylinks' => array(self::HAS_ONE, 'SurveyLink', 'participant_id'),
+            'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id', 'with'=>'participant_attribute_names', 'joinType'=> 'LEFT JOIN')
         );
     }
 
@@ -85,6 +90,51 @@ class ParticipantShare extends LSActiveRecord
         );
     }
 
+    public function getColumns(){
+        $cols = array(
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
+                "name" => 'participant.firstname',
+                "header" => gT("Firstname"),
+                "filter" => TbHtml::textField("ParticipantShare[Participant][full_name]", $this->participant['firstname'])
+            ),
+            array(
+                "name" => 'participant.lastname',
+                "header" => gT("Lastname"),
+                "filter" => TbHtml::textField("ParticipantShare[Participant][lastname]",$this->participant['lastname'])
+            ),
+            array(
+                "name" => 'participant.email',
+                "header" => gT("Email"),
+                "filter" => TbHtml::textField("ParticipantShare[Participant][email]",$this->participant['email'])
+            ),
+            array(
+                "name" => 'shared_with.full_name',
+                "header" => gT("Shared with"),
+                "filter" => TbHtml::textField("ParticipantShare[SharedWith][full_name]",$this->shared_with['full_name'])
+            ),
+            array(
+                "name" => 'owner.full_name',
+                "header" => gT("Owner"),
+                "filter" => TbHtml::textField("ParticipantShare[Owner][full_name]",$this->owner['full_name'])
+            ),
+            array(
+                "name" => 'date_added',
+                "header" => gT("Date added")
+            ),
+            array(
+                "name" => 'can_edit',
+                "header" => gT("Can edit?")
+            ),
+        );
+        return $cols;
+
+    }
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -93,6 +143,34 @@ class ParticipantShare extends LSActiveRecord
     {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
+        $sort = new CSort;
+        $sortAttributes = array(
+          'firstname'=>array(
+            'asc'=>'participant.firstname',
+            'desc'=>'participant.firstname desc',
+          ),
+          'lastname'=>array(
+            'asc'=>'participant.lastname',
+            'desc'=>'participant.lastname desc',
+          ),
+          'email'=>array(
+            'asc'=>'participant.email',
+            'desc'=>'participant.email desc',
+          ),
+          'language'=>array(
+            'asc'=>'language',
+            'desc'=>'language desc',
+          ),
+
+          'owner.full_name'=>array(
+            'asc'=>'owner.full_name',
+            'desc'=>'owner.full_name desc',
+          ),
+          'blacklisted'=>array(
+            'asc'=>'blacklisted',
+            'desc'=>'blacklisted desc',
+          )
+        );
 
         $criteria=new CDbCriteria;
 

@@ -204,16 +204,7 @@ class participantsaction extends Survey_Common_Action
             'attributecount' => ParticipantAttributeName::model()->count(),
             'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
         );
-        // Page size
-        if (Yii::app()->request->getParam('pageSize'))
-        {
-            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
-        }
-        else
-        {
-            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
-        }
-        $aData['pageSize']= Yii::app()->user->getState('pageSize');
+
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         // loads the participant panel and summary view
@@ -299,18 +290,19 @@ class participantsaction extends Survey_Common_Action
             'debug' => Yii::app()->request->getParam('Participant')
         );
         // Page size
-        if (Yii::app()->request->getParam('pageSize'))
+        if (Yii::app()->request->getParam('pageSizeParticipantView'))
         {
-            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
+            Yii::app()->user->setState('pageSizeParticipantView',(int)Yii::app()->request->getParam('pageSizeParticipantView'));
         }
         else
         {
-            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
+            Yii::app()->user->setState('pageSizeParticipantView',(int)Yii::app()->params['defaultPageSize']);
         }
-        $aData['pageSize']= Yii::app()->user->getState('pageSize');
+        $aData['pageSizeParticipantView']= Yii::app()->user->getState('pageSizeParticipantView');
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
-        //App()->getClientScript()->registerPackage('jqgrid');
+        yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
+        yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         // loads the participant panel view and display participant view
 
@@ -352,7 +344,41 @@ class participantsaction extends Survey_Common_Action
      */
     public function sharePanel()
     {
-        $this->_loadjqGrid('sharePanel');
+        $lang = Yii::app()->session['adminlang'];
+
+        $model = new ParticipantShare();
+        if(Yii::app()->request->getParam('ParticipantShare'))
+        {
+            $model->attributes=Yii::app()->request->getParam('ParticipantShare');
+        } 
+        // data to be passed to view
+        $aData = array(
+            'names' => User::model()->findAll(),
+            'attributes' => ParticipantAttributeName::model()->getVisibleAttributes(),
+            'allattributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'attributeValues' => ParticipantAttributeName::model()->getAllAttributesValues(),
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'model' => $model,
+            'debug' => Yii::app()->request->getParam('Participant')
+        );
+        // Page size
+        if (Yii::app()->request->getParam('pageSize'))
+        {
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
+        }
+        else
+        {
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
+        }
+        $aData['pageSize']= Yii::app()->user->getState('pageSize');
+        $searchstring = Yii::app()->request->getPost('searchstring');
+        $aData['searchstring'] = $searchstring;
+        //App()->getClientScript()->registerPackage('jqgrid');
+
+        // loads the participant panel view and display participant view
+
+
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'sharePanel'), $aData);
     }
 
     /**
@@ -446,7 +472,39 @@ class participantsaction extends Survey_Common_Action
      */
     public function attributeControl()
     {
-        $this->_loadjqGrid('attributeControl');
+               $lang = Yii::app()->session['adminlang'];
+
+        $model = new ParticipantAttributeName();
+        if(Yii::app()->request->getParam('ParticipantAttributeName'))
+        {
+            $model->attributes=Yii::app()->request->getParam('ParticipantAttributeName');
+        } 
+        // data to be passed to view
+        $aData = array(
+            'names' => User::model()->findAll(),
+            'attributes' => ParticipantAttributeName::model()->getVisibleAttributes(),
+            'allattributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'attributeValues' => ParticipantAttributeName::model()->getAllAttributesValues(),
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'model' => $model,
+            'debug' => Yii::app()->request->getParam('Attribute')
+        );
+        // Page size
+        if (Yii::app()->request->getParam('pageSizeAttributes'))
+        {
+            Yii::app()->user->setState('pageSizeAttributes',(int)Yii::app()->request->getParam('pageSizeAttributes'));
+        }
+        else
+        {
+            Yii::app()->user->setState('pageSizeAttributes',(int)Yii::app()->params['defaultPageSize']);
+        }
+        $aData['pageSizeAttributes']= Yii::app()->user->getState('pageSize');
+        $searchstring = Yii::app()->request->getPost('searchstring');
+        $aData['searchstring'] = $searchstring;
+        // loads the participant panel view and display participant view
+        yii::app()->clientScript->registerPackage('bootstrap-switch');
+
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
 
     /**
@@ -559,6 +617,98 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
+    private function generateExtraAttributeEditHtml($name, $value, $attribute, $model){
+        $attributes_control_group_text_template = 
+        '<div class="form-horizontal form-group">'
+            . '<label class="col-sm-4 control-label" for="Attributes[:name:]">:displayName:</label>'
+            . "<div>"
+                . "<div class='col-sm-8'>"
+                    . '<input class="form-control" name="Attributes[:name:]" id="Attributes_:name:" type="text" maxlength="254" value=":value:">'
+                . "</div>"
+            . "</div>"
+        . "</div>";
+
+        $attributes_control_group_datepicker_template = 
+        '<div class="form-horizontal form-group">'
+            . '<label class="col-sm-4 control-label" for="datepickerInputField_[:name:]">:displayName:</label>'
+            . "<div>"
+                . "<div class='col-sm-8'>"
+                    . '<input class="form-control" name="datepickerInputField_:name:" id="datepickerInputField_:name:" type="text" value=":value:">'
+                    . '<input name="Attributes[:name:]" id="Attributes_:name:" type="hidden" value=":value:">'
+                    . '<script type="text/javascript">
+                        $(function () {
+                            $(\'#datepickerInputField_:name:\').datetimepicker(datepickerConfig.initDatePickerObject);
+                            $(\'#datepickerInputField_:name:\').on("dp.change", function(e){
+                                $("#Attributes_:name:").val(e.date.format(datepickerConfig.dateformatdetailsjs));
+                            })
+                        });
+                    </script>'
+                . "</div>"
+            . "</div>"
+        . "</div>";
+
+        $attributes_control_group_dropdown_template = 
+        '<div class="form-horizontal form-group">'
+            . '<label class="col-sm-4 control-label" for="datepickerInputField_[:name:]">:displayName:</label>'
+            . "<div>"
+                . "<div class='col-sm-8'>"
+                    . '<select class="form-control" name="Attributes[:name:]" id="Attributes_:name:">'
+                    . ':options:'
+                    . '</select>'
+                . "</div>"
+            . "</div>"
+        . "</div>";
+
+        switch($attribute['attribute_type'])
+        {
+            case "DP": //DatePicker attribute
+                $outHtml = preg_replace("/(:name:)/",$name,$attributes_control_group_datepicker_template);
+                break;
+            case "DD": //DropDown Attribute
+                $outHtml = preg_replace("/(:name:)/",$name,$attributes_control_group_dropdown_template);
+                $options_raw = $model->getOptionsForAttribute($attribute['attribute_id']);
+                $options="<option value></option>";
+                foreach($options_raw as $option)
+                {
+                    $options.="<option value='".$option['value']."' "
+                        . ($option['value'] == $value ? "selected" : "" )
+                        . ">".$option['value'] 
+                        . "</option>";
+                }
+                $outHtml = preg_replace("/(:options:)/",$options,$outHtml);
+
+                break;
+            case "TB": //"Basic" Textbox Attribute
+            default:
+                $outHtml = preg_replace("/(:name:)/",$name,$attributes_control_group_text_template);
+                break;
+        }
+
+        $outHtml = preg_replace("/(:displayName:)/", $attribute['defaultname'], $outHtml);
+        $outHtml = preg_replace("/(:value:)/", $value , $outHtml);
+        return $outHtml;
+    }
+
+    public function openeditparticipant(){
+        $participant_id = Yii::app()->request->getPost('participant_id');
+        $model = Participant::model()->findByPk($participant_id);     
+        
+        //Generate HTML for extra Attributes
+
+        $extraAttributes = [];
+        foreach($model->allExtraAttributes as $name=>$extraAttribute){
+            $value = $model->getParticipantAttribute("",$extraAttribute['attribute_id']);
+            
+            $extraAttributes[] = $this->generateExtraAttributeEditHtml($name, $value, $extraAttribute, $model);
+        }
+        $aData = array(
+            'model' => $model,
+            'editType' => "edit",
+            'extraAttributes' => $extraAttributes
+        );
+
+        $this->getController()->renderPartial('/admin/participants/modal_subviews/_editParticipant', $aData);
+    }
     /**
      * Resposible for editing data on the jqGrid
      */
@@ -569,15 +719,29 @@ class participantsaction extends Survey_Common_Action
         // if edit it will update the row
         if ($sOperation == 'edit' && Permission::model()->hasGlobalPermission('participantpanel','update') && Participant::model()->is_owner(Yii::app()->request->getPost('id')))
         {
-            $aData = array(
-                'participant_id' => Yii::app()->request->getPost('id'),
-                'firstname' => Yii::app()->request->getPost('firstname'),
-                'lastname' => Yii::app()->request->getPost('lastname'),
-                'email' => Yii::app()->request->getPost('email'),
-                'language' => Yii::app()->request->getPost('language'),
-                'blacklisted' => Yii::app()->request->getPost('blacklisted')
-            );
-            Participant::model()->updateRow($aData);
+            $aData = Yii::app()->request->getPost('Participant');
+            $extraAttributes = Yii::app()->request->getPost('Attributes');
+            $participant = Participant::model()->findByPk($aData['participant_id']);
+            $participant->attributes = $aData;
+            $success['participant'] = $participant->save();
+
+             foreach( $extraAttributes as $htmlName => $attributeValue ){
+                 list(,$attribute_id) = explode('_',$htmlName);
+                 $data = array(
+                     'attribute_id'=>$attribute_id, 
+                     'participant_id'=>$aData['participant_id'],
+                     'value' => $attributeValue
+                 );
+                 ParticipantAttribute::model()->updateParticipantAttributeValue($data);
+             }
+
+            echo json_encode(array(
+                "debug" => $aData,
+                "debug2" => $extraAttributes,
+                "success" => $success,
+                "successMessage" => gT("Participant successfully updated")
+            ));
+            die();
         }
         // if add it will insert a new row
         elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel','create'))
@@ -1823,6 +1987,22 @@ class participantsaction extends Survey_Common_Action
             die('No permission');
         }
         unlink(Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath')));
+    }
+
+    public function changeblackliststatus(){
+        $participantId = Yii::app()->request->getPost('participant_id');
+        $blacklistStatus = Yii::app()->request->getPost('blacklist');
+        $blacklistValue = ($blacklistStatus=="true" ? "Y" : "N" );
+        $participant = Participant::model()->findByPk($participantId);
+        $participant->blacklisted = $blacklistValue;
+        $participant->update(array('blacklisted'));
+        die(json_encode(array(
+            "debug" => Yii::app()->request,
+            "debug_p1" => Yii::app()->request->getPost('participant_id'),
+            "debug_p2" => Yii::app()->request->getPost('blacklist'),
+            "success" => true,
+            "newValue" => $blacklistValue
+        )));
     }
 
     public function blacklistParticipant()

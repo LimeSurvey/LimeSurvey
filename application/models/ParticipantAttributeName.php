@@ -91,7 +91,86 @@ class ParticipantAttributeName extends LSActiveRecord
             'visible' => 'Visible',
         );
     }
+    public function getButtons(){
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<span class='fa fa-%s' ></span>" //icon class
+            . "</button>";
+        $buttons = "";
+        //DELETE attribute
+        //Edit-button 
+            $editData = array(
+                'action_attributeNames_editModal',
+                '',
+                gT("Edit this extra-attribute"),
+                'edit'
+            );
+            $buttons .= vsprintf($raw_button_template, $editData);
 
+        //delete-button
+            $deleteData = array(
+                'action_attributeNames_deleteModal',
+                'text-danger',
+                gT("Delete this extra-attribute"),
+                'trash text-danger'
+            );
+            $buttons .= vsprintf($raw_button_template, $deleteData);
+
+            return $buttons;
+    }
+    public function getMassiveActionCheckbox(){
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='".$this->attribute_id."' >";
+    }
+    public function getAttributeTypeNice(){
+        $realNames = array(
+            'DD' => gT("Drop-down list"),
+            'DP' => gT("Date"),
+            'TB' => gT("Text box")
+        );
+        return $realNames[$this->attribute_type];
+    }
+
+    public function getNamePlusLanguageName(){
+        $namesList = $this->participant_attribute_names_lang;
+        $names = array();
+        foreach($namesList as $name){
+             $names[] = $name['attribute_name'];
+        }
+        $defaultname = $this->defaultname;
+        $returnName = $defaultname." (".join(', ',$names).")";
+        return $returnName;
+    }
+    public function getVisibleSwitch(){}
+
+    public function getColumns(){
+       $cols = array(
+            array(
+                "name" => 'massiveActionCheckbox',
+                "type" => 'raw',
+                "header" => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
+                "filter" => false
+            ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
+                "name" => 'defaultname',
+                "value" => '$data->getNamePlusLanguageName()'
+            ),
+            array(
+                "name" => 'attribute_type',
+                "value" => '$data->getAttributeTypeNice()'
+            ),
+            array(
+                "name" => 'visible',
+                "value" => '$data->getVisibleSwitch()'
+            )
+       );
+       return $cols;
+    }
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -401,11 +480,7 @@ class ParticipantAttributeName extends LSActiveRecord
         }
         if (!empty($insertnames))
         {
-            $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk(array (
-                    'attribute_id' => $data['attribute_id'],
-                    'attribute_type' => $data['attribute_type']
-                )
-            );
+            $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk($data['attribute_id']);
             foreach ($insertnames as $sFieldname=>$sValue)
             {
                $oParticipantAttributeName->$sFieldname=$sValue;

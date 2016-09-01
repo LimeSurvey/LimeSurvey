@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function bindButtons(){
     // Code for AJAX download
     jQuery.download = function(url, data, method){
         //url and data options required
@@ -17,7 +17,72 @@ $(document).ready(function() {
         };
     };
 
+    $('.action_participant_editModal').on('click', function(e){
+        e.preventDefault();
+        console.log("I sure hope it's working");
+        $('#participant_edit_modal').modal('show');
+        $('#participant_edit_modal').on('hidden.bs.modal', function(){
+             $.fn.yiiGridView.update('list_central_participants',{});
+        })
+       jQuery.ajax({
+           url: openEditParticipant, 
+           data: {'participant_id' : $(this).closest('tr').data('participant_id')},
+           method: 'POST',
+           success: function(page){
+            $('#participant_edit_modal').find('.modal-content').html(page);
+            $('#participant_edit_modal').find('.action_save_modal_editParticipant').on('click', function(e){
+                e.preventDefault();
 
+                var action = $('#participant_edit_modal').find('#editPartcipantActiveForm').attr('action');
+                var data = $('#participant_edit_modal').find('#editPartcipantActiveForm').serializeArray();
+                //$.blockUI({ message: null }); 
+                $.ajax({
+                    url: action,
+                    data: data,
+                    method: 'POST',
+                    dataType: "json",
+                    success: function(result){
+                        //$.unblockUI;
+                        $('#participant_edit_modal').find('.modal-body ').html(result.successMessage);
+                        $('#participant_edit_modal').find('.action_save_modal_editParticipant').css('display','none');
+                        setTimeout(function(){$('#participant_edit_modal').modal('hide');},3500);
+                    },
+                    error : function(err){
+                        //$.unblockUI;
+                        console.log(arguments);
+                        alert(err);
+                    }
+                })
+                console.log( $('#participant_edit_modal').find('#editPartcipantActiveForm').serializeArray());
+            })
+            }
+       });
+    })
+    $('#action_toggleAllParticipant').on('click', function(){
+        $('.selector_participantCheckbox').prop('checked',$('#action_toggleAllParticipant').prop('checked'));
+    });
+
+    $('.action_changeBlacklistStatus').bootstrapSwitch();
+
+    $('.action_changeBlacklistStatus').on('switchChange.bootstrapSwitch', function(event,state){
+        var self = this;
+        $.ajax({
+            url: changeBlacklistStatus, 
+            method: "POST",
+            data: {'participant_id': $(self).closest('tr').data('participant_id'), 'blacklist': state},
+            dataType: 'json', 
+            success: function(resolve){
+                console.log(resolve);
+                $(self).prop("checked", (resolve.newValue == "Y"));
+            }
+        })
+    });
+
+    $('#pageSizeParticipantView').on("change", function(){
+        $.fn.yiiGridView.update('list_central_participants',{ data:{ pageSizeParticipantView: $(this).val() }});
+    });
+
+            
     $('#export').click(function(){
         var dialog_buttons={};
         dialog_buttons[exportBtn]=function(){
@@ -62,4 +127,6 @@ $(document).ready(function() {
                 }
         });
     });
-});
+};
+$(document).ready(bindButtons);
+

@@ -11,6 +11,35 @@
     var sNonSelectedText = "<?php eT("None selected", 'js') ?>";
     var sNSelectedText = "<?php eT("selected", 'js') ?>";
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
+    var openEditParticipant = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/openeditparticipant"); ?>";
+    var changeBlacklistStatus = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/changeblackliststatus"); ?>";
+    var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> '.gT('Remove from Blacklist?'); ?>";
+    var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> '.gT('Add to Blacklist?'); ?>";
+    var datepickerConfig =     <?php 
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        echo json_encode(array(
+            'dateformatdetails'      => $dateformatdetails['dateformat'],
+            'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
+            "initDatePickerObject" => array(
+                "format" => $dateformatdetails['jsdate'],
+                "tooltips" => array(
+                    "today" => gT('Go to today'),
+                    "clear" => gT('Clear selection'),
+                    "close" => gT('Close the picker'),
+                    "selectMonth" => gT('Select Month'),
+                    "prevMonth" => gT('Previous Month'),
+                    "nextMonth" => gT('Next Month'),
+                    "selectYear" => gT('Select Year'),
+                    "prevYear" => gT('Previous Year'),
+                    "nextYear" => gT('Next Year'),
+                    "selectDecade" => gT('Select Decade'),
+                    "prevDecade" => gT('Previous Decade'),
+                    "nextDecade" => gT('Next Decade'),
+                    "prevCentury" => gT('Previous Century'),
+                    "nextCentury" => gT('Next Century')
+                )
+            )
+        ));?>;
 </script>
 <div class="menubar surveymanagerbar">
     <div class="row container-fluid">
@@ -103,6 +132,15 @@
             </a>
         </div>
     </div>
+</div>
+
+<!-- Modal for editing participants-->
+<div class="modal fade" id="participant_edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     
+    </div>
+  </div>
 </div>
 
 

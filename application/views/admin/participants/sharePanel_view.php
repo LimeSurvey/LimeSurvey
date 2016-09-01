@@ -47,12 +47,40 @@
 
 <div class="col-lg-12 list-surveys">
     <h3><?php eT("Share panel"); ?> </h3>
+<div class="row" style="margin-bottom: 100px">
+        <div class="container-fluid">
 
-    <div class="row">
-        <div class="col-lg-12 content-right">
-<table id="sharePanel">
-    <tr><td>&nbsp;</td></tr>
-</table>
+        <div class="row">
+            <?php
+            $this->widget('bootstrap.widgets.TbGridView', array(
+                'id' => 'share_central_participants',
+                'itemsCssClass' => 'table table-striped items',
+                'dataProvider' => $model->search(),
+                'columns' => $model->columns,
+                'filter'=>$model,
+                'afterAjaxUpdate' => 'bindButtons',
+                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
+                            ),
+                    ));
+                ?>
+            </div>
+            <!-- To update rows per page via ajax -->
+            <script type="text/javascript">
+            function bindButtons(){
+                console.log("bind_buttons");
+            }
+                jQuery(function($) {
+                    jQuery(document).on("change", '#pageSize', function(){
+                        $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSize: $(this).val() }});
+                    });
+                });
+            </script>
+    </div>
 <div id="pager">
 </div>
         </div>

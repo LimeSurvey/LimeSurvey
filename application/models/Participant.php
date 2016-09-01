@@ -72,7 +72,7 @@ class Participant extends LSActiveRecord
             array('blacklisted', 'length', 'max' => 1),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('participant_id, firstname, lastname, email, language, blacklisted, owner.full_name', 'safe', 'on' => 'search'),
+            array('participant_id, firstname, lastname, email, language, countActiveSurveys, blacklisted, owner.full_name', 'safe', 'on' => 'search'),
         );
     }
 
@@ -86,24 +86,25 @@ class Participant extends LSActiveRecord
         return array(
             'owner' => array(self::HAS_ONE, 'User', array('uid' => 'owner_uid')),
             'surveylinks' => array(self::HAS_ONE, 'SurveyLink', 'participant_id'),
-            'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id', 'with'=>'participant_attribute_names', 'joinType'=> 'LEFT JOIN')
+            'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id')
         );
     }
-    public function getSurveylinkcount(){
+    // public function getCountActiveSurveys(){
 
-        $count =  count($this->surveylinks);
-        return ($count!==0 ? $count : '');
-    }
+    //     $count =  count($this->surveylinks);
+    //     return $count ;
+    //     return ($count!==0 ? $count : '');
+    // }
+
     public function getButtons(){
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
-            . "<a data-toggle='modal' data-participantid='".$this->participant_id."' data-target='%s'>" //Which modal is to be called?
-            . "<button class='btn btn-default btn-xs %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
             . "<span class='fa fa-%s' ></span>" //icon class
-            . "</button></a>";
+            . "</button>";
         //Edit-button 
             $editData = array(
-                'editModal',
+                'action_participant_editModal',
                 '',
                 gT("Edit this participant"),
                 'edit'
@@ -112,15 +113,15 @@ class Participant extends LSActiveRecord
 
         //delete-button
             $deleteData = array(
-                'deleteParticipant',
-                'btn-danger',
+                'action_participant_deleteModal',
+                'text-danger',
                 gT("Delete this participant"),
-                'trash'
+                'trash text-danger'
             );
             $buttons .= vsprintf($raw_button_template, $deleteData);
         //survey information
             $infoData = array(
-                'participantInfo',
+                'action_participant_infoModal',
                 '',
                 gT("List active surveys"),
                 'search'
@@ -129,20 +130,28 @@ class Participant extends LSActiveRecord
             $buttons .= "</div>";
         return $buttons;
     }
+    public function getCheckbox(){
+        return "<input type='checkbox' class='selector_participantCheckbox' name='selectedParticipant[]' value='".$this->participant_id."' >";
+    }
     /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels()
     {
-        return array(
-            'participant_id' => 'Participant',
-            'firstname' => 'Firstname',
-            'lastname' => 'Lastname',
-            'email' => 'Email',
-            'language' => 'Language',
-            'blacklisted' => 'Blacklisted',
-            'owner_uid' => 'Owner Uid',
+        $returnArray = array(
+            'participant_id' => gT('Participant'),
+            'firstname' => gT('Firstname'),
+            'lastname' => gT('Lastname'),
+            'email' => gT('Email'),
+            'language' => gT('Language'),
+            'blacklisted' => gT('Blacklisted'),
+            'owner_uid' => gT('Owner Uid'),
         );
+        foreach($this->allExtraAttributes as $name => $attribute)
+        {
+            $returnArray[$name] = $attribute['defaultname'];
+        }
+        return $returnArray;
         
     }
 
@@ -155,8 +164,28 @@ class Participant extends LSActiveRecord
         return $extraAttributes;
     }
 
-    public function getParticipantAttribute($attribute_textid){
-        list(,$attribute_id) = explode('_',$attribute_textid);
+    public function getOptionsForAttribute($attribute_id) {
+         $result = Yii::app()->db->createCommand()
+         ->select('*')->from('{{participant_attribute_values}}')->where('attribute_id=:attribute_id', array( 'attribute_id' => $attribute_id))->queryAll();
+         return $result;
+    }
+    public function getAllUsedLanguagesWithRealName(){
+        $lang_array = array();
+        $languages = $this->findAll(array(
+            'select'=>'t.language',
+            'group'=>'t.language',
+            'distinct'=>true,
+        ));
+        foreach($languages as $language){
+            $lang_array[$language['language']] = getLanguageNameFromCode($language['language'], false);
+        }
+        return $lang_array;
+    }
+    public function getParticipantAttribute($attribute_textid, $attribute_id=false){
+        if($attribute_id == false)
+        {
+            list(,$attribute_id) = explode('_',$attribute_textid);
+        }
         $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
         foreach($participantAttributes as $singleAttribute){
             if($singleAttribute['attribute_id'] == $attribute_id){
@@ -165,8 +194,28 @@ class Participant extends LSActiveRecord
         }
         return "";
     }
+
+    public function getCountActiveSurveys(){
+        $activeSurveys = $this->surveylinks;
+        return count($activeSurveys)>0 ? count($activeSurveys) : "";
+    }
+
+    public function getBlacklistSwitchbutton(){
+        $inputHtml = "<input type='checkbox' data-size='small' data-on-color='danger' data-off-color='success' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeBlacklistStatus' "
+            . ($this->blacklisted == "Y" ? "checked" : "")
+            . "/>";
+        return  $inputHtml;
+
+    }
+
     public function getColumns(){
         $cols = array(
+            array(
+                "name" => 'checkbox',
+                "type" => 'raw',
+                "header" => "<input type='checkbox' id='action_toggleAllParticipant' />",
+                "filter" => false
+            ),
             array(
                 "name" => 'buttons',
                 "type" => 'raw',
@@ -174,23 +223,21 @@ class Participant extends LSActiveRecord
                 "filter" => false
             ),
             array(
-                "name" => 'firstname',
-                "header" => gT("Firstname")
+                "name" => 'firstname'
             ),
             array(
-                "name" => 'lastname',
-                "header" => gT("Lastname")
+                "name" => 'lastname'
             ),
             array(
-                "name" => 'email',
-                "header" => gT("Email")
+                "name" => 'email'
             ),
             array(
                 "name" => 'language',
-                "header" => gT("Language")
+                "value" => 'getLanguageNameFromCode($data->language, false)',
+                'filter' => $this->allUsedLanguagesWithRealName
             ),
             array(
-                "name" => 'surveylinkcount',
+                "name" => 'countActiveSurveys',
                 "header" => gT("Active surveys")
             ),
             array(
@@ -200,20 +247,44 @@ class Participant extends LSActiveRecord
             ),
             array(
                 "name" => 'blacklisted',
-                "header" => gT("Blacklisted"),
+                "value" => '$data->getBlacklistSwitchbutton()',
+                "type" => "raw",
                 "filter" => array('N' => gT("No"), 'Y'=>gT('Yes'))
             )
         );
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
         foreach($this->allExtraAttributes as $name => $attribute){
-            $cols[] = array(
+            if($attribute['visible'] == "FALSE") continue;
+            $col_array = array(
                 "value" => '$data->getParticipantAttribute($this->id)',
                 "id" => $name,
                 "header" => $attribute['defaultname'],
                 "type" => "raw",
-                "filter" => TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name])
+               
             );
+            if($attribute['attribute_type'] == "TB") //textbox
+            {
+                 $col_array["filter"] = TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name]);
+            }
+            else if($attribute['attribute_type'] == "DD") //dropdown
+            {
+                $options_raw = $this->getOptionsForAttribute($attribute['attribute_id']);
+                $options_array = array(
+                    ''=>''
+                );
+                foreach($options_raw as $option)
+                {
+                    $options_array[$option['value']] = $option['value'];
+                }
+
+                $col_array["filter"] = TbHtml::dropDownList("extraAttribute[".$name."]", $extraAttributeParams[$name], $options_array);
+            }
+            else if($attribute['attribute_type'] == "DP") //date -> still a text field, too many errors with the gridview
+            {
+                 $col_array["filter"] = TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name]);
+            }
+            $cols[] = $col_array;
         }
         return $cols;
     }
@@ -243,7 +314,6 @@ class Participant extends LSActiveRecord
             'asc'=>'language',
             'desc'=>'language desc',
           ),
-
           'owner.full_name'=>array(
             'asc'=>'owner.full_name',
             'desc'=>'owner.full_name desc',
@@ -254,33 +324,39 @@ class Participant extends LSActiveRecord
           )
         );
 
-        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
-        $criteria->together = true;
         $criteria->with = array('owner','participantAttributes');
         $criteria->compare('t.firstname', $this->firstname, true);
         $criteria->compare('t.lastname', $this->lastname, true);
         $criteria->compare('t.email', $this->email, true);
         $criteria->compare('t.language', $this->language, true);
         $criteria->compare('t.blacklisted', $this->blacklisted, true);
-        $criteria->compare('owner_uid', $this->owner_uid);
-
+        $criteria->compare('t.owner_uid', $this->owner_uid);
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
-        $params = array();
-        $condition = "";
-        foreach($this->allExtraAttributes as $name => $attribute){
-            $value = $extraAttributeParams[$name];
-            if($value != ''){
-                $condition .=' ("participantAttributes"."value" = :'.$name.') ';
-                $criteria->params[$name] = $value;
-                $criteria->addCondition($condition);
-            }
+        $extraAttributeValues = array();
+        
+        
+        foreach($this->allExtraAttributes as $name => $attribute)
+        {
+            if($extraAttributeParams[$name])
+                $extraAttributeValues[] =  "'".$extraAttributeParams[$name]."'";
+        }
+        $tableParticipantAttributes = ParticipantAttribute::model()->tableName();
+        $callParticipantAttributes = "SELECT DISTINCT participant_id FROM ".$tableParticipantAttributes." WHERE value IN (".join(', ',$extraAttributeValues).")";
+
+        if(!empty($extraAttributeValues))
+        { 
+            $criteria->addCondition( '"t"."participant_id" IN (('. $callParticipantAttributes .'))');
         }
 
+        $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
+        
         $sort->attributes = $sortAttributes;
+
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-            'sort'=>$sort,
+             'criteria'=>$criteria,
+             'sort'=>$sort,
+            // 'pagination' => false
             'pagination' => array(
                 'pageSize' => $pageSize
             )
