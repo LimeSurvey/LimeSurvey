@@ -413,7 +413,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         if ($options['autorename'])
         {
             // Check if code already exists
-            while (Question::model()->countByAttributes(array('title'=>$insertdata['title']))>0)
+            while (Question::model()->countByAttributes(array('title'=>$insertdata['title'],'sid'=>$iNewSID))>0)
             {
                 $insertdata['title']=randomChars(5);
             }
