@@ -82,7 +82,7 @@ function retrieveAnswers($ia)
     global $thissurvey;                          //These are set by index.php
 
     $display    = $ia[7];                        //DISPLAY
-    $name       = $ia[0];                        //QUESTION NAME
+    $qid        = $ia[0];                        // Question ID
     $qtitle     = $ia[3];
     $inputnames = array();
     $answer     = "";                            //Create the question/answer html
@@ -384,7 +384,7 @@ function retrieveAnswers($ia)
     $qtitle = $question_text;
     // =====================================================
 
-    $qanda=array($qtitle, $answer, 'help', $display, $name, $ia[2], $ia[5], $ia[1] );
+    $qanda=array($qtitle, $answer, 'help', $display, $qid, $ia[2], $ia[5], $ia[1] );
     //New Return
     return array($qanda, $inputnames);
 }
