@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-09-01 08:14:50+00:00\n"
+"POT-Creation-Date: 2016-09-02 14:22:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -377,15 +377,15 @@ msgid "Either you have been inactive for too long, you have cookies disabled for
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:87
-#: application/controllers/admin/templates.php:1120
+#: application/controllers/admin/templates.php:1122
 #: application/controllers/survey/index.php:194
 #: application/controllers/survey/index.php:217
 #: application/controllers/survey/index.php:282
 #: application/controllers/survey/index.php:295
 #: application/controllers/survey/index.php:309
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:154
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:153
 #: application/helpers/replacements_helper.php:231
-#: application/views/surveys/publicSurveyList.php:85
+#: application/views/surveys/publicSurveyList.php:84
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
@@ -2823,7 +2823,7 @@ msgid "This plugin has no settings."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:75
-#: application/controllers/admin/templates.php:1311
+#: application/controllers/admin/templates.php:1313
 msgid "Please submit by %s"
 msgstr ""
 
@@ -2840,12 +2840,12 @@ msgid "Submit Your Survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:134
-#: application/controllers/admin/templates.php:1312
+#: application/controllers/admin/templates.php:1314
 msgid "Thank you for completing this survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:145
-#: application/controllers/admin/templates.php:1308
+#: application/controllers/admin/templates.php:1310
 msgid "Please fax your completed survey to:"
 msgstr ""
 
@@ -2938,7 +2938,7 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:612
-#: application/controllers/admin/templates.php:1285
+#: application/controllers/admin/templates.php:1287
 msgid "*"
 msgstr ""
 
@@ -2947,7 +2947,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:685
 #: application/controllers/admin/printablesurvey.php:747
 #: application/controllers/admin/printablesurvey.php:935
-#: application/controllers/admin/templates.php:1289
+#: application/controllers/admin/templates.php:1291
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -3896,97 +3896,97 @@ msgstr ""
 msgid "Could not write file "
 msgstr ""
 
-#: application/controllers/admin/templates.php:930
+#: application/controllers/admin/templates.php:932
 msgid "Survey List Page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:931
+#: application/controllers/admin/templates.php:933
 msgid "Welcome Page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:932
+#: application/controllers/admin/templates.php:934
 msgid "Question Page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:933
+#: application/controllers/admin/templates.php:935
 msgid "Completed Page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:934
+#: application/controllers/admin/templates.php:936
 msgid "Clear All Page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:935
+#: application/controllers/admin/templates.php:937
 msgid "Register Page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:936
+#: application/controllers/admin/templates.php:938
 msgid "Load Page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:937
+#: application/controllers/admin/templates.php:939
 msgid "Save Page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:938
+#: application/controllers/admin/templates.php:940
 msgid "Print answers page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:939
+#: application/controllers/admin/templates.php:941
 msgid "Printable survey page"
 msgstr ""
 
-#: application/controllers/admin/templates.php:998
+#: application/controllers/admin/templates.php:1000
 msgid "Invalid screen name"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1050
+#: application/controllers/admin/templates.php:1052
 msgid "Template Sample"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1052
+#: application/controllers/admin/templates.php:1054
 msgid "This is a sample survey description. It could be quite long."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1053
+#: application/controllers/admin/templates.php:1055
 msgid "But this one isn't."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1055
+#: application/controllers/admin/templates.php:1057
 msgid "Welcome to this sample survey"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1056
+#: application/controllers/admin/templates.php:1058
 msgid "You should have a great time doing this"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1063
+#: application/controllers/admin/templates.php:1065
 msgid "Some URL description"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1067
+#: application/controllers/admin/templates.php:1069
 msgid "Group 1: The first lot of questions"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1068
+#: application/controllers/admin/templates.php:1070
 msgid "This group description is fairly vacuous, but quite important."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1096
+#: application/controllers/admin/templates.php:1098
 msgid "This is some help text."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1119
+#: application/controllers/admin/templates.php:1121
 msgid "You have not provided a survey identification number"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1121
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:143
-#: application/views/surveys/publicSurveyList.php:76
+#: application/controllers/admin/templates.php:1123
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:142
+#: application/views/surveys/publicSurveyList.php:75
 msgid "The following surveys are available:"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1140
+#: application/controllers/admin/templates.php:1142
 #: application/helpers/replacements_helper.php:856
 #: application/helpers/replacements_helper.php:879
 #: application/helpers/replacements_helper.php:926
@@ -3994,33 +3994,33 @@ msgstr ""
 msgid "Resume later"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1141
+#: application/controllers/admin/templates.php:1143
 #: application/helpers/replacements_helper.php:372
 #: application/helpers/replacements_helper.php:379
 msgid "Exit and clear survey"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1153
+#: application/controllers/admin/templates.php:1155
 msgid "How many roads must a man walk down?"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1157
+#: application/controllers/admin/templates.php:1159
 msgid "This is some helpful text."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1168
+#: application/controllers/admin/templates.php:1170
 msgid "Hint when response is valid"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1178
+#: application/controllers/admin/templates.php:1180
 msgid "Please explain something in detail:"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1187
+#: application/controllers/admin/templates.php:1189
 msgid "Hint when response is not valid"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1202
+#: application/controllers/admin/templates.php:1204
 #: application/helpers/frontend_helper.php:1750
 #: application/helpers/frontend_helper.php:2143
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
@@ -4032,8 +4032,8 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1203
-#: application/controllers/admin/templates.php:1211
+#: application/controllers/admin/templates.php:1205
+#: application/controllers/admin/templates.php:1213
 #: application/helpers/frontend_helper.php:1765
 #: application/views/admin/participants/displayParticipants_view.php:134
 #: application/views/admin/quotas/newanswer_view.php:29
@@ -4046,19 +4046,19 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: application/controllers/admin/templates.php:1296
+#: application/controllers/admin/templates.php:1298
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1297
+#: application/controllers/admin/templates.php:1299
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1309
+#: application/controllers/admin/templates.php:1311
 msgid "Submit your survey."
 msgstr ""
 
-#: application/controllers/admin/templates.php:1313
+#: application/controllers/admin/templates.php:1315
 msgid "This is the survey end message."
 msgstr ""
 
@@ -5294,8 +5294,8 @@ msgstr ""
 msgid "Estimated time for this survey"
 msgstr ""
 
-#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:150
-#: application/views/surveys/publicSurveyList.php:81
+#: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:149
+#: application/views/surveys/publicSurveyList.php:80
 msgid "No available surveys"
 msgstr ""
 
