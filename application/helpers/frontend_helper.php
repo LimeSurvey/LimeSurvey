@@ -2333,9 +2333,11 @@ function SetSurveyLanguage($surveyid, $sLanguage)
     {
         $default_survey_language= Survey::model()->findByPk($surveyid)->language;
         $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
-        if (!isset($sLanguage) || ($sLanguage=='')
-        || !( in_array($sLanguage,$additional_survey_languages) || $sLanguage==$default_survey_language)
-        )
+        if (
+            empty($sLanguage)                                       //check if there 
+            || (!in_array($sLanguage, $additional_survey_languages))  //Is the language in the survey-language array
+            || ($default_survey_language == $sLanguage)              //Is the $default_language the chosen language?
+         )
         {
             // Language not supported, fall back to survey's default language
             $_SESSION['survey_'.$surveyid]['s_lang'] = $default_survey_language;
