@@ -507,6 +507,22 @@ class participantsaction extends Survey_Common_Action
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
 
+    public function changeattributevisibility(){
+        $attributeId = Yii::app()->request->getPost('attribute_id');
+        $visible = Yii::app()->request->getPost('visible');
+        $visible_value = ($visible=="true" ? "TRUE" : "FALSE" );
+        $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
+        $attributeName->visible = $visible_value;
+        $attributeName->update(array('visible'));
+        die(json_encode(array(
+            "debug" => Yii::app()->request,
+            "debug_p1" => Yii::app()->request->getPost('attribute_id'),
+            "debug_p2" => Yii::app()->request->getPost('visible'),
+            "success" => true,
+            "newValue" => $visible_value
+        )));
+    }
+
     /**
      * Sends the attributes info using JSON encoding
      * Called after the Attribute management grid is loaded
@@ -541,6 +557,125 @@ class participantsaction extends Survey_Common_Action
 
 
         echo ls_json_encode($aData);
+    }
+    public function openeditattributenames(){
+        $attribute_id = Yii::app()->request->getPost('attribute_id');
+        if($attribute_id)
+        {
+            $model = ParticipantAttributeName::model()->findByPk($attribute_id);
+            $editType = "edit";     
+        }
+        else
+        {
+            $model = new ParticipantAttributeName;
+            $editType = "new";     
+        }
+        
+        //Generate HTML for alternative languages
+        $languagesOfAttribute = [];
+        foreach($model->participant_attribute_names_lang as $single_language)
+        {
+            $languagesOfAttribute[$single_language['lang']] = $single_language['attribute_name']; 
+        }
+
+        $aData = array(
+            'model' => $model,
+            'editType' => $editType,
+            'languagesOfAttribute' => $languagesOfAttribute
+        );
+        
+        $allLangDetailArray = getLanguageData(false, Yii::app()->language);
+        $aData['languagesForDropdown'][''] = gT("Select language to add");
+        foreach($allLangDetailArray as $key=>$languageDetail)
+        {
+            $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")"; 
+        }
+
+
+        $this->getController()->renderPartial('/admin/participants/modal_subviews/_editAttribute', $aData);
+    }
+
+    public function editAttributeName(){
+        $AttributeNameAttributes = Yii::app()->request->getPost('ParticipantAttributeName');
+        $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
+        $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
+        $operation = Yii::app()->request->getPost('oper');
+        if($operation === 'edit') 
+        {
+            $ParticipantAttributNamesModel = ParticipantAttributeName::model()->findByPk( $AttributeNameAttributes['attribute_id']);
+            $success[] = $ParticipantAttributNamesModel->saveAttribute($AttributeNameAttributes);
+        }
+        else 
+        {
+            $ParticipantAttributNamesModel = new ParticipantAttributeName;
+            $ParticipantAttributNamesModel->setAttributes($AttributeNameAttributes);
+            $success[] = $ParticipantAttributNamesModel->save();
+            
+        }
+        if(is_array($ParticipantAttributeNamesDropdown)){
+            $ParticipantAttributNamesModel->clearAttributeValues();
+            foreach($ParticipantAttributeNamesDropdown as $i=>$dropDownValue)
+            {
+                if($dropDownValue !== "")
+                {
+                    $storeArray = array(
+                        "attribute_id" => $ParticipantAttributNamesModel->attribute_id,
+                        "value" => $dropDownValue
+                    );
+                    $ParticipantAttributNamesModel->storeAttributeValue($storeArray);
+                }
+            }
+        }
+        if(is_array($AttributeNameLanguages) &&  $operation === 'edit')
+        {
+            foreach($AttributeNameLanguages as $lnKey => $lnValue)
+            {
+                $savaLanguageArray = array(
+                    'attribute_id' => $ParticipantAttributNamesModel->attribute_id,
+                    'attribute_name' => $lnValue,
+                    'lang' => $lnKey
+                );
+                $success[] = $ParticipantAttributNamesModel->saveAttributeLanguages($savaLanguageArray);
+            }
+        }  
+        echo json_encode(array(
+                "success" => $success,
+                "successMessage" => gT("Attribute successfully updated")
+            ));
+        die();
+    } 
+
+    public function deleteLanguageFromAttributeUrl(){
+        $attribute_id = Yii::app()->request->getPost('attribute_id');
+        $lang = Yii::app()->request->getPost('lang');
+        $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
+        if(count($AttributePackage->participant_attribute_names_lang)>1)
+        {
+            $success = $languageEntry = ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
+            echo json_encode(array(
+                "success" => true,
+                "successMessage" => gT("Language successfully deleted")
+            ));
+            die();
+        }
+        else
+        {
+            echo json_encode(array(
+                "success" => false,
+                "errorMessage" => gT("There has to be at least one language.")
+            ));
+            die();
+        }
+    }
+
+    public function deleteSingleAttribute(){
+        $attribute_id = Yii::app()->request->getPost('attribute_id');
+        $success = ParticipantAttributeName::model()->delAttribute($attribute_id);
+        echo json_encode(array(
+            "success" => $success,
+            "successMessage" => gT("Attribute successfully deleted")
+        ));
+        die();
     }
 
     /**
@@ -690,9 +825,18 @@ class participantsaction extends Survey_Common_Action
     }
 
     public function openeditparticipant(){
+
         $participant_id = Yii::app()->request->getPost('participant_id');
-        $model = Participant::model()->findByPk($participant_id);     
-        
+        if($participant_id)
+        {
+            $model = Participant::model()->findByPk($participant_id);
+            $operationType = "edit";     
+        }
+        else 
+        {
+            $model = new Participant;
+            $operationType = "add";
+        }
         //Generate HTML for extra Attributes
 
         $extraAttributes = [];
@@ -703,7 +847,7 @@ class participantsaction extends Survey_Common_Action
         }
         $aData = array(
             'model' => $model,
-            'editType' => "edit",
+            'editType' => $operationType,
             'extraAttributes' => $extraAttributes
         );
 
@@ -725,7 +869,8 @@ class participantsaction extends Survey_Common_Action
             $participant->attributes = $aData;
             $success['participant'] = $participant->save();
 
-             foreach( $extraAttributes as $htmlName => $attributeValue ){
+             foreach( $extraAttributes as $htmlName => $attributeValue )
+             {
                  list(,$attribute_id) = explode('_',$htmlName);
                  $data = array(
                      'attribute_id'=>$attribute_id, 
@@ -736,8 +881,6 @@ class participantsaction extends Survey_Common_Action
              }
 
             echo json_encode(array(
-                "debug" => $aData,
-                "debug2" => $extraAttributes,
                 "success" => $success,
                 "successMessage" => gT("Participant successfully updated")
             ));
@@ -746,18 +889,31 @@ class participantsaction extends Survey_Common_Action
         // if add it will insert a new row
         elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel','create'))
         {
+            $aData = Yii::app()->request->getPost('Participant');
+            $extraAttributes = Yii::app()->request->getPost('Attributes');
             $uuid = Participant::gen_uuid();
-            $aData = array(
-                'participant_id' => $uuid,
-                'firstname' => Yii::app()->request->getPost('firstname'),
-                'lastname' => Yii::app()->request->getPost('lastname'),
-                'email' => Yii::app()->request->getPost('email'),
-                'language' => Yii::app()->request->getPost('language'),
-                'blacklisted' => Yii::app()->request->getPost('blacklisted'),
-                'owner_uid' => Yii::app()->session['loginID'],
-                'created_by' => Yii::app()->session['loginID']
-            );
+            $aData['participant_id'] = $uuid;
+            $aData['owner_uid'] = Yii::app()->session['loginID'];
+            $aData['created_by'] = Yii::app()->session['loginID'];
+
             Participant::model()->insertParticipant($aData);
+
+            foreach( $extraAttributes as $htmlName => $attributeValue )
+             {
+                 list(,$attribute_id) = explode('_',$htmlName);
+                 $data = array(
+                     'attribute_id'=>$attribute_id, 
+                     'participant_id'=>$uuid,
+                     'value' => $attributeValue
+                 );
+                 ParticipantAttribute::model()->updateParticipantAttributeValue($data);
+             }
+
+            echo json_encode(array(
+                "success" => true,
+                "successMessage" => gT("Participant successfully updated")
+            ));
+            die();
         }
     }
 

@@ -846,3 +846,84 @@ function addHiddenElement(theform,thename,thevalue)
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
+
+/**
+ * A method to use the implemented notifier, via ajax or javascript
+ * 
+ * @param text string  | The text to be displayed
+ * @param classes string | The classes that will be put onto the inner container
+ * @param styles object | An object of css-attributes that will be put onto the inner container
+ * @param customOptions | possible options are: 
+ *                         useHtml (boolean) -> use the @text as html
+ *                         timeout (int) -> the timeout in milliseconds until the notifier will fade/slide out 
+ *                         inAnimation (string) -> The jQuery animation to call for the notifier [fadeIn||slideDown]
+ *                         outAnimation (string) -> The jQuery animation to remove the notifier [fadeOut||slideUp]
+ *                         animationTime (int) -> The time in milliseconds the animation will last             
+ */
+
+function NotifyFader(){
+    var count = 0;
+    
+    var increment = function(){count = count+1;},
+        decrement = function(){count = count-1;},
+        getCount = function(){return count;};
+
+    var create = function(text, classes, styles, customOptions){
+        increment();
+        customOptions = customOptions || {};
+        styles = styles || {};
+        classes = classes || "well well-lg";
+
+        var options = {
+            useHtml : customOptions.useHtml || true,
+            timeout : customOptions.timeout || 3500,
+            inAnimation : customOptions.inAnimation || "slideDown", 
+            outAnimation : customOptions.outAnimation || "slideUp", 
+            animationTime : customOptions.animationTime || 450
+        };
+        var container = $("<div> </div>");
+        container.addClass(classes);
+        container.css(styles);
+        if(options.useHtml){
+            container.html(text);
+        } else {
+            container.text(text);
+        }
+        var newID = "notif-container_"+getCount();
+        $('#notif-container').clone()
+            .attr('id', newID)
+            .css({
+                display: 'none',
+                top : (8*((getCount())))+"%",
+                position: 'fixed',
+                left : "15%",
+                width : "70%",
+                'z-index':3500 
+            })
+            .appendTo($('#notif-container').parent())
+            .html(container);
+
+        $('#'+newID)[options.inAnimation](options.animationTime, function(){
+            var remove = function(){
+                $('#'+newID)[options.outAnimation](options.animationTime, function(){
+                    $('#'+newID).remove();
+                    decrement();
+                });
+            }
+            $(this).on('click', remove);
+            setTimeout(remove, options.timeout);
+        });
+    };
+
+    return {
+        create : create,
+        increment: function(){count = count+1;},
+        decrement: function(){count = count-1;},
+        getCount: function(){return count;}
+        };
+};
+var LsGlobalNotifier = new NotifyFader();
+
+function notifyFader(text, classes, styles, customOptions){
+    LsGlobalNotifier.create(text, classes, styles, customOptions);
+}

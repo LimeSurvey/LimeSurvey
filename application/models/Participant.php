@@ -33,7 +33,7 @@ class CPDBException extends Exception {}
  */
 class Participant extends LSActiveRecord
 {
-
+    public $countActiveSurveys;
     /**
      * Returns the static model of Settings table
      *
@@ -127,7 +127,16 @@ class Participant extends LSActiveRecord
                 'search'
             );
             $buttons .= vsprintf($raw_button_template, $infoData);
-            $buttons .= "</div>";
+        //share this participant
+            $infoData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
+
+        $buttons .= "</div>";
         return $buttons;
     }
     public function getCheckbox(){
@@ -238,6 +247,7 @@ class Participant extends LSActiveRecord
             ),
             array(
                 "name" => 'countActiveSurveys',
+                "value" => '$data->getCountActiveSurveys()',
                 "header" => gT("Active surveys")
             ),
             array(
@@ -296,7 +306,7 @@ class Participant extends LSActiveRecord
     {
 
         $sort = new CSort;
-        $sort->defaultOrder = 'lastname ASC';
+        $sort->defaultOrder = 'lastname';
         $sortAttributes = array(
           'lastname'=>array(
             'asc'=>'lastname',
@@ -321,21 +331,25 @@ class Participant extends LSActiveRecord
           'blacklisted'=>array(
             'asc'=>'blacklisted',
             'desc'=>'blacklisted desc',
+          ),
+          'countActiveSurveys'=>array(
+            'asc'=>'countActiveSurveys',
+            'desc'=>'countActiveSurveys desc',
           )
         );
 
         $criteria = new CDbCriteria;
         $criteria->with = array('owner','participantAttributes');
-        $criteria->compare('t.firstname', $this->firstname, true);
-        $criteria->compare('t.lastname', $this->lastname, true);
-        $criteria->compare('t.email', $this->email, true);
+        $criteria->compare('t.firstname', $this->firstname, true, 'AND' ,true);
+        $criteria->compare('t.lastname', $this->lastname, true, 'AND' ,true);
+        $criteria->compare('t.email', $this->email, true, 'AND' ,true);
         $criteria->compare('t.language', $this->language, true);
         $criteria->compare('t.blacklisted', $this->blacklisted, true);
         $criteria->compare('t.owner_uid', $this->owner_uid);
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
         $extraAttributeValues = array();
         
-        
+        //Create the filter for the extra attributes
         foreach($this->allExtraAttributes as $name => $attribute)
         {
             if($extraAttributeParams[$name])
@@ -348,11 +362,14 @@ class Participant extends LSActiveRecord
         { 
             $criteria->addCondition( '"t"."participant_id" IN (('. $callParticipantAttributes .'))');
         }
+        $DBCountActiveSurveys = SurveyLink::model()->tableName();
+        $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
 
-        $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
-        
+        $criteria->select = array('*', $sqlCountActiveSurveys." as countActiveSurveys");
+
         $sort->attributes = $sortAttributes;
 
+        $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
         return new CActiveDataProvider($this, array(
              'criteria'=>$criteria,
              'sort'=>$sort,

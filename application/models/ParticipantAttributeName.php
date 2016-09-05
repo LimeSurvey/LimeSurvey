@@ -86,9 +86,9 @@ class ParticipantAttributeName extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'attribute_id' => 'Attribute',
-            'attribute_type' => 'Attribute Type',
-            'visible' => 'Visible',
+            'attribute_id' => gT('Attribute'),
+            'attribute_type' => gT('Attribute Type'),
+            'visible' => gT('Visible'),
         );
     }
     public function getButtons(){
@@ -105,8 +105,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 gT("Edit this extra-attribute"),
                 'edit'
             );
-            $buttons .= vsprintf($raw_button_template, $editData);
 
+            $buttons .= vsprintf($raw_button_template, $editData);
         //delete-button
             $deleteData = array(
                 'action_attributeNames_deleteModal',
@@ -114,20 +114,29 @@ class ParticipantAttributeName extends LSActiveRecord
                 gT("Delete this extra-attribute"),
                 'trash text-danger'
             );
-            $buttons .= vsprintf($raw_button_template, $deleteData);
+            $buttons .= "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='deleteAttributeAjax(".$this->attribute_id.")'>"
+            . vsprintf($raw_button_template, $deleteData)
+            . "</a>";
 
             return $buttons;
     }
     public function getMassiveActionCheckbox(){
         return "<input type='checkbox' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='".$this->attribute_id."' >";
     }
+
+
+
     public function getAttributeTypeNice(){
+        return $this->attributeTypeDropdownArray[$this->attribute_type];
+    }
+
+    public function getAttributeTypeDropdownArray(){
         $realNames = array(
             'DD' => gT("Drop-down list"),
             'DP' => gT("Date"),
             'TB' => gT("Text box")
         );
-        return $realNames[$this->attribute_type];
+        return $realNames;
     }
 
     public function getNamePlusLanguageName(){
@@ -140,7 +149,12 @@ class ParticipantAttributeName extends LSActiveRecord
         $returnName = $defaultname." (".join(', ',$names).")";
         return $returnName;
     }
-    public function getVisibleSwitch(){}
+    public function getVisibleSwitch(){
+        $inputHtml = "<input type='checkbox' data-size='small' data-visible='".$this->visible."' data-on-color='success' data-off-color='danger' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeVisibility' "
+            . ($this->visible == "TRUE" ? "checked" : "")
+            . "/>";
+        return  $inputHtml;
+    }
 
     public function getColumns(){
        $cols = array(
@@ -162,11 +176,14 @@ class ParticipantAttributeName extends LSActiveRecord
             ),
             array(
                 "name" => 'attribute_type',
-                "value" => '$data->getAttributeTypeNice()'
+                "value" => '$data->getAttributeTypeNice()',
+                "filter" => $this->attributeTypeDropdownArray
             ),
             array(
                 "name" => 'visible',
-                "value" => '$data->getVisibleSwitch()'
+                "value" => '$data->getVisibleSwitch()',
+                "type" => "raw",
+                "filter" => array("TRUE" => gT("Yes"), "FALSE" => gT("No"))
             )
        );
        return $cols;
@@ -182,8 +199,9 @@ class ParticipantAttributeName extends LSActiveRecord
 
         $criteria=new CDbCriteria;
 
+        $criteria->compare('defaultname',$this->defaultname,true,'AND',true);
         $criteria->compare('attribute_id',$this->attribute_id);
-        $criteria->compare('attribute_type',$this->attribute_type,true);
+        $criteria->compare('attribute_type',$this->attribute_type);
         $criteria->compare('visible',$this->visible,true);
 
         return new CActiveDataProvider($this, array(
@@ -534,6 +552,15 @@ class ParticipantAttributeName extends LSActiveRecord
         foreach ($data as $record) {
             Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$record);
         }
+    }
+    function storeAttributeValue($data)
+    {
+        Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$data);
+    }
+    function clearAttributeValues()
+    {
+        $deleteCommand = Yii::app()->db->createCommand();
+        $deleteCommand->delete('{{participant_attribute_values}}', 'attribute_id=:attribute_id', array('attribute_id'=>$this->attribute_id));
     }
 
     function storeAttributeCSV($data)
