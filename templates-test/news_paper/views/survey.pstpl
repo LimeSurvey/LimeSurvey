@@ -1,0 +1,7 @@
+<!-- Survey Description survey.pstpl -->
+<div class="alert alert-danger" role="alert"  id="checkjavascript">
+    {CHECKJAVASCRIPT}
+</div>
+<script>
+document.getElementById("checkjavascript").style.display = 'none';
+</script>

@@ -837,7 +837,7 @@ function do_5pointchoice($ia)
             'value'                  => $fp,
             'id'                     => $ia[1].$fp,
             'labelText'              => $fp,
-            'itemExtraClass'         => 'col-md-1',
+            'itemExtraClass'         => '',
             'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
         ), true);
@@ -1263,7 +1263,6 @@ function do_list_dropdown($ia)
     $_prefix = '';
 
     $value            = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-    $select_show_hide = (isset($other) && $other=='Y')?' showhideother(this.name, this.value);':'';
     $sOptions         = '';
 
     // If no answer previously selected
@@ -1411,6 +1410,7 @@ function do_list_dropdown($ia)
         $aData['name']= $ia[1];
         $aData['checkconditionFunction']=$checkconditionFunction;
         $aData['display'] = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '-oth-')?'display: none;':'';
+        $aData['label'] = $othertext;
         $thisfieldname="$ia[1]other";
         $aData['value'] = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES):'';
 
@@ -1429,7 +1429,6 @@ function do_list_dropdown($ia)
         'dropdownSize'           => $dropdownSize,
         'checkconditionFunction' => $checkconditionFunction,
         'value'                  => $value,
-        'select_show_hide'       => $select_show_hide,
     ), true);
 
 
@@ -4049,6 +4048,7 @@ function do_array_5point($ia)
             $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)?'CHECKED':'';
             $answer_tds .= doRender('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>$i,
+                'labelText'=>$i,
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,
@@ -4082,7 +4082,8 @@ function do_array_5point($ia)
         {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
             $answer_tds .= doRender('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
-                'i'=>"NA",
+                'i'=>"",
+                'labelText'=>gT('No answer'),
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,
@@ -4094,8 +4095,6 @@ function do_array_5point($ia)
         $sRows .= doRender('/survey/questions/arrays/5point/rows/answer_row', array(
                     'answer_tds'    => $answer_tds,
                     'myfname'       => $myfname,
-                    'answerwidth'   => $answerwidth,
-                    'textAlignClass'=> $textAlignClass,
                     'answertext'    => $answertext,
                     'value'         => $value,
                     'error'         => $error,
@@ -4111,6 +4110,7 @@ function do_array_5point($ia)
     $answer = doRender('/survey/questions/arrays/5point/answer', array(
                 'extraclass' => $extraclass,
                 'sColumns'   => $sColumns,
+                'answerwidth'   => $answerwidth,
                 'sHeaders'   => $sHeaders,
                 'sRows'      => $sRows,
             ), true);
@@ -4231,6 +4231,7 @@ function do_array_10point($ia)
 
             $answer_tds .= doRender('/survey/questions/arrays/10point/rows/cells/answer_td_input', array(
                 'i'=>$i,
+                'labelText'=>$i,
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,
@@ -4242,7 +4243,8 @@ function do_array_10point($ia)
         {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
             $answer_tds .= doRender('/survey/questions/arrays/10point/rows/cells/answer_td_input', array(
-                'i'=>'NA',
+                'i'=>'',
+                'labelText'=>gT('No answer'),
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,

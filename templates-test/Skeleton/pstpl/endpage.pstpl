@@ -1,0 +1,19 @@
+
+		</div><!--end #main-->
+		<div id="navigation" class="aside starthidden">
+			<!-- Place for some navigation -->
+		</div>
+		<div id="extra" class="aside starthidden">
+			<!-- Place for some extra -->
+		</div>
+	</div><!--end #content -->
+	<div id="footer" class="starthidden">
+		<ul class="credits">
+		<li class="first">Powered by Libre Software</li>
+		<li>Template &copy; <a href="http://www.sondages.pro" title="Sondages en ligne, enquêtes et recueil de données par Internet.">Denis Chenu, Sondages Pro</a> 
+		</li>
+		<li class="last">This template is distributed under <a href="{TEMPLATEURL}Copyright.txt">MIT and GPL licence</a> </li>
+		</ul>
+	</div>
+</div><!-- end container-->
+<div class="loader"><span class="ui-icon-loading"></span></div>

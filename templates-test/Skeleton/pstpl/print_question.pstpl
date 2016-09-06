@@ -1,0 +1,17 @@
+
+				<div class="{QUESTION_CLASS}">
+					<div class="q-text">
+						<h3>{QUESTION_NUMBER} [{QUESTION_CODE}]{QUESTION_TEXT} <span class="mandatory">{QUESTION_MANDATORY}</span></h3>
+						<p class="q-scenaria">{QUESTION_SCENARIO}</p>
+						<p class="q-type-help">{QUESTION_TYPE_HELP}</p>
+						<p class="q-man-message">{QUESTION_MAN_MESSAGE}</p>
+						<p class="q-validation">{QUESTION_VALID_MESSAGE}</p>
+					</div>
+					<div class="q-answer">
+{ANSWER}
+					</div>
+					<div class="q-help">
+{QUESTIONHELP}
+					</div>
+				</div>
+

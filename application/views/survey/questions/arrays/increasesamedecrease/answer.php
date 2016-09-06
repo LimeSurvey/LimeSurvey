@@ -24,8 +24,8 @@
                 echo $sColumns;
             ?>
         </colgroup>
-        <thead class="thead-inc-same-dec">
-            <tr class="array1 dontread">
+        <thead class="thead-inc-same-dec" aria-hidden="true">
+            <tr class="array1">
                 <th>&nbsp;</th>
 
                 <?php

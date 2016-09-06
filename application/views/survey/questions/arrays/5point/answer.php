@@ -16,26 +16,22 @@
 
         <!-- Columns -->
         <colgroup class="col-responses">
-            <col class="col-answers" />
-
+            <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
             <?php
                 // columns/col.php
                 echo $sColumns;
             ?>
         </colgroup>
-
         <!-- Table headers -->
-        <thead>
-            <tr class="array1 dontread">
+        <thead aria-hidden="true">
+            <tr class="array1">
                 <th>&nbsp;</th>
-
                 <?php
                     // rows/cell/thead.php
                     echo $sHeaders;
                 ?>
             </tr>
         </thead>
-
         <!-- Table Body -->
         <tbody>
             <?php

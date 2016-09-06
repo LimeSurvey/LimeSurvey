@@ -9,7 +9,7 @@
 </tbody>
 
 <tbody>
-    <tr class="dontread repeat headings hidden-xs">
+    <tr class="repeat headings hidden-xs" aria-hidden="true">
         <?php echo $sHeaders; ?>
     </tr>
 <!-- end of repeat_header -->

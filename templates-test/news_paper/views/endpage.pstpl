@@ -1,0 +1,19 @@
+        </div> <!-- main-col -->
+    </div><!-- main-row -->
+</div><!-- outerframe -->
+
+<!-- Bootstrap Modal Alert -->
+<div id="bootstrap-alert-box-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="min-height:40px;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">&nbsp;</h4>
+            </div>
+            <div class="modal-body"><p></p></div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn btn-default">{CLOSE_TRANSLATION}</a>
+            </div>
+        </div>
+    </div>
+</div>

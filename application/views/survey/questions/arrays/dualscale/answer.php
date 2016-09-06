@@ -137,9 +137,8 @@
                     <?php if ($j === 0 && $leftheader != ''): ?>
                         <td class='visible-xs'><em><?php echo $leftheader; ?></em></td>
                     <?php endif; ?>
-                    <td class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item text-center radio">
+                    <td class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item text-center">
                         <input
-                            class="radio"
                             type="radio"
                             name="<?php echo $ansrow['myfname0']; ?>"
                             value="<?php echo $ld; ?>"
@@ -157,7 +156,7 @@
                         <?php if ($shownoanswer): // No answer for accessibility and no javascript (but visible-xs-block visible-xs-block even with no js: need reworking) ?>
                             <label for='answer<?php echo $ansrow['myfid0']; ?>-'>
                                 <input
-                                    class='radio jshide read'
+                                    class='jshide read'
                                     type='radio'
                                     name='<?php echo $ansrow['myfname0']; ?>'
                                     value=''
@@ -173,9 +172,8 @@
                         <?php if ($k === 0 && $rightheader != ''): ?>
                             <td class='visible-xs'><em><?php echo $rightheader; ?></em></td>
                         <?php endif; ?>
-                        <td class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item text-center radio">
+                        <td class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item text-center">
                             <input
-                                class="radio"
                                 type="radio"
                                 name="<?php echo $ansrow['myfname1']; ?>"
                                 value="<?php echo $ld; ?>"
@@ -198,10 +196,9 @@
 
                 <!-- No answer column -->
                 <?php if ($shownoanswer): ?>
-                    <td class="dual_scale_no_answer answer-item radio-item noanswer-item text-center radio">
+                    <td class="dual_scale_no_answer answer-item radio-item noanswer-item text-center">
                         <?php if (count($labelans1) > 0): ?>
                                 <input
-                                    class='radio'
                                     type='radio'
                                     name='<?php echo $ansrow['myfname1']; ?>'
                                     value=''
@@ -213,7 +210,6 @@
                             </label>
                         <?php else: ?>
                                 <input
-                                    class='radio'
                                     type='radio'
                                     name='<?php echo $ansrow['myfname0']; ?>'
                                     value=''

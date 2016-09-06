@@ -14,12 +14,11 @@
 <!--Gender question, radio display -->
 
 <!-- answer -->
-<ul class="answers-list radio-list list-unstyled">
+<ul class="list-unstyled answers-list radio-list form-horizontal">
 
     <!-- Female -->
-    <li class="answer-item radio-item radio">
+    <li class="form-group row answer-item radio-item">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $name;?>"
             id="answer<?php echo $name;?>F"
@@ -29,20 +28,12 @@
             aria-labelledby="label-answer<?php echo $name;?>F"
         />
 
-        <label for="answer<?php echo $name;?>F" class="answertext"></label>
-        <!--
-             The label text is provided inside a div,
-             To respect the global HTML flow of other question types
-        -->
-        <div class="label-text label-clickable" id="label-answer<?php echo $name;?>F">
-            <?php eT('Female');?>
-        </div>
+        <label for="answer<?php echo $name;?>F" class="answertext"><?php eT('Female');?></label>
     </li>
 
     <!-- Male -->
-    <li class="answer-item radio-item radio">
+    <li class="form-group row answer-item radio-item">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $name;?>"
             id="answer<?php echo $name;?>M"
@@ -52,21 +43,13 @@
             aria-labelledby="label-answer<?php echo $name;?>M"
         />
 
-        <label for="answer<?php echo $name;?>M" class="answertext"></label>
-        <!--
-             The label text is provided inside a div,
-             To respect the global HTML flow of other question types
-        -->
-        <div class="label-text label-clickable" id="label-answer<?php echo $name;?>M">
-            <?php eT('Male');?>
-        </div>
+        <label for="answer<?php echo $name;?>M" class="answertext"><?php eT('Male');?></label>
     </li>
 
     <!-- No answer -->
     <?php if($noAnswer):?>
-        <li class="answer-item radio-item noanswer-item radio">
+        <li class="form-group row answer-item radio-item noanswer-item">
             <input
-                class="radio"
                 type="radio"
                 name="<?php echo $name;?>"
                 id="answer<?php echo $name;?>"
@@ -76,14 +59,7 @@
                 aria-labelledby="label-answer<?php echo $name;?>"
             />
 
-            <label for="answer<?php echo $name;?>" class="answertext"></label>
-            <!--
-                 The label text is provided inside a div,
-                 To respect the global HTML flow of other question types
-            -->
-            <div class="label-text label-clickable" id="label-answer<?php echo $name;?>">
-                <?php eT('No answer'); ?>
-            </div>
+            <label for="answer<?php echo $name;?>" class="answertext"><?php eT('No answer'); ?></label>
         </li>
     <?php endif;?>
 </ul>

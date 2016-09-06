@@ -19,13 +19,13 @@
 
 <!-- answer_row_other -->
 <div class="col-sm-12">
-    <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group checkbox' <?php echo $sDisplayStyle; ?> >
+    <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group' <?php echo $sDisplayStyle; ?> >
 
         <!-- Checkbox + label -->
         <div class="pull-left othertext-label-checkox-container">
             <!-- checkbox -->
             <input
-                class="checkbox other-checkbox dontread"
+                class="other-checkbox dontread"
                 type="checkbox"
                 name="<?php echo $myfname; ?>cbox"
                 id="answer<?php echo $myfname; ?>cbox"

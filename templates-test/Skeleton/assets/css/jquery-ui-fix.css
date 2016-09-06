@@ -1,0 +1,35 @@
+/*!
+ * Some fix specific of asset system for jquery : to allow replacing images by own
+ *
+ * Copyright 2016 Denis Chenu <http://www.sondages.pro>
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+.ui-progressbar .ui-progressbar-overlay {
+	background: url("../files/animated-overlay.gif");
+}
+.ui-icon,
+.ui-widget-content .ui-icon {
+	background-image: url("../files/ui-icons_444_256x240.png");
+}
+.ui-widget-header .ui-icon {
+	background-image: url("../files/ui-icons_222222_256x240.png");
+}
+.ui-state-default .ui-icon {
+	background-image: url("../files/ui-icons_666_256x240.png");
+}
+.ui-state-hover .ui-icon,
+.ui-state-focus .ui-icon {
+	background-image: url("../files/ui-icons_333_256x240.png");
+}
+.ui-state-active .ui-icon {
+	background-image: url("../files/ui-icons_454545_256x240.png");
+}
+.ui-state-highlight .ui-icon {
+	background-image: url("../files/ui-icons_31708f_256x240.png");
+}
+.ui-state-error .ui-icon,
+.ui-state-error-text .ui-icon {
+	background-image: url("../files/ui-icons_a94442_256x240.png");
+}

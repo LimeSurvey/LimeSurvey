@@ -563,16 +563,13 @@ table.array-no-dropdown  td.answer-item.text-center
     .no-more-tables tr {
         display: inline-block;
     }
-
     .no-more-tables tbody {
         padding: 0 1em 0 1em;
     }
 
-    /* Hide table headers (but not display: none;, for accessibility) */
+    /* Hide table headers display: none; no need for accessibility) */
     .no-more-tables thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
+        display:none;
     }
 
     .no-more-tables tr,

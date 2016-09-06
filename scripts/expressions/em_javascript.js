@@ -22,7 +22,7 @@
  * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations
  * Actually only for list with comment and select in ranking
  **/
-$(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not([onkeyup])",function(event){
+$(document).on("keyup",".answer-item textarea:not([onkeyup]),.answer-item :text:not([onkeyup])",function(event){
     // 'keyup' can be replaced by event.type (but not really needed)
     // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
     if($(this).data("number"))// data-type ?

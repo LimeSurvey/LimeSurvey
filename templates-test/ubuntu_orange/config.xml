@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadatas>
+        <name>Ubuntu Orange</name>
+        <creationDate>08/01/2016</creationDate>
+        <author>Louis-Sébastien Gac Artigas</author>
+        <authorEmail>louis.gac@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <description>LimeSurvey Template.</description>
+        <last_update>2016-05-13 10:46:00</last_update>
+    </metadatas>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager
+    -->
+    <files>
+        <css>
+            <filename>css/jquery-ui-custom.css</filename>
+            <filename>css/bootstrap-slider.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
+            <filename>css/ubuntu_orange.css</filename>
+            <filename>css/template.css</filename>
+            <filename>css/template-ubuntu-orange.css</filename>
+        </css>
+        <js>
+            <filename>scripts/template.js</filename>
+            <filename>scripts/bootstrap-slider.js</filename>
+        </js>
+        <print_css>
+            <filename>css/print_template.css</filename>
+        </print_css>
+
+        <!--
+            Those files will be loaded for right to left languages only
+            NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the LimeSurvey team about it.
+            We'll be always pleased to make better the right to left display
+
+            NOTE 2: those files are generated with the script R2. See: https://github.com/ded/R2
+        -->
+        <rtl>
+            <css>
+                <filename>css/jquery-ui-custom-rtl.css</filename>
+                <filename>css/bootstrap-slider-rtl.css</filename>
+                <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
+                <filename>css/ubuntu_orange-rtl.css</filename>
+                <filename>css/template-rtl.css</filename>
+                <filename>css/template-ubuntu-orange.css</filename>
+            </css>
+            <js>
+                <filename>scripts/template.js</filename>
+                <filename>scripts/bootstrap-slider.js</filename>
+            </js>
+            <print_css>
+                <filename>css/print_template-rtl.css</filename>
+            </print_css>
+        </rtl>
+        <!-- The logo is used for now only for Surveys List  -->
+        <logo>
+            <filename>files/logo.png</filename>
+        </logo>
+    </files>
+
+    <!-- For template editor -->
+    <files_editable>
+            <css>
+                <filename>css/ubuntu_orange.css</filename>
+                <filename>css/template.css</filename>
+            </css>
+            <js>
+                <filename>scripts/template.js</filename>
+                <filename>scripts/bootstrap-slider.js</filename>
+            </js>
+    </files_editable>
+
+    <engine>
+        <cssframework>bootstrap</cssframework>
+        <pstpldirectory>views</pstpldirectory>
+
+        <!--
+            Set to yes to overwrite the question views,
+            then, just copy application/views/survey/* to template/{your_view_directory}/survey/
+            You also must allow the template to overwrite the views from your site configuration
+            In application/config/config.php, find :     'config'=>array
+            and add this line in it : 'allow_templates_to_overwrite_views'=>1
+        -->
+        <overwrite_question_views>false</overwrite_question_views>
+
+        <packages>
+            <package>jqueryui</package>
+            <package>jquery-touch-punch</package>
+        </packages>
+    </engine>
+</config>

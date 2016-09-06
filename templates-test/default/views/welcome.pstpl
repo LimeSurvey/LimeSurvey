@@ -1,0 +1,29 @@
+<div class="alert alert-danger" role="alert"  id="checkjavascript">
+    {CHECKJAVASCRIPT}
+</div>
+<script>
+document.getElementById("checkjavascript").style.display = 'none';
+</script>
+<!-- Survey Description -->
+<div class="row" id="welcome-container">
+    <div class="col-sm-12 ">
+        <h1>{SURVEYNAME}</h1><br />
+        <p class='surveydescription text-info'>{SURVEYDESCRIPTION}</p>
+    </div>
+</div>
+
+<!-- Survey Welcome -->
+<div class="row survey-welcome">
+    <div class="col-sm-12 ">
+        <p class='surveywelcome'>
+            {WELCOME}
+        </p>
+    </div>
+</div>
+
+<!-- Question number -->
+<div class="row questions-number">
+    <div class="col-sm-12">
+        <p class="x-questions">{THEREAREXQUESTIONS}</p>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+/*!
+ * limesurvey-fix : fix some limesurvey core part
+ *
+ * Copyright 2015 Denis Chenu <http://www.sondages.pro>
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+.save-clear .btn{
+display:inline-block !important;  /* remove hidden */
+width:auto;  /* remove col-* */
+}
+.save-clear .clearall,.save-clear .jshide{
+font-size: 14px;
+padding: 6px 12px;
+}
+.js .jshide{display:none}
+
+/* Survey listing */
+.surveys-list{
+    list-style: outside none none;
+    padding-left: 0;padding-right: 0;
+}
+.surveys-list .surveytitle{
+    display: block;
+    width: 100%;
+    margin-bottom:0.2rem;
+    white-space: normal;
+}

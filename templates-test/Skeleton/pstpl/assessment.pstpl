@@ -1,0 +1,4 @@
+<div id="assessment" class="note">
+	<h2>{ASSESSMENT_HEADING}</h2>
+	{ASSESSMENTS}
+</div>

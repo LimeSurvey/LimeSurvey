@@ -8,27 +8,9 @@
  * @var $checkconditionFunction
  */
 ?>
-
-<!-- othertext -->
-<script type="text/javascript">
-    <!--
-        function showhideother(name, value)
-        {
-            var hiddenothername='othertext'+name;
-            if (value == "-oth-")
-            {
-                document.getElementById(hiddenothername).style.display='';
-                document.getElementById(hiddenothername).focus();
-            }
-            else
-            {
-                document.getElementById(hiddenothername).style.display='none';
-                document.getElementById(hiddenothername).value=''  // reset othercomment fiel
-            }
-        }
-    -->
-</script>
-
+<label for="othertext<?php echo $name; ?>" class="sr-only">
+    <?php echo $label; ?>
+</label>
 <input
     class="form-control"
     type="text"
@@ -36,6 +18,20 @@
     name="<?php echo $name; ?>other"
     style='<?php echo $display; ?>'
     value='<?php echo $value?>'
-    onchange='<?php echo $checkconditionFunction;?>(this.value, this.name, this.type);'
 />
+
+<script>
+if($("#answer<?php echo $name; ?>").val()!="-oth-"){
+    $("#othertext<?php echo $name; ?>").hide();
+}
+$(document).on("change","#answer<?php echo $name; ?>",function(){
+    if($("#answer<?php echo $name; ?>").val()!="-oth-"){
+        $("#othertext<?php echo $name; ?>").hide();
+        $("#othertext<?php echo $name; ?>").val("").trigger("keyup");
+    }else{
+        $("#othertext<?php echo $name; ?>").show();
+        $("#othertext<?php echo $name; ?>").focus();
+    }
+});
+</script>
 <!-- end of othertext -->

@@ -28,9 +28,9 @@
 
     <!-- Checkbox + label -->
     <!-- <div class="pull-left othertext-label-checkox-container checkbox"  <?php // echo $sDisplayStyle ;?>> -->
-    <td class="checkbox"  <?php echo $sDisplayStyle ;?> id="javatbd<?php echo $name; ?>">
+    <td class="checkbox-item" <?php echo $sDisplayStyle ;?> id="javatbd<?php echo $name; ?>">
         <input
-            class="checkbox <?php echo $classes; echo $kpclass; ?>"
+            class="<?php echo $classes; echo $kpclass; ?>"
             title="<?php echo $title;?>"
             type="checkbox"
             name="<?php echo $name; ?>"
