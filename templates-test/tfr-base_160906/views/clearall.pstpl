@@ -1,0 +1,8 @@
+<!-- clearall.pstpl -->
+<div id="clearallDialog" class="row clearall-dialog">
+    <div class="col-md-12">
+        <h1>{ANSWERSCLEARED}</h1>
+        <p>{RESTART}<!--  or <a class="clearall-results-close" onclick="top.window.close();" >Close this window</a> --></p>
+    </div>
+</div>
+<!-- end of clearall.pstpl -->

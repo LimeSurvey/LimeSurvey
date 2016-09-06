@@ -1,0 +1,9 @@
+<!-- completed.pstpl -->
+<div id="completedDialog" class="row completed-dialog">
+    <div class="col-md-12">
+        <h2 class="survey-name">{SURVEYNAME}</h2>
+        {if(!is_empty(COMPLETED),'<p class="survey-completed">'+COMPLETED+'</p>','')}
+        {if(!is_empty(URL),'<p class="survey-url">'+URL+'</p>','')}
+    </div>
+</div>
+<!-- end of completed.pstpl -->

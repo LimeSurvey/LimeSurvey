@@ -1,0 +1,51 @@
+/**
+ * Release: v2.5.0+201696155236 build on 201696155236
+ */
+/* IE8 specifics */
+html {
+  overflow: auto; }
+
+.radio,
+.checkbox {
+  display: inline; }
+
+.radio-list li label,
+.checkbox-list li label {
+  display: inline;
+  border-top: 0px solid white !important;
+  border-bottom: 0px solid white !important; }
+
+input[type='radio'],
+input[type='checkbox'] {
+  display: inline !important; }
+  input[type='radio'] + label:before, input[type='radio'] + label:before:hover,
+  input[type='checkbox'] + label:before,
+  input[type='checkbox'] + label:before:hover {
+    display: none; }
+  input[type='radio']:checked + label,
+  input[type='checkbox']:checked + label {
+    display: none; }
+    input[type='radio']:checked + label:hover,
+    input[type='checkbox']:checked + label:hover {
+      display: none; }
+    input[type='radio']:checked + label:before,
+    input[type='checkbox']:checked + label:before {
+      display: none; }
+
+td label {
+  display: none; }
+  td label:before, td label:before:hover {
+    display: none; }
+  td label.hide {
+    display: none !important;
+    max-height: 2.2rem; }
+  td label.checked:before {
+    display: none; }
+  .register td label {
+    color: inherit; }
+    .register td label:before {
+      content: ""; }
+    .register td label.hide {
+      display: none !important; }
+
+/*# sourceMappingURL=template_ie8.css.map */

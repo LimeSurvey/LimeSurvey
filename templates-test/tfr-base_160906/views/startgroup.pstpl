@@ -1,0 +1,5 @@
+<!-- startgroup.pstpl -->
+<div id="groupName" class="col-md-12 group-name">
+    {if(!is_empty(GROUPNAME),'<h3>'+GROUPNAME+'</h3>','')}
+</div>
+<!-- end of startgroup.pstpl -->

@@ -1,0 +1,8 @@
+<!-- assessment.pstpl -->
+<div id="assessmentDialog" class="row assessment-dialog">
+    <div class="col-md-12">
+    	<h2>{ASSESSMENT_HEADING}</h2>
+    	<p>{ASSESSMENTS}</p>
+    </div>
+</div>
+<!-- end of assessment.pstpl -->

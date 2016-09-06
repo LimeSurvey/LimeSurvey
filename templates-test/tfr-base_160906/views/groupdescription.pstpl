@@ -1,0 +1,5 @@
+<!-- groupdescription.pstpl -->
+<div id="groupDescription" class="col-md-12 group-description">
+    <p>{GROUPDESCRIPTION}</p>
+</div>
+<!-- end of groupdescription.pstpl -->

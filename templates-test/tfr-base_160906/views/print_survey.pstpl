@@ -1,0 +1,34 @@
+<!-- print_survey.pstl -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>{SURVEYNAME}{if(!is_empty(GROUPNAME),' : '+GROUPNAME,'')}</title>
+        {HEADELEMENTS}
+
+        <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}css/print_template.css" />
+    </head>
+    <body class="print">
+    
+        <div>
+            <h1>{SURVEYNAME}</h1>
+
+            {if(!is_empty(SURVEYDESCRIPTION),'<p class="survey-description">'+SURVEYDESCRIPTION+'</p>','')}
+
+            {if(!is_empty(WELCOME),'<p class="survey-welcome">'+WELCOME+'</p>','')}
+
+            {if(!is_empty(THEREAREXQUESTIONS),'<p class="x-questions">'+THEREAREXQUESTIONS+'</p>','')}
+            
+            {GROUPS}
+            {PRIVACY}
+            <p class="submit-by">
+                {END}<br />
+                {SUBMIT_BY}<br />
+                {FAX_TO}<br />
+                {SUBMIT_TEXT}<br />
+                {THANKS}<br />
+            </p>
+        </div>
+
+    </body>
+</html>
+<!-- end of print_survey.pstpl -->

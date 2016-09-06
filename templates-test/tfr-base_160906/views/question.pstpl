@@ -1,0 +1,50 @@
+<!-- question.pstpl -->
+<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} question col-md-12">
+
+    <!-- Question title -->
+    <div class="row">
+        <div class="col-md-12 question-title">
+            <h4>
+            {if(!is_empty(QUESTION_CODE),"<span class='question-code text-muted'>"+QUESTION_CODE+"</span>","")}
+            <span class="question-text">
+                {QUESTION_MANDATORY}
+                {if(!is_empty(QUESTION_NUMBER),"<span class='question-number'>"+QUESTION_NUMBER+"</span>","")}
+                {QUESTION_TEXT}
+            </h4>
+        </div>
+    </div>
+
+    <!-- Question help -->
+    <div class="row">
+        {if(!is_empty(trim(strip_tags(QUESTION_HELP))),"<div class='col-md-12 question-help'>"+QUESTION_HELP+"</div>","")}
+    </div>
+
+    <!-- Question man message -->
+    <div class="row">
+        {if(!is_empty(trim(strip_tags(QUESTION_MAN_MESSAGE))),"<div class='col-md-12 text-danger'>"+QUESTION_MAN_MESSAGE+"</div>","")}
+    </div>
+
+    <!-- Question valid message -->
+    <div class="row">
+        {if(!is_empty(trim(strip_tags(QUESTION_VALID_MESSAGE))),"<div class='col-md-12 text-success'>"+QUESTION_VALID_MESSAGE+"</div>","")}
+    </div>
+
+    <!-- Question file valid message -->
+    <div class="row">
+        {if(!is_empty(trim(strip_tags(QUESTION_FILE_VALID_MESSAGE))),"<div class='col-md-12 text-success file'>"+QUESTION_FILE_VALID_MESSAGE+"</div>","")}
+    </div>
+
+    <!-- Answer -->
+    <div class="row">
+        <div class="col-md-12 answer">
+            {ANSWER}
+        </div>
+    </div>
+
+    <!-- Question help -->
+    <div class="row">
+        {if(!is_empty(trim(strip_tags(QUESTIONHELP))),"<div class='col-md-12 question-help'>"+QUESTIONHELP+"</div>","")}
+    </div>
+    
+</div>
+<!-- end of question.pstpl -->

@@ -1,0 +1,13 @@
+<!-- save.pstpl -->
+<div id="saveDialog" class="row save-dialog">
+    <div class="col-md-12">
+    	<h2>{SAVEHEADING}</h2>
+    	<p class="save-message">{SAVEMESSAGE}</p>
+    	<p class="text-warning">{SAVEALERT}</p>
+    	
+    	<p class="text-danger">{SAVEERROR}</p>
+    	<div class="save-form">{SAVEFORM}</div>
+    	<p>{RETURNTOSURVEY}</p>
+    </div>
+</div>
+<!-- end of save.pstpl -->
