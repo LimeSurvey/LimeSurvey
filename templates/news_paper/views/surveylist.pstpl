@@ -1,7 +1,5 @@
 
-<noscript class="alert alert-danger" role="alert"  id="checkjavascript">
-    {CHECKJAVASCRIPT}
-</noscript>
+{CHECKJAVASCRIPT}
 
 <div class="row" id="surveys-list-container">
     <div class="jumbotron" id="surveys-list-jumbotron">

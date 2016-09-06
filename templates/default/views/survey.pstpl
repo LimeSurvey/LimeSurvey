@@ -1,4 +1,2 @@
 <!-- Survey Description survey.pstpl -->
-<noscript role="alert"  id="checkjavascript">
-    {CHECKJAVASCRIPT}
-</noscript>
+{CHECKJAVASCRIPT}
