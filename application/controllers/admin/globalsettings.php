@@ -163,7 +163,7 @@ class GlobalSettings extends Survey_Common_Action
             {
                 setGlobalSetting('defaulttemplate', $sTemplate);
             }
-
+            setGlobalSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
         }
 
         // we set the admin theme

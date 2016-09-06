@@ -34,13 +34,14 @@
 
             <!-- select state -->
             <div class="form-group">
-                <?php echo $form->label($this->model, 'active', array('label'=>gT('Active:'),'class'=>'control-label')); ?>
+                <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'control-label')); ?>
                 <select name="active" id='Survey_active' class="form-control">
-                    <option value="" <?php if( $this->model->active==""){echo "selected";}?>><?php eT('(Any state)');?></option>
-                    <option value="Y" <?php if( $this->model->active=="Y"){echo "selected";}?>><?php eT('Yes');?></option>
-                    <option value="N" <?php if( $this->model->active=="N"){echo "selected";}?>><?php eT('No');?></option>
-                    <option value="E" <?php if( $this->model->active=="E"){echo "selected";}?>><?php eT('Expired');?></option>
-                    <option value="S" <?php if( $this->model->active=="S"){echo "selected";}?>><?php eT('Not yet started');?></option>
+                    <option value="" <?php if( $this->model->active==""){echo "selected";}?>><?php eT('(Any)');?></option>
+                    <option value="Y" <?php if( $this->model->active=="Y"){echo "selected";}?>><?php eT('Active');?></option>
+                    <option value="R" <?php if( $this->model->active=="R"){echo "selected";}?>><?php eT('Active and running');?></option>
+                    <option value="N" <?php if( $this->model->active=="N"){echo "selected";}?>><?php eT('Inactive');?></option>
+                    <option value="E" <?php if( $this->model->active=="E"){echo "selected";}?>><?php eT('Active but expired');?></option>
+                    <option value="S" <?php if( $this->model->active=="S"){echo "selected";}?>><?php eT('Active but not yet started');?></option>
                 </select>
             </div>
             <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>

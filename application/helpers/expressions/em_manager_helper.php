@@ -7567,10 +7567,9 @@
                     {
                         $sQid = str_replace("relChange","",$qrelQID);
                         if(!in_array($sQid, $aQuestionsWithDependencies)  )
-                        {                            
+                        {
                             $aQuestionsWithDependencies[]=$sQid;
                         }
-
                     }
 
 

@@ -68,6 +68,13 @@
                             'name' => 'id',
                         ));
 
+                        /*
+                        array(
+                            'header' => 'seed',
+                            'name' => 'seed'
+                        ));
+                        */
+
                         $aColumns[] = array(
                             'header'=>'lastpage',
                             'name'=>'lastpage',

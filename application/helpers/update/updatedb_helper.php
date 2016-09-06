@@ -1428,7 +1428,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'importance' => 'int default 1',
                 'display_class' => 'string(31) default \'default\'',
                 'created' => 'datetime not null',
-                'first_read' => 'datetime default null'
+                'first_read' => 'datetime null'
             ));
             $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");

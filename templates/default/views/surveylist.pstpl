@@ -1,10 +1,5 @@
 
-<div class="alert alert-danger" role="alert"  id="checkjavascript">
-    {CHECKJAVASCRIPT}
-</div>
-<script>
-    document.getElementById("checkjavascript").style.display = 'none';
-</script>
+{CHECKJAVASCRIPT}
 
 <div class="row" id="surveys-list-container">
     <div class="jumbotron" id="surveys-list-jumbotron">

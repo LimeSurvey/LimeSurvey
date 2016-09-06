@@ -1016,11 +1016,24 @@ class Survey extends LSActiveRecord
 
                 if($this->active == "E")
                 {
+                    $criteria->compare("t.active",'Y');
                     $criteria->addCondition("t.expires <'$sNow'");
                 }
                 if($this->active == "S")
                 {
+                    $criteria->compare("t.active",'Y');
                     $criteria->addCondition("t.startdate >'$sNow'");
+                }
+                if($this->active == "R")
+                {
+                    $now = new CDbExpression("NOW()");
+
+                    $criteria->compare("t.active",'Y');
+                    $subCriteria = new CDbCriteria;
+                    $subCriteria->addCondition($now.' BETWEEN t.startdate AND t.expires', 'OR');
+                    $subCriteria->addCondition('t.startdate IS NULL', "OR");
+                    $subCriteria->addCondition('t.expires IS NULL', "OR");
+                    $criteria->mergeWith($subCriteria);
                 }
             }
         }
@@ -1042,7 +1055,7 @@ class Survey extends LSActiveRecord
             $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
             $criteria->mergeWith($criteriaPerm, 'AND');
         }
-
+        // $criteria->addCondition("t.blabla == 'blub'");
         $dataProvider=new CActiveDataProvider('Survey', array(
             'sort'=>$sort,
             'criteria'=>$criteria,

@@ -54,8 +54,8 @@ $internalConfig = array(
 
     'modules'=>array(
             'gii'=>array(
-                'class'=>'system.gii.GiiModule',
-                'password'=>'toto',
+                //'class'=>'system.gii.GiiModule',
+                //'password'=>'toto',
                 // 'ipFilters'=>array(...a list of IPs...),
                 // 'newFileMode'=>0666,
                 // 'newDirMode'=>0777,
@@ -146,6 +146,7 @@ $internalConfig = array(
         'session' => array(
             'cookieParams' => array(
                 'httponly' => true,
+                'secure'=> isset($_SERVER['HTTPS']) && ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)
             ),
         ),
         'messages' => array(
