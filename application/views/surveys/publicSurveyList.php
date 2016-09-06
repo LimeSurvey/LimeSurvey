@@ -8,7 +8,7 @@
     {
          $outputSurveys++;
                 //echo "IKI :";var_dump( $survey->localizedTitle);
-        $divider = ($divideToggle ? " vertical-divider right " : ""); 
+        $divider = ($divideToggle ? " vertical-divider right " : "");
         if ($survey->publicstatistics == "Y")
         {
             $statistics = "<div class='col-md-1 col-sm-2 col-xs-2 no-divide ls-custom-padding five ".$divider."'>";
@@ -22,24 +22,24 @@
                     );
             $statistics .= "</div>";
             $list .= "<div class='col-md-5 col-sm-10 col-xs-10 ls-custom-padding five'>";
-        } 
-        else 
+        }
+        else
         {
             $statistics = "";
             $list .= "<div class='col-md-6 col-xs-12 ls-custom-padding five ".$divider."'>";
         }
-        //@TODO Make $allowTooltips a global configuration setting 
+        //@TODO Make $allowTooltips a global configuration setting
         $allowTooltips = "Y";
 
         $content = $survey->localizedTitle;
         $list .= CHtml::link(
-            $content, 
+            $content,
             array(
-                'survey/index', 
-                'sid' => $survey->sid, 
+                'survey/index',
+                'sid' => $survey->sid,
                 'lang' => App()->language,
                 'encode' => false
-                ), 
+                ),
                 array(
                     'class' => 'surveytitle btn btn-primary btn-block'
                 )
@@ -71,10 +71,9 @@
     }
 
     $listheading="<div class='container'>
-                    <div class='row'>
-                    <h3>
+                    <div class='h3'>
                     ".gT("The following surveys are available:")."
-                    </h3>
+                    </div>
                     </div>";
     if( $outputSurveys==0)
     {

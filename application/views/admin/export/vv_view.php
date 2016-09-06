@@ -15,7 +15,7 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <label for="surveyid" class="col-sm-2 control-label">
-                                <?php eT("Survey id:");?>
+                                <?php eT("Survey ID:");?>
                             </label>
                             <div class="col-sm-4">
                                 <?php echo CHtml::textField('surveyid', $surveyid, array('size'=>10, 'readonly'=>'readonly', 'class'=>'form-control')); ?>

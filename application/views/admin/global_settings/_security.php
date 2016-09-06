@@ -48,6 +48,23 @@
     </div>
 </div>
 
+<div class="form-group">
+    <label class="col-sm-5 control-label"  for="force_ssl">
+    <?php if (Yii::app()->getConfig("demoMode")==true){ ?>
+    <span class="text-danger asterisk"></span>
+    <?php }; ?>
+     <?php eT('IFrame embedding allowed:'); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
+    <div class="col-sm-6">
+        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+            'name' => 'x_frame_options',
+            'value'=> getGlobalSetting('x_frame_options'),
+            'selectOptions'=>array(
+                "allow"=>gT("Allow",'unescaped'),
+                "sameorigin"=>gT("Same origin",'unescaped')
+            )
+        ));?>
+    </div>
+</div>
 
 <div class="form-group">
     <label class="col-sm-5 control-label"  for="force_ssl"><?php eT('Force HTTPS:'); ?></label>
@@ -71,6 +88,9 @@ $warning_force_ssl = sprintf(gT('Warning: Before turning on HTTPS,%s check if th
 <div class="form-group">
     <span style='font-size:0.7em;'><?php echo $warning_force_ssl; ?></span>
 </div>
+
+
+
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>

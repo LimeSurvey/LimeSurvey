@@ -614,11 +614,11 @@ table.array-no-dropdown  td.answer-item.text-center
         /*padding-left: 95%;*/
         padding-bottom: 1em;
         white-space: normal;
-        text-align:left;
+        text-align:left ;
     }
 
     .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
-        padding-left: 0%;
+        padding-left:1.5em;
     }
 
 
@@ -955,6 +955,10 @@ body div.row .question-container {
 /* Check javascript */
 #checkjavascript {
     margin-top: 100px;
+    z-index: 999;
+    right: 100px;
+    position: fixed;
+    width: 300px;
 }
 
 /*label font weight*/

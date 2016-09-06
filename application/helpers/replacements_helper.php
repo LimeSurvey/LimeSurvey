@@ -688,7 +688,7 @@ EOD;
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
-    $coreReplacements['CHECKJAVASCRIPT'] = "<noscript><span class='warningjs'>".gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>";
+    $coreReplacements['CHECKJAVASCRIPT'] = "<noscript role='alert' id='checkjavascript'><p class='alert alert-danger warningjs'>".gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</p></noscript>";
     $coreReplacements['CLEARALL'] = $_clearall;
     $coreReplacements['CLEARALL_LINKS'] = $_clearalllinks;
     $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons

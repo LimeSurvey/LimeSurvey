@@ -96,10 +96,6 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
         $rownr++;
         if ($rownr == 1) {
             $num_fields = count($row);
-
-            //This shouldn't occur, but just to be safe:
-            if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
-
             // Add column headers (used by R export)
             if($header==TRUE)
             {

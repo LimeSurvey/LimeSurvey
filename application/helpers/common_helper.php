@@ -31,7 +31,7 @@ function comparePermission($aPermissionA,$aPermissionB)
 /**
  * Translation helper function
  * @param string $sToTranslate
- * @param string $sEscapeMode
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped
  * @param string $sLanguage
  */
 function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
@@ -1403,6 +1403,10 @@ function sendCacheHeaders()
     if ( $embedded ) return;
     if (!headers_sent())
     {
+        if (Yii::app()->getConfig('x_frame_options','allow')=='sameorigin')
+        {
+            header('X-Frame-Options: SAMEORIGIN');
+        }
         header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');  // this line lets IE7 run LimeSurvey in an iframe
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
@@ -1805,6 +1809,16 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['question']=gT("Start language");
         $fieldmap["startlanguage"]['group_name']="";
     }
+
+    /*
+    $fieldmap['seed'] = array('fieldname' => 'seed', 'sid' => $surveyid, 'type' => 'seed', 'gid' => '', 'qid' => '', 'aid' => '');
+    if ($style == 'full')
+    {
+        $fieldmap["seed"]['title']="";
+        $fieldmap["seed"]['question']=gT("Seed");
+        $fieldmap["seed"]['group_name']="";
+    }
+    */
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked

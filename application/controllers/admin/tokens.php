@@ -284,7 +284,7 @@ class tokens extends Survey_Common_Action
         // TODO: permission checks
         $aTokenId = Yii::app()->getRequest()->getParam('sItem');
         $iSid = Yii::app()->getRequest()->getParam('sid');
-        TokenDynamic::model($iSid)->deleteRecords([$aTokenId]);
+        TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         return true;
     }
 
@@ -2393,7 +2393,7 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']))
+                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim($aWriteArray['token'])!='')
                         {
                             $aWriteArray['token'] = sanitize_token($aWriteArray['token']);
                             // We allways search for duplicate token (it's in model. Allow to reset or update token ?

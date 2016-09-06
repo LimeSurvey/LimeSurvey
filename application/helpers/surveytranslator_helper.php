@@ -51,7 +51,7 @@
         );
 
         if ($iDateFormat > 12 || $iDateFormat<0) {
-            $iDateFormat = 11;   // TODO - what should default be?
+            $iDateFormat = 6;
         }
         if ($iDateFormat >0)
         {

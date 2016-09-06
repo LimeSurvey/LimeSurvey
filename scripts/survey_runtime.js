@@ -144,7 +144,7 @@ function checkconditions(value, name, type, evt_type)
         $('#java'+name).val(value);
     }
 
-    aFieldWithDependencies = $('#aQuestionsWithDependencies').data('qids');
+    aQuestionsWithDependencies = $('#aQuestionsWithDependencies').data('qids');
 
     var result;
     if(typeof name !== 'undefined')
@@ -153,8 +153,8 @@ function checkconditions(value, name, type, evt_type)
         result = result[2]
     }
 
-    $isRelevant = $.inArray(result, aFieldWithDependencies);
-
+    // $isRelevant = $.inArray(result, aQuestionsWithDependencies); NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
+    $isRelevant = 1;
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }

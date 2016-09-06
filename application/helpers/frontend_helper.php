@@ -11,6 +11,9 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+// TODO: Why needed?
+require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
+
 function loadanswers()
 {
     Yii::trace('start', 'survey.loadanswers');
@@ -853,12 +856,14 @@ function submitfailed($errormsg = '', $query = null)
 }
 
 /**
-* This function builds all the required session variables when a survey is first started and
-* it loads any answer defaults from command line or from the table defaultvalues
-* It is called from the related format script (group.php, question.php, survey.php)
-* if the survey has just started.
-*/
-
+ * This function builds all the required session variables when a survey is first started and
+ * it loads any answer defaults from command line or from the table defaultvalues
+ * It is called from the related format script (group.php, question.php, survey.php)
+ * if the survey has just started.
+ * @param int $surveyid
+ * @param boolean $preview Defaults to false
+ * @return void
+ */
 function buildsurveysession($surveyid,$preview=false)
 {
     Yii::trace('start', 'survey.buildsurveysession');
@@ -946,13 +951,13 @@ function buildsurveysession($surveyid,$preview=false)
     else 
     {
         $subscenarios['captchaCorrect'] = true;
+        $loadsecurity = false;
     }
 
     //RenderWay defines which html gets rendered to the user_error
     // Possibilities are main,register,correct
     $renderCaptcha = "";
     $renderToken = "";
-    $renderWay = "";
 
     //Define array to render the partials
     $aEnterTokenData = array();
@@ -973,64 +978,17 @@ function buildsurveysession($surveyid,$preview=false)
         $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
     }
 
-
     $FlashError = "";
 
     // Scenario => Captcha required
    if($scenarios['captchaRequired'] && !$preview)
     {
-        //Apply the captchaEnabled flag to the partial
-        $aEnterTokenData['bCaptchaEnabled'] = true;
-        // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
-        if (!$subscenarios['captchaCorrect'])
-        {
-            if (isset($loadsecurity))
-            { // was a bad answer
-                $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
-            }
-            $renderCaptcha='main';
-        }
-        else{
-            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
-            $renderCaptcha='correct';
-        }
+        list($renderCaptcha, $FlashError) = testCaptcha($aEnterTokenData, $subscenarios, $surveyid, $loadsecurity);
     }
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
         //Test if token is valid
-        if(!$subscenarios['tokenValid'])
-        {
-            //Check if there is a clienttoken set
-            if((!isset($clienttoken) || $clienttoken==""))
-            {
-                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
-                {
-                    $renderToken='register';
-                }
-                else
-                {
-                    $renderToken='main';
-                }
-            } 
-            else
-            { //token was wrong
-                $errorMsg= ""
-                . gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
-                . sprintf( gT("For further information please contact %s"), $thissurvey['adminname'])
-                . "(<a href='mailto:".$thissurvey['adminemail']."'>"
-                . $thissurvey['adminemail']."</a>)";
-                
-                 $FlashError .= $errorMsg;
-                
-                $renderToken='main';
-            }
-        } 
-        else 
-        {
-            $aEnterTokenData['visibleToken'] =  $clienttoken;
-            $aEnterTokenData['token'] =  $clienttoken;
-            $renderToken='correct';
-        }
+        list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
     }
 
     //If there were errors, display through yii->FlashMessage
@@ -1038,68 +996,12 @@ function buildsurveysession($surveyid,$preview=false)
         $aEnterTokenData['errorMessage'] = $FlashError;
     }
 
-    //Check which way should be rendered 
-    if($renderToken!==$renderCaptcha)
-    {
-        if($renderToken==="register")
-        {
-            $renderWay="register";
-        }
-        if($renderCaptcha==="correct" || $renderToken==="correct")
-        {
-            $renderWay="main";
-        }
-        if($renderCaptcha==="")
-        {
-            $renderWay=$renderToken;
-        }
-        else if($renderToken==="")
-        {
-            $renderWay=$renderCaptcha;
-        }
-    }
-    else 
-    {
-        $renderWay=$renderToken;
-    }
+    $renderWay = getRenderWay($renderToken, $renderCaptcha);
+    $redata = compact(array_keys(get_defined_vars()));
+    renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
-    switch($renderWay){
-        case "main": //Token required, maybe Captcha required
-            sendCacheHeaders();
-            doHeader();
-            $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
-
-            // render token form
-            if($scenarios['tokenRequired']){
-                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
-            } else {
-                App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
-            }
-
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
-            doFooter();
-            exit; 
-            break;
-        case "register": //Register new user
-            // Add the event and test if done
-            Yii::app()->runController("register/index/sid/{$surveyid}");
-            Yii::app()->end();
-            echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
-            break;
-        case "correct": //Nothing to hold back, render survey
-        default:
-            break;
-    }
-    //RESET ALL THE SESSION VARIABLES AND START AGAIN
-    unset($_SESSION['survey_'.$surveyid]['grouplist']);
-    unset($_SESSION['survey_'.$surveyid]['fieldarray']);
-    unset($_SESSION['survey_'.$surveyid]['insertarray']);
-    unset($_SESSION['survey_'.$surveyid]['fieldnamesInfo']);
-    unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
-    unset($_SESSION['survey_'.$surveyid]['groupReMap']);
-    $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
+    // Reset all the session variables and start again
+    resetAllSessionVariables($surveyid);
 
     // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
     if (returnGlobal('lang',true))
@@ -1119,80 +1021,25 @@ function buildsurveysession($surveyid,$preview=false)
     // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
     SetSurveyLanguage($surveyid, $language_to_set);
 
-
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $sQuery = "SELECT count(*)\n"
-    ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
-    ." WHERE {{questions}}.sid=".$surveyid."\n"
-    ." AND {{groups}}.language='".App()->getLanguage()."'\n"
-    ." AND {{questions}}.language='".App()->getLanguage()."'\n"
-    ." AND {{questions}}.parent_qid=0\n";
-    $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
+    $totalquestions = Question::model()->getTotalQuestions($surveyid);
 
-    $sQuery= "select count(*) from {{groups}}
-        left join {{questions}} on  {{groups}}.gid={{questions}}.gid
-        where {{groups}}.sid={$surveyid} and qid is null";
-    $iTotalGroupsWithoutQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
-
+    $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
     // Fix totalquestions by substracting Test Display questions
-    $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
-    ." FROM {{questions}}"
-    ." WHERE type in ('X','*')\n"
-    ." AND sid={$surveyid}"
-    ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
-    ." AND parent_qid=0")->read();
+    $iNumberofQuestions = Question::model()->getNumberOfQuestions($surveyid);
 
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
 
-    //2. SESSION VARIABLE: totalsteps
-    //The number of "pages" that will be presented in this survey
-    //The number of pages to be presented will differ depending on the survey format
-    switch($thissurvey['format'])
+    // 2. SESSION VARIABLE: totalsteps
+    setTotalSteps($surveyid, $thissurvey, $totalquestions);
+
+    // Break out and crash if there are no questions!
+    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0)
     {
-        case "A":
-            $_SESSION['survey_'.$surveyid]['totalsteps']=1;
-            break;
-        case "G":
-            if (isset($_SESSION['survey_'.$surveyid]['grouplist']))
-            {
-                $_SESSION['survey_'.$surveyid]['totalsteps']=count($_SESSION['survey_'.$surveyid]['grouplist']);
-            }
-            break;
-        case "S":
-            $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
-    }
-
-
-    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions>0)    //break out and crash if there are no questions!
-    {
-        sendCacheHeaders();
-        doHeader();
-
         $redata = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
-        echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
-        echo "\t<div id='wrapper'>\n"
-        ."\t<p id='tokenmessage'>\n"
-        ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
-        echo "<ul>";
-        if ($totalquestions == 0){
-            echo '<li>'.gT("There are no questions in this survey.").'</li>';
-        }
-        if ($iTotalGroupsWithoutQuestions > 0){
-            echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
-        }
-        echo "</ul>"
-        ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
-        ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-        ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-        ."\t</p>\n"
-        ."\t</div>\n";
-
-        echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
-        doFooter();
-        exit;
+        breakOutAndCrash($redata, $sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
@@ -1216,19 +1063,242 @@ function buildsurveysession($surveyid,$preview=false)
     $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
+    //$seed = ls\mersenne\getSeed($surveyid, $preview);
 
+    // Randomization groups for groups
+    list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview);
+
+    // Randomization groups for questions
+    list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview);
+
+    $randomized = $randomized1 || $randomized2;;
+
+    if ($randomized === true)
+    {
+        $fieldmap = finalizeRandomization($fieldmap);
+
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
+    }
+
+    // TMSW Condition->Relevance:  don't need hasconditions, or usedinconditions
+
+    $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
+
+    initFieldArray($surveyid, $fieldmap);
+
+    // Prefill questions/answers from command line params
+    prefillFromCommandLine($surveyid);
+
+    if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
+
+    //Check if a passthru label and value have been included in the query url
+    checkPassthruLabel($surveyid, $preview, $fieldmap);
+
+    Yii::trace('end', 'survey.buildsurveysession');
+    //traceVar($_SESSION['survey_' . $surveyid]);
+}
+
+/**
+ * Check if a passthru label and value have been included in the query url
+ * @param int $surveyid
+ * @param boolean $preview
+ * @return void
+ */
+function checkPassthruLabel($surveyid, $preview, $fieldmap)
+{
+    $oResult=SurveyURLParameter::model()->getParametersForSurvey($surveyid);
+    foreach($oResult->readAll() as $aRow)
+    {
+        if(isset($_GET[$aRow['parameter']]) && !$preview)
+        {
+            $_SESSION['survey_'.$surveyid]['urlparams'][$aRow['parameter']]=$_GET[$aRow['parameter']];
+            if ($aRow['targetqid']!='')
+            {
+                foreach ($fieldmap as $sFieldname=>$aField)
+                {
+                    if ($aRow['targetsqid']!='')
+                    {
+                        if ($aField['qid']==$aRow['targetqid'] && $aField['sqid']==$aRow['targetsqid'])
+                        {
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$sFieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']]=$_GET[$aRow['parameter']];
+                        }
+                    }
+                    else
+                    {
+                        if ($aField['qid']==$aRow['targetqid'])
+                        {
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$sFieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']]=$_GET[$aRow['parameter']];
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+/**
+ * Prefill startvalues from command line param
+ * @return void
+ */
+function prefillFromCommandLine($surveyid)
+{
+    $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
+    $startingValues=array();
+    if (isset($_GET))
+    {
+        foreach ($_GET as $k=>$v)
+        {
+            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
+            {
+                $startingValues[$k] = $v;
+            }
+            else
+            {   // Search question codes to use those for prefilling.
+                foreach($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details)
+                {
+                    if ($details['title'] == $k)
+                    {
+                        $startingValues[$sgqa] = $v;
+                    }
+                }
+            }
+        }
+    }
+    $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
+}
+
+/**
+ * @param array $fieldmap
+ * @return void
+ */
+function initFieldArray($surveyid, array $fieldmap)
+{
+    foreach ($fieldmap as $key => $field)
+    {
+        if (isset($field['qid']) && $field['qid']!='')
+        {
+            $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+            $_SESSION['survey_'.$surveyid]['insertarray'][]=$field['fieldname'];
+            //fieldarray ARRAY CONTENTS -
+            //            [0]=questions.qid,
+            //            [1]=fieldname,
+            //            [2]=questions.title,
+            //            [3]=questions.question
+            //            [4]=questions.type,
+            //            [5]=questions.gid,
+            //            [6]=questions.mandatory,
+            //            [7]=conditionsexist,
+            //            [8]=usedinconditions
+            //            [8]=usedinconditions
+            //            [9]=used in group.php for question count
+            //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
+
+            if (!isset($_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
+            {
+                //JUST IN CASE : PRECAUTION!
+                //following variables are set only if $style=="full" in createFieldMap() in common_helper.
+                //so, if $style = "short", set some default values here!
+                if (isset($field['title']))
+                    $title = $field['title'];
+                else
+                    $title = "";
+
+                if (isset($field['question']))
+                    $question = $field['question'];
+                else
+                    $question = "";
+
+                if (isset($field['mandatory']))
+                    $mandatory = $field['mandatory'];
+                else
+                    $mandatory = 'N';
+
+                if (isset($field['hasconditions']))
+                    $hasconditions = $field['hasconditions'];
+                else
+                    $hasconditions = 'N';
+
+                if (isset($field['usedinconditions']))
+                    $usedinconditions = $field['usedinconditions'];
+                else
+                    $usedinconditions = 'N';
+
+                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
+                $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
+                $title,
+                $question,
+                $field['type'],
+                $field['gid'],
+                $mandatory,
+                $hasconditions,
+                $usedinconditions);
+            }
+            if (isset($field['random_gid']))
+            {
+                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid'];
+            }
+        }
+    }
+}
+
+/**
+ * @param array $aEnterTokenData
+ * @param array $subscenarios
+ * @param int $surveyid
+ * @param boolean $loadsecurity
+ * @return array ($renderCaptcha, $FlashError)
+ */
+function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $loadsecurity)
+{
+    $FlashError = '';
+
+    //Apply the captchaEnabled flag to the partial
+    $aEnterTokenData['bCaptchaEnabled'] = true;
+    // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
+    if (!$subscenarios['captchaCorrect'])
+    {
+        if ($loadsecurity)
+        { // was a bad answer
+            $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
+        }
+        $renderCaptcha='main';
+    }
+    else{
+        $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
+        $renderCaptcha='correct';
+    }
+
+    return array ($renderCaptcha, $FlashError);
+}
+
+/**
+ * Randomization group for groups
+ * @param int $surveyid
+ * @param array $fieldmap
+ * @param boolean $preview
+ * @return array ($fieldmap, $randomized)
+ */
+function randomizationGroup($surveyid, array $fieldmap, $preview)
+{
     // Randomization groups for groups
     $aRandomGroups=array();
     $aGIDCompleteMap=array();
-    // first find all groups and their groups IDS
+
+    // First find all groups and their groups IDS
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
     $criteria->addCondition("randomization_group != ''");
     $oData = QuestionGroup::model()->findAll($criteria);
+
     foreach($oData as $aGroup)
     {
         $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
     }
+
     // Shuffle each group and create a map for old GID => new GID
     foreach ($aRandomGroups as $sGroupName=>$aGIDs)
     {
@@ -1281,11 +1351,21 @@ function buildsurveysession($surveyid,$preview=false)
                 }
             }
         }
-        unset($GroupFieldMap);
     }
 
-    // Randomization groups for questions
+    return array($fieldmap, $randomized);
+}
 
+/**
+ * Randomization group for questions
+ * @param int $surveyid
+ * @param array $fieldmap
+ * @param boolean $preview
+ * @return array ($fieldmap, $randomized)
+ */
+function randomizationQuestion($surveyid, array $fieldmap, $preview)
+{
+    $randomized = false;
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
     if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
@@ -1297,6 +1377,7 @@ function buildsurveysession($surveyid,$preview=false)
         $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
     }
     $rgresult = dbExecuteAssoc($rgquery);
+
     foreach($rgresult->readAll() as $rgrow)
     {
         // Get the question IDs for each randomization group
@@ -1356,186 +1437,259 @@ function buildsurveysession($surveyid,$preview=false)
         $fieldmap = $copyFieldMap;
     }
 
-    if ($randomized === true)
+    return array($fieldmap, $randomized);
+}
+
+/**
+ * Stuff?
+ * @param array $fieldmap
+ * @return array Fieldmap
+ */
+function finalizeRandomization($fieldmap)
+{
+    // reset the sequencing counts
+    $gseq = -1;
+    $_gid = -1;
+    $qseq = -1;
+    $_qid = -1;
+    $copyFieldMap = array();
+    foreach ($fieldmap as $key => $val)
     {
-        // reset the sequencing counts
-        $gseq = -1;
-        $_gid = -1;
-        $qseq = -1;
-        $_qid = -1;
-        $copyFieldMap = array();
-        foreach ($fieldmap as $key => $val)
+        if ($val['gid'] != '')
         {
-            if ($val['gid'] != '')
+            if (isset($val['random_gid']))
             {
-                if (isset($val['random_gid']))
-                {
-                    $gid = $val['random_gid'];
-                } else {
-                    $gid = $val['gid'];
-                }
-                if ($gid != $_gid)
-                {
-                    $_gid = $gid;
-                    ++$gseq;
-                }
+                $gid = $val['random_gid'];
+            } else {
+                $gid = $val['gid'];
             }
-
-            if ($val['qid'] != '' && $val['qid'] != $_qid)
+            if ($gid != $_gid)
             {
-                $_qid = $val['qid'];
-                ++$qseq;
-            }
-
-            if ($val['gid'] != '' && $val['qid'] != '')
-            {
-                $val['groupSeq']    = $gseq;
-                $val['questionSeq'] = $qseq;
-            }
-
-            $copyFieldMap[$key] = $val;
-        }
-        $fieldmap = $copyFieldMap;
-        unset($copyFieldMap);
-
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
-    }
-
-    // TMSW Condition->Relevance:  don't need hasconditions, or usedinconditions
-
-    $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
-
-    foreach ($fieldmap as $key => $field)
-    {
-        if (isset($field['qid']) && $field['qid']!='')
-        {
-            $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
-            $_SESSION['survey_'.$surveyid]['insertarray'][]=$field['fieldname'];
-            //fieldarray ARRAY CONTENTS -
-            //            [0]=questions.qid,
-            //            [1]=fieldname,
-            //            [2]=questions.title,
-            //            [3]=questions.question
-            //                     [4]=questions.type,
-            //            [5]=questions.gid,
-            //            [6]=questions.mandatory,
-            //            [7]=conditionsexist,
-            //            [8]=usedinconditions
-            //            [8]=usedinconditions
-            //            [9]=used in group.php for question count
-            //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
-
-
-
-            if (!isset($_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
-            {
-                //JUST IN CASE : PRECAUTION!
-                //following variables are set only if $style=="full" in createFieldMap() in common_helper.
-                //so, if $style = "short", set some default values here!
-                if (isset($field['title']))
-                    $title = $field['title'];
-                else
-                    $title = "";
-
-                if (isset($field['question']))
-                    $question = $field['question'];
-                else
-                    $question = "";
-
-                if (isset($field['mandatory']))
-                    $mandatory = $field['mandatory'];
-                else
-                    $mandatory = 'N';
-
-                if (isset($field['hasconditions']))
-                    $hasconditions = $field['hasconditions'];
-                else
-                    $hasconditions = 'N';
-
-                if (isset($field['usedinconditions']))
-                    $usedinconditions = $field['usedinconditions'];
-                else
-                    $usedinconditions = 'N';
-
-                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
-                $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
-                $title,
-                $question,
-                $field['type'],
-                $field['gid'],
-                $mandatory,
-                $hasconditions,
-                $usedinconditions);
-            }
-            if (isset($field['random_gid']))
-            {
-                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid'];
+                $_gid = $gid;
+                ++$gseq;
             }
         }
 
-    }
-
-    // Prefill questions/answers from command line params
-    $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
-    $startingValues=array();
-    if (isset($_GET))
-    {
-        foreach ($_GET as $k=>$v)
+        if ($val['qid'] != '' && $val['qid'] != $_qid)
         {
-            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
+            $_qid = $val['qid'];
+            ++$qseq;
+        }
+
+        if ($val['gid'] != '' && $val['qid'] != '')
+        {
+            $val['groupSeq']    = $gseq;
+            $val['questionSeq'] = $qseq;
+        }
+
+        $copyFieldMap[$key] = $val;
+    }
+    return $copyFieldMap;
+}
+
+/**
+ * Test if token is valid
+ * @param array $subscenarios
+ * @param array $thissurvey
+ * @param array $aEnterTokenData
+ * @param string $clienttoken
+ * @return array ($renderToken, $FlashError)
+ */
+function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
+{
+    $FlashError = '';
+    if(!$subscenarios['tokenValid'])
+    {
+        //Check if there is a clienttoken set
+        if((!isset($clienttoken) || $clienttoken==""))
+        {
+            if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
             {
-                $startingValues[$k] = $v;
+                $renderToken='register';
             }
             else
-            {   // Search question codes to use those for prefilling.
-                foreach($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details)
-                {
-                    if ($details['title'] == $k)
-                    {
-                        $startingValues[$sgqa] = $v;
-                    }
-                }
-            }
-        }
-    }
-    $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
-
-    if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
-
-    //Check if a passthru label and value have been included in the query url
-    $oResult=SurveyURLParameter::model()->getParametersForSurvey($surveyid);
-    foreach($oResult->readAll() as $aRow)
-    {
-        if(isset($_GET[$aRow['parameter']]) && !$preview)
-        {
-            $_SESSION['survey_'.$surveyid]['urlparams'][$aRow['parameter']]=$_GET[$aRow['parameter']];
-            if ($aRow['targetqid']!='')
             {
-                foreach ($fieldmap as $sFieldname=>$aField)
-                {
-                    if ($aRow['targetsqid']!='')
-                    {
-                        if ($aField['qid']==$aRow['targetqid'] && $aField['sqid']==$aRow['targetsqid'])
-                        {
-                            $_SESSION['survey_'.$surveyid]['startingValues'][$sFieldname]=$_GET[$aRow['parameter']];
-                            $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']]=$_GET[$aRow['parameter']];
-                        }
-                    }
-                    else
-                    {
-                        if ($aField['qid']==$aRow['targetqid'])
-                        {
-                            $_SESSION['survey_'.$surveyid]['startingValues'][$sFieldname]=$_GET[$aRow['parameter']];
-                            $_SESSION['survey_'.$surveyid]['startingValues'][$aRow['parameter']]=$_GET[$aRow['parameter']];
-                        }
-                    }
-                }
-
+                $renderToken='main';
             }
         }
+        else
+        { //token was wrong
+            $errorMsg= ""
+            . gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
+            . sprintf( gT("For further information please contact %s"), $thissurvey['adminname'])
+            . "(<a href='mailto:".$thissurvey['adminemail']."'>"
+            . $thissurvey['adminemail']."</a>)";
+
+            $FlashError .= $errorMsg;
+
+            $renderToken='main';
+        }
     }
-    Yii::trace('end', 'survey.buildsurveysession');
+    else
+    {
+        $aEnterTokenData['visibleToken'] =  $clienttoken;
+        $aEnterTokenData['token'] =  $clienttoken;
+        $renderToken='correct';
+    }
+    return array($renderToken, $FlashError);
+}
+
+/**
+ * Returns which way should be rendered
+ * @param string $renderToken
+ * @param string $renderCaptcha
+ * @return string
+ */
+function getRenderWay($renderToken, $renderCaptcha)
+{
+    $renderWay = "";
+    if($renderToken!==$renderCaptcha)
+    {
+        if($renderToken==="register")
+        {
+            $renderWay="register";
+        }
+        if($renderCaptcha==="correct" || $renderToken==="correct")
+        {
+            $renderWay="main";
+        }
+        if($renderCaptcha==="")
+        {
+            $renderWay=$renderToken;
+        }
+        else if($renderToken==="")
+        {
+            $renderWay=$renderCaptcha;
+        }
+    }
+    else
+    {
+        $renderWay=$renderToken;
+    }
+    return $renderWay;
+}
+
+/**
+ * Render token, captcha or register form
+ * @param string $renderWay
+ * @param array $redata
+ * @param array $scenarios
+ * @param string $sTemplateViewPath
+ * @param array $aEnterTokenData
+ * @param int $surveyid
+ * @return void
+ */
+function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid)
+{
+    switch($renderWay){
+        case "main": //Token required, maybe Captcha required
+            sendCacheHeaders();
+            doHeader();
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
+
+            // render token form
+            if($scenarios['tokenRequired']){
+                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
+            } else {
+                App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
+            }
+
+            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
+            doFooter();
+            Yii::app()->end();
+            break;
+        case "register": //Register new user
+            // Add the event and test if done
+            Yii::app()->runController("register/index/sid/{$surveyid}");
+            Yii::app()->end();
+            echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
+            break;
+        case "correct": //Nothing to hold back, render survey
+        default:
+            break;
+    }
+}
+
+/**
+ * Resets all session variables for this survey
+ * @param int $surveyid
+ * @return void
+ */
+function resetAllSessionVariables($surveyid)
+{
+    unset($_SESSION['survey_'.$surveyid]['grouplist']);
+    unset($_SESSION['survey_'.$surveyid]['fieldarray']);
+    unset($_SESSION['survey_'.$surveyid]['insertarray']);
+    unset($_SESSION['survey_'.$surveyid]['fieldnamesInfo']);
+    unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
+    unset($_SESSION['survey_'.$surveyid]['groupReMap']);
+    $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
+}
+
+/**
+ * The number of "pages" that will be presented in this survey
+ * The number of pages to be presented will differ depending on the survey format
+ * Set totalsteps in session
+ * @param int $surveyid
+ * @param array $thissurvey
+ * @return void
+ */
+function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
+{
+    switch($thissurvey['format'])
+    {
+        case "A":
+            $_SESSION['survey_'.$surveyid]['totalsteps']=1;
+            break;
+        case "G":
+            if (isset($_SESSION['survey_'.$surveyid]['grouplist']))
+            {
+                $_SESSION['survey_'.$surveyid]['totalsteps']=count($_SESSION['survey_'.$surveyid]['grouplist']);
+            }
+            break;
+        case "S":
+            $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
+    }
+}
+
+/**
+ * @todo Rename
+ * @todo Move HTML to view
+ * @param array $redata
+ * @param string $sTemplateViewPath
+ * @param int $totalquestions
+ * @param int $iTotalGroupsWithoutQuestions
+ * @param array $thissurvey
+ * @return void
+ */
+function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, array $thissurvey)
+{
+    sendCacheHeaders();
+    doHeader();
+
+    echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
+    echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
+    echo "\t<div id='wrapper'>\n"
+    ."\t<p id='tokenmessage'>\n"
+    ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
+    echo "<ul>";
+    if ($totalquestions == 0){
+        echo '<li>'.gT("There are no questions in this survey.").'</li>';
+    }
+    if ($iTotalGroupsWithoutQuestions > 0){
+        echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
+    }
+    echo "</ul>"
+    ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
+    ." (<a href='mailto:{$thissurvey['adminemail']}'>"
+    ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
+    ."\t</p>\n"
+    ."\t</div>\n";
+
+    echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
+    doFooter();
+    Yii::app()->end();
 }
 
 /**
@@ -2179,9 +2333,11 @@ function SetSurveyLanguage($surveyid, $sLanguage)
     {
         $default_survey_language= Survey::model()->findByPk($surveyid)->language;
         $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
-        if (!isset($sLanguage) || ($sLanguage=='')
-        || !( in_array($sLanguage,$additional_survey_languages) || $sLanguage==$default_survey_language)
-        )
+        if (
+            empty($sLanguage)                                       //check if there 
+            || (!in_array($sLanguage, $additional_survey_languages))  //Is the language in the survey-language array
+            || ($default_survey_language == $sLanguage)              //Is the $default_language the chosen language?
+         )
         {
             // Language not supported, fall back to survey's default language
             $_SESSION['survey_'.$surveyid]['s_lang'] = $default_survey_language;

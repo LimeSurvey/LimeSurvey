@@ -273,6 +273,9 @@ function activateSurvey($iSurveyID, $simulate = false)
     {
         switch($aRow['type'])
         {
+            case 'seed':
+                $aTableDefinition[$aRow['fieldname']] = "string(31)";
+                break;
             case 'startlanguage':
                 $aTableDefinition[$aRow['fieldname']] = "string(20) NOT NULL";
                 break;

@@ -48,7 +48,7 @@
                     ),
 
                     array(
-                        'header' => gT('Active'),
+                        'header' => gT('Status'),
                         'name' => 'running',
                         'value'=>'$data->running',
                         'type'=>'raw',

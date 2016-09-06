@@ -111,15 +111,18 @@ class Question extends LSActiveRecord
             // Disallow other title if question allow other
             $oParentQuestion=Question::model()->findByPk(array("qid"=>$this->parent_qid,'language'=>$this->language));
             if($oParentQuestion->other=="Y")
-                $aRules[]= array('title', 'compare','compareValue'=>'other','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),"other"), 'except' => 'archiveimport');
+            {
+                $aRules[]= array('title', 'LSYii_CompareInsensitiveValidator','compareValue'=>'other','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),"other"), 'except' => 'archiveimport');
+            }
         }
         else
         {
             // Disallow other if sub question have 'other' for title
-            $oSubquestionOther=Question::model()->find("parent_qid=:parent_qid and title='other'",array("parent_qid"=>$this->qid));
+            $oSubquestionOther=Question::model()->find("parent_qid=:parent_qid and LOWER(title)='other'",array("parent_qid"=>$this->qid));
             if($oSubquestionOther)
+            {
                 $aRules[]= array('other', 'compare','compareValue'=>'Y','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),'other'), 'except' => 'archiveimport' );
-
+            }
         }
         if(!$this->isNewRecord)
         {
@@ -143,8 +146,8 @@ class Question extends LSActiveRecord
         }
         else
         {
+            $aRules[]= array('title', 'compare','compareValue'=>'time','operator'=>'!=', 'message'=> gT("'time' is a reserved word and can not be used for a subquestion."), 'except' => 'archiveimport' );
             $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
-
         }
         return $aRules;
     }
@@ -933,5 +936,37 @@ class Question extends LSActiveRecord
         {
             return false;
         }
+    }
+
+    /**
+     * Used in frontend helper, buildsurveysession.
+     * @param int $surveyid
+     * @return int
+     */
+    public static function getTotalQuestions($surveyid)
+    {
+        $sQuery = "SELECT count(*)\n"
+        ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
+        ." WHERE {{questions}}.sid=".$surveyid."\n"
+        ." AND {{groups}}.language='".App()->getLanguage()."'\n"
+        ." AND {{questions}}.language='".App()->getLanguage()."'\n"
+        ." AND {{questions}}.parent_qid=0\n";
+        return Yii::app()->db->createCommand($sQuery)->queryScalar();
+    }
+
+    /**
+     * Used in frontend helper, buildsurveysession.
+     * @todo Rename
+     * @param int $surveyid
+     * @return array|false??? Return from CDbDataReader::read()
+     */
+    public static function getNumberOfQuestions($surveyid)
+    {
+        return dbExecuteAssoc("SELECT count(*)\n"
+        ." FROM {{questions}}"
+        ." WHERE type in ('X','*')\n"
+        ." AND sid={$surveyid}"
+        ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
+        ." AND parent_qid=0")->read();
     }
 }

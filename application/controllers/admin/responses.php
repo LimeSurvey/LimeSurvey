@@ -493,6 +493,7 @@ class responses extends Survey_Common_Action
             'token', // Replaced by tokens.token
             'id', // Allways adding it at start
             'lastpage',
+            'seed'
         );
         $aFieldmap = createFieldMap($iSurveyID, 'full', true, false, $aData['language']);
 
@@ -630,6 +631,7 @@ class responses extends Survey_Common_Action
 
             $aSurveyEntry[] = $row['id'];
             $aSurveyEntry[] = $row['lastpage'];
+            $aSurveyEntry[] = $row['seed'];
             // completed
             $aSurveyEntry[] = empty($row['submitdate'])?'N':'Y';
 

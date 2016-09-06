@@ -35,6 +35,122 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from   2.51.2 (build 160906) to 2.51.3 (build 160907) Sept 06, 2016
+-Fixed issue: Template editor not working properly (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Serbian by MilaVeljovic
+
+
+Changes from   2.51.1 (build 160901) to 2.51.2 (build 160906) Sept 06, 2016
+-Fixed issue #11599: Any way to show active and not expired surveys (markusfluer)
+-Fixed issue #11613: Importing a participant having an empty token field is not possible (Carsten Schmitz)
+-Fixed issue #11616: Data of "Other" field at "Multiple options with comments" question not shown on revisiting survey page (Carsten Schmitz)
+-Fixed issue #11617: At question import the question code gets replaced though the code doesn't exist in that survey (Carsten Schmitz)
+-Fixed issue #11619: Error 500 tokens (array short-notation) (Olle Haerstedt)
+-Fixed issue: Nojavascript tag showing in custom templates
+-Fixed issue: Broken HTML in survey listing (Denis Chenu)
+#Updated translation: Afrikaans by geebee100
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Czech by slansky, sedlacev, VBraun, jelen1
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Slovak by dusanm
+#Updated translation: Slovak by gadeynebram, gmambro, dusanm
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+
+Changes from  2.51.0 (build 160829) to 2.51.1 (build 160901) Sept 01, 2016
+-Fixed issue #11565: When importing participants, can't un-set attribute match once set (Olle Haerstedt)
+-Fixed issue #11581: Active label on survey list is confusing (Carsten Schmitz)
+-Fixed issue #11591: Typing mistake in text string (Carsten Schmitz)
+-Fixed issue #11592: Fatal error with clean 160829 (Olle Haerstedt)
+-Fixed issue #11598: Some survey responses cannot be exported to SPSS (Carsten Schmitz)
+-Fixed issue #11603: Upgrading from 2.50-160616 to 2.51-160829 fails with database error on MS-SQL (Olle Haerstedt)
+-Fixed issue: Renew key message even though there is no manual renewal possible (Carsten Schmitz)
+-Fixed issue: Statistics show more than allowed filter for ranking question type (Denis Chenu)
+-Fixed issue: Survey cannot proceed anymore (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by NdK, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by aesteban
+
+Changes from  2.50.1 (build 160823) to 2.51.0 (build 160829) Aug 29, 2016
+-New feature: Option to automatically rename colliding question codes on question import (Carsten Schmitz)
+-New feature: Set X-Frame-Options in global settings to restrict iframe embedding to the same server (Carsten Schmitz)
+-New feature: User can show survey list on welcome page (LouisGac)
+-Fixed issue #10006: Variables are in the wrong order when exporting to SPSS/R (Carsten Schmitz)
+-Fixed issue #10180: Configured token length not being enforced on adding/editing tokens (Carsten Schmitz)
+-Fixed issue #10190: Inconsistent field size for attribute names (Carsten Schmitz)
+-Fixed issue #10198: Unable to import/export tokens even if all global permissions except superadmin are given (Carsten Schmitz)
+-Fixed issue #10562: Question index highlighting required questions missing. (LouisGac)
+-Fixed issue #11272: Large text question response repeated revisiting page (Carsten Schmitz)
+-Fixed issue #11467: Status bar in Response View will not stay. (LouisGac)
+-Fixed issue #11527: {QUESTION_VALID_MESSAGE} placeholder gets populated with HTML even if no warning exists (markusfluer)
+-Fixed issue #11528: Add new question in question group list leads to copy question (LouisGac)
+-Fixed issue #11534: Right align statistic columns (LouisGac)
+-Fixed issue #11537: Large array questions moving out of question container (LouisGac)
+-Fixed issue #11538: Wrong codes are created when using quick add feature (markusfluer)
+-Fixed issue #11559: Layout problem with bipolar answers/labels for matrix (markusfluer)
+-Fixed issue #11567: Blank_button is invisible in participant list (markusfluer)
+-Fixed issue #11569: How do I access ComfortUpdate if I remove the icon from teh home page? (LouisGac)
+-Fixed issue #11572: Export responses to Excel with non-english symbol sequences in title may cause file corruption (Carsten Schmitz)
+-Fixed issue #11573: Buggy title when browsing participants in Italian (Carsten Schmitz)
+-Fixed issue #11580: Error 403 at captcha query (Carsten Schmitz)
+-Fixed issue #11585: VV export/import dialogs are not styled (LouisGac)
+-Fixed issue #11588: Default template below 800px: array with checkboxes goes wrong (Carsten Schmitz)
+-Fixed issue #11590: CAPTCHA reload image button label not correctly shown some translations (Carsten Schmitz)
+-Fixed issue #8678: Using Expressions as default value for text fields questions when index is activated (LouisGac)
+-Fixed issue #9909 : disallow time for SubQuestion code (allow Time/TIME ...) for export issue (Denis Chenu)
+-Fixed issue #9909: Empty colums in export file while data visible in GUI (markusfluer)
+-Fixed issue #9979: Mandatory fields on the registration page don't have an asterisk (*) beside them (Carsten Schmitz)
+-Fixed issue: Extend/Compact switcher for responses list wasn't working anymore (LouisGac)
+-Fixed issue: In demo mode it is possible to change the admin password (Carsten Schmitz)
+-Fixed issue: Language setting not searchable in user settings (Carsten Schmitz)
+-Fixed issue: Navigation error after saving a survey (Denis Chenu)
+-Fixed issue: Notice when adding a survey participant (Carsten Schmitz)
+-Fixed issue: Other must be compared insensitive for DB issue (Denis Chenu)
+-Fixed issue: Printable version not properly handling old templates (Carsten Schmitz)
+-Fixed issue: [security] If SSL is used cookies did not have secure flag (Carsten Schmitz)
+-Fixed issue: Untranslated text for example question (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by yanglaw, popcorner, liudidi
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by aesteban
+
 Changes from 2.50+ (build 160816) to 2.50.1 (build 160823) Aug 23, 2016
 -New feature: Add example group and question on survey creation (Carsten Schmitz)
 -New translation: Kyrgyz by kmaksat (Carsten Schmitz)
