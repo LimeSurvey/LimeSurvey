@@ -1031,7 +1031,7 @@ class Survey extends LSActiveRecord
                     $criteria->compare("t.active",'Y');
                     $subCriteria1 = new CDbCriteria;
                     $subCriteria2 = new CDbCriteria;
-                    $subCriteria1->addCondition($now.' > t.startdate AND t.expires', 'OR');
+                    $subCriteria1->addCondition($now.' > t.startdate', 'OR');
                     $subCriteria2->addCondition($now.' < t.expires', 'OR');
                     $subCriteria1->addCondition('t.expires IS NULL', "OR");
                     $subCriteria2->addCondition('t.startdate IS NULL', "OR");
