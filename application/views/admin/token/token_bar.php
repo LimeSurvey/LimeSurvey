@@ -90,7 +90,7 @@
                     </button>
 
                     <ul class="dropdown-menu">
-                        <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')): ?>
+                        <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')): ?>
 
                         <!-- Send email invitation -->
                         <li>
@@ -155,7 +155,7 @@
                                 <span class="icon-settings"></span>
                                 <?php eT("Bounce settings"); ?>
                             </a>
-                        </li>                        
+                        </li>
                     </ul>
                 </div>
 
