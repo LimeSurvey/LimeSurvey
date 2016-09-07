@@ -11,10 +11,16 @@ $( document ).ready(function() {
 
 function updatetotals()
 {
+    var inputValue = $(this).val();
     var sRadix=LSvar.sLEMradix;
     var sTableID=$(this).closest('table').attr('id');
     var sTable=$(this).closest('table');
     var iGrandTotal=new Decimal(0);
+
+    if(!normalizeValue(inputValue)){
+        $(this).val(inputValue.substring(0,(inputValue.length-1)));
+        return;
+    }
 
     // Sum all rows
     sTable.find('tr').each(function () {
@@ -27,7 +33,7 @@ function updatetotals()
             sum = sum.plus(value);
         });
         //set the value of currents rows sum to the total-combat element in the current row
-        $(this).find('input:disabled').val(formatValue(sum));
+        $(this).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
         iGrandTotal = iGrandTotal.plus(sum);
     });
     // Sum all columns
@@ -45,11 +51,11 @@ function updatetotals()
             //sum the values
            sum = sum.plus(val);
         });
-        $($iRow.last().find('td').get((i-1))).find('input:disabled').val(formatValue(sum));
+        $($iRow.last().find('td').get((i-1))).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
     }
 
     //$('#'+sTableID+' tr:last-child td.total:nth-of-type('+iColumns+') input:disabled').val(formatValue(iGrandTotal));
-    $iRow.last().find('td.grand.total').find('input:disabled').val(formatValue(iGrandTotal));
+    $iRow.last().find('td.grand.total').find('input:disabled').val(formatValue(iGrandTotal)).trigger('change').trigger('keyup').trigger('keydown');
     // Grand total
 }
 function formatValue(sValue)
@@ -63,15 +69,24 @@ function formatValue(sValue)
 
 function normalizeValue(aValue)
 {
+    var regexCheck = new RegExp(/^([0-9]*)((,|\.){1}([0-9]*)){0,1}$/);
+    if(!regexCheck.test(aValue) && bFixNumAuto){
+        return 0;
+    }
     aValue = aValue || 0;
-    var number = new Decimal(aValue);
-    if(number.isNaN())
+    var outNumber = false;
+    try {
+        outNumber = new Decimal(aValue);
+    } catch(e){}
+    
+    if(outNumber == false)
     {
-        var numReplaced = aValue.replace(/,/g, ".");
-        var number = new Decimal(numReplaced);
-        return number;
+        var numReplaced = aValue.toString().replace(/,/g, ".");
+        outNumber = new Decimal(numReplaced);
+
+        return outNumber;
     } else {
-        return number;
+        return outNumber;
     }
 }
 
