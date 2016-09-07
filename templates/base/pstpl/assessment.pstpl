@@ -1,0 +1,4 @@
+<div id="assessment">
+	<div class="h2">{ASSESSMENT_HEADING}</div>
+	{ASSESSMENTS}
+</div>

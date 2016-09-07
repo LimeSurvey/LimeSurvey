@@ -1,0 +1,9 @@
+{CHECKJAVASCRIPT}
+<div class="h1">{SURVEYNAME}</div>
+{if(!is_empty(SURVEYDESCRIPTION),'<div class="jumbotron surveydescrition">'+SURVEYDESCRIPTION+'</div>','')}
+<div class="welcome">
+	<div class="surveywelcome">
+	{WELCOME}
+	{if(!is_empty(THEREAREXQUESTIONS),"<div class='therearexquestions'>"+THEREAREXQUESTIONS+"</div>","")}
+	</div>
+</div>
