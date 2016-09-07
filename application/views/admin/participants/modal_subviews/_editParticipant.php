@@ -53,7 +53,7 @@
     <p>&nbsp;</p>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close') ?></button>
     <button type="button" class="btn btn-primary action_save_modal_editParticipant"><?php eT("Save")?></button>
 </div>
 <?php

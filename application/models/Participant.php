@@ -33,6 +33,7 @@ class CPDBException extends Exception {}
  */
 class Participant extends LSActiveRecord
 {
+    public $extraCondition;
     public $countActiveSurveys;
     /**
      * Returns the static model of Settings table
@@ -85,7 +86,7 @@ class Participant extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'owner' => array(self::HAS_ONE, 'User', array('uid' => 'owner_uid')),
-            'surveylinks' => array(self::HAS_ONE, 'SurveyLink', 'participant_id'),
+            'surveylinks' => array(self::HAS_MANY, 'SurveyLink', 'participant_id'),
             'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id')
         );
     }
@@ -155,6 +156,7 @@ class Participant extends LSActiveRecord
             'language' => gT('Language'),
             'blacklisted' => gT('Blacklisted'),
             'owner_uid' => gT('Owner Uid'),
+            'surveyid' => gT('Active survey Id')
         );
         foreach($this->allExtraAttributes as $name => $attribute)
         {
@@ -309,28 +311,28 @@ class Participant extends LSActiveRecord
         $sort->defaultOrder = 'lastname';
         $sortAttributes = array(
           'lastname'=>array(
-            'asc'=>'lastname',
-            'desc'=>'lastname desc',
+            'asc'=>'t.lastname',
+            'desc'=>'t.lastname desc',
           ),
           'firstname'=>array(
-            'asc'=>'firstname',
-            'desc'=>'firstname desc',
+            'asc'=>'t.firstname',
+            'desc'=>'t.firstname desc',
           ),
           'email'=>array(
-            'asc'=>'email',
-            'desc'=>'email desc',
+            'asc'=>'t.email',
+            'desc'=>'t.email desc',
           ),
           'language'=>array(
-            'asc'=>'language',
-            'desc'=>'language desc',
+            'asc'=>'t.language',
+            'desc'=>'t.language desc',
           ),
           'owner.full_name'=>array(
             'asc'=>'owner.full_name',
             'desc'=>'owner.full_name desc',
           ),
           'blacklisted'=>array(
-            'asc'=>'blacklisted',
-            'desc'=>'blacklisted desc',
+            'asc'=>'t.blacklisted',
+            'desc'=>'t.blacklisted desc',
           ),
           'countActiveSurveys'=>array(
             'asc'=>'countActiveSurveys',
@@ -366,7 +368,10 @@ class Participant extends LSActiveRecord
         $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
 
         $criteria->select = array('*', $sqlCountActiveSurveys." as countActiveSurveys");
-
+        if($this->extraCondition)
+        {
+            $criteria->mergeWith($this->extraCondition);
+        }
         $sort->attributes = $sortAttributes;
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
@@ -392,6 +397,10 @@ class Participant extends LSActiveRecord
         }
         return TbHtml::dropDownList('Participant[owner_uid]',$selected, $ownerList);
         
+    }
+
+    public function addSurveyFilter($conditions){
+        $this->extraCondition = $this->getParticipantsSearchMultipleCondition($conditions);
     }
 
     /*
@@ -803,7 +812,7 @@ class Participant extends LSActiveRecord
         }
     }
 
-    /*
+      /*
      * Function builds a select query for searches through participants using the $condition field passed
      * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
      * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
@@ -1098,7 +1107,7 @@ class Participant extends LSActiveRecord
                 ->join('{{surveys_languagesettings}} sls', 'sl.survey_id = sls.surveyls_survey_id')
                 ->where('sls.surveyls_title '. $operator.' '.$param)
                 ->group('sl.participant_id');
-                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             elseif($sFieldname=="surveyid")
             {
@@ -1107,7 +1116,7 @@ class Participant extends LSActiveRecord
                 ->from('{{survey_links}} sl')
                 ->where('sl.survey_id '. $operator.' '.$param)
                 ->group('sl.participant_id');
-                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             elseif($sFieldname=="surveys") //Search by quantity of linked surveys
             {
@@ -1116,7 +1125,7 @@ class Participant extends LSActiveRecord
                 ->from('{{survey_links}} sl')
                 ->having('count(*) '. $operator.' '.$param)
                 ->group('sl.participant_id');
-                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             elseif($sFieldname=="owner_name")
             {
@@ -1124,7 +1133,7 @@ class Participant extends LSActiveRecord
             }
             elseif($sFieldname=="participant_id")
             {
-                $command->addCondition('p.participant_id ' . $operator . ' '.$param, $booloperator);
+                $command->addCondition('t.participant_id ' . $operator . ' '.$param, $booloperator);
             }
             elseif (is_numeric($sFieldname)) //Searching for an attribute
             {

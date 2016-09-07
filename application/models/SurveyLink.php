@@ -51,6 +51,19 @@ class SurveyLink extends LSActiveRecord
         return array('participant_id', 'token_id', 'survey_id');
     }
 
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'participant' => array(self::HAS_ONE, 'Particiant', 'participant_id'),
+            'survey' => array(self::HAS_ONE, 'Survey', array('survey_id'=>'sid'))
+        );
+    }
+
     function getLinkInfo($participantid)
     {
         return self::model()->findAllByAttributes(array('participant_id' => $participantid));
@@ -105,7 +118,141 @@ class SurveyLink extends LSActiveRecord
                              ->bindParam(":survey_id", $surveyId)
                              ->query();
     }
+    public function getDateFormat(){
+        $dateFormat = $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        return $dateFormat['phpdate'];
+    }
+    public function getSurveyInfo(){
+        $Survey = Survey::model()->findByPk($this->survey_id);
+        return $Survey->surveyinfo;
 
+    }
+    public function getTokenDynamicModel(){
+        $TokenDynamic = TokenDynamic::model($this->survey_id);
+        return $TokenDynamic->findByPk($this->token_id);
+    }
+
+    public function getSurveyName(){
+       return $this->surveyInfo['surveyls_title'];
+    }
+
+    public function getLastInvited(){
+        $invitedate = $this->tokenDynamicModel['sent'];
+        if($invitedate != "N") 
+        {
+            $date = new DateTime($invitedate);
+            return $date->format($this->dateFormat);
+        }
+    }
+    
+    public function getLastReminded(){
+        $reminddate = $this->tokenDynamicModel['remindersent'];
+        if($reminddate != "N") 
+        {
+            $date = new DateTime($reminddate);
+            return $date->format($this->dateFormat);
+        }
+    }
+
+    public function getFormattedDateCreated(){
+        $dateCreated = $this->date_created;
+        
+        $date = new DateTime($dateCreated);
+        return $date->format($this->dateFormat);
+    }
+
+    public function getIsSubmittedHtml(){
+        if($this->isSubmitted !== false)
+        {
+            $date = new DateTime($this->isSubmitted);
+            $submittedAt = $date->format($this->dateFormat);
+            return gT("Yes")." <i class='fa fa-circle text-success' data-toggle='tooltip' title='".$submittedAt."'></i>";
+        } 
+        else 
+        {
+            return gT("No")." <i class='fa fa-circle-o text-warning'></i>";
+        }
+    }
+
+    public function getIsSubmitted(){
+        $submitdate = $this->tokenDynamicModel['completed'];
+        return (($submitdate == "N") ? false : $submitdate);
+    }
+
+    public function getCheckbox(){
+        return "<input type='checkbox' class='selector_toggleAllParticipantSurveys' value='[".$this->token_id.",".$this->survey_id.",\"".$this->participant_id."\"]' />";
+    }
+
+    public function attributeLabels() {
+        return array(
+            'survey_id' => gT("Survey ID"),
+            'token_id' => gT('Token ID'),
+            'participant_id' => gT('Participant'),
+            'date_created' => gT('Date added')
+        );
+    }
+
+    public function getColumns() {
+        return array(
+            array(
+                "name" => 'checkbox',
+                "type" => 'raw',
+                "header" => "<input type='checkbox' id='action_toggleAllParticipantSurveys' />",
+                "sortable" => false,
+                "filter" => false
+            ),
+            array(
+                "value" => '$data->surveyName',
+                'header' => gT('Survey Name'),
+                "sortable" => false,
+                "filter" => false
+            ),
+            array(
+                "name" => 'survey_id',
+                "sortable" => false,
+                "filter" => false
+            ),
+            array(
+                "name" => 'token_id',
+                "sortable" => false,
+                "filter" => false
+            ),
+            array(
+                "name" => 'date_created',
+                "value" => '$data->formattedDateCreated',
+                "sortable" => false,
+                "filter" => false
+            ),
+            array(
+                "header" => gT("Last invited"),
+                "value" => '$data->lastInvited',
+                "sortable" => false,
+                "filter" => false
+            ),
+            array(
+                "header" => gT("Submitted"),
+                "value" => '$data->isSubmittedHtml',
+                "type" => "raw",
+                "sortable" => false,
+                "filter" => false
+            ),
+
+        );
+    }
+
+    public function search() {
+        $criteria = new CDbCriteria;
+        $sort = new CSort;
+
+        $criteria->compare('participant_id', $this->participant_id);
+
+        return new CActiveDataProvider($this, array(
+             'criteria'=>$criteria,
+             'sort'=>$sort,
+            // 'pagination' => false
+            'pagination' => false
+        ));
+    }
 }
 
 ?>

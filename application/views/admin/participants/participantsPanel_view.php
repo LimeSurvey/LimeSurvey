@@ -11,12 +11,9 @@
     var sNonSelectedText = "<?php eT("None selected", 'js') ?>";
     var sNSelectedText = "<?php eT("selected", 'js') ?>";
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
-    var openEditParticipant = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/openeditparticipant"); ?>";
-    var openEditAttributeNames = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/openeditattributenames"); ?>";
-    var deleteLanguageFromAttributeUrl = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/deleteLanguageFromAttributeUrl"); ?>";
-    var changeBlacklistStatus = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/changeblackliststatus"); ?>";
-    var changeAttributeVisibility = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/changeattributevisibility"); ?>";
-    var deleteAttributeUrl = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/deleteSingleAttribute"); ?>";
+    var openModalParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/openModalParticipantPanel"); ?>";
+    var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";
+    
     var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> '.gT('Remove from Blacklist?'); ?>";
     var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> '.gT('Add to Blacklist?'); ?>";
     var datepickerConfig =     <?php 
@@ -140,7 +137,7 @@
 
 <!-- Modal for editing participants-->
 <div class="modal fade" id="participantPanel_edit_modal" tabindex="-1" role="dialog" aria-labelledby="participantPanel_edit_modal">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      
     </div>
