@@ -1,8 +1,0 @@
-<div id="save">
-<h3>{SAVEHEADING}</h3>
-<strong class="error">{SAVEERROR}</strong>
-<div class="note">{SAVEMESSAGE}
-<div class="form">{SAVEFORM}</div>
-</div>
-<p class="tools">{RETURNTOSURVEY}</p>
-</div>

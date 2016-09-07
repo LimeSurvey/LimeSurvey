@@ -284,6 +284,7 @@ class Template extends LSActiveRecord
                 'default',
                 'news_paper',
                 'ubuntu_orange',
+                'tfr-base'
             )
         );
     }

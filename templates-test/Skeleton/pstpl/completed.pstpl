@@ -1,4 +1,0 @@
-<div id="completed" class="note">
-	<div class="text">{COMPLETED}</div>
-	{if(!is_empty(URL),"<p class='url endurl'>"+URL+"</p>","")}
-</div>

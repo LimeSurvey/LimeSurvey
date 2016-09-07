@@ -1,9 +1,0 @@
-<div>
-	{LANGUAGECHANGER}
-	<h2>{SURVEYLISTHEADING}</h2>
-
-		{SURVEYLIST}
-
-	<p class="surveycontact">{SURVEYCONTACT}</p>
-</div>
-

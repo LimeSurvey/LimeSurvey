@@ -1,3 +1,0 @@
-{if(!is_empty(LANGUAGECHANGER),"<div class='tools languageselect' id='languageselect-wrapper'>"+LANGUAGECHANGER+"</div>","")}
-{PERCENTCOMPLETE}
-
