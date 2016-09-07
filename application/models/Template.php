@@ -283,6 +283,7 @@ class Template extends LSActiveRecord
             array(
                 'default',
                 'base',
+                'base_awesome',
                 'news_paper',
                 'ubuntu_orange',
                 'tfr-base',
