@@ -1,0 +1,33 @@
+/*!
+ * Style for the template
+ *
+ */
+.container-fluid{max-width: 1170px;}
+
+/* Sticky footer styles
+ * see http://getbootstrap.com/examples/sticky-footer/
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+/**
+ * For the question label (number/code and mandatory)
+ * If user add p or div : one line more
+ */
+.question-number,
+.question-code
+{float:left:margin-right:0.2em}

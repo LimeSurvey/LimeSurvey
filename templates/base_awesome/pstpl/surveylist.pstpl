@@ -1,0 +1,10 @@
+<div id='surveylist'>
+{if(!is_empty(LANGUAGECHANGER),"<div class='languageselect row form-inline'>"+LANGUAGECHANGER+"</div>","")}<!-- LANGUAGECHANGER are not same in survey and surveylist : must be fixed -->
+
+	<div class="h2">{SURVEYLISTHEADING}</div>
+
+		{SURVEYLIST}
+
+	<div class="surveycontact">{SURVEYCONTACT}</div>
+</div>
+

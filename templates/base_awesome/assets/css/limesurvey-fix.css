@@ -1,0 +1,20 @@
+/*!
+ * Actual fix : must be fixed in HTML views
+ *
+ * Copyright 2015 Denis Chenu <http://www.sondages.pro>
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+
+/**
+ * Default button must be shown , needed for no js
+ */
+.save-clear .btn{
+display:inline-block !important;  /* remove hidden */
+width:auto;  /* remove col-* */
+}
+.save-clear .clearall,.save-clear .jshide{
+font-size: 14px;
+padding: 6px 12px;
+}
