@@ -325,17 +325,17 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     public function newLoginForm()
     {
         $this->getEvent()->getContent($this)
-            ->addContent(CHtml::tag('li', array(), "<label for='user'>"  . gT("Username") . "</label><input name='user' id='user' type='text' size='40' maxlength='40' value='' />"))
-            ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label><input name='password' id='password' type='password' size='40' maxlength='40' value='' />"));
+        ->addContent(CHtml::tag('span', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user','',array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))))
+        ->addContent(CHtml::tag('span', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password','',array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))));
     }
 
     /**
-     * Modified getPluginSettings since we have a select box that autosubmits
-     * and we only want to show the relevant options.
-     *
-     * @param boolean $getValues
-     * @return array
-     */
+    * Modified getPluginSettings since we have a select box that autosubmits
+    * and we only want to show the relevant options.
+    *
+    * @param boolean $getValues
+    * @return array
+    */
     public function getPluginSettings($getValues = true)
     {
         $aPluginSettings = parent::getPluginSettings($getValues);
