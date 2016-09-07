@@ -592,7 +592,9 @@ function submittokens($quotaexit=false)
                     }
                 }
                 $event = new PluginEvent('beforeTokenEmail');
+                $event->set('survey', $surveyid);
                 $event->set('type', 'confirm');
+                $event->set('model', 'confirm');
                 $event->set('subject', $subject);
                 $event->set('to', $sToAddress);
                 $event->set('body', $message);
