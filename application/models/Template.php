@@ -282,6 +282,7 @@ class Template extends LSActiveRecord
         return in_array($sTemplateName,
             array(
                 'default',
+                'base',
                 'news_paper',
                 'ubuntu_orange',
                 'tfr-base',
