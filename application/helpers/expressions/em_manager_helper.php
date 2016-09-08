@@ -5419,6 +5419,12 @@
                             {
                                 $val=NULL;  // since some databases can't store blanks in numerical inputs
                             }
+                            elseif(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
+                            {
+                                // Message is set in ProcessCurrentResponses, show in _validateQuestion. But we leave the value in ProcessCurrentResponses
+                                // Because it can happen without hacking (unsure : if we use maxlength in input : then we can reset it. But maybe have textarea ?)
+                                $val=NULL;
+                            }
                             break;
                         default:
                             // @todo : control length of DB string, if answers in single choice is valid too (for example) ?
@@ -8750,7 +8756,8 @@ EOD;
                                 if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
                                 {
                                     $LEM->invalidAnswerCore[$sq]=gT("This question only accept 30 digits including 10 decimals.");
-                                    $value=null;
+                                    /* Show an error but don't unset value : this can happen without hack */
+                                    //$value=null;
                                 }
                                 break;
                             default:
