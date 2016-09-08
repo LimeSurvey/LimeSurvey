@@ -24,35 +24,21 @@
  */
 ?>
 <!-- answer_row -->
-<tr class='<?php echo $liclasses;?>'>
+<li id="javatbd<?php echo $name; ?>" class='answer-item checkbox-text-item form-group form-inline noanswer-item clearfix' <?php echo $sDisplayStyle ;?>>
 
     <!-- Checkbox + label -->
-
-    <td class=""  <?php echo $sDisplayStyle ;?>>
-
-        <label for="<?php echo $id;?>" class="answertext control-label"></label>
-
-        <!--
-             The label text is provided inside a div,
-             so final user can add paragraph, div, or whatever he wants in the subquestion text
-             This field is related to the input thanks to attribute aria-labelledby
-        -->
-        <div class="label-text label-clickable" id="label-<?php echo $id;?>">
-            <?php echo $labeltext;?>
-        </div>
+    <div class="form-group text-item other-text-item col-sm-6 col-xs-12">
+        <label if="label-<?php echo $name; ?>" for="<?php echo $id;?>" class="label-text control-label"><?php echo $labeltext;?></label>
 
         <input
-           class="text other form-control input-sm  multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
-
+           class="other-text form-control input-sm  multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
            type="text"
            name="<?php echo $name; ?>"
            id="<?php echo $id;?>"
-           title="<?php eT('Other'); ?>"
            size="10"
            onkeyup="<?php echo $checkconditionFunction;?>"
            value="<?php  echo $value; ?>"
         />
-
         <?php if($javainput):?>
             <input
             type='hidden'
@@ -62,23 +48,19 @@
             <?php echo $checked;?>
             />
         <?php endif;?>
-    </td>
+    </div>
 
     <!-- Comment -->
-    <td <?php echo $sDisplayStyle; ?> class="comment-container">
-        <label for='<?php echo $inputCommentId;?>' class="answer-comment hide control-label">
-            <?php echo $commentLabelText;?>
-        </label>
-
+    <div class="form-group text-item col-sm-6 col-xs-12 comment-container">
         <input
-            class='form-control text input-sm <?php echo $kpclass; ?>'
-
+            class='form-control input-sm <?php echo $kpclass; ?>'
             type='text'
             size='40'
             id='<?php echo $inputCommentId;?>'
             name='<?php echo $inputCommentName; ?>'
             value='<?php echo $inputCOmmentValue; ?>'
             onkeyup='<?php echo $checkconditionFunctionComment;?>'
+            aria-labelledby='label-<?php echo $name; ?> <?php echo $name; ?>'
         />
     </td>
 </tr>

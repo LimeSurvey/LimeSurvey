@@ -41,7 +41,7 @@
         name="<?php echo $name; ?>other"
         title="<?php eT('Other'); ?>" <?php echo $answer_other;?>
         onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $name; ?>').click(); };  <?php echo $oth_checkconditionFunction; ?>",
-        labelled-by="label-id-<?php echo $name; ?>"
+        aria-labelledby="label-id-<?php echo $name; ?>"
         />
     </div>
 </li>
