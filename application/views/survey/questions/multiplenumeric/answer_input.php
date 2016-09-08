@@ -17,60 +17,40 @@
 <!-- Multiple Numerical -->
 
 <!-- answer -->
-<div class='subquestion-list questions-list text-list <?php echo $prefixclass?>-list'>
-
-    <table class='table no-more-tables table-multi-num'>
+<ul class='list-unstyled subquestion-list questions-list text-list <?php echo $prefixclass?>-list'>
         <?php
             // rows/answer_row.php
             echo $sRows;
         ?>
 
-        <?php if($equals_num_value):?>
-            <tr>
-                <td class='hide-on-small-screen'></td>
-                <?php if (!empty($prefix)): ?>
-                    <td class='hide-on-small-screen'></td>
-                <?php endif; ?>
-                <td>
-                    <div class='multiplenumerichelp help-block pull-right'>
-                        <div class='label label-default'>
-                            <label>
-                                <?php eT('Remaining: ');?>
-                            </label>
-                            <span id="remainingvalue_<?php echo $id; ?>" class="dynamic_remaining">
-                                <?php echo $prefix; ?>
-                                {<?php echo $sumRemainingEqn;?>}
-                                <?php echo $suffix; ?>
-                            </span>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+        <?php if($sumRemainingEqn):?>
+            <li>
+                <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
+                    <?php eT('Remaining: ');?>
+                </div>
+                <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+                    <?php echo $prefix; ?>
+                    <span id="remainingvalue_<?php echo $id; ?>" class="dynamic_remaining">
+                        {<?php echo $sumRemainingEqn;?>}
+                    </span>
+                    <?php echo $suffix; ?>
+                </div>
+            </li>
         <?php endif; ?>
 
-        <?php if($displaytotal):?>
-            <tr>
-                <td class='hide-on-small-screen'></td>
-                <?php if (!empty($prefix)): ?>
-                    <td class='hide-on-small-screen'></td>
-                <?php endif; ?>
-                <td>
-
-                    <div class='multiplenumerichelp help-block pull-right'>
-                        <div class='label label-default'>
-                            <label class=""><?php eT('Total: '); ?></label>
-                            <span id="totalvalue_<?php echo $id; ?>" class="">
-                                <?php echo $prefix; ?>
-                                <?php // NO SPACE AFTER BRACKET !!!! ?>
-                                {<?php echo $sumEqn; ?>}
-                                <?php echo $suffix; ?>
-                            </span>
-                        </div>
-                    </div>
-
-                </td>
-            </tr>
+        <?php if($sumEqn):?>
+            <li>
+                <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
+                    <?php eT('Total: ');?>
+                </div>
+               <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+                    <?php echo $prefix; ?>
+                    <span id="remainingvalue_<?php echo $id; ?>" class="dynamic_remaining">
+                        {<?php echo $sumEqn; ?>}
+                    </span>
+                    <?php echo $suffix; ?>
+                </div>
+            </li>
         <?php endif; ?>
-    </table>
-</div>
+</ul>
 <!-- endof answer -->

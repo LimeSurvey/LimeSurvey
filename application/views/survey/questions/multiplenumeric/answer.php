@@ -14,8 +14,8 @@
  * @var $prefix
  */
 ?>
-<!-- Multiple Numerical -->
-
+<!-- Multiple Numerical with slider -->
+<!-- @todo ul/li in real -->
 <!-- answer -->
 <div class='subquestion-list questions-list text-list <?php echo $prefixclass?>-list'>
 

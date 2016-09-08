@@ -2900,13 +2900,13 @@ function do_multiplenumeric($ia)
     {
         $tiwidth     = $aQuestionAttributes['text_input_width'];
         $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        //$extraclass .= " col-sm-".trim($col);
+        $sInputContainerWidth=$col;
     }
     else
     {
-        $tiwidth = 6;
+        $sInputContainerWidth=$tiwidth = 6;
     }
-
+    $sLabelWidth=12-$sInputContainerWidth;
     $prefixclass = "numeric";
 
     if ($aQuestionAttributes['slider_layout']==1)
@@ -3136,6 +3136,8 @@ function do_multiplenumeric($ia)
                 'prefix'                 => $prefix,
                 'suffix'                 => $suffix,
                 'tiwidth'                => $tiwidth,
+                'sInputContainerWidth'   => $sInputContainerWidth,
+                'sLabelWidth'            => $sLabelWidth,
                 'myfname'                => $myfname,
                 'dispVal'                => $sValue,
                 'maxlength'              => $maxlength,
@@ -3216,6 +3218,8 @@ function do_multiplenumeric($ia)
                         'displaytotal'     => $displaytotal,
                         'sumEqn'           => (isset($qinfo))?$qinfo['sumEqn']:'',
                         'prefix'           => $prefix,  // Need to know this to place sum/remaining correctly
+                        'sInputContainerWidth'   => $sInputContainerWidth,
+                        'sLabelWidth'            => $sLabelWidth,
                        ), true);
 
     }
