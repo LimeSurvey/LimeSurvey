@@ -6610,10 +6610,13 @@
                     $bValidAnswer=true;
                     if(isset($this->invalidAnswerCore[$sgqa]))
                     {
-                        /* Add the string to be showned , no js error or another class ? */
-                        $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', array('qid'=>$qid,'vclass'=>'dberror alert alert-danger','vtip'  =>$this->invalidAnswerCore[$sgqa]), true);
-                        /* Set this question invalid (only if move next due to $force) */
-                        $qvalid=false;
+                        if($qrel && !$qhidden)/* Maybe we can have hidden posted value : never show error for hidden question (or not relevant) */
+                        {
+                            /* Add the string to be showned , no js error or another class ? */
+                            $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', array('qid'=>$qid,'vclass'=>'dberror alert alert-danger','vtip'  =>$this->invalidAnswerCore[$sgqa]), true);
+                            /* Set this question invalid (only if move next due to $force) */
+                            $qvalid=false;
+                        }
                         unset($LEM->invalidAnswerCore[$sgqa]);
                     }
                 }
@@ -8714,7 +8717,7 @@ EOD;
                         {
                             case '!': //List - dropdown
                             case 'L': //LIST drop-down/radio-button list
-                                if(substr($sq,-5)!='other' && isset($_SESSION[$LEM->sessid][$sq]) && $_SESSION[$LEM->sessid][$sq]!=="")// We must validate $_SESSION[$LEM->sessid][$sgqa]==="0", then don't use empty
+                                if(substr($sq,-5)!='other' && isset($value) && $value!=="")// We must validate $value==="0", then don't use empty. $value is not set if unrelevant , then don't use $value!==null
                                 {
                                     if($value=="-oth-")
                                     {
@@ -8776,8 +8779,8 @@ EOD;
                         // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
                         unset($_SESSION[$LEM->sessid][$sq]);
                         $_update = array (
-                        'type'=>$type,
-                        'value'=>NULL,
+                            'type'=>$type,
+                            'value'=>NULL,
                         );
                         $updatedValues[$sq] = $_update;
                         $LEM->updatedValues[$sq] = $_update;
