@@ -646,10 +646,12 @@
          */
         private $qid2exclusiveAuto = array();
         /**
-         * array of invalid sgq, set in ProcessCurrentReponse : to set the value to null, unset in _validateQUestion to show an erro to user
-         * Must be always unbset after using (EM are in $_SESSION and never new ....)
+         * Array of invalid answer, key is sgq, value is the clear string to be shown
+         * Must be always unset after using (EM are in $_SESSION and never new ....)
+         *
+         * @var string[]
          */
-        private $invalidAnswerCore = array();
+        private $invalidAnswerString = array();
         /**
          * Array of values to be updated
          * @var type
@@ -10191,7 +10193,7 @@ EOD;
 
         /**
          * Check a validity of an answer,
-         * Put the string to show to user $this->invalidAnswerCore
+         * Put the string to show to user $this->invalidAnswerString
          *
          * @param string $type : question type
          * @param string $value : the value
@@ -10205,7 +10207,6 @@ EOD;
             /* This function is called by a static function , then set ot to static .... */
             $LEM =& LimeExpressionManager::singleton();
             /* See bug Control value against value from survey : see #11611 */
-            /* Alternative to $LEM->invalidAnswerCore : App()->user->setState("invalidAnswerCore".$sq,string) */
             switch ($type)
             {
                 case '!': //List - dropdown
@@ -10216,7 +10217,7 @@ EOD;
                         {
                             if($qinfo['info']['other']!='Y')
                             {
-                                $LEM->invalidAnswerCore[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                                 $value=null;
                             }
                         }
@@ -10232,7 +10233,7 @@ EOD;
                             'code','answer');// The knowVars is really dirty , and answer::model don't seems to have a clean way to just have it simply
                             if(!array_key_exists($value,$aAnswers))
                             {
-                                $LEM->invalidAnswerCore[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                                 return false;
                             }
                         }
@@ -10242,7 +10243,7 @@ EOD;
                 case 'K':
                     if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$value)) // DECIMAL(30,10)
                     {
-                        $LEM->invalidAnswerCore[$sgq]=gT("This question only accept 30 digits including 10 decimals.");
+                        $LEM->invalidAnswerString[$sgq]=gT("This question only accept 30 digits including 10 decimals.");
                         /* Show an error but don't unset value : this can happen without hack */
                     }
                     break;
@@ -10270,10 +10271,10 @@ EOD;
         private static function getValidityString($sgqa)
         {
             $LEM =& LimeExpressionManager::singleton();
-            if(isset($LEM->invalidAnswerCore[$sgqa]))
+            if(isset($LEM->invalidAnswerString[$sgqa]))
             {
-                $sValidityString=$LEM->invalidAnswerCore[$sgqa];
-                unset($LEM->invalidAnswerCore[$sgqa]);
+                $sValidityString=$LEM->invalidAnswerString[$sgqa];
+                unset($LEM->invalidAnswerString[$sgqa]);
                 return $sValidityString;
             }
         }
