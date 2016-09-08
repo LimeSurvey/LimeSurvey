@@ -764,8 +764,9 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         var thisrow=lsrows[k].splitCSV(separatorchar);
         if (thisrow.length<=languages.length)
         {
-            var qCode = (parseInt(k)+(1+parseInt(allrows)));
-            if (lsreplace){qCode = 1;}
+            var qCode = (parseInt(k)+1);
+            if (lsreplace===false){
+                qCode+=(parseInt(allrows));}
             while(qCode.toString().length < numericSuffix.length){
                 qCode = "0"+qCode;
             }

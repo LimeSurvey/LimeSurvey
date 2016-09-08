@@ -406,7 +406,7 @@ class index extends CAction {
             } else {
                 $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
-            if (!isset($tokenInstance))
+            if (empty($tokenInstance))
             {
                 $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
                 if($oToken)

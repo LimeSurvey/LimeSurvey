@@ -933,7 +933,7 @@ function buildsurveysession($surveyid,$preview=false)
             $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
 
-        $subscenarios['tokenValid'] = isset($oTokenEntry);
+        $subscenarios['tokenValid'] = ((!empty($oTokenEntry) && ($clienttoken != "")));
     }
     else 
     {

@@ -12,15 +12,16 @@
         <thead class=' array1 dontread'>
             <tr>
                 <th>&nbsp;</th>
-                <?php foreach ($aQuestions as $question): ?>
+                <?php
+                foreach ($aQuestions as $i=>$question): ?>
                     <?php if ($question['errormandatory']): ?>
-                        <th class='text-center'>
+                        <th class='text-center<?php echo ($i % 2 == 0)?' array2':' well';?>'>
                             <span class="label label-danger" role="alert">
                                 <?php echo $question['question']; ?>
                             </span >
                         </th>
                     <?php else: ?>
-                        <th class="text-center">
+                        <th class="text-center<?php echo ($i % 2 == 0)?' array2':' well';?>">
                             <?php echo $question['question']; ?>
                         </th>
                     <?php endif; ?>
@@ -29,12 +30,13 @@
         </thead>
         <tbody>
             <?php foreach ($labels as $ansrow): ?>
-                <tr id="javatbd<?php echo $ansrow['code'];?>" class="well answers-list radio-list">
+                <tr id="javatbd<?php echo $ansrow['code'];?>" class="answers-list radio-list">
                     <th class="answertext">
                         <span class="answertextright"><?php echo $ansrow['answer']; ?></span>
                     </th>
-                    <?php foreach ($anscode as $i => $ld): ?>
-                        <td class="answer-cell-2 answer_cell_<?php echo $ld;?> answer-item radio-item radio text-center">
+                    <?php
+                    foreach ($anscode as $i => $ld): ?>
+                        <td class="answer-cell-2 answer_cell_<?php echo $ld;?><?php echo ($i % 2 == 0)?' array2':' well';?> answer-item radio-item radio text-center">
                                 <input
                                     class="radio"
                                     type="radio"

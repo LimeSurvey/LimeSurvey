@@ -352,7 +352,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $_clearall = TbHtml::button('Click me to open modal', array(
+        $_clearall = TbHtml::button(gT("Exit and clear survey"), array(
                     'class' => "clearall button  btn btn-default btn-lg  col-xs-4 hidden",
                     'data-toggle' => 'modal',
                     'data-target' => '#clearallConfirmation',
