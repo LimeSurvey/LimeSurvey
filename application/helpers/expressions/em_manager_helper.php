@@ -6609,24 +6609,18 @@
             /**
              * Control value against value from survey : see #11611
              */
-            if ($qrel)
+            foreach($sgqas as $sgqa)
             {
-                foreach($sgqas as $sgqa)
+                $validityString=self::getValidityString($sgqa);
+                if($validityString && $qrel && !$qhidden)
                 {
-                    $bValidAnswer=true;
-                    if(isset($this->invalidAnswerCore[$sgqa]))
-                    {
-                        if($qrel && !$qhidden)/* Maybe we can have hidden posted value : never show error for hidden question (or not relevant) */
-                        {
-                            /* Add the string to be showned , no js error or another class ? */
-                            $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', array('qid'=>$qid,'vclass'=>'dberror alert alert-danger','vtip'  =>$this->invalidAnswerCore[$sgqa]), true);
-                            /* Set this question invalid (only if move next due to $force) */
-                            $qvalid=false;
-                        }
-                        unset($LEM->invalidAnswerCore[$sgqa]);
-                    }
+                    /* Add the string to be showned , no js error or another class ? */
+                    $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', array('qid'=>$qid,'vclass'=>'dberror alert alert-danger','vtip'  =>$validityString), true);
+                    /* Set this question invalid (only if move next due to $force) */
+                    $qvalid=false;
                 }
             }
+
             if (!$qvalid)
             {
                 $prettyPrintValidTip = $stringToParse;
@@ -8715,62 +8709,10 @@ EOD;
                                 }
                                 break;
                         }
-
-                        /* Validate the value and put it in invalidAnswerCore to show an error to the user */
-                        /* See bug Control value against value from survey : see #11611 */
-                        /* Alternative to $LEM->invalidAnswerCore : App()->user->setState("invalidAnswerCore".$sq,string) */
-                        switch ($type)
+                        // Add the string in $_SESSION to be shown and see if we need to reset value
+                        if(!self::checkValidityAnswer($type,$value,$sq,$qinfo))
                         {
-                            case '!': //List - dropdown
-                            case 'L': //LIST drop-down/radio-button list
-                                if(substr($sq,-5)!='other' && isset($value) && $value!=="")// We must validate $value==="0", then don't use empty. $value is not set if unrelevant , then don't use $value!==null
-                                {
-                                    if($value=="-oth-")
-                                    {
-                                        if($qinfo['info']['other']!='Y')
-                                        {
-                                            $LEM->invalidAnswerCore[$sq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
-                                            $value=null;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
-                                        $aAnswers=CHtml::listData(
-                                            Answer::model()->findAll(array(
-                                                "select"=>'code,answer',
-                                                'condition'=>"qid=:qid and language=:language",
-                                                "params"=>array(":qid"=>$qid,'language'=>$language)
-                                            )),
-                                        'code','answer');// The knowVars is really dirty , and answer::model don't seems to have a clean way to just have it simply
-                                        if(!array_key_exists($value,$aAnswers))
-                                        {
-                                            $LEM->invalidAnswerCore[$sq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
-                                            $value=null;
-                                        }
-                                    }
-                                }
-                                break;
-                            case 'N':
-                            case 'K':
-                                if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
-                                {
-                                    $LEM->invalidAnswerCore[$sq]=gT("This question only accept 30 digits including 10 decimals.");
-                                    /* Show an error but don't unset value : this can happen without hack */
-                                    //$value=null;
-                                }
-                                break;
-                            default:
-                                break;
-                            /**
-                             * We must add
-                             * array question type (whole)
-                             * specific single choice (genfer , Yes no ..)
-                             * Multiple : allowing Y only
-                             * Array number : only valid floatval ?
-                             * Array number with checkbox Only 1 or 0 (maybe reset 0 to '')
-                             * And surely a lot more
-                             */
+                            $value=null;
                         }
 
                         $_SESSION[$LEM->sessid][$sq] = $value;
@@ -10245,6 +10187,97 @@ EOD;
             }
 
             return $result;
+        }
+
+        /**
+         * Check a validity of an answer,
+         * Put the string to show to user $this->invalidAnswerCore
+         *
+         * @param $type : question type
+         * @param $value : the value
+         * @param $sgq : the sgqa
+         * @param $qinfo : an array with information from question
+         *
+         * @return boolean true : if question is OK to be put in session, false if must be set to null
+         */
+        private static function checkValidityAnswer($type,$value,$sgq,$qinfo)
+        {
+            /* This function is called by a static function , then set ot to static .... */
+            $LEM =& LimeExpressionManager::singleton();
+            /* See bug Control value against value from survey : see #11611 */
+            /* Alternative to $LEM->invalidAnswerCore : App()->user->setState("invalidAnswerCore".$sq,string) */
+            switch ($type)
+            {
+                case '!': //List - dropdown
+                case 'L': //LIST drop-down/radio-button list
+                    if(substr($sgq,-5)!='other' && isset($value) && $value!=="")// We must validate $value==="0", then don't use empty. $value is not set if unrelevant , then don't use $value!==null
+                    {
+                        if($value=="-oth-")
+                        {
+                            if($qinfo['info']['other']!='Y')
+                            {
+                                $LEM->invalidAnswerCore[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                $value=null;
+                            }
+                        }
+                        else
+                        {
+                            $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
+                            $aAnswers=CHtml::listData(
+                                Answer::model()->findAll(array(
+                                    "select"=>'code,answer',
+                                    'condition'=>"qid=:qid and language=:language",
+                                    "params"=>array(":qid"=>$qinfo['info']['qid'],'language'=>$language)
+                                )),
+                            'code','answer');// The knowVars is really dirty , and answer::model don't seems to have a clean way to just have it simply
+                            if(!array_key_exists($value,$aAnswers))
+                            {
+                                $LEM->invalidAnswerCore[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                return false;
+                            }
+                                $LEM->invalidAnswerCore[$sgq]=sprintf(gT("BUGGY %s is an invalid value for this question"),htmlspecialchars($value));
+                                return false;
+                        }
+                    }
+                    break;
+                case 'N':
+                case 'K':
+                    if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$value)) // DECIMAL(30,10)
+                    {
+                        $LEM->invalidAnswerCore[$sgq]=gT("This question only accept 30 digits including 10 decimals.");
+                        /* Show an error but don't unset value : this can happen without hack */
+                    }
+                    break;
+                default:
+                    break;
+                /**
+                 * We must add
+                 * array question type (whole)
+                 * specific single choice (genfer , Yes no ..)
+                 * Multiple : allowing Y only
+                 * Array number : only valid floatval ?
+                 * Array number with checkbox Only 1 or 0 (maybe reset 0 to '')
+                 * And surely a lot more
+                 */
+            }
+            return true;
+        }
+
+        /**
+         * return the actual validity string , and reset the variable used ($_SESSION)
+         * @param $sgqa : the SGQ (answer name)
+         *
+         * @return string|null
+         */
+        private static function getValidityString($sgqa)
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            if(isset($LEM->invalidAnswerCore[$sgqa]))
+            {
+                $sValidityString=$LEM->invalidAnswerCore[$sgqa];
+                unset($LEM->invalidAnswerCore[$sgqa]);
+                return $sValidityString;
+            }
         }
     }
 
