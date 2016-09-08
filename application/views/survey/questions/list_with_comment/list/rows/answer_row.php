@@ -12,7 +12,7 @@
  */
 ?>
 <!-- answer_row -->
-<div class="form-group answer-item radio-item <?php if(isset($li_classes)){echo $li_classes;}?>">
+<li id='javatbd<?php echo $name; ?>' class="form-group answer-item radio-item <?php if(isset($li_classes)){echo $li_classes;}?>">
     <input
         type="radio"
         name="<?php echo $name; ?>"
@@ -20,16 +20,7 @@
         value="<?php echo $value; ?>"
         <?php echo $check_ans; ?>
         onclick="<?php echo $checkconditionFunction; ?>"
-        aria-labelledby="label-<?php echo $id; ?>"
     />
-    <label for="<?php echo $id; ?>" class="answertext radio-label control-label"></label>
-    <!--
-         The label text is provided inside a div,
-         so final user can add paragraph, div, or whatever he wants in the subquestion text
-         This field is related to the input thanks to attribute aria-labelledby
-    -->
-    <div class="label-text label-clickable" id="label-<?php echo $id; ?>">
-        <?php echo $labeltext;?>
-    </div>
-</div>
+    <label for="<?php echo $id; ?>" class="radio-label control-label"><?php echo $labeltext;?></label>
+</li>
 <!-- end of answer_row -->

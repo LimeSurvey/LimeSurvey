@@ -11,7 +11,7 @@
 ?>
 
 <!-- answer_row -->
-<li id='javatbd<?php echo $myfname; ?>' class='row form-group answer-item radio-item' <?php echo $sDisplayStyle; ?> >
+<li id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item' <?php echo $sDisplayStyle; ?> >
     <input
         type="radio"
         value="<?php echo $code; ?>"

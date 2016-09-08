@@ -2076,7 +2076,6 @@ function do_multiplechoice($ia)
     $aQuestionAttributes    = getQuestionAttributeValues($ia[0]);                                                                                                          // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:');  // text for 'other'
     $iNbCols                = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1;                                               // number of columns
-
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
         $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -2120,6 +2119,12 @@ function do_multiplechoice($ia)
         $iMaxRowsByColumn = ceil($anscount / $iNbCols);
         $first = true; // The very first item will open a bootstrap row containing the columns
     }
+    else
+    {
+        $iColumnWidth = 12;
+        $iMaxRowsByColumn = $anscount +3; // No max
+        $first = true;
+    }
 
     /// Generate answer rows
     $i = 0;
@@ -2153,7 +2158,7 @@ function do_multiplechoice($ia)
         // Open Column
         // The column is opened if user set more than one column in question attribute
         // and if this is the first answer row, or if the column has been closed and the row count reset before.
-        if($iNbCols > 1 && $iRowCount == 1 )
+        if($iRowCount == 1 )
         {
             $sRows .= doRender('/survey/questions/multiplechoice/columns/column_header', array(
                 'iColumnWidth' => (isset($iColumnWidth))?$iColumnWidth:'',
@@ -2185,7 +2190,7 @@ function do_multiplechoice($ia)
         // and if the max answer rows by column is reached.
         // If max answer rows by column is not reached while there is no more answer,
         // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
-        if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
+        if($iRowCount == $iMaxRowsByColumn )
         {
             $last      = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
             $sRows   .= doRender('/survey/questions/multiplechoice/columns/column_footer', array('last'=>$last), true);
@@ -2238,7 +2243,7 @@ function do_multiplechoice($ia)
         // The column is opened if user set more than one column in question attribute
         // and if this is the first answer row (should never happen for 'other'),
         // or if the column has been closed and the row count reset before.
-        if($iNbCols > 1 && $iRowCount == 1 )
+        if($iRowCount == 1 )
         {
             $sRows .= doRender('/survey/questions/multiplechoice/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
@@ -2262,12 +2267,9 @@ function do_multiplechoice($ia)
         // Close column
         // The column is closed if the user set more than one column in question attribute
         // Other is always the last answer, so it's always closing the col and the bootstrap row containing the columns
-        if($iNbCols > 1 )
-        {
-            $sRows    .= doRender('/survey/questions/multiplechoice/columns/column_footer', array('last'=>true), true);
-            $iRowCount = 0;
-            $isOpen    = false;
-        }
+        $sRows    .= doRender('/survey/questions/multiplechoice/columns/column_footer', array('last'=>true), true);
+        $iRowCount = 0;
+        $isOpen    = false;
     }
 
     ////
@@ -2275,7 +2277,7 @@ function do_multiplechoice($ia)
     // The column is closed if the user set more than one column in question attribute
     // and if on column has been opened and not closed
     // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
-    if($iNbCols > 1 && $isOpen )
+    if($isOpen )
     {
         $sRows   .= doRender('/survey/questions/multiplechoice/columns/column_footer', array('last'=>true), true);
         $iRowCount = 0;

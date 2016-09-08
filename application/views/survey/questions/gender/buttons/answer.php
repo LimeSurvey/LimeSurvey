@@ -12,7 +12,8 @@
 ?>
 
 <!--Gender question, buttons display -->
-
+<!-- Must use exactly the same HTML than other, + some HTML. Hide default and trigger with js, or do only with css after --
+<!-- Leave it for next HTML cleaning -->
 <!-- answer -->
 <div class="answers-list radio-list gender-button">
 
@@ -106,7 +107,6 @@
     $(document).ready(function(){
         $('.btn.ls-icons').on('click', function(){
             $id='#'+$(this).data('id');
-            console.log('gender, clicked on : '+$id);
             $gender = $($id);
             $gender.trigger('click');
         });

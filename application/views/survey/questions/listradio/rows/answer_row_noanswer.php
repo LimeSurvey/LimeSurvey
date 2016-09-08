@@ -9,7 +9,7 @@
 ?>
 
 <!-- answer_row_noanswer -->
-<li id='javatbd<?php echo $name; ?>' class="row form-group answer-item radio-item no-anwser-item">
+<li id='javatbd<?php echo $name; ?>' class="form-group answer-item radio-item no-anwser-item">
     <input
     type="radio"
     name="<?php echo $name; ?>"

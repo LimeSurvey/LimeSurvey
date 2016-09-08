@@ -17,9 +17,9 @@
 ?>
 
 <!-- answer_row_other -->
-<li id='javatbd<?php echo $myfname; ?>' class='row form-group answer-item radio-item' <?php echo $sDisplayStyle; ?> >
+<li id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-text-item form-inline' <?php echo $sDisplayStyle; ?> >
     <!-- Checkbox + label -->
-    <div class="pull-left othertext-label-checkox-container">
+    <div class="form-group othertext-label-checkox-container radio-item">
         <input
         type="radio"
         value="-oth-"
@@ -33,7 +33,7 @@
     </div>
 
     <!-- comment -->
-    <div class="pull-left ">
+    <div class="form-group text-item other-text-item">
         <input
         type="text"
         class="form-control <?php echo $kpclass; ?> input-sm"

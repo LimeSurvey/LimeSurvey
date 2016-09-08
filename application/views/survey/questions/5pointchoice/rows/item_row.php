@@ -22,6 +22,6 @@
         <?php echo $checkedState; ?>
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
     />
-    <label for="answer<?php echo $id; ?>" class="radio-label"><?php echo $labelText; ?></label>
+    <label for="answer<?php echo $id; ?>" class="control-label radio-label"><?php echo $labelText; ?></label>
 </li>
 <!-- end of item_row -->
