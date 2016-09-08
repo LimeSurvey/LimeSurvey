@@ -646,6 +646,11 @@
          */
         private $qid2exclusiveAuto = array();
         /**
+         * array of invalid sgq, set in ProcessCurrentReponse : to set the value to null, unset in _validateQUestion to show an erro to user
+         * Must be always unbset after using (EM are in $_SESSION and never new ....)
+         */
+        private $invalidAnswerCore = array();
+        /**
          * Array of values to be updated
          * @var type
          */
@@ -5414,11 +5419,6 @@
                             {
                                 $val=NULL;  // since some databases can't store blanks in numerical inputs
                             }
-                            elseif(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
-                            {
-                                // Here : we must ADD a message for the user and set the question "not valid" : show the same page + show with input-error class
-                                $val=NULL;
-                            }
                             break;
                         default:
                             // @todo : control length of DB string, if answers in single choice is valid too (for example) ?
@@ -6552,6 +6552,7 @@
             $validationEqn='';
             $validationJS='';       // assume can't generate JavaScript to validate equation
             $validTip='';           // default is none
+            $stringToParse = ''; // Final string to send to Expression manager
             if (isset($LEM->qid2validationEqn[$qid]))
             {
                 $hasValidationEqn=true;
@@ -6571,7 +6572,6 @@
                         $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
                     }
 
-                    $stringToParse = '';
                     foreach ($LEM->qid2validationEqn[$qid]['tips'] as $vclass=>$vtip)
                     {
                         // Only add non-empty tip
@@ -6586,13 +6586,6 @@
                         }
                     }
 
-                    $prettyPrintValidTip = $stringToParse;
-                    $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
-                    // TODO check for errors?
-                    if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX))
-                    {
-                        $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
-                    }
                     $sumEqn = $LEM->qid2validationEqn[$qid]['sumEqn'];
                     $sumRemainingEqn = $LEM->qid2validationEqn[$qid]['sumRemainingEqn'];
                     //                $countEqn = $LEM->qid2validationEqn[$qid]['countEqn'];
@@ -6607,11 +6600,38 @@
                     }
                 }
             }
-
+            /**
+             * Control value against value from survey : see #11611
+             */
+            if ($qrel)
+            {
+                foreach($sgqas as $sgqa)
+                {
+                    $bValidAnswer=true;
+                    if(isset($this->invalidAnswerCore[$sgqa]))
+                    {
+                        /* Add the string to be showned , no js error or another class ? */
+                        $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', array('qid'=>$qid,'vclass'=>'dberror alert alert-danger','vtip'  =>$this->invalidAnswerCore[$sgqa]), true);
+                        /* Set this question invalid (only if move next due to $force) */
+                        $qvalid=false;
+                        unset($LEM->invalidAnswerCore[$sgqa]);
+                    }
+                }
+            }
             if (!$qvalid)
             {
+                $prettyPrintValidTip = $stringToParse;
+                $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
+                // TODO check for errors?
+                if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX))
+                {
+                    $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
+                }
                 $invalidSQs = $LEM->qid2code[$qid]; // TODO - currently invalidates all - should only invalidate those that truly fail validation rules.
             }
+
+
+
             /////////////////////////////////////////////////////////
             // OPTIONALLY DISPLAY (DETAILED) DEBUGGING INFORMATION //
             /////////////////////////////////////////////////////////
@@ -8686,15 +8706,73 @@ EOD;
                                 }
                                 break;
                         }
+
+                        /* Validate the value and put it in invalidAnswerCore to show an error to the user */
+                        /* See bug Control value against value from survey : see #11611 */
+                        /* Alternative to $LEM->invalidAnswerCore : App()->user->setState("invalidAnswerCore".$sq,string) */
+                        switch ($type)
+                        {
+                            case '!': //List - dropdown
+                            case 'L': //LIST drop-down/radio-button list
+                                if(substr($sq,-5)!='other' && isset($_SESSION[$LEM->sessid][$sq]) && $_SESSION[$LEM->sessid][$sq]!=="")// We must validate $_SESSION[$LEM->sessid][$sgqa]==="0", then don't use empty
+                                {
+                                    if($value=="-oth-")
+                                    {
+                                        if($qinfo['info']['other']!='Y')
+                                        {
+                                            $LEM->invalidAnswerCore[$sq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                            $value=null;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
+                                        $aAnswers=CHtml::listData(
+                                            Answer::model()->findAll(array(
+                                                "select"=>'code,answer',
+                                                'condition'=>"qid=:qid and language=:language",
+                                                "params"=>array(":qid"=>$qid,'language'=>$language)
+                                            )),
+                                        'code','answer');// The knowVars is really dirty , and answer::model don't seems to have a clean way to just have it simply
+                                        if(!array_key_exists($value,$aAnswers))
+                                        {
+                                            $LEM->invalidAnswerCore[$sq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                            $value=null;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 'N':
+                            case 'K':
+                                if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
+                                {
+                                    $LEM->invalidAnswerCore[$sq]=gT("This question only accept 30 digits including 10 decimals.");
+                                    $value=null;
+                                }
+                                break;
+                            default:
+                                break;
+                            /**
+                             * We must add
+                             * array question type (whole)
+                             * specific single choice (genfer , Yes no ..)
+                             * Multiple : allowing Y only
+                             * Array number : only valid floatval ?
+                             * Array number with checkbox Only 1 or 0 (maybe reset 0 to '')
+                             * And surely a lot more
+                             */
+                        }
+
                         $_SESSION[$LEM->sessid][$sq] = $value;
                         $_update = array (
-                        'type'=>$type,
-                        'value'=>$value,
+                            'type'=>$type,
+                            'value'=>$value,
                         );
                         $updatedValues[$sq] = $_update;
                         $LEM->updatedValues[$sq] = $_update;
                     }
-                    else {  // irrelevant, so database will be NULLed separately
+                    else
+                    {  // irrelevant, so database will be NULLed separately
                         // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
                         unset($_SESSION[$LEM->sessid][$sq]);
                         $_update = array (
@@ -10158,7 +10236,6 @@ EOD;
 
             return $result;
         }
-
     }
 
     /**
