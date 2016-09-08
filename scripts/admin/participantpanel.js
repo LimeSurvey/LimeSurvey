@@ -1,5 +1,7 @@
+//Namespacing all Methods of the participant panel in one JS-Prototype
 var Bindings = function(){
     var 
+    //Basic Methods used by all submethods
     baseModal = '#participantPanel_edit_modal',
     runBaseModal = function(url, data, actionButtonClass, formId, gridViewId){
         var secondSuccess = function(result){
@@ -65,47 +67,63 @@ var Bindings = function(){
          * @TODO rewrite export
          */
         $('#export').click(function(){
-            var dialog_buttons={};
-            dialog_buttons[exportBtn]=function(){
-                $.download(exportToCSVURL,{ attributes: $('#attributes').val().join(' ') },"POST");
-                $(this).dialog("close");
-            };            
-            dialog_buttons[cancelBtn]=function(){
-                $(this).dialog("close");};
-
-            $.post(exporttocsvcountall,
-                function(data) {
+            var postdata = {
+                selectedParticipant: [],
+                YII_CSRF_TOKEN : LS.data.csrfToken
+            }; 
+            $('.selector_participantCheckbox:checked').each(function(i,item){
+                postdata.selectedParticipant.push($(item).val());
+            });
+            
+            $.ajax({
+                url: exporttocsvcountall,
+                data: postdata,
+                method: 'POST',
+                success:  function(data) {
                     count = data;
                     if(count == 0)
                     {
-                        $('#exportcsvallnorow').dialog({
-                            modal: true,
-                            title: error,
-                            buttons: dialog_buttons,
-                            width : 300,
-                            height : 160
+                        $('#exportcsvallnorow').modal('show');
+                        $('#exportcsvallnorow').on('shown.bs.modal', function(e) {
+                            var self = this;
+                            $(this).find('.exportButton').remove();
                         });
                     }
                     else
                     {
-                        $('#exportcsv').dialog({
-                            modal: true,
-                            title: count,
-                            buttons: dialog_buttons,
-                            width : 600,
-                            height : 300,
-                            open: function(event, ui) {
-                                $('#attributes').multiselect({ includeSelectAllOption:true, 
-                                                            selectAllValue: '0',
-                                                            selectAllText: sSelectAllText,
-                                                            nonSelectedText: sNonSelectedText,
-                                                            nSelectedText: sNSelectedText,
-                                                            maxHeight: 140 });
-                            }
-                        });
-
+                        $('#exportcsv').modal('show');
+                        $('#exportcsv').on('shown.bs.modal', function(e) {
+                            var self = this;
+                            $(this).find('h4.modal-title').text(count);
+                            $(this).find('.exportButton').on('click', function(){
+                                var dldata = postdata;
+                                dldata.attributes =$('#attributes').val().join('+');
+                                console.log(dldata);
+                                var dlForm = $("<form></form>")
+                                    .attr('action', exportToCSVURL)
+                                    .attr('method', "POST");
+                                $.each(dldata, function(key,value){
+                                    $('<input />')
+                                        .attr('name', key)
+                                        .attr('value', value)
+                                        .appendTo(dlForm);
+                                });
+                                dlForm.submit();
+                                $(self).modal("hide");
+                            });
+                                $('#attributes')
+                                    .multiselect({ 
+                                        includeSelectAllOption:true, 
+                                        selectAllValue: '0',
+                                        selectAllText: sSelectAllText,
+                                        nonSelectedText: sNonSelectedText,
+                                        nSelectedText: sNSelectedText,
+                                        maxHeight: 140 
+                                    });
+                            });
                         /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
                     }
+                }
             });
         });
     },
@@ -151,6 +169,18 @@ var Bindings = function(){
                 data,
                 'action_save_modal_deleteParticipant',
                 'deleteParticipantActiveForm', 
+                'list_central_participants' 
+            );
+        });
+        $('.action_participant_shareParticipant').on('click', function(e){
+            e.preventDefault();
+            var data = {modalTarget: 'shareparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
+            //url, data, idString, actionButtonClass, formId, gridViewId
+            runBaseModal(
+                openModalParticipantPanel, 
+                data,
+                'action_save_modal_shareparticipant',
+                'shareParticipantActiveForm', 
                 'list_central_participants' 
             );
         });
@@ -236,7 +266,28 @@ var Bindings = function(){
     },
     //JS-bindings especially for the sharePanel
     sharePanel = function(){
+        $('#action_toggleAllParticipant').on('click', function(){
+            $('.selector_participantCheckbox').prop('checked',$('#action_toggleAllParticipant').prop('checked'));
+        });
 
+        $('.action_changeEditableStatus').bootstrapSwitch();
+
+        $('.action_changeEditableStatus').on('switchChange.bootstrapSwitch', function(event,state){
+            var self = this;
+            $.ajax({
+                url: editValueParticipantPanel, 
+                method: "POST",
+                data: {actionTarget: 'changeSharedEditableStatus', 'participant_id': $(self).closest('tr').data('participant_id'), 'can_edit': state},
+                dataType: 'json', 
+                success: function(resolve){
+                    $(self).prop("checked", resolve.newValue);
+                }
+            })
+        });
+
+        $('#pageSizeShareParticipantView').on("change", function(){
+            $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSizeShareParticipantView: $(this).val() }});
+        });
     };
     return {
         basics :  basics,
@@ -254,6 +305,21 @@ function bindButtons(){
     bind.attributePanel();
     bind.sharePanel();
 };
+function rejectParticipantShareAjax(participant_id){
+    var runRejectParticipantShareAjax = function(){
+        $.ajax({
+            url: editValueParticipantPanel,
+            data: {participant_id : participant_id, actionTarget: 'rejectShareParticipant'},
+            method: "POST",
+            dataType: 'json',
+            success: function(result){
+                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                $.fn.yiiGridView.update('share_central_participants',{});
+            }
+        })
+    }
+    return runRejectParticipantShareAjax;
+}
 function deleteAttributeAjax(attribute_id){
     var runDeleteAttributeAjax = function(){
         $.ajax({

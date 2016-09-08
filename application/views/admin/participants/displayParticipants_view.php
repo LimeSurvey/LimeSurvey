@@ -64,30 +64,30 @@
             
         ?>
     <div class="row">
-      <?php
-        echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='".join("||",$searchcondition)."' />";
-        $this->widget('bootstrap.widgets.TbGridView', array(
-            'id' => 'list_central_participants',
-            'itemsCssClass' => 'table table-striped items',
-            'dataProvider' => $model->search(),
-            'columns' => $model->columns,
-            'rowHtmlOptionsExpression' => '["data-participant_id" => $data->participant_id ]',
-            'filter'=>$model,
-            'htmlOptions' => array('class'=> 'table-responsive'),
-            'itemsCssClass' => 'table table-responsive table-striped',
-            'afterAjaxUpdate' => 'bindButtons',
-            'ajaxType' => 'POST',
-            'beforeAjaxUpdate' => 'insertSearchCondition',
-            'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
-            CHtml::dropDownList(
-                'pageSizeParticipantView',
-                $pageSizeParticipantView,
-                Yii::app()->params['pageSizeOptions'],
-                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
-                )
-            ),
-        ));
-        ?>
+        <?php
+            echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='".join("||",$searchcondition)."' />";
+            $this->widget('bootstrap.widgets.TbGridView', array(
+                'id' => 'list_central_participants',
+                'itemsCssClass' => 'table table-striped items',
+                'dataProvider' => $model->search(),
+                'columns' => $model->columns,
+                'rowHtmlOptionsExpression' => '["data-participant_id" => $data->participant_id ]',
+                'filter'=>$model,
+                'htmlOptions' => array('class'=> 'table-responsive'),
+                'itemsCssClass' => 'table table-responsive table-striped',
+                'afterAjaxUpdate' => 'bindButtons',
+                'ajaxType' => 'POST',
+                'beforeAjaxUpdate' => 'insertSearchCondition',
+                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                CHtml::dropDownList(
+                    'pageSizeParticipantView',
+                    $pageSizeParticipantView,
+                    Yii::app()->params['pageSizeOptions'],
+                    array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+                    )
+                ),
+            ));
+            ?>
     </div>
   </div>
 </div>

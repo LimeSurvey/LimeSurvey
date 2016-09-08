@@ -109,6 +109,7 @@ class participantsaction extends Survey_Common_Action
                 $this->openeditparticipant();
                 break;
             case "shareparticipant":
+                $this->openparticipantshare();
                 break;
             case "showparticipantsurveys":
                 $this->openparticipantsurveys();
@@ -146,6 +147,12 @@ class participantsaction extends Survey_Common_Action
                 break;
             case "deleteParticipant":
                 $this->delParticipant();
+                break;
+            case "changeSharedEditableStatus":
+                $this->changeSharedEditableStatus();
+                break;
+            case "rejectShareParticipant":
+                $this->rejectShareParticipant();
                 break;
             default:
                 echo "";
@@ -447,6 +454,18 @@ class participantsaction extends Survey_Common_Action
             'surveymodel' => $surveyModel
         );
         $this->getController()->renderPartial('/admin/participants/modal_subviews/_showParticipantSurveys', $aData);
+    }
+
+    public function openparticipantshare(){
+        $participant_id = Yii::app()->request->getPost('participant_id');
+        $model = Participant::model()->findByPk($participant_id);
+        $surveyModel = SurveyLink::model();
+        $surveyModel->participant_id = $participant_id;
+        $aData = array(
+            'model' => $model,
+            'surveymodel' => $surveyModel
+        );
+        $this->getController()->renderPartial('/admin/participants/modal_subviews/_shareParticipant', $aData);
     }
 
     /**
@@ -942,13 +961,30 @@ class participantsaction extends Survey_Common_Action
             die('No permission');
         }
 
+        $search = new CDbCriteria;
         if (Yii::app()->request->getPost('searchcondition','') !== '') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
-        } else {
+        } 
+        else 
+        {
             $search = null;
         }
+
+        $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
+        $chosenParticipantsArray = explode(',',$chosenParticipants);
+        $searchSelected = new CDbCriteria;
+        if(!empty($chosenParticipants))
+            $searchSelected->addInCondition("p.participant_id",$chosenParticipantsArray);
+        else 
+            $searchSelected = null;
+
+        if($search)
+            $search->mergeWith($searchSelected);
+        else
+            $search = $searchSelected;
+
         $aAttributes=explode('+',Yii::app()->request->getPost('attributes',''));
         $this->csvExport($search,$aAttributes);
     }
@@ -966,13 +1002,29 @@ class participantsaction extends Survey_Common_Action
         $searchcondition  = Yii::app()->request->getPost('searchcondition');
         $searchconditionurl = basename($searchconditionurl);
 
+        $search = new CDbCriteria;
         if ($searchconditionurl != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||", $searchcondition);
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
-            $search = null;
+            $search->addCondition("1=1");
         }
+
+        $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
+        $chosenParticipantsArray = explode(',',$chosenParticipants);
+
+           $searchSelected = new CDbCriteria;
+        if(!empty($chosenParticipants))
+            $searchSelected->addInCondition("{{participant_id}}",$chosenParticipantsArray);
+        else 
+            $searchSelected = null;
+
+        if($search)
+            $search->mergeWith($searchSelected);
+        else
+            $search = $searchSelected;
+
 
         echo $this->csvExportCount($search);
     }
@@ -982,7 +1034,17 @@ class participantsaction extends Survey_Common_Action
      */
     public function exporttocsvcountAll()
     {
-        echo $this->csvExportCount();
+        $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
+        if(!empty($chosenParticipants))
+        {
+            $search = new CDbCriteria;
+            $search->addInCondition("p.participant_id",$chosenParticipants);
+        }
+        else 
+        {
+            $search = null;
+        }
+        echo $this->csvExportCount($search);
     }
 
     /**
@@ -990,7 +1052,17 @@ class participantsaction extends Survey_Common_Action
      */
     public function exporttocsvAll()
     {
-        $this->csvExport(); // no search
+        $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
+        if(!empty($chosenParticipants))
+        {
+            $search = new CDbCriteria;
+            $search->addInCondition("p.participant_id",$chosenParticipants);
+        }
+        else 
+        {
+            $search = null;
+        }
+        $this->csvExport($search);
     }
 
 //Display BlacklistSetting
@@ -1588,15 +1660,15 @@ class participantsaction extends Survey_Common_Action
             'debug' => Yii::app()->request->getParam('Participant')
         );
         // Page size
-        if (Yii::app()->request->getParam('pageSize'))
+        if (Yii::app()->request->getParam('pageSizeShareParticipantView'))
         {
-            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
+            Yii::app()->user->setState('pageSizeShareParticipantView',(int)Yii::app()->request->getParam('pageSizeShareParticipantView'));
         }
         else
         {
-            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
+            Yii::app()->user->setState('pageSizeShareParticipantView',(int)Yii::app()->params['defaultPageSize']);
         }
-        $aData['pageSize']= Yii::app()->user->getState('pageSize');
+        $aData['pageSizeShareParticipantView']= Yii::app()->user->getState('pageSizeShareParticipantView');
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         App()->getClientScript()->registerPackage('bootstrap-switch');
@@ -1967,7 +2039,7 @@ class participantsaction extends Survey_Common_Action
      */
     public function shareParticipants()
     {
-        $iParticipantId = Yii::app()->request->getPost('participantid');
+        $iParticipantId = Yii::app()->request->getPost('participant_id');
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
 
@@ -1993,7 +2065,54 @@ class participantsaction extends Survey_Common_Action
         printf(gT("%s participants have been shared"), $i);
     }
 
+    /**
+     * Stores the shared participant information in participant_shares for ONE participant
+     */
+    public function shareParticipant()
+    {
+        $iParticipantId = Yii::app()->request->getPost('participant_id');
+        $iShareUserId = Yii::app()->request->getPost('shareuser');
+        $bCanEdit = Yii::app()->request->getPost('can_edit');
 
+        if (Permission::model()->hasGlobalPermission('participantpanel','update')){
+            $time = time();
+            $aData = array('participant_id' => $iParticipantId,
+                'share_uid' => yii::app()->user->getId(),
+                'date_added' => date('Y-m-d H:i:s', $time),
+                'can_edit' => $bCanEdit);
+            ParticipantShare::model()->storeParticipantShare($aData);
+            echo json_encode(array(
+                "success" => true,
+                "successMessage" => gT("Participant shared.")
+            ));
+            die();
+        }
+            echo json_encode(array(
+                "success" => false,
+                "errorMessage" => gT("No permission to share users")
+            ));
+            die();
+    }
+
+    public function rejectShareParticipant(){
+        $participant_id = yii::app()->request->getPost('participant_id');
+        $share_uid = yii::app()->user->getId();
+        $success = ParticipantShare::model()->deleteAllByAttributes( array('participant_id' => $participant_id) );
+        echo json_encode(array(
+            "success" => $success,
+            "successMessage" => gT("Participant removed from sharing")
+        ));
+    }
+
+    public function changeSharedEditableStatus(){
+        $participant_id = Yii::app()->request->getPost('participant_id');
+        $can_edit = Yii::app()->request->getPost('can_edit');
+        $ShareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id));
+        $ShareModel->can_edit = (int) $can_edit;
+        $success = $ShareModel->save();
+        echo json_encode(array("newValue" => $can_edit, "success" => $success));
+        die();
+    }
 
 
     /**
