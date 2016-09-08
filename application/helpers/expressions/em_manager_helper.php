@@ -10193,10 +10193,10 @@ EOD;
          * Check a validity of an answer,
          * Put the string to show to user $this->invalidAnswerCore
          *
-         * @param $type : question type
-         * @param $value : the value
-         * @param $sgq : the sgqa
-         * @param $qinfo : an array with information from question
+         * @param string $type : question type
+         * @param string $value : the value
+         * @param string $sgq : the sgqa
+         * @param array $qinfo : an array with information from question
          *
          * @return boolean true : if question is OK to be put in session, false if must be set to null
          */
@@ -10263,7 +10263,7 @@ EOD;
 
         /**
          * return the actual validity string , and reset the variable used ($_SESSION)
-         * @param $sgqa : the SGQ (answer name)
+         * @param string $sgqa : the SGQ (answer name)
          *
          * @return string|null
          */
