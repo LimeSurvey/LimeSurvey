@@ -1498,6 +1498,12 @@ function do_list_radio($ia)
         $iMaxRowsByColumn = ceil($anscount / $iNbCols);
         $first = true; // The very first item will open a bootstrap row containing the columns
     }
+    else
+    {
+        $iColumnWidth=12;
+        $iMaxRowsByColumn=$anscount+3; // No max : anscount + no answer + other + 1 by security
+        $first = true;
+    }
 
     // Get array_filter stuff
 
@@ -1524,7 +1530,7 @@ function do_list_radio($ia)
         // Open Column
         // The column is opened if user set more than one column in question attribute
         // and if this is the first answer row, or if the column has been closed and the row count reset before.
-        if($iNbCols > 1 && $iRowCount == 1 )
+        if($iRowCount == 1 )
         {
             $sRows  .= doRender('/survey/questions/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth), true);
             $isOpen  = true; // If a column is not closed, it will be closed at the end of the process
@@ -1550,7 +1556,7 @@ function do_list_radio($ia)
         // and if the max answer rows by column is reached.
         // If max answer rows by column is not reached while there is no more answer,
         // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
-        if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
+        if($iRowCount == $iMaxRowsByColumn )
         {
             $last      = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
             $sRows    .= doRender('/survey/questions/listradio/columns/column_footer', array('last'=>$last), true);
@@ -1605,7 +1611,7 @@ function do_list_radio($ia)
         // The column is opened if user set more than one column in question attribute
         // and if this is the first answer row (should never happen for 'other'),
         // or if the column has been closed and the row count reset before.
-        if($iNbCols > 1 && $iRowCount == 1 )
+        if($iRowCount == 1 )
         {
             $sRows .= doRender('/survey/questions/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
@@ -1632,7 +1638,7 @@ function do_list_radio($ia)
         // Close column
         // The column is closed if the user set more than one column in question attribute
         // We can't be sure it's the last one because of 'no answer' item
-        if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
+        if($iRowCount == $iMaxRowsByColumn )
         {
             $last = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
             $sRows .= doRender('/survey/questions/listradio/columns/column_footer', array(), true);
@@ -1655,7 +1661,7 @@ function do_list_radio($ia)
             $check_ans = '';
         }
 
-        if($iNbCols > 1 && $iRowCount == 1 )
+        if($iRowCount == 1 )
         {
             $sRows .= doRender('/survey/questions/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth), true);
         }
@@ -1669,23 +1675,18 @@ function do_list_radio($ia)
 
         ////
         // Close column
-        // The column is closed if the user set more than one column in question attribute
         // 'No answer' is always the last answer, so it's always closing the col and the bootstrap row containing the columns
-        if($iNbCols > 1 )
-        {
-            $sRows .= doRender('/survey/questions/listradio/columns/column_footer', array('last'=>true), true);
-            $iRowCount = 0;
-            $isOpen = false;
-        }
+        $sRows .= doRender('/survey/questions/listradio/columns/column_footer', array('last'=>true), true);
+        $iRowCount = 0;
+        $isOpen = false;
     }
 
 
     ////
     // Close column
-    // The column is closed if the user set more than one column in question attribute
-    // and if on column has been opened and not closed
+    // if on column has been opened and not closed
     // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
-    if($iNbCols > 1 && $isOpen )
+    if($isOpen )
     {
         $sRows .= doRender('/survey/questions/listradio/columns/column_footer', array('last'=>true), true);
         $iRowCount = 0;

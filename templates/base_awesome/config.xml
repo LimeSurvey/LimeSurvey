@@ -23,7 +23,7 @@
         -->
         <css>
             <filename>css/bootstrap.min.css</filename>
-            <filename>css/bootstrap-fix.css</filename>
+            <filename>css/bootstrap-ls.css</filename>
             <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
             <filename>css/jquery-ui.css</filename>
             <!--<filename>assets/css/bootstrap-theme.css</filename>-->

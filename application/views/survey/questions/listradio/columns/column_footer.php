@@ -5,5 +5,4 @@
  *
  */
  ?>
-        </div>
-    </div> <!-- the last opened column -->
+</ul>
