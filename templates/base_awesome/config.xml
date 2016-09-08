@@ -70,8 +70,8 @@
     <!-- Here datas about how LimeSurvey should load the template -->
     <engine>
         <cssframework>bootstrap</cssframework>
-        <assetdirectory>assets</assetdirectory>
-        <filesdirectory>assets/files</filesdirectory>
+        <pstpldirectory>pstpl</pstpldirectory>
+        <filesdirectory>files</filesdirectory>
 
         <!--
             Deactivate overwrite for now : all part are not extendable (navigator/clearall/saveall and this one neede to be extendable ....)

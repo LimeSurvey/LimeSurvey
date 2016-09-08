@@ -13,7 +13,7 @@
 ?>
 
 <!-- item_row -->
-<li class="form-group answer-item radio-item <?php echo $itemExtraClass; ?> radio-inline">
+<li id="javatbd<?php echo $myfname; ?>" class="form-group answer-item radio-item <?php echo $itemExtraClass; ?>">
     <input
         type="radio"
         name="<?php echo $name; ?>"
@@ -22,6 +22,6 @@
         <?php echo $checkedState; ?>
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
     />
-    <label for="answer<?php echo $id; ?>" class="answertext radio-label"><?php echo $labelText; ?></label>
+    <label for="answer<?php echo $id; ?>" class="radio-label"><?php echo $labelText; ?></label>
 </li>
 <!-- end of item_row -->

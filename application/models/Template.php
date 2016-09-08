@@ -284,9 +284,9 @@ class Template extends LSActiveRecord
                 'default',
                 'base',
                 'base_awesome',
-                'news_paper',
-                'ubuntu_orange',
-                'tfr-base',
+                //~ 'news_paper',
+                //~ 'ubuntu_orange',
+                'tfr',
                 'default_251'
             )
         );
