@@ -22,20 +22,20 @@
             Any file here will be loaded via the asset manager
         -->
         <css>
-            <filename>assets/css/bootstrap.min.css</filename>
-            <filename>assets/css/bootstrap-fix.css</filename>
-            <filename>assets/css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
-            <filename>assets/css/jquery-ui.css</filename>
+            <filename>css/bootstrap.min.css</filename>
+            <filename>css/bootstrap-fix.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
+            <filename>css/jquery-ui.css</filename>
             <!--<filename>assets/css/bootstrap-theme.css</filename>-->
-            <filename>assets/css/limesurvey.css</filename>
-            <filename>assets/css/limesurvey-fix.css</filename>
-            <filename>assets/css/template.css</filename>
+            <filename>css/limesurvey.css</filename>
+            <filename>css/limesurvey-fix.css</filename>
+            <filename>css/template.css</filename>
         </css>
         <js>
-            <filename>assets/js/template.js</filename>
+            <filename>js/template.js</filename>
         </js>
         <print_css>
-            <filename>assets/css/print_template.css</filename>
+            <filename>css/print_template.css</filename>
         </print_css>
 
         <rtl>
@@ -60,17 +60,16 @@
     -->
     <files_editable>
             <css>
-                <filename>assets/css/template.css</filename>
+                <filename>css/template.css</filename>
             </css>
             <js>
-                <filename>assets/js/template.js</filename>
+                <filename>js/template.js</filename>
             </js>
     </files_editable>
 
     <!-- Here datas about how LimeSurvey should load the template -->
     <engine>
         <cssframework>bootstrap</cssframework>
-        <pstpldirectory>pstpl</pstpldirectory>
         <assetdirectory>assets</assetdirectory>
         <filesdirectory>assets/files</filesdirectory>
 

@@ -13,7 +13,7 @@
              The last_update field must be updated before each release,
              to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
          -->
-        <last_update>2016-08-07 11:08:00</last_update>
+        <last_update>2016-08-08 11:08:00</last_update>
     </metadatas>
 
     <files>
@@ -22,29 +22,29 @@
             Any file here will be loaded via the asset manager
         -->
         <css>
-            <filename>assets/css/bootstrap.min.css</filename>
-            <filename>assets/css/bootstrap-fix.css</filename>
-            <filename>assets/css/jquery-ui.css</filename>
+            <filename>css/bootstrap.min.css</filename>
+            <filename>css/bootstrap-fix.css</filename>
+            <filename>css/jquery-ui.css</filename>
             <!--<filename>assets/css/bootstrap-theme.css</filename>-->
-            <filename>assets/css/limesurvey.css</filename>
-            <filename>assets/css/limesurvey-fix.css</filename>
-            <filename>assets/css/template.css</filename>
+            <filename>css/limesurvey.css</filename>
+            <filename>css/limesurvey-fix.css</filename>
+            <filename>css/template.css</filename>
         </css>
         <js>
-            <filename>assets/js/template.js</filename>
+            <filename>js/template.js</filename>
         </js>
         <print_css>
-            <filename>assets/css/print_template.css</filename>
+            <filename>css/print_template.css</filename>
         </print_css>
 
         <rtl>
             <css>
                 <!--
-                <filename>assets/css/jquery-ui-custom-rtl.css</filename>
-                <filename>assets/css/bootstrap-rtl.min.css</filename>
-                <filename>assets/css/bootstrap-theme-rtl.css</filename>
-                <filename>assets/css/limesurvey-rtl.css</filename>
-                <filename>assets/css/template-rtl.css</filename>
+                <filename>css/jquery-ui-custom-rtl.css</filename>
+                <filename>css/bootstrap-rtl.min.css</filename>
+                <filename>css/bootstrap-theme-rtl.css</filename>
+                <filename>css/limesurvey-rtl.css</filename>
+                <filename>css/template-rtl.css</filename>
                 -->
             </css>
             <js>
@@ -59,10 +59,10 @@
     -->
     <files_editable>
             <css>
-                <filename>assets/css/template.css</filename>
+                <filename>css/template.css</filename>
             </css>
             <js>
-                <filename>assets/js/template.js</filename>
+                <filename>js/template.js</filename>
             </js>
     </files_editable>
 
@@ -70,8 +70,7 @@
     <engine>
         <cssframework>bootstrap</cssframework>
         <pstpldirectory>pstpl</pstpldirectory>
-        <assetdirectory>assets</assetdirectory>
-        <filesdirectory>assets/files</filesdirectory>
+        <filesdirectory>files</filesdirectory>
 
         <!--
             Deactivate overwrite for now : all part are not extendable (navigator/clearall/saveall and this one neede to be extendable ....)
