@@ -10235,8 +10235,6 @@ EOD;
                                 $LEM->invalidAnswerCore[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                                 return false;
                             }
-                                $LEM->invalidAnswerCore[$sgq]=sprintf(gT("BUGGY %s is an invalid value for this question"),htmlspecialchars($value));
-                                return false;
                         }
                     }
                     break;
