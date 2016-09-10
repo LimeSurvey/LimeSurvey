@@ -39,7 +39,7 @@
     </nav>
 
     <!-- Top container -->
-    <div id="topContainer" class="jumbotron">
+    <div id="topContainer">
       <div class="container">
         {PERCENTCOMPLETE}
         {LANGUAGECHANGER}
