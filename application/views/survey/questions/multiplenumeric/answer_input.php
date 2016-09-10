@@ -30,9 +30,9 @@
                 </div>
                 <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
                     <?php echo $prefix; ?>
-                    <span id="remainingvalue_<?php echo $id; ?>" class="dynamic_remaining">
+                    <div id="remainingvalue_<?php echo $id; ?>" class="label label-info dynamic_remaining">
                         {<?php echo $sumRemainingEqn;?>}
-                    </span>
+                    </div>
                     <?php echo $suffix; ?>
                 </div>
             </li>
@@ -45,9 +45,9 @@
                 </div>
                <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
                     <?php echo $prefix; ?>
-                    <span id="remainingvalue_<?php echo $id; ?>" class="dynamic_remaining">
+                    <div id="remainingvalue_<?php echo $id; ?>" class="label label-info dynamic_total">
                         {<?php echo $sumEqn; ?>}
-                    </span>
+                    </div>
                     <?php echo $suffix; ?>
                 </div>
             </li>
