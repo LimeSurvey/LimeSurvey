@@ -22,7 +22,7 @@
 <!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="row-inc-same-dec well answers-list radio-list array<?php echo $zebra; ?>"  <?php echo $sDisplayStyle; ?>>
     <!-- Answer text /  Errors -->
-    <th class="answertext  text-center">
+    <th class="answertext">
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" />
         <?php if($error): ?>
             <div class="label label-danger" role="alert">
