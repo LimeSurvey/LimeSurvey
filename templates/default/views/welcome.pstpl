@@ -9,7 +9,7 @@
 
 <div id="welcome-container"> 
   <h1 class="survey-name">{SURVEYNAME}</h1>
-  <p class="text-info survey-description">{SURVEYDESCRIPTION}</p>
-  <p class="survey-welcome">{WELCOME}</p>
-  <p class="number-of-questions">{THEREAREXQUESTIONS}</p> 
+  <span class="text-info survey-description">{SURVEYDESCRIPTION}</span>
+  <span class="survey-welcome">{WELCOME}</span>
+  <span class="number-of-questions">{THEREAREXQUESTIONS}</span> 
 </div>
