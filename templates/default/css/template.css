@@ -42,7 +42,7 @@ div[id^="group-"]>div {
 
 .progress {
     height: 21px;
-    margin-bottom: 0px;
+    margin-bottom: 1em;
 }
 
 #surveynametitle {
@@ -217,12 +217,9 @@ li.responsive-content
     margin-bottom: 30px;
 }
 
-
-
-
-
-
-#indexcontainer {display : none;}
+#indexcontainer {
+  display : none;
+}
 
 .radio-list li
 {
@@ -872,6 +869,7 @@ table.numbers-only th, table.numbers-only input {
   margin-bottom: 2em;
   background:white;
 }
+
 .question-title-container {
   color: white;
   padding-top:2em;
@@ -896,17 +894,17 @@ table.numbers-only th, table.numbers-only input {
   border-width: 0px 1px 0px 1px;
   border-style: solid;
   padding-top: 3em;
+  padding-bottom:1.5em;
 }
 
 .question-help-container {
   border-width: 0px 1px 1px 1px;
-  border-style: solid;
-  
+  border-style: solid; 
 }
 
 /* Give help text some space */
 .questionhelp {
-  padding:0.5em 0;
+  padding-bottom:0.5em;
 }
 
 /* Arrow */
