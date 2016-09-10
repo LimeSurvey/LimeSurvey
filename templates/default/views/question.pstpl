@@ -14,7 +14,7 @@
     <div class="question-valid-container col-sm-12">
       <span class="question-valid-message">{QUESTION_VALID_MESSAGE}</span>
       <span class="question-man-message">{QUESTION_MAN_MESSAGE}</span>
-      <span class="question-file-valid message">{QUESTION_FILE_VALID_MESSAGE}</span>
+      <span class="question-file-valid-message">{QUESTION_FILE_VALID_MESSAGE}</span>
     </div>
 
     <!-- Answer -->
