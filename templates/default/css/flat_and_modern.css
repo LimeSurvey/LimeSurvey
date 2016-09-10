@@ -7070,22 +7070,22 @@ a.list-group-item-danger.active:focus {
 
 
  /** Header **/
- .question-title-container, .questionvalidcontainer {
+ .question-title-container, .question-valid-container {
      background-color: #233140;
  }
 
 
 
- .questionvalidcontainer .text-danger{
+ .question-valid-container .text-danger{
      color: #E75041;
  }
 
- .questionvalidcontainer .text-info{
+ .question-valid-container .text-info{
      color: #B9CC14;
  }
 
  /* Arrow */
- .questionvalidcontainer:after {
+ .question-valid-container:after {
      border-top-color: #233140;
  }
 

@@ -11,13 +11,18 @@
     padding: 0;
 }
 div[id^="group-"]>div {
-    background-color: #fff;
-    margin-bottom: 1em;
+    //background-color: #fff;
+    //margin-bottom: 1em;
  }
 
  div[id^="group-"]>div.group-container {
      background-color: transparent;
  }
+ 
+.group-title-container {
+  padding: 1em;
+  background:transparent;
+}
 
 .language-changer {
     background-color: #fff;
@@ -46,10 +51,6 @@ div[id^="group-"]>div {
     text-align: center;
 }
 
-.group-name {
-
-}
-
 #surveydescription, .group-name {
     color: #2c3e50;
 }
@@ -73,9 +74,6 @@ div[id^="group-"]>div {
  #main-col {
      margin-top: 1em;
  }
-
-.row {
-}
 
  .col-centered{
      float: none;
@@ -345,10 +343,7 @@ table {
     width: 100%;
 }
 
-/* Give help text some space */
-.question-help {
-    margin-top: 1em;
-}
+
 
 /* Wrap text in e.g. gender button "No answer */
 .wrap-normal {
@@ -532,12 +527,6 @@ table.array-no-dropdown  td.answer-item.text-center
     }
     .visible-xs-inline-block{
         display: inline-block !important;
-    }
-
-    /* Remove margin */
-    .row {
-        margin: 0;
-        padding: 0;
     }
 
     /* Add some margin for multiple short text */
@@ -874,54 +863,47 @@ table.numbers-only th, table.numbers-only input {
 }
 
 
-
-
 /** Question Design **/
 
-body div.row .question-container {
-    margin-bottom: 2em;
+.question-wrapper {
+  margin-bottom: 2em;
+  background:white;
 }
-
-.answer-container, .question-help-container
-{
-    border-style: solid;
-}
-
-.answer-container
-{
-    border-width: 0px 1px 0px 1px;
-    padding-top: 3em;
-    background-color: white;
-}
-
-.question-help-container
-{
-    border-width: 0px 1px 1px 1px;
-    padding-bottom: 5px;
-}
-
-
-/** Header **/
-
 .question-title-container {
-    color: white;
-    padding: 2em 1em 1em 1em;
-
+  color: white;
+  padding-top:2em;
+  padding-bottom:1em;
 }
 
-.questionvalidcontainer {
-    position: relative;
-    text-align: center;
-    padding-bottom: 1em;
+.question-valid-container {
+  position: relative;
+  text-align: center;
+  padding-bottom: 1em;
 }
 
-.questionvalidcontainer .text-danger{
-    font-weight: bold;
+.question-valid-container .text-danger{
+  font-weight: bold;
 }
 
-.questionvalidcontainer .text-info{
-    color: #B9CC14;
-    font-weight: bold;
+.question-valid-container .text-info{
+  font-weight: bold;
+}
+
+.answer-container {
+  border-width: 0px 1px 0px 1px;
+  border-style: solid;
+  padding-top: 3em;
+}
+
+.question-help-container {
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+  
+}
+
+/* Give help text some space */
+.questionhelp {
+  padding:0.5em 0;
 }
 
 /* Arrow */
