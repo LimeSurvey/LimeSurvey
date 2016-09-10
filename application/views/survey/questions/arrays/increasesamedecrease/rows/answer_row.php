@@ -22,7 +22,7 @@
 <!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="row-inc-same-dec well answers-list radio-list array<?php echo $zebra; ?><?php if($error){ echo " bg-warning";} ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
-    <th class="answertext text-center<?php if($error):?> text-danger<?php endif;?>">
+    <th class="answertext<?php if($error):?> text-danger<?php endif;?>">
         <div id="answertext<?php echo $myfname;?>"><?php echo $answertext;?></div>
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" />
     </th>

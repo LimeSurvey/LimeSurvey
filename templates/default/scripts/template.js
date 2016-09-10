@@ -84,9 +84,6 @@ function replaceColumnWithDiv(that) {
     $(that).replaceWith(newHtml);
 }
 
-
-
-
 $(document).ready(function()
 {
 
@@ -102,21 +99,20 @@ $(document).ready(function()
         });
     }
 
-
     // Make the label clickable
     $('.label-clickable').each(function(){
-        var $that    = $(this);
-        var attrId = $that.attr('id');
-        if(attrId!=undefined){
-            attrId = attrId.replace("label-", "");
-        } else {
-            attrId = "";
-        }
-        var $inputEl = $("#"+attrId);
-        $that.on('click', function(){
-            console.log($inputEl.attr('id'));
-            $inputEl.trigger( "click" );
-        });
+      var $that    = $(this);
+      var attrId = $that.attr('id');
+      if(attrId!=undefined){
+          attrId = attrId.replace("label-", "");
+      } else {
+          attrId = "";
+      }
+      var $inputEl = $("#"+attrId);
+      $that.on('click', function(){
+          console.log($inputEl.attr('id'));
+          $inputEl.trigger( "click" );
+      });
     });
 
     $('.if-no-js').hide();
@@ -125,12 +121,11 @@ $(document).ready(function()
     // It's OK to keep tables on pads.
     if($(window).width() < 768 && 1===2)
     {
-        // Brutally remake the array-by-columns question type to divs,
-        // because you can't wrap table columns
-        $('.array-by-columns-table').each(function() {
-            replaceColumnWithDiv(this);
-        });
-
+      // Brutally remake the array-by-columns question type to divs,
+      // because you can't wrap table columns
+      $('.array-by-columns-table').each(function() {
+          replaceColumnWithDiv(this);
+      });
     }
 
     //var outerframeDistanceFromTop = 50;
