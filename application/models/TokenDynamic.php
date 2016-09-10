@@ -975,9 +975,9 @@ class TokenDynamic extends LSActiveRecord
       $criteria->compare('language',$this->language,true);
       $criteria->compare('sent',$this->sent,true);
       $criteria->compare('remindersent',$this->remindersent,true);
-      $criteria->compare('remindercount',$this->remindercount,true);
+      $criteria->compare('remindercount',$this->remindercount,false);
       $criteria->compare('completed',$this->completed,true);
-      $criteria->compare('usesleft',$this->usesleft,true);
+      $criteria->compare('usesleft',$this->usesleft,false);
       $criteria->compare('validfrom',$this->validfrom,true);
       $criteria->compare('validuntil',$this->validuntil,true);
 
