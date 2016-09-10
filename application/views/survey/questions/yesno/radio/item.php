@@ -12,10 +12,9 @@
  */
 ?>
 
-<ul class="list-unstyled answers-list radio-list">
-
+<ul class="list-unstyled list-inline answers-list radio-list">
     <!-- Yes -->
-    <li class="answer-item radio-item">
+    <li id="javatbd<?php echo $name;?>Y"  class="answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $name;?>"
@@ -23,21 +22,14 @@
             value="Y"
             <?php echo $yChecked; ?>
             onclick="<?php echo $checkconditionFunction; ?>"
-            aria-labelledby="label-answer<?php echo $name;?>Y"
         />
-
-        <label for="answer<?php echo $name;?>Y" class="answertext"></label>
-        <!--
-             The label text is provided inside a div,
-             To respect the global HTML flow of other question types
-        -->
-        <div class="label-text label-clickable" id="label-answer<?php echo $name;?>Y">
+        <label for="answer<?php echo $name;?>Y" class="answertext">
             <?php eT('Yes');?>
-        </div>
+        </label>
     </li>
 
     <!-- No -->
-    <li class="answer-item radio-item">
+    <li id="javatbd<?php echo $name;?>N"  class="answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $name;?>"
@@ -45,22 +37,16 @@
             value="N"
             <?php echo $nChecked; ?>
             onclick="<?php echo $checkconditionFunction;?>"
-            aria-labelledby="label-answer<?php echo $name;?>N"
         />
-
-        <label for="answer<?php echo $name;?>N" class="answertext" ></label>
-        <!--
-             The label text is provided inside a div,
-             To respect the global HTML flow of other question types
-        -->
-        <div class="label-text label-clickable" id="label-answer<?php echo $name;?>N">
+        <label for="answer<?php echo $name;?>N" class="answertext" >
             <?php eT('No');?>
-        </div>
+
+        </label>
     </li>
 
     <!-- No answer -->
     <?php if($noAnswer):?>
-        <li class="answer-item radio-item noanswer-item">
+        <li id="javatbd<?php echo $name;?>"  class="answer-item radio-item noanswer-item">
             <input
                 type="radio"
                 name="<?php echo $name;?>"
@@ -68,21 +54,14 @@
                 value=""
                 <?php echo $naChecked; ?>
                 onclick="<?php echo $checkconditionFunction;?>"
-                aria-labelledby="label-answer<?php echo $name;?>"
             />
-
-            <label for="answer<?php echo $name;?>" class="answertext"></label>
-            <!--
-                 The label text is provided inside a div,
-                 To respect the global HTML flow of other question types
-            -->
-            <div class="label-text label-clickable" id="label-answer<?php echo $name;?>">
+            <label for="answer<?php echo $name;?>" class="answertext">
                 <?php eT('No answer');?>
-            </div>
+            </label>
         </li>
     <?php endif;?>
 </ul>
-
+<!-- Value for expression manager (use id) -->
 <input
     type="hidden"
     name="java<?php echo $name;?>"

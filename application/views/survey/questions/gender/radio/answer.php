@@ -14,7 +14,7 @@
 <!--Gender question, radio display -->
 
 <!-- answer -->
-<ul class="list-unstyled answers-list radio-list form-horizontal">
+<ul class="list-unstyled list-inline answers-list radio-list">
 
     <!-- Female -->
     <li id='javatbd<?php echo $name; ?>F' class="form-group answer-item radio-item">
@@ -26,7 +26,9 @@
             <?php echo $fChecked; ?>
             onclick="<?php echo $checkconditionFunction; ?>"
         />
-        <label for="answer<?php echo $name;?>F" class="control-label radio-label"><?php eT('Female');?></label>
+        <label for="answer<?php echo $name;?>F" class="control-label radio-label">
+            <?php eT('Female');?>
+        </label>
     </li>
 
     <!-- Male -->
@@ -38,10 +40,11 @@
             value="M"
             <?php echo $mChecked;?>
             onclick="<?php echo $checkconditionFunction; ?>"
-            aria-labelledby="label-answer<?php echo $name;?>M"
         />
 
-        <label for="answer<?php echo $name;?>M" class="control-label radio-label"><?php eT('Male');?></label>
+        <label for="answer<?php echo $name;?>M" class="control-label radio-label">
+            <?php eT('Male');?>
+        </label>
     </li>
 
     <!-- No answer -->
@@ -54,10 +57,10 @@
                 value=""
                 <?php echo $naChecked;?>
                 onclick="<?php echo $checkconditionFunction; ?>"
-                aria-labelledby="label-answer<?php echo $name;?>"
             />
-
-            <label for="answer<?php echo $name;?>" class="control-label radio-label"><?php eT('No answer'); ?></label>
+            <label for="answer<?php echo $name;?>" class="control-label radio-label">
+                <?php eT('No answer'); ?>
+            </label>
         </li>
     <?php endif;?>
 </ul>

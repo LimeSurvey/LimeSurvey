@@ -3866,7 +3866,7 @@ function do_yesno($ia)
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'displayType'=>$displayType,
     );
-    if($displayType===0)
+    if(false && $displayType===0)
     {
         $answer = doRender('/survey/questions/yesno/buttons/item', $itemDatas, true);
     }

@@ -12,42 +12,12 @@
 ?>
 
 <!--Gender question, buttons display -->
-<!-- Must use exactly the same HTML than other, + some HTML. Hide default and trigger with js, or do only with css after --
-<!-- Leave it for next HTML cleaning -->
 <!-- answer -->
-<div class="answers-list radio-list gender-button">
-
-    <div class='hidden'>  <!-- Hide this for now -->
-        <button class="btn btn-danger btn-lg ls-icons" type="button" data-id="answer<?php echo $name;?>F"  >
-            <span class="fa fa-venus lead gender-icon"  ></span>
-            <span class="gender-text">
-                <?php eT('Female');?>
-            </span>
-        </button>
-
-        <button class="btn btn-info btn-lg ls-icons" type="button"  data-id="answer<?php echo $name;?>M" >
-            <span class="fa fa-mars lead gender-icon" ></span>
-            <span class="gender-text">
-                <?php eT('Male');?>
-            </span>
-        </button>
-
-        <?php if($noAnswer):?>
-        <button class="btn btn-default btn-lg ls-icons" type="button"  data-id="answer<?php echo $name;?>" >
-            <span class="fa fa-genderless lead gender-icon"  ></span>
-            <span class="gender-text">
-                <?php eT('No answer'); ?>
-            </span>
-        </button>
-        <?php endif; ?>
-    </div>
-
-    <div class='col-xs-12 col-sm-6'>  <!-- Full width on Phone; otherwise half width -->
-        <div class="btn-group btn-group-justified" data-toggle="buttons">
-
-          <!-- Female -->
-          <label class="btn btn-primary <?php if($fChecked!=''){echo 'active';}?>" id="label-answer<?php echo $name;?>F">
-              <input
+<div class="col-xs-12 col-sm-6">
+    <ul class="list-unstyled list-inline btn-group btn-group-justified answers-list button-list gender-button" data-toggle="buttons">
+        <!-- Female -->
+        <li id="javatbd<?php echo $name;?>F" class="button-item btn btn-primary <?php if($fChecked!=''){echo 'active';}?>">
+            <input
                 class="radio"
                 type="radio"
                 name="<?php echo $name;?>"
@@ -55,61 +25,53 @@
                 value="F"
                 <?php echo $fChecked; ?>
                 onclick="<?php echo $checkconditionFunction; ?>"
-               />
-               <span class="fa fa-venus"></span>
-              <?php eT('Female');?>
-          </label>
+            />
+            <label for="answer<?php echo $name;?>F">
+                <span class="fa fa-venus" aria-hidden="true"></span> <?php eT('Female');?>
+            </label>
+        </li>
 
-          <!-- Male -->
-          <label class="btn btn-primary  <?php if($mChecked!=''){echo 'active';}?> " id="label-answer<?php echo $name;?>M">
-                <input
-                  class="radio"
-                  type="radio"
-                  name="<?php echo $name;?>"
-                  id="answer<?php echo $name;?>M"
-                  value="M"
-                  <?php echo $mChecked;?>
-                  onclick="<?php echo $checkconditionFunction; ?>"
-                />
-                <span class="fa fa-mars"></span>
-                <?php eT('Male');?>
-          </label>
+        <!-- Male -->
+        <li id="javatbd<?php echo $name;?>M" class="button-item btn btn-primary  <?php if($mChecked!=''){echo 'active';}?> ">
+            <input
+                class="radio"
+                type="radio"
+                name="<?php echo $name;?>"
+                id="answer<?php echo $name;?>M"
+                value="M"
+                <?php echo $mChecked;?>
+                onclick="<?php echo $checkconditionFunction; ?>"
+            />
+            <label for="answer<?php echo $name;?>M">
+                <span class="fa fa-mars" aria-hidden="true"></span> <?php eT('Male');?>
+            </label>
+        </li>
 
-          <!-- No answer -->
-          <?php if($noAnswer):?>
-              <label class="btn btn-primary  <?php if($naChecked!=''){echo 'active';}?>" id="label-answer<?php echo $name;?>">
-                  <input
-                      class="radio"
-                      type="radio"
-                      name="<?php echo $name;?>"
-                      id="answer<?php echo $name;?>"
-                      value=""
-                      <?php echo $naChecked;?>
-                      onclick="<?php echo $checkconditionFunction; ?>"
-                  />
-                  <span class="fa fa-genderless"></span>
-                  <span class='wrap-normal'><?php eT('No answer'); ?></span>
-              </label>
-            <?php endif;?>
-        </div>
-    </div>
-
-    <!-- Value -->
-    <input
-        type="hidden"
-        name="java<?php echo $name;?>"
-        id="java<?php echo $name; ?>"
-        value="<?php echo $value;?>"
-    />
+    <!-- No answer -->
+        <?php if($noAnswer):?>
+        <li id="javatbd<?php echo $name;?>" class="button-item btn btn-primary  <?php if($naChecked!=''){echo 'active';}?>">
+            <input
+                class="radio"
+                type="radio"
+                name="<?php echo $name;?>"
+                id="answer<?php echo $name;?>"
+                value=""
+                <?php echo $naChecked;?>
+                onclick="<?php echo $checkconditionFunction; ?>"
+            />
+            <label for="answer<?php echo $name;?>">
+                <span class="fa fa-genderless" aria-hidden="true"></span> <?php eT('No answer'); ?>
+            </label>
+        </li>
+        <?php endif;?>
+    </ul>
 </div>
+<!-- Value for expression manager-->
+<input
+    type="hidden"
+    name="java<?php echo $name;?>"
+    id="java<?php echo $name; ?>"
+    value="<?php echo $value;?>"
+/>
 
-<script>
-    $(document).ready(function(){
-        $('.btn.ls-icons').on('click', function(){
-            $id='#'+$(this).data('id');
-            $gender = $($id);
-            $gender.trigger('click');
-        });
-    });
-</script>
 <!-- end of answer -->
