@@ -964,7 +964,7 @@ class TokenDynamic extends LSActiveRecord
           );
       }
 
-      $criteria = new CDbCriteria;
+      $criteria = new LSDbCriteria;
       $criteria->compare('tid',$this->tid,false);
       $criteria->compare('token',$this->token,true);
       $criteria->compare('firstname',$this->firstname,true);
