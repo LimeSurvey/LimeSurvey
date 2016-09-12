@@ -10204,60 +10204,181 @@ EOD;
          */
         private static function checkValidityAnswer($type,$value,$sgq,$qinfo)
         {
-            /* This function is called by a static function , then set ot to static .... */
-            $LEM =& LimeExpressionManager::singleton();
-            /* See bug Control value against value from survey : see #11611 */
-            switch ($type)
+            if(isset($value) && $value!=="")
             {
-                case '!': //List - dropdown
-                case 'L': //LIST drop-down/radio-button list
-                    if(substr($sgq,-5)!='other' && isset($value) && $value!=="")// We must validate $value==="0", then don't use empty. $value is not set if unrelevant , then don't use $value!==null
-                    {
-                        if($value=="-oth-")
+                /* This function is called by a static function , then set ot to static .... */
+                $LEM =& LimeExpressionManager::singleton();
+                // Using language to find some valid value : set it to an existing language of this survey (can be Survey::model()->findByPk($LEM->sessid)->language too)
+                $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
+                /* See bug Control value against value from survey : see #11611 */
+                switch ($type)
+                {
+                    case '5': // 5 point choice
+                        if(!in_array($value,array("1","2","3","4","5")))
                         {
-                            if($qinfo['info']['other']!='Y')
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case '!': //List - dropdown
+                    case 'L': //LIST drop-down/radio-button list
+                        if(substr($sgq,-5)!='other')// We must validate $value==="0", then don't use empty. $value is not set if unrelevant , then don't use $value!==null
+                        {
+                            if($value=="-oth-")
                             {
-                                $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
-                                $value=null;
+                                if($qinfo['info']['other']!='Y')
+                                {
+                                    $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
+                                {
+                                    $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                    return false;
+                                }
                             }
                         }
-                        else
+                        break;
+                    case 'O': // List with comment
+                        if(substr($sgq,-7)!='comment')
                         {
-                            $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
-                            $aAnswers=CHtml::listData(
-                                Answer::model()->findAll(array(
-                                    "select"=>'code,answer',
-                                    'condition'=>"qid=:qid and language=:language",
-                                    "params"=>array(":qid"=>$qinfo['info']['qid'],'language'=>$language)
-                                )),
-                            'code','answer');// The knowVars is really dirty , and answer::model don't seems to have a clean way to just have it simply
-                            if(!array_key_exists($value,$aAnswers))
+                            if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
                             {
                                 $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                                 return false;
                             }
                         }
-                    }
-                    break;
-                case 'N':
-                case 'K':
-                    if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$value)) // DECIMAL(30,10)
-                    {
-                        $LEM->invalidAnswerString[$sgq]=gT("This question only accept 30 digits including 10 decimals.");
-                        /* Show an error but don't unset value : this can happen without hack */
-                    }
-                    break;
-                default:
-                    break;
-                /**
-                 * We must add
-                 * array question type (whole)
-                 * specific single choice (genfer , Yes no ..)
-                 * Multiple : allowing Y only
-                 * Array number : only valid floatval ?
-                 * Array number with checkbox Only 1 or 0 (maybe reset 0 to '')
-                 * And surely a lot more
-                 */
+                        break;
+                    case 'F': // Array
+                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'B': // Array 10 point
+                        if(!in_array($value,array("1","2","3","4","5","6","7","8","9","10")))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'A': // Array 5 point
+                        if(!in_array($value,array("1","2","3","4","5")))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'E': // Array increase decrease same
+                        if(!in_array($value,array("I","D","S")))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case ";": // Array number
+                        if(stringval(floatval($value))!=$value)
+                        {
+                            $LEM->invalidAnswerString[$sgq]=gT("This question only accept float value.");
+                            /* Show an error but don't unset value : this can happen without hack */
+                        }
+                        break;
+                    case ";": // Array text
+                        /* No validty control ? size ? */
+                        break;
+                    case 'C': // Array Yes No Uncertain
+                        if(!in_array($value,array("Y","N","U")))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'H': // Array by column
+                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case '1': // Array dual scale
+                        /*  @todo */
+                        break;
+                    case 'D': // Date + time
+                        /*  @todo : but are already partially in EM and in old function ?*/
+                        break;
+                    case '*': // Equation
+                        /* No validty control ? size ? */
+                        break;
+                    case '|': // File upload
+                        /* @todo ? seems to be in old function ?*/
+                        break;
+                    case 'G': // Gender
+                        if(!in_array($value,array("M","F")))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'I': // Language switch
+                        if(!in_array($value,Survey::model()->findByPk($LEM->sessid)->getAllLanguages()))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'K': // Multiple numerical
+                    case 'N': // Numerical
+                        if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$value)) // DECIMAL(30,10)
+                        {
+                            $LEM->invalidAnswerString[$sgq]=gT("This question only accept 30 digits including 10 decimals.");
+                            /* Show an error but don't unset value : this can happen without hack */
+                        }
+                        break;
+                    case 'R':  // Ranking
+                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'X': // Text display
+                        /* No validty control ; but always reset the value to null ? */
+                        return false; // Can not be set : set it to null
+                        break;
+                    case 'Y': // Gender
+                        if(!in_array($value,array("Y","N")))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'U': // Huge text
+                    case 'T': // Long text
+                    case 'Q': // Multiple text
+                    case 'S': // Short text
+                        /* No validty control ? size ? */
+                        break;
+                    case 'M': // Multiple
+                        if($value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    case 'P': // Multiple with comment
+                        if(substr($sgq,-7)!='comment' && $value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
             return true;
         }
