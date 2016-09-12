@@ -952,7 +952,7 @@ class tokens extends Survey_Common_Action
             }
 
             $amount = sanitize_int(Yii::app()->request->getPost('amount'));
-            $tokenlength = sanitize_int(Yii::app()->request->getPost('tokenlen'));
+            $iTokenLength = sanitize_int(Yii::app()->request->getPost('tokenlen'));
 
             // Fill an array with all existing tokens
             $existingtokens = array();
@@ -980,9 +980,9 @@ class tokens extends Survey_Common_Action
 
 				$attempts = 0;
                 do {
-					$token->token = Yii::app()->securityManager->generateRandomString($tokenlength);
-					$attempts++;
-				} while (isset($existingtokens[$token->token]) && $attempts < 50);
+                    $token->token = Token::generateRandomToken($iTokenLength);
+                    $attempts++;
+                } while (isset($existingtokens[$token->token]) && $attempts < 50);
 
 				if ($attempts == 50)
 				{
@@ -1019,12 +1019,12 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $tokenlength = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+            $iTokenLength = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
 
 			$thissurvey = getSurveyInfo($iSurveyId);
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
-            $aData['tokenlength'] = $tokenlength;
+            $aData['tokenlength'] = $iTokenLength;
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],App()->language);
             $aData['aAttributeFields']=GetParticipantAttributes($iSurveyId);
             $this->_renderWrappedTemplate('token', array('tokenbar', 'dummytokenform'), $aData);
