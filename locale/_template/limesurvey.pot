@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-09-06 11:24:41+00:00\n"
+"POT-Creation-Date: 2016-09-08 10:14:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3995,6 +3995,7 @@ msgid "Resume later"
 msgstr ""
 
 #: application/controllers/admin/templates.php:1141
+#: application/helpers/replacements_helper.php:355
 #: application/helpers/replacements_helper.php:372
 #: application/helpers/replacements_helper.php:379
 msgid "Exit and clear survey"
@@ -10242,7 +10243,7 @@ msgstr ""
 msgid "Are you sure you want to delete this box ?"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:75
+#: application/models/InstallerConfigForm.php:76
 msgid "Passwords do not match!"
 msgstr ""
 

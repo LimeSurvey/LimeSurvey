@@ -35,6 +35,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from  2.51.3 (build 160907) to 2.51.4 (build 160908) Sept 08, 2016
+-Fixed issue #11615: Input is not properly supressed when setting "numbers only" restriction (markusfluer)
+-Fixed issue #11621: Installer allows invalid database names (Carsten Schmitz)
+-Fixed issue #11624: Zeros in Excel export are formatted as text not as numbers (Carsten Schmitz)
+-Fixed issue #11628: When LDAP enabled and default the login form does not look properly (Carsten Schmitz)
+-Fixed issue #11633: User can access closed surveys of no tokens were generated (markusfluer)
+-Fixed issue #11634: Quick add answer options, all options have same code (markusfluer)
+-Fixed issue #11635: Array by column has no zebra style (Carsten Schmitz)
+-Fixed issue: [security] Closed surveys accessible without token if no participants having a token exist (markusfluer)
+-Fixed issue: Active and running filter not working if there is only start- or enddate (markusfluer)
+-Fixed issue: Active and running not working on postgres (markusfluer)
+-Fixed issue: Custom templates have a Open Modal instead of a exit and clear button (markusfluer)
+-Fixed issue: User with token update permission does not see 'Send invitation/reminder' menu entries (Carsten Schmitz)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Serbian by MilaVeljovic
+
 Changes from   2.51.2 (build 160906) to 2.51.3 (build 160907) Sept 06, 2016
 -Fixed issue: Template editor not working properly (Olle Haerstedt)
 #Updated translation: Catalan by qualitatuvic
@@ -45,7 +63,6 @@ Changes from   2.51.2 (build 160906) to 2.51.3 (build 160907) Sept 06, 2016
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
 #Updated translation: Serbian by MilaVeljovic
-
 
 Changes from   2.51.1 (build 160901) to 2.51.2 (build 160906) Sept 06, 2016
 -Fixed issue #11599: Any way to show active and not expired surveys (markusfluer)

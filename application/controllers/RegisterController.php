@@ -40,7 +40,7 @@ class RegisterController extends LSYii_Controller {
     {
         return array(
             'captcha' => array(
-                'class' => 'CCaptchaAction', 
+                'class' => 'CCaptchaAction',
                 'backColor'=>0xf6f6f6
             )
         );
@@ -141,7 +141,7 @@ class RegisterController extends LSYii_Controller {
             $sLoadsecurity=Yii::app()->request->getPost('loadsecurity','');
             $captcha=Yii::app()->getController()->createAction("captcha");
             $captchaCorrect = $captcha->validate( $sLoadsecurity, false);
-            
+
             if (!$captchaCorrect)
             {
                 $this->aRegisterErrors[] = gT("Your answer to the security question was not correct - please try again.");
@@ -204,7 +204,7 @@ class RegisterController extends LSYii_Controller {
         {
             $sRegisterError='';
         }
-        
+
         $aReplacement['REGISTERERROR'] = $sRegisterError;
         $aReplacement['REGISTERMESSAGE1'] = gT("You must be registered to complete this survey");
         if($sStartDate=$this->getStartDate($iSurveyId))
@@ -265,7 +265,9 @@ class RegisterController extends LSYii_Controller {
         $sitename =  Yii::app()->getConfig('sitename');
         // Plugin event for email handling (Same than admin token but with register type)
         $event = new PluginEvent('beforeTokenEmail');
+        $event->set('survey', $iSurveyId);
         $event->set('type', 'register');
+        $event->set('model', 'register');
         $event->set('subject', $aMail['subject']);
         $event->set('to', $sTo);
         $event->set('body', $aMail['message']);
@@ -485,7 +487,7 @@ class RegisterController extends LSYii_Controller {
             Yii::app()->clientScript->registerPackage( 'survey-template' );
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");            
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
             useFirebug();
             $this->render('/register/display',$aViewData);
         }else{
