@@ -10280,12 +10280,8 @@ EOD;
                             return false;
                         }
                         break;
-                    case ";": // Array number
-                        if(stringval(floatval($value))!=$value)
-                        {
-                            $LEM->invalidAnswerString[$sgq]=gT("This question only accept float value.");
-                            /* Show an error but don't unset value : this can happen without hack */
-                        }
+                    case ":": // Array number
+                        // @ todo Review if value is totally saved in DB, EM test if is numeric */
                         break;
                     case ";": // Array text
                         /* No validty control ? size ? */
@@ -10305,7 +10301,12 @@ EOD;
                         }
                         break;
                     case '1': // Array dual scale
-                        /*  @todo */
+                        $scale=intval(substr($sgq,-1)); // Get the scale {SGQ}#0 or {SGQ}#1 actually
+                        if(!Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language,$scale))
+                        {
+                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            return false;
+                        }
                         break;
                     case 'D': // Date + time
                         /*  @todo : but are already partially in EM and in old function ?*/
@@ -10362,14 +10363,14 @@ EOD;
                     case 'S': // Short text
                         /* No validty control ? size ? */
                         break;
-                    case 'M': // Multiple
+                    case 'M':
                         if($value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
                         {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
                         }
                         break;
-                    case 'P': // Multiple with comment
+                    case 'P':
                         if(substr($sgq,-7)!='comment' && $value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
                         {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
