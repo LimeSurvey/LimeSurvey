@@ -25,7 +25,7 @@
                 onclick="<?php echo $checkconditionFunction; ?>"
             />
             <label for="answer<?php echo $name;?>Y">
-                <span class="fa fa-thumbs-o-up" aria-hidden="true"></span> <?php eT('Yes');?>
+                <span class="fa fa-check" aria-hidden="true"></span> <?php eT('Yes');?>
             </label>
         </li>
         <!-- No -->
@@ -40,7 +40,7 @@
                 onclick="<?php echo $checkconditionFunction;?>"
             />
             <label for="answer<?php echo $name;?>Y">
-                <span class="fa fa-thumbs-o-down" aria-hidden="true"></span> <?php eT('No');?>
+                <span class="fa fa-ban" aria-hidden="true"></span> <?php eT('No');?>
             </label>
         </li>
 
