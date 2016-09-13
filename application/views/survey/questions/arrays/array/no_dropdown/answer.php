@@ -14,38 +14,36 @@
 <!-- Array -->
 
 <!-- answer -->
-<div class="no-more-tables no-more-tables-array-no-dropdown">
-    <table class="array-no-dropdown table table-condensed question subquestion-list questions-list <?php echo $extraclass; ?>">
-        <colgroup class="col-responses">
-            <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;' />
+<table class="table question array-no-dropdown subquestion-list questions-list table-bordered no-more-tables <?php echo $extraclass; ?>">
+    <colgroup class="col-responses">
+        <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;' />
+        <?php
+            // columns/col.php
+            echo $sColumns;
+        ?>
+    </colgroup>
+    <thead aria-hidden="true">
+        <tr class="array1">
             <?php
-                // columns/col.php
-                echo $sColumns;
+                // rows/cell/thead.php
+                echo $sHeaders;
             ?>
-        </colgroup>
-        <thead aria-hidden="true">
-            <tr class="array1">
-                <?php
-                    // rows/cell/thead.php
-                    echo $sHeaders;
-                ?>
+        </tr>
+    </thead>
+    <tbody>
+
+        <?php if($anscount==0):?>
+            <tr>
+                <th class="answertext">
+                    <?php eT('Error: This question has no answers.');?>
+                </th>
             </tr>
-        </thead>
-        <tbody>
+        <?php endif; ?>
 
-            <?php if($anscount==0):?>
-                <tr>
-                    <th class="answertext">
-                        <?php eT('Error: This question has no answers.');?>
-                    </th>
-                </tr>
-            <?php endif; ?>
-
-            <?php
-                // rows/answer_row.php
-                echo $sRows;
-            ?>
-        </tbody>
-    </table>
-</div>
+        <?php
+            // rows/answer_row.php
+            echo $sRows;
+        ?>
+    </tbody>
+</table>
 <!-- end of answer -->

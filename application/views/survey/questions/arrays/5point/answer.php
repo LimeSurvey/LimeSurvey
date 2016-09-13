@@ -11,34 +11,33 @@
 <!-- Array 5 point choice -->
 
 <!-- answer -->
-<div class="no-more-tables no-more-tables-5-point">
-    <table class="table question table-5-point-array subquestion-list questions-list <?php echo $extraclass; ?>">
+<table class="table question table-5-point-array subquestion-list questions-list no-more-tables table-bordered <?php echo $extraclass; ?>">
 
-        <!-- Columns -->
-        <colgroup class="col-responses">
-            <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
+    <!-- Columns -->
+    <colgroup class="col-responses">
+        <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
+        <?php
+            // columns/col.php
+            echo $sColumns;
+        ?>
+    </colgroup>
+    <!-- Table headers -->
+    <thead aria-hidden="true">
+        <tr class="array1">
+            <td>&nbsp;</td>
             <?php
-                // columns/col.php
-                echo $sColumns;
+                // rows/cell/thead.php
+                echo $sHeaders;
             ?>
-        </colgroup>
-        <!-- Table headers -->
-        <thead aria-hidden="true">
-            <tr class="array1">
-                <th>&nbsp;</th>
-                <?php
-                    // rows/cell/thead.php
-                    echo $sHeaders;
-                ?>
-            </tr>
-        </thead>
-        <!-- Table Body -->
-        <tbody>
-            <?php
-                // rows/answer_row.php
-                echo $sRows;
-            ?>
-        </tbody>
-    </table>
-</div>
+        </tr>
+    </thead>
+    <!-- Table Body -->
+    <tbody>
+        <?php
+            // rows/answer_row.php
+            echo $sRows;
+        ?>
+    </tbody>
+</table>
+
 <!-- end of answer -->

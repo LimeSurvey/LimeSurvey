@@ -1,0 +1,17 @@
+/**
+ * All of this part fix already included css (bootstrap + awesome) for this template
+ */
+/* Boostrap don't do some reset */
+img,video,svg{
+  max-width: 100%;height: auto;
+}
+/**
+ * Table alignment
+ */
+.table.question,.table.question th,.table.question td
+{text-align:center;vertical-align:middle}
+.table.question thead th
+{vertical-align:bottom}
+
+table.question .answertext{text-align:right}
+table.question .answertextright{text-align:left}

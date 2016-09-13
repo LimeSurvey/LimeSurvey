@@ -4003,7 +4003,7 @@ function do_array_5point($ia)
     for ($xc=1; $xc<=5; $xc++)
     {
         $sHeaders .= doRender('/survey/questions/arrays/5point/rows/cells/thead', array(
-            'class'=>'th-1',
+            'class'=>'th-'.$xc,
             'style'=>'',
             'th_content'=>$xc,
         ), true);
@@ -4013,8 +4013,8 @@ function do_array_5point($ia)
     if ($right_exists)
     {
         $sHeaders .= doRender('/survey/questions/arrays/5point/rows/cells/thead', array(
-            'class'=>'',
-            'style'=>'width: '.$answerwidth.'%;',
+            'class'=>'answertextright',
+            'style'=>'',
             'th_content'=>'&nbsp;',
         ), true);
     }
@@ -4022,7 +4022,7 @@ function do_array_5point($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $sHeaders .= doRender('/survey/questions/arrays/5point/rows/cells/thead', array(
-            'class'=>'th-2',
+            'class'=>'th-',
             'style'=>'',
             'th_content'=>gT('No answer'),
         ), true);
@@ -4108,7 +4108,6 @@ function do_array_5point($ia)
                     'sDisplayStyle' => $sDisplayStyle,
                     'zebra'         => 2 - ($j % 2)
                 ), true);
-
         $answer_tds = '';
         $fn++;
         $inputnames[]=$myfname;

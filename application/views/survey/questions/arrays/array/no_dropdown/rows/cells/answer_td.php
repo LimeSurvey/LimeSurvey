@@ -11,7 +11,7 @@
 ?>
 
 <!-- answer_td -->
-<td class="answer_cell_<?php echo $ld;?> answer-item radio-item text-center">
+<td class="answer_cell_<?php echo $ld;?> answer-item radio-item">
     <input
         type="radio"
         name="<?php echo $myfname;?>"
@@ -20,7 +20,7 @@
         <?php echo $CHECKED; ?>
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
     />
-    <label for="answer<?php echo $myfname;?>-<?php echo $ld; ?>"  class="text-hide-md text-hide-lg">
+    <label for="answer<?php echo $myfname;?>-<?php echo $ld; ?>"  class="sr-only">
         <?php echo $label;?>
     </label>
 </td>

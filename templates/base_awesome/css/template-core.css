@@ -1,0 +1,46 @@
+/**
+ * All of this part fix already included css (bootstrap + awesome) for this template
+ */
+/* Boostrap don't do some reset */
+img,video,svg{
+  max-width: 100%;height: auto;
+}
+/**
+ * Table alignment
+ */
+.table.question,.table.question th,.table.question td
+{text-align:center;vertical-align:middle}
+.table.question thead th
+{vertical-align:bottom}
+
+table.question .answertext{text-align:right}
+table.question .answertextright{text-align:left}
+
+
+
+/* For awesome : we need sr-only inside table */
+.radio-item label.sr-only{
+overflow:visible;
+width:17px;
+height:17px;
+color: transparent;
+margin-right:-17px;
+}
+.radio-item label.sr-only > * {
+    border: 0 none;
+    clip: rect(0px, 0px, 0px, 0px);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+table.question input[type="checkbox"],table.question input[type="radio"]{
+margin: 0;
+}
+/* no-more-table system */
+
+table.no-more-tables{
+
+}

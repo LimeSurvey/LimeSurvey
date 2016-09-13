@@ -1,3 +1,9 @@
+/**
+ * Replace ".checkbox " > ".checkbox-item "
+ * Replace ".checkbox." > ".checkbox-item."
+ * Replace ".radio " > ".radio-item "
+ * Replace ".checkradiobox." > ".radio-item."
+ */
 .checkbox-item {
   padding-left: 20px;
 }
@@ -14,8 +20,7 @@
   width: 17px;
   height: 17px;
   left: 0;
-  margin-left: -30px;
-  margin-top: -10px;
+  margin-left: -20px;
   border: 1px solid #cccccc;
   border-radius: 3px;
   background-color: #fff;
@@ -30,8 +35,7 @@
   height: 16px;
   left: 0;
   top: 0;
-  margin-left: -30px;
-  margin-top: -10px;
+  margin-left: -20px;
   padding-left: 3px;
   padding-top: 1px;
   font-size: 11px;
@@ -78,11 +82,6 @@
 }
 .checkbox-item.checkbox-inline {
   margin-top: 0;
-}
-.checkbox-item.checkbox-inline label::before,
-.checkbox-item.checkbox-inline label::after {
-  margin-left: -20px;
-  margin-top: 2px;
 }
 
 .checkbox-primary input[type="checkbox"]:checked + label::before,
@@ -206,8 +205,7 @@
   width: 17px;
   height: 17px;
   left: 0;
-  margin-left: -30px;
-  margin-top: -10px;
+  margin-left: -20px;
   border: 1px solid #cccccc;
   border-radius: 50%;
   background-color: #fff;
@@ -223,8 +221,7 @@
   height: 11px;
   left: 3px;
   top: 3px;
-  margin-left: -30px;
-  margin-top: -10px;
+  margin-left: -20px;
   border-radius: 50%;
   background-color: #2c3e50;
   -webkit-transform: scale(0, 0);
@@ -259,11 +256,6 @@
 }
 .radio-item.radio-inline {
   margin-top: 0;
-}
-.radio-item.radio-inline label::before,
-.radio-item.radio-inline label::after {
-  margin-left: -20px;
-  margin-top: 2px;
 }
 
 .radio-primary input[type="radio"] + label::after {

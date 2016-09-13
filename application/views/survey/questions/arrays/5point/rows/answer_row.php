@@ -11,9 +11,9 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list array<?php echo $zebra; ?><?php if($error){ echo " bg-warning";} ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
-    <th class="answertext <?php if($error){ echo " text-danger";} ?>">
-        <div id="answertext<?php echo $myfname;?>"><?php echo $answertext;?></div>
+<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list form-group array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
+    <th id="answertext<?php echo $myfname;?>"class="answertext control-label">
+        <?php echo $answertext;?>
         <input name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" type="hidden">
     </th>
     <?php

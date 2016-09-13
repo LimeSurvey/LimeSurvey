@@ -18,7 +18,7 @@ div[id^="group-"]>div {
  div[id^="group-"]>div.group-container {
      background-color: transparent;
  }
- 
+
 .group-title-container {
   padding: 1em;
   background:transparent;
@@ -896,7 +896,7 @@ table.numbers-only th, table.numbers-only input {
 
 .question-help-container {
   border-width: 0px 1px 1px 1px;
-  border-style: solid; 
+  border-style: solid;
 }
 
 /* Give help text some space */

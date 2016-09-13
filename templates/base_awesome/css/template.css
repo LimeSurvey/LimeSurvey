@@ -28,6 +28,5 @@ body {
  * For the question label (number/code and mandatory)
  * If user add p or div : one line more
  */
-.question-number,
-.question-code
+.question-number,.question-code
 {float:left:margin-right:0.2em}
