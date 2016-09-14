@@ -8,20 +8,20 @@
  * @var $sTargetURL
  */
 ?>
-
+<!-- Must be included only one time (else : multiple id) -->
 <!-- views/survey/system/LanguageChanger -->
     <div class="form-group form-horizontal" >
         <label id="langchanger-label" for="langchanger" class="col-sm-4 col-xs-4 control-label text-right">
             <?php eT("Language:");?>
         </label>
-
         <div class='col-xs-8 col-sm-4'>
-            <?php echo CHtml::dropDownList('langchanger', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));?>
+            <?php echo CHtml::dropDownList('lang', $sSelected,$aListLang,array('id'=>'langchanger','class'=>$sClass,'data-targeturl'=>$sTargetURL));?>
         </div>
-        <div class='col-xs-0 col-sm-4'>
-            <!--  We don't have to add this button if in previewmode -->
+        <div class='sr-only'>
+            <!--  In previewmode the no-js functionality didn't work : no form (for $_POST['lang']+$_POST['changelangbtn'] value, javascript do $_GET in activateLanguageChanger function)-->
+            <!-- It must be a js-only button -->
             <?php
-               echo CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','style'=>'display:none;','class'=>'changelang jshide btn btn-default'));
+               echo CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide btn btn-default'));
             ?>
         </div>
     </div>

@@ -591,7 +591,26 @@ function submittokens($quotaexit=false)
                         }
                     }
                 }
-                SendEmailMessage($message, $subject, $sToAddress, $from, $sitename, $ishtml, null, $aRelevantAttachments);
+                $event = new PluginEvent('beforeTokenEmail');
+                $event->set('survey', $surveyid);
+                $event->set('type', 'confirm');
+                $event->set('model', 'confirm');
+                $event->set('subject', $subject);
+                $event->set('to', $sToAddress);
+                $event->set('body', $message);
+                $event->set('from', $from);
+                $event->set('bounce', getBounceEmail($surveyid));
+                $event->set('token', $token->attributes);
+                App()->getPluginManager()->dispatchEvent($event);
+                $subject = $event->get('subject');
+                $message = $event->get('body');
+                $to = $event->get('to');
+                $from = $event->get('from');
+                $bounce = $event->get('bounce');
+                if ($event->get('send', true) != false)
+                {
+                    SendEmailMessage($message, $subject, $to, $from, Yii::app()->getConfig("sitename"), $ishtml, $bounce, $aRelevantAttachments);
+                }
             }
      //   } else {
                 // Leave it to send optional confirmation at closed token
@@ -879,7 +898,7 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
     $thissurvey = getSurveyInfo($surveyid,$sLangCode);
-    
+
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
@@ -902,7 +921,7 @@ function buildsurveysession($surveyid,$preview=false)
 
     /**
     * This method has multiple outcomes that virtually do the same thing
-    * Possible scenarios/subscenarios are => 
+    * Possible scenarios/subscenarios are =>
     *   - No token required & no captcha required
     *   - No token required & captcha required
     *       > captcha may be wrong
@@ -916,7 +935,7 @@ function buildsurveysession($surveyid,$preview=false)
         "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !isset($_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']))
     );
 
-    /** 
+    /**
     *   Set subscenarios depending on scenario outcome
     */
     $subscenarios = array(
@@ -935,7 +954,7 @@ function buildsurveysession($surveyid,$preview=false)
 
         $subscenarios['tokenValid'] = ((!empty($oTokenEntry) && ($clienttoken != "")));
     }
-    else 
+    else
     {
         $subscenarios['tokenValid'] = true;
     }
@@ -948,7 +967,7 @@ function buildsurveysession($surveyid,$preview=false)
         $captcha = Yii::app()->getController()->createAction('captcha');
         $subscenarios['captchaCorrect'] = $captcha->validate($loadsecurity, false);
     }
-    else 
+    else
     {
         $subscenarios['captchaCorrect'] = true;
         $loadsecurity = false;
@@ -2334,7 +2353,7 @@ function SetSurveyLanguage($surveyid, $sLanguage)
         $default_survey_language= Survey::model()->findByPk($surveyid)->language;
         $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
         if (
-            empty($sLanguage)                                       //check if there 
+            empty($sLanguage)                                       //check if there
             || (!in_array($sLanguage, $additional_survey_languages))  //Is the language in the survey-language array
             || ($default_survey_language == $sLanguage)              //Is the $default_language the chosen language?
          )
