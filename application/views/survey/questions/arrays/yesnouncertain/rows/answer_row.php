@@ -55,7 +55,7 @@
     </td>
 
     <!-- No -->
-    <td class="answer_cell_N answer-item radio-item text-center">
+    <td class="answer_cell_N answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $myfname;?>"
@@ -71,7 +71,7 @@
 
     <!-- No Answer -->
     <?php if($no_answer):?>
-        <td class="answer-item radio-item noanswer-item">
+        <td class="answer_cell_ answer-item radio-item noanswer-item">
             <input
                 type="radio"
                 name="<?php echo $myfname;?>"
@@ -80,7 +80,7 @@
                 <?php echo $NAchecked?>
                 onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
             />
-            <label for="answer<?php echo $myfname;?>-">
+            <label for="answer<?php echo $myfname;?>-" class="sr-only">
                 <?php eT("No answer");?>
             </label>
         </td>
