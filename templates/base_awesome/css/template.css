@@ -30,3 +30,8 @@ body {
  */
 .question-number,.question-code
 {float:left:margin-right:0.2em}
+
+label{font-weight:normal}
+.question-text{font-size: 1.7em;}/* Need some color */
+
+.array2{background:#f9f9f9}

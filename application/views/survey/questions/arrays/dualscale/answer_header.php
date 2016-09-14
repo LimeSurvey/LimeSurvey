@@ -10,9 +10,9 @@
  */
 
 ?>
-<tr class="array1 header_row dontread <?php echo $class; ?>">
+<tr class="array1 header_row <?php echo $class; ?>" aria-hidden="true">
 
-    <th class="header_answer_text">&nbsp;</th>
+    <td class="header_answer_text">&nbsp;</td>
 
     <?php foreach ($labelans0 as $ld): ?>
         <th class='th-12 text-center'><?php echo $ld; ?></th>
@@ -31,7 +31,6 @@
     <?php if ($shownoanswer || $rightexists): ?>
         <td class="header_separator rigth_separator">&nbsp;</td>
     <?php endif; ?>
-
     <?php if ($shownoanswer): ?>
         <th class="header_no_answer text-center"><?php eT('No answer'); ?></th>
     <?php endif; ?>

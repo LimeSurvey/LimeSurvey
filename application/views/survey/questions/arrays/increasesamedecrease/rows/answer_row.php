@@ -20,15 +20,15 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="row-inc-same-dec well answers-list radio-list array<?php echo $zebra; ?><?php if($error){ echo " bg-warning";} ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
+<tr id="javatbd<?php echo $myfname;?>" class="row-inc-same-dec answers-list radio-list array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
-    <th class="answertext<?php if($error):?> text-danger<?php endif;?>">
-        <div id="answertext<?php echo $myfname;?>"><?php echo $answertext;?></div>
+    <th class="answertext" id="answertext<?php echo $myfname;?>">
+        <?php echo $answertext;?>
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" />
     </th>
 
     <!-- Increase -->
-    <td class="answer_cell_I answer-item radio-item text-center">
+    <td class="answer_cell_I answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $myfname;?>"
@@ -37,13 +37,13 @@
             <?php echo $Ichecked;?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
             />
-        <label for="answer<?php echo $myfname;?>-I" class="text-hide-md text-hide-lg">
+        <label for="answer<?php echo $myfname;?>-I" class="sr-only">
             <?php eT("Increase"); ?>
         </label>
     </td>
 
     <!-- Same -->
-    <td class="answer_cell_S answer-item radio-item text-center">
+    <td class="answer_cell_S answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $myfname; ?>"
@@ -52,13 +52,13 @@
             <?php echo $Schecked?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
         />
-        <label for="answer<?php echo $myfname; ?>-S" class="text-hide-md text-hide-lg">
+        <label for="answer<?php echo $myfname; ?>-S" class="sr-only">
             <?php eT("Same");?>
         </label>
     </td>
 
     <!-- Decrease -->
-    <td class="answer_cell_D answer-item radio-item text-center">
+    <td class="answer_cell_D answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $myfname;?>"
@@ -67,7 +67,7 @@
             <?php echo $Dchecked?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
         />
-        <label for="answer<?php echo $myfname;?>-D" class="text-hide-md text-hide-lg">
+        <label for="answer<?php echo $myfname;?>-D" class="sr-only">
             <?php eT("Decrease"); ?>
         </label>
     </td>
@@ -83,7 +83,7 @@
                 <?php echo $NAchecked?>
                 onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
             />
-            <label for="answer<?php echo $myfname;?>-" class="text-hide-md text-hide-lg">
+            <label for="answer<?php echo $myfname;?>-" class="sr-only">
                 <?php eT("No answer");?>
             </label>
         </td>

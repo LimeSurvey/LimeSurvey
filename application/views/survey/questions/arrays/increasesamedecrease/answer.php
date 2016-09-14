@@ -13,42 +13,38 @@
 ?>
 
 <!-- Array  increasesamedecrease -->
-
 <!-- answer -->
-<div class="no-more-tables no-more-tables-inc-same-dec">
-    <table class="table table-condensed  table-in-qanda-4 question subquestion-list questions-list  <?php echo $extraclass; ?>">
-        <colgroup class="col-responses">
-            <col class="col-answers"  style='width: <?php echo $answerwidth;?>%;'  />
+<table class="table question subquestion-list questions-list table-bordered <?php echo $extraclass; ?>">
+    <colgroup class="col-responses">
+        <col class="col-answers"  style='width: <?php echo $answerwidth;?>%;'  />
+        <?php
+            // columns/col.php
+            echo $sColumns;
+        ?>
+    </colgroup>
+    <thead class="thead-inc-same-dec" aria-hidden="true">
+        <tr class="array1">
+            <td>&nbsp;</td>
             <?php
-                // columns/col.php
-                echo $sColumns;
+                // rows/cell/thead.php
+                echo $sHeaders;
             ?>
-        </colgroup>
-        <thead class="thead-inc-same-dec" aria-hidden="true">
-            <tr class="array1">
-                <th>&nbsp;</th>
-
-                <?php
-                    // rows/cell/thead.php
-                    echo $sHeaders;
-                ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if($anscount==0):?>
+            <tr>
+                <th class="answertext">
+                    <?php eT('Error: This question has no answers.');?>
+                </th>
             </tr>
-        </thead>
-        <tbody>
+        <?php endif; ?>
 
-            <?php if($anscount==0):?>
-                <tr>
-                    <th class="answertext">
-                        <?php eT('Error: This question has no answers.');?>
-                    </th>
-                </tr>
-            <?php endif; ?>
+        <?php
+            // rows/answer_row.php
+            echo $sRows;
+        ?>
+    </tbody>
+</table>
 
-            <?php
-                // rows/answer_row.php
-                echo $sRows;
-            ?>
-        </tbody>
-    </table>
-</div>
 <!-- end of answer -->
