@@ -23,7 +23,7 @@
 ?>
 
 <!-- answer_td -->
-<td class="answer-cell-5 answer_cell_<?php echo $ld;?> question-item answer-item <?php echo $answertypeclass; ?>-item <?php echo $extraclass; ?>">
+<td class="answer_cell_<?php echo $ld;?> question-item answer-item <?php echo $answertypeclass; ?>-item <?php echo $extraclass; ?>">
         <input
             type="hidden"
             name="java<?php echo $myfname2;?>"
@@ -31,11 +31,9 @@
             value="<?php echo $value; ?>"
         />
 
-        <label for="answer<?php echo $myfname2;?>" class='col-xs-12 col-sm-12'></label>
-
-        <div class="text-right visible-xs" id="label-answer<?php echo $myfname2;?>">
+        <label for="answer<?php echo $myfname2;?>" class='sr-only'>
             <?php echo $dataTitle;?>
-        </div>
+        </label>
         <?php if($inputboxlayout == false):?>
             <!-- InputBox Layout False -->
             <select
@@ -45,12 +43,9 @@
                 onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
                 aria-labelledby="label-answer<?php echo $myfname2;?>"
             >
-
                 <option value="">
                     <?php eT('...'); ?>
                 </option>
-
-
                 <?php for($ii=$minvalue; ($reverse?$ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue): ?>
                     <?php $selected = (isset($value) && (string) $value == (string)$ii)?'SELECTED':''; ?>
                     <option value="<?php echo str_replace('.',$sSeparator,$ii); ?>" <?php echo $selected;?>>

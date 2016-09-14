@@ -14,45 +14,43 @@
  */
 ?>
 <!-- answer -->
-<div class="no-more-tables">
-    <table class="table question subquestion-list questions-list <?php echo $answertypeclass; ?>-list <?php echo $extraclass; ?>">
+<table class="table question subquestion-list questions-list <?php echo $answertypeclass; ?>-list <?php echo $extraclass; ?>">
 
-        <colgroup class="col-responses">
-            <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
+    <colgroup class="col-responses">
+        <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
 
-            <?php foreach ($labelans as $i=>$ld):?>
-                <col class="<?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;'/>
+        <?php foreach ($labelans as $i=>$ld):?>
+            <col class="<?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;'/>
+        <?php endforeach;?>
+
+        <?php if ($right_exists):?>
+            <col class="answertextright <?php // TODO: array2 alternation ?>" style='width: <?php echo $answerwidth;?>%;' />
+        <?php endif;?>
+    </colgroup>
+
+    <thead>
+        <tr aria-hidden="true">
+            <td>&nbsp;</td>
+
+            <?php foreach ($labelans as $ld): ?>
+                <th>
+                    <?php echo $ld;?>
+                </th>
             <?php endforeach;?>
 
             <?php if ($right_exists):?>
-                <col class="answertextright <?php // TODO: array2 alternation ?>" style='width: <?php echo $answerwidth;?>%;' />
+                <th>
+                    &nbsp;
+                </th>
             <?php endif;?>
-        </colgroup>
+        </tr>
+    </thead>
 
-        <thead>
-            <tr class="dontread">
-                <th class="text-center">&nbsp;</th>
-
-                <?php foreach ($labelans as $ld): ?>
-                    <th  class='th-11  text-<?php echo $textAlignment; ?>'>
-                        <?php echo $ld;?>
-                    </th>
-                <?php endforeach;?>
-
-                <?php if ($right_exists):?>
-                    <th class="text-<?php echo $textAlignment; ?>">
-                        &nbsp;
-                    </th>
-                <?php endif;?>
-            </tr>
-        </thead>
-
-        <tbody>
-            <?php
-                // rows/answer_row.php
-                echo $sAnswerRows;
-            ?>
-        </tbody>
-    </table>
-</div>
+    <tbody>
+        <?php
+            // rows/answer_row.php
+            echo $sAnswerRows;
+        ?>
+    </tbody>
+</table>
 <!-- end of answer -->

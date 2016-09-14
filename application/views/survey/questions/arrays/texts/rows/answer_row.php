@@ -2,7 +2,7 @@
 /**
  * Generate a row for the table
  *
- * @var $answer_tds  : the cells of each row, generated with the view rows/cells/*.php 
+ * @var $answer_tds  : the cells of each row, generated with the view rows/cells/*.php
  * @var $myfname
  * @var $error
  * @var $answertext
@@ -15,15 +15,9 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="<?php //TODO: alternation ?> well subquestion-list questions-list array<?php echo $zebra; ?>">
-    <th class="answertext">
-        <?php if($error): ?>
-            <div class="label label-danger" role="alert">
-                <?php echo $answertext; ?>
-            </div>
-        <?php else: ?>
-            <?php echo $answertext; ?>
-        <?php endif;?>
+<tr id="javatbd<?php echo $myfname;?>" class="subquestion-list questions-list array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>" role="radiogroup" aria-labelledby="answertext<?php echo $myfname;?>">
+    <th id="answertext<?php echo $myfname;?>" class="answertext control-label">
+        <?php echo $answertext; ?>
         <input
             type="hidden"
             name="java<?php echo $myfname;?>"
@@ -38,9 +32,9 @@
     <!-- Total -->
     <?php if($rightTd): ?>
         <?php if($rightTdEmpty): ?>
-            <td class="answertextright" style='text-align:left; width: <?php $answerwidth; ?>%;' >&nbsp;</td>
+            <td class="answertextright">&nbsp;</td>
         <?php else: ?>
-            <td class="answertextright" style='text-align:left; width: <?php $answerwidth; ?>%;' >
+            <td class="answertextright">
                 <?php echo $answertext; ?>
             </td>
         <?php endif; ?>

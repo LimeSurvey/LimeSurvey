@@ -6,10 +6,10 @@
   max-width: 100%;height: auto;
 }
 /* awesome-bootstrap-checkbox */
-li.radio-item{display:block}
+li.radio-item,li.checkbox-item{display:block}
 /* Else big label break*/
-.radio-item label {display:block}
-.radio-item input[type="radio"] {
+.radio-item label,.checkbox-item label {display:block}
+.radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {
     position:absolute;
     /* opacity: 1; // Must control it for accessibility */
 }
@@ -37,12 +37,12 @@ li.radio-item{display:block}
 table.question input[type="checkbox"],table.question input[type="radio"]{
 margin: 0;
 }
-.table td.radio-item {
+.table td.radio-item,.table td.checkbox-item{
     padding: 2px;
     padding-left: 22px;
 }
 /* show partially sr-only inside table */
-.radio-item label.sr-only{
+.radio-item label.sr-only,.checkbox-item label.sr-only{
     display:inline-block;
     overflow:hidden;
     width: 17px;
@@ -52,14 +52,17 @@ margin: 0;
     text-indent: 21px;
 }
 /* no argin on label : no margiun after and before too */
-.radio-item label.sr-only::before {
+.radio-item label.sr-only::before,.checkbox-item label.sr-only::before  {
     margin-left:0;
 }
 .radio-item label.sr-only::after {
     margin-left:0;
 }
+.checkbox-item label.sr-only::after {
+    margin-left:-20px;margin-top:-2px
+}
 /* Hide the other content inside sr-only */
-.radio-item label.sr-only > * {
+.radio-item label.sr-only > *,.checkbox-item label.sr-only > * {
     height: 1px;
     margin: -1px;
     overflow: hidden;
@@ -93,8 +96,8 @@ only screen and (max-width: 760px),
     .radio-item label.sr-only{
         display:block;
     }
-    .no-more-table .radio-item label.sr-only,
-    .no-more-table .radio-item label.sr-only > *
+    .no-more-table label.sr-only,
+    .no-more-table label.sr-only > *
     {
         overflow:visible;
         width: auto;
@@ -104,13 +107,15 @@ only screen and (max-width: 760px),
         clip: auto;
         position: relative;
     }
-    .no-more-table .radio-item label.sr-only > img{
+    .no-more-table .radio-item label.sr-only
+    {
 
     }
-    .no-more-table .radio-item label.sr-only::before {
+
+    .no-more-table .radio-item label.sr-only::before,.no-more-table .checkbox-item label.sr-only::before {
         margin-left:-20px;
     }
-    .no-more-table .radio-item label.sr-only::after {
+    .no-more-table .radio-item label.sr-only::after,.no-more-table .checkbox-item label.sr-only::after {
         margin-left:-20px;
     }
 }

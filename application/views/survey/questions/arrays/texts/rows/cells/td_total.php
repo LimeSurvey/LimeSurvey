@@ -9,7 +9,7 @@
     <?php if($empty):?>
         &nbsp;
     <?php else:?>
-        <label class="hidden-md hidden-lg"><?php eT("Total");?></label>
+        <label class="sr-only"><?php eT("Total");?></label>
         <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
     <?php endif;?>
 </td>
