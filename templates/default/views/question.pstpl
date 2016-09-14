@@ -18,7 +18,7 @@
 
     <!-- Answer -->
     <div class="answer-container col-sm-12">
-      <div class="answer">
+      <div class="answer no-more-table">
         {ANSWER}
       </div>
     </div>

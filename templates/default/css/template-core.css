@@ -6,37 +6,109 @@ img,video,svg{
   max-width: 100%;height: auto;
 }
 /* Some fix specific for list of answers */
-.list-unstyled.answers-list{margin-bottom:0}
-
-/* For awesome : we need sr-only inside table */
-.radio-item label.sr-only{
-overflow:visible;
-width:17px;
-height:17px;
-color: transparent;
-margin-right:-17px;
+.answers-list{margin-bottom:0}
+/* awesome-bootstrap-checkbox */
+li.radio-item{display:block}
+/* Else big label break*/
+.radio-item label {display:block}
+.radio-item input[type="radio"] {
+    position:absolute;
+    /* opacity: 1; // Must control it for accessibility */
 }
+/**
+ * Table .question feature
+ */
+/* We have some settings to set width of the table : use it */
+.table.question{table-layout:fixed}
+.table.question{width:100%}
+/* Basic alignment */
+.table.question td
+{text-align:center;vertical-align:middle}
+.table.question thead th
+{text-align:center;vertical-align:bottom}
+.table.question .answertext{text-align:right}
+.table.question .answertextright{text-align:left}
+
+/** awesome-bootstrap-checkbox inside table with an sr-only label */
+/* reset the margin set by boostrap */
+table.question input[type="checkbox"],table.question input[type="radio"]{
+margin: 0;
+}
+.table > tbody > tr > td.radio-item {
+    padding: 2px;
+    padding-left: 22px;
+}
+
+/* show partially sr-only inside table */
+.radio-item label.sr-only{
+    display:inline-block;
+    overflow:hidden;
+    width: 17px;
+    height: 17px;
+    margin-left:-20px;
+    line-height: 21px;
+    text-indent: 21px;
+}
+/* no argin on label : no margiun after and before too */
+.radio-item label.sr-only::before {
+    margin-left:0;
+}
+.radio-item label.sr-only::after {
+    margin-left:0;
+}
+/* Hide the other content inside sr-only */
 .radio-item label.sr-only > * {
-    border: 0 none;
-    clip: rect(0px, 0px, 0px, 0px);
     height: 1px;
     margin: -1px;
     overflow: hidden;
     padding: 0;
-    position: absolute;
     width: 1px;
+    position:absolute;
 }
-table.question input[type="checkbox"],table.question input[type="radio"]{
-margin: 0;
+/*
+Max width before this PARTICULAR table gets nasty
+For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
+*/
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    .no-more-table table.question,.no-more-table thead,.no-more-table tbody,.no-more-table th,.no-more-table td,.no-more-table tr {
+        display: block;
+        text-align:left;
+    }
+    .no-more-table thead{display:none} /* We don't need it for accessibility : we already have the label */
+
+    .table.question td
+    {text-align:left;}
+    .table.question thead th
+    {text-align:left;}
+
+    .no-more-table .table > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
+    .table.question .answertext{text-align:left}
+    .table.question .answertextright{text-align:right}
+
+    /* Show the label */
+    .radio-item label.sr-only{
+        display:block;
+    }
+    .no-more-table .radio-item label.sr-only,
+    .no-more-table .radio-item label.sr-only > *
+    {
+        overflow:visible;
+        width: auto;
+        height: auto;
+        margin-left:0;
+        text-indent: 0;
+        clip: auto;
+        position: relative;
+    }
+    .no-more-table .radio-item label.sr-only > img{
+
+    }
+    .no-more-table .radio-item label.sr-only::before {
+        margin-left:-20px;
+    }
+    .no-more-table .radio-item label.sr-only::after {
+        margin-left:-20px;
+    }
 }
-
-/**
- * Table alignment
- */
-.table.question,.table.question th,.table.question td
-{text-align:center;vertical-align:middle}
-.table.question thead th
-{vertical-align:bottom}
-
-table.question .answertext{text-align:right}
-table.question .answertextright{text-align:left}

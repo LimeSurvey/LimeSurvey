@@ -14,7 +14,7 @@
 <!-- Array -->
 
 <!-- answer -->
-<table class="table question array-no-dropdown subquestion-list questions-list table-bordered no-more-tables <?php echo $extraclass; ?>">
+<table class="table question array-no-dropdown subquestion-list questions-list table-bordered no-more-tables table-bordered<?php echo $extraclass; ?>">
     <colgroup class="col-responses">
         <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;' />
         <?php
@@ -31,7 +31,6 @@
         </tr>
     </thead>
     <tbody>
-
         <?php if($anscount==0):?>
             <tr>
                 <th class="answertext">
@@ -39,7 +38,6 @@
                 </th>
             </tr>
         <?php endif; ?>
-
         <?php
             // rows/answer_row.php
             echo $sRows;

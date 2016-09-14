@@ -20,6 +20,5 @@
         // defined in rows/cells/*
         echo $answer_tds;
     ?>
-
 </tr>
 <!-- end of answer_row -->

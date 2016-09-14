@@ -10,8 +10,8 @@
  * @var $tdRight
  */
 ?>
-<tr id="javatbd<?php echo $myfname;?>" class="well question-item answer-item dropdown-item array<?php echo $zebra; ?><?php if($error){ echo " bg-warning";} ?>" >
-    <th class="answertext align-middle<?php if($error){ echo " text-danger";} ?>">
+<tr id="javatbd<?php echo $myfname;?>" class="question-item answer-item dropdown-item array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>" >
+    <th class="answertext">
         <label for="answer<?php echo $myfname;?>">
             <?php echo $answertext; ?>
         </label>
@@ -33,7 +33,7 @@
     </td>
 
     <?php if ($right_exists): ?>
-        <th class='answertextright align-middle'>
+        <th class='answertextright'>
             <label>
                 <?php echo $answertextright; ?>
             </label>

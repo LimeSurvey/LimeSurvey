@@ -11,6 +11,6 @@
 		{QUESTION_FILE_VALID_MESSAGE} <!-- unsure still used -->
 		{if(!is_empty(trim(strip_tags(QUESTION_HELP))),"<div class='help'>"+QUESTION_HELP+"</div>","")}<!-- in 2.06 : come from qanda_helper -->
 	</div>
-	<div class="answers-wrapper clearfix">{ANSWER}</div>
+	<div class="answers-wrapper clearfix no-more-table">{ANSWER}</div>
 	{if(!is_empty(QUESTIONHELP),"<div class='question-help clearfix'>"+QUESTIONHELP+"</div>","")}
 </div>

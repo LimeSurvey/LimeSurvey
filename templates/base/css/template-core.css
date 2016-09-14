@@ -1,8 +1,8 @@
 /**
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
-/* Boostrap don't do some reset */
-img,video,svg{
+/* Boostrap don't do some reset : do it in answer part*/
+.answers-wrapper img,.answers-wrapper video,.answers-wrapper svg{
   max-width: 100%;height: auto;
 }
 /**

@@ -12,14 +12,13 @@
 <!-- Array -->
 
 <!-- answer -->
-<div class="no-more-tables no-more-tables-array-dropdown">
-    <table class="table table-condensed question subquestion-list questions-list  <?php echo $extraclass; ?>">
-        <tbody>
-            <?php
-                // rows/answer_row.php
-                echo $sRows;
-            ?>
-        </tbody>
-    </table>
-</div>
+<table class="table question subquestion-list questions-list  <?php echo $extraclass; ?>">
+    <tbody>
+        <?php
+            // rows/answer_row.php
+            echo $sRows;
+        ?>
+    </tbody>
+</table>
+
 <!-- end of answer -->

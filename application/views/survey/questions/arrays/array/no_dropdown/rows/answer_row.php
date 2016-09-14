@@ -19,7 +19,6 @@
         // Defined in answer_td view
         echo $answer_tds;
     ?>
-
     <?php if ($right_exists): ?>
         <th class='answertextright'>
             <?php echo $answertextright; ?>
