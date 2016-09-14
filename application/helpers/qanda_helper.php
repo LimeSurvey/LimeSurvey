@@ -4868,10 +4868,14 @@ function do_array($ia)
             $fn++;
         }
 
+        $responsewidth  = ($right_exists) ? 100-$answerwidth:100-$answerwidth*2;
         $answer = doRender('/survey/questions/arrays/array/dropdown/answer', array
         (
             'extraclass' => $extraclass,
             'sRows'      => $sRows,
+            'answerwidth'=> $answerwidth,
+            'responsewidth'=> $responsewidth,
+            'right_exists'=> $right_exists,
         ),  true);
 
     }
