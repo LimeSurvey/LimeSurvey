@@ -619,13 +619,13 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
 --
 -- User settings table
 --
-CREATE TABLE IF NOT EXISTS `prefix_user_settings` (
+CREATE TABLE IF NOT EXISTS `prefix_settings_user` (
     `uid` int(11) NOT NULL,
     `entity` VARCHAR(15) DEFAULT NULL,
     `entity_id` VARCHAR(31) DEFAULT NULL,
-    `key` VARCHAR(63) NOT NULL,
-    `value` TEXT DEFAULT NULL,
-    PRIMARY KEY (`id`, `entity`, `entity_id`, `key`)
+    `stg_name` VARCHAR(63) NOT NULL,
+    `stg_value` TEXT DEFAULT NULL,
+    PRIMARY KEY (`id`, `entity`, `entity_id`, `stg_name`)
 ) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --

@@ -613,12 +613,12 @@ CREATE INDEX [notif_hash_index] ON [prefix_notifications] ([hash]);
 --
 -- User settings table
 --
-CREATE TABLE prefix_user_settings (
+CREATE TABLE prefix_settings_user (
     [uid] int NOT NULL,
     [entity] varchar(15) DEFAULT NULL,
     [entity_id] varchar(31) DEFAULT NULL,
-    [key] varchar(63) NOT NULL,
-    [value] nvarchar(max) DEFAULT NULL,
+    [stg_name] varchar(63) NOT NULL,
+    [stg_value] nvarchar(max) DEFAULT NULL,
     PRIMARY KEY ([uid], [entity], [entity_id], [key])
 );
 

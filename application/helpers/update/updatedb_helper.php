@@ -1468,13 +1468,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * @since 2016-08-29
          */
         if ($iOldDBVersion < 263) {
-            $oDB->createCommand()->createTable('{{user_settings}}', array(
+            $oDB->createCommand()->createTable('{{settings_user}}', array(
                 'uid' => 'integer NOT NULL',
                 'entity' => 'string(15)',
                 'entity_id' => 'string(31)',
-                'key' => 'string(63) not null',
-                'value' => 'text',
-                'PRIMARY KEY (uid, entity, entity_id, key)'
+                'stg_name' => 'string(63) not null',
+                'stg_value' => 'text',
+                'PRIMARY KEY (uid, entity, entity_id, stg_name)'
             ));
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>263),"stg_name='DBVersion'");
         }

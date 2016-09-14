@@ -622,12 +622,12 @@ CREATE INDEX hash_index ON prefix_notifications USING btree (hash);
 --
 -- User settings table
 --
-CREATE TABLE prefix_user_settings (
+CREATE TABLE prefix_settings_user (
     "uid" integer NOT NULL,
     "entity" character varying(15) DEFAULT NULL,
     "entity_id" character varying(31) DEFAULT NULL,
-    "key" character varying(63) NOT NULL,
-    "value" text NULL,
+    "stg_name" character varying(63) NOT NULL,
+    "stg_value" text NULL,
     CONSTRAINT prefix_user_settings_pkey PRIMARY KEY (uid, entity, entity_id, key)
 );
 
