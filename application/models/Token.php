@@ -205,7 +205,7 @@
                 $bIsValidToken = false;
                 while ($bIsValidToken == false && $invalidtokencount<50)
                 {
-                    $newtoken =$this::generateRandomToken($tokenlength);
+                    $newtoken =$this::generateRandomToken($tokenLength);
                     if (!isset($existingtokens[$newtoken]))
                     {
                         $existingtokens[$newtoken] = true;
