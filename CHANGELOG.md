@@ -2,6 +2,7 @@
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
 ## unreleased
+- Fixed issue: ~ and _ in tokens hard to manually enter
 
 ### Feature
 - Allow plugin to add new question attributes

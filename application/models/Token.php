@@ -138,11 +138,11 @@
         public function generateToken()
         {
             $length = $this->survey->tokenlength;
-            $this->token = \Yii::app()->securityManager->generateRandomString($length);
+            $this->token = $this::generateRandomToken($length);
             $counter = 0;
             while (!$this->validate('token'))
             {
-                $this->token = \Yii::app()->securityManager->generateRandomString($length);
+                $this->token = $this::generateRandomToken($length);
                 $counter++;
                 // This is extremely unlikely.
                 if ($counter > 10)
@@ -151,6 +151,16 @@
                 }
             }
         }
+
+        /**
+        * Creates a random token string without special characters
+        *
+        * @param mixed $tokenlength
+        */
+        public static function generateRandomToken($tokenlength){
+            return str_replace(array('~','_'),array('a','z'),Yii::app()->securityManager->generateRandomString($tokenlength));
+        }
+
         /**
          * Sanitize token show to the user (replace sanitize_helper sanitize_token)
          * @param string token to sanitize
@@ -183,13 +193,11 @@
             $criteria = $this->getDbCriteria();
             $criteria->select = 'token';
             $ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
-
             // select all existing tokens
             foreach ($ntresult as $tkrow)
             {
                 $existingtokens[$tkrow['token']] = true;
             }
-
             $newtokencount = 0;
             $invalidtokencount=0;
             foreach ($tkresult as $tkrow)
@@ -197,7 +205,7 @@
                 $bIsValidToken = false;
                 while ($bIsValidToken == false && $invalidtokencount<50)
                 {
-                    $newtoken = Yii::app()->securityManager->generateRandomString($tokenLength);
+                    $newtoken =$this::generateRandomToken($tokenlength);
                     if (!isset($existingtokens[$newtoken]))
                     {
                         $existingtokens[$newtoken] = true;

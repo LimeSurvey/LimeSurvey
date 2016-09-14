@@ -957,7 +957,7 @@ class tokens extends Survey_Common_Action
             // Fill an array with all existing tokens
             $existingtokens = array();
             $tokenModel     = Token::model($iSurveyId);
-			$criteria       = $tokenModel->getDbCriteria();
+            $criteria       = $tokenModel->getDbCriteria();
             $criteria->select = 'token';
             $criteria->distinct = true;
             $command = $tokenModel->getCommandBuilder()->createFindCommand($tokenModel->getTableSchema(),$criteria);
@@ -971,28 +971,28 @@ class tokens extends Survey_Common_Action
             $newDummyToken=0;
             while ($newDummyToken < $amount && $invalidtokencount < 50)
             {
-				$token = Token::create($iSurveyId);
-				$token->setAttributes($aData, false);
+                $token = Token::create($iSurveyId);
+                $token->setAttributes($aData, false);
 
                 $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->firstname);
                 $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->lastname);
                 $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->email);
 
-				$attempts = 0;
+                $attempts = 0;
                 do {
-					$token->token = Yii::app()->securityManager->generateRandomString($tokenlength);
-					$attempts++;
-				} while (isset($existingtokens[$token->token]) && $attempts < 50);
+                    $token->token = Token::generateRandomToken($tokenlength);
+                    $attempts++;
+                } while (isset($existingtokens[$token->token]) && $attempts < 50);
 
-				if ($attempts == 50)
-				{
-					throw new Exception('Something is wrong with your random generator.');
-				}
+                if ($attempts == 50)
+                {
+                    throw new Exception('Something is wrong with your random generator.');
+                }
 
                 $existingtokens[$token->token] = true;
-				$token->save();
-				$newDummyToken++;
-			}
+                $token->save();
+                $newDummyToken++;
+            }
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
             if(!$invalidtokencount)
@@ -1021,7 +1021,7 @@ class tokens extends Survey_Common_Action
         {
             $tokenlength = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
 
-			$thissurvey = getSurveyInfo($iSurveyId);
+            $thissurvey = getSurveyInfo($iSurveyId);
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
             $aData['tokenlength'] = $tokenlength;
