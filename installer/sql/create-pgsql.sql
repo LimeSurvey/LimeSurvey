@@ -628,7 +628,7 @@ CREATE TABLE prefix_settings_user (
     "entity_id" character varying(31) DEFAULT NULL,
     "stg_name" character varying(63) NOT NULL,
     "stg_value" text NULL,
-    CONSTRAINT prefix_user_settings_pkey PRIMARY KEY (uid, entity, entity_id, key)
+    CONSTRAINT prefix_user_settings_pkey PRIMARY KEY (uid, entity, entity_id, stg_name)
 );
 
 --

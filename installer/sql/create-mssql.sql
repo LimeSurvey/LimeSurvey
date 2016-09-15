@@ -619,7 +619,7 @@ CREATE TABLE prefix_settings_user (
     [entity_id] varchar(31) DEFAULT NULL,
     [stg_name] varchar(63) NOT NULL,
     [stg_value] nvarchar(max) DEFAULT NULL,
-    PRIMARY KEY ([uid], [entity], [entity_id], [key])
+    PRIMARY KEY ([uid], [entity], [entity_id], [stg_name])
 );
 
 --
