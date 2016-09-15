@@ -1434,12 +1434,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
         }
 
+        if ($iOldDBVersion < 260) {
+            alterColumn('{{participant_attribute_names}}','defaultname',"string(255)",false);
+            alterColumn('{{participant_attribute_names_lang}}','attribute_name',"string(255)",false);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
+        }
+
         /**
          * The hash value of a notification is used to calculate uniqueness.
          * @since 2016-08-10
          * @author Olle Haerstedt
          */
-        if ($iOldDBVersion < 260) {
+        if ($iOldDBVersion < 261) {
             addColumn('{{notifications}}', 'hash', 'string(64)');
             $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
 
@@ -1450,17 +1456,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Plugin JSON config file
          * @since 2016-08-22
          */
-        if ($iOldDBVersion < 261)
+        if ($iOldDBVersion < 262)
         {
             addColumn('{{plugins}}', 'version', 'string(32)');
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
-        }
-
-        if ($iOldDBVersion < 262) {
-            alterColumn('{{participant_attribute_names}}','defaultname',"string(255)",false);
-            alterColumn('{{participant_attribute_names_lang}}','attribute_name',"string(255)",false);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
         }
 
         /**
