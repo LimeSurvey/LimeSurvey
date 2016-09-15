@@ -23,7 +23,7 @@
 <tr  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item" <?php echo $sDisplayStyle;?>>
     <td class='text-right align-middle'>
         <?php if($alert):?>
-            <label class="control-label numeric-label text-danger errormandatory"  role="alert">
+            <label class="control-label numeric-label label label-danger errormandatory"  role="alert">
                 <?php echo $labelText;?>
             </label> <!-- alert -->
         <?php else:?>

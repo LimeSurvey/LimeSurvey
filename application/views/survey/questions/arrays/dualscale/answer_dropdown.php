@@ -83,7 +83,7 @@
                         <label for="answer<?php echo $ansrow['myfid0']; ?>">
 
                             <?php if ($ansrow['alert']): ?>
-                                <div class="text-danger" role="alert">
+                                <div class="label label-danger" role="alert">
                                     <?php echo $ansrow['question']; ?>
                                 </div>
                             <?php else: ?>

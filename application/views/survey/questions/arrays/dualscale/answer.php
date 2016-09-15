@@ -109,7 +109,7 @@
                     <?php echo $ansrow['hiddenfield']; ?>
 
                     <?php if ($ansrow['showmandatoryviolation']): ?>
-                        <div class="text-danger">
+                        <div class="label label-danger">
                             <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
                             <?php echo $ansrow['answertext']; ?>
                         </div>

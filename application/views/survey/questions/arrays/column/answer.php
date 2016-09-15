@@ -16,7 +16,7 @@
                 foreach ($aQuestions as $i=>$question): ?>
                     <?php if ($question['errormandatory']): ?>
                         <th class='text-center<?php echo ($i % 2 == 0)?' array2':' well';?>'>
-                            <span class="text-danger" role="alert">
+                            <span class="label label-danger" role="alert">
                                 <?php echo $question['question']; ?>
                             </span >
                         </th>
