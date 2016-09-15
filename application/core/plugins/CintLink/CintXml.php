@@ -30,6 +30,14 @@ final class CintXml
         $url = 'https://' . $apiKey . '.cds.cintworks.net/';
         $curl = new Curl();
         $this->raw = $curl->get($url);
+
+        if (!is_string($this->raw))
+        {
+            // TODO: Better error message
+            // TODO: Ignore silently?
+            throw new Exception('Could not get Xml file using Curl - is you server configured properly?');
+        }
+
         $this->xml = new SimpleXmlElement($this->raw);
     }
 

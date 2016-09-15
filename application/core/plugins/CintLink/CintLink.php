@@ -843,8 +843,12 @@ class CintLink extends \ls\pluginmanager\PluginBase
         App()->clientScript->registerScriptFile("https://" . $this->cintApiKey . ".cds.cintworks.net/assets/cint-link-1-0-0.js");
 
         // Need to include this manually so Ajax loading of gridview will work
-        App()->clientScript->registerScriptFile('/framework/zii/widgets/assets/gridview/jquery.yiigridview.js');
-        App()->clientScript->registerScriptFile('/framework/web/js/source/jquery.ba-bbq.min.js');
+        $baseScriptUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets'));
+        App()->clientScript->registerScriptFile($baseScriptUrl . '/gridview/jquery.yiigridview.js');
+
+        // TODO: Use asset maganer for this too
+        App()->clientScript->registerScriptFile(Yii::app()->baseUrl .
+            '/application/vendor/yiisoft/yii/framework/web/js/source/jquery.ba-bbq.js');
     }
 
     /**
