@@ -437,7 +437,8 @@ class SurveyRuntimeHelper {
             if (!isset($_SESSION[$LEMsessid]['step']))
             {
                 buildsurveysession($surveyid);
-
+                randomizationGroupsAndQuestions($surveyid);
+                initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
 
                 if($surveyid != LimeExpressionManager::getLEMsurveyId())
                     LimeExpressionManager::SetDirtyFlag();

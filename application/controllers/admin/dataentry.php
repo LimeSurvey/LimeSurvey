@@ -685,6 +685,9 @@ class dataentry extends Survey_Common_Action
                         case "id":
                             $aDataentryoutput .= CHtml::tag('span', array('style' => 'font-weight: bold;'), '&nbsp;'.$idrow[$fname['fieldname']]);
                             break;
+                        case "seed":
+                            $aDataentryoutput .= CHtml::tag('span', array(), '&nbsp;'.$idrow[$fname['fieldname']]);
+                            break;
                         case "5": //5 POINT CHOICE radio-buttons
                             for ($i=1; $i<=5; $i++)
                             {
