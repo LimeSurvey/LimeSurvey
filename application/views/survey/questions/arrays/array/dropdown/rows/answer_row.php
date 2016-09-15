@@ -13,7 +13,7 @@
 <tr id="javatbd<?php echo $myfname;?>" class="well question-item answer-item dropdown-item array<?php echo $zebra; ?>">
     <th class="answertext align-middle">
         <?php if($error): ?>
-            <div class="label label-danger" role="alert">
+            <div class="text-danger" role="alert">
                 <?php echo $answertext; ?>
             </div>
         <?php else:?>

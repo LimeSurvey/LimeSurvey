@@ -32,7 +32,7 @@
 
     <div class="form-group row">
         <?php if($alert):?>
-            <div class="label label-danger errormandatory"  role="alert">
+            <div class="text-danger errormandatory"  role="alert">
                 <?php echo $labelText;?>
             </div> <!-- alert -->
         <?php else:?>

@@ -22,7 +22,7 @@
     <th class="answertext">
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value; ?>" />
         <?php if($error): ?>
-            <div class="label label-danger" role="alert">
+            <div class="text-danger" role="alert">
                 <?php echo $answertext;?>
             </div>
         <?php else: ?>

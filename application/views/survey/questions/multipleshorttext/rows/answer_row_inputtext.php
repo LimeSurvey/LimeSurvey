@@ -24,7 +24,7 @@
         <?php if ($alert):?>
             <!--  color code missing mandatory questions red -->
             <div class="col-xs-12 col-sm-<?php echo $sLabelWidth; ?> control-label">
-                <div class="label label-danger errormandatory pull-right" role="alert">
+                <div class="text-danger errormandatory pull-right" role="alert">
                     <?php echo $question; ?>
                 </div>
             </div>

@@ -14,7 +14,7 @@
 <tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list array<?php echo $zebra; ?>"  <?php echo $sDisplayStyle; ?>>
     <th class="answertext <?php echo $textAlignClass;?>" style="width: <?php echo $answerwidth;?>%;">
         <?php if($error): ?>
-            <div class="label label-danger" role="alert">
+            <div class="text-danger" role="alert">
                 <?php echo $answertext;?>
             </div>
         <?php else: ?>
