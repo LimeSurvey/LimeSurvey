@@ -616,4 +616,4 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '260');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '261');
