@@ -13,7 +13,7 @@
 <tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list array<?php echo $zebra; ?>">
     <th class="answertext">
         <?php if($error): ?>
-            <div class="label label-danger" role="alert">
+            <div class="text-danger" role="alert">
                 <?php echo $answertext; ?>
             </div>
         <?php else:?>
