@@ -65,6 +65,7 @@ class InstallerConfigForm extends CFormModel
     {
         return array(
 			// Database
+            array('dbname','match', 'pattern' => '/^[a-zA-Z_][a-zA-Z0-9_]*$/'), // Check that database name is a single word with options underscores not starting with a number
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
 			array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
 			array('dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'),

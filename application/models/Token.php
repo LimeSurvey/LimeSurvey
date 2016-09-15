@@ -137,12 +137,12 @@
          */
         public function generateToken()
         {
-            $length = $this->survey->tokenlength;
-            $this->token = \Yii::app()->securityManager->generateRandomString($length);
+            $iTokenLength = $this->survey->tokenlength;
+            $this->token = $this::generateRandomToken($iTokenLength);
             $counter = 0;
             while (!$this->validate(array('token')))
             {
-                $this->token = \Yii::app()->securityManager->generateRandomString($length);
+                $this->token = $this::generateRandomToken($iTokenLength);
                 $counter++;
                 // This is extremely unlikely.
                 if ($counter > 10)
@@ -151,6 +151,16 @@
                 }
             }
         }
+
+        /**
+        * Creates a random token string without special characters
+        *
+        * @param mixed $tokenlength
+        */
+        public static function generateRandomToken($iTokenLength){
+            return str_replace(array('~','_'),array('a','z'),Yii::app()->securityManager->generateRandomString($iTokenLength));
+        }
+
         /**
          * Sanitize token show to the user (replace sanitize_helper sanitize_token)
          * @param string token to sanitize
@@ -170,7 +180,7 @@
                 throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens");
             }
             $surveyId = $this->dynamicId;
-            $tokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
+            $iTokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
 
             $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
             //Exit early if there are not empty tokens
@@ -183,13 +193,11 @@
             $criteria = $this->getDbCriteria();
             $criteria->select = 'token';
             $ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
-
             // select all existing tokens
             foreach ($ntresult as $tkrow)
             {
                 $existingtokens[$tkrow['token']] = true;
             }
-
             $newtokencount = 0;
             $invalidtokencount=0;
             foreach ($tkresult as $tkrow)
@@ -197,7 +205,7 @@
                 $bIsValidToken = false;
                 while ($bIsValidToken == false && $invalidtokencount<50)
                 {
-                    $newtoken = Yii::app()->securityManager->generateRandomString($tokenLength);
+                    $newtoken =$this::generateRandomToken($iTokenLength);
                     if (!isset($existingtokens[$newtoken]))
                     {
                         $existingtokens[$newtoken] = true;

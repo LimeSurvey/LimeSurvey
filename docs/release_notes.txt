@@ -35,6 +35,86 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from  2.51.3 (build 160907) to 2.51.4 (build 160908) Sept 08, 2016
+-Fixed issue #11615: Input is not properly supressed when setting "numbers only" restriction (markusfluer)
+-Fixed issue #11621: Installer allows invalid database names (Carsten Schmitz)
+-Fixed issue #11624: Zeros in Excel export are formatted as text not as numbers (Carsten Schmitz)
+-Fixed issue #11628: When LDAP enabled and default the login form does not look properly (Carsten Schmitz)
+-Fixed issue #11633: User can access closed surveys of no tokens were generated (markusfluer)
+-Fixed issue #11634: Quick add answer options, all options have same code (markusfluer)
+-Fixed issue #11635: Array by column has no zebra style (Carsten Schmitz)
+-Fixed issue: [security] Closed surveys accessible without token if no participants having a token exist (markusfluer)
+-Fixed issue: Active and running filter not working if there is only start- or enddate (markusfluer)
+-Fixed issue: Active and running not working on postgres (markusfluer)
+-Fixed issue: Custom templates have a Open Modal instead of a exit and clear button (markusfluer)
+-Fixed issue: User with token update permission does not see 'Send invitation/reminder' menu entries (Carsten Schmitz)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Serbian by MilaVeljovic
+
+Changes from   2.51.2 (build 160906) to 2.51.3 (build 160907) Sept 06, 2016
+-Fixed issue: Template editor not working properly (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Serbian by MilaVeljovic
+
+Changes from   2.51.1 (build 160901) to 2.51.2 (build 160906) Sept 06, 2016
+-Fixed issue #11599: Any way to show active and not expired surveys (markusfluer)
+-Fixed issue #11613: Importing a participant having an empty token field is not possible (Carsten Schmitz)
+-Fixed issue #11616: Data of "Other" field at "Multiple options with comments" question not shown on revisiting survey page (Carsten Schmitz)
+-Fixed issue #11617: At question import the question code gets replaced though the code doesn't exist in that survey (Carsten Schmitz)
+-Fixed issue #11619: Error 500 tokens (array short-notation) (Olle Haerstedt)
+-Fixed issue: Nojavascript tag showing in custom templates
+-Fixed issue: Broken HTML in survey listing (Denis Chenu)
+#Updated translation: Afrikaans by geebee100
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Czech by slansky, sedlacev, VBraun, jelen1
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Slovak by dusanm
+#Updated translation: Slovak by gadeynebram, gmambro, dusanm
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+
+Changes from  2.51.0 (build 160829) to 2.51.1 (build 160901) Sept 01, 2016
+-Fixed issue #11565: When importing participants, can't un-set attribute match once set (Olle Haerstedt)
+-Fixed issue #11581: Active label on survey list is confusing (Carsten Schmitz)
+-Fixed issue #11591: Typing mistake in text string (Carsten Schmitz)
+-Fixed issue #11592: Fatal error with clean 160829 (Olle Haerstedt)
+-Fixed issue #11598: Some survey responses cannot be exported to SPSS (Carsten Schmitz)
+-Fixed issue #11603: Upgrading from 2.50-160616 to 2.51-160829 fails with database error on MS-SQL (Olle Haerstedt)
+-Fixed issue: Renew key message even though there is no manual renewal possible (Carsten Schmitz)
+-Fixed issue: Statistics show more than allowed filter for ranking question type (Denis Chenu)
+-Fixed issue: Survey cannot proceed anymore (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by NdK, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by aesteban
+
 Changes from  2.50.1 (build 160823) to 2.51.0 (build 160829) Aug 29, 2016
 -New feature: Option to automatically rename colliding question codes on question import (Carsten Schmitz)
 -New feature: Set X-Frame-Options in global settings to restrict iframe embedding to the same server (Carsten Schmitz)

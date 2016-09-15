@@ -371,9 +371,22 @@ class QuestionGroup extends LSActiveRecord
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid = ' . $surveyId);
         $criteria->mergeWith(array(
-          'order' => 'gid DESC'
+            'order' => 'gid DESC'
         ));
         return self::model()->find($criteria);
+    }
+
+    /*
+     * Used in frontend helper, buildsurveysession.
+     * @param int $surveyid
+     * @return int
+     */
+    public static function getTotalGroupsWithoutQuestions($surveyid)
+    {
+        $sQuery= "select count(*) from {{groups}}
+            left join {{questions}} on  {{groups}}.gid={{questions}}.gid
+            where {{groups}}.sid={$surveyid} and qid is null";
+        return Yii::app()->db->createCommand($sQuery)->queryScalar();
     }
 
 }

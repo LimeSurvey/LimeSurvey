@@ -284,7 +284,7 @@ class tokens extends Survey_Common_Action
         // TODO: permission checks
         $aTokenId = Yii::app()->getRequest()->getParam('sItem');
         $iSid = Yii::app()->getRequest()->getParam('sid');
-        TokenDynamic::model($iSid)->deleteRecords([$aTokenId]);
+        TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         return true;
     }
 
@@ -1080,7 +1080,7 @@ class tokens extends Survey_Common_Action
             }
 
             $amount = sanitize_int(Yii::app()->request->getPost('amount'));
-            $tokenlength = sanitize_int(Yii::app()->request->getPost('tokenlen'));
+            $iTokenLength = sanitize_int(Yii::app()->request->getPost('tokenlen'));
 
             // Fill an array with all existing tokens
             $existingtokens = array();
@@ -1108,7 +1108,7 @@ class tokens extends Survey_Common_Action
 
                 $attempts = 0;
                 do {
-                    $token->token = Yii::app()->securityManager->generateRandomString($tokenlength);
+                    $token->token = Token::generateRandomToken($iTokenLength);
                     $attempts++;
                 } while (isset($existingtokens[$token->token]) && $attempts < 50);
 
@@ -1147,12 +1147,12 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $tokenlength = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+            $iTokenLength = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
 
             $thissurvey = getSurveyInfo($iSurveyId);
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
-            $aData['tokenlength'] = $tokenlength;
+            $aData['tokenlength'] = $iTokenLength;
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],App()->language);
             $aData['aAttributeFields']=GetParticipantAttributes($iSurveyId);
             $this->_renderWrappedTemplate('token', array( 'dummytokenform'), $aData);
@@ -1645,7 +1645,9 @@ class tokens extends Survey_Common_Action
                          * token        r       Raw token data.
                          */
                         $event = new PluginEvent('beforeTokenEmail');
+                        $event->set('survey', $iSurveyId);
                         $event->set('type', $sTemplate);
+                        $event->set('model', $sSubAction);
                         $event->set('subject', $modsubject);
                         $event->set('to', $to);
                         $event->set('body', $modmessage);
@@ -2393,7 +2395,7 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']))
+                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim($aWriteArray['token'])!='')
                         {
                             $aWriteArray['token'] = sanitize_token($aWriteArray['token']);
                             // We allways search for duplicate token (it's in model. Allow to reset or update token ?

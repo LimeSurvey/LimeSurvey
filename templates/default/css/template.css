@@ -958,6 +958,10 @@ body div.row .question-container {
 /* Check javascript */
 #checkjavascript {
     margin-top: 100px;
+    z-index: 999;
+    right: 100px;
+    position: fixed;
+    width: 300px;
 }
 
 /*label font weight*/

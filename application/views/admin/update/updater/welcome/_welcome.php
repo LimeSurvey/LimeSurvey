@@ -48,7 +48,7 @@
         <?php endif;?>
 
         <strong><?php eT('Your update key:');?> <?php echo $serverAnswer->key_infos->keyid; ?></strong><br/>
-        <strong><?php eT('Valid until:');?> <?php echo $sValidityDate; ?></strong><br/>        
+        <strong><?php eT('Valid until:');?> <?php echo $sValidityDate; ?></strong><br/>
         <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
             <strong><?php eT('Remaining updates:');?> <?php echo $serverAnswer->key_infos->remaining_updates;?></strong><br/>
         <?php } ?>
@@ -57,7 +57,7 @@
             <br/>
             <?php  if ($serverAnswer->key_infos->remaining_updates!=-999):?>
                 <a class="btn btn-default" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
-                    <?php eT("Renew this key"); ?>
+                    <?php eT("Buy a new key"); ?>
                 </a>
             <?php endif; ?>
 

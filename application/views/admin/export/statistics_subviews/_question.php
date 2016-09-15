@@ -660,10 +660,10 @@
                 case "R": //RANKING
 
                 //get some answers
-
-                //get number of answers
-                $count = count($result[$key1]);
-
+                //get number of columns
+                $answersCount = count($result[$key1]);
+                $maxDbAnswer=QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'",array(':qid' => $flt[0]));
+                $columnsCount=(!$maxDbAnswer || intval($maxDbAnswer->value)<1) ? $answersCount : intval($maxDbAnswer->value); // If max_subquestions is not set or is invalid : get the answer count
                 //lets put the answer code and text into the answers array
                 foreach($result[$key1] as $row)
                 {
@@ -671,7 +671,7 @@
                 }
 
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                for ($i=1; $i<=$count; $i++)
+                for ($i=1; $i<=$columnsCount; $i++)
                 {
                     //adjust layout depending on counter
                     //if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}

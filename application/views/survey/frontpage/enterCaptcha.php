@@ -45,6 +45,7 @@
         <!-- Submit area -->
         <div class="row form-group">
             <span class='col-sm-12 col-md-3 col-md-offset-9'>
+                <input type='hidden' name='lang' value='<?php echo $sLangCode; ?>' />
                 <?php echo CHtml::submitButton(gT("Continue"), array('class' => 'btn btn-default btn-block button submit')); ?>
             </span>
         </div>

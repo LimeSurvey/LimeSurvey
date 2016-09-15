@@ -50,7 +50,7 @@
            title="<?php eT('Other'); ?>"
            size="10"
            onkeyup="<?php echo $checkconditionFunction;?>"
-           value="<?php // echo $value; ?>"
+           value="<?php  echo $value; ?>"
         />
 
         <?php if($javainput):?>
@@ -72,7 +72,7 @@
 
         <input
             class='form-control text input-sm <?php echo $kpclass; ?>'
-            
+
             type='text'
             size='40'
             id='<?php echo $inputCommentId;?>'

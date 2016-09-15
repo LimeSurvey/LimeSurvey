@@ -40,6 +40,9 @@ class AdminController extends LSYii_Controller
         if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction'));} //Desired subaction
         if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));} // for html editor integration
 
+        // This line is needed for template editor to work
+        $oAdminTheme = AdminTheme::getInstance();
+
         AdminTheme::staticRegisterScriptFile('ADMIN_SCRIPT_PATH', 'admin_core.js' );
         AdminTheme::staticRegisterScriptFile('ADMIN_SCRIPT_PATH', 'notifications.js' );
     }
