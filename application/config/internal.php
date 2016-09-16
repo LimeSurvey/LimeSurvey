@@ -132,12 +132,6 @@ $internalConfig = array(
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
                 ),
-                'debug' => array(
-                    'class' => 'CFileLogRoute',
-                    'levels' => 'trace, info, error, warning',
-                    'logFile' => 'debug.log',
-                    'categories' => 'debug.*'
-                )
             )
         ),
         'cache'=>array(
