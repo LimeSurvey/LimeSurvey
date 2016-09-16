@@ -730,19 +730,38 @@ class TokenDynamic extends LSActiveRecord
             ),
             array(
                 'header' => gT('Valid from'),
+                'filter' => Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    'name' => "validfrom",
+                    'id'   => "validfrom_datepicker",
+                    'value' => '',  // Field won't parse '$data->foo'
+                    'htmlOptions' => array(
+                        'size' => '10'
+                    ),
+                    'events' => array(
+                        'unfocus' => 'function() { alert("hej"); }'
+                    )
+                ), true),
                 'name' => 'validfrom',
                 'type'=>'raw',
                 'value'=>'$data->validfromFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
+                'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
             array(
                 'header' => gT('Valid until'),
+                'filter' => Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    'name' => "validuntil",
+                    'id'   => "validuntil_datepicker",
+                    'value' => '',  // Field won't parse '$data->foo'
+                    'htmlOptions' => array(
+                        'size' => '10'
+                    )
+                ), true),
                 'type'=>'raw',
                 'name' => 'validuntil',
                 'value'=>'$data->validuntilFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
         );
     }
@@ -767,7 +786,6 @@ class TokenDynamic extends LSActiveRecord
                 'htmlOptions' => array('class' => 'hidden-xs'),
             );
         }
-
 
         return array_merge($this->standardColsForGrid, $aCustomAttributesCols);
     }
@@ -977,9 +995,9 @@ class TokenDynamic extends LSActiveRecord
       $criteria->compare('remindersent',$this->remindersent,true);
       $criteria->compare('remindercount',$this->remindercount,false);
       $criteria->compare('completed',$this->completed,true);
-      $criteria->compare('usesleft',$this->usesleft,false);
-      $criteria->compare('validfrom',$this->validfrom,true);
-      $criteria->compare('validuntil',$this->validuntil,true);
+      $criteria->compare('usesleft',$this->usesleft,true);
+      //$criteria->compare('validfrom',$this->validfrom,true);
+      //$criteria->compare('validuntil',$this->validuntil,true);
 
       foreach($this->custom_attributes as $sColName => $oColumn)
       {

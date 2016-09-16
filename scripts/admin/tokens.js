@@ -14,6 +14,7 @@ $.fn.YesNoDate = function(options)
 
         // The view is called without processing output (no javascript)
         // So we must apply js to widget elements
+        console.log($elSwitch);
         $elSwitch.bootstrapSwitch();                                            // Generate the switch
         $elDate.datetimepicker({locale: that.data('locale')})                   // Generate the date time picker
 
@@ -501,4 +502,19 @@ function updatePageAfterGrid(){
         $(".gridcontrol.dataforward").addClass("disabled");
     }
 
+}
+
+/**
+ * When date-picker is used in token gridview
+ * @return
+ */
+function reinstallParticipantsFilterDatePicker() {
+    $('#validfrom_datepicker').datetimepicker();
+    $('#validuntil_datepicker').datetimepicker();
+
+    $('#validfrom_datepicker').on('focusout', function() {
+        var value = $(this).val();
+        $('#validfrom_datepicker').attr('value', value);
+        $.fn.yiiGridView.update('token-grid');
+    });
 }
