@@ -2,6 +2,8 @@
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
 ## unreleased
+- Fixed issue: If no plugin add attribute : no questions are shown
+- Fixed issue #10226: {ANSWERTABLE} includes <script> placed in question text (LouisGac)
 - Fixed issue: ~ and _ in tokens hard to manually enter
 
 ### Feature
