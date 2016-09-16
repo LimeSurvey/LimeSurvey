@@ -3,6 +3,8 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ## unreleased
 
+## [1.0.24] - 2016-09-16
+
 ### Feature
 - Allow plugin to add new question attributes
 
