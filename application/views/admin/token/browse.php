@@ -139,6 +139,7 @@
 </script>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Display"))); ?>
     <h3><?php eT("Survey participants"); ?></h3>
 
