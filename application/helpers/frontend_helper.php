@@ -675,32 +675,36 @@ function sendSubmitNotifications($surveyid)
             }
         }
 
+        Yii::import('application.helpers.viewHelper');
         $aFullResponseTable=getFullResponseTable($surveyid,$_SESSION['survey_'.$surveyid]['srid'],$_SESSION['survey_'.$surveyid]['s_lang']);
         $ResultTableHTML = "<table class='printouttable' >\n";
         $ResultTableText ="\n\n";
         $oldgid = 0;
         $oldqid = 0;
-
-        Yii::import('application.helpers.viewHelper');
         foreach ($aFullResponseTable as $sFieldname=>$fname)
         {
+            $fname[0]=viewHelper::flatEllipsizeText($fname[0],true,0);
+            $fname[1]=viewHelper::flatEllipsizeText($fname[1],true,0);
             if (substr($sFieldname,0,4)=='gid_')
             {
-                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".viewHelper::flatEllipsizeText($fname[0],true,0)."</td></tr>\n";
-                $ResultTableText .="\n{$fname[0]}\n\n";
+                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
+                $ResultTableText .="\n** {$fname[0]} ** \n";
             }
             elseif (substr($sFieldname,0,4)=='qid_')
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".viewHelper::flatEllipsizeText($fname[0], true,0)."</td></tr>\n";
-                $ResultTableText .="\n{$fname[0]}\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
+                $ResultTableText .="* {$fname[0]} \n";
             }
-            else
+            elseif(empty($fname[1]))
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}",true,0)."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
-                $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestion printanswersquestionhead'><td>{$fname[0]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
+                $ResultTableText .="* {$fname[0]} \t\t\t : {$fname[2]}\n";
+            }else
+            {
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[1]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
+                $ResultTableText .="- \t {$fname[1]} \t\t : {$fname[2]}\n";
             }
         }
-
         $ResultTableHTML .= "</table>\n";
         $ResultTableText .= "\n\n";
         if ($bIsHTML)
@@ -2279,3 +2283,4 @@ function getMove()
     }
     return $move;
 }
+
