@@ -3860,7 +3860,10 @@ function questionAttributes($returnByName=false)
         $event = new PluginEvent('newQuestionAttributes');
         $result = App()->getPluginManager()->dispatchEvent($event);
         $questionAttributes = $result->get('questionAttributes');
-        $qattributes=array_merge($qattributes,$questionAttributes);
+        if(is_array($questionAttributes))
+        {
+            $qattributes=array_merge($qattributes,$questionAttributes);
+        }
 
     }
     //This builds a more useful array (don't modify)
