@@ -583,11 +583,10 @@ class SurveyDynamic extends LSActiveRecord
        }
 
        // Basic filters
-       $criteria->compare('t.lastpage',empty($this->lastpage)?null:(int)$this->lastpage, false);
-       $criteria->compare('t.id',empty($this->id)?null:(int)$this->id, false);
+       $criteria->compare('t.lastpage',empty($this->lastpage) ? null : $this->lastpage, false);
+       $criteria->compare('t.id',empty($this->id) ? null : $this->id, false);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
-
 
        // Completed filters
        if($this->completed_filter == "Y")
@@ -672,16 +671,14 @@ class SurveyDynamic extends LSActiveRecord
                     }
                     else if ($isDatetime)
                     {
-                        Yii::log($this->$c1, CLogger::LEVEL_TRACE, 'debug');
-                        $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->$c1);
-                        Yii::log(print_r($s, true), CLogger::LEVEL_TRACE, 'debug');
+                        $s = DateTime::createFromFormat($dateformatdetails['phpdate'], $this->$c1);
                         if ($s === false)
                         {
                             // This happens when date is in wrong format
                             continue;
                         }
-                        $s2 = $s->format('Y-m-d H:i');
-                        $criteria->addCondition(Yii::app()->db->quoteColumnName($c1) . ' = \'' . $s2 . '\'');
+                        $s2 = $s->format('Y-m-d');
+                        $criteria->addCondition('cast(' . Yii::app()->db->quoteColumnName($c1) . ' as date) = \'' . $s2 . '\'');
                     }
                     else
                     {

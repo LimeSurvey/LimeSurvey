@@ -945,4 +945,3 @@ class TokenDynamic extends LSActiveRecord
 
     }
 }
-?>

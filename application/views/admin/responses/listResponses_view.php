@@ -148,25 +148,6 @@
                    // An array to control unicity of $code (EM code)
                     foreach($model->metaData->columns as $column)
                     {
-                        Yii::log($column->name, CLogger::LEVEL_TRACE, 'debug');
-                        /*
-                        if ($column->name == 'startdate')
-                        {
-                            $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
-                            $aColumns[] = array(
-                                'header' => 'test',
-                                'name' => 'startdate',
-                                'filter' => Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                    'name' => "startdate",
-                                    'value' => ''
-                                ), true)
-                            );
-                        }
-                        else if ($column->name == 'datestamp')
-                        {
-                        }
-                         */
-
                         if(!in_array($column->name, $aDefaultColumns))
                         {
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......

@@ -66,10 +66,10 @@ function reinstallResponsesFilterDatePicker() {
     var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
 
     $('#SurveyDynamic_startdate').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
+        format: dateFormatDetails.jsdate
     });
     $('#SurveyDynamic_datestamp').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
+        format: dateFormatDetails.jsdate
     });
 
     $('#SurveyDynamic_startdate').on('focusout', function() {
