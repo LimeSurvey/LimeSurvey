@@ -600,43 +600,7 @@ class SurveyDynamic extends LSActiveRecord
            $criteria->addCondition('t.submitdate IS NULL');
        }
 
-      $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-
-       // Filters for responses
-       foreach($this->metaData->columns as $column)
-       {
-           Yii::log($column->dbType, CLogger::LEVEL_TRACE, 'debug');
-           if(!in_array($column->name, $this->defaultColumns))
-           {
-               $c1 = (string) $column->name;
-               if (!empty($this->$c1))
-               {
-                   $isDatetime = strpos($column->dbType, 'timestamp') !== false || strpos($column->dbType, 'datetime') !== false;
-                   if ($column->dbType=='decimal')
-                   {
-                       $this->$c1=(float)$this->$c1;
-                       $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
-                   }
-                   else if ($isDatetime)
-                   {
-                       Yii::log($this->$c1, CLogger::LEVEL_TRACE, 'debug');
-                       $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->$c1);
-                       Yii::log(print_r($s, true), CLogger::LEVEL_TRACE, 'debug');
-                       if ($s === false)
-                       {
-                           // This happens when date is in wrong format
-                           continue;
-                       }
-                       $s2 = $s->format('Y-m-d H:i');
-                       $criteria->addCondition(Yii::app()->db->quoteColumnName($c1) . ' = \'' . $s2 . '\'');
-                   }
-                   else
-                   {
-                       $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
-                   }
-               }
-           }
-       }
+       $this->filterColumns($criteria);
 
        $dataProvider=new CActiveDataProvider('SurveyDynamic', array(
            'sort'=>$sort,
@@ -679,5 +643,52 @@ class SurveyDynamic extends LSActiveRecord
         );
 
         $sort->attributes = array_merge($sort->attributes, $aSortVirtualAttributes);
+    }
+
+    /**
+     * Loop through columns and add filter if any value is given for this column
+     * @param CdbCriteria $criteria
+     * @return void
+     */
+    protected function filterColumns(CDbCriteria $criteria)
+    {
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+
+        // Filters for responses
+        foreach($this->metaData->columns as $column)
+        {
+            $isNotDefaultColumn = !in_array($column->name, $this->defaultColumns);
+            if ($isNotDefaultColumn)
+            {
+                $c1 = (string) $column->name;
+                $columnHasValue = !empty($this->$c1);
+                if ($columnHasValue)
+                {
+                    $isDatetime = strpos($column->dbType, 'timestamp') !== false || strpos($column->dbType, 'datetime') !== false;
+                    if ($column->dbType == 'decimal')
+                    {
+                        $this->$c1 = (float)$this->$c1;
+                        $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
+                    }
+                    else if ($isDatetime)
+                    {
+                        Yii::log($this->$c1, CLogger::LEVEL_TRACE, 'debug');
+                        $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->$c1);
+                        Yii::log(print_r($s, true), CLogger::LEVEL_TRACE, 'debug');
+                        if ($s === false)
+                        {
+                            // This happens when date is in wrong format
+                            continue;
+                        }
+                        $s2 = $s->format('Y-m-d H:i');
+                        $criteria->addCondition(Yii::app()->db->quoteColumnName($c1) . ' = \'' . $s2 . '\'');
+                    }
+                    else
+                    {
+                        $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
+                    }
+                }
+            }
+        }
     }
 }
