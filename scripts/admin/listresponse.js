@@ -30,8 +30,6 @@ $(document).ready(function(){
 
     bindScrollWrapper();
 
-    console.log('here');
-
     $('#display-mode').click(function(event){
         event.preventDefault();
 
