@@ -36,7 +36,7 @@
                         </ul>
                     </p>
 
-                    <?php if (  !empty(aInvalidTokenList) ||
+                    <?php if (  !empty($aInvalidTokenList) ||
                                 !empty($aDuplicateList) ||
                                 !empty($aInvalidFormatList) ||
                                 !empty($aInvalidEmailList) ||
@@ -46,13 +46,13 @@
                         <h2 class='text-warning'><?php eT('Warnings'); ?></h2>
                     <p>
                         <ul class="list-unstyled">
-                            <?php if (!empty(aInvalidTokenList)) { ?>
+                            <?php if (!empty($aInvalidTokenList)) { ?>
                                 <li>
-                                    <?php printf(gT("%s lines with invalid tokens skipped (tokens may only contain 0-9,a-z,A-Z,_)."), count(aInvalidTokenList)); ?>
+                                    <?php printf(gT("%s lines with invalid tokens skipped (tokens may only contain 0-9,a-z,A-Z,_)."), count($aInvalidTokenList)); ?>
                                     [<a href='#' onclick='$("#badtokenlist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist well' id='badtokenlist' style='display: none;'>
                                         <ul class="list-unstyled">
-                                            <?php foreach (aInvalidTokenList as $sInvalidEntry) { ?>
+                                            <?php foreach ($aInvalidTokenList as $sInvalidEntry) { ?>
                                                 <li><?php echo $sInvalidEntry; ?></li>
                                             <?php } ?>
                                         </ul>
