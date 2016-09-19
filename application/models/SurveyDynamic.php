@@ -628,29 +628,35 @@ class SurveyDynamic extends LSActiveRecord
        // Filters for responses
        foreach($this->metaData->columns as $column)
        {
-           // Compare dates
-           if ($column->name == 'startdate' && !empty($this->startdate))
-           {
-              $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->startdate);
-              $s2 = $s->format('Y-m-d H:i');
-              $criteria->addCondition('startdate = \'' . $s2 . '\'');
-           }
-           else if ($column->name == 'datestamp' && !empty($this->datestamp))
-           {
-              $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->datestamp);
-              $s2 = $s->format('Y-m-d H:i');
-              $criteria->addCondition('datestamp = \'' . $s2 . '\'');
-           }
-           else if(!in_array($column->name, $this->defaultColumns))
+           Yii::log($column->dbType, CLogger::LEVEL_TRACE, 'debug');
+           if(!in_array($column->name, $this->defaultColumns))
            {
                $c1 = (string) $column->name;
                if (!empty($this->$c1))
                {
+                   $isDatetime = strpos($column->dbType, 'timestamp') !== false || strpos($column->dbType, 'datetime') !== false;
                    if ($column->dbType=='decimal')
                    {
-                        $this->$c1=(float)$this->$c1;
+                       $this->$c1=(float)$this->$c1;
+                       $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
                    }
-                   $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
+                   else if ($isDatetime)
+                   {
+                       Yii::log($this->$c1, CLogger::LEVEL_TRACE, 'debug');
+                       $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->$c1);
+                       Yii::log(print_r($s, true), CLogger::LEVEL_TRACE, 'debug');
+                       if ($s === false)
+                       {
+                           // This happens when date is in wrong format
+                           continue;
+                       }
+                       $s2 = $s->format('Y-m-d H:i');
+                       $criteria->addCondition(Yii::app()->db->quoteColumnName($c1) . ' = \'' . $s2 . '\'');
+                   }
+                   else
+                   {
+                       $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
+                   }
                }
            }
        }
