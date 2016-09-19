@@ -576,33 +576,10 @@ class SurveyDynamic extends LSActiveRecord
            '*',
        );
 
-
        // Join the token table and filter tokens if needed
        if ($this->bHaveToken && $this->survey->anonymized != 'Y')
        {
-            $criteria->compare('t.token',$this->token, true);
-            $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
-            $criteria->compare('tokens.firstname',$this->firstname_filter, true);
-            $criteria->compare('tokens.lastname',$this->lastname_filter, true);
-            $criteria->compare('tokens.email',$this->email_filter, true);
-
-            // Add the related token model's columns sortable
-            $aSortVirtualAttributes = array(
-                'tokens.firstname'=>array(
-                           'asc'=>'tokens.firstname ASC',
-                           'desc'=>'tokens.firstname DESC',
-                       ),
-                'tokens.lastname' => array(
-                    'asc'=>'lastname ASC',
-                    'desc'=>'lastname DESC'
-                ),
-                'tokens.email' => array(
-                    'asc'=>'email ASC',
-                    'desc'=>'email DESC'
-                ),
-            );
-
-            $sort->attributes = array_merge($sort->attributes, $aSortVirtualAttributes);
+           $this->joinWithToken($criteria, $sort);
        }
 
        // Basic filters
@@ -671,5 +648,36 @@ class SurveyDynamic extends LSActiveRecord
 
        return $dataProvider;
     }
+
+    /**
+     * @param CDbCriteria $criteria
+     * @param CSort $sort
+     * @return void
+     */
+    protected function joinWithToken(CDbCriteria $criteria, CSort $sort)
+    {
+        $criteria->compare('t.token',$this->token, true);
+        $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
+        $criteria->compare('tokens.firstname',$this->firstname_filter, true);
+        $criteria->compare('tokens.lastname',$this->lastname_filter, true);
+        $criteria->compare('tokens.email',$this->email_filter, true);
+
+        // Add the related token model's columns sortable
+        $aSortVirtualAttributes = array(
+            'tokens.firstname'=>array(
+                'asc'=>'tokens.firstname ASC',
+                'desc'=>'tokens.firstname DESC',
+            ),
+            'tokens.lastname' => array(
+                'asc'=>'lastname ASC',
+                'desc'=>'lastname DESC'
+            ),
+            'tokens.email' => array(
+                'asc'=>'email ASC',
+                'desc'=>'email DESC'
+            ),
+        );
+
+        $sort->attributes = array_merge($sort->attributes, $aSortVirtualAttributes);
+    }
 }
-?>
