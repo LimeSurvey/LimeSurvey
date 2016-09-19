@@ -1990,6 +1990,7 @@ class tokens extends Survey_Common_Action
 
             $aAttrFieldNames = getAttributeFieldNames($iSurveyId);
             $aDuplicateList = array();
+            $aInvalidTokenList= array();
             $aInvalidEmailList = array();
             $aInvalidFormatList = array();
             $aModelErrorList = array();
@@ -2128,6 +2129,7 @@ class tokens extends Survey_Common_Action
                         }
                         $bDuplicateFound = false;
                         $bInvalidEmail = false;
+                        $bInvalidToken = false;
                         $aWriteArray['email'] = isset($aWriteArray['email']) ? trim($aWriteArray['email']) : "";
                         $aWriteArray['firstname'] = isset($aWriteArray['firstname']) ? $aWriteArray['firstname'] : "";
                         $aWriteArray['lastname'] = isset($aWriteArray['lastname']) ? $aWriteArray['lastname'] : "";
@@ -2182,11 +2184,15 @@ class tokens extends Survey_Common_Action
                                     }
                                 }
                             }
-                        }
+                         }
 
                         if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim($aWriteArray['token'])!='')
                         {
-                            $aWriteArray['token'] = sanitize_token($aWriteArray['token']);
+                            if (trim($aWriteArray['token']) != sanitize_token($aWriteArray['token']));
+                            {
+                                $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']),CHtml::encode($aWriteArray['token']));
+                                $bInvalidToken=true;
+                            }
                             // We allways search for duplicate token (it's in model. Allow to reset or update token ?
                             if(Token::model($iSurveyId)->count("token=:token",array(":token"=>$aWriteArray['token'])))
                             {
@@ -2195,7 +2201,7 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        if (!$bDuplicateFound && !$bInvalidEmail)
+                        if (!$bDuplicateFound && !$bInvalidEmail && !$bInvalidToken)
                         {
                             // unset all empty value
                             foreach ($aWriteArray as $key=>$value)
@@ -2231,15 +2237,14 @@ class tokens extends Survey_Common_Action
                     $iRecordCount++;
                 }
                 $iRecordCount = $iRecordCount - 1;
-
                 unlink($sFileName);
-
                 $aData['aTokenListArray'] = $aTokenListArray;// Big array in memory, just for success ?
                 $aData['iRecordImported'] = $iRecordImported;
                 $aData['iRecordOk'] = $iRecordOk;
                 $aData['iRecordCount'] = $iRecordCount;
                 $aData['aFirstLine'] = $aFirstLine;// Seem not needed
                 $aData['aDuplicateList'] = $aDuplicateList;
+                $aData['aInvalidTokenList'] = $aInvalidTokenList;
                 $aData['aInvalidFormatList'] = $aInvalidFormatList;
                 $aData['aInvalidEmailList'] = $aInvalidEmailList;
                 $aData['aModelErrorList'] = $aModelErrorList;
@@ -2248,8 +2253,7 @@ class tokens extends Survey_Common_Action
                 $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
                 $aData['aInvalideAttrFieldName'] = $aInvalideAttrFieldName;
                 $aData['aMissingAttrFieldName'] = $aMissingAttrFieldName;
-
-                $this->_renderWrappedTemplate('token', array( 'csvpost'), $aData);
+                $this->_renderWrappedTemplate('token', array( 'csvimportresult'), $aData);
                 Yii::app()->end();
             }
         }
