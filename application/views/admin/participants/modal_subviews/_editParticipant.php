@@ -18,7 +18,6 @@
     <?php
         echo "<legend>".gT("Basic attributes")."</legend>";
         $baseControlGroupHtmlOptions = array(
-             'groupOptions'=> array('class'=>'form-horizontal'),
              'labelOptions'=> array('class'=> 'col-sm-4'),
              'class' => 'col-sm-8',
              'required' => 'required'
@@ -27,10 +26,10 @@
         echo $form->textFieldControlGroup($model,'lastname',$baseControlGroupHtmlOptions);
         echo $form->textFieldControlGroup($model,'email',$baseControlGroupHtmlOptions);
         echo 
-        "<div class='row'>
-            <div class='col-xs-12'>".gT("Should this user be blacklisted?")."</div>"
-      . "</div>
-        <div class='text-center'>
+        "<div class='form-group'>
+            <label class='control-label col-sm-4'>".gT("Should this user be blacklisted?")."</label>
+            <div class='col-sm-8'>
+            &nbsp;
             <label class='radio-inline'>"
              . "<input name=\"Participant[blacklisted]\" id=\"Participant_blacklisted\" type=\"radio\" value=\"Y\" "
                 .($model->blacklisted == "Y" ? "checked" : "")." />"
@@ -41,6 +40,7 @@
                 .($model->blacklisted == "N" ? "checked" : "")." />"
              . gT("No")."
             </label>
+            </div>
         </div>";
         echo "<br/>";
         echo "<br/>";

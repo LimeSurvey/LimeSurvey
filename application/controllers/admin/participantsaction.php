@@ -1065,7 +1065,7 @@ class participantsaction extends Survey_Common_Action
         $this->csvExport($search);
     }
 
-//Display BlacklistSetting
+    //Display BlacklistSetting
     /**********************************************UN-/BLACKLIST PARTICIPANTS***********************************************/
     /**
      * Loads the view 'blacklistControl'
