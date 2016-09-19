@@ -407,7 +407,6 @@ class TokenDynamic extends LSActiveRecord
     {
         $i=0;
         $j=1;
-        $tobedonelater =array();
         $command = new CDbCriteria;
         $command->condition = '';
         $iNumberOfConditions = (count($condition)+1)/4;

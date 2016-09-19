@@ -623,10 +623,25 @@ class SurveyDynamic extends LSActiveRecord
            $criteria->addCondition('t.submitdate IS NULL');
        }
 
+      $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+
        // Filters for responses
        foreach($this->metaData->columns as $column)
        {
-           if(!in_array($column->name, $this->defaultColumns))
+           // Compare dates
+           if ($column->name == 'startdate' && !empty($this->startdate))
+           {
+              $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->startdate);
+              $s2 = $s->format('Y-m-d H:i');
+              $criteria->addCondition('startdate = \'' . $s2 . '\'');
+           }
+           else if ($column->name == 'datestamp' && !empty($this->datestamp))
+           {
+              $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->datestamp);
+              $s2 = $s->format('Y-m-d H:i');
+              $criteria->addCondition('datestamp = \'' . $s2 . '\'');
+           }
+           else if(!in_array($column->name, $this->defaultColumns))
            {
                $c1 = (string) $column->name;
                if (!empty($this->$c1))
@@ -635,7 +650,7 @@ class SurveyDynamic extends LSActiveRecord
                    {
                         $this->$c1=(float)$this->$c1;
                    }
-                    $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
+                   $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
                }
            }
        }

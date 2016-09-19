@@ -415,6 +415,7 @@ class responses extends Survey_Common_Action
             $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
             $aData['hasUpload']         = hasFileUploadQuestion($iSurveyId);
             $aData['fieldmap']          = createFieldMap($iSurveyId, 'full', true, false, $aData['language']);
+            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
             ////////////////////
             // Setting the grid
