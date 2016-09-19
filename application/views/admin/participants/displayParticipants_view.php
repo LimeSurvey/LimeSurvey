@@ -5,8 +5,8 @@
         </div>
         <div class="col-xs-4 text-right">
             <button class="btn btn-default" id="addParticipantToCPP">
-                <?php eT("Add new participant"); ?>
                 <i class="fa fa-plus-circle text-success"></i> 
+                <?php eT("Add new participant"); ?>
             </button>
         </div>
     </h3>
