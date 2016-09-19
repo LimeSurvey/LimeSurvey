@@ -14,8 +14,8 @@
     var openModalParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/openModalParticipantPanel"); ?>";
     var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";
     
-    var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> '.gT('Remove from Blacklist?'); ?>";
-    var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> '.gT('Add to Blacklist?'); ?>";
+    var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> '.gT('Remove from blacklist?'); ?>";
+    var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> '.gT('Add to blacklist?'); ?>";
     var datepickerConfig =     <?php 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         echo json_encode(array(
@@ -161,7 +161,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT("Export Participants"); ?></h4>
+                <h4 class="modal-title"><?php eT("Export participants"); ?></h4>
             </div>
             <div class="modal-body">
                 <?php eT("There are no participants to be exported."); ?>
@@ -177,7 +177,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT("Export Participants"); ?> </h4>
+                <h4 class="modal-title"><?php eT("Export participants"); ?> </h4>
             </div>
             <div class="modal-body">
                 <div class="form30">
