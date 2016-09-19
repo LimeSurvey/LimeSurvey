@@ -212,11 +212,10 @@ class Participant extends LSActiveRecord
     }
 
     public function getBlacklistSwitchbutton(){
-        $inputHtml = "<input type='checkbox' data-size='small' data-on-color='danger' data-off-color='success' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeBlacklistStatus' "
+        $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeBlacklistStatus' "
             . ($this->blacklisted == "Y" ? "checked" : "")
             . "/>";
         return  $inputHtml;
-
     }
 
     public function getColumns(){

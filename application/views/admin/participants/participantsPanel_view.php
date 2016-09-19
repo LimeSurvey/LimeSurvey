@@ -50,7 +50,7 @@
     </div>
 </div>
 <div class='menubar surveybar' id="participantbar">
-    <div class='row container-fluid'>
+    <div class='row'>
 
         <div class="col-md-9">
             <!-- Information -->

@@ -357,12 +357,10 @@ class participantsaction extends Survey_Common_Action
         $aData['pageSizeParticipantView']= Yii::app()->user->getState('pageSizeParticipantView');
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
-        yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
-        yii::app()->clientScript->registerPackage('bootstrap-switch');
+        Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
+        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
-        // loads the participant panel view and display participant view
-
-
+        // Loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
     }
 
@@ -1198,7 +1196,7 @@ class participantsaction extends Survey_Common_Action
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         // loads the participant panel view and display participant view
-        yii::app()->clientScript->registerPackage('bootstrap-switch');
+        Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
