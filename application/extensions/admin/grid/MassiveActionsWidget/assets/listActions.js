@@ -15,13 +15,13 @@
  *      perform an ajax request and close
  *      perform an ajax request and show the result in the modal
  */
- $(document).on('click', '.listActions a', function ()
+$(document).on('click', '.listActions a', function ()
 {
-    $that          = $(this);                                                             // The cliked link
-    $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
-    $gridid        = $('.listActions').data('grid-id');
-    $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // List of the clicked checkbox
-    $oCheckedItems = JSON.stringify($oCheckedItems);
+    var $that          = $(this);                                                             // The cliked link
+    var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
+    var $gridid        = $('.listActions').data('grid-id');
+    var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // List of the clicked checkbox
+    var $oCheckedItems = JSON.stringify($oCheckedItems);
 
     // TODO : Switch action (post, session, ajax...)
 
@@ -53,44 +53,52 @@
     // Using session before redirect rather than form submission
     if($that.data('actionType') == 'fill-session-and-redirect')
     {
-     // postUrl is defined as a var in the View
-     $(this).load(postUrl, {
-         participantid:$oCheckedItems},function(){
-             $(location).attr('href',$actionUrl);
-     });
-     return;
+        // postUrl is defined as a var in the View
+        $(this).load(postUrl, {
+            participantid:$oCheckedItems},function(){
+                $(location).attr('href',$actionUrl);
+            });
+        return;
+    }
+
+    // Set window location href. Used by download files in responses list view.
+    if ($that.data('actionType') == 'window-location-href')
+    {
+        var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // So we can join
+        window.location.href = $actionUrl + $oCheckedItems.join(',');
+        return;
     }
 
 
     // TODO: switch case "Modal"
-    $modal  = $('#'+$that.data('modal-id'));   // massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>
+    var $modal  = $('#'+$that.data('modal-id'));   // massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>
 
     // Needed modal elements
-    $modalTitle    = $modal.find('.modal-title');                   // Modal Title
-    $modalBody     = $modal.find('.modal-body-text');               // Modal Body
-    $modalButton   = $modal.find('.btn-ok');
+    var $modalTitle    = $modal.find('.modal-title');                   // Modal Title
+    var $modalBody     = $modal.find('.modal-body-text');               // Modal Body
+    var $modalButton   = $modal.find('.btn-ok');
 
-    $modalClose    = $modal.find('.modal-footer-close');            // Modal footer with close button
-    $ajaxLoader    = $("#ajaxContainerLoading");                    // Ajax loader
+    var $modalClose    = $modal.find('.modal-footer-close');            // Modal footer with close button
+    var $ajaxLoader    = $("#ajaxContainerLoading");                    // Ajax loader
 
     // Original modal state
-    $oldModalTitle     = $modalTitle.text();
-    $oldModalBody      = $modalBody.html();
-    $oldModalButtons   = $modal.find('.modal-footer-buttons');     // Modal footer with yes/no buttons
+    var $oldModalTitle     = $modalTitle.text();
+    var $oldModalBody      = $modalBody.html();
+    var $oldModalButtons   = $modal.find('.modal-footer-buttons');     // Modal footer with yes/no buttons
 
     // When user close the modal, we put it back to its original state
     $modal.on('hidden.bs.modal', function (e) {
-     $modalTitle.text($oldModalTitle);               // the modal title
-     $modalBody.empty().append($oldModalBody);       // modal body
-     $modalClose.hide();                             // Hide the 'close' button
-     $oldModalButtons.show();                        // Show the 'Yes/No' buttons
+        $modalTitle.text($oldModalTitle);               // the modal title
+        $modalBody.empty().append($oldModalBody);       // modal body
+        $modalClose.hide();                             // Hide the 'close' button
+        $oldModalButtons.show();                        // Show the 'Yes/No' buttons
 
-     if ($that.data('grid-reload') == "yes")
-     {
-        $.fn.yiiGridView.update($gridid);                         // Update the surveys list
-        setTimeout(function(){
-            $('#'+$gridid).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
-     }
+        if ($that.data('grid-reload') == "yes")
+        {
+            $.fn.yiiGridView.update($gridid);                         // Update the surveys list
+            setTimeout(function(){
+                $('#'+$gridid).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
+        }
 
     })
 
@@ -98,17 +106,17 @@
     $modalButton.on('click', function(){
 
         // Custom datas comming from the modal (like sid)
-        $postDatas  = {sItems:$oCheckedItems};
+        var $postDatas  = {sItems:$oCheckedItems};
         $modal.find('.custom-data').each(function(i, el)
         {
             $postDatas[$(this).attr('name')]=$(this).val();
         });
 
         // Custom attributes to updates (like question attributes)
-        $aAttributesToUpdate = [];
+        var $aAttributesToUpdate = [];
         $modal.find('.attributes-to-update').each(function(i, el)
         {
-        $aAttributesToUpdate.push($(this).attr('name'));
+            $aAttributesToUpdate.push($(this).attr('name'));
         });
         $postDatas['aAttributesToUpdate'] = JSON.stringify($aAttributesToUpdate);
 
@@ -148,13 +156,13 @@
     // open the modal
     if( $oCheckedItems !== '[]' )
     {
-     $modal.modal();
+        $modal.modal();
     }
     else
     {
-    //If no item selected, the error modal "please select first an item" is shown
-    // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
-    $('#error-first-select').modal();
+        //If no item selected, the error modal "please select first an item" is shown
+        // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
+        $('#error-first-select').modal();
     }
 });
 
@@ -209,9 +217,9 @@ function prepareBsSwitchInteger($gridid){
     });
 }
 
- $(document).ready(function() {
-     prepareBsSwitchBoolean(gridId);
-     prepareBsSwitchInteger(gridId);
+$(document).ready(function() {
+    prepareBsSwitchBoolean(gridId);
+    prepareBsSwitchInteger(gridId);
 
     // Grid refresh: see point 3
     $(document).on('actions-updated', '#'+gridId,  function(){

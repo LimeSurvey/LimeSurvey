@@ -329,7 +329,8 @@ class SurveyDynamic extends LSActiveRecord
         // Upload question
         if($oFieldMap->type =='|' && strpos($oFieldMap->fieldname,'filecount')===false)
         {
-            $sSurveyEntry="<table class='table table-condensed'><tr>";
+
+            $sSurveyEntry="<table class='table table-condensed upload-question'><tr>";
             $aQuestionAttributes = getQuestionAttributeValues($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++)
