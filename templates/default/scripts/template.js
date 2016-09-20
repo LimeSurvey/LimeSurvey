@@ -42,46 +42,6 @@ $(document).ready(function(){
 */
 
 
-/**
- * Ellipsize the title in the menu
- */
-function ellipsizeBrandTitle()
-{
-    var $elNavBarBrand = $(".navbar-brand").first();                            // The element containing the menu title
-    var sBrandTitle    = $elNavBarBrand.data('full-title');                     // First, we try to get the old full brand title
-
-    // If not defined, then it's the first call to this function, and we should get the full title from the element's text
-    if (typeof(sBrandTitle) == "undefined")
-    {
-        sBrandTitle = $elNavBarBrand.text();                                    // So we get the current full title
-        $elNavBarBrand.data('full-title',sBrandTitle);                          // And we store it in the element's data to be able to restore it later
-    }
-
-    // The number of characters in the title will be relative to the width available
-    var iNavBrandWidth = $elNavBarBrand.width();
-    var iMaxString = iNavBrandWidth/10;
-    var sElipsizedsBrandTitle = sBrandTitle.substring(0,iMaxString)+'...';
-
-    $elNavBarBrand.empty().append(sElipsizedsBrandTitle);
-}
-
-/**
- * Restore the full title in the menu
- * It tries to get the old full title in the element's data.
- * If it's not define, it means that the full title is shown and no change is needed
- * Else it restore it
- */
-function fullBrandTitle()
-{
-    var $elNavBarBrand = $(".navbar-brand").first();
-    var sBrandTitle    = $elNavBarBrand.data('full-title');
-
-    if(typeof(sBrandTitle) != "undefined")
-    {
-        elNavBarBrand.empty().append(sBrandTitle);
-    }
-}
-
 $(document).ready(function()
 {
 
@@ -118,20 +78,8 @@ $(document).ready(function()
 
     if($(window).width() < 768 )
     {
-        ellipsizeBrandTitle();
+        // nothing
     }
-
-    $(window).resize(function()
-    {
-        if ($(window).width() < 768)
-        {
-            ellipsizeBrandTitle();
-        }
-        else
-        {
-            fullBrandTitle();
-        }
-    });
 
     //var outerframeDistanceFromTop = 50;
     //topsurveymenubar
