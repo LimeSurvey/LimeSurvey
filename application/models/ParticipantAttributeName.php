@@ -87,7 +87,7 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         return array(
             'attribute_id' => gT('Attribute'),
-            'attribute_type' => gT('Attribute Type'),
+            'attribute_type' => gT('Attribute type'),
             'visible' => gT('Visible'),
         );
     }
@@ -172,7 +172,8 @@ class ParticipantAttributeName extends LSActiveRecord
             ),
             array(
                 "name" => 'defaultname',
-                "value" => '$data->getNamePlusLanguageName()'
+                "value" => '$data->getNamePlusLanguageName()',
+                "header" => gT("Name")
             ),
             array(
                 "name" => 'attribute_type',
