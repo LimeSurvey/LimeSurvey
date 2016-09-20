@@ -30,19 +30,20 @@
         echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray ,$baseControlGroupHtmlOptions);
         echo 
         "<div class='row'>
-            <div class='col-xs-12'>".gT("Should this attribute be visible on the panel?")."</div>"
-      . "</div>
-        <div class='text-center form-group'>
-            <label class='radio-inline'>"
-             . "<input name=\"ParticipantAttributeName[visible]\" id=\"ParticipantAttributeName_visible\" type=\"radio\" value=\"TRUE\" "
-                .($model->visible == "TRUE" ? "checked" : "")." />"
-             . gT("Yes")."
-            </label>
-            <label class='radio-inline'>"
-             . "<input name=\"ParticipantAttributeName[visible]\" id=\"ParticipantAttributeName_visible\" type=\"radio\" value=\"FALSE\" "
-                .($model->visible == "FALSE" ? "checked" : "")." />"
-             . gT("No")."
-            </label>
+            <label class='control-label col-sm-4'>".gT("Should this attribute be visible on the panel?")."</label>
+            <div class='col-sm-8'>
+                &nbsp;
+                <label class='radio-inline'>"
+                 . "<input name=\"ParticipantAttributeName[visible]\" id=\"ParticipantAttributeName_visible\" type=\"radio\" value=\"TRUE\" "
+                    .($model->visible == "TRUE" ? "checked" : "")." />"
+                 . gT("Yes")."
+                </label>
+                <label class='radio-inline'>"
+                 . "<input name=\"ParticipantAttributeName[visible]\" id=\"ParticipantAttributeName_visible\" type=\"radio\" value=\"FALSE\" "
+                    .($model->visible == "FALSE" ? "checked" : "")." />"
+                 . gT("No")."
+                </label>
+            </div>
         </div>
         <br/>"; 
     ?>
