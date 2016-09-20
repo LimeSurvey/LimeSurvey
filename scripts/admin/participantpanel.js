@@ -4,46 +4,57 @@ var Bindings = function(){
     //Basic Methods used by all submethods
     baseModal = '#participantPanel_edit_modal',
     runBaseModal = function(url, data, actionButtonClass, formId, gridViewId){
-        var secondSuccess = function(result){
-                    $(baseModal).modal('hide');
-                    $.fn.yiiGridView.update(gridViewId,{});
-                    if(result.successMessage != undefined){
-                        notifyFader(result.successMessage, 'well-lg bg-primary text-center');
-                    } else {
-                        try{
-                            notifyFader(result.errorMessage, 'well-lg bg-danger text-center');
-                        } catch(e){}
-                    }
-                };
-            var firstSuccess = function(page){
-                    $(baseModal).find('.modal-content').html(page);
-                    $(baseModal).find('.'+actionButtonClass).on('click', function(e){
-                        e.preventDefault();
-                        var action = $(baseModal).find('#'+formId).attr('action');
-                        var formData = $(baseModal).find('#'+formId).serializeArray();
-                        $.ajax({
-                            url: action,
-                            data: formData,
-                            method: 'POST',
-                            dataType: "json",
-                            success: secondSuccess,
-                            error : function(){
-                                console.log(arguments);
-                            }
-                        });
-                    });
-                };
-                
+        console.log('runBaseModal');
+        console.log('url', url);
+        console.log('data', data);
 
-            $(baseModal).modal('show');
-            jQuery.ajax({
-                url: url, 
-                data: data,
-                method: 'POST',
-                success: firstSuccess,
-                error: console.log
+        /**
+         * @todo
+         */
+        var secondSuccess = function(result){
+            $(baseModal).modal('hide');
+            $.fn.yiiGridView.update(gridViewId,{});
+            if(result.successMessage != undefined){
+                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+            } else {
+                try{
+                    notifyFader(result.errorMessage, 'well-lg bg-danger text-center');
+                } catch(e){}
+            }
+        };
+
+        /**
+         * @todo
+         */
+        var firstSuccess = function(page){
+            $(baseModal).find('.modal-content').html(page);
+            $(baseModal).find('.'+actionButtonClass).on('click', function(e){
+                e.preventDefault();
+                var action = $(baseModal).find('#'+formId).attr('action');
+                var formData = $(baseModal).find('#'+formId).serializeArray();
+                $.ajax({
+                    url: action,
+                    data: formData,
+                    method: 'POST',
+                    dataType: "json",
+                    success: secondSuccess,
+                    error : function(){
+                        console.log(arguments);
+                    }
+                });
             });
-        },
+        };
+
+        $(baseModal).modal('show');
+
+        jQuery.ajax({
+            url: url, 
+            data: data,
+            method: 'POST',
+            success: firstSuccess,
+            error: console.log
+        });
+    },
     // Basic settings and bindings that should take place in all three views
     basics = function(){ 
         // Code for AJAX download
@@ -74,7 +85,7 @@ var Bindings = function(){
             $('.selector_participantCheckbox:checked').each(function(i,item){
                 postdata.selectedParticipant.push($(item).val());
             });
-            
+
             $.ajax({
                 url: exporttocsvcountall,
                 data: postdata,
@@ -111,16 +122,16 @@ var Bindings = function(){
                                 dlForm.submit();
                                 $(self).modal("hide");
                             });
-                                $('#attributes')
-                                    .multiselect({ 
-                                        includeSelectAllOption:true, 
-                                        selectAllValue: '0',
-                                        selectAllText: sSelectAllText,
-                                        nonSelectedText: sNonSelectedText,
-                                        nSelectedText: sNSelectedText,
-                                        maxHeight: 140 
-                                    });
-                            });
+                            $('#attributes')
+                                .multiselect({ 
+                                    includeSelectAllOption:true, 
+                                    selectAllValue: '0',
+                                    selectAllText: sSelectAllText,
+                                    nonSelectedText: sNonSelectedText,
+                                    nSelectedText: sNSelectedText,
+                                    maxHeight: 140 
+                                });
+                        });
                         /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
                     }
                 }
@@ -131,9 +142,9 @@ var Bindings = function(){
     participantPanel = function(){
         $('#removeAllFilters').on('click', function(e){
             e.preventDefault();
-                $('#searchcondition').val('');
-                $('#ParticipantFilters').remove();
-                $.fn.yiiGridView.update('list_central_participants',{});
+            $('#searchcondition').val('');
+            $('#ParticipantFilters').remove();
+            $.fn.yiiGridView.update('list_central_participants',{});
             return false;
         });
         $('.action_participant_editModal').on('click', function(e){
@@ -141,62 +152,62 @@ var Bindings = function(){
             var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
-                data,
-                'action_save_modal_editParticipant',
-                'editPartcipantActiveForm', 
-                'list_central_participants' 
-            );
+                    openModalParticipantPanel, 
+                    data,
+                    'action_save_modal_editParticipant',
+                    'editPartcipantActiveForm', 
+                    'list_central_participants' 
+                    );
         });
         $('.action_participant_deleteModal').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
-                data,
-                'action_save_modal_deleteParticipant',
-                'deleteParticipantActiveForm', 
-                'list_central_participants' 
-            );
+                    openModalParticipantPanel, 
+                    data,
+                    'action_save_modal_deleteParticipant',
+                    'deleteParticipantActiveForm', 
+                    'list_central_participants' 
+                    );
         });
         $('.action_participant_infoModal').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'showparticipantsurveys', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
-                data,
-                'action_save_modal_deleteParticipant',
-                'deleteParticipantActiveForm', 
-                'list_central_participants' 
-            );
+                    openModalParticipantPanel, 
+                    data,
+                    'action_save_modal_deleteParticipant',
+                    'deleteParticipantActiveForm', 
+                    'list_central_participants' 
+                    );
         });
         $('.action_participant_shareParticipant').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'shareparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
-                data,
-                'action_save_modal_shareparticipant',
-                'shareParticipantActiveForm', 
-                'list_central_participants' 
-            );
+                    openModalParticipantPanel, 
+                    data,
+                    'action_save_modal_shareparticipant',
+                    'shareParticipantActiveForm', 
+                    'list_central_participants' 
+                    );
         });
         $('#addParticipantToCPP').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'editparticipant'};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
-                data,
-                'action_save_modal_editParticipant',
-                'editPartcipantActiveForm', 
-                'list_central_participants' 
-            );
+                    openModalParticipantPanel, 
+                    data,
+                    'action_save_modal_editParticipant',
+                    'editPartcipantActiveForm', 
+                    'list_central_participants' 
+                    );
         });
-            
+
         $('#action_toggleAllParticipant').on('click', function(){
             $('.selector_participantCheckbox').prop('checked',$('#action_toggleAllParticipant').prop('checked'));
         });
@@ -224,6 +235,7 @@ var Bindings = function(){
     //JS-bindings especially for the attributePanel
     attributePanel = function(){
         $('#addParticipantAttributeName').on('click', function(e){
+            console.log('here');
             e.preventDefault();
             var data = {modalTarget: 'editattribute'};
             runBaseModal(

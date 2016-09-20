@@ -358,14 +358,25 @@ class ParticipantAttributeName extends LSActiveRecord
         return $output;
     }
 
-    function getAttributesValues($attribute_id)
+    /**
+     * @param int $attribute_id
+     * @return array
+     */
+    function getAttributesValues($attribute_id = null)
     {
-       return Yii::app()->db->createCommand()
-                            ->select('*')
-                            ->from('{{participant_attribute_values}}')
-                            ->where('attribute_id = :attribute_id')
-                            ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
-                            ->queryAll();
+        if (empty($attribute_id))
+        {
+            return array();
+        }
+        else
+        {
+            return Yii::app()->db->createCommand()
+                ->select('*')
+                ->from('{{participant_attribute_values}}')
+                ->where('attribute_id = :attribute_id')
+                ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
+                ->queryAll();
+        }
     }
 
     // this is a very specific function used to get the attributes that are not present for the participant

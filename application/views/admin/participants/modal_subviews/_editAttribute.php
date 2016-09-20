@@ -26,8 +26,8 @@
              'class' => 'col-sm-8',
              'required' => 'required'
         );
-        echo $form->textFieldControlGroup($model,'defaultname',$baseControlGroupHtmlOptions);
-        echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray ,$baseControlGroupHtmlOptions);
+        echo $form->textFieldControlGroup($model,'defaultname', $baseControlGroupHtmlOptions);
+        echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, $baseControlGroupHtmlOptions);
         echo 
         "<div class='row'>
             <label class='control-label col-sm-4'>".gT("Should this attribute be visible on the panel?")."</label>
@@ -52,11 +52,11 @@
             <div class="col-xs-2">
                 <button class="btn btn-default btn-block" id="addDropdownField" data-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
             </div>
-            <h4 class="col-xs-8 col-offset-xs-2"><?php eT("Dropdown Fields") ?></h4>
+            <h4 class="col-xs-8 col-offset-xs-2"><?php eT("Dropdown fields") ?></h4>
         </div>
         <div id='ParticipantAttributeNamesDropdownEditList'>
             <?php 
-                foreach($model->allAttributesValues as $attribute_value){
+                foreach($model->getAttributesValues($model->attribute_id) as $attribute_value){
                     echo "<div class='control-group'>";
                     echo "<div class='dropDownContainer col-xs-8 col-offset-xs-2'>";
                     echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[".$attribute_value['value_id']."]' value='".$attribute_value['value']."' />";
@@ -83,7 +83,7 @@
     </div>
      <legend><?php eT("Languages") ?></legend>
         <div class="row form-group">
-            <label class="col-sm-5 col-xs-12 control-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add Language");?></label>
+            <label class="col-sm-5 col-xs-12 control-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
             <div>
                 <div class="col-sm-6 col-xs-11">
                 <?php

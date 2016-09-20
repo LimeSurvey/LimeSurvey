@@ -100,8 +100,9 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-    * AJAX switcher for modal calling
-    */
+     * AJAX switcher for modal calling
+     * @return void
+     */
     public function openModalParticipantPanel(){
         $target = Yii::app()->request->getPost('modalTarget');
         switch($target){
@@ -1232,11 +1233,12 @@ class participantsaction extends Survey_Common_Action
         }
         else
         {
-            $model = new ParticipantAttributeName;
+            $model = new ParticipantAttributeName();
+            $model->attribute_type = 'TB';
             $editType = "new";     
         }
-        
-        //Generate HTML for alternative languages
+
+        // Generate HTML for alternative languages
         $languagesOfAttribute = [];
         foreach($model->participant_attribute_names_lang as $single_language)
         {
@@ -1255,7 +1257,6 @@ class participantsaction extends Survey_Common_Action
         {
             $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")"; 
         }
-
 
         $this->getController()->renderPartial('/admin/participants/modal_subviews/_editAttribute', $aData);
     }
