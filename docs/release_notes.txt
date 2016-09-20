@@ -35,6 +35,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from  2.51.4 (build 160908) to 2.52 (build 160920) Sept 20, 2016
+-New feature #11626: beforeTokenEmail for confirmation email (Denis Chenu)
+-New feature: Add model for beforeTokenEmail event (name in the DB for surveyls_email_model) (Denis Chenu)
+-New feature: Add survey for survey id in beforeTokenEmail event (Denis Chenu)
+-Fixed issue #11574: Search box in main survey list is case sensitive (Alfredo Esteban)
+-Fixed issue #11639: Bad design when using the function Copy conditions (Olle Haerstedt)
+-Fixed issue #11642: Update CKEditor to Version 4.5.11 (Carsten Schmitz)
+-Fixed issue #11644: SQL error in postgresql when filtering by date types in participants list and responses list (Olle Haerstedt)
+-Fixed issue #11647: Can not use LANGUAGECHANGER inside a survey (Denis Chenu)
+-Fixed issue #11650: Array dropdown : answer_width don't set answer column width (Denis Chenu)
+-Fixed issue #11651: Multiple question exportation to SPSS unclear (Denis Chenu)
+-Fixed issue #11663: KCFinder Image Browse Server not working when using db sessions (Gabriele Mambrini) (Denis Chenu)
+-Fixed issue #11664: When using core variable in relevance or in attribute : update language during survey break expression (Denis Chenu)
+-Fixed issue: ~ and _ in tokens hard to manually enter (Carsten Schmitz)
+-Fixed issue: import template skipped "woff2" files, and warn as "skipped" the folders. (LouisGac)
+-Fixed issue: Language changer not holding language with activated captcha (markusfluer)
+-Fixed issue: SQL error with postgresql when filling integer fields in tokens list (Alfredo Esteban)
+-Fixed issue: Tokens are silently sanitized on import - should be skipped instead with proper error message in import summary (Carsten Schmitz)
+-Fixed issue: Version number not updated (Carsten Schmitz)
+#Updated translation: Albanian by amirbuzo
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Hebrew by lior
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Slovak by dusanm
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+
 Changes from  2.51.3 (build 160907) to 2.51.4 (build 160908) Sept 08, 2016
 -Fixed issue #11615: Input is not properly supressed when setting "numbers only" restriction (markusfluer)
 -Fixed issue #11621: Installer allows invalid database names (Carsten Schmitz)
