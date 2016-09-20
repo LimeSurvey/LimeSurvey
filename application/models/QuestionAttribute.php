@@ -200,7 +200,7 @@ class QuestionAttribute extends LSActiveRecord
                 if($oAttributeValue->language){
                     $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
                 }else{
-                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
+                    $aAttributeValues[$oAttributeValue->attribute]['nolanguage']=$oAttributeValue->value;
                 }
             }
 
@@ -210,9 +210,9 @@ class QuestionAttribute extends LSActiveRecord
             {
                 if ($aAttribute['i18n'] == false)
                 {
-                    if(isset($aAttributeValues[$aAttribute['name']]))
+                    if(isset($aAttributeValues[$aAttribute['name']]['nolanguage']))
                     {
-                        $aQuestionAttributes[$aAttribute['name']]=$aAttributeValues[$aAttribute['name']];
+                        $aQuestionAttributes[$aAttribute['name']]=$aAttributeValues[$aAttribute['name']]['nolanguage'];
                     }
                     else
                     {
@@ -227,6 +227,10 @@ class QuestionAttribute extends LSActiveRecord
                         {
                             $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][$sLanguage];
                         }
+                        elseif(isset($aAttributeValues[$aAttribute['name']]['nolanguage']))
+                        {
+                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']]['nolanguage'];
+                        }
                         else
                         {
                             $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttribute['default'];
@@ -234,13 +238,13 @@ class QuestionAttribute extends LSActiveRecord
                     }
                 }
             }
+            $aQuestionAttributesStatic[$iQuestionID]=$aQuestionAttributes;
+            return $aQuestionAttributes;
         }
         else
         {
-            return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
+            return false;
         }
-        $aQuestionAttributesStatic[$iQuestionID]=$aQuestionAttributes;
-        return $aQuestionAttributes;
     }
 
     public static function insertRecords($data)

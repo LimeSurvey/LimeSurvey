@@ -269,6 +269,7 @@ class questionHelper
         "types"=>":;ABCDEFKMNOPQRSTU",
         'category'=>gT('Logic'),
         'sortorder'=>210,
+        'i18n'=>true,
         'inputtype'=>'textarea',
         "help"=>gT('This is a hint text that will be shown to the participant describing the question validation equation.'),
         "caption"=>gT('Question validation tip'));
@@ -285,6 +286,7 @@ class questionHelper
         "types"=>";:KQSTUN",
         'category'=>gT('Logic'),
         'sortorder'=>230,
+        'i18n'=>true,
         'inputtype'=>'textarea',
         "help"=>gT('This is a tip shown to the participant describing the sub-question validation equation.'),
         "caption"=>gT('Sub-question validation tip'));
