@@ -729,7 +729,7 @@ table.array-no-dropdown  td.answer-item.text-center
 
     /* text overflows, ellipsis and hyphens */
     .navbar-brand {
-        max-height: 1.5em;
+        white-space:nowrap;
         text-overflow: ellipsis;
         text-overflow: "…";
     }
