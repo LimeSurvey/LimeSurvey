@@ -555,6 +555,7 @@ class participantsaction extends Survey_Common_Action
         $aData = array(
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
+        Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'),$aData);
     }
 
@@ -1079,6 +1080,7 @@ class participantsaction extends Survey_Common_Action
             'allowunblacklist' => Yii::app()->getConfig('allowunblacklist'),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
+        Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
     }
 
