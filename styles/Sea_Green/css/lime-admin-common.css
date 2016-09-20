@@ -2101,3 +2101,8 @@ table#responsedetail tr td{
 .select2-container--bootstrap .select2-selection {
    font-family: Roboto !important;
 }
+
+#responses-grid .table-condensed.upload-question {
+    margin-bottom: 0;
+    background-color: inherit;
+}

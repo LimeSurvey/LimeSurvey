@@ -2097,3 +2097,12 @@ table#responsedetail tr td{
     height: 340px;
     width: 390px;
 }
+/* Override fixed font in select2 CSS */
+.select2-container--bootstrap .select2-selection {
+   font-family: Roboto !important;
+}
+
+#responses-grid .table-condensed.upload-question {
+    margin-bottom: 0;
+    background-color: inherit;
+}
