@@ -581,7 +581,7 @@ class participantsaction extends Survey_Common_Action
         {
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024),'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
-            exit;
+            Yii::app()->end();
         }
         elseif (strtolower($sExtension)=='csv')
         {
@@ -592,13 +592,13 @@ class participantsaction extends Survey_Common_Action
         {
             Yii::app()->setFlashMessage(gT("This is not a .csv file."),'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
-            exit;
+            Yii::app()->end();
         }
         if (!$bMoveFileResult)
         {
             Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
-            exit;
+            Yii::app()->end();
         }
         else
         {
