@@ -6,6 +6,7 @@
         <div class="col-xs-4 text-right">
             <button class="btn btn-default" id="addParticipantToCPP">
                 <i class="fa fa-plus-circle text-success"></i> 
+                &nbsp;
                 <?php eT("Add new participant"); ?>
             </button>
         </div>

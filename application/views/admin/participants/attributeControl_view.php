@@ -5,8 +5,9 @@
         </div>
         <div class="col-xs-4 text-right">
             <button class="btn btn-default" id="addParticipantAttributeName">
-                <?php eT("Add new Attribute"); ?>
                 <i class="fa fa-plus-circle text-success"></i> 
+                &nbsp;
+                <?php eT("Add new attribute"); ?>
             </button>
         </div>
     </h3>
