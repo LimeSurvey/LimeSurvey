@@ -22,15 +22,13 @@ function bindScrollWrapper(){
     $(document).find('.scrolling-wrapper').scroll(function(){
         setListPagerPosition();
     });
+
+    reinstallResponsesFilterDatePicker();
 }
 
 $(document).ready(function(){
 
-/*
-
-*/
-
-bindScrollWrapper();
+    bindScrollWrapper();
 
     $('#display-mode').click(function(event){
         event.preventDefault();
@@ -55,4 +53,33 @@ bindScrollWrapper();
         });
 
     });
+
 });
+
+/**
+ * When date-picker is used in responses gridview
+ * @return
+ */
+function reinstallResponsesFilterDatePicker() {
+
+    // Since grid view is updated with Ajax, we need to fetch date format each update
+    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
+
+    $('#SurveyDynamic_startdate').datetimepicker({
+        format: dateFormatDetails.jsdate
+    });
+    $('#SurveyDynamic_datestamp').datetimepicker({
+        format: dateFormatDetails.jsdate
+    });
+
+    $('#SurveyDynamic_startdate').on('focusout', function() {
+        var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+        $.fn.yiiGridView.update('responses-grid', {data: data});
+    });
+
+    $('#SurveyDynamic_datestamp').on('focusout', function() {
+        var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+        $.fn.yiiGridView.update('responses-grid', {data: data});
+    });
+
+}

@@ -180,9 +180,11 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
                                 if ($row[$fieldno] == 'Y')
                                 {
                                     echo($q. 1 .$q);
-                                } else
+                                } elseif(isset($row[$fieldno]))
                                 {
                                     echo($q. 0 .$q);
+                                } else {
+                                    echo($na);
                                 }
                             } elseif (!$field['hide']) {
                                 $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);

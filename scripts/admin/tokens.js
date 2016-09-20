@@ -1,5 +1,5 @@
 /**
- * jQuery Plugin to manage the date in token modal edition.
+ * jQuery Plugin to manage the date in token modal edit.
  * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
  * They are displayed via a switch hidding or showing a date picker.
  */
@@ -15,7 +15,7 @@ $.fn.YesNoDate = function(options)
         // The view is called without processing output (no javascript)
         // So we must apply js to widget elements
         $elSwitch.bootstrapSwitch();                                            // Generate the switch
-        $elDate.datetimepicker({locale: that.data('locale')})                   // Generate the date time picker
+        $elDate.datetimepicker({locale: that.data('locale')});                  // Generate the date time picker
 
         // When user switch
         $(document).on( 'switchChange.bootstrapSwitch', '#'+$elSwitch.attr('id'), function(event, state)
@@ -109,11 +109,11 @@ $.fn.textWidth = function(text, font) {
 
 
 function submitEditToken(){
-    $form       = $('#edittoken');
-    $datas      = $form.serialize();
-    $actionUrl  = $form.attr('action');
-    $gridid     = $('.listActions').data('grid-id');
-    $modal      = $('#editTokenModal');
+    var $form       = $('#edittoken');
+    var $datas      = $form.serialize();
+    var $actionUrl  = $form.attr('action');
+    var $gridid     = $('.listActions').data('grid-id');
+    var $modal      = $('#editTokenModal');
 
     $ajaxLoader = $('#ajaxContainerLoading2');
     $('#modal-content').empty();
@@ -211,7 +211,7 @@ $(document).ready(function(){
         })
     });
     /**
-     * Token edition
+     * Token edit
      */
     $(document).on( 'click', '.edit-token', function(){
         var $that       = $(this),
@@ -500,5 +500,33 @@ function updatePageAfterGrid(){
         $(".dataforward").click(function(){});
         $(".gridcontrol.dataforward").addClass("disabled");
     }
+
+}
+
+/**
+ * When date-picker is used in token gridview
+ * @return
+ */
+function reinstallParticipantsFilterDatePicker() {
+
+    // Since grid view is updated with Ajax, we need to fetch date format each update
+    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
+
+    $('#TokenDynamic_validfrom').datetimepicker({
+        format: dateFormatDetails.jsdate + ' HH:mm'
+    });
+    $('#TokenDynamic_validuntil').datetimepicker({
+        format: dateFormatDetails.jsdate + ' HH:mm'
+    });
+
+    $('#TokenDynamic_validfrom').on('focusout', function() {
+        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
+        $.fn.yiiGridView.update('token-grid', {data: data});
+    });
+
+    $('#TokenDynamic_validuntil').on('focusout', function() {
+        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
+        $.fn.yiiGridView.update('token-grid', {data: data});
+    });
 
 }

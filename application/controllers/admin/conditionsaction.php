@@ -1586,8 +1586,9 @@ class conditionsaction extends Survey_Common_Action {
 
             if (count($conditionsList))
             {
-                //TIBO
-                $this->registerScriptFile( 'SCRIPT_PATH', 'jquery.multiselect.min.js');
+                // Multiselect is not working, so better to disable (as in 2.06)
+                //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
+                //$this->registerScriptFile( 'SCRIPT_PATH', 'jquery.multiselect.min.js');
                 $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
 
                 // TODO

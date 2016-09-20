@@ -1,4 +1,3 @@
-
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT('Survey responses'); ?></h3>
 
@@ -40,6 +39,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="content-right scrolling-wrapper"    >
+                <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
                 <?php
                     // the massive actions dropup button
                     $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
@@ -142,8 +142,6 @@
                             'header'=>'startlanguage',
                             'name'=>'startlanguage',
                         );
-
-
 
                    // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
                    // All other columns are based on the questions.

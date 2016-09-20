@@ -131,7 +131,7 @@ $internalConfig = array(
                 ),
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
-                )
+                ),
             )
         ),
         'cache'=>array(

@@ -1081,3 +1081,7 @@ div.yes-no .btn-group label {
 .ls-custom-margin.eighteen{
     margin: 18px;
 }
+
+.label-danger {
+    white-space: normal;
+}
