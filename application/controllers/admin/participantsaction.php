@@ -1089,7 +1089,7 @@ class participantsaction extends Survey_Common_Action
      */
     public function storeBlacklistValues()
     {
-        $values = Array('blacklistallsurveys', 'blacklistnewsurveys', 'blockaddingtosurveys', 'hideblacklisted', 'deleteblacklisted', 'allowunblacklist', 'userideditable');
+        $values = Array('blacklistallsurveys', 'blacklistnewsurveys', 'blockaddingtosurveys', 'hideblacklisted', 'deleteblacklisted', 'allowunblacklist');
         foreach ($values as $value)
         {
             if ($find = SettingGlobal::model()->findByPk($value))
@@ -1104,6 +1104,7 @@ class participantsaction extends Survey_Common_Action
                 $stg->save();
             }
         }
+        Yii::app()->setFlashMessage(gT('Blacklist settings were saved.'), 'success');
         Yii::app()->getController()->redirect(array('admin/participants/sa/blacklistControl'));
     }
 
