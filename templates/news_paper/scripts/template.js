@@ -43,49 +43,44 @@ $(document).ready(function(){
 
 
 /**
- * Remake table @that with divs, by column
- * Used by array-by-column question type on
- * small screen
- *
- * TODO: remove all the HTML from this function.
- *
- * @param {object} that The table jQuery object
- * @return void
+ * Ellipsize the title in the menu
  */
-function replaceColumnWithDiv(that) {
-    var newHtml = '';
-    var nrOfColumns = $(that).find('tr:first th').length;
-    newHtml += "<div class='array-by-columns-div'>";
-    for (var i = 0; i < nrOfColumns; i++)
+function ellipsizeBrandTitle()
+{
+    var $elNavBarBrand = $(".navbar-brand").first();                            // The element containing the menu title
+    var sBrandTitle    = $elNavBarBrand.data('full-title');                     // First, we try to get the old full brand title
+
+    // If not defined, then it's the first call to this function, and we should get the full title from the element's text
+    if (typeof(sBrandTitle) == "undefined")
     {
-        // Fetch each column from the table and put content in div
-        newHtml += "<div class='well radio-list array" + (i % 2 === 0 ? "2" : "1") + " '>";
-        $(that).find('tr > *:nth-child('+ (i + 2) + ')').each(function(j) {
-            // First one is header
-            if (j === 0) {
-                newHtml += "<div class='answertext clearfix'>";
-                newHtml += $(this).html();
-                newHtml += "</div>";
-            }
-            else {                
-                newHtml += "<div class='radio-item radio clearfix'>";
-                newHtml += $(this).html();
-                newHtml += "</div>";
-            }
-        });
-        newHtml += "</div>";
+        sBrandTitle = $elNavBarBrand.text();                                    // So we get the current full title
+        $elNavBarBrand.data('full-title',sBrandTitle);                          // And we store it in the element's data to be able to restore it later
     }
-    newHtml += "</div>";
-    newHtml = $(newHtml);
-    newHtml.find('span.visible-sm-block').each(function(){
-        console.log(this);
-        $(this).removeClass('visible-xs-block').removeClass('visible-sm-block');
-    })
-    $(that).replaceWith(newHtml);
+
+    // The number of characters in the title will be relative to the width available
+    var iNavBrandWidth = $elNavBarBrand.width();
+    var iMaxString = iNavBrandWidth/10;
+    var sElipsizedsBrandTitle = sBrandTitle.substring(0,iMaxString)+'...';
+
+    $elNavBarBrand.empty().append(sElipsizedsBrandTitle);
 }
 
+/**
+ * Restore the full title in the menu
+ * It tries to get the old full title in the element's data.
+ * If it's not define, it means that the full title is shown and no change is needed
+ * Else it restore it
+ */
+function fullBrandTitle()
+{
+    var $elNavBarBrand = $(".navbar-brand").first();
+    var sBrandTitle    = $elNavBarBrand.data('full-title');
 
-
+    if(typeof(sBrandTitle) != "undefined")
+    {
+        elNavBarBrand.empty().append(sBrandTitle);
+    }
+}
 
 $(document).ready(function()
 {
@@ -121,17 +116,22 @@ $(document).ready(function()
 
     $('.if-no-js').hide();
 
-    // iPad has width 768, Google Nexus 10 width 800
-    // It's OK to keep tables on pads.
-    if($(window).width() < 768 && 1===2)
+    if($(window).width() < 768 )
     {
-        // Brutally remake the array-by-columns question type to divs,
-        // because you can't wrap table columns
-        $('.array-by-columns-table').each(function() {
-            replaceColumnWithDiv(this);
-        });
-
+        ellipsizeBrandTitle();
     }
+
+    $(window).resize(function()
+    {
+        if ($(window).width() < 768)
+        {
+            ellipsizeBrandTitle();
+        }
+        else
+        {
+            fullBrandTitle();
+        }
+    });
 
     //var outerframeDistanceFromTop = 50;
     //topsurveymenubar
