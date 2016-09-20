@@ -87,7 +87,7 @@ class PluginsController extends LSYii_Controller
 
         if ($arPlugin === null)
         {
-            Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
+            Yii::app()->user->setFlash('pluginmanager', gT('Plugin not found'));
             $this->redirect(array('plugins/'));
         }
 
@@ -102,7 +102,7 @@ class PluginsController extends LSYii_Controller
                 $aSave[$name] = App()->request->getPost($name, null);
             }
             $oPluginObject->saveSettings($aSave);
-            Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
+            Yii::app()->user->setFlash('pluginmanager', gT('Settings saved'));
             if(App()->request->getPost('redirect'))
             {
                 $this->redirect(App()->request->getPost('redirect'), true);
@@ -114,7 +114,7 @@ class PluginsController extends LSYii_Controller
         if (empty($aSettings))
         {
             // And show a message
-            Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
+            Yii::app()->user->setFlash('pluginmanager', gT('This plugin has no settings'));
             $this->redirect('plugins/index', true);
         }
 
