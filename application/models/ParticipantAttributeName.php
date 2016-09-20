@@ -150,7 +150,7 @@ class ParticipantAttributeName extends LSActiveRecord
         return $returnName;
     }
     public function getVisibleSwitch(){
-        $inputHtml = "<input type='checkbox' data-size='small' data-visible='".$this->visible."' data-on-color='success' data-off-color='danger' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeVisibility' "
+        $inputHtml = "<input type='checkbox' data-size='small' data-visible='".$this->visible."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeVisibility' "
             . ($this->visible == "TRUE" ? "checked" : "")
             . "/>";
         return  $inputHtml;
