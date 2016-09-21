@@ -103,11 +103,14 @@ class ParticipantShare extends LSActiveRecord
         
     }
 
+    /**
+     * @return string HTML
+     */
     public function getCanEditHtml(){
         $loggedInUser = yii::app()->user->getId();
         if($this->participant->owner_uid == $loggedInUser)
         {
-            $inputHtml = "<input type='checkbox' data-size='small' data-off-color='danger' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeEditableStatus' "
+            $inputHtml = "<input type='checkbox' data-size='small' data-off-color='warning' data-on-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeEditableStatus' "
             . ($this->can_edit ? "checked" : "")
             . "/>";
             return  $inputHtml;
@@ -118,6 +121,9 @@ class ParticipantShare extends LSActiveRecord
         }
     }
 
+    /**
+     * @return string HTML
+     */
     public function getButtons(){
         $loggedInUser = yii::app()->user->getId();
         if($this->participant->owner_uid == $loggedInUser)
