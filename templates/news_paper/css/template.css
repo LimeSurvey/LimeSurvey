@@ -780,6 +780,12 @@ table.array-no-dropdown  td.answer-item.text-center
         margin-bottom: 0.4em;
     }
 
+    /* text overflows, ellipsis and hyphens */
+    .navbar-brand {
+        white-space:nowrap;
+        text-overflow: ellipsis;
+        text-overflow: "…";
+    }
 }
 
 /* On iPad etc only */

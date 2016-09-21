@@ -2188,7 +2188,7 @@ class tokens extends Survey_Common_Action
 
                         if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim($aWriteArray['token'])!='')
                         {
-                            if (trim($aWriteArray['token']) != sanitize_token($aWriteArray['token']));
+                            if (trim($aWriteArray['token']) != sanitize_token($aWriteArray['token']))
                             {
                                 $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']),CHtml::encode($aWriteArray['token']));
                                 $bInvalidToken=true;

@@ -42,51 +42,6 @@ $(document).ready(function(){
 */
 
 
-/**
- * Remake table @that with divs, by column
- * Used by array-by-column question type on
- * small screen
- *
- * TODO: remove all the HTML from this function.
- *
- * @param {object} that The table jQuery object
- * @return void
- */
-function replaceColumnWithDiv(that) {
-    var newHtml = '';
-    var nrOfColumns = $(that).find('tr:first th').length;
-    newHtml += "<div class='array-by-columns-div'>";
-    for (var i = 0; i < nrOfColumns; i++)
-    {
-        // Fetch each column from the table and put content in div
-        newHtml += "<div class='well radio-list array" + (i % 2 === 0 ? "2" : "1") + " '>";
-        $(that).find('tr > *:nth-child('+ (i + 2) + ')').each(function(j) {
-            // First one is header
-            if (j === 0) {
-                newHtml += "<div class='answertext clearfix'>";
-                newHtml += $(this).html();
-                newHtml += "</div>";
-            }
-            else {                
-                newHtml += "<div class='radio-item radio clearfix'>";
-                newHtml += $(this).html();
-                newHtml += "</div>";
-            }
-        });
-        newHtml += "</div>";
-    }
-    newHtml += "</div>";
-    newHtml = $(newHtml);
-    newHtml.find('span.visible-sm-block').each(function(){
-        console.log(this);
-        $(this).removeClass('visible-xs-block').removeClass('visible-sm-block');
-    })
-    $(that).replaceWith(newHtml);
-}
-
-
-
-
 $(document).ready(function()
 {
 
@@ -121,16 +76,9 @@ $(document).ready(function()
 
     $('.if-no-js').hide();
 
-    // iPad has width 768, Google Nexus 10 width 800
-    // It's OK to keep tables on pads.
-    if($(window).width() < 768 && 1===2)
+    if($(window).width() < 768 )
     {
-        // Brutally remake the array-by-columns question type to divs,
-        // because you can't wrap table columns
-        $('.array-by-columns-table').each(function() {
-            replaceColumnWithDiv(this);
-        });
-
+        // nothing
     }
 
     //var outerframeDistanceFromTop = 50;

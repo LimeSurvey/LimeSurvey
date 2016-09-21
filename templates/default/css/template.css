@@ -726,6 +726,15 @@ table.array-no-dropdown  td.answer-item.text-center
         padding-left: 0;
     }
 
+
+    /* text overflows, ellipsis and hyphens */
+    .navbar-brand {
+        white-space:nowrap;
+        text-overflow: ellipsis;
+        text-overflow: "…";
+    }
+
+
 }
 
 /** On small phones, leave some more space */
