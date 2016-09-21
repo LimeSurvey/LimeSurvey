@@ -6000,7 +6000,7 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['myfid1'] = $myfid1;
 
                 $aData['aSubQuestions'][$i]['answertext'] = $ansrow['question'];
-
+                $aData['aSubQuestions'][$i]['zebra'] =  2 - ($i % 2);
                 /* Check the Sub Q mandatory violation */
                 if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
                 {
@@ -6012,10 +6012,12 @@ function do_array_dual($ia)
                 }
 
                 // Get array_filter stuff
-                list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
-                $aData['aSubQuestions'][$i]['htmltbody2'] = $htmltbody2;
-                $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
+                //~ list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
 
+                //~ $aData['aSubQuestions'][$i]['htmltbody2'] = $htmltbody2;
+                //~ $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
+                // @todo return_display_style($ia, $aQuestionAttributes, $thissurvey, $ansrow);
+                $aData['aSubQuestions'][$i]['sDisplayStyle']=return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
                 array_push($inputnames, $myfname0);
 
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]))
@@ -6199,13 +6201,17 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['myfid1'] = $myfid1;
                 $aData['aSubQuestions'][$i]['sActualAnswer0'] = $sActualAnswer0;
                 $aData['aSubQuestions'][$i]['sActualAnswer1'] = $sActualAnswer1;
+                $aData['aSubQuestions'][$i]['zebra'] =  2 - ($i % 2);
 
                 // Set mandatory alert
                 $aData['aSubQuestions'][$i]['alert'] = ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));
+                $aData['aSubQuestions'][$i]['mandatoryviolation'] = ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));
+                // Array filter : maybe leave EM do the trick
+                $aData['aSubQuestions'][$i]['sDisplayStyle']=return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
-                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list dropdown-list");
-                $aData['aSubQuestions'][$i]['htmltbody2'] = $htmltbody2;
-                $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
+                //~ list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list dropdown-list");
+                //~ $aData['aSubQuestions'][$i]['htmltbody2'] = $htmltbody2;
+                //~ $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
                 $aData['labels0'] = $labels0;
                 $aData['labels1'] = $labels1;
                 $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER);
