@@ -361,6 +361,8 @@ class participantsaction extends Survey_Common_Action
         Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array(), true, false);
+
         // Loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
     }
@@ -374,38 +376,53 @@ class participantsaction extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('participantpanel','delete'))
         {
             $selectoption = Yii::app()->request->getPost('selectedoption');
-            $iParticipantId = Yii::app()->request->getPost('participant_id');
 
-            //echo $selectoption." -- ".$iParticipantId."<br />"; die();
+            // First for delete one, second for massive action
+            $participantId = Yii::app()->request->getPost('participant_id');
+            $participantIds = json_decode(Yii::app()->request->getPost('sItems'), true);
+
+            if (empty($participantIds))
+            {
+                $participantIds = $participantId;
+            }
+
+            if (is_array($participantIds))
+            {
+                $participantIds = join($participantIds, ',');
+            }
 
             // Deletes from participants only
             if ($selectoption == 'po')
             {
-                Participant::model()->deleteParticipants($iParticipantId);
+                Participant::model()->deleteParticipants($participantIds);
             }
             // Deletes from central and token table
             elseif ($selectoption == 'ptt')
             {
-                Participant::model()->deleteParticipantToken($iParticipantId);
+                Participant::model()->deleteParticipantToken($participantIds);
             }
             // Deletes from central , token and assosiated responses as well
             elseif ($selectoption == 'ptta')
             {
-                Participant::model()->deleteParticipantTokenAnswer($iParticipantId);
+                Participant::model()->deleteParticipantTokenAnswer($participantIds);
             }
+            else
+            {
+                // Internal error
+                assert(false);
+            }
+
             echo json_encode(array(
                 'success' => true,
                 'successMessage' => gT('Participant deleted')
             ));
-            die();
         }
         else 
         {
             echo json_encode(array(
                 'success' => false,
-                'errorMessage' => gT('You do not have the right to do that')
+                'errorMessage' => gT('No permission')
             ));
-            die();
         }
     }
 

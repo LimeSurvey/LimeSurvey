@@ -79,6 +79,7 @@
                 'afterAjaxUpdate' => 'bindButtons',
                 'ajaxType' => 'POST',
                 'beforeAjaxUpdate' => 'insertSearchCondition',
+                'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                 'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                 CHtml::dropDownList(
                     'pageSizeParticipantView',
