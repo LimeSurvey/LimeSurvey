@@ -138,7 +138,7 @@ class ParticipantShare extends LSActiveRecord
         }
     }
     public function getColumns(){
-        $ParticipantFilter = yii::app()->request->getPost('Participant');
+        $participantFilter = yii::app()->request->getPost('Participant');
         $cols = array(
             array(
                 "name" => 'buttons',
@@ -149,17 +149,17 @@ class ParticipantShare extends LSActiveRecord
             array(
                 "name" => 'participant.firstname',
                 "header" => gT("Firstname"),
-                "filter" => TbHtml::textField("Participant[full_name]", $ParticipantFilter['firstname'])
+                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'])
             ),
             array(
                 "name" => 'participant.lastname',
                 "header" => gT("Lastname"),
-                "filter" => TbHtml::textField("Participant[lastname]",$ParticipantFilter['lastname'])
+                "filter" => TbHtml::textField("Participant[lastname]",$participantFilter['lastname'])
             ),
             array(
                 "name" => 'participant.email',
                 "header" => gT("Email"),
-                "filter" => TbHtml::textField("Participant[email]",$ParticipantFilter['email'])
+                "filter" => TbHtml::textField("Participant[email]",$participantFilter['email'])
             ),
             array(
                 "name" => 'share_uid',
@@ -219,16 +219,18 @@ class ParticipantShare extends LSActiveRecord
         );
         $sort->attributes = $sortAttributes;
 
-        $ParticipantFilter = yii::app()->request->getPost('Participant');
+        $participantFilter = Yii::app()->request->getPost('Participant');
+        Yii::log(print_r($_POST, true), CLogger::LEVEL_TRACE, 'debug');
+
         $criteria=new CDbCriteria;
         $criteria->with = array('participant','shared_by');
         $criteria->compare('participant_id',$this->participant_id, false);
         $criteria->compare('share_uid',$this->share_uid);
         $criteria->compare('date_added',$this->date_added,true);
         $criteria->compare('can_edit',$this->can_edit,true);
-        $criteria->compare('participant.lastname',$ParticipantFilter['lastname'],true);
-        $criteria->compare('participant.firstname',$ParticipantFilter['firstname'],true);
-        $criteria->compare('participant.email',$ParticipantFilter['email'],true);
+        $criteria->compare('participant.lastname',$participantFilter['lastname'],true);
+        $criteria->compare('participant.firstname',$participantFilter['firstname'],true);
+        $criteria->compare('participant.email',$participantFilter['email'],true);
 
         $pageSize = Yii::app()->user->getState('pageSizeShareParticipantView', Yii::app()->params['defaultPageSize']);
         return new CActiveDataProvider($this, array(
