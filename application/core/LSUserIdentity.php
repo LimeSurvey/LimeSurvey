@@ -127,8 +127,12 @@ class LSUserIdentity extends CUserIdentity {
 
         // Check for default password
         if ($this->password === 'password') {
-            App()->user->setFlash('warning', gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.'));
-            //App()->user->setFlash('pwdnotify', gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.'));
+            Yii::app()->setFlashMessage(gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."),'warning');
+        }
+
+        if ((int)App()->request->getPost('width', '1280') < 1280)
+        {
+            Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."),'error');
         }
 
         // Do session setup
@@ -142,7 +146,7 @@ class LSUserIdentity extends CUserIdentity {
         Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
 
         // Perform language settings
-        if (App()->request->getPost('loginlang','default') != 'default')
+        if (App()->request->getPost('loginlang', 'default') != 'default')
         {
             $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
             $user->save();

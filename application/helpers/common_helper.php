@@ -2624,6 +2624,7 @@ function stripCtrlChars($sValue)
     }
     return $sValue;
 }
+
 // make a string safe to include in a JavaScript String parameter.
 function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
     $new_str ='';
