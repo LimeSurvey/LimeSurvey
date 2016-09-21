@@ -1,14 +1,25 @@
 //Namespacing all Methods of the participant panel in one JS-Prototype
 var Bindings = function(){
-    var 
-    //Basic Methods used by all submethods
+    var
+
+    // Basic modal used by all submethods
     baseModal = '#participantPanel_edit_modal',
+
+    /**
+     * @param {string} url
+     * @param {object} data
+     * @param {string} actionButtonClass
+     * @param {string} formId
+     * @oaram {string} gridViewId
+     * @return
+     */
     runBaseModal = function(url, data, actionButtonClass, formId, gridViewId){
         console.log('runBaseModal');
         console.log('url', url);
         console.log('data', data);
 
         /**
+         * @param {object} result
          * @todo
          */
         var secondSuccess = function(result){
@@ -24,6 +35,7 @@ var Bindings = function(){
         };
 
         /**
+         * @param {string} page - Modal HTML fetched with Ajax
          * @todo
          */
         var firstSuccess = function(page){
@@ -55,6 +67,7 @@ var Bindings = function(){
             error: console.log
         });
     },
+
     // Basic settings and bindings that should take place in all three views
     basics = function(){ 
         // Code for AJAX download

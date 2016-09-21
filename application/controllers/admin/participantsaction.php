@@ -455,15 +455,25 @@ class participantsaction extends Survey_Common_Action
         $this->getController()->renderPartial('/admin/participants/modal_subviews/_showParticipantSurveys', $aData);
     }
 
+    /**
+     * Called by Ajax to open the share participant modal
+     * @return void
+     */
     public function openparticipantshare(){
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
         $surveyModel = SurveyLink::model();
         $surveyModel->participant_id = $participant_id;
+
+        // Get all users except myself
+        $users = User::model()->findAll('uid != ' . Yii::app()->user->id);
+
         $aData = array(
             'model' => $model,
-            'surveymodel' => $surveyModel
+            'surveymodel' => $surveyModel,
+            'users' => $users
         );
+
         $this->getController()->renderPartial('/admin/participants/modal_subviews/_shareParticipant', $aData);
     }
 
@@ -1636,11 +1646,10 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
-
-//Display sharePanel
     /**********************************************PARTICIPANT SHARE PANEL***********************************************/
     /**
      * Loads the view 'sharePanel'
+     * @return void
      */
     public function sharePanel()
     {
@@ -1675,9 +1684,7 @@ class participantsaction extends Survey_Common_Action
         $aData['searchstring'] = $searchstring;
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
-        // loads the participant panel view and display participant view
-
-
+        // Loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'sharePanel'), $aData);
     }
 
@@ -2038,37 +2045,60 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Stores the shared participant information in participant_shares
+     * @return void
      */
     public function shareParticipants()
     {
-        $iParticipantId = Yii::app()->request->getPost('participant_id');
-        $iShareUserId = Yii::app()->request->getPost('shareuser');
-        $bCanEdit = Yii::app()->request->getPost('can_edit');
-
-        // Some input validation needed
-        if ($iShareUserId == '') {
-            printf(gT("Please select a user"));
+        if (!Permission::model()->hasGlobalPermission('participantpanel','update'))
+        {
+            echo json_encode(array(
+                "success" => false,
+                "errorMessage" => gT("No permission to share users")
+            ));
             return;
         }
 
+        $participantIds = Yii::app()->request->getPost('participant_id');
+        $iShareUserId = Yii::app()->request->getPost('shareuser');
+        $bCanEdit = (boolean) Yii::app()->request->getPost('can_edit');
+
+        if (!is_array($participantIds))
+        {
+            $participantIds = array($participantIds);
+        }
+
+        // Some input validation needed
+        if (empty($iShareUserId))
+        {
+            $iShareUserId = -1;  // -1 = shared with all users
+        }
+
         $i = 0;
-    //  $iShareUserId == 0 means any user
+        // $iShareUserId == 0 means any user
         if (Permission::model()->hasGlobalPermission('participantpanel','update') && $iShareUserId !== '')
-            foreach ($iParticipantId as $iId)
+        {
+            foreach ($participantIds as $id)
             {
                 $time = time();
-                $aData = array('participant_id' => $iId,
+                $aData = array(
+                    'participant_id' => $id,
                     'share_uid' => $iShareUserId,
                     'date_added' => date('Y-m-d H:i:s', $time),
-                    'can_edit' => $bCanEdit);
+                    'can_edit' => $bCanEdit
+                );
                 ParticipantShare::model()->storeParticipantShare($aData);
                 $i++;
+            }
         }
-        printf(gT("%s participants have been shared"), $i);
+        echo json_encode(array(
+            'success' => true,
+            'successMessage' => sprintf(gT("%s participants have been shared"), $i)
+        ));
     }
 
     /**
      * Stores the shared participant information in participant_shares for ONE participant
+     * @return void
      */
     public function shareParticipant()
     {
@@ -2087,15 +2117,20 @@ class participantsaction extends Survey_Common_Action
                 "success" => true,
                 "successMessage" => gT("Participant shared.")
             ));
-            die();
         }
+        else
+        {
             echo json_encode(array(
                 "success" => false,
                 "errorMessage" => gT("No permission to share users")
             ));
-            die();
+        }
+        Yii::app()->end();
     }
 
+    /**
+     * @return void
+     */
     public function rejectShareParticipant(){
         $participant_id = yii::app()->request->getPost('participant_id');
         $share_uid = yii::app()->user->getId();
@@ -2106,6 +2141,9 @@ class participantsaction extends Survey_Common_Action
         ));
     }
 
+    /**
+     * @return void
+     */
     public function changeSharedEditableStatus(){
         $participant_id = Yii::app()->request->getPost('participant_id');
         $can_edit = Yii::app()->request->getPost('can_edit');
@@ -2113,9 +2151,8 @@ class participantsaction extends Survey_Common_Action
         $ShareModel->can_edit = (int) $can_edit;
         $success = $ShareModel->save();
         echo json_encode(array("newValue" => $can_edit, "success" => $success));
-        die();
+        Yii::app()->end();
     }
-
 
     /**
      * Responsible for copying the participant from tokens to the central Database
