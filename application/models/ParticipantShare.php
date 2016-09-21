@@ -192,35 +192,35 @@ class ParticipantShare extends LSActiveRecord
         // should not be searched.
         $sort = new CSort;
         $sortAttributes = array(
-          'participant.firstname'=>array(
-            'asc'=>'participant.firstname',
-            'desc'=>'participant.firstname desc',
-          ),
-          'participant.lastname'=>array(
-            'asc'=>'participant.lastname',
-            'desc'=>'participant.lastname desc',
-          ),
-          'participant.email'=>array(
-            'asc'=>'participant.email',
-            'desc'=>'participant.email desc',
-          ),
-          'share_uid'=>array(
-            'asc'=>'shared_by.full_name',
-            'desc'=>'shared_by.full_name desc',
-          ),
-          'date_added'=>array(
-            'asc'=>'date_added',
-            'desc'=>'date_added desc',
-          ),
-          'can_edit'=>array(
-            'asc'=>'can_edit',
-            'desc'=>'can_edit desc',
-          )
+            'participant.firstname'=>array(
+                'asc'=>'participant.firstname asc',
+                'desc'=>'participant.firstname desc',
+            ),
+            'participant.lastname'=>array(
+                'asc'=>'participant.lastname asc',
+                'desc'=>'participant.lastname desc',
+            ),
+            'participant.email'=>array(
+                'asc'=>'participant.email asc',
+                'desc'=>'participant.email desc',
+            ),
+            'share_uid'=>array(
+                'asc'=>'shared_by.full_name asc',
+                'desc'=>'shared_by.full_name desc',
+            ),
+            'date_added'=>array(
+                'asc'=>'date_added asc',
+                'desc'=>'date_added desc',
+            ),
+            'can_edit'=>array(
+                'asc'=>'can_edit asc',
+                'desc'=>'can_edit desc',
+            ),
         );
         $sort->attributes = $sortAttributes;
+        $sort->defaultOrder = 'participant.firstname ';
 
         $participantFilter = Yii::app()->request->getPost('Participant');
-        Yii::log(print_r($_POST, true), CLogger::LEVEL_TRACE, 'debug');
 
         $criteria=new CDbCriteria;
         $criteria->with = array('participant','shared_by');
