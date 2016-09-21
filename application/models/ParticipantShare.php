@@ -110,7 +110,7 @@ class ParticipantShare extends LSActiveRecord
             $inputHtml = "<input type='checkbox' data-size='small' data-off-color='danger' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeEditableStatus' "
             . ($this->can_edit ? "checked" : "")
             . "/>";
-        return  $inputHtml;
+            return  $inputHtml;
         }
         else 
         {
@@ -122,9 +122,9 @@ class ParticipantShare extends LSActiveRecord
         $loggedInUser = yii::app()->user->getId();
         if($this->participant->owner_uid == $loggedInUser)
         {
-         return "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='rejectParticipantShareAjax(\"".$this->participant_id."\")'>"
-             . "<button class='btn btn-xs btn-default action_delete_shareParticipant'><i class='fa fa-trash text-danger'></i></button>"
-             . "</a>";
+            return "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='rejectParticipantShareAjax(\"".$this->participant_id."\")'>"
+                . "<button class='btn btn-xs btn-default action_delete_shareParticipant'><i class='fa fa-trash text-danger'></i></button>"
+                . "</a>";
         } 
         else 
         {
