@@ -2608,6 +2608,23 @@ function dbQuoteAll($value)
     return Yii::app()->db->quoteValue($value);
 }
 
+
+/**
+* This function strips UTF-8 control characters from strings, except tabs, CR and LF
+* - it is intended to be used before any response data is saved to the response table
+*
+* @param mixed $sValue A string to be sanitized
+* @return A sanitized string, otherwise the unmodified original variable
+*/
+function stripCtrlChars($sValue)
+{
+    if (is_string($sValue))
+    {
+        $sValue=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '', $sValue);
+    }
+    return $sValue;
+}
+
 // make a string safe to include in a JavaScript String parameter.
 function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
     $new_str ='';

@@ -647,6 +647,7 @@ class SurveyDynamic extends LSActiveRecord
 
     /**
      * Loop through columns and add filter if any value is given for this column
+     * Used in responses grid
      * @param CdbCriteria $criteria
      * @return void
      */
@@ -683,7 +684,7 @@ class SurveyDynamic extends LSActiveRecord
                     }
                     else
                     {
-                        $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
+                        $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, true);
                     }
                 }
             }
