@@ -2148,10 +2148,9 @@ class participantsaction extends Survey_Common_Action
         $participant_id = Yii::app()->request->getPost('participant_id');
         $can_edit = Yii::app()->request->getPost('can_edit');
         $ShareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id));
-        $ShareModel->can_edit = (int) $can_edit;
+        $ShareModel->can_edit =  $can_edit ? 1 : 0;
         $success = $ShareModel->save();
         echo json_encode(array("newValue" => $can_edit, "success" => $success));
-        Yii::app()->end();
     }
 
     /**
