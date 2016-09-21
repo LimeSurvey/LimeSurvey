@@ -582,6 +582,7 @@ class XLSXWriter
 	//------------------------------------------------------------------
 	public static function xmlspecialchars($val)
 	{
+        $val=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '', $val);
 		return str_replace("'", "&#39;", htmlspecialchars($val));
 	}
 	//------------------------------------------------------------------
