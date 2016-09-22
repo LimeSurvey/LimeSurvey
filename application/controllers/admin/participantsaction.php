@@ -460,6 +460,9 @@ class participantsaction extends Survey_Common_Action
         $this->getController()->renderPartial('/admin/participants/modal_subviews/_editParticipant', $aData);
     }
 
+    /**
+     * ?
+     */
     public function openparticipantsurveys(){
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
@@ -474,11 +477,26 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Called by Ajax to open the share participant modal
+     * Used by both single share and massive action share
      * @return void
      */
     public function openparticipantshare(){
         $participant_id = Yii::app()->request->getPost('participant_id');
+        $participant_ids = null;
+
+        if (empty($participant_id))
+        {
+            $participant_ids = Yii::app()->request->getPost('participantIds');
+            $participant_id = $participant_ids[0];
+        }
+
         $model = Participant::model()->findByPk($participant_id);
+
+        if (empty($model))
+        {
+            throw new \CException('Found no participant with id \'' . $participant_id . '\'.');
+        }
+
         $surveyModel = SurveyLink::model();
         $surveyModel->participant_id = $participant_id;
 
@@ -488,7 +506,8 @@ class participantsaction extends Survey_Common_Action
         $aData = array(
             'model' => $model,
             'surveymodel' => $surveyModel,
-            'users' => $users
+            'users' => $users,
+            'participantIds' => $participant_ids
         );
 
         $this->getController()->renderPartial('/admin/participants/modal_subviews/_shareParticipant', $aData);
@@ -1675,7 +1694,7 @@ class participantsaction extends Survey_Common_Action
         $model = new ParticipantShare();
         if(Yii::app()->request->getParam('ParticipantShare'))
         {
-            $model->attributes=Yii::app()->request->getParam('ParticipantShare');
+            $model->attributes = Yii::app()->request->getParam('ParticipantShare');
         } 
         // data to be passed to view
         $aData = array(
@@ -2164,9 +2183,17 @@ class participantsaction extends Survey_Common_Action
     public function changeSharedEditableStatus(){
         $participant_id = Yii::app()->request->getPost('participant_id');
         $can_edit = Yii::app()->request->getPost('can_edit');
-        $ShareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id));
-        $ShareModel->can_edit =  $can_edit == 'true' ? 1 : 0;
-        $success = $ShareModel->save();
+        $shareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id));
+
+        if ($shareModel)
+        {
+            $shareModel->can_edit = ($can_edit == 'true' ? 1 : 0);
+            $success = $shareModel->save();
+        }
+        else
+        {
+            $success = false;
+        }
         echo json_encode(array("newValue" => $can_edit, "success" => $success));
     }
 

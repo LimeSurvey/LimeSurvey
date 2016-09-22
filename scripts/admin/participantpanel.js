@@ -295,14 +295,14 @@ LS.CPDB = (function() {
         });
     },
     //JS-bindings especially for the sharePanel
-    sharePanel = function(){
+    sharePanel = function() {
         $('#action_toggleAllParticipant').on('click', function(){
-            $('.selector_participantCheckbox').prop('checked',$('#action_toggleAllParticipant').prop('checked'));
+            $('.selector_participantCheckbox').prop('checked', $('#action_toggleAllParticipant').prop('checked'));
         });
 
         $('.action_changeEditableStatus').bootstrapSwitch();
 
-        $('.action_changeEditableStatus').on('switchChange.bootstrapSwitch', function(event,state){
+        $('.action_changeEditableStatus').on('switchChange.bootstrapSwitch', function(event, state){
             var self = this;
             $.ajax({
                 url: editValueParticipantPanel, 
@@ -318,6 +318,26 @@ LS.CPDB = (function() {
         $('#pageSizeShareParticipantView').on("change", function(){
             $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSizeShareParticipantView: $(this).val() }});
         });
+    },
+
+    /**
+     * Modal for sharing checked items
+     * @param {array} participantIds - Array of participant ids
+     * @return
+     */
+    shareMassiveAction = function(participantIds) {
+        console.log('participantIds', participantIds);
+        var data = {
+            modalTarget: 'shareparticipant',
+            participantIds: participantIds
+        };
+        runBaseModal(
+            openModalParticipantPanel,
+            data,
+            'action_save_modal_shareparticipant',
+            'shareParticipantActiveForm',
+            'list_central_participants'
+        );
     },
 
     /**
@@ -338,15 +358,20 @@ LS.CPDB = (function() {
 
     return {
         basics: basics,
+        runBaseModal: runBaseModal,
         participantPanel: participantPanel,
         attributePanel: attributePanel,
         sharePanel: sharePanel,
         onClickExport: onClickExport,
-        bindButtons: bindButtons
+        bindButtons: bindButtons,
+        shareMassiveAction: shareMassiveAction
     };
 
 })();
 
+/**
+ * ?
+ */
 function rejectParticipantShareAjax(participant_id){
     var runRejectParticipantShareAjax = function(){
         $.ajax({
@@ -362,6 +387,10 @@ function rejectParticipantShareAjax(participant_id){
     }
     return runRejectParticipantShareAjax;
 }
+
+/**
+ * ?
+ */
 function deleteAttributeAjax(attribute_id){
     var runDeleteAttributeAjax = function(){
         $.ajax({
@@ -377,7 +406,11 @@ function deleteAttributeAjax(attribute_id){
     }
     return runDeleteAttributeAjax;
 }
-function insertSearchCondition(id,options){
+
+/**
+ * ?
+ */
+function insertSearchCondition(id, options){
     options.data.searchcondition=$('#searchcondition').val();
     return options;
 }

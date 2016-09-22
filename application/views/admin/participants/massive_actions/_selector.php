@@ -45,7 +45,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
         array(
             'type' => 'action',
             'action' => 'export',
-            'url' => App()->createUrl('/admin/participants/sa/export'),
+            'url' => '',  // Not relevant
             'iconClasses' => 'icon-exportcsv text-success',
             'text' => gT('Export'),
             'grid-reload' => 'no',
@@ -53,10 +53,19 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'actionType' => 'custom',
             'custom-js' => '(function() { LS.CPDB.onClickExport(); })'
         ),
-        /*
         // Share
         array(
+            'type' => 'action',
+            'action' => 'share',
+            'url' => App()->createUrl('/admin/participants/sa/share'),
+            'iconClasses' => 'fa fa-share',
+            'text' => gT('Share'),
+            'grid-reload' => 'no',
+
+            'actionType' => 'custom',
+            'custom-js' => '(function(itemIds) { LS.CPDB.shareMassiveAction(itemIds); })'
         ),
+        /*
         // Add to survey
         array(
         )
