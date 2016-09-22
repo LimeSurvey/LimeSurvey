@@ -690,6 +690,13 @@ class Participant extends LSActiveRecord
                 {
                     $oParticipant->delete();
                 }
+                $oParticipantShare = ParticipantShare::model()->findByAttributes(array(
+                    'participant_id' => $aID
+                ));
+                if ($oParticipantShare)
+                {
+                    $oParticipantShare->delete();
+                }
             }
 
             Yii::app()->db->createCommand()->delete(Participant::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
