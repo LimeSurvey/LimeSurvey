@@ -43,6 +43,9 @@
                         <?php if (isset($aAction['on-success'])): ?>
                             data-on-success="<?php echo $aAction['on-success'];?>"
                         <?php endif; ?>
+                        <?php if (isset($aAction['custom-js'])): ?>
+                            data-custom-js="<?php echo $aAction['custom-js'];?>"
+                        <?php endif; ?>
                         data-action="<?php echo $aAction['action'];?>"
                         data-type="<?php echo $aAction['actionType']; //Direct action, or modal ?>"
                         data-grid-reload="<?php if(isset($aAction['grid-reload'])){echo $aAction['grid-reload'];}else{echo "no";}?>"

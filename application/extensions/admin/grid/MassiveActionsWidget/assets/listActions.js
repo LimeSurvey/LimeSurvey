@@ -64,11 +64,17 @@ $(document).on('click', '.listActions a', function ()
     }
 
     // Set window location href. Used by download files in responses list view.
-    if (actionType == 'window-location-href')
-    {
+    if (actionType == 'window-location-href') {
         var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // So we can join
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
+    }
+
+    if (actionType == 'custom') {
+        var js = $that.data('custom-js');
+        console.log('js', js);
+        var func = eval(js);
+        func();
     }
 
     // TODO: switch case "Modal"
