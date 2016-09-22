@@ -4826,7 +4826,7 @@ function do_array($ia)
                 $options[]=array(
                     'text'=> gT('Please choose...'),
                     'value'=> '',
-                    'selected'=>'SELECTED'
+                    'selected'=>''
                 );
                 $showNoAnswer=false;
             }
@@ -4835,7 +4835,7 @@ function do_array($ia)
             {
                 $options[]=array(
                     'value'=>$lrow['code'],
-                    'selected'=>(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code'])?'SELECTED':'',
+                    'selected'=>($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code'])? SELECTED :'',
                     'text'=> flattenText($lrow['answer'])
                 );
             }
@@ -4845,7 +4845,7 @@ function do_array($ia)
                 $options[]=array(
                     'text'=> gT('No answer'),
                     'value'=> '',
-                    'selected'=> '',
+                    'selected'=> ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]==='') ?  SELECTED :'',
                 );
             }
             unset($showNoAnswer);
