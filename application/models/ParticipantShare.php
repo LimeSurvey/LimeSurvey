@@ -224,7 +224,10 @@ class ParticipantShare extends LSActiveRecord
 
         $criteria=new CDbCriteria;
         $criteria->with = array('participant','shared_by');
-        $criteria->compare('participant_id',$this->participant_id, false);
+
+        // This condition is necessary to filter out participants that got deleted, but the share entry is not
+        $criteria->addCondition('participant.participant_id = t.participant_id');
+
         $criteria->compare('share_uid',$this->share_uid);
         $criteria->compare('date_added',$this->date_added,true);
         $criteria->compare('can_edit',$this->can_edit,true);
