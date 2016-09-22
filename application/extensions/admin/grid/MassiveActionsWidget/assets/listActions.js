@@ -77,11 +77,15 @@ $(document).on('click', '.listActions a', function ()
         return;
     }
 
+    /**
+     * Custom action
+     * Will run Javascript function in 'custom-js'. First argument is array of item ids, defined by 'pk'.
+     */
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
-        console.log('js', js);
         var func = eval(js);
-        func();
+        var itemIds = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));
+        func(itemIds);
         return;
     }
 
