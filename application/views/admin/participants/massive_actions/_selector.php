@@ -40,6 +40,26 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'aCustomDatas'  => array(
             ),
         ),
+
+        // Export
+        array(
+            'type' => 'action',
+            'action' => 'export',
+            'url' => App()->createUrl('/admin/participants/sa/export'),
+            'iconClasses' => 'icon-exportcsv text-success',
+            'text' => gT('Export'),
+            'grid-reload' => 'no',
+
+            'actionType' => 'window-location-href',
+        ),
+        /*
+        // Share
+        array(
+        ),
+        // Add to survey
+        array(
+        )
+         */
     )
 ));
 

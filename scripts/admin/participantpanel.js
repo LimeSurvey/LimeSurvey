@@ -1,5 +1,5 @@
 //Namespacing all Methods of the participant panel in one JS-Prototype
-var Bindings = function(){
+LS.CPDB = (function() {
     var
 
     // Basic modal used by all submethods
@@ -68,8 +68,74 @@ var Bindings = function(){
         });
     },
 
+    /**
+     * Run when user clicks 'Export'
+     * Used for both all participants and checked participants
+     * @return
+     */
+    onClickExport = function() {
+        var postdata = {
+            selectedParticipant: [],
+            YII_CSRF_TOKEN : LS.data.csrfToken
+        }; 
+        $('.selector_participantCheckbox:checked').each(function(i,item){
+            postdata.selectedParticipant.push($(item).val());
+        });
+
+        $.ajax({
+            url: exporttocsvcountall,
+            data: postdata,
+            method: 'POST',
+            success:  function(data) {
+                count = data;
+                if(count == 0)
+                {
+                    $('#exportcsvallnorow').modal('show');
+                    $('#exportcsvallnorow').on('shown.bs.modal', function(e) {
+                        var self = this;
+                        $(this).find('.exportButton').remove();
+                    });
+                }
+                else
+                {
+                    $('#exportcsv').modal('show');
+                    $('#exportcsv').on('shown.bs.modal', function(e) {
+                        var self = this;
+                        $(this).find('h4.modal-title').text(count);
+                        $(this).find('.exportButton').on('click', function(){
+                            var dldata = postdata;
+                            dldata.attributes =$('#attributes').val().join('+');
+                            console.log(dldata);
+                            var dlForm = $("<form></form>")
+                                .attr('action', exportToCSVURL)
+                                .attr('method', "POST");
+                            $.each(dldata, function(key,value){
+                                $('<input />')
+                                    .attr('name', key)
+                                    .attr('value', value)
+                                    .appendTo(dlForm);
+                            });
+                            dlForm.submit();
+                            $(self).modal("hide");
+                        });
+                        $('#attributes')
+                            .multiselect({ 
+                                includeSelectAllOption:true, 
+                                selectAllValue: '0',
+                                selectAllText: sSelectAllText,
+                                nonSelectedText: sNonSelectedText,
+                                nSelectedText: sNSelectedText,
+                                maxHeight: 140 
+                            });
+                    });
+                    /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
+                }
+            }
+        });
+    },
+
     // Basic settings and bindings that should take place in all three views
-    basics = function(){ 
+    basics = function() { 
         // Code for AJAX download
         jQuery.download = function(url, data, method){
             //url and data options required
@@ -87,70 +153,8 @@ var Bindings = function(){
                     .appendTo('body').submit().remove();
             };
         };
-        /**
-         * @TODO rewrite export
-         */
-        $('#export').click(function(){
-            var postdata = {
-                selectedParticipant: [],
-                YII_CSRF_TOKEN : LS.data.csrfToken
-            }; 
-            $('.selector_participantCheckbox:checked').each(function(i,item){
-                postdata.selectedParticipant.push($(item).val());
-            });
-
-            $.ajax({
-                url: exporttocsvcountall,
-                data: postdata,
-                method: 'POST',
-                success:  function(data) {
-                    count = data;
-                    if(count == 0)
-                    {
-                        $('#exportcsvallnorow').modal('show');
-                        $('#exportcsvallnorow').on('shown.bs.modal', function(e) {
-                            var self = this;
-                            $(this).find('.exportButton').remove();
-                        });
-                    }
-                    else
-                    {
-                        $('#exportcsv').modal('show');
-                        $('#exportcsv').on('shown.bs.modal', function(e) {
-                            var self = this;
-                            $(this).find('h4.modal-title').text(count);
-                            $(this).find('.exportButton').on('click', function(){
-                                var dldata = postdata;
-                                dldata.attributes =$('#attributes').val().join('+');
-                                console.log(dldata);
-                                var dlForm = $("<form></form>")
-                                    .attr('action', exportToCSVURL)
-                                    .attr('method', "POST");
-                                $.each(dldata, function(key,value){
-                                    $('<input />')
-                                        .attr('name', key)
-                                        .attr('value', value)
-                                        .appendTo(dlForm);
-                                });
-                                dlForm.submit();
-                                $(self).modal("hide");
-                            });
-                            $('#attributes')
-                                .multiselect({ 
-                                    includeSelectAllOption:true, 
-                                    selectAllValue: '0',
-                                    selectAllText: sSelectAllText,
-                                    nonSelectedText: sNonSelectedText,
-                                    nSelectedText: sNSelectedText,
-                                    maxHeight: 140 
-                                });
-                        });
-                        /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
-                    }
-                }
-            });
-        });
     },
+
     //JS-bindings especially for the participantPanel
     participantPanel = function(){
         $('#removeAllFilters').on('click', function(e){
@@ -314,22 +318,30 @@ var Bindings = function(){
             $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSizeShareParticipantView: $(this).val() }});
         });
     };
-    return {
-        basics :  basics,
-        participantPanel : participantPanel,
-        attributePanel : attributePanel,
-        sharePanel : sharePanel
+
+    function bindButtons() {
+        basics();
+        participantPanel();
+        attributePanel();
+        sharePanel();
+
+        /**
+         * @TODO rewrite export
+         */
+        $('#export').click(onClickExport);
     };
 
-}
+    return {
+        basics: basics,
+        participantPanel: participantPanel,
+        attributePanel: attributePanel,
+        sharePanel: sharePanel,
+        onClickExport: onClickExport,
+        bindButtons: bindButtons
+    };
 
-var bind = new Bindings();
-function bindButtons(){
-    bind.basics();
-    bind.participantPanel();
-    bind.attributePanel();
-    bind.sharePanel();
-};
+})();
+
 function rejectParticipantShareAjax(participant_id){
     var runRejectParticipantShareAjax = function(){
         $.ajax({
@@ -365,4 +377,4 @@ function insertSearchCondition(id,options){
     return options;
 }
 
-$(document).ready(bindButtons);
+$(document).ready(LS.CPDB.bindButtons);

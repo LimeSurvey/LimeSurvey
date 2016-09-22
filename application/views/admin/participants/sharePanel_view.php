@@ -13,7 +13,7 @@
                     'columns' => $model->columns,
                     'filter'=>$model,
                     'ajaxType' => 'POST',
-                    'afterAjaxUpdate' => 'bindButtons',
+                    'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
                     'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSizeShareParticipantView',

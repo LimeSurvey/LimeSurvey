@@ -28,7 +28,7 @@
                 'htmlOptions' => array('class'=> 'table-responsive'),
                 'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
                 'itemsCssClass' => 'table table-responsive table-striped',
-                'afterAjaxUpdate' => 'bindButtons',
+                'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
                 'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSizeAttributes',
