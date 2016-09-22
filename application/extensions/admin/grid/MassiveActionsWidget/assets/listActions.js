@@ -25,6 +25,13 @@ $(document).on('click', '.listActions a', function ()
     var $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType = $that.data('actionType');
 
+    if( $oCheckedItems == '[]' ) {
+        //If no item selected, the error modal "please select first an item" is shown
+        // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
+        $('#error-first-select').modal();
+        return;
+    }
+
     // TODO : Switch action (post, session, ajax...)
 
     // For actions without modal, doing a redirection
@@ -75,6 +82,7 @@ $(document).on('click', '.listActions a', function ()
         console.log('js', js);
         var func = eval(js);
         func();
+        return;
     }
 
     // TODO: switch case "Modal"
@@ -174,16 +182,7 @@ $(document).on('click', '.listActions a', function ()
     });
 
     // open the modal
-    if( $oCheckedItems !== '[]' )
-    {
-        $modal.modal();
-    }
-    else
-    {
-        //If no item selected, the error modal "please select first an item" is shown
-        // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
-        $('#error-first-select').modal();
-    }
+    $modal.modal();
 });
 
 /**
