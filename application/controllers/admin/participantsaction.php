@@ -128,9 +128,9 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-    * AJAX switcher for action calling
-    */
-
+     * AJAX switcher for action calling
+     * @return void
+     */
     public function editValueParticipantPanel(){
         $target = Yii::app()->request->getPost('actionTarget');
         switch($target){
@@ -1783,10 +1783,10 @@ class participantsaction extends Survey_Common_Action
         else
         {
             $aData = array(
-                    'participant_id' => Yii::app()->request->getPost('participant_id'),
-                    'can_edit' => Yii::app()->request->getPost('can_edit'),
-                    'share_uid' => Yii::app()->request->getPost('shared_uid')
-                    );
+                'participant_id' => Yii::app()->request->getPost('participant_id'),
+                'can_edit' => Yii::app()->request->getPost('can_edit'),
+                'share_uid' => Yii::app()->request->getPost('shared_uid')
+            );
             ParticipantShare::model()->updateShare($aData);
         }
     }
