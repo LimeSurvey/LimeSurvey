@@ -226,6 +226,24 @@ LS.CPDB = (function() {
                     );
         });
 
+        /**
+         * Small icon, add participant to a survey
+         */
+        $('.action_participant_addToSurvey').on('click', function(e) {
+            var data = {
+                modalTarget: 'addToSurvey',
+                participant_id: $(this).closest('tr').data('participant_id')
+            };
+            //url, data, idString, actionButtonClass, formId, gridViewId
+            runBaseModal(
+                openModalParticipantPanel, 
+                data,
+                'action_save_modal_addToSurvey',
+                'addToSurveyActiveForm', 
+                'list_central_participants' 
+            );
+        });
+
         $('#action_toggleAllParticipant').on('click', function(){
             $('.selector_participantCheckbox').prop('checked',$('#action_toggleAllParticipant').prop('checked'));
         });

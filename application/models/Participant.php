@@ -103,39 +103,51 @@ class Participant extends LSActiveRecord
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<span class='fa fa-%s' ></span>" //icon class
             . "</button>";
-        //Edit-button 
-            $editData = array(
-                'action_participant_editModal',
-                '',
-                gT("Edit this participant"),
-                'edit'
-            );
-            $buttons .= vsprintf($raw_button_template, $editData);
 
-        //delete-button
-            $deleteData = array(
-                'action_participant_deleteModal',
-                'text-danger',
-                gT("Delete this participant"),
-                'trash text-danger'
-            );
-            $buttons .= vsprintf($raw_button_template, $deleteData);
-        //survey information
-            $infoData = array(
-                'action_participant_infoModal',
-                '',
-                gT("List active surveys"),
-                'search'
-            );
-            $buttons .= vsprintf($raw_button_template, $infoData);
-        //share this participant
-            $infoData = array(
-                'action_participant_shareParticipant',
-                '',
-                gT("Share this participant"),
-                'share'
-            );
-            $buttons .= vsprintf($raw_button_template, $infoData);
+        // Edit button 
+        $editData = array(
+            'action_participant_editModal',
+            '',
+            gT("Edit this participant"),
+            'edit'
+        );
+        $buttons .= vsprintf($raw_button_template, $editData);
+
+        // Delete button
+        $deleteData = array(
+            'action_participant_deleteModal',
+            'text-danger',
+            gT("Delete this participant"),
+            'trash text-danger'
+        );
+        $buttons .= vsprintf($raw_button_template, $deleteData);
+
+        // Survey information
+        $infoData = array(
+            'action_participant_infoModal',
+            '',
+            gT("List active surveys"),
+            'search'
+        );
+        $buttons .= vsprintf($raw_button_template, $infoData);
+
+        // Share this participant
+        $infoData = array(
+            'action_participant_shareParticipant',
+            '',
+            gT("Share this participant"),
+            'share'
+        );
+        $buttons .= vsprintf($raw_button_template, $infoData);
+
+        // Add participant to survey
+        $infoData = array(
+            'action_participant_addToSurvey',
+            '',
+            gT("Add participant to survey"),
+            'user-plus'
+        );
+        $buttons .= vsprintf($raw_button_template, $infoData);
 
         $buttons .= "</div>";
         return $buttons;

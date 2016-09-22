@@ -121,8 +121,11 @@ class participantsaction extends Survey_Common_Action
             case "editattribute":
                 $this->openeditattributenames();
                 break;
+            case "addToSurvey":
+                $this->openAddToSurvey();
+                break;
             default:
-                echo "";
+                throw new \CException('Unsupported modal target: ' . $target);
                 break;
         }
     }
@@ -1308,14 +1311,33 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-    * Method to edit a global Attribute
-    * Requires POST 
-    *   'ParticipantAttributeName' (array), 
-    *   'ParticipantAttributeNameLanguages' (array), 
-    *   'ParticipantAttributeNamesDropdown' (array|null), 
-    *   'oper' (string) ['edit'|'new']
-    * @return json-encoded array 'success' (array), 'successMessage' (string)
-    */
+     * Open modal to add participant(s) to survey
+     * @return void
+     */
+    public function openAddToSurvey()
+    {
+        // This is in fact a comma-separated list
+        $participant_id = Yii::app()->request->getPost('participant_id');
+
+        $data = array();
+        $data['participant_id'] = $participant_id;
+        $data['count'] = substr_count($participant_id, ',') + 1;
+
+        $surveys = Survey::getSurveysWithTokenTable();
+        $data['surveys'] = $surveys;
+
+        $this->getController()->renderPartial('/admin/participants/modal_subviews/_addToSurvey', $data);
+    }
+
+    /**
+     * Method to edit a global Attribute
+     * Requires POST
+     *   'ParticipantAttributeName' (array),
+     *   'ParticipantAttributeNameLanguages' (array),
+     *   'ParticipantAttributeNamesDropdown' (array|null),
+     *   'oper' (string) ['edit'|'new']
+     * @return json-encoded array 'success' (array), 'successMessage' (string)
+     */
     public function editAttributeName(){
         $AttributeNameAttributes = Yii::app()->request->getPost('ParticipantAttributeName');
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
@@ -1331,7 +1353,7 @@ class participantsaction extends Survey_Common_Action
             $ParticipantAttributNamesModel = new ParticipantAttributeName;
             $ParticipantAttributNamesModel->setAttributes($AttributeNameAttributes);
             $success[] = $ParticipantAttributNamesModel->save();
-            
+
         }
         if(is_array($ParticipantAttributeNamesDropdown)){
             $ParticipantAttributNamesModel->clearAttributeValues();
@@ -1360,17 +1382,17 @@ class participantsaction extends Survey_Common_Action
             }
         }  
         echo json_encode(array(
-                "success" => $success,
-                "successMessage" => gT("Attribute successfully updated")
-            ));
+            "success" => $success,
+            "successMessage" => gT("Attribute successfully updated")
+        ));
         die();
     } 
 
     /**
-    * Deletes a translation from an Attribute, if it has at least one translation
-    * Requires POST 'attribute_id' (int), 'lang' (string) [language-code] 
-    * @return 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
-    */
+     * Deletes a translation from an Attribute, if it has at least one translation
+     * Requires POST 'attribute_id' (int), 'lang' (string) [language-code] 
+     * @return 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
+     */
     public function deleteLanguageFromAttribute(){
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $lang = Yii::app()->request->getPost('lang');
@@ -1394,10 +1416,10 @@ class participantsaction extends Survey_Common_Action
         }
     }
     /**
-    * Deletes a single Attribute via AJAX-call 
-    * Requires POST 'attribute_id' (int)
-    * @return json-encoded array 'success' (boolean), successMessage (string)
-    */ 
+     * Deletes a single Attribute via AJAX-call 
+     * Requires POST 'attribute_id' (int)
+     * @return json-encoded array 'success' (boolean), successMessage (string)
+     */ 
     public function deleteSingleAttribute(){
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $success = ParticipantAttributeName::model()->delAttribute($attribute_id);
@@ -1453,7 +1475,7 @@ class participantsaction extends Survey_Common_Action
     }
 
 
-    /*
+    /**
      * Fetches the attributes of a participant to be displayed in the attribute subgrid
      */
     public function getAttribute_json()
@@ -1654,7 +1676,7 @@ class participantsaction extends Survey_Common_Action
         Yii::app()->getController()->redirect(array('admin/participants/sa/attributeControl'));
     }
 
-    /*
+    /**
      * Responsible for deleting the additional attribute values in case of drop down.
      */
     public function delAttributeValues()
@@ -1665,7 +1687,7 @@ class participantsaction extends Survey_Common_Action
         Yii::app()->getController()->redirect(array('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
     }
 
-    /*
+    /**
      * Responsible for editing the additional attributes values
      */
     public function editAttributevalue()
@@ -2062,9 +2084,9 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-    * Seems to be a method to show the uploadsummary
-    * @TODO investigate this more
-    */
+     * Seems to be a method to show the uploadsummary
+     * @TODO investigate this more
+     */
     public function summaryview()
     {
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->getAllAttributes()));
