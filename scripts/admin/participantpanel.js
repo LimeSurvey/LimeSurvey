@@ -1,4 +1,5 @@
 //Namespacing all Methods of the participant panel in one JS-Prototype
+LS = LS || {};
 LS.CPDB = (function() {
     var
 
@@ -317,9 +318,13 @@ LS.CPDB = (function() {
         $('#pageSizeShareParticipantView').on("change", function(){
             $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSizeShareParticipantView: $(this).val() }});
         });
-    };
+    },
 
-    function bindButtons() {
+    /**
+     * Bind all JS functions to button clicks
+     * @return
+     */
+    bindButtons = function() {
         basics();
         participantPanel();
         attributePanel();

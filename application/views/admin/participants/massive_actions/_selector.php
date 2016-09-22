@@ -50,7 +50,8 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'text' => gT('Export'),
             'grid-reload' => 'no',
 
-            'actionType' => 'window-location-href',
+            'actionType' => 'custom',
+            'custom-js' => '(function() { LS.CPDB.onClickExport(); })'
         ),
         /*
         // Share
