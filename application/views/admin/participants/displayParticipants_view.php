@@ -69,6 +69,7 @@
             echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='".join("||",$searchcondition)."' />";
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id' => 'list_central_participants',
+                'emptyText'=>gT('No participants found.'),
                 'itemsCssClass' => 'table table-striped items',
                 'dataProvider' => $model->search(),
                 'columns' => $model->columns,

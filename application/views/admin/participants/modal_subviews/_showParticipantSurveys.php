@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="participant_edit_modal"><?php echo $model->firstname."&nbsp;".$model->lastname; ?></h4>
+    <h4 class="modal-title" id="participant_edit_modal"><?php eT('List active surveys'); ?></h4>
 </div>
 <div class="modal-body form-horizontal">
 <?php
@@ -9,7 +9,7 @@
         array(
             'id' => 'participantSurveysActiveForm',
             'action' => array('admin/participants/sa/editValueParticipantPanel'),
-            'htmlOptions' => array('class' => 'well form-horizontal'), // for inset effect
+            'htmlOptions' => array('class' => 'form-horizontal'), // for inset effect
         )
     );
 ?>
@@ -27,7 +27,7 @@
             'afterAjaxUpdate' => 'bindButtonsInsideSurveys',
             'ajaxType' => 'POST',
             'summaryText'   => gT('Displaying {count} survey(s).'),
-            'blankDisplay' => gT("This PArticipant is not active in any survey")
+            'emptyText' => gT("This participant is not active in any survey")
             
         ));
     ?>

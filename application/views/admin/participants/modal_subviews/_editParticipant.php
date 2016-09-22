@@ -9,7 +9,7 @@
         array(
             'id' => 'editPartcipantActiveForm',
             'action' => array('admin/participants/sa/editParticipant'),
-            'htmlOptions' => array('class' => 'well form-horizontal'), // for inset effect
+            'htmlOptions' => array('class' => 'form-horizontal'), // for inset effect
         )
     );
 ?>

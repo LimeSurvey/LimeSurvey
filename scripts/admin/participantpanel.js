@@ -321,14 +321,33 @@ LS.CPDB = (function() {
     },
 
     /**
-     * Modal for sharing checked items
+     * Modal for sharing checked items, massive action
      * @param {array} participantIds - Array of participant ids
      * @return
      */
     shareMassiveAction = function(participantIds) {
-        console.log('participantIds', participantIds);
         var data = {
             modalTarget: 'shareparticipant',
+            participantIds: participantIds
+        };
+        runBaseModal(
+            openModalParticipantPanel,
+            data,
+            'action_save_modal_shareparticipant',
+            'shareParticipantActiveForm',
+            'list_central_participants'
+        );
+    },
+
+    /**
+     * Modal for adding participants to a survey.
+     * Used by massive action.
+     * @param {array} participantIds - Array of participant ids
+     * @return
+     */
+    addParticipantToSurvey = function(participantIds) {
+        var data = {
+            modalTarget: 'addParticipantToSurvey',
             participantIds: participantIds
         };
         runBaseModal(
@@ -354,6 +373,8 @@ LS.CPDB = (function() {
          * @TODO rewrite export
          */
         $('#export').click(onClickExport);
+
+        doToolTip();
     };
 
     return {

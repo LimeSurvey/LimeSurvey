@@ -6,6 +6,7 @@
                 <?php
                   $this->widget('bootstrap.widgets.TbGridView', array(
                     'id' => 'share_central_participants',
+                    'emptyText' => gT('No shared participants found'),
                     'itemsCssClass' => 'table table-striped items',
                     'htmlOptions' => array('class'=> 'table-responsive'),
                     'dataProvider' => $model->search(),
@@ -14,13 +15,14 @@
                     'filter'=>$model,
                     'ajaxType' => 'POST',
                     'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                     'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'pageSizeShareParticipantView',
-                                    $pageSizeShareParticipantView,
-                                    Yii::app()->params['pageSizeOptions'],
-                                    array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
-                                ),
+                        CHtml::dropDownList(
+                            'pageSizeShareParticipantView',
+                            $pageSizeShareParticipantView,
+                            Yii::app()->params['pageSizeOptions'],
+                            array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
+                        ),
                     ));
                 ?>
             </div>

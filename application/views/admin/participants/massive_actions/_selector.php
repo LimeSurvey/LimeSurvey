@@ -41,12 +41,15 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             ),
         ),
 
+        // Separator
+        array('type'  => 'separator'),
+
         // Export
         array(
             'type' => 'action',
             'action' => 'export',
             'url' => '',  // Not relevant
-            'iconClasses' => 'icon-exportcsv text-success',
+            'iconClasses' => 'icon-exportcsv',
             'text' => gT('Export'),
             'grid-reload' => 'no',
 
@@ -57,7 +60,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
         array(
             'type' => 'action',
             'action' => 'share',
-            'url' => App()->createUrl('/admin/participants/sa/share'),
+            'url' => '',  // Not relevant
             'iconClasses' => 'fa fa-share',
             'text' => gT('Share'),
             'grid-reload' => 'no',
@@ -65,11 +68,18 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'actionType' => 'custom',
             'custom-js' => '(function(itemIds) { LS.CPDB.shareMassiveAction(itemIds); })'
         ),
-        /*
         // Add to survey
         array(
+            'type' => 'action',
+            'action' => 'add-to-survey',
+            'url' => '',  // Not relevant
+            'iconClasses' => 'fa fa-user-plus',
+            'text' => gT('Add participants to survey'),
+            'grid-reload' => 'no',
+
+            'actionType' => 'custom',
+            'custom-js' => '(function(itemIds) {})'
         )
-         */
     )
 ));
 
