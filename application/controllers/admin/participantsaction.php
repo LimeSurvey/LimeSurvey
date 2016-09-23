@@ -101,7 +101,8 @@ class participantsaction extends Survey_Common_Action
      * AJAX switcher for modal calling
      * @return void
      */
-    public function openModalParticipantPanel(){
+    public function openModalParticipantPanel()
+    {
         $target = Yii::app()->request->getPost('modalTarget');
         switch($target){
             case "editparticipant":
@@ -132,7 +133,8 @@ class participantsaction extends Survey_Common_Action
      * AJAX switcher for action calling
      * @return void
      */
-    public function editValueParticipantPanel(){
+    public function editValueParticipantPanel()
+    {
         $target = Yii::app()->request->getPost('actionTarget');
         switch($target){
             case "changeBlacklistStatus":
@@ -466,7 +468,8 @@ class participantsaction extends Survey_Common_Action
     /**
      * ?
      */
-    public function openparticipantsurveys(){
+    public function openparticipantsurveys()
+    {
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
         $surveyModel = SurveyLink::model();
@@ -1109,6 +1112,7 @@ class participantsaction extends Survey_Common_Action
     /**********************************************UN-/BLACKLIST PARTICIPANTS***********************************************/
     /**
      * Loads the view 'blacklistControl'
+     * @return void
      */
     public function blacklistControl()
     {
@@ -1127,6 +1131,7 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Stores the blacklist setting to the database
+     * @return void
      */
     public function storeBlacklistValues()
     {
@@ -1150,22 +1155,22 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-    * AJAX Method to change the blacklist status of a participant
-    * Requires POST with 'participant_id' (varchar) and 'blacklist' (boolean)
-    * @return  json-encoded array with 'success' (boolean) and 'newValue' ('Y' || 'N')
-    */
-
-    public function changeblackliststatus(){
+     * AJAX Method to change the blacklist status of a participant
+     * Requires POST with 'participant_id' (varchar) and 'blacklist' (boolean)
+     * @return  json-encoded array with 'success' (boolean) and 'newValue' ('Y' || 'N')
+     */
+    public function changeblackliststatus()
+    {
         $participantId = Yii::app()->request->getPost('participant_id');
         $blacklistStatus = Yii::app()->request->getPost('blacklist');
         $blacklistValue = ($blacklistStatus=="true" ? "Y" : "N" );
         $participant = Participant::model()->findByPk($participantId);
         $participant->blacklisted = $blacklistValue;
         $participant->update(array('blacklisted'));
-        die(json_encode(array(
+        echo json_encode(array(
             "success" => true,
             "newValue" => $blacklistValue
-        )));
+        ));
     }
 
 //Display GlobalParticipant Setting
@@ -1245,26 +1250,31 @@ class participantsaction extends Survey_Common_Action
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
 
-    public function changeattributevisibility(){
+    /**
+     * @return void
+     */
+    public function changeattributevisibility()
+    {
         $attributeId = Yii::app()->request->getPost('attribute_id');
         $visible = Yii::app()->request->getPost('visible');
         $visible_value = ($visible=="true" ? "TRUE" : "FALSE" );
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
         $attributeName->visible = $visible_value;
         $attributeName->update(array('visible'));
-        die(json_encode(array(
+        echo json_encode(array(
             "debug" => Yii::app()->request,
             "debug_p1" => Yii::app()->request->getPost('attribute_id'),
             "debug_p2" => Yii::app()->request->getPost('visible'),
             "success" => true,
             "newValue" => $visible_value
-        )));
+        ));
     }
 
     /**
     * Method to open the editAttributeName Modal
     */
-    public function openeditattributenames(){
+    public function openeditattributenames()
+    {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         if($attribute_id)
         {
@@ -1384,7 +1394,8 @@ class participantsaction extends Survey_Common_Action
      * Requires POST 'attribute_id' (int), 'lang' (string) [language-code] 
      * @return 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
      */
-    public function deleteLanguageFromAttribute(){
+    public function deleteLanguageFromAttribute()
+    {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $lang = Yii::app()->request->getPost('lang');
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
@@ -1409,7 +1420,8 @@ class participantsaction extends Survey_Common_Action
      * Requires POST 'attribute_id' (int)
      * @return json-encoded array 'success' (boolean), successMessage (string)
      */ 
-    public function deleteSingleAttribute(){
+    public function deleteSingleAttribute()
+    {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $success = ParticipantAttributeName::model()->delAttribute($attribute_id);
         echo json_encode(array(
@@ -1820,7 +1832,8 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
-    private function generateExtraAttributeEditHtml($name, $value, $attribute, $model){
+    private function generateExtraAttributeEditHtml($name, $value, $attribute, $model)
+    {
         $attributes_control_group_text_template = 
         '<div class="form-horizontal form-group">'
             . '<label class="col-sm-4 control-label" for="Attributes[:name:]">:displayName:</label>'
@@ -2190,7 +2203,8 @@ class participantsaction extends Survey_Common_Action
     /**
      * @return void
      */
-    public function changeSharedEditableStatus(){
+    public function changeSharedEditableStatus()
+    {
         $participant_id = Yii::app()->request->getPost('participant_id');
         $can_edit = Yii::app()->request->getPost('can_edit');
         $shareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id));
