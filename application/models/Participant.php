@@ -87,7 +87,8 @@ class Participant extends LSActiveRecord
         return array(
             'owner' => array(self::HAS_ONE, 'User', array('uid' => 'owner_uid')),
             'surveylinks' => array(self::HAS_MANY, 'SurveyLink', 'participant_id'),
-            'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id')
+            'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id'),
+            'shares' => array(self::HAS_MANY, 'ParticipantShare', 'participant_id')
         );
     }
     // public function getCountActiveSurveys(){
@@ -351,7 +352,7 @@ class Participant extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->with = array('owner','participantAttributes');
+        $criteria->join = 'LEFT JOIN {{participant_shares}} shares ON t.participant_id = shares.participant_id';  // TODO: Do ->with(array('shares')) instead - how?
         $criteria->compare('t.firstname', $this->firstname, true, 'AND' ,true);
         $criteria->compare('t.lastname', $this->lastname, true, 'AND' ,true);
         $criteria->compare('t.email', $this->email, true, 'AND' ,true);
@@ -386,13 +387,16 @@ class Participant extends LSActiveRecord
 
         // Users can only see: 1) Participants they own; and 2) shared participants.
         // Superadmins can see all users.
-        $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' AND true');
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (!$isSuperAdmin)
+        {
+            $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' OR t.owner_uid == shares.share_uid');
+        }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-            'sort'=>$sort,
-            // 'pagination' => false
+            'criteria' => $criteria,
+            'sort' => $sort,
             'pagination' => array(
                 'pageSize' => $pageSize
             )
@@ -610,7 +614,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * @return CDbCommand
      */
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
