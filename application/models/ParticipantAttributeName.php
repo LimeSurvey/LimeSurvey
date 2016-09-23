@@ -205,8 +205,12 @@ class ParticipantAttributeName extends LSActiveRecord
         $criteria->compare('attribute_type',$this->attribute_type);
         $criteria->compare('visible',$this->visible,true);
 
+        $sort = new CSort();
+        $sort->defaultOrder = array('defaultname' => CSort::SORT_ASC);
+
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+            'sort' => $sort
         ));
     }
 

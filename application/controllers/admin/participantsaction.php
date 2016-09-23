@@ -1215,7 +1215,7 @@ class participantsaction extends Survey_Common_Action
      */
     public function attributeControl()
     {
-               $lang = Yii::app()->session['adminlang'];
+        $lang = Yii::app()->session['adminlang'];
 
         $model = new ParticipantAttributeName();
         if(Yii::app()->request->getParam('ParticipantAttributeName'))
