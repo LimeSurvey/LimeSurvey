@@ -365,14 +365,14 @@ LS.CPDB = (function() {
      */
     addParticipantToSurvey = function(participantIds) {
         var data = {
-            modalTarget: 'addParticipantToSurvey',
-            participantIds: participantIds
+            modalTarget: 'addToSurvey',
+            participant_id: participantIds.join(',')
         };
         runBaseModal(
             openModalParticipantPanel,
             data,
-            'action_save_modal_shareparticipant',
-            'shareParticipantActiveForm',
+            'action_save_modal_addToSurvey',
+            'addToSurveyActiveForm',
             'list_central_participants'
         );
     },
@@ -403,7 +403,8 @@ LS.CPDB = (function() {
         sharePanel: sharePanel,
         onClickExport: onClickExport,
         bindButtons: bindButtons,
-        shareMassiveAction: shareMassiveAction
+        shareMassiveAction: shareMassiveAction,
+        addParticipantToSurvey: addParticipantToSurvey
     };
 
 })();

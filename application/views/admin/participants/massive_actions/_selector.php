@@ -78,7 +78,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'grid-reload' => 'no',
 
             'actionType' => 'custom',
-            'custom-js' => '(function(itemIds) {})'
+            'custom-js' => '(function(itemIds) { LS.CPDB.addParticipantToSurvey(itemIds); })'
         )
     )
 ));
