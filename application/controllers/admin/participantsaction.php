@@ -1337,7 +1337,8 @@ class participantsaction extends Survey_Common_Action
      *   'ParticipantAttributeNameLanguages' (array),
      *   'ParticipantAttributeNamesDropdown' (array|null),
      *   'oper' (string) ['edit'|'new']
-     * @return json-encoded array 'success' (array), 'successMessage' (string)
+     * Echoes json-encoded array 'success' (array), 'successMessage' (string)
+     * @return void
      */
     public function editAttributeName()
     {
@@ -1392,7 +1393,8 @@ class participantsaction extends Survey_Common_Action
     /**
      * Deletes a translation from an Attribute, if it has at least one translation
      * Requires POST 'attribute_id' (int), 'lang' (string) [language-code] 
-     * @return 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
+     * Echoes 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
+     * @return void
      */
     public function deleteLanguageFromAttribute()
     {
@@ -1418,7 +1420,8 @@ class participantsaction extends Survey_Common_Action
     /**
      * Deletes a single Attribute via AJAX-call 
      * Requires POST 'attribute_id' (int)
-     * @return json-encoded array 'success' (boolean), successMessage (string)
+     * Echoes json-encoded array 'success' (boolean), successMessage (string)
+     * @return void
      */ 
     public function deleteSingleAttribute()
     {
@@ -1750,7 +1753,7 @@ class participantsaction extends Survey_Common_Action
      * Sends the shared participant info to the share panel using JSON encoding
      * Called after the share panel grid is loaded
      * Returns the json depending on the user logged in by checking it from the session
-     * @return JSON encoded string containg sharing information
+     * @return void
      */
     public function getShareInfo_json()
     {
@@ -1832,6 +1835,9 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
+    /**
+     * @return string HTML
+     */
     private function generateExtraAttributeEditHtml($name, $value, $attribute, $model)
     {
         $attributes_control_group_text_template = 
@@ -1910,7 +1916,8 @@ class participantsaction extends Survey_Common_Action
      * Receives an ajax call containing the participant id in the fourth segment of the url
      * Supplies list of survey links - surveys of which this participant is on the tokens table
      * URL: [localurl]/limesurvey/admin/participants/getSurveyInfo_json/pid/[participant_id]
-     * RETURNS: json data containing linked survey information (Survey name, survey id, token_id and date_added)
+     * Echoes json data containing linked survey information (Survey name, survey id, token_id and date_added)
+     * @return void
      */
     public function getSurveyInfo_json()
     {
@@ -2002,6 +2009,7 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Equal to getParticipants_json() but now with a search
+     * @return void
      */
     public function getParticipantsResults_json()
     {
@@ -2009,11 +2017,13 @@ class participantsaction extends Survey_Common_Action
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
         $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
-        return $this->getParticipants_json($search);
+        $this->getParticipants_json($search);
     }
 
     /*
      * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
+     * Echoes json
+     * @return void
      */
     public function getParticipants_json($search = null)
     {
@@ -2095,6 +2105,8 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Responsible for setting the session variables for attribute map page redirect
+     * @todo Use user session?
+     * @todo Used?
      */
     public function setSession()
     {
@@ -2314,6 +2326,7 @@ class participantsaction extends Survey_Common_Action
             return;
         }
 
+        // TODO: This code can't be reached
         echo "<p>";
         printf(gT("%s participants have been copied to the survey token table"), "<span class='badge alert-success'>" . $response['success'] . "</span>");
         echo "</p>";

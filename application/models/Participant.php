@@ -317,7 +317,6 @@ class Participant extends LSActiveRecord
      */
     public function search()
     {
-
         $sort = new CSort;
         $sort->defaultOrder = 'lastname';
         $sortAttributes = array(
@@ -385,10 +384,14 @@ class Participant extends LSActiveRecord
         }
         $sort->attributes = $sortAttributes;
 
+        // Users can only see: 1) Participants they own; and 2) shared participants.
+        // Superadmins can see all users.
+        //$criteria->addCondition('(t.owner_uid = ' . Yii::app()->user->id . ' OR );
+
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
         return new CActiveDataProvider($this, array(
-             'criteria'=>$criteria,
-             'sort'=>$sort,
+            'criteria'=>$criteria,
+            'sort'=>$sort,
             // 'pagination' => false
             'pagination' => array(
                 'pageSize' => $pageSize
@@ -396,6 +399,10 @@ class Participant extends LSActiveRecord
         ));
     }
 
+    /**
+     * @param int $selected Owner id
+     * @return string HTML
+     */
     public function getOwnersList($selected){
         $owner_ids = Yii::app()->db->createCommand()
             ->selectDistinct('owner_uid')
@@ -414,10 +421,10 @@ class Participant extends LSActiveRecord
         $this->extraCondition = $this->getParticipantsSearchMultipleCondition($conditions);
     }
 
-    /*
-     * funcion for generation of unique id
+    /**
+     * Funcion for generation of unique id
+     * @return string
      */
-
     static function gen_uuid()
     {
         return sprintf(
@@ -433,27 +440,27 @@ class Participant extends LSActiveRecord
         );
     }
 
-    /*
+    /**
      * This function is responsible for adding the participant to the database
-     * Parameters : participant data
-     * Return Data : true on success, false on failure
+     * @param array $aData Participant data
+     * @return boolean true on success, false on failure
      */
-     function insertParticipant($aData)
-     {
-         $oParticipant = new self;
-         foreach ($aData as $sField => $sValue){
-             $oParticipant->$sField = $sValue;
-         }
-         try
-         {
-             $oParticipant->save();
-             return true;
-         }
-         catch(Exception $e)
-         {
-             return false;
-         }
-     }
+    public function insertParticipant($aData)
+    {
+        $oParticipant = new self;
+        foreach ($aData as $sField => $sValue){
+            $oParticipant->$sField = $sValue;
+        }
+        try
+        {
+            $oParticipant->save();
+            return true;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
+    }
 
     /**
      * Returns the primary key of this table
@@ -469,8 +476,9 @@ class Participant extends LSActiveRecord
      * This function updates the data edited in the jqgrid
      *
      * @param aray $data
+     * @return void
      */
-    function updateRow($data)
+    public function updateRow($data)
     {
         $record = $this->findByPk($data['participant_id']);
         foreach ($data as $key => $value)
@@ -488,7 +496,7 @@ class Participant extends LSActiveRecord
      *
      * @return object containing all the users
      */
-    function getParticipantsOwner($userid)
+    public function getParticipantsOwner($userid)
     {
         $subquery = Yii::app()->db->createCommand()
             ->select('{{participants}}.participant_id,{{participant_shares}}.can_edit')
@@ -507,7 +515,10 @@ class Participant extends LSActiveRecord
         return $command->queryAll();
     }
 
-    function getParticipantsOwnerCount($userid)
+    /**
+     * @return int
+     */
+    public function getParticipantsOwnerCount($userid)
     {
         $command = Yii::app()->db->createCommand()
                         ->select('count(*)')
@@ -524,12 +535,15 @@ class Participant extends LSActiveRecord
      *
      * @return int
      */
-    function getParticipantsCountWithoutLimit()
+    public function getParticipantsCountWithoutLimit()
     {
         return Participant::model()->count();
     }
 
-    function getParticipantsWithoutLimit()
+    /**
+     * @return Participant[]
+     */
+    public function getParticipantsWithoutLimit()
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
     }
@@ -542,13 +556,13 @@ class Participant extends LSActiveRecord
      * @param  int $userid The id of the owner
      * @return int The number of participants owned by $userid who are shared
      */
-    function getParticipantsSharedCount($userid)
+    public function getParticipantsSharedCount($userid)
     {
         $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
         return $count;
     }
 
-    function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
+    public function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
     {
         $data = $this->getParticipantsSelectCommand(false, $attid, $search, $userid, $page, $limit, $order);
 
@@ -566,7 +580,7 @@ class Participant extends LSActiveRecord
      * @param type $userid
      * @return type
      */
-    function getParticipantsCount($attid, $search = null, $userid = null) {
+    public function getParticipantsCount($attid, $search = null, $userid = null) {
         $data = $this->getParticipantsSelectCommand(true, $attid, $search, $userid);
 
         return $data->queryScalar();
@@ -672,7 +686,10 @@ class Participant extends LSActiveRecord
         return $data;
     }
 
-    function getSurveyCount($participant_id)
+    /**
+     * @return int
+     */
+    public function getSurveyCount($participant_id)
     {
         $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{survey_links}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $participant_id, PDO::PARAM_INT)->queryScalar();
         return $count;
@@ -685,7 +702,7 @@ class Participant extends LSActiveRecord
      * @param $rows Participants ID separated by comma
      * @return void
      **/
-    function deleteParticipants($rows, $bFilter=true)
+    public function deleteParticipants($rows, $bFilter=true)
     {
         // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size
         $aParticipantsIDChunks = array_chunk(explode(",", $rows),100);
@@ -725,24 +742,30 @@ class Participant extends LSActiveRecord
     * Filter an array of participants IDs according to permissions of the person being logged in
     *
     * @param mixed $aParticipantsIDs
+    * @return int[]
     */
-    function filterParticipantIDs($aParticipantIDs)
+    public function filterParticipantIDs($aParticipantIDs)
     {
-            if (!Permission::model()->hasGlobalPermission('superadmin','read')) // If not super admin filter the participant IDs first to owner only
-            {
-                $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
-                $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
-                $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Participant::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
-            }
-            return $aParticipantIDs;
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) // If not super admin filter the participant IDs first to owner only
+        {
+            $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
+            $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
+            $aParticipantIDs = Yii::app()->db->createCommand()
+                ->select('participant_id')
+                ->from(Participant::model() ->tableName())
+                ->where($aCondition, $aParameter)
+                ->queryColumn();
+        }
+        return $aParticipantIDs;
     }
 
     /**
     * Deletes CPDB participants identified by their participant ID from token tables
     *
     * @param mixed $sParticipantsIDs
+    * @return void
     */
-    function deleteParticipantToken($sParticipantsIDs)
+    public function deleteParticipantToken($sParticipantsIDs)
     {
         /* This function deletes the participant from the participants table,
            the participant from any tokens table they're in (using the survey_links table to find them)
@@ -768,14 +791,15 @@ class Participant extends LSActiveRecord
     }
 
     /**
-    * This function deletes the participant from the participants table,
-    * the participant from any tokens table they're in (using the survey_links table to find them),
-    * all responses in surveys they've been linked to,
-    * and then all the participants attributes.
-    *
-    * @param mixed $sParticipantsIDs
-    */
-    function deleteParticipantTokenAnswer($sParticipantsIDs)
+     * This function deletes the participant from the participants table,
+     * the participant from any tokens table they're in (using the survey_links table to find them),
+     * all responses in surveys they've been linked to,
+     * and then all the participants attributes.
+     *
+     * @param mixed $sParticipantsIDs
+     * @return void
+     */
+    public function deleteParticipantTokenAnswer($sParticipantsIDs)
     {
         $aParticipantsIDs = explode(",", $sParticipantsIDs);
         $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
@@ -830,7 +854,7 @@ class Participant extends LSActiveRecord
         }
     }
 
-      /*
+    /**
      * Function builds a select query for searches through participants using the $condition field passed
      * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
      * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
@@ -839,11 +863,9 @@ class Participant extends LSActiveRecord
      * @param int $page Which page number to display
      * @param in $limit The limit/number of reords to return
      *
-     * @returns array $output
-     *
-     *
-     * */
-    function getParticipantsSearchMultiple($condition, $page, $limit)
+     * @return array $output
+     */
+    public function getParticipantsSearchMultiple($condition, $page, $limit)
     {
         //http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
         //First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
@@ -1052,9 +1074,9 @@ class Participant extends LSActiveRecord
      * @param int $page Which page number to display
      * @param in $limit The limit/number of reords to return
      *
-     * @returns CDbCriteria $output
+     * @return CDbCriteria $output
      */
-    function getParticipantsSearchMultipleCondition($condition)
+    public function getParticipantsSearchMultipleCondition($condition)
     {
         //http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
         //First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
@@ -1188,9 +1210,9 @@ class Participant extends LSActiveRecord
      * Returns true if participant_id has ownership or shared rights over this participant false if not
      *
      * @param mixed $participant_id
-     * @returns bool true/false
+     * @return bool true/false
      */
-    function is_owner($participant_id)
+    public function is_owner($participant_id)
     {
         // Superadmins can edit all participants
         if (Permission::model()->hasGlobalPermission('superadmin'))
@@ -1233,7 +1255,7 @@ class Participant extends LSActiveRecord
     /**
      * This funciton is responsible for showing all the participant's shared by a particular user based on the user id
      */
-    function getParticipantShared($userid)
+    public function getParticipantShared($userid)
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
     }
@@ -1241,7 +1263,7 @@ class Participant extends LSActiveRecord
     /**
      * This funciton is responsible for showing all the participant's shared to the superadmin
      */
-    function getParticipantSharedAll()
+    public function getParticipantSharedAll()
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
     }
@@ -1738,7 +1760,7 @@ class Participant extends LSActiveRecord
         }
     }
 
-    /*
+    /**
      * Copies token participants to the central participants table, and also copies
      * token attribute values where applicable. It checks for matching entries using
      * firstname/lastname/email combination.
@@ -1757,8 +1779,7 @@ class Participant extends LSActiveRecord
      *
      * @return array An array contaning list of successful and list of failed ids
      */
-
-    function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
+    public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
     {
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
         $tokenid = json_decode($tokenid_string);
@@ -1927,7 +1948,7 @@ class Participant extends LSActiveRecord
     /**
      * The purpose of this function is to check for duplicate in participants
      */
-    function checkforDuplicate($fields, $output="bool")
+    public function checkforDuplicate($fields, $output="bool")
     {
         $query = Yii::app()->db->createCommand()->select('participant_id')->where($fields)->from('{{participants}}')->queryAll();
         if (count($query) > 0)
@@ -1941,7 +1962,7 @@ class Participant extends LSActiveRecord
         }
     }
 
-    function insertParticipantCSV($data)
+    public function insertParticipantCSV($data)
     {
         $insertData = array(
             'participant_id' => $data['participant_id'],
@@ -1953,9 +1974,5 @@ class Participant extends LSActiveRecord
             'created_by' => $data['owner_uid'],
             'owner_uid' => $data['owner_uid']);
         Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
-    }
-
-    public function browse(){
-
     }
 }
