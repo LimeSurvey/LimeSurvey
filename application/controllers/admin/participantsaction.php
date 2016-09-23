@@ -45,10 +45,8 @@ class participantsaction extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','read'))
-        {
-            die('No permission');
-        }
+        $this->checkPermission('read');
+
         parent::runWithParams($params);
     }
 
@@ -169,12 +167,12 @@ class participantsaction extends Survey_Common_Action
      *
      * @param type $search  CDCriteria?
      * @paran mixed $mAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes
+     * @return void
      */
-    private function csvExport($search = null, $aAttributeIDs=null) {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','export'))
-        {
-            die('No permission');
-        }
+    private function csvExport($search = null, $aAttributeIDs=null)
+    {
+        $this->checkPermission('export');
+
         Yii::app()->loadHelper('export');
         //If super admin all the participants will be visible
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
@@ -432,8 +430,10 @@ class participantsaction extends Survey_Common_Action
     /**
     * Method to open the participant edit/ new participant modal
     * Requires 'participant_id' (int|null)
+    * @return void
     */
-    public function openeditparticipant(){
+    public function openeditparticipant()
+    {
 
         $participant_id = Yii::app()->request->getPost('participant_id');
         if($participant_id)
@@ -483,7 +483,8 @@ class participantsaction extends Survey_Common_Action
      * Used by both single share and massive action share
      * @return void
      */
-    public function openparticipantshare(){
+    public function openparticipantshare()
+    {
         $participant_id = Yii::app()->request->getPost('participant_id');
         $participant_ids = null;
 
@@ -519,8 +520,10 @@ class participantsaction extends Survey_Common_Action
     /**
     * Method to open the participant delete modal
     * Requires 'participant_id' (int)
+    * @return void
     */
-    public function opendeleteparticipant(){
+    public function opendeleteparticipant()
+    {
 
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
@@ -529,6 +532,7 @@ class participantsaction extends Survey_Common_Action
     }
     /**
      * Resposible for editing data on the jqGrid
+     * @return void
      */
     public function editParticipant()
     {
@@ -543,22 +547,22 @@ class participantsaction extends Survey_Common_Action
             $participant->attributes = $aData;
             $success['participant'] = $participant->save();
 
-             foreach( $extraAttributes as $htmlName => $attributeValue )
-             {
-                 list(,$attribute_id) = explode('_',$htmlName);
-                 $data = array(
-                     'attribute_id'=>$attribute_id, 
-                     'participant_id'=>$aData['participant_id'],
-                     'value' => $attributeValue
-                 );
-                 ParticipantAttribute::model()->updateParticipantAttributeValue($data);
-             }
+            foreach( $extraAttributes as $htmlName => $attributeValue )
+            {
+                list(,$attribute_id) = explode('_',$htmlName);
+                $data = array(
+                    'attribute_id'=>$attribute_id, 
+                    'participant_id'=>$aData['participant_id'],
+                    'value' => $attributeValue
+                );
+                ParticipantAttribute::model()->updateParticipantAttributeValue($data);
+            }
 
             echo json_encode(array(
                 "success" => $success,
                 "successMessage" => gT("Participant successfully updated")
             ));
-            die();
+            Yii::app()->end();
         }
         // if add it will insert a new row
         elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel','create'))
@@ -587,7 +591,7 @@ class participantsaction extends Survey_Common_Action
                 "success" => true,
                 "successMessage" => gT("Participant successfully updated")
             ));
-            die();
+            Yii::app()->end();
         }
     }
 
@@ -598,10 +602,8 @@ class participantsaction extends Survey_Common_Action
      */
     public function importCSV()
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
-        {
-            die('No permission');
-        }
+        $this->checkPermission('import');
+
         $aData = array(
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
@@ -614,10 +616,8 @@ class participantsaction extends Survey_Common_Action
      */
     public function attributeMapCSV()
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
-        {
-            die('No permission');
-        }
+        $this->checkPermission('import');
+
         if ($_FILES['the_file']['name']=='')
         {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'),'error');
@@ -718,10 +718,8 @@ class participantsaction extends Survey_Common_Action
      */
     public function uploadCSV()
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
-        {
-            die('No permission');
-        }
+        $this->checkPermission('import');
+
         unset(Yii::app()->session['summary']);
         $mappedarray = Yii::app()->request->getPost('mappedarray',false);
         $filterblankemails = Yii::app()->request->getPost('filterbea');
@@ -991,10 +989,8 @@ class participantsaction extends Survey_Common_Action
      */
     public function mapCSVcancelled()
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
-        {
-            die('No permission');
-        }
+        $this->checkPermission('import');
+
         unlink(Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath')));
     }
 
@@ -1005,10 +1001,7 @@ class participantsaction extends Survey_Common_Action
      */
     public function exporttocsv()
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','export'))
-        {
-            die('No permission');
-        }
+        $this->checkPermission('export');
 
         $search = new CDbCriteria;
         if (Yii::app()->request->getPost('searchcondition','') !== '') // if there is a search condition then only the participants that match the search criteria are counted
@@ -1043,10 +1036,8 @@ class participantsaction extends Survey_Common_Action
      */
     public function exporttocsvcount()
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','export'))
-        {
-            die('No permission');
-        }
+        $this->checkPermission('export');
+
         $searchconditionurl = Yii::app()->request->getPost('searchURL');
         $searchcondition  = Yii::app()->request->getPost('searchcondition');
         $searchconditionurl = basename($searchconditionurl);
@@ -1338,7 +1329,8 @@ class participantsaction extends Survey_Common_Action
      *   'oper' (string) ['edit'|'new']
      * @return json-encoded array 'success' (array), 'successMessage' (string)
      */
-    public function editAttributeName(){
+    public function editAttributeName()
+    {
         $AttributeNameAttributes = Yii::app()->request->getPost('ParticipantAttributeName');
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
@@ -1385,7 +1377,6 @@ class participantsaction extends Survey_Common_Action
             "success" => $success,
             "successMessage" => gT("Attribute successfully updated")
         ));
-        die();
     } 
 
     /**
@@ -1404,7 +1395,6 @@ class participantsaction extends Survey_Common_Action
                 "success" => true,
                 "successMessage" => gT("Language successfully deleted")
             ));
-            die();
         }
         else
         {
@@ -1412,7 +1402,6 @@ class participantsaction extends Survey_Common_Action
                 "success" => false,
                 "errorMessage" => gT("There has to be at least one language.")
             ));
-            die();
         }
     }
     /**
@@ -1427,7 +1416,6 @@ class participantsaction extends Survey_Common_Action
             "success" => $success,
             "successMessage" => gT("Attribute successfully deleted")
         ));
-        die();
     }
 
     /**
@@ -2501,6 +2489,20 @@ class participantsaction extends Survey_Common_Action
         }
 
         return $result;
+    }
+
+    /**
+     * If user has no permission, redirect and show error message.
+     * @param string $permission Like 'import' or 'export, etc
+     * @return void
+     */
+    private function checkPermission($permission)
+    {
+        if (!Permission::model()->hasGlobalPermission('participantpanel', $permission))
+        {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            Yii::app()->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
     }
 
 }
