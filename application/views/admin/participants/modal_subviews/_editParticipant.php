@@ -37,7 +37,7 @@
             </label>
             <label class='radio-inline'>"
              . "<input name=\"Participant[blacklisted]\" id=\"Participant_blacklisted\" type=\"radio\" value=\"N\" "
-                .($model->blacklisted == "N" ? "checked" : "")." />"
+                .(($model->blacklisted == "N" || empty($model->blacklisted)) ? "checked" : "")." />"
              . gT("No")."
             </label>
             </div>

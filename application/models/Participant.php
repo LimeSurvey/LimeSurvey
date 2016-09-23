@@ -386,7 +386,7 @@ class Participant extends LSActiveRecord
 
         // Users can only see: 1) Participants they own; and 2) shared participants.
         // Superadmins can see all users.
-        //$criteria->addCondition('(t.owner_uid = ' . Yii::app()->user->id . ' OR );
+        $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' AND true');
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
         return new CActiveDataProvider($this, array(
@@ -443,23 +443,44 @@ class Participant extends LSActiveRecord
     /**
      * This function is responsible for adding the participant to the database
      * @param array $aData Participant data
-     * @return boolean true on success, false on failure
+     * @return string|Participant Error message on failure, participant object on success
      */
     public function insertParticipant($aData)
     {
         $oParticipant = new self;
-        foreach ($aData as $sField => $sValue){
+        foreach ($aData as $sField => $sValue)
+        {
             $oParticipant->$sField = $sValue;
         }
         try
         {
-            $oParticipant->save();
-            return true;
+            $result = $oParticipant->save();
+            if (!$result)
+            {
+                return $this->flattenErrorMessages($oParticipant->getErrors());
+            }
+            return $oParticipant;
         }
         catch(Exception $e)
         {
-            return false;
+            return $e->getMessage();
         }
+    }
+
+    /**
+     * Takes result from model->getErrors() and creates a
+     * long string of all messages.
+     * @param array $errors
+     * @return string
+     */
+    private function flattenErrorMessages(array $errors)
+    {
+        $result = '';
+        foreach ($errors as $error)
+        {
+            $result .= $error[0] . ' ';
+        }
+        return $result;
     }
 
     /**
@@ -562,6 +583,9 @@ class Participant extends LSActiveRecord
         return $count;
     }
 
+    /**
+     * @return array
+     */
     public function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
     {
         $data = $this->getParticipantsSelectCommand(false, $attid, $search, $userid, $page, $limit, $order);
@@ -574,11 +598,10 @@ class Participant extends LSActiveRecord
     /**
      * Duplicated from getparticipants, only to have a count
      *
-     * @param type $attid
-     * @param type $order
+     * @param int $attid
      * @param CDbCriteria $search
-     * @param type $userid
-     * @return type
+     * @param int $userid
+     * @return int
      */
     public function getParticipantsCount($attid, $search = null, $userid = null) {
         $data = $this->getParticipantsSelectCommand(true, $attid, $search, $userid);
@@ -586,6 +609,9 @@ class Participant extends LSActiveRecord
         return $data->queryScalar();
     }
 
+    /**
+     * @return array
+     */
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
         $selectValue = array();
@@ -1686,7 +1712,7 @@ class Participant extends LSActiveRecord
      *
      * @return bool true/false
      */
-    function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+    public function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
 
         if (intval($participantAttributeId) === 0)  // OBS: intval returns 0 at fail, but also at intval("0"). lolphp.
         {
@@ -1724,7 +1750,7 @@ class Participant extends LSActiveRecord
      *
      * @return bool true/false
      */
-     function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+     public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
         $val = Yii::app()->db
                          ->createCommand()
                          ->select($tokenFieldname)
@@ -1947,10 +1973,17 @@ class Participant extends LSActiveRecord
 
     /**
      * The purpose of this function is to check for duplicate in participants
+     * @param array $fields
+     * @param string $output
+     * @return mixed
      */
     public function checkforDuplicate($fields, $output="bool")
     {
-        $query = Yii::app()->db->createCommand()->select('participant_id')->where($fields)->from('{{participants}}')->queryAll();
+        $query = Yii::app()->db->createCommand()
+            ->select('participant_id')
+            ->where($fields)
+            ->from('{{participants}}')
+            ->queryAll();
         if (count($query) > 0)
         {
             if($output=="bool") {return true;}
@@ -1962,6 +1995,10 @@ class Participant extends LSActiveRecord
         }
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     public function insertParticipantCSV($data)
     {
         $insertData = array(

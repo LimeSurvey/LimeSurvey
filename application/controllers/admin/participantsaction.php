@@ -534,15 +534,18 @@ class participantsaction extends Survey_Common_Action
         $this->getController()->renderPartial('/admin/participants/modal_subviews/_deleteParticipant', array('model' => $model));
     }
     /**
-     * Resposible for editing data on the jqGrid
+     * Saving participant details
      * @return void
      */
     public function editParticipant()
     {
         $sOperation = Yii::app()->request->getPost('oper');
 
-        // if edit it will update the row
-        if ($sOperation == 'edit' && Permission::model()->hasGlobalPermission('participantpanel','update') && Participant::model()->is_owner(Yii::app()->request->getPost('id')))
+        // If edit it will update the row
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin','read');
+        $isOwner = Participant::model()->is_owner(Yii::app()->request->getPost('id'));
+        $hasPermissionToEdit = Permission::model()->hasGlobalPermission('participantpanel','update') && ($isSuperAdmin || $isOwner);
+        if ($sOperation == 'edit' && $hasPermissionToEdit)
         {
             $aData = Yii::app()->request->getPost('Participant');
             $extraAttributes = Yii::app()->request->getPost('Attributes');
@@ -565,36 +568,58 @@ class participantsaction extends Survey_Common_Action
                 "success" => $success,
                 "successMessage" => gT("Participant successfully updated")
             ));
-            Yii::app()->end();
         }
-        // if add it will insert a new row
-        elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel','create'))
+        // If add it will insert a new row
+        elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel', 'create'))
         {
             $aData = Yii::app()->request->getPost('Participant');
             $extraAttributes = Yii::app()->request->getPost('Attributes');
             $uuid = Participant::gen_uuid();
             $aData['participant_id'] = $uuid;
-            $aData['owner_uid'] = Yii::app()->session['loginID'];
-            $aData['created_by'] = Yii::app()->session['loginID'];
+            $aData['owner_uid'] = Yii::app()->user->id;
+            $aData['created_by'] = Yii::app()->user->id;
 
-            Participant::model()->insertParticipant($aData);
+            // String = error message, object = success
+            $result = Participant::model()->insertParticipant($aData);
 
-            foreach( $extraAttributes as $htmlName => $attributeValue )
-             {
-                 list(,$attribute_id) = explode('_',$htmlName);
-                 $data = array(
-                     'attribute_id'=>$attribute_id, 
-                     'participant_id'=>$uuid,
-                     'value' => $attributeValue
-                 );
-                 ParticipantAttribute::model()->updateParticipantAttributeValue($data);
-             }
+            if (is_object($result))
+            {
+                foreach( $extraAttributes as $htmlName => $attributeValue )
+                {
+                    list(,$attribute_id) = explode('_',$htmlName);
+                    $data = array(
+                        'attribute_id'   =>$attribute_id,
+                        'participant_id' =>$uuid,
+                        'value'          => $attributeValue
+                    );
+                    ParticipantAttribute::model()->updateParticipantAttributeValue($data);
+                }
 
+                echo json_encode(array(
+                    "success" => true,
+                    "successMessage" => gT("Participant successfully added")
+                ));
+            }
+            else if (is_string($result))
+            {
+                echo json_encode(array(
+                    "success" => false,
+                    // TODO: Localization?
+                    "errorMessage" => 'Could not add new participant: ' . $result
+                ));
+            }
+            else
+            {
+                // "Impossible"
+                assert(false);
+            }
+        }
+        else
+        {
             echo json_encode(array(
-                "success" => true,
-                "successMessage" => gT("Participant successfully updated")
+                "success" => false,
+                "errorMessage" => gT("Unknown error")
             ));
-            Yii::app()->end();
         }
     }
 
