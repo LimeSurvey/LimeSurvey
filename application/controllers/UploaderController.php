@@ -351,6 +351,7 @@ class UploaderController extends SurveyController {
         $qidattributes=getQuestionAttributeValues($qid);
         $qidattributes['max_filesize']=floor(min($qidattributes['max_filesize']*1024,getMaximumFileUploadSize())/1024);
         $body = '</head><body class="uploader">
+            <div class="model-container clearfix">
                 <div id="notice" class="text-center"></div>
                 <input type="hidden" id="ia"                value="'.$fn.'" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
@@ -368,11 +369,11 @@ class UploaderController extends SurveyController {
                     <button id="button1" class="btn btn-default" type="button" >'.gT("Select file").'</button>
                 </div>
 
-                <p class="uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
+                <p class="alert alert-info uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
                 <div class="uploadstatus" id="uploadstatus"></div>
 
                 <!-- The list of uploaded files -->
-
+            </div>
             </body>
         </html>';
         App()->getClientScript()->render($body);

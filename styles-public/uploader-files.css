@@ -1,4 +1,24 @@
+.file-upload-modal .modal-dialog
+{
+  margin-bottom:0;
+}
+.file-upload-modal .modal-body
+{
+  height:auto;
+  width:auto;
+  max-height:100%;
+  box-sizing:border-box;
+  overflow-y:auto;
+  overflow-x:auto;
+}
 
+.uploader-frame{
+  border:0 none;
+  width:100%;
+  height:100%;
+}
+
+/*
 img.uploaded{
 display:block;
 margin:5px auto;
@@ -41,4 +61,5 @@ text-indent: 40px;
 background:url("img/upload-edit.png") 50% 50% no-repeat;
 border: 0 none;
 }
+*/
 

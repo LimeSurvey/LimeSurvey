@@ -1,7 +1,20 @@
 $(document).ready(function(){
     doFileUpload();
+    fixParentHeigth();
 });
 
+function fixParentHeigth()
+{
+    if(window != top)
+    {
+        //~ frameheight=Math.max($(document).height(),$('html').outerHeight()+30,150);
+        frameheight=Math.max($(document).height()+30,150);
+        if(jQuery.isFunction(parent.updateUploadFrame))
+        {
+            parent.updateUploadFrame(window.name,frameheight);
+        }
+    }
+}
 function doFileUpload(){
     var fieldname = $('#ia').val();
 
@@ -26,12 +39,12 @@ function doFileUpload(){
             var previewblock =  "<li id='"+fieldname+"_li_"+i+"' class='previewblock file-element'>";
             previewblock +="<div class='file-preview'>";
             if (isValueInArray(image_extensions, json[i-1].ext.toLowerCase()))
-                previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' class='uploaded' />";
+                previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' class='uploaded' onload='fixParentHeigth()' />";
             else
                 previewblock += "<div class='upload-placeholder' />";
             previewblock += "<span class='file-name'>"+decodeURIComponent(json[i-1].name)+"</span>";
             previewblock += "</div>";
-            
+
             previewblock +="<div class='file-info'><fieldset>";
             if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
             {
@@ -58,6 +71,7 @@ function doFileUpload(){
 
             // add file to the list
             $('#field'+fieldname+'_listfiles').append(previewblock);
+            fixParentHeigth();
         }
     }
 
@@ -86,6 +100,7 @@ function doFileUpload(){
             if (filecount >= maxfiles)
             {
                 $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+uploadLang.errorNoMoreFiles+'</p>');
+                fixParentHeigth();
                 return false;
             }
 
@@ -105,6 +120,7 @@ function doFileUpload(){
             if (allowSubmit == false)
             {
                 $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+uploadLang.errorOnlyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
+                fixParentHeigth();
                 return false;
             }
 
@@ -151,7 +167,7 @@ function doFileUpload(){
 
                 previewblock +="<div class='file-preview'>";
                 if (isValueInArray(image_extensions, metadata.ext.toLowerCase()))
-                    previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded' />";
+                    previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded'  onload='fixParentHeigth()' />";
                 else
                     previewblock += "<div class='upload-placeholder' />";
                 previewblock += "<span class='file-name'>"+decodeURIComponent(metadata.name)+"<span>";
@@ -194,15 +210,17 @@ function doFileUpload(){
                     $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
                 else
                     $('#uploadstatus').html(uploadLang.errorMaxReached);
-
+                fixParentHeigth();
                 if (filecount >= maxfiles)
                     $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;'+uploadLang.errorTooMuch+'</p>');
+                fixParentHeigth();
             }
             else
             {
                 $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+metadata.msg+'</p>');
+                fixParentHeigth();
             }
-            
+
         }
     });
 
@@ -280,13 +298,13 @@ function deletefile(fieldname, count) {
 
     var filecount = parseInt($('#'+fieldname+'_filecount').val());
     var licount   = parseInt($('#'+fieldname+'_licount').val());
-    
+
     $.ajax(
     {
         method: "POST",
         url: uploadurl,
-        data: { 
-            'delete': 1, 
+        data: {
+            'delete': 1,
             'fieldname': fieldname,
             'filename' : filename,
             'name' : name,
@@ -315,9 +333,15 @@ function deletefile(fieldname, count) {
         var maxfiles = parseInt($('#'+fieldname+'_maxfiles').val());
 
         if (filecount < minfiles)
+        {
             $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s',(minfiles - filecount)));
+            fixParentHeigth();
+        }
         else
+        {
             $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
+            fixParentHeigth();
+        }
     });
 }
 

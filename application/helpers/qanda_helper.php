@@ -2627,20 +2627,19 @@ function do_file_upload($ia)
 
     $answer .= '
         <!-- Trigger the modal with a button -->
-        <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
 
         <!-- Modal -->
-        <div id="file-upload-modal-' . $ia[1] . '" class="modal fade" role="dialog">
+        <div id="file-upload-modal-' . $ia[1] . '" class="modal fade file-upload-modal" role="dialog">
             <div class="modal-dialog">
 
                 <!-- Modal content-->
-                <div class="modal-content" style="vertical-align: middle;">
-                    <div class="modal-header">
+                <div class="modal-content">
+                    <div class="modal-header file-upload-modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">' . ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files']) . '</h4>
                     </div>
                     <div class="modal-body file-upload-modal-body">
-                        <iframe id="uploader' . $ia[1] . '" name="uploader' . $ia[1] . '" class="externalSite" src="' . $uploadurl . '"></iframe>
+                        <iframe id="uploader' . $ia[1] . '" name="uploader' . $ia[1] . '" class="uploader-frame" src="' . $uploadurl . '"></iframe>
                     </div>
                     <div class="modal-footer file-upload-modal-footer">
                         <button type="button" class="btn btn-success" data-dismiss="modal">' . gT("Save changes") . '</button>
