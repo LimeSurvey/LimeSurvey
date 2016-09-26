@@ -448,8 +448,8 @@ class participantsaction extends Survey_Common_Action
             $model = new Participant;
             $operationType = "add";
         }
-        //Generate HTML for extra Attributes
 
+        //Generate HTML for extra Attributes
         $extraAttributes = array();
         foreach($model->allExtraAttributes as $name => $extraAttribute) {
             $value = $model->getParticipantAttribute("", $extraAttribute['attribute_id']);
@@ -462,6 +462,7 @@ class participantsaction extends Survey_Common_Action
 
             $extraAttributes[$name] = $extraAttribute;
         }
+
         $aData = array(
             'model' => $model,
             'editType' => $operationType,

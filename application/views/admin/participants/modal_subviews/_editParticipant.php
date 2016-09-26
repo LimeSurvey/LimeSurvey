@@ -53,7 +53,13 @@
             </div>
         </div>
         <legend><?php eT("Custom attributes"); ?></legend>
-        <?php foreach($extraAttributes as $name => $attribute): ?>
+        <?php $i = 0; foreach($extraAttributes as $attribute): $i++; ?>
+
+            <!-- Two inputs on each row -->
+            <?php if ($i % 2 == 0): ?>
+                <div class='form-group'>
+            <?php endif; ?>
+
             <?php switch ($attribute['attribute_type']):
 
                 // Text box
@@ -72,6 +78,12 @@
                 <?php break; ?>
 
             <?php endswitch; ?>
+
+            <!-- Close form-group div -->
+            <?php if ($i % 2 == 0): ?>
+                </div>
+            <?php endif; ?>
+
         <?php endforeach; ?>
 </div>
 <div class="modal-footer">
