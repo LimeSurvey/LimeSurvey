@@ -73,7 +73,7 @@
                 'itemsCssClass' => 'table table-striped items',
                 'dataProvider' => $model->search(),
                 'columns' => $model->columns,
-                'rowHtmlOptionsExpression' => '["data-participant_id" => $data->participant_id ]',
+                'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
                 'filter'=>$model,
                 'htmlOptions' => array('class'=> 'table-responsive'),
                 'itemsCssClass' => 'table table-responsive table-striped',

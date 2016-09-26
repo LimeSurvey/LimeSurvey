@@ -35,6 +35,7 @@ class Participant extends LSActiveRecord
 {
     public $extraCondition;
     public $countActiveSurveys;
+    public $id;
     /**
      * Returns the static model of Settings table
      *
@@ -71,7 +72,6 @@ class Participant extends LSActiveRecord
             array('firstname, lastname, language', 'LSYii_Validators'),
             array('email', 'length', 'max' => 254),
             array('blacklisted', 'length', 'max' => 1),
-            // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('participant_id, firstname, lastname, email, language, countActiveSurveys, blacklisted, owner.full_name', 'safe', 'on' => 'search'),
         );
@@ -378,7 +378,11 @@ class Participant extends LSActiveRecord
         $DBCountActiveSurveys = SurveyLink::model()->tableName();
         $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
 
-        $criteria->select = array('*', $sqlCountActiveSurveys." as countActiveSurveys");
+        $criteria->select = array(
+            '*',
+            $sqlCountActiveSurveys . ' AS countActiveSurveys',
+            't.participant_id AS id'
+        );
         if($this->extraCondition)
         {
             $criteria->mergeWith($this->extraCondition);
