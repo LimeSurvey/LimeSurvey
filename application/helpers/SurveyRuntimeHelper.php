@@ -1489,17 +1489,17 @@ class SurveyRuntimeHelper {
         $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory : it's the real gid or the updated gid ? We need original gid or updated gid ?
         $aReplacement['SGQ']=$aQuestionQanda[7];
         $aReplacement['AID']=isset($aQuestionQanda[0]['aid']) ? $aQuestionQanda[0]['aid'] : "" ;
-        $aReplacement['QUESTION_CODE']=$aReplacement['QUESTION_NUMBER']="";
         $sCode=$aQuestionQanda[5];
         $iNumber=$aQuestionQanda[0]['number'];
 
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
         $aSurveyinfo = getSurveyInfo($iSurveyId);
-        // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
-        if(($aSurveyinfo['showqnumcode'] == $showqnumcode_global_) || ($showqnumcode_global_ == 'choose')){
-            $showqnumcode_ = $aSurveyinfo['showqnumcode'];
-        } else {
-            $showqnumcode_ = $showqnumcode_global_;
+
+        // Check global setting to see if survey level setting should be applied
+        if($showqnumcode_global_ == 'choose') { // Use survey level settings
+            $showqnumcode_ = $aSurveyinfo['showqnumcode']; //B, N, C, or X
+        } else { // Use global setting
+            $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
         }
 
         switch ($showqnumcode_)
@@ -1510,15 +1510,20 @@ class SurveyRuntimeHelper {
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
                 break;
             case 'number':
-            case 'N':
+            case 'N': // Number only
+                $aReplacement['QUESTION_CODE']="";
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
                 break;
-            case 'number':
+            case 'code':
+            case 'C': // Code only
                 $aReplacement['QUESTION_CODE']=$sCode;
+                $aReplacement['QUESTION_NUMBER']="";
                 break;
-            case 'choose':
-            case 'C':
-            default:
+            case 'none':
+            case 'X':
+            default: // Neither
+                $aReplacement['QUESTION_CODE']="";
+                $aReplacement['QUESTION_NUMBER']="";
                 break;
         }
 
