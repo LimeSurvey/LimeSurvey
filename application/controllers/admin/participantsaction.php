@@ -548,14 +548,25 @@ class participantsaction extends Survey_Common_Action
     {
         $sOperation = Yii::app()->request->getPost('oper');
 
+        $aData = Yii::app()->request->getPost('Participant');
+
+        if (isset($aData['blacklisted'])) {
+            if ($aData['blacklisted'] == 'on') {
+                $aData['blacklisted'] = 'Y';
+            }
+            else {
+                $aData['blacklisted'] = 'N';
+            }
+        }
+
+        $extraAttributes = Yii::app()->request->getPost('Attributes');
+
         // If edit it will update the row
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin','read');
         $isOwner = Participant::model()->is_owner(Yii::app()->request->getPost('id'));
         $hasPermissionToEdit = Permission::model()->hasGlobalPermission('participantpanel','update') && ($isSuperAdmin || $isOwner);
         if ($sOperation == 'edit' && $hasPermissionToEdit)
         {
-            $aData = Yii::app()->request->getPost('Participant');
-            $extraAttributes = Yii::app()->request->getPost('Attributes');
             $participant = Participant::model()->findByPk($aData['participant_id']);
             $participant->attributes = $aData;
             $success['participant'] = $participant->save();
@@ -579,8 +590,6 @@ class participantsaction extends Survey_Common_Action
         // If add it will insert a new row
         elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel', 'create'))
         {
-            $aData = Yii::app()->request->getPost('Participant');
-            $extraAttributes = Yii::app()->request->getPost('Attributes');
             $uuid = Participant::gen_uuid();
             $aData['participant_id'] = $uuid;
             $aData['owner_uid'] = Yii::app()->user->id;
