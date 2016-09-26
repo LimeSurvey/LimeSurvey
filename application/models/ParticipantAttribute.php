@@ -62,13 +62,25 @@ class ParticipantAttribute extends LSActiveRecord
         );
     }
 
-    function getAttributeInfo($participantid)
+    /**
+     * ?
+     */
+    public function getAttributeInfo($participantid)
     {
         return self::model()->findAllByAttributes(array('participant_id' => $participantid));
     }
-    function updateParticipantAttributeValue($data)
+
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function updateParticipantAttributeValue($data)
     {
-        $query = Yii::app()->db->createCommand()->select('*')->where("participant_id='".$data['participant_id']."' AND attribute_id = ".$data['attribute_id'])->from('{{participant_attribute}}')->queryAll();
+        $query = Yii::app()->db->createCommand()
+            ->select('*')
+            ->where("participant_id='".$data['participant_id']."' AND attribute_id = ".$data['attribute_id'])
+            ->from('{{participant_attribute}}')
+            ->queryAll();
         if (count($query) > 0)
         {
             Yii::app()->db->createCommand()
@@ -80,5 +92,3 @@ class ParticipantAttribute extends LSActiveRecord
     }
 
 }
-
-?>

@@ -450,11 +450,18 @@ class participantsaction extends Survey_Common_Action
         }
         //Generate HTML for extra Attributes
 
-        $extraAttributes = [];
-        foreach($model->allExtraAttributes as $name=>$extraAttribute){
-            $value = $model->getParticipantAttribute("",$extraAttribute['attribute_id']);
-            
-            $extraAttributes[] = $this->generateExtraAttributeEditHtml($name, $value, $extraAttribute, $model);
+        $extraAttributes = array();
+        foreach($model->allExtraAttributes as $name => $extraAttribute) {
+            $value = $model->getParticipantAttribute("", $extraAttribute['attribute_id']);
+            $extraAttribute['value'] = $value;
+            $extraAttribute['name'] = $name;
+
+            if ($extraAttribute['attribute_type'] == 'DD') {
+                $extraAttribute['options'] = $model->getOptionsForAttribute($extraAttribute['attribute_id']);
+            }
+
+            $extraAttributes[$name] = $extraAttribute;
+            //$extraAttributes[] = $this->generateExtraAttributeEditHtml($name, $value, $extraAttribute, $model);
         }
         $aData = array(
             'model' => $model,

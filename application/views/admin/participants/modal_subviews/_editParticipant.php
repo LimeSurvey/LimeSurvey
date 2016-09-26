@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="participant_edit_modal"><?php echo $model->firstname."&nbsp;".$model->lastname; ?></h4>
+    <h4 class="modal-title" id="participant_edit_modal"><?php eT('Edit participant'); ?></h4>
 </div>
 <div class="modal-body form-horizontal">
 <?php
@@ -22,35 +22,57 @@
              'class' => 'col-sm-8',
              'required' => 'required'
         );
-        echo $form->textFieldControlGroup($model,'firstname', $baseControlGroupHtmlOptions);
-        echo $form->textFieldControlGroup($model,'lastname',$baseControlGroupHtmlOptions);
-        echo $form->textFieldControlGroup($model,'email',$baseControlGroupHtmlOptions);
-        echo 
-        "<div class='form-group'>
-            <label class='control-label col-sm-4'>".gT("Should this user be blacklisted?")."</label>
-            <div class='col-sm-8'>
-            &nbsp;
-            <label class='radio-inline'>"
-             . "<input name=\"Participant[blacklisted]\" id=\"Participant_blacklisted\" type=\"radio\" value=\"Y\" "
-                .($model->blacklisted == "Y" ? "checked" : "")." />"
-             . gT("Yes")."
-            </label>
-            <label class='radio-inline'>"
-             . "<input name=\"Participant[blacklisted]\" id=\"Participant_blacklisted\" type=\"radio\" value=\"N\" "
-                .(($model->blacklisted == "N" || empty($model->blacklisted)) ? "checked" : "")." />"
-             . gT("No")."
-            </label>
-            </div>
-        </div>";
-        echo "<br/>";
-        echo "<br/>";
-        echo "<legend>".gT("Custom attributes")."</legend>";
-   
-        foreach($extraAttributes as $extraAttribute){
-            echo $extraAttribute;
-        }
     ?>
-    <p>&nbsp;</p>
+        <div class='form-group'>
+            <label class='control-label col-sm-2'>
+                <?php eT('First name:'); ?>
+            </label>
+            <div class='col-sm-4'>
+                <input class='form-control' name='firstname' value='<?php echo $model->firstname; ?>' />
+            </div>
+            <label class='control-label col-sm-2'>
+                <?php eT('Last name:'); ?>
+            </label>
+            <div class='col-sm-4'>
+                <input class='form-control' name='lastname' value='<?php echo $model->lastname; ?>' />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='control-label col-sm-2'>
+                <?php eT('E-mail:'); ?>
+            </label>
+            <div class='col-sm-10'>
+                <input class='form-control' name='email' value='<?php echo $model->firstname; ?>' />
+            </div>
+        </div>
+        <div class='form-group'>
+            <label class='control-label col-sm-4'><?php eT("Should this user be blacklisted?"); ?></label>
+            <div class='col-sm-8'>
+                &nbsp;
+                <input name='Participant[blacklisted]' type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='action_changeBlacklistStatus bootstrap-switch' />
+            </div>
+        </div>
+        <legend><?php eT("Custom attributes"); ?></legend>
+        <?php foreach($extraAttributes as $name => $attribute): ?>
+            <?php switch ($attribute['attribute_type']):
+
+                // Text box
+                case 'TB': ?>
+                    <?php $this->renderPartial('/admin/participants/modal_subviews/attributes/textbox', $attribute); ?>
+                <?php break; ?>
+
+                <!-- Drop down -->
+                <?php case 'DD': ?>
+                    <?php $this->renderPartial('/admin/participants/modal_subviews/attributes/dropdown', $attribute); ?>
+                <?php break; ?>
+
+                <!-- Date -->
+                <?php case 'DP': ?>
+                    <?php $this->renderPartial('/admin/participants/modal_subviews/attributes/date', $attribute); ?>
+                <?php break; ?>
+
+            <?php endswitch; ?>
+        <?php endforeach; ?>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close') ?></button>

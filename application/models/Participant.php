@@ -179,6 +179,9 @@ class Participant extends LSActiveRecord
         
     }
 
+    /**
+     * @return array
+     */
     public function getAllExtraAttributes(){
         $allAttributes =  ParticipantAttributeName::model()->getAllAttributes();
         $extraAttributes = array();
@@ -188,11 +191,25 @@ class Participant extends LSActiveRecord
         return $extraAttributes;
     }
 
+    /**
+     * Get options for a drop-down attribute
+     * @return array
+     */
     public function getOptionsForAttribute($attribute_id) {
-         $result = Yii::app()->db->createCommand()
-         ->select('*')->from('{{participant_attribute_values}}')->where('attribute_id=:attribute_id', array( 'attribute_id' => $attribute_id))->queryAll();
-         return $result;
+
+        //if ($this->attribute_type != 'DD') {
+            //throw new \CInvalidArgumentException('Only drop-down attributes have options');
+        //}
+
+        //$attribute_id = $this->attribute_id;
+        $result = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('{{participant_attribute_values}}')
+            ->where('attribute_id=:attribute_id', array('attribute_id' => $attribute_id))
+            ->queryAll();
+        return $result;
     }
+
     public function getAllUsedLanguagesWithRealName(){
         $lang_array = array();
         $languages = $this->findAll(array(
@@ -205,6 +222,12 @@ class Participant extends LSActiveRecord
         }
         return $lang_array;
     }
+
+    /**
+     * @param string $attribute_textid
+     * @param mixed $attribute_id
+     * @return
+     */
     public function getParticipantAttribute($attribute_textid, $attribute_id=false){
         if($attribute_id == false)
         {

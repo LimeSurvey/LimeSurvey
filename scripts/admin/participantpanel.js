@@ -60,7 +60,7 @@ LS.CPDB = (function() {
 
         $(baseModal).modal('show');
 
-        jQuery.ajax({
+        return jQuery.ajax({
             url: url, 
             data: data,
             method: 'POST',
@@ -170,13 +170,16 @@ LS.CPDB = (function() {
             var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                    openModalParticipantPanel, 
-                    data,
-                    'action_save_modal_editParticipant',
-                    'editPartcipantActiveForm', 
-                    'list_central_participants' 
-                    );
+                openModalParticipantPanel, 
+                data,
+                'action_save_modal_editParticipant',
+                'editPartcipantActiveForm', 
+                'list_central_participants' 
+            ).done(function() {
+                $('.bootstrap-switch').bootstrapSwitch();
+            });
         });
+
         $('.action_participant_deleteModal').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
