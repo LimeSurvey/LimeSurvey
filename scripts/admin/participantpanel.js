@@ -191,7 +191,10 @@ LS.CPDB = (function() {
         });
         $('.action_participant_infoModal').on('click', function(e){
             e.preventDefault();
-            var data = {modalTarget: 'showparticipantsurveys', 'participant_id' : $(this).closest('tr').data('participant_id')};
+            var data = {
+                modalTarget: 'showparticipantsurveys',
+                participant_id: $(this).closest('tr').data('participant_id')
+            };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                     openModalParticipantPanel, 
