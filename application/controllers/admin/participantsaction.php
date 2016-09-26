@@ -461,7 +461,6 @@ class participantsaction extends Survey_Common_Action
             }
 
             $extraAttributes[$name] = $extraAttribute;
-            //$extraAttributes[] = $this->generateExtraAttributeEditHtml($name, $value, $extraAttribute, $model);
         }
         $aData = array(
             'model' => $model,
@@ -1866,83 +1865,6 @@ class participantsaction extends Survey_Common_Action
             ParticipantShare::model()->updateShare($aData);
         }
     }
-
-    /**
-     * @return string HTML
-     */
-    private function generateExtraAttributeEditHtml($name, $value, $attribute, $model)
-    {
-        $attributes_control_group_text_template = 
-        '<div class="form-horizontal form-group">'
-            . '<label class="col-sm-4 control-label" for="Attributes[:name:]">:displayName:</label>'
-            . "<div>"
-                . "<div class='col-sm-8'>"
-                    . '<input class="form-control" name="Attributes[:name:]" id="Attributes_:name:" type="text" maxlength="254" value=":value:">'
-                . "</div>"
-            . "</div>"
-        . "</div>";
-
-        $attributes_control_group_datepicker_template = 
-        '<div class="form-horizontal form-group">'
-            . '<label class="col-sm-4 control-label" for="datepickerInputField_[:name:]">:displayName:</label>'
-            . "<div>"
-                . "<div class='col-sm-8'>"
-                    . '<input class="form-control" name="datepickerInputField_:name:" id="datepickerInputField_:name:" type="text" value=":value:">'
-                    . '<input name="Attributes[:name:]" id="Attributes_:name:" type="hidden" value=":value:">'
-                    . '<script type="text/javascript">
-                        $(function () {
-                            $(\'#datepickerInputField_:name:\').datetimepicker(datepickerConfig.initDatePickerObject);
-                            $(\'#datepickerInputField_:name:\').on("dp.change", function(e){
-                                $("#Attributes_:name:").val(e.date.format(datepickerConfig.dateformatdetailsjs));
-                            })
-                        });
-                    </script>'
-                . "</div>"
-            . "</div>"
-        . "</div>";
-
-        $attributes_control_group_dropdown_template = 
-        '<div class="form-horizontal form-group">'
-            . '<label class="col-sm-4 control-label" for="datepickerInputField_[:name:]">:displayName:</label>'
-            . "<div>"
-                . "<div class='col-sm-8'>"
-                    . '<select class="form-control" name="Attributes[:name:]" id="Attributes_:name:">'
-                    . ':options:'
-                    . '</select>'
-                . "</div>"
-            . "</div>"
-        . "</div>";
-
-        switch($attribute['attribute_type'])
-        {
-            case "DP": //DatePicker attribute
-                $outHtml = preg_replace("/(:name:)/",$name,$attributes_control_group_datepicker_template);
-                break;
-            case "DD": //DropDown Attribute
-                $outHtml = preg_replace("/(:name:)/",$name,$attributes_control_group_dropdown_template);
-                $options_raw = $model->getOptionsForAttribute($attribute['attribute_id']);
-                $options="<option value></option>";
-                foreach($options_raw as $option)
-                {
-                    $options.="<option value='".$option['value']."' "
-                        . ($option['value'] == $value ? "selected" : "" )
-                        . ">".$option['value'] 
-                        . "</option>";
-                }
-                $outHtml = preg_replace("/(:options:)/",$options,$outHtml);
-
-                break;
-            case "TB": //"Basic" Textbox Attribute
-            default:
-                $outHtml = preg_replace("/(:name:)/",$name,$attributes_control_group_text_template);
-                break;
-        }
-
-        $outHtml = preg_replace("/(:displayName:)/", $attribute['defaultname'], $outHtml);
-        $outHtml = preg_replace("/(:value:)/", $value , $outHtml);
-        return $outHtml;
-    }
-
    
     /**
      * Receives an ajax call containing the participant id in the fourth segment of the url
