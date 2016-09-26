@@ -1513,11 +1513,10 @@ class SurveyRuntimeHelper {
             case 'N':
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
                 break;
-            case 'number':
-                $aReplacement['QUESTION_CODE']=$sCode;
-                break;
             case 'choose':
             case 'C':
+                $aReplacement['QUESTION_CODE']=$sCode;
+                break;
             default:
                 break;
         }
