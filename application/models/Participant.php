@@ -1806,16 +1806,16 @@ class Participant extends LSActiveRecord
                             ->bindParam(":attribute_id", $participantAttributeId, PDO::PARAM_INT)
                             ->queryRow();
             if($test['count'] > 0) {
-                $sql=Yii::app()->db
-                               ->createCommand()
-                               ->update('{{participant_attribute}}', array("value"=>$value2[$tokenFieldname]), "participant_id='$participantId' AND attribute_id=$participantAttributeId");
+                Yii::app()->db
+                    ->createCommand()
+                    ->update('{{participant_attribute}}', array("value"=>$value2[$tokenFieldname]), "participant_id='$participantId' AND attribute_id=$participantAttributeId");
             } else {
-                $sql=Yii::app()->db
-                               ->createCommand()
-                               ->insert('{{participant_attribute}}', $data);
+                Yii::app()->db
+                    ->createCommand()
+                    ->insert('{{participant_attribute}}', $data);
             }
         }
-    }
+     }
 
     /**
      * Copies token participants to the central participants table, and also copies
