@@ -110,7 +110,7 @@
             <?php
                 $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(                        
                             'model'            => $oSurveySearch,
-                            'bRenderSearchBox' => false,
+                            'bRenderSearchBox' => true,
                         ));
             ?>
         </div>
