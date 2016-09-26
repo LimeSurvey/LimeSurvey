@@ -166,11 +166,11 @@ class SurveyLink extends LSActiveRecord
         {
             $date = new DateTime($this->isSubmitted);
             $submittedAt = $date->format($this->dateFormat);
-            return gT("Yes")." <i class='fa fa-circle text-success' data-toggle='tooltip' title='".$submittedAt."'></i>";
+            return $submittedAt;
         } 
         else 
         {
-            return gT("No")." <i class='fa fa-circle-o text-warning'></i>";
+            return '&#8211;';
         }
     }
 
@@ -194,6 +194,7 @@ class SurveyLink extends LSActiveRecord
 
     public function getColumns() {
         return array(
+            /*
             array(
                 "name" => 'checkbox',
                 "type" => 'raw',
@@ -201,6 +202,7 @@ class SurveyLink extends LSActiveRecord
                 "sortable" => false,
                 "filter" => false
             ),
+             */
             array(
                 "value" => '$data->surveyName',
                 'header' => gT('Survey Name'),
