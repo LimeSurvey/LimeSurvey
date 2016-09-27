@@ -13,7 +13,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             // li element
             'type'        => 'action',
             'action'      => 'delete',
-            'url'         =>  App()->createUrl('/admin/participants/sa/delParticipant/'),
+            'url'         =>  App()->createUrl('/admin/participants/sa/deleteParticipant/'),
             'iconClasses' => 'text-danger glyphicon glyphicon-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',

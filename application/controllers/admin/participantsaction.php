@@ -150,7 +150,7 @@ class participantsaction extends Survey_Common_Action
                 $this->deleteSingleAttribute();
                 break;
             case "deleteParticipant":
-                $this->delParticipant();
+                $this->deleteParticipant();
                 break;
             case "changeSharedEditableStatus":
                 $this->changeSharedEditableStatus();
@@ -373,8 +373,9 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Takes the delete call from the display participants and take appropriate action depending on the condition
+     * @return void
      */
-    public function delParticipant()
+    public function deleteParticipant()
     {
         if (Permission::model()->hasGlobalPermission('participantpanel','delete'))
         {

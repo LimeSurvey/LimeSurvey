@@ -798,10 +798,9 @@ class Participant extends LSActiveRecord
         $aParticipantsIDChunks = array_chunk(explode(",", $rows),100);
         foreach ($aParticipantsIDChunks as $aParticipantsIDs)
         {
-
             if ($bFilter)
             {
-                $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
+                $aParticipantsIDs = $this->filterParticipantIDs($aParticipantsIDs);
             }
             foreach($aParticipantsIDs as $aID){
                 $oParticipant=Participant::model()->findByPk($aID);
