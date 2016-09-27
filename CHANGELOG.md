@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## unreleased
+## [1.0.25] - 2016-09-27
 
 ### Fix
 - Fixed issue #11455: MapQuest discontinued the free tileserver (Markus Flür)
