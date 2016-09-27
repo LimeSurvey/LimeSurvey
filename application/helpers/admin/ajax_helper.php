@@ -36,7 +36,7 @@ class AjaxHelper
     }
 
     /**
-     * 
+     * @return void
      */
     public static function outputNoPermission()
     {

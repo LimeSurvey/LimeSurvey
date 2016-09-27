@@ -790,12 +790,13 @@ class Participant extends LSActiveRecord
      * references in the survey_links table (but not in matching tokens tables)
      * and then all the participants attributes.
      * @param $rows Participants ID separated by comma
-     * @return void
+     * @return int
      **/
     public function deleteParticipants($rows, $bFilter=true)
     {
         // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size
         $aParticipantsIDChunks = array_chunk(explode(",", $rows),100);
+        $deletedParticipants = 0;
         foreach ($aParticipantsIDChunks as $aParticipantsIDs)
         {
             if ($bFilter)
@@ -807,6 +808,7 @@ class Participant extends LSActiveRecord
                 if ($oParticipant)
                 {
                     $oParticipant->delete();
+                    $deletedParticipants++;
                 }
                 $oParticipantShare = ParticipantShare::model()->findByAttributes(array(
                     'participant_id' => $aID
@@ -824,6 +826,7 @@ class Participant extends LSActiveRecord
             // Delete participant attributes
             Yii::app()->db->createCommand()->delete(ParticipantAttribute::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
         }
+        return $deletedParticipants;
     }
 
 

@@ -377,55 +377,55 @@ class participantsaction extends Survey_Common_Action
      */
     public function deleteParticipant()
     {
-        if (Permission::model()->hasGlobalPermission('participantpanel','delete'))
-        {
-            $selectoption = Yii::app()->request->getPost('selectedoption');
-
-            // First for delete one, second for massive action
-            $participantId = Yii::app()->request->getPost('participant_id');
-            $participantIds = json_decode(Yii::app()->request->getPost('sItems'), true);
-
-            if (empty($participantIds))
-            {
-                $participantIds = $participantId;
-            }
-
-            if (is_array($participantIds))
-            {
-                $participantIds = join($participantIds, ',');
-            }
-
-            // Deletes from participants only
-            if ($selectoption == 'po')
-            {
-                Participant::model()->deleteParticipants($participantIds);
-            }
-            // Deletes from central and token table
-            elseif ($selectoption == 'ptt')
-            {
-                Participant::model()->deleteParticipantToken($participantIds);
-            }
-            // Deletes from central , token and assosiated responses as well
-            elseif ($selectoption == 'ptta')
-            {
-                Participant::model()->deleteParticipantTokenAnswer($participantIds);
-            }
-            else
-            {
-                // Internal error
-                assert(false);
-            }
-
-            echo json_encode(array(
-                'success' => true,
-                'successMessage' => gT('Participant deleted')
-            ));
-        }
-        else 
-        {
+        // Abort if no permission
+        if (!Permission::model()->hasGlobalPermission('participantpanel','delete')) {
             echo json_encode(array(
                 'success' => false,
                 'errorMessage' => gT('No permission')
+            ));
+        }
+
+        $selectoption = Yii::app()->request->getPost('selectedoption');
+
+        // First for delete one, second for massive action
+        $participantId = Yii::app()->request->getPost('participant_id');
+        $participantIds = json_decode(Yii::app()->request->getPost('sItems'), true);
+
+        if (empty($participantIds)) {
+            $participantIds = $participantId;
+        }
+
+        if (is_array($participantIds)) {
+            $participantIds = join($participantIds, ',');
+        }
+
+        // Deletes from participants only
+        if ($selectoption == 'po') {
+            $deletedParticipants = Participant::model()->deleteParticipants($participantIds);
+        }
+        // Deletes from central and token table
+        else if ($selectoption == 'ptt') {
+            $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
+        }
+        // Deletes from central , token and assosiated responses as well
+        else if ($selectoption == 'ptta') {
+            $deletedParticipants = Participant::model()->deleteParticipantTokenAnswer($participantIds);
+        }
+        else {
+            // Internal error
+            assert(false);
+        }
+
+        if ($deletedParticipants == 0) {
+            echo json_encode(array(
+                'success' => false,
+                'errorMessage' => gT('No participants deleted')
+            ));
+        }
+        else {
+            echo json_encode(array(
+                'success' => true,
+                'successMessage' => gT('Participant deleted')
             ));
         }
     }
