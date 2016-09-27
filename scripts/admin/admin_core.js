@@ -14,6 +14,9 @@
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
+// Namespace
+var LS = LS || {};
+
 /* Set a variable to test if browser have HTML5 form ability
  * Need to be replaced by some polyfills see #8009
  */
@@ -860,7 +863,6 @@ function onlyUnique(value, index, self) {
  *                         outAnimation (string) -> The jQuery animation to remove the notifier [fadeOut||slideUp]
  *                         animationTime (int) -> The time in milliseconds the animation will last             
  */
-
 function NotifyFader(){
     var count = 0;
     
@@ -926,4 +928,48 @@ var LsGlobalNotifier = new NotifyFader();
 
 function notifyFader(text, classes, styles, customOptions){
     LsGlobalNotifier.create(text, classes, styles, customOptions);
+}
+
+/**
+ * Like $.ajax, but with checks for errors,
+ * permission etc. Should be used together
+ * with the PHP AjaxHelper.
+ * @param {object} options - Exactly the same as $.ajax options
+ * @return
+ */
+LS.ajax = function(options) {
+
+    var oldSuccess = options.success;
+    var oldError = options.error;
+    options.success = function(result) {
+
+        try {
+            var response = JSON.parse(result);
+        }
+        catch(e) {
+            alert('Could not parse JSON from server: ' + result);
+            return;
+        }
+
+        console.log('response', response);
+
+        if (!response.loggedIn) {
+            alert('Not logged in');
+        }
+        else if (!response.hasPermission) {
+            notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
+        }
+        else if (response.error) {
+            notifyFader(response.error.message, 'well-lg bg-danger text-center');
+        }
+        else if (resopnse.success) {
+            notifyFader(response.success, 'well-lg bg-primary text-center');
+        }
+        else {
+            oldSuccess(result);
+        }
+
+    };
+
+    return $.ajax(options);
 }

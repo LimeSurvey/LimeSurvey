@@ -47,6 +47,8 @@ class participantsaction extends Survey_Common_Action
     {
         $this->checkPermission('read');
 
+        Yii::import('application.helpers.admin.ajax_helper', true);
+
         parent::runWithParams($params);
     }
 
@@ -106,25 +108,26 @@ class participantsaction extends Survey_Common_Action
         $target = Yii::app()->request->getPost('modalTarget');
         switch($target){
             case "editparticipant":
-                $this->openeditparticipant();
+                $this->openEditParticipant();
                 break;
             case "shareparticipant":
-                $this->openparticipantshare();
+                $this->openParticipantShare();
                 break;
             case "showparticipantsurveys":
-                $this->openparticipantsurveys();
+                $this->openParticipantSurveys();
                 break;
             case "showdeleteparticipant":
-                $this->opendeleteparticipant();
+                $this->openDeleteParticipant();
                 break;
             case "editattribute":
-                $this->openeditattributenames();
+                $this->openEditAttributeNames();
                 break;
             case "addToSurvey":
                 $this->openAddToSurvey();
                 break;
             default:
-                throw new \CException('Unsupported modal target: ' . $target);
+                // Unknown modal target
+                assert(false);
                 break;
         }
     }
@@ -435,9 +438,8 @@ class participantsaction extends Survey_Common_Action
     * Requires 'participant_id' (int|null)
     * @return void
     */
-    public function openeditparticipant()
+    public function openEditParticipant()
     {
-
         $participant_id = Yii::app()->request->getPost('participant_id');
         if($participant_id)
         {
@@ -470,13 +472,19 @@ class participantsaction extends Survey_Common_Action
             'extraAttributes' => $extraAttributes
         );
 
-        $this->getController()->renderPartial('/admin/participants/modal_subviews/_editParticipant', $aData);
+        $html = $this->getController()->renderPartial(
+            '/admin/participants/modal_subviews/_editParticipant',
+            $aData,
+            true
+        );
+
+        ls\ajax\AjaxHelper::output($html);
     }
 
     /**
      * ?
      */
-    public function openparticipantsurveys()
+    public function openParticipantSurveys()
     {
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
@@ -494,7 +502,7 @@ class participantsaction extends Survey_Common_Action
      * Used by both single share and massive action share
      * @return void
      */
-    public function openparticipantshare()
+    public function openParticipantShare()
     {
         $participant_id = Yii::app()->request->getPost('participant_id');
         $participant_ids = null;
@@ -533,7 +541,7 @@ class participantsaction extends Survey_Common_Action
     * Requires 'participant_id' (int)
     * @return void
     */
-    public function opendeleteparticipant()
+    public function openDeleteParticipant()
     {
 
         $participant_id = Yii::app()->request->getPost('participant_id');
@@ -560,15 +568,15 @@ class participantsaction extends Survey_Common_Action
         $extraAttributes = Yii::app()->request->getPost('Attributes');
 
         switch ($operation) {
-        case 'edit':
-            echo $this->updateParticipant($aData, $extraAttributes);
-            break;
-        case 'add':
-            echo $this->addParticipant($aData, $extraAttributes);
-            break;
-        case 'default':
-            throw new \CInvalidArgumentException('Unknown operation: ' . $operation);
-            break;
+            case 'edit':
+                echo $this->updateParticipant($aData, $extraAttributes);
+                break;
+            case 'add':
+                echo $this->addParticipant($aData, $extraAttributes);
+                break;
+            case 'default':
+                throw new \CInvalidArgumentException('Unknown operation: ' . $operation);
+                break;
         }
     }
 
@@ -1338,7 +1346,7 @@ class participantsaction extends Survey_Common_Action
     /**
     * Method to open the editAttributeName Modal
     */
-    public function openeditattributenames()
+    public function openEditAttributeNames()
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         if($attribute_id)

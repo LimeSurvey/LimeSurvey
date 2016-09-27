@@ -14,28 +14,43 @@ namespace ls\ajax;
 class AjaxHelper
 {
     /**
-     * Echoes json success
+     * Echoes json with result set as $msg
+     * This is the custom json, that expects to be
+     * handled manually.
      * @param string $msg message
      * @return void
      */
-    public static function outputSuccessMessage($msg)
+    public static function output($msg)
     {
-        $output = new JsonOuput($msg);
+        $output = new JsonOutput($msg);
         echo $output;  // Encoded to json format when converted to string
     }
 
     /**
+     * Success popup
+     * @param string $msg
+     * @return void
+     */
+    public static function outputSuccess($msg)
+    {
+        $output = new JsonOutputSuccess($msg);
+        echo $output;
+    }
+
+    /**
+     * Error popup
      * @param string $msg
      * @param int $code
      * @return void
      */
-    public static function outputErrorMessage($msg, $code = 0)
+    public static function outputError($msg, $code = 0)
     {
         $output = new JsonOutputError($msg, $code);
         echo $output;
     }
 
     /**
+     * No permission popup
      * @return void
      */
     public static function outputNoPermission()
@@ -59,9 +74,15 @@ class JsonOutput
 
     /**
      * Array like array('code' => 123, 'message' => 'Something went wrong.')
-     * @var array
+     * @var array|null
      */
-    public $error = array();
+    public $error;
+
+    /**
+     * Success message pop-up
+     * @var string|null
+     */
+    public $success;
 
     /**
      * True if user is logged in
@@ -101,6 +122,7 @@ class JsonOutput
     public function __toString()
     {
         return json_encode(array(
+            'success' => $this->success,
             'result' => $this->result,
             'error' => $this->error,
             'loggedIn' => $this->loggedIn,
@@ -125,7 +147,8 @@ class JsonOutputNoPermission extends JsonOutput
 }
 
 /**
- * Set error in constructor
+ * Set error in constructor, which will be
+ * shown as a pop-up on client.
  * @since 2016-09-27
  * @author Olle Härstedt
  */
@@ -143,5 +166,25 @@ class JsonOutputError extends JsonOutput
             'message' => $msg,
             'code' => $code
         );
+    }
+}
+
+/**
+ * Set success message in constructor, which
+ * will be shown as a pop-up on client.
+ * @since 2016-09-27
+ * @author Olle Härstedt
+ */
+class JsonOutputSuccess extends JsonOutput
+{
+    /**
+     * @param string $msg
+     * @param int $code
+     * @return JsonOutputError
+     */
+    public function __construct($msg)
+    {
+        parent::__construct(null);
+        $this->success = $msg;
     }
 }
