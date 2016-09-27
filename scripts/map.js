@@ -43,6 +43,12 @@ function isvalidCoord(val){
 
 // OSMap functions
 function OSGeoInitialize(question,latLng){
+		var tileServerURL = {
+			OSM : "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}",
+			HUM : "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}",
+			CYC : "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}",
+			TRA : "http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}"
+		};
 		var name = question.substr(0,question.length - 2);
 		// tiles layers def
 		var MapOption=LSmaps[name];
@@ -52,46 +58,56 @@ function OSGeoInitialize(question,latLng){
 		if(isNaN(MapOption.longitude) || MapOption.longitude==""){
 			MapOption.longitude=0;
 		}
-		var mapquestOSM = L.tileLayer("//{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
+		var mapOSM = L.tileLayer(tileServerURL.OSM+".png", {
 			maxZoom: 19,
-			subdomains: ["otile1", "otile2", "otile3", "otile4"],
-			attribution: 'Tiles courtesy of <a href="//www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+			subdomains: ["a", "b", "c"],
+			attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		});
-		var mapquestOAM = L.tileLayer("//{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-			maxZoom: 10,
-			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-			attribution: 'Tiles courtesy of <a href="//www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-		});
-		var mapquestHYB = L.layerGroup([L.tileLayer("//{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-			maxZoom: 10,
-			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
-		}), L.tileLayer("//{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
+		var mapCYC = L.tileLayer(tileServerURL.CYC+".png", {
 			maxZoom: 19,
-			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-			attribution: 'Labels courtesy of <a href="//www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+			subdomains: ["a", "b", "c"],
+			attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+		});
+		var mapHOT = L.layerGroup([L.tileLayer(tileServerURL.HUM+".png", {
+			maxZoom: 20,
+			subdomains: ["a", "b", "c"],
+		}), L.tileLayer(tileServerURL+".png", {
+			maxZoom: 19,
+			subdomains: ["a", "b", "c"],
+			attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+		})]);
+		var mapTRA = L.layerGroup([L.tileLayer(tileServerURL.TRA+".png", {
+			maxZoom: 19,
+			subdomains: ["a", "b", "c"],
+		}), L.tileLayer(tileServerURL+".png", {
+			maxZoom: 19,
+			subdomains: ["a", "b", "c"],
+			attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		})]);
 
 		var baseLayers = {
-			"Street Map": mapquestOSM,
-			"Aerial Imagery": mapquestOAM,
-			"Imagery with Streets": mapquestHYB
+			"Street Map": mapOSM,
+			"Humanitarian": mapHOT,
+			"Cyclemap": mapCYC,
+			"Traffic Map" : mapTRA
 		};
+
 		var overlays = {
 		};
-		var map = L.map("map_"+name, { 
+		var map = L.map("map_"+name, {
 			zoom:MapOption.zoomLevel,
 			minZoom:1,
 			center: [MapOption.latitude, MapOption.longitude] ,
 			maxBounds: ([[-90, -180],[90, 180]]),
-			layers: [mapquestOSM]
+			layers: [mapOSM]
 		});
 		//function zoomExtent(){ // todo: restrict to rect ?
 		//	map.setView([15, 15],1);
 		//}
-		
+
 		var pt1 = latLng[0].split("@");
 		var pt2 = latLng[1].split("@");
-		
+
 		if ((pt1.length == 2) && (pt2.length == 2)) { // is Rect
 			var isRect = true;
 			lat = "";
@@ -108,26 +124,26 @@ function OSGeoInitialize(question,latLng){
 			lat = latLng[0];
 			lng = latLng[1];
 		}
-		
+
 		if (isNaN(parseFloat(lat)) || isNaN(parseFloat(lng))) {
 			lat=-9999; lng=-9999;
 		}
-		
+
 		var marker = new L.marker([lat,lng], {title:'Current Location',id:1,draggable:'true'});
 		map.addLayer(marker);
-		
+
 		var layerControl = L.control.layers(baseLayers, overlays, {
 		  collapsed: true
 		}).addTo(map);
-		
-		map.on('click', 
-			function(e) { 
+
+		map.on('click',
+			function(e) {
 				var coords = L.latLng(e.latlng.lat,e.latlng.lng);
 				marker.setLatLng(coords);
 				UI_update(e.latlng.lat,e.latlng.lng)
-			}	
+			}
 		)
-		
+
 		marker.on('dragend', function(e){
 				var marker = e.target;
 				var position = marker.getLatLng();
@@ -146,9 +162,9 @@ function OSGeoInitialize(question,latLng){
 				$("#answer_lat"+question).val("");
 				$("#answer_lng"+question).val("");
 			}
-			
+
 		}
-		
+
 		$('coords[name^='+name+']').each(function() {
 			// Save current value of element
 			$(this).data('oldVal', $(this));
@@ -178,7 +194,7 @@ function OSGeoInitialize(question,latLng){
 			appendTo: $("#searchbox_"+name).parent(),
 			source: function( request, response ) {
 				$.ajax({
-					url: "//api.geonames.org/searchJSON",
+					url: "http://api.geonames.org/searchJSON",
 					dataType: "jsonp",
 					data: {
 						username : LSmap.geonameUser,
@@ -214,20 +230,20 @@ function OSGeoInitialize(question,latLng){
 					UI_update(ui.item.lat, ui.item.lng);
 				}
 			},
-			 open: function() { 
+			 open: function() {
 				$( this ).addClass( "searching" );
 			},
 			close: function() {
 				$( this ).removeClass( "searching" );
 			}
 		});
-        
+
         var mapQuestion = $('#question'+name.split('X')[2]);
-        
+
         function resetMapTiles(mapQuestion) {
-        
+
             //window.setTimeout(function(){
-            
+
                 if($(mapQuestion).css('display') == 'none' && $.support.leadingWhitespace) { // IE7-8 excluded (they work as-is)
                     $(mapQuestion).css({
                         'position': 'relative',
@@ -239,16 +255,16 @@ function OSGeoInitialize(question,latLng){
                         'left': 'auto'
                     }).hide();
                 }
-                
-            //},50);            
+
+            //},50);
         }
-        
+
         resetMapTiles(mapQuestion);
-        
-        jQuery(window).resize(function() {        
-            window.setTimeout(function(){                            
-                resetMapTiles(mapQuestion); 
-            },5);            
+
+        jQuery(window).resize(function() {
+            window.setTimeout(function(){
+                resetMapTiles(mapQuestion);
+            },5);
         });
 
 	return map;
@@ -260,19 +276,19 @@ function OSGeoInitialize(question,latLng){
 // Initialize map
 function GMapsInitialize(question,lat,lng) {
 
-	
+
 	var name = question.substr(0,question.length - 2);
 	var latlng = new google.maps.LatLng(lat, lng);
-	
+
 	var mapOptions = {
 		zoom: zoom[name],
 		center: latlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
-	
+
 	var map = new google.maps.Map(document.getElementById("gmap_canvas_" + question), mapOptions);
 	gmaps[''+question] = map;
-    
+
 	var marker = new google.maps.Marker({
 		position: latlng,
 		draggable:true,
@@ -280,28 +296,18 @@ function GMapsInitialize(question,lat,lng) {
 		id: 'marker__'+question
 	});
 	gmaps['marker__'+question] = marker;
-	
+
 	google.maps.event.addListener(map, 'rightclick', function(event) {
 		marker.setPosition(event.latLng);
 		map.panTo(event.latLng);
 		geocodeAddress(name, event.latLng);
 		$("#answer"+question).val(Math.round(event.latLng.lat()*10000)/10000 + " " + Math.round(event.latLng.lng()*10000)/10000);
 	});
-	
+
 	google.maps.event.addListener(marker, 'dragend', function(event) {
 		//map.panTo(event.latLng);
 		geocodeAddress(name, event.latLng);
 		$("#answer"+question).val(Math.round(event.latLng.lat()*10000)/10000 + " " + Math.round(event.latLng.lng()*10000)/10000);
-	});
-
-	$("#answer"+question).on('input', function() {
-		var c = $("#answer"+question).val().split(" ");
-		if (c.length === 2) {
-			var latLng = new google.maps.LatLng(c[0], c[1]);
-			map.panTo(latLng);
-			marker.setPosition(latLng);
-			geocodeAddress(name, latLng);
-		}
 	});
 }
 
@@ -324,12 +330,12 @@ function resetMap(qID) {
 // Reverse geocoder
 function geocodeAddress(name, pos) {
 	var geocoder = new google.maps.Geocoder();
-	
+
 	var city  = '';
 	var state = '';
 	var country = '';
 	var postal = '';
-	
+
 	geocoder.geocode({
 		latLng: pos
 	}, function(results, status) {
@@ -348,7 +354,7 @@ function geocodeAddress(name, pos) {
 					postal = val.short_name;
 				}
 			});
-			
+
 			var location = (results[0].geometry.location);
 		}
 		getInfoToStore(name, pos.lat(), pos.lng(), city, state, country, postal);
@@ -357,7 +363,7 @@ function geocodeAddress(name, pos) {
 
 // Store address info
 function getInfoToStore(name, lat, lng, city, state, country, postal){
-    
+
 	var boycott = $("#boycott_"+name).val();
     // 2 - city; 3 - state; 4 - country; 5 - postal
     if (boycott.indexOf("2")!=-1)
@@ -368,7 +374,7 @@ function getInfoToStore(name, lat, lng, city, state, country, postal){
         country = '';
     if (boycott.indexOf("5")!=-1)
         postal = '';
-    
+
     $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
 }
 

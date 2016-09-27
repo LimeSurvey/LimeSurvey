@@ -3015,7 +3015,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Location'),
         'sortorder'=>101,
         'inputtype'=>'text',
-        'default'=>'11',
+        'default'=>'1',
         "help"=>gT("Map zoom level"),
         "caption"=>gT("Zoom level"));
 

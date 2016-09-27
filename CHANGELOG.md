@@ -3,6 +3,11 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ## unreleased
 
+### Fix
+- Fixed issue #11455: MapQuest discontinued the free tileserver (Markus Flür)
+
+## [1.0.24] - 2016-09-16
+
 ### Feature
 - Allow plugin to add new question attributes
 
