@@ -105,23 +105,49 @@ class Participant extends LSActiveRecord
             . "<span class='fa fa-%s' ></span>" //icon class
             . "</button>";
 
-        // Edit button 
-        $editData = array(
-            'action_participant_editModal',
-            '',
-            gT("Edit this participant"),
-            'edit'
-        );
-        $buttons .= vsprintf($raw_button_template, $editData);
+        if ($this->userHasPermissionToEdit()) {
+            // Edit button
+            $editData = array(
+                'action_participant_editModal',
+                '',
+                gT("Edit this participant"),
+                'edit'
+            );
+            $buttons .= vsprintf($raw_button_template, $editData);
 
-        // Delete button
-        $deleteData = array(
-            'action_participant_deleteModal',
-            'text-danger',
-            gT("Delete this participant"),
-            'trash text-danger'
-        );
-        $buttons .= vsprintf($raw_button_template, $deleteData);
+            // Delete button
+            $deleteData = array(
+                'action_participant_deleteModal',
+                'text-danger',
+                gT("Delete this participant"),
+                'trash text-danger'
+            );
+            $buttons .= vsprintf($raw_button_template, $deleteData);
+
+            // Share this participant
+            $infoData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
+
+        }
+        else {
+            // Three empty buttons for correct alignment
+            $buttons .= "
+                <button class='btn btn-default btn-xs' style='visibility: hidden;'>
+                    <span class='fa fa-trash'></span>
+                </button>
+                <button class='btn btn-default btn-xs' style='visibility: hidden;'>
+                    <span class='fa fa-trash'></span>
+                </button>
+                <button class='btn btn-default btn-xs' style='visibility: hidden;'>
+                    <span class='fa fa-trash'></span>
+                </button>
+            ";
+        }
 
         // Survey information
         $infoData = array(
@@ -129,15 +155,6 @@ class Participant extends LSActiveRecord
             '',
             gT("List active surveys"),
             'search'
-        );
-        $buttons .= vsprintf($raw_button_template, $infoData);
-
-        // Share this participant
-        $infoData = array(
-            'action_participant_shareParticipant',
-            '',
-            gT("Share this participant"),
-            'share'
         );
         $buttons .= vsprintf($raw_button_template, $infoData);
 
@@ -247,13 +264,29 @@ class Participant extends LSActiveRecord
         return count($activeSurveys)>0 ? count($activeSurveys) : "";
     }
 
+    /**
+     * @return string HTML
+     */
     public function getBlacklistSwitchbutton(){
-        $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeBlacklistStatus' "
-            . ($this->blacklisted == "Y" ? "checked" : "")
-            . "/>";
-        return  $inputHtml;
+        if ($this->userHasPermissionToEdit()) {
+            $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeBlacklistStatus' "
+                . ($this->blacklisted == "Y" ? "checked" : "")
+                . "/>";
+            return  $inputHtml;
+        }
+        else {
+            if ($this->blacklisted == 'Y') {
+                return gT('Yes');
+            }
+            else {
+                return gT('No');
+            }
+        }
     }
 
+    /**
+     * @return array
+     */
     public function getColumns(){
         $cols = array(
             array(
@@ -2060,11 +2093,12 @@ class Participant extends LSActiveRecord
             // Superadmins can do anything
             return true;
         }
-        else if ($shared && $shared->share_uid == -1) {
+        else if ($shared && $shared->share_uid == -1 && $shared->can_edit) {
             // -1 = shared with everyone
             return true;
         }
-        else if ($shared && $shared->share_uid == $userId) {
+        else if ($shared && $shared->share_uid == $userId && $shared->can_edit) {
+            // Shared with this particular user
             return true;
         }
         else {
