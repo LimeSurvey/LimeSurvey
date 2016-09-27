@@ -23,15 +23,18 @@ LS.CPDB = (function() {
          * @param {object} result
          * @todo
          */
-        var secondSuccess = function(result){
+        var secondSuccess = function(result) {
             $(baseModal).modal('hide');
             $.fn.yiiGridView.update(gridViewId,{});
-            if(result.successMessage != undefined){
+            if(result.successMessage != undefined) {
                 notifyFader(result.successMessage, 'well-lg bg-primary text-center');
-            } else {
-                try{
+            }
+            else {
+                try {
                     notifyFader(result.errorMessage, 'well-lg bg-danger text-center');
-                } catch(e){}
+                }
+                catch(e) {
+                }
             }
         };
 
@@ -41,7 +44,7 @@ LS.CPDB = (function() {
          */
         var firstSuccess = function(page){
             $(baseModal).find('.modal-content').html(page);
-            $(baseModal).find('.'+actionButtonClass).on('click', function(e){
+            $(baseModal).find('.'+actionButtonClass).on('click', function(e) {
                 e.preventDefault();
                 var action = $(baseModal).find('#'+formId).attr('action');
                 var formData = $(baseModal).find('#'+formId).serializeArray();
@@ -51,7 +54,7 @@ LS.CPDB = (function() {
                     method: 'POST',
                     dataType: "json",
                     success: secondSuccess,
-                    error : function(){
+                    error : function() {
                         console.log(arguments);
                     }
                 });
@@ -103,7 +106,7 @@ LS.CPDB = (function() {
                     $('#exportcsv').on('shown.bs.modal', function(e) {
                         var self = this;
                         $(this).find('h4.modal-title').text(count);
-                        $(this).find('.exportButton').on('click', function(){
+                        $(this).find('.exportButton').on('click', function() {
                             var dldata = postdata;
                             dldata.attributes =$('#attributes').val().join('+');
                             console.log(dldata);
@@ -156,8 +159,9 @@ LS.CPDB = (function() {
         };
     },
 
-    //JS-bindings especially for the participantPanel
+    // JS-bindings especially for the participantPanel
     participantPanel = function(){
+
         $('#removeAllFilters').on('click', function(e){
             e.preventDefault();
             $('#searchcondition').val('');
@@ -165,6 +169,7 @@ LS.CPDB = (function() {
             $.fn.yiiGridView.update('list_central_participants',{});
             return false;
         });
+
         $('.action_participant_editModal').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
@@ -176,7 +181,8 @@ LS.CPDB = (function() {
                 'editPartcipantActiveForm', 
                 'list_central_participants' 
             ).done(function() {
-                $('.ls-bootstrap-switch').bootstrapSwitch();
+                var val = $('#participantPanel_edit_modal .ls-bootstrap-switch').val();
+                $('.ls-bootstrap-switch').bootstrapSwitch('state', val == 1);
             });
         });
 
@@ -219,17 +225,22 @@ LS.CPDB = (function() {
                     'list_central_participants' 
                     );
         });
+
         $('#addParticipantToCPP').on('click', function(e){
             e.preventDefault();
-            var data = {modalTarget: 'editparticipant'};
+            var data = {
+                modalTarget: 'editparticipant'
+            };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                    openModalParticipantPanel, 
-                    data,
-                    'action_save_modal_editParticipant',
-                    'editPartcipantActiveForm', 
-                    'list_central_participants' 
-                    );
+                openModalParticipantPanel,
+                data,
+                'action_save_modal_editParticipant',
+                'editPartcipantActiveForm',
+                'list_central_participants'
+            ).done(function() {
+                $('.ls-bootstrap-switch').bootstrapSwitch();
+            });
         });
 
         /**
