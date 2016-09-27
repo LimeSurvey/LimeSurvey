@@ -176,7 +176,7 @@ LS.CPDB = (function() {
                 'editPartcipantActiveForm', 
                 'list_central_participants' 
             ).done(function() {
-                $('.bootstrap-switch').bootstrapSwitch();
+                $('.ls-bootstrap-switch').bootstrapSwitch();
             });
         });
 

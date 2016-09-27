@@ -49,7 +49,7 @@
             <label class='control-label col-sm-4'><?php eT("Should this user be blacklisted?"); ?></label>
             <div class='col-sm-8'>
                 &nbsp;
-                <input name='Participant[blacklisted]' type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='action_changeBlacklistStatus bootstrap-switch' />
+                <input name='Participant[blacklisted]' type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='action_changeBlacklistStatus ls-bootstrap-switch' />
             </div>
         </div>
         <legend><?php eT("Custom attributes"); ?></legend>
