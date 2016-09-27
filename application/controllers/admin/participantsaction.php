@@ -468,7 +468,6 @@ class participantsaction extends Survey_Common_Action
             $aData,
             true
         );
-
         ls\ajax\AjaxHelper::output($html);
     }
 
@@ -485,7 +484,12 @@ class participantsaction extends Survey_Common_Action
             'model' => $model,
             'surveymodel' => $surveyModel
         );
-        $this->getController()->renderPartial('/admin/participants/modal_subviews/_showParticipantSurveys', $aData);
+        $html = $this->getController()->renderPartial(
+            '/admin/participants/modal_subviews/_showParticipantSurveys',
+            $aData,
+            true
+        );
+        ls\ajax\AjaxHelper::output($html);
     }
 
     /**
@@ -524,7 +528,12 @@ class participantsaction extends Survey_Common_Action
             'participantIds' => $participant_ids
         );
 
-        $this->getController()->renderPartial('/admin/participants/modal_subviews/_shareParticipant', $aData);
+        $html = $this->getController()->renderPartial(
+            '/admin/participants/modal_subviews/_shareParticipant',
+            $aData,
+            true
+        );
+        ls\ajax\AjaxHelper::output($html);
     }
 
     /**
@@ -538,7 +547,12 @@ class participantsaction extends Survey_Common_Action
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
 
-        $this->getController()->renderPartial('/admin/participants/modal_subviews/_deleteParticipant', array('model' => $model));
+        $html = $this->getController()->renderPartial(
+            '/admin/participants/modal_subviews/_deleteParticipant',
+            array('model' => $model),
+            true
+        );
+        ls\ajax\AjaxHelper::output($html);
     }
 
     /**
@@ -1360,7 +1374,12 @@ class participantsaction extends Survey_Common_Action
             $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")"; 
         }
 
-        $this->getController()->renderPartial('/admin/participants/modal_subviews/_editAttribute', $aData);
+        $html = $this->getController()->renderPartial(
+            '/admin/participants/modal_subviews/_editAttribute',
+            $aData,
+            true
+        );
+        ls\ajax\AjaxHelper::output($html);
     }
 
     /**
@@ -1379,7 +1398,12 @@ class participantsaction extends Survey_Common_Action
         $surveys = Survey::getSurveysWithTokenTable();
         $data['surveys'] = $surveys;
 
-        $this->getController()->renderPartial('/admin/participants/modal_subviews/_addToSurvey', $data);
+        $html = $this->getController()->renderPartial(
+            '/admin/participants/modal_subviews/_addToSurvey',
+            $data,
+            true
+        );
+        ls\ajax\AjaxHelper::output($html);
     }
 
     /**
