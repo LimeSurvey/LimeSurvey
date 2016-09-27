@@ -375,7 +375,7 @@ class Participant extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->join = 'LEFT JOIN {{participant_shares}} shares ON t.participant_id = shares.participant_id';  // TODO: Do ->with(array('shares')) instead - how?
+        $criteria->join = 'LEFT JOIN {{participant_shares}} shares ON t.participant_id = shares.participant_id';
         $criteria->compare('t.firstname', $this->firstname, true, 'AND' ,true);
         $criteria->compare('t.lastname', $this->lastname, true, 'AND' ,true);
         $criteria->compare('t.email', $this->email, true, 'AND' ,true);
@@ -412,12 +412,12 @@ class Participant extends LSActiveRecord
         }
         $sort->attributes = $sortAttributes;
 
-        // Users can only see: 1) Participants they own; and 2) shared participants.
+        // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone
         // Superadmins can see all users.
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
         if (!$isSuperAdmin)
         {
-            $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' OR t.owner_uid == shares.share_uid');
+            $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' OR t.owner_uid = shares.share_uid OR shares.share_uid = -1');
         }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
