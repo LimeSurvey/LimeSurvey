@@ -49,11 +49,10 @@ LS.CPDB = (function() {
                 e.preventDefault();
                 var action = $(baseModal).find('#'+formId).attr('action');
                 var formData = $(baseModal).find('#'+formId).serializeArray();
-                $.ajax({
+                LS.ajax({
                     url: action,
                     data: formData,
                     method: 'POST',
-                    dataType: "json",
                     success: secondSuccess,
                     error : function() {
                         console.log(arguments);

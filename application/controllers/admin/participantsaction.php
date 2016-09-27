@@ -582,9 +582,10 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Update participant
+     * Outputs Ajax result
      * @param array $aData
      * @param array $extraAttributes
-     * @return string json
+     * @return void
      */
     public function updateParticipant($aData, $extraAttributes)
     {
@@ -592,18 +593,12 @@ class participantsaction extends Survey_Common_Action
 
         // Abort if not found (internal error)
         if (empty($participant)) {
-            return json_encode(array(
-                'success' => false,
-                'errorMessage' => sprintf('Found no participant with id %s', $aData['participant_id'])
-            ));
+            ls\ajax\AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
         }
 
         // Abort if no permission
         if (!$participant->userHasPermissionToEdit()) {
-            return json_encode(array(
-                'success' => false,
-                'errorMessage' => gT('No permission')
-            ));
+            ls\ajax\AjaxHelper::outputNoPermission();
         }
 
         $participant->attributes = $aData;
@@ -619,10 +614,7 @@ class participantsaction extends Survey_Common_Action
             ParticipantAttribute::model()->updateParticipantAttributeValue($data);
         }
 
-        return json_encode(array(
-            "success" => $success,
-            "successMessage" => gT("Participant successfully updated")
-        ));
+        ls\ajax\AjaxHelper::outputSuccess(gT("Participant successfully updated"));
     }
 
     /**
@@ -653,22 +645,18 @@ class participantsaction extends Survey_Common_Action
                     ParticipantAttribute::model()->updateParticipantAttributeValue($data);
                 }
 
-                return json_encode(array(
-                    "success" => true,
-                    "successMessage" => gT("Participant successfully added")
-                ));
+                ls\ajax\AjaxHelper::outputSuccess(gT("Participant successfully added"));
             }
             else if (is_string($result)) {
-                return json_encode(array(
-                    "success" => false,
-                    // TODO: Localization?
-                    "errorMessage" => 'Could not add new participant: ' . $result
-                ));
+                ls\ajax\AjaxHelper::outputError('Could not add new participant: ' . $result);
             }
             else {
                 // "Impossible"
                 assert(false);
             }
+        }
+        else {
+            ls\ajax\AjaxHelper::outputNoPermission();
         }
     }
 

@@ -926,7 +926,11 @@ function NotifyFader(){
 };
 var LsGlobalNotifier = new NotifyFader();
 
-function notifyFader(text, classes, styles, customOptions){
+function notifyFader(text, classes, styles, customOptions) {
+
+    // Hide all modals
+    $('.modal').modal('hide');
+
     LsGlobalNotifier.create(text, classes, styles, customOptions);
 }
 
@@ -953,19 +957,28 @@ LS.ajax = function(options) {
 
         console.log('response', response);
 
+        // Check type of response and take action accordingly
         if (!response.loggedIn) {
             alert('Not logged in');
         }
+        // No permission
         else if (!response.hasPermission) {
+            console.log('permission');
             notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
         }
+        // Error popup
         else if (response.error) {
+            console.log('error');
             notifyFader(response.error.message, 'well-lg bg-danger text-center');
         }
-        else if (resopnse.success) {
+        // Success popup
+        else if (response.success) {
+            console.log('success');
             notifyFader(response.success, 'well-lg bg-primary text-center');
         }
+        // Custom action
         else {
+            console.log('custom');
             oldSuccess(result);
         }
 
