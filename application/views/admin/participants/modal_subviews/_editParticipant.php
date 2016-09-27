@@ -28,13 +28,13 @@
                 <?php eT('First name:'); ?>
             </label>
             <div class='col-sm-4'>
-                <input class='form-control' name='firstname' value='<?php echo $model->firstname; ?>' />
+                <input class='form-control' name='Participant[firstname]' value='<?php echo $model->firstname; ?>' />
             </div>
             <label class='control-label col-sm-2'>
                 <?php eT('Last name:'); ?>
             </label>
             <div class='col-sm-4'>
-                <input class='form-control' name='lastname' value='<?php echo $model->lastname; ?>' />
+                <input class='form-control' name='Participant[lastname]' value='<?php echo $model->lastname; ?>' />
             </div>
         </div>
         <div class='form-group'>
@@ -42,7 +42,7 @@
                 <?php eT('E-mail:'); ?>
             </label>
             <div class='col-sm-10'>
-                <input class='form-control' name='email' value='<?php echo $model->firstname; ?>' />
+                <input class='form-control' name='Participant[email]' value='<?php echo $model->firstname; ?>' />
             </div>
         </div>
         <div class='form-group'>

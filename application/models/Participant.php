@@ -2043,4 +2043,32 @@ class Participant extends LSActiveRecord
             'owner_uid' => $data['owner_uid']);
         Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
     }
+
+    /**
+     * Returns true if logged in user has edit rights to this participant
+     * @return boolean
+     */
+    public function userHasPermissionToEdit()
+    {
+        $userId = Yii::app()->user->id;
+
+        $shared = ParticipantShare::model()->findByAttributes(array(
+            'participant_id' => $this->participant_id
+        ));
+
+        if (Permission::model()->hasGlobalPermission('superadmin')) {
+            // Superadmins can do anything
+            return true;
+        }
+        else if ($shared && $shared->share_uid == -1) {
+            // -1 = shared with everyone
+            return true;
+        }
+        else if ($shared && $shared->share_uid == $userId) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

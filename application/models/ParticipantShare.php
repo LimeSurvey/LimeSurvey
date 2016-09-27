@@ -245,6 +245,10 @@ class ParticipantShare extends LSActiveRecord
         ));
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     public function storeParticipantShare($data)
     {
         $ownerid = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR)->queryRow();
@@ -261,7 +265,11 @@ class ParticipantShare extends LSActiveRecord
         }
     }
 
-    function updateShare($data)
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function updateShare($data)
     {
         if (strpos( $data['participant_id'],'--' )!==false)
         {
@@ -274,7 +282,11 @@ class ParticipantShare extends LSActiveRecord
         ParticipantShare::model()->updateAll($data,$criteria);
     }
     
-    function deleteRow($rows)
+    /**
+     * @param string $rows Comma-separated list of something
+     * @return void
+     */
+    public function deleteRow($rows)
     {
         // Converting the comma separated id's to an array to delete multiple rows
         $rowid=explode(",",$rows);
@@ -282,8 +294,9 @@ class ParticipantShare extends LSActiveRecord
         {
             list($participantId, $uId)=explode("--", $row);
             Yii::app()->db
-                      ->createCommand()
-                      ->delete('{{participant_shares}}',"participant_id = '$participantId' AND share_uid = $uId");
+                ->createCommand()
+                ->delete('{{participant_shares}}',"participant_id = '$participantId' AND share_uid = $uId");
         }
     }
+
 }

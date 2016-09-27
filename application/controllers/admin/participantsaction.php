@@ -540,14 +540,13 @@ class participantsaction extends Survey_Common_Action
 
         $this->getController()->renderPartial('/admin/participants/modal_subviews/_deleteParticipant', array('model' => $model));
     }
+
     /**
-     * Saving participant details
-     * @return void
+     * Either update or create new participant
      */
     public function editParticipant()
     {
-        $sOperation = Yii::app()->request->getPost('oper');
-
+        $operation = Yii::app()->request->getPost('oper');
         $aData = Yii::app()->request->getPost('Participant');
 
         if (isset($aData['blacklisted']) && $aData['blacklisted'] == 'on') {
@@ -559,35 +558,73 @@ class participantsaction extends Survey_Common_Action
 
         $extraAttributes = Yii::app()->request->getPost('Attributes');
 
-        // If edit it will update the row
-        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin','read');
-        $isOwner = Participant::model()->is_owner(Yii::app()->request->getPost('id'));
-        $hasPermissionToEdit = Permission::model()->hasGlobalPermission('participantpanel','update') && ($isSuperAdmin || $isOwner);
-        if ($sOperation == 'edit' && $hasPermissionToEdit)
-        {
-            $participant = Participant::model()->findByPk($aData['participant_id']);
-            $participant->attributes = $aData;
-            $success['participant'] = $participant->save();
+        switch ($operation) {
+        case 'edit':
+            echo $this->updateParticipant($aData, $extraAttributes);
+            break;
+        case 'add':
+            echo $this->addParticipant($aData, $extraAttributes);
+            break;
+        case 'default':
+            throw new \CInvalidArgumentException('Unknown operation: ' . $operation);
+            break;
+        }
+    }
 
-            foreach( $extraAttributes as $htmlName => $attributeValue )
-            {
-                list(,$attribute_id) = explode('_',$htmlName);
-                $data = array(
-                    'attribute_id'=>$attribute_id, 
-                    'participant_id'=>$aData['participant_id'],
-                    'value' => $attributeValue
-                );
-                ParticipantAttribute::model()->updateParticipantAttributeValue($data);
-            }
+    /**
+     * Update participant
+     * @param array $aData
+     * @param array $extraAttributes
+     * @return string json
+     */
+    public function updateParticipant($aData, $extraAttributes)
+    {
+        $participant = Participant::model()->findByPk($aData['participant_id']);
 
-            echo json_encode(array(
-                "success" => $success,
-                "successMessage" => gT("Participant successfully updated")
+        // Abort if not found (internal error)
+        if (empty($participant)) {
+            return json_encode(array(
+                'success' => false,
+                'errorMessage' => sprintf('Found no participant with id %s', $aData['participant_id'])
             ));
         }
-        // If add it will insert a new row
-        elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel', 'create'))
-        {
+
+        // Abort if no permission
+        if (!$participant->userHasPermissionToEdit()) {
+            return json_encode(array(
+                'success' => false,
+                'errorMessage' => gT('No permission')
+            ));
+        }
+
+        $participant->attributes = $aData;
+        $success['participant'] = $participant->save();
+
+        foreach( $extraAttributes as $htmlName => $attributeValue ) {
+            list(,$attribute_id) = explode('_',$htmlName);
+            $data = array(
+                'attribute_id'=>$attribute_id, 
+                'participant_id'=>$aData['participant_id'],
+                'value' => $attributeValue
+            );
+            ParticipantAttribute::model()->updateParticipantAttributeValue($data);
+        }
+
+        return json_encode(array(
+            "success" => $success,
+            "successMessage" => gT("Participant successfully updated")
+        ));
+    }
+
+    /**
+     * Add new participant to database
+     * @param array $aData
+     * @param array $extraAttributes
+     * @return string json
+     */
+    public function addParticipant($aData, $extraAttributes)
+    {
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
             $uuid = Participant::gen_uuid();
             $aData['participant_id'] = $uuid;
             $aData['owner_uid'] = Yii::app()->user->id;
@@ -596,10 +633,8 @@ class participantsaction extends Survey_Common_Action
             // String = error message, object = success
             $result = Participant::model()->insertParticipant($aData);
 
-            if (is_object($result))
-            {
-                foreach( $extraAttributes as $htmlName => $attributeValue )
-                {
+            if (is_object($result)) {
+                foreach($extraAttributes as $htmlName => $attributeValue) {
                     list(,$attribute_id) = explode('_',$htmlName);
                     $data = array(
                         'attribute_id'   =>$attribute_id,
@@ -609,34 +644,24 @@ class participantsaction extends Survey_Common_Action
                     ParticipantAttribute::model()->updateParticipantAttributeValue($data);
                 }
 
-                echo json_encode(array(
+                return json_encode(array(
                     "success" => true,
                     "successMessage" => gT("Participant successfully added")
                 ));
             }
-            else if (is_string($result))
-            {
-                echo json_encode(array(
+            else if (is_string($result)) {
+                return json_encode(array(
                     "success" => false,
                     // TODO: Localization?
                     "errorMessage" => 'Could not add new participant: ' . $result
                 ));
             }
-            else
-            {
+            else {
                 // "Impossible"
                 assert(false);
             }
         }
-        else
-        {
-            echo json_encode(array(
-                "success" => false,
-                "errorMessage" => gT("Unknown error")
-            ));
-        }
     }
-
 
     /**********************************************IMPORT PARTICIPANTS***********************************************/
     /**
