@@ -382,10 +382,7 @@ class participantsaction extends Survey_Common_Action
     {
         // Abort if no permission
         if (!Permission::model()->hasGlobalPermission('participantpanel','delete')) {
-            echo json_encode(array(
-                'success' => false,
-                'errorMessage' => gT('No permission')
-            ));
+            ls\ajax\AjaxHelper::outputNoPermission();
         }
 
         $selectoption = Yii::app()->request->getPost('selectedoption');
@@ -420,16 +417,10 @@ class participantsaction extends Survey_Common_Action
         }
 
         if ($deletedParticipants == 0) {
-            echo json_encode(array(
-                'success' => false,
-                'errorMessage' => gT('No participants deleted')
-            ));
+            ls\ajax\AjaxHelper::outputError(gT('No participants deleted'));
         }
         else {
-            echo json_encode(array(
-                'success' => true,
-                'successMessage' => gT('Participant deleted')
-            ));
+            ls\ajax\AjaxHelper::outputSuccess(gT('Participant deleted'));
         }
     }
 
@@ -1445,10 +1436,7 @@ class participantsaction extends Survey_Common_Action
                 $success[] = $ParticipantAttributNamesModel->saveAttributeLanguages($savaLanguageArray);
             }
         }  
-        echo json_encode(array(
-            "success" => $success,
-            "successMessage" => gT("Attribute successfully updated")
-        ));
+        ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
     } 
 
     /**
@@ -1465,17 +1453,11 @@ class participantsaction extends Survey_Common_Action
         if(count($AttributePackage->participant_attribute_names_lang)>1)
         {
             $success = $languageEntry = ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
-            echo json_encode(array(
-                "success" => true,
-                "successMessage" => gT("Language successfully deleted")
-            ));
+            ls\ajax\AjaxHelper::outputSuccess(gT("Language successfully deleted"));
         }
         else
         {
-            echo json_encode(array(
-                "success" => false,
-                "errorMessage" => gT("There has to be at least one language.")
-            ));
+            ls\ajax\AjaxHelper::outputError(gT("There has to be at least one language."));
         }
     }
     /**
@@ -1488,10 +1470,7 @@ class participantsaction extends Survey_Common_Action
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $success = ParticipantAttributeName::model()->delAttribute($attribute_id);
-        echo json_encode(array(
-            "success" => $success,
-            "successMessage" => gT("Attribute successfully deleted")
-        ));
+        ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully deleted"));
     }
 
     /**
@@ -2106,10 +2085,7 @@ class participantsaction extends Survey_Common_Action
     {
         if (!Permission::model()->hasGlobalPermission('participantpanel','update'))
         {
-            echo json_encode(array(
-                "success" => false,
-                "errorMessage" => gT("No permission to share users")
-            ));
+            ls\ajax\AjaxHelper::outputNoPermission();
             return;
         }
 
@@ -2145,10 +2121,7 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
         }
-        echo json_encode(array(
-            'success' => true,
-            'successMessage' => sprintf(gT("%s participants have been shared"), $i)
-        ));
+        ls\ajax\AjaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
     }
 
     /**
@@ -2168,32 +2141,23 @@ class participantsaction extends Survey_Common_Action
                 'date_added' => date('Y-m-d H:i:s', $time),
                 'can_edit' => $bCanEdit);
             ParticipantShare::model()->storeParticipantShare($aData);
-            echo json_encode(array(
-                "success" => true,
-                "successMessage" => gT("Participant shared.")
-            ));
+
+            ls\ajax\AjaxHelper::outputSuccess(gT("Participant shared."));
         }
-        else
-        {
-            echo json_encode(array(
-                "success" => false,
-                "errorMessage" => gT("No permission to share users")
-            ));
+        else {
+            ls\ajax\AjaxHelper::outputNoPermission();
         }
-        Yii::app()->end();
     }
 
     /**
      * @return void
      */
-    public function rejectShareParticipant(){
+    public function rejectShareParticipant()
+    {
         $participant_id = yii::app()->request->getPost('participant_id');
         $share_uid = yii::app()->user->getId();
         $success = ParticipantShare::model()->deleteAllByAttributes( array('participant_id' => $participant_id) );
-        echo json_encode(array(
-            "success" => $success,
-            "successMessage" => gT("Participant removed from sharing")
-        ));
+        ls\ajax\AjaxHelper::outputSuccess(gT("Participant removed from sharing"));
     }
 
     /**
