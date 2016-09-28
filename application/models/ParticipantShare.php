@@ -104,6 +104,20 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
+     * @return string
+     */
+    public function getSharedBy()
+    {
+        Yii::log(print_r($this->shared_by, true), CLogger::LEVEL_TRACE, 'debug');
+        if ($this->share_uid == -1) {
+            return gT('Everybody');
+        }
+        else {
+            return $this->shared_by['full_name'];
+        }
+    }
+
+    /**
      * @return string HTML
      */
     public function getCanEditHtml(){
@@ -208,7 +222,7 @@ class ParticipantShare extends LSActiveRecord
             ),
             array(
                 "name" => 'share_uid',
-                "value" => '$data->shared_by[\'full_name\']',
+                "value" => '$data->sharedBy',
                 "header" => gT("Shared By"),
                 "filter" => $this->getSharedByList($this->share_uid)
             ),
