@@ -24,7 +24,7 @@
                             'name' => 'blacklistallsurveys',
                             'onLabel' => gT('Yes'),
                             'offLabel' => gT('No'),
-                            'value' => $blacklistallsurveys ? '1' : 0
+                            'value' => $blacklistallsurveys == 'Y' ? '1' : 0
                         )); ?>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                             'name' => 'blacklistnewsurveys',
                             'onLabel' => gT('Yes'),
                             'offLabel' => gT('No'),
-                            'value' => $blacklistnewsurveys ? '1' : 0
+                            'value' => $blacklistnewsurveys == 'Y' ? '1' : 0
                         )); ?>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                             'name' => 'blockaddingtosurveys',
                             'onLabel' => gT('Yes'),
                             'offLabel' => gT('No'),
-                            'value' => $blockaddingtosurveys ? '1' : 0
+                            'value' => $blockaddingtosurveys == 'Y' ? '1' : 0
                         )); ?>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                             'name' => 'hideblacklisted',
                             'onLabel' => gT('Yes'),
                             'offLabel' => gT('No'),
-                            'value' => $hideblacklisted ? '1' : 0
+                            'value' => $hideblacklisted == 'Y' ? '1' : 0
                         )); ?>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                             'name' => 'deleteblacklisted',
                             'onLabel' => gT('Yes'),
                             'offLabel' => gT('No'),
-                            'value' => $deleteblacklisted ? '1' : 0
+                            'value' => $deleteblacklisted == 'Y' ? '1' : 0
                         )); ?>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             'name' => 'allowunblacklist',
                             'onLabel' => gT('Yes'),
                             'offLabel' => gT('No'),
-                            'value' => $allowunblacklist ? '1' : 0
+                            'value' => $allowunblacklist == 'Y' ? '1' : 0
                         )); ?>
                     </div>
                 </div>

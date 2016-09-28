@@ -1209,13 +1209,18 @@ class participantsaction extends Survey_Common_Action
         {
             if ($find = SettingGlobal::model()->findByPk($value))
             {
-                SettingGlobal::model()->updateByPk($value, array('stg_value'=>Yii::app()->request->getPost($value)));
+                SettingGlobal::model()->updateByPk(
+                    $value,
+                    array(
+                        'stg_value' => Yii::app()->request->getPost($value) ? 'Y' : 'N'
+                    )
+                );
             }
             else
             {
                 $stg = new SettingGlobal;
                 $stg ->stg_name=$value;
-                $stg ->stg_value=Yii::app()->request->getPost($value);
+                $stg ->stg_value=Yii::app()->request->getPost($value) ? 'Y' : 'N';
                 $stg->save();
             }
         }
