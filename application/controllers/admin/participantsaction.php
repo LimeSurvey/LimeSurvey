@@ -144,7 +144,7 @@ class participantsaction extends Survey_Common_Action
                 $this->changeblackliststatus();
                 break;
             case "changeAttributeVisibility":
-                $this->changeattributevisibility();
+                $this->changeAttributeVisibility();
                 break;
             case "deleteLanguageFromAttribute":
                 $this->deleteLanguageFromAttribute();
@@ -1316,13 +1316,20 @@ class participantsaction extends Survey_Common_Action
         // loads the participant panel view and display participant view
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
+        $aData['massiveAction'] = App()->getController()->renderPartial(
+            '/admin/participants/massive_actions/_selector_attribute',
+            array(),
+            true,
+            false
+        );
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
 
     /**
+     * Echoes json
      * @return void
      */
-    public function changeattributevisibility()
+    public function changeAttributeVisibility()
     {
         $attributeId = Yii::app()->request->getPost('attribute_id');
         $visible = Yii::app()->request->getPost('visible');
@@ -1340,8 +1347,8 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-    * Method to open the editAttributeName Modal
-    */
+     * Method to open the editAttributeName Modal
+     */
     public function openEditAttributeNames()
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
@@ -1503,10 +1510,10 @@ class participantsaction extends Survey_Common_Action
     /**
      * Takes the edit call from the share panel, which either edits or deletes the share information
      * Basically takes the call on can_edit
+     * @return void
      */
     public function editAttributeInfo()
     {
-
         $operation = Yii::app()->request->getPost('oper');
 
         if ($operation == 'del' && Yii::app()->request->getPost('id'))
@@ -1541,9 +1548,7 @@ class participantsaction extends Survey_Common_Action
             ParticipantAttributeName::model()->saveAttribute($aData);
             eT("Attribute display setting updated");
         }
-
     }
-
 
     /**
      * Fetches the attributes of a participant to be displayed in the attribute subgrid

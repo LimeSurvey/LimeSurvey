@@ -91,7 +91,12 @@ class ParticipantAttributeName extends LSActiveRecord
             'visible' => gT('Visible'),
         );
     }
-    public function getButtons(){
+
+    /**
+     * @return string html
+     */
+    public function getButtons()
+    {
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
             . "<span class='fa fa-%s' ></span>" //icon class
@@ -120,17 +125,28 @@ class ParticipantAttributeName extends LSActiveRecord
 
             return $buttons;
     }
-    public function getMassiveActionCheckbox(){
+
+    /**
+     * @return string
+     */
+    public function getMassiveActionCheckbox()
+    {
         return "<input type='checkbox' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='".$this->attribute_id."' >";
     }
 
-
-
-    public function getAttributeTypeNice(){
+    /**
+     * @return string ??
+     */
+    public function getAttributeTypeNice()
+    {
         return $this->attributeTypeDropdownArray[$this->attribute_type];
     }
 
-    public function getAttributeTypeDropdownArray(){
+    /**
+     * @return array
+     */
+    public function getAttributeTypeDropdownArray()
+    {
         $realNames = array(
             'DD' => gT("Drop-down list"),
             'DP' => gT("Date"),
@@ -139,7 +155,11 @@ class ParticipantAttributeName extends LSActiveRecord
         return $realNames;
     }
 
-    public function getNamePlusLanguageName(){
+    /**
+     * @return string
+     */
+    public function getNamePlusLanguageName()
+    {
         $namesList = $this->participant_attribute_names_lang;
         $names = array();
         foreach($namesList as $name){
@@ -149,6 +169,10 @@ class ParticipantAttributeName extends LSActiveRecord
         $returnName = $defaultname." (".join(', ',$names).")";
         return $returnName;
     }
+
+    /**
+     * @return string
+     */
     public function getVisibleSwitch(){
         $inputHtml = "<input type='checkbox' data-size='small' data-visible='".$this->visible."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeVisibility' "
             . ($this->visible == "TRUE" ? "checked" : "")
@@ -156,6 +180,9 @@ class ParticipantAttributeName extends LSActiveRecord
         return  $inputHtml;
     }
 
+    /**
+     * @return array
+     */
     public function getColumns(){
        $cols = array(
             array(
