@@ -127,8 +127,11 @@ class ParticipantShare extends LSActiveRecord
      */
     public function getButtons()
     {
-        $loggedInUser = yii::app()->user->getId();
-        if($this->participant->owner_uid == $loggedInUser) {
+        $userId = yii::app()->user->id;
+        $isOwner = $this->participant->owner_uid == $userId;
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if ($isOwner || $isSuperAdmin) {
+
             $url = Yii::app()->createUrl(
                 'admin/participants/sa/deleteSingleParticipantShare',
                 array(
