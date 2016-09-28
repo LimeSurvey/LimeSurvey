@@ -2103,6 +2103,8 @@ class Participant extends LSActiveRecord
             'participant_id' => $this->participant_id
         ));
 
+        $owner = $this->owner_uid == $userId;
+
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             // Superadmins can do anything
             return true;
@@ -2113,6 +2115,10 @@ class Participant extends LSActiveRecord
         }
         else if ($shared && $shared->share_uid == $userId && $shared->can_edit) {
             // Shared with this particular user
+            return true;
+        }
+        else if ($owner) {
+            // User owns this participant
             return true;
         }
         else {

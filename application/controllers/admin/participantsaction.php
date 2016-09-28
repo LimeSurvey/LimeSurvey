@@ -602,7 +602,6 @@ class participantsaction extends Survey_Common_Action
             ls\ajax\AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
         }
 
-        // Abort if no permission
         if (!$participant->userHasPermissionToEdit()) {
             ls\ajax\AjaxHelper::outputNoPermission();
         }
