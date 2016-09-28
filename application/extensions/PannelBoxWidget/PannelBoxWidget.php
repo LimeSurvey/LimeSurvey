@@ -13,6 +13,7 @@
         public $offset=3;
         public $display='singlebox';
         public $boxesbyrow=3;
+        public $external=false;
 
         public function run()
         {
@@ -43,7 +44,13 @@
             if($box)
             {
                 $this->position = $box->position;
-                $this->url = $box->url;
+                if(!preg_match("/^(http|https)/", $box->url)) {
+                    $this->url = Yii::app()->createUrl($box->url);
+                }
+                else {
+                    $this->url = $box->url;
+                    $this->external = true;
+                }
                 $this->title = $box->title;
                 $this->ico = $box->ico;
                 $this->description = $box->desc;
@@ -66,13 +73,15 @@
             if ( self::canSeeBox())
             {
                 $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '';
+
                 $this->render('box', array(
                     'position'=> $this->position,
                     'offset' => $offset,
-                    'url'=> Yii::app()->createUrl($this->url),
+                    'url'=> $this->url,
                     'title'=> $this->title,
                     'ico'=> $this->ico,
                     'description'=> $this->description,
+                    'external' => $this->external,
                 ));
             }
         }
