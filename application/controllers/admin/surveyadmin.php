@@ -1665,36 +1665,49 @@ class SurveyAdmin extends Survey_Common_Action
             $langsettings->insertNewSurvey($aInsertData);
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
-            // Now create a new dummy group
-            $aInsertData=array();
-            $aInsertData[Survey::model()->findByPk($iNewSurveyid)->language]=array(
-                'sid' => $iNewSurveyid,
-                'group_name' => gt('My first question group','html',Survey::model()->findByPk($iNewSurveyid)->language),
-                'description' => '',
-                'group_order' => 1,
-                'language' => Survey::model()->findByPk($iNewSurveyid)->language,
-                'grelevance' => '1');
-            $iNewGroupID=QuestionGroup::model()->insertNewGroup($aInsertData);
-            // Now create a new dummy question
-            $oQuestion= new Question;
-            $oQuestion->sid = $iNewSurveyid;
-            $oQuestion->gid = $iNewGroupID;
-            $oQuestion->type = 'T';
-            $oQuestion->title = 'Q00';
-            $oQuestion->question = gt('A first example question. Please answer this question:','html',Survey::model()->findByPk($iNewSurveyid)->language);
-            $oQuestion->help = gt('This is a question help text.','html',Survey::model()->findByPk($iNewSurveyid)->language);
-            $oQuestion->mandatory = 'N';
-            $oQuestion->relevance = '1';
-            $oQuestion->question_order = 1;
-            $oQuestion->language = Survey::model()->findByPk($iNewSurveyid)->language;
-            $oQuestion->save();
-            $iNewQuestionID=$oQuestion->qid;
 
-            Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."),'info');
+            $createSample = ((int) App()->request->getPost('createsample', 0) === 1) ? true : false;
 
+            if($createSample) {
+                // Now create a new dummy group
+                $aInsertData=array();
+                $aInsertData[Survey::model()->findByPk($iNewSurveyid)->language]=array(
+                    'sid' => $iNewSurveyid,
+                    'group_name' => gt('My first question group','html',Survey::model()->findByPk($iNewSurveyid)->language),
+                    'description' => '',
+                    'group_order' => 1,
+                    'language' => Survey::model()->findByPk($iNewSurveyid)->language,
+                    'grelevance' => '1');
+                $iNewGroupID=QuestionGroup::model()->insertNewGroup($aInsertData);
+                // Now create a new dummy question
+                $oQuestion= new Question;
+                $oQuestion->sid = $iNewSurveyid;
+                $oQuestion->gid = $iNewGroupID;
+                $oQuestion->type = 'T';
+                $oQuestion->title = 'Q00';
+                $oQuestion->question = gt('A first example question. Please answer this question:','html',Survey::model()->findByPk($iNewSurveyid)->language);
+                $oQuestion->help = gt('This is a question help text.','html',Survey::model()->findByPk($iNewSurveyid)->language);
+                $oQuestion->mandatory = 'N';
+                $oQuestion->relevance = '1';
+                $oQuestion->question_order = 1;
+                $oQuestion->language = Survey::model()->findByPk($iNewSurveyid)->language;
+                $oQuestion->save();
+                $iNewQuestionID=$oQuestion->qid;
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."),'info');
+            }
+            else {
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created."),'info');
+            }
+
+            // Figure out destination
             if (App()->request->getPost('saveandclose'))
             {
-                $this->getController()->redirect(array("admin/questions/sa/view/surveyid/{$iNewSurveyid}/gid/{$iNewGroupID}/qid/{$iNewQuestionID}"));
+                if($createSample) {
+                    $this->getController()->redirect(array("admin/questions/sa/view/surveyid/{$iNewSurveyid}/gid/{$iNewGroupID}/qid/{$iNewQuestionID}"));
+                }
+                else {
+                    $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
+                }
             }
             else
             {
