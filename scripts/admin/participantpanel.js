@@ -390,6 +390,24 @@ LS.CPDB = (function() {
     },
 
     /**
+     * Call server to delete ONE single participant share
+     * @param {string} participantId
+     * @param {number} shareUid
+     * @return
+     */
+    deleteSingleParticipantShare = function(url) {
+        console.log('url', url);
+        LS.ajax({
+            url: url,
+            method: "GET",
+            dataType: 'json',
+            success: function(result){
+                $.fn.yiiGridView.update('share_central_participants',{});
+            }
+        });
+    },
+
+    /**
      * Bind all JS functions to button clicks
      * @return
      */
@@ -416,7 +434,8 @@ LS.CPDB = (function() {
         onClickExport: onClickExport,
         bindButtons: bindButtons,
         shareMassiveAction: shareMassiveAction,
-        addParticipantToSurvey: addParticipantToSurvey
+        addParticipantToSurvey: addParticipantToSurvey,
+        deleteSingleParticipantShare: deleteSingleParticipantShare
     };
 
 })();

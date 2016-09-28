@@ -128,14 +128,20 @@ class ParticipantShare extends LSActiveRecord
     public function getButtons()
     {
         $loggedInUser = yii::app()->user->getId();
-        if($this->participant->owner_uid == $loggedInUser)
-        {
-            return "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='rejectParticipantShareAjax(\"".$this->participant_id."\")'>"
+        if($this->participant->owner_uid == $loggedInUser) {
+            $url = Yii::app()->createUrl(
+                'admin/participants/sa/deleteSingleParticipantShare',
+                array(
+                    'participantId' => urlencode($this->participant_id),
+                    'shareUid' => $this->share_uid
+                )
+            );
+
+            return "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='(function() { LS.CPDB.deleteSingleParticipantShare(\"" . $url . "\"); })'>"
                 . "<button class='btn btn-xs btn-default action_delete_shareParticipant'><i class='fa fa-trash text-danger'></i></button>"
                 . "</a>";
         } 
-        else 
-        {
+        else {
             return '';
         }
     }

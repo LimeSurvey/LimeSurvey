@@ -219,7 +219,7 @@ $(document).ready(function(){
                 });
             }
             else {
-                throw "Confirmation modal: onclick is not a function.";
+                throw "Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).";
             }
 
         }
@@ -964,7 +964,9 @@ LS.ajax = function(options) {
             notifyFader(response.success, 'well-lg bg-primary text-center');
         }
 
-        oldSuccess(response);
+        if (oldSuccess) {
+            oldSuccess(response);
+        }
     };
 
     return $.ajax(options);

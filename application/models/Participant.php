@@ -98,6 +98,9 @@ class Participant extends LSActiveRecord
     //     return ($count!==0 ? $count : '');
     // }
 
+    /**
+     * @return string
+     */
     public function getButtons(){
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""

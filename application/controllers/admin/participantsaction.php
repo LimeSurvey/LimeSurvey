@@ -161,6 +161,8 @@ class participantsaction extends Survey_Common_Action
             case "rejectShareParticipant":
                 $this->rejectShareParticipant();
                 break;
+            case "deleteSingleParticipantShare":
+                $this->deleteSingleParticipantShare();
             default:
                 echo "";
                 break;
@@ -1809,6 +1811,8 @@ class participantsaction extends Survey_Common_Action
         $aData['searchstring'] = $searchstring;
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector_share', array(), true, false);
+
         // Loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'sharePanel'), $aData);
     }
@@ -2174,6 +2178,7 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
+     * Deletes *all* shares for this participant
      * @return void
      */
     public function rejectShareParticipant()
@@ -2185,6 +2190,29 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
+     * Deletes a single participant share
+     * Called by Ajax; echoes success/error
+     * @param string $participantId
+     * @param int $share_uid
+     * @return void
+     */
+    public function deleteSingleParticipantShare($participantId, $shareUid)
+    {
+        $participantShare = ParticipantShare::model()->findByPk(array(
+            'participant_id' => $participantId,
+            'share_uid' => $shareUid
+        ));
+
+        if (empty($participantShare)) {
+            ls\ajax\AjaxHelper::outputError(gT('Found no participant share'));
+        }
+        else {
+            $participantShare->delete();
+            ls\ajax\AjaxHelper::outputSuccess(gT('Participant share deleted'));
+        }
+    }
+
+    /**
      * @return void
      */
     public function changeSharedEditableStatus()
@@ -2193,13 +2221,11 @@ class participantsaction extends Survey_Common_Action
         $can_edit = Yii::app()->request->getPost('can_edit');
         $shareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id));
 
-        if ($shareModel)
-        {
+        if ($shareModel) {
             $shareModel->can_edit = ($can_edit == 'true' ? 1 : 0);
             $success = $shareModel->save();
         }
-        else
-        {
+        else {
             $success = false;
         }
         echo json_encode(array("newValue" => $can_edit, "success" => $success));
