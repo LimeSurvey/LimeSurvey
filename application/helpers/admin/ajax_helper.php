@@ -23,7 +23,7 @@ class AjaxHelper
     public static function output($msg)
     {
         $output = new JsonOutput($msg);
-        echo $output;  // Encoded to json format when converted to string
+        self::echo($output);  // Encoded to json format when converted to string
     }
 
     /**
@@ -34,7 +34,7 @@ class AjaxHelper
     public static function outputSuccess($msg)
     {
         $output = new JsonOutputSuccess($msg);
-        echo $output;
+        self::echo($output);
     }
 
     /**
@@ -46,7 +46,7 @@ class AjaxHelper
     public static function outputError($msg, $code = 0)
     {
         $output = new JsonOutputError($msg, $code);
-        echo $output;
+        self::echo($output);
     }
 
     /**
@@ -56,7 +56,18 @@ class AjaxHelper
     public static function outputNoPermission()
     {
         $output = new JsonOutputNoPermission();
-        echo $output;
+        self::echo($output);
+    }
+
+    /**
+     * Echo $str with json header
+     * @param string str
+     * @return void
+     */
+    private static function echo($str)
+    {
+        header('Content-Type: application/json');
+        echo $str;
     }
 }
 

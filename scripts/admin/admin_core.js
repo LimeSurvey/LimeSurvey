@@ -945,15 +945,7 @@ LS.ajax = function(options) {
 
     var oldSuccess = options.success;
     var oldError = options.error;
-    options.success = function(result) {
-
-        try {
-            var response = JSON.parse(result);
-        }
-        catch(e) {
-            alert('Could not parse JSON from server: ' + result);
-            return;
-        }
+    options.success = function(response) {
 
         console.log('response', response);
 
@@ -979,7 +971,7 @@ LS.ajax = function(options) {
         // Custom action
         else {
             console.log('custom');
-            oldSuccess(result);
+            oldSuccess(response);
         }
 
     };
