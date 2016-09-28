@@ -42,8 +42,7 @@ LS.CPDB = (function() {
          * @param {string} page - Modal HTML fetched with Ajax
          * @todo
          */
-        var firstSuccess = function(page){
-            var json = JSON.parse(page);
+        var firstSuccess = function(json){
             $(baseModal).find('.modal-content').html(json.result);
             $(baseModal).find('.'+actionButtonClass).on('click', function(e) {
                 e.preventDefault();
