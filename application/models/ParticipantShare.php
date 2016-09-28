@@ -89,18 +89,29 @@ class ParticipantShare extends LSActiveRecord
         );
     }
 
-  public function getSharedByList($selected){
+    /**
+     * @return string html dropdown
+     */
+    public function getSharedByList($selected)
+    {
         $share_uids = Yii::app()->db->createCommand()
             ->selectDistinct('share_uid')
             ->from('{{participant_shares}}')
             ->queryAll();
-        $shareList = array(''=>"");
-        foreach($share_uids as $id){
+
+        $shareList = array(
+            '' => '',  // No filter
+            '-1' => gT('Everybody')
+        );
+
+        foreach($share_uids as $id) {
+            if ($id['share_uid'] == -1) {
+                continue;
+            }
             $user = User::model()->getName($id['share_uid']);
             $shareList[$id['share_uid']] = $user['full_name'];
         }
         return TbHtml::dropDownList('ParticipantShare[share_uid]',$selected, $shareList);
-        
     }
 
     /**
