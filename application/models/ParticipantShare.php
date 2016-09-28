@@ -108,7 +108,6 @@ class ParticipantShare extends LSActiveRecord
      */
     public function getSharedBy()
     {
-        Yii::log(print_r($this->shared_by, true), CLogger::LEVEL_TRACE, 'debug');
         if ($this->share_uid == -1) {
             return gT('Everybody');
         }
