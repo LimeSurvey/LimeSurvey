@@ -122,6 +122,7 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
+     * Action buttons
      * @return string HTML
      */
     public function getButtons()
@@ -140,11 +141,38 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
+     * Massive action checkbox
+     * @return string html
+     */
+    public function getCheckbox()
+    {
+        $userId = Yii::app()->user->id;
+        $participant = Participant::model()->findByPk($this->participant_id);
+        $isOwner = $participant->owner_uid == $userId;
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+
+        if ($isOwner || $isSuperAdmin) {
+            $html =  "<input type='checkbox' class='selector_participantShareCheckbox' name='selectedParticipantShare[]' value='".$this->participant_id."' >";
+        }
+        else {
+            $html = '';
+        }
+
+        return $html;
+    }
+
+    /**
      * @return array
      */
     public function getColumns(){
         $participantFilter = yii::app()->request->getPost('Participant');
         $cols = array(
+            array(
+                "name" => 'checkbox',
+                "type" => 'raw',
+                "header" => "<input type='checkbox' id='action_toggleAllParticipantShare' />",
+                "filter" => false
+            ),
             array(
                 "name" => 'buttons',
                 "type" => 'raw',

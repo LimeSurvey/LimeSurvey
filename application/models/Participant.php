@@ -127,6 +127,16 @@ class Participant extends LSActiveRecord
                     'trash text-danger'
                 );
                 $buttons .= vsprintf($raw_button_template, $deleteData);
+
+                // Share this participant
+                $infoData = array(
+                    'action_participant_shareParticipant',
+                    '',
+                    gT("Share this participant"),
+                    'share'
+                );
+                $buttons .= vsprintf($raw_button_template, $infoData);
+
             }
             else {
                 // Invisible button
@@ -137,16 +147,14 @@ class Participant extends LSActiveRecord
                     'trash text-danger'
                 );
                 $buttons .= vsprintf($raw_button_template, $deleteData);
+                $infoData = array(
+                    'action_participant_shareParticipant invisible',
+                    '',
+                    gT("Share this participant"),
+                    'share'
+                );
+                $buttons .= vsprintf($raw_button_template, $infoData);
             }
-
-            // Share this participant
-            $infoData = array(
-                'action_participant_shareParticipant',
-                '',
-                gT("Share this participant"),
-                'share'
-            );
-            $buttons .= vsprintf($raw_button_template, $infoData);
 
         }
         else {
@@ -190,9 +198,15 @@ class Participant extends LSActiveRecord
         $buttons .= "</div>";
         return $buttons;
     }
-    public function getCheckbox(){
+
+    /**
+     * @return string html
+     */
+    public function getCheckbox()
+    {
         return "<input type='checkbox' class='selector_participantCheckbox' name='selectedParticipant[]' value='".$this->participant_id."' >";
     }
+
     /**
      * @return array customized attribute labels (name=>label)
      */

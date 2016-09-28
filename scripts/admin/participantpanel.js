@@ -250,8 +250,14 @@ LS.CPDB = (function() {
             );
         });
 
-        $('#action_toggleAllParticipant').on('click', function(){
+        // Toggle all, participant list
+        $('#action_toggleAllParticipant').on('click', function() {
             $('.selector_participantCheckbox').prop('checked',$('#action_toggleAllParticipant').prop('checked'));
+        });
+
+        // Toggle all, share panel
+        $('#action_toggleAllParticipantShare').on('click', function() {
+            $('.selector_participantShareCheckbox').prop('checked', $('#action_toggleAllParticipantShare').prop('checked'));
         });
 
         $('.action_changeBlacklistStatus').bootstrapSwitch();
