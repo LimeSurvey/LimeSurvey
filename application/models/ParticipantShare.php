@@ -124,7 +124,8 @@ class ParticipantShare extends LSActiveRecord
     /**
      * @return string HTML
      */
-    public function getButtons(){
+    public function getButtons()
+    {
         $loggedInUser = yii::app()->user->getId();
         if($this->participant->owner_uid == $loggedInUser)
         {
@@ -134,9 +135,13 @@ class ParticipantShare extends LSActiveRecord
         } 
         else 
         {
-            return "<button class='btn btn-xs btn-default disabled'><i class='fa fa-ban text-muted'></i></button>";
+            return '';
         }
     }
+
+    /**
+     * @return array
+     */
     public function getColumns(){
         $participantFilter = yii::app()->request->getPost('Participant');
         $cols = array(

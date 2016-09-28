@@ -129,11 +129,14 @@ class Participant extends LSActiveRecord
                 $buttons .= vsprintf($raw_button_template, $deleteData);
             }
             else {
-                $buttons .= "
-                    <button class='btn btn-default btn-xs' style='visibility: hidden;'>
-                        <span class='fa fa-trash'></span>
-                    </button>
-                ";
+                // Invisible button
+                $deleteData = array(
+                    'action_participant_deleteModal invisible',
+                    'text-danger',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+                $buttons .= vsprintf($raw_button_template, $deleteData);
             }
 
             // Share this participant
@@ -148,17 +151,22 @@ class Participant extends LSActiveRecord
         }
         else {
             // Three empty buttons for correct alignment
-            $buttons .= "
-                <button class='btn btn-default btn-xs' style='visibility: hidden;'>
-                    <span class='fa fa-trash'></span>
-                </button>
-                <button class='btn btn-default btn-xs' style='visibility: hidden;'>
-                    <span class='fa fa-trash'></span>
-                </button>
-                <button class='btn btn-default btn-xs' style='visibility: hidden;'>
-                    <span class='fa fa-trash'></span>
-                </button>
-            ";
+            // TODO: For some reason, the delete button is smaller than the others
+            $editData = array(
+                'action_participant_editModal invisible',
+                '',
+                gT("Edit this participant"),
+                'edit'
+            );
+            $buttons .= vsprintf($raw_button_template, $editData);
+            $buttons .= vsprintf($raw_button_template, $editData);
+            $deleteData = array(
+                'action_participant_deleteModal invisible',
+                'text-danger',
+                gT("Delete this participant"),
+                'trash text-danger'
+            );
+            $buttons .= vsprintf($raw_button_template, $deleteData);
         }
 
         // Survey information
