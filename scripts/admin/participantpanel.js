@@ -26,16 +26,6 @@ LS.CPDB = (function() {
         var secondSuccess = function(result) {
             $(baseModal).modal('hide');
             $.fn.yiiGridView.update(gridViewId,{});
-            if(result.successMessage != undefined) {
-                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
-            }
-            else {
-                try {
-                    notifyFader(result.errorMessage, 'well-lg bg-danger text-center');
-                }
-                catch(e) {
-                }
-            }
         };
 
         /**
@@ -180,12 +170,12 @@ LS.CPDB = (function() {
                 'editPartcipantActiveForm', 
                 'list_central_participants' 
             ).done(function() {
-                var val = $('#participantPanel_edit_modal .ls-bootstrap-switch').val();
-                $('.ls-bootstrap-switch').bootstrapSwitch('state', val == 1);
+                var val = $('#participantPanel_edit_modal .ls-bootstrap-switch').attr('checked');
+                $('.ls-bootstrap-switch').bootstrapSwitch('state', val == 'checked');
             });
         });
 
-        $('.action_participant_deleteModal').on('click', function(e){
+        $('.action_participant_deleteModal').on('click', function(e) {
             e.preventDefault();
             var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
@@ -197,7 +187,7 @@ LS.CPDB = (function() {
                     'list_central_participants' 
                     );
         });
-        $('.action_participant_infoModal').on('click', function(e){
+        $('.action_participant_infoModal').on('click', function(e) {
             e.preventDefault();
             var data = {
                 modalTarget: 'showparticipantsurveys',
@@ -212,7 +202,7 @@ LS.CPDB = (function() {
                     'list_central_participants' 
                     );
         });
-        $('.action_participant_shareParticipant').on('click', function(e){
+        $('.action_participant_shareParticipant').on('click', function(e) {
             e.preventDefault();
             var data = {modalTarget: 'shareparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId

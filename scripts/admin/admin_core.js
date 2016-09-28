@@ -947,33 +947,24 @@ LS.ajax = function(options) {
     var oldError = options.error;
     options.success = function(response) {
 
-        console.log('response', response);
-
         // Check type of response and take action accordingly
         if (!response.loggedIn) {
             alert('Not logged in');
         }
         // No permission
         else if (!response.hasPermission) {
-            console.log('permission');
             notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
         }
         // Error popup
         else if (response.error) {
-            console.log('error');
             notifyFader(response.error.message, 'well-lg bg-danger text-center');
         }
         // Success popup
         else if (response.success) {
-            console.log('success');
             notifyFader(response.success, 'well-lg bg-primary text-center');
         }
-        // Custom action
-        else {
-            console.log('custom');
-            oldSuccess(response);
-        }
 
+        oldSuccess(response);
     };
 
     return $.ajax(options);

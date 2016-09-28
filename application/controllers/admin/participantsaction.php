@@ -563,7 +563,7 @@ class participantsaction extends Survey_Common_Action
         $operation = Yii::app()->request->getPost('oper');
         $aData = Yii::app()->request->getPost('Participant');
 
-        if (isset($aData['blacklisted']) && $aData['blacklisted'] == 'on') {
+        if (isset($aData['blacklisted']) && ($aData['blacklisted'] == 'on' || $aData['blacklisted'] == '1')) {
             $aData['blacklisted'] = 'Y';
         }
         else {
@@ -574,13 +574,14 @@ class participantsaction extends Survey_Common_Action
 
         switch ($operation) {
             case 'edit':
-                echo $this->updateParticipant($aData, $extraAttributes);
+                $this->updateParticipant($aData, $extraAttributes);
                 break;
             case 'add':
-                echo $this->addParticipant($aData, $extraAttributes);
+                $this->addParticipant($aData, $extraAttributes);
                 break;
-            case 'default':
-                throw new \CInvalidArgumentException('Unknown operation: ' . $operation);
+            default:
+                // Internal error
+                assert(false, 'Unknown operation: ' . $operation);
                 break;
         }
     }

@@ -115,14 +115,26 @@ class Participant extends LSActiveRecord
             );
             $buttons .= vsprintf($raw_button_template, $editData);
 
-            // Delete button
-            $deleteData = array(
-                'action_participant_deleteModal',
-                'text-danger',
-                gT("Delete this participant"),
-                'trash text-danger'
-            );
-            $buttons .= vsprintf($raw_button_template, $deleteData);
+            // Only owner or superadmin can delete
+            $userId = Yii::app()->user->id;
+            $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+            if ($this->owner_uid == $userId || $isSuperAdmin) {
+                // Delete button
+                $deleteData = array(
+                    'action_participant_deleteModal',
+                    'text-danger',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+                $buttons .= vsprintf($raw_button_template, $deleteData);
+            }
+            else {
+                $buttons .= "
+                    <button class='btn btn-default btn-xs' style='visibility: hidden;'>
+                        <span class='fa fa-trash'></span>
+                    </button>
+                ";
+            }
 
             // Share this participant
             $infoData = array(
