@@ -163,6 +163,9 @@ class participantsaction extends Survey_Common_Action
                 break;
             case "deleteSingleParticipantShare":
                 $this->deleteSingleParticipantShare();
+                break;
+            case "deleteMultipleParticipantShare":
+                $this->deleteMultipleParticipantShare();
             default:
                 echo "";
                 break;
@@ -2207,8 +2210,60 @@ class participantsaction extends Survey_Common_Action
             ls\ajax\AjaxHelper::outputError(gT('Found no participant share'));
         }
         else {
-            $participantShare->delete();
-            ls\ajax\AjaxHelper::outputSuccess(gT('Participant share deleted'));
+            $userId = Yii::app()->user->id;
+            $isOwner = $participantShare->participant->owner_uid == $userId;
+            $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+
+            if ($isOwner || $isSuperAdmin) {
+                $participantShare->delete();
+                ls\ajax\AjaxHelper::outputSuccess(gT('Participant share deleted'));
+            }
+            else {
+                ls\ajax\AjaxHelper::outputNoPermission();
+            }
+        }
+    }
+
+    /**
+     * Deletes several ParticipantShare
+     * NOT the same as rejectShareParticipant
+     * @return void
+     */
+    public function deleteMultipleParticipantShare()
+    {
+        $request = Yii::app()->request;
+        $userId = Yii::app()->user->id;
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
+
+        // Array of strings with both participant id and share uid separated by comma
+        $participantIdAndShareUids = json_decode($request->getPost('sItems'), true);
+
+        $sharesDeleted = 0;
+        foreach ($participantIdAndShareUids as $participantIdAndShareUid) {
+            list($participantId, $shareUid) = explode(',', $participantIdAndShareUid);
+
+            $participantShare = ParticipantShare::model()->findByPk(array(
+                'participant_id' => $participantId,
+                'share_uid' => $shareUid
+            ));
+
+            $isOwner = $participantShare->participant->owner_uid == $userId;
+            $hasPermissionToDelete = $isOwner || $isSuperAdmin;
+
+            if ($hasPermissionToDelete && !empty($participantShare)) {
+                $participantShare->delete();
+                $sharesDeleted++;
+            }
+        }
+
+        if ($sharesDeleted == 0) {
+            ls\ajax\AjaxHelper::outputError(gT('No participant shares were deleted'));
+        }
+        else {
+            ls\ajax\AjaxHelper::outputSuccess(
+                sprintf(ngT('%s participant share was deleted|%s participant shares were deleted', $sharesDeleted),
+                $sharesDeleted
+            ));
         }
     }
 

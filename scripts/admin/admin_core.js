@@ -935,11 +935,35 @@ function notifyFader(text, classes, styles, customOptions) {
 }
 
 /**
+ * @param {object} JSON object from server
+ * @return
+ */
+LS.ajaxHelperOnSuccess = function(response) {
+    // Check type of response and take action accordingly
+    if (!response.loggedIn) {
+        alert('Not logged in');
+    }
+    // No permission
+    else if (!response.hasPermission) {
+        notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
+    }
+    // Error popup
+    else if (response.error) {
+        notifyFader(response.error.message, 'well-lg bg-danger text-center');
+    }
+    // Success popup
+    else if (response.success) {
+        notifyFader(response.success, 'well-lg bg-primary text-center');
+    }
+
+}
+
+/**
  * Like $.ajax, but with checks for errors,
  * permission etc. Should be used together
  * with the PHP AjaxHelper.
  * @param {object} options - Exactly the same as $.ajax options
- * @return
+ * @return {object} ajax promise
  */
 LS.ajax = function(options) {
 
@@ -947,27 +971,12 @@ LS.ajax = function(options) {
     var oldError = options.error;
     options.success = function(response) {
 
-        // Check type of response and take action accordingly
-        if (!response.loggedIn) {
-            alert('Not logged in');
-        }
-        // No permission
-        else if (!response.hasPermission) {
-            notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
-        }
-        // Error popup
-        else if (response.error) {
-            notifyFader(response.error.message, 'well-lg bg-danger text-center');
-        }
-        // Success popup
-        else if (response.success) {
-            notifyFader(response.success, 'well-lg bg-primary text-center');
-        }
+        LS.ajaxHelperOnSuccess(response);
 
         if (oldSuccess) {
             oldSuccess(response);
         }
-    };
+    }
 
     return $.ajax(options);
 }

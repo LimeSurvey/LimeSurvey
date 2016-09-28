@@ -160,8 +160,11 @@ class ParticipantShare extends LSActiveRecord
         $isOwner = $participant->owner_uid == $userId;
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
 
+        // Primary key for ParticipantShare
+        $participantIdAndShareUid = $this->participant_id . ',' . $this->share_uid;
+
         if ($isOwner || $isSuperAdmin) {
-            $html =  "<input type='checkbox' class='selector_participantShareCheckbox' name='selectedParticipantShare[]' value='".$this->participant_id."' >";
+            $html =  "<input type='checkbox' class='selector_participantShareCheckbox' name='selectedParticipantShare[]' value='" . $participantIdAndShareUid . "' >";
         }
         else {
             $html = '';
