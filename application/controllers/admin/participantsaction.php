@@ -507,16 +507,14 @@ class participantsaction extends Survey_Common_Action
         $participant_id = Yii::app()->request->getPost('participant_id');
         $participant_ids = null;
 
-        if (empty($participant_id))
-        {
+        if (empty($participant_id)) {
             $participant_ids = Yii::app()->request->getPost('participantIds');
             $participant_id = $participant_ids[0];
         }
 
         $model = Participant::model()->findByPk($participant_id);
 
-        if (empty($model))
-        {
+        if (empty($model)) {
             throw new \CException('Found no participant with id \'' . $participant_id . '\'.');
         }
 

@@ -17,7 +17,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'iconClasses' => 'text-danger glyphicon glyphicon-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
-            'on-success'  => "(function(result) { var result = JSON.parse(result); notifyFader(result.successMessage, 'well-lg bg-primary text-center'); })",
+            'on-success'  => "(function(result) { LS.ajaxHelperOnSuccess(result); })",
 
             // Modal
             'actionType'    => 'modal',
