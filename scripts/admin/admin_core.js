@@ -935,12 +935,18 @@ function notifyFader(text, classes, styles, customOptions) {
 }
 
 /**
+ * Part of ajax helper
  * @param {object} JSON object from server
  * @return
+ * @todo Localization
+ * @todo Branch on message type?
  */
 LS.ajaxHelperOnSuccess = function(response) {
     // Check type of response and take action accordingly
-    if (!response.loggedIn) {
+    if (response == '') {
+        alert('No response from server');
+    }
+    else if (!response.loggedIn) {
         alert('Not logged in');
     }
     // No permission
@@ -955,7 +961,6 @@ LS.ajaxHelperOnSuccess = function(response) {
     else if (response.success) {
         notifyFader(response.success, 'well-lg bg-primary text-center');
     }
-
 }
 
 /**

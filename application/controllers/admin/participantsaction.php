@@ -1508,6 +1508,43 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
+     * Delete several attributes.
+     * Massive action, called by Ajax.
+     * @return void
+     */
+    public function deleteAttributes()
+    {
+        if (!Permission::model()->hasGlobalPermission('participantpanel','delete')) {
+            ls\ajax\AjaxHelper::outputNoPermission();
+            return;
+        }
+
+        $request = Yii::app()->request;
+        $attributeIds = json_decode($request->getPost('sItems'));
+
+        $deletedAttributes = 0;
+
+        try {
+            foreach ($attributeIds as $attributeId) {
+                ParticipantAttributeName::model()->delAttribute($attributeId);
+                $deletedAttributes++;
+            }
+
+            ls\ajax\AjaxHelper::outputSuccess(sprintf(
+                ngT('%s attribute deleted|%s attributes deleted', $deletedAttributes),
+                $deletedAttributes)
+            );
+        }
+        catch (Exception $e) {
+            ls\ajax\AjaxHelper::outputError(sprintf(
+                gT('Error. Deleted %s attribute(s). Error message: %s'),
+                $deletedAttributes,
+                $e->getMessage()
+            ));
+        }
+    }
+
+    /**
      * Takes the edit call from the share panel, which either edits or deletes the share information
      * Basically takes the call on can_edit
      * @return void
