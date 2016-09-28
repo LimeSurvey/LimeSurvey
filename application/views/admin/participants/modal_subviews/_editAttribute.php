@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="participant_edit_modal"><?php echo $model->defaultname; ?></h4>
+    <h4 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h4>
 </div>
 <div class="modal-body form-horizontal">
 <?php
@@ -9,7 +9,7 @@
         array(
             'id' => 'editAttributeNameActiveForm',
             'action' => array('admin/participants/sa/editAttributeName'),
-            'htmlOptions' => array('class' => 'well form-horizontal'), // for inset effect
+            'htmlOptions' => array('class' => 'form-horizontal'), // for inset effect
         )
     );
 ?>
