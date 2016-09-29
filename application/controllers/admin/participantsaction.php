@@ -1254,6 +1254,14 @@ class participantsaction extends Survey_Common_Action
      */
     public function userControl()
     {
+        // Only superadmin allowed
+        if (!Permission::model()->hasGlobalPermission('superadmin')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            Yii::app()->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        Yii::app()->clientScript->registerPackage('bootstrap-switch');
+
         $aData = array(
             'userideditable' => Yii::app()->getConfig('userideditable'),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
@@ -1269,13 +1277,18 @@ class participantsaction extends Survey_Common_Action
     {
         if ($find = SettingGlobal::model()->findByPk('userideditable'))
         {
-            SettingGlobal::model()->updateByPk('userideditable', array('stg_value'=>Yii::app()->request->getPost('userideditable')));
+            SettingGlobal::model()->updateByPk(
+                'userideditable',
+                array(
+                    'stg_value' => Yii::app()->request->getPost('userideditable') ? 'Y' : 'N'
+                )
+            );
         }
         else
         {
             $stg = new SettingGlobal;
             $stg ->stg_name='userideditable';
-            $stg ->stg_value=Yii::app()->request->getPost('userideditable');
+            $stg ->stg_value = Yii::app()->request->getPost('userideditable') ? 'Y' : 'N';
             $stg->save();
         }
         Yii::app()->getController()->redirect(array('admin/participants/sa/userControl'));

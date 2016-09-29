@@ -3,38 +3,34 @@
 <div class="col-lg-12 list-surveys">
     <h3><?php eT("Global participant settings"); ?></h3>
 
-    <div class="row">
-        <div class="col-lg-12 content-right">
-    <div id='usercontrol-1'>
-        <?php
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
-            $attribute = array('class' => 'col-md-6 col-md-offset-3');
-            echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeUserControlValues'), 'post', $attribute);
-            $options = array('Y' => gT('Yes','unescaped'), 'N' => gT('No','unescaped'));
-            ?>
-                <div class="form-group">
-                    <label for='userideditable' id='userideditable'>
-                        <?php eT('User ID editable:'); ?>
-                    </label>
-                    <?php echo CHtml::dropDownList('userideditable', $userideditable, $options, array('class' => 'form-control' ) ); ?>
-                </div>
-            <p>
-                <?php
-                echo CHtml::submitButton('submit', array('value' => gT('Save'), 'class'=>'btn btn-default'));
-                ?>
-            </p>
-            <?php
-            echo CHtml::endForm();
-        }
-        else
-        {
-            echo "<div class='messagebox ui-corner-all'>" . gT("You don't have sufficient permissions.") . "</div>";
-        }
-        ?>
-    </div>
+    <?php echo CHtml::beginForm($this->createUrl(
+        '/admin/participants/sa/storeUserControlValues'),
+        'post',
+        array(
+            'class' => 'form form-horizontal col-md-6 col-md-offset-1'
+        )
+    ); ?>
 
+        <div class="form-group">
+            <label class='control-label col-sm-8'>
+                <?php eT('User ID editable:'); ?>
+            </label>
+            <div class='col-sm-3'>
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'userideditable',
+                    'onLabel' => gT('Yes'),
+                    'offLabel' => gT('No'),
+                    'value' => $userideditable == 'Y' ? '1' : 0
+                )); ?>
+            </div>
         </div>
-    </div>
+        <div class='form-group'>
+            <div class='col-sm-8'></div>
+            <div class='col-sm-3'>
+                <?php echo CHtml::submitButton('submit', array('value' => gT('Save'), 'class'=>'btn btn-default')); ?>
+            </div>
+        </div>
+    <?php echo CHtml::endForm(); ?>
+
 </div>
 
