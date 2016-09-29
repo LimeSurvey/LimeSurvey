@@ -13,19 +13,19 @@
 
 
 /**
-*
-*  Generate a chart for a question
-*  @param int $iQuestionID      ID of the question
-*  @param int $iSurveyID        ID of the survey
-*  @param mixed $type           Type of the chart to be created - null produces bar chart, any other value produces pie chart
-*  @param array $lbl            An array containing the labels for the chart items
-*  @param mixed $gdata          An array containing the percentages for the chart items
-*  @param mixed $grawdata       An array containing the raw count for the chart items
-*  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
-*  @param mixed $sLanguageCode  Language Code
-*  @param string $sQuestionType The question type
-*  @return                Name
-*/
+ *
+ *  Generate a chart for a question
+ *  @param int $iQuestionID      ID of the question
+ *  @param int $iSurveyID        ID of the survey
+ *  @param mixed $type           Type of the chart to be created - null produces bar chart, any other value produces pie chart
+ *  @param array $lbl            An array containing the labels for the chart items
+ *  @param mixed $gdata          An array containing the percentages for the chart items
+ *  @param mixed $grawdata       An array containing the raw count for the chart items
+ *  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
+ *  @param mixed $sLanguageCode  Language Code
+ *  @param string $sQuestionType The question type
+ *  @return                Name
+ */
 function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
 {
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
