@@ -95,7 +95,6 @@ LS.CPDB = (function() {
                 {
                     $('#exportcsvallnorow').modal('show');
                     $('#exportcsvallnorow').on('shown.bs.modal', function(e) {
-                        var self = this;
                         $(this).find('.exportButton').remove();
                     });
                 }
