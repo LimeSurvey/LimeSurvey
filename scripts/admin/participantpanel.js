@@ -107,7 +107,13 @@ LS.CPDB = (function() {
                         $(this).find('h4.modal-title').text(count);
                         $(this).find('.exportButton').on('click', function() {
                             var dldata = postdata;
-                            dldata.attributes =$('#attributes').val().join('+');
+                            var val = $('#attributes').val();
+                            if (val) {
+                                dldata.attributes = val.join('+');
+                            }
+                            else {
+                                dldata.attributes = '';
+                            }
                             console.log(dldata);
                             var dlForm = $("<form></form>")
                                 .attr('action', exportToCSVURL)
