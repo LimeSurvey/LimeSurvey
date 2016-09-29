@@ -221,7 +221,7 @@
                 $myfield = $flt[2].$myfield;
             }
 
-            
+
         ?>
             <input type='checkbox'
                     id='filter<?php echo $myfield; ?>'
@@ -937,7 +937,14 @@
                     }
 
                     $counter2=0;
-
+                    $oQuestionAttributeMaxDBanswers = QuestionAttribute::model()->find(
+                        "qid = :qid AND attribute = 'max_subquestions'",
+                        array(':qid' => $flt[0])
+                    );
+                    if($oQuestionAttributeMaxDBanswers && intval($oQuestionAttributeMaxDBanswers->value)>0)
+                    {
+                        $count=min($count,intval($oQuestionAttributeMaxDBanswers->value));
+                    }
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i=1; $i<=$count; $i++)
                     {

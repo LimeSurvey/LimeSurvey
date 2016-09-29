@@ -1,10 +1,15 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## unrealeased
+
+### Fix
+- Statistics allow to show more rank question than available
+
 ## [1.0.25] - 2016-09-27
 
 ### Fix
-- Fixed issue #11455: MapQuest discontinued the free tileserver (Markus Flür)
+- #11455: MapQuest discontinued the free tileserver (Markus Flür)
 
 ## [1.0.24] - 2016-09-16
 
@@ -12,10 +17,10 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 - Allow plugin to add new question attributes
 
 ### Fix
-- Fixed issue: If no plugin add attribute : no questions are shown
-- Fixed issue #10226: {ANSWERTABLE} includes <script> placed in question text (LouisGac)
-- Fixed issue: ~ and _ in tokens hard to manually enter
-- Fixed issue #11509: numerical input option integer only leads to positive integer input only
+- If no plugin add attribute : no questions are shown
+- #10226: {ANSWERTABLE} includes <script> placed in question text (LouisGac)
+- ~ and _ in tokens hard to manually enter
+- #11509: numerical input option integer only leads to positive integer input only
 
 ### Updated
 - improve Plain text ANSWERTABLE for email

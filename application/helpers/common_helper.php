@@ -3079,7 +3079,7 @@ function questionAttributes($returnByName=false)
         /* Ranking specific : max DB answer */
         $qattributes["max_subquestions"]=array(
         "types"=>"R",
-        'readonly_when_active'=>true,
+        'readonly'=>true,
         'category'=>gT('Logic'),
         'sortorder'=>12,
         'inputtype'=>'integer',
