@@ -15,9 +15,6 @@ LS.CPDB = (function() {
      * @return
      */
     runBaseModal = function(url, data, actionButtonClass, formId, gridViewId){
-        console.log('runBaseModal');
-        console.log('url', url);
-        console.log('data', data);
 
         /**
          * @param {object} result
@@ -89,7 +86,6 @@ LS.CPDB = (function() {
              * @return
              */
             success:  function(data) {
-                console.log('data', data);
                 count = data;
                 if(count == 0)
                 {
@@ -113,7 +109,6 @@ LS.CPDB = (function() {
                             else {
                                 dldata.attributes = '';
                             }
-                            console.log(dldata);
                             var dlForm = $("<form></form>")
                                 .attr('action', exportToCSVURL)
                                 .attr('method', "POST");
@@ -298,7 +293,6 @@ LS.CPDB = (function() {
     //JS-bindings especially for the attributePanel
     attributePanel = function(){
         $('#addParticipantAttributeName').on('click', function(e){
-            console.log('here');
             e.preventDefault();
             var data = {modalTarget: 'editattribute'};
             runBaseModal(
@@ -411,7 +405,6 @@ LS.CPDB = (function() {
      * @return
      */
     deleteSingleParticipantShare = function(url) {
-        console.log('url', url);
         LS.ajax({
             url: url,
             method: "GET",
