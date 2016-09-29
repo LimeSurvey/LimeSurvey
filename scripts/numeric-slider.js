@@ -12,7 +12,6 @@
 
 function doNumericSlider(qID,options) {
   $("#vmsg_"+qID+"_default").text(sliderTranslation.help);
-  console.log(options.slider_custom_handle);
   //~ if(options.slider_custom_handle){
     //~ $("head").append("<style>#question'+qID+' .slider-handle.custom::before{ content: '\""+options.slider_custom_handle+"';}</style>");
   //~ }
@@ -25,7 +24,8 @@ function doNumericSlider(qID,options) {
     var dispVal= $(inputEl).data('slider-value');
     var separator = $(inputEl).data('separator');
     var sliderNoActionEl = $('#slider_user_no_action_' + myfname);
-
+    /* need to fix actual value : force to number */
+    dispVal = Number(dispVal.toString().replace(separator,'.'));
     // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
     // Use closure for namespace, so we can use theSlider variable for all sliders.
     //~ (function () {
@@ -54,7 +54,6 @@ function doNumericSlider(qID,options) {
       });
 
       theSlider.on('slideStop', function() {
-          console.log($(inputEl).val());
           $(inputEl).trigger('keyup');// We call the EM by the event
       });
 
