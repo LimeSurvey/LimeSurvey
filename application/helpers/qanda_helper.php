@@ -2874,7 +2874,11 @@ function do_multiplenumeric($ia)
     {
         $sInputContainerWidth=$tiwidth = 6;
     }
-    $sLabelWidth=12-$sInputContainerWidth;
+    if($sInputContainerWidth<12){
+        $sLabelWidth=12-$sInputContainerWidth;
+    }else{
+        $sLabelWidth=12;
+    }
     $prefixclass = "numeric";
 
     if ($aQuestionAttributes['slider_layout']==1)
@@ -2923,13 +2927,6 @@ function do_multiplenumeric($ia)
 
         $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
         $slider_reset=($aQuestionAttributes['slider_reset'])?1:0;
-
-        // If the slider reset is ON, slider should be max 10 columns
-        if($slider_reset)
-        {
-            $tiwidth = ($tiwidth < 10)?$tiwidth:10;
-        }
-
     }
     else
     {
@@ -2983,42 +2980,55 @@ function do_multiplenumeric($ia)
 
             $fixLabelWidth=0;
             $fixInputContainerWidth=0;
-            $sliderWidth = 12;
+
             if ($ansrow['question'] == "")
             {
                 $ansrow['question'] = "&nbsp;";
             }
 
-            if ($slider_layout === false || $slider_separator == '')
-            {
-                $theanswer = $ansrow['question'];
-                $sliders   = false;
-            }
-            else
-            {
-                $aAnswer     = explode($slider_separator,$ansrow['question']);
-                $theanswer   = (isset($aAnswer[0]))?$aAnswer[0]:"";
-                $labelText   = $theanswer;
-                $sliderleft  = (isset($aAnswer[1]))?$aAnswer[1]:null;
-                $sliderright = (isset($aAnswer[2]))?$aAnswer[2]:null;
-                $sliders     = true;
-                /* sliderleft and sliderright is in inpout, but is part of answers =>  in label width */
-                if(!empty($sliderleft)){
-                    $fixLabelWidth-=2;
-                    $fixInputContainerWidth+=2;
-                    $sliderWidth-=2;
-                }
-                if(!empty($sliderright)){
-                    $fixLabelWidth-=2;
-                    $fixInputContainerWidth+=2;
-                    $sliderWidth-=2;
-                }
-            }
             if($slider_layout){
+                $fixedInputContainerWidth=$sInputContainerWidth;
+                $fixedLabelWidth=$sLabelWidth;
+                $sliderWidth = 12;
                 /* actually slider reset is in answer part : good idea or not ? */
                 if($slider_reset){
                     $sliderWidth-=2;
                 }
+                if($slider_separator == '')
+                {
+                    $aAnswer     = explode($slider_separator,$ansrow['question']);
+                    $theanswer   = (isset($aAnswer[0]))?$aAnswer[0]:"";
+                    $labelText   = $theanswer;
+                    $sliderleft  = (isset($aAnswer[1]))?$aAnswer[1]:null;
+                    $sliderright = (isset($aAnswer[2]))?$aAnswer[2]:null;
+                    $sliders     = true;
+                    /* sliderleft and sliderright is in input, but is part of answers then take label width */
+                    if(!empty($sliderleft)){
+                        $fixedLabelWidth-=2;
+                        $fixedInputContainerWidth+=2;
+                        $sliderWidth-=2;
+                    }
+                    if(!empty($sliderright)){
+                        $fixedLabelWidth-=2;
+                        $fixedInputContainerWidth+=2;
+                        $sliderWidth-=2;
+                    }
+                    if($fixedLabelWidth<=0){
+                        $fixedLabelWidth=12;
+                    }
+                    if($fixedInputContainerWidth>12){
+                        $fixedLabelWidth=12;
+                    }
+                    $sliders   = true;// What is the usage ?
+                }else{
+                    $theanswer = $ansrow['question'];
+                    $sliders   = false;
+                }
+            }
+            else
+            {
+                $theanswer = $ansrow['question'];
+                $sliders   = false;
             }
 
             $aAnswer     = (isset($aAnswer))?$aAnswer:'';
@@ -3148,8 +3158,8 @@ function do_multiplenumeric($ia)
                     'prefix'                 => $prefix,
                     'suffix'                 => $suffix,
                     'tiwidth'                => $tiwidth,
-                    'sInputContainerWidth'   => $sInputContainerWidth +$fixInputContainerWidth,
-                    'sLabelWidth'            => $sLabelWidth+$fixLabelWidth,
+                    'sInputContainerWidth'   => $fixedInputContainerWidth,
+                    'sLabelWidth'            => $fixedLabelWidth,
                     'sliderWidth'            => $sliderWidth,
                     'myfname'                => $myfname,
                     'dispVal'                => $sValue,
