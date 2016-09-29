@@ -25,17 +25,21 @@
     </label>
 
     <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
-        <?php echo $prefix; ?>
+        <?php if($prefix){
+            echo CHtml::tag("div",array("class"=>"input-group-addon"),$prefix);
+        }?>
         <input
             class="form-control <?php echo $kpclass; ?>"
             type="text"
             name="<?php echo $myfname; ?>"
             id="answer<?php echo $myfname; ?>"
             value="<?php echo $dispVal; ?>"
-            onkeyup="<?php echo $checkconditionFunction; ?>"
             <?php echo $maxlength; ?>
+            <?php if($numbersonly): echo "data-number='{$numbersonly}'"; endif; ?>
             />
-        <?php echo $suffix; ?>
-    </div>
+        <?php if($suffix){
+            echo CHtml::tag("div",array("class"=>"input-group-addon"),$suffix);
+        }?>
+        </div>
 </li>
 <!-- end of answer_row_inputtext -->

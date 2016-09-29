@@ -20,7 +20,7 @@
 ?>
 <!-- answer_row -->
 
-<li id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item text-item form-group<?php if($alert):?> has-error<?php endif; ?>" <?php echo $sDisplayStyle;?>>
+<li id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item text-item form-group<?php echo $extraclass;?><?php if($alert):?> has-error<?php endif; ?>" <?php echo $sDisplayStyle;?>>
     <!--  color code missing mandatory questions red -->
     <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?><?php if($alert):?> errormandatory<?php endif; ?>' for="answer<?php echo$myfname;?>">
         <?php echo $labelText; ?>

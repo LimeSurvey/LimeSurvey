@@ -27,7 +27,6 @@
     <files>
         <css>
             <filename>css/jquery-ui-custom.css</filename>
-            <filename>css/bootstrap-slider.css</filename>
 
             <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
             <filename>css/flat_and_modern.css</filename>
@@ -38,7 +37,6 @@
         </css>
         <js>
             <filename>scripts/template.js</filename>
-            <filename>scripts/bootstrap-slider.js</filename>
         </js>
         <print_css>
             <filename>css/print_template.css</filename>
@@ -54,14 +52,12 @@
         <rtl>
             <css>
                 <filename>css/jquery-ui-custom-rtl.css</filename>
-                <filename>css/bootstrap-slider-rtl.css</filename>
                 <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
                 <filename>css/flat_and_modern-rtl.css</filename>
                 <filename>css/template-rtl.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>
-                <filename>scripts/bootstrap-slider.js</filename>
             </js>
             <print_css>
                 <filename>css/print_template-rtl.css</filename>

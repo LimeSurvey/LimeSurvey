@@ -739,7 +739,7 @@ function LEMval(alias)
                     value="";
                 }
                 else {
-                    value= moment(value,sdatetimePattern).format(sdatetimePattern); 
+                    value= moment(value,sdatetimePattern).format(sdatetimePattern);
                 }
                 return value;
             }

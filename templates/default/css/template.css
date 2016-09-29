@@ -134,84 +134,6 @@ li.responsive-content
 }
 
 /** UI Slider **/
-.numeric-multi label.slider-label {
-  display: table-cell;
-  width: auto !important;
-  padding: 0 1em 0.2em 0;
-  margin-top: 1.3em;
-  vertical-align: middle;
-}
-
-.numeric-multi .ui-slider-handle {
-    top: -0.35em;
-}
-
-.ui-slider-1 {
-  width: 200px;
-  height: 9px;
-  margin-bottom: 20px;
-}
-
-.ui-slider-2 {
-  width: 200px;
-  height: 23px;
-  position: relative;
-  background-image: url(../../images/slider-bg-2.png);
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-
-.slider_callout {
-  height: 20px;
-  width: 100px;
-  overflow: hidden;
-  position: absolute;
-  top: -20px;
-  margin-left: -3px;
-  color: #284a6e;
-  font-size: 90%;
-  font-weight: bold;
-  text-align: left;
-}
-
-.slider_showmin {
-  float: left;
-  width: 50px;
-  margin: 15px 0 0 -0.3em;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 0.7em;
-  font-weight: normal;
-  text-align: left;
-}
-
-.slider_showmax {
-  float: right;
-  width: 50px;
-  margin: 15px -0.3em 0 0;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 0.7em;
-  font-weight: normal;
-  text-align: right;
-}
-
-.slider_lefttext {
-  display: table-cell;
-  padding-top: 1.5em;
-  padding-right: 11px;
-  padding-bottom: 3px;
-  vertical-align: top;
-  text-align: right;
-  font-size: 0.9em;
-}
-
-.slider_righttext {
-  display: table-cell;
-  padding-top: 1.5em;
-  padding-left: 11px;
-  padding-bottom: 3px;
-  vertical-align: top;
-  font-size: 0.9em;
-}
 
 .withslider {
     margin-bottom: 30px;
@@ -387,25 +309,6 @@ table {
 
     /* The reset button will be under the slider, so allow some margin */
     margin-bottom: 1em;
-}
-
-/* When slider has both show-min-max and reset button, add space between
- * left badge and reset button */
-.slider-min-badge {
-    margin-right: 1em;
-}
-
-.slider-left-span {
-    text-align: right;
-}
-
-.slider-right-span {
-    text-align: left;
-}
-
-.slider-container {
-    margin-top: 3.5em;
-    margin-bottom: 2.5em;
 }
 
 #yii-flash-message {

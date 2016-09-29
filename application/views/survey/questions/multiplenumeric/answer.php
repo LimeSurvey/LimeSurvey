@@ -15,44 +15,46 @@
  */
 ?>
 <!-- Multiple Numerical with slider -->
-<!-- @todo ul/li in real -->
 <!-- answer -->
-<div class='subquestion-list questions-list text-list <?php echo $prefixclass?>-list'>
+<ul class='list-unstyled subquestion-list questions-list text-list <?php echo $prefixclass?>-list'>
 
         <?php
             // rows/answer_row.php
             echo $sRows;
         ?>
 
-        <?php if($equals_num_value):?>
-            <div class='multiplenumerichelp help-block'>
-                <div class='label label-default'>
-                    <label>
-                        <?php eT('Remaining: ');?>
-                    </label>
-                    <span id="remainingvalue_<?php echo $id; ?>" class="dynamic_remaining">
-                        <?php echo $prefix; ?>
+        <?php if($sumRemainingEqn):?>
+            <li>
+                <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
+                    <?php eT('Remaining: ');?>
+                </div>
+                <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+                    <?php echo $prefix; ?>
+                    <div id="remainingvalue_<?php echo $id; ?>" class="label label-info dynamic_remaining">
                         {<?php echo $sumRemainingEqn;?>}
-                        <?php echo $suffix; ?>
-                    </span>
+                    </div>
+                    <?php echo $suffix; ?>
                 </div>
-            </div>
+            </li>
         <?php endif; ?>
 
-        <?php if($displaytotal):?>
-
-            <div class='multiplenumerichelp help-block'>
-                <div class='label label-default'>
-                    <label class=""><?php eT('Total: '); ?></label>
-                    <span id="totalvalue_<?php echo $id; ?>" class="">
-                        <?php echo $prefix; ?>
-                        <?php // NO SPACE AFTER BRACKET !!!! ?>
+        <?php if($sumEqn):?>
+            <li>
+                <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
+                    <?php eT('Total: ');?>
+                </div>
+               <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+                    <?php echo $prefix; ?>
+                    <div id="remainingvalue_<?php echo $id; ?>" class="label label-info dynamic_total">
                         {<?php echo $sumEqn; ?>}
-                        <?php echo $suffix; ?>
-                    </span>
+                    </div>
+                    <?php echo $suffix; ?>
                 </div>
-            </div>
-
+            </li>
         <?php endif; ?>
-</div>
+</ul>
 <!-- endof answer -->
+<!-- Add some data for slider javascript -->
+<div class="hidden">
+
+</div>

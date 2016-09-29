@@ -30,18 +30,20 @@
     <?php endif;?>
 
     <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
-        <?php echo $prefix;?>
+        <?php if($prefix){
+            echo CHtml::tag("div",array("class"=>"input-group-addon"),$prefix);
+        }?>
         <textarea
             class="form-control <?php echo $kpclass;?>"
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname;?>"
             rows="<?php echo $rows;?>"
-            <?php echo $maxlength;?>
-            onkeyup="<?php echo $checkconditionFunction; ?>"
-        >
-        <?php echo $dispVal;?>
-        </textarea>
-        <?php echo $suffix;?>
+            <?php if($maxlength): echo "data-{$maxlength}"; endif; ?>
+            <?php if($numbersonly): echo "data-number='{$numbersonly}'"; endif; ?>
+        ><?php echo $dispVal;?></textarea>
+        <?php if($suffix){
+            echo CHtml::tag("div",array("class"=>"input-group-addon"),$suffix);
+        }?>
     </div>
 </li>
 <!-- end of answer_row_textarea -->

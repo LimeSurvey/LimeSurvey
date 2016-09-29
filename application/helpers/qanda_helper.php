@@ -2731,90 +2731,41 @@ function do_multipleshorttext($ia)
 
     if ($anscount!=0)
     {
-        // Display TextArea
-        if (trim($aQuestionAttributes['display_rows'])!='')
+        $alert = false;
+        foreach ($aSubquestions as $ansrow)
         {
-            //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-            $drows=$aQuestionAttributes['display_rows'];
+            $myfname = $ia[1].$ansrow['title'];
+            $ansrow['question'] = ($ansrow['question'] == "")?"&nbsp;":$ansrow['question'];
 
-            foreach ($aSubquestions as $ansrow)
+            // color code missing mandatory questions red
+            if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
             {
-                $myfname = $ia[1].$ansrow['title'];
-                $ansrow['question'] = ($ansrow['question'] == "")?"&nbsp;":$ansrow['question'];
-
-                /* Check for array_filter */
-                $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-                $dispVal ='';
-
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+                if ($ia[6]=='Y' &&  $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
                 {
-                    $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                    if ($aQuestionAttributes['numbers_only']==1)
-                    {
-                        $dispVal = str_replace('.',$sSeparator,$dispVal);
-                    }
-                    $dispVal = htmlspecialchars($dispVal);
+                    $alert = true;
                 }
-
-                $sRows .= doRender('/survey/questions/multipleshorttext/rows/answer_row_textarea', array(
-                    'alert'                  => false,
-                    'sInputContainerWidth'   => $sInputContainerWidth,
-                    'sLabelWidth'            => $sLabelWidth,
-                    'maxlength'              => '',
-                    'extraclass'             => $extraclass,
-                    'sDisplayStyle'          => $sDisplayStyle,
-                    'prefix'                 => $prefix,
-                    'myfname'                => $myfname,
-                    'labelText'              => $ansrow['question'],
-                    'prefix'                 => $prefix,
-                    'kpclass'                => $kpclass,
-                    'rows'                   => $drows,
-                    'maxlength'              => $maxlength,
-                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-                    'dispVal'                => $dispVal,
-                    'suffix'                 => $suffix,
-                ), true);
-
-                $fn++;
-                $inputnames[]=$myfname;
             }
 
-        }
-        // Diplay input text
-        else
-        {
-            $alert = false;
-            foreach ($aSubquestions as $ansrow)
+            $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+            $dispVal       = '';
+
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
             {
-                $myfname = $ia[1].$ansrow['title'];
-                $ansrow['question'] = ($ansrow['question'] == "")?"&nbsp;":$ansrow['question'];
-
-                // color code missing mandatory questions red
-                if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
+                $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                if ($aQuestionAttributes['numbers_only']==1)
                 {
-                    if ($ia[6]=='Y' &&  $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
-                    {
-                        $alert = true;
-                    }
+                    $dispVal = str_replace('.',$sSeparator,$dispVal);
                 }
-
-                $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-                $dispVal       = '';
-
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-                {
-                    $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                    if ($aQuestionAttributes['numbers_only']==1)
-                    {
-                        $dispVal = str_replace('.',$sSeparator,$dispVal);
-                    }
-                    $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
-                }
-
-                $sRows .= doRender('/survey/questions/multipleshorttext/rows/answer_row_inputtext', array(
+                $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
+            }
+            $numbersonly=($aQuestionAttributes['numbers_only']==1);
+            if (trim($aQuestionAttributes['display_rows'])!=''){
+                $sRows .= doRender('/survey/questions/multipleshorttext/rows/answer_row_textarea', array(
                     'alert'                  => $alert,
                     'labelname'              => 'answer'.$myfname,
                     'maxlength'              => $maxlength,
+                    'rows'                   => $aQuestionAttributes['display_rows'],
+                    'numbersonly'            => $numbersonly,
                     'sInputContainerWidth'   => $sInputContainerWidth,
                     'sLabelWidth'            => $sLabelWidth,
                     'extraclass'             => $extraclass,
@@ -2828,10 +2779,28 @@ function do_multipleshorttext($ia)
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
                 ), true);
-                $fn++;
-                $inputnames[]=$myfname;
+            }else{
+                $sRows .= doRender('/survey/questions/multipleshorttext/rows/answer_row_inputtext', array(
+                    'alert'                  => $alert,
+                    'labelname'              => 'answer'.$myfname,
+                    'maxlength'              => $maxlength,
+                    'numbersonly'            => $numbersonly,
+                    'sInputContainerWidth'   => $sInputContainerWidth,
+                    'sLabelWidth'            => $sLabelWidth,
+                    'extraclass'             => $extraclass,
+                    'sDisplayStyle'          => $sDisplayStyle,
+                    'prefix'                 => $prefix,
+                    'myfname'                => $myfname,
+                    'question'               => $ansrow['question'],
+                    'prefix'                 => $prefix,
+                    'kpclass'                => $kpclass,
+                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+                    'dispVal'                => $dispVal,
+                    'suffix'                 => $suffix,
+                ), true);
             }
-
+            $fn++;
+            $inputnames[]=$myfname;
         }
 
         $answer = doRender('/survey/questions/multipleshorttext/answer', array(
@@ -3027,14 +2996,32 @@ function do_multiplenumeric($ia)
                 $aAnswer     = explode($slider_separator,$ansrow['question']);
                 $theanswer   = (isset($aAnswer[0]))?$aAnswer[0]:"";
                 $labelText   = $theanswer;
-                $sliderleft  = (isset($aAnswer[1]))?$aAnswer[1]:"";
-                $sliderright = (isset($aAnswer[2]))?$aAnswer[2]:"";
+                $sliderleft  = (isset($aAnswer[1]))?$aAnswer[1]:null;
+                $sliderright = (isset($aAnswer[2]))?$aAnswer[2]:null;
                 $sliders     = true;
+                $sliderWidth = 12;
+                /* sliderleft and sliderright is in inpout, but is part of answers =>  in label width */
+                $fixLabelWidth=0;
+                $fixInputContainerWidth=0;
+                if(!empty($sliderleft)){
+                    $fixLabelWidth-=2;
+                    $fixInputContainerWidth+=2;
+                    $sliderWidth-=2;
+                }
+                if(!empty($sliderright)){
+                    $fixLabelWidth-=2;
+                    $fixInputContainerWidth+=2;
+                    $sliderWidth-=2;
+                }
+                /* actually slider reset is in answer part : good idea or not ? */
+                if($slider_reset){
+                    $sliderWidth-=2;
+                }
             }
 
             $aAnswer     = (isset($aAnswer))?$aAnswer:'';
-            $sliderleft  = (isset($sliderleft))?$sliderleft:"";
-            $sliderright = (isset($sliderright))?$sliderright:"";
+            $sliderleft  = (isset($sliderleft))?$sliderleft:null;
+            $sliderright = (isset($sliderright))?$sliderright:null;
 
             // color code missing mandatory questions red
             $alert='';
@@ -3162,6 +3149,9 @@ function do_multiplenumeric($ia)
                     'prefix'                 => $prefix,
                     'suffix'                 => $suffix,
                     'tiwidth'                => $tiwidth,
+                    'sInputContainerWidth'   => $sInputContainerWidth +$fixInputContainerWidth,
+                    'sLabelWidth'            => $sLabelWidth+$fixLabelWidth,
+                    'sliderWidth'            => $sliderWidth,
                     'myfname'                => $myfname,
                     'dispVal'                => $sValue,
                     'maxlength'              => $maxlength,
@@ -3181,10 +3171,16 @@ function do_multiplenumeric($ia)
                     'slider_showminmax'      => $aQuestionAttributes['slider_showminmax'],
                     'sSeparator'             => $sSeparator,
                     'sUnformatedValue'       => $sUnformatedValue,
+                    'integeronly'=> $integeronly,
                 ), true);
             }
             $fn++;
             $inputnames[]=$myfname;
+
+            //~ $aJsData=array(
+                //~ 'slider_custom_handle'=>$slider_custom_handle
+            //~ );
+
         }
         $displaytotal     = false;
         $equals_num_value = false;
@@ -3225,7 +3221,19 @@ function do_multiplenumeric($ia)
 
     if($aQuestionAttributes['slider_layout']==1)
     {
-        Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/bootstrap-slider/bootstrap-slider.js");
+        /* Add some data for javascript */
+        $sliderTranslation=array(
+            'help'=>gT('Please click and drag the slider handles to enter your answer.')
+        );
+        App()->getClientScript()->registerScript("sliderTranslation","var sliderTranslation=".json_encode($sliderTranslation).";\n",CClientScript::POS_HEAD);
+        App()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/bootstrap-slider/bootstrap-slider.js");
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."numeric-slider.js");
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') ."numeric-slider.css");
+        App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}';");
+        $aJsonOptions=json_encode(array(
+            'slider_custom_handle'=>$slider_custom_handle
+        ));
+        App()->getClientScript()->registerScript("doNumericSlider{$ia[0]}","doNumericSlider({$ia[0]},{$aJsonOptions})",CClientScript::POS_END);
     }
 
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
