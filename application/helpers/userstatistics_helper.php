@@ -3054,16 +3054,16 @@ class userstatistics_helper {
                 $sOutputHTML .= "<br />\n<div class='well'><table class='table table-striped statisticssummary' >\n"
                 ."\t<thead><tr><th class='text-center' colspan='2'>".gT("Results")."</th></tr></thead>\n"
                 ."\t<tr><th >".gT("Number of records in this query:").'</th>'
-                ."<td>$results</td></tr>\n"
+                ."<td class='text-right'>$results</td></tr>\n"
                 ."\t<tr><th>".gT("Total records in survey:").'</th>'
-                ."<td>$total</td></tr>\n";
+                ."<td class='text-right'>$total</td></tr>\n";
 
                 //only calculate percentage if $total is set
                 if ($total)
                 {
                     $percent=sprintf("%01.2f", ($results/$total)*100);
                     $sOutputHTML .= "\t<tr><th>".gT("Percentage of total:").'</th>'
-                    ."<td>$percent%</td></tr>\n";
+                    ."<td class='text-right'>$percent%</td></tr>\n";
                 }
                 if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))
                 {
