@@ -1653,7 +1653,7 @@ class userstatistics_helper {
                 break;
             case 'html':
                 //output
-                $statisticsoutput .= "<table class='statisticstable'>\n"
+                $statisticsoutput .= "<div class='well'><table class='table table-striped statisticstable'>\n"
                 ."\t<thead><tr><th colspan='4' align='center'><strong>"
 
                 //headline
@@ -2785,7 +2785,7 @@ class userstatistics_helper {
                 ."</div></td></tr>";
 
             }
-            $statisticsoutput .= "</td></tr></table><br /> \n";
+            $statisticsoutput .= "</td></tr></table></div><br /> \n";
         }
 
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);
