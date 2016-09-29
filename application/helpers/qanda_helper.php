@@ -2981,6 +2981,9 @@ function do_multiplenumeric($ia)
             $labelText = $ansrow['question'];
             $myfname   = $ia[1].$ansrow['title'];
 
+            $fixLabelWidth=0;
+            $fixInputContainerWidth=0;
+            $sliderWidth = 12;
             if ($ansrow['question'] == "")
             {
                 $ansrow['question'] = "&nbsp;";
@@ -2999,10 +3002,7 @@ function do_multiplenumeric($ia)
                 $sliderleft  = (isset($aAnswer[1]))?$aAnswer[1]:null;
                 $sliderright = (isset($aAnswer[2]))?$aAnswer[2]:null;
                 $sliders     = true;
-                $sliderWidth = 12;
                 /* sliderleft and sliderright is in inpout, but is part of answers =>  in label width */
-                $fixLabelWidth=0;
-                $fixInputContainerWidth=0;
                 if(!empty($sliderleft)){
                     $fixLabelWidth-=2;
                     $fixInputContainerWidth+=2;
@@ -3013,6 +3013,8 @@ function do_multiplenumeric($ia)
                     $fixInputContainerWidth+=2;
                     $sliderWidth-=2;
                 }
+            }
+            if($slider_layout){
                 /* actually slider reset is in answer part : good idea or not ? */
                 if($slider_reset){
                     $sliderWidth-=2;
@@ -3107,33 +3109,30 @@ function do_multiplenumeric($ia)
                 $integeronly=0;
             }
 
-            if(!$sliders)
-            {
-            $sRows .= doRender('/survey/questions/multiplenumeric/rows/input/answer_row', array(
-                'qid'                    => $ia[0],
-                'extraclass'             => $extraclass,
-                'answertypeclass'        => $answertypeclass,
-                'sDisplayStyle'          => $sDisplayStyle,
-                'kpclass'                => $kpclass,
-                'alert'                  => $alert,
-                'theanswer'              => $theanswer,
-                'labelname'              => 'answer'.$myfname,
-                'prefixclass'            => $prefixclass,
-                'prefix'                 => $prefix,
-                'suffix'                 => $suffix,
-                'tiwidth'                => $tiwidth,
-                'sInputContainerWidth'   => $sInputContainerWidth,
-                'sLabelWidth'            => $sLabelWidth,
-                'myfname'                => $myfname,
-                'dispVal'                => $sValue,
-                'maxlength'              => $maxlength,
-                'labelText'              => $labelText,
-                'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type, \'onchange\','.$integeronly.')',
-                'integeronly'=> $integeronly,
-            ), true);
-            }
-            else
-            {
+            if(!$slider_layout){
+                $sRows .= doRender('/survey/questions/multiplenumeric/rows/input/answer_row', array(
+                    'qid'                    => $ia[0],
+                    'extraclass'             => $extraclass,
+                    'answertypeclass'        => $answertypeclass,
+                    'sDisplayStyle'          => $sDisplayStyle,
+                    'kpclass'                => $kpclass,
+                    'alert'                  => $alert,
+                    'theanswer'              => $theanswer,
+                    'labelname'              => 'answer'.$myfname,
+                    'prefixclass'            => $prefixclass,
+                    'prefix'                 => $prefix,
+                    'suffix'                 => $suffix,
+                    'tiwidth'                => $tiwidth,
+                    'sInputContainerWidth'   => $sInputContainerWidth,
+                    'sLabelWidth'            => $sLabelWidth,
+                    'myfname'                => $myfname,
+                    'dispVal'                => $sValue,
+                    'maxlength'              => $maxlength,
+                    'labelText'              => $labelText,
+                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type, \'onchange\','.$integeronly.')',
+                    'integeronly'=> $integeronly,
+                ), true);
+            }else{
                 $sRows .= doRender('/survey/questions/multiplenumeric/rows/sliders/answer_row', array(
                     'qid'                    => $ia[0],
                     'extraclass'             => $extraclass,
