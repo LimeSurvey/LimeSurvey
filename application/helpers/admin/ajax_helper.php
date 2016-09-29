@@ -14,6 +14,19 @@ namespace ls\ajax;
 class AjaxHelper
 {
     /**
+     * As createAbsoluteUrl, but appends param ajax = 1 to url
+     * Use when creating Ajax action links, like button clicks that
+     * will open modals or save data.
+     * @param string $route
+     * @param array $params
+     * @return string
+     */
+    public static function createUrl($route, array $params = array())
+    {
+        $params['ajax'] = 1;
+        return App()->createAbsoluteUrl($route, $params);
+    }
+    /**
      * Echoes json with result set as $msg
      * This is the custom json, that expects to be
      * handled manually.
@@ -56,6 +69,15 @@ class AjaxHelper
     public static function outputNoPermission()
     {
         $output = new JsonOutputNoPermission();
+        self::echo($output);
+    }
+
+    /**
+     * @return void
+     */
+    public static function outputNotLoggedIn()
+    {
+        $output = new JsonOutputNotLoggedIn();
         self::echo($output);
     }
 
@@ -198,4 +220,58 @@ class JsonOutputSuccess extends JsonOutput
         parent::__construct(null);
         $this->success = $msg;
     }
+}
+
+/**
+ * 
+ */
+class JsonOutputModal extends JsonOutput
+{
+
+    /**
+     * @var string
+     */
+    public $html;
+
+    /**
+     * 
+     */
+    public function __construct($html)
+    {
+        parent::__construct(null);
+        $this->html = $html;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public function __toString()
+    {
+        return json_encode(array(
+            'html' => $this->html,
+            'hasPermission' => $this->hasPermission,
+            'loggedIn' => $this->loggedIn
+        ));
+    }
+}
+
+/**
+ * Echo html for log in form modal body
+ * This is a special case of JsonOutputModal, but with fixed html
+ * Only used through JsonOutputNotLoggedIn in AdminController::run.
+ */
+class JsonOutputNotLoggedIn extends JsonOutputModal
+{
+    /**
+     * 
+     */
+    public function __construct()
+    {
+        parent::__construct(null);
+        $this->html = '<p>some html</p>';
+        $this->hasPermission = true;
+        $this->loggedIn = false;
+    }
+
 }

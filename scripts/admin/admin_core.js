@@ -937,7 +937,7 @@ function notifyFader(text, classes, styles, customOptions) {
 /**
  * Part of ajax helper
  * @param {object} JSON object from server
- * @return
+ * @return {boolean} true if the original success method should be run after this
  * @todo Localization
  * @todo Branch on message type?
  */
@@ -947,7 +947,13 @@ LS.ajaxHelperOnSuccess = function(response) {
         alert('No response from server');
     }
     else if (!response.loggedIn) {
-        alert('Not logged in');
+
+        // Hide any modals that might be open
+        $('.modal').modal('hide');
+
+        $('#ajax-helper-modal .modal-content').html(response.html);
+        $('#ajax-helper-modal').modal('show');
+        return false;
     }
     // No permission
     else if (!response.hasPermission) {
@@ -961,6 +967,13 @@ LS.ajaxHelperOnSuccess = function(response) {
     else if (response.success) {
         notifyFader(response.success, 'well-lg bg-primary text-center');
     }
+    // Modal popup
+    else if (response.html) {
+        $('#ajax-helper-modal .modal-content').html(response.html);
+        $('#ajax-helper-modal').modal('show');
+    }
+
+    return true;
 }
 
 /**
@@ -976,9 +989,9 @@ LS.ajax = function(options) {
     var oldError = options.error;
     options.success = function(response) {
 
-        LS.ajaxHelperOnSuccess(response);
+        var runOldSuccess = LS.ajaxHelperOnSuccess(response);
 
-        if (oldSuccess) {
+        if (oldSuccess && runOldSuccess) {
             oldSuccess(response);
         }
     }

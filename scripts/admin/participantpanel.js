@@ -31,6 +31,7 @@ LS.CPDB = (function() {
          */
         var firstSuccess = function(json){
             $(baseModal).find('.modal-content').html(json.result);
+            $(baseModal).modal('show');
             $(baseModal).find('.'+actionButtonClass).on('click', function(e) {
                 e.preventDefault();
                 var action = $(baseModal).find('#'+formId).attr('action');
@@ -47,7 +48,6 @@ LS.CPDB = (function() {
             });
         };
 
-        $(baseModal).modal('show');
 
         return LS.ajax({
             url: url, 

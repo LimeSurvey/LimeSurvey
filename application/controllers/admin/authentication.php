@@ -253,8 +253,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Redirects a logged in user to the administration page
-    */
+     * Redirects a logged in user to the administration page
+     */
     private function _redirectIfLoggedIn()
     {
         if (!Yii::app()->user->getIsGuest())
