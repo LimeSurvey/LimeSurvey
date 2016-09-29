@@ -4,7 +4,7 @@
 
 <div id='statsContainer'>
     <div id='statsHeader'>
-        <h3 class='statsSurveyTitle'><?php echo $thisSurveyTitle; ?></h3>
+        <div class='h3 statsSurveyTitle'><?php echo $thisSurveyTitle; ?></div>
         <div class='statsNumRecords'><?php echo gT("Total records in survey")." : $totalrecords"; ?></div>
     </div>
     <?php if (isset($statisticsoutput) && $statisticsoutput) { echo $statisticsoutput; } ?><br />
