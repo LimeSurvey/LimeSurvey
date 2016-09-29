@@ -1,10 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## unrealeased
+## [1.0.26] - 2016-09-29
 
 ### Fix
-- Statistics allow to show more rank question than available
+- Statistics show more rank than available
+- Max sub-question attribute for ranking question still editable after activation
 
 ## [1.0.25] - 2016-09-27
 
