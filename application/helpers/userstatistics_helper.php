@@ -1652,7 +1652,7 @@ class userstatistics_helper {
 
                 //question title
                 .$outputs['qquestion']."</strong></th></tr>\n"
-                ."\t<tr>\n\t\t<th width='50%' class='text-center' align='center' >";
+                ."\t<tr>\n\t\t<th width='50%' class='text-left' align='center' >";
                 break;
             default:
 
@@ -2219,7 +2219,7 @@ class userstatistics_helper {
             * 2 (25%) = count (absolute)
             * 3 (25%) = percentage
             */
-            $statisticsoutput .= "\t<tr>\n\t\t<td class='text-center' align='center' >" . $label[$i] ."\n"
+            $statisticsoutput .= "\t<tr>\n\t\t<td class='text-left' align='center' >" . $label[$i] ."\n"
             ."\t\t</td>\n";
             /*
             * If there is a "browse" button in this label, let's make sure there's an extra row afterwards
