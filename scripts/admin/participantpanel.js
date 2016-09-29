@@ -64,22 +64,32 @@ LS.CPDB = (function() {
     /**
      * Run when user clicks 'Export'
      * Used for both all participants and checked participants
+     * @param {boolean} all - If true, export all participants
      * @return
      */
-    onClickExport = function() {
+    onClickExport = function(all) {
         var postdata = {
             selectedParticipant: [],
             YII_CSRF_TOKEN : LS.data.csrfToken
         }; 
-        $('.selector_participantCheckbox:checked').each(function(i,item){
-            postdata.selectedParticipant.push($(item).val());
-        });
+
+        if (!all) {
+            $('.selector_participantCheckbox:checked').each(function(i,item){
+                postdata.selectedParticipant.push($(item).val());
+            });
+        }
 
         $.ajax({
             url: exporttocsvcountall,
             data: postdata,
             method: 'POST',
+
+            /**
+             * @param {string} data
+             * @return
+             */
             success:  function(data) {
+                console.log('data', data);
                 count = data;
                 if(count == 0)
                 {
@@ -420,7 +430,7 @@ LS.CPDB = (function() {
         /**
          * @TODO rewrite export
          */
-        $('#export').click(onClickExport);
+        $('#export').click(function() { onClickExport(true); });
 
         doToolTip();
     };

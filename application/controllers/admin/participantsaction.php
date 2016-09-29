@@ -234,6 +234,7 @@ class participantsaction extends Survey_Common_Action
         {
             return 0;
         }
+
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
         //If super admin all the participants will be visible
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
@@ -242,7 +243,6 @@ class participantsaction extends Survey_Common_Action
         } else {
             $iUserID = Yii::app()->session['loginID'];
         }
-
 
         $count = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
 
