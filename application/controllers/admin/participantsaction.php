@@ -330,12 +330,13 @@ class participantsaction extends Survey_Common_Action
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
-        $participantParam = Yii::app()->request->getPost('Participant');
+        $request = Yii::app()->request;
+        $participantParam = $request->getPost('Participant');
         if($participantParam)
         {
             $model->attributes=$participantParam;
         } 
-        $searchcondition = Yii::app()->request->getPost('searchcondition');
+        $searchcondition = $request->getPost('searchcondition');
         $searchparams = array();
         if($searchcondition)
         {
@@ -355,24 +356,21 @@ class participantsaction extends Survey_Common_Action
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'totalrecords' => $iTotalRecords,
             'model' => $model,
-            'debug' => Yii::app()->request->getParam('Participant')
+            'debug' => $request->getParam('Participant')
         );
-        // Page size
-        if (Yii::app()->request->getParam('pageSizeParticipantView'))
-        {
-            Yii::app()->user->setState('pageSizeParticipantView',(int)Yii::app()->request->getParam('pageSizeParticipantView'));
-        }
-        else
-        {
-            Yii::app()->user->setState('pageSizeParticipantView',(int)Yii::app()->params['defaultPageSize']);
-        }
+
         $aData['pageSizeParticipantView']= Yii::app()->user->getState('pageSizeParticipantView');
-        $searchstring = Yii::app()->request->getPost('searchstring');
+        $searchstring = $request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array(), true, false);
+
+        // Set page size
+        if ($request->getPost('pageSizeParticipantView')) {
+            Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSizeParticipantView'));
+        }
 
         // Loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
