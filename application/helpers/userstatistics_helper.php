@@ -1593,16 +1593,16 @@ class userstatistics_helper {
     }
 
     /**
-    * displayResults builds html output to display the actual results from a survey
-    *
-    * @param mixed $outputs
-    * @param INT $results The number of results being displayed overall
-    * @param mixed $rt
-    * @param mixed $outputType
-    * @param mixed $surveyid
-    * @param mixed $sql
-    * @param mixed $usegraph
-    */
+     * displayResults builds html output to display the actual results from a survey
+     *
+     * @param mixed $outputs
+     * @param INT $results The number of results being displayed overall
+     * @param mixed $rt
+     * @param mixed $outputType
+     * @param mixed $surveyid
+     * @param mixed $sql
+     * @param mixed $usegraph
+     */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage) {
 
         /* Set up required variables */
