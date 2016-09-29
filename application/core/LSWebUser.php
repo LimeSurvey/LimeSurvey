@@ -8,10 +8,6 @@
 
         public function __construct()
         {
-            //$request = Yii::app()->request;
-            //var_dump($request->getQuery('ajax'));
-            //var_dump($_GET); die;
-
             $this->loginUrl = Yii::app()->createUrl('admin/authentication', array('sa' => 'login'));
 
             // Try to fix missing language in plugin controller
