@@ -971,7 +971,7 @@ body div.row .question-container {
 }
 
 /*label font weight*/
-label, th {
+label {
     font-weight: normal;
 }
 
