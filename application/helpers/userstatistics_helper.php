@@ -3061,7 +3061,7 @@ class userstatistics_helper {
 
             case 'html':
 
-                $sOutputHTML .= "<br />\n<table class='statisticssummary' >\n"
+                $sOutputHTML .= "<br />\n<div class='well'><table class='table table-striped statisticssummary' >\n"
                 ."\t<thead><tr><th colspan='2'>".gT("Results")."</th></tr></thead>\n"
                 ."\t<tr><th >".gT("Number of records in this query:").'</th>'
                 ."<td>$results</td></tr>\n"
@@ -3084,7 +3084,7 @@ class userstatistics_helper {
                     $sOutputHTML .= "</td></tr>";
 
                 }
-                $sOutputHTML .="</table>\n";
+                $sOutputHTML .="</table></div>\n";
 
                 break;
             default:
