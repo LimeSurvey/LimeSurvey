@@ -646,18 +646,7 @@ class userstatistics_helper {
         $qqid = "";
 
         /* Some variable depend on output type, actually : only line feed */
-        switch($outputType)
-        {
-            case 'xls':
-            case 'pdf':
-                $linefeed = "\n";
-                break;
-            case 'html':
-                $linefeed = "<br />\n";
-                break;
-            default:
-                break;
-        }
+        $linefeed = $this->getLinefeed($outputType);
 
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($firstletter == "M" || $firstletter == "P")
@@ -3338,5 +3327,26 @@ class userstatistics_helper {
         return $output;
     }
 
+    /**
+     * @param string $outputType
+     * @return string
+     */
+    private function getLinefeed($outputType)
+    {
+        switch($outputType) {
+            case 'xls':
+            case 'pdf':
+                $linefeed = "\n";
+                break;
+            case 'html':
+                $linefeed = "<br />\n";
+                break;
+            default:
+                throw new \CInvalidArgumentException('Unknown output type: ' . $outputType);
+                break;
+        }
+
+        return $linefeed;
+    }
 
 }
