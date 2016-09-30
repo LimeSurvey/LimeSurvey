@@ -377,7 +377,9 @@ LS.CPDB = (function() {
             'action_save_modal_shareparticipant',
             'shareParticipantActiveForm',
             'list_central_participants'
-        );
+        ).done(function() {
+            $('.ls-bootstrap-switch').bootstrapSwitch();
+        });
     },
 
     /**
