@@ -3475,15 +3475,15 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
     if ($sType == 'survey')
     {
-        $sPattern = "([^'\"]*)/upload/surveys/{$iOldSurveyID}/";
+        $sPattern = "(http(s)?:\/\/)?((.)*(?=())\/upload\/surveys\/{$iOldSurveyID}\/)";
         $sReplace = Yii::app()->getConfig("publicurl")."upload/surveys/{$iNewSurveyID}/";
-        return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
+        return preg_replace("\\".$sPattern."\\u", $sReplace, $sString);
     }
     elseif ($sType == 'label')
     {
-        $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
-        $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
-        return preg_replace('#'.$pattern.'#', $replace, $sString);
+        $sPattern = "(http(s)?:\/\/)?((.)*(?=())\/upload\/labels\/{$iOldSurveyID}\/)";
+        $sReplace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
+        return preg_replace("\\".$sPattern."\\u", $sReplace, $sString);
     }
     else // unknown type
     {
