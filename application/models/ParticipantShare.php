@@ -22,6 +22,9 @@
  */
 class ParticipantShare extends LSActiveRecord
 {
+
+    public $ownerName;
+
     /**
      * Returns the static model of Settings table
      *
@@ -216,25 +219,30 @@ class ParticipantShare extends LSActiveRecord
                 "filter" => false
             ),
             array(
-                "name" => 'participant.firstname',
-                "header" => gT("Firstname"),
-                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'])
-            ),
-            array(
                 "name" => 'participant.lastname',
                 "header" => gT("Lastname"),
                 "filter" => TbHtml::textField("Participant[lastname]",$participantFilter['lastname'])
             ),
             array(
+                "name" => 'participant.firstname',
+                "header" => gT("Firstname"),
+                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'])
+            ),
+            array(
                 "name" => 'participant.email',
-                "header" => gT("Email"),
+                "header" => gT("Email address"),
                 "filter" => TbHtml::textField("Participant[email]",$participantFilter['email'])
             ),
             array(
                 "name" => 'share_uid',
                 "value" => '$data->sharedBy',
-                "header" => gT("Shared By"),
+                "header" => gT("Shared by"),
                 "filter" => $this->getSharedByList($this->share_uid)
+            ),
+            array(
+                'name' => 'ownerName',
+                'value' => '$data->getOwnerName()',
+                'header' => 'Owner'
             ),
             array(
                 "name" => 'date_added',
@@ -366,6 +374,15 @@ class ParticipantShare extends LSActiveRecord
                 ->createCommand()
                 ->delete('{{participant_shares}}',"participant_id = '$participantId' AND share_uid = $uId");
         }
+    }
+
+    /**
+     * Full name of the owner of the participant that is shared
+     * @return string
+     */
+    public function getOwnerName()
+    {
+        return $this->participant->owner->full_name;
     }
 
 }
