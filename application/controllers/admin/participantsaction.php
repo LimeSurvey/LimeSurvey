@@ -52,8 +52,6 @@ class participantsaction extends Survey_Common_Action
         parent::runWithParams($params);
     }
 
-
-
     /**
      * Loads jqGrid for the view
      * @param string $sScript Subaction
@@ -1246,57 +1244,9 @@ class participantsaction extends Survey_Common_Action
         ));
     }
 
-//Display GlobalParticipant Setting
-    /**********************************************GLOBAL PARTICIPANT SETTINGS***********************************************/
-    /**
-     * Loads the view 'userControl'
-     */
-    public function userControl()
-    {
-        // Only superadmin allowed
-        if (!Permission::model()->hasGlobalPermission('superadmin')) {
-            Yii::app()->setFlashMessage(gT('No permission'), 'error');
-            Yii::app()->getController()->redirect(Yii::app()->request->urlReferrer);
-        }
-
-        Yii::app()->clientScript->registerPackage('bootstrap-switch');
-
-        $aData = array(
-            'userideditable' => Yii::app()->getConfig('userideditable'),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
-        );
-        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'userControl'), $aData);
-    }
-
-
-    /**
-     * Stores the user control setting to the database
-     */
-    public function storeUserControlValues()
-    {
-        if ($find = SettingGlobal::model()->findByPk('userideditable'))
-        {
-            SettingGlobal::model()->updateByPk(
-                'userideditable',
-                array(
-                    'stg_value' => Yii::app()->request->getPost('userideditable') ? 'Y' : 'N'
-                )
-            );
-        }
-        else
-        {
-            $stg = new SettingGlobal;
-            $stg ->stg_name='userideditable';
-            $stg ->stg_value = Yii::app()->request->getPost('userideditable') ? 'Y' : 'N';
-            $stg->save();
-        }
-        Yii::app()->getController()->redirect(array('admin/participants/sa/userControl'));
-    }
-
-
-//Display Attributes
+    //Display Attributes
     /**********************************************PARTICIPANT ATTRIBUTES***********************************************/
- /**
+    /**
      * Loads the view 'attributeControl'
      */
     public function attributeControl()

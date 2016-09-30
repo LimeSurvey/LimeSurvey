@@ -93,26 +93,21 @@
                     <?php endif;?>
                 <?php endif;?>
 
-            <!-- Blacklist control -->
-            <?php
-            if (Permission::model()->hasGlobalPermission('superadmin','read')):?>
+            <?php if (Permission::model()->hasGlobalPermission('superadmin','read')):?>
+
+                <!-- Global participant settings -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
-                    <span class="glyphicon glyphicon-ban-circle text-warning"></span>
-                    <?php eT("Blacklist");?>
+                    <span class="icon-global text-success"></span>
+                    <?php eT("Settings");?>
                 </a>
 
-            <!-- Global participant settings -->
-            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/userControl"); ?>" role="button">
-                <span class="icon-global text-success"></span>
-                <?php eT("Settings");?>
-            </a>
+                <!-- Attribute management -->
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
+                    <span class="glyphicon glyphicon-tag text-success"></span>
+                    <?php eT("Attributes");?>
+                </a>
 
-            <!-- Attribute management -->
-            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
-                <span class="glyphicon glyphicon-tag text-success"></span>
-                <?php eT("Attributes");?>
-            </a>
-                <?php endif;?>
+            <?php endif;?>
 
             <!-- Share panel -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" role="button">

@@ -1,7 +1,7 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
 
 <div class="col-lg-12 list-surveys">
-    <h3><?php eT("Blacklist control"); ?></h3>
+    <h3><?php eT("Blacklist settings"); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
