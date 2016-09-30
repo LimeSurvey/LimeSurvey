@@ -696,6 +696,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param int $page
+     * @param int $limit
+     * @param array $attid
+     * @param order
+     * @param search
+     * @param userid
      * @return array
      */
     public function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)

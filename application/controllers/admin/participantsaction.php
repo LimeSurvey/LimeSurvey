@@ -1100,6 +1100,7 @@ class participantsaction extends Survey_Common_Action
         $aAttributes=explode('+',Yii::app()->request->getPost('attributes',''));
         $this->csvExport($search,$aAttributes);
     }
+
     /**
      * Returns the count of the participants in the CSV and show it in the title of the modal box
      * This is to give the user the hint to see the number of participants he is exporting

@@ -172,6 +172,8 @@
         </div>
     </div>
 </div>
+
+<?php // TODO: Move modal to separate view ?>
 <div id="exportcsv" title="exportcsv" role="dialog" tabindex="-1" class="modal fade">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -194,6 +196,11 @@
                             </select>
                         </div>
                     </div>
+                <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
+                    <div class='alert alert-info'>
+                        <p><span class='fa fa-info-circle'></span>&nbsp;<?php eT('If you want to export blacklisted participants, set "Hide blacklisted participants" to "No" in CPDB settings..'); ?></p>
+                    </div>
+                <?php endif; ?>
                 </div>
             </div>
             <div class="modal-footer">
