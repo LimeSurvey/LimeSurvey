@@ -339,10 +339,10 @@ class Participant extends LSActiveRecord
                 "filter" => false
             ),
             array(
-                "name" => 'firstname'
+                "name" => 'lastname'
             ),
             array(
-                "name" => 'lastname'
+                "name" => 'firstname'
             ),
             array(
                 "name" => 'email'
@@ -456,11 +456,13 @@ class Participant extends LSActiveRecord
         $extraAttributeValues = array();
         
         //Create the filter for the extra attributes
+        /*
         foreach($this->allExtraAttributes as $name => $attribute)
         {
             if($extraAttributeParams[$name])
                 $extraAttributeValues[] =  "'".$extraAttributeParams[$name]."'";
         }
+         */
         $tableParticipantAttributes = ParticipantAttribute::model()->tableName();
         $callParticipantAttributes = "SELECT DISTINCT participant_id FROM ".$tableParticipantAttributes." WHERE value IN (".join(', ',$extraAttributeValues).")";
 
@@ -481,6 +483,7 @@ class Participant extends LSActiveRecord
             $criteria->mergeWith($this->extraCondition);
         }
         $sort->attributes = $sortAttributes;
+        $sort->defaultOrder = 'created desc';
 
         // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone
         // Superadmins can see all users.
