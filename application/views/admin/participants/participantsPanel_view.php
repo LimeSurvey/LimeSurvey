@@ -53,16 +53,16 @@
     <div class='row'>
 
         <div class="col-md-9">
-            <!-- Information -->
-            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
-                <span class="glyphicon glyphicon-list-alt text-success" ></span>
-                <?php eT("Information");?>
-            </a>
-
             <!-- Display participants -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
                 <span class="glyphicon glyphicon-list text-success"></span>
-                <?php eT("List");?>
+                <?php eT("Display CPDB participants");?>
+            </a>
+
+            <!-- Information -->
+            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
+                <span class="glyphicon glyphicon-list-alt text-success" ></span>
+                <?php eT("Info");?>
             </a>
 
             <!-- Import from CSV file -->
