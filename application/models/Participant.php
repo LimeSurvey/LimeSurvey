@@ -456,13 +456,11 @@ class Participant extends LSActiveRecord
         $extraAttributeValues = array();
         
         //Create the filter for the extra attributes
-        /*
-        foreach($this->allExtraAttributes as $name => $attribute)
-        {
-            if($extraAttributeParams[$name])
+        foreach($this->allExtraAttributes as $name => $attribute) {
+            if(isset($extraAttributeParams[$name]) && $extraAttributeParams[$name]) {
                 $extraAttributeValues[] =  "'".$extraAttributeParams[$name]."'";
+            }
         }
-         */
         $tableParticipantAttributes = ParticipantAttribute::model()->tableName();
         $callParticipantAttributes = "SELECT DISTINCT participant_id FROM ".$tableParticipantAttributes." WHERE value IN (".join(', ',$extraAttributeValues).")";
 
