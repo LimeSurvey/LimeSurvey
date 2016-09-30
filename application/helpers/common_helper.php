@@ -3477,13 +3477,13 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     {
         $sPattern = "(http(s)?:\/\/)?((.)*(?=())\/upload\/surveys\/{$iOldSurveyID}\/)";
         $sReplace = Yii::app()->getConfig("publicurl")."upload/surveys/{$iNewSurveyID}/";
-        return preg_replace("\\".$sPattern."\\u", $sReplace, $sString);
+        return preg_replace("/".$sPattern."/u", $sReplace, $sString);
     }
     elseif ($sType == 'label')
     {
         $sPattern = "(http(s)?:\/\/)?((.)*(?=())\/upload\/labels\/{$iOldSurveyID}\/)";
         $sReplace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
-        return preg_replace("\\".$sPattern."\\u", $sReplace, $sString);
+        return preg_replace("/".$sPattern."/u", $sReplace, $sString);
     }
     else // unknown type
     {
