@@ -42,7 +42,7 @@
                 <?php eT('E-mail:'); ?>
             </label>
             <div class='col-sm-10'>
-                <input class='form-control' name='Participant[email]' value='<?php echo $model->firstname; ?>' />
+                <input class='form-control' name='Participant[email]' value='<?php echo $model->email; ?>' />
             </div>
         </div>
         <div class='form-group'>
