@@ -75,7 +75,8 @@ class SurveyLink extends LSActiveRecord
      *
      *
      * */
-    function rebuildLinksFromTokenTable($iSurveyId) {
+    function rebuildLinksFromTokenTable($iSurveyId)
+    {
         $this->deleteLinksBySurvey($iSurveyId);
         $tableName="{{tokens_".$iSurveyId."}}";
         $dateCreated=date('Y-m-d H:i:s', time());
@@ -96,7 +97,8 @@ class SurveyLink extends LSActiveRecord
      *
      * @return true|false
      * */
-    function deleteTokenLink($iTokenIds, $surveyId) {
+    function deleteTokenLink($iTokenIds, $surveyId)
+    {
         $query = "DELETE FROM ".SurveyLink::tableName()." WHERE token_id IN (".implode(", ", $iTokenIds).") AND survey_id=:survey_id";
         return Yii::app()->db->createCommand($query)
                              ->bindParam(":survey_id", $surveyId)
@@ -112,31 +114,55 @@ class SurveyLink extends LSActiveRecord
      *
      * @return true|false
      * */
-    function deleteLinksBySurvey($surveyId) {
+    function deleteLinksBySurvey($surveyId)
+    {
         $query = "DELETE FROM ".SurveyLink::tableName(). " WHERE survey_id = :survey_id";
         return Yii::app()->db->createCommand($query)
                              ->bindParam(":survey_id", $surveyId)
                              ->query();
     }
-    public function getDateFormat(){
+
+    /**
+     * @return string
+     */
+    public function getDateFormat()
+    {
         $dateFormat = $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         return $dateFormat['phpdate'];
     }
-    public function getSurveyInfo(){
+
+    /**
+     * @return array
+     */
+    public function getSurveyInfo()
+    {
         $Survey = Survey::model()->findByPk($this->survey_id);
         return $Survey->surveyinfo;
 
     }
-    public function getTokenDynamicModel(){
+
+    /**
+     * @return TokenDynamic
+     */
+    public function getTokenDynamicModel()
+    {
         $TokenDynamic = TokenDynamic::model($this->survey_id);
         return $TokenDynamic->findByPk($this->token_id);
-    }
+    } 
 
-    public function getSurveyName(){
+    /**
+     * @return string
+     */
+    public function getSurveyName()
+    {
        return $this->surveyInfo['surveyls_title'];
     }
 
-    public function getLastInvited(){
+    /**
+     * @return string
+     */
+    public function getLastInvited()
+    {
         $invitedate = $this->tokenDynamicModel['sent'];
         if($invitedate != "N") 
         {
@@ -145,7 +171,11 @@ class SurveyLink extends LSActiveRecord
         }
     }
     
-    public function getLastReminded(){
+    /**
+     * @return string
+     */
+    public function getLastReminded()
+    {
         $reminddate = $this->tokenDynamicModel['remindersent'];
         if($reminddate != "N") 
         {
@@ -154,14 +184,22 @@ class SurveyLink extends LSActiveRecord
         }
     }
 
-    public function getFormattedDateCreated(){
+    /**
+     * @return string
+     */
+    public function getFormattedDateCreated()
+    {
         $dateCreated = $this->date_created;
         
         $date = new DateTime($dateCreated);
         return $date->format($this->dateFormat);
     }
 
-    public function getIsSubmittedHtml(){
+    /**
+     * @return string
+     */
+    public function getIsSubmittedHtml()
+    {
         if($this->isSubmitted !== false)
         {
             $date = new DateTime($this->isSubmitted);
@@ -174,16 +212,28 @@ class SurveyLink extends LSActiveRecord
         }
     }
 
-    public function getIsSubmitted(){
+    /**
+     * @return boolean|string false or submit date
+     */
+    public function getIsSubmitted()
+    {
         $submitdate = $this->tokenDynamicModel['completed'];
         return (($submitdate == "N") ? false : $submitdate);
     }
 
-    public function getCheckbox(){
+    /**
+     * @return string html
+     */
+    public function getCheckbox()
+    {
         return "<input type='checkbox' class='selector_toggleAllParticipantSurveys' value='[".$this->token_id.",".$this->survey_id.",\"".$this->participant_id."\"]' />";
     }
 
-    public function attributeLabels() {
+    /**
+     * @return array
+     */
+    public function attributeLabels()
+    {
         return array(
             'survey_id' => gT("Survey ID"),
             'token_id' => gT('Token ID'),
@@ -192,7 +242,11 @@ class SurveyLink extends LSActiveRecord
         );
     }
 
-    public function getColumns() {
+    /**
+     * @return array
+     */
+    public function getColumns()
+    {
         return array(
             /*
             array(
@@ -211,8 +265,10 @@ class SurveyLink extends LSActiveRecord
             ),
             array(
                 "name" => 'survey_id',
+                'value' => '$data->surveyIdLink',
                 "sortable" => false,
-                "filter" => false
+                "filter" => false,
+                'type' => 'raw'
             ),
             array(
                 "name" => 'token_id',
@@ -237,24 +293,35 @@ class SurveyLink extends LSActiveRecord
                 "type" => "raw",
                 "sortable" => false,
                 "filter" => false
-            ),
-
+            )
         );
     }
 
-    public function search() {
+    /**
+     * @return CActiveDataProvider
+     */
+    public function search()
+    {
         $criteria = new CDbCriteria;
         $sort = new CSort;
 
         $criteria->compare('participant_id', $this->participant_id);
 
         return new CActiveDataProvider($this, array(
-             'criteria'=>$criteria,
-             'sort'=>$sort,
-            // 'pagination' => false
+            'criteria'=>$criteria,
+            'sort'=>$sort,
             'pagination' => false
         ));
     }
-}
 
-?>
+    /**
+     * Link to survey
+     * @return string html
+     */
+    public function getSurveyIdLink()
+    {
+        $url = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->survey_id);
+        $link = CHtml::link($this->survey_id, $url);
+        return $link;
+    }
+}
