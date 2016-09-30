@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class='form-group'>
-            <label class='control-label col-sm-4'><?php eT("Should this user be blacklisted?"); ?></label>
+            <label class='control-label col-sm-2'><?php eT("Blacklist user:"); ?></label>
             <div class='col-sm-8'>
                 &nbsp;
                 <input name='Participant[blacklisted]' type='checkbox' <?php if ($model->blacklisted == 'Y'): echo ' checked="checked" '; endif; ?> data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='action_changeBlacklistStatus ls-bootstrap-switch' />
