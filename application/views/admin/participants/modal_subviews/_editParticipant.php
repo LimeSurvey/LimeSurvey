@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'add'): eT('Add participant'); else: eT('Edit participant'); endif; ?></h4>
 </div>
-<div class="modal-body form-horizontal">
+<div class="modal-body edit-participant-modal-body form-horizontal">
 <?php
     $form = $this->beginWidget(
         'bootstrap.widgets.TbActiveForm',

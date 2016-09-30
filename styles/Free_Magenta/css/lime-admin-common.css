@@ -2118,3 +2118,8 @@ table#responsedetail tr td{
     margin-bottom: 0;
     background-color: inherit;
 }
+
+.edit-participant-modal-body {
+    max-height: 500px;
+    overflow-y: auto;
+}
