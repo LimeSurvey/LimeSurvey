@@ -3481,7 +3481,6 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     }
     elseif ($sType == 'label')
     {
-        $sString=str_replace("\xA0", " ", $sString);
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/'.$iOldSurveyID.'\/)';
         $sReplace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
         return preg_replace("/".$sPattern."/u", $sReplace, $sString);
