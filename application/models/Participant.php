@@ -491,7 +491,7 @@ class Participant extends LSActiveRecord
             $criteria->mergeWith($this->extraCondition);
         }
         $sort->attributes = $sortAttributes;
-        $sort->defaultOrder = 'created DESC';
+        $sort->defaultOrder = 't.created DESC';
 
         // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone
         // Superadmins can see all users.

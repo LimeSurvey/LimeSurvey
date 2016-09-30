@@ -2179,7 +2179,7 @@ class participantsaction extends Survey_Common_Action
 
         $participantIds = Yii::app()->request->getPost('participant_id');
         $iShareUserId = Yii::app()->request->getPost('shareuser');
-        $bCanEdit = (boolean) Yii::app()->request->getPost('can_edit');
+        $bCanEdit = Yii::app()->request->getPost('can_edit') == 'on';
 
         if (!is_array($participantIds))
         {
