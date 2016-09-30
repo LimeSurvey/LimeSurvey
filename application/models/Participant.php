@@ -369,6 +369,11 @@ class Participant extends LSActiveRecord
                 "type" => "raw",
                 "filter" => array('N' => gT("No"), 'Y'=>gT('Yes'))
             ),
+            array(
+                'name' => 'created',
+                'value' => '$data->createdFormatted',
+                'type' => 'raw',
+            )
         );
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
@@ -415,34 +420,38 @@ class Participant extends LSActiveRecord
         $sort = new CSort;
         $sort->defaultOrder = 'lastname';
         $sortAttributes = array(
-          'lastname'=>array(
-            'asc'=>'t.lastname',
-            'desc'=>'t.lastname desc',
-          ),
-          'firstname'=>array(
-            'asc'=>'t.firstname',
-            'desc'=>'t.firstname desc',
-          ),
-          'email'=>array(
-            'asc'=>'t.email',
-            'desc'=>'t.email desc',
-          ),
-          'language'=>array(
-            'asc'=>'t.language',
-            'desc'=>'t.language desc',
-          ),
-          'owner.full_name'=>array(
-            'asc'=>'owner.full_name',
-            'desc'=>'owner.full_name desc',
-          ),
-          'blacklisted'=>array(
-            'asc'=>'t.blacklisted',
-            'desc'=>'t.blacklisted desc',
-          ),
-          'countActiveSurveys'=>array(
-            'asc'=>'countActiveSurveys',
-            'desc'=>'countActiveSurveys desc',
-          )
+            'lastname'=>array(
+                'asc'=>'t.lastname',
+                'desc'=>'t.lastname desc',
+            ),
+            'firstname'=>array(
+                'asc'=>'t.firstname',
+                'desc'=>'t.firstname desc',
+            ),
+            'email'=>array(
+                'asc'=>'t.email',
+                'desc'=>'t.email desc',
+            ),
+            'language'=>array(
+                'asc'=>'t.language',
+                'desc'=>'t.language desc',
+            ),
+            'owner.full_name'=>array(
+                'asc'=>'owner.full_name',
+                'desc'=>'owner.full_name desc',
+            ),
+            'blacklisted'=>array(
+                'asc'=>'t.blacklisted',
+                'desc'=>'t.blacklisted desc',
+            ),
+            'countActiveSurveys'=>array(
+                'asc'=>'countActiveSurveys',
+                'desc'=>'countActiveSurveys desc',
+            ),
+            'created' => array(
+                'asc' => 't.created asc',
+                'desc' => 't.created desc'
+            )
         );
 
         $criteria = new CDbCriteria;
@@ -482,7 +491,7 @@ class Participant extends LSActiveRecord
             $criteria->mergeWith($this->extraCondition);
         }
         $sort->attributes = $sortAttributes;
-        $sort->defaultOrder = 'created desc';
+        $sort->defaultOrder = 'created DESC';
 
         // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone
         // Superadmins can see all users.
@@ -2150,6 +2159,23 @@ class Participant extends LSActiveRecord
         }
         else {
             return false;
+        }
+    }
+
+    /**
+     * 'created' field formatted; empty string if no timestamp in database
+     * @return string
+     */
+    public function getCreatedFormatted()
+    {
+        if ($this->created) {
+            $timestamp = strtotime($this->created);
+            $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+            $date = date($dateformatdetails['phpdate'], $timestamp);
+            return $date;
+        }
+        else {
+            return '';
         }
     }
 }
