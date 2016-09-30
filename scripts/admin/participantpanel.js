@@ -259,7 +259,9 @@ LS.CPDB = (function() {
                 'action_save_modal_addToSurvey',
                 'addToSurveyActiveForm', 
                 'list_central_participants' 
-            );
+            ).done(function() {
+                $('.ls-bootstrap-switch').bootstrapSwitch();
+            });
         });
 
         // Toggle all, participant list
@@ -399,7 +401,9 @@ LS.CPDB = (function() {
             'action_save_modal_addToSurvey',
             'addToSurveyActiveForm',
             'list_central_participants'
-        );
+        ).done(function() {
+            $('.ls-bootstrap-switch').bootstrapSwitch();
+        });
     },
 
     /**
