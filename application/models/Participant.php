@@ -355,7 +355,8 @@ class Participant extends LSActiveRecord
             array(
                 "name" => 'countActiveSurveys',
                 "value" => '$data->getCountActiveSurveys()',
-                "header" => gT("Active surveys")
+                "header" => gT("Active surveys"),
+                "htmlOptions" => array('width' => '80px')
             ),
             array(
                 "name" => 'owner.full_name',
@@ -367,7 +368,7 @@ class Participant extends LSActiveRecord
                 "value" => '$data->getBlacklistSwitchbutton()',
                 "type" => "raw",
                 "filter" => array('N' => gT("No"), 'Y'=>gT('Yes'))
-            )
+            ),
         );
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
