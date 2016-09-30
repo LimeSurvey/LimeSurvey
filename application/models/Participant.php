@@ -219,7 +219,7 @@ class Participant extends LSActiveRecord
             'participant_id' => gT('Participant'),
             'firstname' => gT('Firstname'),
             'lastname' => gT('Lastname'),
-            'email' => gT('Email'),
+            'email' => gT('Email address'),
             'language' => gT('Language'),
             'blacklisted' => gT('Blacklisted'),
             'owner_uid' => gT('Owner Uid'),
