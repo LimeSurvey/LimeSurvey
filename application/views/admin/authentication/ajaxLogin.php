@@ -152,12 +152,18 @@ $( document ).ready(function() {
 
         o.login_submit = 'login';
 
-        $.ajax({
-            url: url,
+        LS.ajax({
+            url: url + '&ajax=1',
             data: o,
             method: 'post',
             success: function(response, status) {
+                console.log('ajaxLogin');
                 console.log(response);
+                console.log(response.loggedIn);
+
+                if (!response.loggedIn) {
+                    // TODO: Re-open login modal?
+                }
             }
         });
         return false;
