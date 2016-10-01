@@ -52,6 +52,7 @@
                 <input name='Participant[blacklisted]' type='checkbox' <?php if ($model->blacklisted == 'Y'): echo ' checked="checked" '; endif; ?> data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='action_changeBlacklistStatus ls-bootstrap-switch' />
             </div>
         </div>
+    <?php if (count($extraAttributes) > 0): ?>
         <legend><?php eT("Custom attributes"); ?></legend>
         <?php $i = 0; foreach($extraAttributes as $attribute): $i++; ?>
 
@@ -85,6 +86,7 @@
             <?php endif; ?>
 
         <?php endforeach; ?>
+    <?php endif; ?>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close') ?></button>
