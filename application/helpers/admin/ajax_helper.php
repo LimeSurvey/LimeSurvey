@@ -270,11 +270,22 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
     {
         parent::__construct(null);
 
-        $data = array();
-        $data[''];
-        $html = Yii::app()->getController()->renderPartial('admin/authentication/login', $data);
+        \Yii::import('application.controllers.admin.authentication', true);
 
-        $this->html = '<p>some html</p>';
+        // Return success, failure or template data
+        $result = \Authentication::prepareLogin();
+
+        // This should not be possible here
+        if (isset($result[0]) && $result[0] == 'success') {
+            throw new \CException('Internal error: login form submitted');
+        }
+        else if (isset($result[0]) && $result[0] == 'failed') {
+            throw new \CException('Internal error: login form submitted');
+        }
+
+        $data = $result;
+        $this->html = \Yii::app()->getController()->renderPartial('/admin/authentication/ajaxLogin', $data, true);
+
         $this->hasPermission = true;
         $this->loggedIn = false;
     }
