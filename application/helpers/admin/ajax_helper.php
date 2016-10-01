@@ -269,6 +269,11 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
     public function __construct()
     {
         parent::__construct(null);
+
+        $data = array();
+        $data[''];
+        $html = Yii::app()->getController()->renderPartial('admin/authentication/login', $data);
+
         $this->html = '<p>some html</p>';
         $this->hasPermission = true;
         $this->loggedIn = false;
