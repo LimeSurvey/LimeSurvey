@@ -11,7 +11,7 @@
         <div class="row login-title login-content">
             <div class="col-lg-12">
                 <h3><?php eT("Log in");?></h3>
-                <p class='text-muted'><?php eT('You\'ve been logged out due to inactivity. Please login in again.'); ?></p>
+                <p class='text-muted'><?php eT('You\'ve been logged out due to inactivity. Please log in again.'); ?></p>
             </div>
         </div>
 
