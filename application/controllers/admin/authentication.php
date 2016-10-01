@@ -37,6 +37,11 @@ class Authentication extends Survey_Common_Action
 
         $result = self::prepareLogin();
 
+        //print_r($_GET);
+        //print_r($_POST);
+        //print_r($result);
+        //die;
+
         if (isset($result[0]) && $result[0] == 'success') {
             self::doRedirect();
         }
