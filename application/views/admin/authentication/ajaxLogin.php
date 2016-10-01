@@ -128,6 +128,39 @@
 <script type='text/javascript'>
 $( document ).ready(function() {
     $('#user').focus();
-    //$("#width").val($(window).width());
+
+    $('button[name="login_submit"]').unbind();
+    $('button[name="login_submit"]').on('click', function(ev) {
+        ev.preventDefault();
+        var data = $('#loginform').serializeArray();;
+        var url = $('#loginform').attr('action');
+        console.log(data);
+        console.log(url);
+
+		var o = {};
+		var a = data;
+		$.each(a, function() {
+			if (o[this.name] !== undefined) {
+				if (!o[this.name].push) {
+					o[this.name] = [o[this.name]];
+				}
+				o[this.name].push(this.value || '');
+			} else {
+				o[this.name] = this.value || '';
+			}
+		});
+
+        o.login_submit = 'login';
+
+        $.ajax({
+            url: url,
+            data: o,
+            method: 'post',
+            success: function(response, status) {
+                console.log(response);
+            }
+        });
+        return false;
+    });
 });
 </script>
