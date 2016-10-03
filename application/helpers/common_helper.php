@@ -5600,15 +5600,20 @@ function getHeader($meta = false)
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
     App()->getClientScript()->registerPackage('fontawesome');
-    $header=  "<!DOCTYPE html>\n"
-    . "<html lang=\"{$languagecode}\"";
+    $header = "<!DOCTYPE html>\n";
+    $class = "no-js $languagecode";
+    $header .= "<html lang=\"{$languagecode}\"";
 
-    if (getLanguageRTL($languagecode))
-    {
+    if (getLanguageRTL($languagecode)){
         $header.=" dir=\"rtl\" ";
+        $class .= " dir-rtl";
+    }else{
+        $header.=" dir=\"ltr\" ";
+        $class .= " dir-ltr";
     }
-    $header.= ">\n\t<head>\n";
-
+    $header.= " class=\"{$class}\">\n";
+    $header.= "\t<head>\n";
+    $header.= "<script type='text/javascript'>/*<![CDATA[*/(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);/*]]>*/</script>";
     if ($meta)
         $header .= $meta;
 

@@ -352,11 +352,15 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $_clearall=CHtml::htmlButton(gT("Exit and clear survey"),array('type'=>'submit','id'=>"clearall",'value'=>'clearall','name'=>'clearall','class'=>'clearall button  btn btn-default btn-lg  col-xs-4 hidden','data-confirmedby'=>'confirm-clearall','title'=>gT("This action need confirmation.")));
-        $_clearall.=CHtml::checkBox("confirm-clearall",false,array('id'=>'confirm-clearall','value'=>'confirm','class'=>'hide jshide  btn btn-default btn-lg  col-xs-4'));
-        $_clearall.=CHtml::label(gT("Are you sure you want to clear all your responses?"),'confirm-clearall',array('class'=>'hide jshide  btn btn-default btn-lg  col-xs-4'));
-
-        $_clearalllinks = '<li><a href="#" id="clearallbtnlink">'.gT("Exit and clear survey").'</a></li>';
+        $_clearall=CHtml::tag("div",array("class"=>"form-inline"),
+            CHtml::htmlButton(gT("Exit and clear survey"),array('type'=>'submit','id'=>"clearall",'value'=>'clearall','name'=>'clearall','class'=>'clearall btn btn-default','data-confirmedby'=>'confirm-clearall','title'=>gT("This action need confirmation.")))
+            .CHtml::tag("div",array("class"=>"form-group ls-js-hidden checkbox-item"),
+                CHtml::checkBox("confirm-clearall",false,array('id'=>'confirm-clearall','value'=>'confirm','class'=>'checbox'))
+                .CHtml::label(gT("Are you sure you want to clear all your responses?"),'confirm-clearall',array('class'=>'control-label'))
+            )
+        );
+        $_clearalllinks = '<li class="ls-no-js-hidden"><a href="#" id="clearallbtnlink">'.gT("Exit and clear survey").'</a></li>';
+        // To replace javascript confirm : https://ethaizone.github.io/Bootstrap-Confirmation/ or http://bootboxjs.com/documentation.html#bb-confirm-dialog orhttps://nakupanda.github.io/bootstrap3-dialog/ or ....
     }
     else
     {
@@ -470,11 +474,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_saveform .="
             <div class='form-group save-survey-row save-survey-captcha'>
                 <label class='control-label col-sm-3 save-survey-label label-cell' for='loadsecurity'>" . gT("Security question:") . "</label>
-                <div class='col-sm-2 captcha-image'>
-                    <img alt='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' />
-                </div>
-                <div class='col-sm-3 save-survey-input input-cell'>
-                    <div class='captcha-table'>
+                <div class='col-sm-7 save-survey-input input-cell'>
+                    <div class='input-group'>
+                        <div class='input-group-addon captcha-image'>
+                            <img alt='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' />
+                        </div>
                         <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' />
                     </div>
                 </div>
@@ -482,13 +486,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     $_saveform .= "
         <div class='form-group save-survey-row save-survey-submit'>
-            <!-- Needed?
-            <td class='save-survey-label label-cell'>
-                <label class='hide jshide' for='savebutton'>" . gT("Save Now") . "</label>
-            </td>
-            -->
             <div class='form-group save-survey-input input-cell'>
-                <div class='col-sm-12'>
+                <div class='col-sm-7 col-md-offset-3'>
                     <input class='btn btn-default' type='submit' id='savebutton' name='savesubmit' value='" . gT("Save Now") . "' />
                 </div>
             </div>
@@ -520,24 +519,21 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_loadform .="
             <div class='form-group load-survey-row load-survey-captcha'>
                 <label class='control-label col-sm-3 load-survey-label label-cell' for='loadsecurity'>" . gT("Security question:") . "</label>
-                <div class='col-sm-2 captcha-image' valign='middle'>
-                    <img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' />
-                </div>
-                <div class='col-sm-3 captcha-input' valign='middle'>
-                    <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/>
+                <div class='col-sm-7 load-survey-input input-cell'>
+                    <div class='input-group'>
+                        <div class='input-group-addon captcha-image' >
+                            <img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' />
+                        </div>
+                        <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/>
+                    </div>
                 </div>
             </div>
         ";
     }
 
     $_loadform .="
-            <div class='load-survey-row load-survey-submit'>
-                <!-- Needed?
-                    <td class='load-survey-label label-cell'>
-                        <label class='hide jshide' for='loadbutton'>" . gT("Load now") . "</label>
-                    </td>
-                -->
-                <div class='form-group col-sm-12 load-survey-input input-cell'>
+            <div class='form-group load-survey-row load-survey-submit'>
+                <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
                     <input type='submit' id='loadbutton' class='btn btn-default' value='" . gT("Load now") . "' />
                 </div>
             </div>
@@ -820,8 +816,8 @@ function doHtmlSaveLinks($move="")
 
     if($thissurvey['allowsave'] == "Y")
     {
-        $sLoadButton = '<li><a href="#" id="loadallbtnlink" >'.gT("Load unfinished survey").'</a></li>';
-        $sSaveButton = '<li><a href="#" id="saveallbtnlink" >'.gT("Resume later").'</a></li>';
+        $sLoadButton = '<li class="ls-no-js-hidden"><a href="#" id="loadallbtnlink" >'.gT("Load unfinished survey").'</a></li>';
+        $sSaveButton = '<li class="ls-no-js-hidden"><a href="#" id="saveallbtnlink" >'.gT("Resume later").'</a></li>';
     }
     else
     {
@@ -844,7 +840,7 @@ function doHtmlSaveLinks($move="")
         {
             $sSaveAllButtons .= $sLoadButton;
         }
-        $sSaveAllButtons .= '<li><a href="#" id="saveallbtnlink" '.$aHtmlOptionsSaveall['disabled'].' >'.gT("Resume later").'</a></li>';
+        $sSaveAllButtons .= '<li class="ls-no-js-hidden"><a href="#" id="saveallbtnlink" '.$aHtmlOptionsSaveall['disabled'].' >'.gT("Resume later").'</a></li>';
     }
     elseif (!$iSessionStep) //Welcome page, show load (but not save)
     {
@@ -886,8 +882,8 @@ function doHtmlSaveAll($move="")
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
 
-    $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall btn btn-default col-xs-12 col-sm-4 submit button hidden");
-    $aHtmlOptionsSaveall=array('type'=>'submit','id'=>'saveallbtn','value'=>'saveall','name'=>'saveall','class'=>"saveall btn btn-default col-xs-12 col-sm-4 submit button hidden");
+    $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall btn btn-default");
+    $aHtmlOptionsSaveall=array('type'=>'submit','id'=>'saveallbtn','value'=>'saveall','name'=>'saveall','class'=>"saveall btn btn-default");
     if($thissurvey['allowsave'] == "Y")
     {
         $sLoadButton=CHtml::htmlButton(gT("Load unfinished survey"),$aHtmlOptionsLoadall);

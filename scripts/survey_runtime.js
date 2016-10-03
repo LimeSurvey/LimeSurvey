@@ -104,15 +104,15 @@ function limesurveySubmitHandler(){
 // Ask confirmation on click on .needconfirm
 function needConfirmHandler(){
     $(document).on('click',"[data-confirmedby]", function(event){
-        text=$("label[for='"+$(this).data('confirmedby')+"']").text();
-        if (confirm(text)) {
-            $("#"+$(this).data('confirmedby')).prop('checked',true);
-            return true;
+        if(!$("#"+$(this).data('confirmedby')).is(":checked"))
+        {
+            text=$("label[for='"+$(this).data('confirmedby')+"']").text();
+            if (confirm(text)) {
+                $("#"+$(this).data('confirmedby')).prop('checked',true);
+                return true;
+            }
+            return false;
         }
-        $(".button.ui-button" ).button( "option", "disabled", false );
-        $(".button").prop('disabled',false).removeClass('disabled');
-        $(this).prop('active',false).removeClass('active');
-        return false;
     });
 }
 /**

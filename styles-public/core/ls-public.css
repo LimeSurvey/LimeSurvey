@@ -5,5 +5,10 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  */
+.js .ls-js-hidden{display: none !important;}
+.no-js .ls-no-js-hidden{display: none !important;}
+
+/* The answers part */
 /* Restriction to big screen ? */
 .ls-input-group-extra{display:table-cell;width:1%;vertical-align: middle;padding: 0 0.8em;white-space: nowrap;}
+.form-inline .input-group .ls-input-group-extra{width: auto;white-space: initial;}

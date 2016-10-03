@@ -1,6 +1,6 @@
 <div id='load'>
   <div class="h2">{LOADHEADING}</div>
-  {if(LOADERROR,"<div class='alert alert-danger' role='alert'>"+LOADERROR+"</div>")}
+  {if(LOADERROR,"<div class='alert alert-danger' role='alert'>"+LOADERROR+"</div>","")}
   <div>{LOADMESSAGE}
     <div class="form">{LOADFORM}</div>
   </div>
