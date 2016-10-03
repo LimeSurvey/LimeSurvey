@@ -14,38 +14,38 @@
  */
 ?>
 
-<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal short-free-text">
+<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal short-free-text row">
 
-    <div class='form-group'>
-
+    <div class='col-sm-<?php echo $col; ?>'>
         <!-- Label -->
-        <label class='control-label col-xs-12 col-sm-2 hide label' for='answer<?php echo $name; ?>' >
+        <label class='control-label sr-only' for='answer<?php echo $name; ?>' >
             <?php eT('Your answer'); ?>
         </label>
-
-        <!-- Prefix -->
-        <?php if ($prefix !== ''): ?>
-            <span class='col-xs-12 col-sm-2 prefix-text-right prefix'><?php echo $prefix; ?></span>
+        <?php if ($prefix !== '' || $suffix !== ''): ?>
+            <div class="input-group">
         <?php endif; ?>
+            <!-- Prefix -->
+            <?php if ($prefix !== ''): ?>
+                <div class='ls-input-group-extra prefix-text prefix text-right'><?php echo $prefix; ?></div>
+            <?php endif; ?>
 
-        <!-- Input -->
-        <div class='col-xs-12 col-sm-<?php echo max($sm_col - 5, 6); ?>'>
+            <!-- Input -->
             <input
                 class="form-control text <?php echo $kpclass;?>"
                 type="text"
-                size="<?php echo $tiwidth; ?>"
                 name="<?php echo $name; ?>"
                 id="answer<?php echo $name;?>"
                 value="<?php echo $dispVal; ?>"
                 <?php echo $maxlength; ?>
-                onkeyup="<?php echo $checkconditionFunction; ?>"
+                size="<?php echo $inputsize; ?>"
             />
-        </div>
 
-        <!-- Suffix -->
-        <?php if ($suffix !== ''): ?>
-            <span class='col-xs-12 col-sm-2 text-left suffix'><?php echo $suffix; ?></span>
+            <!-- Suffix -->
+            <?php if ($suffix !== ''): ?>
+                <div class='ls-input-group-extra suffix-text suffix text-left'><?php echo $suffix; ?></div>
+            <?php endif; ?>
+        <?php if ($prefix !== '' || $suffix !== ''): ?>
+            </div>
         <?php endif; ?>
-
     </div>
 </div>

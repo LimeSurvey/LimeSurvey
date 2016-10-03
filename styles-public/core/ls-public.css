@@ -1,0 +1,9 @@
+/*!
+ * Style for public survey
+ *
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+/* Restriction to big screen ? */
+.ls-input-group-extra{display:table-cell;width:1%;vertical-align: middle;padding: 0 0.8em;white-space: nowrap;}

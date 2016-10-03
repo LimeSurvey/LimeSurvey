@@ -3402,15 +3402,13 @@ function do_shortfreetext($ia)
 
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth     = $aQuestionAttributes['text_input_width'];
-        $extraclass .= " inputwidth-".trim($aQuestionAttributes['text_input_width']);
-        $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .= " col-sm-".trim($col);
+        $col         = intval(($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12);
     }
     else
     {
-        $tiwidth = 50;
+        $col = 12; /* Or 6 ? */
     }
+    $inputsize=50; /* @todo : move it to attribute ? see https://bugs.limesurvey.org/view.php?id=11734 */
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
     {
         $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
@@ -3439,7 +3437,6 @@ function do_shortfreetext($ia)
     {
         $kpclass = "";
     }
-
     $answer = "";
 
     if (trim($aQuestionAttributes['display_rows'])!='')
@@ -3447,12 +3444,6 @@ function do_shortfreetext($ia)
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
         $drows = $aQuestionAttributes['display_rows'];
 
-        //if a textarea should be displayed we make it equal width to the long text question
-        //this looks nicer and more continuous
-        if($tiwidth == 50)
-        {
-            $tiwidth = 40;
-        }
         $dispVal = "";
 
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
@@ -3472,14 +3463,14 @@ function do_shortfreetext($ia)
             'labelText'              => gT('Your answer'),
             'name'                   => $ia[1],
             'drows'                  => $drows,
-            'tiwidth'                => $tiwidth,
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'dispVal'                => $dispVal,
             'maxlength'              => $maxlength,
             'kpclass'                => $kpclass,
             'prefix'                 => $prefix,
             'suffix'                 => $suffix,
-            'sm_col'                 => decide_sm_col($prefix, $suffix)
+            'inputsize'              => $inputsize,
+            'col'                    => $col
         ), true);
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==1)
@@ -3545,7 +3536,6 @@ function do_shortfreetext($ia)
             $questionHelp = true;
             $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
-
         $answer = doRender('/survey/questions/shortfreetext/location_mapservice/item', array(
             'extraclass'             => $extraclass,
             'freeTextId'             => 'answer'.$ia[1],
@@ -3561,7 +3551,8 @@ function do_shortfreetext($ia)
             'location_mapheight'     => $aQuestionAttributes['location_mapheight'],
             'questionHelp'           => $questionHelp,
             'question_text_help'     => (isset( $question_text ))? $question_text['help']:'',
-            'sm_col'                 => decide_sm_col($prefix, $suffix)
+            'inputsize'              => $inputsize,
+            'col'                    => $col
         ), true);
 
     }
@@ -3609,7 +3600,6 @@ function do_shortfreetext($ia)
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
 
-
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
             $questionHelp = true;
@@ -3630,6 +3620,8 @@ function do_shortfreetext($ia)
             'location_value'=> $currentLatLong[0].' '.$currentLatLong[1],
             'currentLat'=>$currentLatLong[0],
             'currentLong'=>$currentLatLong[1],
+            'inputsize'              => $inputsize,
+            'col'                    => $col
         );
         $answer = doRender('/survey/questions/shortfreetext/location_mapservice/item_100', $itemDatas, true);
     }
@@ -3650,10 +3642,10 @@ function do_shortfreetext($ia)
             'prefix'=>$prefix,
             'suffix'=>$suffix,
             'kpclass'=>$kpclass,
-            'tiwidth'=>$tiwidth,
             'dispVal'=>$dispVal,
             'maxlength'=>$maxlength,
-            'sm_col' => decide_sm_col($prefix, $suffix)
+            'inputsize'              => $inputsize,
+            'col'                    => $col
         );
         $answer = doRender('/survey/questions/shortfreetext/text/item', $itemDatas, true);
 

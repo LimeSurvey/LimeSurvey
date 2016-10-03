@@ -17,35 +17,34 @@
  */
 ?>
 
-<div class="question answer-item geoloc-item <?php echo $extraclass; ?>">
+<div class="question answer-item geoloc-item <?php echo $extraclass; ?> row">
 
-    <div class="geoname_search col-xs-12" >
-        <div class="pull-left search-icon">
-            <span class="fa fa-search"></span>
-        </div>
-        <div class="geoname_search col-xs-6" >
-            <input
-                id="searchbox_<?php echo $name; ?>"
-                placeholder="<?php eT("Search"); ?>"
-                class="form-control"
-                type="text"
-             />
-        </div>
+    <div class="geoname_search col-xs-12 col-sm-12 " >
+        <div class="input-group">
+            <div class="input-group-addon search-icon">
+                <span class="fa fa-search"></span>
+            </div>
+                <input
+                    id="searchbox_<?php echo $name; ?>"
+                    placeholder="<?php eT("Search"); ?>"
+                    class="form-control"
+                    type="text"
+                 />
 
-        <div class="pull-left checkbox">
-            <input
-                type="checkbox"
-                id="restrictToExtent_<?php echo $name; ?>"
-                />
-                <label for="restrictToExtent_<?php echo $name; ?>">
-                    <?php eT("Restrict search place to map extent"); ?>
-                </label>
+            <div class="input-group-addon checkbox-item">
+                <input
+                    type="checkbox"
+                    id="restrictToExtent_<?php echo $name; ?>"
+                    />
+                    <label for="restrictToExtent_<?php echo $name; ?>">
+                        <?php eT("Restrict search place to map extent"); ?>
+                    </label>
+            </div>
         </div>
     </div>
 
-    <div class="col-xs-12 if-no-js">
+    <div class="col-xs-12 if-no-js col-sm-12 form-inline">
         <!-- No javascript need a way to answer -->
-
         <input
             type="hidden"
             name="<?php echo $name; ?>"
@@ -53,7 +52,7 @@
             value="<?php echo $value; ?>"
             >
 
-            <input
+        <input
             type="hidden"
             class="location"
             name="<?php echo $name; ?>_c"
@@ -61,29 +60,31 @@
             value="<?php echo $location_value; ?>"
             />
 
-            <ul class="list-unstyled coordinates-list col-xs-12">
-                <li class="coordinate-item">
-                    <?php eT("Latitude:"); ?>
+                <div class="coordinate-item form-group">
+                    <label for="answer_lat<?php echo $name; ?>_c" class="control-label">
+                        <?php eT("Latitude:"); ?>
+                    </label>
                     <input
-                    class="coords text"
+                    class="coords text form-control"
                     type="text"
                     name="<?php echo $name; ?>_c1"
                     id="answer_lat<?php echo $name; ?>_c"
                     value="<?php echo $currentLat; ?>"
                     />
-                </li>
+                </div>
 
-                <li class="coordinate-item">
-                    <?php eT("Longitude:"); ?>
+                <div class="coordinate-item form-group">
+                    <label for="answer_lng<?php echo $name; ?>_c" class="control-label">
+                        <?php eT("Longitude:"); ?>
+                    </label>
                     <input
-                    class="coords text"
+                    class="coords text form-control"
                     type="text"
                     name="<?php echo $name; ?>_c2"
                     id="answer_lng<?php echo $name; ?>_c"
                     value="<?php echo $currentLong; ?>"
                     />
-                </li>
-            </ul>
+                </div>
 
             <input
             type="hidden"
@@ -100,10 +101,10 @@
             value="<?php echo $location_mapservice; ?>"
             />
     </div>
-
+    <div class="col-xs-12">
     <!-- Map -->
-    <div id="map_<?php echo $name; ?>" style="width: 100%; height: <?php echo $location_mapheight; ?>px;">
-
+        <div id="map_<?php echo $name; ?>" style="width: 100%; height: <?php echo $location_mapheight; ?>px;">
+    </div>
     </div>
 
     <?php if($questionHelp):?>
