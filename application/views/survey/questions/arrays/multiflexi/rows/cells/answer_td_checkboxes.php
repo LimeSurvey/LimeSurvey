@@ -15,7 +15,6 @@
 
 <!-- answer_td_checkboxes -->
 <td class="answer_cell_<?php echo $ld; ?> question-item answer-item <?php echo $answertypeclass;?>-item checkbox-item text-center">
-
     <input
         type="hidden"
         name="java<?php echo $myfname2;?>"
@@ -26,31 +25,17 @@
         type="hidden"
         name="<?php echo $myfname2; ?>"
         id="answer<?php echo $myfname2;?>"
-        value=""
+        class="hidden"
+        value="<?php echo $value; ?>"
     />
     <input
         type="checkbox"
-        class="checkbox <?php echo $extraclass;?>"
+        class="<?php echo $extraclass;?>"
         name="<?php echo $myfname2;?>"
         id="cbox_<?php echo $myfname2;?>"
+        value="1"
         <?php echo $setmyvalue; ?>
-        onclick="
-            cancelBubbleThis(event);
-            jelt=document.getElementById('java<?php echo $myfname2;?>');
-            if(this.checked)
-            {
-                jelt.value=1;
-                <?php echo $checkconditionFunction; ?>(1,'<?php echo $myfname2;?>',aelt.type);
-            }
-            else
-            {
-                jelt.value='';
-                <?php echo $checkconditionFunction; ?>('','<?php echo $myfname2;?>',aelt.type);
-            }
-            return true;"
-        onchange="checkconditions(this.value, this.name, this.type)"
         />
-
         <label for="cbox_<?php echo $myfname2;?>" class="sr-only">
             <?php echo $dataTitle;?>
         </label>

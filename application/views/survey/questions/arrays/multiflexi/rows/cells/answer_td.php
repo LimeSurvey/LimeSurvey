@@ -40,8 +40,6 @@
                 class="multiflexiselect form-control text-right"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
-                onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
-                aria-labelledby="label-answer<?php echo $myfname2;?>"
             >
                 <option value="">
                     <?php eT('...'); ?>
@@ -62,8 +60,8 @@
                 id="answer<?php echo $myfname2;?>"
                 <?php echo $maxlength; ?>
                 size=5
-                onkeyup="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
                 value="<?php echo $value; ?>"
+                data-number="true"
                 />
         <?php endif; ?>
 </td>

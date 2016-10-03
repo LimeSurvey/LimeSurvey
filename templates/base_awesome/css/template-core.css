@@ -55,11 +55,11 @@ margin: 0;
 .radio-item label.sr-only::before,.checkbox-item label.sr-only::before  {
     margin-left:0;
 }
-.radio-item label.sr-only::after {
+.radio-item label.sr-only::after,.checkbox-item label.sr-only::after {
     margin-left:0;
 }
 .checkbox-item label.sr-only::after {
-    margin-left:-20px;margin-top:-2px
+    line-height:17px;width:17px;text-align:center;text-indent: 0;
 }
 /* Hide the other content inside sr-only */
 .radio-item label.sr-only > *,.checkbox-item label.sr-only > * {
@@ -93,7 +93,7 @@ only screen and (max-width: 760px),
     .table.question .answertextright{text-align:right}
 
     /* Show the label */
-    .radio-item label.sr-only{
+    label.sr-only{
         display:block;
     }
     .no-more-table label.sr-only,

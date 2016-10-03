@@ -5357,6 +5357,8 @@ function do_array_multiflexi($ia)
         $answertypeclass     =  " checkbox";
         $caption            .= gT("Please check the matching combinations.");
         $textAlignment       = 'center';
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-number-checkbox.js",CClientScript::POS_HEAD);
+        App()->getClientScript()->registerScript("doArrayNumberCheckbox","doArrayNumberCheckbox();\n",CClientScript::POS_END);
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
@@ -5639,7 +5641,6 @@ function do_array_multiflexi($ia)
 
             $sAnswerRows .=  doRender('/survey/questions/arrays/multiflexi/rows/answer_row', array(
                                 'sDisplayStyle'     => $sDisplayStyle,
-                                'useAnswerWidth'    => $useAnswerWidth,
                                 'answerwidth'       => $answerwidth,
                                 'myfname'           => $myfname,
                                 'error'             => $error,

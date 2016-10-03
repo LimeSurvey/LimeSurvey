@@ -10,7 +10,7 @@ img,video,svg{
 /* awesome-bootstrap-checkbox */
 li.radio-item{display:block}
 /* Else big label break*/
-.radio-item label {display:block}
+.radio-item label,.checkbox-item label {display:block}
 .radio-item input[type="radio"] {
     position:absolute;
     /* opacity: 1; // Must control it for accessibility */
@@ -40,7 +40,7 @@ margin: 0;
 }
 
 /* show partially sr-only inside table */
-.radio-item label.sr-only{
+.radio-item label.sr-only,.checkbox-item label.sr-only{
     display:inline-block;
     overflow:hidden;
     width: 17px;
@@ -49,15 +49,18 @@ margin: 0;
     line-height: 21px;
     text-indent: 21px;
 }
-/* no argin on label : no margiun after and before too */
-.radio-item label.sr-only::before {
+/* no margin on label : no margin after and before too */
+.radio-item label.sr-only::before,.checkbox-item label.sr-only::before  {
     margin-left:0;
 }
-.radio-item label.sr-only::after {
+.radio-item label.sr-only::after,.checkbox-item label.sr-only::after {
     margin-left:0;
+}
+.checkbox-item label.sr-only::after {
+    line-height:17px;width:17px;text-align:center;text-indent: 0;
 }
 /* Hide the other content inside sr-only */
-.radio-item label.sr-only > * {
+.radio-item label.sr-only > *,.checkbox-item label.sr-only > * {
     height: 1px;
     margin: -1px;
     overflow: hidden;
@@ -88,11 +91,11 @@ only screen and (max-width: 760px),
     .table.question .answertextright{text-align:right}
 
     /* Show the label */
-    .radio-item label.sr-only{
-        display:block;
+    label.sr-only{
+        display:inline-block;
     }
-    .no-more-table .radio-item label.sr-only,
-    .no-more-table .radio-item label.sr-only > *
+    .no-more-table label.sr-only,
+    .no-more-table label.sr-only > *
     {
         overflow:visible;
         width: auto;
@@ -102,13 +105,10 @@ only screen and (max-width: 760px),
         clip: auto;
         position: relative;
     }
-    .no-more-table .radio-item label.sr-only > img{
-
-    }
-    .no-more-table .radio-item label.sr-only::before {
+    .no-more-table .radio-item label.sr-only::before,.no-more-table .checkbox-item label.sr-only::before  {
         margin-left:-20px;
     }
-    .no-more-table .radio-item label.sr-only::after {
+    .no-more-table .radio-item label.sr-only::after,.no-more-table .checkbox-item label.sr-only::after {
         margin-left:-20px;
     }
 }

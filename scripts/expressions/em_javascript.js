@@ -34,10 +34,11 @@ $(document).on("keyup",".answer-item textarea:not([onkeyup]),.answer-item :text:
         checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
     }
 });
-$(document).on("change",".select-item select:not([onchange])",function(event){
+$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
     //$('#java'+$(this).attr("name")).val($(this).val()); Not needed for ranking, needed for ? select already have val() and are unique by name
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring )){
         ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
+    }
 });
 
 function LEMcount()

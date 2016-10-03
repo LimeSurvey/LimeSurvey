@@ -31,13 +31,11 @@
 .checkbox-item label::after {
   display: inline-block;
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 17px;text-align:center;
+  height: 17px;line-height: 17px;
   left: 0;
   top: 0;
   margin-left: -20px;
-  padding-left: 3px;
-  padding-top: 1px;
   font-size: 11px;
   color: #2c3e50;
 }
