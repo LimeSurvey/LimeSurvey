@@ -2994,7 +2994,7 @@ function do_multiplenumeric($ia)
                 if($slider_reset){
                     $sliderWidth-=2;
                 }
-                if($slider_separator == '')
+                if($slider_separator != '')
                 {
                     $aAnswer     = explode($slider_separator,$ansrow['question']);
                     $theanswer   = (isset($aAnswer[0]))?$aAnswer[0]:"";
