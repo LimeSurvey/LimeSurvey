@@ -461,7 +461,8 @@ class participantsaction extends Survey_Common_Action
         $aData = array(
             'model' => $model,
             'editType' => $operationType,
-            'extraAttributes' => $extraAttributes
+            'extraAttributes' => $extraAttributes,
+            'users' => User::model()->findAll()
         );
 
         $html = $this->getController()->renderPartial(
@@ -603,6 +604,11 @@ class participantsaction extends Survey_Common_Action
 
         if (!$participant->userHasPermissionToEdit()) {
             ls\ajax\AjaxHelper::outputNoPermission();
+        }
+
+        // Make sure no-one hacks owner_uid into form
+        if (!$participant->isOwnerOrSuperAdmin()) {
+            unset($aData['owner_uid']);
         }
 
         $participant->attributes = $aData;

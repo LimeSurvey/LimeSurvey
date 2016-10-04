@@ -2171,6 +2171,20 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * Returns true if user is either owner of this participant or superadmin
+     * Used to decide is user can change owner of participant
+     * @return boolean
+     */
+    public function isOwnerOrSuperAdmin()
+    {
+        $userId = Yii::app()->user->id;
+        $owner = $this->owner_uid == $userId;
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
+
+        return $owner || $isSuperAdmin;
+    }
+
+    /**
      * 'created' field formatted; empty string if no timestamp in database
      * @return string
      */
