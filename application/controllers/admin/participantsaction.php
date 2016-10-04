@@ -293,8 +293,6 @@ class participantsaction extends Survey_Common_Action
      */
     public function displayParticipants()
     {
-        $lang = Yii::app()->session['adminlang'];
-
         //Get list of surveys.
         //Should be all surveys owned by user (or all surveys for super admin)
         $surveys = Survey::model();
@@ -414,7 +412,7 @@ class participantsaction extends Survey_Common_Action
         }
         else {
             // Internal error
-            assert(false);
+            throw new InvalidArgumentException('Unknown select option: ' . $selectoption);
         }
 
         if ($deletedParticipants == 0) {
@@ -703,6 +701,8 @@ class participantsaction extends Survey_Common_Action
         $sExtension = $aPathinfo['extension'];
         if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
         {
+            $bMoveFileResult = null;  // Scrutinizer does not understand that this block halt execution
+            $filterblankemails = null;  // Same
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024),'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             Yii::app()->end();
@@ -714,10 +714,13 @@ class participantsaction extends Survey_Common_Action
         }
         else
         {
+            $bMoveFileResult = null;  // Scrutinizer does not understand that this block halt execution
+            $filterblankemails = null;  // Same
             Yii::app()->setFlashMessage(gT("This is not a .csv file."),'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             Yii::app()->end();
         }
+
         if (!$bMoveFileResult)
         {
             Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),'error');
@@ -1072,12 +1075,12 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Exports participants as CSV - receiver function for the GUI
+     * @return void
      */
     public function exporttocsv()
     {
         $this->checkPermission('export');
 
-        $search = new CDbCriteria;
         if (Yii::app()->request->getPost('searchcondition','') !== '') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
@@ -1091,15 +1094,19 @@ class participantsaction extends Survey_Common_Action
         $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
         $chosenParticipantsArray = explode(',',$chosenParticipants);
         $searchSelected = new CDbCriteria;
-        if(!empty($chosenParticipants))
+        if(!empty($chosenParticipants)) {
             $searchSelected->addInCondition("p.participant_id",$chosenParticipantsArray);
-        else 
+        }
+        else {
             $searchSelected = null;
+        }
 
-        if($search)
+        if($search) {
             $search->mergeWith($searchSelected);
-        else
+        }
+        else {
             $search = $searchSelected;
+        }
 
         $aAttributes=explode('+',Yii::app()->request->getPost('attributes',''));
         $this->csvExport($search,$aAttributes);
@@ -1254,11 +1261,10 @@ class participantsaction extends Survey_Common_Action
     /**********************************************PARTICIPANT ATTRIBUTES***********************************************/
     /**
      * Loads the view 'attributeControl'
+     * @return void
      */
     public function attributeControl()
     {
-        $lang = Yii::app()->session['adminlang'];
-
         $model = new ParticipantAttributeName();
         if(Yii::app()->request->getParam('ParticipantAttributeName'))
         {
@@ -1459,7 +1465,7 @@ class participantsaction extends Survey_Common_Action
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
         if(count($AttributePackage->participant_attribute_names_lang)>1)
         {
-            $success = $languageEntry = ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
+            ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
             ls\ajax\AjaxHelper::outputSuccess(gT("Language successfully deleted"));
         }
         else
@@ -1476,7 +1482,7 @@ class participantsaction extends Survey_Common_Action
     public function deleteSingleAttribute()
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
-        $success = ParticipantAttributeName::model()->delAttribute($attribute_id);
+        ParticipantAttributeName::model()->delAttribute($attribute_id);
         ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully deleted"));
     }
 
@@ -1796,8 +1802,6 @@ class participantsaction extends Survey_Common_Action
      */
     public function sharePanel()
     {
-        $lang = Yii::app()->session['adminlang'];
-
         $model = new ParticipantShare();
         if(Yii::app()->request->getParam('ParticipantShare'))
         {
@@ -2175,15 +2179,16 @@ class participantsaction extends Survey_Common_Action
     public function shareParticipant()
     {
         $iParticipantId = Yii::app()->request->getPost('participant_id');
-        $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
 
         if (Permission::model()->hasGlobalPermission('participantpanel','update')){
             $time = time();
-            $aData = array('participant_id' => $iParticipantId,
+            $aData = array(
+                'participant_id' => $iParticipantId,
                 'share_uid' => yii::app()->user->getId(),
                 'date_added' => date('Y-m-d H:i:s', $time),
-                'can_edit' => $bCanEdit);
+                'can_edit' => $bCanEdit
+            );
             ParticipantShare::model()->storeParticipantShare($aData);
 
             ls\ajax\AjaxHelper::outputSuccess(gT("Participant shared."));
@@ -2200,8 +2205,7 @@ class participantsaction extends Survey_Common_Action
     public function rejectShareParticipant()
     {
         $participant_id = yii::app()->request->getPost('participant_id');
-        $share_uid = yii::app()->user->getId();
-        $success = ParticipantShare::model()->deleteAllByAttributes( array('participant_id' => $participant_id) );
+        ParticipantShare::model()->deleteAllByAttributes( array('participant_id' => $participant_id) );
         ls\ajax\AjaxHelper::outputSuccess(gT("Participant removed from sharing"));
     }
 
@@ -2209,7 +2213,7 @@ class participantsaction extends Survey_Common_Action
      * Deletes a single participant share
      * Called by Ajax; echoes success/error
      * @param string $participantId
-     * @param int $share_uid
+     * @param int $shareUid
      * @return void
      */
     public function deleteSingleParticipantShare($participantId, $shareUid)
