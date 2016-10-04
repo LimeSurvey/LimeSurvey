@@ -55,11 +55,10 @@ function updateUploadFrame(frameName,heigth)
  */
 function updateMaxHeightModalbody(modal)
 {
-    var offset=$(modal).find(".modal-dialog").offset();
-    var offsetTop =offset.top;
     var modalHeader=$(modal).find(".modal-header").outerHeight();
     var modalFooter=$(modal).find(".modal-footer").outerHeight();
-    var finalMaxHeight=Math.max(150,$(window).height()-(offsetTop+modalHeader+modalFooter+20));// Not less than 150px
+    console.log([$(window).height(),modalHeader,modalFooter,(modalHeader+modalFooter)]);
+    var finalMaxHeight=Math.max(150,$(window).height()-(modalHeader+modalFooter+16));// Not less than 150px
     $(modal).find(".modal-body").css("max-height",finalMaxHeight);
 }
 

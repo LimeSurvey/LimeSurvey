@@ -1,6 +1,6 @@
 .file-upload-modal .modal-dialog
 {
-  margin-bottom:0;
+  margin:0;
 }
 .file-upload-modal .modal-body
 {
@@ -8,16 +8,16 @@
   width:auto;
   max-height:100%;
   box-sizing:border-box;
-  overflow-y:auto;
-  overflow-x:auto;
+  overflow-y:show;
+  overflow-x:hidden;
 }
+.file-upload-modal-footer{margin-top:0}
 
 .uploader-frame{
   border:0 none;
   width:100%;
   height:100%;
 }
-
 /*
 img.uploaded{
 display:block;
