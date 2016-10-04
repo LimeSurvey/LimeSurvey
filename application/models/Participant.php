@@ -290,8 +290,8 @@ class Participant extends LSActiveRecord
         }
 
         $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
-        foreach($participantAttributes as $singleAttribute){
-            if($singleAttribute['attribute_id'] == $attribute_id){
+        foreach($participantAttributes as $singleAttribute) {
+            if($singleAttribute['attribute_id'] == $attribute_id) {
                 return $singleAttribute['value']; 
             }
         }
@@ -473,7 +473,7 @@ class Participant extends LSActiveRecord
                 $extraAttributeValues[] =  "'".$extraAttributeParams[$name]."'";
             }
         }
-        $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attributes}} AS pa WHERE value IN (".join(', ',$extraAttributeValues).")";
+        $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE value IN (".join(', ',$extraAttributeValues).")";
 
         if(!empty($extraAttributeValues))
         { 
