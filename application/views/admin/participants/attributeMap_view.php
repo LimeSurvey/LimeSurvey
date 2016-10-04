@@ -2,7 +2,7 @@
     var redUrl = "<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>";
     var surveyId = "<?php echo $survey_id ?>";
     var redirect = "<?php echo $redirect ?>";
-    if(redirect=='TRUE')
+    if(redirect == 'on')
     {
         redUrl = "<?php echo $this->createUrl("/admin/tokens/sa/browse/surveyid/{$survey_id}"); ?>";
     }

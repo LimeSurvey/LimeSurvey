@@ -4,6 +4,17 @@
  * This file contain all the common css definitions for the different admin theme.
  * It should not contain color definition (grey, blacks, and white are acceptable)
  */
+#notif-container{
+  position: fixed;
+  top: 5%;
+  left: 20%;
+  width: 60%;
+  z-index: 3500;
+  background: rgba(255,255,255,0.1);
+}
+.bg-white{
+  background: #fff;
+}
 .row-button-margin-bottom {
   margin-bottom: -5px;
 }
@@ -162,6 +173,7 @@
   min-height: 100%;
   position: relative;
   margin-bottom: 65px;
+  padding: 0;
 }
 
 .side-body h3, .pagetitle, .list-surveys h3 {
@@ -2105,4 +2117,9 @@ table#responsedetail tr td{
 #responses-grid .table-condensed.upload-question {
     margin-bottom: 0;
     background-color: inherit;
+}
+
+.edit-participant-modal-body {
+    max-height: 500px;
+    overflow-y: auto;
 }

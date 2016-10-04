@@ -19,9 +19,18 @@ $(document).on('click', '.listActions a', function ()
 {
     var $that          = $(this);                                                             // The cliked link
     var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
+    var onSuccess      = $that.data('on-success');
     var $gridid        = $('.listActions').data('grid-id');
     var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
+    var actionType = $that.data('actionType');
+
+    if( $oCheckedItems == '[]' ) {
+        //If no item selected, the error modal "please select first an item" is shown
+        // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
+        $('#error-first-select').modal();
+        return;
+    }
 
     // TODO : Switch action (post, session, ajax...)
 
@@ -29,7 +38,7 @@ $(document).on('click', '.listActions a', function ()
     // TODO: replace all of them with the method above
 
     // TODO : Switch case "redirection (with 2 type; post or fill session)"
-    if($that.data('actionType')=="redirect")
+    if(actionType == "redirect")
     {
         $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // So we can join
         var newForm = jQuery('<form>', {
@@ -51,7 +60,7 @@ $(document).on('click', '.listActions a', function ()
 
     // For actions without modal, doing a redirection
     // Using session before redirect rather than form submission
-    if($that.data('actionType') == 'fill-session-and-redirect')
+    if(actionType == 'fill-session-and-redirect')
     {
         // postUrl is defined as a var in the View
         $(this).load(postUrl, {
@@ -62,13 +71,23 @@ $(document).on('click', '.listActions a', function ()
     }
 
     // Set window location href. Used by download files in responses list view.
-    if ($that.data('actionType') == 'window-location-href')
-    {
+    if (actionType == 'window-location-href') {
         var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // So we can join
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
     }
 
+    /**
+     * Custom action
+     * Will run Javascript function in 'custom-js'. First argument is array of item ids, defined by 'pk'.
+     */
+    if (actionType == 'custom') {
+        var js = $that.data('custom-js');
+        var func = eval(js);
+        var itemIds = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));
+        func(itemIds);
+        return;
+    }
 
     // TODO: switch case "Modal"
     var $modal  = $('#'+$that.data('modal-id'));   // massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>
@@ -113,12 +132,16 @@ $(document).on('click', '.listActions a', function ()
         });
 
         // Custom attributes to updates (like question attributes)
-        var $aAttributesToUpdate = [];
+        var aAttributesToUpdate = [];
         $modal.find('.attributes-to-update').each(function(i, el)
         {
-            $aAttributesToUpdate.push($(this).attr('name'));
+            aAttributesToUpdate.push($(this).attr('name'));
         });
-        $postDatas['aAttributesToUpdate'] = JSON.stringify($aAttributesToUpdate);
+        $postDatas['aAttributesToUpdate'] = JSON.stringify(aAttributesToUpdate);
+
+        $modal.find('input.post-value, select.post-value').each(function(i, el) {
+            $postDatas[$(el).attr('name')] = $(el).val();
+        });
 
         // Update the modal elements
         // TODO: ALL THIS DEPEND ON KEEPOPEN OR NOT
@@ -137,13 +160,22 @@ $(document).on('click', '.listActions a', function ()
             success : function(html, statut){
                 $ajaxLoader.hide();                                 // Hide the ajax loader
 
-                // This depend on keepopen
-                $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
-
                 if( $modal.data('keepopen') != 'yes' )
                 {
                     $modal.modal('hide');
                 }
+                else
+                {
+                    // This depend on keepopen
+                    $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
+                }
+
+                if (onSuccess) {
+                    var func = eval(onSuccess);
+                    func(html);
+                    return;
+                }
+
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
@@ -154,16 +186,7 @@ $(document).on('click', '.listActions a', function ()
     });
 
     // open the modal
-    if( $oCheckedItems !== '[]' )
-    {
-        $modal.modal();
-    }
-    else
-    {
-        //If no item selected, the error modal "please select first an item" is shown
-        // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
-        $('#error-first-select').modal();
-    }
+    $modal.modal();
 });
 
 /**
