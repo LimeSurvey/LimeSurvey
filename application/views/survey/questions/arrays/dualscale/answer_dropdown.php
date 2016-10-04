@@ -15,53 +15,20 @@
     <table class="table table-in-qanda-10 question subquestion-list questions-list dropdown-list">
 
         <!-- Column groups -->
-        <col class="answertext" style='width: <?php echo $answerwidth; ?>%;' />
-
-        <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
-            <colgroup style='width: <?php echo $cellwidth; ?>%;' >
-        <?php endif; ?>
-
-            <?php if ($ddprefix != ''): ?>
-                <col class="ddprefix" />
-            <?php endif; ?>
-
-            <col class="dsheader" <?php echo $headcolwidth; ?> />
-
-            <?php if ($ddsuffix != ''): ?>
-                <col class="ddsuffix" />
-            <?php endif; ?>
-
-            <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
-                </colgroup>
-            <?php endif; ?>
-
-        <col class="ddarrayseparator" style='width: <?php echo $separatorwidth; ?>%'/>
-
-        <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
-            <colgroup style='width: <?php echo $cellwidth; ?>%;' >
-        <?php endif; ?>
-
-            <?php if ($ddprefix != ''): ?>
-                <col class="ddprefix" />
-            <?php endif; ?>
-
-            <col class="dsheader" <?php echo $headcolwidth; ?> />
-
-            <?php if ($ddsuffix != ''): ?>
-                <col class="ddsuffix" />
-            <?php endif; ?>
-
-        <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
-            </colgroup>
-        <?php endif; ?>
+        <colgroup>
+            <col class="answertext" style='width: <?php echo $answerwidth; ?>%;' />
+            <col class="dsheader" style='width: <?php echo $cellwidth; ?>%;' />
+            <col class="ddarrayseparator" style='width: <?php echo $separatorwidth; ?>%'/>
+            <col class="dsheader"  style='width: <?php echo $cellwidth; ?>%;' />
+        </colgroup>
         <!-- Header -->
 
         <thead>
             <tr>
-                <th>&nbsp;</th>
-                <th  class='th-14' <?php echo $colspan; ?>><?php echo $leftheader; ?></th>
-                <th>&nbsp;</th>
-                <th class='th-15' <?php echo $colspan; ?>><?php echo $rightheader; ?></th>
+                <td>&nbsp;</tdh>
+                <th class='left-header'><?php echo $leftheader; ?></th>
+                <td>&nbsp;</td>
+                <th class='right-header'><?php echo $rightheader; ?></th>
             </tr>
         </thead>
 
@@ -86,8 +53,8 @@
                 ?>
                     <!-- Answer text (actual question) -->
 
-                    <th class="answertext control-label">
-                        <label for="answer<?php echo $ansrow['myfid0']; ?>" id="answertext<?php echo $ansrow['myfname']; ?>">
+                    <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?>">
+                        <label class="control-label" for="answer<?php echo $ansrow['myfid0']; ?>" id="label-<?php echo $ansrow['myfname']; ?>">
                             <?php echo $ansrow['question']; ?>
                         </label>
                         <input
@@ -106,24 +73,23 @@
                         />
                     </th>
 
-                    <!-- Prefix -->
-
-                    <?php if ($ddprefix != ''): ?>
-                        <td class="ddprefix information-item">
-                            <?php echo $ddprefix; ?>
-                        </td>
-                    <?php endif; ?>
-
                     <!-- First dropdown -->
 
                     <td class="answer-item dropdown-item">
+                        <?php if ($ddprefix != '' || $ddprefix != ''): ?>
+                            <div class="input-group">
+                        <?php endif; ?>
+                        <?php if ($ddprefix != ''): ?>
+                            <div class="ddprefix ls-input-group-extra">
+                                <?php echo $ddprefix; ?>
+                            </div>
+                        <?php endif; ?>
                         <select
                             class='form-control'
                             name="<?php echo $ansrow['myfname0']; ?>"
                             id="answer<?php echo $ansrow['myfid0']; ?>"
                             aria-labelledby="answertext<?php echo $ansrow['myfname']; ?>"
                         >
-
                             <!-- Please choose... -->
                             <?php if ($ansrow['sActualAnswer0'] == ''): ?>
                                 <option value="" <?php echo SELECTED; ?> >
@@ -147,37 +113,35 @@
                             <?php if ($ansrow['showNoAnswer0'] && $ansrow['sActualAnswer0'] != ''): ?>
                                 <option value=""><?php eT('No answer'); ?></option>
                             <?php endif; ?>
-
                         </select>
+                        <?php if ($ddsuffix != ''): ?>
+                            <div class="ddsuffix ls-input-group-extra">
+                                <?php echo $ddsuffix; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($ddprefix != '' || $ddprefix != ''): ?>
+                            </div>
+                        <?php endif; ?>
                     </td>
 
-                    <!-- Suffix -->
-
-                    <?php if($ddsuffix != ''): ?>
-                        <td class="ddsuffix information-item"><?php echo $ddsuffix; ?></td>
-                    <?php endif; ?>
 
                     <!-- Separator -->
 
                     <td class="ddarrayseparator information-item"><?php echo $interddSep; ?></td>
 
-                    <!-- Prefix -->
-
-                    <?php if ($ddprefix != ''): ?>
-                        <td class="ddprefix information-item text-right">
-                            <?php echo $ddprefix; ?>
-                        </td>
-                    <?php endif; ?>
-
-
                     <!-- Second dropdown -->
 
                     <td class="answer-item dropdown-item">
-                        <label class="visible-xs-block" for="answer<?php echo $ansrow['myfid1']; ?>">
-                            <?php echo $ansrow['question']; ?>
-                        </label>
-
-                        <select class='form-control' name="<?php echo $ansrow['myfname1']; ?>" id="answer<?php echo $ansrow['myfid1']; ?>">
+                        <!-- We don't need another label : aria-labelledby for accessibility, and we have only 2 line in phone and no-more-table -->
+                        <?php if ($ddprefix != '' || $ddprefix != ''): ?>
+                            <div class="input-group">
+                        <?php endif; ?>
+                        <?php if ($ddprefix != ''): ?>
+                            <div class="ddprefix ls-input-group-extra">
+                                <?php echo $ddprefix; ?>
+                            </div>
+                        <?php endif; ?>
+                        <select class='form-control' name="<?php echo $ansrow['myfname1']; ?>" id="answer<?php echo $ansrow['myfid1']; ?>" aria-labelledby="label-<?php echo $ansrow['myfname']; ?>"">
                             <!-- Please choose... -->
                             <?php if ($ansrow['sActualAnswer1'] == ''): ?>
                                 <option value="" <?php echo SELECTED; ?> ><?php eT('Please choose...'); ?></option>
@@ -200,14 +164,15 @@
                             <?php endif; ?>
 
                         </select>
+                        <?php if ($ddsuffix != ''): ?>
+                            <div class="ddsuffix ls-input-group-extra">
+                                <?php echo $ddsuffix; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($ddprefix != '' || $ddprefix != ''): ?>
+                            </div>
+                        <?php endif; ?>
                     </td>
-
-                    <!-- Suffix -->
-
-                    <?php if($ddsuffix != ''): ?>
-                        <td class="ddsuffix information-item"><?php echo $ddsuffix; ?></td>
-                    <?php endif; ?>
-
                 </tr>
             <?php endforeach; ?>
 

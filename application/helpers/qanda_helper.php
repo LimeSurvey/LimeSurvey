@@ -6134,7 +6134,7 @@ function do_array_dual($ia)
         elseif($useDropdownLayout === true)
         {
             $aData = array();
-            $separatorwidth=(100-$answerwidth)/10;
+            $separatorwidth=4;
             $cellwidth=(100-$answerwidth-$separatorwidth)/2;
 
             $answer = "";
@@ -6147,8 +6147,8 @@ function do_array_dual($ia)
             }
             else
             {
-                $ddprefix ='';
-                $ddsuffix='';
+                $ddprefix =null;
+                $ddsuffix=null;
             }
             if (trim($aQuestionAttributes['dropdown_separators'])!='') {
                 $aSeparator =explode('|',$aQuestionAttributes['dropdown_separators']);
@@ -6167,26 +6167,8 @@ function do_array_dual($ia)
             $aData['ddsuffix'] = $ddsuffix;
             $aData['cellwidth'] = $cellwidth;
 
-            ////// TODO: check in prev headcolwidth if style='width:$cellwidth' and not style='width:\"$cellwidth\"'
-            $headcolwidth = ($ddprefix != '' || $ddsuffix != '') ? "" : " style='width: $cellwidth%';";
-            $aData['headcolwidth'] = $headcolwidth;
-
             $aData['separatorwidth'] = $separatorwidth;
 
-            // colspan : for header only
-            if($ddprefix != '' && $ddsuffix != '')
-            {
-                $colspan=' colspan="3"';
-            }
-            elseif($ddprefix != '' || $ddsuffix != '')
-            {
-                $colspan=' colspan="2"';
-            }
-            else
-            {
-                $colspan="";
-            }
-            $aData['colspan'] = $colspan;
             $aData['leftheader'] = $leftheader;
             $aData['rightheader'] = $rightheader;
 

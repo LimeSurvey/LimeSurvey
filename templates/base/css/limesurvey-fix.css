@@ -6,15 +6,3 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  */
-
-/**
- * Default button must be shown , needed for no js
- */
-.save-clear .btn{
-display:inline-block !important;  /* remove hidden */
-width:auto;  /* remove col-* */
-}
-.save-clear .clearall,.save-clear .jshide{
-font-size: 14px;
-padding: 6px 12px;
-}

@@ -23,8 +23,8 @@
   vertical-align: middle;
 }
 .ls-input-group-extra {
-  padding: 0.42857rem 0.8571rem;
-  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  font-size: inherit;/* 1.4rem; BS use 10px for html and 14px for body */
   font-weight: normal;
   line-height: 1;
   text-align: center;
