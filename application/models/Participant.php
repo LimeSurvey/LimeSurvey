@@ -1922,9 +1922,6 @@ class Participant extends LSActiveRecord
      * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values
      * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
      * @param bool $createautomap If true, updates tokendescription field with new mapping
-     * @param array $tokenid is assumed, saved by an earlier script as a session string called "participantid". It holds a list of token_ids
-     *                       for the token participants we are copying to the central db
-     *
      * @return array An array contaning list of successful and list of failed ids
      */
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
@@ -1933,7 +1930,6 @@ class Participant extends LSActiveRecord
         $tokenid = json_decode($tokenid_string);
         $duplicate = 0;
         $sucessfull = 0;
-        $writearray = array();
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
         $pid = "";
 

@@ -212,7 +212,6 @@ class JsonOutputSuccess extends JsonOutput
 {
     /**
      * @param string $msg
-     * @param int $code
      * @return JsonOutputError
      */
     public function __construct($msg)
