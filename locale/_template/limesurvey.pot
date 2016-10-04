@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-10-04 14:40:53+00:00\n"
+"POT-Creation-Date: 2016-10-04 15:02:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2191,7 +2191,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:217
 #: application/controllers/admin/labels.php:103
 #: application/controllers/admin/labels.php:147
-#: application/controllers/admin/participantsaction.php:726
+#: application/controllers/admin/participantsaction.php:725
 #: application/controllers/admin/questiongroups.php:63
 #: application/controllers/admin/questions.php:198
 #: application/controllers/admin/surveyadmin.php:303
@@ -2214,7 +2214,7 @@ msgid "Import VV file"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:275
-#: application/controllers/admin/participantsaction.php:2600
+#: application/controllers/admin/participantsaction.php:2599
 #: application/controllers/admin/pluginmanager.php:73
 #: application/controllers/admin/pluginmanager.php:89
 #: application/controllers/admin/pluginmanager.php:136
@@ -2609,7 +2609,7 @@ msgid "This ZIP archive contains no valid Resources files. Import failed."
 msgstr ""
 
 #: application/controllers/admin/labels.php:141
-#: application/controllers/admin/participantsaction.php:706
+#: application/controllers/admin/participantsaction.php:705
 #: application/controllers/admin/questiongroups.php:58
 #: application/controllers/admin/questions.php:194
 #: application/controllers/admin/surveyadmin.php:929
@@ -2714,23 +2714,23 @@ msgstr ""
 msgid "Export {n} participant to CSV|Export {n} participants to CSV"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:419
+#: application/controllers/admin/participantsaction.php:418
 msgid "No participants deleted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:422
+#: application/controllers/admin/participantsaction.php:421
 msgid "Participant deleted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:625
+#: application/controllers/admin/participantsaction.php:624
 msgid "Participant successfully updated"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:656
+#: application/controllers/admin/participantsaction.php:655
 msgid "Participant successfully added"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:695
+#: application/controllers/admin/participantsaction.php:694
 #: application/controllers/admin/surveyadmin.php:1416
 #: application/views/admin/labels/_labelviewrightcontent_view.php:52
 #: application/views/admin/labels/_labelviewrightcontent_view.php:67
@@ -2746,11 +2746,11 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:719
+#: application/controllers/admin/participantsaction.php:718
 msgid "This is not a .csv file."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:778
+#: application/controllers/admin/participantsaction.php:777
 #: application/controllers/admin/templates.php:172
 #: application/core/Survey_Common_Action.php:1385
 #: application/views/admin/homepagesettings/index.php:9
@@ -2761,125 +2761,125 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:779
+#: application/controllers/admin/participantsaction.php:778
 #: application/views/admin/responses/browsemenubar_view.php:9
 #: application/views/admin/token/browse.php:93
 msgid "Summary"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:780
+#: application/controllers/admin/participantsaction.php:779
 msgid "Upload summary"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:781
+#: application/controllers/admin/participantsaction.php:780
 msgid "You have to pair this field with an existing attribute."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:782
+#: application/controllers/admin/participantsaction.php:781
 msgid "Only one CSV attribute is mapped with central attribute."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:783
+#: application/controllers/admin/participantsaction.php:782
 #: application/views/admin/participants/attributeMapToken_view.php:9
 #: application/views/admin/participants/attributeMap_view.php:18
 msgid "This list cannot accept token attributes."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1237
+#: application/controllers/admin/participantsaction.php:1236
 msgid "Blacklist settings were saved."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1360
+#: application/controllers/admin/participantsaction.php:1359
 msgid "Select language to add"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1452
+#: application/controllers/admin/participantsaction.php:1451
 msgid "Attribute successfully updated"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1469
+#: application/controllers/admin/participantsaction.php:1468
 msgid "Language successfully deleted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1473
+#: application/controllers/admin/participantsaction.php:1472
 msgid "There has to be at least one language."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1486
+#: application/controllers/admin/participantsaction.php:1485
 msgid "Attribute successfully deleted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1513
+#: application/controllers/admin/participantsaction.php:1512
 msgid "%s attribute deleted|%s attributes deleted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1519
+#: application/controllers/admin/participantsaction.php:1518
 msgid "Error. Deleted %s attribute(s). Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1565
+#: application/controllers/admin/participantsaction.php:1564
 msgid "Attribute display setting updated"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1710
+#: application/controllers/admin/participantsaction.php:1709
 msgid "Attribute was saved."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2172
+#: application/controllers/admin/participantsaction.php:2171
 msgid "%s participants have been shared"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2194
+#: application/controllers/admin/participantsaction.php:2193
 msgid "Participant shared."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2209
+#: application/controllers/admin/participantsaction.php:2208
 msgid "Participant removed from sharing"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2227
+#: application/controllers/admin/participantsaction.php:2226
 msgid "Found no participant share"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2236
+#: application/controllers/admin/participantsaction.php:2235
 msgid "Participant share deleted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2277
+#: application/controllers/admin/participantsaction.php:2276
 msgid "No participant shares were deleted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2281
+#: application/controllers/admin/participantsaction.php:2280
 msgid "%s participant share was deleted|%s participant shares were deleted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2323
+#: application/controllers/admin/participantsaction.php:2322
 msgid "%s participants have been copied to the central participants table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2327
-#: application/controllers/admin/participantsaction.php:2405
+#: application/controllers/admin/participantsaction.php:2326
+#: application/controllers/admin/participantsaction.php:2404
 msgid "%s entries were not copied because they already existed"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2332
+#: application/controllers/admin/participantsaction.php:2331
 msgid "Attribute values for existing participants have been updated from the token records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2401
+#: application/controllers/admin/participantsaction.php:2400
 msgid "%s participants have been copied to the survey token table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2410
+#: application/controllers/admin/participantsaction.php:2409
 msgid "%s entries were skipped because they are blacklisted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2415
+#: application/controllers/admin/participantsaction.php:2414
 msgid "Attribute values for existing participants have been updated from the participants records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:2486
-#: application/controllers/admin/participantsaction.php:2545
+#: application/controllers/admin/participantsaction.php:2485
+#: application/controllers/admin/participantsaction.php:2544
 #: application/views/admin/participants/attributeMapToken_view.php:8
 msgid "There are no unmapped attributes"
 msgstr ""
@@ -3310,7 +3310,8 @@ msgid "Token ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:155
-#: application/helpers/common_helper.php:3722 application/models/Token.php:37
+#: application/helpers/common_helper.php:3722
+#: application/models/Participant.php:221 application/models/Token.php:37
 #: application/models/TokenDynamic.php:575
 #: application/views/admin/export/exportresults_view.php:338
 #: application/views/admin/responses/listResponses_view.php:110
@@ -3321,7 +3322,8 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:156
-#: application/helpers/common_helper.php:3727 application/models/Token.php:38
+#: application/helpers/common_helper.php:3727
+#: application/models/Participant.php:222 application/models/Token.php:38
 #: application/models/TokenDynamic.php:583
 #: application/views/admin/export/exportresults_view.php:339
 #: application/views/admin/responses/listResponses_view.php:121
@@ -5550,6 +5552,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:20
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:51
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:83
+#: application/views/admin/participants/participantsPanel_view.php:31
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:37
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:70
 #: application/views/admin/token/dummytokenform.php:92
@@ -5563,6 +5566,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:21
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:52
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:84
+#: application/views/admin/participants/participantsPanel_view.php:32
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:38
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:71
 #: application/views/admin/token/dummytokenform.php:93
@@ -5576,6 +5580,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:22
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:53
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:85
+#: application/views/admin/participants/participantsPanel_view.php:33
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:39
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:72
 #: application/views/admin/token/dummytokenform.php:94
@@ -5589,6 +5594,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:23
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:54
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:86
+#: application/views/admin/participants/participantsPanel_view.php:34
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:40
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:73
 #: application/views/admin/token/dummytokenform.php:95
@@ -5602,6 +5608,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:24
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:55
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:87
+#: application/views/admin/participants/participantsPanel_view.php:35
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:41
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:74
 #: application/views/admin/token/dummytokenform.php:96
@@ -5615,6 +5622,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:25
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:56
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:88
+#: application/views/admin/participants/participantsPanel_view.php:36
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:42
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:75
 #: application/views/admin/token/dummytokenform.php:97
@@ -5628,6 +5636,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:26
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:57
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:89
+#: application/views/admin/participants/participantsPanel_view.php:37
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:43
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:76
 #: application/views/admin/token/dummytokenform.php:98
@@ -5641,6 +5650,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:27
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:58
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:90
+#: application/views/admin/participants/participantsPanel_view.php:38
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:44
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:77
 #: application/views/admin/token/dummytokenform.php:99
@@ -5654,6 +5664,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:28
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:59
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:91
+#: application/views/admin/participants/participantsPanel_view.php:39
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:45
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:78
 #: application/views/admin/token/dummytokenform.php:100
@@ -5667,6 +5678,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:29
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:60
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:92
+#: application/views/admin/participants/participantsPanel_view.php:40
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:46
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:79
 #: application/views/admin/token/dummytokenform.php:101
@@ -10423,16 +10435,6 @@ msgstr ""
 msgid "Participant"
 msgstr ""
 
-#: application/models/Participant.php:221
-#: application/models/ParticipantShare.php:228
-msgid "Firstname"
-msgstr ""
-
-#: application/models/Participant.php:222
-#: application/models/ParticipantShare.php:223
-msgid "Lastname"
-msgstr ""
-
 #: application/models/Participant.php:224
 #: application/models/QuestionGroup.php:76
 #: application/models/TokenDynamic.php:617
@@ -10449,7 +10451,7 @@ msgid "Blacklisted"
 msgstr ""
 
 #: application/models/Participant.php:226
-msgid "Owner Uid"
+msgid "Owner UID"
 msgstr ""
 
 #: application/models/Participant.php:227
@@ -10477,11 +10479,11 @@ msgid "Visible"
 msgstr ""
 
 #: application/models/ParticipantAttributeName.php:110
-msgid "Edit this extra-attribute"
+msgid "Edit this attribute"
 msgstr ""
 
 #: application/models/ParticipantAttributeName.php:119
-msgid "Delete this extra-attribute"
+msgid "Delete this attribute"
 msgstr ""
 
 #: application/models/ParticipantAttributeName.php:151
@@ -10494,6 +10496,14 @@ msgstr ""
 
 #: application/models/ParticipantAttributeName.php:153
 msgid "Text box"
+msgstr ""
+
+#: application/models/ParticipantShare.php:223
+msgid "Lastname"
+msgstr ""
+
+#: application/models/ParticipantShare.php:228
+msgid "Firstname"
 msgstr ""
 
 #: application/models/ParticipantShare.php:239
@@ -13408,11 +13418,11 @@ msgid "Add new participant"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:23
-msgid "Filteres active:"
+msgid "Active filters:"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:25
-msgid "Remove Filters"
+msgid "Remove filters"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:41
@@ -13692,47 +13702,7 @@ msgid "Close the picker"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:30
-msgid "Select Month"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:31
-msgid "Previous Month"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:32
-msgid "Next Month"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:33
-msgid "Select Year"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:34
-msgid "Previous Year"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:35
-msgid "Next Year"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:36
-msgid "Select Decade"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:37
-msgid "Previous Decade"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:38
-msgid "Next Decade"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:39
-msgid "Previous Century"
-msgstr ""
-
-#: application/views/admin/participants/participantsPanel_view.php:40
-msgid "Next Century"
+msgid "Select month"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:59
@@ -13775,7 +13745,7 @@ msgid "Attributes to export:"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:196
-msgid "If you want to export blacklisted participants, set \"Hide blacklisted participants\" to \"No\" in CPDB settings.."
+msgid "If you want to export blacklisted participants, set \"Hide blacklisted participants\" to \"No\" in CPDB settings."
 msgstr ""
 
 #: application/views/admin/participants/sharePanel_view.php:9
