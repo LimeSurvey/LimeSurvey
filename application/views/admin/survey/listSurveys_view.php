@@ -12,7 +12,7 @@
 
     <!-- Survey List widget -->
     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
-                'pageSize' => Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']),
+                'pageSize' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                 'model' => $model
         ));
     ?>

@@ -1507,6 +1507,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
+        App()->clientScript->registerPackage('bootstrap-switch');
         App()->getClientScript()->registerPackage('jqgrid');
 
     }

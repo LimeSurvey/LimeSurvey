@@ -1000,10 +1000,25 @@ function buildsurveysession($surveyid,$preview=false)
     $FlashError = "";
 
     // Scenario => Captcha required
-   if($scenarios['captchaRequired'] && !$preview)
-    {
-        list($renderCaptcha, $FlashError) = testCaptcha($aEnterTokenData, $subscenarios, $surveyid, $loadsecurity);
+    if($scenarios['captchaRequired'] && !$preview) {
+        $FlashError = '';
+
+        //Apply the captchaEnabled flag to the partial
+        $aEnterTokenData['bCaptchaEnabled'] = true;
+        // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
+        if (!$subscenarios['captchaCorrect']) {
+            if ($loadsecurity) {
+                // was a bad answer
+                $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
+            }
+            $renderCaptcha='main';
+        }
+        else {
+            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
+            $renderCaptcha='correct';
+        }
     }
+
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
         //Test if token is valid
@@ -1269,6 +1284,7 @@ function initFieldArray($surveyid, array $fieldmap)
  * @param array $subscenarios
  * @param int $surveyid
  * @param boolean $loadsecurity
+ * @todo This does not work for some reason, copied the code back. See bug #11739.
  * @return array ($renderCaptcha, $FlashError)
  */
 function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $loadsecurity)

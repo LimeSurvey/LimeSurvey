@@ -14,6 +14,9 @@
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
+// Namespace
+var LS = LS || {};
+
 /* Set a variable to test if browser have HTML5 form ability
  * Need to be replaced by some polyfills see #8009
  */
@@ -216,7 +219,7 @@ $(document).ready(function(){
                 });
             }
             else {
-                throw "Confirmation modal: onclick is not a function.";
+                throw "Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).";
             }
 
         }
@@ -845,4 +848,153 @@ function addHiddenElement(theform,thename,thevalue)
 
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
+}
+
+/**
+ * A method to use the implemented notifier, via ajax or javascript
+ * 
+ * @param text string  | The text to be displayed
+ * @param classes string | The classes that will be put onto the inner container
+ * @param styles object | An object of css-attributes that will be put onto the inner container
+ * @param customOptions | possible options are: 
+ *                         useHtml (boolean) -> use the @text as html
+ *                         timeout (int) -> the timeout in milliseconds until the notifier will fade/slide out 
+ *                         inAnimation (string) -> The jQuery animation to call for the notifier [fadeIn||slideDown]
+ *                         outAnimation (string) -> The jQuery animation to remove the notifier [fadeOut||slideUp]
+ *                         animationTime (int) -> The time in milliseconds the animation will last             
+ */
+function NotifyFader(){
+    var count = 0;
+    
+    var increment = function(){count = count+1;},
+        decrement = function(){count = count-1;},
+        getCount = function(){return count;};
+
+    var create = function(text, classes, styles, customOptions){
+        increment();
+        customOptions = customOptions || {};
+        styles = styles || {};
+        classes = classes || "well well-lg";
+
+        var options = {
+            useHtml : customOptions.useHtml || true,
+            timeout : customOptions.timeout || 3500,
+            inAnimation : customOptions.inAnimation || "slideDown", 
+            outAnimation : customOptions.outAnimation || "slideUp", 
+            animationTime : customOptions.animationTime || 450
+        };
+        var container = $("<div> </div>");
+        container.addClass(classes);
+        container.css(styles);
+        if(options.useHtml){
+            container.html(text);
+        } else {
+            container.text(text);
+        }
+        var newID = "notif-container_"+getCount();
+        $('#notif-container').clone()
+            .attr('id', newID)
+            .css({
+                display: 'none',
+                top : (8*((getCount())))+"%",
+                position: 'fixed',
+                left : "15%",
+                width : "70%",
+                'z-index':3500 
+            })
+            .appendTo($('#notif-container').parent())
+            .html(container);
+
+        $('#'+newID)[options.inAnimation](options.animationTime, function(){
+            var remove = function(){
+                $('#'+newID)[options.outAnimation](options.animationTime, function(){
+                    $('#'+newID).remove();
+                    decrement();
+                });
+            }
+            $(this).on('click', remove);
+            setTimeout(remove, options.timeout);
+        });
+    };
+
+    return {
+        create : create,
+        increment: function(){count = count+1;},
+        decrement: function(){count = count-1;},
+        getCount: function(){return count;}
+        };
+};
+var LsGlobalNotifier = new NotifyFader();
+
+function notifyFader(text, classes, styles, customOptions) {
+
+    // Hide all modals
+    $('.modal').modal('hide');
+
+    LsGlobalNotifier.create(text, classes, styles, customOptions);
+}
+
+/**
+ * Part of ajax helper
+ * @param {object} JSON object from server
+ * @return {boolean} true if the original success method should be run after this
+ * @todo Localization
+ * @todo Branch on message type?
+ */
+LS.ajaxHelperOnSuccess = function(response) {
+    // Check type of response and take action accordingly
+    if (response == '') {
+        alert('No response from server');
+    }
+    else if (!response.loggedIn) {
+
+        // Hide any modals that might be open
+        $('.modal').modal('hide');
+
+        $('#ajax-helper-modal .modal-content').html(response.html);
+        $('#ajax-helper-modal').modal('show');
+        return false;
+    }
+    // No permission
+    else if (!response.hasPermission) {
+        notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
+    }
+    // Error popup
+    else if (response.error) {
+        notifyFader(response.error.message, 'well-lg bg-danger text-center');
+    }
+    // Success popup
+    else if (response.success) {
+        notifyFader(response.success, 'well-lg bg-primary text-center');
+    }
+    // Modal popup
+    else if (response.html) {
+        $('#ajax-helper-modal .modal-content').html(response.html);
+        $('#ajax-helper-modal').modal('show');
+    }
+
+    return true;
+}
+
+/**
+ * Like $.ajax, but with checks for errors,
+ * permission etc. Should be used together
+ * with the PHP AjaxHelper.
+ * @param {object} options - Exactly the same as $.ajax options
+ * @return {object} ajax promise
+ */
+LS.ajax = function(options) {
+
+    var oldSuccess = options.success;
+    var oldError = options.error;
+    options.success = function(response) {
+
+        var runOldSuccess = LS.ajaxHelperOnSuccess(response);
+
+        if (oldSuccess && runOldSuccess) {
+            oldSuccess(response);
+        }
+    }
+
+    return $.ajax(options);
 }

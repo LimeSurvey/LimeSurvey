@@ -30,6 +30,7 @@ class AdminController extends LSYii_Controller
         $this->_sessioncontrol();
 
         $this->user_id = Yii::app()->user->getId();
+
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid'));}                //Usergroup-ID
         if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid'));}                   //GroupID
@@ -151,6 +152,14 @@ class AdminController extends LSYii_Controller
                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
 
                 App()->user->setReturnUrl(App()->request->requestUri);
+
+                // If this is an ajax call, don't redirect, but echo login modal instead
+                $isAjax = isset($_GET['ajax']) && $_GET['ajax'];
+                if ($isAjax && Yii::app()->user->getIsGuest()) {
+                    Yii::import('application.helpers.admin.ajax_helper', true);
+                    ls\ajax\AjaxHelper::outputNotLoggedIn();
+                    return;
+                }
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             }
@@ -312,7 +321,6 @@ class AdminController extends LSYii_Controller
                 //$filename = str_replace('.css', '-rtl.css', $filename);
             //}
 
-        //echo '<pre>'; var_dump($aData); echo '</pre>';die;
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 
         if ($return)
