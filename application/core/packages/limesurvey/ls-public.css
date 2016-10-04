@@ -8,6 +8,26 @@
 .js .ls-js-hidden{display: none !important;}
 .no-js .ls-no-js-hidden{display: none !important;}
 
+/*
+.asterisk {
+    display: inline-block;
+
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+*/
+.asterisk {
+}
+.asterisk:before {
+    content: "\f069";
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: inherit;
+    line-height:1;
+}
+
 /**
  * The answers part
  * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
