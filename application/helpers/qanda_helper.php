@@ -2841,29 +2841,28 @@ function do_multiplenumeric($ia)
         $maxlength = " maxlength='25' ";
     }
 
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    if ($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]!='')
     {
         $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withprefix";
     }
     else
     {
-        $prefix = '';
+        $prefix = null;
     }
 
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    if ($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]!='')
     {
         $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .= " withsuffix";
     }
     else
     {
-        $suffix = '';
+        $suffix = null;
     }
 
     $kpclass            = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $numbersonly_slider = ''; // DEPRECATED
-
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth     = $aQuestionAttributes['text_input_width'];
@@ -3296,15 +3295,14 @@ function do_numerical($ia)
     }
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth     = $aQuestionAttributes['text_input_width'];
         $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
         $extraclass .= " col-sm-".trim($col);
     }
     else
     {
-        $tiwidth = 10;
-    }
 
+    }
+    $inputsize=10; /* @todo : move it to attribute ? see https://bugs.limesurvey.org/view.php?id=11734 */
     if (trim($aQuestionAttributes['num_value_int_only'])==1)
     {
         $acomma           = "";
@@ -3346,7 +3344,7 @@ function do_numerical($ia)
         'id'                     => $ia[1],
         'prefix'                 => $prefix,
         'answertypeclass'        => $answertypeclass,
-        'tiwidth'                => $tiwidth,
+        'inputsize'              => $inputsize,
         'fValue'                 => $fValue,
         'checkconditionFunction' => $checkconditionFunction,
         'integeronly'            => $integeronly,

@@ -76,7 +76,7 @@
                     <!-- First dropdown -->
 
                     <td class="answer-item dropdown-item">
-                        <?php if ($ddprefix != '' || $ddprefix != ''): ?>
+                        <?php if ($ddsuffix != '' || $ddprefix != ''): ?>
                             <div class="input-group">
                         <?php endif; ?>
                         <?php if ($ddprefix != ''): ?>
@@ -119,7 +119,7 @@
                                 <?php echo $ddsuffix; ?>
                             </div>
                         <?php endif; ?>
-                        <?php if ($ddprefix != '' || $ddprefix != ''): ?>
+                        <?php if ($ddsuffix != '' || $ddprefix != ''): ?>
                             </div>
                         <?php endif; ?>
                     </td>
@@ -133,7 +133,7 @@
 
                     <td class="answer-item dropdown-item">
                         <!-- We don't need another label : aria-labelledby for accessibility, and we have only 2 line in phone and no-more-table -->
-                        <?php if ($ddprefix != '' || $ddprefix != ''): ?>
+                        <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
                             <div class="input-group">
                         <?php endif; ?>
                         <?php if ($ddprefix != ''): ?>
@@ -169,7 +169,7 @@
                                 <?php echo $ddsuffix; ?>
                             </div>
                         <?php endif; ?>
-                        <?php if ($ddprefix != '' || $ddprefix != ''): ?>
+                        <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
                             </div>
                         <?php endif; ?>
                     </td>
