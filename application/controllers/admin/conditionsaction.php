@@ -36,32 +36,30 @@ class conditionsaction extends Survey_Common_Action {
         $imageurl = Yii::app()->getConfig("adminimageurl");
         Yii::app()->loadHelper("database");
 
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
+        $aData['questionbar']['buttons']['conditions'] = TRUE;
 
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-            $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
-            $aData['questionbar']['buttons']['conditions'] = TRUE;
+        switch($subaction)
+        {
+            case 'editconditionsform':
+                $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
+                break;
 
-            switch($subaction)
-            {
-                case 'editconditionsform':
-                    $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
-                    break;
+            case 'conditions':
+                $aData['questionbar']['buttons']['condition']['conditions'] = TRUE;
+                break;
 
-                case 'conditions':
-                    $aData['questionbar']['buttons']['condition']['conditions'] = TRUE;
-                    break;
+            case 'copyconditionsform':
+                $aData['questionbar']['buttons']['condition']['copyconditionsform'] = TRUE;
+                break;
 
-                case 'copyconditionsform':
-                    $aData['questionbar']['buttons']['condition']['copyconditionsform'] = TRUE;
-                    break;
-
-                default:
-                    $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
-                    break;
-            }
-
+            default:
+                $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
+                break;
+        }
 
         if( !empty($_POST['subaction']) ) $subaction=Yii::app()->request->getPost('subaction');
 
