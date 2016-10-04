@@ -336,7 +336,6 @@ class participantsaction extends Survey_Common_Action
         $searchparams = array();
         if($searchcondition)
         {
-
             $searchparams = explode('||', $searchcondition);
             $model->addSurveyFilter($searchparams);
         } 
