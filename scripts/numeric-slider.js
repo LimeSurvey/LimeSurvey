@@ -52,9 +52,10 @@ function doNumericSlider(qID,options) {
           displayValue = value.toString().replace('.',separator); // We format it with the right separator
           $(inputEl).val(displayValue); // We parse it to the element
       });
-
-      theSlider.on('slideStop', function() {
-          $(inputEl).trigger('keyup');// We call the EM by the event
+      theSlider.on('change', function(event) {
+      });
+      theSlider.on('slideStop', function(event) {
+          $(inputEl).val(event.value.toString().replace('.',separator)).trigger('keyup');// We call the EM by the event
       });
 
       // If user no action is on, we hide the tooltip
