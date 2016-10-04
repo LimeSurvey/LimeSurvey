@@ -81,6 +81,8 @@ Changes from  2.52 (build 160908) to 2.53 (build 160920) Oct 04, 2016
 #Updated translation: Russian by kmaksat, vipgroup
 #Updated translation: Serbian by MilaVeljovic
 #Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
 
 Changes from  2.51.4 (build 160908) to 2.52 (build 160920) Sept 20, 2016
 -New feature #11626: beforeTokenEmail for confirmation email (Denis Chenu)
