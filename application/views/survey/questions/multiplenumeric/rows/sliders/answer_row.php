@@ -193,7 +193,7 @@
                         theSlider.bootstrapSlider('setValue', null);
 
                         // Set value to null
-                        $inputEl.attr('value', null);
+                        $inputEl.attr('value', '').trigger("keyup");
 
                         // Why the fuck not?
                        // LEMrel<?php echo $qid; ?>() // We call the EM
