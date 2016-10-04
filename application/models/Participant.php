@@ -218,12 +218,12 @@ class Participant extends LSActiveRecord
     {
         $returnArray = array(
             'participant_id' => gT('Participant'),
-            'firstname' => gT('Firstname'),
-            'lastname' => gT('Lastname'),
+            'firstname' => gT('First name'),
+            'lastname' => gT('Last name'),
             'email' => gT('Email address'),
             'language' => gT('Language'),
             'blacklisted' => gT('Blacklisted'),
-            'owner_uid' => gT('Owner Uid'),
+            'owner_uid' => gT('Owner UID'),
             'surveyid' => gT('Active survey Id')
         );
         foreach($this->allExtraAttributes as $name => $attribute)

@@ -104,26 +104,26 @@ class ParticipantAttributeName extends LSActiveRecord
         $buttons = "";
         //DELETE attribute
         //Edit-button 
-            $editData = array(
-                'action_attributeNames_editModal',
-                '',
-                gT("Edit this extra-attribute"),
-                'edit'
-            );
+        $editData = array(
+            'action_attributeNames_editModal',
+            '',
+            gT("Edit this attribute"),
+            'edit'
+        );
 
-            $buttons .= vsprintf($raw_button_template, $editData);
+        $buttons .= vsprintf($raw_button_template, $editData);
         //delete-button
-            $deleteData = array(
-                'action_attributeNames_deleteModal',
-                'text-danger',
-                gT("Delete this extra-attribute"),
-                'trash text-danger'
-            );
-            $buttons .= "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='deleteAttributeAjax(".$this->attribute_id.")'>"
+        $deleteData = array(
+            'action_attributeNames_deleteModal',
+            'text-danger',
+            gT("Delete this attribute"),
+            'trash text-danger'
+        );
+        $buttons .= "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='deleteAttributeAjax(".$this->attribute_id.")'>"
             . vsprintf($raw_button_template, $deleteData)
             . "</a>";
 
-            return $buttons;
+        return $buttons;
     }
 
     /**
