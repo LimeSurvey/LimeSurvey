@@ -8,7 +8,57 @@
 .js .ls-js-hidden{display: none !important;}
 .no-js .ls-no-js-hidden{display: none !important;}
 
-/* The answers part */
-/* Restriction to big screen ? */
-.ls-input-group-extra{display:table-cell;width:1%;vertical-align: middle;padding: 0 0.8em;white-space: nowrap;}
-.form-inline .input-group .ls-input-group-extra{width: auto;white-space: initial;}
+/**
+ * The answers part
+ * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
+ **/
+
+/* ls-input-group-extra : same behaviour than BS input-group-addon without border/background and with rem(can be easily done in template) */
+.input-group-lg > .ls-input-group-extra{
+  height: 3.2857rem;
+  padding: 0.7142rem 1.1429rem;
+  font-size: 1.2857rem;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
+select.input-group-lg > .ls-input-group-extra {
+  height: 3.2857rem;
+  line-height: 3.2857rem;
+}
+textarea.input-group-lg > .ls-input-group-extra,
+select[multiple].input-group-lg > .ls-input-group-extra {
+  height: auto;
+}
+.input-group-sm > .ls-input-group-extra {
+  height: 2.1429rem;
+  padding: 0.3571rem 0.7142rem;
+  font-size: 1,1667rem;
+  line-height: 1.5;
+}
+select.input-group-sm > .ls-input-group-extra {
+  height: 2.1429rem;
+  line-height: 2.1429rem;
+}
+textarea.input-group-sm > ..ls-input-group-extra,
+select[multiple].input-group-sm > ..ls-input-group-extra {
+  height: auto;
+}
+.ls-input-group-extra {
+  display: table-cell;
+}
+.ls-input-group-extra {
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.ls-input-group-extra {
+  padding: 0.42857rem 0.8571rem;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1;
+  text-align: center;
+  border: 1px hidden transparent;
+}
+@media (min-width: 768px) {/* boostrap restrict to min-width: why ? */
+  .form-inline .input-group .ls-input-group-extra{width: auto;white-space: initial;}
+}
