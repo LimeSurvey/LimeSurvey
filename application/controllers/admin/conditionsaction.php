@@ -161,47 +161,24 @@ class conditionsaction extends Survey_Common_Action {
 
         $br = CHtml::openTag('br /');
 
-        //MAKE SURE THAT THERE IS A SID
+        // Make sure that there is a sid
         if (!isset($iSurveyID) || !$iSurveyID)
         {
-            $conditionsoutput = gT("You have not selected a survey").str_repeat($br, 2);
-            $conditionsoutput .= CHtml::submitButton(gT("Main admin screen",'unescaped'), array(
-            'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
-            )).$br;
-            safeDie($conditionsoutput);
-            return;
+            Yii::app()->setFlashMessage(gT('You have not selected a survey'), 'error');
+            $this->getController()->redirect(array('admin'));
         }
-
-
 
         if (isset($p_subaction) && $p_subaction == "resetsurveylogic")
         {
-
-            $resetsurveylogicoutput = $br;
-            $resetsurveylogicoutput .= CHtml::openTag('table', array('class'=>'alertbox'));
-            $resetsurveylogicoutput .= CHtml::openTag('tr').CHtml::openTag('td', array('colspan'=>'2'));
-            $resetsurveylogicoutput .= CHtml::tag('font', array('size'=>'1'), CHtml::tag('strong', array(), gT("Reset Survey Logic")));
-            $resetsurveylogicoutput .= CHtml::closeTag('td').CHtml::closeTag('tr');
-
             if (!isset($_GET['ok']))
             {
-                $button_yes = CHtml::submitButton(gT("Yes",'unescaped'), array(
-                'onclick' => "window.open('".$this->getController()->createUrl("admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/$iSurveyID")."?ok=Y"."', '_top')"
-                ));
-                $button_cancel = CHtml::submitButton(gT("Cancel",'unescaped'), array(
-                'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyID")."', '_top')"
-                ));
-
-                $messagebox_content = gT("You are about to delete all conditions on this survey's questions")."($iSurveyID)"
-                . $br . gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")
-                . $br . gT("Continue?")
-                . $br . $button_yes . $button_cancel;
-
+                $data = array('iSurveyID' => $iSurveyID);
+                $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
                 $this->_renderWrappedTemplate('conditions', array('message' => array(
-                'title' => gT("Warning"),
-                'message' => $messagebox_content
+                    'title' => gT("Warning"),
+                    'message' => $content
                 )));
-                exit;
+                Yii::app()->end();
             }
             else
             {
@@ -211,8 +188,6 @@ class conditionsaction extends Survey_Common_Action {
                 $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
             }
         }
-
-
 
         // MAKE SURE THAT THERE IS A QID
         if ( !isset($qid) || !$qid )
