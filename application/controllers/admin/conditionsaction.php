@@ -22,6 +22,48 @@
 class conditionsaction extends Survey_Common_Action {
 
     /**
+     * @var array
+     */
+    private $stringComparisonOperators;
+
+    /**
+     * @var array
+     */
+    private $nonStringComparisonOperators;
+
+    /**
+     * Init some stuff
+     */
+    public function __construct($controller = null, $id = null)
+    {
+        parent::__construct($controller, $id);
+
+        $this->stringComparisonOperators = array(
+            "<"      => gT("Less than"),
+            "<="     => gT("Less than or equal to"),
+            "=="     => gT("Equals"),
+            "!="     => gT("Not equal to"),
+            ">="     => gT("Greater than or equal to"),
+            ">"      => gT("Greater than"),
+            "RX"     => gT("Regular expression"),
+            "a<b"    => gT("Less than (Strings)"),
+            "a<=b"   => gT("Less than or equal to (Strings)"),
+            "a>=b"   => gT("Greater than or equal to (Strings)"),
+            "a>b"    => gT("Greater than (Strings)")
+        );
+
+        $this->nonStringComparisonOperators = array(
+            "<"  => gT("Less than"),
+            "<=" => gT("Less than or equal to"),
+            "==" => gT("equals"),
+            "!=" => gT("Not equal to"),
+            ">=" => gT("Greater than or equal to"),
+            ">"  => gT("Greater than"),
+            "RX" => gT("Regular expression")
+        );
+    }
+
+    /**
      * @param string $subaction
      * @param int $iSurveyID
      * @param int $gid
@@ -91,36 +133,7 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
 
-        // this array will be used soon,
-        // to explain wich conditions is used to evaluate the question
-        if (Yii::app()->getConfig('stringcomparizonoperators') == 1)
-        {
-            $method = array(
-            "<"      => gT("Less than"),
-            "<="     => gT("Less than or equal to"),
-            "=="     => gT("Equals"),
-            "!="     => gT("Not equal to"),
-            ">="     => gT("Greater than or equal to"),
-            ">"      => gT("Greater than"),
-            "RX"     => gT("Regular expression"),
-            "a<b"      => gT("Less than (Strings)"),
-            "a<=b"     => gT("Less than or equal to (Strings)"),
-            "a>=b"     => gT("Greater than or equal to (Strings)"),
-            "a>b"      => gT("Greater than (Strings)")
-            );
-        }
-        else
-        {
-            $method = array(
-            "<"  => gT("Less than"),
-            "<=" => gT("Less than or equal to"),
-            "==" => gT("equals"),
-            "!=" => gT("Not equal to"),
-            ">=" => gT("Greater than or equal to"),
-            ">"  => gT("Greater than"),
-            "RX" => gT("Regular expression")
-            );
-        }
+        $method = $this->getMethod();
 
         if (isset($_POST['method']))
         {
@@ -2069,6 +2082,22 @@ class conditionsaction extends Survey_Common_Action {
 
         return $reshtml;
 
+    }
+
+    /**
+     * This array will be used to explain wich conditions is used to evaluate the question
+     * @return array
+     */
+    protected function getMethod()
+    {
+        if (Yii::app()->getConfig('stringcomparizonoperators') == 1) {
+            $method = $this->stringComparisonOperators;
+        }
+        else {
+            $method = $this->nonStringComparisonOperators;
+        }
+
+        return $method;
     }
 
     /**
