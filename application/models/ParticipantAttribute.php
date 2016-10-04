@@ -63,7 +63,8 @@ class ParticipantAttribute extends LSActiveRecord
     }
 
     /**
-     * ?
+     * @param string $participantid
+     * @return array
      */
     public function getAttributeInfo($participantid)
     {

@@ -36,6 +36,7 @@ class Participant extends LSActiveRecord
     public $extraCondition;
     public $countActiveSurveys;
     public $id;
+
     /**
      * Returns the static model of Settings table
      *
@@ -278,15 +279,16 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * @param string $attribute_textid
+     * @param string $attributeTextId E.g. ea_145
      * @param mixed $attribute_id
      * @return
      */
-    public function getParticipantAttribute($attribute_textid, $attribute_id=false){
-        if($attribute_id == false)
-        {
-            list(,$attribute_id) = explode('_',$attribute_textid);
+    public function getParticipantAttribute($attributeTextId, $attribute_id=false)
+    {
+        if($attribute_id == false) {
+            list(,$attribute_id) = explode('_',$attributeTextId);
         }
+
         $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
         foreach($participantAttributes as $singleAttribute){
             if($singleAttribute['attribute_id'] == $attribute_id){
@@ -455,7 +457,7 @@ class Participant extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->join = 'LEFT JOIN {{participant_shares}} shares ON t.participant_id = shares.participant_id';
+        $criteria->join = 'LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id';
         $criteria->compare('t.firstname', $this->firstname, true, 'AND' ,true);
         $criteria->compare('t.lastname', $this->lastname, true, 'AND' ,true);
         $criteria->compare('t.email', $this->email, true, 'AND' ,true);
@@ -464,15 +466,14 @@ class Participant extends LSActiveRecord
         $criteria->compare('t.owner_uid', $this->owner_uid);
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
         $extraAttributeValues = array();
-        
+
         //Create the filter for the extra attributes
         foreach($this->allExtraAttributes as $name => $attribute) {
             if(isset($extraAttributeParams[$name]) && $extraAttributeParams[$name]) {
                 $extraAttributeValues[] =  "'".$extraAttributeParams[$name]."'";
             }
         }
-        $tableParticipantAttributes = ParticipantAttribute::model()->tableName();
-        $callParticipantAttributes = "SELECT DISTINCT participant_id FROM ".$tableParticipantAttributes." WHERE value IN (".join(', ',$extraAttributeValues).")";
+        $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attributes}} AS pa WHERE value IN (".join(', ',$extraAttributeValues).")";
 
         if(!empty($extraAttributeValues))
         { 
@@ -484,7 +485,8 @@ class Participant extends LSActiveRecord
         $criteria->select = array(
             '*',
             $sqlCountActiveSurveys . ' AS countActiveSurveys',
-            't.participant_id AS id'
+            't.participant_id',
+            't.participant_id AS id',   // This is need to avoid confusion between t.participant_id and shares.participant_id
         );
         if($this->extraCondition)
         {
