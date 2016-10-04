@@ -42,7 +42,7 @@ $internalConfig = array(
     'aliases' => array(
         // Third party path
         'third_party' => realpath(__DIR__ . '/../../third_party'),
-        'ls-styles' => realpath(__DIR__ . '/../../styles-public'),
+        'ls-core' => realpath(__DIR__ . '/../../application/core/packages'),
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
@@ -100,7 +100,7 @@ $internalConfig = array(
                 require('third_party.php'),
                 array(
                     'limesurvey-public'=>array(
-                        'basePath' => 'ls-styles.core',
+                        'basePath' => 'ls-core.limesurvey',
                         'css'=> array(
                             'ls-public.css'
                         ),

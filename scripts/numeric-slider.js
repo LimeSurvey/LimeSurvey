@@ -12,9 +12,6 @@
 
 function doNumericSlider(qID,options) {
   $("#vmsg_"+qID+"_default").text(sliderTranslation.help);
-  //~ if(options.slider_custom_handle){
-    //~ $("head").append("<style>#question'+qID+' .slider-handle.custom::before{ content: '\""+options.slider_custom_handle+"';}</style>");
-  //~ }
   $("#question"+qID+" .slider-container").each(function()
   {
     var inputEl = $(this).find("input:text");
