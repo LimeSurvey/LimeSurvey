@@ -21,7 +21,14 @@
 */
 class conditionsaction extends Survey_Common_Action {
 
-    function index($subaction, $iSurveyID=null, $gid=null, $qid=null)
+    /**
+     * @param string $subaction
+     * @param int $iSurveyID
+     * @param int $gid
+     * @param int $qid
+     * @return void
+     */
+    public function index($subaction, $iSurveyID=null, $gid=null, $qid=null)
     {
         $iSurveyID = sanitize_int($iSurveyID);
         $gid = sanitize_int($gid);
@@ -2025,6 +2032,10 @@ class conditionsaction extends Survey_Common_Action {
 
     }
 
+    /**
+     * @param string $hinttext
+     * @return string html
+     */
     private function _showSpeaker($hinttext)
     {
         global $max;
@@ -2063,12 +2074,13 @@ class conditionsaction extends Survey_Common_Action {
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     * @return void
+     */
     protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array())
     {
         ////$aData['display']['menu_bars'] = false;
