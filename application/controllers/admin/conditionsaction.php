@@ -211,58 +211,7 @@ class conditionsaction extends Survey_Common_Action {
             'qid'           => $qid
         );
 
-        if ($p_subaction == "insertcondition") {
-            $this->insertCondition($args);
-        }
-
-        // UPDATE ENTRY IF THIS IS AN EDIT
-        if ($p_subaction == "updatecondition") {
-            $this->updateCondition($args);
-        }
-
-        // DELETE ENTRY IF THIS IS DELETE
-        if ($p_subaction == "delete")
-        {
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
-            $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-        }
-
-        // DELETE ALL CONDITIONS IN THIS SCENARIO
-        if ($p_subaction == "deletescenario")
-        {
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
-            $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-        }
-
-        // UPDATE SCENARIO
-        if ($p_subaction == "updatescenario" && isset($p_newscenarionum))
-        {
-            $result = Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
-            'qid'=>$qid, 'scenario'=>$p_scenario));
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-        }
-
-        // DELETE ALL CONDITIONS FOR THIS QUESTION
-        if ($p_subaction == "deleteallconditions")
-        {
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
-            $result = Condition::model()->deleteRecords(array('qid'=>$qid));
-        }
-
-        // RENUMBER SCENARIOS
-        if ($p_subaction == "renumberscenarios")
-        {
-            $this->renumberScenarios($args);
-        }
-
-        // COPY CONDITIONS IF THIS IS COPY
-        if ($p_subaction == "copyconditions" )
-        {
-            $this->copyConditions($args);
-        }
-        //END PROCESS ACTIONS
+        $this->applySubaction($p_subaction, $args);
 
         $cquestions = array();
         $canswers   = array();
@@ -2119,6 +2068,66 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID); // do for whole survey, since don't know which questions affected.
+    }
+
+    /**
+     * Switch on action to update/copy/add condition etc
+     * @param string $p_subaction
+     * @param array $args
+     * @return void
+     */
+    protected function applySubaction($p_subaction, array $args)
+    {
+        extract($args);
+        switch ($p_subaction) {
+            // Insert new condition
+            case "insertcondition":
+                $this->insertCondition($args);
+                break;
+
+            // Update entry if this is an edit
+            case "updatecondition":
+                $this->updateCondition($args);
+                break;
+
+            // Delete entry if this is delete
+            case "delete":
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
+                $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
+                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                break;
+
+            // Delete all conditions in this scenario
+            case "deletescenario":
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
+                $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
+                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                break;
+
+            // Update scenario
+            case "updatescenario":
+                // TODO: Check if $p_newscenarionum is null
+                $result = Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
+                    'qid'=>$qid, 'scenario'=>$p_scenario));
+                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                break;
+
+            // Delete all conditions for this question
+            case "deleteallconditions":
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
+                $result = Condition::model()->deleteRecords(array('qid'=>$qid));
+                break;
+
+            // Renumber scenarios
+            case "renumberscenarios":
+                $this->renumberScenarios($args);
+                break;
+
+            // Copy conditions if this is copy
+            case "copyconditions" :
+                $this->copyConditions($args);
+                break;
+        }
     }
 
     /**
