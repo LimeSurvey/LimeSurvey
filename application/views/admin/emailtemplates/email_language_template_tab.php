@@ -11,7 +11,7 @@
     </li>
     <li><label for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
         <div class='htmleditor'>
-        <?php echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->$details['field']['body'],array('cols'=>80,'rows'=>20)); ?>
+        <?php echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->{$details['field']['body']},array('cols'=>80,'rows'=>20)); ?>
         <?php echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
         <?php 
             $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
