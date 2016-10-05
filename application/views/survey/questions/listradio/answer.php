@@ -12,11 +12,12 @@
 <!-- answer -->
 <?php echo $sTimer; ?>
 
+<div class="row">
 <?php
     // rows/answer_row.php
     echo $sRows;
 ?>
-
+</div>
 <input
     type="hidden"
     name="java<?php echo $name; ?>"

@@ -16,7 +16,6 @@
 
 <!-- answer -->
 <ul id="<?php echo $id; ?>" class="list-unstyled list-inline answers-list radio-list form-inline">
-
     <?php
         // item_row.php
         echo $sRows;

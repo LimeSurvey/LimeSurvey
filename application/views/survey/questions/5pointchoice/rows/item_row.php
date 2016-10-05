@@ -13,7 +13,7 @@
 ?>
 
 <!-- item_row -->
-<li id="javatbd<?php echo $myfname; ?>" class="form-group answer-item radio-item <?php echo $itemExtraClass; ?>">
+<li id="javatbd<?php echo $name; ?>" class="form-group answer-item radio-item <?php echo $itemExtraClass; ?>">
     <input
         type="radio"
         name="<?php echo $name; ?>"
