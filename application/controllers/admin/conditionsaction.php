@@ -37,6 +37,11 @@ class conditionsaction extends Survey_Common_Action {
     private $iSurveyID;
 
     /**
+     * @var string
+     */
+    private $language;
+
+    /**
      * Init some stuff
      */
     public function __construct($controller = null, $id = null)
@@ -222,6 +227,7 @@ class conditionsaction extends Survey_Common_Action {
         $thissurvey = getSurveyInfo($iSurveyID);
 
         $language = Survey::model()->findByPk($iSurveyID)->language;
+        $this->language = $language;
         $qresult = Question::model()->with('groups')->findByAttributes(array(
             'qid' => $qid,
             'parent_qid' => 0,
@@ -269,6 +275,7 @@ class conditionsaction extends Survey_Common_Action {
         // Now, using the same array which is now properly sorted by group then question
         // Create an array of all the questions that appear AFTER the current one
         $position = "before";
+        $postquestionlist = array();
         foreach ($qrows as $qrow) //Go through each question until we reach the current one
         {
             if ( $qrow["qid"] == $qid )
@@ -282,41 +289,11 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
 
-        $postrows  = array();
-
-        $theserows = $this->getTheseRows($questionlist, $language);
-
-        if (isset($postquestionlist) && is_array($postquestionlist))
-        {
-            foreach ($postquestionlist as $pq)
-            {
-                $result = Question::model()->with(array(
-                'groups' => array(
-                'condition' => 'groups.language = :lang',
-                'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
-                ),
-                ))->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
-
-                $postcount = count($result);
-
-                foreach ($result as $myrows)
-                {
-                    $postrows[]=array(
-                    "qid"        =>    $myrows['qid'],
-                    "sid"        =>    $myrows['sid'],
-                    "gid"        =>    $myrows['gid'],
-                    "question"    =>    $myrows['question'],
-                    "type"        =>    $myrows['type'],
-                    "mandatory"    =>    $myrows['mandatory'],
-                    "other"        =>    $myrows['other'],
-                    "title"        =>    $myrows['title']
-                    );
-                } // while
-            }
-            $postquestionscount=count($postrows);
-        }
+        $theserows = $this->getTheseRows($questionlist);
+        $postrows  = $this->getPostRows($postquestionlist);
 
         $questionscount=count($theserows);
+        $postquestionscount=count($postrows);
 
         if (isset($postquestionscount) && $postquestionscount > 0)
         { //Build the array used for the questionNav and copyTo select boxes
@@ -2102,10 +2079,9 @@ class conditionsaction extends Survey_Common_Action {
 
     /**
      * @param array $questionlist
-     * @param string $language
      * @return array
      */
-    protected function getTheseRows(array $questionlist, $language)
+    protected function getTheseRows(array $questionlist)
     {
         $theserows = array();
         foreach ($questionlist as $ql) {
@@ -2113,9 +2089,9 @@ class conditionsaction extends Survey_Common_Action {
             $result = Question::model()->with(array(
                 'groups' => array(
                     'condition' => 'groups.language = :lang',
-                    'params' => array(':lang' => $language)
+                    'params' => array(':lang' => $this->language)
                 ),
-            ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $language));
+            ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $this->language));
 
             // And store again these questions in this array...
             foreach ($result as $myrows) {                   //key => value
@@ -2132,6 +2108,37 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
         return $theserows;
+    }
+
+    /**
+     * @param array $postquestionlist
+     * @return array
+     */
+    protected function getPostRows(array $postquestionlist)
+    {
+        $postrows = array();
+        foreach ($postquestionlist as $pq) {
+            $result = Question::model()->with(array(
+                'groups' => array(
+                    'condition' => 'groups.language = :lang',
+                    'params' => array(':lang' => $this->language)
+                ),
+            ))->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $this->language));
+
+            foreach ($result as $myrows) {
+                $postrows[] = array(
+                    "qid"        =>    $myrows['qid'],
+                    "sid"        =>    $myrows['sid'],
+                    "gid"        =>    $myrows['gid'],
+                    "question"    =>    $myrows['question'],
+                    "type"        =>    $myrows['type'],
+                    "mandatory"    =>    $myrows['mandatory'],
+                    "other"        =>    $myrows['other'],
+                    "title"        =>    $myrows['title']
+                );
+            }
+        }
+        return $postrows;
     }
 
 }
