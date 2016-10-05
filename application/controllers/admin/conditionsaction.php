@@ -32,6 +32,11 @@ class conditionsaction extends Survey_Common_Action {
     private $nonStringComparisonOperators;
 
     /**
+     * @var int
+     */
+    private $iSurveyID;
+
+    /**
      * Init some stuff
      */
     public function __construct($controller = null, $id = null)
@@ -73,6 +78,7 @@ class conditionsaction extends Survey_Common_Action {
     public function index($subaction, $iSurveyID=null, $gid=null, $qid=null)
     {
         $iSurveyID = sanitize_int($iSurveyID);
+        $this->iSurveyID = $iSurveyID;
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
         $imageurl = Yii::app()->getConfig("adminimageurl");
@@ -121,12 +127,13 @@ class conditionsaction extends Survey_Common_Action {
         if (!isset($p_csrctoken)) {$p_csrctoken=returnGlobal('csrctoken');}
         if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnGlobal('prevQuestionSGQA');}
 
-        if (!isset($p_canswers)) {
-            if (isset($_POST['canswers']) && is_array($_POST['canswers'])) {
-                foreach ($_POST['canswers'] as $key => $val) {
-                    $p_canswers[$key]= preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
-                }
+        if (isset($_POST['canswers']) && is_array($_POST['canswers'])) {
+            foreach ($_POST['canswers'] as $key => $val) {
+                $p_canswers[$key]= preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
             }
+        }
+        else {
+            $p_canswers = null;
         }
 
         $method = $this->getMethod();
@@ -185,161 +192,26 @@ class conditionsaction extends Survey_Common_Action {
         //BEGIN PROCESS ACTIONS
         // ADD NEW ENTRY IF THIS IS AN ADD
 
-        if (isset($p_subaction) && $p_subaction == "insertcondition")
-        {
-            if (
-                (
-                    !isset($p_canswers) &&
-                    !isset($_POST['ConditionConst']) &&
-                    !isset($_POST['prevQuestionSGQA']) &&
-                    !isset($_POST['tokenAttr']) &&
-                    !isset($_POST['ConditionRegexp'])
-                ) ||
-                (!isset($p_cquestions) && !isset($p_csrctoken))
-            )
-            {
-                $conditionsoutput_action_error .= CHtml::script("\n<!--\n alert(\"".gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n");
-            }
-            else
-            {
-                if (isset($p_cquestions) && $p_cquestions != '')
-                {
-                    $conditionCfieldname = $p_cquestions;
-                }
-                elseif(isset($p_csrctoken) && $p_csrctoken != '')
-                {
-                    $conditionCfieldname = $p_csrctoken;
-                }
+        $args = array(
+            'p_scenario'    => $p_scenario,
+            'p_cquestions'  => $p_cquestions,
+            'p_csrctoken'   => $p_csrctoken,
+            'p_canswers'    => $p_canswers,
+            'p_cqid'        => $p_cqid,
+            'p_cid'         => $p_cid,
+            'p_subaction'   => $p_subaction,
+            'p_prevquestionsgqa' => $p_prevquestionsgqa,
+            'p_method'      => $p_method,
+            'qid'           => $qid
+        );
 
-                $condition_data = array(
-                'qid'             => $qid,
-                'scenario'         => $p_scenario,
-                'cqid'             => $p_cqid,
-                'cfieldname'     => $conditionCfieldname,
-                'method'        => $p_method
-                );
-
-                if (isset($p_canswers))
-                {
-                    foreach ($p_canswers as $ca)
-                    {
-                        //First lets make sure there isn't already an exact replica of this condition
-                        $condition_data['value'] = $ca;
-
-                        $result = Condition::model()->findAllByAttributes($condition_data);
-
-                        $count_caseinsensitivedupes = count($result);
-
-                        if ($count_caseinsensitivedupes == 0)
-                        {
-                            $result = Condition::model()->insertRecords($condition_data);;
-                        }
-                    }
-                }
-
-                unset($posted_condition_value);
-                // Please note that autoUnescape is already applied in database.php included above
-                // so we only need to db_quote _POST variables
-                if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
-                {
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
-                }
-                elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
-                {
-                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
-                }
-                elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
-                {
-                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
-                }
-                elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
-                {
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
-                }
-
-                if (isset($posted_condition_value))
-                {
-                    $condition_data['value'] = $posted_condition_value;
-                    $result = Condition::model()->insertRecords($condition_data);
-                }
-            }
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+        if (isset($p_subaction) && $p_subaction == "insertcondition") {
+            $this->insertCondition($args);
         }
 
         // UPDATE ENTRY IF THIS IS AN EDIT
         if (isset($p_subaction) && $p_subaction == "updatecondition") {
-            if ((    !isset($p_canswers) &&
-            !isset($_POST['ConditionConst']) &&
-            !isset($_POST['prevQuestionSGQA']) &&
-            !isset($_POST['tokenAttr']) &&
-            !isset($_POST['ConditionRegexp'])) ||
-            (!isset($p_cquestions) && !isset($p_csrctoken))
-            )
-            {
-                $conditionsoutput_action_error .= CHtml::script("\n<!--\n alert(\"".gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n");
-            }
-            else
-            {
-                if ( isset($p_cquestions) && $p_cquestions != '' )
-                {
-                    $conditionCfieldname = $p_cquestions;
-                }
-                elseif(isset($p_csrctoken) && $p_csrctoken != '')
-                {
-                    $conditionCfieldname = $p_csrctoken;
-                }
-
-                if ( isset($p_canswers) )
-                {
-                    foreach ($p_canswers as $ca)
-                    {
-                        // This is an Edit, there will only be ONE VALUE
-                        $updated_data = array(
-                        'qid' => $qid,
-                        'scenario' => $p_scenario,
-                        'cqid' => $p_cqid,
-                        'cfieldname' => $conditionCfieldname,
-                        'method' => $p_method,
-                        'value' => $ca
-                        );
-                        $result = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
-                    }
-                }
-
-                unset($posted_condition_value);
-                // Please note that autoUnescape is already applied in database.php included above
-                // so we only need to db_quote _POST variables
-                if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
-                {
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
-                }
-                elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
-                {
-                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
-                }
-                elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
-                {
-                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
-                }
-                elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
-                {
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
-                }
-
-                if (isset($posted_condition_value))
-                {
-                    $updated_data = array(
-                    'qid' => $qid,
-                    'scenario' => $p_scenario,
-                    'cqid' => $p_cqid,
-                    'cfieldname' => $conditionCfieldname,
-                    'method' => $p_method,
-                    'value' => $posted_condition_value
-                    );
-                    $result = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
-                }
-            }
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+            $this->updateCondition($args);
         }
 
         // DELETE ENTRY IF THIS IS DELETE
@@ -2058,6 +1930,176 @@ class conditionsaction extends Survey_Common_Action {
             Yii::app()->setFlashMessage(gT("All conditions in this survey have been deleted."));
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
         }
+    }
+
+    /**
+     * @todo Better way than to extract $args
+     * @params $args
+     * @return void
+     */
+    protected function insertCondition($args)
+    {
+        // Extract p_scenario, p_cquestions, ...
+        extract($args);
+
+        if (
+            (
+                !isset($p_canswers) &&
+                !isset($_POST['ConditionConst']) &&
+                !isset($_POST['prevQuestionSGQA']) &&
+                !isset($_POST['tokenAttr']) &&
+                !isset($_POST['ConditionRegexp'])
+            ) ||
+            (!isset($p_cquestions) && !isset($p_csrctoken))
+        )
+        {
+            $conditionsoutput_action_error .= CHtml::script("\n<!--\n alert(\"".gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n");
+        }
+        else
+        {
+            if (isset($p_cquestions) && $p_cquestions != '')
+            {
+                $conditionCfieldname = $p_cquestions;
+            }
+            elseif(isset($p_csrctoken) && $p_csrctoken != '')
+            {
+                $conditionCfieldname = $p_csrctoken;
+            }
+
+            $condition_data = array(
+                'qid'             => $qid,
+                'scenario'         => $p_scenario,
+                'cqid'             => $p_cqid,
+                'cfieldname'     => $conditionCfieldname,
+                'method'        => $p_method
+            );
+
+            if (isset($p_canswers))
+            {
+                foreach ($p_canswers as $ca)
+                {
+                    //First lets make sure there isn't already an exact replica of this condition
+                    $condition_data['value'] = $ca;
+
+                    $result = Condition::model()->findAllByAttributes($condition_data);
+
+                    $count_caseinsensitivedupes = count($result);
+
+                    if ($count_caseinsensitivedupes == 0)
+                    {
+                        $result = Condition::model()->insertRecords($condition_data);;
+                    }
+                }
+            }
+
+            unset($posted_condition_value);
+            // Please note that autoUnescape is already applied in database.php included above
+            // so we only need to db_quote _POST variables
+            if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
+            {
+                $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
+            }
+            elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
+            {
+                $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
+            }
+            elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
+            {
+                $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
+            }
+            elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
+            {
+                $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
+            }
+
+            if (isset($posted_condition_value))
+            {
+                $condition_data['value'] = $posted_condition_value;
+                $result = Condition::model()->insertRecords($condition_data);
+            }
+        }
+        LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateCondition($args)
+    {
+        extract($args);
+
+        if ((    !isset($p_canswers) &&
+            !isset($_POST['ConditionConst']) &&
+            !isset($_POST['prevQuestionSGQA']) &&
+            !isset($_POST['tokenAttr']) &&
+            !isset($_POST['ConditionRegexp'])) ||
+            (!isset($p_cquestions) && !isset($p_csrctoken))
+        )
+        {
+            $conditionsoutput_action_error .= CHtml::script("\n<!--\n alert(\"".gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n");
+        }
+        else
+        {
+            if ( isset($p_cquestions) && $p_cquestions != '' )
+            {
+                $conditionCfieldname = $p_cquestions;
+            }
+            elseif(isset($p_csrctoken) && $p_csrctoken != '')
+            {
+                $conditionCfieldname = $p_csrctoken;
+            }
+
+            if ( isset($p_canswers) )
+            {
+                foreach ($p_canswers as $ca)
+                {
+                    // This is an Edit, there will only be ONE VALUE
+                    $updated_data = array(
+                        'qid' => $qid,
+                        'scenario' => $p_scenario,
+                        'cqid' => $p_cqid,
+                        'cfieldname' => $conditionCfieldname,
+                        'method' => $p_method,
+                        'value' => $ca
+                    );
+                    $result = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
+                }
+            }
+
+            unset($posted_condition_value);
+            // Please note that autoUnescape is already applied in database.php included above
+            // so we only need to db_quote _POST variables
+            if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
+            {
+                $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
+            }
+            elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
+            {
+                $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
+            }
+            elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
+            {
+                $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
+            }
+            elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
+            {
+                $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
+            }
+
+            if (isset($posted_condition_value))
+            {
+                $updated_data = array(
+                    'qid' => $qid,
+                    'scenario' => $p_scenario,
+                    'cqid' => $p_cqid,
+                    'cfieldname' => $conditionCfieldname,
+                    'method' => $p_method,
+                    'value' => $posted_condition_value
+                );
+                $result = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
+            }
+        }
+        LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
     }
 
     /**
