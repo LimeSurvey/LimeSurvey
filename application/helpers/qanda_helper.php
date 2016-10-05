@@ -5718,11 +5718,12 @@ function do_arraycolumns($ia)
 
         if ($anscount>0)
         {
-            $cellwidth=$anscount;
-            $cellwidth=round(( 50 / $cellwidth ) , 1);
+            $answerwidth=(trim($aQuestionAttributes['answer_width_bycolumn'])!="" ? intval($aQuestionAttributes['answer_width_bycolumn']) : 33);
+            $cellwidth=(100 -$answerwidth) / $anscount ;
 
             $aData['anscount'] = $anscount;
             $aData['cellwidth'] = $cellwidth;
+            $aData['answerwidth'] = $answerwidth;
             $aData['aQuestions'] = $aQuestions;
 
             foreach ($aQuestions as $ansrow)

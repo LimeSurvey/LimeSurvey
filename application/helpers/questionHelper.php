@@ -70,6 +70,16 @@ class questionHelper
         "help"=>gT('Set the percentage width of the (sub-)question column (1-100)'),
         "caption"=>gT('(Sub-)question width'));
 
+        self::$attributes["answer_width_bycolumn"]=array(
+        "types"=>"H",
+        'category'=>gT('Display'),
+        'sortorder'=>100,
+        'inputtype'=>'integer',
+        'min'=>'1',
+        'max'=>'100',
+        "help"=>gT('Set the percentage width of the answers column (1-100)'),
+        "caption"=>gT('Answers column width'));
+
         self::$attributes["repeat_headings"]=array(
         "types"=>"F:1;",
         'category'=>gT('Display'),

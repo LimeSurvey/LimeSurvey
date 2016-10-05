@@ -26,7 +26,7 @@ li.radio-item{display:block}
 {text-align:center;vertical-align:middle}
 .table.question thead th
 {text-align:center;vertical-align:bottom}
-.table.question .answertext{text-align:right}
+.table.question tbody .answertext{text-align:right}
 .table.question .answertextright{text-align:left}
 
 /** awesome-bootstrap-checkbox inside table with an sr-only label */

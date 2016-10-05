@@ -9,7 +9,7 @@
  ?>
 <table class="table question subquestion-list questions-list array-by-columns">
     <colgroup>
-        <col class="col-answers" />
+        <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <?php foreach ($aQuestions as $i=>$question): ?>
             <col
                 class="answers-list radio-list <?php echo ($i % 2 == 0)?' array2':' array1';?> <?php if($question['errormandatory']): echo " has-error"; endif; ?>"
