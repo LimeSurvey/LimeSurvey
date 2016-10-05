@@ -27,7 +27,7 @@ li.radio-item,li.checkbox-item{display:block}
 .table.question thead th
 {text-align:center;vertical-align:bottom}
 
-.table.question .answertext{text-align:right}
+.table.question tbody .answertext{text-align:right}
 .table.question .answertextright{text-align:left}
 
 /**
@@ -51,14 +51,34 @@ margin: 0;
     line-height: 21px;
     text-indent: 21px;
 }
+.radio-item label.ls-label-xs-visibility,.checkbox-item label.ls-label-xs-visibility{
+display:inline-block;
+    position:relative;
+    left:auto;
+    overflow:hidden;
+    width: 17px;
+    height: 17px;
+    margin-left:-20px;
+    line-height: 21px;
+    text-indent: 21px;
+}
 /* no argin on label : no margiun after and before too */
 .radio-item label.sr-only::before,.checkbox-item label.sr-only::before  {
+    margin-left:0;
+}
+.radio-item label.ls-label-xs-visibility::before,.checkbox-item label.ls-label-xs-visibility::before{
     margin-left:0;
 }
 .radio-item label.sr-only::after,.checkbox-item label.sr-only::after {
     margin-left:0;
 }
+.radio-item label.ls-label-xs-visibility::after,.checkbox-item label.ls-label-xs-visibility::after {
+    margin-left:0;
+}
 .checkbox-item label.sr-only::after {
+    line-height:17px;width:17px;text-align:center;text-indent: 0;
+}
+.checkbox-item label.ls-label-xs-visibility::after {
     line-height:17px;width:17px;text-align:center;text-indent: 0;
 }
 /* Hide the other content inside sr-only */
@@ -69,6 +89,14 @@ margin: 0;
     padding: 0;
     width: 1px;
     position:absolute;
+}
+.radio-item label.ls-label-xs-visibility > * ,.checkbox-item label.ls-label-xs-visibility > *{
+position:absolute;
+left:-10000px;
+top:auto;
+width:1px;
+height:1px;
+overflow:hidden;
 }
 /*
 Max width before this PARTICULAR table gets nasty
