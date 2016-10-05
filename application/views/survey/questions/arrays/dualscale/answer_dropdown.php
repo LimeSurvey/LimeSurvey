@@ -25,7 +25,7 @@
 
         <thead>
             <tr>
-                <td>&nbsp;</tdh>
+                <td>&nbsp;</td>
                 <th class='left-header'><?php echo $leftheader; ?></th>
                 <td>&nbsp;</td>
                 <th class='right-header'><?php echo $rightheader; ?></th>
