@@ -810,79 +810,10 @@ class conditionsaction extends Survey_Common_Action {
         //// NICE COMMENTS : but a subaction copy would be even nicer
 
         // BEGIN: DISPLAY THE COPY CONDITIONS FORM
-        if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
+        if ($subaction == "copyconditionsform"
+            || $subaction == "copyconditions")
         {
-            $aViewUrls['output'] .= "<tr class=''><td colspan='3'>\n"
-            .CHtml::form(array("/admin/conditions/sa/index/subaction/copyconditions/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"copyconditions",'name'=>"copyconditions"))
-            ."<h3>".gT("Copy conditions")."</h3>\n";
-
-
-            if (count($conditionsList))
-            {
-                // Multiselect is not working, so better to disable (as in 2.06)
-                //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
-                //$this->registerScriptFile( 'SCRIPT_PATH', 'jquery.multiselect.min.js');
-                $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
-
-                // TODO
-                $aViewUrls['output'] .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".gT("No questions selected")."', checkAllText: '".gT("Check all")."', uncheckAllText: '".gT("Uncheck all")."', selectedText: '# ".gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
-
-                $aViewUrls['output'] .= "\t<div class='conditioncopy-tbl-row'>\n"
-                ."\t<div class='condition-tbl-left'>".gT("Copy the selected conditions to").":</div>\n"
-                ."\t<div class='condition-tbl-right'>\n"
-                ."\t\t<select class='form-control' name='copyconditionsto[]' id='copytomultiselect'  multiple='multiple' >\n";
-                if (isset($pquestions) && count($pquestions) != 0)
-                {
-                    foreach ($pquestions as $pq)
-                    {
-                        $aViewUrls['output'] .= "\t\t<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
-                    }
-                }
-                $aViewUrls['output'] .= "\t\t</select>\n"
-                ."\t</div>\n"
-                ."\t</div>\n";
-
-                if ( !isset($pquestions) || count($pquestions) == 0)
-                {
-                    $disableCopyCondition=" disabled='disabled'";
-                }
-                else
-                {
-                    $disableCopyCondition=" ";
-                }
-
-                $aViewUrls['output'] .= "\t<div class='condition-tbl-full'>\n"
-                //        ."\t\t<input type='submit' value='".gT("Copy conditions")."' onclick=\"if (confirm('".gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){ prepareCopyconditions(); return true;} else { return false;}\" $disableCopyCondition/>\n"
-                ."<br/>\t\t<input class='btn btn-default' type='submit' value='".gT("Copy conditions")."' onclick=\"prepareCopyconditions(); return true;\" $disableCopyCondition/>\n"
-                ."<input type='hidden' name='subaction' value='copyconditions' />\n"
-                ."<input type='hidden' name='sid' value='$iSurveyID' />\n"
-                ."<input type='hidden' name='gid' value='$gid' />\n"
-                ."<input type='hidden' name='qid' value='$qid' />\n"
-                ."</div>\n";
-
-                $aViewUrls['output'] .= "<script type=\"text/javascript\">\n"
-                ."function prepareCopyconditions()\n"
-                ."{\n"
-                ."\t$(\"input:checked[name^='aConditionFromScenario']\").each(function(i,val)\n"
-                ."\t{\n"
-                ."var thecid = val.value;\n"
-                ."var theform = document.getElementById('copyconditions');\n"
-                ."addHiddenElement(theform,'copyconditionsfrom[]',thecid);\n"
-                ."return true;\n"
-                ."\t});\n"
-                ."}\n"
-                ."</script>\n";
-
-            }
-            else
-            {
-                $aViewUrls['output'] .= "<div class='messagebox ui-corner-all'>\n"
-                ."<div class='partialheader'>".gT("There are no existing conditions in this survey.")."</div><br />\n"
-                ."</div>\n";
-            }
-
-            $aViewUrls['output'] .= "</form></td></tr>\n";
-
+            $aViewUrls['output'] .= $this->getCopyForm($qid, $gid, $conditionsList, $pquestions);
         }
         // END: DISPLAY THE COPY CONDITIONS FORM
 
@@ -2205,6 +2136,87 @@ class conditionsaction extends Survey_Common_Action {
         } //foreach theserows
 
         return array($cquestions, $canswers);
+    }
+
+    /**
+     * @param int $qid
+     * @param int $gid
+     * @param array $conditionsList
+     * @return string html
+     */
+    protected function getCopyForm($qid, $gid, array $conditionsList, array $pquestions)
+    {
+        $aViewUrls = array();
+        $aViewUrls['output'] = "<tr class=''><td colspan='3'>\n"
+            .CHtml::form(array("/admin/conditions/sa/index/subaction/copyconditions/surveyid/{$this->iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"copyconditions",'name'=>"copyconditions"))
+            ."<h3>".gT("Copy conditions")."</h3>\n";
+
+        if (count($conditionsList))
+        {
+            // Multiselect is not working, so better to disable (as in 2.06)
+            //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
+            //$this->registerScriptFile( 'SCRIPT_PATH', 'jquery.multiselect.min.js');
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
+
+            // TODO
+            $aViewUrls['output'] .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".gT("No questions selected")."', checkAllText: '".gT("Check all")."', uncheckAllText: '".gT("Uncheck all")."', selectedText: '# ".gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
+
+            $aViewUrls['output'] .= "\t<div class='conditioncopy-tbl-row'>\n"
+                ."\t<div class='condition-tbl-left'>".gT("Copy the selected conditions to").":</div>\n"
+                ."\t<div class='condition-tbl-right'>\n"
+                ."\t\t<select class='form-control' name='copyconditionsto[]' id='copytomultiselect'  multiple='multiple' >\n";
+            if (count($pquestions) != 0)
+            {
+                foreach ($pquestions as $pq)
+                {
+                    $aViewUrls['output'] .= "\t\t<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
+                }
+            }
+            $aViewUrls['output'] .= "\t\t</select>\n"
+                ."\t</div>\n"
+                ."\t</div>\n";
+
+            if (count($pquestions) == 0)
+            {
+                $disableCopyCondition=" disabled='disabled'";
+            }
+            else
+            {
+                $disableCopyCondition=" ";
+            }
+
+            $aViewUrls['output'] .= "\t<div class='condition-tbl-full'>\n"
+                //        ."\t\t<input type='submit' value='".gT("Copy conditions")."' onclick=\"if (confirm('".gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){ prepareCopyconditions(); return true;} else { return false;}\" $disableCopyCondition/>\n"
+                ."<br/>\t\t<input class='btn btn-default' type='submit' value='".gT("Copy conditions")."' onclick=\"prepareCopyconditions(); return true;\" $disableCopyCondition/>\n"
+                ."<input type='hidden' name='subaction' value='copyconditions' />\n"
+                ."<input type='hidden' name='sid' value='$this->iSurveyID' />\n"
+                ."<input type='hidden' name='gid' value='$gid' />\n"
+                ."<input type='hidden' name='qid' value='$qid' />\n"
+                ."</div>\n";
+
+            $aViewUrls['output'] .= "<script type=\"text/javascript\">\n"
+                ."function prepareCopyconditions()\n"
+                ."{\n"
+                ."\t$(\"input:checked[name^='aConditionFromScenario']\").each(function(i,val)\n"
+                ."\t{\n"
+                ."var thecid = val.value;\n"
+                ."var theform = document.getElementById('copyconditions');\n"
+                ."addHiddenElement(theform,'copyconditionsfrom[]',thecid);\n"
+                ."return true;\n"
+                ."\t});\n"
+                ."}\n"
+                ."</script>\n";
+
+        }
+        else
+        {
+            $aViewUrls['output'] .= "<div class='messagebox ui-corner-all'>\n"
+                ."<div class='partialheader'>".gT("There are no existing conditions in this survey.")."</div><br />\n"
+                ."</div>\n";
+        }
+
+        $aViewUrls['output'] .= "</form></td></tr>\n";
+        return $aViewUrls['output'];
     }
 
 }
