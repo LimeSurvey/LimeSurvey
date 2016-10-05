@@ -44,7 +44,11 @@
 .checkbox-item input[type="checkbox"],
 .checkbox-item input[type="radio"] {
   opacity: 0;
-  z-index: 1;
+  z-index: -1;
+  /* set the position at same place than label::after */
+  position: absolute;
+  left: 0;
+  margin-left: -20px;
 }
 .checkbox-item input[type="checkbox"]:focus + label::before,
 .checkbox-item input[type="radio"]:focus + label::before {
