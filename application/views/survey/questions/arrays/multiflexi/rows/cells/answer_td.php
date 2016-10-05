@@ -31,7 +31,7 @@
             value="<?php echo $value; ?>"
         />
 
-        <label for="answer<?php echo $myfname2;?>" class='sr-only'>
+        <label for="answer<?php echo $myfname2;?>" class='ls-label-xs-visibility'>
             <?php echo $dataTitle;?>
         </label>
         <?php if($inputboxlayout == false):?>

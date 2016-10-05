@@ -19,7 +19,7 @@
         <?php echo $CHECKED;?>
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
      />
-    <label for="answer<?php echo $myfname;?>-<?php echo $i; ?>" class="sr-only">
+    <label for="answer<?php echo $myfname;?>-<?php echo $i; ?>" class="ls-label-xs-visibility">
         <?php echo $labelText;?>
     </label>
 </td>

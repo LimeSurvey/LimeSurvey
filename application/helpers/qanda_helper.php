@@ -5880,13 +5880,16 @@ function do_array_dual($ia)
     $answerwidth    = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
 
     // Find if we have rigth and center text
+    /* All of this part seem broken actually : we don't send it to view and don't explode it */
     $sQuery         = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
     $rigthCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();
     $rightexists    = ($rigthCount>0);// $right_exists: flag to find out if there are any right hand answer parts. leaving right column but don't force with
     $sQuery         = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%|%'";
     $centerCount    = Yii::app()->db->createCommand($sQuery)->queryScalar();
     $centerexists   = ($centerCount>0);// $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
-
+    /* Then always set to false : see bug https://bugs.limesurvey.org/view.php?id=11750 */
+    $rightexists=false;
+    $centerexists=false;
     // Label and code for input
     foreach ($aAnswersScale0 as $lrow)
     {
@@ -5932,10 +5935,24 @@ function do_array_dual($ia)
                 $numrows++;
                 $caption.=gT("The last cell is for 'No answer'.");
             }
-            if($rightexists) {$numrows++;}
-            if($centerexists) {$numrows++;}
+            /* right and center come from answer => go to answer part*/
+            $numColExtraAnswer=0;
+            if($rightexists) {
+                $numColExtraAnswer++;
+            }elseif($shownoanswer){
+                $columnswidth-=4;
+                $rightwidth=4;
+            }else{
+                $rightwidth=0;
+            }
+            if($centerexists) {
+                $numColExtraAnswer++;
+            }else{
+                $columnswidth-=4;
+                $separatorwidth=4;
+            }
             $cellwidth=$columnswidth/$numrows;
-            $cellwidth=sprintf("%02d", $cellwidth); // No reason to do this, except to leave place for separator ?  But then table can not be the same in all browser
+            $answerwidth=$answerwidth/(1 + $numColExtraAnswer*0.5);
 
             // Header row and colgroups
             $aData['answerwidth'] = $answerwidth;
@@ -5944,10 +5961,10 @@ function do_array_dual($ia)
             $aData['labelcode0'] = $labelcode0;
             $aData['labelans1'] = $labelans1;
             $aData['labelcode1'] = $labelcode1;
-            $aData['separatorwidth'] = ($centerexists) ? "style='width: $cellwidth%;' ":"";
+            $aData['separatorwidth'] = $centerexists ? $answerwidth/2 : $separatorwidth;
             $aData['shownoanswer'] = $shownoanswer;
             $aData['rightexists'] = $rightexists;
-            $aData['rigthwidth'] = ($rightexists) ? "style='width: $cellwidth%;' ":"";
+            $aData['rigthwidth'] = $rightexists ? $answerwidth/2 : $rightwidth;
 
             // build first row of header if needed
             $aData['leftheader'] = $leftheader;
@@ -6133,8 +6150,7 @@ function do_array_dual($ia)
         elseif($useDropdownLayout === true)
         {
             $aData = array();
-            $separatorwidth=4;
-            $cellwidth=(100-$answerwidth-$separatorwidth)/2;
+
 
             $answer = "";
 
@@ -6161,6 +6177,12 @@ function do_array_dual($ia)
             else {
                 $interddSep = '';
             }
+            if($interddSep){
+                $separatorwidth=8;
+            }else{
+                $separatorwidth=4;
+            }
+            $cellwidth=(100-$answerwidth-$separatorwidth)/2;
             $aData['answerwidth'] = $answerwidth;
             $aData['ddprefix'] = $ddprefix;
             $aData['ddsuffix'] = $ddsuffix;

@@ -19,7 +19,7 @@
 <!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>"  <?php echo $sDisplayStyle; ?> role="radiogroup" aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
-    <th class="answertext" id="answertext<?php echo $myfname;?>">
+    <th class="answertext control-label" id="answertext<?php echo $myfname;?>">
          <?php echo $answertext;?>
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value; ?>" />
     </th>
@@ -34,7 +34,7 @@
             <?php echo $Ychecked;?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
             />
-        <label for="answer<?php echo $myfname;?>-Y" class="sr-only">
+        <label for="answer<?php echo $myfname;?>-Y" class="ls-label-xs-visibility">
             <?php eT("Yes"); ?>
         </label>
     </td>
@@ -49,7 +49,7 @@
             <?php echo $Uchecked?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
         />
-        <label for="answer<?php echo $myfname; ?>-U" class="sr-only">
+        <label for="answer<?php echo $myfname; ?>-U" class="ls-label-xs-visibility">
             <?php eT("Uncertain");?>
         </label>
     </td>
@@ -64,7 +64,7 @@
             <?php echo $Nchecked?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
         />
-        <label for="answer<?php echo $myfname;?>-N" class="sr-only">
+        <label for="answer<?php echo $myfname;?>-N" class="ls-label-xs-visibility">
             <?php eT("No"); ?>
         </label>
     </td>
@@ -80,7 +80,7 @@
                 <?php echo $NAchecked?>
                 onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
             />
-            <label for="answer<?php echo $myfname;?>-" class="sr-only">
+            <label for="answer<?php echo $myfname;?>-" class="ls-label-xs-visibility">
                 <?php eT("No answer");?>
             </label>
         </td>

@@ -22,7 +22,7 @@
 <!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="row-inc-same-dec answers-list radio-list array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
-    <th class="answertext" id="answertext<?php echo $myfname;?>">
+    <th class="answertext control-label" id="answertext<?php echo $myfname;?>">
         <?php echo $answertext;?>
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" />
     </th>
@@ -37,7 +37,7 @@
             <?php echo $Ichecked;?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
             />
-        <label for="answer<?php echo $myfname;?>-I" class="sr-only">
+        <label for="answer<?php echo $myfname;?>-I" class="ls-label-xs-visibility">
             <?php eT("Increase"); ?>
         </label>
     </td>
@@ -52,7 +52,7 @@
             <?php echo $Schecked?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
         />
-        <label for="answer<?php echo $myfname; ?>-S" class="sr-only">
+        <label for="answer<?php echo $myfname; ?>-S" class="ls-label-xs-visibility">
             <?php eT("Same");?>
         </label>
     </td>
@@ -67,14 +67,14 @@
             <?php echo $Dchecked?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
         />
-        <label for="answer<?php echo $myfname;?>-D" class="sr-only">
+        <label for="answer<?php echo $myfname;?>-D" class="ls-label-xs-visibility">
             <?php eT("Decrease"); ?>
         </label>
     </td>
 
     <!-- No Answer -->
     <?php if($no_answer):?>
-        <td class="answer-item radio-item noanswer-item text-center">
+        <td class="answer-item radio-item noanswer-item">
             <input
                 type="radio"
                 name="<?php echo $myfname;?>"
@@ -83,7 +83,7 @@
                 <?php echo $NAchecked?>
                 onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
             />
-            <label for="answer<?php echo $myfname;?>-" class="sr-only">
+            <label for="answer<?php echo $myfname;?>-" class="ls-label-xs-visibility">
                 <?php eT("No answer");?>
             </label>
         </td>

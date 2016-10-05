@@ -30,9 +30,7 @@
 /** ls-label-xs-visibility : set sr-only by default : template can reinit it with initial */
 .ls-label-xs-visibility{
 position:absolute;
-/*
 left:-10000px;
-*/
 top:auto;
 width:1px;
 height:1px;

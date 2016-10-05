@@ -9,25 +9,25 @@
 ?>
 
 <table class="no-more-tables table-dual-scale table question subquestion-list questions-list">
-    <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
+    <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' >
     <colgroup class="col-responses group-1">
         <?php foreach ($labelans0 as $ld): ?>
-            <col style='width: <?php echo $cellwidth; ?>%;' />
+            <col style='width: <?php echo $cellwidth; ?>%;' >
         <?php endforeach; ?>
     </colgroup>
     <?php if (count($labelans1) > 1): ?>
-        <col class="separator" <?php echo $separatorwidth; ?>/>
+        <col class="separator" style="width: <?php echo $separatorwidth; ?>">
         <colgroup class="col-responses group-2">
             <?php foreach ($labelans1 as $ld): ?>
-                <col style="width: <?php $cellwidth; ?>%" />
+                <col style='width: <?php echo $cellwidth; ?>%;' >
             <?php endforeach; ?>
         </colgroup>
     <?php endif; ?>
     <?php if ($shownoanswer || $rightexists): ?>
-        <col class="separator rigth_separator" <?php echo $rigthwidth; ?> />
+        <col class="separator rigth_separator" style="width: <?php echo $rigthwidth; ?>">
     <?php endif; ?>
     <?php if ($shownoanswer): ?>
-        <col class="col-no-answer"  style='width: <?php echo $cellwidth; ?>%;' />
+        <col class="col-no-answer"  style="width: <?php echo $cellwidth; ?>%;" />
     <?php endif; ?>
 
     <thead>
@@ -97,14 +97,14 @@
                 array(
                     'id'=> "javatbd{$ansrow['myfname']}",
                     'class'=>"answers-list radio-list array{$ansrow['zebra']} {$errorClass} " ,
-                    'role'=>"radiogroup",
-                    'aria-labelledby'=>"answertext{$ansrow['myfname']}"
+                    'role'=>"group",
+                    'aria-describedby'=>"answertext{$ansrow['myfname']}"
                 ),
                 "",
                 false
             );
             ?>
-            <th class="answertext  control-label">
+            <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?>">
                 <?php echo $ansrow['answertext']; ?>
                 <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>"
                     id="java<?php echo $ansrow['myfid0']; ?>" value=""
@@ -133,25 +133,27 @@
                         id="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>"
                         <?php echo $labelcode0_checked[$ansrow['title']][$ld]; ?>
                     />
-                    <label for="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>" class="sr-only">
+                    <label for="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>" class="ls-label-xs-visibility">
                         <?php echo $labelans0[$j];?>
                     </label>
                 </td>
             <?php endforeach; ?>
 
             <?php if (count($labelans1) > 0):  // if second label set is used ?>
-                <td class="dual_scale_separator information-item">
+                <td class="dual_scale_separator information-item <?php if($shownoanswer): ?>  radio-item noanswer-item <?php endif; ?>">
                     <?php if ($shownoanswer): // No answer for accessibility and no javascript (but visible-xs-block visible-xs-block even with no js: need reworking) ?>
-                        <label for='answer<?php echo $ansrow['myfid0']; ?>-'>
-                            <input
-                                class='visible-xs-block'
-                                type='radio'
-                                name='<?php echo $ansrow['myfname0']; ?>'
-                                value=''
-                                id='answer<?php echo $ansrow['myfid0']; ?>-'
-                                <?php echo $myfname0_notset; ?>
-                            />
+                    <div class="ls-js-hidden">
+                        <input
+                            type='radio'
+                            name='<?php echo $ansrow['myfname0']; ?>'
+                            value=''
+                            id='answer<?php echo $ansrow['myfid0']; ?>-'
+                            <?php echo $myfname0_notset; ?>
+                        />
+                        <label for='answer<?php echo $ansrow['myfid0']; ?>-' class='ls-label-xs-visibility'>
+                            <?php eT("No answer"); ?>
                         </label>
+                    </div>
                     <?php endif; ?>
                 </td>
 
@@ -168,7 +170,7 @@
                             id="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>"
                             <?php echo $labelcode1_checked[$ansrow['title']][$ld]; ?>
                         />
-                        <label for="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>" class="sr-only">
+                        <label for="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>" class="ls-label-xs-visibility">
                             <?php echo $labelans1[$k];?>
                         </label>
                     </td>
@@ -177,7 +179,7 @@
 
             <!-- Separator for no-answer -->
             <?php if ($shownoanswer || $rightexists): ?>
-                <td class="answertextright dual_scale_separator information-item\">
+                <td class="answertextright dual_scale_separator information-item">
                     <?php echo $answertextright; ?>
                 </td>
             <?php endif; ?>
@@ -193,7 +195,7 @@
                                 id='answer<?php echo $ansrow['myfid1']; ?>-'
                                 <?php echo $myfname1_notset; ?>
                             />
-                        <label for='answer<?php echo $ansrow['myfid1']; ?>-' class="sr-only">
+                        <label for='answer<?php echo $ansrow['myfid1']; ?>-' class="ls-label-xs-visibility">
                             <?php eT("No answer"); ?>
                         </label>
                     <?php else: ?>
@@ -204,7 +206,7 @@
                                 id='answer<?php echo $ansrow['myfid0']; ?>-'
                                 <?php echo $myfname0_notset; ?>
                             />
-                        <label for='answer<?php echo $ansrow['myfid0']; ?>-' class="sr-only">
+                        <label for='answer<?php echo $ansrow['myfid0']; ?>-' class="ls-label-xs-visibility">
                             <?php eT("No answer"); ?>
                         </label>
                     <?php endif; ?>

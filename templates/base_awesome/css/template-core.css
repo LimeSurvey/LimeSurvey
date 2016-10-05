@@ -11,7 +11,6 @@ li.radio-item,li.checkbox-item{display:block}
 .radio-item label,.checkbox-item label {display:block}
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {
     position:absolute;
-    /* opacity: 1; // Must control it for accessibility */
 }
 /**
  * Table .question feature
@@ -20,15 +19,17 @@ li.radio-item,li.checkbox-item{display:block}
 .table.question{table-layout:fixed}
 .table.question{width:100%}
 /* Basic alignment */
-.table.question td
-{text-align:center;vertical-align:middle}
-.table.question tbody th
+.question > tbody > tr > td
+{vertical-align:middle}
+.question tbody td
+{text-align:center}
+.question tbody th
 {text-align:right;vertical-align:middle}
-.table.question thead th
+.question thead th
 {text-align:center;vertical-align:bottom}
 
-.table.question tbody .answertext{text-align:right}
-.table.question .answertextright{text-align:left}
+.question tbody .answertext{text-align:right}
+.question .answertextright{text-align:left}
 
 /**
  *  awesome-bootstrap-checkbox inside table with an sr-only label
@@ -42,17 +43,8 @@ margin: 0;
     padding-left: 22px;
 }
 /* show partially sr-only inside table */
-.radio-item label.sr-only,.checkbox-item label.sr-only{
-    display:inline-block;
-    overflow:hidden;
-    width: 17px;
-    height: 17px;
-    margin-left:-20px;
-    line-height: 21px;
-    text-indent: 21px;
-}
 .radio-item label.ls-label-xs-visibility,.checkbox-item label.ls-label-xs-visibility{
-display:inline-block;
+    display:inline-block;
     position:relative;
     left:auto;
     overflow:hidden;
@@ -63,40 +55,23 @@ display:inline-block;
     text-indent: 21px;
 }
 /* no argin on label : no margiun after and before too */
-.radio-item label.sr-only::before,.checkbox-item label.sr-only::before  {
-    margin-left:0;
-}
 .radio-item label.ls-label-xs-visibility::before,.checkbox-item label.ls-label-xs-visibility::before{
-    margin-left:0;
-}
-.radio-item label.sr-only::after,.checkbox-item label.sr-only::after {
     margin-left:0;
 }
 .radio-item label.ls-label-xs-visibility::after,.checkbox-item label.ls-label-xs-visibility::after {
     margin-left:0;
 }
-.checkbox-item label.sr-only::after {
-    line-height:17px;width:17px;text-align:center;text-indent: 0;
-}
 .checkbox-item label.ls-label-xs-visibility::after {
     line-height:17px;width:17px;text-align:center;text-indent: 0;
 }
 /* Hide the other content inside sr-only */
-.radio-item label.sr-only > *,.checkbox-item label.sr-only > * {
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    width: 1px;
-    position:absolute;
-}
 .radio-item label.ls-label-xs-visibility > * ,.checkbox-item label.ls-label-xs-visibility > *{
-position:absolute;
-left:-10000px;
-top:auto;
-width:1px;
-height:1px;
-overflow:hidden;
+    position:absolute;
+    left:-10000px;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
 }
 /*
 Max width before this PARTICULAR table gets nasty
@@ -105,45 +80,52 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 @media
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
-    .no-more-table table.question,.no-more-table thead,.no-more-table tbody,.no-more-table th,.no-more-table td,.no-more-table tr {
+    table.question,.question thead,.question tbody,.question th,.question td,.question tr {
         display: block;
         text-align:left;
     }
-    .no-more-table thead{display:none} /* We don't need it for accessibility : we already have the label */
+    .question thead{display:none} /* We don't need it for accessibility : we already have the label */
 
-    .table.question td
-    {text-align:left;}
-    .table.question thead th
-    {text-align:left;}
+    .question tbody td{text-align:left;}
 
-    .no-more-table .table > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
-    .table.question .answertext{text-align:left}
-    .table.question .answertextright{text-align:right}
-
+    .question > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
+    .question tbody .answertext{text-align:left}
+    .question .answertextright{text-align:right}
     /* Show the label */
-    label.sr-only{
-        display:block;
-    }
-    .no-more-table label.sr-only,
-    .no-more-table label.sr-only > *
+    label.ls-label-xs-visibility
     {
+        display:block;
+        position:relative;
+        left:auto;
+        width: auto;
+        height: auto;
+    }
+    .radio-item label.ls-label-xs-visibility,.checkbox-item label.ls-label-xs-visibility{
+        display:block;
+        left:auto;
         overflow:visible;
         width: auto;
         height: auto;
         margin-left:0;
-        text-indent: 0;
-        clip: auto;
-        position: relative;
+        line-height: initial;
+        text-indent: initial;
     }
-    .no-more-table .radio-item label.sr-only
+    .question label.ls-label-xs-visibility > *
     {
-
+        position:relative;
+        left:auto;
+        top:auto;
+        width:auto;
+        height:auto;
+        overflow:auto;
     }
-
-    .no-more-table .radio-item label.sr-only::before,.no-more-table .checkbox-item label.sr-only::before {
+    .question .radio-item label.ls-label-xs-visibility::before,.question .checkbox-item label.ls-label-xs-visibility::before {
         margin-left:-20px;
     }
-    .no-more-table .radio-item label.sr-only::after,.no-more-table .checkbox-item label.sr-only::after {
+    .question .radio-item label.ls-label-xs-visibility::after,.question .checkbox-item label.ls-label-xs-visibility::after {
         margin-left:-20px;
     }
+
+    /* bs fix */
+    .question td.visible-xs,.question th.visible-xs{display:block !important}
 }

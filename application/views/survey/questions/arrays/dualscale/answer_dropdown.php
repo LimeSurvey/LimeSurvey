@@ -44,8 +44,8 @@
                         "tr",
                         array(
                             'id'=> "javatbd{$ansrow['myfname']}",
-                            'class'=>"answers-list radio-list array{$ansrow['zebra']}".(($ansrow['mandatoryviolation']) ? " has-error error-mandatory" : "") ,
-                            'role'=>"radiogroup",
+                            'class'=>"answers-list radio-list array{$ansrow['zebra']}".(($ansrow['mandatoryviolation']) ? " has-error" : "") ,
+                            'role'=>"group",
                         ),
                         "",
                         false

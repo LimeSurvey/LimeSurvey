@@ -14,7 +14,7 @@
 ?>
 
 <!-- answer_td_checkboxes -->
-<td class="answer_cell_<?php echo $ld; ?> question-item answer-item <?php echo $answertypeclass;?>-item checkbox-item text-center">
+<td class="answer_cell_<?php echo $ld; ?> question-item answer-item <?php echo $answertypeclass;?>-item checkbox-item">
     <input
         type="hidden"
         name="java<?php echo $myfname2;?>"
@@ -36,7 +36,7 @@
         value="1"
         <?php echo $setmyvalue; ?>
         />
-        <label for="cbox_<?php echo $myfname2;?>" class="sr-only">
+        <label for="cbox_<?php echo $myfname2;?>" class="ls-label-xs-visibility">
             <?php echo $dataTitle;?>
         </label>
     </td>
