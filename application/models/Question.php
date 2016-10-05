@@ -224,16 +224,7 @@ class Question extends LSActiveRecord
 
         if ($iQuestionID)
         {
-            $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
-            $aAttributeValues=array();
-            foreach($oAttributeValues as $oAttributeValue)
-            {
-                if($oAttributeValue->language){
-                    $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
-                }else{
-                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
-                }
-            }
+            $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID);
         }
         $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         uasort($aAttributeNames, 'categorySort');
