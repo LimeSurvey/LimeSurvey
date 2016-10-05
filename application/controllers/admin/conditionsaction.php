@@ -146,6 +146,9 @@ class conditionsaction extends Survey_Common_Action {
                 $p_method = trim ($_POST['method']);
             }
         }
+        else {
+            $p_method = null;
+        }
 
         if (isset($_POST['newscenarionum'])) {
             $p_newscenarionum = sanitize_int($_POST['newscenarionum']);
@@ -165,7 +168,7 @@ class conditionsaction extends Survey_Common_Action {
             $this->getController()->redirect(array('admin'));
         }
 
-        if (isset($p_subaction) && $p_subaction == "resetsurveylogic") {
+        if ($p_subaction == "resetsurveylogic") {
             $this->resetSurveyLogic($iSurveyID);
         }
 
@@ -205,17 +208,17 @@ class conditionsaction extends Survey_Common_Action {
             'qid'           => $qid
         );
 
-        if (isset($p_subaction) && $p_subaction == "insertcondition") {
+        if ($p_subaction == "insertcondition") {
             $this->insertCondition($args);
         }
 
         // UPDATE ENTRY IF THIS IS AN EDIT
-        if (isset($p_subaction) && $p_subaction == "updatecondition") {
+        if ($p_subaction == "updatecondition") {
             $this->updateCondition($args);
         }
 
         // DELETE ENTRY IF THIS IS DELETE
-        if (isset($p_subaction) && $p_subaction == "delete")
+        if ($p_subaction == "delete")
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
             $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
@@ -223,7 +226,7 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         // DELETE ALL CONDITIONS IN THIS SCENARIO
-        if (isset($p_subaction) && $p_subaction == "deletescenario")
+        if ($p_subaction == "deletescenario")
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
             $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
@@ -231,7 +234,7 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         // UPDATE SCENARIO
-        if (isset($p_subaction) && $p_subaction == "updatescenario" && isset($p_newscenarionum))
+        if ($p_subaction == "updatescenario" && isset($p_newscenarionum))
         {
             $result = Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
             'qid'=>$qid, 'scenario'=>$p_scenario));
@@ -239,33 +242,20 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         // DELETE ALL CONDITIONS FOR THIS QUESTION
-        if (isset($p_subaction) && $p_subaction == "deleteallconditions")
+        if ($p_subaction == "deleteallconditions")
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
             $result = Condition::model()->deleteRecords(array('qid'=>$qid));
         }
 
         // RENUMBER SCENARIOS
-        if (isset($p_subaction) && $p_subaction == "renumberscenarios")
+        if ($p_subaction == "renumberscenarios")
         {
-            $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
-            $result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safeDie ("Couldn't select scenario<br />$query<br />");
-            $newindex = 1;
-
-            foreach ($result->readAll() as $srow)
-            {
-                // new var $update_result == old var $result2
-                $update_result = Condition::model()->insertRecords(array('scenario'=>$newindex), TRUE,
-                array( 'qid'=>$qid, 'scenario'=>$srow['scenario'] )
-                );
-                $newindex++;
-            }
-            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-            Yii::app()->setFlashMessage(gT("All conditions scenarios were renumbered."));
+            $this->renumberScenarios($args);
         }
 
         // COPY CONDITIONS IF THIS IS COPY
-        if ( isset($p_subaction) && $p_subaction == "copyconditions" )
+        if ($p_subaction == "copyconditions" )
         {
             $qid = returnGlobal('qid');
             $copyconditionsfrom = returnGlobal('copyconditionsfrom');
@@ -1937,7 +1927,7 @@ class conditionsaction extends Survey_Common_Action {
      * @params $args
      * @return void
      */
-    protected function insertCondition($args)
+    protected function insertCondition(array $args)
     {
         // Extract p_scenario, p_cquestions, ...
         extract($args);
@@ -2022,9 +2012,10 @@ class conditionsaction extends Survey_Common_Action {
     }
 
     /**
+     * @param array $args
      * @return void
      */
-    protected function updateCondition($args)
+    protected function updateCondition(array $args)
     {
         extract($args);
 
@@ -2100,6 +2091,30 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
         LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+    }
+
+    /**
+     * @param array $args
+     * @return void
+     */
+    protected function renumberScenarios(array $args)
+    {
+        extract($args);
+
+        $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
+        $result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safeDie ("Couldn't select scenario<br />$query<br />");
+        $newindex = 1;
+
+        foreach ($result->readAll() as $srow)
+        {
+            // new var $update_result == old var $result2
+            $update_result = Condition::model()->insertRecords(array('scenario'=>$newindex), TRUE,
+                array( 'qid'=>$qid, 'scenario'=>$srow['scenario'] )
+            );
+            $newindex++;
+        }
+        LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+        Yii::app()->setFlashMessage(gT("All conditions scenarios were renumbered."));
     }
 
     /**
