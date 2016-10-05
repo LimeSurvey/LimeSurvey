@@ -195,9 +195,7 @@ class conditionsaction extends Survey_Common_Action {
             $markcidarray = explode("-", $_GET['markcid']);
         }
 
-        //BEGIN PROCESS ACTIONS
-        // ADD NEW ENTRY IF THIS IS AN ADD
-
+        // Begin process actions
         $args = array(
             'p_scenario'    => $p_scenario,
             'p_cquestions'  => $p_cquestions,
@@ -1253,14 +1251,6 @@ class conditionsaction extends Survey_Common_Action {
             ."<h3>".gT("Copy conditions")."</h3>\n";
 
 
-            //CopyConditionsMessage
-            if (isset ($CopyConditionsMessage))
-            {
-                $aViewUrls['output'] .= "<div class='messagebox ui-corner-all'>\n"
-                ."$CopyConditionsMessage\n"
-                ."</div>\n";
-            }
-
             if (count($conditionsList))
             {
                 // Multiselect is not working, so better to disable (as in 2.06)
@@ -2047,23 +2037,13 @@ class conditionsaction extends Survey_Common_Action {
 
             if (isset($conditionCopied) && $conditionCopied === true) {
                 if (isset($conditionDuplicated) && $conditionDuplicated ==true) {
-                    $CopyConditionsMessage = CHtml::tag('div', array('class'=>'partialheader'),
-                        '('.gT("Condition successfully copied (some were skipped because they were duplicates)").')'
-                    );
                     Yii::app()->setFlashMessage(gT("Condition successfully copied (some were skipped because they were duplicates)"), 'warning');
                 }
                 else {
-
-                    $CopyConditionsMessage = CHtml::tag('div', array('class'=>'successheader'),
-                        '('.gT("Condition successfully copied").')'
-                    );
                     Yii::app()->setFlashMessage(gT("Condition successfully copied"));
                 }
             }
             else {
-                $CopyConditionsMessage = CHtml::tag('div', array('class'=>'warningheader'),
-                    '('.gT("No conditions could be copied (due to duplicates)").')'
-                );
                 Yii::app()->setFlashMessage(gT("No conditions could be copied (due to duplicates)"), 'error');
             }
         }
