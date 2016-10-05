@@ -422,14 +422,14 @@ table.array-no-dropdown  td.answer-item.text-center
 @media
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
-    .no-more-table tbody {
+    table.question  tbody {
         padding: 0 1em 0 1em;
     }
-    .no-more-table tr{
+    table.question  tr{
         border: 0 none;
         padding: 1em;
     }
-    .no-more-table tr th {
+    table.question  tr th {
         font-size: 1.1em;
         text-align: center;
         color: #317eac;
@@ -452,68 +452,43 @@ only screen and (max-width: 760px),
         margin-bottom: 15px;
     }
 
-    /* Force table to not be like tables anymore */
-    .no-more-tables table,
-    .no-more-tables thead,
-    .no-more-tables tbody,
-    .no-more-tables th,
-    .no-more-tables td {
-        display: block;
-    }
-
-    .no-more-tables tbody th,
-    .no-more-tables tbody td,
-    .no-more-tables tbody tr {
-        width: 100% !important;
-    }
-
-    .no-more-tables tr {
-        display: inline-block;
-    }
-    .no-more-tables tbody {
+    table.question  tbody {
         padding: 0 1em 0 1em;
     }
 
     /* Hide table headers display: none; no need for accessibility) */
-    .no-more-tables thead tr {
+    table.question  thead tr {
         display:none;
     }
 
-    .no-more-tables tr,
-    .array-by-columns-div .radio-list {
+    table.question tr{
         border: 1px solid #ccc;
         padding: 1em;
     }
 
     /* Line header ; color is h4 color */
-    .no-more-tables tr th,
-    .array-by-columns-div .answertext {
+    table.question tr th {
         font-size: 1.1em;
         text-align: center;
         color: #317eac;
     }
 
-    .no-more-tables tr th {
+    table.question tr th {
         text-align: left;
     }
 
-    .array-by-columns-div .answertext {
+    .array-by-columns .answertext {
         padding: 8px;
         padding-left: 0;
         text-align: left;
         font-weight: bold;
     }
 
-    .array-by-columns-div .radio-item {
+    .array-by-columns .radio-item {
         padding-bottom: 8px;
     }
 
-    .no-more-tables .checkbox  {
-        position: relative;
-        top: 6px;
-    }
-
-    .no-more-tables td {
+    table.question td {
         /* Behave  like a "row" */
         min-height: 2em;
         border: none;
@@ -528,46 +503,6 @@ only screen and (max-width: 760px),
         padding-left:1.5em;
     }
 
-
-    .no-more-tables td:before {
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align:left;
-        font-weight: bold;
-    }
-
-    /*
-    Label the data
-    */
-    /*.no-more-tables td:before { content: attr(data-title); }*/
-
-    .no-more-tables-10-point td {
-    }
-
-    /* Don't wrap "No answer" on two lines */
-    .no-more-tables-10-point label {
-        white-space: nowrap;
-    }
-
-    .no-more-tables-10-point td:before, .no-more-tables-5-point td:before {
-        /* Now like a table header */
-        position: relative;
-        left: 2px;
-        /* Top/left values mimic padding */
-    }
-
-    /* When tables are collapsed, remove margin top so the labels look centered */
-    input[type="radio"],
-    .radio input[type="radio"],
-    .radio-inline input[type="radio"] {
-      margin-top: 4px;
-    }
 
     .five-point-choice .col-xs-12 {
         padding-bottom: 8px;  /* For 5-point-choice; TODO: Should look like 5-point-array? */

@@ -11,7 +11,7 @@
 
 <!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>" role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
-    <th id="answertext<?php echo $myfname;?>" class="answertext control-label">
+    <th id="answertext<?php echo $myfname;?>" class="answertext control-label <?php if($error){ echo " ls-error-mandatory";} ?>">
         <?php echo $answertext;?>
         <input name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" type="hidden">
     </th>

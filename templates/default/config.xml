@@ -110,6 +110,7 @@
         <packages>
             <package>jqueryui</package>
             <package>jquery-touch-punch</package>
+            <!-- Add the limesurvey needed package. Without : no backwards-compatible for minor version -->
             <package>limesurvey-public</package>
         </packages>
     </engine>

@@ -14,7 +14,7 @@
  */
 ?>
 <!-- answer -->
-<table class="table question subquestion-list questions-list <?php echo $answertypeclass; ?>-list <?php echo $extraclass; ?>">
+<table class="table question subquestion-list questions-list table-bordered <?php echo $answertypeclass; ?>-list <?php echo $extraclass; ?>">
 
     <colgroup class="col-responses">
         <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
