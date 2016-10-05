@@ -221,7 +221,12 @@ class conditionsaction extends Survey_Common_Action {
         if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
         $thissurvey = getSurveyInfo($iSurveyID);
 
-        $qresult = Question::model()->with('groups')->findByAttributes(array('qid' => $qid, 'parent_qid' => 0, 'language' => Survey::model()->findByPk($iSurveyID)->language));
+        $language = Survey::model()->findByPk($iSurveyID)->language;
+        $qresult = Question::model()->with('groups')->findByAttributes(array(
+            'qid' => $qid,
+            'parent_qid' => 0,
+            'language' => $language
+        ));
         $questiongroupname = $qresult->groups->group_name;
         $questiontitle = $qresult['title'];
         $sCurrentFullQuestionText = $qresult['question'];
@@ -233,9 +238,9 @@ class conditionsaction extends Survey_Common_Action {
         // first get all questions in natural sort order
         // , and find out which number in that order this question is
         $qresult = Question::model()->with(array(
-        'groups' => array(
-        'condition' => 'groups.language = :lang',
-        'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
+            'groups' => array(
+            'condition' => 'groups.language = :lang',
+            'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
         ),
         ))->findAllByAttributes(array('parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
         $qrows = array();
@@ -245,6 +250,7 @@ class conditionsaction extends Survey_Common_Action {
         usort($qrows, 'groupOrderThenQuestionOrder');
 
         $position="before";
+        $questionlist = array();
         // Go through each question until we reach the current one
         foreach ($qrows as $qrow)
         {
@@ -276,39 +282,9 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
 
-        $theserows = array();
         $postrows  = array();
 
-        if (isset($questionlist) && is_array($questionlist))
-        {
-            foreach ($questionlist as $ql)
-            {
-
-                $result = Question::model()->with(array(
-                'groups' => array(
-                'condition' => 'groups.language = :lang',
-                'params' => array(':lang' => Survey::model()->findByPk($iSurveyID)->language),
-                ),
-                ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $iSurveyID, 'language' => Survey::model()->findByPk($iSurveyID)->language));
-
-                $thiscount = count($result);
-
-                // And store again these questions in this array...
-                foreach ($result as $myrows)
-                {                   //key => value
-                    $theserows[] = array(
-                    "qid"        =>    $myrows['qid'],
-                    "sid"        =>    $myrows['sid'],
-                    "gid"        =>    $myrows['gid'],
-                    "question"    =>    $myrows['question'],
-                    "type"        =>    $myrows['type'],
-                    "mandatory"    =>    $myrows['mandatory'],
-                    "other"        =>    $myrows['other'],
-                    "title"        =>    $myrows['title']
-                    );
-                }
-            }
-        }
+        $theserows = $this->getTheseRows($questionlist, $language);
 
         if (isset($postquestionlist) && is_array($postquestionlist))
         {
@@ -2122,6 +2098,40 @@ class conditionsaction extends Survey_Common_Action {
     {
         ////$aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+    }
+
+    /**
+     * @param array $questionlist
+     * @param string $language
+     * @return array
+     */
+    protected function getTheseRows(array $questionlist, $language)
+    {
+        $theserows = array();
+        foreach ($questionlist as $ql) {
+
+            $result = Question::model()->with(array(
+                'groups' => array(
+                    'condition' => 'groups.language = :lang',
+                    'params' => array(':lang' => $language)
+                ),
+            ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $language));
+
+            // And store again these questions in this array...
+            foreach ($result as $myrows) {                   //key => value
+                $theserows[] = array(
+                    "qid"        =>    $myrows['qid'],
+                    "sid"        =>    $myrows['sid'],
+                    "gid"        =>    $myrows['gid'],
+                    "question"    =>    $myrows['question'],
+                    "type"        =>    $myrows['type'],
+                    "mandatory"    =>    $myrows['mandatory'],
+                    "other"        =>    $myrows['other'],
+                    "title"        =>    $myrows['title']
+                );
+            }
+        }
+        return $theserows;
     }
 
 }
