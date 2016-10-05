@@ -27,17 +27,17 @@
                     "today" => gT('Go to today'),
                     "clear" => gT('Clear selection'),
                     "close" => gT('Close the picker'),
-                    "selectMonth" => gT('Select Month'),
-                    "prevMonth" => gT('Previous Month'),
-                    "nextMonth" => gT('Next Month'),
-                    "selectYear" => gT('Select Year'),
-                    "prevYear" => gT('Previous Year'),
-                    "nextYear" => gT('Next Year'),
-                    "selectDecade" => gT('Select Decade'),
-                    "prevDecade" => gT('Previous Decade'),
-                    "nextDecade" => gT('Next Decade'),
-                    "prevCentury" => gT('Previous Century'),
-                    "nextCentury" => gT('Next Century')
+                    "selectMonth" => gT('Select month'),
+                    "prevMonth" => gT('Previous month'),
+                    "nextMonth" => gT('Next month'),
+                    "selectYear" => gT('Select year'),
+                    "prevYear" => gT('Previous year'),
+                    "nextYear" => gT('Next year'),
+                    "selectDecade" => gT('Select decade'),
+                    "prevDecade" => gT('Previous decade'),
+                    "nextDecade" => gT('Next decade'),
+                    "prevCentury" => gT('Previous century'),
+                    "nextCentury" => gT('Next century')
                 )
             )
         ));?>;
@@ -193,7 +193,7 @@
                     </div>
                 <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
                     <div class='alert alert-info'>
-                        <p><span class='fa fa-info-circle'></span>&nbsp;<?php eT('If you want to export blacklisted participants, set "Hide blacklisted participants" to "No" in CPDB settings..'); ?></p>
+                        <p><span class='fa fa-info-circle'></span>&nbsp;<?php eT('If you want to export blacklisted participants, set "Hide blacklisted participants" to "No" in CPDB settings.'); ?></p>
                     </div>
                 <?php endif; ?>
                 </div>

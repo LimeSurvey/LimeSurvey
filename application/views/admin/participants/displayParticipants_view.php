@@ -20,9 +20,9 @@
             echo "<div class='container-fluid' id='ParticipantFilters'>" 
                     . "<div class='row'>"
                         . "<div class='col-xs-12'>"
-                                . gT("Filteres active:")
+                                . gT("Active filters:")
                             . "<span class=''>&nbsp;&nbsp;</span>"
-                            . "<button id='removeAllFilters' class='btn btn-warning btn-xs'>".gT("Remove Filters")."</button>"
+                            . "<button id='removeAllFilters' class='btn btn-warning btn-xs'>".gT("Remove filters")."</button>"
                         . "</div>"
                     . "</div>";
             $i=0;
