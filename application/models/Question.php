@@ -228,10 +228,14 @@ class Question extends LSActiveRecord
             $aAttributeValues=array();
             foreach($oAttributeValues as $oAttributeValue)
             {
+                if(!isset($aAttributeValues[$oAttributeValue->attribute]))
+                {
+                    $aAttributeValues[$oAttributeValue->attribute]=array();
+                }
                 if($oAttributeValue->language){
                     $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
                 }else{
-                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
+                    $aAttributeValues[$oAttributeValue->attribute]['nolanguage']=$oAttributeValue->value;
                 }
             }
         }
@@ -241,9 +245,9 @@ class Question extends LSActiveRecord
         {
             if ($aAttribute['i18n'] == false)
             {
-                if (isset($aAttributeValues[$aAttribute['name']]))
+                if (isset($aAttributeValues[$aAttribute['name']]['nolanguage']))
                 {
-                    $aAttributeNames[$iKey]['value'] = $aAttributeValues[$aAttribute['name']];
+                    $aAttributeNames[$iKey]['value'] = $aAttributeValues[$aAttribute['name']]['nolanguage'];
                 }
                 else
                 {
@@ -257,6 +261,10 @@ class Question extends LSActiveRecord
                     if (isset($aAttributeValues[$aAttribute['name']][$sLanguage]))
                     {
                         $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
+                    }
+                    elseif(isset($aAttributeValues[$aAttribute['name']]['nolanguage']))
+                    {
+                        $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']]['nolanguage'];
                     }
                     else
                     {
