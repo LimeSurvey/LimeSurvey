@@ -477,7 +477,7 @@ function submittokens($quotaexit=false)
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
     // check how many uses the token has left
-    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    $token = Token::model($surveyid,'FinalSubmit')->findByAttributes(array('token' => $clienttoken));
 
     if ($quotaexit==true)
     {
