@@ -159,21 +159,7 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         if (isset($p_subaction) && $p_subaction == "resetsurveylogic") {
-            if (!isset($_GET['ok'])) {
-                $data = array('iSurveyID' => $iSurveyID);
-                $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
-                $this->_renderWrappedTemplate('conditions', array('message' => array(
-                    'title' => gT("Warning"),
-                    'message' => $content
-                )));
-                Yii::app()->end();
-            }
-            else {
-                LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
-                Condition::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
-                Yii::app()->setFlashMessage(gT("All conditions in this survey have been deleted."));
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
-            }
+            $this->resetSurveyLogic($iSurveyID);
         }
 
         // Make sure that there is a qid
@@ -2050,6 +2036,28 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         return $method;
+    }
+
+    /**
+     * @return void
+     */
+    protected function resetSurveyLogic($iSurveyID)
+    {
+        if (!isset($_GET['ok'])) {
+            $data = array('iSurveyID' => $iSurveyID);
+            $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
+            $this->_renderWrappedTemplate('conditions', array('message' => array(
+                'title' => gT("Warning"),
+                'message' => $content
+            )));
+            Yii::app()->end();
+        }
+        else {
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+            Condition::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
+            Yii::app()->setFlashMessage(gT("All conditions in this survey have been deleted."));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+        }
     }
 
     /**
