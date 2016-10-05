@@ -84,8 +84,7 @@ class conditionsaction extends Survey_Common_Action {
         $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
         $aData['questionbar']['buttons']['conditions'] = TRUE;
 
-        switch($subaction)
-        {
+        switch($subaction) {
             case 'editconditionsform':
                 $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
                 break;
@@ -122,12 +121,9 @@ class conditionsaction extends Survey_Common_Action {
         if (!isset($p_csrctoken)) {$p_csrctoken=returnGlobal('csrctoken');}
         if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnGlobal('prevQuestionSGQA');}
 
-        if (!isset($p_canswers))
-        {
-            if (isset($_POST['canswers']) && is_array($_POST['canswers']))
-            {
-                foreach ($_POST['canswers'] as $key => $val)
-                {
+        if (!isset($p_canswers)) {
+            if (isset($_POST['canswers']) && is_array($_POST['canswers'])) {
+                foreach ($_POST['canswers'] as $key => $val) {
                     $p_canswers[$key]= preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
                 }
             }
@@ -135,21 +131,16 @@ class conditionsaction extends Survey_Common_Action {
 
         $method = $this->getMethod();
 
-        if (isset($_POST['method']))
-        {
-            if ( !in_array($_POST['method'], array_keys($method)))
-            {
+        if (isset($_POST['method'])) {
+            if ( !in_array($_POST['method'], array_keys($method))) {
                 $p_method = "==";
             }
-            else
-            {
+            else {
                 $p_method = trim ($_POST['method']);
             }
         }
 
-
-        if (isset($_POST['newscenarionum']))
-        {
+        if (isset($_POST['newscenarionum'])) {
             $p_newscenarionum = sanitize_int($_POST['newscenarionum']);
         }
         //END Sanitizing POSTed data
@@ -162,16 +153,13 @@ class conditionsaction extends Survey_Common_Action {
         $br = CHtml::openTag('br /');
 
         // Make sure that there is a sid
-        if (!isset($iSurveyID) || !$iSurveyID)
-        {
+        if (!isset($iSurveyID) || !$iSurveyID) {
             Yii::app()->setFlashMessage(gT('You have not selected a survey'), 'error');
             $this->getController()->redirect(array('admin'));
         }
 
-        if (isset($p_subaction) && $p_subaction == "resetsurveylogic")
-        {
-            if (!isset($_GET['ok']))
-            {
+        if (isset($p_subaction) && $p_subaction == "resetsurveylogic") {
+            if (!isset($_GET['ok'])) {
                 $data = array('iSurveyID' => $iSurveyID);
                 $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
                 $this->_renderWrappedTemplate('conditions', array('message' => array(
@@ -180,8 +168,7 @@ class conditionsaction extends Survey_Common_Action {
                 )));
                 Yii::app()->end();
             }
-            else
-            {
+            else {
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
                 Condition::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
                 Yii::app()->setFlashMessage(gT("All conditions in this survey have been deleted."));
@@ -189,32 +176,23 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
 
-        // MAKE SURE THAT THERE IS A QID
-        if ( !isset($qid) || !$qid )
-        {
-            $conditionsoutput = gT("You have not selected a question").str_repeat($br, 2);
-            $conditionsoutput .= CHtml::submitButton(gT("Main admin screen",'unescaped'), array(
-            'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
-            )).$br;
-            safeDie($conditionsoutput);
-            return;
+        // Make sure that there is a qid
+        if (!isset($qid) || !$qid) {
+            Yii::app()->setFlashMessage(gT('You have not selected a question'), 'error');
+            Yii::app()->getController()->redirect(Yii::app()->request->urlReferrer);
         }
-
 
         // If we made it this far, then lets develop the menu items
         // add the conditions container table
-
         $extraGetParams = "";
-        if (isset($qid) && isset($gid))
-        {
+        if (isset($qid) && isset($gid)) {
             $extraGetParams = "/gid/{$gid}/qid/{$qid}";
         }
 
         $conditionsoutput_action_error = ""; // defined during the actions
 
         $markcidarray = Array();
-        if ( isset($_GET['markcid']) )
-        {
+        if (isset($_GET['markcid'])) {
             $markcidarray = explode("-", $_GET['markcid']);
         }
 
@@ -303,8 +281,7 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         // UPDATE ENTRY IF THIS IS AN EDIT
-        if (isset($p_subaction) && $p_subaction == "updatecondition")
-        {
+        if (isset($p_subaction) && $p_subaction == "updatecondition") {
             if ((    !isset($p_canswers) &&
             !isset($_POST['ConditionConst']) &&
             !isset($_POST['prevQuestionSGQA']) &&
