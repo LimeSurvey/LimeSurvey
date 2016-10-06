@@ -163,3 +163,19 @@
                                         <a href=\"http://manual.limesurvey.org/wiki/Using_regular_expressions\" target=\"_blank\"><?php eT("Regular expression"); ?></a></div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class='condition-tbl-full'>
+                        <input type='reset' class='btn btn-default' id='resetForm' value='<?php eT("Clear"); ?>' />
+                        <input type='submit' class='btn btn-default' value='<?php echo $submitLabel; ?>' />
+                            <input type='hidden' name='sid' value='<?php echo $iSurveyID; ?>' />
+                            <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
+                            <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
+                            <input type='hidden' name='subaction' value='<?php echo $submitSubaction; ?>' />
+                            <input type='hidden' name='cqid' id='cqid' value='' />
+                            <input type='hidden' name='cid' id='cid' value='<?php echo $submitcid; ?>' />
+                            <input type='hidden' name='editTargetTab' id='editTargetTab' value='' />
+                            <input type='hidden' name='editSourceTab' id='editSourceTab' value='' />
+                            <input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />
+                        </div>
+                    </form>

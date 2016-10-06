@@ -1863,26 +1863,7 @@ class conditionsaction extends Survey_Common_Action {
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
-        $data = array(
-            'subaction'     => $subaction,
-            'iSurveyID'     => $iSurveyID,
-            'gid'           => $gid,
-            'qid'           => $qid,
-            'mytitle'       => $mytitle,
-            'showScenario'  => $showScenario,
-            'qcountI'       => $qcount+1,
-            'cquestions'    => $cquestions,
-            'p_csrctoken'   => $p_csrctoken,
-            'p_prevquestionsgqa' => $p_prevquestionsgqa,
-            'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID),
-            'method'        => $method,
-            'subaction'     => $subaction,
-            'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
-            'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction)
-        );
-        $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
-
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'conditions.js');
+        $this->registerScriptFile('ADMIN_SCRIPT_PATH', 'conditions.js');
 
         if ($subaction == "editthiscondition" && isset($p_cid))
         {
@@ -1897,24 +1878,27 @@ class conditionsaction extends Survey_Common_Action {
             $submitcid = "";
         }
 
-        $aViewUrls['output'] .= "</div>\n"
-            ."</div>\n";
-
-        // Begin buttons row
-        $aViewUrls['output'] .= "<div class='condition-tbl-full'>\n"
-            ."\t<input type='reset' class='btn btn-default' id='resetForm' value='".gT("Clear")."' />\n"
-            ."\t<input type='submit' class='btn btn-default' value='".$submitLabel."' />\n"
-            ."<input type='hidden' name='sid' value='$iSurveyID' />\n"
-            ."<input type='hidden' name='gid' value='$gid' />\n"
-            ."<input type='hidden' name='qid' value='$qid' />\n"
-            ."<input type='hidden' name='subaction' value='$submitSubaction' />\n"
-            ."<input type='hidden' name='cqid' id='cqid' value='' />\n"
-            ."<input type='hidden' name='cid' id='cid' value='".$submitcid."' />\n"
-            ."<input type='hidden' name='editTargetTab' id='editTargetTab' value='' />\n" // auto-select tab by jQuery when editing a condition
-            ."<input type='hidden' name='editSourceTab' id='editSourceTab' value='' />\n" // auto-select tab by jQuery when editing a condition
-            ."<input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />\n" // auto-select target answers by jQuery when editing a condition
-            ."</div>\n"
-            ."</form>\n";
+        $data = array(
+            'subaction'     => $subaction,
+            'iSurveyID'     => $iSurveyID,
+            'gid'           => $gid,
+            'qid'           => $qid,
+            'mytitle'       => $mytitle,
+            'showScenario'  => $showScenario,
+            'qcountI'       => $qcount+1,
+            'cquestions'    => $cquestions,
+            'p_csrctoken'   => $p_csrctoken,
+            'p_prevquestionsgqa'  => $p_prevquestionsgqa,
+            'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID),
+            'method'        => $method,
+            'subaction'     => $subaction,
+            'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
+            'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction),
+            'submitLabel'   => $submitLabel,
+            'submitSubaction'     => $submitSubaction,
+            'submitcid'     => $submitcid
+        );
+        $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
         $aViewUrls['output'] .= "<script type='text/javascript'>\n"
             . "<!--\n"
