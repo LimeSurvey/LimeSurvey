@@ -24,7 +24,7 @@
  */
 ?>
 <!-- answer_row -->
-<li id="javatbd<?php echo $name; ?>" class='answer-item checkbox-text-item form-group form-inline noanswer-item clearfix' <?php echo $sDisplayStyle ;?>>
+<li id="javatbd<?php echo $name; ?>" class='row answer-item checkbox-text-item form-group form-inline noanswer-item clearfix' <?php echo $sDisplayStyle ;?>>
 
     <!-- Checkbox + label -->
     <div class="form-group text-item other-text-item col-sm-6 col-xs-12">

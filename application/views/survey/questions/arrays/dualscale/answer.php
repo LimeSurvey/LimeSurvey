@@ -8,7 +8,7 @@
 
 ?>
 
-<table class="no-more-tables table-dual-scale table question subquestion-list questions-list">
+<table class="table question table-bordered table-dual-scale question subquestion-list questions-list">
     <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' >
     <colgroup class="col-responses group-1">
         <?php foreach ($labelans0 as $ld): ?>

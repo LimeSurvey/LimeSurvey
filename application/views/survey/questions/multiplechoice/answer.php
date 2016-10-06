@@ -12,8 +12,10 @@
 
 <!-- answer -->
 <input type="hidden" name="MULTI<?php echo $name; ?>" value="<?php echo $anscount; ?>" />
+<div class="row">
 <?php
     // rows/answer_row*.php
     echo $sRows;
 ?>
 <!-- end of answer -->
+</div>
