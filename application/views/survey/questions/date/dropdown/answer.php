@@ -15,7 +15,7 @@
 <!-- Date, dropdown layout -->
 
 <!-- answer -->
-<div class="question date answer-item dropdown-item date-item">
+<div class="question date answer-item dropdown-item date-item row">
 
     <?php
         // rows/*.php
