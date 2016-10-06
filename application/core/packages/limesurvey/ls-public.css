@@ -9,8 +9,7 @@
 /**
  * Used in answers : bootsrap fix (specific single choice list)
  */
-.list-inline.list-unstyled {padding-left: 0;padding-right: 0;margin-left: 0;margin-right: 0;}
-.list-inline.list-unstyled > li:first-child {padding-left: 0;}
+
 
 /* Some tools
  */
