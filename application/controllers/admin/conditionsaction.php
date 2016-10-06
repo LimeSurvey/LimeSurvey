@@ -1869,28 +1869,14 @@ class conditionsaction extends Survey_Common_Action {
             'qcountI'=>$qcount+1,
             'cquestions' => $cquestions,
             'p_csrctoken' => $p_csrctoken,
-            'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID)
+            'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID),
+            'method' => $method
         );
         $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $aDataEditconditions, true);
 
         //form_editconditions_header
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
-
-        // Begin "Comparison operator" row
-        $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("Comparison operator")."</div>\n"
-            ."<div class='condition-tbl-right'>\n"
-            ."<select class='form-control' name='method' id='method'>\n";
-        foreach ($method as $methodCode => $methodTxt)
-        {
-            $selected=$methodCode=="==" ? " selected='selected'" : "";
-            $aViewUrls['output'] .= "\t<option value='".$methodCode."'$selected>".$methodTxt."</option>\n";
-        }
-
-        $aViewUrls['output'] .="</select>\n"
-            ."</div>\n"
-            ."</div>\n";
 
         // Begin "Answer" row
         $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"

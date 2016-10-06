@@ -94,3 +94,15 @@
                     </div>
                 </div>
             </div>
+            <div class='condition-tbl-row'>
+            <div class='condition-tbl-left'><?php eT("Comparison operator"); ?></div>
+                <div class='condition-tbl-right'>
+                    <select class='form-control' name='method' id='method'>
+                        <?php foreach ($method as $methodCode => $methodTxt): ?>
+                            <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' select="selected" '; endif; ?>>
+                                <?php echo $methodTxt; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
