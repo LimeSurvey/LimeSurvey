@@ -65,48 +65,103 @@ function jquery_goodchars(e, goods)
 
 
 $(document).ready(function(){
- $('#copyconditions').submit(function() {
-        if (!$('input[@id=cbox{$rows[cid]}]:checked').length) 
-        {
-         alert("Please select alteast one condition to copy from"); 
-         return false;  
+
+    // TODO: Localization
+    $('#copyconditions').submit(function() {
+        if (!$('input[@id=cbox{$rows[cid]}]:checked').length) {
+            alert("Please select alteast one condition to copy from");
+            return false;
         } 
-        if (!$('#copytomultiselect option:selected').length) 
-        { 
+        if (!$('#copytomultiselect option:selected').length) {
             alert("Please select alteast one question to copy condition to","js");
-            return false;  
+            return false;
         }
+    });
+
+     //$('#languagetabs').bootTabs();
+    $('#radiototal,#radiogroup').change(function() {
+        if ($('#radiototal').attr('checked')==true) {
+            $('#newgroupselect').attr('disabled','disabled');
+        }
+        else {
+            if ($('#newgroupselect>option').length==0) {
+                $('#radiototal').attr('checked',true);
+                alert(strnogroup);
+            }
+            else {
+                $('#newgroupselect').attr('disabled',false);
+            }
+        }
+    });
+
+    $('#radiototal, #radiogroup').change();
+
+    $('.numbersonly').keypress(function(e) {
+        return jquery_goodchars(e,'1234567890-');
+    });
+
+    /**
+     * Used when user chooses between "Previous questions" and
+     * "Survey participant attributes"
+     * @param {object} ev - Event
+     * @return
+     */
+    var questionOnChange = function(ev) {
+        switch (ev.currentTarget.value) {
+            case 'prev':
+                $('#SRCPREVQUEST').show();
+                $('#SRCTOKENATTRS').hide();
+                break;
+            case 'attr':
+                $('#SRCTOKENATTRS').show();
+                $('#SRCPREVQUEST').hide();
+                break;
+            default:
+                throw 'Unknown value';
+        }
+    };
+
+    $('input[name="question"]').change(questionOnChange);
+
+    // Run once on load to hide/show relevant part
+    var currentValue = $('input[name="question"]').val();
+    var dummyEvent = {currentTarget: {value: currentValue}};
+    questionOnChange(dummyEvent);
+
+    /**
+     * Used when user clicks answer button group
+     * @param {object} ev - Event
+     * @return
+     */
+    var answerOnChange = function(ev) {
+        $('.answer-option').hide();
+        switch (ev.currentTarget.value) {
+            case 'predefined':
+                $('#CANSWERSTAB').show();
+                break;
+            case 'constant':
+                $('#CONST').show();
+                break;
+            case 'questions':
+                $('#PREVQUESTIONS').show();
+                break;
+            case 'tokenFields':
+                $('#TOKENATTRS').show();
+                break;
+            case 'regexp':
+                $('#REGEXP').show();
+                break;
+        }
+    };
+
+    $('input[name="answer"]').change(answerOnChange);
+
+    // Run once on load to hide/show relevant part
+    var currentValue = $('input[name="answer"]').val();
+    var dummyEvent = {currentTarget: {value: currentValue}};
+    answerOnChange(dummyEvent);
+
 });
-    //$('#languagetabs').bootTabs();
-    $('#radiototal,#radiogroup').change(
-        function()
-        {
-              if ($('#radiototal').attr('checked')==true)
-              {
-                $('#newgroupselect').attr('disabled','disabled');
-              }
-              else
-              {
-                if ($('#newgroupselect>option').length==0){
-                  $('#radiototal').attr('checked',true);
-                  alert (strnogroup);    
-                }
-                else
-                {
-                    $('#newgroupselect').attr('disabled',false);
-                }
-              }
-        }
-    );
-    $('#radiototal,#radiogroup').change();
-    $('.numbersonly').keypress(
-        function(e){
-            return jquery_goodchars(e,'1234567890-');    
-        }
-    );
-  }
- 
-);
 
 function populateCanswersSelect(evt) {
 	var fname = $('#cquestions').val();
@@ -282,6 +337,7 @@ $(document).ready(function(){
 	}
 
 	// At editing, a hidden field gives the Tab that should be selected
+    /*
 	if ($('#editSourceTab').val() != '') {
         var val = $('#editSourceTab').val();
 
@@ -290,6 +346,7 @@ $(document).ready(function(){
 		$('#conditionsource').bootTabs('option','active', val);
 		$('#conditionsource').tabs({active: nr});
 	}
+    */
 	
 	// At editing, if cquestions is set, populate answers
 	if ($('#cquestions').val() != '') {
@@ -299,5 +356,12 @@ $(document).ready(function(){
 	$('#conditiontarget').bootTabs('option','active', 1);
 });
 
-
-
+/**
+ * Used when user clicks 'Add scenario' to replace default with number input
+ * @return
+ */
+function scenarioaddbtnOnClickAction() {
+    $('#scenarioaddbtn').hide();
+    $('#defaultscenariotxt').hide('slow');
+    $('#scenario').show('slow');
+}

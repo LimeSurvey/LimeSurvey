@@ -840,6 +840,7 @@ class conditionsaction extends Survey_Common_Action {
         $args['qcount'] = $qcount;
         $args['method'] = $method;
         $args['cquestions'] = $cquestions;
+        $args['scenariocount'] = $scenariocount;
 
         if ($subaction == "editconditionsform"
             || $subaction == "insertcondition"
