@@ -833,352 +833,27 @@ class conditionsaction extends Survey_Common_Action {
             $qcount = 0;
         }
 
-        //BEGIN: DISPLAY THE ADD or EDIT CONDITION FORM
-        if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
-        $subaction == "updatecondition" || $subaction == "deletescenario" ||
-        $subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
-        $subaction == "updatescenario" ||
-        $subaction == "editthiscondition" || $subaction == "delete")
+        // Some extra args to getEditConditionForm
+        $args['subaction'] = $subaction;
+        $args['iSurveyID'] = $this->iSurveyID;
+        $args['gid'] = $gid;
+        $args['qcount'] = $qcount;
+        $args['method'] = $method;
+        $args['cquestions'] = $cquestions;
+
+        if ($subaction == "editconditionsform"
+            || $subaction == "insertcondition"
+            || $subaction == "updatecondition"
+            || $subaction == "deletescenario"
+            || $subaction == "renumberscenarios"
+            || $subaction == "deleteallconditions"
+            || $subaction == "updatescenario"
+            || $subaction == "editthiscondition"
+            || $subaction == "delete"
+        )
         {
-            $mytitle = ($subaction == "editthiscondition" &&  isset($p_cid))?gT("Edit condition"):gT("Add condition");
-            $scenario = '';
-            $showScenario = ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) || ( $subaction == "editthiscondition" && $scenario == 1) )?true:false;
-
-            $aDataEditconditions = array(
-                'subaction'=>$subaction,
-                'iSurveyID'=>$iSurveyID,
-                'gid'=>$gid,
-                'qid'=>$qid,
-                'mytitle'=>$mytitle,
-                'showScenario'=>$showScenario,
-                'qcountI'=>$qcount+1,
-            );
-            $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $aDataEditconditions, true);
-
-
-            //form_editconditions_header
-
-            if (isset($cquestions))
-            {
-                $js_getAnswers_onload = "";
-                foreach ($cquestions as $cqn)
-                {
-                    $aViewUrls['output'] .= "<option value='$cqn[3]' title=\"".htmlspecialchars($cqn[0])."\"";
-                    if (isset($p_cquestions) && $cqn[3] == $p_cquestions) {
-                        $aViewUrls['output'] .= " selected";
-                        if (isset($p_canswers))
-                        {
-                            $canswersToSelect = "";
-                            foreach ($p_canswers as $checkval)
-                            {
-                                $canswersToSelect .= ";$checkval";
-                            }
-                            $canswersToSelect = substr($canswersToSelect,1);
-                            $js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
-                        }
-                    }
-                    $aViewUrls['output'] .= ">$cqn[0]</option>\n";
-                }
-            }
-
-            $aViewUrls['output'] .= "</select>\n"
-            ."</div>\n";
-
-            // Source token Tab
-            $aViewUrls['output'] .= "<div id='SRCTOKENATTRS' class='tab-pane fade in'><select class='form-control' name='csrctoken' id='csrctoken' >\n";
-            foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
-            {
-                // Check to select
-                if (isset($p_csrctoken) && $p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}')
-                {
-                    $selectThisSrcTokenAttr = "selected=\"selected\"";
-                }
-                else
-                {
-                    $selectThisSrcTokenAttr = "";
-                }
-                $aViewUrls['output'] .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".HTMLEscape($tokenattrName['description'])."</option>\n";
-            }
-
-            $aViewUrls['output'] .= "</select>
-            </div>\n\n";
-
-            $aViewUrls['output'] .= "\t</div>\n"; // end conditionsource div
-            $aViewUrls['output'] .= "\t</div>\n"; // end tab-content div
-
-            $aViewUrls['output'] .= "</div>
-            </div>\n";
-
-            // Begin "Comparison operator" row
-            $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("Comparison operator")."</div>\n"
-            ."<div class='condition-tbl-right'>\n"
-            ."<select class='form-control' name='method' id='method'>\n";
-            foreach ($method as $methodCode => $methodTxt)
-            {
-                $selected=$methodCode=="==" ? " selected='selected'" : "";
-                $aViewUrls['output'] .= "\t<option value='".$methodCode."'$selected>".$methodTxt."</option>\n";
-            }
-
-            $aViewUrls['output'] .="</select>\n"
-            ."</div>\n"
-            ."</div>\n";
-
-            // Begin "Answer" row
-            $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("Answer")."</div>\n";
-
-            if ($subaction == "editthiscondition")
-            {
-                $multipletext = "";
-                if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
-                {
-                    $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
-                }
-                else
-                {
-                    $EDITConditionConst="";
-                }
-                if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
-                {
-                    $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
-                }
-                else
-                {
-                    $EDITConditionRegexp="";
-                }
-            }
-            else
-            {
-                $multipletext = "multiple";
-                if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
-                {
-                    $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
-                }
-                else
-                {
-                    $EDITConditionConst="";
-                }
-                if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
-                {
-                    $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
-                }
-                else
-                {
-                    $EDITConditionRegexp="";
-                }
-            }
-
-
-            $aViewUrls['output'] .= ""
-            ."<div class='condition-tbl-right'>\n"
-            ."<div id=\"conditiontarget\">\n"
-            ."\t<ul class='nav nav-tabs'>\n"
-            ."\t\t<li role='presentation' class='active'><a data-toggle='tab' href=\"#CANSWERSTAB\"><span>".gT("Predefined")."</span></a></li>\n"
-            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#CONST\"><span>".gT("Constant")."</span></a></li>\n"
-            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#PREVQUESTIONS\"><span>".gT("Questions")."</span></a></li>\n"
-            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#TOKENATTRS\"><span>".gT("Token fields")."</span></a></li>\n"
-            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#REGEXP\"><span>".gT("RegExp")."</span></a></li>\n"
-            ."\t</ul>\n";
-
-            // Predefined answers tab
-            $aViewUrls['output'] .= "\t<div class='tab-content'>\n";
-            $aViewUrls['output'] .= "\t<div id='CANSWERSTAB'  class='tab-pane fade in active'>\n"
-            ."\t\t<select class='form-control'  name='canswers[]' $multipletext id='canswers' size='7'>\n"
-            ."\t\t</select>\n"
-            ."\t\t<br /><span id='canswersLabel'>".gT("Predefined answer options for this question")."</span>\n"
-            ."\t</div>\n";
-
-            // Constant tab
-            $aViewUrls['output'] .= "\t<div id='CONST' class='tab-pane fade in'>\n"
-            ."\t\t<textarea name='ConditionConst' id='ConditionConst' rows='5' cols='113'>$EDITConditionConst</textarea>\n"
-            ."\t\t<br /><div id='ConditionConstLabel'>".gT("Constant value")."</div>\n"
-            ."\t</div>\n";
-            // Previous answers tab @SGQA@ placeholders
-            $aViewUrls['output'] .= "\t<div id='PREVQUESTIONS'  class='tab-pane fade in'>\n"
-            ."\t\t<br /><label for='prevQuestionSGQA'>".gT("Answer from previous question")."</label>\n"
-            ."\t\t<select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>\n";
-            foreach ($cquestions as $cqn)
-            { // building the @SGQA@ placeholders options
-                if ($cqn[2] != 'M' && $cqn[2] != 'P')
-                { // Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers
-                    $aViewUrls['output'] .= "\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
-                    if (isset($p_prevquestionsgqa) && $p_prevquestionsgqa == "@".$cqn[3]."@")
-                    {
-                        $aViewUrls['output'] .= " selected='selected'";
-                    }
-                    $aViewUrls['output'] .= ">$cqn[0]</option>\n";
-                }
-            }
-            $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t</div>\n";
-
-            // Token tab
-            $aViewUrls['output'] .= "\t<div id='TOKENATTRS'  class='tab-pane fade in'>\n"
-            ."\t\t<br /><label for='tokenAttr'>".gT("Attributes of the survey participant")."</label>\n"
-            ."\t\t<select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>\n";
-            foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
-            {
-                $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".HTMLEscape($tokenattrName['description'])."</option>\n";
-            }
-
-            $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t</div>\n";
-
-            // Regexp Tab
-            $aViewUrls['output'] .= "\t<div id='REGEXP' class='tab-pane fade in'>\n"
-            ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'>$EDITConditionRegexp</textarea>\n"
-            ."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://manual.limesurvey.org/wiki/Using_regular_expressions\" target=\"_blank\">".gT("Regular expression")."</a></div>\n"
-            ."\t</div>\n";
-
-            $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div
-
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'conditions.js');
-
-
-            if ($subaction == "editthiscondition" && isset($p_cid))
-            {
-                $submitLabel = gT("Update condition");
-                $submitSubaction = "updatecondition";
-                $submitcid = sanitize_int($p_cid);
-            }
-            else
-            {
-                $submitLabel = gT("Add condition");
-                $submitSubaction = "insertcondition";
-                $submitcid = "";
-            }
-
-            $aViewUrls['output'] .= "</div>\n"
-            ."</div>\n";
-
-            // Begin buttons row
-            $aViewUrls['output'] .= "<div class='condition-tbl-full'>\n"
-            ."\t<input type='reset' class='btn btn-default' id='resetForm' value='".gT("Clear")."' />\n"
-            ."\t<input type='submit' class='btn btn-default' value='".$submitLabel."' />\n"
-            ."<input type='hidden' name='sid' value='$iSurveyID' />\n"
-            ."<input type='hidden' name='gid' value='$gid' />\n"
-            ."<input type='hidden' name='qid' value='$qid' />\n"
-            ."<input type='hidden' name='subaction' value='$submitSubaction' />\n"
-            ."<input type='hidden' name='cqid' id='cqid' value='' />\n"
-            ."<input type='hidden' name='cid' id='cid' value='".$submitcid."' />\n"
-            ."<input type='hidden' name='editTargetTab' id='editTargetTab' value='' />\n" // auto-select tab by jQuery when editing a condition
-            ."<input type='hidden' name='editSourceTab' id='editSourceTab' value='' />\n" // auto-select tab by jQuery when editing a condition
-            ."<input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />\n" // auto-select target answers by jQuery when editing a condition
-            ."</div>\n"
-            ."</form>\n";
-
-            if (!isset($js_getAnswers_onload))
-            {
-                $js_getAnswers_onload = '';
-            }
-
-            $aViewUrls['output'] .= "<script type='text/javascript'>\n"
-            . "<!--\n"
-            . "\t".$js_getAnswers_onload."\n";
-            if (isset($p_method))
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('method').value='".$p_method."';\n";
-            }
-
-            if ($subaction == "editthiscondition")
-            { // in edit mode we read previous values in order to dusplay them in the corresponding inputs
-                if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
-                {
-                    // In order to avoid issues with backslash escaping, I don't use javascript to set the value
-                    // Thus the value is directly set when creating the Textarea element
-                    //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($_POST['EDITConditionConst'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
-                }
-                elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
-                {
-                    $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($_POST['EDITprevQuestionSGQA'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
-                }
-                elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '')
-                {
-                    $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($_POST['EDITtokenAttr'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
-                }
-                elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
-                {
-                    // In order to avoid issues with backslash escaping, I don't use javascript to set the value
-                    // Thus the value is directly set when creating the Textarea element
-                    //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($_POST['EDITConditionRegexp'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
-                }
-                elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers']))
-                { // was a predefined answers post
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
-                    $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
-                }
-
-                if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
-                {
-                    $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
-                }
-                else if (isset($_POST['cquestions']) && $_POST['cquestions'] != '')
-                    {
-                        $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
-                        $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
-                    }
-            }
-            else
-            { // in other modes, for the moment we do the same as for edit mode
-                if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
-                {
-                    // In order to avoid issues with backslash escaping, I don't use javascript to set the value
-                    // Thus the value is directly set when creating the Textarea element
-                    //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($_POST['ConditionConst'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
-                }
-                elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
-                {
-                    $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($_POST['prevQuestionSGQA'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
-                }
-                elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
-                {
-                    $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($_POST['tokenAttr'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
-                }
-                elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
-                {
-                    // In order to avoid issues with backslash escaping, I don't use javascript to set the value
-                    // Thus the value is directly set when creating the Textarea element
-                    //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($_POST['ConditionRegexp'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
-                }
-                else
-                { // was a predefined answers post
-                    if (isset($_POST['cquestions']))
-                    {
-                        $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
-                    }
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
-                }
-
-                if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
-                {
-                    $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
-                }
-                else
-                {
-                    if (isset($_POST['cquestions'])) $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascriptEscape($_POST['cquestions'])."';\n";
-                    $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
-                }
-            }
-
-            if (isset($p_scenario))
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
-            }
-            $aViewUrls['output'] .= "-->\n"
-            . "</script>\n";
+            $aViewUrls['output'] .= $this->getEditConditionForm($args);
         }
-        //END: DISPLAY THE ADD or EDIT CONDITION FORM
 
         $conditionsoutput = $aViewUrls['output'];
 
@@ -1186,7 +861,6 @@ class conditionsaction extends Survey_Common_Action {
         $this->_renderWrappedTemplate('conditions', $aViewUrls, $aData);
 
         // TMSW Condition->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
-
     }
 
     /**
@@ -2169,6 +1843,354 @@ class conditionsaction extends Survey_Common_Action {
             $data,
             true
         );
+    }
+
+    /**
+     * Get html for add/edit condition form
+     * @param array $args
+     * @return void
+     */
+    protected function getEditConditionForm(array $args)
+    {
+        extract($args);
+        $aViewUrls = array('output' => '');
+
+        $mytitle = ($subaction == "editthiscondition" &&  isset($p_cid))?gT("Edit condition"):gT("Add condition");
+        $scenario = '';
+        $showScenario = ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) || ( $subaction == "editthiscondition" && $scenario == 1) )?true:false;
+
+        $aDataEditconditions = array(
+            'subaction'=>$subaction,
+            'iSurveyID'=>$iSurveyID,
+            'gid'=>$gid,
+            'qid'=>$qid,
+            'mytitle'=>$mytitle,
+            'showScenario'=>$showScenario,
+            'qcountI'=>$qcount+1,
+        );
+        $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $aDataEditconditions, true);
+
+
+        //form_editconditions_header
+
+        if (isset($cquestions))
+        {
+            $js_getAnswers_onload = "";
+            foreach ($cquestions as $cqn)
+            {
+                $aViewUrls['output'] .= "<option value='$cqn[3]' title=\"".htmlspecialchars($cqn[0])."\"";
+                if (isset($p_cquestions) && $cqn[3] == $p_cquestions) {
+                    $aViewUrls['output'] .= " selected";
+                    if (isset($p_canswers))
+                    {
+                        $canswersToSelect = "";
+                        foreach ($p_canswers as $checkval)
+                        {
+                            $canswersToSelect .= ";$checkval";
+                        }
+                        $canswersToSelect = substr($canswersToSelect,1);
+                        $js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
+                    }
+                }
+                $aViewUrls['output'] .= ">$cqn[0]</option>\n";
+            }
+        }
+
+        $aViewUrls['output'] .= "</select>\n"
+            ."</div>\n";
+
+        // Source token Tab
+        $aViewUrls['output'] .= "<div id='SRCTOKENATTRS' class='tab-pane fade in'><select class='form-control' name='csrctoken' id='csrctoken' >\n";
+        foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
+        {
+            // Check to select
+            if (isset($p_csrctoken) && $p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}')
+            {
+                $selectThisSrcTokenAttr = "selected=\"selected\"";
+            }
+            else
+            {
+                $selectThisSrcTokenAttr = "";
+            }
+            $aViewUrls['output'] .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".HTMLEscape($tokenattrName['description'])."</option>\n";
+        }
+
+        $aViewUrls['output'] .= "</select> </div>\n\n";
+
+        $aViewUrls['output'] .= "\t</div>\n"; // end conditionsource div
+        $aViewUrls['output'] .= "\t</div>\n"; // end tab-content div
+
+        $aViewUrls['output'] .= "</div> </div>\n";
+
+        // Begin "Comparison operator" row
+        $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
+            ."<div class='condition-tbl-left'>".gT("Comparison operator")."</div>\n"
+            ."<div class='condition-tbl-right'>\n"
+            ."<select class='form-control' name='method' id='method'>\n";
+        foreach ($method as $methodCode => $methodTxt)
+        {
+            $selected=$methodCode=="==" ? " selected='selected'" : "";
+            $aViewUrls['output'] .= "\t<option value='".$methodCode."'$selected>".$methodTxt."</option>\n";
+        }
+
+        $aViewUrls['output'] .="</select>\n"
+            ."</div>\n"
+            ."</div>\n";
+
+        // Begin "Answer" row
+        $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
+            ."<div class='condition-tbl-left'>".gT("Answer")."</div>\n";
+
+        if ($subaction == "editthiscondition")
+        {
+            $multipletext = "";
+            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
+            {
+                $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
+            }
+            else
+            {
+                $EDITConditionConst="";
+            }
+            if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
+            {
+                $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
+            }
+            else
+            {
+                $EDITConditionRegexp="";
+            }
+        }
+        else
+        {
+            $multipletext = "multiple";
+            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
+            {
+                $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
+            }
+            else
+            {
+                $EDITConditionConst="";
+            }
+            if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
+            {
+                $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
+            }
+            else
+            {
+                $EDITConditionRegexp="";
+            }
+        }
+
+
+        $aViewUrls['output'] .= ""
+            ."<div class='condition-tbl-right'>\n"
+            ."<div id=\"conditiontarget\">\n"
+            ."\t<ul class='nav nav-tabs'>\n"
+            ."\t\t<li role='presentation' class='active'><a data-toggle='tab' href=\"#CANSWERSTAB\"><span>".gT("Predefined")."</span></a></li>\n"
+            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#CONST\"><span>".gT("Constant")."</span></a></li>\n"
+            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#PREVQUESTIONS\"><span>".gT("Questions")."</span></a></li>\n"
+            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#TOKENATTRS\"><span>".gT("Token fields")."</span></a></li>\n"
+            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#REGEXP\"><span>".gT("RegExp")."</span></a></li>\n"
+            ."\t</ul>\n";
+
+        // Predefined answers tab
+        $aViewUrls['output'] .= "\t<div class='tab-content'>\n";
+        $aViewUrls['output'] .= "\t<div id='CANSWERSTAB'  class='tab-pane fade in active'>\n"
+            ."\t\t<select class='form-control'  name='canswers[]' $multipletext id='canswers' size='7'>\n"
+            ."\t\t</select>\n"
+            ."\t\t<br /><span id='canswersLabel'>".gT("Predefined answer options for this question")."</span>\n"
+            ."\t</div>\n";
+
+        // Constant tab
+        $aViewUrls['output'] .= "\t<div id='CONST' class='tab-pane fade in'>\n"
+            ."\t\t<textarea name='ConditionConst' id='ConditionConst' rows='5' cols='113'>$EDITConditionConst</textarea>\n"
+            ."\t\t<br /><div id='ConditionConstLabel'>".gT("Constant value")."</div>\n"
+            ."\t</div>\n";
+        // Previous answers tab @SGQA@ placeholders
+        $aViewUrls['output'] .= "\t<div id='PREVQUESTIONS'  class='tab-pane fade in'>\n"
+            ."\t\t<br /><label for='prevQuestionSGQA'>".gT("Answer from previous question")."</label>\n"
+            ."\t\t<select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>\n";
+        foreach ($cquestions as $cqn)
+        { // building the @SGQA@ placeholders options
+            if ($cqn[2] != 'M' && $cqn[2] != 'P')
+            { // Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers
+                $aViewUrls['output'] .= "\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
+                if (isset($p_prevquestionsgqa) && $p_prevquestionsgqa == "@".$cqn[3]."@")
+                {
+                    $aViewUrls['output'] .= " selected='selected'";
+                }
+                $aViewUrls['output'] .= ">$cqn[0]</option>\n";
+            }
+        }
+        $aViewUrls['output'] .= "\t\t</select>\n"
+            ."\t</div>\n";
+
+        // Token tab
+        $aViewUrls['output'] .= "\t<div id='TOKENATTRS'  class='tab-pane fade in'>\n"
+            ."\t\t<br /><label for='tokenAttr'>".gT("Attributes of the survey participant")."</label>\n"
+            ."\t\t<select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>\n";
+        foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
+        {
+            $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".HTMLEscape($tokenattrName['description'])."</option>\n";
+        }
+
+        $aViewUrls['output'] .= "\t\t</select>\n"
+            ."\t</div>\n";
+
+        // Regexp Tab
+        $aViewUrls['output'] .= "\t<div id='REGEXP' class='tab-pane fade in'>\n"
+            ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'>$EDITConditionRegexp</textarea>\n"
+            ."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://manual.limesurvey.org/wiki/Using_regular_expressions\" target=\"_blank\">".gT("Regular expression")."</a></div>\n"
+            ."\t</div>\n";
+
+        $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div
+
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'conditions.js');
+
+
+        if ($subaction == "editthiscondition" && isset($p_cid))
+        {
+            $submitLabel = gT("Update condition");
+            $submitSubaction = "updatecondition";
+            $submitcid = sanitize_int($p_cid);
+        }
+        else
+        {
+            $submitLabel = gT("Add condition");
+            $submitSubaction = "insertcondition";
+            $submitcid = "";
+        }
+
+        $aViewUrls['output'] .= "</div>\n"
+            ."</div>\n";
+
+        // Begin buttons row
+        $aViewUrls['output'] .= "<div class='condition-tbl-full'>\n"
+            ."\t<input type='reset' class='btn btn-default' id='resetForm' value='".gT("Clear")."' />\n"
+            ."\t<input type='submit' class='btn btn-default' value='".$submitLabel."' />\n"
+            ."<input type='hidden' name='sid' value='$iSurveyID' />\n"
+            ."<input type='hidden' name='gid' value='$gid' />\n"
+            ."<input type='hidden' name='qid' value='$qid' />\n"
+            ."<input type='hidden' name='subaction' value='$submitSubaction' />\n"
+            ."<input type='hidden' name='cqid' id='cqid' value='' />\n"
+            ."<input type='hidden' name='cid' id='cid' value='".$submitcid."' />\n"
+            ."<input type='hidden' name='editTargetTab' id='editTargetTab' value='' />\n" // auto-select tab by jQuery when editing a condition
+            ."<input type='hidden' name='editSourceTab' id='editSourceTab' value='' />\n" // auto-select tab by jQuery when editing a condition
+            ."<input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />\n" // auto-select target answers by jQuery when editing a condition
+            ."</div>\n"
+            ."</form>\n";
+
+        if (!isset($js_getAnswers_onload))
+        {
+            $js_getAnswers_onload = '';
+        }
+
+        $aViewUrls['output'] .= "<script type='text/javascript'>\n"
+            . "<!--\n"
+            . "\t".$js_getAnswers_onload."\n";
+        if (isset($p_method))
+        {
+            $aViewUrls['output'] .= "\tdocument.getElementById('method').value='".$p_method."';\n";
+        }
+
+        if ($subaction == "editthiscondition")
+        { // in edit mode we read previous values in order to dusplay them in the corresponding inputs
+            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
+            {
+                // In order to avoid issues with backslash escaping, I don't use javascript to set the value
+                // Thus the value is directly set when creating the Textarea element
+                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($_POST['EDITConditionConst'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
+            }
+            elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
+            {
+                $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($_POST['EDITprevQuestionSGQA'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
+            }
+            elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '')
+            {
+                $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($_POST['EDITtokenAttr'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
+            }
+            elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
+            {
+                // In order to avoid issues with backslash escaping, I don't use javascript to set the value
+                // Thus the value is directly set when creating the Textarea element
+                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($_POST['EDITConditionRegexp'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+            }
+            elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers']))
+            { // was a predefined answers post
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+                $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
+            }
+
+            if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
+            {
+                $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
+            }
+            else if (isset($_POST['cquestions']) && $_POST['cquestions'] != '')
+            {
+                $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
+            }
+        }
+        else
+        { // in other modes, for the moment we do the same as for edit mode
+            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
+            {
+                // In order to avoid issues with backslash escaping, I don't use javascript to set the value
+                // Thus the value is directly set when creating the Textarea element
+                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($_POST['ConditionConst'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
+            }
+            elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
+            {
+                $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($_POST['prevQuestionSGQA'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
+            }
+            elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
+            {
+                $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($_POST['tokenAttr'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
+            }
+            elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
+            {
+                // In order to avoid issues with backslash escaping, I don't use javascript to set the value
+                // Thus the value is directly set when creating the Textarea element
+                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($_POST['ConditionRegexp'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+            }
+            else
+            { // was a predefined answers post
+                if (isset($_POST['cquestions']))
+                {
+                    $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
+                }
+                $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+            }
+
+            if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
+            {
+                $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
+            }
+            else
+            {
+                if (isset($_POST['cquestions'])) $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascriptEscape($_POST['cquestions'])."';\n";
+                $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
+            }
+        }
+
+        if (isset($p_scenario))
+        {
+            $aViewUrls['output'] .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
+        }
+        $aViewUrls['output'] .= "-->\n"
+            . "</script>\n";
+        return $aViewUrls['output'];
     }
 
 }
