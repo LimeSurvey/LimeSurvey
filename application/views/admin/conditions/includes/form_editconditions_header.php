@@ -81,3 +81,16 @@
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+                            <div id='SRCTOKENATTRS' class='tab-pane fade in'>
+                                <select class='form-control' name='csrctoken' id='csrctoken' >
+                                    <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
+                                        <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
+                                            <?php echo HTMLEscape($tokenattrName['description']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

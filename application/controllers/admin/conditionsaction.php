@@ -1867,36 +1867,15 @@ class conditionsaction extends Survey_Common_Action {
             'mytitle'=>$mytitle,
             'showScenario'=>$showScenario,
             'qcountI'=>$qcount+1,
-            'cquestions' => $cquestions
+            'cquestions' => $cquestions,
+            'p_csrctoken' => $p_csrctoken,
+            'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID)
         );
         $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $aDataEditconditions, true);
 
         //form_editconditions_header
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
-
-        // Source token Tab
-        $aViewUrls['output'] .= "<div id='SRCTOKENATTRS' class='tab-pane fade in'><select class='form-control' name='csrctoken' id='csrctoken' >\n";
-        foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
-        {
-            // Check to select
-            if (isset($p_csrctoken) && $p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}')
-            {
-                $selectThisSrcTokenAttr = "selected=\"selected\"";
-            }
-            else
-            {
-                $selectThisSrcTokenAttr = "";
-            }
-            $aViewUrls['output'] .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".HTMLEscape($tokenattrName['description'])."</option>\n";
-        }
-
-        $aViewUrls['output'] .= "</select> </div>\n\n";
-
-        $aViewUrls['output'] .= "\t</div>\n"; // end conditionsource div
-        $aViewUrls['output'] .= "\t</div>\n"; // end tab-content div
-
-        $aViewUrls['output'] .= "</div> </div>\n";
 
         // Begin "Comparison operator" row
         $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
