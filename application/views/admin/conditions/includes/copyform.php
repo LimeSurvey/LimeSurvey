@@ -39,7 +39,7 @@
 
 </form>
 
-<script type=\"text/javascript\">
+<script type="text/javascript">
 function prepareCopyconditions() {
     $("input:checked[name^='aConditionFromScenario']").each(function(i,val) {
         var thecid = val.value;
