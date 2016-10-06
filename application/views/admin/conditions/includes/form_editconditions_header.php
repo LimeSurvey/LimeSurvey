@@ -106,3 +106,26 @@
                     </select>
                 </div>
             </div>
+            <div class='condition-tbl-row'>
+                <div class='condition-tbl-left'><?php echo gT("Answer"); ?></div>
+                    <div class='condition-tbl-right'>
+                        <div id="conditiontarget">
+                            <ul class='nav nav-tabs'>
+                                <li role='presentation' class='active'><a data-toggle='tab' href="#CANSWERSTAB"><span><?php eT("Predefined"); ?></span></a></li>
+                                <li role='presentation'><a data-toggle='tab' href="#CONST"><span><?php eT("Constant"); ?></span></a></li>
+                                <li role='presentation'><a data-toggle='tab' href="#PREVQUESTIONS"><span><?php eT("Questions"); ?></span></a></li>
+                                <li role='presentation'><a data-toggle='tab' href="#TOKENATTRS"><span><?php eT("Token fields"); ?></span></a></li>
+                                <li role='presentation'><a data-toggle='tab' href="#REGEXP"><span><?php eT("RegExp"); ?></span></a></li>
+                            </ul>
+                            <div class='tab-content'>
+                                <div id='CANSWERSTAB'  class='tab-pane fade in active'>
+                                    <select class='form-control'  name='canswers[]' <?php if ($subaction != 'editthiscondition'): echo ' multiple '; endif; ?> id='canswers' size='7'>
+                                    </select>
+                                    <br />
+                                    <span id='canswersLabel'><?php eT("Predefined answer options for this question"); ?></span>
+                                </div>
+                                <div id='CONST' class='tab-pane fade in'>
+                                <textarea name='ConditionConst' id='ConditionConst' rows='5' cols='113'><?php echo $EDITConditionConst; ?></textarea>
+                                    <br />
+                                    <div id='ConditionConstLabel'><?php eT("Constant value"); ?></div>
+                                </div>

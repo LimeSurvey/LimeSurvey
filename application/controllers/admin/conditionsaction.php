@@ -1859,95 +1859,58 @@ class conditionsaction extends Survey_Common_Action {
         $scenario = '';
         $showScenario = ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) || ( $subaction == "editthiscondition" && $scenario == 1) )?true:false;
 
-        $aDataEditconditions = array(
-            'subaction'=>$subaction,
-            'iSurveyID'=>$iSurveyID,
-            'gid'=>$gid,
-            'qid'=>$qid,
-            'mytitle'=>$mytitle,
-            'showScenario'=>$showScenario,
-            'qcountI'=>$qcount+1,
-            'cquestions' => $cquestions,
-            'p_csrctoken' => $p_csrctoken,
-            'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID),
-            'method' => $method
-        );
-        $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $aDataEditconditions, true);
-
         //form_editconditions_header
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
-        // Begin "Answer" row
-        $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("Answer")."</div>\n";
-
-        if ($subaction == "editthiscondition")
-        {
-            $multipletext = "";
-            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
-            {
+        if ($subaction == "editthiscondition") {
+            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '') {
                 $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
             }
-            else
-            {
+            else {
                 $EDITConditionConst="";
             }
-            if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
-            {
+
+            if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '') {
                 $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
             }
-            else
-            {
+            else {
                 $EDITConditionRegexp="";
             }
         }
-        else
-        {
-            $multipletext = "multiple";
-            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
-            {
+        else {
+            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '') {
                 $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
             }
-            else
-            {
+            else {
                 $EDITConditionConst="";
             }
-            if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
-            {
+
+            if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '') {
                 $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
             }
-            else
-            {
+            else {
                 $EDITConditionRegexp="";
             }
         }
 
+        $data = array(
+            'subaction'     => $subaction,
+            'iSurveyID'     => $iSurveyID,
+            'gid'           => $gid,
+            'qid'           => $qid,
+            'mytitle'       => $mytitle,
+            'showScenario'  => $showScenario,
+            'qcountI'       => $qcount+1,
+            'cquestions'    => $cquestions,
+            'p_csrctoken'   => $p_csrctoken,
+            'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID),
+            'method'        => $method,
+            'subaction'     => $subaction,
+            'EDITConditionConst' => $EDITConditionConst
+        );
+        $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
-        $aViewUrls['output'] .= ""
-            ."<div class='condition-tbl-right'>\n"
-            ."<div id=\"conditiontarget\">\n"
-            ."\t<ul class='nav nav-tabs'>\n"
-            ."\t\t<li role='presentation' class='active'><a data-toggle='tab' href=\"#CANSWERSTAB\"><span>".gT("Predefined")."</span></a></li>\n"
-            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#CONST\"><span>".gT("Constant")."</span></a></li>\n"
-            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#PREVQUESTIONS\"><span>".gT("Questions")."</span></a></li>\n"
-            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#TOKENATTRS\"><span>".gT("Token fields")."</span></a></li>\n"
-            ."\t\t<li role='presentation'><a data-toggle='tab' href=\"#REGEXP\"><span>".gT("RegExp")."</span></a></li>\n"
-            ."\t</ul>\n";
-
-        // Predefined answers tab
-        $aViewUrls['output'] .= "\t<div class='tab-content'>\n";
-        $aViewUrls['output'] .= "\t<div id='CANSWERSTAB'  class='tab-pane fade in active'>\n"
-            ."\t\t<select class='form-control'  name='canswers[]' $multipletext id='canswers' size='7'>\n"
-            ."\t\t</select>\n"
-            ."\t\t<br /><span id='canswersLabel'>".gT("Predefined answer options for this question")."</span>\n"
-            ."\t</div>\n";
-
-        // Constant tab
-        $aViewUrls['output'] .= "\t<div id='CONST' class='tab-pane fade in'>\n"
-            ."\t\t<textarea name='ConditionConst' id='ConditionConst' rows='5' cols='113'>$EDITConditionConst</textarea>\n"
-            ."\t\t<br /><div id='ConditionConstLabel'>".gT("Constant value")."</div>\n"
-            ."\t</div>\n";
         // Previous answers tab @SGQA@ placeholders
         $aViewUrls['output'] .= "\t<div id='PREVQUESTIONS'  class='tab-pane fade in'>\n"
             ."\t\t<br /><label for='prevQuestionSGQA'>".gT("Answer from previous question")."</label>\n"
