@@ -7,7 +7,7 @@
 .dragDropTable .SortableTitle{display:block}
 .dragDropTable .columns2{width:50%;float:left;margin:0;padding:0;}
 /* For rtl: float:right, using html class */
-:dir(ltr) .dragDropTable .columns2,.dir-ltr .dragDropTable .columns2{float:right}
+:dir(rtl) .dragDropTable .columns2,.dir-rtl .dragDropTable .columns2{float:right}
 .dragDropTable .clear{clear:both}
 
 

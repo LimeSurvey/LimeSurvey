@@ -11,19 +11,12 @@ html {
   position: relative;
   min-height: 100%;
 }
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+/* For testing purpose : better view of HTML answers part */
+.answers-wrapper {
+    margin: 0;
+    padding: 0;
+    border:1px dotted red;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
-}
-
 /**
  * For the question label (number/code and mandatory)
  * If user add p or div : one line more
