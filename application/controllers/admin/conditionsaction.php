@@ -1859,8 +1859,6 @@ class conditionsaction extends Survey_Common_Action {
         $scenario = '';
         $showScenario = ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) || ( $subaction == "editthiscondition" && $scenario == 1) )?true:false;
 
-        //form_editconditions_header
-
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
         $this->registerScriptFile('ADMIN_SCRIPT_PATH', 'conditions.js');
@@ -1908,6 +1906,90 @@ class conditionsaction extends Survey_Common_Action {
             $aViewUrls['output'] .= "\tdocument.getElementById('method').value='".$p_method."';\n";
         }
 
+        $aViewUrls['output'] .= $this->getEditFormJavascript($subaction);
+
+        if (isset($p_scenario))
+        {
+            $aViewUrls['output'] .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
+        }
+        $aViewUrls['output'] .= "-->\n"
+            . "</script>\n";
+
+        return $aViewUrls['output'];
+    }
+
+    /**
+     * @param array $cquestions
+     * @param string $p_cquestions Question SGID
+     * @param array $p_canswers E.g. array('A2')
+     * @return string JS code
+     */
+    protected function getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers)
+    {
+        $js_getAnswers_onload = "";
+        foreach ($cquestions as $cqn) {
+            if ($cqn[3] == $p_cquestions) {
+                if (isset($p_canswers)) {
+                    $canswersToSelect = "";
+                    foreach ($p_canswers as $checkval) {
+                        $canswersToSelect .= ";$checkval";
+                    }
+                    $canswersToSelect = substr($canswersToSelect,1);
+                    $js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
+                }
+            }
+        }
+        return $js_getAnswers_onload;
+    }
+
+    /**
+     * @param string $subaction
+     * @return string
+     */
+    protected function getEDITConditionConst($subaction)
+    {
+        $EDITConditionConst = '';
+        if ($subaction == "editthiscondition") {
+            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '') {
+                $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
+            }
+        }
+        else {
+            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '') {
+                $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
+            }
+        }
+        return $EDITConditionConst;
+    }
+
+    /**
+     * @param string $subaction
+     * @return string
+     */
+    protected function getEDITConditionRegexp($subaction)
+    {
+        $EDITConditionRegexp = '';
+        if ($subaction == "editthiscondition") {
+            if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '') {
+                $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
+            }
+        }
+        else {
+            if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '') {
+                $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
+            }
+        }
+        return $EDITConditionRegexp;
+    }
+
+    /**
+     * Generates some JS used by form
+     * @param string $subaction
+     * @return string JS
+     */
+    protected function getEditFormJavascript($subaction)
+    {
+        $aViewUrls = array('output' => '');
         if ($subaction == "editthiscondition")
         { // in edit mode we read previous values in order to dusplay them in the corresponding inputs
             if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
@@ -1997,77 +2079,6 @@ class conditionsaction extends Survey_Common_Action {
                 $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
             }
         }
-
-        if (isset($p_scenario))
-        {
-            $aViewUrls['output'] .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
-        }
-        $aViewUrls['output'] .= "-->\n"
-            . "</script>\n";
         return $aViewUrls['output'];
-    }
-
-    /**
-     * @param array $cquestions
-     * @param string $p_cquestions Question SGID
-     * @param array $p_canswers E.g. array('A2')
-     * @return string JS code
-     */
-    protected function getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers)
-    {
-        $js_getAnswers_onload = "";
-        foreach ($cquestions as $cqn) {
-            if ($cqn[3] == $p_cquestions) {
-                if (isset($p_canswers)) {
-                    $canswersToSelect = "";
-                    foreach ($p_canswers as $checkval) {
-                        $canswersToSelect .= ";$checkval";
-                    }
-                    $canswersToSelect = substr($canswersToSelect,1);
-                    $js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
-                }
-            }
-        }
-        return $js_getAnswers_onload;
-    }
-
-    /**
-     * @param string $subaction
-     * @return string
-     */
-    protected function getEDITConditionConst($subaction)
-    {
-        $EDITConditionConst = '';
-        if ($subaction == "editthiscondition") {
-            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '') {
-                $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
-            }
-        }
-        else {
-            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '') {
-                $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
-            }
-        }
-        return $EDITConditionConst;
-    }
-
-    /**
-     * @param string $subaction
-     * @return string
-     */
-    protected function getEDITConditionRegexp($subaction)
-    {
-        $EDITConditionRegexp = '';
-        if ($subaction == "editthiscondition") {
-            if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '') {
-                $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
-            }
-        }
-        else {
-            if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '') {
-                $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
-            }
-        }
-        return $EDITConditionRegexp;
     }
 }
