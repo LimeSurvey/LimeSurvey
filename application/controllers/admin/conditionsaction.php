@@ -1873,6 +1873,7 @@ class conditionsaction extends Survey_Common_Action {
             'qcountI'       => $qcount+1,
             'cquestions'    => $cquestions,
             'p_csrctoken'   => $p_csrctoken,
+            'p_prevquestionsgqa' => $p_prevquestionsgqa,
             'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID),
             'method'        => $method,
             'subaction'     => $subaction,
@@ -1880,25 +1881,6 @@ class conditionsaction extends Survey_Common_Action {
             'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction)
         );
         $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
-
-        // Previous answers tab @SGQA@ placeholders
-        $aViewUrls['output'] .= "\t<div id='PREVQUESTIONS'  class='tab-pane fade in'>\n"
-            ."\t\t<br /><label for='prevQuestionSGQA'>".gT("Answer from previous question")."</label>\n"
-            ."\t\t<select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>\n";
-        foreach ($cquestions as $cqn)
-        { // building the @SGQA@ placeholders options
-            if ($cqn[2] != 'M' && $cqn[2] != 'P')
-            { // Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers
-                $aViewUrls['output'] .= "\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
-                if (isset($p_prevquestionsgqa) && $p_prevquestionsgqa == "@".$cqn[3]."@")
-                {
-                    $aViewUrls['output'] .= " selected='selected'";
-                }
-                $aViewUrls['output'] .= ">$cqn[0]</option>\n";
-            }
-        }
-        $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t</div>\n";
 
         // Token tab
         $aViewUrls['output'] .= "\t<div id='TOKENATTRS'  class='tab-pane fade in'>\n"
@@ -1912,6 +1894,7 @@ class conditionsaction extends Survey_Common_Action {
         $aViewUrls['output'] .= "\t\t</select>\n"
             ."\t</div>\n";
 
+        $EDITConditionRegexp = 'dummy';
         // Regexp Tab
         $aViewUrls['output'] .= "\t<div id='REGEXP' class='tab-pane fade in'>\n"
             ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'>$EDITConditionRegexp</textarea>\n"

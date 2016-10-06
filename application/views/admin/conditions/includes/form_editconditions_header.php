@@ -129,3 +129,21 @@
                                     <br />
                                     <div id='ConditionConstLabel'><?php eT("Constant value"); ?></div>
                                 </div>
+                                <div id='PREVQUESTIONS'  class='tab-pane fade in'>
+                                    <label for='prevQuestionSGQA'><?php eT("Answer from previous question"); ?></label>
+                                    <select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
+                                        <?php foreach ($cquestions as $cqn): ?>
+                                            <?php if ($cqn[2] != 'M' && $cqn[2] != 'P'): ?>
+                                                <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
+                                                <option
+                                                    value='<?php echo '@' . $cqn[3] . '@'; ?>'
+                                                    title="<?php echo htmlspecialchars($cqn[0]); ?>"
+                                                    <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@'): echo ' selected="selected" '; endif; ?>
+                                                    >
+                                                    <?php echo $cqn[0]; ?>
+                                                </option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
