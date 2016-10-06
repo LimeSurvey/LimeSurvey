@@ -1882,29 +1882,7 @@ class conditionsaction extends Survey_Common_Action {
         );
         $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
-        // Token tab
-        $aViewUrls['output'] .= "\t<div id='TOKENATTRS'  class='tab-pane fade in'>\n"
-            ."\t\t<br /><label for='tokenAttr'>".gT("Attributes of the survey participant")."</label>\n"
-            ."\t\t<select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>\n";
-        foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
-        {
-            $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".HTMLEscape($tokenattrName['description'])."</option>\n";
-        }
-
-        $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t</div>\n";
-
-        $EDITConditionRegexp = 'dummy';
-        // Regexp Tab
-        $aViewUrls['output'] .= "\t<div id='REGEXP' class='tab-pane fade in'>\n"
-            ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'>$EDITConditionRegexp</textarea>\n"
-            ."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://manual.limesurvey.org/wiki/Using_regular_expressions\" target=\"_blank\">".gT("Regular expression")."</a></div>\n"
-            ."\t</div>\n";
-
-        $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div
-
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'conditions.js');
-
 
         if ($subaction == "editthiscondition" && isset($p_cid))
         {

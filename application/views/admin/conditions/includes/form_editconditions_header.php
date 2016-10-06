@@ -146,4 +146,20 @@
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-
+                                <div id='TOKENATTRS'  class='tab-pane fade in'>
+                                    <label for='tokenAttr'><?php eT("Attributes of the survey participant"); ?></label>
+                                    <select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>
+                                        <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
+                                            <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}'>
+                                                <?php echo HTMLEscape($tokenattrName['description']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div id='REGEXP' class='tab-pane fade in'>
+                                    <textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'><?php echo $EDITConditionRegexp; ?></textarea>
+                                    <br />
+                                    <div id='ConditionRegexpLabel'>
+                                        <a href=\"http://manual.limesurvey.org/wiki/Using_regular_expressions\" target=\"_blank\"><?php eT("Regular expression"); ?></a></div>
+                                    </div>
+                                </div>
