@@ -1863,37 +1863,6 @@ class conditionsaction extends Survey_Common_Action {
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
-        if ($subaction == "editthiscondition") {
-            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '') {
-                $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
-            }
-            else {
-                $EDITConditionConst="";
-            }
-
-            if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '') {
-                $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
-            }
-            else {
-                $EDITConditionRegexp="";
-            }
-        }
-        else {
-            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '') {
-                $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
-            }
-            else {
-                $EDITConditionConst="";
-            }
-
-            if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '') {
-                $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
-            }
-            else {
-                $EDITConditionRegexp="";
-            }
-        }
-
         $data = array(
             'subaction'     => $subaction,
             'iSurveyID'     => $iSurveyID,
@@ -1907,7 +1876,8 @@ class conditionsaction extends Survey_Common_Action {
             'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID),
             'method'        => $method,
             'subaction'     => $subaction,
-            'EDITConditionConst' => $EDITConditionConst
+            'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
+            'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction)
         );
         $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
@@ -2116,4 +2086,43 @@ class conditionsaction extends Survey_Common_Action {
         return $js_getAnswers_onload;
     }
 
+    /**
+     * @param string $subaction
+     * @return string
+     */
+    protected function getEDITConditionConst($subaction)
+    {
+        $EDITConditionConst = '';
+        if ($subaction == "editthiscondition") {
+            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '') {
+                $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
+            }
+        }
+        else {
+            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '') {
+                $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
+            }
+        }
+        return $EDITConditionConst;
+    }
+
+    /**
+     * @param string $subaction
+     * @return string
+     */
+    protected function getEDITConditionRegexp($subaction)
+    {
+        $EDITConditionRegexp = '';
+        if ($subaction == "editthiscondition") {
+            if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '') {
+                $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
+            }
+        }
+        else {
+            if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '') {
+                $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
+            }
+        }
+        return $EDITConditionRegexp;
+    }
 }
