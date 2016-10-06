@@ -82,6 +82,7 @@ class conditionsaction extends Survey_Common_Action {
      */
     public function index($subaction, $iSurveyID=null, $gid=null, $qid=null)
     {
+        tracevar($_POST);
         $iSurveyID = sanitize_int($iSurveyID);
         $this->iSurveyID = $iSurveyID;
         $gid = sanitize_int($gid);

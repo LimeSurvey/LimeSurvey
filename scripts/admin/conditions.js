@@ -107,24 +107,15 @@ $(document).ready(function(){
      * @return
      */
     var questionOnChange = function(ev) {
-        switch (ev.currentTarget.value) {
-            case 'prev':
-                $('#SRCPREVQUEST').show();
-                $('#SRCTOKENATTRS').hide();
-                break;
-            case 'attr':
-                $('#SRCTOKENATTRS').show();
-                $('#SRCPREVQUEST').hide();
-                break;
-            default:
-                throw 'Unknown value';
-        }
+        $('.question-option').hide();
+        var value = ev.currentTarget.value;
+        $(value).show();
     };
 
-    $('input[name="question"]').change(questionOnChange);
+    $('input[name="editSourceTab"]').change(questionOnChange);
 
     // Run once on load to hide/show relevant part
-    var currentValue = $('input[name="question"]').val();
+    var currentValue = $('input[name="editSourceTab"]').val();
     var dummyEvent = {currentTarget: {value: currentValue}};
     questionOnChange(dummyEvent);
 
@@ -135,29 +126,14 @@ $(document).ready(function(){
      */
     var answerOnChange = function(ev) {
         $('.answer-option').hide();
-        switch (ev.currentTarget.value) {
-            case 'predefined':
-                $('#CANSWERSTAB').show();
-                break;
-            case 'constant':
-                $('#CONST').show();
-                break;
-            case 'questions':
-                $('#PREVQUESTIONS').show();
-                break;
-            case 'tokenFields':
-                $('#TOKENATTRS').show();
-                break;
-            case 'regexp':
-                $('#REGEXP').show();
-                break;
-        }
+        var value = ev.currentTarget.value;
+        $(value).show();
     };
 
-    $('input[name="answer"]').change(answerOnChange);
+    $('input[name="editTargetTab"]').change(answerOnChange);
 
     // Run once on load to hide/show relevant part
-    var currentValue = $('input[name="answer"]').val();
+    var currentValue = $('input[name="editTargetTab"]').val();
     var dummyEvent = {currentTarget: {value: currentValue}};
     answerOnChange(dummyEvent);
 

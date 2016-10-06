@@ -48,16 +48,16 @@
                 <label class='control-label col-sm-2'><?php eT("Question"); ?></label>
                 <div class='col-sm-5'>
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'question',
-                        'value'=> 'prev',
+                        'name' => 'editSourceTab',
+                        'value'=> '#SRCPREVQUEST',
                         'selectOptions'=>array(
-                            'prev' => gT('Previous questions'),
-                            'attr' => gT('Survey participant attributes')
+                            '#SRCPREVQUEST' => gT('Previous questions'),
+                            '#SRCTOKENATTRS' => gT('Survey participant attributes')
                     )));?>
                 </div>
             </div>
 
-            <div id='SRCPREVQUEST' class='form-group'>
+            <div id='SRCPREVQUEST' class='form-group question-option'>
                 <label class='control-label col-sm-2'><?php eT("Previous questions"); ?></label>
                 <div class='col-sm-5'>
                     <select class='form-control' name='cquestions' id='cquestions' size='<?php echo $qcountI;?>'>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div id='SRCTOKENATTRS' class='form-group'>
+            <div id='SRCTOKENATTRS' class='form-group question-option'>
                 <label class='control-label col-sm-2'><?php eT("Survey participant attributes"); ?></label>
                 <div class='col-sm-5'>
                     <select class='form-control' name='csrctoken' id='csrctoken' >
@@ -100,14 +100,14 @@
                 <label class='control-label col-sm-2'><?php echo gT("Answer"); ?></label>
                 <div class='col-sm-8'>
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'answer',
-                        'value'=> 'predefined',
+                        'name' => 'editTargetTab',
+                        'value'=> '#CANSWERSTAB',
                         'selectOptions'=>array(
-                            'predefined' => gT('Predefined'),
-                            'constant' => gT('Constant'),
-                            'questions' => gT('Questions'),
-                            'tokenFields' => gT('Token fields'),
-                            'regexp' => gT('RegExp')
+                            '#CANSWERSTAB' => gT('Predefined'),
+                            '#CONST' => gT('Constant'),
+                            '#PREVQUESTIONS' => gT('Questions'),
+                            '#TOKENATTRS' => gT('Token fields'),
+                            '#REGEXP' => gT('RegExp')
                     )));?>
                 </div>
             </div>
@@ -190,8 +190,6 @@
                     <input type='hidden' name='subaction' value='<?php echo $submitSubaction; ?>' />
                     <input type='hidden' name='cqid' id='cqid' value='' />
                     <input type='hidden' name='cid' id='cid' value='<?php echo $submitcid; ?>' />
-                    <input type='hidden' name='editTargetTab' id='editTargetTab' value='' />
-                    <input type='hidden' name='editSourceTab' id='editSourceTab' value='' />
                     <input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />
                 </div>
             </div>
