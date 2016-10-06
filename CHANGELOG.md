@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## Unrealeased
+## [1.0.27] - 2016-10-06
 
 ### Fix
 - PHP7 compatibility fix ([SamMousa](http://befound.nl))
