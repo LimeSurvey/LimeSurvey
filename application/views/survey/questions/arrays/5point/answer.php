@@ -22,8 +22,8 @@
     </colgroup>
     <!-- Table headers -->
     <thead aria-hidden="true">
-        <tr class="array1">
-            <td>&nbsp;</td>
+        <tr class="ls-heading"><!-- same class for repeat heading too -->
+            <td>&nbsp;</td> <!-- This is NOT an header cell https://github.com/Shnoulle/LimeSurvey-Shnoulle/issues/14#issuecomment-252034424 -->
             <?php
                 // rows/cell/thead.php
                 echo $sHeaders;

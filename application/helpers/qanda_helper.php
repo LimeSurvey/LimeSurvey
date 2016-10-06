@@ -20,7 +20,7 @@
 *
 * The $ia string comes from the $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['insertarray'] variable which is built at the commencement of the survey.
 * See index.php, function "buildsurveysession()"
-* One $ia array exists for every question in the survey. The $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['insertarray']
+* One $ia array zexists for every question in the survey. The $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['insertarray']
 * string is an array of $ia arrays.
 *
 * $ia[0] => question id
@@ -4112,7 +4112,7 @@ function do_array_5point($ia)
                     'value'         => $value,
                     'error'         => $error,
                     'sDisplayStyle' => $sDisplayStyle,
-                    'zebra'         => 2 - ($j % 2)
+                    'odd'           => ($j % 2), // true for odd, false for even
                 ), true);
         $answer_tds = '';
         $fn++;
