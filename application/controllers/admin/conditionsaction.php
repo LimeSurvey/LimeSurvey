@@ -1867,37 +1867,13 @@ class conditionsaction extends Survey_Common_Action {
             'mytitle'=>$mytitle,
             'showScenario'=>$showScenario,
             'qcountI'=>$qcount+1,
+            'cquestions' => $cquestions
         );
         $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $aDataEditconditions, true);
 
-
         //form_editconditions_header
 
-        if (isset($cquestions))
-        {
-            $js_getAnswers_onload = "";
-            foreach ($cquestions as $cqn)
-            {
-                $aViewUrls['output'] .= "<option value='$cqn[3]' title=\"".htmlspecialchars($cqn[0])."\"";
-                if (isset($p_cquestions) && $cqn[3] == $p_cquestions) {
-                    $aViewUrls['output'] .= " selected";
-                    if (isset($p_canswers))
-                    {
-                        $canswersToSelect = "";
-                        foreach ($p_canswers as $checkval)
-                        {
-                            $canswersToSelect .= ";$checkval";
-                        }
-                        $canswersToSelect = substr($canswersToSelect,1);
-                        $js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
-                    }
-                }
-                $aViewUrls['output'] .= ">$cqn[0]</option>\n";
-            }
-        }
-
-        $aViewUrls['output'] .= "</select>\n"
-            ."</div>\n";
+        $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
         // Source token Tab
         $aViewUrls['output'] .= "<div id='SRCTOKENATTRS' class='tab-pane fade in'><select class='form-control' name='csrctoken' id='csrctoken' >\n";
@@ -2081,11 +2057,6 @@ class conditionsaction extends Survey_Common_Action {
             ."</div>\n"
             ."</form>\n";
 
-        if (!isset($js_getAnswers_onload))
-        {
-            $js_getAnswers_onload = '';
-        }
-
         $aViewUrls['output'] .= "<script type='text/javascript'>\n"
             . "<!--\n"
             . "\t".$js_getAnswers_onload."\n";
@@ -2191,6 +2162,32 @@ class conditionsaction extends Survey_Common_Action {
         $aViewUrls['output'] .= "-->\n"
             . "</script>\n";
         return $aViewUrls['output'];
+    }
+
+    /**
+     * @param array $cquestions
+     * @param string $p_cquestions Question SGID
+     * @param array $p_canswers E.g. array('A2')
+     * @return string JS code
+     */
+    protected function getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers)
+    {
+        tracevar($cquestions);
+        tracevar($p_canswers);
+        $js_getAnswers_onload = "";
+        foreach ($cquestions as $cqn) {
+            if ($cqn[3] == $p_cquestions) {
+                if (isset($p_canswers)) {
+                    $canswersToSelect = "";
+                    foreach ($p_canswers as $checkval) {
+                        $canswersToSelect .= ";$checkval";
+                    }
+                    $canswersToSelect = substr($canswersToSelect,1);
+                    $js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
+                }
+            }
+        }
+        return $js_getAnswers_onload;
     }
 
 }

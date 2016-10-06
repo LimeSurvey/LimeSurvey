@@ -74,3 +74,10 @@
                         <div class="tab-content">
                             <div id='SRCPREVQUEST' class='tab-pane fade in active'>
                                 <select class='form-control' name='cquestions' id='cquestions' size='<?php echo $qcountI;?>'>
+                                    <?php foreach ($cquestions as $cqn): ?>
+                                        <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars($cqn[0]); ?>">
+                                            <?php echo $cqn[0]; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
