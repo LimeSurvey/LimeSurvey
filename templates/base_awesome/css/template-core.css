@@ -8,6 +8,7 @@
 /* awesome-bootstrap-checkbox */
 li.radio-item,li.checkbox-item{display:block}
 .list-inline > .radio-item,.list-inline > .checkbox-item{padding-left: 20px}
+.list-inline.list-unstyled > .radio-item:first-child,.list-inline.list-unstyled > .checkbox-item:first-child {padding-left: 20px}
 
 /* Else big label break*/
 .radio-item label,.checkbox-item label {display:block}

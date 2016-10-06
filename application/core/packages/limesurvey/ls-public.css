@@ -6,19 +6,22 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  */
+/**
+ * Used in answers : bootsrap fix (specific single choice list)
+ */
+.list-inline.list-unstyled {padding-left: 0;padding-right: 0;margin-left: 0;margin-right: 0;}
+.list-inline.list-unstyled > li:first-child {padding-left: 0;}
+
+/* Some tools
+ */
 .js .ls-js-hidden{display: none !important;}
 .no-js .ls-no-js-hidden{display: none !important;}
+/* For relanceOnOff ? */
+.ls-irrelevant {display: none !important;}
 
-/*
-.asterisk {
-    display: inline-block;
-
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+/* Todo : default asterisk : why not put directly <i class fa> inside ?
 */
+/*
 .asterisk {}
 .asterisk:before {
     content: "\f069";
@@ -27,14 +30,15 @@
     font-size: inherit;
     line-height:1;
 }
+*/
 /** ls-label-xs-visibility : set sr-only by default : template can reinit it with initial */
 .ls-label-xs-visibility{
-position:absolute;
-left:-10000px;
-top:auto;
-width:1px;
-height:1px;
-overflow:hidden;
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
 }
 /**
  * The answers part

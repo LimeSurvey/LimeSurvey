@@ -35,12 +35,18 @@ $(document).on("keyup",".answer-item textarea:not([onkeyup]),.answer-item :text:
     }
 });
 $(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
-    //$('#java'+$(this).attr("name")).val($(this).val()); Not needed for ranking, needed for ? select already have val() and are unique by name
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring )){
-        ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
-    }
+    checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
+    //~ if($.isFunction(window.ExprMgr_process_relevance_and_tailoring )){
+        //~ ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
+    //~ }
 });
-
+$(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:not([onclick])",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
+    //~ $('#java'+$(this).attr("name")).val($(this).val());
+    //~ if($.isFunction(window.ExprMgr_process_relevance_and_tailoring )){
+        //~ ExprMgr_process_relevance_and_tailoring("click",$(this).attr("name"),"radio");
+    //~ }
+});
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty

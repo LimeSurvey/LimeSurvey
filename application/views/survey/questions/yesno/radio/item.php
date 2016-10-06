@@ -12,33 +12,31 @@
  */
 ?>
 
-<ul class="list-unstyled list-inline answers-list radio-list">
+<ul class="list-unstyled form-inline answers-list radio-list">
     <!-- Yes -->
-    <li id="javatbd<?php echo $name;?>Y"  class="answer-item radio-item">
+    <li id="javatbd<?php echo $name;?>Y"  class="form-group answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $name;?>"
             id="answer<?php echo $name;?>Y"
             value="Y"
             <?php echo $yChecked; ?>
-            onclick="<?php echo $checkconditionFunction; ?>"
         />
-        <label for="answer<?php echo $name;?>Y" class="answertext">
+        <label for="answer<?php echo $name;?>Y" class="control-label answer-text">
             <?php eT('Yes');?>
         </label>
     </li>
 
     <!-- No -->
-    <li id="javatbd<?php echo $name;?>N"  class="answer-item radio-item">
+    <li id="javatbd<?php echo $name;?>N"  class="form-group answer-item radio-item">
         <input
             type="radio"
             name="<?php echo $name;?>"
             id="answer<?php echo $name;?>N"
             value="N"
             <?php echo $nChecked; ?>
-            onclick="<?php echo $checkconditionFunction;?>"
         />
-        <label for="answer<?php echo $name;?>N" class="answertext" >
+        <label for="answer<?php echo $name;?>N" class="control-label answer-text" >
             <?php eT('No');?>
 
         </label>
@@ -46,25 +44,25 @@
 
     <!-- No answer -->
     <?php if($noAnswer):?>
-        <li id="javatbd<?php echo $name;?>"  class="answer-item radio-item noanswer-item">
+        <li id="javatbd<?php echo $name;?>"  class="form-group answer-item radio-item noanswer-item">
             <input
                 type="radio"
                 name="<?php echo $name;?>"
                 id="answer<?php echo $name;?>"
                 value=""
                 <?php echo $naChecked; ?>
-                onclick="<?php echo $checkconditionFunction;?>"
             />
-            <label for="answer<?php echo $name;?>" class="answertext">
+            <label for="answer<?php echo $name;?>" class="control-label answer-text">
                 <?php eT('No answer');?>
             </label>
         </li>
     <?php endif;?>
 </ul>
-<!-- Value for expression manager (use id) -->
+<!-- Value for expression manager javascript (use id) ; no need to submit -->
 <input
     type="hidden"
     name="java<?php echo $name;?>"
     id="java<?php echo $name;?>"
     value="<?php echo $value;?>"
+    disabled="disabled"
 />

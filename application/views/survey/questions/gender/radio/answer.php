@@ -14,7 +14,7 @@
 <!--Gender question, radio display -->
 
 <!-- answer -->
-<ul class="list-unstyled list-inline answers-list radio-list">
+<ul class="list-unstyled form-inline answers-list radio-list">
 
     <!-- Female -->
     <li id='javatbd<?php echo $name; ?>F' class="form-group answer-item radio-item">
@@ -24,7 +24,6 @@
             id="answer<?php echo $name;?>F"
             value="F"
             <?php echo $fChecked; ?>
-            onclick="<?php echo $checkconditionFunction; ?>"
         />
         <label for="answer<?php echo $name;?>F" class="control-label radio-label">
             <?php eT('Female');?>
@@ -39,7 +38,6 @@
             id="answer<?php echo $name;?>M"
             value="M"
             <?php echo $mChecked;?>
-            onclick="<?php echo $checkconditionFunction; ?>"
         />
 
         <label for="answer<?php echo $name;?>M" class="control-label radio-label">
@@ -64,11 +62,12 @@
         </li>
     <?php endif;?>
 </ul>
-<!-- Value -->
+<!-- Value for expression manager javascript (use id) ; no need to submit -->
 <input
     type="hidden"
     name="java<?php echo $name;?>"
     id="java<?php echo $name; ?>"
     value="<?php echo $value;?>"
+    disabled="disabled"
 />
 <!-- end of answer -->

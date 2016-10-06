@@ -15,18 +15,19 @@
 <!-- 5 point choice -->
 
 <!-- answer -->
-<ul id="<?php echo $id; ?>" class="list-unstyled list-inline answers-list radio-list form-inline">
+<ul id="<?php echo $id; ?>" class="list-unstyled form-inline answers-list radio-list ">
     <?php
         // item_row.php
         echo $sRows;
     ?>
 </ul>
-<!-- 5 point choice footer -->
+<!-- Value for expression manager javascript (use id) ; no need to submit -->
 <input
     type="hidden"
     name="java<?php echo $name;?>"
     id="java<?php echo $name;?>"
     value="<?php echo $sessionValue;?>"
+    disabled="disabled"
 />
 
 <?php if($slider_rating==1):?>

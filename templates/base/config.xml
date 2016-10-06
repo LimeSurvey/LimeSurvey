@@ -23,10 +23,8 @@
         -->
         <css>
             <filename>css/bootstrap.min.css</filename>
-            <filename>css/bootstrap-ls.css</filename>
             <filename>css/jquery-ui.css</filename>
             <!--<filename>assets/css/bootstrap-theme.css</filename>-->
-            <filename>css/limesurvey.css</filename>
             <filename>css/template-core.css</filename>
             <filename>css/template.css</filename>
         </css>

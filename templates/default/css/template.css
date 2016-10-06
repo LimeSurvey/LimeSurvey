@@ -218,12 +218,23 @@ li.responsive-content
 html, body {
     height: 90%;
 }
-
+/**
+ * Max width for some answer part
+ */
+@media (min-width: 768px) {
+  .yesno-button,.gender-button {
+    float: left;
+  }
+  .yesno-button,.gender-button {
+    width: 50%;
+  }
+}
 /**
  * Gender buttons
  */
 
 /* Not selected */
+
 .gender-button button{
     box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.16), 2px 2px 2px 0 rgba(0, 0, 0, 0.12);
     margin-left: 1em;
