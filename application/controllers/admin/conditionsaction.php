@@ -2172,8 +2172,6 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers)
     {
-        tracevar($cquestions);
-        tracevar($p_canswers);
         $js_getAnswers_onload = "";
         foreach ($cquestions as $cqn) {
             if ($cqn[3] == $p_cquestions) {
