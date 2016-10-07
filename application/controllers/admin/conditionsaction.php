@@ -361,14 +361,19 @@ class conditionsaction extends Survey_Common_Action {
                     }
 
                     $aData['scenarionr'] = $scenarionr;
+
                     if (!isset($aViewUrls['output'])) {
                         $aViewUrls['output'] = '';
                     }
+
+                    /*
                     $aViewUrls['output'] .= $this->getController()->renderPartial(
                         '/admin/conditions/includes/conditions_scenario',
                         $aData,
                         true
                     );
+                     */
+                    $aData['conditionHtml'] = '';
 
                     unset($currentfield);
 
@@ -549,7 +554,7 @@ class conditionsaction extends Survey_Common_Action {
                                 $data['hiddenFields'] = '';
                             }
 
-                            $aViewUrls['output'] .= $this->getController()->renderPartial(
+                            $aData['conditionHtml'] .= $this->getController()->renderPartial(
                                 '/admin/conditions/includes/condition',
                                 $data,
                                 true
@@ -559,7 +564,14 @@ class conditionsaction extends Survey_Common_Action {
                         }
 
                     }
+
                     $s++;
+
+                    $aViewUrls['output'] .= $this->getController()->renderPartial(
+                        '/admin/conditions/includes/conditions_scenario',
+                        $aData,
+                        true
+                    );
                 }
                 // If we have a condition, allways reset the condition, this can fix old import (see #09344)
                 LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
@@ -576,29 +588,21 @@ class conditionsaction extends Survey_Common_Action {
         }
         //END DISPLAY CONDITIONS FOR THIS QUESTION
 
-        //// NICE COMMENTS : but a subaction copy would be even nicer
-
-        // BEGIN: DISPLAY THE COPY CONDITIONS FORM
-        if ($subaction == "copyconditionsform"
-            || $subaction == "copyconditions")
-        {
+        // Display the copy conditions form
+        if (   $subaction == "copyconditionsform"
+            || $subaction == "copyconditions") {
             $aViewUrls['output'] .= $this->getCopyForm($qid, $gid, $conditionsList, $pquestions);
         }
-        // END: DISPLAY THE COPY CONDITIONS FORM
 
-        if ( isset($cquestions) )
-        {
-            if ( count($cquestions) > 0 && count($cquestions) <=10)
-            {
+        if (isset($cquestions)) {
+            if ( count($cquestions) > 0 && count($cquestions) <=10) {
                 $qcount = count($cquestions);
             }
-            else
-            {
+            else {
                 $qcount = 9;
             }
         }
-        else
-        {
+        else {
             $qcount = 0;
         }
 
@@ -611,7 +615,7 @@ class conditionsaction extends Survey_Common_Action {
         $args['cquestions'] = $cquestions;
         $args['scenariocount'] = $scenariocount;
 
-        if ($subaction == "editconditionsform"
+        if (   $subaction == "editconditionsform"
             || $subaction == "insertcondition"
             || $subaction == "updatecondition"
             || $subaction == "deletescenario"
@@ -625,9 +629,7 @@ class conditionsaction extends Survey_Common_Action {
             $aViewUrls['output'] .= $this->getEditConditionForm($args);
         }
 
-        $conditionsoutput = $aViewUrls['output'];
-
-        $aData['conditionsoutput'] = $conditionsoutput;
+        $aData['conditionsoutput'] = $aViewUrls['output'];
         $this->_renderWrappedTemplate('conditions', $aViewUrls, $aData);
 
         // TMSW Condition->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?

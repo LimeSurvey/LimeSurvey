@@ -9,45 +9,72 @@
     </script>
 <?php endif; ?>
 
-<?php if ($showScenarioText == 'normal'): ?>
-    -------- <i>Scenario <?php echo $scenarionr['scenario']; ?></i> --------
-<?php elseif ($showScenarioText == 'withOr'): ?>
-    -------- <i><?php eT('OR'); ?> Scenario <?php echo $scenarionr['scenario']; ?></i> --------
-<?php endif; ?>
+<div class='panel panel-primary'>
 
-<?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'display: none','id'=>'editscenario'.$scenarionr['scenario']));?>
-    <label><?php eT("New scenario number:"); ?>&nbsp;
-        <input type='text' name='newscenarionum' size='3'/></label>
-    <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario']; ?>'/>
-    <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
-    <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
-    <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
-    <input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;
-    <input type='submit' class="btn btn-default" name='scenarioupdated' value='<?php eT("Update scenario"); ?>' />
-    <input type='button' class="btn btn-default" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
-</form>
+    <div class='panel-heading'>
 
-<?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>
+        <div class='row'>
+            <div class='col-sm-2'>
+            <!-- Scenario header -->
+            <?php if ($showScenarioText == 'normal'): ?>
+                <h5>Scenario <?php echo $scenarionr['scenario']; ?></h5>
+            <?php elseif ($showScenarioText == 'withOr'): ?>
+                <h5><?php eT('OR'); ?> Scenario <?php echo $scenarionr['scenario']; ?></h5>
+            <?php else: ?>
+                <h5><?php eT('Default scenario'); ?></h5>
+            <?php endif; ?>
+            </div>
 
-    <?php if ($showScenarioButtons): ?>
-        <a 
-            href='#'
-            onclick="if (confirm('<?php eT("Are you sure you want to delete all conditions set in this scenario?", "js"); ?>')) { document.getElementById('deletescenario<?php echo $scenarionr['scenario']; ?>').submit();}"
-        >
-            <span class="glyphicon glyphicon-trash"></span>
-        </a>
+            <div class='col-sm-10'>
 
-        <a
-            href='#'
-            id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
-            onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').toggle('slow');"
-        >
-            <span class="glyphicon glyphicon-pencil"></span>
-        </a>
-    <?php endif; ?>
+            <!-- Small form to change scenario number -->
+            <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'display: none','id'=>'editscenario'.$scenarionr['scenario']));?>
+                <label>
+                    <?php eT("New scenario number:"); ?>&nbsp;
+                    <input type='text' name='newscenarionum' size='3'/>
+                </label>
+                <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario']; ?>'/>
+                <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+                <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
+                <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
+                <input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;
+                <input type='submit' class="btn btn-default" name='scenarioupdated' value='<?php eT("Update scenario"); ?>' />
+                <input type='button' class="btn btn-default" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
+            </form>
 
-    <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario'];?>' />
-    <input type='hidden' name='qid' value='<?php echo $qid;?>' />
-    <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
-    <input type='hidden' name='subaction' value='deletescenario' />
-</form>
+            <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>
+
+                <?php if ($showScenarioButtons): ?>
+                    <button 
+                        class='btn btn-default btn-sm'
+                        data-toggle='tooltip'
+                        data-title='<?php eT('Delete all conditions in this scenario'); ?>'
+                        onclick="if (confirm('<?php eT("Are you sure you want to delete all conditions set in this scenario?", "js"); ?>')) { document.getElementById('deletescenario<?php echo $scenarionr['scenario']; ?>').submit();} return false;"
+                    >
+                        <span class="glyphicon glyphicon-trash text-danger"></span>
+                    </button>
+
+                    <button
+                        class='btn btn-default btn-sm'
+                        data-toggle='tooltip'
+                        data-title='<?php eT('Change scenario number'); ?>'
+                        id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
+                        onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').toggle('slow'); return false"
+                    >
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                <?php endif; ?>
+
+                <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario'];?>' />
+                <input type='hidden' name='qid' value='<?php echo $qid;?>' />
+                <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
+                <input type='hidden' name='subaction' value='deletescenario' />
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class='panel-body'>
+        <?php echo $conditionHtml; ?>
+    </div>
+</div>

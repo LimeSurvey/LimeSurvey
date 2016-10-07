@@ -1,4 +1,8 @@
-<?php echo $andOrOr; ?>
+<?php if ($andOrOr): ?>
+    <span class='label label-default'>
+        <?php echo $andOrOr; ?>
+    </span>
+<?php endif; ?>
 
 <?php echo CHtml::form(
     $formAction,
