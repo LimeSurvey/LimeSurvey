@@ -33,19 +33,17 @@ class SurveyRuntimeHelper {
         $htmlButtons = array();
         $html = '';
         $html .=  "\n\n<!-- PRESENT THE INDEX MENU (full) -->\n";
-        $html .=  CHtml::openTag('li', array('id' => 'index-menu', 'class'=>'dropdown index-menu-incremental-full'));
+        $html .=  CHtml::openTag('li', array('id' => 'index-menu', 'class'=>'dropdown ls-no-js-hidden index-menu-incremental-full'));
         $html .=  CHtml::link(gT("Question index").'&nbsp;<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle', 'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
         $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $key => $group)
         {
-
             if (LimeExpressionManager::GroupIsRelevant($group['gid']))
             {
                 $group['step'] = $key + 1;
                 $active = ($_SESSION[$LEMsessid]['step'] == $group['step']) ? 'current active' : '';
                 $classes = ' linkToButton ';
-                $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('id'=>'button-'.$group['gid'],'type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'jshide'));
-
+                $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('id'=>'button-'.$group['gid'],'type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'btn btn-default btn-sm ls-js-hidden-sr'));
                 // Button
                 $htmlButtons[] =   CHtml::tag('li', array(
                     'data-gid' => $group['gid'],
@@ -53,10 +51,8 @@ class SurveyRuntimeHelper {
                     'class' => $classes,
                     ), $group['group_name'].$sButtonSubmit);
 
-
-
                 $html .=  CHtml::openTag('li', array('class'=>$active));
-                $html .=  CHtml::link($group['group_name'], array('#'), array('class'=>$classes, 'data-button-to-click'=>'#button-'.$group['gid'], ));
+                $html .=  CHtml::link($group['group_name'], array("survey/index",'sid'=>str_replace("survey_","",$LEMsessid),'move'=>$group['step']), array('class'=>$classes, 'data-button-to-click'=>'#button-'.$group['gid'], ));
                 $html .= CHtml::closeTag('li');
 
             }
@@ -333,13 +329,15 @@ class SurveyRuntimeHelper {
             echo "<div class=\"row $class\">";
             echo "<span class=\"hdr\">$v</span>";
             echo "<span title=\"$sText\">$sText</span>";
-            echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide', 'id'=> 'button-'.$g['gid']));
+            if($n != $_SESSION[$LEMsessid]['step'] - 1){
+                echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'btn btn-default btn-sm ls-js-hidden-sr', 'id'=> 'button-'.$g['gid']));
+            }
             echo "</div>";
         }
 
         if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
         {
-            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
+            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'btn submit button'));
         }
 
         echo '</div></div>';

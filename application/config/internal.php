@@ -42,7 +42,7 @@ $internalConfig = array(
     'aliases' => array(
         // Third party path
         'third_party' => realpath(__DIR__ . '/../../third_party'),
-        'limesurvey-core' => realpath(__DIR__ . '/../../application/core/packages'),
+        'core' => realpath(__DIR__ . '/../../application/core/packages'),
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
@@ -100,9 +100,12 @@ $internalConfig = array(
                 require('third_party.php'),
                 array(
                     'limesurvey-public'=>array(
-                        'basePath' => 'limesurvey-core.limesurvey',
+                        'basePath' => 'core.limesurvey',
                         'css'=> array(
-                            'ls-public.css'
+                            'survey.css',
+                        ),
+                        'js'=>array(
+                            'survey.js',
                         ),
                         'depends' => array(
                             'bootstrap',

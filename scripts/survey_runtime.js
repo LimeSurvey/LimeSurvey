@@ -324,24 +324,7 @@ function activateLanguageChanger(){
         $(".changelang.jshide").hide();
     });
 }
-/**
- * Manage the index
- */
-function manageIndex(){
-    $("#index .jshide").hide();
-    $("#index").on('click','li,.row',function(e){
-        if(!$(e.target).is('button')){
-            $(this).children("[name='move']").click();
-        }
-    });
-    $(function() {
-        $(".outerframe").addClass("withindex");
-        var idx = $("#index");
-        var row = $("#index .row.current");
-        if(row.length)
-            idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
-    });
-}
+
 /**
  * Put a empty class on empty answer text item (limit to answers part)
  * @author Denis Chenu / Shnoulle

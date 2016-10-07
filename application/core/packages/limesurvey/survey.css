@@ -15,6 +15,17 @@
  */
 .js .ls-js-hidden{display: none !important;}
 .no-js .ls-no-js-hidden{display: none !important;}
+
+/* Using http://webaim.org/techniques/css/invisiblecontent/ technique : better with less part (to be more easily updatable by template ? : can use initial) */
+.js .ls-js-hidden-sr{
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+
 /* For relanceOnOff ? */
 .ls-irrelevant {display: none !important;}
 
