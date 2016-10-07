@@ -850,7 +850,7 @@ label, th {
 }
 
 .list-unstyled.radio-list {
-    padding-left: 15px;
+    //padding-left: 15px;
 }
 
 div.yes-no .btn-group label {
