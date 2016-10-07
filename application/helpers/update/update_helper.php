@@ -44,7 +44,12 @@ function CheckForDBUpgrades($subaction = null)
             }
             else
             {
-                $data = "<p><a href='".Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db")."'>".gT("Please fix this error in your database and try again")."</a></p></div>";
+                $msg = '';
+                foreach(yii::app()->user->getflashes() as $key => $message)
+                {
+                    $msg .=  '<div class="alert alert-danger flash-' . $key . '">' . $message . "</div>\n";
+                }
+                $data = $msg . "<p><a href='".Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db")."'>".gT("Please fix this error in your database and try again")."</a></p></div> ";
             }
             return $data;
         }
@@ -54,34 +59,12 @@ function CheckForDBUpgrades($subaction = null)
     }
 }
 
-function ShowDBUpgradeNotice() {
-    $message ='
-        <div class="jumbotron message-box">
-            <h2 class="">'.gT('Database upgrade').'</h2>
-            <p class="lead">'.gT('Please verify the following information before continuing with the database upgrade:').'</p>
-            <div class="row">
-            <div class="col-md-offset-4 col-md-4">
-                <table class="table table-striped">
-                    <tr><th>'.gT('Database type:') . '</th><td>' . Yii::app()->db->getDriverName() . '</td></tr>
-                    <tr><th>'.gT('Database name:') . '</th><td>' . getDBConnectionStringProperty('dbname') . '</td></tr>
-                    <tr><th>'.gT('Table prefix:') . '</th><td>' . Yii::app()->db->tablePrefix . '</td></tr>
-                    <tr><th>'.gT('Site name:') . '</th><td>' . Yii::app()->getConfig("sitename") . '</td></tr>
-                    <tr><th>'.gT('Root URL:') . '</th><td>' . Yii::app()->getController()->createUrl('') . '</td></tr>
-                    <tr><th>'.gT('Current database version:') . '</th><td>' . GetGlobalSetting('DBVersion') . '</td></tr>
-                    <tr><th>'.gT('Target database version:') . '</th><td>' . Yii::app()->getConfig('dbversionnumber'). '</td></tr>
-                </table>
-            </div>
-            </div>
-
-            <p>
-                <a class="btn btn-lg btn-success" href="'.Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes").'" role="button">
-                    '. gT('Click here to continue') .'
-                </a>
-            </p>
-
-        </div>
-    ';
-
+/**
+ * @return string html
+ */
+function ShowDBUpgradeNotice()
+{
+    $message = Yii::app()->getController()->renderPartial('/admin/databaseupdate/verify', null, true);
     return $message;
 }
 

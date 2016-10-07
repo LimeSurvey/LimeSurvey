@@ -5,7 +5,7 @@
     <div class="col-md-9">
     <h2><?php echo $title; ?></h2>
     <legend><?php echo $descp; ?></legend>
-    <?php if (isset($confirmation)) echo sprintf("<div class='alert alert-success'>%s</div>",$confirmation); ?>
+    <?php if (isset($confirmation)) echo "<div class='alert alert-success'>".$confirmation."</div>"; ?>
     <div style="color:red; font-size:12px;">
         <?php echo CHtml::errorSummary($model, null, null, array('class' => 'alert alert-danger')); ?>
     </div>

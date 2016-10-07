@@ -478,6 +478,7 @@ function submittokens($quotaexit=false)
 
     // check how many uses the token has left
     $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    $token->scenario = 'FinalSubmit';  // Do not XSS filter token data
 
     if ($quotaexit==true)
     {
