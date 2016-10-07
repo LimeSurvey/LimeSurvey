@@ -339,5 +339,6 @@ $(document).ready(function(){
 function scenarioaddbtnOnClickAction() {
     $('#scenarioaddbtn').hide();
     $('#defaultscenariotxt').hide('slow');
+    $('.add-scenario-column').removeClass('col-sm-4').addClass('col-sm-2');
     $('#scenario').show('slow');
 }
