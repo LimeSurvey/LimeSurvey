@@ -42,6 +42,12 @@ class conditionsaction extends Survey_Common_Action {
     private $language;
 
     /**
+     * True if there exists a token table for this survey
+     * @var boolean
+     */
+    private $tokenTableExists;
+
+    /**
      * Init some stuff
      */
     public function __construct($controller = null, $id = null)
@@ -84,6 +90,7 @@ class conditionsaction extends Survey_Common_Action {
     {
         $iSurveyID = sanitize_int($iSurveyID);
         $this->iSurveyID = $iSurveyID;
+        $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
         $imageurl = Yii::app()->getConfig("adminimageurl");
@@ -395,45 +402,58 @@ class conditionsaction extends Survey_Common_Action {
                         {
                             $aConditionsMerged[]=$arow;
                         }
+
                         foreach ($aConditionsMerged as $rows)
                         {
                             if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
                             $markcidstyle="oddrow";
-                            if (array_search($rows['cid'], $markcidarray) !== FALSE){
+                            if (array_search($rows['cid'], $markcidarray) !== FALSE) {
                                 // This is the style used when the condition editor is called
                                 // in order to check which conditions prevent a question deletion
                                 $markcidstyle="markedrow";
                             }
                             if ($subaction == "editthiscondition" && isset($p_cid) &&
-                            $rows['cid'] === $p_cid)
-                            {
+                                $rows['cid'] === $p_cid) {
                                 // Style used when editing a condition
                                 $markcidstyle="editedrow";
                             }
 
+                            $data = array();
+
                             if (isset($currentfield) && $currentfield != $rows['cfieldname'] )
                             {
-                                $aViewUrls['output'] .= gT("and");
+                                //$aViewUrls['output'] .= gT("and");
+                                $data['andOrOr'] = gT('and');
                             }
                             elseif (isset($currentfield))
                             {
-                                $aViewUrls['output'] .= gT("or");
+                                //$aViewUrls['output'] .= gT("or");
+                                $data['andOrOr'] = gT('or');
+                            }
+                            else {
+                                $data['andOrOr'] = '';
                             }
 
-                            $aViewUrls['output'] .= CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"conditionaction{$rows['cid']}",'name'=>"conditionaction{$rows['cid']}"))
-                            ."<table class='table conditionstable'>\n"
-                            ."\t<tr class='active'>\n";
+                            // TODO: Is this form needed?
+                            //$aViewUrls['output'] .= CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"conditionaction{$rows['cid']}",'name'=>"conditionaction{$rows['cid']}"));
+                            $data['formAction'] = $this->getController()->createUrl(
+                                '/admin/conditions/sa/index/',
+                                array(
+                                    'subaction' => $subaction,
+                                    'surveyid' => $this->iSurveyID,
+                                    'gid' => $gid,
+                                    'qid' => $qid
+                                )
+                            );
+                            $data['row'] = $rows;
+                            $data['subaction'] = $subaction;
+                            $data['scenarionr'] = $scenarionr;
 
-                            if ( $subaction == "copyconditionsform" || $subaction == "copyconditions" )
-                            {
-                                $aViewUrls['output'] .= "<td>&nbsp;&nbsp;</td>"
-                                . "<td class='scenariotd'>\n"
-                                . "\t<input type='checkbox' name='aConditionFromScenario{$scenarionr['scenario']}' id='cbox{$rows['cid']}' value='{$rows['cid']}' checked='checked'/>\n"
-                                . "</td>\n";
-                            }
-                            $aViewUrls['output'] .= ""
-                            ."<td class='col-md-4 questionnamecol'>\n"
-                            ."\t<span>\n";
+                            $aViewUrls['output'] .= $this->getController()->renderPartial(
+                                '/admin/conditions/includes/condition',
+                                $data,
+                                true
+                            );
 
                             $leftOperandType = 'unknown'; // prevquestion, tokenattr
                             if (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
@@ -448,7 +468,7 @@ class conditionsaction extends Survey_Common_Action {
                                 {
                                     $thisAttrName=HTMLEscape($extractedTokenAttr[1]);
                                 }
-                                if(tableExists("{{tokens_$iSurveyID}}"))
+                                if($this->tokenTableExists)
                                 {
                                     $thisAttrName.= " [".gT("From token table")."]";
                                 }
