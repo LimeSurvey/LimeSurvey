@@ -413,15 +413,11 @@ class conditionsaction extends Survey_Common_Action {
 
                             if (isset($currentfield) && $currentfield != $rows['cfieldname'] )
                             {
-                                $aViewUrls['output'] .= "<tr class='evenrow'>\n"
-                                ."\t<td colspan='2' class='operator'>\n"
-                                .gT("and")."</td></tr>";
+                                $aViewUrls['output'] .= gT("and");
                             }
                             elseif (isset($currentfield))
                             {
-                                $aViewUrls['output'] .= "<tr class='evenrow'>\n"
-                                ."\t<td colspan='2' class='operator'>\n"
-                                .gT("or")."</td></tr>";
+                                $aViewUrls['output'] .= gT("or");
                             }
 
                             $aViewUrls['output'] .= "\t<tr class='{$markcidstyle}'>\n"
