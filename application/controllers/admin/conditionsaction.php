@@ -263,40 +263,10 @@ class conditionsaction extends Survey_Common_Action {
         } //if questionscount > 0
         //END Gather Information for this question
 
-
-        $questionNavOptions = CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>gT("Before","js")));
-        foreach ($theserows as $row)
-        {
-            $question=$row['question'];
-            $question=strip_tags($question);
-            $questionselecter = viewHelper::flatEllipsizeText($question,true,'40');
-            $questionNavOptions .= CHtml::tag('option', array(
-            'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
-            strip_tags($row['title']).':'.$questionselecter
-            );
-        }
-        $questionNavOptions .= CHtml::closeTag('optgroup');
-        $questionNavOptions .= CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>gT("Current","js")));
-        $question = strip_tags($sCurrentFullQuestionText);
-        $questiontextshort=viewHelper::flatEllipsizeText($question,true,'40');
-        $questionNavOptions .= CHtml::tag('option', array(
-        'value'=>$this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$gid/qid/$qid"),
-        'selected'=>'selected'),
-        $questiontitle .': '. $questiontextshort);
-        $questionNavOptions .= CHtml::closeTag('optgroup');
-        $questionNavOptions .= CHtml::openTag('optgroup', array('class'=> 'activesurveyselect', 'label'=>gT("After","js")));
-
-        foreach ($postrows as $row)
-        {
-            $question=$row['question'];
-            $question=strip_tags($question);
-            $questionselecter=viewHelper::flatEllipsizeText($question,true,'40');
-            $questionNavOptions .=  CHtml::tag('option', array(
-            'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
-            strip_tags($row['title']).':'.$questionselecter
-            );
-        }
-        $questionNavOptions .= CHtml::closeTag('optgroup');
+        $args['sCurrentFullQuestionText'] = $sCurrentFullQuestionText;
+        $args['questiontitle'] = $questiontitle;
+        $args['gid'] = $gid;
+        $questionNavOptions = $this->getQuestionNavOptions($theserows, $postrows, $args);
 
         //Now display the information and forms
         //BEGIN: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
@@ -2081,5 +2051,51 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
         return $aViewUrls['output'];
+    }
+
+    /**
+     * The navigator that lets user quickly move to another question within the survey.
+     * @param array $theserows
+     * @param array $postrows
+     * @param array $args
+     * @return string html
+     */
+    protected function getQuestionNavOptions($theserows, $postrows, $args)
+    {
+        extract($args);
+
+        $iSurveyID = $this->iSurveyID;
+
+        $questionNavOptions = CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>gT("Before","js")));
+        foreach ($theserows as $row) {
+            $question=$row['question'];
+            $question=strip_tags($question);
+            $questionselecter = viewHelper::flatEllipsizeText($question,true,'40');
+            $questionNavOptions .= CHtml::tag('option', array(
+                'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
+            strip_tags($row['title']).':'.$questionselecter);
+        }
+        $questionNavOptions .= CHtml::closeTag('optgroup');
+        $questionNavOptions .= CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>gT("Current","js")));
+        $question = strip_tags($sCurrentFullQuestionText);
+        $questiontextshort=viewHelper::flatEllipsizeText($question,true,'40');
+        $questionNavOptions .= CHtml::tag('option', array(
+            'value'=>$this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$gid/qid/$qid"),
+            'selected'=>'selected'),
+        $questiontitle .': '. $questiontextshort);
+        $questionNavOptions .= CHtml::closeTag('optgroup');
+        $questionNavOptions .= CHtml::openTag('optgroup', array('class'=> 'activesurveyselect', 'label'=>gT("After","js")));
+
+        foreach ($postrows as $row) {
+            $question=$row['question'];
+            $question=strip_tags($question);
+            $questionselecter=viewHelper::flatEllipsizeText($question,true,'40');
+            $questionNavOptions .=  CHtml::tag('option', array(
+                'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/{$row['gid']}/qid/{$row['qid']}")),
+            strip_tags($row['title']).':'.$questionselecter);
+        }
+        $questionNavOptions .= CHtml::closeTag('optgroup');
+
+        return $questionNavOptions;
     }
 }

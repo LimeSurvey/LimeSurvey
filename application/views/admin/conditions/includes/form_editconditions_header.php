@@ -37,9 +37,9 @@
                     <?php endif;?>
                     <?php if($showScenario):?>
                         &nbsp;
-                        <a class='btn btn-default' id='scenarioaddbtn' href='#' onclick="scenarioaddbtnOnClickAction();" >
+                        <button class='btn btn-default' id='scenarioaddbtn' onclick="scenarioaddbtnOnClickAction(); return false;" >
                             <span class='icon-add'></span>&nbsp;<?php eT('Add scenario'); ?>
-                        </a>
+                        </button>
                     <?php endif;?>
                 </div>
             </div>
