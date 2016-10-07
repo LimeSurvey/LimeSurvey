@@ -171,6 +171,7 @@ class conditionsaction extends Survey_Common_Action {
             $this->getController()->redirect(array('admin'));
         }
 
+        // This will redirect after logic is reset
         if ($p_subaction == "resetsurveylogic") {
             $this->resetSurveyLogic($iSurveyID);
         }
@@ -210,6 +211,7 @@ class conditionsaction extends Survey_Common_Action {
             'qid'           => $qid
         );
 
+        // Subaction = form submission
         $this->applySubaction($p_subaction, $args);
 
         $cquestions = array();
@@ -232,9 +234,9 @@ class conditionsaction extends Survey_Common_Action {
         // , and find out which number in that order this question is
         // Then, using the same array which is now properly sorted by group then question
         // Create an array of all the questions that appear AFTER the current one
-        $qrows = $this->getQRows($qid);
-        $questionlist = $this->getQuestionList($qid, $qrows);
-        $postquestionlist = $this->getPostQuestionList($qid, $qrows);
+        $questionRows = $this->getQuestionRows($qid);
+        $questionlist = $this->getQuestionList($qid, $questionRows);
+        $postquestionlist = $this->getPostQuestionList($qid, $questionRows);
 
         $theserows = $this->getTheseRows($questionlist);
         $postrows  = $this->getPostRows($postquestionlist);
@@ -264,55 +266,8 @@ class conditionsaction extends Survey_Common_Action {
         $questionNavOptions = $this->getQuestionNavOptions($theserows, $postrows, $args);
 
         //Now display the information and forms
-        //BEGIN: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
-        $javascriptpre = CHtml::openTag('script', array('type' => 'text/javascript'))
-        . "<!--\n"
-        . "\tvar Fieldnames = new Array();\n"
-        . "\tvar Codes = new Array();\n"
-        . "\tvar Answers = new Array();\n"
-        . "\tvar QFieldnames = new Array();\n"
-        . "\tvar Qcqids = new Array();\n"
-        . "\tvar Qtypes = new Array();\n";
 
-        $jn = 0;
-        if ( isset($canswers) )
-        {
-            foreach($canswers as $can)
-            {
-                $an = ls_json_encode(flattenText($can[2]));
-                $javascriptpre .= "Fieldnames[{$jn}]='{$can[0]}';\n"
-                . "Codes[{$jn}]='{$can[1]}';\n"
-                . "Answers[{$jn}]={$an};\n";
-                $jn++;
-            }
-        }
-
-        $jn = 0;
-        if ( isset($cquestions) )
-        {
-            foreach ($cquestions as $cqn)
-            {
-                $javascriptpre .= "QFieldnames[$jn]='$cqn[3]';\n"
-                ."Qcqids[$jn]='$cqn[1]';\n"
-                ."Qtypes[$jn]='$cqn[2]';\n";
-                $jn++;
-            }
-        }
-
-        //  record a JS variable to let jQuery know if survey is Anonymous
-        if ($surveyIsAnonymized)
-        {
-            $javascriptpre .= "isAnonymousSurvey = true;";
-        }
-        else
-        {
-            $javascriptpre .= "isAnonymousSurvey = false;";
-        }
-
-        $javascriptpre .= "//-->\n"
-        .CHtml::closeTag('script');
-
-        //END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
+        $javascriptpre = $this->getJavascriptForMatching($canswers, $cquestions, $surveyIsAnonymized);
 
         $aViewUrls = array();
 
@@ -1352,7 +1307,7 @@ class conditionsaction extends Survey_Common_Action {
      * @param int $qid
      * @return array
      */
-    protected function getQRows($qid)
+    protected function getQuestionRows($qid)
     {
         $qresult = Question::model()->with(array(
             'groups' => array(
@@ -2104,5 +2059,54 @@ class conditionsaction extends Survey_Common_Action {
                 'qid' => $qid
             )
         );
+    }
+
+    /**
+     * Javascript to match question with answer
+     * @param array $canswers
+     * @param array $cquestions
+     * @param boolean $surveyIsAnonymized
+     * @return string js
+     */
+    protected function getJavascriptForMatching(array $canswers, array $cquestions, $surveyIsAnonymized)
+    {
+        $javascriptpre = CHtml::openTag('script', array('type' => 'text/javascript'))
+            . "<!--\n"
+            . "\tvar Fieldnames = new Array();\n"
+            . "\tvar Codes = new Array();\n"
+            . "\tvar Answers = new Array();\n"
+            . "\tvar QFieldnames = new Array();\n"
+            . "\tvar Qcqids = new Array();\n"
+            . "\tvar Qtypes = new Array();\n";
+
+        $jn = 0;
+        foreach($canswers as $can) {
+            $an = ls_json_encode(flattenText($can[2]));
+            $javascriptpre .= "Fieldnames[{$jn}]='{$can[0]}';\n"
+                . "Codes[{$jn}]='{$can[1]}';\n"
+                . "Answers[{$jn}]={$an};\n";
+            $jn++;
+        }
+
+        $jn = 0;
+        foreach ($cquestions as $cqn) {
+            $javascriptpre .= "QFieldnames[$jn]='$cqn[3]';\n"
+                ."Qcqids[$jn]='$cqn[1]';\n"
+                ."Qtypes[$jn]='$cqn[2]';\n";
+            $jn++;
+        }
+
+        //  record a JS variable to let jQuery know if survey is Anonymous
+        if ($surveyIsAnonymized) {
+            $javascriptpre .= "isAnonymousSurvey = true;";
+        }
+        else {
+            $javascriptpre .= "isAnonymousSurvey = false;";
+        }
+
+        $javascriptpre .= "//-->\n"
+            .CHtml::closeTag('script');
+
+        return $javascriptpre;
     }
 }
