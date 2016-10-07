@@ -163,11 +163,6 @@ class conditionsaction extends Survey_Common_Action {
         }
         //END Sanitizing POSTed data
 
-        //include_once("login_check.php");
-        include_once("database.php");
-        // Caution (lemeur): database.php uses autoUnescape on all entries in $_POST
-        // Take care to not use autoUnescape on $_POST variables after this
-
         $br = CHtml::openTag('br /');
 
         // Make sure that there is a sid
