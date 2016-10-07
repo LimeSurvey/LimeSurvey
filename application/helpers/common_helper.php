@@ -838,15 +838,15 @@ function alternation($alternate = '' , $type = 'col')
     // It has been left in case it becomes useful but probably should be
     // removed.
     */
-    if($type == 'row')
+    if($type == 'row')// Row is sub question OR Y Axis subquestion : it must be column for array by column
     {
-        $odd  = 'array2 well'; // should be row_odd
-        $even = 'array1 well'; // should be row_even
+        $odd  = 'ls-odd'; // should be row_odd
+        $even = 'ls-even'; // should be row_even
     }
-    else
+    else // cols is answers part OR X axis subquestion : it must the row in array by column
     {
-        $odd  = 'odd';  // should be col_odd
-        $even = 'even'; // should be col_even
+        $odd  = 'ls-col-odd';  // should be col_odd
+        $even = 'ls-col-even'; // should be col_even
     };
     if($alternate == $odd)
     {

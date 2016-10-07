@@ -959,7 +959,7 @@ class printablesurvey extends Survey_Common_Action
                 <tbody>";
 
                                 $j=0;
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
                                 $mearesult= Question::model()->getAllRecords( $condition, array('question_order'));
                                 foreach ($mearesult->readAll() as $mearow)
                                 {
@@ -1009,7 +1009,7 @@ class printablesurvey extends Survey_Common_Action
                                 }
                                 $question['ANSWER'] .= "\t</thead>\n\n\t<tbody>\n";
                                 $j=0;
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
                                 $mearesult=Question::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' AND language='{$sLanguageCode}' ", array('question_order'));
                                 foreach ($mearesult->readAll() as $mearow)
                                 {
@@ -1047,7 +1047,7 @@ class printablesurvey extends Survey_Common_Action
             ';
                                 $j=0;
 
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
 
                                 $mearesult=Question::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' ", array('question_order'));
                                 foreach ($mearesult->readAll() as $mearow)
@@ -1082,7 +1082,7 @@ class printablesurvey extends Survey_Common_Action
                 <tbody>
             ';
                                 $j=0;
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
 
                                 $mearesult=Question::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' ", array('question_order'));
                                 foreach ($mearesult->readAll() as $mearow)
@@ -1155,7 +1155,7 @@ class printablesurvey extends Survey_Common_Action
                                 }
                                 $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
                                 $a=1; //Counter for pdfoutput
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
 
                                 $mearesult=Question::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' and scale_id=0 AND language='{$sLanguageCode}' ", array('question_order'));
                                 $result = $mearesult->readAll();
@@ -1220,7 +1220,7 @@ class printablesurvey extends Survey_Common_Action
                                 }
                                 $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n<tbody>\n";
                                 $a=1;
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
 
                                 foreach ($mearesult as $mearow)
                                 {
@@ -1289,7 +1289,7 @@ class printablesurvey extends Survey_Common_Action
                                 $i++;
                                 $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
                                 $counter = 1;
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
 
                                 $mearesult=Question::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' ", array('question_order'));
                                 foreach ($mearesult->readAll() as $mearow)
@@ -1410,7 +1410,7 @@ class printablesurvey extends Survey_Common_Action
                                 $question['ANSWER'] .= $printablesurveyoutput2;
                                 $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
 
                                 //counter for each subquestion
                                 $sqcounter = 0;
@@ -1467,7 +1467,7 @@ class printablesurvey extends Survey_Common_Action
                                 }
                                 $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
                                 $a=1;
-                                $rowclass = 'array1';
+                                $rowclass = 'ls-odd';
 
                                 $mearesult=Answer::model()->getAllRecords(" qid='{$deqrow['qid']}' AND scale_id=0 AND language='{$sLanguageCode}' ", array('sortorder','code'));
                                 foreach ($mearesult->readAll() as $mearow)

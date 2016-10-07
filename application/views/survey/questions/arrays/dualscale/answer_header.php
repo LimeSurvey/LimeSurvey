@@ -10,12 +10,12 @@
  */
 
 ?>
-<tr class="array1 header_row <?php echo $class; ?>" aria-hidden="true">
+<tr class="ls-heading header_row <?php echo $class; ?>" aria-hidden="true">
 
     <td class="header_answer_text">&nbsp;</td>
 
     <?php foreach ($labelans0 as $ld): ?>
-        <th class='th-12 text-center'><?php echo $ld; ?></th>
+        <th class=''><?php echo $ld; ?></th>
     <?php endforeach; ?>
 
     <?php if (count($labelans1) > 0): ?>
@@ -23,7 +23,7 @@
         <td class="header_separator">&nbsp;</td>  <!-- Separator : and No answer for accessibility for first colgroup -->
 
         <?php foreach ($labelans1 as $ld): ?>
-            <th  class='th-13 text-center'><?php echo $ld; ?></th>
+            <th  class=''><?php echo $ld; ?></th>
         <?php endforeach; ?>
 
     <?php endif; ?>
@@ -32,7 +32,7 @@
         <td class="header_separator rigth_separator">&nbsp;</td>
     <?php endif; ?>
     <?php if ($shownoanswer): ?>
-        <th class="header_no_answer text-center"><?php eT('No answer'); ?></th>
+        <th class="header_no_answer"><?php eT('No answer'); ?></th>
     <?php endif; ?>
 
 </tr>

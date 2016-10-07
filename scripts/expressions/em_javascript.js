@@ -3172,10 +3172,10 @@ function updateHeadings(tab, rep)
 // updates the colors in a dynamic table
 function updateColors(tab)
 {
-    var trs = tab.find('tr:visible');
-    trs.each(function(i, tr)
+    $(tab).find('tr:not(.ls-heading):visible').each(function(i, tr)
     {
+        console.log($(tr));
         // fix line colors
-        $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
+        $(tr).removeClass('ls-odd ls-even').addClass(((i+1)%2 == 0) ? "ls-odd" : "ls-even");
     });
 }

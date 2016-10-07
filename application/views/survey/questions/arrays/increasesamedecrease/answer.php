@@ -23,7 +23,7 @@
         ?>
     </colgroup>
     <thead class="thead-inc-same-dec" aria-hidden="true">
-        <tr class="array1">
+        <tr class="ls-heading">
             <td>&nbsp;</td>
             <?php
                 // rows/cell/thead.php

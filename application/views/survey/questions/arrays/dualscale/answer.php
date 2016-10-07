@@ -32,7 +32,7 @@
 
     <thead>
         <?php if ($leftheader != '' || $rightheader !=''): ?>
-            <tr class="array1 groups header_row">
+            <tr class="ls-heading groups header_row">
                 <th class="header_answer_text">&nbsp;</th>
                 <th colspan="<?php echo count($labelans0); ?>" class="dsheader text-center"><?php echo $leftheader; ?></th>
 
@@ -90,20 +90,9 @@
             <?php endif; ?>
 
             <!-- tr -->
-            <?php
-            $errorClass= (($ansrow['showmandatoryviolation']) ? " has-error" : "");
-            echo CHtml::tag(
-                "tr",
-                array(
-                    'id'=> "javatbd{$ansrow['myfname']}",
-                    'class'=>"answers-list radio-list array{$ansrow['zebra']} {$errorClass} " ,
-                    'role'=>"group",
-                    'aria-describedby'=>"answertext{$ansrow['myfname']}"
-                ),
-                "",
-                false
-            );
-            ?>
+            <tr id="" role="group" aria-describedby="answertext<?php echo $ansrow['myfname']; ?>"
+                class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['showmandatoryviolation']) ? " has-error" : ""; ?>"
+            >
             <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?>">
                 <?php echo $ansrow['answertext']; ?>
                 <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>"

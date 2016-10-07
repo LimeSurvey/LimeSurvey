@@ -23,7 +23,7 @@
         ?>
     </colgroup>
     <thead aria-hidden="true">
-        <tr class="array1">
+        <tr class="ls-heading">
             <?php
                 // rows/cell/thead.php
                 echo $sHeaders;

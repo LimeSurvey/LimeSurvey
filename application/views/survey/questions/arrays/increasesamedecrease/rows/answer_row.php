@@ -20,7 +20,7 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="row-inc-same-dec answers-list radio-list array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
+<tr id="javatbd<?php echo $myfname;?>" class="row-inc-same-dec answers-list radio-list <?php echo ($odd) ? "ls-odd" : "ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
     <th class="answertext control-label" id="answertext<?php echo $myfname;?>">
         <?php echo $answertext;?>

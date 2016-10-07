@@ -232,9 +232,10 @@ html, body {
 /**
  * table color
  */
-.question .bg-info{
+.ls-even{
 background-color:#f9f9f9;
 }
+table.question,
 .question > thead > tr > th, .question > tbody > tr > th, .question > tfoot > tr > th, .question > thead > tr > td, .question > tbody > tr > td, .question > tfoot > tr > td {
     border-color:transparent;
 }

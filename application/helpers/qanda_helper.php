@@ -4271,7 +4271,7 @@ function do_array_10point($ia)
                     'value'         => $value,
                     'error'         => $error,
                     'sDisplayStyle' => $sDisplayStyle,
-                    'zebra'         => 2 - ($j % 2),
+                    'odd'           => ($j % 2),
                     'answer_tds'    => $answer_tds,
                 ), true);
 
@@ -4384,7 +4384,7 @@ function do_array_yesnouncertain($ia)
                         'checkconditionFunction' => $checkconditionFunction,
                         'error'                  => $error,
                         'no_answer'              => $no_answer,
-                        'zebra'                  => 2 - ($i % 2)
+                        'odd'                    => ($i % 2)
                     ), true);
             $inputnames[]=$myfname;
             $fn++;
@@ -4492,7 +4492,7 @@ function do_array_increasesamedecrease($ia)
                     'checkconditionFunction'=>$checkconditionFunction,
                     'error'=>$error,
                     'no_answer'=>$no_answer,
-                    'zebra' => 2 - ($i % 2)
+                    'odd' => ($i % 2)
                 ), true);
 
         $inputnames[]=$myfname;
@@ -4724,7 +4724,7 @@ function do_array($ia)
                         'right_exists' => $right_exists,
                         'value'      => $value,
                         'error'      => $error,
-                        'zebra'      => 2 - ($i % 2)
+                        'odd'        => ($i % 2), // true for odd, false for even
                     ),  true);
             $inputnames[]=$myfname;
         }
@@ -4866,7 +4866,7 @@ function do_array($ia)
                 'right_exists'           => $right_exists,
                 'answertextright'        => $answertextright,
                 'options'                => $options,
-                'zebra'                  => 2 - ($j % 2)
+                'odd'                    => ($j % 2), // true for odd, false for even
             ),  true);
 
             $inputnames[]=$myfname;
@@ -5200,7 +5200,7 @@ function do_array_texts($ia)
                                 'rightTdEmpty'      =>  $rightTdEmpty,
                                 'answerwidth'       =>  $answerwidth,
                                 'formatedRowTotal'  =>  $formatedRowTotal,
-                                'zebra'                  => 2 - ($j % 2),
+                                'odd'               => ($j % 2),
                             ),  true);
 
             $fn++;
@@ -5639,7 +5639,7 @@ function do_array_multiflexi($ia)
                                 'answertextright'   => $answertextright,
                                 'answer_tds'        => $answer_tds,
                                 'rightTd'           => $rightTd,
-                                'zebra'             => 2 - ($j % 2),
+                                'odd'               => ($j % 2),
                             ),  true);
             $fn++;
         }
@@ -6025,7 +6025,7 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['myfid1'] = $myfid1;
 
                 $aData['aSubQuestions'][$i]['answertext'] = $ansrow['question'];
-                $aData['aSubQuestions'][$i]['zebra'] =  2 - ($i % 2);
+                $aData['aSubQuestions'][$i]['odd'] =  ($i % 2);
                 /* Check the Sub Q mandatory violation */
                 if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
                 {
@@ -6213,8 +6213,7 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['myfid1'] = $myfid1;
                 $aData['aSubQuestions'][$i]['sActualAnswer0'] = $sActualAnswer0;
                 $aData['aSubQuestions'][$i]['sActualAnswer1'] = $sActualAnswer1;
-                $aData['aSubQuestions'][$i]['zebra'] =  2 - ($i % 2);
-
+                $aData['aSubQuestions'][$i]['odd'] =  ($i % 2);
                 // Set mandatory alert
                 $aData['aSubQuestions'][$i]['alert'] = ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));
                 $aData['aSubQuestions'][$i]['mandatoryviolation'] = ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));

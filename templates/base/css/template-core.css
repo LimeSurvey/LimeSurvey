@@ -2,16 +2,21 @@
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
 /* Boostrap don't do some reset : do it in answer part*/
-.answers-wrapper img,.answers-wrapper video,.answers-wrapper svg{
+.ls-answers img,.ls-answers video,.ls-answers svg{
   max-width: 100%;height: auto;
 }
 /**
  * Table alignment
  */
-.table.question,.table.question th,.table.question td
-{text-align:center;vertical-align:middle}
-.table.question thead th
-{vertical-align:bottom}
+.ls-answers tbody,.ls-answers thead
+{vertical-align:middle}
+.ls-answers td
+{text-align:center;}
+.ls-answers thead th
+{text-align:center;vertical-align:bottom}
 
-table.question .answertext{text-align:right}
-table.question .answertextright{text-align:left}
+.ls-answers tbody .answertext{text-align:right}
+.ls-answers .answertextright{text-align:left}
+
+.ls-even{background-color: #f9f9f9;}
+.ls-odd{}

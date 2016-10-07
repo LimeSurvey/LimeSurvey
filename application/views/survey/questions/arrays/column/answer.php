@@ -7,12 +7,12 @@
  * @var $cellwidth
  */
  ?>
-<table class="table question subquestion-list questions-list array-by-columns">
+<table class="table table-bordered table-hover ls-answers subquestion-list questions-list array-by-columns">
     <colgroup>
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <?php foreach ($aQuestions as $i=>$question): ?>
             <col
-                class="answers-list radio-list <?php echo ($i % 2 == 0)?' array2':' array1';?> <?php if($question['errormandatory']): echo " has-error"; endif; ?>"
+                class="answers-list radio-list <?php echo ($i % 2)?'ls-odd':'ls-even';?> <?php if($question['errormandatory']): echo " has-error"; endif; ?>"
                 style='width: <?php echo $cellwidth; ?>%;'
                 role="radiogroup"
                 aria-labelledby="answertext<?php echo $question['myfname'];?>"

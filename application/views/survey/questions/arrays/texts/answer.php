@@ -48,7 +48,7 @@
     </colgroup>
 
     <thead>
-        <tr class="array1" aria-hidden="true">
+        <tr class="ls-heading" aria-hidden="true">
             <td>
                 &nbsp;
             </td>

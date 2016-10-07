@@ -43,13 +43,14 @@
                 "tr",
                 array(
                     'id'=> "javatbd{$ansrow['myfname']}",
-                    'class'=>"answers-list radio-list array{$ansrow['zebra']}".(($ansrow['mandatoryviolation']) ? " has-error" : "") ,
+
                     'role'=>"group",
                 ),
                 "",
                 false
             );
         ?>
+        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>"
             <!-- Answer text (actual question) -->
 
             <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?>">

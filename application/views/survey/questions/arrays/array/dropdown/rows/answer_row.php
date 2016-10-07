@@ -10,7 +10,7 @@
  * @var $tdRight
  */
 ?>
-<tr id="javatbd<?php echo $myfname;?>" class="question-item answer-item dropdown-item array<?php echo $zebra; ?><?php if($error){ echo " has-error";} ?>" >
+<tr id="javatbd<?php echo $myfname;?>" class="question-item answer-item dropdown-item <?php echo ($odd) ? " ls-odd" : " ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>" >
     <th class="answertext">
         <label for="answer<?php echo $myfname;?>">
             <?php echo $answertext; ?>
