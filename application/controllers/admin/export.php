@@ -413,12 +413,22 @@ class export extends Survey_Common_Action {
             $data['surveyid'] = $iSurveyID;
             $data['display']['menu_bars']['browse'] = gT('Export results');
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $surveyinfo = $oSurvey->surveyinfo;
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data["surveyinfo"] = $surveyinfo;
             $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+            $data['sBaseLanguage'] = $oSurvey->language;
+
+            $aLanguages=array();
+            $aLanguagesCodes=$oSurvey->getAllLanguages();
+            foreach ($aLanguagesCodes as $sLanguage){
+                $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
+            }
+            $data['aLanguages'] = $aLanguages;    // Pass available exports
 
             $data['sidemenu']['state'] = false;
+
             $data['menu']['edition'] = true;
             $data['menu']['close'] =  true;
 
@@ -427,8 +437,13 @@ class export extends Survey_Common_Action {
         }
 
         // Get Base language:
-        $language = Survey::model()->findByPk($iSurveyID)->language;
-        App()->setLanguage($language);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $sLanguage = Yii::app()->request->getParam('exportlang');
+        $aLanguagesCodes=$oSurvey->getAllLanguages();
+        if (!in_array($sLanguage,$aLanguagesCodes)){
+            $sLanguage = $oSurvey->language;
+        }
+        App()->setLanguage($sLanguage);
 
         Yii::app()->loadHelper("admin/exportresults");
         viewHelper::disableHtmlLogging();
@@ -446,7 +461,7 @@ class export extends Survey_Common_Action {
             }
 
             $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '' )?'\''.$_POST['noanswervalue'].'\'':'';
-            SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue);
+            SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue, $sLanguage);
 
             exit;
         }
@@ -459,7 +474,7 @@ class export extends Survey_Common_Action {
             header("Pragma: public");
 
             // Build array that has to be returned
-            $fields = SPSSFieldMap($iSurveyID);
+            $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
             //Now get the query string with all fields to export
             $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
