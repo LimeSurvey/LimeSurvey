@@ -48,6 +48,11 @@ class conditionsaction extends Survey_Common_Action {
     private $tokenTableExists;
 
     /**
+     * @var array
+     */
+    private $tokenFieldsAndNames;
+
+    /**
      * Init some stuff
      */
     public function __construct($controller = null, $id = null)
@@ -91,6 +96,7 @@ class conditionsaction extends Survey_Common_Action {
         $iSurveyID = sanitize_int($iSurveyID);
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
+        $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
         $imageurl = Yii::app()->getConfig("adminimageurl");
@@ -418,6 +424,7 @@ class conditionsaction extends Survey_Common_Action {
                                 $markcidstyle="editedrow";
                             }
 
+                            // This variable is used for condition.php view; $aData is used for other view
                             $data = array();
 
                             if (isset($currentfield) && $currentfield != $rows['cfieldname'] )
@@ -448,144 +455,102 @@ class conditionsaction extends Survey_Common_Action {
                             $data['row'] = $rows;
                             $data['subaction'] = $subaction;
                             $data['scenarionr'] = $scenarionr;
-
-                            $aViewUrls['output'] .= $this->getController()->renderPartial(
-                                '/admin/conditions/includes/condition',
-                                $data,
-                                true
-                            );
+                            $data['method'] = $method;
 
                             $leftOperandType = 'unknown'; // prevquestion, tokenattr
-                            if (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
-                            {
+                            if (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0) {
                                 $leftOperandType = 'tokenattr';
-                                $aTokenAttrNames=getTokenFieldsAndNames($iSurveyID);
-                                if(isset($aTokenAttrNames[strtolower($extractedTokenAttr[1])]))
-                                {
-                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description']);
-                                }
-                                else
-                                {
-                                    $thisAttrName=HTMLEscape($extractedTokenAttr[1]);
-                                }
-                                if($this->tokenTableExists)
-                                {
-                                    $thisAttrName.= " [".gT("From token table")."]";
-                                }
-                                else
-                                {
-                                    $thisAttrName.= " [".gT("Inexistant token table")."]";
-                                }
-                                $aViewUrls['output'] .= "\t$thisAttrName\n";
+
+                                $thisAttrName = $this->getAttributeName($extractedTokenAttr);
+
+                                $data['name'] = $thisAttrName;
+
                                 // TIBO not sure this is used anymore !!
-                                $conditionsList[]=array("cid"=>$rows['cid'],
-                                "text"=>$thisAttrName);
+                                $conditionsList[] = array(
+                                    "cid"  => $rows['cid'],
+                                    "text" => $thisAttrName
+                                );
                             }
-                            else
-                            {
+                            else {
                                 $leftOperandType = 'prevquestion';
-                                foreach ($cquestions as $cqn)
-                                {
-                                    if ($cqn[3] == $rows['cfieldname'])
-                                    {
-                                        $aViewUrls['output'] .= "\t$cqn[0] (qid{$rows['cqid']})\n";
-                                        $conditionsList[]=array("cid"=>$rows['cid'],
-                                        "text"=>$cqn[0]." ({$rows['value']})");
+                                foreach ($cquestions as $cqn) {
+                                    if ($cqn[3] == $rows['cfieldname']) {
+                                        $data['name'] = $cqn[0] . "(qid{$rows['cqid']})";
+                                        $conditionsList[] = array(
+                                            "cid"  => $rows['cid'],
+                                            "text" => $cqn[0]." ({$rows['value']})"
+                                        );
                                     }
-                                    else
-                                    {
+                                    else {
                                         //$aViewUrls['output'] .= "\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
                                     }
                                 }
                             }
 
-                            $aViewUrls['output'] .= "\t</span></td>\n"
-                            ."\t<td class='col-md-2 operatornametd'>\n"
-                            ."<span>\n" //    .gT("Equals")."</font></td>"
-                            .$method[trim ($rows['method'])]
-                            ."</span>\n"
-                            ."\t</td>\n"
-                            ."\n"
-                            ."\t<td class='col-md-3 questionanswertd'>\n"
-                            ."<span>\n";
-
                             // let's read the condition's right operand
                             // determine its type and display it
                             $rightOperandType = 'unknown'; // predefinedAnsw,constantVal, prevQsgqa, tokenAttr, regexp
-                            if ($rows['method'] == 'RX')
-                            {
+                            if ($rows['method'] == 'RX') {
                                 $rightOperandType = 'regexp';
-                                $aViewUrls['output'] .= "".HTMLEscape($rows['value'])."\n";
+                                $data['target'] = HTMLEscape($rows['value']);
                             }
-                            elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0)
-                            { // SGQA
+                            elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0) { // SGQA
                                 $rightOperandType = 'prevQsgqa';
-                                $textfound=false;
-                                foreach ($cquestions as $cqn)
-                                {
-                                    if ($cqn[3] == $matchedSGQA[1])
-                                    {
-                                        $matchedSGQAText=$cqn[0];
-                                        $textfound=true;
+                                $textfound = false;
+                                foreach ($cquestions as $cqn) {
+                                    if ($cqn[3] == $matchedSGQA[1]) {
+                                        $matchedSGQAText = $cqn[0];
+                                        $textfound = true;
                                         break;
                                     }
                                 }
-                                if ($textfound === false)
-                                {
-                                    $matchedSGQAText=$rows['value'].' ('.gT("Not found").')';
+                                if ($textfound === false) {
+                                    $matchedSGQAText = $rows['value'].' ('.gT("Not found").')';
                                 }
 
-                                $aViewUrls['output'] .= "".HTMLEscape($matchedSGQAText)."\n";
+                                $data['target'] = HTMLEscape($matchedSGQAText);
                             }
-                            elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
-                            {
+                            elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0) {
                                 $rightOperandType = 'tokenAttr';
-                                $aTokenAttrNames=getTokenFieldsAndNames($iSurveyID);
-                                if (count($aTokenAttrNames) != 0)
-                                {
-                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From token table")."]";
+                                $aTokenAttrNames = $this->tokenFieldsAndNames;
+                                if (count($aTokenAttrNames) != 0) {
+                                    $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From token table")."]";
                                 }
-                                else
-                                {
-                                    $thisAttrName=HTMLEscape($extractedTokenAttr[1])." [".gT("Inexistant token table")."]";
+                                else {
+                                    $thisAttrName = HTMLEscape($extractedTokenAttr[1])." [".gT("Inexistant token table")."]";
                                 }
-                                $aViewUrls['output'] .= "\t$thisAttrName\n";
+                                $data['target'] = $thisAttrName;
                             }
-                            elseif (isset($canswers))
-                            {
-                                foreach ($canswers as $can)
-                                {
-                                    if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
-                                    {
-                                        $aViewUrls['output'] .= "$can[2] ($can[1])\n";
+                            elseif (isset($canswers)) {
+                                foreach ($canswers as $can) {
+                                    if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value']) {
+                                        $data['target'] = "$can[2] ($can[1])\n";
                                         $rightOperandType = 'predefinedAnsw';
-
                                     }
                                 }
                             }
+
                             // if $rightOperandType is still unknown then it is a simple constant
-                            if ($rightOperandType == 'unknown')
-                            {
+                            if ($rightOperandType == 'unknown') {
                                 $rightOperandType = 'constantVal';
-                                if ($rows['value'] == ' ' ||
-                                $rows['value'] == '')
-                                {
-                                    $aViewUrls['output'] .= "".gT("No answer")."\n";
+                                if ($rows['value'] == ' ' || $rows['value'] == '') {
+                                    $data['target'] = gT("No answer");
                                 }
-                                else
-                                {
-                                    $aViewUrls['output'] .= "".HTMLEscape($rows['value'])."\n";
+                                else {
+                                    $data['target'] = HTMLEscape($rows['value']);
                                 }
                             }
 
-                            $aViewUrls['output'] .= "\t</span></td>\n"
-                            ."\t<td class='text-right'>\n";
-
-                            if ( $subaction == "editconditionsform" ||$subaction == "insertcondition" ||
-                            $subaction == "updatecondition" || $subaction == "editthiscondition" ||
-                            $subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
-                            $subaction == "updatescenario" ||
-                            $subaction == "deletescenario" || $subaction == "delete" )
+                            if (   $subaction == "editconditionsform"
+                                || $subaction == "insertcondition"
+                                || $subaction == "updatecondition"
+                                || $subaction == "editthiscondition"
+                                || $subaction == "renumberscenarios"
+                                || $subaction == "deleteallconditions"
+                                || $subaction == "updatescenario"
+                                || $subaction == "deletescenario"
+                                || $subaction == "delete"
+                            )
                             { // show single condition action buttons in edit mode
 
                                 $aData['rows'] = $rows;
@@ -593,65 +558,15 @@ class conditionsaction extends Survey_Common_Action {
 
                                 //$aViewUrls['includes/conditions_edit'][] = $aData;
 
-                                $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit',$aData, TRUE);
-
-                                // now sets e corresponding hidden input field
-                                // depending on the leftOperandType
-                                if ($leftOperandType == 'tokenattr')
-                                {
-                                    $aViewUrls['output'] .= CHtml::hiddenField('csrctoken', HTMLEscape($rows['cfieldname']), array(
-                                    'id' => 'csrctoken'.$rows['cid']
-                                    ));
-                                }
-                                else
-                                {
-                                    $aViewUrls['output'] .= CHtml::hiddenField('cquestions', HTMLEscape($rows['cfieldname']),
-                                    array(
-                                    'id' => 'cquestions'.$rows['cid']
-                                    )
-                                    );
-                                }
-
-                                // now set the corresponding hidden input field
-                                // depending on the rightOperandType
-                                // This is used when editing a condition
-                                if ($rightOperandType == 'predefinedAnsw')
-                                {
-                                    $aViewUrls['output'] .= CHtml::hiddenField('EDITcanswers[]', HTMLEscape($rows['value']), array(
-                                    'id' => 'editModeTargetVal'.$rows['cid']
-                                    ));
-                                }
-                                elseif ($rightOperandType == 'prevQsgqa')
-                                {
-                                    $aViewUrls['output'] .= CHtml::hiddenField('EDITprevQuestionSGQA', HTMLEscape($rows['value']),
-                                    array(
-                                    'id' => 'editModeTargetVal'.$rows['cid']
-                                    ));
-                                }
-                                elseif ($rightOperandType == 'tokenAttr')
-                                {
-                                    $aViewUrls['output'] .= CHtml::hiddenField('EDITtokenAttr', HTMLEscape($rows['value']), array(
-                                    'id' => 'editModeTargetVal'.$rows['cid']
-                                    ));
-                                }
-                                elseif ($rightOperandType == 'regexp')
-                                {
-                                    $aViewUrls['output'] .= CHtml::hiddenField('EDITConditionRegexp', HTMLEscape($rows['value']),
-                                    array(
-                                    'id' => 'editModeTargetVal'.$rows['cid']
-                                    ));
-                                }
-                                else
-                                {
-                                    $aViewUrls['output'] .= CHtml::hiddenField('EDITConditionConst', HTMLEscape($rows['value']),
-                                    array(
-                                    'id' => 'editModeTargetVal'.$rows['cid']
-                                    ));
-                                }
+                                $data['editButtons'] = $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit',$aData, TRUE);
+                                $data['hiddenFields'] = $this->getHiddenFields($rows, $leftOperandType, $rightOperandType);
                             }
 
-                            $aViewUrls['output']     .=     CHtml::closeTag('td')     . CHtml::closeTag('tr') .
-                            CHtml::closeTag('table'). CHtml::closeTag('form');
+                            $aViewUrls['output'] .= $this->getController()->renderPartial(
+                                '/admin/conditions/includes/condition',
+                                $data,
+                                true
+                            );
 
                             $currentfield = $rows['cfieldname'];
                         }
@@ -1756,7 +1671,7 @@ class conditionsaction extends Survey_Common_Action {
             'cquestions'    => $cquestions,
             'p_csrctoken'   => $p_csrctoken,
             'p_prevquestionsgqa'  => $p_prevquestionsgqa,
-            'tokenFieldsAndNames' => getTokenFieldsAndNames($iSurveyID),
+            'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
             'method'        => $method,
             'subaction'     => $subaction,
             'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
@@ -2056,5 +1971,95 @@ class conditionsaction extends Survey_Common_Action {
             .CHtml::closeTag('script');
 
         return $javascriptpre;
+    }
+
+    /**
+     * @param array $extractedTokenAttr
+     * @return string
+     */
+    protected function getAttributeName($extractedTokenAttr)
+    {
+        if(isset($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])])) {
+            $thisAttrName = HTMLEscape($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])]['description']);
+        }
+        else {
+            $thisAttrName = HTMLEscape($extractedTokenAttr[1]);
+        }
+
+        if($this->tokenTableExists) {
+            $thisAttrName .= " [".gT("From token table")."]";
+        }
+        else {
+            $thisAttrName .= " [".gT("Inexistant token table")."]";
+        }
+
+        return $thisAttrName;
+    }
+
+    /**
+     * @param array $rows
+     * @param string $leftOperandType
+     * @param string $rightOperandType
+     * @return string html
+     */
+    protected function getHiddenFields(array $rows, $leftOperandType, $rightOperandType)
+    {
+        $html = '';
+
+        // now sets e corresponding hidden input field
+        // depending on the leftOperandType
+        if ($leftOperandType == 'tokenattr')
+        {
+            $html .= CHtml::hiddenField('csrctoken', HTMLEscape($rows['cfieldname']), array(
+                'id' => 'csrctoken'.$rows['cid']
+            ));
+        }
+        else
+        {
+            $html .= CHtml::hiddenField('cquestions', HTMLEscape($rows['cfieldname']),
+                array(
+                    'id' => 'cquestions'.$rows['cid']
+                )
+            );
+        }
+
+        // now set the corresponding hidden input field
+        // depending on the rightOperandType
+        // This is used when editing a condition
+        if ($rightOperandType == 'predefinedAnsw')
+        {
+            $html .= CHtml::hiddenField('EDITcanswers[]', HTMLEscape($rows['value']), array(
+                'id' => 'editModeTargetVal'.$rows['cid']
+            ));
+        }
+        elseif ($rightOperandType == 'prevQsgqa')
+        {
+            $html .= CHtml::hiddenField('EDITprevQuestionSGQA', HTMLEscape($rows['value']),
+                array(
+                    'id' => 'editModeTargetVal'.$rows['cid']
+                ));
+        }
+        elseif ($rightOperandType == 'tokenAttr')
+        {
+            $html .= CHtml::hiddenField('EDITtokenAttr', HTMLEscape($rows['value']), array(
+                'id' => 'editModeTargetVal'.$rows['cid']
+            ));
+        }
+        elseif ($rightOperandType == 'regexp')
+        {
+            $html .= CHtml::hiddenField('EDITConditionRegexp', HTMLEscape($rows['value']),
+                array(
+                    'id' => 'editModeTargetVal'.$rows['cid']
+                ));
+        }
+        else
+        {
+            $html .= CHtml::hiddenField('EDITConditionConst', HTMLEscape($rows['value']),
+                array(
+                    'id' => 'editModeTargetVal' . $rows['cid']
+                ));
+        }
+
+        return $html;
     }
 }
