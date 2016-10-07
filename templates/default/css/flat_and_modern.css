@@ -1479,7 +1479,7 @@ li {
 .list-inline {
   padding-left: 0;
   list-style: none;
-  margin-left: -5px;
+  //margin-left: -5px;
 }
 .list-inline > li {
   display: inline-block;
