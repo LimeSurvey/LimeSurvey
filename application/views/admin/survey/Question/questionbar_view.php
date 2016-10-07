@@ -239,14 +239,9 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
 
-
+                <!-- Condition designer navigator -->
                 <?php if(isset($questionbar['buttons']['conditions'])):?>
-
-                    <div class="form-group">
-                        <label for='questionNav'><?php eT("Move to question:");?></label>
-                        <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_top')"><?php echo $questionNavOptions;?></select>
-                    </div>
-
+                    <?php echo $questionNavOptions; ?> <!-- HTML is in views/admin/conditions/includes/navigator.php -->
                 <?php endif;?>
 
                 <!-- Close -->
