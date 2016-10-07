@@ -44,7 +44,12 @@ function CheckForDBUpgrades($subaction = null)
             }
             else
             {
-                $data = "<p><a href='".Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db")."'>".gT("Please fix this error in your database and try again")."</a></p></div>";
+                $msg = '';
+                foreach(yii::app()->user->getflashes() as $key => $message)
+                {
+                    $msg .=  '<div class="alert alert-danger flash-' . $key . '">' . $message . "</div>\n";
+                }
+                $data = $msg . "<p><a href='".Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db")."'>".gT("Please fix this error in your database and try again")."</a></p></div> ";
             }
             return $data;
         }
