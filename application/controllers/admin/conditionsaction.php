@@ -314,15 +314,9 @@ class conditionsaction extends Survey_Common_Action {
             $conditionscount = 0;
             $conditionsList=array();
             $s=0;
-            $criteria=new CDbCriteria;
-            $criteria->select='scenario';  // only select the 'scenario' column
-            $criteria->condition='qid=:qid';
-            $criteria->params=array(':qid'=>$qid);
-            $criteria->order='scenario';
-            $criteria->group='scenario';
 
-            $scenarioresult = Condition::model()->findAll($criteria);
-            $scenariocount=count($scenarioresult);
+            $scenarios = $this->getAllScenarios($qid);
+            $scenariocount = count($scenarios);
 
             $aData['conditionsoutput'] = '';
             $aData['extraGetParams'] = $extraGetParams;
@@ -338,54 +332,43 @@ class conditionsaction extends Survey_Common_Action {
             if ($scenariocount > 0)
             {
                 $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
-                foreach ($scenarioresult as $scenarionr)
-                {
-                    $scenariotext = "";
-                    if ($s == 0 && $scenariocount > 1)
-                    {
-                        $scenariotext = " -------- <i>Scenario {$scenarionr['scenario']}</i> --------";
+                foreach ($scenarios as $scenarionr) {
+
+                    if ($s == 0 && $scenariocount > 1) {
+                        $aData['showScenarioText'] = 'normal';
                     }
-                    if ($s > 0)
-                    {
-                        $scenariotext = " -------- <i>".gT("OR")." Scenario {$scenarionr['scenario']}</i> --------";
+                    else if ($s > 0) {
+                        $aData['showScenarioText'] = 'withOr';
                     }
-                    if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
-                    {
-                        $initialCheckbox = "<td><input type='checkbox' id='scenarioCbx{$scenarionr['scenario']}' checked='checked'/>\n"
-                        ."<script type='text/javascript'>$(document).ready(function () { $('#scenarioCbx{$scenarionr['scenario']}').checkgroup({ groupName:'aConditionFromScenario{$scenarionr['scenario']}'}); });</script>"
-                        ."</td><td>&nbsp;</td>\n";
-                    }
-                    else
-                    {
-                        $initialCheckbox = "";
+                    else {
+                        $aData['showScenarioText'] = null;
                     }
 
-                    if (    $scenariotext != "" && ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
-                    $subaction == "updatecondition" || $subaction == "editthiscondition" ||
-                    $subaction == "renumberscenarios" || $subaction == "updatescenario" ||
-                    $subaction == "deletescenario" || $subaction == "delete")
-                    )
-                    {
-                        $img_tag = '<span class="glyphicon glyphicon-trash"></span>';
-                        $additional_main_content = CHtml::link($img_tag, '#', array(
-                            'onclick'     =>     "if ( confirm('".gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}"
-                        ));
-
-                        $img_tag = '<span class="glyphicon glyphicon-pencil"></span>';
-                        $additional_main_content .= CHtml::link($img_tag, '#', array(
-                        'id'         =>     'editscenariobtn'.$scenarionr['scenario'],
-                        'onclick'     =>     "$('#editscenario{$scenarionr['scenario']}').toggle('slow');"
-                        ));
-
-                        $aData['additional_content'] = $additional_main_content;
+                    if ($aData['showScenarioText'] != null &&
+                        (  $subaction == "editconditionsform"
+                        || $subaction == "insertcondition"
+                        || $subaction == "updatecondition"
+                        || $subaction == "editthiscondition"
+                        || $subaction == "renumberscenarios"
+                        || $subaction == "updatescenario"
+                        || $subaction == "deletescenario"
+                        || $subaction == "delete")
+                    ) {
+                        $aData['showScenarioButtons'] = true;
+                    }
+                    else {
+                        $aData['showScenarioButtons'] = false;
                     }
 
-                    $aData['initialCheckbox'] = $initialCheckbox;
-                    $aData['scenariotext'] = $scenariotext;
                     $aData['scenarionr'] = $scenarionr;
-                    if (!isset($aViewUrls['output'])) $aViewUrls['output']='';
-                    $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/conditions_scenario',
-                    $aData, TRUE);
+                    if (!isset($aViewUrls['output'])) {
+                        $aViewUrls['output'] = '';
+                    }
+                    $aViewUrls['output'] .= $this->getController()->renderPartial(
+                        '/admin/conditions/includes/conditions_scenario',
+                        $aData,
+                        true
+                    );
 
                     unset($currentfield);
 
@@ -513,7 +496,7 @@ class conditionsaction extends Survey_Common_Action {
                             elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0) {
                                 $rightOperandType = 'tokenAttr';
                                 $aTokenAttrNames = $this->tokenFieldsAndNames;
-                                if (count($aTokenAttrNames) != 0) {
+                                if ($this->tokenTableExists) {
                                     $thisAttrName = HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From token table")."]";
                                 }
                                 else {
@@ -560,6 +543,10 @@ class conditionsaction extends Survey_Common_Action {
 
                                 $data['editButtons'] = $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit',$aData, TRUE);
                                 $data['hiddenFields'] = $this->getHiddenFields($rows, $leftOperandType, $rightOperandType);
+                            }
+                            else {
+                                $data['editButtons'] = '';
+                                $data['hiddenFields'] = '';
                             }
 
                             $aViewUrls['output'] .= $this->getController()->renderPartial(
@@ -2061,5 +2048,21 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         return $html;
+    }
+
+    /**
+     * @param int $qid
+     * @return Condition[]
+     */
+    protected function getAllScenarios($qid)
+    {
+        $criteria=new CDbCriteria;
+        $criteria->select='scenario';  // only select the 'scenario' column
+        $criteria->condition='qid=:qid';
+        $criteria->params=array(':qid'=>$qid);
+        $criteria->order='scenario';
+        $criteria->group='scenario';
+
+        return Condition::model()->findAll($criteria);
     }
 }
