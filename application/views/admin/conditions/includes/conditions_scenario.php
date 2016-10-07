@@ -1,6 +1,5 @@
-<tr>
     <?php echo $initialCheckbox; ?>
-    <td><?php echo $scenariotext; ?>&nbsp;
+    <?php echo $scenariotext; ?>&nbsp;
         <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'display: none','id'=>'editscenario'.$scenarionr['scenario']));?>
             <label><?php eT("New scenario number:"); ?>&nbsp;
                 <input type='text' name='newscenarionum' size='3'/></label>
@@ -12,8 +11,6 @@
             <input type='submit' class="btn btn-default" name='scenarioupdated' value='<?php eT("Update scenario"); ?>' />
             <input type='button' class="btn btn-default" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
         </form>
-    </td>
-    <td>
         <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>
             <?php if(isset($additional_content)) echo $additional_content; ?>
             <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario'];?>' />
@@ -21,5 +18,3 @@
             <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
             <input type='hidden' name='subaction' value='deletescenario' />
         </form>
-    </td>
-</tr>

@@ -88,7 +88,7 @@
                 <div class='col-sm-2'>
                     <select class='form-control' name='method' id='method'>
                         <?php foreach ($method as $methodCode => $methodTxt): ?>
-                            <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' select="selected" '; endif; ?>>
+                            <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' selected="selected" '; endif; ?>>
                                 <?php echo $methodTxt; ?>
                             </option>
                         <?php endforeach; ?>
@@ -171,7 +171,7 @@
                 <div class='col-sm-5'>
                     <textarea name='ConditionRegexp' class='form-control' id='ConditionRegexp' rows='5' cols='113'><?php echo $EDITConditionRegexp; ?></textarea>
                     <div id='ConditionRegexpLabel'>
-                        <a href=\"http://manual.limesurvey.org/wiki/Using_regular_expressions\" target=\"_blank\">
+                        <a href="http://manual.limesurvey.org/wiki/Using_regular_expressions" target="_blank">
                             <?php eT("Regular expression"); ?>
                         </a>
                     </div>

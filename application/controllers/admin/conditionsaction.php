@@ -420,10 +420,8 @@ class conditionsaction extends Survey_Common_Action {
                                 $aViewUrls['output'] .= gT("or");
                             }
 
-                            $aViewUrls['output'] .= "\t<tr class='{$markcidstyle}'>\n"
-                            ."\t<td colspan='2'>"
-                            .CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"conditionaction{$rows['cid']}",'name'=>"conditionaction{$rows['cid']}"))
-                            ."<table class='table' id='conditionstable'>\n"
+                            $aViewUrls['output'] .= CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"conditionaction{$rows['cid']}",'name'=>"conditionaction{$rows['cid']}"))
+                            ."<table class='table conditionstable'>\n"
                             ."\t<tr class='active'>\n";
 
                             if ( $subaction == "copyconditionsform" || $subaction == "copyconditions" )
@@ -434,7 +432,7 @@ class conditionsaction extends Survey_Common_Action {
                                 . "</td>\n";
                             }
                             $aViewUrls['output'] .= ""
-                            ."<td class='col-md-4' id='questionnamecol'>\n"
+                            ."<td class='col-md-4 questionnamecol'>\n"
                             ."\t<span>\n";
 
                             $leftOperandType = 'unknown'; // prevquestion, tokenattr
@@ -482,13 +480,13 @@ class conditionsaction extends Survey_Common_Action {
                             }
 
                             $aViewUrls['output'] .= "\t</span></td>\n"
-                            ."\t<td class='col-md-2' id='operatornametd'>\n"
+                            ."\t<td class='col-md-2 operatornametd'>\n"
                             ."<span>\n" //    .gT("Equals")."</font></td>"
                             .$method[trim ($rows['method'])]
                             ."</span>\n"
                             ."\t</td>\n"
                             ."\n"
-                            ."\t<td class='col-md-3' id='questionanswertd'>\n"
+                            ."\t<td class='col-md-3 questionanswertd'>\n"
                             ."<span>\n";
 
                             // let's read the condition's right operand
@@ -633,8 +631,7 @@ class conditionsaction extends Survey_Common_Action {
                             }
 
                             $aViewUrls['output']     .=     CHtml::closeTag('td')     . CHtml::closeTag('tr') .
-                            CHtml::closeTag('table'). CHtml::closeTag('form') .
-                            CHtml::closeTag('td')     . CHtml::closeTag('tr');
+                            CHtml::closeTag('table'). CHtml::closeTag('form');
 
                             $currentfield = $rows['cfieldname'];
                         }
@@ -651,7 +648,6 @@ class conditionsaction extends Survey_Common_Action {
                 $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/no_condition',$aData, true);
             }
 
-            $aViewUrls['output'] .= CHtml::closeTag('table');
             //// To close the div opened in condition header....  see : https://goo.gl/BY7gUJ
             $aViewUrls['afteroutput'] = '</div></div></div>';
 
