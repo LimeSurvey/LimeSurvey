@@ -834,28 +834,16 @@ class conditionsaction extends Survey_Common_Action {
     {
         extract($args);
 
-        if ((!isset($p_canswers) &&
-            !isset($_POST['ConditionConst']) &&
-            !isset($_POST['prevQuestionSGQA']) &&
-            !isset($_POST['tokenAttr']) &&
-            !isset($_POST['ConditionRegexp'])) 
-            || (!isset($p_cquestions) && !isset($p_csrctoken))
-            || is_null($p_canswers)
-        ) {
-            Yii::app()->setFlashMessage(
-                gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js"),
-                'error'
-            );
+        if ( isset($p_cquestions) && $p_cquestions != '' ) {
+            $conditionCfieldname = $p_cquestions;
         }
-        else {
-            if ( isset($p_cquestions) && $p_cquestions != '' ) {
-                $conditionCfieldname = $p_cquestions;
-            }
-            elseif(isset($p_csrctoken) && $p_csrctoken != '') {
-                $conditionCfieldname = $p_csrctoken;
-            }
+        elseif(isset($p_csrctoken) && $p_csrctoken != '') {
+            $conditionCfieldname = $p_csrctoken;
+        }
 
-            $results = array();
+        $results = array();
+
+        if ($p_canswers) {
             foreach ($p_canswers as $ca) {
                 // This is an Edit, there will only be ONE VALUE
                 $updated_data = array(
@@ -866,18 +854,23 @@ class conditionsaction extends Survey_Common_Action {
                     'method' => $p_method,
                     'value' => $ca
                 );
-                $result = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
+                $results[] = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
             }
 
             // Check if any result returned false
             if (in_array(false, $results, true)) {
                 Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
             }
-            else {
+            else if ($results) {
                 Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
             }
+            else {
+                Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
+            }
+        }
+        else {
+            $posted_condition_value = null;
 
-            unset($posted_condition_value);
             // Please note that autoUnescape is already applied in database.php included above
             // so we only need to db_quote _POST variables
             if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST") {
@@ -893,7 +886,9 @@ class conditionsaction extends Survey_Common_Action {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
             }
 
-            if (isset($posted_condition_value)) {
+            $result = null;
+
+            if ($posted_condition_value) {
                 $updated_data = array(
                     'qid' => $qid,
                     'scenario' => $p_scenario,
@@ -902,9 +897,18 @@ class conditionsaction extends Survey_Common_Action {
                     'method' => $p_method,
                     'value' => $posted_condition_value
                 );
-                $result = Condition::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
+                $result = Condition::model()->insertRecords($updated_data, true, array('cid'=>$p_cid));
             }
+
+            if ($result) {
+                Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
+            }
+            else {
+                Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
+            }
+
         }
+
         LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
         $this->redirectToConditionStart($qid, $gid);
     }

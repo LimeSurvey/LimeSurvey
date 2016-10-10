@@ -1,4 +1,5 @@
 <?php echo $conditionsoutput;?>
+
 <div class="row">
     <?php if ($subaction== "editconditionsform" || $subaction=='insertcondition' ||
         $subaction == "editthiscondition" || $subaction == "delete" ||
@@ -34,25 +35,8 @@
 
 
             <?php if ($scenariocount > 0): ?>
-                <button
-                    data-toggle='modal'
-                    data-target='#confirmation-modal'
-                    data-message='<?php eT('Are you sure you want to delete all conditions?', 'js'); ?>'
-                    data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
-                    class='btn btn-warning'
-                    onclick='return false';
-                >
-                    <span class="glyphicon glyphicon-trash"></span>&nbsp;
-                    <?php eT('Delete all conditions'); ?>
-                </button>
             <?php endif; ?>
 
-            <?php if ($scenariocount > 1): ?>
-                <a class="btn btn-default" href='#' onclick="if ( confirm('<?php eT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js");?>')) { document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}">
-                    <span class="icon-renumber"></span>
-                    <?php eT("Renumber scenario automatically");?>
-                </a>
-            <?php endif; ?>
 
         </form>
     </div>

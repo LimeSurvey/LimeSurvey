@@ -2132,3 +2132,11 @@ table#responsedetail tr td{
 .scenario-heading .delete-scenario-form {
     padding-top: 6px;
 }
+
+#delete-all-conditions, #renumber-scenario {
+    margin-top: -10px;
+}
+
+#renumber-scenario {
+    margin-right: 10px;
+}
