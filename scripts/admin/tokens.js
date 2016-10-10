@@ -45,7 +45,6 @@ $.fn.YesNo = function(options)
     var that              = $(this);                                            // calling element
     var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
 
-
     $(document).ready(function(){
         var $elSwitch        = that.find('.YesNoSwitch').first();               // switch element (generated with YiiWheels widgets)
         $elSwitch.bootstrapSwitch();                                            // Generate the switch
@@ -175,11 +174,24 @@ $(document).ready(function(){
         });
     }
 
-    $('.scrolling-wrapper').scroll(function(){
-        $('#tokenListPager').css({
-            'left': $(this).scrollLeft() ,
+    var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
+    var useRtl = $('input[name="rtl"]').val() === '1';
+
+    if (useRtl) {
+        $('.scrolling-wrapper').scroll(function(){
+            var scrollAmount = Math.abs($('.scrolling-wrapper').scrollLeft() - initialScrollValue);
+            $('#tokenListPager').css({
+                'right': scrollAmount
+            });
         });
-    });
+    }
+    else {
+        $('.scrolling-wrapper').scroll(function(){
+            $('#tokenListPager').css({
+                'left': $(this).scrollLeft() ,
+            });
+        });
+    }
 
     /**
      * Token delete Token
