@@ -238,7 +238,7 @@ $aReplacementData=array();
 
                 <!-- Close -->
                 <?php if(isset($questionbar['closebutton']['url'])):?>
-                    <a class="btn btn-danger pull-right" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
+                    <a class="btn btn-danger pull-right margin-left" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
                         <span class="glyphicon glyphicon-close"></span>
                         <?php eT("Close");?>
                     </a>

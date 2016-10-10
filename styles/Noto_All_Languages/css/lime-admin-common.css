@@ -2140,3 +2140,8 @@ table#responsedetail tr td{
 #renumber-scenario {
     margin-right: 10px;
 }
+
+/* Needed for buttons that are pulled right in the conditions bar */
+.margin-left {
+    margin-left: 5px;
+}
