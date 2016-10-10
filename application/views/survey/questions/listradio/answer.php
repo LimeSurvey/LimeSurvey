@@ -12,7 +12,7 @@
 <!-- answer -->
 <?php echo $sTimer; ?>
 
-<div class="row">
+<div class="<?php echo $coreClass;?> row">
 <?php
     // rows/answer_row.php
     echo $sRows;

@@ -14,7 +14,7 @@
  */
 ?>
 
-<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal short-free-text row">
+<div class="<?php echo $coreClass; ?> <?php echo $extraclass; ?> form-horizontal short-free-text row">
 
     <div class='col-sm-<?php echo $col; ?>'>
         <!-- Label -->

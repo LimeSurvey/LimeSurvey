@@ -11,7 +11,7 @@
 <!-- Array 5 point choice -->
 
 <!-- answer -->
-<table class="table table-bordered table-hover question table-5-point-array subquestion-list questions-list <?php echo $extraclass; ?>">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-5-point-array">
     <!-- Columns -->
     <colgroup class="col-responses">
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />

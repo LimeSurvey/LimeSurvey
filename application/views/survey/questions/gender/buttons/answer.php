@@ -13,7 +13,7 @@
 
 <!--Gender question, buttons display -->
 <!-- answer -->
-<ul class="list-unstyled form-inline btn-group btn-group-justified answers-list button-list gender-button" data-toggle="buttons">
+<ul class="<?php echo $coreClass;?> list-unstyled form-inline btn-group btn-group-justified" data-toggle="buttons">
     <!-- Female -->
     <li id="javatbd<?php echo $name;?>F" class="button-item btn btn-primary <?php if($fChecked!=''){echo 'active';}?>">
         <input

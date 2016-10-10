@@ -25,7 +25,7 @@
 <!-- Multi Text -->
 
 <!-- answer -->
-<table <?php echo $q_table_id_HTML;?> class="table question subquestion-list questions-list table-bordered <?php echo $extraclass;?> <?php echo $num_class;?> <?php echo $totals_class;?>">
+<table <?php echo $q_table_id_HTML;?> class="<?php echo $coreClass;?> table table-bordered table-hover <?php echo $num_class;?> <?php echo $totals_class;?>">
     <colgroup class="col-responses">
 
         <!-- Column for answer label -->

@@ -67,7 +67,7 @@
             <div class='col-xs-12 col-sm-2 slider-right text-left'><?php echo $sliderright;?></div>
         <?php endif; ?>
         <?php if ($slider_reset): ?>
-            <div class="col-xs-12 col-sm-2">
+            <div class="ls-input-group-extra">
             <div id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default btn-sm btn-slider-reset'>
                 <span class='fa fa-times slider-reset-icon' aria-hidden='true'></span><span class="slider-reset-text">&nbsp;<?php eT("Reset"); ?></span>
             </div>

@@ -23,11 +23,12 @@ function doNumericSlider(qID,options) {
     var sliderNoActionEl = $('#slider_user_no_action_' + myfname);
     /* need to fix actual value : force to number */
     dispVal = Number(dispVal.toString().replace(separator,'.'));
+    console.log(dispVal);
     // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
     // Use closure for namespace, so we can use theSlider variable for all sliders.
     //~ (function () {
       var theSlider = $(inputEl).bootstrapSlider({
-          value : dispVal,
+          //~ value : dispVal,
           formatter: function (value) {
               if($(sliderNoActionEl).val()=="1"){
                  return null;
@@ -61,7 +62,7 @@ function doNumericSlider(qID,options) {
       if($(sliderNoActionEl).val()=="1")
       {
           $('#javatbd' + myfname).find('div.tooltip').hide();
-          $(inputEl).val(''); // .trigger('keyup');
+          $(inputEl).val(null); // .trigger('keyup');
       }
 
       // Click the reset button
@@ -72,7 +73,7 @@ function doNumericSlider(qID,options) {
           // Position slider button at beginning
           theSlider.bootstrapSlider('setValue', null);
           // Set value to null
-          $(inputEl).val('').trigger('keyup');
+          $(inputEl).val(null).trigger('keyup');
       });
 
       // On form submission, if user action is still on,

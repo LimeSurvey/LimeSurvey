@@ -24,44 +24,48 @@
  */
 ?>
 <!-- answer_row -->
-<li id="javatbd<?php echo $name; ?>" class='row answer-item checkbox-text-item form-group form-inline noanswer-item clearfix' <?php echo $sDisplayStyle ;?>>
+<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group form-inline noanswer-item clearfix' <?php echo $sDisplayStyle ;?>>
 
     <!-- Checkbox + label -->
-    <div class="form-group text-item other-text-item col-sm-6 col-xs-12">
-        <label if="label-<?php echo $name; ?>" for="<?php echo $id;?>" class="label-text control-label"><?php echo $labeltext;?></label>
+    <div class="col-sm-6 col-xs-12">
+        <div class="form-group answer-item text-item other-text-item">
+            <label for="<?php echo $id;?>" class="label-text control-label"><?php echo $labeltext;?></label>
 
-        <input
-           class="other-text form-control input-sm  multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
-           type="text"
-           name="<?php echo $name; ?>"
-           id="<?php echo $id;?>"
-           size="10"
-           onkeyup="<?php echo $checkconditionFunction;?>"
-           value="<?php  echo $value; ?>"
-        />
-        <?php if($javainput):?>
             <input
-            type='hidden'
-            name='<?php echo $javaname?>'
-            id='<?php echo $javaname?>'
-            value='<?php echo $javavalue;?>'
-            <?php echo $checked;?>
+               class="other-text form-control input-sm multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
+               type="text"
+               name="<?php echo $name; ?>"
+               id="<?php echo $id;?>"
+               size="40"
+               onkeyup="<?php echo $checkconditionFunction;?>"
+               value="<?php  echo $value; ?>"
             />
-        <?php endif;?>
+            <?php if($javainput):?>
+                <input
+                type='hidden'
+                name='<?php echo $javaname?>'
+                id='<?php echo $javaname?>'
+                value='<?php echo $javavalue;?>'
+                <?php echo $checked;?>
+                />
+            <?php endif;?>
+        </div>
     </div>
 
     <!-- Comment -->
-    <div class="form-group text-item col-sm-6 col-xs-12 comment-container">
-        <input
-            class='form-control input-sm <?php echo $kpclass; ?>'
-            type='text'
-            size='40'
-            id='<?php echo $inputCommentId;?>'
-            name='<?php echo $inputCommentName; ?>'
-            value='<?php echo $inputCOmmentValue; ?>'
-            onkeyup='<?php echo $checkconditionFunctionComment;?>'
-            aria-labelledby='label-<?php echo $name; ?> <?php echo $name; ?>'
-        />
-    </td>
-</tr>
+    <div class="col-sm-6 col-xs-12 ">
+        <div class="form-group answer-item text-item comment-item">
+            <input
+                class='form-control <?php echo $kpclass; ?>'
+                type='text'
+                size='40'
+                id='<?php echo $inputCommentId;?>'
+                name='<?php echo $inputCommentName; ?>'
+                value='<?php echo $inputCOmmentValue; ?>'
+                onkeyup='<?php echo $checkconditionFunctionComment;?>'
+                aria-labelledby='label-<?php echo $name; ?> <?php echo $name; ?>'
+            />
+        </div>
+    </div>
+</li>
 <!-- end of answer_row -->

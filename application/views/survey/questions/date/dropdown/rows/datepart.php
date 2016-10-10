@@ -1,3 +1,3 @@
-<div class="" style="float: left; margin-top: 0.5em;">
+<div class="ls-input-group-extra">
     <?php echo $datepart; ?>
 </div>

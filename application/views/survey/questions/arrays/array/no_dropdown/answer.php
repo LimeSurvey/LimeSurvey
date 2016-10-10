@@ -14,7 +14,7 @@
 <!-- Array -->
 
 <!-- answer -->
-<table class="table question array-no-dropdown subquestion-list questions-list table-bordered no-more-tables table-bordered<?php echo $extraclass; ?>">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-array-radio">
     <colgroup class="col-responses">
         <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;' />
         <?php

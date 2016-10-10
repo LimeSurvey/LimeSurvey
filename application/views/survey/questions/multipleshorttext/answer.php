@@ -9,7 +9,7 @@
 <!-- Multiple Shor Text -->
 
 <!-- answer -->
-<ul class="list-unstyled subquestion-list questions-list text-list form-horizontal ">
+<ul class="<?php echo $coreClass?> list-unstyled form-horizontal ">
     <?php
         echo $sRows;
     ?>

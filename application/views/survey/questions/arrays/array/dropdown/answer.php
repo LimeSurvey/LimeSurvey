@@ -12,7 +12,7 @@
 <!-- Array -->
 
 <!-- answer -->
-<table class="table question subquestion-list questions-list  <?php echo $extraclass; ?>">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-array-dropdown">
     <colgroup class="col-responses">
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <col class="odd" style='width: <?php echo $columnswidth; ?>%;' />

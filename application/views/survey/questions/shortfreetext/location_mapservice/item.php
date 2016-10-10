@@ -22,7 +22,7 @@
     zoom['<?php echo $name;?>'] = <?php echo $location_mapzoom;?>;
 </script>
 
-<div class="question answer-item geoloc-item <?php echo $extraclass;?>">
+<div class="<?php echo $coreClass; ?> <?php echo $extraclass;?>">
     <!-- Input Text Location -->
     <input
         class="text location <?php echo $kpclass; ?> if-no-js"

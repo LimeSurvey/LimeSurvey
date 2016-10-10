@@ -17,7 +17,12 @@
 <!-- Numerical -->
 
 <!-- answer -->
-<div class='question answer-item text-item numeric-item <?php echo $extraclass;?>'>
+<?php if($withColumn): ?>
+<div class='<?php echo $coreClass; ?> row'>
+    <div class="<?php echo $extraclass; ?>">
+<?php else: ?>
+<div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
+<?php endif; ?>
     <label for='answer<?php echo $id;?>' class='control-label sr-only'>
             <?php eT('Your answer'); ?>
     </label>
@@ -31,7 +36,7 @@
     <?php endif; ?>
 
     <input
-        class='form-control text <?php echo $answertypeclass; ?>'
+        class='form-control <?php echo $answertypeclass; ?>'
         type="text"  <?php // Want to use HTML5 number type? Think again: Doesn't work as we want with locale: http://stackoverflow.com/questions/13412204/localization-of-input-type-number | Shnoulle 20161005 : but type=number is localized by default :) ?>
         size="<?php echo $inputsize;?>"
         name="<?php echo $id;?>"
@@ -49,6 +54,10 @@
     <?php if ($prefix !== '' || $suffix !== ''): ?>
         </div>
     <?php endif; ?>
-
+<?php if($withColumn): ?>
+    </div>
 </div>
+<?php else: ?>
+</div>
+<?php endif; ?>
 <!-- end of answer -->

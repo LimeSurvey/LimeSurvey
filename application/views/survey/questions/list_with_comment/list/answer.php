@@ -19,9 +19,9 @@
 <!-- List with comment, list style, -->
 
 <!-- answer -->
-<div class="row">
-    <div class="list col-sm-6 col-xs-12">
-        <ul class="list-unstyled answers-list radio-list">
+<div class="ls-answers row">
+    <div class="answers-list radio-list col-sm-6 col-xs-12">
+        <ul class="list-unstyled">
 
             <?php
                 // rows/row.php
@@ -31,7 +31,7 @@
         </ul>
     </div>
 
-    <div class="comment form-group answer-item text-item col-sm-6 col-xs-12">
+    <div class="form-group answer-item text-item col-sm-6 col-xs-12">
         <label class="control-label" for="<?php echo $id; ?>">
             <?php echo $hint_comment;?>:
         </label>

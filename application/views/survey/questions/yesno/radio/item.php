@@ -12,7 +12,7 @@
  */
 ?>
 
-<ul class="list-unstyled form-inline answers-list radio-list">
+<ul class="<?php echo $coreClass;?> list-unstyled form-inline">
     <!-- Yes -->
     <li id="javatbd<?php echo $name;?>Y"  class="form-group answer-item radio-item">
         <input

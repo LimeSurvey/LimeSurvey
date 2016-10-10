@@ -248,6 +248,6 @@
 }
 
 /* Extra part */
-.slider-list .input-group{margin-top:2em} /* same line */
-.slider-list .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2em;}  different line
-.withslider .btn-slider-reset{white-space: normal;text-align:center}
+.slider-list .input-group{margin-top:2.5em} /* same line */
+.slider-list .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2.5em;} /* different line */
+.btn-slider-reset{text-align:center;margin-top:-2em;}

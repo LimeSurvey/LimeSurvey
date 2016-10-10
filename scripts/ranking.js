@@ -10,6 +10,7 @@
  * @param {number} qId The qid of the question where apply.
  */
 function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
+
 // TODO : advanced setting in attributes
   if (typeof showpopups === 'undefined'){showpopups=true;}
   if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
@@ -20,9 +21,8 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
   // Hide the default answers list but display for media oral or screen reader
-  $('#question'+qID+' .answers-list').addClass("hide");
   // We are in javascript, then default tip can be replaced
-  $('#question'+qID+' .em_default').html("<div class='hide'>"+$('#question'+qID+' .em_default').html()+"</div><div aria-hidden='true'>"+aRankingTranslations.rankhelp+"</div>");
+  $('#question'+qID+' .em_default').html("<div class='sr-only'>"+$('#question'+qID+' .em_default').html()+"</div><div aria-hidden='true'>"+aRankingTranslations.rankhelp+"</div>");
   $('#question'+qID+' .answers-list').on("change",".select-item",{source:false},function(event,data){
     data = data || event.data;
     if(data.source!='dragdrop')
@@ -30,26 +30,6 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   });
 
   // Add connected sortables elements to the question
-  // Actually a table : move it to a list is a good idea, but need reviewing template a lot.
-  var htmlCode = '<div class="dragDropTable" aria-hidden="true"> \
-      <div class="columns2">\
-        <strong class="SortableTitle">'+aRankingTranslations.choicetitle+'</strong>\
-        <div class="ui-state-default dragDropChoices"> \
-          <ul id="sortable-choice-'+qID+'" class="connectedSortable'+qID+' dragDropChoiceList"> \
-            <li>'+aRankingTranslations.choicetitle+'</li> \
-          </ul> \
-        </div> \
-      </div>\
-      <div class="columns2">\
-        <strong class="SortableTitle">'+aRankingTranslations.ranktitle+'</strong>\
-        <div class="ui-state-default dragDropRanks"> \
-          <ol id="sortable-rank-'+qID+'" class="connectedSortable'+qID+' dragDropRankList selectionSortable"> \
-            <li>'+aRankingTranslations.ranktitle+'</li> \
-          </ol> \
-        </div> \
-      </div> \
-    </div>';
-  $(htmlCode).insertAfter('#question'+qID+' .answers-list');
   $('#sortable-choice-'+qID+' li, #sortable-rank-'+qID+' li').remove();
 
   // Get the list of choices from the LimeSurvey question and copy them as items into the sortable choices list
@@ -58,7 +38,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     if($(this).val()!=''){
       ranked.push($(this).val());
       htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
-      var liCode = '<li class="ui-state-default choice" id="'+rankingname+$(this).val()+'">' + htmloption + '</li>'
+      var liCode = '<li class="ls-choice list-group-item" id="'+rankingname+$(this).val()+'">' + htmloption + '</li>'
       $(liCode).appendTo('#sortable-rank-'+qID+'');
     }
   });
@@ -66,7 +46,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     var thisvalue=$(this).val();
     if(thisvalue!='' && jQuery.inArray(thisvalue,ranked)<0){
         htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
-        var liCode = '<li class="ui-state-default choice" id="'+rankingname+$(this).val()+'">' + htmloption + '</li>'
+        var liCode = '<li class="ls-choice list-group-item" id="'+rankingname+$(this).val()+'">' + htmloption + '</li>'
         $(liCode).appendTo('#sortable-choice-'+qID+'');
     }
   });
@@ -77,7 +57,10 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     connectWith: '.connectedSortable'+qID+'',
     forceHelperSize: true,
     forcePlaceholderSize: true,
-    placeholder: 'ui-sortable-placeholder',
+    start: function (e, ui) {
+      ui.placeholder.html("&nbsp;");
+    },
+    placeholder: 'ui-sortable-placeholder ls-rank-placeholder list-group-item',
     helper: 'clone',
     delay: 200,
     revert: 50,

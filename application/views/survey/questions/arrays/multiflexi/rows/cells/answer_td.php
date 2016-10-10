@@ -23,7 +23,7 @@
 ?>
 
 <!-- answer_td -->
-<td class="answer_cell_<?php echo $ld;?> question-item answer-item <?php echo $answertypeclass; ?>-item <?php echo $extraclass; ?>">
+<td class="answer_cell_<?php echo $ld;?> answer-item <?php echo $answertypeclass; ?> <?php echo $extraclass; ?>">
         <input
             type="hidden"
             name="java<?php echo $myfname2;?>"
@@ -55,7 +55,7 @@
             <!-- InputBox Layout -->
             <input
                 type='text'
-                class="multiflexitext text form-control <?php echo $kpclass;?> text-right"
+                class="multiflexitext form-control <?php echo $kpclass;?> text-right"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
                 <?php echo $maxlength; ?>

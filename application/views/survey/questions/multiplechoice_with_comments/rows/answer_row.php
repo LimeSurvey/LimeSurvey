@@ -24,49 +24,50 @@
  */
 ?>
 <!-- answer_row -->
-<li id="javatbd<?php echo $name; ?>" class='row answer-item checkbox-text-item form-group form-inline clearfix'  <?php echo $sDisplayStyle ;?>>
+<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group form-inline clearfix'  <?php echo $sDisplayStyle ;?>>
 
     <!-- Checkbox + label -->
-    <div class="form-group checkbox-item col-sm-6 col-xs-12">
-        <input
-            class="<?php echo $classes; echo $kpclass; ?>"
-            title="<?php echo $title;?>"
-            type="checkbox"
-            name="<?php echo $name; ?>"
-            id="<?php echo $id;?>"
-            value="<?php echo $value?>"
-            <?php echo $checked;?>
-            onclick="<?php echo $checkconditionFunction;?>"
-          />
-
-        <label id="label-<?php echo $id;?>" for="<?php echo $id;?>" class="control-label checkbox-label"><?php echo $labeltext;?></label>
-
-        <?php if($javainput):?>
+    <div class="col-sm-6 col-xs-12">
+        <div class="checkbox-item answer-item form-group">
             <input
-            type='hidden'
-            name='<?php echo $javaname?>'
-            id='<?php echo $javaname?>'
-            value='<?php echo $javavalue;?>'
-            <?php echo $checked;?>
-            />
-        <?php endif;?>
+                class="<?php echo $classes; echo $kpclass; ?>"
+                title="<?php echo $title;?>"
+                type="checkbox"
+                name="<?php echo $name; ?>"
+                id="<?php echo $id;?>"
+                value="<?php echo $value?>"
+                <?php echo $checked;?>
+                onclick="<?php echo $checkconditionFunction;?>"
+              />
+
+            <label id="label-<?php echo $id;?>" for="<?php echo $id;?>" class="control-label checkbox-label"><?php echo $labeltext;?></label>
+
+            <?php if($javainput):?>
+                <input
+                type='hidden'
+                name='<?php echo $javaname?>'
+                id='<?php echo $javaname?>'
+                value='<?php echo $javavalue;?>'
+                <?php echo $checked;?>
+                />
+            <?php endif;?>
+        </div>
     </div>
 
     <!-- Comment -->
-    <div class="form-group text-item col-sm-6 col-xs-12 comment-container">
-        <label id='label-<?php echo $inputCommentId;?>' for='<?php echo $inputCommentId;?>' class="lext-label control-label sr-only">
-            <?php echo $commentLabelText;?>
-        </label>
-        <input
-            class='form-control input-sm <?php echo $kpclass; ?>'
-            type='text'
-            size='40'
-            id='<?php echo $inputCommentId;?>'
-            name='<?php echo $inputCommentName; ?>'
-            value='<?php echo $inputCOmmentValue; ?>'
-            onkeyup='<?php echo $checkconditionFunctionComment;?>'
-            aria-labelled='label-<?php echo $id;?> label-<?php echo $inputCommentId;?>'
-        />
+    <div class="col-sm-6 col-xs-12">
+        <div class="form-group answer-item text-item comment-item">
+            <input
+                class='form-control <?php echo $kpclass; ?>'
+                type='text'
+                size='40'
+                id='<?php echo $inputCommentId;?>'
+                name='<?php echo $inputCommentName; ?>'
+                value='<?php echo $inputCOmmentValue; ?>'
+                onkeyup='<?php echo $checkconditionFunctionComment;?>'
+                aria-labelled='label-<?php echo $id;?>'
+            />
+        </div>
     </div>
 </li>
 <!-- end of answer_row -->

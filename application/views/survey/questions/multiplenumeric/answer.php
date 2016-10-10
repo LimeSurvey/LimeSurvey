@@ -16,7 +16,7 @@
 ?>
 <!-- Multiple Numerical with slider -->
 <!-- answer -->
-<ul class='list-unstyled subquestion-list questions-list text-list <?php echo $prefixclass?>-list'>
+<ul class='<?php echo $coreClass?> list-unstyled'>
 
         <?php
             // rows/answer_row.php

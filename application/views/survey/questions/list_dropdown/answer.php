@@ -17,8 +17,8 @@
 
 <!-- answer-->
 
-<p class="question answer-item dropdown-item form-group form-inline">
-    <label for="answer<?php echo $name; ?>" class="sr-only label">
+<div class="<?php echo $coreClass;?> form-group form-inline">
+    <label for="answer<?php echo $name; ?>" class="sr-only control-label">
         <?php eT('Please choose'); ?>
     </label>
 
@@ -47,7 +47,5 @@
         id="java<?php echo $name; ?>"
         value="<?php echo $value; ?>"
     />
-
-
-</p>
+</div>
 <!-- end of answer  -->

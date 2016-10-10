@@ -12,7 +12,7 @@
 
 <!-- answer -->
 <input type="hidden" name="MULTI<?php echo $name; ?>" value="<?php echo $anscount; ?>" />
-<div class="row">
+<div class="<?php echo $coreClass;?> row">
 <?php
     // rows/answer_row*.php
     echo $sRows;

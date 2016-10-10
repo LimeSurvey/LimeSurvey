@@ -13,7 +13,7 @@
 ?>
 <!-- Yes/No/Uncertain-->
 <!-- answer -->
-<table class="table question subquestion-list questions-list table-bordered <?php echo $extraclass; ?>">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover">
     <colgroup class="col-responses">
         <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;' />
         <?php
