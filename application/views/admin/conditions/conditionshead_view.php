@@ -23,7 +23,11 @@
             <button
                 id='renumber-scenario'
                 class="btn btn-default pull-right"
-                onclick="if ( confirm('<?php eT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js");?>')) { document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}"
+                data-toggle='modal'
+                data-target='#confirmation-modal'
+                data-message='<?php eT('Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?', 'js'); ?>'
+                data-onclick='(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})'
+                onclick='return false;'
             >
                 <span class="icon-renumber"></span>
                 &nbsp;
