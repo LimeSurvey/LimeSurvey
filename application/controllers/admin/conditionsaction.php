@@ -1622,7 +1622,7 @@ class conditionsaction extends Survey_Common_Action {
         $this->registerScriptFile('ADMIN_SCRIPT_PATH', 'checkgroup.js');
 
         $url = $this->getcontroller()->createUrl(
-            '/admin/conditions/sa/index/subaction/copyconditions/surveyid/',
+            '/admin/conditions/sa/index/subaction/copyconditions/',
             array(
                 'surveyid' => $this->iSurveyID,
                 'gid' => $gid,
