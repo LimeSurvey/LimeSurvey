@@ -7,23 +7,12 @@
         $subaction == "updatescenario" ||
         $subaction == "renumberscenarios")  : ?>
 
-    <div class="col-sm-8">
-        <strong>
-            <?php
-                // echo $onlyshow;
-                eT("Only show question:");
-            ?>
-        </strong>
-        <br/><br/>
-            <blockquote>
-            <em>
-            <?php echo $sCurrentQuestionText;?>
-            </em>
-        </blockquote>
-        <br/>
-        <strong><?php eT('IF:');?></strong>
-        <br/>
-        <br/>
+    <div class="col-sm-12 lead">
+            <?php eT("Only show question"); ?>
+            <strong>
+            <?php echo ' ' . $sCurrentQuestionText;?>
+            </strong>
+        <?php eT('if:');?>
     </div>
 
     <div class="col-sm-4">
