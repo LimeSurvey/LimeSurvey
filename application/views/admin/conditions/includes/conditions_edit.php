@@ -18,7 +18,6 @@
     class="btn btn-default"
     data-toggle="tooltip"
     data-title="<?php eT("Edit condition"); ?>"
-    href='#' 
     onclick='document.getElementById("subaction<?php echo $rows['cid']; ?>").value="editthiscondition"; document.getElementById("conditionaction<?php echo $rows['cid']; ?>").submit();'
 >
     <span class="glyphicon glyphicon-pencil"></span>
