@@ -11,7 +11,7 @@
 
 <div class='panel panel-primary'>
 
-    <div class='panel-heading'>
+    <div class='panel-heading scenario-heading'>
 
         <div class='row'>
             <div class='col-sm-2'>
@@ -42,11 +42,11 @@
                 <input type='button' class="btn btn-default" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
             </form>
 
-            <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>
+            <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;', 'class' => 'delete-scenario-form', 'id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>
 
                 <?php if ($showScenarioButtons): ?>
                     <button 
-                        class='btn btn-default btn-sm'
+                        class='btn btn-default btn-xs'
                         data-toggle='tooltip'
                         data-title='<?php eT('Delete all conditions in this scenario'); ?>'
                         onclick="if (confirm('<?php eT("Are you sure you want to delete all conditions set in this scenario?", "js"); ?>')) { document.getElementById('deletescenario<?php echo $scenarionr['scenario']; ?>').submit();} return false;"
@@ -55,7 +55,7 @@
                     </button>
 
                     <button
-                        class='btn btn-default btn-sm'
+                        class='btn btn-default btn-xs'
                         data-toggle='tooltip'
                         data-title='<?php eT('Change scenario number'); ?>'
                         id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
