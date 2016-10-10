@@ -727,38 +727,25 @@ class conditionsaction extends Survey_Common_Action {
         // Extract p_scenario, p_cquestions, ...
         extract($args);
 
-        if (
-            (
-                !isset($p_canswers) &&
-                !isset($_POST['ConditionConst']) &&
-                !isset($_POST['prevQuestionSGQA']) &&
-                !isset($_POST['tokenAttr']) &&
-                !isset($_POST['ConditionRegexp'])) 
-                || (!isset($p_cquestions) && !isset($p_csrctoken))
-                || is_null($p_canswers)
-        ) {
-            Yii::app()->setFlashMessage(
-                gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js"),
-                'error'
-            );
+        if (isset($p_cquestions) && $p_cquestions != '') {
+            $conditionCfieldname = $p_cquestions;
         }
-        else {
-            if (isset($p_cquestions) && $p_cquestions != '') {
-                $conditionCfieldname = $p_cquestions;
-            }
-            elseif(isset($p_csrctoken) && $p_csrctoken != '') {
-                $conditionCfieldname = $p_csrctoken;
-            }
+        elseif(isset($p_csrctoken) && $p_csrctoken != '') {
+            $conditionCfieldname = $p_csrctoken;
+        }
 
-            $condition_data = array(
-                'qid'        => $qid,
-                'scenario'   => $p_scenario,
-                'cqid'       => $p_cqid,
-                'cfieldname' => $conditionCfieldname,
-                'method'     => $p_method
-            );
+        $condition_data = array(
+            'qid'        => $qid,
+            'scenario'   => $p_scenario,
+            'cqid'       => $p_cqid,
+            'cfieldname' => $conditionCfieldname,
+            'method'     => $p_method
+        );
+
+        if ($p_canswers) {
 
             $results = array();
+
             foreach ($p_canswers as $ca) {
                 //First lets make sure there isn't already an exact replica of this condition
                 $condition_data['value'] = $ca;
@@ -773,16 +760,28 @@ class conditionsaction extends Survey_Common_Action {
             }
 
             // Check if any result returned false
-            if (in_array(false, $results, true)) {
+            if ($results && in_array(false, $results, true)) {
                 Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
             }
-            else {
+            else if ($results) {
                 Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
             }
+            else {
+                Yii::app()->setFlashMessage(
+                    gT(
+                        "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+                        "js"
+                    ),
+                    'error'
+                );
+            }
 
-            unset($posted_condition_value);
-            // Please note that autoUnescape is already applied in database.php included above
-            // so we only need to db_quote _POST variables
+        }
+        else {
+
+            $posted_condition_value = null;
+
+            // Other conditions like constant, other question or token field
             if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
             }
@@ -796,11 +795,31 @@ class conditionsaction extends Survey_Common_Action {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
             }
 
-            if (isset($posted_condition_value)) {
+            if ($posted_condition_value) {
                 $condition_data['value'] = $posted_condition_value;
                 $result = Condition::model()->insertRecords($condition_data);
             }
+            else {
+                $result = null;
+            }
+
+            if ($result === false) {
+                Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
+            }
+            else if ($result === true) {
+                Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
+            }
+            else {
+                Yii::app()->setFlashMessage(
+                    gT(
+                        "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+                        "js"
+                    ),
+                    'error'
+                );
+            }
         }
+
         LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 
         $this->redirectToConditionStart($qid, $gid);
