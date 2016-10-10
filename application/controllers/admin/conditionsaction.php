@@ -324,7 +324,6 @@ class conditionsaction extends Survey_Common_Action {
             $aData['questionNavOptions'] = $questionNavOptions;
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
-            $aData['onlyshow'] = sprintf(gT("Only show question %s IF"),$questiontitle .': '. $sCurrentFullQuestionText);
             $aData['sCurrentQuestionText'] = $questiontitle .': '.viewHelper::flatEllipsizeText($sCurrentFullQuestionText,true,'120');
             $aData['subaction'] = $subaction;
             $aData['scenariocount'] = $scenariocount;
