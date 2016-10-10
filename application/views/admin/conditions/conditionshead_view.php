@@ -8,7 +8,7 @@
                 id='delete-all-conditions'
                 data-toggle='modal'
                 data-target='#confirmation-modal'
-                data-message='<?php eT('Are you sure you want to delete all conditions?', 'js'); ?>'
+                data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
                 data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
                 class='btn btn-warning pull-right'
                 onclick='return false';
