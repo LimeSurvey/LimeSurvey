@@ -13,12 +13,13 @@
  */
 
 // Some function can be launch before document ready (and seems intersting)
-limesurveySubmitHandler();
-needConfirmHandler();
-tableCellAdapters();
-activateLanguageChanger();
+// But put it in ready : allowing update by template.js (before moving at end of HTML : best place */
 $(document).ready(function()
 {
+    limesurveySubmitHandler();
+    needConfirmHandler();
+    tableCellAdapters();
+    activateLanguageChanger();
     navbuttonsJqueryUi();
     showStartPopups();
     addClassEmpty();
@@ -349,11 +350,11 @@ function addClassEmpty()
 
 /**
  * Disable scroll on select, put it in function to allow update in template
- *
+ * Shnoulle at 2016-10-10 Why adding this ?
  */
 function noScrollOnSelect()
 {
-    $(".question").find("select").each(function () {
+    $(".ls-answers").find("select").each(function () {
         hookEvent($(this).attr('id'),'mousewheel',noScroll);
     });
 }
@@ -367,7 +368,7 @@ function tableCellAdapters()
 //	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
 //		e.stopPropagation();
 //	});
-    $(document).on('click','table.question tbody td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
+    $(".ls-answers tbody").on('click',' td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
         var eventTarget=$(event.target).prop("tagName");// Alternative us data
         var eventActivate=$(this).find("input:radio,input:checkbox");
         if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
@@ -594,7 +595,7 @@ function doToolTipTable()
         }
     });
 }
-//Hide the Answer and the helper field in an
+//Hide the Answer and the helper field in an : template related , no ?
 $(document).ready(
     function(){
         $('.question-container').each(function(){

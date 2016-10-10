@@ -3365,7 +3365,7 @@ function do_numerical($ia)
     $answer = doRender('/survey/questions/numerical/answer', array(
         'extraclass'             => $extraclass,
         'coreClass'              => $coreClass,
-        'widthColumn'                       => $widthColumn,
+        'withColumn'             => $withColumn,
         'id'                     => $ia[1],
         'prefix'                 => $prefix,
         'answertypeclass'        => $answertypeclass,
@@ -3794,6 +3794,7 @@ function do_hugefreetext($ia)
 {
     global $thissurvey;
     $extraclass ="";
+    $coreClass="ls-answers answer-item text-item";
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
@@ -3831,15 +3832,16 @@ function do_hugefreetext($ia)
     }
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$aQuestionAttributes['text_input_width'];
-        $extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
         $extraclass .=" col-sm-".trim($col);
+        $withColumn = true;
     }
     else
     {
-        $tiwidth=70;
+        $withColumn = false;
     }
+    $tiwidth=70;
+
     $dispVal="";
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
@@ -3848,6 +3850,8 @@ function do_hugefreetext($ia)
 
     $itemDatas = array(
         'extraclass'=>$extraclass,
+        'coreClass'=>$coreClass,
+        'withColumn'=>$withColumn,
         'kpclass'=>$kpclass,
         'name'=>$ia[1],
         'drows'=>$drows,

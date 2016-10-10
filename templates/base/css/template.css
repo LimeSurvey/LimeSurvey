@@ -28,8 +28,3 @@ html {
 .question-code
 {float:left:margin-right:0.2em}
 
-
-
-/* table alignment */
-.table.question tbody .answertext{text-align:right}
-.table.question .answertextright{text-align:left}

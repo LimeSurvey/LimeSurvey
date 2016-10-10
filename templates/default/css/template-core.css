@@ -2,7 +2,7 @@
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
 /* Boostrap don't do some reset : do it in answer part*/
-.answers-wrapper img,.answers-wrapper video,.answers-wrapper svg{
+.ls-answers img,.ls-answers video,.ls-answers svg{
   max-width: 100%;height: auto;
 }
 /* awesome-bootstrap-checkbox */
@@ -17,29 +17,29 @@ li.radio-item,li.checkbox-item{display:block}
  * Table .question feature
  */
 /* We have some settings to set width of the table : use it */
-.table.question{table-layout:fixed}
-.table.question{width:100%}
+table.ls-answers{table-layout:fixed}
+table.ls-answers{width:100%}
 /* Basic alignment */
-.question > tbody > tr > td
+.ls-answers > tbody > tr > td
 {vertical-align:middle}
-.question tbody td
+.ls-answers tbody td
 {text-align:center}
-.question tbody th
+.ls-answers tbody th
 {text-align:right;vertical-align:middle}
-.question thead th
+.ls-answers thead th
 {text-align:center;vertical-align:bottom}
 
-.question tbody .answertext{text-align:right}
-.question .answertextright{text-align:left}
+.ls-answers tbody .answertext{text-align:right}
+.ls-answers .answertextright{text-align:left}
 
 /**
  *  awesome-bootstrap-checkbox inside table with an sr-only label
  */
 /* reset the margin and review the padding set by boostrap */
-table.question input[type="checkbox"],table.question input[type="radio"]{
+table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{
 margin: 0;
 }
-.table td.radio-item,.table td.checkbox-item{
+.ls-answers td.radio-item,.ls-answers td.checkbox-item{
     padding: 2px;
     padding-left: 22px;
 }
@@ -81,17 +81,17 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 @media
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
-    table.question,.question thead,.question tbody,.question th,.question td,.question tr {
+    table.ls-answers,.ls-answers thead,.ls-answers tbody,.ls-answers th,.ls-answers td,.ls-answers tr {
         display: block;
         text-align:left;
     }
-    .question thead{display:none} /* We don't need it for accessibility : we already have the label */
+    .ls-answers thead{display:none} /* We don't need it for accessibility : we already have the label */
 
-    .question tbody td{text-align:left;}
+    .ls-answers tbody td{text-align:left;}
 
-    .question > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
-    .question tbody .answertext{text-align:left}
-    .question .answertextright{text-align:right}
+    .ls-answers > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
+    .ls-answers tbody .answertext{text-align:left}
+    .ls-answers .answertextright{text-align:right}
     /* Show the label */
     label.ls-label-xs-visibility
     {
@@ -120,13 +120,13 @@ only screen and (max-width: 760px),
         height:auto;
         overflow:auto;
     }
-    .question .radio-item label.ls-label-xs-visibility::before,.question .checkbox-item label.ls-label-xs-visibility::before {
+    .ls-answers .radio-item label.ls-label-xs-visibility::before,.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
         margin-left:-20px;
     }
-    .question .radio-item label.ls-label-xs-visibility::after,.question .checkbox-item label.ls-label-xs-visibility::after {
+    .ls-answers .radio-item label.ls-label-xs-visibility::after,.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
         margin-left:-20px;
     }
 
     /* bs fix */
-    .question td.visible-xs,.question th.visible-xs{display:block !important}
+    .ls-answers td.visible-xs,.ls-answers th.visible-xs{display:block !important}
 }

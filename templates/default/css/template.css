@@ -235,8 +235,8 @@ html, body {
 .ls-even{
 background-color:#f9f9f9;
 }
-table.question,
-.question > thead > tr > th, .question > tbody > tr > th, .question > tfoot > tr > th, .question > thead > tr > td, .question > tbody > tr > td, .question > tfoot > tr > td {
+table.ls-answers,
+.ls-answers > thead > tr > th, .ls-answers > tbody > tr > th, .ls-answers > tfoot > tr > th, .ls-answers > thead > tr > td, .ls-answers > tbody > tr > td, .ls-answers > tfoot > tr > td {
     border-color:transparent;
 }
 /**
@@ -348,7 +348,7 @@ table.table-multi-text tbody tr th {
     vertical-align: middle;
 }
 
-table.question.subquestion-list.questions-list.table-multi-text thead tr th {
+table.ls-answers.subquestion-list.questions-list.table-multi-text thead tr th {
     text-align: center;
 }
 
@@ -443,14 +443,14 @@ table.array-no-dropdown  td.answer-item.text-center
 @media
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
-    table.question  tbody {
+    table.ls-answers  tbody {
         padding: 0 1em 0 1em;
     }
-    table.question  tr{
+    table.ls-answers  tr{
         border: 0 none;
         padding: 1em;
     }
-    table.question  tr th {
+    table.ls-answers  tr th {
         font-size: 1.1em;
         text-align: center;
         color: #317eac;
@@ -473,28 +473,23 @@ only screen and (max-width: 760px),
         margin-bottom: 15px;
     }
 
-    table.question  tbody {
+    table.ls-answers  tbody {
         padding: 0 1em 0 1em;
     }
 
-    /* Hide table headers display: none; no need for accessibility) */
-    table.question  thead tr {
-        display:none;
-    }
-
-    table.question tr{
+    table.ls-answers tr{
         border: 1px solid #ccc;
         padding: 1em;
     }
 
     /* Line header ; color is h4 color */
-    table.question tr th {
+    table.ls-answers tr th {
         font-size: 1.1em;
         text-align: center;
         color: #317eac;
     }
 
-    table.question tr th {
+    table.ls-answers tr th {
         text-align: left;
     }
 
@@ -509,7 +504,7 @@ only screen and (max-width: 760px),
         padding-bottom: 8px;
     }
 
-    table.question td {
+    table.ls-answers td {
         /* Behave  like a "row" */
         min-height: 2em;
         border: none;
@@ -518,15 +513,6 @@ only screen and (max-width: 760px),
         padding-bottom: 1em;
         white-space: normal;
         text-align:left ;
-    }
-
-    .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
-        padding-left:1.5em;
-    }
-
-
-    .five-point-choice .col-xs-12 {
-        padding-bottom: 8px;  /* For 5-point-choice; TODO: Should look like 5-point-array? */
     }
 
     /* Hide the first column in array-by-column */
@@ -553,7 +539,7 @@ only screen and (max-width: 760px),
         text-align: left;
     }
 
-    table.question.subquestion-list.questions-list tr th.answertext {
+    table.ls-answers.subquestion-list.questions-list tr th.answertext {
         text-align: left;
     }
 
