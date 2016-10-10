@@ -36,6 +36,29 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from  2.53 (build 161004) to 2.54 (build 161007) Oct 07, 2016
+-New feature #11683: i18n for EM validations tip (Denis Chenu)
+-New feature: Choose language when exporting SPSS data (Carsten Schmitz)
+-New translation: Bengali (Carsten Schmitz)
+-Fixed issue #10614: Crash during installation if password and confirmation password don't match (Alfredo Esteban)
+-Fixed issue #11682: Possible illegal string offset with some attribute (Denis Chenu)
+-Fixed issue #11730: Minimum width warning for admin interface showing when it shouldn't (Carsten Schmitz)
+-Fixed issue #11732: (partial) Slider reset don't reset to default position (Denis Chenu)
+-Fixed issue #11757: tmp/assets directory is missing (Carsten Schmitz)
+-Fixed issue: Crash during installation if admin email is empty (Alfredo Esteban)
+-Fixed issue: TLS handshake used even if no TLS is set in SMTP settings (Carsten Schmitz)
+-Fixed issue: XSS filter for attributes is applied when the participant is marked as completed or quota out (Carsten Schmitz)
+#Updated translation: Bengali by khadijaashraf
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
 Changes from  2.52 (build 160908) to 2.53 (build 161004) Oct 04, 2016
 -New feature #11626: beforeTokenEmail for confirmation email (Denis Chenu)
 -New feature: Add model for beforeTokenEmail event (name in the DB for surveyls_email_model) (Denis Chenu)
@@ -74,7 +97,7 @@ Changes from  2.52 (build 160908) to 2.53 (build 161004) Oct 04, 2016
 #Updated translation: Hungarian by c_schmitz
 #Updated translation: Italian by lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
-#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Bokmål) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
