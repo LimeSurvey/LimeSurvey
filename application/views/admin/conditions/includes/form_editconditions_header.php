@@ -49,7 +49,7 @@
                 <div class='col-sm-5'>
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'editSourceTab',
-                        'value'=> '#SRCPREVQUEST',
+                        'value'=> $editSourceTab,
                         'selectOptions'=>array(
                             '#SRCPREVQUEST' => gT('Previous questions'),
                             '#SRCTOKENATTRS' => gT('Survey participant attributes')
@@ -101,7 +101,7 @@
                 <div class='col-sm-8'>
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'editTargetTab',
-                        'value'=> '#CANSWERSTAB',
+                        'value'=> $editTargetTab,
                         'selectOptions'=>array(
                             '#CANSWERSTAB' => gT('Predefined'),
                             '#CONST' => gT('Constant'),

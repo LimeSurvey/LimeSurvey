@@ -1693,7 +1693,9 @@ class conditionsaction extends Survey_Common_Action {
             'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction),
             'submitLabel'   => $submitLabel,
             'submitSubaction'     => $submitSubaction,
-            'submitcid'     => $submitcid
+            'submitcid'     => $submitcid,
+            'editSourceTab' => $this->getEditSourceTab(),
+            'editTargetTab' => $this->getEditTargetTab()
         );
         $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
@@ -1824,12 +1826,10 @@ class conditionsaction extends Survey_Common_Action {
             if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
             {
                 $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
-                $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
             }
             else if (isset($_POST['cquestions']) && $_POST['cquestions'] != '')
             {
                 $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
-                $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
             }
         }
         else
@@ -1870,15 +1870,54 @@ class conditionsaction extends Survey_Common_Action {
             if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
             {
                 $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
-                $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
             }
             else
             {
                 if (isset($_POST['cquestions'])) $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascriptEscape($_POST['cquestions'])."';\n";
-                $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
             }
         }
         return $aViewUrls['output'];
+    }
+
+    /**
+     * @return string Either '#SRCTOKENATTRS' or '#SRCPREVQUEST'; defaults to '#SRCPREVQUEST' if nothing is posted
+     */
+    protected function getEditSourceTab()
+    {
+        if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '') {
+            return '#SRCTOKENATTRS';
+        }
+        else if (isset($_POST['cquestions']) && $_POST['cquestions'] != '') {
+            return '#SRCPREVQUEST';
+        }
+        else {
+            return '#SRCPREVQUEST';
+        }
+    }
+
+    /**
+     * @return string Predfined, constant, questions, token field or regexp; defaults to predefined
+     */
+    protected function getEditTargetTab()
+    {
+        if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '') {
+            return '#CONST';
+        }
+        elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '') {
+            return '#PREVQUESTIONS';
+        }
+        elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '') {
+            return '#TOKENATTRS';
+        }
+        elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '') {
+            return '#REGEXP';
+        }
+        elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers'])) {
+            return '#CANSWERSTAB';
+        }
+        else {
+            return '#PREVQUESTIONS';
+        }
     }
 
     /**
