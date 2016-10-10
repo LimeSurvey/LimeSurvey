@@ -47,9 +47,13 @@
                 <?php if ($showScenarioButtons): ?>
                     <button 
                         class='btn btn-default btn-xs'
-                        data-toggle='tooltip'
+                        data-tooltip='tooltip'
                         data-title='<?php eT('Delete all conditions in this scenario'); ?>'
-                        onclick="if (confirm('<?php eT("Are you sure you want to delete all conditions set in this scenario?", "js"); ?>')) { document.getElementById('deletescenario<?php echo $scenarionr['scenario']; ?>').submit();} return false;"
+                        data-toggle='modal'
+                        data-target='#confirmation-modal'
+                        data-message='<?php eT('Are you sure you want to delete all conditions set in this scenario?', 'js'); ?>'
+                        data-onclick='(function() { document.getElementById("deletescenario<?php echo $scenarionr["scenario"]; ?>").submit(); })'
+                        onclick='return false;'
                     >
                         <span class="glyphicon glyphicon-trash text-danger"></span>
                     </button>
