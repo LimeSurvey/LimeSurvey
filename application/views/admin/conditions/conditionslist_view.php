@@ -32,11 +32,19 @@
             <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
             <input type='hidden' id='toplevelsubaction' name='subaction' value='deleteallconditions' />
 
+
             <?php if ($scenariocount > 0): ?>
-                <a class="btn btn-default" href='#' onclick="if ( confirm('<?php eT("Are you sure you want to delete all conditions set to the questions you have selected?","js");?>')) { document.getElementById('deleteallconditions').submit();}">
-                    <span class="glyphicon glyphicon-trash"></span>
-                    <?php eT("Delete all conditions");?>
-                </a>
+                <button
+                    data-toggle='modal'
+                    data-target='#confirmation-modal'
+                    data-message='<?php eT('Are you sure you want to delete all conditions?', 'js'); ?>'
+                    data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
+                    class='btn btn-warning'
+                    onclick='return false';
+                >
+                    <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                    <?php eT('Delete all conditions'); ?>
+                </button>
             <?php endif; ?>
 
             <?php if ($scenariocount > 1): ?>
