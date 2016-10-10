@@ -36,6 +36,9 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from  2.54 (build 161007) to 2.54.1 (build 161010) Oct 10, 2016
+-Fixed issue #11760: White screen/error when opening CPDB
+
 Changes from  2.53 (build 161004) to 2.54 (build 161007) Oct 07, 2016
 -New feature #11683: i18n for EM validations tip (Denis Chenu)
 -New feature: Choose language when exporting SPSS data (Carsten Schmitz)
