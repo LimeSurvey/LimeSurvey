@@ -48,8 +48,8 @@
                 </ul>
             </div>
         </div>
+    </div>
 </div>
-
 <!--  The list with HTML answers -->
 
 <div class="hidden" style="display:none">
