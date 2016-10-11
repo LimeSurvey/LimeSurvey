@@ -19,6 +19,7 @@ $(document).ready(function()
     limesurveySubmitHandler();
     needConfirmHandler();
     tableCellAdapters();
+    navbuttonsJqueryUi();
     showStartPopups();
     addClassEmpty();
     noScrollOnSelect();

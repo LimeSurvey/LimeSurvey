@@ -5867,7 +5867,7 @@ function do_array_dual($ia)
     $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
-    $coreClass                  = "ls-answers subquestion-list questions-list";
+    $coreClass                  = "ls-answers subquestion-list questions-list array-dual-scale";
     $answertypeclass            = ""; // Maybe not
     $caption                    = "";// Just leave empty, are replaced after
     $inputnames                 = array();
