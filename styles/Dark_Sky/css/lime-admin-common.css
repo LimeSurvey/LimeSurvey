@@ -2146,6 +2146,14 @@ table#responsedetail tr td{
     margin-left: 5px;
 }
 
+.conditions-table {
+    margin-bottom: 0;
+}
+
+.condition-and-or-or {
+    margin-left: 20px;
+}
+
 /* Tabs used within form in condition designer */
 #editconditions .tab-content {
     padding-top: 0;

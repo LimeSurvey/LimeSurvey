@@ -1,7 +1,5 @@
 <?php if ($andOrOr): ?>
-    <span class='label label-default'>
-        <?php echo $andOrOr; ?>
-    </span>
+    <h4 class='condition-and-or-or'><span class='label label-default'> <?php echo $andOrOr; ?> </span></h4>
 <?php endif; ?>
 
 <?php echo CHtml::form(
@@ -12,7 +10,7 @@
         'name'=>"conditionaction" . $row['cid']
     )
 ); ?>
-    <table class='table conditionstable'>
+    <table class='table conditions-table'>
         <tr class='active'>
             <?php if ($subaction == "copyconditionsform" || $subaction == "copyconditions" ): ?>
                 <td></td>
