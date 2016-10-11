@@ -11,7 +11,7 @@
 
 ?>
 
-<table class="table question table-bordered table-dual-scale question subquestion-list questions-list dropdown-list">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-dual-scale subquestion-list questions-list dropdown-list">
 
 <!-- Column groups -->
 <colgroup>
