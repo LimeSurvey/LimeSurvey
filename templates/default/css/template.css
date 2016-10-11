@@ -235,8 +235,8 @@ html, body {
 .ls-even{
 background-color:#f9f9f9;
 }
-table.ls-answers,
-.ls-answers > thead > tr > th, .ls-answers > tbody > tr > th, .ls-answers > tfoot > tr > th, .ls-answers > thead > tr > td, .ls-answers > tbody > tr > td, .ls-answers > tfoot > tr > td {
+table.table-bordered,
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
     border-color:transparent;
 }
 /**
