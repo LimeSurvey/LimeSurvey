@@ -811,13 +811,22 @@ function doHtmlSaveLinks($move="")
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
 
-    $aHtmlOptionsLoadall['disabled']='';
-    $aHtmlOptionsSaveall['disabled']='';
-
     if($thissurvey['allowsave'] == "Y")
     {
-        $sLoadButton = '<li class="ls-no-js-hidden"><a href="#" id="loadallbtnlink" >'.gT("Load unfinished survey").'</a></li>';
-        $sSaveButton = '<li class="ls-no-js-hidden"><a href="#" id="saveallbtnlink" >'.gT("Resume later").'</a></li>';
+        $submit=ls_json_encode(array(
+                'loadall'=>'loadall'
+            ));
+        $sLoadButton=App()->getController()->renderPartial("/survey/system/actionLink/saveLoad",array(
+            'submit'=>$submit,
+            'class'=>'ls-link-action ls-link-loadall'
+        ),true);
+        $submit=ls_json_encode(array(
+                'saveall'=>'saveall'
+            ));
+        $sSaveButton=App()->getController()->renderPartial("/survey/system/actionLink/saveSave",array(
+            'submit'=>$submit,
+            'class'=>'ls-link-action ls-link-saveall'
+        ),true);
     }
     else
     {
@@ -840,7 +849,7 @@ function doHtmlSaveLinks($move="")
         {
             $sSaveAllButtons .= $sLoadButton;
         }
-        $sSaveAllButtons .= '<li class="ls-no-js-hidden"><a href="#" id="saveallbtnlink" '.$aHtmlOptionsSaveall['disabled'].' >'.gT("Resume later").'</a></li>';
+        $sSaveAllButtons .= $sSaveButton;
     }
     elseif (!$iSessionStep) //Welcome page, show load (but not save)
     {
@@ -882,12 +891,19 @@ function doHtmlSaveAll($move="")
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
 
-    $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall btn btn-default");
-    $aHtmlOptionsSaveall=array('type'=>'submit','id'=>'saveallbtn','value'=>'saveall','name'=>'saveall','class'=>"saveall btn btn-default");
     if($thissurvey['allowsave'] == "Y")
     {
-        $sLoadButton=CHtml::htmlButton(gT("Load unfinished survey"),$aHtmlOptionsLoadall);
-        $sSaveButton=CHtml::htmlButton(gT("Resume later"),$aHtmlOptionsSaveall);
+        $sLoadButton=App()->getController()->renderPartial("/survey/system/actionButton/saveLoad",array(
+            'value'=>'loadall',
+            'name'=>'loadall',
+            'class'=>'ls-saveaction ls-loadall'
+        ),true);
+        $sSaveButton=App()->getController()->renderPartial("/survey/system/actionButton/saveSave",array(
+            'value'=>'saveall',
+            'name'=>'saveall',
+            'class'=>'ls-saveaction ls-saveall'
+        ),true);
+        App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
     }
     else
     {
@@ -909,7 +925,7 @@ function doHtmlSaveAll($move="")
         {
             $sSaveAllButtons .= $sLoadButton;
         }
-        $sSaveAllButtons .= CHtml::htmlButton(gT("Resume later"),$aHtmlOptionsSaveall);
+        $sSaveAllButtons .= $sSaveButton;
     }
     elseif (!$iSessionStep) //Welcome page, show load (but not save)
     {
