@@ -2714,7 +2714,7 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
                     $iNearestIndex = $i;
                 }
             }
-            if ( $iStrict !== 1 ) {
+            if ( $iStrict != 1 ) {  // Do not use strict checking as the parameter will be passed as a string!
                 return $aToValues[$iNearestIndex];
             }
         }
