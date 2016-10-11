@@ -384,9 +384,7 @@ function doToolTip()
     // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
     $('[data-tooltip="true"]').tooltip();
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+    $('[data-toggle="tooltip"]').tooltip()
 
     // ToolTip on menu
     $(".sf-menu li").each(function() {

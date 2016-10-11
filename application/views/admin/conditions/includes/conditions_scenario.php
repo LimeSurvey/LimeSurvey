@@ -47,7 +47,7 @@
                 <?php if ($showScenarioButtons): ?>
                     <button 
                         class='btn btn-default btn-xs'
-                        data-tooltip='tooltip'
+                        data-tooltip='true'
                         data-title='<?php eT('Delete all conditions in this scenario'); ?>'
                         data-toggle='modal'
                         data-target='#confirmation-modal'
