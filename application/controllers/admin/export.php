@@ -461,7 +461,7 @@ class export extends Survey_Common_Action {
             }
 
             $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '' )?'\''.$_POST['noanswervalue'].'\'':'';
-            SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue, $sLanguage);
+            SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue,'\'',false, $sLanguage);
 
             exit;
         }
