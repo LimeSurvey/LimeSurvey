@@ -100,43 +100,6 @@ $(document).ready(function(){
         return jquery_goodchars(e,'1234567890-');
     });
 
-    /**
-     * Used when user chooses between "Previous questions" and
-     * "Survey participant attributes"
-     * @param {object} ev - Event
-     * @return
-     */
-    var questionOnChange = function(ev) {
-        $('.question-option').hide();
-        var value = ev.currentTarget.value;
-        $(value).show();
-    };
-
-    $('input[name="editSourceTab"]').change(questionOnChange);
-
-    // Run once on load to hide/show relevant part
-    var currentValue = $('input[name="editSourceTab"]').val();
-    var dummyEvent = {currentTarget: {value: currentValue}};
-    questionOnChange(dummyEvent);
-
-    /**
-     * Used when user clicks answer button group
-     * @param {object} ev - Event
-     * @return
-     */
-    var answerOnChange = function(ev) {
-        $('.answer-option').hide();
-        var value = ev.currentTarget.value;
-        $(value).show();
-    };
-
-    $('input[name="editTargetTab"]').change(answerOnChange);
-
-    // Run once on load to hide/show relevant part
-    var currentValue = $('input[name="editTargetTab"]').val();
-    var dummyEvent = {currentTarget: {value: currentValue}};
-    answerOnChange(dummyEvent);
-
 });
 
 function populateCanswersSelect(evt) {
@@ -308,9 +271,9 @@ $(document).ready(function(){
 
 	// At editing, a hidden field gives the Tab that should be selected
 	// Louis : that suppose to be a numerical input not a string !!!
-	if ($('#editTargetTab').val() != '') {
-		$('#conditiontarget').bootTabs('option','active', $('#editTargetTab').val());
-	}
+	//if ($('#editTargetTab').val() != '') {
+		//$('#conditiontarget').bootTabs('option','active', $('#editTargetTab').val());
+	//}
 
 	// At editing, a hidden field gives the Tab that should be selected
     /*
@@ -329,7 +292,31 @@ $(document).ready(function(){
 		populateCanswersSelect(null);
 	}
 	
-	$('#conditiontarget').bootTabs('option','active', 1);
+	//$('#conditiontarget').bootTabs('option','active', 1);
+
+    $('.nav-tabs').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    })
+
+    // Tab management for add/edit condition
+    var editTargetTab = $('input[name="editTargetTab"]').val();
+    var editSourceTab = $('input[name="editSourceTab"]').val();
+    $('a[href="' + editTargetTab + '"]').trigger('click');
+    $('a[href="' + editSourceTab + '"]').trigger('click');
+
+    // When user clicks tab, update hidden input
+    $('.src-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="editSourceTab"]').val(href);
+    });
+
+    // When user clicks tab, update hidden input
+    $('.target-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="editTargetTab"]').val(href);
+    });
+
 });
 
 /**

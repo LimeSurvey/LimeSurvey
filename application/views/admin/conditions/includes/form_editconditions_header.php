@@ -47,39 +47,45 @@
             <div class='form-group'>
                 <label class='control-label col-sm-2'><?php eT("Question"); ?></label>
                 <div class='col-sm-5'>
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'editSourceTab',
-                        'value'=> $editSourceTab,
-                        'selectOptions'=>array(
-                            '#SRCPREVQUEST' => gT('Previous questions'),
-                            '#SRCTOKENATTRS' => gT('Survey participant attributes')
-                    )));?>
+                    <ul class='nav nav-tabs'>
+                        <li role='presentation' class='active src-tab'>
+                            <a href='#SRCPREVQUEST' aria-controls='SRCPREVQUEST' role='tab' data-toggle='tab'><?php eT('Previous questions'); ?></a>
+                        </li>
+                        <li role='presentation' class='src-tab'>
+                            <a href='#SRCTOKENATTRS' aria-controls='SRCTOKENATTRS' role='tab' data-toggle='tab'><?php eT('Survey participant attributes'); ?></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <div id='SRCPREVQUEST' class='form-group question-option'>
-                <label class='control-label col-sm-2'><?php eT("Previous questions"); ?></label>
-                <div class='col-sm-5'>
-                    <select class='form-control' name='cquestions' id='cquestions' size='<?php echo $qcountI;?>'>
-                        <?php foreach ($cquestions as $cqn): ?>
-                            <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars($cqn[0]); ?>">
-                                <?php echo $cqn[0]; ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+            <div class='tab-content'>
+                <div role='tabpanel' class='tab-pane active' id='SRCPREVQUEST'>
+                    <div class='form-group question-option'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-5'>
+                            <select class='form-control' name='cquestions' id='cquestions' size='7'>
+                                <?php foreach ($cquestions as $cqn): ?>
+                                    <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars($cqn[0]); ?>">
+                                        <?php echo $cqn[0]; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div id='SRCTOKENATTRS' class='form-group question-option'>
-                <label class='control-label col-sm-2'><?php eT("Survey participant attributes"); ?></label>
-                <div class='col-sm-5'>
-                    <select class='form-control' name='csrctoken' id='csrctoken' >
-                        <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
-                            <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
-                                <?php echo HTMLEscape($tokenattrName['description']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                <div role='tabpanel' class='tab-pane ' id='SRCTOKENATTRS'>
+                    <div class='form-group question-option'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-5'>
+                            <select class='form-control' name='csrctoken' id='csrctoken' size='7'>
+                                <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
+                                    <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
+                                        <?php echo HTMLEscape($tokenattrName['description']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -98,82 +104,101 @@
 
             <div class='form-group'>
                 <label class='control-label col-sm-2'><?php echo gT("Answer"); ?></label>
-                <div class='col-sm-8'>
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'editTargetTab',
-                        'value'=> $editTargetTab,
-                        'selectOptions'=>array(
-                            '#CANSWERSTAB' => gT('Predefined'),
-                            '#CONST' => gT('Constant'),
-                            '#PREVQUESTIONS' => gT('Questions'),
-                            '#TOKENATTRS' => gT('Token fields'),
-                            //'#REGEXP' => gT('RegExp')
-                    )));?>
+                <div class='col-sm-5'>
+                    <ul class='nav nav-tabs'>
+                        <li role='presentation' class='active target-tab'>
+                            <a href='#CANSWERSTAB' aria-controls='CANSWERSTAB' role='tab' data-toggle='tab'><?php eT('Predefined'); ?></a>
+                        </li>
+                        <li role='presentation' class='target-tab'>
+                            <a href='#CONST' aria-controls='CONST' role='tab' data-toggle='tab'><?php eT('Constant'); ?></a>
+                        </li>
+                        <li role='presentation' class='target-tab'>
+                            <a href='#PREVQUESTIONS' aria-controls='PREVQUESTIONS' role='tab' data-toggle='tab'><?php eT('Questions'); ?></a>
+                        </li>
+                        <li role='presentation' class='target-tab'>
+                            <a href='#TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Token fields'); ?></a>
+                        </li>
+                        <li role='presentation' class='target-tab'>
+                            <a href='#REGEXP' aria-controls='REGEXP' role='tab' data-toggle='tab'><?php eT('RegExp'); ?></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <div id='CANSWERSTAB'  class='form-group answer-option'>
-                <label class='control-label col-sm-2' id='canswersLabel'><?php eT("Predefined answer options for this question"); ?></label>
-                <div class='col-sm-5'>
-                    <select
-                        class='form-control'
-                        name='canswers[]'
-                        <?php if ($subaction != 'editthiscondition'): echo ' multiple '; endif; ?>
-                        id='canswers'
-                        size='7'
-                    >
-                    </select>
+            <div class='tab-content'>
+                <div role='tabpanel' class='tab-pane active' id='CANSWERSTAB'>
+                    <div class='form-group answer-option'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-5'>
+                            <select
+                                class='form-control'
+                                name='canswers[]'
+                                <?php if ($subaction != 'editthiscondition'): echo ' multiple '; endif; ?>
+                                id='canswers'
+                                size='7'
+                            >
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div id='CONST' class='form-group answer-option'>
-                <label class='control-label col-sm-2' id='ConditionConstLabel'><?php eT("Constant value"); ?></label>
-                <div class='col-sm-5'>
-                    <textarea class='form-control' name='ConditionConst' id='ConditionConst' rows='5' cols='113'><?php echo $EDITConditionConst; ?></textarea>
+                <div role='tabpanel' class='tab-pane active' id='CONST'>
+                    <div class='form-group answer-option'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-5'>
+                            <textarea class='form-control' name='ConditionConst' id='ConditionConst' rows='5' cols='113'><?php echo $EDITConditionConst; ?></textarea>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div id='PREVQUESTIONS'  class='form-group answer-option'>
-                <label class='control-label col-sm-2' for='prevQuestionSGQA'><?php eT("Answer from previous question"); ?></label>
-                <div class='col-sm-5'>
-                    <select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
-                        <?php foreach ($cquestions as $cqn): ?>
-                            <?php if ($cqn[2] != 'M' && $cqn[2] != 'P'): ?>
-                                <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
-                                <option
-                                    value='<?php echo '@' . $cqn[3] . '@'; ?>'
-                                    title="<?php echo htmlspecialchars($cqn[0]); ?>"
-                                    <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@'): echo ' selected="selected" '; endif; ?>
-                                    >
-                                    <?php echo $cqn[0]; ?>
-                                </option>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </select>
+                <div role='tabpanel' class='tab-pane active' id='PREVQUESTIONS'>
+                    <div class='form-group answer-option'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-5'>
+                            <select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
+                                <?php foreach ($cquestions as $cqn): ?>
+                                    <?php if ($cqn[2] != 'M' && $cqn[2] != 'P'): ?>
+                                        <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
+                                        <option
+                                            value='<?php echo '@' . $cqn[3] . '@'; ?>'
+                                            title="<?php echo htmlspecialchars($cqn[0]); ?>"
+                                            <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@'): echo ' selected="selected" '; endif; ?>
+                                            >
+                                            <?php echo $cqn[0]; ?>
+                                        </option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div id='TOKENATTRS'  class='form-group answer-option'>
-                <label class='control-label col-sm-2' for='tokenAttr'><?php eT("Attributes of the survey participant"); ?></label>
-                <div class='col-sm-5'>
-                    <select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>
-                        <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
-                            <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}'>
-                                <?php echo HTMLEscape($tokenattrName['description']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                <div role='tabpanel' class='tab-pane active' id='TOKENATTRS'>
+                    <div class='form-group answer-option'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-5'>
+                            <select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>
+                                <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
+                                    <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}'>
+                                        <?php echo HTMLEscape($tokenattrName['description']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div id='REGEXP' class='form-group answer-option'>
-                <label class='control-label col-sm-2' for='ConditionRegexp'><?php eT("RegExp"); ?></label>
-                <div class='col-sm-5'>
-                    <textarea name='ConditionRegexp' class='form-control' id='ConditionRegexp' rows='5' cols='113'><?php echo $EDITConditionRegexp; ?></textarea>
-                    <div id='ConditionRegexpLabel'>
-                        <a href="http://manual.limesurvey.org/wiki/Using_regular_expressions" target="_blank">
-                            <?php eT("Regular expression"); ?>
-                        </a>
+                <div role='tabpanel' class='tab-pane active' id='REGEXP'>
+                    <div class='form-group answer-option'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-5'>
+                            <textarea name='ConditionRegexp' class='form-control' id='ConditionRegexp' rows='5' cols='113'><?php echo $EDITConditionRegexp; ?></textarea>
+                            <div id='ConditionRegexpLabel'>
+                                <a href="http://manual.limesurvey.org/wiki/Using_regular_expressions" target="_blank">
+                                    <?php eT("Regular expression"); ?>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -191,6 +216,8 @@
                     <input type='hidden' name='cqid' id='cqid' value='' />
                     <input type='hidden' name='cid' id='cid' value='<?php echo $submitcid; ?>' />
                     <input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />
+                    <input type='hidden' name='editSourceTab' id='editSourceTab' value='<?php echo $editSourceTab; ?>' />
+                    <input type='hidden' name='editTargetTab' id='editTargetTab' value='<?php echo $editTargetTab; ?>' />
                 </div>
             </div>
         </form>
