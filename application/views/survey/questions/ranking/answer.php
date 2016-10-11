@@ -23,7 +23,7 @@
 <!-- Ranking -->
 
 <!-- answer -->
-<div class="<?php echo $coreClass; ?> ranking-answers">
+<div class="<?php echo $coreClass; ?>">
     <ul class="list-unstyled ls-js-hidden-sr form-horizontal">
         <?php
             // rows/answer_row.php
@@ -48,6 +48,7 @@
                 </ul>
             </div>
         </div>
+    </div>
 </div>
 
 <!--  The list with HTML answers -->
