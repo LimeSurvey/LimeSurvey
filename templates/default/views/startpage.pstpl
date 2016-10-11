@@ -42,7 +42,7 @@
     <div id="topContainer">
       <div class="container">
         {PERCENTCOMPLETE}
-        {LANGUAGECHANGER}
+        {LANGUAGECHANGER} <!-- must hide it without javascript -->
       </div>
     </div>
 

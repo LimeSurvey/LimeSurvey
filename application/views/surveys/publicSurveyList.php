@@ -6,7 +6,7 @@
 
     foreach($publicSurveys as $survey)
     {
-         $outputSurveys++;
+        $outputSurveys++;
                 //echo "IKI :";var_dump( $survey->localizedTitle);
         $divider = ($divideToggle ? " vertical-divider right " : "");
         if ($survey->publicstatistics == "Y")

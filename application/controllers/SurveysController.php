@@ -29,7 +29,7 @@
                 Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
                 App()->bootstrap->registerAllScripts();
             }
-
+            Yii::app()->clientScript->registerPackage('survey-template');
             $aData = array(
                     'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
                     'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
@@ -42,8 +42,7 @@
 
             if($event->get('result'))
             {
-                $htmlFromEvent = $event->get('result');
-                $htmlOut = $htmlFromEvent['html'];
+                $htmlOut = $event->get('result');
             }
             echo $htmlOut;
         }

@@ -183,7 +183,7 @@ class OptoutController extends LSYii_Controller {
             App()->bootstrap->register();
         }
         $thistpl = $oTemplate->viewPath;
-        Yii::app()->clientScript->registerPackage( 'survey-template' );
+        Yii::app()->clientScript->registerPackage('survey-template');
         ob_start(function($buffer, $phase)
         {
             App()->getClientScript()->render($buffer);

@@ -23,7 +23,6 @@ function doNumericSlider(qID,options) {
     var sliderNoActionEl = $('#slider_user_no_action_' + myfname);
     /* need to fix actual value : force to number */
     dispVal = Number(dispVal.toString().replace(separator,'.'));
-    console.log(dispVal);
     // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
     // Use closure for namespace, so we can use theSlider variable for all sliders.
     //~ (function () {

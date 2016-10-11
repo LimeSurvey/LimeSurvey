@@ -2,6 +2,6 @@
 {if(!is_empty(SURVEYDESCRIPTION),'<div class="jumbotron surveydescrition">'+SURVEYDESCRIPTION+'</div>','')}
 
 <!-- Because without JS : LANGUAGECHANGER NEED to be in the form -->
-{if(!is_empty(LANGUAGECHANGER),"<div class='languageselect row'>"+LANGUAGECHANGER+"</div>","")}
+{LANGUAGECHANGER}
 {PERCENTCOMPLETE}
 

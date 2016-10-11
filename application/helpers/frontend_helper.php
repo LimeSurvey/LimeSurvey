@@ -188,56 +188,56 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
     {
         $aAllLanguages=getLanguageData(true);
         $aSurveyLangs=array_intersect_key($aAllLanguages,array_flip($aSurveyLangs)); // Sort languages by their locale name
-        $sClass="languagechanger";
-        $sHTMLCode="";
+        $sClass="ls-language-changer-item";
+        $btnClass='ls-change-lang';
         $sAction=Yii::app()->request->getParam('action','');// Different behaviour if preview
         $sSelected="";
-        if(substr($sAction,0,7)=='preview')
-        {
-            $route="/survey/index/sid/{$surveyid}";
-            if ($sAction=='previewgroup' && intval(Yii::app()->request->getParam('gid',0)))
+        $routeParams=array(
+            "sid"=>$surveyid,
+        );
+        if(substr($sAction,0,7)=='preview'){
+            $routeParams["action"]=$sAction;
+            if (intval(Yii::app()->request->getParam('gid',0)))
             {
-                $route.="/action/previewgroup/gid/".intval(Yii::app()->request->getParam('gid',0));
+                $routeParams['gid']=intval(Yii::app()->request->getParam('gid',0));
             }
             if ($sAction=='previewquestion' && intval(Yii::app()->request->getParam('gid',0)) && intval(Yii::app()->request->getParam('qid',0)))
             {
-                $route.="/action/previewquestion/gid/".intval(Yii::app()->request->getParam('gid',0))."/qid/".intval(Yii::app()->request->getParam('qid',0));
+                $routeParams['qid']=intval(Yii::app()->request->getParam('qid',0));
             }
             if (!is_null(Yii::app()->request->getParam('token')))
             {
-                $route.="/token/".Yii::app()->request->getParam('token');
+                $routeParams['token']=Yii::app()->request->getParam('token');
             }
-            $sClass.=" previewmode";
-            // Maybe add other param (for prefilling by URL): then need a real createUrl with array
-#            foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
-#            {
-#                $sTargetURL=Yii::app()->getController()->createUrl($route."/lang/$sLangCode");
-#                $aListLang[$sTargetURL]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
-#                if(App()->language==$sLangCode)
-#                    $sSelected=$sTargetURL;
-#            }
+            // @todo : add other params (for prefilling by URL in preview mode)
+            $sClass.=" ls-no-js-hidden ls-previewmode-language-dropdown ";
+            $sTargetURL=Yii::app()->getController()->createUrl("survey/index",$routeParams);
+        }else{
+            $sTargetURL=null;
         }
-        else
-        {
-            $route="/survey/index/sid/{$surveyid}";
-        }
-        $sTargetURL=Yii::app()->getController()->createUrl($route);
+
+        /* @todo : find when we need a form , and how to set here */
+        $form=false;
+
+
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
         {
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
         }
         $sSelected=App()->language;
-        $sClass .= ' form-control ';
 
         $languageChangerDatas = array(
             'sSelected' => $sSelected ,
             'aListLang' => $aListLang ,
             'sClass'    => $sClass    ,
-            'sTargetURL'=> $sTargetURL,
+            'targetUrl' => $sTargetURL,
         );
-
-        $sHTMLCode = Yii::app()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);
+        if($form){
+            $sHTMLCode = App()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChangerForm', $languageChangerDatas, true);
+        }else{
+            $sHTMLCode = App()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);
+        }
         return $sHTMLCode;
     }
     else
@@ -257,37 +257,28 @@ function makeLanguageChanger($sSelectedLanguage)
     $aLanguages=getLanguageDataRestricted(true);// Order by native
     if(count($aLanguages)>1)
     {
-#        $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
-#        foreach(getLanguageDataRestricted(true) as $sLanguageID=>$aLanguageProperties)
-#        {
-#            $sLanguageUrl=Yii::app()->getController()->createUrl('survey/index',array('lang'=>$sLanguageID));
-#            $sHTMLCode .= "<option value='{$sLanguageUrl}'";
-#            if($sLanguageID == $sSelectedLanguage)
-#            {
-#                $sHTMLCode .= " selected='selected' ";
-#                $sHTMLCode .= ">{$aLanguageProperties['nativedescription']}</option>\n";
-#            }
-#            else
-#            {
-#                $sHTMLCode .= ">".$aLanguageProperties['nativedescription'].' - '.$aLanguageProperties['description']."</option>\n";
-#            }
-#        }
-#        $sHTMLCode .= "</select>\n";
-
-        $sClass= "languagechanger form-control";
+        $sClass= "ls-language-changer-item";
         foreach ($aLanguages as $sLangCode => $aLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT,'UTF-8').' - '.$aLanguage['description'];
         $sSelected=$sSelectedLanguage;
 
-        $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get', array('class' => 'form-horizontal'));
-        $sHTMLCode.=CHtml::label(gT("Language:"), 'lang',array('class'=>'control-label col-xs-4 col-sm-8'));
-        $sHTMLCode .= "<div class='col-xs-7 col-sm-2'>";
-        $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
-        $sHTMLCode .= "</div>";
-        $sHTMLCode .= "<div class='col-xs-1 col-sm-2'>";
-        $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".gT("Change the language")."</button>";
-        $sHTMLCode .= "</div>";
-        $sHTMLCode.= CHtml::endForm();
+        $languageChangerDatas = array(
+            'sSelected' => $sSelected ,
+            'aListLang' => $aListLang ,
+            'sClass'    => $sClass    ,
+        );
+        $sHTMLCode = Yii::app()->getController()->renderPartial('/surveys/LanguageChangerForm', $languageChangerDatas, true);
+
+        //~ $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get', array('class' => 'form-horizontal'));
+        //~ $sHTMLCode = Yii::app()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);
+        //~ $sHTMLCode.=CHtml::label(gT("Language:"), 'lang',array('class'=>'control-label col-xs-4 col-sm-8'));
+        //~ $sHTMLCode .= "<div class='col-xs-7 col-sm-2'>";
+        //~ $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
+        //~ $sHTMLCode .= "</div>";
+        //~ $sHTMLCode .= "<div class='col-xs-1 col-sm-2'>";
+        //~ $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".gT("Change the language")."</button>";
+        //~ $sHTMLCode .= "</div>";
+        //~ $sHTMLCode.= CHtml::endForm();
         return $sHTMLCode;
     }
     else
