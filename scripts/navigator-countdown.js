@@ -16,7 +16,6 @@ function navigator_countdown(n)
 	$(document).ready(function()
 	{
 		$('button.disabled').prop("disabled", true);// Double check : already in navbuttonsJqueryUi
-		$('button.disabled.ui-button').button("option", "disabled", true );
 		$(window).data('countdown', n);
 		navigator_countdown_btn().each(function(i, e)
 		{
@@ -28,7 +27,7 @@ function navigator_countdown(n)
 
 function navigator_countdown_btn()
 {
-	return $('#movenextbtn, #moveprevbtn, #movesubmitbtn');
+	return $('.ls-move-btn');
 }
 
 function navigator_countdown_end()

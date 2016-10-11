@@ -1,9 +1,7 @@
 <?php
 if ($screenname != 'welcome')
 {
-?>
-    <button id="moveprevbtn" name="move2" value="<?php eT('Previous') ?>" type="button" accesskey="p" class="submit"><?php eT('Previous') ?></button>
-<?php
+    echo App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>"moveprev",'class'=>"ls-move-btn ls-move-previous-btn"),true);
 }
+echo App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"ls-move-btn ls-move-next-btn"),true);
 ?>
-<button id="movenextbtn" name="move2" value="<?php eT('Next') ?>" accesskey="n" type="submit" class="submit"><?php eT('Next') ?></button>

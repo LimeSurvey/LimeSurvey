@@ -1197,18 +1197,24 @@ class templates extends Survey_Common_Action
 
                 // Normally output by survey_runtime
                 $myoutput = array_merge($myoutput, array('</div>'));
+                $sMovePrev = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>"moveprev",'class'=>"ls-move-btn ls-move-previous-btn"),true);
+                $sMoveNext = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"ls-move-btn ls-move-next-btn"),true);
 
                 $aData['aReplacements'] = array(
-                    'MOVEPREVBUTTON' => '<button type="submit" id="moveprevbtn" value="moveprev" name="moveprev" accesskey="p" class="submit button btn btn-default btn-lg ">'.gT('Previous').'</button>',
-                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg ">'.gT('Next').'</button>'
+                    'MOVEPREVBUTTON' => $sMovePrev,
+                    'MOVENEXTBUTTON' => $sMoveNext,
+                    'NAVIGATOR' => "$sMovePrev $sMoveNext",
                 );
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/navigator.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endpage.pstpl", $aData, $oEditedTemplate));
                 break;
 
             case 'welcome':
+                $sMoveNext = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"ls-move-btn ls-move-next-btn"),true);
+
                 $aData['aReplacements'] = array(
-                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg">'.gT('Next').'</button>'
+                    'MOVENEXTBUTTON' => $sMoveNext,
+                    'NAVIGATOR' => "$sMoveNext",
                 );
                 $files=$Welcome ;
                 foreach ($Welcome as $qs) {

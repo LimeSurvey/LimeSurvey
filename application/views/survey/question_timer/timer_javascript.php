@@ -51,22 +51,30 @@
 
                 if(timeleft > disable_next)
                 {
-                    $('#movenextbtn').prop('disabled',true);$('#movenextbtn.ui-button').button( 'option', 'disabled', true );
+                    $('.ls-move-previous-btn').each(function(){
+                        $(this).prop('disabled',true);
+                    });
                 }
                 else if (disable_next >= 1 && timeleft <= disable_next)
                 {
-                    $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
+                    $('.ls-move-next-btn').each(function(){
+                        $(this).prop('disabled',false);
+                    });
                 }
             <?php endif; ?>
 
             <?php if($disable_prev > 0): ?>
                 if(timeleft > disable_prev)
                 {
-                    $('#moveprevbtn').prop('disabled',true);$('#moveprevbtn.ui-button').button( 'option', 'disabled', true );
+                    $('.ls-move-next-btn').each(function(){
+                        $(this).prop('disabled',true);
+                    });
                 }
                 else if (disable_prev >= 1 && timeleft <= disable_prev)
                 {
-                    $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
+                    $('.ls-move-previous-btn').each(function(){
+                        $(this).prop('disabled',false);
+                    });
                 }
             <?php endif;?>
 
@@ -141,23 +149,35 @@
                 switch(action)
                 {
                     case 2: //Just move on, no warning
-                        $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
-                        $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
+                        $('.ls-move-previous-btn').each(function(){
+                            $(this).prop('disabled',false);
+                        });
+                        $('.ls-move-next-btn').each(function(){
+                            $(this).prop('disabled',false);
+                        });
                         freezeFrame(disable);
                         subcookiejar.crumble('limesurvey_timers', timersessionname);
                         $('#defaultbtn').click();
                         break;
                     case 3: //Just warn, don't move on
                         $('#'+expireddisplay).show();
-                        $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
-                        $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
+                        $('.ls-move-previous-btn').each(function(){
+                            $(this).prop('disabled',false);
+                        });
+                        $('.ls-move-next-btn').each(function(){
+                            $(this).prop('disabled',false);
+                        });
                         freezeFrame(disable);
                         $('#limesurvey').submit(function(){ subcookiejar.crumble('limesurvey_timers', timersessionname); });
                         break;
                     default: //Warn and move on
                         $('#'+expireddisplay).show();
-                        $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
-                        $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
+                        $('.ls-move-previous-btn').each(function(){
+                            $(this).prop('disabled',false);
+                        });
+                        $('.ls-move-next-btn').each(function(){
+                            $(this).prop('disabled',false);
+                        });
                         freezeFrame(disable);
                         subcookiejar.crumble('limesurvey_timers', timersessionname);
                         setTimeout($('#defaultbtn').click(), ".$time_limit_message_delay.");

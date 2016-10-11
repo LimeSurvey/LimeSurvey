@@ -1744,7 +1744,7 @@ function surveymover()
     $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
     $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep']))?$_SESSION['survey_'.$surveyid]['maxstep']:false;
     $iSessionTotalSteps=(isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
-    $sClass="submit button";
+    $sClass="ls-move-btn";
     $sSurveyMover = "";
 
     // Count down
@@ -1779,34 +1779,27 @@ function surveymover()
         $sMoveNext="";
     }
 
-    $sClass .= " btn btn-lg ";
 
     // Construction of mover
-    $sMovePrevButton = '';
+
     if($sMovePrev){
-        $sLangMoveprev=gT("Previous");
+        $sMovePrevButton = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>$sMovePrev,'class'=>"$sClass ls-move-previous-btn"),true);
         //$sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
-        $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass." btn-default"));
-    }
-    if($sMovePrev && $sMoveNext){
-        $sSurveyMover .= " ";
+        //~ $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass." btn-default"));
+    }else{
+        $sMovePrevButton = '';
     }
 
-    $sMoveNextButton = '';
     if($sMoveNext){
-
         if($sMoveNext=="movesubmit"){
-            $sLangMovenext=gT("Submit");
-            $sAccessKeyNext='l';// Why l ?
+            $sMoveNextButton = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"movesubmit",'class'=>"$sClass ls-move-submit-btn"),true);
         }else{
-            $sLangMovenext=gT("Next");
-            $sAccessKeyNext='n';
+            $sMoveNextButton = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"$sClass ls-move-next-btn"),true);
         }
-
-        //$sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
-        $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass." btn-primary"));
-     }
-    //return $sSurveyMover;
+        //~ $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass." btn-primary"));
+    }else{
+        $sMoveNextButton = '';
+    }
     return array('sMovePrevButton' => $sMovePrevButton, 'sMoveNextButton'=>$sMoveNextButton);
 }
 
@@ -2177,10 +2170,20 @@ function checkCompletedQuota($surveyid,$return=false)
     if ($sAction == "2")
     {
         $sQuotaStep = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
-        $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button btn btn-default"));
+        $sMovePrev = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>$sQuotaStep,'class'=>"ls-move-btn ls-move-previous-btn"),true);
+        /* Not completly tested submit : @todo test it */
+        $sMoveSubmit = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"movesubmit",'class'=>"ls-move-btn ls-move-submit-btn"),true);
+        $sMoveSubmit = "";
+        $sNavigator = "$sMovePrev $sMoveSubmit";
+
         //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
         $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','class'=>'survey-form-container QuotaMessage'));
-        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array('MOVEPREVBUTTON'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
+        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array(
+            'MOVEPREVBUTTON' => $sMovePrev,
+            'MOVENEXTBUTTON' => $sMoveSubmit,
+            'NAVIGATOR' => $sNavigator,
+            'SAVE'=>''
+        ),$aDataReplacement);
         $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$surveyid);
         $sHtmlQuotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
         $sHtmlQuotaMessage.= CHtml::endForm();

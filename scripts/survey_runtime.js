@@ -19,7 +19,6 @@ $(document).ready(function()
     limesurveySubmitHandler();
     needConfirmHandler();
     tableCellAdapters();
-    navbuttonsJqueryUi();
     showStartPopups();
     addClassEmpty();
     noScrollOnSelect();
@@ -82,22 +81,16 @@ function setJsVar(){
     intRegex = new RegExp('[^-0-9]','g');
 }
 // Deactivate all other button on submit
+// Did we really need this .....
 function limesurveySubmitHandler(){
     // Return false disallow all other system
     $(document).on("click",".disabled",function(){return false});
     $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
 
-    $(document).on('click',"#limesurvey .button", function(event){
+    $(document).on('click',"#limesurvey .button,#limesurvey .ls-move-btn", function(event){
         $(this).prop('active',true).addClass('active');
-        $("#limesurvey .button.ui-button" ).not($(this)).button( "option", "disabled", true );
-        $("#limesurvey .button").not($(this)).prop('disabled',true).addClass('disabled');
+        $("#limesurvey .button,#limesurvey .ls-move-btn").not($(this)).prop('disabled',true).addClass('disabled');
     });
-    if (document.all && !document.querySelector) { // IE7 or lower
-        $(function() {
-            $("#defaultbtn").css('display','inline').css('width','0').css('height','0').css('padding','0').css('margin','0').css('overflow','hidden');
-            $("#limesurvey [type='submit']").not("#defaultbtn").first().before($("#defaultbtn"));
-        });
-    }
 }
 
 
@@ -246,31 +239,6 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     checkconditions(newval, name, type, evt_type);
 }
 
-// Set jquery-ui to LS Button
-function navbuttonsJqueryUi(){
-    $('[dir!="rtl"] #moveprevbtn').button({
-    icons: {
-        primary: 'ui-icon-triangle-1-w'
-    }
-    });
-    $('[dir="rtl"] #moveprevbtn').button({
-    icons: {
-        secondary: 'ui-icon-triangle-1-e'
-    }
-    });
-    $('[dir!="rtl"] #movenextbtn').button({
-    icons: {
-        secondary: 'ui-icon-triangle-1-e'
-    }
-    });
-    $('[dir="rtl"] #movenextbtn').button({
-    icons: {
-        primary: 'ui-icon-triangle-1-w'
-    }
-    });
-    $(".button").button();
-    // TODO trigger handler activate/deactivate to update ui-button class
-}
 /**
  * showStartPopups : Take all message in startPopups json array and launch an alert with text
  */
