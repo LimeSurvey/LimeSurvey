@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
 <h3 class="pagetitle"><?php eT("User control");?></h3>
     <div class="row">
         <div class="col-md-2 col-sm-4 col-xs-12  col-md-offset-10 col-sm-offset-8">
@@ -7,7 +7,7 @@
 
     </div>
     <div class="row" style="margin-bottom: 100px">
-        <div class="container">
+        <div class="container-fluid">
             <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id' => 'all_users',

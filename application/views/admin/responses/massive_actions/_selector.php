@@ -36,6 +36,18 @@
                         array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
                     ),
                 ),
+
+                // Download ZIP archive of file upload question types
+                array(
+                    'type' => 'action',
+                    'action' => 'downloadZip',
+                    'url' => App()->createUrl('/admin/responses/sa/actionDownloadfiles/iSurveyId/' . $_GET['surveyid']) . '/sResponseId/',
+                    'iconClasses' => 'fa fa-download',
+                    'text' => gT('Download files'),
+                    'grid-reload' => 'no',
+
+                    'actionType' => 'window-location-href'
+                )
             ),
 
     ));

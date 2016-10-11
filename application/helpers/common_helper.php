@@ -2606,6 +2606,23 @@ function dbQuoteAll($value)
     return Yii::app()->db->quoteValue($value);
 }
 
+
+/**
+* This function strips UTF-8 control characters from strings, except tabs, CR and LF
+* - it is intended to be used before any response data is saved to the response table
+*
+* @param mixed $sValue A string to be sanitized
+* @return A sanitized string, otherwise the unmodified original variable
+*/
+function stripCtrlChars($sValue)
+{
+    if (is_string($sValue))
+    {
+        $sValue=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '', $sValue);
+    }
+    return $sValue;
+}
+
 // make a string safe to include in a JavaScript String parameter.
 function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
     $new_str ='';
@@ -2686,6 +2703,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     require_once(APPPATH.'/third_party/phpmailer/PHPMailerAutoload.php');
     $mail = new PHPMailer;
+    $mail->SMTPAutoTLS=false;
     if (!$mail->SetLanguage($defaultlang,APPPATH.'/third_party/phpmailer/language/'))
     {
         $mail->SetLanguage('en',APPPATH.'/third_party/phpmailer/language/');
@@ -3456,15 +3474,15 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
     if ($sType == 'survey')
     {
-        $sPattern = "([^'\"]*)/upload/surveys/{$iOldSurveyID}/";
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/'.$iOldSurveyID.'\/)';
         $sReplace = Yii::app()->getConfig("publicurl")."upload/surveys/{$iNewSurveyID}/";
-        return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
+        return preg_replace('/'.$sPattern.'/u', $sReplace, $sString);
     }
     elseif ($sType == 'label')
     {
-        $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
-        $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
-        return preg_replace('#'.$pattern.'#', $replace, $sString);
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/'.$iOldSurveyID.'\/)';
+        $sReplace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
+        return preg_replace("/".$sPattern."/u", $sReplace, $sString);
     }
     else // unknown type
     {

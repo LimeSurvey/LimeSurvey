@@ -286,7 +286,7 @@
             );
             foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
             {
-                 $aRules[]=array($key,'LSYii_Validators');
+                 $aRules[]=array($key,'LSYii_Validators','except'=>'FinalSubmit');
             }
             return $aRules;
         }

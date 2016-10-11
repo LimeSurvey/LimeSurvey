@@ -397,72 +397,6 @@ class TokenDynamic extends LSActiveRecord
         return parent::beforeSave();
     }
 
-    /**
-     * Get CDbCriteria for a json search string
-     *
-     * @param array $condition
-     * @return \CDbCriteria
-     */
-    function getSearchMultipleCondition($condition)
-    {
-        $i=0;
-        $j=1;
-        $tobedonelater =array();
-        $command = new CDbCriteria;
-        $command->condition = '';
-        $iNumberOfConditions = (count($condition)+1)/4;
-        $sConnectingOperator = 'AND';
-        $aParams=array();
-        while($i < $iNumberOfConditions){
-            $sFieldname=$condition[$i*4];
-            $sOperator=$condition[($i*4)+1];
-            $sValue=$condition[($i*4)+2];
-            switch ($sOperator)
-            {
-                case 'equal':
-                    $command->addCondition($sFieldname.' = :condition_'.$i, $sConnectingOperator);
-                    $aParams[':condition_'.$i] = $sValue;
-                    break;
-                case 'contains':
-                    $command->addCondition($sFieldname.' LIKE :condition_'.$i, $sConnectingOperator);
-                    $aParams[':condition_'.$i] = '%'.$sValue.'%';
-                    break;
-                case 'notequal':
-                    $command->addCondition($sFieldname.' <> :condition_'.$i, $sConnectingOperator);
-                    $aParams[':condition_'.$i] = $sValue;
-                    break;
-                case 'notcontains':
-                    $command->addCondition($sFieldname.' NOT LIKE :condition_'.$i, $sConnectingOperator);
-                    $aParams[':condition_'.$i] = '%'.$sValue.'%';
-                    break;
-                case 'greaterthan':
-                    $command->addCondition($sFieldname.' > :condition_'.$i, $sConnectingOperator);
-                    $aParams[':condition_'.$i] = $sValue;
-                    break;
-                case 'lessthan':
-                    $command->addCondition($sFieldname.' < :condition_'.$i, $sConnectingOperator);
-                    $aParams[':condition_'.$i] = $sValue;
-                    break;
-            }
-            if (isset($condition[($i*4)+3]))
-            {
-                $sConnectingOperator=$condition[($i*4)+3];
-            }
-            else
-            {
-                $sConnectingOperator='AND';
-            }
-            $i++;
-
-        }
-        if (count($aParams)>0)
-        {
-            $command->params = $aParams;
-        }
-
-        return $command;
-    }
-
     function deleteToken($tokenid)
     {
         $dlquery = "DELETE FROM ".TokenDynamic::tableName()." WHERE tid=:tokenid";
@@ -609,6 +543,7 @@ class TokenDynamic extends LSActiveRecord
 
     public function getStandardColsForGrid()
     {
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         return array(
             array(
                 'id'=>'tid',
@@ -734,7 +669,7 @@ class TokenDynamic extends LSActiveRecord
                 'type'=>'raw',
                 'value'=>'$data->validfromFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
+                'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
             array(
                 'header' => gT('Valid until'),
@@ -742,7 +677,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'validuntil',
                 'value'=>'$data->validuntilFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
         );
     }
@@ -767,7 +702,6 @@ class TokenDynamic extends LSActiveRecord
                 'htmlOptions' => array('class' => 'hidden-xs'),
             );
         }
-
 
         return array_merge($this->standardColsForGrid, $aCustomAttributesCols);
     }
@@ -978,8 +912,21 @@ class TokenDynamic extends LSActiveRecord
       $criteria->compare('remindercount',$this->remindercount,false);
       $criteria->compare('completed',$this->completed,true);
       $criteria->compare('usesleft',$this->usesleft,false);
-      $criteria->compare('validfrom',$this->validfrom,true);
-      $criteria->compare('validuntil',$this->validuntil,true);
+
+      $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+      if ($this->validfrom)
+      {
+          $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validfrom);
+          $s2 = $s->format('Y-m-d H:i');
+          $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+      }
+
+      if ($this->validuntil)
+      {
+          $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validuntil);
+          $s2 = $s->format('Y-m-d H:i');
+          $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+      }
 
       foreach($this->custom_attributes as $sColName => $oColumn)
       {
@@ -998,4 +945,3 @@ class TokenDynamic extends LSActiveRecord
 
     }
 }
-?>

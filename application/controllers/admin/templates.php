@@ -147,6 +147,7 @@ class templates extends Survey_Common_Action
             if (is_file($_FILES['the_file']['tmp_name']))
             {
                 $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+
                 if ($aExtractResult===0)
                 {
                     Yii::app()->user->setFlash('error',gT("This file is not a valid ZIP file archive. Import failed."));
@@ -156,9 +157,9 @@ class templates extends Survey_Common_Action
                 else
                 {
                     // Successfully unpacked
-                    foreach($aExtractResult as $sFile)
+                    foreach ($aExtractResult as $sFile)
                     {
-                        if ($sFile['status']=='skipped')
+                        if ($sFile['status']=='skipped' && !$sFile['folder'])
                         {
                             $aErrorFilesInfo[] = array(
                                 "filename" => $sFile['stored_filename'],

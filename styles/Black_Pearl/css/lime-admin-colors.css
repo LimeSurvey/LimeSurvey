@@ -1774,10 +1774,12 @@ div.panel.disabled {
   background-color: #802b26;
   border: 1px solid #5d1f1b; }
 
-.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
   color: #fff;
   background: #071630; }
 
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning,
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
   background: #a0352f;
   color: #fff; }

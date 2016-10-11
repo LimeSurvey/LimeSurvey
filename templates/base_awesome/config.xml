@@ -8,7 +8,7 @@
         <authorEmail>denis@sondages.pro</authorEmail>
         <license>GNU General Public License version 3 or later and MIT</license>
         <version>0.1</version>
-        <description>LimeSurvey Template with the less update.</description>
+        <description>Testing template for 3.0 LS version, must be renamed to something like 'basic' after.</description>
         <!--
              The last_update field must be updated before each release,
              to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)

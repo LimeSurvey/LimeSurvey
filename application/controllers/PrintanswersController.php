@@ -139,7 +139,7 @@
                     {
                         if($sAnonymized != 'Y')
                         {
-                                $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                                $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                         }
                     }
                     elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it

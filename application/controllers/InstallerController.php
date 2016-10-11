@@ -709,9 +709,7 @@ class InstallerController extends CController {
                     return;
                 }
             } else {
-                // if passwords don't match, redirect to proper link.
-                Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT("Passwords don't match."));
-                $this->redirect(array('installer/optional'));
+                unset($aData['confirmation']);
             }
         } elseif(empty(Yii::app()->session['configFileWritten'])) {
             $this->_writeConfigFile();
