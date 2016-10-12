@@ -3962,7 +3962,6 @@ function do_array_5point($ia)
 
     $ansresult     = dbExecuteAssoc($ansquery);     //Checked
     $aSubquestions = $ansresult->readAll();
-    $anscount      = count($aSubquestions);
     $fn            = 1;
     $sColumns      = $sHeaders = $sRows = $answer_tds = '';
 
@@ -5811,7 +5810,6 @@ function do_array_dual($ia)
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $extraclass                 = "";
     $answertypeclass            = ""; // Maybe not
-    $caption                    = "";// Just leave empty, are replaced after
     $inputnames                 = array();
     $labelans1                  = array();
     $labelans                   = array();
