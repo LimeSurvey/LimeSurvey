@@ -1644,25 +1644,21 @@ class conditionsaction extends Survey_Common_Action {
     protected function getEditConditionForm(array $args)
     {
         extract($args);
-        $aViewUrls = array('output' => '');
-
-        $mytitle = ($subaction == "editthiscondition" &&  isset($p_cid))?gT("Edit condition"):gT("Add condition");
-        $scenario = '';
-        $showScenario = ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) || ( $subaction == "editthiscondition" && $scenario == 1) )?true:false;
+        $result = '';
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
         $this->registerScriptFile('ADMIN_SCRIPT_PATH', 'conditions.js');
 
-        if ($subaction == "editthiscondition" && isset($p_cid))
-        {
+        if ($subaction == "editthiscondition" && isset($p_cid)) {
+            $title = gT("Edit condition");
             $submitLabel = gT("Update condition");
             $submitSubaction = "updatecondition";
             $submitcid = sanitize_int($p_cid);
         }
-        else
-        {
-            $submitLabel = gT("Add condition");
+        else {
+            $title = gT("Add condition");
+            $submitLabel = $title;
             $submitSubaction = "insertcondition";
             $submitcid = "";
         }
@@ -1672,9 +1668,9 @@ class conditionsaction extends Survey_Common_Action {
             'iSurveyID'     => $iSurveyID,
             'gid'           => $gid,
             'qid'           => $qid,
-            'mytitle'       => $mytitle,
-            'showScenario'  => $showScenario,
-            'qcountI'       => $qcount+1,
+            'title'         => $title,
+            'showScenario'  => $this->shouldShowScenario($subaction, $scenariocount),
+            'qcountI'       => $qcount + 1,
             'cquestions'    => $cquestions,
             'p_csrctoken'   => $p_csrctoken,
             'p_prevquestionsgqa'  => $p_prevquestionsgqa,
@@ -1689,26 +1685,24 @@ class conditionsaction extends Survey_Common_Action {
             'editSourceTab' => $this->getEditSourceTab(),
             'editTargetTab' => $this->getEditTargetTab()
         );
-        $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
+        $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
-        $aViewUrls['output'] .= "<script type='text/javascript'>\n"
+        $result .= "<script type='text/javascript'>\n"
             . "<!--\n"
             . "\t".$js_getAnswers_onload."\n";
-        if (isset($p_method))
-        {
-            $aViewUrls['output'] .= "\tdocument.getElementById('method').value='".$p_method."';\n";
+        if (isset($p_method)) {
+            $result .= "\tdocument.getElementById('method').value='".$p_method."';\n";
         }
 
-        $aViewUrls['output'] .= $this->getEditFormJavascript($subaction);
+        $result .= $this->getEditFormJavascript($subaction);
 
-        if (isset($p_scenario))
-        {
-            $aViewUrls['output'] .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
+        if (isset($p_scenario)) {
+            $result .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
         }
-        $aViewUrls['output'] .= "-->\n"
+        $result .= "-->\n"
             . "</script>\n";
 
-        return $aViewUrls['output'];
+        return $result;
     }
 
     /**
@@ -2134,5 +2128,16 @@ class conditionsaction extends Survey_Common_Action {
             )
         );
         $this->getController()->redirect($url);
+    }
+
+    /**
+     * Decides if "Default scenario" should be shown or not
+     * @param string $subaction
+     * @param int $scenariocount
+     * @return boolean
+     */
+    protected function shouldShowScenario($subaction, $scenariocount)
+    {
+        return (($subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount==0)) || ($subaction == "editthiscondition"));
     }
 }

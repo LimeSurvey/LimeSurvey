@@ -6,7 +6,7 @@
  * @var $iSurveyID
  * @var $gid
  * @var $qid
- * @var $mytitle
+ * @var $title
  * @var $showScenario                   ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1)
  * @var $qcountI                        $qcount+1
  */
@@ -21,7 +21,7 @@
             <div class='form-group'>
                 <div class='col-sm-2'></div>
                 <div class='col-sm-10'>
-                    <h4><?php echo $mytitle;?></h4>
+                    <h4><?php echo $title;?></h4>
                 </div>
             </div>
 
