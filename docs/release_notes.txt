@@ -36,6 +36,25 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from  2.54.1 (build 161007) to 2.54.2 (build 161012) Oct 12, 2016
+-Fixed issue #11752: Mandatory radio star show 4 stars only (markusfluer)
+-Fixed issue #11760: Helper class ls\ajax\AjaxHelper uses echo keyword as method name (Olle Haerstedt)
+-Fixed issue #11772: Expression manager convert_value does not obey strict setting (Olle Haerstedt)
+-Fixed issue #11775: Gender question condition faulty (Olle Haerstedt)
+-Fixed issue #11780: Typo - The file has been successfuly uploaded (Olle Haerstedt)
+-Fixed issue #11785: Warn if input is too big in question organizer (Olle Haerstedt)
+-Fixed issue: SPSS data export corrupted (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz, surveyunihi, ecoplan
+#Updated translation: German (Informal) by c_schmitz, actxcellence
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by xtingray, larjona, aesteban
+
 Changes from  2.54 (build 161007) to 2.54.1 (build 161010) Oct 10, 2016
 -Fixed issue #11760: White screen/error when opening CPDB
 
