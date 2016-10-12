@@ -151,13 +151,11 @@ class conditionsaction extends Survey_Common_Action {
         if (!isset($p_csrctoken)) {$p_csrctoken=returnGlobal('csrctoken');}
         if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnGlobal('prevQuestionSGQA');}
 
+        $p_canswers = null;
         if (is_array($request->getPost('canswers'))) {
             foreach ($request->getPost('canswers') as $key => $val) {
                 $p_canswers[$key]= preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
             }
-        }
-        else {
-            $p_canswers = null;
         }
 
         $method = $this->getMethod();
@@ -181,8 +179,6 @@ class conditionsaction extends Survey_Common_Action {
             $p_newscenarionum = null;
         }
         //END Sanitizing POSTed data
-
-        $br = CHtml::openTag('br /');
 
         // Make sure that there is a sid
         if (!isset($iSurveyID) || !$iSurveyID) {
@@ -209,11 +205,6 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         $conditionsoutput_action_error = ""; // defined during the actions
-
-        $markcidarray = Array();
-        if (isset($_GET['markcid'])) {
-            $markcidarray = explode("-", $_GET['markcid']);
-        }
 
         // Begin process actions
         $args = array(
@@ -306,6 +297,9 @@ class conditionsaction extends Survey_Common_Action {
 
         $aViewUrls['conditionshead_view'][] = $aData;
 
+        $conditionsList = array();
+        $scenariocount = 0;
+
         //BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
         if (
             $subaction == 'index' ||
@@ -320,7 +314,6 @@ class conditionsaction extends Survey_Common_Action {
 
             //3: Get other conditions currently set for this question
             $conditionscount = 0;
-            $conditionsList=array();
             $s=0;
 
             $scenarios = $this->getAllScenarios($qid);
@@ -351,7 +344,7 @@ class conditionsaction extends Survey_Common_Action {
                         $aData['showScenarioText'] = null;
                     }
 
-                    if ($aData['showScenarioText'] != null &&
+                    if (!empty($aData['showScenarioText']) &&
                         (  $subaction == "editconditionsform"
                         || $subaction == "insertcondition"
                         || $subaction == "updatecondition"
@@ -407,17 +400,6 @@ class conditionsaction extends Survey_Common_Action {
                         foreach ($aConditionsMerged as $rows)
                         {
                             if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
-                            $markcidstyle="oddrow";
-                            if (array_search($rows['cid'], $markcidarray) !== FALSE) {
-                                // This is the style used when the condition editor is called
-                                // in order to check which conditions prevent a question deletion
-                                $markcidstyle="markedrow";
-                            }
-                            if ($subaction == "editthiscondition" && isset($p_cid) &&
-                                $rows['cid'] === $p_cid) {
-                                // Style used when editing a condition
-                                $markcidstyle="editedrow";
-                            }
 
                             // This variable is used for condition.php view; $aData is used for other view
                             $data = array();
@@ -492,6 +474,7 @@ class conditionsaction extends Survey_Common_Action {
                             elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0) { // SGQA
                                 $rightOperandType = 'prevQsgqa';
                                 $textfound = false;
+                                $matchedSGQAText = '';
                                 foreach ($cquestions as $cqn) {
                                     if ($cqn[3] == $matchedSGQA[1]) {
                                         $matchedSGQAText = $cqn[0];
@@ -499,6 +482,7 @@ class conditionsaction extends Survey_Common_Action {
                                         break;
                                     }
                                 }
+
                                 if ($textfound === false) {
                                     $matchedSGQAText = $rows['value'].' ('.gT("Not found").')';
                                 }
@@ -767,10 +751,10 @@ class conditionsaction extends Survey_Common_Action {
             }
 
             // Check if any result returned false
-            if ($results && in_array(false, $results, true)) {
+            if (in_array(false, $results, true)) {
                 Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
             }
-            else if ($results) {
+            else if (!empty($results)) {
                 Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
             }
             else {
@@ -868,7 +852,7 @@ class conditionsaction extends Survey_Common_Action {
             if (in_array(false, $results, true)) {
                 Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
             }
-            else if ($results) {
+            else if (!empty($results)) {
                 Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
             }
             else {
@@ -952,7 +936,6 @@ class conditionsaction extends Survey_Common_Action {
     {
         extract($args);
 
-        $qid = returnGlobal('qid');
         $copyconditionsfrom = returnGlobal('copyconditionsfrom');
         $copyconditionsto = returnGlobal('copyconditionsto');
         if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
@@ -982,12 +965,12 @@ class conditionsaction extends Survey_Common_Action {
 
                     //First lets make sure there isn't already an exact replica of this condition
                     $conditions_data = array(
-                        'qid'             =>     $newqid,
-                        'scenario'         =>     $pfc['scenario'],
-                        'cqid'             =>     $pfc['cqid'],
-                        'cfieldname'     =>     $pfc['cfieldname'],
-                        'method'         =>    $pfc['method'],
-                        'value'         =>     $pfc['value']
+                        'qid'        => $newqid,
+                        'scenario'   => $pfc['scenario'],
+                        'cqid'       => $pfc['cqid'],
+                        'cfieldname' => $pfc['cfieldname'],
+                        'method'     => $pfc['method'],
+                        'value'      => $pfc['value']
                     );
 
                     $result = Condition::model()->findAllByAttributes($conditions_data);
@@ -1638,6 +1621,7 @@ class conditionsaction extends Survey_Common_Action {
             )
         );
 
+        $data = array();
         $data['url'] = $url;
         $data['conditionsList'] = $conditionsList;
         $data['pquestions'] = $pquestions;
