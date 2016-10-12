@@ -272,7 +272,12 @@
             $resulttoken = Yii::app()->db->createCommand($querytoken)
                 ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
                 ->bindValue(":qid", $qid, PDO::PARAM_INT)
-                ->queryRow() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
+                ->queryRow();
+
+            if (empty($resulttoken)) {
+                throw new \CException('Faulty query in getConditionCountToken');
+            }
+
             return (int) $resulttoken['recordcount'];
         }
 
