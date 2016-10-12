@@ -1157,10 +1157,24 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', 'organizeGroupsAndQuestions_view', $aData);
     }
 
+    /**
+     * Reorder groups and questions
+     * @param int $iSurveyID
+     * @return void
+     */
     private function _reorderGroup($iSurveyID)
     {
         $AOrgData = array();
         parse_str(Yii::app()->request->getPost('orgdata'), $AOrgData);
+
+        // If the survey is big, input might exceed max_input_vars causing
+        // parse_str to fail. TODO: Fix using JSON in post instead
+        $errors = error_get_last();
+        if ($errors) {
+            $message = $errors['message'];
+            Yii::app()->setFlashMessage($message, 'error');
+            return;
+        }
 
         $grouporder = 0;
         foreach ($AOrgData['list'] as $ID => $parent)
