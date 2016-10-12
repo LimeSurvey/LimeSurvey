@@ -181,27 +181,29 @@ $(document).ready(function(){
 
         var onclick = null;
         var href = null;
-        if($(this).data('href'))
-        {
-            var href = $(this).data('href');    // When calling modal from javascript
+
+        if ($(this).data('href')) {
+            href = $(this).data('href');    // When calling modal from javascript
         }
-        else
-        {
-            var href = $(e.relatedTarget).data('href');
+        else {
+            href = $(e.relatedTarget).data('href');
         }
 
-        if($(this).data('onclick'))
-        {
-            var onclick = $(this).data('onclick');
+        if ($(this).data('onclick')) {
+            onclick = $(this).data('onclick');
         }
-        else
-        {
-            var onclick = $(e.relatedTarget).data('onclick');
+        else {
+            onclick = $(e.relatedTarget).data('onclick');
+        }
+
+        // Get message
+        var message = $(this).data('message');
+        if (message) {
+            $(this).find('.modal-body-text').html(message);
         }
 
         $keepopen = $(this).data('keepopen');
-        if (href != '' && href !== undefined)
-        {
+        if (href != '' && href !== undefined) {
             $(this).find('.btn-ok').attr('href', href);
         }
         else if (onclick != '' && onclick !== undefined) {
@@ -223,8 +225,7 @@ $(document).ready(function(){
             }
 
         }
-        else if($(e.relatedTarget).data('ajax-url'))
-        {
+        else if ($(e.relatedTarget).data('ajax-url')) {
             var postDatas   = $(e.relatedTarget).data('post');
             var gridid      = $(e.relatedTarget).data('gridid');
 
@@ -247,8 +248,7 @@ $(document).ready(function(){
                 });
             });
         }
-        else
-        {
+        else {
             throw "Confirmation modal: Found neither data-href or data-onclick.";
         }
 
@@ -384,9 +384,7 @@ function doToolTip()
     // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
     $('[data-tooltip="true"]').tooltip();
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+    $('[data-toggle="tooltip"]').tooltip()
 
     // ToolTip on menu
     $(".sf-menu li").each(function() {

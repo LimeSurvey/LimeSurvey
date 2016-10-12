@@ -2123,3 +2123,38 @@ table#responsedetail tr td{
     max-height: 500px;
     overflow-y: auto;
 }
+
+/* Condition builder */
+.scenario-heading {
+    padding: 0;
+}
+
+.scenario-heading .delete-scenario-form {
+    padding-top: 6px;
+}
+
+#delete-all-conditions, #renumber-scenario {
+    margin-top: -10px;
+}
+
+#renumber-scenario {
+    margin-right: 10px;
+}
+
+/* Needed for buttons that are pulled right in the conditions bar */
+.margin-left {
+    margin-left: 5px;
+}
+
+.conditions-table {
+    margin-bottom: 0;
+}
+
+.condition-and-or-or {
+    margin-left: 20px;
+}
+
+/* Tabs used within form in condition designer */
+#editconditions .tab-content {
+    padding-top: 0;
+}
