@@ -259,7 +259,7 @@ class SurveyLink extends LSActiveRecord
              */
             array(
                 "value" => '$data->surveyName',
-                'header' => gT('Survey Name'),
+                'header' => gT('Survey name'),
                 "sortable" => false,
                 "filter" => false
             ),

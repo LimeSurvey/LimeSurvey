@@ -223,7 +223,7 @@ class Participant extends LSActiveRecord
             'email' => gT('Email address'),
             'language' => gT('Language'),
             'blacklisted' => gT('Blacklisted'),
-            'owner_uid' => gT('Owner UID'),
+            'owner_uid' => gT('Owner ID'),
             'surveyid' => gT('Active survey ID')
         );
         foreach($this->allExtraAttributes as $name => $attribute)
