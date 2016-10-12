@@ -118,7 +118,7 @@
                         <li role='presentation' class='target-tab'>
                             <a href='#TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Token fields'); ?></a>
                         </li>
-                        <li role='presentation' class='target-tab'>
+                        <li role='presentation' class='target-tab disabled'>
                             <a href='#REGEXP' aria-controls='REGEXP' role='tab' data-toggle='tab'><?php eT('RegExp'); ?></a>
                         </li>
                     </ul>
