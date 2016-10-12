@@ -42,6 +42,20 @@ PrepareEditorScript(false, $this);
             <span class='text-warning'><?php  eT("Required"); ?> </span>
         </div>
 
+        <!-- Create sample group/question checkbox -->
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for='createsample'><?php  eT("Sample question:"); ?></label>
+            <div class="col-sm-2">
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'createsample',
+                    'value'=> false,
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
+            </div>
+            <span class='help-block'><?php  eT("Adds a group and sample question to the new survey"); ?> </span>
+        </div>
 
         <!-- Description -->
         <div class="form-group">

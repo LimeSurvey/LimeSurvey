@@ -76,10 +76,10 @@ function strSplitUnicode($str, $l = 0) {
 * @param sep Quote separator. Use '\'' for SPSS, '"' for R
 * @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
 */
-function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE) {
+function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='') {
 
     // Build array that has to be returned
-    $fields = SPSSFieldMap($iSurveyID);
+    $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
     // Now see if we have parameters for from (offset) & num (limit)
     $limit = App()->getRequest()->getParam('limit');
@@ -326,7 +326,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 * @param $prefix string prefix for the variable ID
 * @return array
 */
-function SPSSFieldMap($iSurveyID, $prefix = 'V')
+function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 {
     $typeMap = array(
         '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -362,28 +362,26 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
         '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
     );
 
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+    if (empty($sLanguage)){
+        $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
+    }
+    $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
+    // ... and if the survey uses anonymized responses
+    $sSurveyAnonymized=Survey::model()->findByPk($iSurveyID)->anonymized;
 
-    #Lookup the names of the attributes
-    $query="SELECT sid, anonymized, language FROM {{surveys}} WHERE sid=$iSurveyID";
-    $aRow=Yii::app()->db->createCommand($query)->queryRow();  //Checked
-    $surveyprivate=$aRow['anonymized'];
-    $language=$aRow['language'];
-
-    $fieldno=0;
-
+    $iFieldNumber=0;
     $fields=array();
-    if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
+    if ($bTokenTableExists && $sSurveyAnonymized == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $fieldno++;
-                $fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
+                $iFieldNumber++;
+                $fields[] = array('id'=>"{$prefix}{$iFieldNumber}",'name'=>mb_substr($attributefield, 0, 8),
                 'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
                 'VariableLabel'=>$attributedescription['description'],'sql_name'=>$attributefield,'size'=>'100',
                 'title'=>$attributefield,'hide'=>0, 'scale'=>'');
@@ -480,15 +478,15 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
             }
 
         }
-        $fieldno++;
-        $fid = $fieldno - $diff;
+        $iFieldNumber++;
+        $fid = $iFieldNumber - $diff;
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
         $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
         'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
         'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
         'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
-        $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
+        $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $sLanguage);
         if (is_array($answers)) {
             //Ok we have answers
             if (isset($answers['size'])) {
@@ -1274,23 +1272,23 @@ function quexml_export($surveyi, $quexmllan)
                 $question->appendChild($directive);
             }
 
-			if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
-			{
+            if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
+            {
 
-				$RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
+                $RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
 
-				if (!empty($RowQ['printable_help']))
-				{
-					$directive = $dom->createElement("directive");
-					$position = $dom->createElement("position","before");
-					$text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
-					$administration = $dom->createElement("administration","self");
-					$directive->appendChild($position);
-					$directive->appendChild($text);
-					$directive->appendChild($administration);
-					$question->appendChild($directive);
-				}
-			}
+                if (!empty($RowQ['printable_help']))
+                {
+                    $directive = $dom->createElement("directive");
+                    $position = $dom->createElement("position","before");
+                    $text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
+                    $administration = $dom->createElement("administration","self");
+                    $directive->appendChild($position);
+                    $directive->appendChild($text);
+                    $directive->appendChild($administration);
+                    $question->appendChild($directive);
+                }
+            }
 
             $response = $dom->createElement("response");
             $sgq = $RowQ['title'];
@@ -1820,7 +1818,7 @@ function tokensExport($iSurveyID)
 
     if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
     {
-		Token::model($iSurveyID)->deleteByPk($aExportedTokens);
+        Token::model($iSurveyID)->deleteByPk($aExportedTokens);
     }
 }
 

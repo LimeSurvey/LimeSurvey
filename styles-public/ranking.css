@@ -5,16 +5,14 @@
 .ranking-answers{width:100%;}
 .dragDropTable {width: 100%;}
 .dragDropTable .SortableTitle{display:block}
-.dragDropTable .columns2{width:50%;float:left;margin:0;padding:0;
-*width:49%;/* IE7 round up, all other round down */
-}
-:dir(ltr) .dragDropTable .columns2{float:right}
+.dragDropTable .columns2{width:50%;float:left;margin:0;padding:0;}
+:dir(rtl) .dragDropTable .columns2{float:right}
 .dragDropTable .clear{clear:both}
 
 
 .dragDropTable .dragDropChoices,
 .dragDropTable .dragDropRanks {
-	margin: 5px 0 0 0; 
+	margin: 5px 0 0 0;
 	background: transparent none;
 }
 
@@ -25,7 +23,7 @@
     padding-bottom:2em;
     list-style-type: none;
     list-style-position:outside;
-	display: block; /* Force the li to full width */
+    display: block; /* Force the li to full width */
 }
 
 .dragDropTable ul.dragDropChoiceList li,
@@ -33,17 +31,17 @@
     margin: 3px;
     margin-top:0;
     padding: 3px;
-	min-height: 1.3em;
-	*height:1.3em;
-	font-weight: normal;
-	cursor: move;
-	clear:both;
-	background-image: none;
+    min-height: 1.3em;
+    font-weight: normal;
+    cursor: move;
+    clear:both;
+    background-image: none;
 }
 .dragDropTable ul.dragDropChoiceList li.ui-sortable-placeholder,
 .dragDropTable ol.dragDropRankList li.ui-sortable-placeholder {
-	border: 1px dotted #CCC;
+    border: 1px dotted #CCC;
 }
+/* Must remove it and find a BS class */
 .dragDropTable .error {
-	border-color: fuchsia;
+    border-color: fuchsia;
 }

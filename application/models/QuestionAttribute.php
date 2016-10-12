@@ -193,26 +193,20 @@ class QuestionAttribute extends LSActiveRecord
             }
 
             $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sType);
-            $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
-            $aAttributeValues=array();
-            foreach($oAttributeValues as $oAttributeValue)
-            {
-                if($oAttributeValue->language){
-                    $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
-                }else{
-                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
-                }
-            }
 
             // Fill with aQuestionAttributes with default attribute or with aAttributeValues
             // Can not use array_replace due to i18n
             foreach($aAttributeNames as $aAttribute)
             {
+                $oAttributeNameValues = QuestionAttribute::model()->findAll("qid=:qid and attribute=:attribute",array(':qid'=>$iQuestionID,':attribute'=>$aAttribute['name']));
+                /* listData do an array with key language : get really all value : null key is set to empty string */
+                /* this allow to set an attribute to i18n without loose old value */
+                $aAttributeNameValues=CHtml::listData($oAttributeNameValues,'language','value');
                 if ($aAttribute['i18n'] == false)
                 {
-                    if(isset($aAttributeValues[$aAttribute['name']]))
+                    if(isset($aAttributeNameValues['']))
                     {
-                        $aQuestionAttributes[$aAttribute['name']]=$aAttributeValues[$aAttribute['name']];
+                        $aQuestionAttributes[$aAttribute['name']]=$aAttributeNameValues[''];
                     }
                     else
                     {
@@ -223,12 +217,11 @@ class QuestionAttribute extends LSActiveRecord
                 {
                     foreach ($aLanguages as $sLanguage)
                     {
-                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage]))
-                        {
-                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                        }
-                        else
-                        {
+                        if (isset($aAttributeNameValues[$sLanguage])){
+                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeNameValues[$sLanguage];
+                        }elseif(isset($aAttributeNameValues[''])){
+                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeNameValues[''];
+                        }else{
                             $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttribute['default'];
                         }
                     }

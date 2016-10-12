@@ -2705,6 +2705,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     require_once(APPPATH.'/third_party/phpmailer/PHPMailerAutoload.php');
     $mail = new PHPMailer;
+    $mail->SMTPAutoTLS=false;
     if (!$mail->SetLanguage($defaultlang,APPPATH.'/third_party/phpmailer/language/'))
     {
         $mail->SetLanguage('en',APPPATH.'/third_party/phpmailer/language/');
@@ -3475,15 +3476,15 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
     if ($sType == 'survey')
     {
-        $sPattern = "([^'\"]*)/upload/surveys/{$iOldSurveyID}/";
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/'.$iOldSurveyID.'\/)';
         $sReplace = Yii::app()->getConfig("publicurl")."upload/surveys/{$iNewSurveyID}/";
-        return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
+        return preg_replace('/'.$sPattern.'/u', $sReplace, $sString);
     }
     elseif ($sType == 'label')
     {
-        $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
-        $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
-        return preg_replace('#'.$pattern.'#', $replace, $sString);
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/'.$iOldSurveyID.'\/)';
+        $sReplace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
+        return preg_replace("/".$sPattern."/u", $sReplace, $sString);
     }
     else // unknown type
     {

@@ -915,7 +915,6 @@ body div.row .question-container {
 .question-title-container {
     color: white;
     padding: 2em 1em 1em 1em;
-
 }
 
 .questionvalidcontainer {
@@ -974,7 +973,7 @@ body div.row .question-container {
 }
 
 /*label font weight*/
-label, th {
+label {
     font-weight: normal;
 }
 

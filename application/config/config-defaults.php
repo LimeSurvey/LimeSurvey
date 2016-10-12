@@ -661,6 +661,7 @@ $config['bNumRealValue']             = 0;
 // Home page default Settings
 $config['show_logo'] = 'show';
 $config['show_last_survey_and_question'] = 'show';
+$config['show_survey_list_search'] = 'show';
 $config['boxes_by_row'] = '3';
 $config['boxes_offset'] = '3';
 

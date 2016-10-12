@@ -140,6 +140,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
+    <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Display"))); ?>
     <h3><?php eT("Survey participants"); ?></h3>
 

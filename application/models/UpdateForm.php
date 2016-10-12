@@ -1021,6 +1021,10 @@ class UpdateForm extends CFormModel
         $ch = curl_init();
         $pFile = fopen($this->tempdir.DIRECTORY_SEPARATOR.$fileName.'.zip', 'w');
         curl_setopt($ch, CURLOPT_URL, $this->_getProtocol().Yii::app()->getConfig("comfort_update_server_url").$getters);
+        if ($this->proxy_host_name != '') {
+            $proxy = $this->proxy_host_name.':'.$this->proxy_host_port;
+            curl_setopt($ch, CURLOPT_PROXY, $proxy);
+        }
         curl_setopt($ch, CURLOPT_COOKIEFILE, $this->path_cookie );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false); // We don't want the header to be written in the zip file !

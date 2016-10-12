@@ -29,12 +29,58 @@ class Authentication extends Survey_Common_Action
 {
 
     /**
-    * Show login screen and parse login data
-    */
+     * Show login screen and parse login data
+     * Will redirect or echo json depending on ajax call
+     * @return void
+     */
     public function index()
     {
         $this->_redirectIfLoggedIn();
 
+        // Result can be success, fail or data for template
+        $result = self::prepareLogin();
+
+        $isAjax = isset($_GET['ajax']) && $_GET['ajax'] == 1;
+        $succeeded = isset($result[0]) && $result[0] == 'success';
+        $failed = isset($result[0]) && $result[0] == 'failed';
+
+        // If Ajax, echo success or failure json
+        if ($isAjax) {
+            Yii::import('application.helpers.admin.ajax_helper', true);
+            if ($succeeded) {
+                ls\ajax\AjaxHelper::outputSuccess(gT('Successful login'));
+                return;
+            }
+            else if ($failed) {
+                ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
+                return;
+            }
+        }
+        // If not ajax, redirect to admin startpage or again to login form
+        else {
+            if ($succeeded) {
+                self::doRedirect();
+            }
+            else if ($failed) {
+                $message = $result[1];
+                App()->user->setFlash('loginError', $message);
+                App()->getController()->redirect(array('/admin/authentication/sa/login'));
+            }
+        }
+
+        // Neither success nor failure, meaning no form submission - result = template data from plugin
+        $aData = $result;
+
+        // If for any reason, the plugin bugs, we can't let the user with a blank screen.
+        $this->_renderWrappedTemplate('authentication', 'login', $aData);
+    }
+
+    /**
+     * Prepare login and return result
+     * @return array Either success, failure or plugin data (used in login form)
+     */
+    public static function prepareLogin()
+    {
         $aData = array();
 
         // Make sure after first run / update the authdb plugin is registered and active
@@ -75,7 +121,7 @@ class Authentication extends Survey_Common_Action
             }
             $newLoginForm = new PluginEvent('newLoginForm');
             App()->getPluginManager()->dispatchEvent($newLoginForm);
-            $aData['summary'] = $this->_getSummary('logout');
+            $aData['summary'] = self::getSummary('logout');
             $aData['pluginContent'] = $newLoginForm->getAllContent();
         }
         else
@@ -94,15 +140,14 @@ class Authentication extends Survey_Common_Action
             {
                 FailedLoginAttempt::model()->deleteAttempts();
                 App()->user->setState('plugin', $authMethod);
-                $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
+                Yii::app()->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                 Yii::app()->session['just_logged_in'] = true;
-                Yii::app()->session['loginsummary'] = $this->_getSummary();
+                Yii::app()->session['loginsummary'] = self::getSummary();
 
                 $event = new PluginEvent('afterSuccessfulLogin');
                 App()->getPluginManager()->dispatchEvent($event);
 
-                $this->_doRedirect();
-
+                return array('success');
             }
             else
             {
@@ -116,17 +161,17 @@ class Authentication extends Survey_Common_Action
                     // If no message, return a default message
                     $message = gT('Incorrect username and/or password!');
                 }
-                App()->user->setFlash('loginError', $message);
-                $this->getController()->redirect(array('/admin/authentication/sa/login'));
+                return array('failed', $message);
             }
         }
-        // If for any reason, the plugin bugs, we can't let the user with a blank screen.
-        $this->_renderWrappedTemplate('authentication', 'login', $aData);
+
+        return $aData;
     }
 
     /**
-    * Logout user
-    */
+     * Logout user
+     * @return void
+     */
     public function logout()
     {
         /* Adding beforeLogout event */
@@ -147,8 +192,9 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Forgot Password screen
-    */
+     * Forgot Password screen
+     * @return void
+     */
     public function forgotpassword()
     {
         $this->_redirectIfLoggedIn();
@@ -181,11 +227,11 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Send the forgot password email
-    *
-    * @param string $sEmailAddr
-    * @param array $aFields
-    */
+     * Send the forgot password email
+     *
+     * @param string $sEmailAddr
+     * @param array $aFields
+     */
     private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
         $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
@@ -219,12 +265,12 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Get's the summary
-    * @param string $sMethod login|logout
-    * @param string $sSummary Default summary
-    * @return string Summary
-    */
-    private function _getSummary($sMethod = 'login', $sSummary = '')
+     * Get's the summary
+     * @param string $sMethod login|logout
+     * @param string $sSummary Default summary
+     * @return string Summary
+     */
+    private static function getSummary($sMethod = 'login', $sSummary = '')
     {
         if (!empty($sSummary))
         {
@@ -253,8 +299,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Redirects a logged in user to the administration page
-    */
+     * Redirects a logged in user to the administration page
+     */
     private function _redirectIfLoggedIn()
     {
         if (!Yii::app()->user->getIsGuest())
@@ -264,9 +310,9 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Check if a user can log in
-    * @return bool|array
-    */
+     * Check if a user can log in
+     * @return bool|array
+     */
     private function _userCanLogin()
     {
         $failed_login_attempts = FailedLoginAttempt::model();
@@ -283,21 +329,23 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Redirect after login
-    */
-    private function _doRedirect()
+     * Redirect after login
+     * @return void
+     */
+    private static function doRedirect()
     {
         $returnUrl = App()->user->getReturnUrl(array('/admin'));
-        $this->getController()->redirect($returnUrl);
+        Yii::app()->getController()->redirect($returnUrl);
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     * @return void
+     */
     protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;

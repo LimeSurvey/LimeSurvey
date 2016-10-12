@@ -49,7 +49,7 @@
                     else
                     {
                         // We could rather raise an exception.
-                        $this->render('unkown_modal_type');
+                        $this->render('unknown_modal_type');
                     }
                 }
             }
@@ -62,6 +62,6 @@
 
         private function isView($display)
         {
-            return in_array($display, array('yes-no'));
+            return in_array($display, array('yes-no', 'empty'));
         }
     }

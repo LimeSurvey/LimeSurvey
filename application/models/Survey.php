@@ -1150,4 +1150,15 @@ class Survey extends LSActiveRecord
         $subQuestions = $subQuestions < 0 ? 0 : $subQuestions;
         return ceil(($subQuestions + $baseQuestions)*$time_per_question);
     }
+
+    /**
+     * Get all surveys that has participant table
+     * @return Survey[]
+     */
+    public static function getSurveysWithTokenTable()
+    {
+        $surveys = self::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
+        $surveys = array_filter($surveys, function($s) { return tableExists('{{tokens_' . $s->sid); });
+        return $surveys;
+    }
 }
