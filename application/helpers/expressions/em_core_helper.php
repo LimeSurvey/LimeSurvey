@@ -2714,7 +2714,7 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
                     $iNearestIndex = $i;
                 }
             }
-            if ( $iStrict !== 1 ) {
+            if ( $iStrict != 1 ) {
                 return $aToValues[$iNearestIndex];
             }
         }
