@@ -2,13 +2,17 @@
 /**
  * Gender question, button item Html
  *
+ * OBS: If you change the HTML flow of this question, please make
+ * sure that <input> is the first child of <label> or change the
+ * onclick function to reflect your change.
+ *
  * @var $name
- * @var $checkconditionFunction
  * @var $fChecked
  * @var $mChecked
  * @var $naChecked
  * @var $value
  */
+
 ?>
 
 <!--Gender question, buttons display -->
@@ -45,7 +49,10 @@
         <div class="btn-group btn-group-justified" data-toggle="buttons">
 
           <!-- Female -->
-          <label class="btn btn-primary <?php if($fChecked!=''){echo 'active';}?>" id="label-answer<?php echo $name;?>F">
+          <label
+                class="btn btn-primary <?php if($fChecked!=''){echo 'active';}?>" id="label-answer<?php echo $name;?>F"
+                onclick="checkconditions(this.children[0].value, this.children[0].name, this.children[0].type);"
+            >
               <input
                 class="radio"
                 type="radio"
@@ -53,14 +60,16 @@
                 id="answer<?php echo $name;?>F"
                 value="F"
                 <?php echo $fChecked; ?>
-                onclick="<?php echo $checkconditionFunction; ?>"
                />
                <span class="fa fa-venus"></span>
               <?php eT('Female');?>
           </label>
 
           <!-- Male -->
-          <label class="btn btn-primary  <?php if($mChecked!=''){echo 'active';}?> " id="label-answer<?php echo $name;?>M">
+            <label
+                class="btn btn-primary  <?php if($mChecked!=''){echo 'active';}?> " id="label-answer<?php echo $name;?>M"
+                onclick="checkconditions(this.children[0].value, this.children[0].name, this.children[0].type);"
+            >
                 <input
                   class="radio"
                   type="radio"
@@ -68,7 +77,6 @@
                   id="answer<?php echo $name;?>M"
                   value="M"
                   <?php echo $mChecked;?>
-                  onclick="<?php echo $checkconditionFunction; ?>"
                 />
                 <span class="fa fa-mars"></span>
                 <?php eT('Male');?>
@@ -76,7 +84,10 @@
 
           <!-- No answer -->
           <?php if($noAnswer):?>
-              <label class="btn btn-primary  <?php if($naChecked!=''){echo 'active';}?>" id="label-answer<?php echo $name;?>">
+              <label
+                    class="btn btn-primary  <?php if($naChecked!=''){echo 'active';}?>" id="label-answer<?php echo $name;?>"
+                    onclick="checkconditions(this.children[0].value, this.children[0].name, this.children[0].type);"
+                >
                   <input
                       class="radio"
                       type="radio"
@@ -84,7 +95,6 @@
                       id="answer<?php echo $name;?>"
                       value=""
                       <?php echo $naChecked;?>
-                      onclick="<?php echo $checkconditionFunction; ?>"
                   />
                   <span class="fa fa-genderless"></span>
                   <span class='wrap-normal'><?php eT('No answer'); ?></span>

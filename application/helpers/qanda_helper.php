@@ -3876,7 +3876,6 @@ function do_yesno($ia)
 // ---------------------------------------------------------------
 function do_gender($ia)
 {
-    $checkconditionFunction = "checkconditions";
     $fChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')?'CHECKED':'';
     $mChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
     $naChecked              = '';
@@ -3900,7 +3899,6 @@ function do_gender($ia)
         'mChecked'               => $mChecked,
         'naChecked'              => $naChecked,
         'noAnswer'               => $noAnswer,
-        'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
         'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
 
