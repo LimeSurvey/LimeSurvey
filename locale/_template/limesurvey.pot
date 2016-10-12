@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-10-12 14:52:28+00:00\n"
+"POT-Creation-Date: 2016-10-12 15:00:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3124,7 +3124,8 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:155
 #: application/helpers/common_helper.php:3723
-#: application/models/Participant.php:221 application/models/Token.php:37
+#: application/models/Participant.php:221
+#: application/models/ParticipantShare.php:228 application/models/Token.php:37
 #: application/models/TokenDynamic.php:575
 #: application/views/admin/export/exportresults_view.php:338
 #: application/views/admin/responses/listResponses_view.php:111
@@ -3136,7 +3137,8 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:156
 #: application/helpers/common_helper.php:3728
-#: application/models/Participant.php:222 application/models/Token.php:38
+#: application/models/Participant.php:222
+#: application/models/ParticipantShare.php:223 application/models/Token.php:38
 #: application/models/TokenDynamic.php:583
 #: application/views/admin/export/exportresults_view.php:339
 #: application/views/admin/responses/listResponses_view.php:122
@@ -10318,7 +10320,7 @@ msgid "Blacklisted"
 msgstr ""
 
 #: application/models/Participant.php:226
-msgid "Owner UID"
+msgid "Owner ID"
 msgstr ""
 
 #: application/models/Participant.php:227
@@ -10363,14 +10365,6 @@ msgstr ""
 
 #: application/models/ParticipantAttributeName.php:153
 msgid "Text box"
-msgstr ""
-
-#: application/models/ParticipantShare.php:223
-msgid "Lastname"
-msgstr ""
-
-#: application/models/ParticipantShare.php:228
-msgid "Firstname"
 msgstr ""
 
 #: application/models/ParticipantShare.php:239
@@ -10837,7 +10831,7 @@ msgid "Edit this survey participant"
 msgstr ""
 
 #: application/models/SurveyLink.php:262
-msgid "Survey Name"
+msgid "Survey name"
 msgstr ""
 
 #: application/models/SurveyLink.php:285
