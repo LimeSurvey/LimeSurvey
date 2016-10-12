@@ -93,6 +93,7 @@ class conditionsaction extends Survey_Common_Action {
      */
     public function index($subaction, $iSurveyID=null, $gid=null, $qid=null)
     {
+        $request = Yii::app()->request;
         $iSurveyID = sanitize_int($iSurveyID);
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
@@ -126,7 +127,10 @@ class conditionsaction extends Survey_Common_Action {
                 break;
         }
 
-        if( !empty($_POST['subaction']) ) $subaction=Yii::app()->request->getPost('subaction');
+
+        if (!empty($request->getPost('subaction'))) {
+            $subaction = $request->getPost('subaction');
+        }
 
         //BEGIN Sanitizing POSTed data
         if ( !isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
@@ -140,13 +144,15 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         if (!isset($p_cid)) { $p_cid=returnGlobal('cid'); }
-        if (!isset($p_subaction)) { if (isset($_POST['subaction'])) $p_subaction=$_POST['subaction']; else $p_subaction=$subaction;}
+        if (!isset($p_subaction)) {
+            $p_subaction=$subaction;
+        }
         if (!isset($p_cquestions)) {$p_cquestions=returnGlobal('cquestions');}
         if (!isset($p_csrctoken)) {$p_csrctoken=returnGlobal('csrctoken');}
         if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnGlobal('prevQuestionSGQA');}
 
-        if (isset($_POST['canswers']) && is_array($_POST['canswers'])) {
-            foreach ($_POST['canswers'] as $key => $val) {
+        if (is_array($request->getPost('canswers'))) {
+            foreach ($request->getPost('canswers') as $key => $val) {
                 $p_canswers[$key]= preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
             }
         }
@@ -156,20 +162,20 @@ class conditionsaction extends Survey_Common_Action {
 
         $method = $this->getMethod();
 
-        if (isset($_POST['method'])) {
-            if ( !in_array($_POST['method'], array_keys($method))) {
+        if ($request->getPost('method') != '') {
+            if ( !in_array($request->getPost('method'), array_keys($method))) {
                 $p_method = "==";
             }
             else {
-                $p_method = trim ($_POST['method']);
+                $p_method = trim ($request->getPost('method'));
             }
         }
         else {
             $p_method = null;
         }
 
-        if (isset($_POST['newscenarionum'])) {
-            $p_newscenarionum = sanitize_int($_POST['newscenarionum']);
+        if (!empty($request->getPost('newscenarionum'))) {
+            $p_newscenarionum = sanitize_int($request->getPost('newscenarionum'));
         }
         else {
             $p_newscenarionum = null;
@@ -222,7 +228,8 @@ class conditionsaction extends Survey_Common_Action {
             'p_newscenarionum' => $p_newscenarionum,
             'p_method'      => $p_method,
             'qid'           => $qid,
-            'gid'           => $gid
+            'gid'           => $gid,
+            'request'       => $request
         );
 
         // Subaction = form submission
@@ -698,7 +705,8 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function resetSurveyLogic($iSurveyID)
     {
-        if (!isset($_GET['ok'])) {
+        $request = Yii::app()->request;
+        if (empty($request->get('ok'))) {
             $data = array('iSurveyID' => $iSurveyID);
             $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
             $this->_renderWrappedTemplate('conditions', array('message' => array(
@@ -781,16 +789,16 @@ class conditionsaction extends Survey_Common_Action {
             $posted_condition_value = null;
 
             // Other conditions like constant, other question or token field
-            if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST") {
+            if ($request->getPost('editTargetTab')=="#CONST") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
             }
-            elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS") {
+            elseif ($request->getPost('editTargetTab')=="#PREVQUESTIONS") {
                 $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
             }
-            elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS") {
+            elseif ($request->getPost('editTargetTab')=="#TOKENATTRS") {
                 $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
             }
-            elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP") {
+            elseif ($request->getPost('editTargetTab')=="#REGEXP") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
             }
 
@@ -872,16 +880,16 @@ class conditionsaction extends Survey_Common_Action {
 
             // Please note that autoUnescape is already applied in database.php included above
             // so we only need to db_quote _POST variables
-            if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST") {
+            if ($request->getPost('editTargetTab')=="#CONST") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
             }
-            elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS") {
+            elseif ($request->getPost('editTargetTab')=="#PREVQUESTIONS") {
                 $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
             }
-            elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS") {
+            elseif ($request->getPost('editTargetTab')=="#TOKENATTRS") {
                 $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
             }
-            elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP") {
+            elseif ($request->getPost('editTargetTab')=="#REGEXP") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
             }
 
@@ -1749,15 +1757,16 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getEDITConditionConst($subaction)
     {
+        $request = Yii::app()->request;
         $EDITConditionConst = '';
         if ($subaction == "editthiscondition") {
-            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '') {
-                $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
+            if ($request->getPost('EDITConditionConst') != '') {
+                $EDITConditionConst=HTMLEscape($request->getPost('EDITConditionConst'));
             }
         }
         else {
-            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '') {
-                $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
+            if ($request->getPost('ConditionConst') != '') {
+                $EDITConditionConst=HTMLEscape($request->getPost('ConditionConst'));
             }
         }
         return $EDITConditionConst;
@@ -1769,15 +1778,16 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getEDITConditionRegexp($subaction)
     {
+        $request = Yii::app()->request;
         $EDITConditionRegexp = '';
         if ($subaction == "editthiscondition") {
-            if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '') {
-                $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
+            if ($request->getPost('EDITConditionRegexp') != '') {
+                $EDITConditionRegexp=HTMLEscape($request->getPost('EDITConditionRegexp'));
             }
         }
         else {
-            if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '') {
-                $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
+            if ($request->getPost('ConditionRegexp') != '') {
+                $EDITConditionRegexp=HTMLEscape($request->getPost('ConditionRegexp'));
             }
         }
         return $EDITConditionRegexp;
@@ -1790,90 +1800,78 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getEditFormJavascript($subaction)
     {
+        $request = Yii::app()->request;
         $aViewUrls = array('output' => '');
-        if ($subaction == "editthiscondition")
-        { // in edit mode we read previous values in order to dusplay them in the corresponding inputs
-            if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
-            {
+        if ($subaction == "editthiscondition") { 
+            // in edit mode we read previous values in order to dusplay them in the corresponding inputs
+            if ($request->getPost('EDITConditionConst') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
-                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($_POST['EDITConditionConst'])."';\n";
+                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('EDITConditionConst'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
             }
-            elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($_POST['EDITprevQuestionSGQA'])."';\n";
+            elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
+                $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($request->getPost('EDITprevQuestionSGQA'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
             }
-            elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '')
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($_POST['EDITtokenAttr'])."';\n";
+            elseif ($request->getPost('EDITtokenAttr') != '') {
+                $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($request->getPost('EDITtokenAttr'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
             }
-            elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
-            {
+            elseif ($request->getPost('EDITConditionRegexp') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
-                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($_POST['EDITConditionRegexp'])."';\n";
+                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($request->getPost('EDITConditionRegexp'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
             }
-            elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers']))
-            { // was a predefined answers post
+            elseif (is_array($request->getPost('EDITcanswers'))) { // was a predefined answers post
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
-                $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
+                $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$request->getPost('EDITcanswers')[0]."');\n";
             }
 
-            if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
+            if ($request->getPost('csrctoken') != '') {
+                $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($request->getPost('csrctoken'))."';\n";
             }
-            else if (isset($_POST['cquestions']) && $_POST['cquestions'] != '')
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
+            else if ($request->getPost('cquestions') != '') {
+                $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($request->getPost('cquestions'))."';\n";
             }
         }
-        else
-        { // in other modes, for the moment we do the same as for edit mode
-            if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
-            {
+        else { // in other modes, for the moment we do the same as for edit mode
+            if ($request->getPost('ConditionConst') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
-                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($_POST['ConditionConst'])."';\n";
+                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('ConditionConst'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
             }
-            elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($_POST['prevQuestionSGQA'])."';\n";
+            elseif ($request->getPost('prevQuestionSGQA') != '') {
+                $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($request->getPost('prevQuestionSGQA'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
             }
-            elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($_POST['tokenAttr'])."';\n";
+            elseif ($request->getPost('tokenAttr') != '') {
+                $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($request->getPost('tokenAttr'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
             }
-            elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
-            {
+            elseif ($request->getPost('ConditionRegexp') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
-                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($_POST['ConditionRegexp'])."';\n";
+                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($request->getPost('ConditionRegexp'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
             }
-            else
-            { // was a predefined answers post
-                if (isset($_POST['cquestions']))
-                {
-                    $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
+            else { // was a predefined answers post
+                if ($request->getPost('cquestions') != '') {
+                    $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($request->getPost('cquestions'))."';\n";
                 }
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
             }
 
-            if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
-            {
-                $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
+            if ($request->getPost('csrctoken') != '') {
+                $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($request->getPost('csrctoken'))."';\n";
             }
             else
             {
-                if (isset($_POST['cquestions'])) $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascriptEscape($_POST['cquestions'])."';\n";
+                if ($request->getPost('cquestions') != '') {
+                    $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascriptEscape($request->getPost('cquestions'))."';\n";
+                }
             }
         }
         return $aViewUrls['output'];
@@ -1884,10 +1882,11 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getEditSourceTab()
     {
-        if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '') {
+        $request = Yii::app()->request;
+        if ($request->getPost('csrctoken') != '') {
             return '#SRCTOKENATTRS';
         }
-        else if (isset($_POST['cquestions']) && $_POST['cquestions'] != '') {
+        else if ($request->getPost('cquestions') != '') {
             return '#SRCPREVQUEST';
         }
         else {
@@ -1900,19 +1899,20 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getEditTargetTab()
     {
-        if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '') {
+        $request = Yii::app()->request;
+        if ($request->getPost('EDITConditionConst') != '') {
             return '#CONST';
         }
-        elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '') {
+        elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
             return '#PREVQUESTIONS';
         }
-        elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '') {
+        elseif ($request->getPost('EDITtokenAttr') != '') {
             return '#TOKENATTRS';
         }
-        elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '') {
+        elseif ($request->getPost('EDITConditionRegexp') != '') {
             return '#REGEXP';
         }
-        elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers'])) {
+        elseif (is_array($request->getPost('EDITcanswers'))) {
             return '#CANSWERSTAB';
         }
         else {
