@@ -21,3 +21,4 @@
 .settings/org.eclipse.php.core.prefs
 .buildpath
 /application/config/config.php
+*un~
