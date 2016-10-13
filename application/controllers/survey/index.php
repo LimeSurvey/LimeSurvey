@@ -316,15 +316,18 @@ class index extends CAction {
         if (Yii::app()->request->getParam('loadall') == "reload")
         {
             $errormsg="";
+            $aLoadErrorMsg=array();
             $sLoadName=Yii::app()->request->getParam('loadname');
             $sLoadPass=Yii::app()->request->getParam('loadpass');
             if ( isset($sLoadName) && !$sLoadName)
             {
                 $errormsg .= gT("You did not provide a name")."<br />\n";
+                $aLoadErrorMsg['name']=gT("You did not provide a name.");
             }
             if ( isset($sLoadPass) && !$sLoadPass)
             {
                 $errormsg .= gT("You did not provide a password")."<br />\n";
+                $aLoadErrorMsg['password']=gT("You did not provide a password.");
             }
 
             // if security question answer is incorrect
@@ -333,15 +336,17 @@ class index extends CAction {
             {
                 $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
                 $captcha = Yii::app()->getController()->createAction('captcha');
-                $captchaCorrect = $captcha->validate( $sLoadsecurity, false);
-            
+                $captchaCorrect = $captcha->validate( $sLoadSecurity, false);
+
                 if(empty($sLoadSecurity))
                 {
                     $errormsg .= gT("You did not answer to the security question.")."<br />\n";
+                    $aLoadErrorMsg['captchaempty']=gT("You did not answer to the security question.");
                 }
                 elseif ( !$captchaCorrect )
                 {
                     $errormsg .= gT("The answer to the security question is incorrect.")."<br />\n";
+                    $aLoadErrorMsg['captcha']=gT("The answer to the security question is incorrect.");
                 }
             }
 
@@ -352,12 +357,12 @@ class index extends CAction {
                     Yii::app()->setConfig('move','reload');
                     $move = "reload";// veyRunTimeHelper use $move in $arg
                 } else {
-                    $errormsg .= gT("There is no matching saved survey");
+                    $aLoadErrorMsg['matching']=gT("There is no matching saved survey.");
                 }
                 randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
             }
-            if ($errormsg) {
+            if (count($aLoadErrorMsg)) {
                 Yii::app()->setConfig('move',"loadall");// Show loading form
             }
         }
@@ -365,10 +370,14 @@ class index extends CAction {
         //Allow loading of saved survey
         if (Yii::app()->getConfig('move')=="loadall")
         {
-            $redata = compact(array_keys(get_defined_vars()));
+            $aLoadErrorMsg=empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
             Yii::import("application.libraries.Load_answers");
             $tmp = new Load_answers();
-            $tmp->run($redata);
+            $tmp->run(array(
+                "surveyid"=>$surveyid, // Not really needed : already in App()->getConfig('surveyID')
+                "aLoadErrorMsg"=>$aLoadErrorMsg,
+                "clienttoken"=>isset($clienttoken)? $clienttoken : null ,
+            ));
         }
 
 

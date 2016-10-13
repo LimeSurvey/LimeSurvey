@@ -1,11 +1,12 @@
-<div class="h1">{SURVEYNAME}</div>
-
+<div class='h1 save-page'>{SURVEYNAME}</div>
 <div id="save">
   <div class="h3">{SAVEHEADING}</div>
-  {if(SAVEERROR,"<div class='alert alert-danger' role='alert'>"+SAVEERROR+"</div>","")}
-  <div class="savemessage">{SAVEMESSAGE}</div>
-  {if(SAVEALERT,"<div class='alert alert-info' role='alert'>"+SAVEALERT+"</div>","")}
-  <div class="form">{SAVEFORM}</div>
+  <div class="well">
+    {SAVEMESSAGE}
+    {SAVEERROR}
+    {if(SAVEALERT,"<strong class='text-warning'>"+SAVEALERT+"</strong>","")}
+    <div class="form-save">{SAVEFORM}</div>
 
-  <div class='url url-return'>{RETURNTOSURVEY}</div>
+    <div class='url-wrapper url-return-wrapper'>{RETURNTOSURVEY}</div>
+  </div>
 </div>

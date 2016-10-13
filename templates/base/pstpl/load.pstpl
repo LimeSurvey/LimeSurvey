@@ -1,8 +1,9 @@
-<div id='load'>
+<div class='load-page'>
   <div class="h2">{LOADHEADING}</div>
-  {if(LOADERROR,"<div class='alert alert-danger' role='alert'>"+LOADERROR+"</div>")}
-  <div>{LOADMESSAGE}
-    <div class="form">{LOADFORM}</div>
+  {LOADERROR}
+  <div class="well">
+    {LOADMESSAGE}
+    <div class="form-load">{LOADFORM}</div>
   </div>
-  <div class='url url-return'>{RETURNTOSURVEY}</div>
+  <div class='text-center'><div class='btn btn-sm'>{RETURNTOSURVEY}</div></div>
 </div>

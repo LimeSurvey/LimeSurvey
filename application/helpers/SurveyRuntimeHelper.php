@@ -617,12 +617,7 @@ class SurveyRuntimeHelper {
                 display_first_page();
                 Yii::app()->end(); // So we can still see debug messages
             }
-
             // TODO FIXME
-            if ($thissurvey['active'] == "Y") {
-                Yii::import("application.libraries.Save");
-                $cSave = new Save();
-            }
             if ($thissurvey['active'] == "Y" && Yii::app()->request->getPost('saveall')) // Don't test if save is allowed
             {
                 $bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid);
@@ -630,7 +625,9 @@ class SurveyRuntimeHelper {
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
                 if (!isset($_SESSION[$LEMsessid]['scid']) && !$bTokenAnswerPersitance )
                 {
-                    $cSave->showsaveform(); // generates a form and exits, awaiting input
+                    Yii::import("application.libraries.Save");
+                    $cSave = new Save();
+                    $cSave->showsaveform($thissurvey['sid']); // generates a form and exits, awaiting input
                 }
                 else
                 {
@@ -648,11 +645,12 @@ class SurveyRuntimeHelper {
             {
                 // The response from the save form
                 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
+                Yii::import("application.libraries.Save");
+                $cSave = new Save();
                 $popup = $cSave->savedcontrol();
-
-                if (isset($errormsg) && $errormsg != "")
+                if (!empty($cSave->aSaveErrors))
                 {
-                    $cSave->showsaveform(); // reshow the form if there is an error
+                    $cSave->showsaveform($thissurvey['sid']); // reshow the form if there is an error
                 }
 
                 $moveResult = LimeExpressionManager::GetLastMoveResult(true);

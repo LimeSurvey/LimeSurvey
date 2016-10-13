@@ -176,9 +176,10 @@ function makegraph($currentstep, $total)
 /**
 * This function creates the language selector for a particular survey
 *
-* @param mixed $sSelectedLanguage The language in which all information is shown
+* @param string $sSelectedLanguage : lang to be selected (forced)
+* @param boolean $withForm : add a form (method="get") around the select
 */
-function makeLanguageChangerSurvey($sSelectedLanguage)
+function makeLanguageChangerSurvey($sSelectedLanguage="",$withForm=false)
 {
     $surveyid = Yii::app()->getConfig('surveyID');
     Yii::app()->loadHelper("surveytranslator");
@@ -216,16 +217,12 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             $sTargetURL=null;
         }
 
-        /* @todo : find when we need a form , and how to set here */
-        $form=false;
-
-
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
         {
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
         }
-        $sSelected=App()->language;
+        $sSelected=($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
 
         $languageChangerDatas = array(
             'sSelected' => $sSelected ,
@@ -233,7 +230,7 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             'sClass'    => $sClass    ,
             'targetUrl' => $sTargetURL,
         );
-        if($form){
+        if($withForm){
             $sHTMLCode = App()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChangerForm', $languageChangerDatas, true);
         }else{
             $sHTMLCode = App()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);

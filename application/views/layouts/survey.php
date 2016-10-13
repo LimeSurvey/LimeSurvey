@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <?php 
-        
+        <?php
+
         /* @var $cs CClientScript */
         $cs=Yii::app()->getClientScript();
         $cs->registerCoreScript('jquery');
@@ -14,7 +14,7 @@
         $cs->registerScriptFile(Yii::app()->createUrl('config/script'));
         $cs->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
         ?>
-        
+
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('third_party');?>jqueryui/css/smoothness/jquery-ui-1.10.0.custom.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>/jquery-ui/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>printablestyle.css" media="print" />
@@ -35,8 +35,8 @@
         ?>
                 <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
-        
-        
+
+
         <title>Limesurvey</title>
     </head>
     <body>

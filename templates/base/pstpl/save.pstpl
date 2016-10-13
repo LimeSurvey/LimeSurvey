@@ -2,7 +2,7 @@
 
 <div id="save">
   <div class="h3">{SAVEHEADING}</div>
-  {if(SAVEERROR,"<div class='alert alert-danger' role='alert'>"+SAVEERROR+"</div>","")}
+  {SAVEERROR}
   <div class="savemessage">{SAVEMESSAGE}</div>
   {if(SAVEALERT,"<div class='alert alert-info' role='alert'>"+SAVEALERT+"</div>","")}
   <div class="form">{SAVEFORM}</div>

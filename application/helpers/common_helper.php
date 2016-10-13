@@ -5613,9 +5613,9 @@ function getHeader($meta = false)
     }
     $header.= " class=\"{$class}\">\n";
     $header.= "\t<head>\n";
-    $header.= "<script type='text/javascript'>/*<![CDATA[*/(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);/*]]>*/</script>";
     if ($meta)
         $header .= $meta;
+    App()->clientScript->registerScript("nojsReplace","(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);",CClientScript::POS_HEAD);
 
 
     if ( !$embedded )
