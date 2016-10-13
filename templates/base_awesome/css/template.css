@@ -14,7 +14,7 @@ html {
 /* For testing purpose : better view of HTML answers part */
 .answers-wrapper {
     margin: 0;
-    padding: 0;
+    padding: 0 15px;
     border:1px dotted red;
 }
 /**
@@ -22,9 +22,7 @@ html {
  * If user add p or div : one line more
  */
 .question-number,.question-code
-{float:left:margin-right:0.2em}
+{float:left;margin-right:0.2em}
 
 label{font-weight:normal}
 .question-text{font-size: 1.7em;}/* Need some color */
-
-.array2{background:#f9f9f9}

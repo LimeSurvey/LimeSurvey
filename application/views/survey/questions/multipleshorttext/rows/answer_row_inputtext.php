@@ -24,7 +24,7 @@
     </label>
     <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
         <?php if ($prefix != '' || $suffix != ''): ?>
-            <div class="input-group">
+            <div class="ls-input-group">
         <?php endif; ?>
             <?php if ($prefix != ''): ?>
                 <div class="ls-input-group-extra prefix-text prefix text-right">

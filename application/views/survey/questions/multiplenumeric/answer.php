@@ -16,42 +16,23 @@
 ?>
 <!-- Multiple Numerical with slider -->
 <!-- answer -->
-<ul class='<?php echo $coreClass?> list-unstyled'>
+<ul class='<?php echo $coreClass?> list-unstyled form-horizontal'>
+    <?php
+        // rows/answer_row.php
+        echo $sRows;
+    ?>
+<?php
+    doRender("/survey/questions/multiplenumeric/rows/dynamic",array(
+        'id'=>$id,
+        'sumRemainingEqn'=>$sumRemainingEqn,
+        'sumEqn'=>$sumEqn,
+        'sLabelWidth'=>$sLabelWidth,
+        'sInputContainerWidth'=>$sInputContainerWidth,
+        'prefix'=>$prefix,
+        'suffix'=>$suffix,
+    ),true);
+?>
 
-        <?php
-            // rows/answer_row.php
-            echo $sRows;
-        ?>
-
-        <?php if($sumRemainingEqn):?>
-            <li>
-                <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
-                    <?php eT('Remaining: ');?>
-                </div>
-                <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
-                    <?php echo $prefix; ?>
-                    <div id="remainingvalue_<?php echo $id; ?>" class="label label-info dynamic_remaining">
-                        {<?php echo $sumRemainingEqn;?>}
-                    </div>
-                    <?php echo $suffix; ?>
-                </div>
-            </li>
-        <?php endif; ?>
-
-        <?php if($sumEqn):?>
-            <li>
-                <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
-                    <?php eT('Total: ');?>
-                </div>
-               <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
-                    <?php echo $prefix; ?>
-                    <div id="remainingvalue_<?php echo $id; ?>" class="label label-info dynamic_total">
-                        {<?php echo $sumEqn; ?>}
-                    </div>
-                    <?php echo $suffix; ?>
-                </div>
-            </li>
-        <?php endif; ?>
 </ul>
 <!-- endof answer -->
 <!-- Add some data for slider javascript -->

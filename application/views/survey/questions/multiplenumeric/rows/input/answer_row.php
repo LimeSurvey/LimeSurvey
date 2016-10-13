@@ -26,7 +26,7 @@
         <?php echo $labelText; ?>
     </label>
 
-    <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+    <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
         <?php if ($prefix != ''): ?>
             <div class="ls-input-group-extra prefix-text prefix text-right">
                 <?php echo $prefix; ?>
@@ -34,7 +34,7 @@
         <?php endif; ?>
 
         <input
-            class=" form-control numeric <?php echo $kpclass;?>"
+            class="form-control numeric <?php echo $kpclass;?>"
             type="text"
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname; ?>"

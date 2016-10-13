@@ -55,7 +55,25 @@
  * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
  **/
 
-/* ls-input-group-extra : near same behaviour than BS input-group-addon without border/background and with rem(can be easily done in template) */
+/* ls-input-group : near same behaviour than BS. */
+.ls-input-group {
+    border-collapse: separate;
+    display: table;
+    position: relative;
+}
+.ls-input-group[class*="col-"] {
+    float: none;
+    padding-left: 0;
+    padding-right: 0;
+}
+.ls-input-group .form-control {
+    float: left;
+    margin-bottom: 0;
+    width: 100%;
+}
+.ls-input-group  .form-control {
+    display: table-cell;
+}
 .ls-input-group-extra {
   display: table-cell;
 }
@@ -72,6 +90,7 @@
   text-align: center;
   border: 1px hidden transparent;
 }
+
 /* in inline form : width need to be auto */
 .form-inline .input-group .ls-input-group-extra{width: auto;white-space: initial;}
 

@@ -12,7 +12,7 @@
 
 <!-- answer -->
 <input type='hidden' name='<?php echo $name; ?>' value='<?php echo $value;?>' />
-<ul class="multiple-choice-with-comment list-unstyled subquestion-list questions-list checkbox-text-list">
+<ul class="<?php echo $coreClass; ?> list-unstyled">
     <?php
         // rows/answer_row.php
         echo $sRows;

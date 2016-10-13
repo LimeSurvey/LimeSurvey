@@ -32,7 +32,7 @@
     <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?><?php if($alert):?> errormandatory<?php endif; ?>' for="answer<?php echo$myfname;?>">
         <?php echo $labelText; ?>
     </label>
-    <div class="input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?> container-fluid">
+    <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?> container-fluid">
         <?php if (!empty($sliderleft)): ?>
             <div class='col-xs-12 col-sm-2 slider-left text-right'><?php echo $sliderleft;?></div>
         <?php endif; ?>
