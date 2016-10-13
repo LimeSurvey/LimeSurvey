@@ -1608,18 +1608,20 @@ class dataentry extends Survey_Common_Action
                 }
             }
 
+            $tokenTableExists = tableExists('{{tokens_'.$thissurvey['sid'].'}}');
+
             // First Check if the survey uses tokens and if a token has been provided
-            if (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && (!$_POST['token']))
+            if ($tokenTableExists && (!$_POST['token']))
             {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
                 $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."));
             }
-            elseif (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && $lastanswfortoken == 'UnknownToken')
+            elseif ($tokenTableExists && $lastanswfortoken == 'UnknownToken')
             {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
                 $errormsg .= CHtml::tag('p', array(), gT("The token you have provided is not valid or has already been used."));
             }
-            elseif (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && $lastanswfortoken != '')
+            elseif ($tokenTableExists && $lastanswfortoken != '')
             {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
                 $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this token"));
