@@ -45,6 +45,8 @@ function doRatingStar(qID) {
   if(itemNoAnswer){ 
     starsHtmlElement
       .append("<div class='star-rating star-cancel' data-star='"+(numberOfPossibleAnswers)+"' title='"+$('#question'+qID+' .noanswer-item label').html()+"'><i class='fa fa-ban'></i></div>");
+  } else {
+    numberOfPossibleAnswers++;
   }
 
   //Add stars to the container
