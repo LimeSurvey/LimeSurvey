@@ -595,7 +595,7 @@ class dataentry extends Survey_Common_Action
                 }
 
                 $results1['id'] = "";
-                $results1['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+                $results1['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                 $results1['ipaddr'] = $saver['ip'];
                 $results[] = $results1;
             }
@@ -1691,11 +1691,11 @@ class dataentry extends Survey_Common_Action
                 {
                     if ($thissurvey['datestamp'] == "Y")
                     {
-                        $_POST['submitdate'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+                        $_POST['submitdate'] = dateShift(date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                     }
                     else
                     {
-                        $_POST['submitdate'] = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                        $_POST['submitdate'] = date("Y-m-d H:i",mktime(0,0,0,1,1,1980));
                     }
                 }
 
@@ -1770,10 +1770,12 @@ class dataentry extends Survey_Common_Action
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
                 {
                     // get submit date
-                    if (isset($_POST['closedate']))
-                    { $submitdate = $_POST['closedate']; }
-                    else
-                    { $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
+                    if (isset($_POST['closedate'])) {
+                        $submitdate = $_POST['closedate'];
+                    }
+                    else {
+                        $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust);
+                    }
 
                     // check how many uses the token has left
                     $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
@@ -1824,7 +1826,7 @@ class dataentry extends Survey_Common_Action
                     $columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
                         "refurl", 'saved_thisstep', "status", "saved_date");
                     $values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
-                        "'".getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "'".Yii::app()->getConfig('timeadjust'))."'");
+                        "'".getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))."'");
 
                     $SQL = "INSERT INTO $saved_control_table
                         (".implode(',',$columns).")
