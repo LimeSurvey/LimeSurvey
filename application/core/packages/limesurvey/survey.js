@@ -8,6 +8,7 @@
 /**
  * Manage the index
  */
+
 function manageIndex(){
     $("#index").on('click','li,.row',function(e){
         if(!$(e.target).is('button')){
@@ -64,22 +65,53 @@ function activateLanguageChanger(){
  * Action link with submit object (json) : add params to form and submit
  */
 function activateActionLink(){
+        console.log(LSvar);
+
     /* If no limesurvey form : don't need it */
     if(!$('form#limesurvey').length){
         $('[data-limesurvey-submit]').remove();
     }
     /* Submit limesurvey form on click */
-    $('[data-limesurvey-submit]').on('click',function() {
-        var submit=$(this).data('limesurvey-submit');
-        if($('form#limesurvey').length==1){
-            $.each(submit, function(name, value) {
-                $("<input/>",{
-                    'type':"hidden",
-                    'name':name,
-                    'value':value,
-                }).appendTo('form#limesurvey');
-            });
-            $('form#limesurvey').submit();
+    else{
+        $('[data-limesurvey-submit]').on('click',function() {
+            var submit=$(this).data('limesurvey-submit');
+            var confirmedby=$(this).data('confirmedby');
+            if(!confirmedby || confirm($(this).data('confirmlabel')))
+            {
+                $.each(submit, function(name, value) {
+                    $("<input/>",{
+                        'type':"hidden",
+                        'name':name,
+                        'value':value,
+                    }).appendTo('form#limesurvey');
+                });
+                $.each(confirmedby, function(name, value) {
+                    $("<input/>",{
+                        'type':"hidden",
+                        'name':name,
+                        'value':value,
+                    }).appendTo('form#limesurvey');
+                });
+                $('form#limesurvey').submit();
+            }
+        });
+    }
+}
+
+/* Ask confirmation on click on .needconfirm*/
+function activateConfirmButton(){
+        console.log(LSvar);
+
+    $(document).on('click',"button[data-confirmedby]", function(event){
+        // @todo : allow multiple here : remove extra
+        if(!$("[name='"+$(this).data('confirmedby')+"']").is(":checked"))
+        {
+            text=$("[name='"+$(this).data('confirmedby')+"']").parent("label").text();
+            if (confirm(text)) {
+                $("[name='"+$(this).data('confirmedby')+"']").prop('checked',true);
+                return true;
+            }
+            return false;
         }
     });
 }

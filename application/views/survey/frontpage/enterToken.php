@@ -3,16 +3,14 @@
         <span class='error'>$error</span><br/>
     <?php endif; ?>
     <script type='text/javascript'>var focus_element = '#token';</script>
-    <div class='jumbotron'>
-        <div id="tokenmessage" class="container clearfix">
-            <h3><?php eT("To participate in this restricted survey, you need a valid token."); ?></h3>
-            <?php if(!isset($token)): ?>
-            <h3><small class='text-info'><?php eT("If you have been issued a token, please enter it in the box below and click continue."); ?></small></h3>
-            <?php else: ?>
-            <h3><small class='text-info'><?php eT("Please confirm the token by answering the security question below and click continue."); ?></small></h3>
-            <?php endif; ?>
-            </p>
-        </div>
+    <div class="tokenmessage container clearfix">
+        <div class="h3"><?php eT("To participate in this restricted survey, you need a valid token."); ?></div>
+        <?php if(!isset($token)): ?>
+        <div class='text-info'><?php eT("If you have been issued a token, please enter it in the box below and click continue."); ?></div>
+        <?php else: ?>
+        <div class='text-info'><?php eT("Please confirm the token by answering the security question below and click continue."); ?></div>
+        <?php endif; ?>
+        </p>
     </div>
 
     <?php if (isset($errorMessage)): ?>
@@ -24,7 +22,7 @@
     <div class="container">
         <?php echo CHtml::beginForm(array("/survey/index/sid/{$iSurveyId}"), 'post', array(
             'id' => 'tokenform',
-            'class' => 'form-horizontal col-sm-12 col-md-10 col-md-offset-1'
+            'class' => 'ls-form-token form-horizontal col-sm-12 col-md-10 col-md-offset-1'
         )); ?>
         <div class="col-sm-12 form-group">
                 <?php echo CHtml::label(gT("Token: "), 'token', array(
