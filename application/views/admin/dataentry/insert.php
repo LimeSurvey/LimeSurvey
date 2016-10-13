@@ -12,7 +12,7 @@
                             <tr>
                                 <td align='right'><?php eT("Identifier:"); ?></td>
                                 <td>
-                                    <?php echo CHtml::textField('text','save_identifier',$_POST['save_identifier']);?>
+                                    <?php echo CHtml::textField('save_identifier',$_POST['save_identifier']);?>
                                 </td>
                             </tr>
                             <tr>
@@ -36,7 +36,7 @@
                             <tr>
                                 <td align='right'><?php eT("Start language:"); ?></td>
                                 <td>
-                                    <?php echo CHtml::textField('text','save_language',$_POST['save_language']);?>
+                                    <?php echo CHtml::textField('save_language', $_POST['save_language']);?>
                                 </td>
                             </tr>
                             <tr>
