@@ -26,7 +26,7 @@
 
     <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
         <?php if ($prefix != '' || $suffix != ''): ?>
-            <div class="input-group">
+            <div class="ls-input-group">
         <?php endif; ?>
             <?php if ($prefix != ''): ?>
                 <div class="ls-input-group-extra prefix-text prefix text-right">
@@ -42,7 +42,7 @@
                 <?php if($numbersonly): echo "data-number='{$numbersonly}'"; endif; ?>
             ><?php echo $dispVal;?></textarea>
             <?php if ($suffix != ''): ?>
-                <div class="ls-input-group-extra suffix-text suffix text-right">
+                <div class="ls-input-group-extra suffix-text suffix text-left">
                     <?php echo $suffix; ?>
                 </div>
             <?php endif; ?>

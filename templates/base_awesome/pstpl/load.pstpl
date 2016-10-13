@@ -1,8 +1,10 @@
-<div id='load'>
-  <div class="h2">{LOADHEADING}</div>
-  {if(LOADERROR,"<div class='alert alert-danger' role='alert'>"+LOADERROR+"</div>","")}
-  <div>{LOADMESSAGE}
-    <div class="form">{LOADFORM}</div>
+<div class='load-page'>
+  <div class="h3">{LOADHEADING}</div>
+  {LANGUAGECHANGER}
+  <div class="well">
+    {LOADMESSAGE}
+    {LOADERROR}
+    <div class="form-load">{LOADFORM}</div>
+    <div class='url-wrapper url-return-wrapper'>{RETURNTOSURVEY}</div>
   </div>
-  <div class='url url-return'>{RETURNTOSURVEY}</div>
 </div>

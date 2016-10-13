@@ -2317,7 +2317,7 @@ function do_multiplechoice_withcomments($ia)
     $inputnames = array();
     $qaquery    = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult   = Yii::app()->db->createCommand($qaquery)->query();                                                 //Checked
-
+    $coreClass  = "ls-answers subquestion-list questions-list checkbox-text-list multiple-choice-with-comment";
     foreach($qaresult->readAll() as $qarow)
     {
         $qquery  = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
@@ -2498,6 +2498,7 @@ function do_multiplechoice_withcomments($ia)
 
     $answer = doRender('/survey/questions/multiplechoice_with_comments/answer', array(
         'sRows' => $sRows,
+        'coreClass'=>$coreClass,
         'name'=>'MULTI'.$ia[1],
         'value'=> $anscount
     ), true);
@@ -2884,13 +2885,12 @@ function do_multiplenumeric($ia)
     $numbersonly_slider = ''; // DEPRECATED
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth     = $aQuestionAttributes['text_input_width'];
         $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
         $sInputContainerWidth=$col;
     }
     else
     {
-        $sInputContainerWidth=$tiwidth = 6;
+        $sInputContainerWidth= 6;
     }
     if($sInputContainerWidth<12){
         $sLabelWidth=12-$sInputContainerWidth;
@@ -3037,7 +3037,9 @@ function do_multiplenumeric($ia)
                     }
                     if($fixedInputContainerWidth>12){
                         $fixedLabelWidth=12;
+                        $fixedInputContainerWidth=12;
                     }
+
                     $sliders   = true;// What is the usage ?
                 }else{
                     $theanswer = $ansrow['question'];
@@ -3151,7 +3153,6 @@ function do_multiplenumeric($ia)
                     'prefixclass'            => $prefixclass,
                     'prefix'                 => $prefix,
                     'suffix'                 => $suffix,
-                    'tiwidth'                => $tiwidth,
                     'sInputContainerWidth'   => $sInputContainerWidth,
                     'sLabelWidth'            => $sLabelWidth,
                     'myfname'                => $myfname,
@@ -3176,7 +3177,6 @@ function do_multiplenumeric($ia)
                     'sliderright'            => $sliderright,
                     'prefix'                 => $prefix,
                     'suffix'                 => $suffix,
-                    'tiwidth'                => $tiwidth,
                     'sInputContainerWidth'   => $fixedInputContainerWidth,
                     'sLabelWidth'            => $fixedLabelWidth,
                     'sliderWidth'            => $sliderWidth,

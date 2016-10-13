@@ -71,7 +71,7 @@ class SurveyController extends LSYii_Controller
             'uploader' => 'application.controllers.uploader',
             'verification' => 'application.controllers.verification',
             'captcha' => array(
-                'class' => 'CCaptchaAction', 
+                'class' => 'CCaptchaAction',
                 'backColor'=>0xf6f6f6
             )
         );
