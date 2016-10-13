@@ -1164,20 +1164,9 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _reorderGroup($iSurveyID)
     {
-        $AOrgData = array();
-        parse_str(Yii::app()->request->getPost('orgdata'), $AOrgData);
-
-        // If the survey is big, input might exceed max_input_vars causing
-        // parse_str to fail. TODO: Fix using JSON in post instead
-        $errors = error_get_last();
-        if ($errors) {
-            $message = $errors['message'];
-            Yii::app()->setFlashMessage($message, 'error');
-            return;
-        }
-
         $grouporder = 0;
-        foreach ($AOrgData['list'] as $ID => $parent)
+        $orgdata = $this->getOrgdata();
+        foreach ($orgdata as $ID => $parent)
         {
             if ($parent == 'root' && $ID[0] == 'g') {
                 QuestionGroup::model()->updateAll(array('group_order' => $grouporder), 'gid=:gid', array(':gid' => (int)substr($ID, 1)));
@@ -1204,6 +1193,28 @@ class SurveyAdmin extends Survey_Common_Action
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+    }
+
+    /**
+     * Get the new question organization from the post data.
+     * This function replaces parse_str, since parse_str
+     * is bound by max_input_vars.
+     * @return array
+     */
+    protected function getOrgdata()
+    {
+        $request = Yii::app()->request;
+        $orgdata = $request->getPost('orgdata');
+        $ex = explode('&', $orgdata);
+        $vars = array();
+        foreach ($ex as $str) {
+            list($list, $target) = explode('=', $str);
+            $list = str_replace('list[', '', $list);
+            $list = str_replace(']', '', $list);
+            $vars[$list] = $target;
+        }
+
+        return $vars;
     }
 
     /**
