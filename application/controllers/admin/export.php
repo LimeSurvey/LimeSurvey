@@ -918,7 +918,7 @@ class export extends Survey_Common_Action {
     {
         $sSurveys = $_POST['sItems'];
         $exportResult = $this->exportMultipleSurveys($sSurveys, 'archive');
-        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
     }
 
 
