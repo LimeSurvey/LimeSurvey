@@ -1404,35 +1404,11 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * survey::_tabImport()
-    * Load "Import" tab.
-    * @param mixed $iSurveyID
-    * @return
-    */
-    private function _tabImport()
-    {
-        $aData = array();
-        return $aData;
-    }
-
-    /**
-    * survey::_tabCopy()
-    * Load "Copy" tab.
-    * @param mixed $iSurveyID
-    * @return
-    */
-    private function _tabCopy()
-    {
-        $aData = array();
-        return $aData;
-    }
-
-    /**
-    * survey::_tabResourceManagement()
-    * Load "Resources" tab.
-    * @param mixed $iSurveyID
-    * @return
-    */
+     * survey::_tabResourceManagement()
+     * Load "Resources" tab.
+     * @param mixed $iSurveyID
+     * @return
+     */
     private function _tabResourceManagement($iSurveyID)
     {
         global $sCKEditorURL;
