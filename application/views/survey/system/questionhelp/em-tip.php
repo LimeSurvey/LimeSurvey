@@ -2,12 +2,13 @@
 /**
  * Question tips. For now, called from em_manager_helper::_ValidateQuestion
  * @var $qid
+ * @var coreId : need to be the id of the tag (part of the API)
+ * @var coreClass : need to be in class (part of the API)
  * @var $vclass
  * @var $vtip
  */
 ?>
-<div id='vmsg_<?php echo $qid; ?>_<?php echo $vclass; ?>' class='em_<?php echo $vclass; ?> emtip '>
-
+<div id='<?php echo $coreId; ?>' class='text-info <?php echo $coreClass; ?>'>
     <span class='fa fa-exclamation-circle' aria-hidden="true"></span>
     <?php echo $vtip; ?>
 </div>

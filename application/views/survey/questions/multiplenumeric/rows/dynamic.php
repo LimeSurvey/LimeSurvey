@@ -22,7 +22,7 @@
             </div>
             <?php echo $suffix; ?>
         </div>
-    </li class="form-group">
+    </li>
 <?php endif; ?>
 
 <?php if($sumEqn):?>
@@ -32,10 +32,10 @@
         </div>
        <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
             <?php echo $prefix; ?>
-            <div id="remainingvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-total">
+            <div id="totalvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-total">
                 {<?php echo $sumEqn; ?>}
             </div>
             <?php echo $suffix; ?>
         </div>
-    </li class="form-group">
+    </li>
 <?php endif; ?>

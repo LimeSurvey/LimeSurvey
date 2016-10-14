@@ -38,27 +38,25 @@
                     <div class='col-xs-12 col-sm-2 slider-left text-right'><?php echo $sliderleft;?></div>
                 <?php endif; ?>
                 <div class="slider-container col-xs-12 col-sm-<?php echo $sliderWidth ?>">
-                    <input
-                        class="text form-control <?php echo $kpclass;?>"
-                        type="text"
-                        name="<?php echo $myfname;?>"
-                        id="answer<?php echo $myfname; ?>"
-                        value="<?php echo ($dispVal ? $dispVal : null); ?>"
-                        <?php echo $maxlength; ?>
-                        data-slider-value="<?php echo ($dispVal ? $dispVal : null); ?>"
-                        data-slider-min='<?php echo $slider_min;?>'
-                        data-slider-max='<?php echo $slider_max;?>'
-                        data-slider-step='<?php echo $slider_step;?>'
-                        data-slider-orientation='<?php echo $slider_orientation;?>'
-                        data-slider-handle='<?php echo $slider_handle;?>'
-                        data-slider-tooltip='always'
-                        data-slider-reset='<?php echo $slider_reset; ?>'
-                        data-slider-prefix='<?php echo $prefix; ?>'
-                        data-slider-suffix='<?php echo $suffix; ?>'
-                        data-separator='<?php echo $sSeparator;?>'
-                        data-number='true',
-                        data-integer='<?php echo $integeronly;?>',
-                    />
+                <?php
+                /* FF show issue + prefix/suffix must be encoded */
+                echo CHtml::textField($myfname,$dispVal,array(
+                    'id'=>"answer{$myfname}",
+                    'data-slider-value'=>($dispVal ? $dispVal : null),
+                    'data-slider-min'=>$slider_min,
+                    'data-slider-max'=>$slider_max,
+                    'data-slider-step'=>$slider_step,
+                    'data-slider-orientation'=>$slider_orientation,
+                    'data-slider-handle'=>$slider_handle,
+                    'data-slider-tooltip'=>'always',
+                    'data-slider-reset'=>$slider_reset,
+                    'data-slider-prefix'=>$prefix,
+                    'data-slider-suffix'=>$suffix,
+                    'data-separator'=>$sSeparator,
+                    'data-number'=>true,
+                    'data-integer'=>$integeronly,
+                ));
+                ?>
                     <?php if($slider_showminmax): ?>
                         <div class='pull-left help-block'><?php echo $slider_min; ?></div>
                         <div class='pull-right help-block'><?php echo $slider_max; ?></div>

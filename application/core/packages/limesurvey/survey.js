@@ -111,3 +111,27 @@ function activateConfirmButton(){
         }
     });
 }
+/* Trigger tip class when classChangeGood/classChangeError happen */
+function triggerEmClassChange(){
+    /* The tips */
+    $(document).on('classChangeError','.ls-em-tip', function(event){
+        $(this).removeClass("ls-em-success").addClass("ls-em-error text-danger");
+    });
+    $(document).on('classChangeGood','.ls-em-tip', function(event){
+        $(this).removeClass("ls-em-error text-danger").addClass("ls-em-success");
+    });
+    /* The dynamic sum */
+    $(document).on('classChangeError','.dynamic-total', function(event){
+        $(this).removeClass("ls-em-success text-success").addClass("ls-em-error text-danger");
+    });
+    $(document).on('classChangeGood','.dynamic-total', function(event){
+        $(this).removeClass("ls-em-error text-danger").addClass("ls-em-success text-success");
+    });
+    /* The input */
+    $(document).on('classChangeError','input,select,textarea', function(event){
+        $(this).closest(".form-control").addClass("has-warning"); // Use warning, not error : in multiple : if one input have error : it's apply to all input
+    });
+    $(document).on('classChangeGood','input,select,textarea', function(event){
+        $(this).closest(".form-control").removeClass("has-warning");
+    });
+}

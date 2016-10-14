@@ -6581,11 +6581,13 @@
                         if (trim($vtip) != "")
                         {
                             $tipsDatas = array(
-                                'qid'   =>$qid,
-                                'vclass'=>$vclass,
-                                'vtip'  =>$vtip,
+                                'qid'       =>$qid,
+                                'coreId'    =>"vmsg_{$qid}_{$vclass}", // If it's not this id : EM is broken
+                                'coreClass' =>"ls-em-tip em_{$vclass}",
+                                'vclass'    =>$vclass,
+                                'vtip'      =>$vtip,
                             );
-                            $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', $tipsDatas, true);
+                            $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/em-tip', $tipsDatas, true);
                         }
                     }
 
@@ -7049,6 +7051,8 @@
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
         * Also create list of variables that need to be declared
+        *
+        * @return : line to be added to content Javacript line + hidden input (can't use register script...)
         */
         static function GetRelevanceAndTailoringJavaScript()
         {
@@ -7059,7 +7063,11 @@
             $jsParts=array();
             $allJsVarsUsed=array();
             $rowdividList=array();   // list of subquestions needing relevance entries
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");;
+            /* All function for expression manager */
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
+            /* Call the function when trigerring event */
+            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
+
             $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
             if ($LEM->surveyMode == 'group')
@@ -7339,9 +7347,9 @@
                         if($validationJS!='')
                         {
                             $valParts[] = "\n  if(" . $validationJS . "){\n";
-                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');;\n";
+                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').trigger('classChangeGood');\n";
                             $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').trigger('classChangeError');\n";
                             $valParts[] = "  }\n";
                         }
                     }
@@ -7380,9 +7388,9 @@
                             if($_validationJS!='')
                             {
                                 $valParts[] = "\n  if(" . $_validationJS . "){\n";
-                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').removeClass('error').addClass('good').trigger('classChangeGood');\n";
+                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').trigger('classChangeGood');\n";
                                 $valParts[] = "  }\n  else {\n";
-                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').trigger('classChangeError');\n";
                                 switch ($vclass)
                                 {
                                     case 'sum_range':
@@ -7406,9 +7414,9 @@
                         }
 
                         $valParts[] = "\n  if(isValidSum" . $arg['qid'] . "){\n";
-                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('error').addClass('good').trigger('classChangeGood');\n";
+                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').trigger('classChangeGood');\n";
                         $valParts[] = "  }\n  else {\n";
-                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').trigger('classChangeError');\n";
                         $valParts[] = "  }\n";
 
                         // color-code single-entry fields as needed
@@ -7420,9 +7428,9 @@
                             case 'T':
                             case 'U':
                                 $valParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
-                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');\n";
+                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').trigger('classChangeGood');\n";
                                 $valParts[] = "  }\n  else {\n";
-                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').trigger('classChangeError');\n";
                                 $valParts[] = "  }\n";
                                 break;
                             default:
@@ -7448,9 +7456,9 @@
                                     break;
                             }
                             $valParts[] = "\n  if(isValidOtherComment" . $arg['qid'] . "){\n";
-                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');\n";
+                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').trigger('classChangeGood');\n";
                             $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').trigger('classChangeError');\n";
                             $valParts[] = "  }\n";
                             break;
                             default:

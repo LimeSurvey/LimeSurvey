@@ -134,18 +134,18 @@ $(document).ready(function()
 
 
     // Errors
-    if($('.emtip').length>0)
+    if($('.ls-em-tip').length>0)
     {
-        // On Document Load
-        $('.emtip').each(function(){
-            if($(this).hasClass('error'))
+        // On Document Load (the EM js is done before ? */
+        $('.ls-em-tip').each(function(){
+            if($(this).hasClass('ls-em-error'))
             {
                 $(this).parents('div.questionhelp').removeClass('text-info').addClass('text-danger');
             }
         });
 
         // On em change
-        $('.emtip').each(function(){
+        $('.ls-em-tip').each(function(){
             $(this).on('classChangeError', function() {
                 $parent = $(this).parent('div.questionhelp');
                 $parent.removeClass('text-info',1);
