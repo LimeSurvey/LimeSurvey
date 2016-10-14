@@ -36,7 +36,17 @@ CHANGE LOG
 ------------------------------------------------------
 
 
-Changes from  2.54.1 (build 161007) to 2.54.2 (build 161012) Oct 12, 2016
+Changes from  2.54.2 (build 161012) to 2.54.3 (build 161014) Oct 14, 2016
+-Fixed issue #11746: Notice when previewing a hidden question and debug mode activated (Carsten Schmitz)
+-Fixed issue #11765: Admin data entry doesn't work if survey has restricted access (Olle Haerstedt)
+-Fixed issue: Mass-exporting survey archives shows error (Carsten Schmitz)
+-Fixed issue: Remove session warning message from question organizer (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21, DenisChenu
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Spanish (Spain) by aesteban
+
+Changes from  2.54.1 (build 161010) to 2.54.2 (build 161012) Oct 12, 2016
 -Fixed issue #11752: Mandatory radio star show 4 stars only (markusfluer)
 -Fixed issue #11760: Helper class ls\ajax\AjaxHelper uses echo keyword as method name (Olle Haerstedt)
 -Fixed issue #11772: Expression manager convert_value does not obey strict setting (Olle Haerstedt)
