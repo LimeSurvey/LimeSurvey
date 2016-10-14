@@ -1,4 +1,4 @@
-<div id="completed">
-	<div>{COMPLETED}</div>
-	{if(!is_empty(URL),"<div class='url url-end'>"+URL+"</div>","")}
+<div class="completed-wrapper">
+	<div class='completed-text'>{COMPLETED}</div>
+	<div class='end-url'>"+{URL}+"</div>
 </div>

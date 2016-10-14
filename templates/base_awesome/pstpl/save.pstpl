@@ -4,9 +4,8 @@
   <div class="well">
     {SAVEMESSAGE}
     {SAVEERROR}
-    {if(SAVEALERT,"<strong class='text-warning'>"+SAVEALERT+"</strong>","")}
+    <div class="text-success">{SAVEALERT}</div>
     <div class="form-save">{SAVEFORM}</div>
-
     <div class='url-wrapper url-return-wrapper'>{RETURNTOSURVEY}</div>
   </div>
 </div>

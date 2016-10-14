@@ -65,8 +65,6 @@ function activateLanguageChanger(){
  * Action link with submit object (json) : add params to form and submit
  */
 function activateActionLink(){
-        console.log(LSvar);
-
     /* If no limesurvey form : don't need it */
     if(!$('form#limesurvey').length){
         $('[data-limesurvey-submit]').remove();
@@ -100,8 +98,6 @@ function activateActionLink(){
 
 /* Ask confirmation on click on .needconfirm*/
 function activateConfirmButton(){
-        console.log(LSvar);
-
     $(document).on('click',"button[data-confirmedby]", function(event){
         // @todo : allow multiple here : remove extra
         if(!$("[name='"+$(this).data('confirmedby')+"']").is(":checked"))

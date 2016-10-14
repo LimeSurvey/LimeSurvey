@@ -41,6 +41,12 @@
     line-height:1;
 }
 */
+.form-horizontal .control-label.col-sm-12 {
+    text-align: left;
+}
+.dir-rtl .form-horizontal .control-label.col-sm-12 {
+    text-align: right;
+}
 /** ls-label-xs-visibility : set sr-only by default : template can reinit it with initial */
 .ls-label-xs-visibility{
   position:absolute;
@@ -60,11 +66,6 @@
     border-collapse: separate;
     display: table;
     position: relative;
-}
-.ls-input-group[class*="col-"] {
-    float: none;
-    padding-left: 0;
-    padding-right: 0;
 }
 .ls-input-group .form-control {
     float: left;

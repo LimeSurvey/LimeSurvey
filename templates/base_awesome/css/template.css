@@ -2,7 +2,7 @@
  * Style for the template
  *
  */
-.container-fluid{max-width: 1170px;}
+.container-fluid{max-width: 80em;}
 
 /* Sticky footer styles
  * see http://getbootstrap.com/examples/sticky-footer/
@@ -11,18 +11,26 @@ html {
   position: relative;
   min-height: 100%;
 }
-/* For testing purpose : better view of HTML answers part */
+/* Some no boostrap class */
+.ls-language-changer-item{text-align:right}
+.dir-rtl .ls-language-changer-item{text-align:left}
 .answers-wrapper {
     margin: 0;
-    padding: 0 15px;
-    border:1px dotted red;
+    padding: 0.5em 15px;
+    border:1px dotted #ccc;
+    background:#fff;
+    border-radius:4px;
 }
 /**
  * For the question label (number/code and mandatory)
  * If user add p or div : one line more
  */
-.question-number,.question-code
-{float:left;margin-right:0.2em}
+.question-number,.question-code{float:left;margin-right:0.2em}
 
-label{font-weight:normal}
-.question-text{font-size: 1.7em;}/* Need some color */
+/**
+ * Some specific
+ */
+.boilerplate .answers-wrapper,
+.equation .answers-wrapper{
+display:none;
+}

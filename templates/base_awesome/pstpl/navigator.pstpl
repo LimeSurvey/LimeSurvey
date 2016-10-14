@@ -1,4 +1,4 @@
-	<p class="navigator row">{NAVIGATOR}</p>
+	<div class="navigator text-center">{NAVIGATOR}</div>
 	<!-- Review this par : using div ? -->
 	{if(!is_empty(SAVE) or !is_empty(CLEARALL),"<ul class='list-unstyled list-inline save-clear'>","")}
 		{if(!is_empty(SAVE),"<li>"+SAVE+"</li>","")}

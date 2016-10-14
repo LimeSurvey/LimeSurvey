@@ -25,12 +25,12 @@ table.ls-answers{width:100%}
 .ls-answers tbody td
 {text-align:center}
 .ls-answers tbody th
-{text-align:right;vertical-align:middle}
+{vertical-align:middle}
 .ls-answers thead th
 {text-align:center;vertical-align:bottom}
 
-.ls-answers tbody .answertext{text-align:right}
 .ls-answers .answertextright{text-align:left}
+.dir-rtl .ls-answers .answertextright{text-align:right}
 
 /**
  *  awesome-bootstrap-checkbox inside table with an sr-only label

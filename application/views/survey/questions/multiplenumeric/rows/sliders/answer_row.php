@@ -32,48 +32,50 @@
     <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?><?php if($alert):?> errormandatory<?php endif; ?>' for="answer<?php echo$myfname;?>">
         <?php echo $labelText; ?>
     </label>
-    <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?> container-fluid">
-        <?php if (!empty($sliderleft)): ?>
-            <div class='col-xs-12 col-sm-2 slider-left text-right'><?php echo $sliderleft;?></div>
-        <?php endif; ?>
-        <div class="slider-container col-xs-12 col-sm-<?php echo $sliderWidth ?>">
-            <input
-                class="text form-control <?php echo $kpclass;?>"
-                type="text"
-                name="<?php echo $myfname;?>"
-                id="answer<?php echo $myfname; ?>"
-                value="<?php echo ($dispVal ? $dispVal : null); ?>"
-                <?php echo $maxlength; ?>
-                data-slider-value="<?php echo ($dispVal ? $dispVal : null); ?>"
-                data-slider-min='<?php echo $slider_min;?>'
-                data-slider-max='<?php echo $slider_max;?>'
-                data-slider-step='<?php echo $slider_step;?>'
-                data-slider-orientation='<?php echo $slider_orientation;?>'
-                data-slider-handle='<?php echo $slider_handle;?>'
-                data-slider-tooltip='always'
-                data-slider-reset='<?php echo $slider_reset; ?>'
-                data-slider-prefix='<?php echo $prefix; ?>'
-                data-slider-suffix='<?php echo $suffix; ?>'
-                data-separator='<?php echo $sSeparator;?>'
-                data-number='true',
-                data-integer='<?php echo $integeronly;?>',
-            />
-            <?php if($slider_showminmax): ?>
-                <div class='pull-left help-block'><?php echo $slider_min; ?></div>
-                <div class='pull-right help-block'><?php echo $slider_max; ?></div>
-            <?php endif; ?>
+    <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?> container-fluid">
+        <div class="ls-input-group">
+                <?php if (!empty($sliderleft)): ?>
+                    <div class='col-xs-12 col-sm-2 slider-left text-right'><?php echo $sliderleft;?></div>
+                <?php endif; ?>
+                <div class="slider-container col-xs-12 col-sm-<?php echo $sliderWidth ?>">
+                    <input
+                        class="text form-control <?php echo $kpclass;?>"
+                        type="text"
+                        name="<?php echo $myfname;?>"
+                        id="answer<?php echo $myfname; ?>"
+                        value="<?php echo ($dispVal ? $dispVal : null); ?>"
+                        <?php echo $maxlength; ?>
+                        data-slider-value="<?php echo ($dispVal ? $dispVal : null); ?>"
+                        data-slider-min='<?php echo $slider_min;?>'
+                        data-slider-max='<?php echo $slider_max;?>'
+                        data-slider-step='<?php echo $slider_step;?>'
+                        data-slider-orientation='<?php echo $slider_orientation;?>'
+                        data-slider-handle='<?php echo $slider_handle;?>'
+                        data-slider-tooltip='always'
+                        data-slider-reset='<?php echo $slider_reset; ?>'
+                        data-slider-prefix='<?php echo $prefix; ?>'
+                        data-slider-suffix='<?php echo $suffix; ?>'
+                        data-separator='<?php echo $sSeparator;?>'
+                        data-number='true',
+                        data-integer='<?php echo $integeronly;?>',
+                    />
+                    <?php if($slider_showminmax): ?>
+                        <div class='pull-left help-block'><?php echo $slider_min; ?></div>
+                        <div class='pull-right help-block'><?php echo $slider_max; ?></div>
+                    <?php endif; ?>
+                </div>
+                <?php if (!empty($sliderright)): ?>
+                    <div class='col-xs-12 col-sm-2 slider-right text-left'><?php echo $sliderright;?></div>
+                <?php endif; ?>
+                <?php if ($slider_reset): ?>
+                    <div class="ls-input-group-extra">
+                    <div id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default btn-sm btn-slider-reset'>
+                        <span class='fa fa-times slider-reset-icon' aria-hidden='true'></span><span class="slider-reset-text">&nbsp;<?php eT("Reset"); ?></span>
+                    </div>
+                    </div>
+                <?php endif; ?>
+                <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo ($dispVal ? 0 : 1);?>" />
         </div>
-        <?php if (!empty($sliderright)): ?>
-            <div class='col-xs-12 col-sm-2 slider-right text-left'><?php echo $sliderright;?></div>
-        <?php endif; ?>
-        <?php if ($slider_reset): ?>
-            <div class="ls-input-group-extra">
-            <div id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default btn-sm btn-slider-reset'>
-                <span class='fa fa-times slider-reset-icon' aria-hidden='true'></span><span class="slider-reset-text">&nbsp;<?php eT("Reset"); ?></span>
-            </div>
-            </div>
-        <?php endif; ?>
-        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo ($dispVal ? 0 : 1);?>" />
     </div>
 </li>
 <!-- end of answer_row -->

@@ -28,7 +28,7 @@
 
     <!-- Checkbox + label -->
     <div class="col-sm-6 col-xs-12">
-        <div class="form-group answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too ->
+        <div class="form-group answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
             <label for="<?php echo $id;?>" class="label-text control-label ls-input-group-extra" id="label-<?php echo $id;?>" ><?php echo $labeltext;?></label>
             <input
                class="other-text form-control input-sm multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
