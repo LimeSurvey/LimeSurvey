@@ -750,8 +750,14 @@ function LEMval(alias)
                 return value;
             }
             else {
-                var decimal_safe = new Decimal(value);
-                return parseFloat(decimal_safe.valueOf());
+                // If it's not a decimal number, just return value
+                try {
+                    var decimal_safe = new Decimal(value);
+                    return parseFloat(decimal_safe.valueOf());
+                }
+                catch (ex) {
+                    return value;
+                }
             }
         }
         case 'rowdivid':
