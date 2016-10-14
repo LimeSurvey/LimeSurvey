@@ -17,7 +17,6 @@
 $(document).ready(function()
 {
     limesurveySubmitHandler();
-    needConfirmHandler();
     tableCellAdapters();
     showStartPopups();
     addClassEmpty();
@@ -94,20 +93,6 @@ function limesurveySubmitHandler(){
 }
 
 
-// Ask confirmation on click on .needconfirm
-function needConfirmHandler(){
-    $(document).on('click',"[data-confirmedby]", function(event){
-        if(!$("#"+$(this).data('confirmedby')).is(":checked"))
-        {
-            text=$("label[for='"+$(this).data('confirmedby')+"']").text();
-            if (confirm(text)) {
-                $("#"+$(this).data('confirmedby')).prop('checked',true);
-                return true;
-            }
-            return false;
-        }
-    });
-}
 /**
  * checkconditions : javascript function attach to some element
  * Launch ExprMgr_process_relevance_and_tailoring with good value

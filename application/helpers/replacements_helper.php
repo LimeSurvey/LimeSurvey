@@ -354,15 +354,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $_clearall=CHtml::tag("div",array("class"=>"form-inline"),
-            CHtml::htmlButton(gT("Exit and clear survey"),array('type'=>'submit','id'=>"clearall",'value'=>'clearall','name'=>'clearall','class'=>'clearall btn btn-default','data-confirmedby'=>'confirm-clearall','title'=>gT("This action need confirmation.")))
-            .CHtml::tag("div",array("class"=>"form-group ls-js-hidden checkbox-item"),
-                CHtml::checkBox("confirm-clearall",false,array('id'=>'confirm-clearall','value'=>'confirm','class'=>'checbox'))
-                .CHtml::label(gT("Are you sure you want to clear all your responses?"),'confirm-clearall',array('class'=>'control-label'))
-            )
-        );
-        $_clearalllinks = '<li class="ls-no-js-hidden"><a href="#" id="clearallbtnlink">'.gT("Exit and clear survey").'</a></li>';
-        // To replace javascript confirm : https://ethaizone.github.io/Bootstrap-Confirmation/ or http://bootboxjs.com/documentation.html#bb-confirm-dialog orhttps://nakupanda.github.io/bootstrap3-dialog/ or ....
+        $aClearAll=doHtmlClearAll();
+        $_clearall = $aClearAll['button'];
+        $_clearalllinks = $aClearAll['link'];
     }
     else
     {
@@ -842,4 +836,40 @@ function doHtmlSaveAll($move="")
     }
     $aSaveAllButtons[$move]=$sSaveAllButtons;
     return $aSaveAllButtons[$move];
+}
+
+/**
+ * ClearALl link and button
+ *
+ * @return array
+ */
+function doHtmlClearAll(){
+    /* one of the reason of seaparation : call each tim we use templatereplace */
+    static $aClearAll=array();
+    if(empty($aClearAll)){
+        $aClearAll['button']=App()->getController()->renderPartial("/survey/system/actionButton/clearAll",array(
+            'value'=>'clearall',
+            'name'=>'clearall',
+            'class'=>'ls-clearaction ls-clearall',
+            'confirmedby'=>'confirm-clearall',
+            'confirmvalue'=>'confirm',
+            ),true);
+        $submit=ls_json_encode(array(
+                'clearall'=>'clearall'
+            ));
+        $confirm=ls_json_encode(array(
+                'confirm-clearall'=>'confirm'
+            ));
+        $aClearAll['link'] = App()->getController()->renderPartial("/survey/system/actionLink/clearAll",array(
+            'class'=>'ls-link-action ls-link-clearall',
+            'submit'=>$submit,
+            'confirm'=>$confirm,
+        ),true);
+        // To replace javascript confirm : https://ethaizone.github.io/Bootstrap-Confirmation/ or http://bootboxjs.com/documentation.html#bb-confirm-dialog or https://nakupanda.github.io/bootstrap3-dialog/ or ....
+        /* Don't do it in core actually, but put some language*/
+        App()->getClientScript()->registerScript("activateConfirmLanguage","LSvar.confirmLang=".ls_json_encode(array('yes'=>gT("Yes"),'no'=>gT("No"))),CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
+        App()->getClientScript()->registerScript("activateConfirmButton","activateConfirmButton();\n",CClientScript::POS_END);
+    }
+    return $aClearAll;
 }
