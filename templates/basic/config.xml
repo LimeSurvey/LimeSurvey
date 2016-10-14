@@ -2,18 +2,18 @@
 <config>
     <!-- Those metadatas will be display in the template configuration page. They are not used for now. -->
     <metadatas>
-        <name>Base with Awesome checkbox</name>
+        <name>Basic</name>
         <creationDate>14/04/2016</creationDate>
         <author>Denis Chenu</author>
         <authorEmail>denis@sondages.pro</authorEmail>
         <license>GNU General Public License version 3 or later and MIT</license>
-        <version>0.1</version>
-        <description>Testing template for 3.0 LS version, must be renamed to something like 'basic' after.</description>
+        <version>0.2</version>
+        <description>Basic template for LimeSurvey, based on core bootsrap, with awesome button.</description>
         <!--
              The last_update field must be updated before each release,
              to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
          -->
-        <last_update>2016-08-07 12:08:00</last_update>
+        <last_update>2016-10-07 14:08:00</last_update>
     </metadatas>
 
     <files>
@@ -22,12 +22,10 @@
             Any file here will be loaded via the asset manager
         -->
         <css>
-            <filename>css/bootstrap.min.css</filename>
-            <filename>css/bootstrap-ls.css</filename>
-            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
             <filename>css/jquery-ui.css</filename>
+            <filename>css/bootstrap.min.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
             <!--<filename>assets/css/bootstrap-theme.css</filename>-->
-            <filename>css/limesurvey.css</filename>
             <filename>css/template-core.css</filename>
             <filename>css/template.css</filename>
         </css>
@@ -40,6 +38,7 @@
 
         <rtl>
             <css>
+                <!-- this part must be reviewed : i like to have a "only update needed part bs-rtl" -->
                 <!--
                 <filename>assets/css/jquery-ui-custom-rtl.css</filename>
                 <filename>assets/css/bootstrap-rtl.min.css</filename>

@@ -1,9 +1,0 @@
-<!-- survey.pstpl -->
-<!-- Survey Header -->
-<div id="surveyHeader" class="row">
-    <div class="col-md-12">
-        <h2 id="surveyName" class="survey-name">{SURVEYNAME}</h2>
-        {if(!is_empty(SURVEYDESCRIPTION),'<p id="surveyDescription" class="survey-description">'+SURVEYDESCRIPTION+'</p>','')}
-    </div>
-</div>
-<!-- end of survey.pstpl -->

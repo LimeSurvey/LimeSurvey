@@ -1,7 +1,0 @@
-<!-- privacy.pstl -->
-<div id="privacy" class="row">
-    <div class="col-md-12 col-centered">
-        <p>{PRIVACYMESSAGE}</p>
-    </div>
-</div>
-<!-- end of privacy.pstl -->

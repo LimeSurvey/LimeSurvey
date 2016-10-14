@@ -1,9 +1,0 @@
-<!-- print_group.pstpl -->
-<div class="survey-group{ODD_EVEN}">
-    <h2>{GROUPNAME}</h2>
-    <div class="group-description">
-        {GROUPDESCRIPTION}
-    </div>
-    {QUESTIONS}
-</div>
-<!-- end of print_group.pstpl -->
