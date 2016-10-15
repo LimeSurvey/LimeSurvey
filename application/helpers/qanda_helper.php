@@ -1901,7 +1901,7 @@ function do_ranking($ia)
     $imageurl               = Yii::app()->getConfig("imageurl");
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $coreClass              = "ls-answers answers-list select-list sortable-list";
+    $coreClass              = "ls-answers answers-lists select-sortable-lists";
     if ($aQuestionAttributes['random_order']==1)
     {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
