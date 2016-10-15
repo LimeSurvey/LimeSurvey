@@ -807,9 +807,9 @@ class SurveyRuntimeHelper {
 
                     if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == '')
                     {
-                        $completed = "<br /><input type='hidden' class='hidemenubutton'/><span>" . gT("Thank you!") . "</span><br /><br />\n\n"
-                        . gT("Your survey responses have been recorded.") . "<br /><br />\n";
-                    }
+                        $completed = "<p>".gT("Thank you!")."</p>";
+                        $completed.= "<p>".gT("Your survey responses have been recorded.")."</p>";
+                      }
                     else
                     {
                         $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
@@ -818,27 +818,23 @@ class SurveyRuntimeHelper {
                     // Link to Print Answer Preview  **********
                     if ($thissurvey['printanswers'] == 'Y')
                     {
-                        $url = Yii::app()->getController()->createUrl("/printanswers/view/surveyid/{$surveyid}");
-                        $completed .= "<br /><br />"
-                        . "<a class='printlink' href='$url'  target='_blank'>"
-                        . gT("Print your answers.")
-                        . "</a><br />\n";
-                    }
-                    //*****************************************
-
-                    if ($thissurvey['publicstatistics'] == 'Y' && $thissurvey['printanswers'] == 'Y')
-                    {
-                        $completed .='<br />' . gT("or");
+                        $completed.= App()->getController()->renderPartial("/survey/system/url",array(
+                            'url'=>Yii::app()->getController()->createUrl("/printanswers/view",array('surveyid'=>$surveyid)),
+                            'description'=>gT("Print your answers."),
+                            'type'=>"survey-print",
+                            'coreClass'=>"ls-print",
+                        ),true);
                     }
 
                     // Link to Public statistics  **********
                     if ($thissurvey['publicstatistics'] == 'Y')
                     {
-                        $url = Yii::app()->getController()->createUrl("/statistics_user/action/surveyid/{$surveyid}/language/".$_SESSION[$LEMsessid]['s_lang']);
-                        $completed .= "<br /><br />"
-                        . "<a class='publicstatisticslink' href='$url' target='_blank'>"
-                        . gT("View the statistics for this survey.")
-                        . "</a><br />\n";
+                        $completed.= App()->getController()->renderPartial("/survey/system/url",array(
+                            'url'=>Yii::app()->getController()->createUrl("/statistics_user/action/",array('surveyid'=>$surveyid,'language'=>App()->getLanguage())),
+                            'description'=>gT("View the statistics for this survey."),
+                            'type'=>"survey-statistics",
+                            'coreClass'=>"ls-statistics",
+                        ),true);
                     }
                     //*****************************************
 

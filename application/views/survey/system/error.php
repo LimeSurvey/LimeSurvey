@@ -1,17 +1,17 @@
 <?php
 /**
- * error
+ * $aErrors string[]
  *
  */
 ?>
-<?php if(count($aLoadErrorMsg) > 1) : ?>
+<?php if(count($aErrors) > 1) : ?>
 <ul class='alert alert-danger list-unstyled' role='alert'>
-    <?php foreach($aLoadErrorMsg as $type=>$error) : ?>
+    <?php foreach($aErrors as $key=>$error) : ?>
     <li><?php echo $error; ?></li>
     <?php endforeach; ?>
 </ul>
 <?php else: ?>
 <p class='alert alert-danger' role='alert'>
-    <?php echo reset($aLoadErrorMsg); ?>
+    <?php echo reset($aErrors); ?>
 </p>
 <?php endif; ?>

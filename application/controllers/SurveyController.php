@@ -87,4 +87,48 @@ class SurveyController extends LSYii_Controller
         );
     }
 
+    //~ /**
+     //~ * Reset the session
+     //~ **/
+    //~ function resetSession($iSurveyId)
+    //~ {
+
+    //~ }
+    /**
+     * Show a message and exit
+     * @param string $sType : type of message
+     * @param string[] $aMessage : string for the messageconstructed via array of string
+     * @param array[null : $aUrl : if url can/must be set
+     * @return void
+     **/
+    function renderExitMessage($iSurveyId,$sType,$aMessages=array(),$aUrl=null,$aErrors=null)
+    {
+        $this->layout='survey';
+        $oTemplate = Template::model()->getInstance('', $iSurveyId);
+        $this->sTemplate=$oTemplate->sTemplateName;
+        $message=$this->renderPartial("/survey/system/message",array(
+            'aMessage'=>$aMessages
+        ),true);
+        if(!empty($aUrl)){
+            $url=$this->renderPartial("/survey/system/url",$aUrl,true);
+        }else{
+            $url="";
+        }
+        if(!empty($aErrors)){
+            $error=$this->renderPartial("/survey/system/error",array(
+                'aErrors'=>$aErrors
+            ),true);
+        }else{
+            $error="";
+        }
+        /* Set the data for templatereplace */
+        $this->aGlobalData['thissurvey']=getSurveyInfo($iSurveyId); /* Did we need it, or did we just use Yii::app()->getConfig('surveyID'); ? */
+        $aReplacementData['MESSAGEID']=$sType;
+        $aReplacementData['MESSAGE']=$message;
+        $aReplacementData['URL']=$url;
+        $aReplacementData['ERROR']=$error;
+        $content=templatereplace(file_get_contents($oTemplate->viewPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
+        $this->render("/survey/system/display",array('content'=>$content));
+        App()->end();
+    }
 }

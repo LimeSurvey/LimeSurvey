@@ -73,7 +73,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $varsPassed[] = $var;
         }
     }
-
     // Local over-rides in case not set above
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
