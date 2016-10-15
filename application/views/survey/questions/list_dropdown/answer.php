@@ -27,6 +27,7 @@
             id="answer<?php echo $name; ?>"
             <?php  echo ($dropdownSize) ? "size=$dropdownSize" : "" ; ?>
             onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type);<?php echo $select_show_hide; ?>"
+    >
         <?php
             // rows/option.php
             echo $sOptions;
