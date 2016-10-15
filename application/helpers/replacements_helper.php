@@ -332,11 +332,21 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         if (trim($thissurvey['surveyls_urldescription']) != '')
         {
-            $_linkreplace = "<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";
+            $_linkreplace = App()->getController()->renderPartial("/survey/system/url",array(
+                'url'=>$thissurvey['surveyls_url'],
+                'description'=>$thissurvey['surveyls_description'],
+                'type'=>"survey-endurl",
+                'coreClass'=>"ls-endurl",
+            ),true);
         }
         else
         {
-            $_linkreplace = "<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
+            $_linkreplace = App()->getController()->renderPartial("/survey/system/url",array(
+                'url'=>$thissurvey['surveyls_url'],
+                'description'=>$thissurvey['surveyls_url'],
+                'type'=>"survey-endurl",
+                'coreClass'=>"ls-endurl ls-surveyurl",
+            ),true);
         }
     }
     else
@@ -403,7 +413,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $restartparam['lang']=$s_lang;
         $restartparam['newtest']="Y";
         $restarturl=Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$restartparam);
-        $_restart = "<a href='{$restarturl}'>".gT("Restart this Survey")."</a>";
+        $_restart = App()->getController()->renderPartial("/survey/system/url",array(
+            'url'=>$restarturl,
+            'description'=>gT("Restart this Survey"),
+            'type'=>"survey-restart",
+            'coreClass'=>"ls-restart",
+        ),true);
     }
     else
     {
@@ -421,10 +436,16 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $returnlink=Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}");
         }
         if(isset(Yii::app()->session['survey_'.$_surveyid]['step'])){
-            $_return_to_survey = "<a href='{$returnlink}'>".gT("Return to survey")."</a>";
+            $returndescription = gT("Return to survey");
         }else{
-            $_return_to_survey = "<a href='{$returnlink}'>".gT("Go to survey")."</a>";
+            $returndescription = gT("Go to survey");
         }
+        $_return_to_survey = App()->getController()->renderPartial("/survey/system/url",array(
+            'url'=>$returnlink,
+            'description'=>$returndescription,
+            'type'=>"survey-return",
+            'coreClass'=>"ls-return",
+        ),true);
     }
     else
     {
