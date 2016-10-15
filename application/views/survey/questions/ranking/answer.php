@@ -24,27 +24,27 @@
 
 <!-- answer -->
 <div class="<?php echo $coreClass; ?>">
-    <ul class="list-unstyled ls-js-hidden-sr form-horizontal">
+    <ul class="list-unstyled ls-js-hidden-sr answers-list select-list form-horizontal">
         <?php
             // rows/answer_row.php
             echo  $sSelects;
         ?>
     </ul>
-    <div class="dragDropTable ls-no-js-hidden row" aria-hidden="true">
+    <div class="dragDropTable ls-no-js-hidden answers-list row" aria-hidden="true">
         <div class="col-sm-6 col-xs-6">
             <strong class="SortableTitle"><?php echo $rank_title;?></strong>
             <!-- @todo : move htmlblock at the good place -->
-            <div class="ui-state-default dragDropChoices">
-                <ul id="sortable-choice-<?php echo $qId;?>" class="connectedSortable<?php echo $qId;?> dragDropChoiceList list-group">
-                    <li class="list-group-item">&nbsp;</li>
+            <div class="dragDropChoices">
+                <ul id="sortable-choice-<?php echo $qId;?>" class="connectedSortable<?php echo $qId;?> sortable-list list-unstyled">
+                    <li>&nbsp;</li>
                 </ul>
             </div>
         </div>
         <div class="col-sm-6 col-xs-6">
             <strong class="SortableTitle"><?php echo $choice_title;?></strong>
-            <div class="ui-state-default dragDropRanks">
-                <ul id="sortable-rank-<?php echo $qId;?>" class="connectedSortable<?php echo $qId;?> dragDropChoiceList selectionSortable list-group">
-                    <li class="list-group-item">&nbsp;</li>
+            <div class="dragDropRanks">
+                <ul id="sortable-rank-<?php echo $qId;?>" class="connectedSortable<?php echo $qId;?> sortable-list selectionSortable  list-unstyled">
+                    <li>&nbsp;</li>
                 </ul>
             </div>
         </div>

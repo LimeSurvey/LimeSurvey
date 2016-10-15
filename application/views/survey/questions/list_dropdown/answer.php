@@ -21,13 +21,11 @@
     <label for="answer<?php echo $name; ?>" class="sr-only control-label">
         <?php eT('Please choose'); ?>
     </label>
-
     <select
             class="form-control"
             name="<?php echo $name; ?>"
             id="answer<?php echo $name; ?>"
-            <?php echo $dropdownSize; ?>
-            onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type);"
+            <?php  echo ($dropdownSize) ? "size=$dropdownSize" : "" ; ?>
     >
         <?php
             // rows/option.php

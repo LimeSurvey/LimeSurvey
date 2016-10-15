@@ -38,16 +38,16 @@
 
         <rtl>
             <css>
-                <!-- this part must be reviewed : i like to have a "only update needed part bs-rtl" -->
-                <!--
-                <filename>assets/css/jquery-ui-custom-rtl.css</filename>
-                <filename>assets/css/bootstrap-rtl.min.css</filename>
-                <filename>assets/css/bootstrap-theme-rtl.css</filename>
-                <filename>assets/css/limesurvey-rtl.css</filename>
-                <filename>assets/css/template-rtl.css</filename>
-                -->
+                <!-- must fix some part -->
+                <filename>css/jquery-ui.css</filename>
+                <filename>css/bootstrap.min.css</filename>
+                <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
+                <!--<filename>assets/css/bootstrap-theme.css</filename>-->
+                <filename>css/template-core.css</filename>
+                <filename>css/template.css</filename>
             </css>
             <js>
+                <filename>js/template.js</filename>
             </js>
         </rtl>
     </files>

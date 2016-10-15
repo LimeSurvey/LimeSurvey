@@ -106,11 +106,11 @@ class Save
         $aReplacements['SAVEFORM'] = $saveForm;
 
         $content = templatereplace(file_get_contents($oTemplate->viewPath."save.pstpl"),$aReplacements,$aData);
-        App()->getController()->layout="bare";
+        App()->getController()->layout="survey";
+        App()->getController()->sTemplate=$sTemplate;
+        App()->getController()->aGlobalData=$aData;
+        App()->getController()->aReplacementData=$aReplacements;
         App()->getController()->render("/survey/system/display",array(
-            'sTemplate'=>$sTemplate,
-            'aData'=>$aData,
-            'aReplacements'=>$aReplacements,
             'content'=>$content,
         ));
         Yii::app()->end();

@@ -18,17 +18,14 @@ namespace ls\helpers;
  */
 class questionHelper
 {
-    /**
-     * The question attribute definition for this LimeSurvey installation
-     */
+    /* @var array[]|null The question attribute definition for this LimeSurvey installation */
     protected static $attributes;
-    /**
-     * The question attribute (settings) by question type
-     */
+    /* @var array[] The question attribute (settings) by question type*/
     protected static $questionAttributesSettings=array();
 
     /**
      * Return all the definitions of Question attributes core+extended value
+     * @return array[]
      */
     public static function getAttributesDefinitions()
     {

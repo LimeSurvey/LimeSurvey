@@ -2178,7 +2178,17 @@ function checkCompletedQuota($surveyid,$return=false)
     // Construction of default message inside quotamessage class
     $sHtmlQuotaMessage = "<div class='quotamessage limesurveycore'>\n";
     $sHtmlQuotaMessage.= "\t".$sMessage."\n";
-    $sHtmlQuotaUrl=($sUrl)? "<a href='".$sUrl."'>".$sUrlDescription."</a>" : "";
+    if($sUrl)
+    {
+        $sHtmlQuotaUrl = App()->getController()->renderPartial("/survey/system/url",array(
+            'url'=>$sUrl,
+            '$description'=>$sUrlDescription,
+            'type'=>"survey-quotaurl",
+            'coreClass'=>"ls-endurl ls-quotaurl",
+        ),true);
+    }else{
+        $sHtmlQuotaUrl="";
+    }
 
     // Add the navigator with Previous button if quota allow modification.
     if ($sAction == "2")

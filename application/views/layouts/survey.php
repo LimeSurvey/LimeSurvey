@@ -1,52 +1,44 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <?php
+<?php
+/**
+ * @var string sTemplate : the template to be used
+ * @var array aData : the global var for templatereplace
+ * @var array aReplacementData  : the array of replacement for templatereplace
+ * @var startsurvey boolean start surevy (mean add survey.pstpl page)
+ **/
+/* send the header : @see common_helper sendCacheHeaders */
+//~ sendCacheHeaders(); // Send the header
+if (!headers_sent())
+{
+    if (Yii::app()->getConfig('x_frame_options','allow')=='sameorigin')
+    {
+        header('X-Frame-Options: SAMEORIGIN');
+    }
+    header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');  // this line lets IE7 run LimeSurvey in an iframe
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
+    header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+    header('Content-Type: text/html; charset=utf-8');
+}
+?><!DOCTYPE html>
+<?php
+    Yii::app()->loadHelper('surveytranslator');
+    $lang=App()->getLanguage();
+    $langDir= (getLanguageRTL(App()->getLanguage())) ? "rtl": "ltr";
+?><html lang="<?php echo $lang ?>" class="no-js <?php echo $lang ?> dir-<?php  echo $langDir  ?>">
+<head>
+<?php
+    $oTemplate = Template::model()->getInstance($this->sTemplate);
+    // Maybe can add language changer here
+    /* Add head by template + star body (if template start body here ....) */
+    echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),$this->aReplacementData,$this->aReplacementData);
 
-        /* @var $cs CClientScript */
-        $cs=Yii::app()->getClientScript();
-        $cs->registerCoreScript('jquery');
-        $cs->registerScriptFile(Yii::app()->getConfig('third_party') . 'jqueryui/js/jquery-ui-1.10.0.custom.js');
-        $cs->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.touch-punch.min.js');
-        $cs->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.qtip.js');
-        $cs->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.notify.js');
-        $cs->registerScriptFile(Yii::app()->createUrl('config/script'));
-        $cs->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
-        ?>
-
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('third_party');?>jqueryui/css/smoothness/jquery-ui-1.10.0.custom.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>/jquery-ui/jquery-ui.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>printablestyle.css" media="print" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>adminstyle.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl');?>adminstyle.css" />
-        <?php
-        if(!empty($css_admin_includes)) {
-            foreach ($css_admin_includes as $cssinclude)
-            {
-                ?>
-                <link rel="stylesheet" type="text/css" media="all" href="<?php echo $cssinclude; ?>" />
-                <?php
-            }
-        }
-        /*if ($bIsRTL){?>
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('adminstyleurl');?>adminstyle-rtl.css" /><?php
-        }*/
-        ?>
-                <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
-
-
-        <title>Limesurvey</title>
-    </head>
-    <body>
-        <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
-        <div id="content">
-        <?php echo $content; ?>
-        </div>
-        <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center">
-            <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
-        </div>
-    </body>
-
+    if(!empty($this->bStartSurvey)){
+        echo templatereplace(file_get_contents($oTemplate->viewPath."survey.pstpl"),$this->aReplacementData,$this->aReplacementData);
+    }
+    echo $content;
+    echo templatereplace(file_get_contents($oTemplate->viewPath."endpage.pstpl"),$this->aReplacementData,$this->aReplacementData);
+?>
+</body>
 </html>
