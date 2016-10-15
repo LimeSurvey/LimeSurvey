@@ -584,11 +584,12 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    var numtest = new Decimal(value);
-                    if(!numtest.isNaN()){
+                    try {
+                        var numtest = new Decimal(value);
                         return parseFloat(numtest.valueOf());
-                    } else {
-                        shown = value; // what about "no answer"?
+                    }
+                    catch(e) {
+                        shown = value;
                     }
                     break;
                 case 'M': //Multiple choice checkbox
@@ -598,11 +599,12 @@ function LEMval(alias)
                     }
                     else {
                         if (attr.type == 'P' && varName.match(/comment$/)) {
-                            var numtest = new Decimal(value);
-                            if(!numtest.isNaN()){
+                            try {
+                                var numtest = new Decimal(value);
                                 shown = parseFloat(numtest.valueOf());
-                            } else {
-                                shown = value; // what about "no answer"?
+                            }
+                            catch(e) {
+                                shown = value;
                             }
                         }
                         else {
@@ -706,7 +708,13 @@ function LEMval(alias)
                 {
                     if(bNumRealValue)
                     {
-                        return parseFloat(new Decimal(value).valueOf());
+                        try {
+                            var numtest = new Decimal(value);
+                            return parseFloat(numtest.valueOf());
+                        }
+                        catch(e) {
+                            return value;
+                        }
                     }
                     else
                     {
@@ -721,7 +729,13 @@ function LEMval(alias)
 //                if (newval != parseFloat(newval)) {
 //                   return '';
 //                }
-                return parseFloat(new Decimal(newval).valueOf());
+                try {
+                    var numtest = new Decimal(value);
+                    return parseFloat(numtest.valueOf());
+                }
+                catch(e) {
+                    return value;
+                }
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
