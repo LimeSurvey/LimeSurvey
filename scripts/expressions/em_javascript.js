@@ -737,7 +737,7 @@ function LEMval(alias)
                 var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).attr('value');
 
                 // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
-                sdatetimePattern=typeof sdatetimePattern=='undefined'? 'yy-mm-dd HH:MM': sdatetimePattern;
+                sdatetimePattern =typeof sdatetimePattern == 'undefined'? 'YYYY-MM-DD HH:mm': sdatetimePattern;
 
                 if (sdatetimePattern==null) {
                     sdatetimePattern="";
@@ -757,8 +757,14 @@ function LEMval(alias)
                 return value;
             }
             else {
-                var decimal_safe = new Decimal(value);
-                return parseFloat(decimal_safe.valueOf());
+                // If it's not a decimal number, just return value
+                try {
+                    var decimal_safe = new Decimal(value);
+                    return parseFloat(decimal_safe.valueOf());
+                }
+                catch (ex) {
+                    return value;
+                }
             }
         }
         case 'rowdivid':

@@ -790,8 +790,8 @@ class InstallerController extends CController {
         /**
         * check for a specific PHPFunction, return HTML image
         *
-        * @param string $function
-        * @param string $image return
+        * @param string $sFunctionName
+        * @param string $sImage return
         * @return bool result
         */
         function check_PHPFunction($sFunctionName, &$sImage)
@@ -932,6 +932,9 @@ class InstallerController extends CController {
 
         // imap php library check
         check_PHPFunction('imap_open', $aData['bIMAPPresent']);
+
+        // Silently check some default PHP extensions
+        $this->checkDefaultExtensions();
 
         return $bProceed;
     }
@@ -1364,5 +1367,29 @@ class InstallerController extends CController {
         $testPdo = null;
 
         return true;
+    }
+
+    /**
+     * Contains a number of extensions that can be expected
+     * to be installed by default, but maybe not on BSD systems etc.
+     * Check them silently and die if they are missing.
+     * @return void
+     */
+    private function checkDefaultExtensions()
+    {
+        $extensions = array(
+            'simplexml',
+            'filter',
+            'ctype',
+            'session',
+            'hash'
+        );
+
+        foreach ($extensions as $extension) {
+            if (!extension_loaded($extension)) {
+                die('You\'re missing default PHP extension ' . $extension);
+            }
+        }
+
     }
 }
