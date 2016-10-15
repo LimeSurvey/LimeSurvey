@@ -20,14 +20,14 @@
 *
 * @param string $line Text to search in
 * @param string[] $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
-* @param array $redata : array of global var used in the function
-* @param string $debugSrc deprecated
+* @param mixed[] $redata : array of global var used in the function
+* @param void $debugSrc deprecated
 * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
-* @param null $registerdata - deprecated
+* @param void $registerdata - deprecated
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @param object|string - the template object to be used
-* @return string  Text with replaced strings
+* @return string Text with replaced strings
 */
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false, $oTemplate='')
 {

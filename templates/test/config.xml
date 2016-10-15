@@ -37,15 +37,14 @@
 
         <rtl>
             <css>
-                <!--
-                <filename>css/jquery-ui-custom-rtl.css</filename>
-                <filename>css/bootstrap-rtl.min.css</filename>
-                <filename>css/bootstrap-theme-rtl.css</filename>
-                <filename>css/limesurvey-rtl.css</filename>
-                <filename>css/template-rtl.css</filename>
-                -->
+                <filename>css/bootstrap.min.css</filename>
+                <filename>css/jquery-ui.css</filename>
+                <!--<filename>assets/css/bootstrap-theme.css</filename>-->
+                <filename>css/template-core.css</filename>
+                <filename>css/template.css</filename>
             </css>
             <js>
+                <filename>js/template.js</filename>
             </js>
         </rtl>
     </files>

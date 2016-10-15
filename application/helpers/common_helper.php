@@ -1399,8 +1399,6 @@ function returnGlobal($stringname,$bRestrictToString=false)
 
 function sendCacheHeaders()
 {
-    global $embedded;
-    if ( $embedded ) return;
     if (!headers_sent())
     {
         if (Yii::app()->getConfig('x_frame_options','allow')=='sameorigin')
@@ -5598,10 +5596,14 @@ function getLabelSets($languages = null)
     return $labelsets;
 }
 
+/**
+ * get the header
+ * var void $meta : not used in any call
+ */
 function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
-    global $embedded,$surveyid ;
+    global $surveyid ;
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
@@ -5636,15 +5638,7 @@ function getHeader($meta = false)
     App()->clientScript->registerScript("nojsReplace","(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);",CClientScript::POS_HEAD);
 
 
-    if ( !$embedded )
-    {
-        return $header;
-    }
-
-    global $embedded_headerfunc; // Did this work ? Can be removed or not ?
-
-    if ( function_exists( $embedded_headerfunc ) )
-        return $embedded_headerfunc($header);
+    return $header;
 }
 
 
@@ -5669,16 +5663,7 @@ function getPrintableHeader()
 // If you want to echo the Footer use doFooter() !
 function getFooter()
 {
-    global $embedded;
-    if ( !$embedded )
-    {
-        return "\n\n\t</body>\n</html>\n";
-    }
-
-    global $embedded_footerfunc;
-
-    if ( function_exists( $embedded_footerfunc ) )
-        return $embedded_footerfunc();
+    return "\n\n\t</body>\n</html>\n";
 }
 
 function doFooter()

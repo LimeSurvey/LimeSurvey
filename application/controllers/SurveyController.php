@@ -15,6 +15,16 @@ class SurveyController extends LSYii_Controller
 {
     public $lang = null;
 
+    /* @var string : Default layout when using render : leave at bare actually : just send content */
+    public $layout= 'bare';
+    /* @var string the template name to be used when using layout */
+    public $sTemplate= 'default';
+    /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
+    public $aReplacementData= array();
+    /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
+    public $aGlobalData= array();
+    /* @var boolean did we need survey.pstpl when using layout */
+    public $bStartSurvey= false;
     /**
      * Initialises this controller, does some basic checks and setups
      *

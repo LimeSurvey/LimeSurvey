@@ -811,9 +811,7 @@ function LEMfixnum(value)
  */
 function LEMstrip_tags(htmlString)
 {
-   var tmp = document.createElement("DIV");
-   tmp.innerHTML = htmlString;
-   return tmp.textContent||tmp.innerText;
+   return $("<div/>").html(htmlString).text();
 }
 
 /**
