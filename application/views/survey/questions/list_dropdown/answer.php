@@ -17,15 +17,16 @@
 
 <!-- answer-->
 
-<div class="<?php echo $coreClass;?> form-group form-inline">
-    <label for="answer<?php echo $name; ?>" class="sr-only control-label">
+<p class="question answer-item dropdown-item col-sm-4">
+    <label for="answer<?php echo $name; ?>" class="hide label">
         <?php eT('Please choose'); ?>
     </label>
     <select
-            class="form-control"
+            class="form-control list-question-select"
             name="<?php echo $name; ?>"
             id="answer<?php echo $name; ?>"
             <?php  echo ($dropdownSize) ? "size=$dropdownSize" : "" ; ?>
+            onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type);<?php echo $select_show_hide; ?>"
     >
         <?php
             // rows/option.php
@@ -34,16 +35,16 @@
 
     </select>
 
-    <?php
-        // rows/othertext.php
-        echo $sOther;
-    ?>
-
     <input
         type="hidden"
         name="java<?php echo $name; ?>"
         id="java<?php echo $name; ?>"
         value="<?php echo $value; ?>"
     />
-</div>
+
+    <?php
+        // rows/othertext.php
+        echo $sOther;
+    ?>
+</p>
 <!-- end of answer  -->
