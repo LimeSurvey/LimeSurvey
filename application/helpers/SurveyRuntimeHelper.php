@@ -1427,6 +1427,7 @@ class SurveyRuntimeHelper {
             $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
             $aRadix=getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
+            $aLSJavascriptVar['lang']=new stdClass; // To add more easily some lang string here
 
             /*
             $aCfieldnameWithDependences = Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);

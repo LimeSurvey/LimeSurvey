@@ -540,8 +540,16 @@ function file_validation_popup($ia, $filenotvalidated = null)
 function return_timer_script($aQuestionAttributes, $ia, $disable=null)
 {
     global $thissurvey;
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js');
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js',CClientScript::POS_HEAD);
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'timer.js',CClientScript::POS_HEAD);
 
+    $langTimer=array(
+        'hours'=>gT("hours"),
+        'mins'=>gT("mins"),
+        'seconds'=>gT("seconds"),
+    );
+    /* Registering script : don't go to EM : no need usage of ls_json_encode */
+    App()->getClientScript()->registerScript("LSVarLangTimer","LSvar.lang.timer=".json_encode($langTimer).";",CClientScript::POS_BEGIN);
     /**
      * The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
      * This just stops error messages occuring
@@ -555,14 +563,15 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     //Used to count how many timer questions in a page, and ensure scripts only load once
     $thissurvey['timercount'] = (isset($thissurvey['timercount']))?$thissurvey['timercount']++:1;
 
-    if ($thissurvey['format'] != "S")
-    {
-        if ($thissurvey['format'] != "G")
-        {
-            return "\n\n<!-- TIMER MODE DISABLED DUE TO INCORRECT SURVEY FORMAT -->\n\n";
-            //We don't do the timer in any format other than question-by-question
-        }
-    }
+    /* Work in all mode system : why disable it ? */
+    //~ if ($thissurvey['format'] != "S")
+    //~ {
+        //~ if ($thissurvey['format'] != "G")
+        //~ {
+            //~ return "\n\n<!-- TIMER MODE DISABLED DUE TO INCORRECT SURVEY FORMAT -->\n\n";
+            //~ //We don't do the timer in any format other than question-by-question
+        //~ }
+    //~ }
 
     $time_limit=$aQuestionAttributes['time_limit'];
     $disable_next=trim($aQuestionAttributes['time_limit_disable_next']) != '' ? $aQuestionAttributes['time_limit_disable_next'] : 0;
@@ -586,12 +595,13 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     $time_limit_warning_2_message=str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
     $time_limit_warning_2_display_time=trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time']+1 : 0;
     $time_limit_message_style=trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "";
-    $time_limit_message_style.="\n        display: none;"; //Important to hide time limit message at start
+    $time_limit_message_class="hidden ls-timer-content ls-timer-message ls-no-js-hidden";
     $time_limit_warning_style=trim($aQuestionAttributes['time_limit_warning_style']) != '' ? $aQuestionAttributes['time_limit_warning_style'] : "";
-    $time_limit_warning_style.="\n        display: none;"; //Important to hide time limit warning at the start
+    $time_limit_warning_class="hidden ls-timer-content ls-timer-warning ls-no-js-hidden";
     $time_limit_warning_2_style=trim($aQuestionAttributes['time_limit_warning_2_style']) != '' ? $aQuestionAttributes['time_limit_warning_2_style'] : "";
-    $time_limit_warning_2_style.="\n        display: none;"; //Important to hide time limit warning at the start
+    $time_limit_warning_2_class="hidden ls-timer-content ls-timer-warning2 ls-no-js-hidden";
     $time_limit_timer_style=trim($aQuestionAttributes['time_limit_timer_style']) != '' ? $aQuestionAttributes['time_limit_timer_style'] : "position: relative;";
+    $time_limit_timer_class="ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
     $timersessionname="timer_question_".$ia[0];
     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname]))
@@ -599,7 +609,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
         $time_limit=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname];
     }
 
-    $output =  doRender('/survey/question_timer/timer_header', array('timersessionname'=>$timersessionname,'timersessionname'=>$timersessionname,'timersessionname'=>$timersessionname,'time_limit'=>$time_limit), true);
+    $output =  doRender('/survey/question_timer/timer_header', array('timersessionname'=>$timersessionname,'time_limit'=>$time_limit), true);
 
     if ($thissurvey['timercount'] < 2)
     {
@@ -630,7 +640,15 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
             $iAction = '3';
         }
 
-        $output .=  doRender('/survey/question_timer/timer_javascript', array('iAction'=>$iAction, 'disable_next'=>$disable_next, 'disable_prev'=>$disable_prev, 'time_limit_countdown_message' =>$time_limit_countdown_message ), true);
+        $output .=  doRender('/survey/question_timer/timer_javascript', array(
+            'timersessionname'=>$timersessionname,
+            'time_limit'=>$time_limit,
+            'iAction'=>$iAction,
+            'disable_next'=>$disable_next,
+            'disable_prev'=>$disable_prev,
+            'time_limit_countdown_message' =>$time_limit_countdown_message,
+            'time_limit_message_delay' => $time_limit_message_delay
+        ), true);
 
     }
 
@@ -639,12 +657,16 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
                     array(
                             'iQid'=>$ia[0],
                             'time_limit_message_style'=>$time_limit_message_style,
+                            'time_limit_message_class'=>$time_limit_message_class,
                             'time_limit_message'=>$time_limit_message,
                             'time_limit_warning_style'=>$time_limit_warning_style,
+                            'time_limit_warning_class'=>$time_limit_warning_class,
                             'time_limit_warning_message'=>$time_limit_warning_message,
                             'time_limit_warning_2_style'=>$time_limit_warning_2_style,
+                            'time_limit_warning_2_class'=>$time_limit_warning_2_class,
                             'time_limit_warning_2_message'=>$time_limit_warning_2_message,
                             'time_limit_timer_style'=>$time_limit_timer_style,
+                            'time_limit_timer_class'=>$time_limit_timer_class,
                         ),
                     true
                 );
