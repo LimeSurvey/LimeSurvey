@@ -14,10 +14,11 @@
 <input
     class="form-control"
     type="text"
-    id="othertext<?php echo $name; ?>"
+    id="<?php echo $name; ?>othertext"
     name="<?php echo $name; ?>other"
     style='<?php echo $display; ?>'
     value='<?php echo $value?>'
+    aria-labelledby='answer<?php echo $name."-oth-" ?>'
 />
 
 <script>
@@ -26,11 +27,11 @@ if($("#answer<?php echo $name; ?>").val()!="-oth-"){
 }
 $(document).on("change","#answer<?php echo $name; ?>",function(){
     if($("#answer<?php echo $name; ?>").val()!="-oth-"){
-        $("#othertext<?php echo $name; ?>").hide();
-        $("#othertext<?php echo $name; ?>").val("").trigger("keyup");
+        $("#<?php echo $name; ?>othertext").hide();
+        $("#<?php echo $name; ?>othertext").val("").trigger("keyup");
     }else{
-        $("#othertext<?php echo $name; ?>").show();
-        $("#othertext<?php echo $name; ?>").focus();
+        $("#<?php echo $name; ?>othertext").show();
+        $("#<?php echo $name; ?>"othertext).focus();
     }
 });
 </script>

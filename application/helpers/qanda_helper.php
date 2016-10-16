@@ -1303,8 +1303,9 @@ function do_list_dropdown($ia)
     if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]==='')
     {
         $sOptions .= doRender('/survey/questions/list_dropdown/rows/option', array(
+            'name'=> $ia[1],
             'value'=>'',
-            'opt_select'=> ($dropdownSize) ? SELECTED : "",/* not needed : first one */
+            'opt_select'=> ($dropdownSize) ? SELECTED : "",/* needed width size, not for single first one */
             'answer'=>gT('Please choose...')
         ), true);
     }
@@ -1324,6 +1325,7 @@ function do_list_dropdown($ia)
             }
             // ==> rows
             $sOptions .= doRender('/survey/questions/list_dropdown/rows/option', array(
+                'name'=> $ia[1],
                 'value'=>$ansrow['code'],
                 'opt_select'=>$opt_select,
                 'answer'=>$_prefix.$ansrow['answer'],
@@ -1366,6 +1368,7 @@ function do_list_dropdown($ia)
 
                 // ==> rows
                 $sOptGroupOptions .= doRender('/survey/questions/list_dropdown/rows/option', array(
+                    'name'=> $ia[1],
                     'value'=>$optionarray['code'],
                     'opt_select'=>$opt_select,
                     'answer'=>flattenText($optionarray['answer'])
@@ -1392,6 +1395,7 @@ function do_list_dropdown($ia)
 
             // ==> rows
             $sOptions .= doRender('/survey/questions/list_dropdown/rows/option', array(
+                'name'=> $ia[1],
                 'value'=>$optionarray['code'],
                 'opt_select'=>$opt_select,
                 'answer'=>flattenText($optionarray['answer'])
@@ -1414,6 +1418,8 @@ function do_list_dropdown($ia)
         }
 
         $sOptions .= doRender('/survey/questions/list_dropdown/rows/option', array(
+            'name'=> $ia[1],
+            'classes'=>'other-item',
             'value'=>'-oth-',
             'opt_select'=>$opt_select,
             'answer'=>flattenText($_prefix.$othertext)
@@ -1428,6 +1434,7 @@ function do_list_dropdown($ia)
         }
 
         $optionData = array(
+            'name'=> $ia[1],
             'classes'=>'noanswer-item',
             'value'=>'',
             'opt_select'=> '', // Never selected
