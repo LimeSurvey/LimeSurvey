@@ -97,8 +97,9 @@ class SurveyController extends LSYii_Controller
     /**
      * Show a message and exit
      * @param string $sType : type of message
-     * @param string[] $aMessage : string for the messageconstructed via array of string
-     * @param array[null : $aUrl : if url can/must be set
+     * @param string[] $aMessage :  array of message line to be shown
+     * @param string|null : $aUrl : if url can/must be set
+     * @param string[] $aErrors : array of errors to be shown
      * @return void
      **/
     function renderExitMessage($iSurveyId,$sType,$aMessages=array(),$aUrl=null,$aErrors=null)
@@ -115,7 +116,7 @@ class SurveyController extends LSYii_Controller
             $url="";
         }
         if(!empty($aErrors)){
-            $error=$this->renderPartial("/survey/system/error",array(
+            $error=$this->renderPartial("/survey/system/errorWarning",array(
                 'aErrors'=>$aErrors
             ),true);
         }else{
@@ -123,10 +124,10 @@ class SurveyController extends LSYii_Controller
         }
         /* Set the data for templatereplace */
         $this->aGlobalData['thissurvey']=getSurveyInfo($iSurveyId); /* Did we need it, or did we just use Yii::app()->getConfig('surveyID'); ? */
-        $aReplacementData['MESSAGEID']=$sType;
+        $this->aReplacementData=$aReplacementData['MESSAGEID']=$sType; // Adding this to replacement data : allow to update title (for example)
         $aReplacementData['MESSAGE']=$message;
         $aReplacementData['URL']=$url;
-        $aReplacementData['ERROR']=$error;
+        $this->aReplacementData=$aReplacementData['ERROR']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
         $content=templatereplace(file_get_contents($oTemplate->viewPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
         $this->render("/survey/system/display",array('content'=>$content));
         App()->end();
