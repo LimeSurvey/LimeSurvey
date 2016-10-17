@@ -24,7 +24,7 @@
 *  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
 *  @param mixed $sLanguageCode  Language Code
 *  @param string $sQuestionType The question type
-*  @return                Name
+*  @return                false|string
 */
 function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
 {
@@ -317,6 +317,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 * Return data to populate a Google Map
 * @param string$sField    Field name
 * @param $qsid             Survey id
+* @param string $sField
 * @return array
 */
 function getQuestionMapData($sField, $qsid)
@@ -1600,6 +1601,11 @@ class statistics_helper {
         return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>$qqid);
     }
 
+    /**
+     * @param string $outputType
+     * @param integer $usegraph
+     * @param boolean $browse
+     */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
         /* Set up required variables */
@@ -2379,10 +2385,10 @@ class statistics_helper {
     * @param mixed $outputs
     * @param INT $results The number of results being displayed overall
     * @param mixed $rt
-    * @param mixed $outputType
+    * @param string $outputType
     * @param mixed $surveyid
     * @param mixed $sql
-    * @param mixed $usegraph
+    * @param integer $usegraph
      *
      *
     */
@@ -3797,6 +3803,7 @@ class statistics_helper {
 
     /**
      * Generate simple statistics
+     * @param string[] $allfields
      */
      public function generate_simple_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
      {
@@ -4161,12 +4168,10 @@ class statistics_helper {
     * @param int $surveyid The survey id
     * @param mixed $allfields
     * @param mixed $q2show
-    * @param mixed $usegraph
+    * @param integer $usegraph
     * @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
-    * @param string $pdfOutput Sets the target for the PDF output: DD=File download , F=Save file to local disk
-    * @param string $statlangcode Lamguage for statistics
     * @param mixed $browse  Show browse buttons
-    * @return buffer
+    * @return string
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $outputTarget='I',$sLanguageCode=null, $browse = true)
     {
@@ -4580,7 +4585,7 @@ class statistics_helper {
     * @staticvar int $recordCount
     * @staticvar null $field
     * @staticvar null $allRows
-    * @param 0|1|2|3 $quartile use 0 for return of recordcount, otherwise will return Q1,Q2,Q3
+    * @param integer $quartile use 0 for return of recordcount, otherwise will return Q1,Q2,Q3
     * @param string $fieldname
     * @param int $surveyid
     * @param string $sql

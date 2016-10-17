@@ -14,8 +14,8 @@
 /**
 * This function imports a LimeSurvey .lsg question group XML file
 *
-* @param mixed $sFullFilePath  The full filepath of the uploaded file
-* @param mixed $iNewSID The new survey id - the group will always be added after the last group in the survey
+* @param string $sFullFilePath  The full filepath of the uploaded file
+* @param integer $iNewSID The new survey id - the group will always be added after the last group in the survey
 */
 function XMLImportGroup($sFullFilePath, $iNewSID)
 {
@@ -343,7 +343,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 /**
 * This function imports a LimeSurvey .lsq question XML file
 *
-* @param mixed $sFullFilePath  The full filepath of the uploaded file
+* @param string $sFullFilePath  The full filepath of the uploaded file
 * @param mixed $iNewSID The new survey id
 * @param mixed $newgid The new question group id -the question will always be added after the last question in the group
 */
@@ -602,7 +602,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
 /**
 * XMLImportLabelsets()
 * Function resp[onsible to import a labelset from XML format.
-* @param mixed $sFullFilePath
+* @param string $sFullFilePath
 * @param mixed $options
 * @return
 */
@@ -712,6 +712,12 @@ function XMLImportLabelsets($sFullFilePath, $options)
     return $results;
 }
 
+/**
+ * @param string $sFullFilePath
+ * @param boolean $bTranslateLinksFields
+ * @param string $sNewSurveyName
+ * @param integer $DestSurveyID
+ */
 function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName=NULL, $DestSurveyID=NULL)
 {
     $aPathInfo = pathinfo($sFullFilePath);
@@ -816,6 +822,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 * This function imports a LimeSurvey .lss survey XML file
 *
 * @param mixed $sFullFilePath  The full filepath of the uploaded file
+* @param string $sXMLdata
 */
 function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true, $bConvertInvalidQuestionCodes=true)
 {
@@ -1575,6 +1582,9 @@ function GetNewSurveyID($iDesiredSurveyId)
 }
 
 
+/**
+ * @param string $sFullFilePath
+ */
 function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeFields=true)
 {
     Yii::app()->loadHelper('database');
@@ -1647,6 +1657,9 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
 }
 
 
+/**
+ * @param string $sFullFilePath
+ */
 function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 {
     Yii::app()->loadHelper('database');
@@ -1993,6 +2006,9 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
 }
 
 
+/**
+ * @param string $sFullFilePath
+ */
 function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 {
 

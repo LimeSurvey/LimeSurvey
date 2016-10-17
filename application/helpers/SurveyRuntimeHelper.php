@@ -14,6 +14,10 @@
 
 class SurveyRuntimeHelper {
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createFullQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
@@ -86,6 +90,10 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>array() );
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createIncrementalQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         $html = '';
@@ -187,6 +195,10 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>array() );
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createFullQuestionIndex($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
@@ -262,6 +274,10 @@ class SurveyRuntimeHelper {
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
     {
         echo "\n\n<!-- PRESENT THE INDEX (incremental)-->\n";

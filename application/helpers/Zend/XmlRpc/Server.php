@@ -482,7 +482,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
     /**
      * Retrieve dispatch table
      *
-     * @return array
+     * @return Zend_Server_Definition
      */
     public function getDispatchTable()
     {
@@ -519,6 +519,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
      * how to handle arguments. If set to true, all methods including constructor
      * will receive the arguments. If set to false, only constructor will receive the
      * arguments
+     * @param boolean $flag
      */
     public function sendArgumentsToAllMethods($flag = null)
     {

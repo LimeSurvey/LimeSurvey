@@ -15,7 +15,7 @@
 /**
 * Sends email to tokens - invitations, reminders, registers, and confirmations
 *
-* @param mixed $iSurveyID
+* @param integer $iSurveyID
 * @param array  $aResultTokens
 * @param string $sType type of notification invite|register|remind|confirm
 * @return array of results

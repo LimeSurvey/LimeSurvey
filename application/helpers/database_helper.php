@@ -58,6 +58,9 @@ function dbQueryOrFalse($sql)
 }
 
 
+/**
+ * @param string $sql
+ */
 function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
 {
     $query = Yii::app()->db->createCommand($sql.= " ");

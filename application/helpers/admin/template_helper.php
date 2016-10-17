@@ -13,6 +13,9 @@
 */
 
 
+/**
+ * @param string $file
+ */
 function doreplacement($file,$data, $oTemplate='')
 {
     //Produce sample page from template file
@@ -57,6 +60,9 @@ function filetext($templatename,$templatefile,$templates) {
     }
 }
 
+/**
+ * @param string $target
+ */
 function mkdir_p($target){
     //creates a new directory
     //Returns 1 for success

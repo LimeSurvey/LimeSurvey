@@ -117,6 +117,9 @@ class httpRequestIt
         }
     }
 
+    /**
+     * @param integer $name
+     */
     Function CookieEncode($value, $name)
     {
         return($name ? str_replace("=", "%25", $value) : str_replace(";", "%3B", $value));
@@ -127,6 +130,9 @@ class httpRequestIt
         return($this->error=$error);
     }
 
+    /**
+     * @param string $error
+     */
     Function SetPHPError($error, &$php_error_message)
     {
         if(IsSet($php_error_message)
@@ -135,6 +141,9 @@ class httpRequestIt
         return($this->SetError($error));
     }
 
+    /**
+     * @param string $error
+     */
     Function SetDataAccessError($error,$check_connection=0)
     {
         $this->error=$error;
@@ -239,6 +248,9 @@ class httpRequestIt
         return(1);
     }
 
+    /**
+     * @return string
+     */
     Function ReadChunkSize()
     {
         if($this->remaining_chunk==0)
@@ -255,6 +267,9 @@ class httpRequestIt
         return("");
     }
 
+    /**
+     * @return string
+     */
     Function ReadBytes($length)
     {
         if($this->use_curl)
@@ -331,6 +346,9 @@ class httpRequestIt
         return(feof($this->connection));
     }
 
+    /**
+     * @param string $server_type
+     */
     Function Resolve($domain, &$ip, $server_type)
     {
         if(preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/',$domain))
@@ -349,6 +367,9 @@ class httpRequestIt
         return('');
     }
 
+    /**
+     * @param boolean $ssl
+     */
     Function Connect($host_name, $host_port, $ssl, $server_type = 'HTTP')
     {
         $domain=$host_name;
@@ -531,6 +552,9 @@ class httpRequestIt
 
     /* Public methods */
 
+    /**
+     * @return string
+     */
     Function GetRequestArguments($url, &$arguments)
     {
         $this->error = '';
@@ -696,6 +720,9 @@ class httpRequestIt
         return($error);
     }
 
+    /**
+     * @param integer $secure
+     */
     Function PickCookies(&$cookies,$secure)
     {
         if(IsSet($this->cookies[$secure]))
@@ -1356,6 +1383,11 @@ class httpRequestIt
         return("");
     }
 
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
     Function SetCookie($name, $value, $expires="" , $path="/" , $domain="" , $secure=0, $verbatim=0)
     {
         if(strlen($this->error))
@@ -1590,6 +1622,9 @@ class httpRequestIt
         return("");
     }
 
+    /**
+     * @param integer $proxy
+     */
     Function Authenticate(&$headers, $proxy, &$proxy_authorization, &$user, &$password, &$realm, &$workstation)
     {
         if($proxy)
@@ -1849,6 +1884,9 @@ class httpRequestIt
         return("");
     }
 
+    /**
+     * @param integer $length
+     */
     Function ReadReplyBody(&$body,$length)
     {
         $body="";

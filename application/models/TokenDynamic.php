@@ -23,7 +23,6 @@ class TokenDynamic extends LSActiveRecord
      *
      * @static
      * @access public
-     * @param int $surveyid
      * @return TokenDynamic
      */
     public static function model($sid = NULL)
@@ -246,6 +245,10 @@ class TokenDynamic extends LSActiveRecord
         self::sid($iSurveyID);
         return Yii::app()->db->createCommand()->insert(self::tableName(), $data);
     }
+
+    /**
+     * @param string $newtoken
+     */
     function updateToken($tid,$newtoken)
     {
         return Yii::app()->db->createCommand("UPDATE {$this->tableName()} SET token = :newtoken WHERE tid = :tid")
@@ -318,7 +321,7 @@ class TokenDynamic extends LSActiveRecord
      * of tokens created
      *
      * @param int $iSurveyID
-     * @return array ( int number of created tokens, int number to be created tokens)
+     * @return integer[] ( int number of created tokens, int number to be created tokens)
      */
     function createTokens($iSurveyID)
     {

@@ -16,6 +16,7 @@
 * fixes the numbering of questions
 * This can happen if question 1 have subquestion code 1 and have question 11 in same survey and group (then same SGQA)
 * @param int $fixnumbering
+* @param integer $iSurveyID
 * @todo can call this function (no $_GET, but getParam) AND do it with Yii
 */
 function fixNumbering($iQuestionID, $iSurveyID)
@@ -79,6 +80,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
 }
 /**
 * checks consistency of groups
+* @param integer $postsid
 * @return <type>
 */
 function checkGroup($postsid)
@@ -103,8 +105,8 @@ function checkGroup($postsid)
 }
 /**
 * checks questions in a survey for consistency
-* @param <type> $postsid
-* @param <type> $iSurveyID
+* @param integer $postsid
+* @param integer $iSurveyID
 * @return array $faildcheck
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
@@ -503,6 +505,10 @@ function activateSurvey($iSurveyID, $simulate = false)
     return $aResult;
 }
 
+/**
+ * @param string $fieldname
+ * @param string $tablename
+ */
 function mssql_drop_constraint($fieldname, $tablename)
 {
     global $modifyoutput;
@@ -525,6 +531,9 @@ function mssql_drop_constraint($fieldname, $tablename)
 }
 
 
+/**
+ * @param string $tablename
+ */
 function mssql_drop_primary_index($tablename)
 {
     global $modifyoutput;

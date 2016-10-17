@@ -730,6 +730,8 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param integer $page
+     * @param integer $limit
      * @return CDbCommand
      */
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
@@ -889,7 +891,7 @@ class Participant extends LSActiveRecord
     /**
     * Filter an array of participants IDs according to permissions of the person being logged in
     *
-    * @param mixed $aParticipantsIDs
+    * @param mixed $aParticipantIDs
     * @return int[]
     */
     public function filterParticipantIDs($aParticipantIDs)
@@ -1219,8 +1221,6 @@ class Participant extends LSActiveRecord
      * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
      *
      * @param array $condition an array containing the search string exploded using || so that "firstname||equal||jason" is $condition(1=>'firstname', 2=>'equal', 3=>'jason')
-     * @param int $page Which page number to display
-     * @param in $limit The limit/number of reords to return
      *
      * @return CDbCriteria $output
      */
@@ -1453,6 +1453,7 @@ class Participant extends LSActiveRecord
      *
      * @param int surveyId
      * @param array $mappedAttributes
+     * @param integer $surveyId
      * @return void
      */
     private function updateTokenFieldProperties($surveyId, array $mappedAttributes)
@@ -1614,7 +1615,7 @@ class Participant extends LSActiveRecord
      * @param array $addedAttributes ?? Result from createColumnsInTokenTable
      * @param array $addedAttributeIds ?? Result from createColumnsInTokenTable
      * @param array $options As in calling function
-     * @return array (success, duplicate, blacklistSkipped)
+     * @return integer[] (success, duplicate, blacklistSkipped)
      */
     private function writeParticipantsToTokenTable(
         $surveyId,
@@ -1830,7 +1831,7 @@ class Participant extends LSActiveRecord
      * @param int $surveyId Survey ID number
      * @param string $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldName fieldname in the token table
+     * @param int $tokenFieldname fieldname in the token table
      *
      * @return bool true/false
      */
@@ -1868,9 +1869,9 @@ class Participant extends LSActiveRecord
      * @param int $surveyId Survey ID number
      * @param int $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldName fieldname in the token table
+     * @param int $tokenFieldname fieldname in the token table
      *
-     * @return bool true/false
+     * @return boolean|null true/false
      */
      public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
         $val = Yii::app()->db

@@ -68,6 +68,9 @@ function ShowDBUpgradeNotice()
     return $message;
 }
 
+/**
+ * @param string $sProperty
+ */
 function getDBConnectionStringProperty($sProperty)
 {
     // Yii doesn't give us a good way to get the database name

@@ -36,6 +36,9 @@
 			return parent::model($className);
 		}
 
+		/**
+		 * @param integer $id
+		 */
 		public static function create($id, $scenario = 'insert')
 		{
 			$className = get_called_class() . '_' . $id;

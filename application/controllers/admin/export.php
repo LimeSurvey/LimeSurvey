@@ -922,6 +922,9 @@ class export extends Survey_Common_Action {
     }
 
 
+    /**
+     * @param string $sExportType
+     */
     public function exportMultipleSurveys($sSurveys, $sExportType)
     {
         $aSurveys = json_decode($sSurveys);
@@ -1161,7 +1164,7 @@ class export extends Survey_Common_Action {
      * Return a list of queXML settings
      *
      * @access private
-     * @return array queXML settings
+     * @return string[] queXML settings
      */
     private function _quexmlsettings()
     {

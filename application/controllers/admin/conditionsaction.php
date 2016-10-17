@@ -1639,7 +1639,7 @@ class conditionsaction extends Survey_Common_Action {
     /**
      * Get html for add/edit condition form
      * @param array $args
-     * @return void
+     * @return string
      */
     protected function getEditConditionForm(array $args)
     {
@@ -2006,7 +2006,7 @@ class conditionsaction extends Survey_Common_Action {
     }
 
     /**
-     * @param array $extractedTokenAttr
+     * @param string[] $extractedTokenAttr
      * @return string
      */
     protected function getAttributeName($extractedTokenAttr)

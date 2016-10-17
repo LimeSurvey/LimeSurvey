@@ -52,7 +52,7 @@ function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 
 /**
  * Translation helper function for plural forms
- * @param string $sToTranslate
+ * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
  */
@@ -317,7 +317,7 @@ function getTemplateListWithPreviews()
 /**
 * getQuestions() queries the database for an list of all questions matching the current survey and group id
 *
-* @return This string is returned containing <option></option> formatted list of questions in the current survey and group
+* @return string string is returned containing <option></option> formatted list of questions in the current survey and group
 */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
@@ -539,6 +539,9 @@ function calculateTotalFileUploadUsage(){
     return (float)$iTotalSize/1024/1024;
 }
 
+/**
+ * @param string $directory
+ */
 function getDirectorySize($directory) {
     $size = 0;
     foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file){
@@ -567,7 +570,7 @@ function getGroupSum($surveyid, $lang)
 /**
  * Queries the database for the maximum sortorder of a group and returns the next higher one.
  *
- * @param string|int $surveyid
+ * @param integer $surveyid
  * @return int
  */
 function getMaxGroupOrder($surveyid)
@@ -864,6 +867,7 @@ function alternation($alternate = '' , $type = 'col')
 * longestString() returns the length of the longest string past to it.
 * @peram string $new_string
 * @peram integer $longest_length length of the (previously) longest string passed to it.
+* @param integer $longest_length
 * @return integer representing the length of the longest string passed (updated if $new_string was longer than $longest_length)
 *
 * usage should look like this: $longest_length = longestString( $new_string , $longest_length );
@@ -885,7 +889,7 @@ function longestString( $new_string , $longest_length )
 *
 * @param string $notificationcode - the currently selected one
 *
-* @return This string is returned containing <option></option> formatted list of notification methods for current survey
+* @return string string is returned containing <option></option> formatted list of notification methods for current survey
 */
 function getNotificationList($notificationcode)
 {
@@ -912,7 +916,7 @@ function getNotificationList($notificationcode)
 *
 * @param string $gid - the currently selected gid/group
 *
-* @return This string is returned containing <option></option> formatted list of groups to current survey
+* @return string string is returned containing <option></option> formatted list of groups to current survey
 */
 function getGroupList($gid,$surveyid)
 {
@@ -1173,7 +1177,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 /**
 * Returns the default email template texts as array
 *
-* @param mixed $oLanguage Required language translationb object
+* @param mixed $sLanguage Required language translationb object
 * @param string $mode Escape mode for the translation function
 * @return array
 */
@@ -1316,6 +1320,9 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
     QuestionGroup::model()->updateGroupOrder($surveyid,$baselang);
 }
 
+/**
+ * @param integer $iSurveyID
+ */
 function fixMovedQuestionConditions($qid,$oldgid,$newgid, $iSurveyID=NULL) //Function rewrites the cfieldname for a question after group change
 {
     if(!isset($iSurveyID))
@@ -1617,7 +1624,7 @@ function validateEmailAddress($sEmailAddress){
 * Validate an list of email addresses - either as array or as semicolon-limited text
 * @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
 *
-* @param mixed $sEmailAddresses  Email address to check
+* @param mixed $aEmailAddressList  Email address to check
 */
 function validateEmailAddresses($aEmailAddressList){
   $aOutList=false;
@@ -1641,7 +1648,7 @@ function validateEmailAddresses($aEmailAddressList){
  * @param int $iSurveyID Id of the Survey in question
  * @param array $aFilters an array which is the result of a query in Questions model
  * @param string $sLanguage
- * @return array The summary
+ * @return string[] The summary
  */
   function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage) {
 
@@ -2367,6 +2374,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 /**
 * Returns true if the given survey has a File Upload Question Type
 * @param $surveyid The survey ID
+* @param integer $iSurveyID
 * @return bool
 */
 function hasFileUploadQuestion($iSurveyID) {
@@ -2378,8 +2386,8 @@ function hasFileUploadQuestion($iSurveyID) {
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
 * @param string $surveyid The Survey ID
-* @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
-* @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
+* @param string $style 'short' (default) or 'full' - full creates extra information like default values
+* @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
 * @return array
@@ -2430,8 +2438,8 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 *
 * @param mixed $needle
 * @param mixed $haystack
-* @param mixed $keyname
-* @param mixed $maxanswers
+* @param string $keyname
+* @param integer $maxanswers
 */
 function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     $output=array();
@@ -2538,7 +2546,7 @@ function getQuestionAttributeValues($iQID)
 * Returns the questionAttribtue value set or '' if not set
 * @author: lemeur
 * @param $questionAttributeArray
-* @param $attributeName
+* @param string $attributeName
 * @param $language string Optional: The language if the particualr attributes is localizable
 * @return string
 */
@@ -2650,9 +2658,9 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 * @param mixed $to Array with several email addresses or single string with one email address
 * @param mixed $from
 * @param mixed $sitename
-* @param mixed $ishtml
+* @param boolean $ishtml
 * @param mixed $bouncemail
-* @param mixed $attachment
+* @param mixed $attachments
 * @return bool If successful returns true
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
@@ -2843,7 +2851,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
-* @param boolean $keepSpan set to true for keep span, used for expression manager. Default: false
+* @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
 * @param boolean $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
 * @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
 * @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
@@ -3130,12 +3138,19 @@ function getArrayFilterExcludesForQuestion($qid)
 
 
 
+/**
+ * @param string $sString
+ */
 function CSVEscape($sString)
 {
     $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
     return '"' . str_replace('"','""', $sString) . '"';
 }
 
+/**
+ * @param string $separator
+ * @param string $quotechar
+ */
 function convertCSVRowToArray($string, $separator, $quotechar)
 {
     $fields=preg_split('/' . $separator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
@@ -3199,7 +3214,7 @@ function languageDropdownClean($surveyid, $selected)
 /**
 * This function removes a directory recursively
 *
-* @param mixed $dirname
+* @param string $dirname
 * @return bool
 */
 function rmdirr($dirname)
@@ -3383,7 +3398,7 @@ function isTokenCompletedDatestamped($thesurvey)
 * will output: 2007-01-01 03:00:00
 *
 * @param mixed $date
-* @param mixed $dformat
+* @param string $dformat
 * @param mixed $shift
 * @return string
 */
@@ -3466,7 +3481,7 @@ function getNextCode($sourcecode)
 /**
 * Translate links which are in any answer/question/survey/email template/label set to their new counterpart
 *
-* @param mixed $sType 'survey' or 'label'
+* @param string $sType 'survey' or 'label'
 * @param mixed $iOldSurveyID
 * @param mixed $iNewSurveyID
 * @param mixed $sString
@@ -3496,7 +3511,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 * This function creates the old fieldnames for survey import
 *
 * @param mixed $iOldSID  The old survey id
-* @param mixed $iNewSID  The new survey id
+* @param integer $iNewSID  The new survey id
 * @param array $aGIDReplacements An array with group ids (oldgid=>newgid)
 * @param array $aQIDReplacements An array with question ids (oldqid=>newqid)
 */
@@ -3535,7 +3550,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 * put your comment there...
 *
 * @param mixed $id
-* @param mixed $type
+* @param string $type
 */
 function hasResources($id,$type='survey')
 {
@@ -3887,7 +3902,7 @@ function useFirebug()
 * This is a convenience function for the coversion of datetime values
 *
 * @param mixed $value
-* @param mixed $fromdateformat
+* @param string $fromdateformat
 * @param mixed $todateformat
 * @return string
 */
@@ -4073,7 +4088,7 @@ function getXMLWriter() {
 * SSLRedirect() generates a redirect URL for the appropriate SSL mode then applies it.
 * (Was redirect() before CodeIgniter port.)
 *
-* @param $enforceSSLMode string 's' or '' (empty).
+* @param string $enforceSSLMode string 's' or '' (empty).
 */
 function SSLRedirect($enforceSSLMode)
 {
@@ -4255,7 +4270,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 /**
 * Check if $str is an integer, or string representation of an integer
 *
-* @param mixed $mStr
+* @param string $mStr
 */
 function isNumericInt($mStr)
 {
@@ -4340,6 +4355,7 @@ function includeKeypad()
 * @param string $surveyid - Survey identification number
 * @param string $language - Language of the quota
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
+* @param integer $iQuotaID
 * @return array - nested array, Quotas->Members
 */
 function getQuotaInformation($surveyid,$language,$iQuotaID=null)
@@ -4621,7 +4637,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
 /**
 * Replaces EM variable codes in a current survey with a new one
 *
-* @param mixed $iSurveyID The survey ID
+* @param integer $iSurveyID The survey ID
 * @param mixed $aCodeMap The codemap array (old_code=>new_code)
 */
 function replaceExpressionCodes ($iSurveyID, $aCodeMap)
@@ -5045,7 +5061,7 @@ function fixLanguageConsistency($sid, $availlangs='')
 * This function switches identity insert on/off for the MSSQL database
 *
 * @param string $table table name (without prefix)
-* @param mixed $state  Set to true to activate ID insert, or false to deactivate
+* @param boolean $state  Set to true to activate ID insert, or false to deactivate
 */
 function switchMSSQLIdentityInsert($table,$state)
 {
@@ -5088,7 +5104,7 @@ function getLastInsertID($sTableName)
 * @param string $sid - the currently selected survey
 * @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
 * @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
-* @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
+* @param string $indexby - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
 *                   "by-targgid" for result indexed with $res[$targgid][$depgid]
 * @return array - returns an array describing the conditions or NULL if no dependecy is found
 *
@@ -5207,7 +5223,7 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 * @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
 * @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
 * @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
-* @param string $index-by - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
+* @param string $indexby - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
 *                   "by-targqid" for result indexed with $res[$targqid][$depqid]
 * @return array - returns an array describing the conditions or NULL if no dependecy is found
 *
@@ -5600,6 +5616,9 @@ function getLabelSets($languages = null)
     return $labelsets;
 }
 
+/**
+ * @return string
+ */
 function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
@@ -5821,8 +5840,8 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 /**
 * Retrieve a HTML <OPTION> list of survey admin users
 *
-* @param mixed $bIncludeOwner If the survey owner should be included
-* @param mixed $bIncludeSuperAdmins If Super admins should be included
+* @param boolean $bIncludeOwner If the survey owner should be included
+* @param boolean $bIncludeSuperAdmins If Super admins should be included
 * @param int surveyid
 * @return string
 */
@@ -6164,6 +6183,9 @@ function array_diff_assoc_recursive($array1, $array2) {
 }
 
 
+    /**
+     * @param string $sSize
+     */
     function convertPHPSizeToBytes($sSize)
     {
         //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
@@ -6194,7 +6216,6 @@ function array_diff_assoc_recursive($array1, $array2) {
     * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
     *
     * @param string $oTokenAttributeData  The original token attributes as stored in the database
-    * @param boolean $bAllowSerialized If serialized data is accepted and properly read - with DBVersion 179 this should only be allowed on survey import
     */
     function decodeTokenAttributes($oTokenAttributeData){
         if (trim($oTokenAttributeData)=='') return array();
@@ -6218,6 +6239,9 @@ function array_diff_assoc_recursive($array1, $array2) {
         return $aReturnData;
     }
 
+    /**
+     * @param string $sSerial
+     */
     function getSerialClass($sSerial) {
         $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
@@ -6228,7 +6252,6 @@ function array_diff_assoc_recursive($array1, $array2) {
     /**
     * Checks if a string looks like it is a MD5 hash
     *
-    * @param mixed $md5
     */
     function isMd5($sMD5 ='') {
         return strlen($sMD5) == 32 && ctype_xdigit($sMD5);

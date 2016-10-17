@@ -53,6 +53,10 @@ class limereplacementfields extends Survey_Common_Action
         $this->getController()->render('/admin/limeReplacementFields_view', $data);
     }
 
+    /**
+     * @param integer $gid
+     * @param integer $qid
+     */
     private function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
     {
         $previousQuestion = null;
@@ -179,6 +183,9 @@ class limereplacementfields extends Survey_Common_Action
         return $cquestions;
     }
 
+    /**
+     * @param integer $surveyid
+     */
     private function _getReplacementFields($fieldtype, $surveyid)
     {
 

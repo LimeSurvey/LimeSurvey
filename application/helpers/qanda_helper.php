@@ -423,7 +423,7 @@ function mandatory_message($ia)
 /**
 *
 * @param <type> $ia
-* @param <type> $show - true if should initially be visible
+* @param boolean $show - true if should initially be visible
 * @return <type>
 */
 function validation_message($ia,$show)
@@ -666,6 +666,9 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     return $output;
 }
 
+/**
+ * @param string $rowname
+ */
 function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
 {
     $htmltbody2 = '';

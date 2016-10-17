@@ -41,7 +41,7 @@ class InstallerController extends CController {
     *
     * @access public
     * @param string $action
-    * @return bool
+    * @return boolean|null
     */
     public function run($action = 'index')
     {
@@ -734,7 +734,6 @@ class InstallerController extends CController {
     * Loads a library
     *
     * @access public
-    * @param string $helper
     * @return void
     */
     public function loadLibrary($library)
@@ -745,7 +744,6 @@ class InstallerController extends CController {
     /**
     * check requirements
     *
-    * @param array $data return theme variables
     * @return bool requirements met
     */
     private function _check_requirements(&$aData)
@@ -772,6 +770,9 @@ class InstallerController extends CController {
         }
 
 
+        /**
+         * @param string $sDirectory
+         */
         function is_writable_recursive($sDirectory)
         {
             $sFolder = opendir($sDirectory);
@@ -806,9 +807,9 @@ class InstallerController extends CController {
         *
         * @param string $path file or directory to check
         * @param int $type 0:undefined (invalid), 1:file, 2:directory
-        * @param string $data to manipulate
         * @param string $base key for data manipulation
         * @param string $keyError key for error data
+        * @param string $aData
         * @return bool result of check (that it is writeable which implies existance)
         */
         function check_PathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive=false)
@@ -942,7 +943,7 @@ class InstallerController extends CController {
     /**
     * Installer::_setup_tables()
     * Function that actually modify the database. Read $sqlfile and execute it.
-    * @param string $sqlfile
+    * @param string $sFileName
     * @return  Empty string if everything was okay - otherwise the error messages
     */
     function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
@@ -1178,6 +1179,7 @@ class InstallerController extends CController {
     *
     * @param string $sDatabaseType
     * @param string $sDatabasePort
+    * @return string
     */
     function _getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd)
     {
