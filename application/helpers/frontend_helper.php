@@ -988,7 +988,6 @@ function buildsurveysession($surveyid,$preview=false)
 
     // Scenario => Captcha required
     if($scenarios['captchaRequired'] && !$preview) {
-        $FlashError = '';
 
         //Apply the captcYii::app()->getRequest()->getPost($id);haEnabled flag to the partial
         $aEnterTokenData['bCaptchaEnabled'] = true;
@@ -1007,10 +1006,6 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
 
-    //If there were errors, display through yii->FlashMessage
-    if($FlashError !== ""){
-        $aEnterTokenData['errorMessage'] = $FlashError;
-    }
     $aEnterTokenData['aEnterErrors']=$aEnterErrors;
     $renderWay = getRenderWay($renderToken, $renderCaptcha);
     $redata = compact(array_keys(get_defined_vars()));
@@ -1271,7 +1266,7 @@ function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $lo
     {
         if ($loadsecurity)
         { // was a bad answer
-            $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
+            $FlashError.=gT("Your answer to the security question was not correct - please try again.");
         }
         $renderCaptcha='main';
     }
