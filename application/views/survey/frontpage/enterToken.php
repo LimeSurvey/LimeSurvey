@@ -1,7 +1,4 @@
 <div class="tokenmessage-wrapper">
-    <?php if (isset($error)): ?>
-        <span class='error'>$error</span><br/>
-    <?php endif; ?>
     <script type='text/javascript'>var focus_element = '#token';</script>
     <div class="tokenmessage container clearfix">
         <div class="h3"><?php eT("To participate in this restricted survey, you need a valid token."); ?></div>

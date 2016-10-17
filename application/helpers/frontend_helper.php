@@ -875,7 +875,7 @@ function submitfailed($errormsg = '', $query = null)
 function buildsurveysession($surveyid,$preview=false)
 {
     Yii::trace('start', 'survey.buildsurveysession');
-    global $secerror, $clienttoken;
+    global $clienttoken;
     global $tokensexist;
     global $move, $rooturl;
 
@@ -971,7 +971,6 @@ function buildsurveysession($surveyid,$preview=false)
     $aEnterTokenData = array();
     $aEnterTokenData['bNewTest'] =  false;
     $aEnterTokenData['bDirectReload'] =  false;
-    $aEnterTokenData['error'] = $secerror;
     $aEnterTokenData['iSurveyId'] = $surveyid;
     $aEnterTokenData['sKpClass'] = $kpclass; // ???
     $aEnterTokenData['sLangCode'] = $sLangCode;

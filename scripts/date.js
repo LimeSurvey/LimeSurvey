@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
     // dropdown dates
     $('.namecontainer').each(function(){
         var name = $(this).data('name');
@@ -26,7 +25,7 @@ function doPopupDate(qId){
             beforeShow: setPickerOptions
         }, $.datepicker.regional[language]);
     }
-    
+
     $("#question"+qId).find('div.input-group.date').on('dp.change', function(){
         $(this).find('input').trigger('change');
     });

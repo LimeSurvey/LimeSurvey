@@ -67,6 +67,7 @@
     display: table;
     position: relative;
 }
+
 .ls-input-group .form-control {
     float: left;
     margin-bottom: 0;
@@ -93,6 +94,8 @@
 }
 
 /* in inline form : width need to be auto */
+.form-inline .ls-input-group{display: inline-table;vertical-align: middle;}
 .form-inline .input-group .ls-input-group-extra{width: auto;white-space: initial;}
+.form-inline .ls-input-group .ls-input-group-extra{width: auto;white-space: initial;}
 
 
