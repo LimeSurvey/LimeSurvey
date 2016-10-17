@@ -34,6 +34,8 @@ class UserAction extends Survey_Common_Action
 
     /**
     * Get Post- or Paramvalue depending on where to get it
+    * @param string $param
+    * @return string
     */
     private function _getPostOrParam($param){
         $value = Yii::app()->request->getPost($param);
@@ -789,6 +791,9 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
+    /**
+     * @param string $str
+     */
     private function escape_str($str, $like = FALSE)
     {
         if (is_array($str)) {
@@ -828,6 +833,9 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
+    /**
+     * @param string $classMsg
+     */
     private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
 

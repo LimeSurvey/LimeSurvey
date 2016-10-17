@@ -42,7 +42,6 @@ class LSYii_Application extends CWebApplication
     * Initiates the application
     *
     * @access public
-    * @param array $config
     * @return void
     */
     public function __construct($aApplicationConfig = null)
@@ -131,7 +130,6 @@ class LSYii_Application extends CWebApplication
     * Loads a library
     *
     * @access public
-    * @param string $helper
     * @return void
     */
     public function loadLibrary($library)

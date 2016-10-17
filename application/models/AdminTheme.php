@@ -231,6 +231,10 @@ class AdminTheme extends CFormModel
         }
     }
 
+    /**
+     * @param string $cPATH
+     * @param string $sFile
+     */
     public function registerScriptFile( $cPATH, $sFile )
     {
         self::staticRegisterScriptFile( $cPATH, $sFile );

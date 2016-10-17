@@ -55,7 +55,7 @@ class UpdateForm extends CFormModel
      * First call to the server : This function requests the latest update informations from the update server necessary to build the update buttons.
      * If any error occured (server not answering, no curl, servor returns error, etc.), the view check_updates/update_buttons/_updatesavailable_error will be rendered by the controller.
      *
-     * @param boolean $crosscheck if it checks for info for both stable and unstable branches
+     * @param string|boolean $crosscheck if it checks for info for both stable and unstable branches
      * @return array Contains update information or error object
      */
     public function getUpdateInfo($crosscheck="1")
@@ -88,6 +88,7 @@ class UpdateForm extends CFormModel
      * The server will do some checks and will ask for the correct view to be diplayed.
      *
      * @param string $updateKey the update key
+     * @param string $destinationBuild
      */
     public function getWelcomeMessage($updateKey=NULL, $destinationBuild)
     {
@@ -163,7 +164,7 @@ class UpdateForm extends CFormModel
      * It calls the server to get the list of files/directories to check
      *
      * @param int  $destinationBuild : the id of the destination build
-     * @return object $checks ; an object indexing local checks
+     * @return stdClass $checks ; an object indexing local checks
      */
     public function getLocalChecks($destinationBuild)
     {
@@ -254,7 +255,6 @@ class UpdateForm extends CFormModel
 
     /**
     * This function download the file to update the updater to the last version
-    * @param int $downloadid the id of the download on the server
     * @return object
     */
     public function downloadUpdateUpdaterFile( $tobuild )
@@ -479,7 +479,7 @@ class UpdateForm extends CFormModel
     /**
      * Create a backup of the files that will be updated
      * @param $updateinfos array of files to updated (needs file field)
-     * @return object error/success and text message
+     * @return stdClass error/success and text message
      */
     public function backupFiles($updateinfos)
     {
@@ -521,7 +521,7 @@ class UpdateForm extends CFormModel
     /**
      * Create a backup of the DataBase
      * @param $updateinfos array of files to updated (needs file field)
-     * @return object error/success and text message
+     * @return stdClass error/success and text message
      */
     public function backupDb($destionationBuild)
     {
@@ -694,7 +694,7 @@ class UpdateForm extends CFormModel
 
     /**
      * Return the total size of the current database in MB
-     * @return int
+     * @return string
      */
     private function _getDbTotalSize()
     {
@@ -714,7 +714,7 @@ class UpdateForm extends CFormModel
 
     /**
      * Create a backup of the DataBase
-     * @return array result of backup
+     * @return stdClass result of backup
      */
     private function _createDbBackup()
     {
@@ -755,7 +755,7 @@ class UpdateForm extends CFormModel
     /**
      * Check if a file (added/deleted/modified) from the update exists yet on the server and if it is readonly
      * @param array $file a file to update (must contain file and type indexes)
-     * @return array containing a list of read only files
+     * @return stdClass containing a list of read only files
      */
     private function _getReadOnlyCheckedFile($file)
     {
@@ -800,7 +800,7 @@ class UpdateForm extends CFormModel
      * Check if a file (added/deleted/) on the update yet exists on the server, or has been modified
      *
      * @param array $file  array of files to update (must contain file, type and chekcsum indexes)
-     * @return array containing a list of read only files
+     * @return stdClass containing a list of read only files
      */
     private function _getCheckedFile($file)
     {
@@ -860,7 +860,7 @@ class UpdateForm extends CFormModel
     /**
      * Check if a file / dir is writable AND/OR if it has enough freespace
      * @param object $obj an object containing the name of the file/directory to check, and what must be checked
-     * @return object the result of the test
+     * @return stdClass the result of the test
      */
     private function _fileSystemCheck($obj)
     {
@@ -893,7 +893,7 @@ class UpdateForm extends CFormModel
     /**
      * build the file / Directory path using APPATH, and then call the check method
      * @param object $obj an object containing the name of the file/directory to check, and what must be checked
-     * @return object the result of the test
+     * @return stdClass the result of the test
      */
     private function _fileSystemCheckAppath($obj)
     {
@@ -906,7 +906,7 @@ class UpdateForm extends CFormModel
     /**
      * build the file / Directory path using getConfig(), and then call the check method
      * @param object $obj an object containing the name of the file/directory to check, and what must be checked
-     * @return object the result of the test
+     * @return stdClass the result of the test
      */
     private function _fileSystemCheckConfig($obj)
     {
@@ -919,7 +919,7 @@ class UpdateForm extends CFormModel
      * Get the required minimal php version for destination build from server, and compare it to local php version.
      *
      * @param int $build the buildid to test
-     * @return object the success/error result
+     * @return stdClass the success/error result
      */
     private function _phpVerCheck($build)
     {
@@ -945,7 +945,7 @@ class UpdateForm extends CFormModel
      * Get the list of required PHP modules for this update
      *
      * @param int $build the buildid to tes
-     * @return object the success/error message
+     * @return stdClass the success/error message
      */
     private function _getModuleChecks($build)
     {

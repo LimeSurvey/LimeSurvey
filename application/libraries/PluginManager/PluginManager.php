@@ -144,7 +144,6 @@ use Plugin;
          * Unsubscribes a plugin from an event.
          * @param iPlugin $plugin Reference to the plugin being unsubscribed.
          * @param string $event Name of the event. Use '*', to unsubscribe all events for the plugin.
-         * @param string $function Optional function of the plugin that was registered.
          */
         public function unsubscribe(iPlugin $plugin, $event)
         {

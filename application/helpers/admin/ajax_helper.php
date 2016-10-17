@@ -84,6 +84,7 @@ class AjaxHelper
     /**
      * Echo $str with json header
      * @param string str
+     * @param JsonOutput $str
      * @return void
      */
     private static function echoString($str)
@@ -137,6 +138,7 @@ class JsonOutput
 
     /**
      * 
+     * @param string|null $result
      */
     public function __construct($result)
     {

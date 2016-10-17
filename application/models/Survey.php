@@ -524,7 +524,7 @@ class Survey extends LSActiveRecord
     * @access public
     * @param int $iSurveyID
     * @param bool @recursive
-    * @return void
+    * @return boolean
     */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
@@ -1128,7 +1128,7 @@ class Survey extends LSActiveRecord
     /**
     * Method to make an approximation on how long a survey will last
     * Approx is 3 questions each minute.
-    * @return int
+    * @return double
     */
     public function calculateEstimatedTime ()
     {

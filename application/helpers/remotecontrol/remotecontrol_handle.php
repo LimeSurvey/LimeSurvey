@@ -1938,7 +1938,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param string $sUser Optional username to get list of surveys
+    * @param string $sUsername Optional username to get list of surveys
     * @return array The list of surveys
     */
     public function list_surveys($sSessionKey, $sUsername=NULL)
@@ -2532,7 +2532,7 @@ class remotecontrol_handle
     *
     * @access protected
     * @param string $sUsername The username
-    * @param mixed $sPassword The Password
+    * @param string $sPassword The Password
     * @return bool
     */
     protected function _doLogin($sUsername, $sPassword)

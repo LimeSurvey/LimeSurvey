@@ -101,6 +101,9 @@
 
         }
 
+        /**
+         * @param string $tag
+         */
         protected function openTag($tag, $options = array())
         {
             $this->out(CHtml::openTag($tag, $options));
@@ -126,6 +129,10 @@
             }
         }
 
+        /**
+         * @param string $tag
+         * @param string $content
+         */
         protected function tag($tag, $options = array(), $content = null)
         {
             if (is_string($options) && !isset($content))

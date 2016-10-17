@@ -12,6 +12,9 @@
 *
 */
 
+/**
+ * @param string $order
+ */
 function subval_sort($a, $subkey, $order)
 {
     $b = array();
@@ -175,7 +178,7 @@ class participantsaction extends Survey_Common_Action
      *
      * @param type $search  CDCriteria?
      * @paran mixed $mAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes
-     * @return void
+     * @return false|null
      */
     private function csvExport($search = null, $aAttributeIDs=null)
     {

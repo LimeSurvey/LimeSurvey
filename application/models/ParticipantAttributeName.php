@@ -299,7 +299,7 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
     * Returns a list of attributes, with name and value. Currently not working for alternate languages
     *
-    * @param mixed $participant_id the id of the participant to return values/names for (if empty, returns all)
+    * @param string $participant_id the id of the participant to return values/names for (if empty, returns all)
     */
     function getParticipantVisibleAttribute($participant_id)
     {
@@ -512,6 +512,9 @@ class ParticipantAttributeName extends LSActiveRecord
         return Yii::app()->db->createCommand()->where("attribute_id = :attribute_id")->from('{{participant_attribute_names_lang}}')->select('*')->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)->queryAll();
     }
 
+    /**
+     * @param string $attributeid
+     */
     function getAttributeName($attributeid, $lang='en')
     {
         return Yii::app()->db->createCommand()->where("attribute_id = :attribute_id AND lang = :lang")->from('{{participant_attribute_names_lang}}')->select('*')->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)->bindParam(":lang", $lang, PDO::PARAM_STR)->queryRow();

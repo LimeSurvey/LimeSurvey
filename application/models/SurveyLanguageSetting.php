@@ -28,7 +28,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      * Returns the table's primary key
      *
      * @access public
-     * @return array
+     * @return string[]
      */
     public function primaryKey()
     {

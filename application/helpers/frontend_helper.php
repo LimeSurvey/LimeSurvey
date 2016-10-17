@@ -456,7 +456,7 @@ function addtoarray_single($array1, $array2)
 * If $quotaexit is set to true then the user exited the survey due to a quota
 * restriction and the according token is only marked as 'Q'
 *
-* @param mixed $quotaexit
+* @param boolean $quotaexit
 */
 function submittokens($quotaexit=false)
 {
@@ -1177,6 +1177,7 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
 
 /**
  * Prefill startvalues from command line param
+ * @param integer $surveyid
  * @return void
  */
 function prefillFromCommandLine($surveyid)
@@ -1208,6 +1209,7 @@ function prefillFromCommandLine($surveyid)
 
 /**
  * @param array $fieldmap
+ * @param integer $surveyid
  * @return void
  */
 function initFieldArray($surveyid, array $fieldmap)
@@ -1529,7 +1531,7 @@ function finalizeRandomization($fieldmap)
  * @param array $thissurvey
  * @param array $aEnterTokenData
  * @param string $clienttoken
- * @return array ($renderToken, $FlashError)
+ * @return string[] ($renderToken, $FlashError)
  */
 function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
 {
@@ -1813,7 +1815,7 @@ function surveymover()
 * Caculate assessement scores
 *
 * @param mixed $surveyid
-* @param mixed $returndataonly - only returns an array with data
+* @param boolean $returndataonly - only returns an array with data
 */
 function doAssessment($surveyid, $returndataonly=false)
 {
@@ -1975,6 +1977,7 @@ function doAssessment($surveyid, $returndataonly=false)
 * A list of groups in this survey, ordered by group name.
 * @param int surveyid
 * @param string language
+* @param integer $surveyid
 */
 function UpdateGroupList($surveyid, $language)
 {
@@ -2358,7 +2361,7 @@ function resetTimers()
 * Control if language exist in this survey, else set to survey default language
 * if $surveyid <= 0 : set the language to default site language
 * @param int $surveyid
-* @param string $language
+* @param string $sLanguage
 */
 function SetSurveyLanguage($surveyid, $sLanguage)
 {

@@ -107,7 +107,7 @@ class Zend_Server_Method_Prototype
     /**
      * Add parameters
      *
-     * @param  array $parameter
+     * @param  array $parameters
      * @return Zend_Server_Method_Prototype
      */
     public function addParameters(array $parameters)

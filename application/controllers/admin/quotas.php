@@ -58,6 +58,9 @@ class quotas extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * @param string $sPermission
+     */
     private function _checkPermissions($iSurveyId, $sPermission)
     {
         if (!empty($sPermission) && !(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission))) {
