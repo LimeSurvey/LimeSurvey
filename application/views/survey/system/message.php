@@ -4,6 +4,6 @@
  *
  */
 ?>
-<?php foreach($aMessage as $message) : ?>
-<p><?php echo $message; ?></p>
+<?php foreach($aMessage as $key=>$message) : ?>
+<p class="message-<?php echo $key; ?>"><?php echo $message; ?></p>
 <?php endforeach; ?>

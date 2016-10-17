@@ -80,13 +80,13 @@ class Save
         $sTemplate=$oSurvey->template;
         $oTemplate = Template::model()->getInstance($sTemplate);
 
-        $aReplacements['SAVEHEADING'] = App()->getController()->renderPartial("/survey/system/saveForm/heading",array(),true);
-        $aReplacements['SAVEMESSAGE'] = App()->getController()->renderPartial("/survey/system/saveForm/message",array(),true);
+        $aReplacements['SAVEHEADING'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/heading",array(),true);
+        $aReplacements['SAVEMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/message",array(),true);
         if($oSurvey->anonymized=="Y"){
-            $aReplacements['SAVEALERT'] = App()->getController()->renderPartial("/survey/system/saveForm/anonymized",array(),true);
+            $aReplacements['SAVEALERT'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/anonymized",array(),true);
         }
         if(!empty($this->aSaveErrors)){
-                $aReplacements['SAVEERROR'] = App()->getController()->renderPartial("/survey/system/saveForm/error",array('aSaveErrors'=>$this->aSaveErrors),true);
+                $aReplacements['SAVEERROR'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/error",array('aSaveErrors'=>$this->aSaveErrors),true);
         }else{
                 $aReplacements['SAVEERROR'] = "";
         }
@@ -96,8 +96,9 @@ class Save
         }else{
                 $captcha=null;
         }
-        $saveForm  = CHtml::beginForm(array("/survey/index","sid"=>$iSurveyId), 'post',array('id'=>'form-save'));
-        $saveForm  .= App()->getController()->renderPartial("/survey/system/saveForm/form",array('captcha'=>$captcha),true);
+        $saveForm  = CHtml::beginForm(array("/survey/index","sid"=>$iSurveyId), 'post',array('id'=>'form-save','class'=>'ls-form'));
+        $saveForm .= CHtml::hiddenField('savesubmit','save');
+        $saveForm .= App()->getController()->renderPartial("/survey/frontpage/saveForm/form",array('captcha'=>$captcha),true);
         if ($clienttoken)
         {
             $saveForm .= CHtml::hiddenField('token',$clienttoken);

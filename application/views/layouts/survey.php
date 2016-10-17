@@ -30,15 +30,15 @@ if (!headers_sent())
 <head>
 <?php
     $oTemplate = Template::model()->getInstance($this->sTemplate);
+    App()->getClientScript()->registerPackage('fontawesome');
     // Maybe can add language changer here
     /* Add head by template + star body (if template start body here ....) */
-    echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),$this->aReplacementData,$this->aReplacementData);
-
+    echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),$this->aReplacementData,$this->aGlobalData);
     if(!empty($this->bStartSurvey)){
-        echo templatereplace(file_get_contents($oTemplate->viewPath."survey.pstpl"),$this->aReplacementData,$this->aReplacementData);
+        echo templatereplace(file_get_contents($oTemplate->viewPath."survey.pstpl"),$this->aReplacementData,$this->aGlobalData);
     }
     echo $content;
-    echo templatereplace(file_get_contents($oTemplate->viewPath."endpage.pstpl"),$this->aReplacementData,$this->aReplacementData);
+    echo templatereplace(file_get_contents($oTemplate->viewPath."endpage.pstpl"),$this->aReplacementData,$this->aGlobalData);
 ?>
 </body>
 </html>

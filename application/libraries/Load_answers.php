@@ -27,10 +27,10 @@ class Load_answers {
         $sTemplate=Survey::model()->findByPk($surveyid)->template;
         $oTemplate = Template::model()->getInstance($sTemplate);
         /* Construction of data for templatereplace */
-        $aReplacements['LOADHEADING'] = App()->getController()->renderPartial("/survey/system/loadForm/heading",array(),true);
-        $aReplacements['LOADMESSAGE'] = App()->getController()->renderPartial("/survey/system/loadForm/message",array(),true);
+        $aReplacements['LOADHEADING'] = App()->getController()->renderPartial("/survey/frontpage/loadForm/heading",array(),true);
+        $aReplacements['LOADMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/loadForm/message",array(),true);
         if(!empty($aLoadErrorMsg)){
-                $aReplacements['LOADERROR'] = App()->getController()->renderPartial("/survey/system/loadForm/error",array('aLoadErrorMsg'=>$aLoadErrorMsg),true);
+                $aReplacements['LOADERROR'] = App()->getController()->renderPartial("/survey/frontpage/loadForm/error",array('aLoadErrorMsg'=>$aLoadErrorMsg),true);
         }else{
                 $aReplacements['LOADERROR'] = "";
         }
@@ -40,7 +40,7 @@ class Load_answers {
                 $captcha=null;
         }
         $loadForm  = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-load'));
-        $loadForm .= App()->getController()->renderPartial("/survey/system/loadForm/form",array('captcha'=>$captcha),true);
+        $loadForm .= App()->getController()->renderPartial("/survey/frontpage/loadForm/form",array('captcha'=>$captcha),true);
         if ($clienttoken)
         {
             $loadForm .= CHtml::hiddenField('token',$clienttoken);

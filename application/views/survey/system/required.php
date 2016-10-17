@@ -1,7 +1,6 @@
 <?php
 /**
- * This file render the asterisk for mandatory questions
+ * Just add required element before an element
  */
 ?>
-<!-- Add a visual information + just Mandatory string for aria : can be improved -->
 <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small><span class="sr-only text-danger asterisk"> (<?php echo gT("Mandatory"); ?>)<span>

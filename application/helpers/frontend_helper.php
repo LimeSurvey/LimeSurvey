@@ -265,17 +265,6 @@ function makeLanguageChanger($sSelectedLanguage)
             'sClass'    => $sClass    ,
         );
         $sHTMLCode = Yii::app()->getController()->renderPartial('/surveys/LanguageChangerForm', $languageChangerDatas, true);
-
-        //~ $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get', array('class' => 'form-horizontal'));
-        //~ $sHTMLCode = Yii::app()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);
-        //~ $sHTMLCode.=CHtml::label(gT("Language:"), 'lang',array('class'=>'control-label col-xs-4 col-sm-8'));
-        //~ $sHTMLCode .= "<div class='col-xs-7 col-sm-2'>";
-        //~ $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
-        //~ $sHTMLCode .= "</div>";
-        //~ $sHTMLCode .= "<div class='col-xs-1 col-sm-2'>";
-        //~ $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".gT("Change the language")."</button>";
-        //~ $sHTMLCode .= "</div>";
-        //~ $sHTMLCode.= CHtml::endForm();
         return $sHTMLCode;
     }
     else
@@ -905,6 +894,7 @@ function buildsurveysession($surveyid,$preview=false)
     $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
+    App()->getController()->sTemplate=$oTemplate->name;
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
 
@@ -940,7 +930,6 @@ function buildsurveysession($surveyid,$preview=false)
         } else {
             $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
-
         $subscenarios['tokenValid'] = ((!empty($oTokenEntry) && ($clienttoken != "")));
     }
     else
@@ -952,9 +941,8 @@ function buildsurveysession($surveyid,$preview=false)
     if($scenarios['captchaRequired'])
     {
         //Check if the Captcha was correct
-        $loadsecurity = returnGlobal('loadsecurity',true);
         $captcha = Yii::app()->getController()->createAction('captcha');
-        $subscenarios['captchaCorrect'] = $captcha->validate($loadsecurity, false);
+        $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity'), false);
     }
     else
     {
@@ -962,11 +950,14 @@ function buildsurveysession($surveyid,$preview=false)
         $loadsecurity = false;
     }
 
+
     //RenderWay defines which html gets rendered to the user_error
     // Possibilities are main,register,correct
     $renderCaptcha = "";
     $renderToken = "";
-
+    /**
+     * @todo : create 2 new function to create and call form
+     */
     //Define array to render the partials
     $aEnterTokenData = array();
     $aEnterTokenData['bNewTest'] =  false;
@@ -985,19 +976,28 @@ function buildsurveysession($surveyid,$preview=false)
         $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
     }
 
-    $FlashError = "";
+    $aEnterErrors=array();
+    // Scenario => Token required
+    if ($scenarios['tokenRequired'] && !$preview){
+        //Test if token is valid
+        list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
+        if(!empty($FlashError)){
+            $aEnterErrors['token']=$FlashError;
+        }
+    }
 
     // Scenario => Captcha required
     if($scenarios['captchaRequired'] && !$preview) {
         $FlashError = '';
 
-        //Apply the captchaEnabled flag to the partial
+        //Apply the captcYii::app()->getRequest()->getPost($id);haEnabled flag to the partial
         $aEnterTokenData['bCaptchaEnabled'] = true;
         // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
         if (!$subscenarios['captchaCorrect']) {
-            if ($loadsecurity) {
-                // was a bad answer
-                $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
+            if(App()->getRequest()->getPost('loadsecurity')){
+                $aEnterErrors['captcha']=gT("Your answer to the security question was not correct - please try again.");
+            }elseif(null!==App()->getRequest()->getPost('loadsecurity')){
+                $aEnterErrors['captcha']=gT("Your must answer to the security question - please try again.");
             }
             $renderCaptcha='main';
         }
@@ -1007,19 +1007,14 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
 
-    // Scenario => Token required
-    if ($scenarios['tokenRequired'] && !$preview){
-        //Test if token is valid
-        list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
-    }
-
     //If there were errors, display through yii->FlashMessage
     if($FlashError !== ""){
         $aEnterTokenData['errorMessage'] = $FlashError;
     }
-
+    $aEnterTokenData['aEnterErrors']=$aEnterErrors;
     $renderWay = getRenderWay($renderToken, $renderCaptcha);
     $redata = compact(array_keys(get_defined_vars()));
+    /* This funtion end if an form need to be shown */
     renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
     // Reset all the session variables and start again
@@ -1564,12 +1559,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         }
         else
         { //token was wrong
-            $errorMsg= ""
-            . gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
-            . sprintf( gT("For further information please contact %s"), $thissurvey['adminname'])
-            . "(<a href='mailto:".$thissurvey['adminemail']."'>"
-            . $thissurvey['adminemail']."</a>)";
-
+            $errorMsg= gT("The token you have provided is either not valid, or has already been used.");
             $FlashError .= $errorMsg;
 
             $renderToken='main';
@@ -1633,26 +1623,35 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
 {
     switch($renderWay){
         case "main": //Token required, maybe Captcha required
-            sendCacheHeaders();
-            doHeader();
-            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
-
+            App()->getController()->layout="survey";
+            App()->getController()->aReplacementData=$aEnterTokenData;
+            App()->getController()->bStartSurvey=true;
             // render token form
-            if($scenarios['tokenRequired']){
-                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
-            } else {
-                App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
-            }
 
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
-            doFooter();
+            if($scenarios['tokenRequired']){
+                $aReplacements['FORMID'] = 'token';
+            } else {
+                $aReplacements['FORMID'] = 'captcha';
+            }
+            $aReplacements['FORMHEADING'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/heading",$aEnterTokenData,true);
+            $aReplacements['FORMMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/message",$aEnterTokenData,true);
+            $aReplacements['FORMERROR'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/error",$aEnterTokenData,true);
+
+            $aReplacements['FORM'] = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
+            $aReplacements['FORM'].= App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/form",$aEnterTokenData,true);
+            /* @ todo : some hidden field must be moved here : in controller */
+            $aReplacements['FORM'].= CHtml::endForm();
+            $content = templatereplace(file_get_contents($sTemplateViewPath."form.pstpl"),$aReplacements,$aData);
+            App()->getController()->render("/survey/system/display",array(
+                'content'=>$content,
+            ));
             Yii::app()->end();
             break;
         case "register": //Register new user
             // Add the event and test if done
             Yii::app()->runController("register/index/sid/{$surveyid}");
             Yii::app()->end();
+            /* We never get here */
             echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
             break;
         case "correct": //Nothing to hold back, render survey
