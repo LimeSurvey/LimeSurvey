@@ -195,25 +195,12 @@ class templates extends Survey_Common_Action
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
 
-
-
-            if (count($aImportedFilesInfo) > 0)
-            {
-                // Not working with 2.5 templates...
-                //$templateFixes= $this->_templateFixes($sNewDirectoryName);
-                $templateFixes= array();
-            }
-            else
-            {
-                $templateFixes= array();
-            }
             $aViewUrls = 'importuploaded_view';
             $aData = array(
                 'aImportedFilesInfo' => $aImportedFilesInfo,
                 'aErrorFilesInfo' => $aErrorFilesInfo,
                 'lid' => $lid,
                 'newdir' => $sNewDirectoryName,
-                'templateFixes' => $templateFixes,
             );
         }
         else
@@ -223,51 +210,6 @@ class templates extends Survey_Common_Action
         }
 
         $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
-    }
-
-    /**
-    * Try to correct a template with new functionality.
-    *
-    * @access private
-    * @param string $templatename
-    * @return array $correction ($success,$number,array($information))
-    */
-    private function _templateFixes($templatename)
-    {
-        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-        $templateFixes=array();
-        $templateFixes['success']=true;
-        $templateFixes['details']=array();
-        // TEMPLATEJS control
-        $fname="$usertemplaterootdir/$templatename/startpage.pstpl";
-        if(is_file($fname))
-        {
-
-            $fhandle = fopen($fname,"r");
-            $content = fread($fhandle,filesize($fname));
-            if(strpos($content, "{TEMPLATEJS}")===false)
-            {
-                $content = str_replace("<script type=\"text/javascript\" src=\"{TEMPLATEURL}template.js\"></script>", "{TEMPLATEJS}", $content);
-                $fhandle = fopen($fname,"w");
-                fwrite($fhandle,$content);
-                fclose($fhandle);
-                if(strpos($content, "{TEMPLATEJS}")===false)
-                {
-                    $templateFixes['success']=false;
-                    $templateFixes['details']['templatejs']=gT("Unable to add {TEMPLATEJS} placeholder, please check your startpage.pstpl.");
-                }
-                else
-                {
-                    $templateFixes['details']['templatejs']=gT("Placeholder {TEMPLATEJS} added to your startpage.pstpl.");
-                }
-            }
-        }
-        else
-        {
-            $templateFixes['success']=false;
-            $templateFixes['details']['templatejs']=gT("Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please check your template.");
-        }
-        return $templateFixes;
     }
 
     /**
@@ -1004,16 +946,21 @@ class templates extends Survey_Common_Action
             $files[] = 'question_start.pstpl';
             $Question[] = 'question_start.pstpl';
         }
-        $sEditFile='';
-        if (file_exists(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile))
-        {
-            $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile);
-        }
-        elseif (file_exists(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.'views'. DIRECTORY_SEPARATOR.$editfile))
-        {
-            $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.'views'. DIRECTORY_SEPARATOR.$editfile);
-        }
 
+        /* See if we found the file to be edited inside template */
+        /* @todo must control if is updatable : in updatable file OR is a view */
+        /* Actually allow to update any file exemple css/template-core.css */
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        if (file_exists(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile)){
+            /* the file seems a simple file */
+            $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile);
+        }elseif (file_exists($oEditedTemplate->viewPath. DIRECTORY_SEPARATOR.$editfile)){
+            /* the file seems a view file */
+            $sEditFile=realpath($oEditedTemplate->viewPath. DIRECTORY_SEPARATOR.$editfile);
+        }else{
+            /* the file seems to be invalid */
+            $sEditFile='';
+        }
         // Make sure file is within the template path
         if (strpos($sEditFile,realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename))===false)
         {
@@ -1080,7 +1027,7 @@ class templates extends Survey_Common_Action
         $printoutput = $this->getController()->renderPartial('/admin/templates/templateeditor_printoutput_view', array(), true);
 
         $totalquestions = '10';
-        $surveyformat = 'Format';
+        $surveyformat = 'group';
         $notanswered = '5';
         $privacy = '';
         $surveyid = '1295';

@@ -44,14 +44,13 @@ function getListOfFiles($wh){
 /**
 * Load this editfile
 *
-* @param string $templatename
+* @param string $template name
 * @param string $templatefile
-* @param array $templates
+* @param string[] $templates directory
 * @return string
 */
 function filetext($templatename,$templatefile,$templates) {
-
-    $sFileName = gettemplatefilename($templates[$templatename],$templatefile);
+    $sFileName = gettemplatefilename($templatename,$templatefile);
     if (file_exists($sFileName))
     {
         return file_get_contents($sFileName);
@@ -164,6 +163,7 @@ function templateExtractFilter($p_event, &$p_header)
 * @param string $templatefile
 */
 function gettemplatefilename($template, $templatefile) {
+    $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
     switch (pathinfo($templatefile, PATHINFO_EXTENSION))
     {
         case 'pstpl':
@@ -171,13 +171,13 @@ function gettemplatefilename($template, $templatefile) {
             return $oEditedTemplate->viewPath.$templatefile;
             break;
         case 'css':
-            return $template.'/'.$templatefile;
+            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
             break;
         case 'js':
-            return $template.'/'.$templatefile;
+            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
             break;
         default:
-            return $template.'/'.$templatefile;
+            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
             break;
     }
 }
