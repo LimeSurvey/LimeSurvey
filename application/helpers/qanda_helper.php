@@ -4997,6 +4997,7 @@ function do_array_texts($ia)
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $coreClass                  = "ls-answers subquestion-list questions-list";
     $coreClass                 .= " text-array";
+    $coreRowClass               = "subquestion-list questions-list";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
 
     if ($thissurvey['nokeyboard']=='Y')
@@ -5060,6 +5061,7 @@ function do_array_texts($ia)
         }
 
         $coreClass .= " number-array";
+        $coreRowClass .= " number-list";
         $caption    .= gT("Each answer may only be a number.");
         $col_head    = '';
         switch ($aQuestionAttributes['show_totals'])
@@ -5279,6 +5281,7 @@ function do_array_texts($ia)
             $formatedRowTotal = str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputsize) , $row_total);
             $sRows .= doRender('/survey/questions/arrays/texts/rows/answer_row', array(
                                 'myfname'           =>  $myfname,
+                                'coreRowClass'      => $coreRowClass,
                                 'answertext'        =>  $answertext,
                                 'error'             =>  $error,
                                 'value'             =>  $value,
@@ -5363,6 +5366,7 @@ function do_array_multiflexi($ia)
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $coreClass                  = "ls-answers subquestion-list questions-list";
+    $coreRowClass                = "subquestion-list questions-list";
     $extraclass                 ="";
     $answertypeclass            = "";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
@@ -5433,6 +5437,7 @@ function do_array_multiflexi($ia)
         $checkboxlayout      =  true;
         $answertypeclass     =  " checkbox-item";
         $coreClass          .= " checkbox-array";
+        $coreRowClass        .= " checkbox-list";
         $caption            .= gT("Please check the matching combinations.");
         $textAlignment       = 'center';
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-number-checkbox.js",CClientScript::POS_HEAD);
@@ -5443,6 +5448,7 @@ function do_array_multiflexi($ia)
         $inputboxlayout      =  true;
         $answertypeclass    .= " numeric-item text-item";
         $coreClass          .= " text-array number-array";
+        $coreRowClass        .= " text-list number-list";
         $extraclass         .= " numberonly";
         $caption            .= gT("Please enter only numbers.");
         $textAlignment       = 'right';
@@ -5451,6 +5457,7 @@ function do_array_multiflexi($ia)
     {
         $answertypeclass     = " dropdown-item";
         $coreClass          .= " dropdown-array";
+        $coreRowClass        .= " dropdown-list";
         $caption            .= gT("Please select an answer for each combination.");
     }
 
@@ -5721,6 +5728,7 @@ function do_array_multiflexi($ia)
 
             $sAnswerRows .=  doRender('/survey/questions/arrays/multiflexi/rows/answer_row', array(
                                 'sDisplayStyle'     => $sDisplayStyle,
+                                'coreRowClass'      => $coreRowClass,
                                 'answerwidth'       => $answerwidth,
                                 'myfname'           => $myfname,
                                 'error'             => $error,
