@@ -14,6 +14,11 @@ li.radio-item,li.checkbox-item{display:block}
     position:absolute;
 }
 /**
+ * Shown :text numeric at right
+ */
+[type='text'][data-number='1']{text-align:right}
+
+/**
  * Table .question feature
  */
 /* We have some settings to set width of the table : use it */

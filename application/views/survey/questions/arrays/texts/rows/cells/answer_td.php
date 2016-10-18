@@ -23,8 +23,10 @@
         id="answer<?php echo $myfname2; ?>"
         class="form-control <?php echo $kpclass; ?>"
         <?php echo $maxlength; ?>
-        size="<?php echo $inputwidth; ?>"
+        size="<?php echo $inputsize; ?>"
         value="<?php echo $value;?>"
+        data-number='<?php echo $isNumber; ?>'
+        data-integer='<?php echo $isInteger; ?>'
     />
     <input
         type="hidden"

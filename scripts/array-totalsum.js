@@ -82,8 +82,9 @@ function normalizeValue(aValue)
     if(outNumber == false)
     {
         var numReplaced = aValue.toString().replace(/,/g, ".");
-        outNumber = new Decimal(numReplaced);
-
+        try {
+            outNumber = new Decimal(numReplaced);
+        } catch(e){}
         return outNumber;
     } else {
         return outNumber;
