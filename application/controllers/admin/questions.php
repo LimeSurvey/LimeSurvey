@@ -1436,7 +1436,6 @@ class questions extends Survey_Common_Action
     * Function responsible for deleting a question.
     *
     * @access public
-    * @param string $action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid

@@ -1220,7 +1220,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * survey::_fetchSurveyInfo()
     * Load survey information based on $action.
-    * @param mixed $action
+    * @param string $action
     * @param mixed $iSurveyID
     * @return
     */
@@ -1701,7 +1701,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * This private function creates a sample group
     *
-    * @param mixed $iSurveyID  The survey ID that the sample group will belong to
+    * @param integer $iSurveyID  The survey ID that the sample group will belong to
     */
     private function _createSampleGroup($iSurveyID)
     {
@@ -1721,7 +1721,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * This private function creates a sample question
     *
-    * @param mixed $iSurveyID  The survey ID that the sample question will belong to
+    * @param integer $iSurveyID  The survey ID that the sample question will belong to
     * @param mixed $iGroupID  The group ID that the sample question will belong to
     */
     private function _createSampleQuestion($iSurveyID, $iGroupID)

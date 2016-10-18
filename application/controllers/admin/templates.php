@@ -813,8 +813,8 @@ class templates extends Survey_Common_Action
     * Function that initialises file data.
     *
     * @access protected
-    * @param mixed $templatename
-    * @return void
+    * @param string $templatename
+    * @return string[]
     */
     protected function getValidScreenFiles($templatename)
     {

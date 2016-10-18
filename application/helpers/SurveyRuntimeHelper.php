@@ -14,6 +14,10 @@
 
 class SurveyRuntimeHelper {
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createFullQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
@@ -27,6 +31,9 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * @param string $LEMsessid
+     */
     protected function createFullQuestionIndexByGroupMenu($LEMsessid)
     {
         // Button will be shown inside the form. Not handled by replacement.
@@ -67,6 +74,9 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>$htmlButtons );
     }
 
+    /**
+     * @param string $LEMsessid
+     */
     protected function createFullQuestionIndexByQuestionMenu($LEMsessid)
     {
         $html = '';
@@ -82,6 +92,10 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>array() );
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createIncrementalQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         $html = '';
@@ -183,6 +197,10 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>array() );
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createFullQuestionIndex($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
@@ -196,6 +214,9 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * @param string $LEMsessid
+     */
     protected function createFullQuestionIndexByGroup($LEMsessid)
     {
         echo "\n\n<!-- PRESENT THE INDEX (full) -->\n";
@@ -246,6 +267,9 @@ class SurveyRuntimeHelper {
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
     }
 
+    /**
+     * @param string $LEMsessid
+     */
     protected function createFullQuestionIndexByQuestion($LEMsessid)
     {
         echo CHtml::openTag('div', array('id' => 'index'));
@@ -258,6 +282,10 @@ class SurveyRuntimeHelper {
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
     {
         echo "\n\n<!-- PRESENT THE INDEX (incremental)-->\n";

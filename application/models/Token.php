@@ -155,7 +155,7 @@
         /**
         * Creates a random token string without special characters
         *
-        * @param mixed $tokenlength
+        * @param mixed $iTokenLength
         */
         public static function generateRandomToken($iTokenLength){
             return str_replace(array('~','_'),array('a','z'),Yii::app()->securityManager->generateRandomString($iTokenLength));

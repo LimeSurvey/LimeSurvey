@@ -388,6 +388,7 @@ class Zend_XmlRpc_Client
     /**
      * Create request object
      *
+     * @param string $method
      * @return Zend_XmlRpc_Request
      */
     protected function _createRequest($method, $params)

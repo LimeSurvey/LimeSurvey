@@ -458,6 +458,9 @@ class SurveyDynamic extends LSActiveRecord
      * @param string sType
      * @param string dStart
      * @param string dEnd
+     * @param string $sType
+     * @param string $dStart
+     * @param string $dEnd
      *
      * @access public
      * @return array

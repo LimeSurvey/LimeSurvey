@@ -423,7 +423,7 @@ function mandatory_message($ia)
 /**
 *
 * @param <type> $ia
-* @param <type> $show - true if should initially be visible
+* @param boolean $show - true if should initially be visible
 * @return <type>
 */
 function validation_message($ia,$show)
@@ -537,6 +537,9 @@ function file_validation_popup($ia, $filenotvalidated = null)
         return false;
 }
 
+/**
+ * @param string $disable
+ */
 function return_timer_script($aQuestionAttributes, $ia, $disable=null)
 {
     global $thissurvey;
@@ -688,6 +691,9 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     return $output;
 }
 
+/**
+ * @param string $rowname
+ */
 function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
 {
     $htmltbody2 = '';
@@ -739,6 +745,10 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
     return $htmltbody2;
 }
 
+/**
+ * @param string $rowname
+ * @param string $valuename
+ */
 function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null)
 {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";

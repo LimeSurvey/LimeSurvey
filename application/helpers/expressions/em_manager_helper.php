@@ -820,7 +820,7 @@
          /**
         * Return array database name as key, LEM name as value
         * @example (['gender'] => '38612X10X145')
-        * @param <integer> $surveyId
+        * @param integer $iSurveyId
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
                 $LEM =& LimeExpressionManager::singleton();
@@ -4506,7 +4506,7 @@
 
         /**
         * Create JavaScript needed to process sub-question-level relevance (e.g. for array_filter and  _exclude)
-        * @param <type> $eqn - the equation to parse
+        * @param string $eqn - the equation to parse
         * @param <type> $questionNum - the question number - needed to align relavance and tailoring blocks
         * @param <type> $rowdivid - the javascript ID that needs to be shown/hidden in order to control array_filter visibility
         * @param <type> $type - the type of sub-question relevance (e.g. 'array_filter', 'array_filter_exclude')
@@ -4640,7 +4640,7 @@
 
         /**
          * Expand "self.suffix" and "that.qcode.suffix" into canonical list of variable names
-         * @param type $qseq
+         * @param integer $qseq
          * @param type $varname
          */
         static function GetAllVarNamesForQ($qseq,$varname)
@@ -4770,7 +4770,6 @@
         /**
         * Should be first function called on each page - sets/clears internally needed variables
         * @param <type> $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
-        * @param <type> $rooturl - if set, this tells LEM to enable hyperlinking of syntax highlighting to ease editing of questions
         * @param <boolean> $initializeVars - if true, initializes the replacement variables to enable syntax highlighting on admin pages
         */
         static function StartProcessingPage($allOnOnePage=false,$initializeVars=false)
@@ -8237,12 +8236,19 @@ EOD;
             }
         }
 
+        /**
+         * @param string $string
+         */
         private function gT($string,  $escapemode = 'html')
         {
             return gT($string, $escapemode);
         }
 
 
+        /**
+         * @param string $sTextToTranslate
+         * @param integer $number
+         */
         private function ngT($sTextToTranslate, $number, $escapemode = 'html')
         {
             return ngT($sTextToTranslate, $number, $escapemode);
@@ -8250,7 +8256,7 @@ EOD;
 
         /**
         * Returns true if the survey is using comma as the radix
-        * @return type
+        * @return boolean
         */
         public static  function usingCommaAsRadix()
         {
@@ -8298,8 +8304,8 @@ EOD;
 
         /**
         * Deprecate obsolete question attributes.
-        * @param boolean $changedb - if true, updates parameters and deletes old ones
-        * @param type $iSureyID - if set, then only for that survey
+        * @param boolean $changeDB - if true, updates parameters and deletes old ones
+        * @param type $iSurveyID - if set, then only for that survey
         * @param type $onlythisqid - if set, then only for this question ID
         */
         public static function UpgradeQuestionAttributes($changeDB=false,$iSurveyID=NULL,$onlythisqid=NULL)
@@ -8743,12 +8749,21 @@ EOD;
                     return false;
         }
 
+        /**
+         * @param integer $gseq
+         * @param integer $qseq
+         * @param string|null $attr
+         */
         static public function GetVarAttribute($name,$attr,$default,$gseq,$qseq)
         {
             $LEM =& LimeExpressionManager::singleton();
             return $LEM->_GetVarAttribute($name,$attr,$default,$gseq,$qseq);
         }
 
+        /**
+         * @param integer $gseq
+         * @param integer $qseq
+         */
         private function _GetVarAttribute($name,$attr,$default,$gseq,$qseq)
         {
             $args = explode(".", $name);

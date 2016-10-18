@@ -735,7 +735,7 @@
     /**
     * Convert a 'dateformat' format string to a 'phpdate' format.
     *
-    * @param $sDateformat string
+    * @param string $sDateformat string
     * @returns string
     *
     */

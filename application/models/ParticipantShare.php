@@ -93,6 +93,7 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
+     * @param integer $selected
      * @return string html dropdown
      */
     public function getSharedByList($selected)

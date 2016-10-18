@@ -89,7 +89,7 @@ class AdminController extends LSYii_Controller
 
         $this->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
 
-        die;
+        Yii::app()->end();
     }
     /**
     * Load and set session vars

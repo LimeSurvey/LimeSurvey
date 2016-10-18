@@ -48,7 +48,7 @@ class Question extends LSActiveRecord
     * Returns the primary key of this table
     *
     * @access public
-    * @return string
+    * @return string[]
     */
     public function primaryKey()
     {
@@ -179,7 +179,6 @@ class Question extends LSActiveRecord
     * @static
     * @access public
     * @param int $gid
-    * @param int $surveyid
     * @return void
     */
     function updateQuestionOrder($gid,$language,$position=0)

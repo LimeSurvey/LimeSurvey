@@ -156,7 +156,7 @@ namespace ls\pluginmanager;
          * Gets the meta data for question attributes.
          * Optionally pass one or more languages to also get current values.
          * Pass * to get all stored languages.
-         * @param type $language
+         * @param type $languages
          * @return type
          */
         public function getAttributes($languages = null) 
@@ -250,7 +250,7 @@ namespace ls\pluginmanager;
         }
         /**
          * Load the question data from the questions model.
-         * @param type $questionId
+         * @param integer $questionId
          */
         public function loadSubQuestions($questionId)
         {
@@ -303,7 +303,6 @@ namespace ls\pluginmanager;
         
         /**
          * This function saves question data. 
-         * @param int $qid Question id.
          * @param string $key
          * @param string $language
          * @param mixed $value

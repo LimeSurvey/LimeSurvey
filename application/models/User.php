@@ -152,6 +152,10 @@ class User extends LSActiveRecord
     * Creates new user
     *
     * @access public
+    * @param string $new_user
+    * @param string $new_pass
+    * @param string $new_full_name
+    * @param string $new_email
     * @return string
     */
     public static function insertUser($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
@@ -196,7 +200,7 @@ class User extends LSActiveRecord
     * Delete user
     *
     * @param int $iUserID The User ID to delete
-    * @return mixed
+    * @return boolean
     */
     function deleteUser($iUserID)
     {

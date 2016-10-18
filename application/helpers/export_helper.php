@@ -49,7 +49,7 @@ function isNumericExtended($value)  {
 * Returns splitted unicode string correctly
 * source: http://www.php.net/manual/en/function.str-split.php#107658
 *
-* @param $str
+* @param string $str
 * @param $l
 * @return string
 */
@@ -71,8 +71,8 @@ function strSplitUnicode($str, $l = 0) {
 * Exports CSV response data for SPSS and R
 *
 * @param mixed $iSurveyID The survey ID
-* @param mixed $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
-* @param mixed $na Value for N/A data
+* @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
+* @param string $na Value for N/A data
 * @param sep Quote separator. Use '\'' for SPSS, '"' for R
 * @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
 */
@@ -215,6 +215,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
 * Check it the gives field has a labelset and return it as an array if true
 *
 * @param $field array field from SPSSFieldMap
+* @param string $language
 * @return array or false
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
@@ -555,8 +556,8 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
 *
 * @param mixed $xmlwriter  The existing XMLWriter object
 * @param mixed $Query  The table query to build from
-* @param mixed $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
-* @param array $excludes array of columnames not to include in export
+* @param string $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
+* @param string[] $excludes array of columnames not to include in export
 */
 function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
@@ -773,11 +774,11 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
 /**
 * Exports a single table to XML
 *
-* @param inetger $iSurveyID The survey ID
+* @param integer $iSurveyID The survey ID
 * @param string $sTableName The database table name of the table to be export
 * @param string $sDocType What doctype should be written
-* @param string $sXMLTableName Name of the tag table name in the XML file
-* @return object XMLWriter object
+* @param string $sXMLTableTagName Name of the tag table name in the XML file
+* @return string|boolean XMLWriter object
 */
 function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName='', $sFileName='', $bSetIndent=true)
 {
@@ -1487,7 +1488,7 @@ function quexml_export($surveyi, $quexmllan)
 *
 * Usage: $db->Concat($str1,$str2);
 *
-* @return concatenated string
+* @return string string
 */
 function concat()
 {
@@ -1500,6 +1501,9 @@ function concat()
 // 1. questions
 // 2. answers
 
+/**
+ * @param string $action
+ */
 function group_export($action, $iSurveyID, $gid)
 {
     $fn = "limesurvey_group_$gid.lsg";
@@ -1532,6 +1536,9 @@ function group_export($action, $iSurveyID, $gid)
     $xml->endDocument();
 }
 
+/**
+ * @param XMLWriter $xml
+ */
 function groupGetXMLStructure($xml,$gid)
 {
     // QuestionGroup
@@ -1603,6 +1610,9 @@ function groupGetXMLStructure($xml,$gid)
 //  - Answer
 //  - Question attributes
 //  - Default values
+/**
+ * @param string $action
+ */
 function questionExport($action, $iSurveyID, $gid, $qid)
 {
     $fn = "limesurvey_question_$qid.lsq";
@@ -1636,6 +1646,9 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     exit;
 }
 
+/**
+ * @param XMLWriter $xml
+ */
 function questionGetXMLStructure($xml,$gid,$qid)
 {
     // Questions table
@@ -1822,6 +1835,9 @@ function tokensExport($iSurveyID)
     }
 }
 
+/**
+ * @param string $filename
+ */
 function CPDBExport($data,$filename)
 {
 
