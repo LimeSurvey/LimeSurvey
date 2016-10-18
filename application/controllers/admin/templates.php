@@ -1123,23 +1123,17 @@ class templates extends Survey_Common_Action
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                     'QUESTION_CODE' => 'Q1 ',
-                    'QUESTIONHELP' => '<div class="text-info questionhelp">
-                    <span class="fa fa-question-circle" aria-hidden="true"></span>
-                    &nbsp;'. gT("This is some helpful text.").'
-                    </div>', // Normally output by survey_runtime
-                    'QUESTION_MANDATORY' => '<span class="text-danger asterisk"></span>',//gT("*"),  // Normally output by survey_runtime
+                    'QUESTIONHELP' => $this->getController()->renderPartial('/survey/system/questionhelp/questionhelp', array('classes' => '','questionHelp'=>gT("This is some helpful text.")), true),
+                    'QUESTION_MANDATORY' => $this->getController()->renderPartial('/survey/question_help/asterisk', array(), true),
                     'QUESTION_MAN_CLASS' => ' mandatory',
                     'QUESTION_ESSENTIALS' => 'id="question1"',
                     'QUESTION_CLASS' => 'list-radio',
                     'QUESTION_NUMBER' => '1',
-                    'QUESTION_VALID_MESSAGE'=>'
-                    <div class="questionhelp text-info" role="alert" id="vmsg_4496">
-                    <div id="vmsg_4496_num_answers" class="em_num_answers emtip good">
-                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    '.gT('Hint when response is valid').'
-                    </div>
-                    </div>
-                    ',
+                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/system/questionhelp/em-tip',array(
+                        'coreId'=>"vmsg_4496_num_answers",
+                        'coreClass'=>"em-tip ",// Unsure for this one
+                        'vtip'=>gT('Hint when response is valid')
+                    ), true),
                 );
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacements);
@@ -1148,17 +1142,15 @@ class templates extends Survey_Common_Action
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT('Please explain something in detail:'),
                     'QUESTION_CODE' => 'Q2 ',
+                    'QUESTIONHELP' => '',
                     'QUESTION_ESSENTIALS' => 'id="question2"',
                     'QUESTION_CLASS' => 'text-long input-error',
                     'QUESTION_NUMBER' => '2',
-                    'QUESTION_VALID_MESSAGE'=>'
-                    <div class="questionhelp text-info" role="alert" id="vmsg_4496">
-                    <div id="vmsg_4496_num_answers" class="em_num_answers emtip error">
-                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    '.gT('Hint when response is not valid').'
-                    </div>
-                    </div>
-                    '
+                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/system/questionhelp/em-tip',array(
+                        'coreId'=>"vmsg_4496_num_answers",
+                        'coreClass'=>"em-tip text-danger",// Unsure for this one, text-danger is set in JS only
+                        'vtip'=>gT('Hint when response is not valid')
+                    ), true),
                 );
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacements);
