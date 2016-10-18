@@ -1,6 +1,6 @@
 <?php
 /**
-* This class handles all methods of the RPCs
+* This class handles all methods of the RemoteControl 2 API
 */
 class remotecontrol_handle
 {
@@ -24,7 +24,7 @@ class remotecontrol_handle
 
     /**
     * RPC routine to create a session key.
-    * Using this function you can create a new XML/JSON-RPC session key.
+    * Using this function you can create a new XML-RPC/JSON-RPC session key.
     * This is mandatory for all following LSRC2 function calls.
     * @access public
     * @param string $username
@@ -105,9 +105,9 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The wish id of the Survey to add
+    * @param int $iSurveyID The desired ID of the Survey to add
     * @param string $sSurveyTitle Title of the new Survey
-    * @param string $sSurveyLanguage    Default language of the Survey
+    * @param string $sSurveyLanguage Default language of the Survey
     * @param string $sformat Question appearance format
     * @return array|string|int
     */
@@ -168,7 +168,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The id of the Survey to be deleted
+    * @param int $iSurveyID The ID of the Survey to be deleted
     * @return array Returns Status
     */
     public function delete_survey($sSessionKey, $iSurveyID)
@@ -192,11 +192,11 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth Credentials
-    * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,txt or survey lsa archive
-    * @param string $sImportDataType  lss,csv,txt or lsa
+    * @param string $sImportData String containing the BASE 64 encoded data of a lss, csv, txt or survey lsa archive
+    * @param string $sImportDataType lss, csv, txt or lsa
     * @param string $sNewSurveyName The optional new name of the survey
     * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
-    * @return array|integer iSurveyID  - ID of the new survey
+    * @return array|integer iSurveyID - ID of the new survey
     */
     public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName=NULL, $DestSurveyID=NULL)
     {
@@ -269,9 +269,9 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID  - ID of the survey
-    * @param array|struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular survey
-    * @return array Of succeeded and failed nodifications according to internal validation.
+    * @param integer $iSurveyID - ID of the Survey
+    * @param array|struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
+    * @return array Of succeeded and failed nodifications according to internal validation
     */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
     {
@@ -342,7 +342,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The id of the survey to be activated
+    * @param int $iSurveyID The ID of the Survey to be activated
     * @return array The result of the activation
     */
     public function activate_survey($sSessionKey, $iSurveyID)
@@ -377,7 +377,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
+    * @param int $iSurveyID ID of the Survey
     * @param string $docType Type of documents the exported statistics should be
     * @param string $sLanguage Optional language of the survey to use
     * @param string $graph Create graph option
@@ -470,7 +470,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
+    * @param int $iSurveyID ID of the Survey
     * @param string $sType (day|hour)
     * @param string $dStart
     * @param string $dEnd
@@ -498,7 +498,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to get summary
+    * @param int $iSurveyID ID of the Survey to get summary
     * @param string $sStatName Name of the summary option - valid values are 'token_count', 'token_invalid', 'token_sent', 'token_opted_out', 'token_completed', 'completed_responses', 'incomplete_responses', 'full_responses' or 'all'
     * @return string The requested value or an array of all values when $sStatName = 'all'
     */
@@ -586,8 +586,8 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID ID of the survey where a token table will be created for
-    * @param string $sLanguage  A valid language shortcut to add to the current survey. If the language already exists no error will be given.
+    * @param integer $iSurveyID ID of the Survey where a token table will be created for
+    * @param string $sLanguage  A valid language shortcut to add to the current Survey. If the language already exists no error will be given.
     * @return array Status=>OK when successfull, otherwise the error description
     */
     public function add_language($sSessionKey, $iSurveyID, $sLanguage)
@@ -651,8 +651,8 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID ID of the survey where a token table will be created for
-    * @param string $sLanguage  A valid language shortcut to delete from the current survey. If the language does not exist in that survey no error will be given.
+    * @param integer $iSurveyID ID of the Survey where a token table will be created for
+    * @param string $sLanguage A valid language shortcut to delete from the current Survey. If the language does not exist in that Survey no error will be given.
     * @return array Status=>OK when successfull, otherwise the error description
     */
     public function delete_language($sSessionKey, $iSurveyID, $sLanguage)
@@ -707,7 +707,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Dd of the Survey
+    * @param int $iSurveyID ID of the Survey
     * @param array $aSurveyLocaleSettings Properties to get
     * @param string $sLang Language to use
     * @return array The requested values
@@ -756,7 +756,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID  - ID of the survey
+    * @param integer $iSurveyID  - ID of the Survey
     * @param array|struct $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @param string $sLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
     * @return array Status=>OK, when save successful otherwise error text.
@@ -834,7 +834,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Dd of the Survey to add the group
+    * @param int $iSurveyID ID of the Survey to add the group
     * @param string $sGroupTitle Name of the group
     * @param string $sGroupDescription     Optional description of the group
     * @return array|int The id of the new group - Or status
@@ -876,9 +876,9 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the survey that the group belongs
-    * @param int $iGroupID Id of the group to delete
-    * @return array|int The id of the deleted group or status
+    * @param int $iSurveyID ID of the Survey that the group belongs
+    * @param int $iGroupID ID of the group to delete
+    * @return array|int The ID of the deleted group or status
     */
     public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
     {
@@ -925,7 +925,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The id of the survey that the group will belong
+    * @param int $iSurveyID The ID of the Survey that the group will belong
     * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
     * @param string $sImportDataType  lsg,csv
     * @param string $sNewGroupName  Optional new name for the group
@@ -1074,7 +1074,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iGroupID  - ID of the survey
+    * @param integer $iGroupID  - ID of the Survey
     * @param array|struct $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @return array Of succeeded and failed modifications according to internal validation.
     */
@@ -1149,8 +1149,8 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int iQuestionID Id of the question to delete
-    * @return array|int Id of the deleted Question or status
+    * @param int iQuestionID ID of the Question to delete
+    * @return array|int ID of the deleted Question or status
     */
     public function delete_question($sSessionKey, $iQuestionID)
     {
@@ -1212,10 +1212,10 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey
-    * @param int $iSurveyID The id of the survey that the question will belong
-    * @param int $iGroupID The id of the group that the question will belong
+    * @param int $iSurveyID The ID of the Survey that the question will belong
+    * @param int $iGroupID The ID of the Group that the question will belong
     * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
-    * @param string $sImportDataType  lsq,csv
+    * @param string $sImportDataType  lsq, csv
     * @param string $sMandatory Optional Mandatory question option (default to No)
     * @param string $sNewQuestionTitle  Optional new title for the question
     * @param string $sNewqQuestion An optional new question
@@ -1321,7 +1321,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iQuestionID Id of the question to get properties
+    * @param int $iQuestionID ID of the question to get properties
     * @param array $aQuestionSettings The properties to get
     * @param string $sLanguage Optional parameter language for multilingual questions
     * @return array The requested values
@@ -1550,7 +1550,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
+    * @param int $iSurveyID ID of the Survey
     * @param struct $aParticipantData Data of the participants to be added
     * @param bool Optional - Defaults to true and determins if the access token automatically created
     * @return array The values added
@@ -1598,8 +1598,8 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey that the participants belong to
-    * @param array $aTokenIDs Id of the tokens/participants to delete
+    * @param int $iSurveyID ID of the Survey that the participants belong to
+    * @param array $aTokenIDs ID of the tokens/participants to delete
     * @return array Result of deletion
     */
     public function delete_participants($sSessionKey, $iSurveyID, $aTokenIDs)
@@ -1643,7 +1643,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to get token properties
+    * @param int $iSurveyID ID of the Survey to get token properties
     * @param array|struct|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
     * @param array $aTokenProperties The properties to get
     * @return array The requested values
@@ -1703,7 +1703,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the survey that participants belong
+    * @param int $iSurveyID Id of the Survey that participants belong
     * @param array|struct|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
     * @param array|struct $aTokenData Data to change
     * @return array Result of the change action
@@ -1762,12 +1762,12 @@ class remotecontrol_handle
 
 
     /**
-    * RPC Routine to return the ids and info of groups belonging to survey .
+    * RPC Routine to return the ids and info of groups belonging to survey.
     * Returns array of ids and info.
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey containing the groups
+    * @param int $iSurveyID ID of the Survey containing the groups
     * @return array The list of groups
     */
     public function list_groups($sSessionKey, $iSurveyID)
@@ -1799,13 +1799,13 @@ class remotecontrol_handle
 
     /**
     * RPC Routine to return the ids and info  of token/participants of a survey.
-    * if $bUnused is true, user will get the list of not completed tokens (token_return functionality).
+    * if $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
     * Parameters iStart and ilimit are used to limit the number of results of this call.
-    * Parameter aAttributes is an optional array containing more attribute that may be requested
+    * Parameter aAttributes is an optional array containing more attributes that may be requested
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the survey to list participants
+    * @param int $iSurveyID ID of the Survey to list participants
     * @param int $iStart Start id of the token list
     * @param int  $iLimit Number of participants to return
     * @param bool $bUnused If you want unused tokens, set true
@@ -1879,7 +1879,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the survey to list questions
+    * @param int $iSurveyID ID of the Survey to list questions
     * @param int $iGroupID Optional id of the group to list questions
     * @param string $sLanguage Optional parameter language for multilingual questions
     * @return array The list of questions
@@ -1934,11 +1934,11 @@ class remotecontrol_handle
     * RPC Routine to list the ids and info of surveys belonging to a user.
     * Returns array of ids and info.
     * If user is admin he can get surveys of every user (parameter sUser) or all surveys (sUser=null)
-    * Else only the syrveys belonging to the user requesting will be shown.
+    * Else only the surveys belonging to the user requesting will be shown.
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param string $sUser Optional username to get list of surveys
+    * @param string $sUsername Optional username to get list of surveys
     * @return array The list of surveys
     */
     public function list_surveys($sSessionKey, $sUsername=NULL)
@@ -2025,7 +2025,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID ID of the survey where a token table will be created for
+    * @param integer $iSurveyID ID of the Survey where a token table will be created for
     * @param array $aAttributeFields  An array of integer describing any additional attribute fields
     * @return array Status=>OK when successfull, otherwise the error description
     */
@@ -2068,7 +2068,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param int $iSurveyID ID of the survey that participants belong
+     * @param int $iSurveyID ID of the Survey that participants belong
      * @param array $overrideAllConditions replace the default conditions, like this:
      *   $overrideAllConditions = Array();
      *   $overrideAllConditions[] = 'tid = 2';
@@ -2208,12 +2208,12 @@ class remotecontrol_handle
 
 
     /**
-    * RPC Routine to send reminder for participants in a survey
+    * RPC Routine to send a reminder to participants in a survey
     * Returns array of results of sending
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID ID of the survey that participants belong
+    * @param int $iSurveyID ID of the Survey that participants belong
     * @param int $iMinDaysBetween Optional parameter days from last reminder
     * @param int $iMaxReminders Optional parameter Maximum reminders count
     * @return array Result of the action
@@ -2285,7 +2285,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to insert responses
+    * @param int $iSurveyID ID of the Survey to insert responses
     * @param struct $aResponseData The actual response
     * @return int The response ID
     */
@@ -2424,8 +2424,8 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
-    * @param string $sDocumentType pdf,csv,xls,doc,json
+    * @param int $iSurveyID ID of the Survey
+    * @param string $sDocumentType pdf, csv, xls, doc, json
     * @param string $sLanguageCode The language to be used
     * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
     * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
@@ -2479,8 +2479,8 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
-    * @param string $sDocumentType pdf,csv,xls,doc,json
+    * @param int $iSurveyID ID of the Survey
+    * @param string $sDocumentType pdf, csv, xls, doc, json
     * @param string $sToken The token for which responses needed
     * @param string $sLanguageCode The language to be used
     * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
@@ -2532,7 +2532,7 @@ class remotecontrol_handle
     *
     * @access protected
     * @param string $sUsername The username
-    * @param mixed $sPassword The Password
+    * @param string $sPassword The Password
     * @return bool
     */
     protected function _doLogin($sUsername, $sPassword)
@@ -2577,7 +2577,7 @@ class remotecontrol_handle
     }
 
     /**
-    * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
+    * This function checks if the session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
     *
     * @access protected
     * @param string $sSessionKey Auth credentials
@@ -2601,7 +2601,7 @@ class remotecontrol_handle
 
 
     /**
-     * This function import a participant to the LimeSurvey cpd. It stores attributes as well, if they are registered before within ui
+     * This function imports a participant into the LimeSurvey cpd. It stores attributes as well, if they are registered before within ui
      *
      * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $aParticipants);
      *

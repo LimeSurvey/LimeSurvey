@@ -13,6 +13,9 @@
 */
 
 
+/**
+ * @param string $file
+ */
 function doreplacement($file,$data, $oTemplate='')
 {
     //Produce sample page from template file
@@ -57,6 +60,9 @@ function filetext($templatename,$templatefile,$templates) {
     }
 }
 
+/**
+ * @param string $target
+ */
 function mkdir_p($target){
     //creates a new directory
     //Returns 1 for success
@@ -140,6 +146,7 @@ function templateExtractFilter($p_event, &$p_header)
     $info = pathinfo($p_header['filename']);
     // Deny files with multiple extensions in general
     if (substr_count($info['basename'],'.')!=1) return 0;
+
     if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'],$aAllowExtensions)) {
         return 1;
     }

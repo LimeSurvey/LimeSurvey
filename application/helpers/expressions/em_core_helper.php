@@ -444,7 +444,7 @@ class ExpressionManager {
 
     /**
      * Main entry function
-     * @param <type> $expr
+     * @param string $expr
      * @param <type> $onlyparse - if true, then validate the syntax without computing an answer
      * @return boolean - true if success, false if any error occurred
      */
@@ -545,7 +545,7 @@ class ExpressionManager {
 
     /**
      * Process a Constant (number of string), retrieve the value of a known variable, or process a function, returning result on the stack.
-     * @return boolean - true if success, false if any error occurred
+     * @return boolean|null - true if success, false if any error occurred
      */
 
     private function RDP_EvaluateConstantVarOrFunction()
@@ -768,7 +768,7 @@ class ExpressionManager {
 
     /**
      * Process a function call
-     * @return boolean - true if success, false if any error occurred
+     * @return boolean|null - true if success, false if any error occurred
      */
     private function RDP_EvaluateFunction()
     {
@@ -967,7 +967,7 @@ class ExpressionManager {
 
     /**
      * Process expressions including functions and parenthesized blocks
-     * @return boolean - true if success, false if any error occurred
+     * @return boolean|null - true if success, false if any error occurred
      */
 
     private function RDP_EvaluatePrimaryExpression()
@@ -1048,7 +1048,7 @@ class ExpressionManager {
 
     /**
      * Process "op a" where op in (+,-,!)
-     * @return boolean - true if success, false if any error occurred
+     * @return boolean|null - true if success, false if any error occurred
      */
 
     private function RDP_EvaluateUnaryExpression()
@@ -1189,7 +1189,7 @@ class ExpressionManager {
     /**
      * Return the JavaScript variable name for a named variable
      * @param <type> $name
-     * @return <type>
+     * @return string
      */
     public function GetJsVarFor($name)
     {
@@ -1347,6 +1347,7 @@ class ExpressionManager {
 
     /**
      * JavaScript Test function - simply writes the result of the current JavaScriptEquivalentFunction to the output buffer.
+     * @param integer $num
      * @return <type>
      */
     public function GetJavascriptTestforExpression($expected,$num)
@@ -1369,7 +1370,9 @@ class ExpressionManager {
 
     /**
      * Generate the function needed to dynamically change the value of a <span> section
-     * @param <type> $name - the ID name for the function
+     * @param string $name - the ID name for the function
+     * @param string $eqn
+     * @param integer $questionNum
      * @return <type>
      */
     public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
@@ -1394,7 +1397,7 @@ class ExpressionManager {
 
     /**
      * This is only used when there are no needed substitutions
-     * @param <type> $expr
+     * @param string $expr
      */
     public function SetPrettyPrintSource($expr)
     {
@@ -1647,8 +1650,9 @@ class ExpressionManager {
 
     /**
      * Get information about the variable, including JavaScript name, read-write status, and whether set on current page.
-     * @param <type> $varname
-     * @return <type>
+     * @param <type> $name
+     * @param string|null $attr
+     * @return string
      */
     private function GetVarAttribute($name,$attr,$default)
     {
@@ -1828,7 +1832,7 @@ class ExpressionManager {
 
     /**
      * Process multiple substitution iterations of a full string, containing multiple expressions delimited by {}, return a consolidated string
-     * @param <type> $src
+     * @param string $src
      * @param <type> $questionNum
      * @param <type> $numRecursionLevels - number of levels of recursive substitution to perform
      * @param <type> $whichPrettyPrintIteration - if recursing, specify which pretty-print iteration is desired
@@ -1865,8 +1869,8 @@ class ExpressionManager {
 
     /**
      * Process one substitution iteration of a full string, containing multiple expressions delimited by {}, return a consolidated string
-     * @param <type> $src
-     * @param <type> $questionNum - used to generate substitution <span>s that indicate to which question they belong
+     * @param string $src
+     * @param integer $questionNum - used to generate substitution <span>s that indicate to which question they belong
      * @return <type>
      */
 
@@ -1939,7 +1943,6 @@ class ExpressionManager {
 
     /**
      * If the equation contains refernece to this, expand to comma separated list if needed.
-     * @param type $eqn
      */
     function ExpandThisVar($src)
     {
@@ -1994,7 +1997,7 @@ class ExpressionManager {
      * Some PHP functions require specific data types - those can be cast here.
      * @param <type> $funcNameToken
      * @param <type> $params
-     * @return boolean
+     * @return boolean|null
      */
     private function RDP_RunFunction($funcNameToken,$params)
     {
@@ -2334,7 +2337,7 @@ class ExpressionManager {
 
     /**
      * Specify the survey  mode for this survey.  Options are 'survey', 'group', and 'question'
-     * @param type $mode
+     * @param string $mode
      */
     public function SetSurveyMode($mode)
     {
@@ -2714,7 +2717,7 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
                     $iNearestIndex = $i;
                 }
             }
-            if ( $iStrict !== 1 ) {
+            if ( $iStrict != 1 ) {
                 return $aToValues[$iNearestIndex];
             }
         }
@@ -2745,7 +2748,7 @@ function exprmgr_if($test,$ok,$error)
  * Return true if the variable is an integer for LimeSurvey
  * Can not really use is_int due to SQL DECIMAL system. This function can surely be improved
  * @param string $arg
- * @return boolean
+ * @return integer
  * @link http://php.net/is_int#82857
  */
 function exprmgr_int($arg)

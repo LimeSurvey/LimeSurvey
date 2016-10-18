@@ -201,7 +201,7 @@ class Survey_Common_Action extends CAction
     *
     * @access protected
     * @param string $sa
-    * @param array $get_vars
+    * @param string[] $get_vars
     * @return void
     */
     protected function route($sa, array $get_vars)
@@ -1302,7 +1302,6 @@ class Survey_Common_Action extends CAction
     }
     /**
     * Load menu bar of user group controller.
-    * @param int $ugid
     * @return void
     */
     public function _userGroupBar($aData)
@@ -1374,6 +1373,10 @@ class Survey_Common_Action extends CAction
         $oAdminTheme->registerCssFile( $sPath, $sFile );
     }
 
+    /**
+     * @param string $extractdir
+     * @param string $destdir
+     */
     protected function _filterImportedResources($extractdir, $destdir)
     {
         $aErrorFilesInfo = array();

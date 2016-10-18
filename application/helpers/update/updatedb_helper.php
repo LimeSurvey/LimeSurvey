@@ -1750,6 +1750,9 @@ function fixKCFinder184()
 }
 
 
+/**
+ * @param string $sMySQLCollation
+ */
 function upgradeSurveyTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
@@ -1781,6 +1784,9 @@ function upgradeSurveyTables181($sMySQLCollation)
     }
 }
 
+/**
+ * @param string $sMySQLCollation
+ */
 function upgradeTokenTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
@@ -2477,6 +2483,10 @@ function upgradeTokens128()
 }
 
 
+/**
+ * @param string $sEncoding
+ * @param string $sCollation
+ */
 function fixMySQLCollations($sEncoding, $sCollation)
 {
     $surveyidresult = dbGetTablesLike("%");
@@ -2571,13 +2581,16 @@ function addPrimaryKey($sTablename, $aColumns)
 * Modifies a primary key in one command  - this is only tested on MySQL
 *
 * @param string $sTablename The table name
-* @param array $aColumns Column names to be in the new key
+* @param string[] $aColumns Column names to be in the new key
 */
 function modifyPrimaryKey($sTablename, $aColumns)
 {
     Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
 }
 
+/**
+ * @param string $sTablename
+ */
 function dropPrimaryKey($sTablename)
 {
     switch (Yii::app()->db->driverName){
@@ -2849,7 +2862,7 @@ function replaceTemplateJS(){
 *  sure all surveys that are not anonymous have a token field with the
 *  right size
 *
-* @return void
+* @return string|null
 */
 function upgradeSurveyTables164()
 {

@@ -49,7 +49,7 @@ function isNumericExtended($value)  {
 * Returns splitted unicode string correctly
 * source: http://www.php.net/manual/en/function.str-split.php#107658
 *
-* @param $str
+* @param string $str
 * @param $l
 * @return string
 */
@@ -71,15 +71,15 @@ function strSplitUnicode($str, $l = 0) {
 * Exports CSV response data for SPSS and R
 *
 * @param mixed $iSurveyID The survey ID
-* @param mixed $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
-* @param mixed $na Value for N/A data
+* @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
+* @param string $na Value for N/A data
 * @param sep Quote separator. Use '\'' for SPSS, '"' for R
 * @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
 */
-function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE) {
+function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='') {
 
     // Build array that has to be returned
-    $fields = SPSSFieldMap($iSurveyID);
+    $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
     // Now see if we have parameters for from (offset) & num (limit)
     $limit = App()->getRequest()->getParam('limit');
@@ -180,9 +180,11 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
                                 if ($row[$fieldno] == 'Y')
                                 {
                                     echo($q. 1 .$q);
-                                } else
+                                } elseif(isset($row[$fieldno]))
                                 {
                                     echo($q. 0 .$q);
+                                } else {
+                                    echo($na);
                                 }
                             } elseif (!$field['hide']) {
                                 $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
@@ -213,6 +215,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
 * Check it the gives field has a labelset and return it as an array if true
 *
 * @param $field array field from SPSSFieldMap
+* @param string $language
 * @return array or false
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
@@ -324,7 +327,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 * @param $prefix string prefix for the variable ID
 * @return array
 */
-function SPSSFieldMap($iSurveyID, $prefix = 'V')
+function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 {
     $typeMap = array(
         '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -360,28 +363,26 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
         '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
     );
 
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+    if (empty($sLanguage)){
+        $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
+    }
+    $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
+    // ... and if the survey uses anonymized responses
+    $sSurveyAnonymized=Survey::model()->findByPk($iSurveyID)->anonymized;
 
-    #Lookup the names of the attributes
-    $query="SELECT sid, anonymized, language FROM {{surveys}} WHERE sid=$iSurveyID";
-    $aRow=Yii::app()->db->createCommand($query)->queryRow();  //Checked
-    $surveyprivate=$aRow['anonymized'];
-    $language=$aRow['language'];
-
-    $fieldno=0;
-
+    $iFieldNumber=0;
     $fields=array();
-    if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
+    if ($bTokenTableExists && $sSurveyAnonymized == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $fieldno++;
-                $fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
+                $iFieldNumber++;
+                $fields[] = array('id'=>"{$prefix}{$iFieldNumber}",'name'=>mb_substr($attributefield, 0, 8),
                 'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
                 'VariableLabel'=>$attributedescription['description'],'sql_name'=>$attributefield,'size'=>'100',
                 'title'=>$attributefield,'hide'=>0, 'scale'=>'');
@@ -478,15 +479,15 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
             }
 
         }
-        $fieldno++;
-        $fid = $fieldno - $diff;
+        $iFieldNumber++;
+        $fid = $iFieldNumber - $diff;
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
         $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
         'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
         'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
         'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
-        $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
+        $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $sLanguage);
         if (is_array($answers)) {
             //Ok we have answers
             if (isset($answers['size'])) {
@@ -555,8 +556,8 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
 *
 * @param mixed $xmlwriter  The existing XMLWriter object
 * @param mixed $Query  The table query to build from
-* @param mixed $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
-* @param array $excludes array of columnames not to include in export
+* @param string $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
+* @param string[] $excludes array of columnames not to include in export
 */
 function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
@@ -773,11 +774,11 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
 /**
 * Exports a single table to XML
 *
-* @param inetger $iSurveyID The survey ID
+* @param integer $iSurveyID The survey ID
 * @param string $sTableName The database table name of the table to be export
 * @param string $sDocType What doctype should be written
-* @param string $sXMLTableName Name of the tag table name in the XML file
-* @return object XMLWriter object
+* @param string $sXMLTableTagName Name of the tag table name in the XML file
+* @return string|boolean XMLWriter object
 */
 function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName='', $sFileName='', $bSetIndent=true)
 {
@@ -1272,23 +1273,23 @@ function quexml_export($surveyi, $quexmllan)
                 $question->appendChild($directive);
             }
 
-			if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
-			{
+            if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
+            {
 
-				$RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
+                $RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
 
-				if (!empty($RowQ['printable_help']))
-				{
-					$directive = $dom->createElement("directive");
-					$position = $dom->createElement("position","before");
-					$text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
-					$administration = $dom->createElement("administration","self");
-					$directive->appendChild($position);
-					$directive->appendChild($text);
-					$directive->appendChild($administration);
-					$question->appendChild($directive);
-				}
-			}
+                if (!empty($RowQ['printable_help']))
+                {
+                    $directive = $dom->createElement("directive");
+                    $position = $dom->createElement("position","before");
+                    $text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
+                    $administration = $dom->createElement("administration","self");
+                    $directive->appendChild($position);
+                    $directive->appendChild($text);
+                    $directive->appendChild($administration);
+                    $question->appendChild($directive);
+                }
+            }
 
             $response = $dom->createElement("response");
             $sgq = $RowQ['title'];
@@ -1487,7 +1488,7 @@ function quexml_export($surveyi, $quexmllan)
 *
 * Usage: $db->Concat($str1,$str2);
 *
-* @return concatenated string
+* @return string string
 */
 function concat()
 {
@@ -1500,6 +1501,9 @@ function concat()
 // 1. questions
 // 2. answers
 
+/**
+ * @param string $action
+ */
 function group_export($action, $iSurveyID, $gid)
 {
     $fn = "limesurvey_group_$gid.lsg";
@@ -1532,6 +1536,9 @@ function group_export($action, $iSurveyID, $gid)
     $xml->endDocument();
 }
 
+/**
+ * @param XMLWriter $xml
+ */
 function groupGetXMLStructure($xml,$gid)
 {
     // QuestionGroup
@@ -1603,6 +1610,9 @@ function groupGetXMLStructure($xml,$gid)
 //  - Answer
 //  - Question attributes
 //  - Default values
+/**
+ * @param string $action
+ */
 function questionExport($action, $iSurveyID, $gid, $qid)
 {
     $fn = "limesurvey_question_$qid.lsq";
@@ -1636,6 +1646,9 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     exit;
 }
 
+/**
+ * @param XMLWriter $xml
+ */
 function questionGetXMLStructure($xml,$gid,$qid)
 {
     // Questions table
@@ -1818,10 +1831,13 @@ function tokensExport($iSurveyID)
 
     if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
     {
-		Token::model($iSurveyID)->deleteByPk($aExportedTokens);
+        Token::model($iSurveyID)->deleteByPk($aExportedTokens);
     }
 }
 
+/**
+ * @param string $filename
+ */
 function CPDBExport($data,$filename)
 {
 

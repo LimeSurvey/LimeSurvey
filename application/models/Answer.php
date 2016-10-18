@@ -42,7 +42,7 @@ class Answer extends LSActiveRecord
     * Returns the primary key of this table
     *
     * @access public
-    * @return array
+    * @return string[]
     */
     public function primaryKey()
     {
@@ -100,9 +100,9 @@ class Answer extends LSActiveRecord
      *
      * @staticvar array $answerCache
      * @param type $qid
-     * @param type $code
-     * @param type $sLanguage
-     * @param type $iScaleID
+     * @param string $code
+     * @param string $sLanguage
+     * @param integer $iScaleID
      * @return array
      */
     function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
@@ -196,6 +196,10 @@ class Answer extends LSActiveRecord
         return $command->query();
     }
 
+    /**
+     * @param string $fields
+     * @param string $orderby
+     */
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
         return Yii::app()->db->createCommand()

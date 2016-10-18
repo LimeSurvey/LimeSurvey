@@ -1,4 +1,3 @@
-
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT('Survey responses'); ?></h3>
 
@@ -40,6 +39,8 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="content-right scrolling-wrapper"    >
+                <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
+                <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
                 <?php
                     // the massive actions dropup button
                     $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
@@ -143,8 +144,6 @@
                             'name'=>'startlanguage',
                         );
 
-
-
                    // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
                    // All other columns are based on the questions.
                    // An array to control unicity of $code (EM code)
@@ -174,7 +173,7 @@
                         'id'            => 'responses-grid',
                         'ajaxUpdate'    => true,
                         'ajaxType'      => 'POST',
-                        'afterAjaxUpdate'=>'bindScrollWrapper',
+                        'afterAjaxUpdate'=>'LS.resp.bindScrollWrapper',
                         'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                         'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(

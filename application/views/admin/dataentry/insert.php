@@ -1,3 +1,4 @@
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
 <div class="col-lg-12 list-surveys">
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -5,65 +6,7 @@
     <div class="jumbotron message-box <?php if($errormsg){echo 'message-box-error';}?>">
 
         <?php if($errormsg): ?>
-                <h2 class="danger"><?php eT("Try again"); ?>:</h2>
-                <p>
-                    <?php echo CHtml::form();?>
-                        <table class='outlinetable'>
-                            <tr>
-                                <td align='right'><?php eT("Identifier:"); ?></td>
-                                <td>
-                                    <?php echo CHtml::textField('text','save_identifier',$_POST['save_identifier']);?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><?php eT("Password:"); ?></td>
-                                <td>
-                                    <?php echo CHtml::passwordField('save_password',$_POST['save_password']);?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><?php eT("Confirm password:"); ?></td>
-                                <td>
-                                    <?php echo CHtml::passwordField('save_confirmpassword',$_POST['save_confirmpassword']);?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><?php eT("Email:"); ?></td>
-                                <td>
-                                    <?php echo CHtml::textField('save_email',$_POST['save_email']);?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><?php eT("Start language:"); ?></td>
-                                <td>
-                                    <?php echo CHtml::textField('text','save_language',$_POST['save_language']);?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <input type='submit' value='<?php eT("Submit"); ?>' />
-                                    <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
-                                    <?php echo CHtml::hiddenField('subaction',$_POST['subaction']);?>
-                                    <input type='hidden' name='language' value='<?php echo $lang; ?>' />
-                                    <input type='hidden' name='save' value='on' />
-                                </td>
-                                <?php
-                                    echo $hiddenfields;
-                                    if (isset($_POST['datestamp']))
-                                    {
-                                        echo CHtml::hiddenField('datestamp', $_POST['datestamp']);
-                                    }
-
-                                    if (isset($_POST['ipaddr']))
-                                    {
-                                        echo CHtml::hiddenField('ipaddr', $_POST['ipaddr']);
-                                    }
-                                ?>
-                            </tr>
-                        </table>
-                    </form>
-                </p>
+                <h2 class="danger"><?php eT("Try again"); ?></h2>
                 <p>
                     <?php
                         foreach($dataentrymsgs as $msg)
@@ -126,3 +69,4 @@
 </div>
 
 </div></div></div>
+</div>

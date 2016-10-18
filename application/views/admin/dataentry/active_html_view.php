@@ -27,7 +27,7 @@ if ($thissurvey['active'] == "Y")
                 <table><tr><td align='left'>
                 <div class="checkbox">
                     <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php eT("Finalize response submission"); ?></label></td></tr>
-                    <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $yii->getConfig('timeadjust')); ?>' />
+                    <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $yii->getConfig('timeadjust')); ?>' />
                 </div>
                 <?php if ($thissurvey['allowsave'] == "Y")
                 { ?>
@@ -69,16 +69,7 @@ if ($thissurvey['active'] == "Y")
                 <?php } ?>
                 <tr>
                 <td colspan='3' align='center'>
-                <input type='submit' id='submitdata' class="btn btn-default hidden" value='<?php eT("Submit"); ?>'
-
-                <?php if (tableExists('tokens_'.$thissurvey['sid']))
-                { ?>
-                     disabled='disabled'/>
-                <?php }
-                else
-                { ?>
-                     />
-                <?php } ?>
+                <input type='submit' id='submitdata' class="btn btn-default hidden" value='<?php eT("Submit"); ?>' />
                 </td>
                 </tr>
             <?php }
@@ -113,5 +104,11 @@ if ($thissurvey['active'] == "Y")
             </table>
             </form>
 
+            <?php if (tableExists('tokens_'.$thissurvey['sid'])): ?>
+                <script>
+                    // Token is mandatory, so disable save buttons
+                    activateSubmit(null);
+                </script>
+            <?php endif; ?>
 
 </div></div></div>

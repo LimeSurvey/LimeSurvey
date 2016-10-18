@@ -56,6 +56,9 @@ class MersenneTwister
   private $state = array ();
   private $index = 0;
 
+  /**
+   * @param integer $seed
+   */
   public function __construct($seed = null) {
     if ($seed === null)
       $seed = mt_rand();
@@ -63,6 +66,9 @@ class MersenneTwister
     $this->setSeed($seed);
   }
 
+  /**
+   * @param integer $seed
+   */
   public function setSeed($seed) {
     $this->state[0] = $seed & 0xffffffff;
 
@@ -84,6 +90,10 @@ class MersenneTwister
     }
   }
 
+  /**
+   * @param integer $min
+   * @param integer $max
+   */
   public function getNext($min = null, $max = null) {
     if (($min === null && $max !== null) || ($min !== null && $max === null))
       throw new Exception('Invalid arguments');

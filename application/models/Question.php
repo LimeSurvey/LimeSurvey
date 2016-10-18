@@ -48,7 +48,7 @@ class Question extends LSActiveRecord
     * Returns the primary key of this table
     *
     * @access public
-    * @return string
+    * @return string[]
     */
     public function primaryKey()
     {
@@ -179,7 +179,6 @@ class Question extends LSActiveRecord
     * @static
     * @access public
     * @param int $gid
-    * @param int $surveyid
     * @return void
     */
     function updateQuestionOrder($gid,$language,$position=0)
@@ -224,16 +223,7 @@ class Question extends LSActiveRecord
 
         if ($iQuestionID)
         {
-            $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
-            $aAttributeValues=array();
-            foreach($oAttributeValues as $oAttributeValue)
-            {
-                if($oAttributeValue->language){
-                    $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
-                }else{
-                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
-                }
-            }
+            $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID);
         }
         $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         uasort($aAttributeNames, 'categorySort');
@@ -816,7 +806,7 @@ class Question extends LSActiveRecord
     {
         if ($this->type != "X"  && $this->type != "|")
         {
-            $sIcon = ($this->other=="Y")?'<span class="fa fa-asterisk text-danger"></span>':'<span></span>';
+            $sIcon = ($this->mandatory=="Y")?'<span class="fa fa-asterisk text-danger"></span>':'<span></span>';
         }
         else
         {
@@ -827,7 +817,7 @@ class Question extends LSActiveRecord
 
     public function getOtherIcon()
     {
-        //return $this->mandatory;
+
         if (( $this->type == "L") || ($this->type == "!") || ($this->type == "P") || ($this->type=="M"))
         {
             $sIcon = ($this->other==="Y")?'<span class="fa fa-dot-circle-o"></span>':'<span></span>';

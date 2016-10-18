@@ -780,6 +780,12 @@ table.array-no-dropdown  td.answer-item.text-center
         margin-bottom: 0.4em;
     }
 
+    /* text overflows, ellipsis and hyphens */
+    .navbar-brand {
+        white-space:nowrap;
+        text-overflow: ellipsis;
+        text-overflow: "…";
+    }
 }
 
 /* On iPad etc only */
@@ -965,7 +971,7 @@ body div.row .question-container {
 }
 
 /*label font weight*/
-label, th {
+label {
     font-weight: normal;
 }
 
@@ -1080,4 +1086,8 @@ div.yes-no .btn-group label {
 }
 .ls-custom-margin.eighteen{
     margin: 18px;
+}
+
+.label-danger {
+    white-space: normal;
 }

@@ -231,6 +231,10 @@ class AdminTheme extends CFormModel
         }
     }
 
+    /**
+     * @param string $cPATH
+     * @param string $sFile
+     */
     public function registerScriptFile( $cPATH, $sFile )
     {
         self::staticRegisterScriptFile( $cPATH, $sFile );
@@ -243,6 +247,8 @@ class AdminTheme extends CFormModel
      *
      * @var string $sPath  'SCRIPT_PATH' for root/scripts/ ; 'ADMIN_SCRIPT_PATH' for root/scripts/admin/; else templates/scripts (uppercase is an heritage from 2.06, which was using constants )
      * @var string $sFile   the name of the js file
+     * @param string $cPATH
+     * @param string $sFile
      */
     static public function staticRegisterScriptFile( $cPATH, $sFile )
     {

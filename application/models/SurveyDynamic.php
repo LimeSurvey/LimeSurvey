@@ -329,7 +329,8 @@ class SurveyDynamic extends LSActiveRecord
         // Upload question
         if($oFieldMap->type =='|' && strpos($oFieldMap->fieldname,'filecount')===false)
         {
-            $sSurveyEntry="<table class='table table-condensed'><tr>";
+
+            $sSurveyEntry="<table class='table table-condensed upload-question'><tr>";
             $aQuestionAttributes = getQuestionAttributeValues($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++)
@@ -457,6 +458,9 @@ class SurveyDynamic extends LSActiveRecord
      * @param string sType
      * @param string dStart
      * @param string dEnd
+     * @param string $sType
+     * @param string $dStart
+     * @param string $dEnd
      *
      * @access public
      * @return array
@@ -576,41 +580,17 @@ class SurveyDynamic extends LSActiveRecord
            '*',
        );
 
-
        // Join the token table and filter tokens if needed
        if ($this->bHaveToken && $this->survey->anonymized != 'Y')
        {
-            $criteria->compare('t.token',$this->token, true);
-            $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
-            $criteria->compare('tokens.firstname',$this->firstname_filter, true);
-            $criteria->compare('tokens.lastname',$this->lastname_filter, true);
-            $criteria->compare('tokens.email',$this->email_filter, true);
-
-            // Add the related token model's columns sortable
-            $aSortVirtualAttributes = array(
-                'tokens.firstname'=>array(
-                           'asc'=>'tokens.firstname ASC',
-                           'desc'=>'tokens.firstname DESC',
-                       ),
-                'tokens.lastname' => array(
-                    'asc'=>'lastname ASC',
-                    'desc'=>'lastname DESC'
-                ),
-                'tokens.email' => array(
-                    'asc'=>'email ASC',
-                    'desc'=>'email DESC'
-                ),
-            );
-
-            $sort->attributes = array_merge($sort->attributes, $aSortVirtualAttributes);
+           $this->joinWithToken($criteria, $sort);
        }
 
        // Basic filters
-       $criteria->compare('t.lastpage',empty($this->lastpage)?null:(int)$this->lastpage, false);
-       $criteria->compare('t.id',empty($this->id)?null:(int)$this->id, false);
+       $criteria->compare('t.lastpage',empty($this->lastpage) ? null : $this->lastpage, false);
+       $criteria->compare('t.id',empty($this->id) ? null : $this->id, false);
        $criteria->compare('t.submitdate',$this->submitdate, true);
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
-
 
        // Completed filters
        if($this->completed_filter == "Y")
@@ -623,22 +603,7 @@ class SurveyDynamic extends LSActiveRecord
            $criteria->addCondition('t.submitdate IS NULL');
        }
 
-       // Filters for responses
-       foreach($this->metaData->columns as $column)
-       {
-           if(!in_array($column->name, $this->defaultColumns))
-           {
-               $c1 = (string) $column->name;
-               if (!empty($this->$c1))
-               {
-                   if ($column->dbType=='decimal')
-                   {
-                        $this->$c1=(float)$this->$c1;
-                   }
-                    $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
-               }
-           }
-       }
+       $this->filterColumns($criteria);
 
        $dataProvider=new CActiveDataProvider('SurveyDynamic', array(
            'sort'=>$sort,
@@ -650,5 +615,82 @@ class SurveyDynamic extends LSActiveRecord
 
        return $dataProvider;
     }
+
+    /**
+     * @param CDbCriteria $criteria
+     * @param CSort $sort
+     * @return void
+     */
+    protected function joinWithToken(CDbCriteria $criteria, CSort $sort)
+    {
+        $criteria->compare('t.token',$this->token, true);
+        $criteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} as tokens ON t.token = tokens.token";
+        $criteria->compare('tokens.firstname',$this->firstname_filter, true);
+        $criteria->compare('tokens.lastname',$this->lastname_filter, true);
+        $criteria->compare('tokens.email',$this->email_filter, true);
+
+        // Add the related token model's columns sortable
+        $aSortVirtualAttributes = array(
+            'tokens.firstname'=>array(
+                'asc'=>'tokens.firstname ASC',
+                'desc'=>'tokens.firstname DESC',
+            ),
+            'tokens.lastname' => array(
+                'asc'=>'lastname ASC',
+                'desc'=>'lastname DESC'
+            ),
+            'tokens.email' => array(
+                'asc'=>'email ASC',
+                'desc'=>'email DESC'
+            ),
+        );
+
+        $sort->attributes = array_merge($sort->attributes, $aSortVirtualAttributes);
+    }
+
+    /**
+     * Loop through columns and add filter if any value is given for this column
+     * Used in responses grid
+     * @param CdbCriteria $criteria
+     * @return void
+     */
+    protected function filterColumns(CDbCriteria $criteria)
+    {
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+
+        // Filters for responses
+        foreach($this->metaData->columns as $column)
+        {
+            $isNotDefaultColumn = !in_array($column->name, $this->defaultColumns);
+            if ($isNotDefaultColumn)
+            {
+                $c1 = (string) $column->name;
+                $columnHasValue = !empty($this->$c1);
+                if ($columnHasValue)
+                {
+                    $isDatetime = strpos($column->dbType, 'timestamp') !== false || strpos($column->dbType, 'datetime') !== false;
+                    if ($column->dbType == 'decimal')
+                    {
+                        $this->$c1 = (float)$this->$c1;
+                        $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
+                    }
+                    else if ($isDatetime)
+                    {
+                        $s = DateTime::createFromFormat($dateformatdetails['phpdate'], $this->$c1);
+                        if ($s === false)
+                        {
+                            // This happens when date is in wrong format
+                            continue;
+                        }
+                        $s2 = $s->format('Y-m-d');
+                        $criteria->addCondition('cast(' . Yii::app()->db->quoteColumnName($c1) . ' as date) = \'' . $s2 . '\'');
+                    }
+                    else
+                    {
+                        $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, true);
+                    }
+                }
+            }
+        }
+    }
 }
-?>

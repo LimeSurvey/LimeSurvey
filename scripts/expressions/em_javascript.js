@@ -254,7 +254,7 @@ function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTransl
                 iNearestIndex = i;
             }
         }
-        if ( iStrict !== 1 ) {
+        if ( iStrict != 1 ) {
             return aToValues[iNearestIndex];
         }
     }
@@ -584,11 +584,12 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    var numtest = new Decimal(value);
-                    if(!numtest.isNaN()){
+                    try {
+                        var numtest = new Decimal(value);
                         return parseFloat(numtest.valueOf());
-                    } else {
-                        shown = value; // what about "no answer"?
+                    }
+                    catch(e) {
+                        shown = value;
                     }
                     break;
                 case 'M': //Multiple choice checkbox
@@ -598,11 +599,12 @@ function LEMval(alias)
                     }
                     else {
                         if (attr.type == 'P' && varName.match(/comment$/)) {
-                            var numtest = new Decimal(value);
-                            if(!numtest.isNaN()){
+                            try {
+                                var numtest = new Decimal(value);
                                 shown = parseFloat(numtest.valueOf());
-                            } else {
-                                shown = value; // what about "no answer"?
+                            }
+                            catch(e) {
+                                shown = value;
                             }
                         }
                         else {
@@ -706,7 +708,13 @@ function LEMval(alias)
                 {
                     if(bNumRealValue)
                     {
-                        return parseFloat(new Decimal(value).valueOf());
+                        try {
+                            var numtest = new Decimal(value);
+                            return parseFloat(numtest.valueOf());
+                        }
+                        catch(e) {
+                            return value;
+                        }
                     }
                     else
                     {
@@ -721,7 +729,13 @@ function LEMval(alias)
 //                if (newval != parseFloat(newval)) {
 //                   return '';
 //                }
-                return parseFloat(new Decimal(newval).valueOf());
+                try {
+                    var numtest = new Decimal(value);
+                    return parseFloat(numtest.valueOf());
+                }
+                catch(e) {
+                    return value;
+                }
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
@@ -730,7 +744,7 @@ function LEMval(alias)
                 var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).attr('value');
 
                 // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
-                sdatetimePattern=typeof sdatetimePattern=='undefined'? 'yy-mm-dd HH:MM': sdatetimePattern;
+                sdatetimePattern =typeof sdatetimePattern == 'undefined'? 'YYYY-MM-DD HH:mm': sdatetimePattern;
 
                 if (sdatetimePattern==null) {
                     sdatetimePattern="";
@@ -739,7 +753,7 @@ function LEMval(alias)
                     value="";
                 }
                 else {
-                    value= moment(value,sdatetimePattern).format(sdatetimePattern); 
+                    value= moment(value,sdatetimePattern).format('YYYY-MM-DD HH:mm');
                 }
                 return value;
             }
@@ -750,8 +764,14 @@ function LEMval(alias)
                 return value;
             }
             else {
-                var decimal_safe = new Decimal(value);
-                return parseFloat(decimal_safe.valueOf());
+                // If it's not a decimal number, just return value
+                try {
+                    var decimal_safe = new Decimal(value);
+                    return parseFloat(decimal_safe.valueOf());
+                }
+                catch (ex) {
+                    return value;
+                }
             }
         }
         case 'rowdivid':

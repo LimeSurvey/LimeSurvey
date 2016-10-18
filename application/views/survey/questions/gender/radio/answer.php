@@ -3,7 +3,6 @@
  * Gender question, radio item Html
  *
  * @var $name
- * @var $checkconditionFunction
  * @var $fChecked
  * @var $mChecked
  * @var $naChecked
@@ -25,7 +24,7 @@
             id="answer<?php echo $name;?>F"
             value="F"
             <?php echo $fChecked; ?>
-            onclick="<?php echo $checkconditionFunction; ?>"
+            onclick="checkconditions(this.value, this.name, this.type);"
             aria-labelledby="label-answer<?php echo $name;?>F"
         />
 
@@ -48,7 +47,7 @@
             id="answer<?php echo $name;?>M"
             value="M"
             <?php echo $mChecked;?>
-            onclick="<?php echo $checkconditionFunction; ?>"
+            onclick="checkconditions(this.value, this.name, this.type);"
             aria-labelledby="label-answer<?php echo $name;?>M"
         />
 
@@ -72,7 +71,7 @@
                 id="answer<?php echo $name;?>"
                 value=""
                 <?php echo $naChecked;?>
-                onclick="<?php echo $checkconditionFunction; ?>"
+                onclick="checkconditions(this.value, this.name, this.type);"
                 aria-labelledby="label-answer<?php echo $name;?>"
             />
 

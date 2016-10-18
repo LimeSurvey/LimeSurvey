@@ -132,13 +132,13 @@ $internalConfig = array(
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
                 ),
+
                 // Log file saved in /tmp/runtime/plugin.log
                 'plugin' => array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'trace, info, error, warning',
                     'logFile' => 'plugin.log',
-                    'categories' => 'plugin.*'
-                    // The category will be the name of the plugin
+                    'categories' => 'plugin.*'  // The category will be the name of the plugin
                 )
             )
         ),

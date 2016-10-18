@@ -52,7 +52,6 @@ class PluginHelper extends Survey_Common_Action
 
         $aData['content'] = $content;
         $this->_renderWrappedTemplate(null, 'super/dummy', $aData);
-
     }
 
     /**
@@ -73,20 +72,18 @@ class PluginHelper extends Survey_Common_Action
      * @param string $methodName
      * @return array
      */
-    protected function getPluginInstanceAndMethod($pluginName, $methodName) {
+    protected function getPluginInstanceAndMethod($pluginName, $methodName)
+    {
         // Get plugin class, abort if not found
-        try
-        {
+        try {
             $refClass = new ReflectionClass($pluginName);
         }
-        catch (ReflectionException $ex)
-        {
+        catch (ReflectionException $ex) {
             throw new \CException("Can't find a plugin with class name $pluginName");
         }
 
         $record = Plugin::model()->findByAttributes(array('name' => $pluginName, 'active' => 1));
-        if (empty($record))
-        {
+        if (empty($record)) {
             throw new Exception('Plugin with name ' . $pluginName . ' is not active or can\' be found');
         }
 
@@ -96,12 +93,10 @@ class PluginHelper extends Survey_Common_Action
         Yii::app()->setPlugin($pluginInstance);
 
         // Get plugin method, abort if not found
-        try
-        {
+        try {
             $refMethod = $refClass->getMethod($methodName);
         }
-        catch (ReflectionException $ex)
-        {
+        catch (ReflectionException $ex) {
             throw new \CException("Plugin $pluginName has no method $methodName");
         }
 
@@ -119,6 +114,5 @@ class PluginHelper extends Survey_Common_Action
     {
         list($pluginInstance, $refMethod) = $this->getPluginInstanceAndMethod($plugin, $method);
         return $refMethod->invoke($pluginInstance, $surveyId);
-
     }
 }

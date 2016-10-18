@@ -175,7 +175,6 @@ class PluginManager extends \PluginManager {
         }
     }
 
-
     /**
      * This function dispatches an event to all registered plugins.
      * @param PluginEvent $event Object holding all event properties

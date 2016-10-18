@@ -84,6 +84,7 @@ class Index extends Survey_Common_Action
 
         // We get the home page display setting
         $aData['bShowSurveyList'] = (getGlobalSetting('show_survey_list')=="show");
+        $aData['bShowSurveyListSearch'] = (getGlobalSetting('show_survey_list_search')=="show");
         $aData['bShowLogo'] = (getGlobalSetting('show_logo')=="show");
         $aData['oSurveySearch'] = new Survey('search');
         $aData['bShowLastSurveyAndQuestion'] = (getGlobalSetting('show_last_survey_and_question')=="show");

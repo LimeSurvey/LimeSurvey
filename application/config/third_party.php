@@ -297,19 +297,35 @@ return array(
         ),
     ),
 
-    'bootstrap-notify' => array(
-        'basePath' => 'third_party.bootstrap-notify',
-        'js' => array(
-            'js/bootstrap-notify.js'
-        ),
+    'bootstrap-datetimepicker' => array(
+        'basePath' => 'third_party.bootstrap-datetimepicker',
         'css' => array(
-            'css/bootstrap-notify.css',
-            'css/styles/alert-blackgloss.css',
-            'css/styles/alert-bangtidy.css'
+            'css/bootstrap-datetimepicker.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-datetimepicker.min.js'
         ),
         'depends' => array(
-            'jquery'
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'bootstrap-switch' => array(
+        'basePath' => 'third_party.bootstrap-switch',
+        'css' => array(
+            'css/bootstrap-switch.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-switch.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
         )
     )
+
 
 );

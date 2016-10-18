@@ -97,6 +97,9 @@ class ProgressBar
 
     // private functions
 
+    /**
+     * @param integer $step
+     */
     function _calculatePercent($step)
     {
         $percent = round(($step - $this->min) / ($this->max - $this->min) * 100);
@@ -104,6 +107,9 @@ class ProgressBar
         return $percent;
     }
 
+    /**
+     * @param integer $step
+     */
     function _calculatePosition($step)
     {
         switch ($this->direction) {
@@ -150,6 +156,9 @@ class ProgressBar
         return $position;
     }
 
+    /**
+     * @param integer $step
+     */
     function _setStep($step)
     {
         if ($step > $this->max) {$step = $this->max;}
@@ -176,6 +185,10 @@ class ProgressBar
 			if ($height>0) {$this->frame['height'] = $height;}
     }
 
+    /**
+     * @param string $type
+     * @param string $name
+     */
     function addLabel($type,$name,$value='&nbsp;')
     {
         switch($type) {
@@ -264,6 +277,10 @@ class ProgressBar
         }
     }
 
+    /**
+     * @param string $name
+     * @param string $action
+     */
     function addButton($name,$value,$action,$target='self')
     {
         $this->addLabel('button',$name,$value);
@@ -337,6 +354,9 @@ class ProgressBar
         }
     }
 
+    /**
+     * @param string $name
+     */
     function setLabelValue($name,$value)
     {
         $this->label[$name]['value'] = $value;
@@ -496,6 +516,9 @@ class ProgressBar
         flush();
     }
 
+    /**
+     * @param integer $step
+     */
     function moveStep($step)
     {
         $last_step = $this->step;

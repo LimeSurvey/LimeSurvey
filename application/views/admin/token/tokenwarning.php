@@ -61,7 +61,7 @@ if ($tcount > 0 && (Permission::model()->hasSurveyPermission($surveyid, 'surveys
                 </p>
                 <p>
                     <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$surveyid}"), 'post'); ?>
-                        <select size='4' name='oldtable' style='width:250px;'>
+                        <select size='4' name='oldtable'>
                             <?php
                                 foreach ($oldlist as $ol)
                                 {

@@ -182,7 +182,7 @@ class UploaderController extends SurveyController {
                                 "name"          => rawurlencode(basename($filename)),
                                 "ext"           => $ext,
                                 "filename"      => $randfilename,
-                                "msg"           => gT("The file has been successfuly uploaded.")
+                                "msg"           => gT("The file has been successfully uploaded.")
                             );
                     // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
                     // Maybe use a javascript 'onunload' on preview question/group
@@ -193,7 +193,7 @@ class UploaderController extends SurveyController {
                 }
             }
             else
-            {    // if everything went fine and the file was uploaded successfuly,
+            {    // if everything went fine and the file was uploaded successfully,
                  // send the file related info back to the client
                  $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
                 if ($size > $maxfilesize)
@@ -224,7 +224,7 @@ class UploaderController extends SurveyController {
                         "name"    => rawurlencode(basename($filename)),
                         "ext"     => $ext,
                         "filename"      => $randfilename,
-                        "msg"     => gT("The file has been successfuly uploaded.")
+                        "msg"     => gT("The file has been successfully uploaded.")
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);

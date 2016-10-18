@@ -783,11 +783,19 @@ class database extends Survey_Common_Action
             }
             QuestionAttribute::model()->deleteAll($criteria);
             $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
             foreach ($validAttributes as $validAttribute)
             {
                 if ($validAttribute['i18n'])
                 {
+                    /* Delete invalid language : not needed but cleaner */
+                    $langCriteria = new CDbCriteria;
+                    $langCriteria->compare('qid',$iQuestionID);
+                    $langCriteria->compare('attribute',$validAttribute['name']);
+                    $langCriteria->addNotInCondition('language',$aLanguages);
+                    QuestionAttribute::model()->deleteAll($langCriteria);
+                    /* But not in don't work for null value in mysql ? */
+                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL',array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
+
                     foreach ($aLanguages as $sLanguage)
                     {// TODO sanitise XSS
                         $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
@@ -845,7 +853,6 @@ class database extends Survey_Common_Action
                     }
                 }
             }
-
 
             $aQuestionTypeList=getQuestionTypeList('','array');
             // These are the questions types that have no answers and therefore we delete the answer in that case

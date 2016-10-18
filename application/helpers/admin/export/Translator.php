@@ -13,7 +13,6 @@ class Translator
     * Finds the header translation key for the column passed in.  If no key is
     * found then false is returned.
     *
-    * @param string $key
     * @return string (or false if no match is found)
     */
     public function getHeaderTranslationKey($column)

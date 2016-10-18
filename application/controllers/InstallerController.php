@@ -41,7 +41,7 @@ class InstallerController extends CController {
     *
     * @access public
     * @param string $action
-    * @return bool
+    * @return boolean|null
     */
     public function run($action = 'index')
     {
@@ -709,9 +709,7 @@ class InstallerController extends CController {
                     return;
                 }
             } else {
-                // if passwords don't match, redirect to proper link.
-                Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT("Passwords don't match."));
-                $this->redirect(array('installer/optional'));
+                unset($aData['confirmation']);
             }
         } elseif(empty(Yii::app()->session['configFileWritten'])) {
             $this->_writeConfigFile();
@@ -736,7 +734,6 @@ class InstallerController extends CController {
     * Loads a library
     *
     * @access public
-    * @param string $helper
     * @return void
     */
     public function loadLibrary($library)
@@ -747,7 +744,6 @@ class InstallerController extends CController {
     /**
     * check requirements
     *
-    * @param array $data return theme variables
     * @return bool requirements met
     */
     private function _check_requirements(&$aData)
@@ -774,6 +770,9 @@ class InstallerController extends CController {
         }
 
 
+        /**
+         * @param string $sDirectory
+         */
         function is_writable_recursive($sDirectory)
         {
             $sFolder = opendir($sDirectory);
@@ -792,8 +791,8 @@ class InstallerController extends CController {
         /**
         * check for a specific PHPFunction, return HTML image
         *
-        * @param string $function
-        * @param string $image return
+        * @param string $sFunctionName
+        * @param string $sImage return
         * @return bool result
         */
         function check_PHPFunction($sFunctionName, &$sImage)
@@ -808,9 +807,9 @@ class InstallerController extends CController {
         *
         * @param string $path file or directory to check
         * @param int $type 0:undefined (invalid), 1:file, 2:directory
-        * @param string $data to manipulate
         * @param string $base key for data manipulation
         * @param string $keyError key for error data
+        * @param string $aData
         * @return bool result of check (that it is writeable which implies existance)
         */
         function check_PathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive=false)
@@ -935,13 +934,16 @@ class InstallerController extends CController {
         // imap php library check
         check_PHPFunction('imap_open', $aData['bIMAPPresent']);
 
+        // Silently check some default PHP extensions
+        $this->checkDefaultExtensions();
+
         return $bProceed;
     }
 
     /**
     * Installer::_setup_tables()
     * Function that actually modify the database. Read $sqlfile and execute it.
-    * @param string $sqlfile
+    * @param string $sFileName
     * @return  Empty string if everything was okay - otherwise the error messages
     */
     function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
@@ -1177,6 +1179,7 @@ class InstallerController extends CController {
     *
     * @param string $sDatabaseType
     * @param string $sDatabasePort
+    * @return string
     */
     function _getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd)
     {
@@ -1366,5 +1369,29 @@ class InstallerController extends CController {
         $testPdo = null;
 
         return true;
+    }
+
+    /**
+     * Contains a number of extensions that can be expected
+     * to be installed by default, but maybe not on BSD systems etc.
+     * Check them silently and die if they are missing.
+     * @return void
+     */
+    private function checkDefaultExtensions()
+    {
+        $extensions = array(
+            'simplexml',
+            'filter',
+            'ctype',
+            'session',
+            'hash'
+        );
+
+        foreach ($extensions as $extension) {
+            if (!extension_loaded($extension)) {
+                die('You\'re missing default PHP extension ' . $extension);
+            }
+        }
+
     }
 }

@@ -137,6 +137,11 @@ class LSUserIdentity extends CUserIdentity {
             $not->save();
         }
 
+        if ((int)App()->request->getPost('width', '1220') < 1220) // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
+        {
+            Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."),'error');
+        }
+
         // Do session setup
         Yii::app()->session['loginID'] = (int) $user->uid;
         Yii::app()->session['user'] = $user->users_name;
@@ -148,7 +153,7 @@ class LSUserIdentity extends CUserIdentity {
         Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
 
         // Perform language settings
-        if (App()->request->getPost('loginlang','default') != 'default')
+        if (App()->request->getPost('loginlang', 'default') != 'default')
         {
             $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
             $user->save();

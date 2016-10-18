@@ -65,48 +65,42 @@ function jquery_goodchars(e, goods)
 
 
 $(document).ready(function(){
- $('#copyconditions').submit(function() {
-        if (!$('input[@id=cbox{$rows[cid]}]:checked').length) 
-        {
-         alert("Please select alteast one condition to copy from"); 
-         return false;  
+
+    // TODO: Localization
+    $('#copyconditions').submit(function() {
+        if (!$('input[@id=cbox{$rows[cid]}]:checked').length) {
+            alert("Please select alteast one condition to copy from");
+            return false;
         } 
-        if (!$('#copytomultiselect option:selected').length) 
-        { 
+        if (!$('#copytomultiselect option:selected').length) {
             alert("Please select alteast one question to copy condition to","js");
-            return false;  
+            return false;
         }
+    });
+
+     //$('#languagetabs').bootTabs();
+    $('#radiototal,#radiogroup').change(function() {
+        if ($('#radiototal').attr('checked')==true) {
+            $('#newgroupselect').attr('disabled','disabled');
+        }
+        else {
+            if ($('#newgroupselect>option').length==0) {
+                $('#radiototal').attr('checked',true);
+                alert(strnogroup);
+            }
+            else {
+                $('#newgroupselect').attr('disabled',false);
+            }
+        }
+    });
+
+    $('#radiototal, #radiogroup').change();
+
+    $('.numbersonly').keypress(function(e) {
+        return jquery_goodchars(e,'1234567890-');
+    });
+
 });
-    //$('#languagetabs').bootTabs();
-    $('#radiototal,#radiogroup').change(
-        function()
-        {
-              if ($('#radiototal').attr('checked')==true)
-              {
-                $('#newgroupselect').attr('disabled','disabled');
-              }
-              else
-              {
-                if ($('#newgroupselect>option').length==0){
-                  $('#radiototal').attr('checked',true);
-                  alert (strnogroup);    
-                }
-                else
-                {
-                    $('#newgroupselect').attr('disabled',false);
-                }
-              }
-        }
-    );
-    $('#radiototal,#radiogroup').change();
-    $('.numbersonly').keypress(
-        function(e){
-            return jquery_goodchars(e,'1234567890-');    
-        }
-    );
-  }
- 
-);
 
 function populateCanswersSelect(evt) {
 	var fname = $('#cquestions').val();
@@ -167,23 +161,33 @@ function populateCanswersSelect(evt) {
 	}
 }
 
+/**
+ * When user selects method in "Comparison operator", we need to
+ * disable/enable regexp and activate the tab.
+ */
 function selectTabFromOper() {
 	var val = $('#method').val();
 	if(val == 'RX') {
-		$('#conditiontarget').bootTabs('enable', 4);
-		$('#conditiontarget').bootTabs('option','active', 4);
-		$('#conditiontarget').bootTabs('disable', 0);
-		$('#conditiontarget').bootTabs('disable', 1);
-		$('#conditiontarget').bootTabs('disable', 2);
-		$('#conditiontarget').bootTabs('disable', 3);
+        $('a[href="#CANSWERSTAB"]').parent().addClass('disabled');
+        $('a[href="#CONST"]').parent().addClass('disabled');
+        $('a[href="#PREVQUESTIONS"]').parent().addClass('disabled');
+        $('a[href="#TOKENATTRS"]').parent().addClass('disabled');
+        $('a[href="#REGEXP"]').parent().removeClass('disabled');
+        $('a[href="#REGEXP"]').trigger('click');
 	}
 	else {
-		$('#conditiontarget').bootTabs('enable', 0);
-		$('#conditiontarget').bootTabs('enable', 1);
-		$('#conditiontarget').bootTabs('enable', 2);
-		if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
-		$('#conditiontarget').bootTabs('option','active', 0);
-		$('#conditiontarget').bootTabs('disable', 4);
+		//if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
+
+        $('a[href="#CANSWERSTAB"]').parent().removeClass('disabled');
+        $('a[href="#CONST"]').parent().removeClass('disabled');
+        $('a[href="#PREVQUESTIONS"]').parent().removeClass('disabled');
+        $('a[href="#TOKENATTRS"]').parent().removeClass('disabled');
+        $('a[href="#REGEXP"]').parent().addClass('disabled');
+
+        // If regexp tab is selected, trigger click on first tab instead
+        if ($('a[href="#REGEXP"]').parent().hasClass('active')) {
+            $('a[href="#CANSWERSTAB"]').trigger('click');
+        }
 	}
 }
 
@@ -266,7 +270,7 @@ $(document).ready(function(){
 	);
 
 	// Select the condition target Tab depending on operator
-	//selectTabFromOper($('#method').val());
+        //selectTabFromOper($('#method').val());
 	$('#method').change(selectTabFromOper);
 
 	$('#cquestions').change(populateCanswersSelect);
@@ -274,30 +278,52 @@ $(document).ready(function(){
 	$('#csrctoken').change(function() {
 		$('#cqid').val(0);
 	});
-
-	// At editing, a hidden field gives the Tab that should be selected
-	// Louis : that suppose to be a numerical input not a string !!!
-	if ($('#editTargetTab').val() != '') {
-		$('#conditiontarget').bootTabs('option','active', $('#editTargetTab').val());
-	}
-
-	// At editing, a hidden field gives the Tab that should be selected
-	if ($('#editSourceTab').val() != '') {
-        var val = $('#editSourceTab').val();
-
-        // Only two tabs: SRCPREVQUEST, SRCTOKENATTRS
-        var nr = (val === '#SRCPREVQUEST' ? 0 : 1);
-		$('#conditionsource').bootTabs('option','active', val);
-		$('#conditionsource').tabs({active: nr});
-	}
 	
 	// At editing, if cquestions is set, populate answers
 	if ($('#cquestions').val() != '') {
 		populateCanswersSelect(null);
 	}
 	
-	$('#conditiontarget').bootTabs('option','active', 1);
+    $('.nav-tabs').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    })
+
+    // Tab management for add/edit condition
+    var editTargetTab = $('input[name="editTargetTab"]').val();
+    var editSourceTab = $('input[name="editSourceTab"]').val();
+    $('a[href="' + editTargetTab + '"]').trigger('click');
+    $('a[href="' + editSourceTab + '"]').trigger('click');
+
+    // When user clicks tab, update hidden input
+    $('.src-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="editSourceTab"]').val(href);
+    });
+
+    // When user clicks tab, update hidden input
+    $('.target-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="editTargetTab"]').val(href);
+    });
+
+    // Disable clicks on disabled tabs (regexp)
+    $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
+        if ($(this).parent().hasClass("disabled")) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
 });
 
-
-
+/**
+ * Used when user clicks 'Add scenario' to replace default with number input
+ * @return
+ */
+function scenarioaddbtnOnClickAction() {
+    $('#scenarioaddbtn').hide();
+    $('#defaultscenariotxt').hide('slow');
+    $('.add-scenario-column').removeClass('col-sm-4').addClass('col-sm-2');
+    $('#scenario').show('slow');
+}
