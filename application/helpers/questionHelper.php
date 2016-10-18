@@ -955,8 +955,9 @@ class questionHelper
         'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'default'=>'12',
+        'default'=>'',
         'options'=>array(
+            ''=>gT("Default"),
             1=>'8%',
             2=>'17%',
             3=>'25%',
@@ -978,8 +979,9 @@ class questionHelper
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
-        'default'=>'6',
+        'default'=>'',
         'options'=>array(
+            ''=>gT("Default"),
             1=>'8%',
             2=>'17%',
             3=>'25%',
@@ -997,12 +999,13 @@ class questionHelper
         "caption"=>gT('Input box width'));
 
         self::$attributes["label_input_columns"]=array(
-        "types"=>"Q",
+        "types"=>"KQ",
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
-        'default'=>'6',
+        'default'=>'',
         'options'=>array(
+            ''=>gT("Default"),
             1=>'8%',
             2=>'17%',
             3=>'25%',

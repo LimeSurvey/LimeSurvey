@@ -66,6 +66,7 @@
     border-collapse: separate;
     display: table;
     position: relative;
+    width:100%;
 }
 
 .ls-input-group .form-control {

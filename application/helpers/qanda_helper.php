@@ -2921,10 +2921,14 @@ function do_multiplenumeric($ia)
     {
         $sInputContainerWidth= 6;
     }
-    if($sInputContainerWidth<12){
-        $sLabelWidth=12-$sInputContainerWidth;
+    if (trim($aQuestionAttributes['label_input_columns'])!=''){
+        $sLabelWidth=intval($aQuestionAttributes['label_input_columns']);
     }else{
-        $sLabelWidth=12;
+        if($sInputContainerWidth<12){
+            $sLabelWidth=12-$sInputContainerWidth;
+        }else{
+            $sLabelWidth=12;
+        }
     }
     $prefixclass = "numeric";
 
@@ -5107,6 +5111,7 @@ function do_array_texts($ia)
 
     $answerwidth = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
 
+    /* Must remove this attribute .... used for column , see https://bugs.limesurvey.org/view.php?id=11734 */
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $inputwidth  = $aQuestionAttributes['text_input_width'];
