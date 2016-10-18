@@ -1465,7 +1465,7 @@ class conditionsaction extends Survey_Common_Action {
                 $acount = count($aresult);
                 foreach ($aresult as $arow)
                 {
-                    $theanswer = addcslashes($arow['answer'], "'");
+                    $theanswer = $arow['answer'];
                     $quicky[]=array($arow['code'], $theanswer);
                 }
                 for ($i=1; $i<=$acount; $i++)
@@ -1496,7 +1496,7 @@ class conditionsaction extends Survey_Common_Action {
 
                 foreach ($aresult as $arows)
                 {
-                    $theanswer = addcslashes($arows['question'], "'");
+                    $theanswer = $arows['question'];
                     $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
 
                     $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
@@ -1565,7 +1565,7 @@ class conditionsaction extends Survey_Common_Action {
 
                     foreach ($aresult as $arows)
                     {
-                        $theanswer = addcslashes($arows['answer'], "'");
+                        $theanswer = $arows['answer'];
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
                     }
                     if ($rows['type'] == "D")

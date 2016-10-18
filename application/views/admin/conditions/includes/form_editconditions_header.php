@@ -161,10 +161,10 @@
                                         <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
                                         <option
                                             value='<?php echo '@' . $cqn[3] . '@'; ?>'
-                                            title="<?php echo htmlspecialchars($cqn[0]); ?>"
+                                            title="<?php echo HTMLEscape($cqn[0]); ?>"
                                             <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@'): echo ' selected="selected" '; endif; ?>
                                             >
-                                            <?php echo $cqn[0]; ?>
+                                            <?php echo HTMLEscape($cqn[0]); ?>
                                         </option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
