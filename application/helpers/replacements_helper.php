@@ -188,7 +188,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }
     }
 
-
     // surveyformat
     if (isset($thissurvey['format']))
     {
@@ -333,7 +332,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         {
             $_linkreplace = App()->getController()->renderPartial("/survey/system/url",array(
                 'url'=>$thissurvey['surveyls_url'],
-                'description'=>$thissurvey['surveyls_description'],
+                'description'=>$thissurvey['surveyls_urldescription'],
                 'type'=>"survey-endurl",
                 'coreClass'=>"ls-endurl",
             ),true);

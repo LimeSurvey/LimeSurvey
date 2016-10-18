@@ -904,13 +904,14 @@ class templates extends Survey_Common_Action
         // From template editor, we just add the bootstrap files to the js/css to load for template_helper::templatereplace()
         if($oEditedTemplate->cssFramework=='bootstrap')
         {
+            /* Actually broke : $oEditedTemplate->config->files->css->filename is a string */
             // Core templates (are published only if exists)
             //$oEditedTemplate->config->files->css->filename[-1]="../../styles-public/bootstrap-for-template-editor.css";
-            $oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
+            //$oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
 
             // User templates (are published only if exists)
             //$oEditedTemplate->config->files->css->filename[-1]="../../../styles-public/bootstrap-for-template-editor.css";
-            $oEditedTemplate->config->files->js->filename[]="../../../scripts/bootstrap-for-template-editor.js";
+            //$oEditedTemplate->config->files->js->filename[]="../../../scripts/bootstrap-for-template-editor.js";
         }
 
         //App()->getClientScript()->reset();

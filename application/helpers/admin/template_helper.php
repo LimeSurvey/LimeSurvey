@@ -50,6 +50,7 @@ function getListOfFiles($wh){
 * @return string
 */
 function filetext($templatename,$templatefile,$templates) {
+
     $sFileName = gettemplatefilename($templates[$templatename],$templatefile);
     if (file_exists($sFileName))
     {
@@ -166,22 +167,8 @@ function gettemplatefilename($template, $templatefile) {
     switch (pathinfo($templatefile, PATHINFO_EXTENSION))
     {
         case 'pstpl':
-            // Default 2.5 templates
-            if (file_exists($template.'/views/'.$templatefile))
-            {
-                return $template.'/views/'.$templatefile;
-            }
-            // Default 2.06 templates
-            elseif(file_exists($template.'/'.$templatefile))
-            {
-                return $template.'/'.$templatefile;
-            }
-            // Something else
-            else
-            {
-                $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
-                return $template.'/'.$oEditedTemplate->viewPath.'/'.$templatefile;
-            }
+            $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
+            return $oEditedTemplate->viewPath.$templatefile;
             break;
         case 'css':
             return $template.'/'.$templatefile;
