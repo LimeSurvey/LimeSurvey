@@ -127,9 +127,9 @@ class conditionsaction extends Survey_Common_Action {
                 break;
         }
 
-
-        if (!empty($request->getPost('subaction'))) {
-            $subaction = $request->getPost('subaction');
+        $postSubaction = $request->getPost('subaction');
+        if (!empty($postSubaction)) {
+            $subaction = $postSubaction;
         }
 
         //BEGIN Sanitizing POSTed data
@@ -172,8 +172,9 @@ class conditionsaction extends Survey_Common_Action {
             $p_method = null;
         }
 
-        if (!empty($request->getPost('newscenarionum'))) {
-            $p_newscenarionum = sanitize_int($request->getPost('newscenarionum'));
+        $postNewScenarioNum = $request->getPost('newscenarionum');
+        if (!empty($postNewScenarioNum)) {
+            $p_newscenarionum = sanitize_int($postNewScenarioNum);
         }
         else {
             $p_newscenarionum = null;
@@ -690,7 +691,8 @@ class conditionsaction extends Survey_Common_Action {
     protected function resetSurveyLogic($iSurveyID)
     {
         $request = Yii::app()->request;
-        if (empty($request->get('ok'))) {
+        $postOk = $request->getQuery('ok');
+        if (empty($postOk)) {
             $data = array('iSurveyID' => $iSurveyID);
             $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
             $this->_renderWrappedTemplate('conditions', array('message' => array(
