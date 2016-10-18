@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.50+!
+Welcome to LimeSurvey v2.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -35,6 +35,29 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from  2.54.3 (build 161014) to 2.54.4 (build 161018) Oct 18, 2016
+-Fixed issue #11702: Dropdown question : 2 'no answer' if value selected is 0 (Denis Chenu)
+-Fixed issue #11731: Regexp validation for short-text question (Olle Haerstedt)
+-Fixed issue #11740: Decimal throwerreor with negative value (Denis Chenu)
+-Fixed issue #11753: Date validation issues (Olle Haerstedt)
+-Fixed issue #11768: Window for old token tables too small (Olle Haerstedt)
+-Fixed issue #11802: Remove unused files (Olle Haerstedt)
+-Fixed issue #11806: Blank page in conditions (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by c_schmitz, kpadm, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: German by Joffm, c_schmitz
+#Updated translation: Italian by c_schmitz, lfanfoni
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, kmaksat, vipgroup
+#Updated translation: Spanish (Spain) by aesteban
 
 Changes from  2.54.2 (build 161012) to 2.54.3 (build 161014) Oct 14, 2016
 -Fixed issue #11746: Notice when previewing a hidden question and debug mode activated (Carsten Schmitz)
