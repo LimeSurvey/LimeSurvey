@@ -2,28 +2,7 @@
 <?php
 if (isset($alt))
 {
-?>
-
-<div class="row question-wrapper">
-            <div class="col-sm-12 answer">
-                <!-- Long Free Text -->
-
-<!-- answer -->
-<p class="question answer-item text-item  inputwidth-12 col-sm-12">
-    <label for="answer319974X232X4271" class="hide label">
-        <?php eT('Answer') ?>
-    </label>
-
-<textarea class="form-control textarea  empty" name="319974X232X4271" id="answer319974X232X4271" rows="5" cols="12" onkeyup="checkconditions(this.value, this.name, this.type)">
-<?php eT('Some text in this answer') ?>
-</textarea>
-</p>
-<!-- end of answer -->
-
-            </div>
-</div>
-
-<?php
+App()->getController()->renderPartial('/admin/templates/templateeditor_question_answertext_view');
 }else{
 ?>
 <!-- List Radio -->
