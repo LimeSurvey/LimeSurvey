@@ -821,7 +821,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 /**
 * This function imports a LimeSurvey .lss survey XML file
 *
-* @param mixed $sFullFilePath  The full filepath of the uploaded file
+* @param string $sFullFilePath  The full filepath of the uploaded file
 * @param string $sXMLdata
 */
 function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true, $bConvertInvalidQuestionCodes=true)
@@ -2079,7 +2079,7 @@ function XSSFilterArray(&$array)
 /**
 * Import survey from an TSV file template that does not require or allow assigning of GID or QID values.
 * NOTE:  This currently only supports import of one language
-* @param type $sFullFilePath
+* @param string $sFullFilePath
 * @return type
 *
 * @author TMSWhite

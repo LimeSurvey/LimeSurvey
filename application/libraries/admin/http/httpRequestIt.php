@@ -268,6 +268,7 @@ class httpRequestIt
     }
 
     /**
+     * @param integer $length
      * @return string
      */
     Function ReadBytes($length)

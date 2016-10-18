@@ -970,6 +970,10 @@ class UpdateForm extends CFormModel
     }
 
     // Get the minimum required mysql version from the server
+
+    /**
+     * @param integer $build
+     */
     private function _getMysqlChecks($build)
     {
         $checks = new stdClass();

@@ -83,6 +83,10 @@ class limereplacementfields extends Survey_Common_Action
         return $questionList;
     }
 
+    /**
+     * @param integer $gid
+     * @param integer $qid
+     */
     private function _shouldAddQuestion($action, $gid, $qid, array $question, $previousQuestion)
     {
         switch ($action)
@@ -136,6 +140,9 @@ class limereplacementfields extends Survey_Common_Action
         }
     }
 
+    /**
+     * @param integer $gid
+     */
     private function _addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
     {
         if ($action == 'tokens' && $questionType == 'email-conf' || $surveyformat == "S") {
