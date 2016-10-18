@@ -41,8 +41,9 @@
                 <?php
                 /* FF show issue + prefix/suffix must be encoded */
                 echo CHtml::textField($myfname,$dispVal,array(
+                    'class'=>'form-control',
                     'id'=>"answer{$myfname}",
-                    'data-slider-value'=>($dispVal ? $dispVal : null),
+                    'data-slider-value'=>($dispVal ? $dispVal : ''),
                     'data-slider-min'=>$slider_min,
                     'data-slider-max'=>$slider_max,
                     'data-slider-step'=>$slider_step,
@@ -66,7 +67,7 @@
                     <div class='col-xs-12 col-sm-2 slider-right text-left'><?php echo $sliderright;?></div>
                 <?php endif; ?>
                 <?php if ($slider_reset): ?>
-                    <div class="ls-input-group-extra">
+                    <div class="ls-input-group-extra ls-no-js-hidden">
                     <div id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default btn-sm btn-slider-reset'>
                         <span class='fa fa-times slider-reset-icon' aria-hidden='true'></span><span class="slider-reset-text">&nbsp;<?php eT("Reset"); ?></span>
                     </div>

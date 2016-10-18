@@ -19,10 +19,9 @@
 <!-- List with comment, list style, -->
 
 <!-- answer -->
-<div class="ls-answers row">
+<div class="<?php echo $coreClass; ?> row">
     <div class="answers-list radio-list col-sm-6 col-xs-12">
         <ul class="list-unstyled">
-
             <?php
                 // rows/row.php
                 echo $sRows;
