@@ -811,6 +811,9 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
+    /**
+     * @param string $str
+     */
     private function remove_invisible_characters($str, $url_encoded = TRUE)
     {
         $non_displayables = array();

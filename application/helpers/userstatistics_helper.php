@@ -1593,6 +1593,7 @@ class userstatistics_helper {
      * @param mixed $surveyid
      * @param mixed $sql
      * @param integer $usegraph
+     * @param boolean $browse
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage) {
 

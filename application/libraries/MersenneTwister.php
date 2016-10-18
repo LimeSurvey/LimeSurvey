@@ -66,6 +66,9 @@ class MersenneTwister
     $this->setSeed($seed);
   }
 
+  /**
+   * @param integer $seed
+   */
   public function setSeed($seed) {
     $this->state[0] = $seed & 0xffffffff;
 

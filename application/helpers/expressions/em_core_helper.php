@@ -1372,6 +1372,7 @@ class ExpressionManager {
      * Generate the function needed to dynamically change the value of a <span> section
      * @param string $name - the ID name for the function
      * @param string $eqn
+     * @param integer $questionNum
      * @return <type>
      */
     public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
@@ -1868,7 +1869,7 @@ class ExpressionManager {
 
     /**
      * Process one substitution iteration of a full string, containing multiple expressions delimited by {}, return a consolidated string
-     * @param <type> $src
+     * @param string $src
      * @param integer $questionNum - used to generate substitution <span>s that indicate to which question they belong
      * @return <type>
      */

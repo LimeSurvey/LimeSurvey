@@ -732,6 +732,7 @@ class translate extends Survey_Common_Action {
 
     /**
      * @param string $action
+     * @param string $type
      */
     private function query($type, $action, $iSurveyID, $tolang, $baselang, $id1 = "", $id2 = "", $iScaleID="", $new = "")
     {
@@ -821,6 +822,7 @@ class translate extends Survey_Common_Action {
     * displayTranslateFieldsHeader() Formats and displays header of translation fields table
     * @param string $baselangdesc The source translation language, e.g. "English"
     * @param string $tolangdesc The target translation language, e.g. "German"
+    * @param string $type
     * @return string $translateoutput
     */
     private function displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type)

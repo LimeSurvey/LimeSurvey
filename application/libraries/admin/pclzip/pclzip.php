@@ -5230,6 +5230,10 @@ class PclZip
     // Parameters :
     // Return Values :
     // --------------------------------------------------------------------------------
+
+    /**
+     * @param string $p_archive_filename
+     */
     function privDuplicate($p_archive_filename)
     {
         $v_result=1;

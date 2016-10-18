@@ -156,6 +156,9 @@ class ProgressBar
         return $position;
     }
 
+    /**
+     * @param integer $step
+     */
     function _setStep($step)
     {
         if ($step > $this->max) {$step = $this->max;}
@@ -184,6 +187,7 @@ class ProgressBar
 
     /**
      * @param string $type
+     * @param string $name
      */
     function addLabel($type,$name,$value='&nbsp;')
     {
