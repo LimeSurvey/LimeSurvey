@@ -8,7 +8,6 @@
  * @var $qid
  * @var $title
  * @var $showScenario                   ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1)
- * @var $qcountI                        $qcount+1
  */
 ?>
 

@@ -296,6 +296,19 @@ class conditionsaction extends Survey_Common_Action {
         $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
         $aData['javascriptpre'] = $javascriptpre;
 
+        $scenarios = $this->getAllScenarios($qid);
+
+        // Some extra args to getEditConditionForm
+        $args['subaction'] = $subaction;
+        $args['iSurveyID'] = $this->iSurveyID;
+        $args['gid'] = $gid;
+        $args['qcount'] = $this->getQCount($cquestions);
+        $args['method'] = $method;
+        $args['cquestions'] = $cquestions;
+        $args['scenariocount'] = count($scenarios);
+
+        $aData['quickAddConditionForm'] = $this->getQuickAddConditionForm($args);
+
         $aViewUrls['conditionshead_view'][] = $aData;
 
         $conditionsList = array();
@@ -317,7 +330,6 @@ class conditionsaction extends Survey_Common_Action {
             $conditionscount = 0;
             $s=0;
 
-            $scenarios = $this->getAllScenarios($qid);
             $scenariocount = count($scenarios);
 
             $aData['conditionsoutput'] = '';
@@ -585,27 +597,6 @@ class conditionsaction extends Survey_Common_Action {
             || $subaction == "copyconditions") {
             $aViewUrls['output'] .= $this->getCopyForm($qid, $gid, $conditionsList, $pquestions);
         }
-
-        if (isset($cquestions)) {
-            if ( count($cquestions) > 0 && count($cquestions) <=10) {
-                $qcount = count($cquestions);
-            }
-            else {
-                $qcount = 9;
-            }
-        }
-        else {
-            $qcount = 0;
-        }
-
-        // Some extra args to getEditConditionForm
-        $args['subaction'] = $subaction;
-        $args['iSurveyID'] = $this->iSurveyID;
-        $args['gid'] = $gid;
-        $args['qcount'] = $qcount;
-        $args['method'] = $method;
-        $args['cquestions'] = $cquestions;
-        $args['scenariocount'] = $scenariocount;
 
         if (   $subaction == "editconditionsform"
             || $subaction == "insertcondition"
@@ -1708,6 +1699,29 @@ class conditionsaction extends Survey_Common_Action {
     }
 
     /**
+     * Form used in quick-add modal
+     * @param array $args
+     */
+    protected function getQuickAddConditionForm(array $args)
+    {
+        extract($args);
+        $data = array(
+            'subaction'     => $subaction,
+            'iSurveyID'     => $iSurveyID,
+            'gid'           => $gid,
+            'qid'           => $qid,
+            'cquestions'    => $cquestions,
+            'p_csrctoken'   => $p_csrctoken,
+            'p_prevquestionsgqa'  => $p_prevquestionsgqa,
+            'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
+            'method'        => $method,
+            'subaction'     => $subaction,
+        );
+        $html = $this->getController()->renderPartial('/admin/conditions/includes/quickAddConditionForm', $data, true);
+        return $html;
+    }
+
+    /**
      * @param array $cquestions
      * @param string $p_cquestions Question SGID
      * @param array $p_canswers E.g. array('A2')
@@ -2141,5 +2155,23 @@ class conditionsaction extends Survey_Common_Action {
     protected function shouldShowScenario($subaction, $scenariocount)
     {
         return $subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount==0);
+    }
+
+    /**
+     * @param array $cquestions
+     * @return int
+     */
+    protected function getQCount(array $cquestions)
+    {
+        $qcount = 0;
+
+        if ( count($cquestions) > 0 && count($cquestions) <=10) {
+            $qcount = count($cquestions);
+        }
+        else {
+            $qcount = 9;
+        }
+
+        return $qcount;
     }
 }

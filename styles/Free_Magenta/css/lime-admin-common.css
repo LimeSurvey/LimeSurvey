@@ -2133,11 +2133,8 @@ table#responsedetail tr td{
     padding-top: 6px;
 }
 
-#delete-all-conditions, #renumber-scenario {
+.condition-header-button {
     margin-top: -10px;
-}
-
-#renumber-scenario {
     margin-right: 10px;
 }
 
