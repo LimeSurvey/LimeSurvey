@@ -108,7 +108,7 @@ class limereplacementfields extends Survey_Common_Action
 
             case 'addquestion':
                 if (empty($gid)) {
-                    safeDie("No GID provided.");
+                    safeDie("No GID provided. Please save the question and try again.");
                 }
 
                 if (!is_null($previousQuestion) && $previousQuestion['gid'] == $gid && $question['gid'] != $gid ) {
