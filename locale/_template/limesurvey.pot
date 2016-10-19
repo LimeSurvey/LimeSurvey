@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-10-18 13:42:55+00:00\n"
+"POT-Creation-Date: 2016-10-19 08:20:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -684,7 +684,7 @@ msgstr ""
 #: application/views/admin/participants/massive_actions/_selector_share.php:18
 #: application/views/admin/participants/modal_subviews/_deleteParticipant.php:26
 #: application/views/admin/quotas/viewquotasrow_view.php:32
-#: application/views/admin/responses/massive_actions/_selector.php:26
+#: application/views/admin/responses/massive_actions/_selector.php:20
 #: application/views/admin/survey/Question/massive_actions/_selector.php:44
 #: application/views/admin/survey/Question/questionbar_view.php:132
 #: application/views/admin/survey/Question/questionbar_view.php:137
@@ -1003,48 +1003,48 @@ msgid "Successful login"
 msgstr ""
 
 #: application/controllers/admin/authentication.php:56
-#: application/controllers/admin/authentication.php:169
+#: application/controllers/admin/authentication.php:189
 msgid "Incorrect username and/or password!"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:192
+#: application/controllers/admin/authentication.php:212
 msgid "Logout successful."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:226
-#: application/controllers/admin/authentication.php:264
+#: application/controllers/admin/authentication.php:246
+#: application/controllers/admin/authentication.php:284
 msgid "If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:246
+#: application/controllers/admin/authentication.php:266
 msgid "User data"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:251
+#: application/controllers/admin/authentication.php:271
 msgid "Username: %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:252
+#: application/controllers/admin/authentication.php:272
 msgid "New password: %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:255
+#: application/controllers/admin/authentication.php:275
 msgid "Your user data for accessing %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:268
+#: application/controllers/admin/authentication.php:288
 msgid "Email failed"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:289
+#: application/controllers/admin/authentication.php:309
 msgid "Please log in first."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:294
+#: application/controllers/admin/authentication.php:314
 msgid "Welcome %s!"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:299
+#: application/controllers/admin/authentication.php:319
 msgid "Reloading screen. Please wait."
 msgstr ""
 
@@ -14276,20 +14276,20 @@ msgstr ""
 msgid "Edit survey participant"
 msgstr ""
 
-#: application/views/admin/responses/massive_actions/_selector.php:15
-msgid "Selected response(s)..."
-msgstr ""
-
-#: application/views/admin/responses/massive_actions/_selector.php:33
+#: application/views/admin/responses/massive_actions/_selector.php:27
 msgid "Delete responses"
 msgstr ""
 
-#: application/views/admin/responses/massive_actions/_selector.php:34
+#: application/views/admin/responses/massive_actions/_selector.php:28
 msgid "Are you sure you want to delete the selected responses?"
 msgstr ""
 
-#: application/views/admin/responses/massive_actions/_selector.php:46
+#: application/views/admin/responses/massive_actions/_selector.php:42
 msgid "Download files"
+msgstr ""
+
+#: application/views/admin/responses/massive_actions/_selector.php:54
+msgid "Selected response(s)..."
 msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:3
