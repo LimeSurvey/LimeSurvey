@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## Not released
+
+### Fix
+- Rank show rtl on ltr
+
 ## [1.0.27] - 2016-10-06
 
 ### Fix

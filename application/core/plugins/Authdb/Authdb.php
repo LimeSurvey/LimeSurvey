@@ -89,7 +89,7 @@ class Authdb extends AuthPluginBase
 
     /**
      * Get the onetime password (if set)
-     * 
+     *
      * @return string|null
      */
     protected function getOnePass()
@@ -169,14 +169,14 @@ class Authdb extends AuthPluginBase
 
     /**
      * Set the onetime password
-     * 
+     *
      * @param type $onepass
      * @return Authdb
      */
     protected function setOnePass($onepass)
     {
         $this->_onepass = $onepass;
-        
+
         return $this;
     }
 
@@ -186,7 +186,7 @@ class Authdb extends AuthPluginBase
     {
         $event = $this->getEvent();
         $type = $event->get('type');
-        
+
         switch ($type) {
             case 'csv':
                 $event->set('label', gT("CSV"));

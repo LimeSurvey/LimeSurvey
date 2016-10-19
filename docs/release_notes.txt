@@ -25,7 +25,7 @@ https://manual.limesurvey.org/Installation
 Please also have a look at the "Installation security hints" section of the online manual in order to secure your installation.
 
 
-=== UPGRADING=====                                                                                     
+=== UPGRADING=====
 
 We suggest to check out and hold close to the instructions, which can be found in our online manual:
 https://manual.limesurvey.org/Upgrading_from_a_previous_version
