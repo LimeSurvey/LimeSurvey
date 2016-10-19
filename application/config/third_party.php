@@ -325,6 +325,13 @@ return array(
             'bootstrap',
             'moment'
         )
+    ),
+
+    'emoji' => array(
+        'basePath' => 'third_party.emojifont',
+        'css' => array(
+            'css/emoji.css'
+        )
     )
 
 

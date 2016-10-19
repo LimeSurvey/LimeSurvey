@@ -911,6 +911,7 @@ function do_5pointchoice($ia)
 
     if($aQuestionAttributes['slider_rating']==2){
         $slider_rating = 2;
+        Yii::app()->getClientScript()->registerPackage('emoji');
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'slider-rating.css');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js");
     }
