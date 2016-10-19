@@ -85,6 +85,23 @@ class Authentication extends Survey_Common_Action
     {
         $aData = array();
 
+        // Plugins, include core plugins, can't be activated by default.
+        // So after a fresh installation, core plugins are not activated
+        // They need to be manually loaded. 
+        if (!class_exists('Authdb', false)) {
+            $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+            if (!$plugin) {
+                $plugin = new Plugin();
+                $plugin->name = 'Authdb';
+                $plugin->active = 1;
+                $plugin->save();
+                App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+            } else {
+                $plugin->active = 1;
+                $plugin->save();
+            }
+        }
+
         // In Authdb, the plugin event "beforeLogin" checks if the url param "onepass" is set
         // if yes, it will call  AuthPluginBase::setAuthPlugin to set to true the plugin private parameter "_stop", so the form will not be displayed
         // @see: application/core/plugins/Authdb/Authdb.php: function beforeLogin()
