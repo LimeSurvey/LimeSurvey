@@ -2140,6 +2140,6 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function shouldShowScenario($subaction, $scenariocount)
     {
-        return (($subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount==0)) || ($subaction == "editthiscondition"));
+        return $subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount==0);
     }
 }

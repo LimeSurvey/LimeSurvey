@@ -34,8 +34,6 @@
                         <span id='defaultscenariotxt'>
                             <?php eT("Default scenario"); ?>
                         </span>
-                    <?php endif;?>
-                    <?php if($showScenario):?>
                         &nbsp;
                         <button class='btn btn-default' id='scenarioaddbtn' onclick="scenarioaddbtnOnClickAction(); return false;" >
                             <span class='icon-add'></span>&nbsp;<?php eT('Add scenario'); ?>
