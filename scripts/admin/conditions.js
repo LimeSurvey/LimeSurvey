@@ -78,7 +78,6 @@ $(document).ready(function(){
         }
     });
 
-     //$('#languagetabs').bootTabs();
     $('#radiototal,#radiogroup').change(function() {
         if ($('#radiototal').attr('checked')==true) {
             $('#newgroupselect').attr('disabled','disabled');
@@ -226,7 +225,6 @@ $(document).ready(function() {
 	});
 
 	// Select the condition target Tab depending on operator
-        //selectTabFromOper($('#method').val());
 	$('#method').change(selectTabFromOper);
 
     var p = new populateCanswersSelectObject();
@@ -262,6 +260,12 @@ $(document).ready(function() {
     // Tab management for add/edit condition
     var editTargetTab = $('input[name="editTargetTab"]').val();
     var editSourceTab = $('input[name="editSourceTab"]').val();
+    $('a[href="' + editTargetTab + '"]').trigger('click');
+    $('a[href="' + editSourceTab + '"]').trigger('click');
+
+    // Tab management for quick-add modal
+    var editTargetTab = $('input[name="quick-add-editTargetTab"]').val();
+    var editSourceTab = $('input[name="quick-add-editSourceTab"]').val();
     $('a[href="' + editTargetTab + '"]').trigger('click');
     $('a[href="' + editSourceTab + '"]').trigger('click');
 

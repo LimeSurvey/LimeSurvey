@@ -2152,6 +2152,10 @@ table#responsedetail tr td{
 }
 
 /* Tabs used within form in condition designer */
-#editconditions .tab-content {
+#editconditions .tab-content, #quick-add-conditions-form .tab-content {
     padding-top: 0;
+}
+
+#quick-add-condition-modal .modal-dialog {
+    width: 800px;
 }

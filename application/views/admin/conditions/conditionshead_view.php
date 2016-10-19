@@ -66,8 +66,9 @@
                 <?php echo $quickAddConditionForm; ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
                 <button type='submit' class='btn btn-primary'><?php eT('Save'); ?></button>
+                <button type='submit' class='btn btn-default'><?php eT('Save and close'); ?></button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>

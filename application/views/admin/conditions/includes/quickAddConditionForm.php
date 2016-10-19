@@ -32,7 +32,7 @@
             </div>
 
             <div class='tab-content'>
-                <div role='tabpanel' class='tab-pane active' id='quick-add-SRCPREVQUEST'>
+                <div role='tabpanel' class='tab-pane active' id='QUICKADD-SRCPREVQUEST'>
                     <div class='form-group question-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div role='tabpanel' class='tab-pane ' id='quick-add-SRCTOKENATTRS'>
+                <div role='tabpanel' class='tab-pane ' id='QUICKADD-SRCTOKENATTRS'>
                     <div class='form-group question-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -99,7 +99,7 @@
             </div>
 
             <div class='tab-content'>
-                <div role='tabpanel' class='tab-pane active' id='quick-add-CANSWERSTAB'>
+                <div role='tabpanel' class='tab-pane active' id='QUICKADD-CANSWERSTAB'>
                     <div class='form-group answer-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
 
-                <div role='tabpanel' class='tab-pane active' id='quick-add-CONST'>
+                <div role='tabpanel' class='tab-pane active' id='QUICKADD-CONST'>
                     <div class='form-group answer-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -124,7 +124,7 @@
                     </div>
                 </div>
 
-                <div role='tabpanel' class='tab-pane active' id='quick-add-PREVQUESTIONS'>
+                <div role='tabpanel' class='tab-pane active' id='QUICKADD-PREVQUESTIONS'>
                     <div class='form-group answer-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
 
-                <div role='tabpanel' class='tab-pane active' id='quick-add-TOKENATTRS'>
+                <div role='tabpanel' class='tab-pane' id='QUICKADD-TOKENATTRS'>
                     <div class='form-group answer-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -161,7 +161,7 @@
                     </div>
                 </div>
 
-                <div role='tabpanel' class='tab-pane active' id='quick-add-REGEXP'>
+                <div role='tabpanel' class='tab-pane active' id='QUICKADD-REGEXP'>
                     <div class='form-group answer-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -184,8 +184,8 @@
                     <input type='hidden' name='quick-add-qid' value='<?php echo $qid; ?>' />
                     <input type='hidden' name='quick-add-cqid' id='quick-add-cqid' value='' />
                     <input type='hidden' name='quick-add-canswersToSelect' id='quick-add-canswersToSelect' value='' />
-                    <input type='hidden' name='quick-add-editSourceTab' id='quick-add-editSourceTab' value='' />
-                    <input type='hidden' name='quick-add-editTargetTab' id='quick-add-editTargetTab' value='' />
+                    <input type='hidden' name='quick-add-editSourceTab' id='quick-add-editSourceTab' value='#QUICKADD-SRCPREVQUEST' />
+                    <input type='hidden' name='quick-add-editTargetTab' id='quick-add-editTargetTab' value='#QUICKADD-CANSWERSTAB' />
                 </div>
             </div>
         </form>
