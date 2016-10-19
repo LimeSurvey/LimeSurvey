@@ -102,64 +102,87 @@ $(document).ready(function(){
 
 });
 
-function populateCanswersSelect(evt) {
-	var fname = $('#cquestions').val();
-	// empty the canswers Select
-	$('#canswers option').remove();
-	var Keys = new Array();
-	// store the indices in the Fieldnames array (to find codes and answers) where fname is found
-	for (var i=0;i<Fieldnames.length;i++) {
-		if (Fieldnames[i] == fname) {
-			Keys[Keys.length]=i;
-		}
-	}
+/**
+ * Object with one public variable: fun, which is
+ * the populateCanswersSelect function.
+ * @constructur
+ */
+populateCanswersSelectObject = function() {
 
-	for (var i=0;i<QFieldnames.length;i++) {
-		if (QFieldnames[i] == fname) {
-			$('#cqid').val(Qcqids[i]);
-			if (Qtypes[i] == 'P' || Qtypes[i] == 'M')
-			{
-				$('#conditiontarget').bootTabs('enable', 0);
-				$('#conditiontarget').bootTabs('option','active', 0);
-				$('#conditiontarget').bootTabs('enable', 1);
-				$('#conditiontarget').bootTabs('disable', 2);
-				$('#conditiontarget').bootTabs('disable', 3);
-				$('#conditiontarget').bootTabs('disable', 4);
-				if ($('#method').val() != '==' || $('#method').val() != '!=')
-				{
-					$('#method').val('==');
-				}
-				$('#method option').not("[value='==']").not("[value='!=']").attr('disabled','disabled');
-			}
-			else
-			{
-				$('#conditiontarget').bootTabs('enable', 0);
-				$('#conditiontarget').bootTabs('enable', 1);
-				$('#conditiontarget').bootTabs('enable', 2);
-				if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
-				$('#conditiontarget').bootTabs('enable', 4);
-				selectTabFromOper();
-				$('#method option').removeAttr('disabled');
-			}
-		}
-	}
+    // Default values for the original add/edit form
+    // They will be overrided by the quick-add form
+    this.cquestionsId      = '#cquestions';
+    this.canswersId        = '#canswers';
+    this.canswersIdNoHash  = 'canswers';
+    this.cqid              = '#cqid';
+    this.conditiontargetId = '#conditiontarget';
+    this.methodId          = '#method';
+    this.canswersToSelectId= '#canswersToSelectId';
 
-	for (var i=0;i<Keys.length;i++) {
-		var optionSelected = false;
-		// If we are at page load time, then we may know which option to select
-		if (evt === null)
-		{ // Let's read canswersToSelect and check if we should select the option
-			var selectedOptions = $('#canswersToSelect').val().split(';');
-			for (var j=0;j<selectedOptions.length;j++) {
-				if (Codes[Keys[i]] == selectedOptions[j])
-				{
-					optionSelected = true;
-				}
-			}
-		}
-		document.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Codes[Keys[i]]+' ('+Answers[Keys[i]]+')', Codes[Keys[i]],false,optionSelected);
-	}
-}
+    var that = this;
+
+    this.fun = function(evt) {
+
+        var fname = $(that.cquestionsId).val();
+        // empty the canswers Select
+        $(that.canswersId + ' option').remove();
+        var Keys = new Array();
+        // store the indices in the Fieldnames array (to find codes and answers) where fname is found
+        for (var i=0;i<Fieldnames.length;i++) {
+            if (Fieldnames[i] == fname) {
+                Keys[Keys.length]=i;
+            }
+        }
+
+        for (var i=0;i<QFieldnames.length;i++) {
+            if (QFieldnames[i] == fname) {
+                $(that.cqid).val(Qcqids[i]);
+                if (Qtypes[i] == 'P' || Qtypes[i] == 'M')
+                {
+                    //$(that.conditiontargetId).bootTabs('enable', 0);
+                    //$(that.conditiontargetId).bootTabs('option','active', 0);
+                    //$(that.conditiontargetId).bootTabs('enable', 1);
+                    //$(that.conditiontargetId).bootTabs('disable', 2);
+                    //$(that.conditiontargetId).bootTabs('disable', 3);
+                    //$(that.conditiontargetId).bootTabs('disable', 4);
+                    if ($(that.methodId).val() != '==' || $('#method').val() != '!=')
+                    {
+                        $(that.methodId).val('==');
+                    }
+                    $(that.methodId + ' option').not("[value='==']").not("[value='!=']").attr('disabled','disabled');
+                }
+                else
+                {
+                    //$(that.conditiontargetId).bootTabs('enable', 0);
+                    //$(that.conditiontargetId).bootTabs('enable', 1);
+                    //$(that.conditiontargetId).bootTabs('enable', 2);
+                    //if (!isAnonymousSurvey) {
+                        //$(that.conditiontargetId).bootTabs('enable', 3);
+                    //}
+                    //$(that.conditiontargetId).bootTabs('enable', 4);
+                    selectTabFromOper();
+                    $(that.methodId + ' option').removeAttr('disabled');
+                }
+            }
+        }
+
+        for (var i=0;i<Keys.length;i++) {
+            var optionSelected = false;
+            // If we are at page load time, then we may know which option to select
+            if (evt === null)
+            { // Let's read canswersToSelect and check if we should select the option
+                var selectedOptions = $(that.canswersToSelectId).val().split(';');
+                for (var j=0;j<selectedOptions.length;j++) {
+                    if (Codes[Keys[i]] == selectedOptions[j])
+                    {
+                        optionSelected = true;
+                    }
+                }
+            }
+            document.getElementById(that.canswersIdNoHash).options[document.getElementById(that.canswersIdNoHash).options.length] = new Option(Codes[Keys[i]]+' ('+Answers[Keys[i]]+')', Codes[Keys[i]],false,optionSelected);
+        }
+    }
+};
 
 /**
  * When user selects method in "Comparison operator", we need to
@@ -191,26 +214,7 @@ function selectTabFromOper() {
 	}
 }
 
-$(document).ready(function(){
-
-    // We must run this to enable the tabsactivate event
-    $('#conditiontarget, #conditionsource').tabs();
-
-	$('#conditiontarget').on('tabsactivate', function(event, ui) {
-		$('#editTargetTab').val('#' + ui.newPanel.prop("id"));	
-	});
-
-
-	$('#conditionsource').on('tabsactivate', function(event, ui) {
-		$('#editSourceTab').val('#' + ui.newPanel.prop("id"));	
-	});
-
-	// disable RegExp tab onload (new condition)
-	
-	$('#conditiontarget').bootTabs('disable', 4);
-	// disable TokenAttribute tab onload if survey is anonymous
-	if (isAnonymousSurvey) $('#conditiontarget').bootTabs('disable', 3);
-	if (isAnonymousSurvey) $('#conditionsource').bootTabs('disable', 1);
+$(document).ready(function() {
 
 	$('#resetForm').click( function() {
 		$('#canswers option').remove();
@@ -221,59 +225,25 @@ $(document).ready(function(){
 		
 	});
 
-	$('#conditiontarget').find(':input').change(
-		function(evt)
-		{
-			$('#conditiontarget').find(':input').each(
-				function(indx,elt)
-				{
-					if (elt.id != evt.target.id)
-					{
-						if ($(elt).attr('type') == 'select-multiple' || 
-							$(elt).attr('type') == 'select-one' ) {
-							$(elt).find('option:selected').removeAttr("selected");
-						}
-						else {
-							$(elt).val('');	
-						}
-					}
-					return true;
-				}
-			);
-		}
-	);
-
-	$('#conditionsource').find(':input').change(
-		function(evt)
-		{
-			$('#conditionsource').find(':input').each(
-				function(indx,elt)
-				{
-					if (elt.id != evt.target.id)
-					{
-						if ($(elt).attr('type') == 'select-multiple' || 
-							$(elt).attr('type') == 'select-one' ) {
-							$(elt).find('option:selected').removeAttr("selected");
-						}
-						else {
-							$(elt).val('');	
-						}
-					}
-					return true;
-				}
-			);
-			if (evt.target.id == 'csrctoken')
-			{
-				$('#canswers option').remove();
-			}
-		}
-	);
-
 	// Select the condition target Tab depending on operator
         //selectTabFromOper($('#method').val());
 	$('#method').change(selectTabFromOper);
 
+    var p = new populateCanswersSelectObject();
+    populateCanswersSelect = p.fun;
+
 	$('#cquestions').change(populateCanswersSelect);
+
+    // Populate stuff for quick-add modal
+    var p2 = new populateCanswersSelectObject();
+    p2.cquestionsId      = '#quick-add-cquestions';
+    p2.canswersId        = '#quick-add-canswers';
+    p2.canswersIdNoHash  = 'quick-add-canswers';
+    p2.cqid              = '#quick-add-cqid';
+    p2.conditiontargetId = '#quick-add-conditiontarget';
+    p2.methodId          = '#quick-add-method';
+    p2.canswersToSelectId= '#quick-add-canswersToSelectId';
+	$('#quick-add-cquestions').change(p2.fun);
 
 	$('#csrctoken').change(function() {
 		$('#cqid').val(0);
