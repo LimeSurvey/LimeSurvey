@@ -312,7 +312,6 @@ class conditionsaction extends Survey_Common_Action {
         $aViewUrls['conditionshead_view'][] = $aData;
 
         $conditionsList = array();
-        $scenariocount = 0;
 
         //BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
         if (
@@ -2158,13 +2157,13 @@ class conditionsaction extends Survey_Common_Action {
     }
 
     /**
+     * Used to calculate size of select box
+     * @todo Not used
      * @param array $cquestions
      * @return int
      */
     protected function getQCount(array $cquestions)
     {
-        $qcount = 0;
-
         if ( count($cquestions) > 0 && count($cquestions) <=10) {
             $qcount = count($cquestions);
         }
