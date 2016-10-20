@@ -990,6 +990,8 @@ LS.ajax = function(options) {
     var oldError = options.error;
     options.success = function(response) {
 
+        $('#ls-loading').hide();
+
         // User-supplied success is always run EXCEPT when login fails
         var runOldSuccess = LS.ajaxHelperOnSuccess(response);
 
@@ -997,6 +999,15 @@ LS.ajax = function(options) {
             oldSuccess(response);
         }
     }
+
+    options.error = function(response) {
+        $('#ls-loading').hide();
+        if (oldError) {
+            oldError();
+        }
+    }
+
+    $('#ls-loading').show();
 
     return $.ajax(options);
 }

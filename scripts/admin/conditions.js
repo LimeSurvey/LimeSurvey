@@ -346,6 +346,27 @@ $(document).ready(function() {
         });
     });
 
+    // Save-and-close for quick-add modal
+    $('#quick-add-condition-save-and-close-button').on('click', function(ev) {
+        var formData = $('#quick-add-conditions-form').serializeArray();
+        var url = $('#quick-add-url').html();
+        LS.ajax({
+            url: url,
+            data: formData,
+            method: 'POST',
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.log(arguments);
+            }
+        });
+    });
+
+    // Close for quick-add modal
+    $('#quick-add-condition-close-button').on('click', function(ev) {
+        location.reload();
+    });
 });
 
 /**

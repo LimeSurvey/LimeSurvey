@@ -824,11 +824,10 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function insertConditionAjax($args)
     {
-        Yii::log(print_r($args, true), CLogger::LEVEL_TRACE, 'debug');
         // Extract scenario, cquestions, ...
         extract($args);
 
-        if (isset($cquestions) && $cquestions != '') {
+        if (isset($cquestions) && $cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
             $conditionCfieldname = $cquestions;
         }
         elseif(isset($csrctoken) && $csrctoken != '') {
@@ -843,7 +842,7 @@ class conditionsaction extends Survey_Common_Action {
             'method'     => $method
         );
 
-        if (!empty($canswers)) {
+        if (!empty($canswers) && $editSourceTab == '#SRCPREVQUEST') {
 
             $results = array();
 
@@ -883,17 +882,17 @@ class conditionsaction extends Survey_Common_Action {
             $posted_condition_value = null;
 
             // Other conditions like constant, other question or token field
-            if ($request->getPost('editTargetTab')=="#CONST") {
-                $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
+            if ($editTargetTab=="#CONST") {
+                $posted_condition_value = $ConditionConst;
             }
-            elseif ($request->getPost('editTargetTab')=="#PREVQUESTIONS") {
-                $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
+            elseif ($editTargetTab=="#PREVQUESTIONS") {
+                $posted_condition_value = $prevQuestionSGQA;
             }
-            elseif ($request->getPost('editTargetTab')=="#TOKENATTRS") {
-                $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
+            elseif ($editTargetTab=="#TOKENATTRS") {
+                $posted_condition_value = $tokenAttr;
             }
-            elseif ($request->getPost('editTargetTab')=="#REGEXP") {
-                $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
+            elseif ($editTargetTab=="#REGEXP") {
+                $posted_condition_value = $ConditionRegexp;
             }
 
             if ($posted_condition_value) {
@@ -1223,6 +1222,8 @@ class conditionsaction extends Survey_Common_Action {
             case "deleteallconditions":
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('qid'=>$qid));
+                Yii::app()->setFlashMessage(gT("All conditions for this question have been deleted."), 'success');
+                $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Renumber scenarios
