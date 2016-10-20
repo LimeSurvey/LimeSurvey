@@ -383,6 +383,18 @@ class conditionsaction extends Survey_Common_Action {
 
                     $aData['scenarionr'] = $scenarionr;
 
+                    // Used when click on button to add condition to scenario
+                    $aData['addConditionToScenarioURL'] = $this->getController()->createUrl(
+                        '/admin/conditions/sa/index/',
+                        array(
+                            'subaction' => 'editconditionsform',
+                            'surveyid' => $this->iSurveyID,
+                            'gid' => $gid,
+                            'qid' => $qid,
+                            'scenarioNr' => $scenarionr['scenario']
+                        )
+                    );
+
                     if (!isset($aViewUrls['output'])) {
                         $aViewUrls['output'] = '';
                     }
@@ -1856,7 +1868,8 @@ class conditionsaction extends Survey_Common_Action {
             'submitSubaction'     => $submitSubaction,
             'submitcid'     => $submitcid,
             'editSourceTab' => $this->getEditSourceTab(),
-            'editTargetTab' => $this->getEditTargetTab()
+            'editTargetTab' => $this->getEditTargetTab(),
+            'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr')
         );
         $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 

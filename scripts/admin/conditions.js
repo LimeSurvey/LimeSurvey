@@ -379,3 +379,14 @@ function scenarioaddbtnOnClickAction() {
     $('.add-scenario-column').removeClass('col-sm-4').addClass('col-sm-2');
     $('#scenario').show('slow');
 }
+
+/**
+ * Redirects to url
+ * Button in scenario to add a condition for this scenario (prefill scenario number)
+ * @param {string} url
+ * @return
+ */
+function addConditionToScenario(url) {
+    location = url + '#formHeader';
+    return false;
+}

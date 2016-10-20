@@ -20,7 +20,7 @@
             <div class='form-group'>
                 <div class='col-sm-2'></div>
                 <div class='col-sm-10'>
-                    <h4><?php echo $title;?></h4>
+                    <h4 id='formHeader'><?php echo $title;?></h4>
                 </div>
             </div>
 
@@ -28,7 +28,7 @@
             <div class='form-group'>
                 <label class='control-label col-sm-2'><?php eT('Scenario'); ?></label>
                 <div class='<?php if ($showScenario): ?> col-sm-4 <?php else: ?> col-sm-2 <?php endif; ?> add-scenario-column'>
-                    <input class='form-control' type='number' name='scenario' id='scenario' value='1' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
+                    <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
                     <?php if($showScenario):?>
                         <span id='defaultscenariotxt'>
                             <?php eT("Default scenario"); ?>
