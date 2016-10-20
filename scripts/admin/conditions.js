@@ -168,12 +168,11 @@ populateCanswersSelectObject = function() {
         for (var i=0;i<Keys.length;i++) {
             var optionSelected = false;
             // If we are at page load time, then we may know which option to select
-            if (evt === null)
-            { // Let's read canswersToSelect and check if we should select the option
+            if (evt === null) {
+                // Let's read canswersToSelect and check if we should select the option
                 var selectedOptions = $(that.canswersToSelectId).val().split(';');
                 for (var j=0;j<selectedOptions.length;j++) {
-                    if (Codes[Keys[i]] == selectedOptions[j])
-                    {
+                    if (Codes[Keys[i]] == selectedOptions[j]) {
                         optionSelected = true;
                     }
                 }
