@@ -213,6 +213,35 @@ function selectTabFromOper() {
 	}
 }
 
+/**
+ * Same as selectTabFromOper but for quick-add modal
+ */
+function quickAddSelectTabFromOper() {
+	var val = $('#quick-add-method').val();
+	if(val == 'RX') {
+        $('a[href="#QUICKADD-CANSWERSTAB"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-CONST"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-PREVQUESTIONS"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-TOKENATTRS"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').trigger('click');
+	}
+	else {
+		//if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
+
+        $('a[href="#QUICKADD-CANSWERSTAB"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-CONST"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-PREVQUESTIONS"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-TOKENATTRS"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').parent().addClass('disabled');
+
+        // If regexp tab is selected, trigger click on first tab instead
+        if ($('a[href="#QUICKADD-REGEXP"]').parent().hasClass('active')) {
+            $('a[href="#QUICKADD-CANSWERSTAB"]').trigger('click');
+        }
+	}
+}
+
 $(document).ready(function() {
 
 	$('#resetForm').click( function() {
@@ -226,6 +255,7 @@ $(document).ready(function() {
 
 	// Select the condition target Tab depending on operator
 	$('#method').change(selectTabFromOper);
+	$('#quick-add-method').change(quickAddSelectTabFromOper);
 
     var p = new populateCanswersSelectObject();
     populateCanswersSelect = p.fun;
@@ -263,6 +293,18 @@ $(document).ready(function() {
     $('a[href="' + editTargetTab + '"]').trigger('click');
     $('a[href="' + editSourceTab + '"]').trigger('click');
 
+    // When user clicks tab, update hidden input
+    $('#editconditions .src-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="editSourceTab"]').val(href);
+    });
+
+    // When user clicks tab, update hidden input
+    $('#editconditions .target-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="editTargetTab"]').val(href);
+    });
+
     // Tab management for quick-add modal
     var editTargetTab = $('input[name="quick-add-editTargetTab"]').val();
     var editSourceTab = $('input[name="quick-add-editSourceTab"]').val();
@@ -270,15 +312,15 @@ $(document).ready(function() {
     $('a[href="' + editSourceTab + '"]').trigger('click');
 
     // When user clicks tab, update hidden input
-    $('.src-tab').on('click', function(e) {
+    $('#quick-add-conditions-form .src-tab').on('click', function(e) {
         var href = $(e.currentTarget).find('a').attr('href');
-        $('input[name="editSourceTab"]').val(href);
+        $('input[name="quick-add-editSourceTab"]').val(href);
     });
 
     // When user clicks tab, update hidden input
-    $('.target-tab').on('click', function(e) {
+    $('#quick-add-conditions-form .target-tab').on('click', function(e) {
         var href = $(e.currentTarget).find('a').attr('href');
-        $('input[name="editTargetTab"]').val(href);
+        $('input[name="quick-add-editTargetTab"]').val(href);
     });
 
     // Disable clicks on disabled tabs (regexp)
@@ -287,6 +329,21 @@ $(document).ready(function() {
             e.preventDefault();
             return false;
         }
+    });
+
+    // Bind save-buttons in quick-add modal
+    $('#quick-add-condition-save-button').on('click', function(ev) {
+        var formData = $('#quick-add-conditions-form').serializeArray();
+        var url = $('#quick-add-url').html();
+        console.log('formData', formData);
+        LS.ajax({
+            url: url,
+            data: formData,
+            method: 'POST',
+            error: function () {
+                console.log(arguments);
+            }
+        });
     });
 
 });

@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-12">
 
-        <!-- Form  editconditions -->
+        <!-- Form quick-add condition -->
         <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"quick-add-conditions-form",'name'=>"quick-add-conditions-form", 'class' => 'form form-horizontal'));?>
             <div class='form-group'>
                 <div class='col-sm-2'></div>
@@ -64,7 +64,7 @@
 
             <div class='form-group'>
                 <label class='control-label col-sm-2'><?php eT("Comparison operator"); ?></label>
-                <div class='col-sm-2'>
+                <div class='col-sm-4'>
                     <select class='form-control' name='quick-add-method' id='quick-add-method'>
                         <?php foreach ($method as $methodCode => $methodTxt): ?>
                             <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' selected="selected" '; endif; ?>>
@@ -167,7 +167,7 @@
                         <div class='col-sm-10'>
                             <textarea name='quick-add-ConditionRegexp' class='form-control' id='quick-add-ConditionRegexp' rows='5' cols='113'></textarea>
                             <div id='quick-add-ConditionRegexpLabel'>
-                                <a href="http://manual.limesurvey.org/wiki/Using_regular_expressions" target="_blank">
+                                <a href="http://manual.limesurvey.org/Using_regular_expressions" target="_blank">
                                     <?php eT("Regular expression"); ?>
                                 </a>
                             </div>
