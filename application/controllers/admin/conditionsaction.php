@@ -1201,6 +1201,7 @@ class conditionsaction extends Survey_Common_Action {
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
                 LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Delete all conditions in this scenario
@@ -1208,6 +1209,7 @@ class conditionsaction extends Survey_Common_Action {
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
                 LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Update scenario
@@ -1229,6 +1231,7 @@ class conditionsaction extends Survey_Common_Action {
             // Renumber scenarios
             case "renumberscenarios":
                 $this->renumberScenarios($args);
+                $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Copy conditions if this is copy
