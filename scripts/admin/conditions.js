@@ -116,7 +116,7 @@ populateCanswersSelectObject = function() {
     this.cqid              = '#cqid';
     this.conditiontargetId = '#conditiontarget';
     this.methodId          = '#method';
-    this.canswersToSelectId= '#canswersToSelectId';
+    this.canswersToSelectId= '#canswersToSelect';
 
     var that = this;
 
