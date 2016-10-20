@@ -833,6 +833,9 @@ class conditionsaction extends Survey_Common_Action {
         elseif(isset($csrctoken) && $csrctoken != '') {
             $conditionCfieldname = $csrctoken;
         }
+        else {
+            return array(gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
+        }
 
         $condition_data = array(
             'qid'        => $qid,

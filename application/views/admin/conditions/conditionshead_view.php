@@ -40,6 +40,8 @@
             class='btn btn-default pull-right condition-header-button'
             data-toggle='modal'
             data-target='#quick-add-condition-modal'
+            data-tooltip='true'
+            data-title='<?php eT('Add multiple conditions without a page reload'); ?>'
         >
             <span class="fa fa-plus-circle"></span>
             &nbsp;
@@ -63,6 +65,7 @@
                 <h4 class="modal-title"><?php eT('Quick-add conditions'); ?></h4>
             </div>
             <div class="modal-body">
+                <!-- Condition form is in file quickAddConditionForm.php -->
                 <?php echo $quickAddConditionForm; ?>
             </div>
             <div class="modal-footer">
