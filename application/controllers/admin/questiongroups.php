@@ -524,19 +524,18 @@ class questiongroups extends Survey_Common_Action
     {
         $iSurveyID = (int) $surveyid;
         $aGroups   = QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $langage);   // Get an array of Groups and questions
-        $count     = 1;                                                                     // @see : http://www.explainxkcd.com/wiki/index.php/163
         $aDatas    = array();                                                               // The indexed array
 
         // Two task :
         // Clean the datas (ellipsize etc)
-        // Build the unindexed array that will be converted to jSon
         foreach($aGroups as $aGroup)
         {
+            $aGroupArray = array();
 
-            $aDatas[$count]["key"]    = $aGroup->gid;                           // The key is used by fancy tree to build the node id.
-            $aDatas[$count]["title"]  = $aGroup->sanitized_group_name;          // The title will be shown as text
-            $aDatas[$count]["folder"] = true;                                   // Means it's a node with children
-            $aDatas[$count]['buttonlinks'] = array(
+            $aGroupArray["key"]    = $aGroup->gid;                           // The key is used by fancy tree to build the node id.
+            $aGroupArray["title"]  = $aGroup->sanitized_group_name;          // The title will be shown as text
+            $aGroupArray["folder"] = true;                                   // Means it's a node with children
+            $aGroupArray['buttonlinks'] = array(
                 array(
                     'title'  => gT('Add a question to this group'),
                     'url'    => 'someurl',
@@ -552,28 +551,59 @@ class questiongroups extends Survey_Common_Action
                 ),
             );
 
-            $countQ = 1;
-            $aDatasQ = array();                                                 // The indexed array that will contain questions
-
             foreach ($aGroup['aQuestions'] as $oQuestion)
             {
-                $aDatasQ[$countQ]["key"]      = $oQuestion->qid;
-                $aDatasQ[$countQ]["title"]    = $oQuestion->sanitized_title . ' : ' . $oQuestion->getEllipsized_question();
-                $aDatasQ[$countQ]['tooltip']  = $oQuestion->getSanitized_question();
-                $aDatasQ[$countQ]['toggle']   = 'tooltip';
-                $aDatas[$count]["children"][] = $aDatasQ[$countQ];              // Doing that, we push the questions in the children array, as an unindexed array (no count)
-                $countQ++;
-            }
+                $aDatasQuestions = array();                                                 // The indexed array that will contain questions
+                $aDatasQuestions["key"]      = $oQuestion->qid;
+                $aDatasQuestions["gid"]      = $aGroup->gid;
+                $aDatasQuestions["title"]    = $oQuestion->sanitized_title . ' : ' . $oQuestion->getEllipsized_question();
+                $aDatasQuestions['tooltip']  = $oQuestion->getSanitized_question();
+                $aDatasQuestions['href']     = Yii::app()->createUrl('admin/questions/sa/view/', array('surveyid' => $surveyid, 'gid' => $aGroup->gid, 'qid' => $oQuestion->qid));
+                $aDatasQuestions['toggle']   = 'tooltip';
+                $aDatasQuestions['placement']   = 'left';
+                $aDatasQuestions['buttonlinks'] = array(
 
-            $jDatas[] = $aDatas[$count];                                        // Doing that, we push the Group as an unindexed array to jDatas
-            $count++;
+                );
+
+                $aGroupArray["children"][] = $aDatasQuestions;             // Doing that, we push the questions in the children array, as an unindexed array (no count)
+            }
+            // Doing that, we push the Group as an unindexed array to jDatas, !IMPORTANT! don't index the jDatas array
+            $jDatas[] = $aGroupArray;          
         }
 
-        // If you need to understand the difference between indexed/non indexed result,
-        // Uncoment the folowing line and go to : {YOUR_URL}/admin/questiongroups/sa/getGroupExplorerDatas/surveyid/{YOUR_SURVEY_ID}/langage/{YOUR_BASE_LANGUAGE}
-        // echo '<h1>INDEXED:</h1>';echo json_encode($aDatas); echo '<hr/>';echo '<h1>NOT INDEXED:</h1>';
-
         echo json_encode($jDatas);
+    }
+
+    function getQuestionDetailData($surveyid, $langage, $gid, $qid){
+        $iSurveyID = (int) $surveyid;
+        $oQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $langage));
+
+        $jDetailContent = "<div class='container-center'>
+            <dl>
+            <dt>".gT('Code')."</dt>
+            <dd class='text-right'>&nbsp;".$oQuestion->title."</dd>
+            
+            <dt>".gT('Question type')."</dt>
+            <dd class='text-right'>&nbsp;".$oQuestion->typedesc."</dd>
+
+            <dt>".gT('Mandatory')."</dt>
+            <dd class='text-right'>&nbsp;".$oQuestion->mandatoryIcon."</dd>
+
+            <dt>".gT('Other')."</dt>
+            <dd class='text-right'>&nbsp;".$oQuestion->otherIcon."</dd>
+
+            <dt>".gT('Relevance equation')."</dt>
+            <dd class='text-right'>&nbsp;".LimeExpressionManager::UnitTestConvertConditionsToRelevance($iSurveyID,$oQuestion->qid)."</dd>
+        </dl>";
+
+        $jDetailsArray = array(
+            'success' => true,
+            'title' => $oQuestion->sanitized_title,
+            'content' => $jDetailContent
+        );
+
+        echo json_encode($jDetailsArray);
+        Yii::app()->end();
     }
 
     /**

@@ -2171,4 +2171,5 @@ EOD;
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }
+
 }
