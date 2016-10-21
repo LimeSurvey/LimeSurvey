@@ -39,7 +39,8 @@
 <?php elseif($slider_rating==2):?>
     <script type='text/javascript'>
     <!--
-        doRatingSlider( <?php echo  $sliderId; ?> );
+        var doRatingSlider_<?php echo  $sliderId; ?> = new getRatingSlider( <?php echo  $sliderId; ?> );
+        doRatingSlider_<?php echo  $sliderId; ?>();
     -->
     </script>
 <?php endif;?>

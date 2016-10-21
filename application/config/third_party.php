@@ -330,7 +330,8 @@ return array(
     'emoji' => array(
         'basePath' => 'third_party.emojifont',
         'css' => array(
-            'css/emoji.css'
+            'css/emoji.css',
+            'css/ss-emoji.css'
         )
     )
 
