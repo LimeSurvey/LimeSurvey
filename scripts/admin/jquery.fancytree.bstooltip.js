@@ -45,58 +45,53 @@
                 $.each( node.data.buttonlinks, function( key, button ){
                     //console.log(button);
 
-                    var buttonHtml = '<a href="'+button.url+'" role="button"';
+                    var jQbutton = $('<a role="button"></a>)');
+                    jQbutton.attr("href",button.url);
 
                     if (button.cssclasses)
                     {
-                        buttonHtml += ' class="'+button.cssclasses+'"';
+                        jQbutton.addClass(button.cssclasses);
                     }
                     else
                     {
-                        buttonHtml += ' class="btn btn-xs btn-default" ';
+                        jQbutton.addClass("btn btn-xs btn-default");
                     }
 
                     if (button.toggle)
                     {
-                        buttonHtml += ' data-toggle="'+button.toggle+'"';
+                        jQbutton.data("toggle", button.toggle);
                     }
-
                     if (button.placement)
                     {
-                        buttonHtml += ' data-placement="'+button.placement+'"';
+                        jQbutton.data("placement", button.placement);
                     }
 
                     if (button.title)
                     {
-                        buttonHtml += ' title="'+button.title+'"';
+                        jQbutton.attr("title", button.title);
                     }
 
-                    buttonHtml += '>';
 
                     if (button.icon)
                     {
-                        buttonHtml += '<span class="'+button.icon+'"></span>';
+                        jQbutton.append('<i class="'+button.icon+'"></i>');
                     }
 
                     if (button.buttontext)
                     {
-                        buttonHtml += button.buttontext;
+                        jQbutton.append(button.buttontext);
                     }
 
-                    buttonHtml += '</a>';
-
-                    var $elButton = $(buttonHtml)
-
-                    $("span.fancytree-title", node.span).append(' ').append( $elButton );
+                    $("span.fancytree-title", node.span).append(' ').append( jQbutton );
 
                     if (button.toggle=='tooltip')
                     {
-                        $elButton.tooltip();
+                        jQbutton.tooltip();
                     }
 
                     if (button.toggle=='popover')
                     {
-                        $elButton.popover();
+                        jQbutton.popover();
                     }
 
                 } );

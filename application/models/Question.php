@@ -862,8 +862,6 @@ class Question extends LSActiveRecord
         return $this->sanitized_title;
     }
 
-
-
     public function search()
     {
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
