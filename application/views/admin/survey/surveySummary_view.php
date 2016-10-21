@@ -109,7 +109,6 @@ $surveyid = $surveyinfo['sid'];
             selectMode: 2,
             clickFolderMode: 3,
             dblclick: function(event, data) {
-
                     var node = data.node;
                     // Use <a> href and target attributes to load the content:
                     if( node.data.href ){
@@ -117,31 +116,42 @@ $surveyid = $surveyinfo['sid'];
                       window.open(node.data.href, node.data.target);
                     }
             },
+            click: function(event, data){
+                var node = data.node;
+                console.log(node);
+                if(node.isActive()){
+                    $.ajax({
+                        url : "<?php echo  Yii::app()->urlManager->createUrl("admin/questiongroups/sa/getQuestionDetailData/surveyid/$iSurveyID/langage/".$surveyinfo['language']);?>",
+                        data : {gid: node.data.gid, qid: node.key},
+                        method : "GET",
+                        dataType: "json"
+                    }).then(
+                        function (success){
+                            $(node.span).find('.fancytree-title').popover({
+                                title: success.title,
+                                content: success.content,
+                                placement: 'right',
+                                html: true,
+                                delay: {show: 200, hide: 4000},
+                                container: node.tree.$container.parent()
+                            }).popover('show');
+                           $('body').on('click.singlePopover', function(){$(node.span).find('.fancytree-title').popover('destroy'); $('body').off('click.singlePopover')});
+                        },
+                        function(error){
+                            console.log(error);
+                        }
+                    )
+                }
+            },
             wide: {
                 iconWidth: "1em",     // Adjust this if @fancy-icon-width != "16px"
                 iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
                 levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
             },
             expand: function(event, data){
-                console.log("expand");
-
-
             }
 
-    });/*.on("mouseover", "span.fancytree-title", function(event){
-        // Add a hover handler to all node titles (using event delegation)
-        var node = $.ui.fancytree.getNode(event);
-        node.info(event.type);
-
-        // Add bootstrap tooltip
-        if(node.data.toggle=='tooltip')
-        {
-            //$(this).addClass('hidden')
-            $(this).attr('data-toggle', 'tooltip');
-            $(this).tooltip();
-        }
-        //console.log(node.toggle)
-    });;*/
+    });
         </script>
 </div>
 </div>
