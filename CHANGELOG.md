@@ -1,10 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## Not released
+## [1.0.28] - 2016-10-23
 
 ### Fix
 - Rank show rtl on ltr
+- #11821: Apache error uploading images kcfinder ([Carsten Schmitz](http://limesurvey.org))
 
 ## [1.0.27] - 2016-10-06
 
@@ -20,7 +21,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 ## [1.0.25] - 2016-09-27
 
 ### Fix
-- #11455: MapQuest discontinued the free tileserver (Markus Flür)
+- #11455: MapQuest discontinued the free tileserver ([Markus Flür](http://limesurvey.org))
 
 ## [1.0.24] - 2016-09-16
 
@@ -29,7 +30,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ### Fix
 - If no plugin add attribute : no questions are shown
-- #10226: {ANSWERTABLE} includes <script> placed in question text (LouisGac)
+- #10226: {ANSWERTABLE} includes <script> placed in question text ([LouisGac](http://limesurvey.org))
 - ~ and _ in tokens hard to manually enter
 - #11509: numerical input option integer only leads to positive integer input only
 
