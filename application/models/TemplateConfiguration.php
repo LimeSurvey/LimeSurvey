@@ -250,13 +250,7 @@ class TemplateConfiguration extends CFormModel
 
     private function setIsStandard()
     {
-        return in_array($this->sTemplateName,
-            array(
-                'default',
-                'news_paper',
-                'ubuntu_orange',
-            )
-        );
+        return Template::isStandardTemplate($this->sTemplateName);
     }
 
 }
