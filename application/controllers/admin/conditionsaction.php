@@ -296,10 +296,31 @@ class conditionsaction extends Survey_Common_Action {
         $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
         $aData['javascriptpre'] = $javascriptpre;
 
+        $scenarios = $this->getAllScenarios($qid);
+
+        // Some extra args to getEditConditionForm
+        $args['subaction'] = $subaction;
+        $args['iSurveyID'] = $this->iSurveyID;
+        $args['gid'] = $gid;
+        $args['qcount'] = $this->getQCount($cquestions);
+        $args['method'] = $method;
+        $args['cquestions'] = $cquestions;
+        $args['scenariocount'] = count($scenarios);
+
+        $aData['quickAddConditionForm'] = $this->getQuickAddConditionForm($args);
+
+        $aData['quickAddConditionURL'] = $this->getController()->createUrl(
+            '/admin/conditions/sa/quickAddCondition',
+            array(
+                'surveyId' => $this->iSurveyID,
+                'gid'      => $gid,
+                'qid'      => $qid
+            )
+        );
+
         $aViewUrls['conditionshead_view'][] = $aData;
 
         $conditionsList = array();
-        $scenariocount = 0;
 
         //BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
         if (
@@ -317,7 +338,6 @@ class conditionsaction extends Survey_Common_Action {
             $conditionscount = 0;
             $s=0;
 
-            $scenarios = $this->getAllScenarios($qid);
             $scenariocount = count($scenarios);
 
             $aData['conditionsoutput'] = '';
@@ -362,6 +382,18 @@ class conditionsaction extends Survey_Common_Action {
                     }
 
                     $aData['scenarionr'] = $scenarionr;
+
+                    // Used when click on button to add condition to scenario
+                    $aData['addConditionToScenarioURL'] = $this->getController()->createUrl(
+                        '/admin/conditions/sa/index/',
+                        array(
+                            'subaction' => 'editconditionsform',
+                            'surveyid' => $this->iSurveyID,
+                            'gid' => $gid,
+                            'qid' => $qid,
+                            'scenarioNr' => $scenarionr['scenario']
+                        )
+                    );
 
                     if (!isset($aViewUrls['output'])) {
                         $aViewUrls['output'] = '';
@@ -586,27 +618,6 @@ class conditionsaction extends Survey_Common_Action {
             $aViewUrls['output'] .= $this->getCopyForm($qid, $gid, $conditionsList, $pquestions);
         }
 
-        if (isset($cquestions)) {
-            if ( count($cquestions) > 0 && count($cquestions) <=10) {
-                $qcount = count($cquestions);
-            }
-            else {
-                $qcount = 9;
-            }
-        }
-        else {
-            $qcount = 0;
-        }
-
-        // Some extra args to getEditConditionForm
-        $args['subaction'] = $subaction;
-        $args['iSurveyID'] = $this->iSurveyID;
-        $args['gid'] = $gid;
-        $args['qcount'] = $qcount;
-        $args['method'] = $method;
-        $args['cquestions'] = $cquestions;
-        $args['scenariocount'] = $scenariocount;
-
         if (   $subaction == "editconditionsform"
             || $subaction == "insertcondition"
             || $subaction == "updatecondition"
@@ -816,6 +827,173 @@ class conditionsaction extends Survey_Common_Action {
         LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 
         $this->redirectToConditionStart($qid, $gid);
+    }
+
+    /**
+     * As insertCondition() but using Ajax, called from quickAddCondition
+     * @todo Code duplication
+     * @return array [message, result], where result = 'success' or 'error'
+     */
+    protected function insertConditionAjax($args)
+    {
+        // Extract scenario, cquestions, ...
+        extract($args);
+
+        if (isset($cquestions) && $cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
+            $conditionCfieldname = $cquestions;
+        }
+        elseif(isset($csrctoken) && $csrctoken != '') {
+            $conditionCfieldname = $csrctoken;
+        }
+        else {
+            return array(gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
+        }
+
+        $condition_data = array(
+            'qid'        => $qid,
+            'scenario'   => $scenario,
+            'cqid'       => $cqid,
+            'cfieldname' => $conditionCfieldname,
+            'method'     => $method
+        );
+
+        if (!empty($canswers) && $editSourceTab == '#SRCPREVQUEST') {
+
+            $results = array();
+
+            foreach ($canswers as $ca) {
+                //First lets make sure there isn't already an exact replica of this condition
+                $condition_data['value'] = $ca;
+
+                $result = Condition::model()->findAllByAttributes($condition_data);
+
+                $count_caseinsensitivedupes = count($result);
+
+                if ($count_caseinsensitivedupes == 0) {
+                    $results[] = Condition::model()->insertRecords($condition_data);;
+                }
+            }
+
+            // Check if any result returned false
+            if (in_array(false, $results, true)) {
+                return array(gT('Could not insert all conditions.'), 'error');
+            }
+            else if (!empty($results)) {
+                return array (gT('Condition added.'), 'success');
+            }
+            else {
+                return array(
+                    gT(
+                        "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+                        "js"
+                    ),
+                    'error'
+                );
+            }
+
+        }
+        else {
+
+            $posted_condition_value = null;
+
+            // Other conditions like constant, other question or token field
+            if ($editTargetTab=="#CONST") {
+                $posted_condition_value = $ConditionConst;
+            }
+            elseif ($editTargetTab=="#PREVQUESTIONS") {
+                $posted_condition_value = $prevQuestionSGQA;
+            }
+            elseif ($editTargetTab=="#TOKENATTRS") {
+                $posted_condition_value = $tokenAttr;
+            }
+            elseif ($editTargetTab=="#REGEXP") {
+                $posted_condition_value = $ConditionRegexp;
+            }
+
+            if ($posted_condition_value) {
+                $condition_data['value'] = $posted_condition_value;
+                $result = Condition::model()->insertRecords($condition_data);
+            }
+            else {
+                $result = null;
+            }
+
+            if ($result === false) {
+                return array(gT('Could not insert all conditions.'), 'error');
+            }
+            else if ($result === true) {
+                return array (gT('Condition added.'), 'success');
+            }
+            else {
+                return array(
+                    gT(
+                        "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+                        "js"
+                    ),
+                    'error'
+                );
+            }
+        }
+
+    }
+
+    /**
+     * Used by quick-add form to add conditions async
+     * @return void
+     */
+    public function quickAddCondition()
+    {
+        Yii::import('application.helpers.admin.ajax_helper', true);
+        $request = Yii::app()->request;
+        $data = $this->getQuickAddData($request);
+
+        list($message, $status) = $this->insertConditionAjax($data);
+
+        if ($status == 'success') {
+            LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $data['qid']);
+            ls\ajax\AjaxHelper::outputSuccess($message);
+        }
+        else if ($status == 'error') {
+            ls\ajax\AjaxHelper::outputError($message);
+        }
+        else {
+            ls\ajax\AjaxHelper::outputError('Internal error: Could not add condition, status unknown: ' . $status);
+        }
+    }
+
+    /**
+     * Get posted data from quick-add modal form
+     * @param LSHttpRequest $request
+     * @return array
+     */
+    protected function getQuickAddData(LSHttpRequest $request)
+    {
+        $result = array();
+        $keys = array(
+            'scenario',
+            'cquestions',
+            'method',
+            'canswers',
+            'ConditionConst',
+            'ConditionRegexp',
+            'sid',
+            'qid',
+            'gid',
+            'cqid',
+            'canswersToSelect',
+            'editSourceTab',
+            'editTargetTab',
+            'csrctoken',
+            'prevQuestionSGQA',
+            'tokenAttr'
+        );
+        foreach ($keys as $key) {
+            $value = $request->getPost('quick-add-' . $key);
+            $value = str_replace('QUICKADD-', '', $value);  // Remove QUICKADD- from editSourceTab/editTargetTab
+            $result[$key] = $value;
+        }
+
+        return $result;
     }
 
     /**
@@ -1038,6 +1216,7 @@ class conditionsaction extends Survey_Common_Action {
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
                 LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Delete all conditions in this scenario
@@ -1045,6 +1224,7 @@ class conditionsaction extends Survey_Common_Action {
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
                 LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Update scenario
@@ -1059,11 +1239,14 @@ class conditionsaction extends Survey_Common_Action {
             case "deleteallconditions":
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('qid'=>$qid));
+                Yii::app()->setFlashMessage(gT("All conditions for this question have been deleted."), 'success');
+                $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Renumber scenarios
             case "renumberscenarios":
                 $this->renumberScenarios($args);
+                $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Copy conditions if this is copy
@@ -1685,7 +1868,8 @@ class conditionsaction extends Survey_Common_Action {
             'submitSubaction'     => $submitSubaction,
             'submitcid'     => $submitcid,
             'editSourceTab' => $this->getEditSourceTab(),
-            'editTargetTab' => $this->getEditTargetTab()
+            'editTargetTab' => $this->getEditTargetTab(),
+            'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr')
         );
         $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
@@ -1705,6 +1889,29 @@ class conditionsaction extends Survey_Common_Action {
             . "</script>\n";
 
         return $result;
+    }
+
+    /**
+     * Form used in quick-add modal
+     * @param array $args
+     */
+    protected function getQuickAddConditionForm(array $args)
+    {
+        extract($args);
+        $data = array(
+            'subaction'     => $subaction,
+            'iSurveyID'     => $iSurveyID,
+            'gid'           => $gid,
+            'qid'           => $qid,
+            'cquestions'    => $cquestions,
+            'p_csrctoken'   => $p_csrctoken,
+            'p_prevquestionsgqa'  => $p_prevquestionsgqa,
+            'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
+            'method'        => $method,
+            'subaction'     => $subaction,
+        );
+        $html = $this->getController()->renderPartial('/admin/conditions/includes/quickAddConditionForm', $data, true);
+        return $html;
     }
 
     /**
@@ -2140,6 +2347,24 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function shouldShowScenario($subaction, $scenariocount)
     {
-        return (($subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount==0)) || ($subaction == "editthiscondition"));
+        return $subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount==0);
+    }
+
+    /**
+     * Used to calculate size of select box
+     * @todo Not used
+     * @param array $cquestions
+     * @return int
+     */
+    protected function getQCount(array $cquestions)
+    {
+        if ( count($cquestions) > 0 && count($cquestions) <=10) {
+            $qcount = count($cquestions);
+        }
+        else {
+            $qcount = 9;
+        }
+
+        return $qcount;
     }
 }

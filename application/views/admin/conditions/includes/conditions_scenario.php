@@ -67,6 +67,17 @@
                     >
                         <span class="glyphicon glyphicon-pencil"></span>
                     </button>
+
+                    <button
+                        class='btn btn-default btn-xs'
+                        data-toggle='tooltip'
+                        data-title='<?php eT('Add condition to this scenario'); ?>'
+                        onclick='addConditionToScenario("<?php echo $addConditionToScenarioURL; ?>"); return false'
+                    >
+                        <span class='fa fa-plus-circle'></span>
+                    </button>
+
+
                 <?php endif; ?>
 
                 <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario'];?>' />
@@ -74,6 +85,7 @@
                 <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
                 <input type='hidden' name='subaction' value='deletescenario' />
             </form>
+
             </div>
         </div>
     </div>

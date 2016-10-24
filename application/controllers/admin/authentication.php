@@ -85,6 +85,23 @@ class Authentication extends Survey_Common_Action
     {
         $aData = array();
 
+        // Plugins, include core plugins, can't be activated by default.
+        // So after a fresh installation, core plugins are not activated
+        // They need to be manually loaded. 
+        if (!class_exists('Authdb', false)) {
+            $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+            if (!$plugin) {
+                $plugin = new Plugin();
+                $plugin->name = 'Authdb';
+                $plugin->active = 1;
+                $plugin->save();
+                App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+            } else {
+                $plugin->active = 1;
+                $plugin->save();
+            }
+        }
+
         // In Authdb, the plugin event "beforeLogin" checks if the url param "onepass" is set
         // if yes, it will call  AuthPluginBase::setAuthPlugin to set to true the plugin private parameter "_stop", so the form will not be displayed
         // @see: application/core/plugins/Authdb/Authdb.php: function beforeLogin()
@@ -125,9 +142,7 @@ class Authentication extends Survey_Common_Action
             App()->getPluginManager()->dispatchEvent($newLoginForm);            // inject the HTML of the form inside the private varibale "_content" of the plugin
             $aData['summary'] = self::getSummary('logout');
             $aData['pluginContent'] = $newLoginForm->getAllContent();           // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
-        }
-        else
-        {
+        }else{
             // The form has been submited, or the plugin has been stoped (so normally, the value of login/password are available)
 
              // Handle getting the post and populating the identity there
@@ -143,10 +158,17 @@ class Authentication extends Survey_Common_Action
             $identity = $event->get('identity');
 
             // Now authenticate
-            if ($identity->authenticate())
-            {
+            // This call LSUserIdentity::authenticate() (application/core/LSUserIdentity.php))
+            // which will call the plugin function newUserSession() (eg: Authdb::newUserSession() )
+            // TODO: for sake of clarity, the plugin function should be renamed to authenticate().
+            if ($identity->authenticate()){
                 FailedLoginAttempt::model()->deleteAttempts();
                 App()->user->setState('plugin', $authMethod);
+
+                // This call to AdminController::_GetSessionUserRights() ;
+                // NB 1:calling another controller method from a controller method is a bad pratice
+                // NB 2: this function only check if logged in user is super admin to set in session USER_RIGHT_INITIALSUPERADMIN
+                // TODO: move this function to the user object
                 Yii::app()->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                 Yii::app()->session['just_logged_in'] = true;
                 Yii::app()->session['loginsummary'] = self::getSummary();
@@ -155,9 +177,7 @@ class Authentication extends Survey_Common_Action
                 App()->getPluginManager()->dispatchEvent($event);
 
                 return array('success');
-            }
-            else
-            {
+            }else{
                 // Failed
                 $event = new PluginEvent('afterFailedLoginAttempt');
                 $event->set('identity', $identity);

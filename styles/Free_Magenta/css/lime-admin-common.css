@@ -4,6 +4,27 @@
  * This file contain all the common css definitions for the different admin theme.
  * It should not contain color definition (grey, blacks, and white are acceptable)
  */
+
+#ls-loading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: block;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 3501;
+    text-align: center;
+    display: none;
+}
+
+/* The font-awesome spinner */
+#ls-loading-spinner {
+    position: absolute;
+    top: 30%;
+}
+
 #notif-container{
   position: fixed;
   top: 5%;
@@ -2133,11 +2154,8 @@ table#responsedetail tr td{
     padding-top: 6px;
 }
 
-#delete-all-conditions, #renumber-scenario {
+.condition-header-button {
     margin-top: -10px;
-}
-
-#renumber-scenario {
     margin-right: 10px;
 }
 
@@ -2155,6 +2173,10 @@ table#responsedetail tr td{
 }
 
 /* Tabs used within form in condition designer */
-#editconditions .tab-content {
+#editconditions .tab-content, #quick-add-conditions-form .tab-content {
     padding-top: 0;
+}
+
+#quick-add-condition-modal .modal-dialog {
+    width: 800px;
 }

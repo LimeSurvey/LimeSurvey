@@ -35,7 +35,7 @@ $.fn.YesNoDate = function(options)
 
         // When user change date
         $(document).on('dp.change', '#'+$elDate.attr('id')+'_datetimepicker', function(e){
-            $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:MM'));
+            $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
         })
     });
 }
