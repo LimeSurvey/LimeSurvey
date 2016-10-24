@@ -104,7 +104,7 @@ class tokens extends Survey_Common_Action
                 $hostencryption=strtoupper($thissurvey['bounceaccountencryption']);
             }
 
-            @list($hostname, $port) = split(':', $hostname);
+            @list($hostname, $port) = explode(':', $hostname);
             if (empty($port))
             {
                 if ($accounttype == "IMAP")
