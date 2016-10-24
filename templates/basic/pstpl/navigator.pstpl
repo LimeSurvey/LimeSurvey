@@ -1,6 +1,10 @@
-	<div class="navigator text-center">{NAVIGATOR}</div>
-	<!-- Review this par : using div ? -->
-	{if(!is_empty(SAVE) or !is_empty(CLEARALL),"<ul class='list-unstyled list-inline save-clear'>","")}
-		{if(!is_empty(SAVE),"<li>"+SAVE+"</li>","")}
-		{if(!is_empty(CLEARALL),"<li>"+CLEARALL+"</li>","")}
-	{if(!is_empty(SAVE) or !is_empty(CLEARALL),"</ul>","")}
+<div class="navigator row hidden-xs">
+	<div class="col-sm-6 text-left">{MOVEPREVBUTTON}</div>
+	<div class="col-sm-6 text-right">{MOVENEXTBUTTON}</div>
+</div>
+<div class="navigator text-center visible-xs-block">{NAVIGATOR}</div>
+<!-- Need improvment -->
+<ul class='list-unstyled list-inline save-clear-list'>
+	<li>{CLEARALL}</li><!-- btn-link in core ? -->
+	<li>{SAVE}</li>
+</ul>

@@ -11,6 +11,9 @@ html {
   position: relative;
   min-height: 100%;
 }
+
+/* Some space */
+.navigator{margin-top: 1em;margin-bottom: 1em; }
 /* Some no boostrap class */
 .ls-language-changer-item{text-align:right}
 .dir-rtl .ls-language-changer-item{text-align:left}
