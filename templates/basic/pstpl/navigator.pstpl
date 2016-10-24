@@ -3,6 +3,8 @@
 	<div class="col-sm-6 text-right">{MOVENEXTBUTTON}</div>
 </div>
 <div class="navigator text-center visible-xs-block">{NAVIGATOR}</div>
+<!-- Need improvment : can be elsewhere if needed : inside form actually -->
+	{QUESTION_INDEX}
 <!-- Need improvment -->
 <ul class='list-unstyled list-inline save-clear-list'>
 	<li>{CLEARALL}</li><!-- btn-link in core ? -->

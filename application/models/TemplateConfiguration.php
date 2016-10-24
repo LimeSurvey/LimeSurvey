@@ -81,6 +81,7 @@ class TemplateConfiguration extends CFormModel
         // If the template directory doesn't exist, it can be that:
         // - user deleted a custom theme
         // In any case, we just set Default as the template to use
+
         if (!is_dir($this->path))
         {
             $this->sTemplateName = 'default';
@@ -250,13 +251,7 @@ class TemplateConfiguration extends CFormModel
 
     private function setIsStandard()
     {
-        return in_array($this->sTemplateName,
-            array(
-                'default',
-                'news_paper',
-                'ubuntu_orange',
-            )
-        );
+        return Template::isStandardTemplate($this->sTemplateName);
     }
 
 }

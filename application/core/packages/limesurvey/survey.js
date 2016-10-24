@@ -71,7 +71,8 @@ function activateActionLink(){
     }
     /* Submit limesurvey form on click */
     else{
-        $('[data-limesurvey-submit]').on('click',function() {
+        $('[data-limesurvey-submit]').on('click',function(event) {
+            event.preventDefault();
             var submit=$(this).data('limesurvey-submit');
             var confirmedby=$(this).data('confirmedby');
             if(!confirmedby || confirm($(this).data('confirmlabel')))
