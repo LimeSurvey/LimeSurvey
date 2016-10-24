@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.50+!
+Welcome to LimeSurvey v2.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -35,6 +35,46 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from  2.54.5 (build 161019) to 2.55 (build 161021) Oct 21 2016
+-New feature: Quick-add conditions in the condition designer (Olle Haerstedt)
+-Fixed issue #11727: 'Undefined index: LEMsid' with a plugin sidebody URL (Olle Haerstedt)
+-Fixed issue #11758: Better error message for replacement fields (Olle Haerstedt)
+-Fixed issue #11794: Show scenario number when edit condition (Olle Haerstedt)
+-Fixed issue #11818: Non-sanitized output in massive actions for question list (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from  2.54.4 (build 161018) to 2.54.5 (build 161019) Oct 19 2016
+-Fixed issue #11805: Timestamp hours does not display correctly in 'invitations sent' window (Olle Haerstedt)
+-Fixed issue #11809: Restrictions for mass actions not correct working in response browsing (Olle Haerstedt)
+-Fixed issue #11815: Can't login, no input field for login (LouisGac)
+#Updated translation: Chinese (Simplified) by yooyooh, yanglaw, leadingsoci
+
+Changes from  2.54.3 (build 161014) to 2.54.4 (build 161018) Oct 18, 2016
+-Fixed issue #11702: Dropdown question : 2 'no answer' if value selected is 0 (Denis Chenu)
+-Fixed issue #11731: Regexp validation for short-text question (Olle Haerstedt)
+-Fixed issue #11740: Decimal throwerreor with negative value (Denis Chenu)
+-Fixed issue #11753: Date validation issues (Olle Haerstedt)
+-Fixed issue #11768: Window for old token tables too small (Olle Haerstedt)
+-Fixed issue #11802: Remove unused files (Olle Haerstedt)
+-Fixed issue #11806: Blank page in conditions (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by kpadm, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: German by Joffm, c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, kmaksat, vipgroup
+#Updated translation: Spanish (Spain) by aesteban
 
 Changes from  2.54.2 (build 161012) to 2.54.3 (build 161014) Oct 14, 2016
 -Fixed issue #11746: Notice when previewing a hidden question and debug mode activated (Carsten Schmitz)

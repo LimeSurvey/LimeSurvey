@@ -547,6 +547,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
     {
         $query->limit((int) $limit,  (int) $offset);
     }
+    $query->order('id ASC');
 
     return $query;
 }
