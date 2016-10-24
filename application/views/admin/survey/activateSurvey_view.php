@@ -65,7 +65,7 @@
 
     <?php echo CHtml::form(array("admin/survey/sa/activate/surveyid/{$surveyid}/"), 'post', array('class'=>'form-horizontal')); ?>
         <div class='row'>
-            <div class="col-sm-3 col-sm-offset-2">
+            <div class="col-sm-4 col-sm-offset-2">
                 <div class='form-group'>
                     <label for='anonymized' class='control-label col-sm-7'>
                         <?php eT("Anonymized responses?"); ?>
@@ -106,7 +106,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <div class='form-group'>
                     <label for='datestamp' class='control-label col-sm-7'>
                         <?php eT("Date stamp?"); ?>
@@ -127,7 +127,7 @@
         </div>
 
         <div class='row'>
-            <div class="col-sm-3 col-sm-offset-2">
+            <div class="col-sm-4 col-sm-offset-2">
                 <div class='form-group'>
                     <label for='ipaddr' class='control-label col-sm-7'>
                         <?php eT("Save IP address?"); ?>
@@ -146,7 +146,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <div class='form-group'>
                     <label class='control-label col-sm-7' for='refurl'><?php eT("Save referrer URL?"); ?></label>
                     <div class='col-sm-5'>
@@ -163,7 +163,7 @@
             </div>
         </div>
 
-        <div class="col-sm-3 col-sm-offset-2">
+        <div class="col-sm-4 col-sm-offset-2">
             <div class='form-group'>
                 <label class='control-label col-sm-7' for='savetimings'><?php eT("Save timings?"); ?></label>
                 <div class='col-sm-5'>
