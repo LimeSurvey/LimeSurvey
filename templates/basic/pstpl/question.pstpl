@@ -9,8 +9,8 @@
 		{QUESTION_MAN_MESSAGE}
 		{QUESTION_VALID_MESSAGE}
 		{QUESTION_FILE_VALID_MESSAGE} <!-- unsure still used -->
-		{if(!is_empty(trim(strip_tags(QUESTION_HELP))),"<div class='help'>"+QUESTION_HELP+"</div>","")}
+		{QUESTION_HELP} <!-- EM dynamic help -->
 	</div>
 	<div class="answers-wrapper clearfix">{ANSWER}</div>
-	{if(!is_empty(QUESTIONHELP),"<div class='question-help clearfix'>"+QUESTIONHELP+"</div>","")}
+	<div class='question-help clearfix'>{QUESTIONHELP}</div>
 </div>
