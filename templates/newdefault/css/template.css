@@ -1,0 +1,130 @@
+body {
+  background: #ccc; }
+
+#top-container {
+  position: relative;
+  top: 70px; }
+
+#outer-frame {
+  position: relative; }
+
+div[id^="question"] {
+  background-color: #ededed;
+  margin-bottom: 1em; }
+
+.group-container {
+  padding-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 15px; }
+
+.question-title-container {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #286090; }
+
+.question-answer-container {
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+  border-bottom: 1px solid #999;
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.progress {
+  border: 1px solid grey; }
+
+.progress-bar {
+  background: #286090; }
+
+.form-horizontal .control-label {
+  text-align: left;
+  font-weight: normal; }
+
+.ls-label-xs-visibility {
+  display: none; }
+
+.ls-language-changer-item {
+  text-align: center; }
+
+.ls-timer-content.alert {
+  margin-top: 15px;
+  margin-bottom: 0; }
+
+@media (max-width: 768px) {
+  .ls-label-xs-visibility {
+    display: normal; } }
+
+label {
+  font-weight: normal; }
+
+.q-mandatory,
+.q-num,
+.q-code,
+.q-text {
+  color: white;
+  font-size: 16px;
+  display: inline; }
+
+.q-num {
+  color: #bbb; }
+
+th {
+  font-weight: normal; }
+
+.question-help-container .questionhelp {
+  padding-bottom: 5px; }
+
+.ls-em-tip {
+  padding-top: 5px; }
+
+div.question-help:empty {
+  display: none; }
+
+#welcome-container {
+  background: white;
+  margin-top: 100px;
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+  border-top: 1px solid #999; }
+
+.privacy-container {
+  background: white;
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+  border-bottom: 1px solid #999;
+  margin-bottom: 15px; }
+
+ul.ls-answers {
+  margin-bottom: 0; }
+
+.ls-answers .form-group:last-child {
+  margin-bottom: 0; }
+
+.ls-answers table {
+  margin-bottom: 0; }
+
+.yesno-button,
+.gender-button {
+  max-width: 400px; }
+
+#indexcontainer {
+  display: none; }
+
+.ls-js-hidden-sr {
+  display: none; }
+
+.array-checkbox td,
+.array-yes-uncertain-no td,
+.array-flexible-row td,
+.array-flexible-column td,
+.array-5-pt td,
+.array-10-pt td,
+.array-increase-same-decrease td,
+.array-flexible-duel-scale td,
+.array-flexible-dual-scale td {
+  text-align: center; }
+
+.ls-choice {
+  background: white; }
+
+.checkbox, .radio {
+  display: table-cell; }
