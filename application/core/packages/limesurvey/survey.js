@@ -4,15 +4,19 @@
  * @copyright LimeSurvey <http://www.limesurvey.org/>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
-
+/**
+ * Always set an empty LSvar
+ */
+var LSvar=LSvar || { }
 /**
  * Manage the index
  */
 
 function manageIndex(){
-    $("#index").on('click','li,.row',function(e){
-        if(!$(e.target).is('button')){
-            $(this).children("[name='move']").click();
+    /* only needed if it's not inside form (form#limesurvey) */
+    $(".ls-index-buttons").on('click','[name="move"]',function(e){
+        if(!$(this).closest('form').length && $('form#limesurvey').length==1){
+            $(this).clone().addClass("hidden").appendTo('form#limesurvey').click();
         }
     });
 }
@@ -67,11 +71,12 @@ function activateLanguageChanger(){
 function activateActionLink(){
     /* If no limesurvey form : don't need it */
     if(!$('form#limesurvey').length){
-        $('[data-limesurvey-submit]').remove();
+        $(document).remove('[data-limesurvey-submit]');
     }
     /* Submit limesurvey form on click */
     else{
-        $('[data-limesurvey-submit]').on('click',function() {
+        $('[data-limesurvey-submit]').on('click',function(event) {
+            event.preventDefault();
             var submit=$(this).data('limesurvey-submit');
             var confirmedby=$(this).data('confirmedby');
             if(!confirmedby || confirm($(this).data('confirmlabel')))
