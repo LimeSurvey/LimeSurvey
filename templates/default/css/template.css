@@ -128,3 +128,6 @@ ul.ls-answers {
 
 .checkbox, .radio {
   display: table-cell; }
+
+.survey-expiry-wrapper {
+  margin-top: 100px; }
