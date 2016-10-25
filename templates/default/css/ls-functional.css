@@ -1,0 +1,71 @@
+#top-container {
+  position: relative;
+  top: 70px; }
+
+#outer-frame {
+  position: relative; }
+
+.form-horizontal .control-label {
+  text-align: left;
+  font-weight: normal; }
+
+.ls-label-xs-visibility {
+  display: none; }
+
+.ls-language-changer-item {
+  text-align: center; }
+
+.ls-timer-content.alert {
+  margin-top: 15px;
+  margin-bottom: 0; }
+
+@media (max-width: 768px) {
+  .ls-label-xs-visibility {
+    display: normal; } }
+
+.question-help-container .questionhelp {
+  padding-bottom: 5px; }
+
+.ls-em-tip {
+  padding-top: 5px; }
+
+div.question-help:empty {
+  display: none; }
+
+ul.ls-answers {
+  margin-bottom: 0; }
+
+.ls-answers .form-group:last-child {
+  margin-bottom: 0; }
+
+.ls-answers table {
+  margin-bottom: 0; }
+
+#indexcontainer {
+  display: none; }
+
+.ls-js-hidden-sr {
+  display: none; }
+
+.array-checkbox td,
+.array-yes-uncertain-no td,
+.array-flexible-row td,
+.array-flexible-column td,
+.array-5-pt td,
+.array-10-pt td,
+.array-increase-same-decrease td,
+.array-flexible-duel-scale td,
+.array-flexible-dual-scale td {
+  text-align: center; }
+
+.ls-choice {
+  background: white; }
+
+.checkbox, .radio {
+  display: table-cell; }
+
+.text-left {
+  float: left; }
+
+.text-right {
+  float: right; }

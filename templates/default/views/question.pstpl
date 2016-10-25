@@ -1,0 +1,39 @@
+<!-- Question -->
+  <div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} col-xs-12 question-container">
+
+    <!-- Question title -->
+    <div class="row question-title-container">
+      <div class="col-sm-12 question-text">
+        <div class="q-mandatory">{QUESTION_MANDATORY}</div>
+        <div class="q-num ">{QUESTION_NUMBER}</div>
+        <div class="q-code">{QUESTION_CODE}</div>
+        <div class="q-text">{QUESTION_TEXT}</div>
+      </div>
+    </div>
+    
+    
+    <!-- All answer stuff -->
+    <div class="question-answer-container row">
+    
+      <!-- Question valid message -->
+      <div class="col-sm-12 question-valid-container">
+        {QUESTION_VALID_MESSAGE}
+        {QUESTION_MAN_MESSAGE}
+        {QUESTION_FILE_VALID_MESSAGE}    
+      </div>
+
+      <!-- Answer -->
+      <div class="col-sm-12 answer-container">
+        <div class="answer">
+          {ANSWER}
+        </div>
+      </div>
+
+      <!-- Question help -->
+      <div class="col-sm-12 question-help-container">
+        <div class=" question-help">
+           {QUESTIONHELP}
+        </div>
+      </div>      
+    </div>  
+  </div>
