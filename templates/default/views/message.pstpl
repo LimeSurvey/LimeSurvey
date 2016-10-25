@@ -1,0 +1,5 @@
+<div class='{MESSAGEID}-wrapper well'>
+    {ERROR}
+    <div class='{MESSAGEID}-text'>{MESSAGE}</div>
+    {URL}
+</div>
