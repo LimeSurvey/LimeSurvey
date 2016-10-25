@@ -241,3 +241,7 @@
         <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
     </div>
 </div>
+<?php
+    /* @todo : add a js var with standard template list name */
+    //$aStandardTemplateLis=Template::getStandardTemplateList();
+?>

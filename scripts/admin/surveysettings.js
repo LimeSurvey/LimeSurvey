@@ -79,7 +79,7 @@ $(document).ready(function(){
     $('#btnSaveParams').click(saveParameter);
     $('#addnewsurvey').submit(PostParameterGrid);
     $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form
-    
+
     $( "#tabs" ).bind( "tabsactivate", function(event, ui) {
         if (ui.newTab.index() > 4)    // Hide on import and copy tab, otherwise show
         {
@@ -175,24 +175,12 @@ function editParameter(rowid)
 
 function templatechange(template)
 {
+    /* @todo : fix it */
     standardtemplates=[
         'default',
-        'blue_sky',
-        'metro_ode',
-        'electric_black',
-        'night_mode',
-        'flat_and_modern',
-        'news_paper',
-        'light_and_shadow',
-        'material_design',
-        'readable',
-        'sandstone',
-        'minimalist',
-        'gunmetal',
-        'super_blue',
-        'ubuntu_orange',
-        'yeti'
-];
+        'test',
+        'basic',
+    ];
     if (in_array(template,standardtemplates))
     {
         $("#preview").attr('src',standardtemplaterooturl+'/'+template+'/preview.png');

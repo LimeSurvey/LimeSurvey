@@ -3439,7 +3439,7 @@ function do_shortfreetext($ia)
     global $thissurvey;
 
     $sGoogleMapsAPIKey  = trim(Yii::app()->getConfig("googleMapsAPIKey"));
-    $coreClass="ls-answers text-item";
+    $coreClass="ls-answers answer-item text-item";
     if ($sGoogleMapsAPIKey!='')
     {
         $sGoogleMapsAPIKey = '&key='.$sGoogleMapsAPIKey;
