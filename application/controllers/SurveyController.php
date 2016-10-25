@@ -98,8 +98,8 @@ class SurveyController extends LSYii_Controller
      * Show a message and exit
      * @param string $sType : type of message
      * @param string[] $aMessage :  array of message line to be shown
-     * @param string|null : $aUrl : if url can/must be set
-     * @param string[] $aErrors : array of errors to be shown
+     * @param string[]|null : $aUrl : if url can/must be set
+     * @param string[]|null $aErrors : array of errors to be shown
      * @return void
      **/
     function renderExitMessage($iSurveyId,$sType,$aMessages=array(),$aUrl=null,$aErrors=null)
