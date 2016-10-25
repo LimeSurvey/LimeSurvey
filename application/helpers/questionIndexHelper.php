@@ -106,7 +106,7 @@ class questionIndexHelper {
         foreach($sessionLem['grouplist'] as $step=>$groupInfo)
         {
             $groupInfo['step'] = $step + 1; /* We don't have a step if group is not relevant ? */
-            if( ($type>1 || $groupInfo['step'] < $sessionLem['maxstep']) // type==1 : incremental : must control step (start at or -1 ?)
+            if( ($type>1 || $groupInfo['step'] <= $sessionLem['maxstep']) // type==1 : incremental : must control step (start at or -1 ?)
                 && LimeExpressionManager::GroupIsRelevant($groupInfo['gid'])
             ){
                 $stepIndex[$step]=array(
@@ -119,7 +119,7 @@ class questionIndexHelper {
                 );
                 if($this->getStepInfo){
                     /* Get the current group info */
-                    if ($groupInfo['step'] < $sessionLem['maxstep'] && $groupInfo['step'] != $sessionLem['step']){
+                    if ($groupInfo['step'] <= $sessionLem['maxstep'] && $groupInfo['step'] != $sessionLem['step']){
                         /* @todo test until maxstep, but without try to submit */
                         $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($step);// Danger: Update the actual group, do it only after display all question in the page
                         $stepIndex[$step]['stepStatus']=array(
