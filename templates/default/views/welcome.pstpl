@@ -6,24 +6,20 @@ document.getElementById("checkjavascript").style.display = 'none';
 </script>
 <!-- Survey Description -->
 <div class="row" id="welcome-container">
-    <div class="col-sm-12 ">
-        <h1>{SURVEYNAME}</h1><br />
-        <p class='surveydescription text-info'>{SURVEYDESCRIPTION}</p>
-    </div>
-</div>
 
-<!-- Survey Welcome -->
-<div class="row survey-welcome">
-    <div class="col-sm-12 ">
-        <p class='surveywelcome'>
-            {WELCOME}
-        </p>
-    </div>
-</div>
+  <div class="survey-description col-sm-12 ">
+    <h1>{SURVEYNAME}</h1><br />
+    <p class="survey-description-text text-info">{SURVEYDESCRIPTION}</p>
+  </div>
 
-<!-- Question number -->
-<div class="row questions-number">
-    <div class="col-sm-12">
-        <p class="x-questions">{THEREAREXQUESTIONS}</p>
-    </div>
+
+  <!-- Survey Welcome -->
+  <div class="survey-welcome col-sm-12">
+    <p class="survey-welcome-text">{WELCOME}</p>
+  </div>
+
+  <!-- Question number -->
+  <div class="questions-number col-sm-12">
+    <p class="questions-number-text">{THEREAREXQUESTIONS}</p>
+  </div>
 </div>

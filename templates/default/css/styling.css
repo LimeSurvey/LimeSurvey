@@ -45,10 +45,9 @@ th {
 
 #welcome-container {
   background: white;
-  margin-top: 100px;
-  border-left: 1px solid #999;
-  border-right: 1px solid #999;
-  border-top: 1px solid #999; }
+  margin-top: 0px;
+  border: 1px solid #999;
+  margin-bottom: 15px; }
 
 .privacy-container {
   background: white;
