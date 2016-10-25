@@ -1276,12 +1276,11 @@ class SurveyRuntimeHelper {
             echo "\n\n<!-- START THE GROUP (in SurveyRunTime ) -->\n";
             echo "\n\n<div id='group-$_gseq'";
             $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
-
             if  ($gnoshow && !$previewgrp)
             {
                 echo " style='display: none;'";
             }
-            echo " class='row'>\n";
+            echo ">\n";
             echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
