@@ -233,8 +233,8 @@ class Template extends LSActiveRecord
         $aTemplateList=array();
         $aStandardTemplates=self::getStandardTemplateList();
         foreach($aStandardTemplates as $templateName){
-            $aTemplateList[$file]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$templateName;
-            $aTemplateList[$file]['preview'] = $standardtemplaterooturl.'/'.$templateName.'/preview.png';
+            $aTemplateList[$templateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$templateName;
+            $aTemplateList[$templateName]['preview'] = $standardtemplaterooturl.'/'.$templateName.'/preview.png';
         }
         if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
         {
