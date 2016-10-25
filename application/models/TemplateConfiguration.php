@@ -80,6 +80,7 @@ class TemplateConfiguration extends CFormModel
         // If the template directory doesn't exist, it can be that:
         // - user deleted a custom theme
         // In any case, we just set Default as the template to use
+
         if (!is_dir($this->path))
         {
             $this->sTemplateName = 'default';
