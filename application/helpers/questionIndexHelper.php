@@ -4,7 +4,7 @@
  *
  * @copyright 2016 LimeSurvey <http://www.limesurvey.org>
  * @license GPL v3
- * @version 0.0.1
+ * @version 0.0.2
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,19 +16,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-namespace ls\helpers;
-use Yii;
-use LimeExpressionManager;
-use viewHelper;
+//~ namespace ls\helpers;
+//~ use Yii;
+//~ use LimeExpressionManager;
+//~ use viewHelper;
 
 class questionIndexHelper {
-
-    /**
-     * Singleton variable
-     * @var questionIndexHelper
-     */
-    private static $instance = null;
-
     /**
      * Actual survey id
      * @var int surveyid
@@ -36,32 +29,28 @@ class questionIndexHelper {
     private $iSurveyId;
 
     /**
-     * The index type (used in view only)
-     * @var string $sIndexType
-     */
-    private $indexType;
-
-    /**
-     * Indexed actual items, leave it private actually.
+     * Indexed actual items,
      * @var array[]
      */
     private $indexItems;
 
-    private function __construct($iSurveyId)
-    {
-        $this->iSurveyId=$iSurveyId;
-    }
+    /**
+     * Add the step information to the indexed items from ExpressionManager
+     * Actually get the step information set the value of current step, can be done after done the current page, not before
+     * @var boolean
+     */
+    public $getStepInfo=false;
 
     /**
-     * @return questionIndexHelper
+     * Set the surveyid when construct
      */
-    public static function getInstance()
+    public function __construct()
     {
-        if (empty(self::$instance))
-        {
-            self::$instance = new questionIndexHelper(LimeExpressionManager::getLEMsurveyId());
-        }
-        return self::$instance;
+        /* Not needed actually : we have only one survey at a time */
+        //~ if(isset($this->indexItems) && $this->iSurveyId!=LimeExpressionManager::getLEMsurveyId()){
+            //~ $this->indexItems=null;
+        //~ }
+        $this->iSurveyId=LimeExpressionManager::getLEMsurveyId();
     }
 
     /**
@@ -71,9 +60,9 @@ class questionIndexHelper {
      */
     public function getIndexItems()
     {
-        if(is_array($this->indexItems)){
-            return $this->indexItems;
-        }
+        //~ if(is_array($this->indexItems)){
+            //~ return $this->indexItems;
+        //~ }
         $oSurvey=\Survey::model()->findByPk($this->iSurveyId);
         /* No survey => no index, don't set indexItems, maybe we where in survey after */
         if(!$oSurvey){
@@ -116,44 +105,68 @@ class questionIndexHelper {
         $stepIndex=array();
         foreach($sessionLem['grouplist'] as $step=>$groupInfo)
         {
+            $groupInfo['step'] = $step + 1; /* We don't have a step if group is not relevant ? */
             if( ($type>1 || $groupInfo['step'] < $sessionLem['maxstep']) // type==1 : incremental : must control step (start at or -1 ?)
                 && LimeExpressionManager::GroupIsRelevant($groupInfo['gid'])
             ){
-                $groupInfo['step'] = $step + 1; /* We don't have a step if group is not relevant ? */
-                /* Get the current group info */
-                if ($groupInfo['step'] < $sessionLem['maxstep'] && $groupInfo['step'] != $sessionLem['step']){
-                    $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($step);
-                    $stepStatus=array(
-                        'has-error'      => (bool) ($stepInfo['mandViolation'] || !$stepInfo['valid']),
-                        'has-unanswered' => (bool) $stepInfo['anyUnanswered'],
-                        'is-before'      => true,
-                        'is-current'     => false,
-                    );
-                }elseif($groupInfo['step'] == $sessionLem['step']){
-                    $stepStatus=array(
-                        'has-error'      => false,
-                        'has-unanswered' => false,
-                        'is-before'      => false,
-                        'is-current'     => true,
-                    );
-                }else{
-                    $stepStatus=array(
-                        'has-error'      => false,
-                        'has-unanswered' => false,
-                        'is-before'      => false,
-                        'is-current'     => false,
-                    );
-                }
-                //~ $submit=
                 $stepIndex[$step]=array(
                     'gid'=>$groupInfo['gid'],
                     'text'=>$groupInfo['group_name'],
                     'description'=>$groupInfo['description'],
                     'step'=>$groupInfo['step'],
-                    'stepStatus'=>$stepStatus,
                     'url'=>Yii::app()->getController()->createUrl("survey/index",array('sid'=>$this->iSurveyId,'move'=>$groupInfo['step'])),
                     'submit'=>ls_json_encode(array('move'=>$groupInfo['step'])),
                 );
+                if($this->getStepInfo){
+                    /* Get the current group info */
+                    if ($groupInfo['step'] < $sessionLem['maxstep'] && $groupInfo['step'] != $sessionLem['step']){
+                        /* @todo test until maxstep, but without try to submit */
+                        $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($step);// Danger: Update the actual group, do it only after display all question in the page
+                        $stepIndex[$step]['stepStatus']=array(
+                            'has-error'      => (bool) ($stepInfo['mandViolation'] || !$stepInfo['valid']),
+                            'has-unanswered' => (bool) $stepInfo['anyUnanswered'],
+                            'is-before'      => true,
+                            'is-current'     => false,
+                        );
+                    }elseif($groupInfo['step'] == $sessionLem['step']){
+                        $stepIndex[$step]['stepStatus']=array(
+                            'has-error'      => false,
+                            'has-unanswered' => false,
+                            'is-before'      => false,
+                            'is-current'     => true,
+                        );
+                    }else{
+                        $stepIndex[$step]['stepStatus']=array(
+                            'has-error'      => false,
+                            'has-unanswered' => false,
+                            'is-before'      => false,
+                            'is-current'     => false,
+                        );
+                    }
+                }else{
+                    if($groupInfo['step'] < $sessionLem['step']){
+                        $stepIndex[$step]['stepStatus']=array(
+                            'has-error'      => null,
+                            'has-unanswered' => null,
+                            'is-before'      => true,
+                            'is-current'     => false,
+                        );
+                    }elseif($groupInfo['step'] == $sessionLem['step']){
+                        $stepIndex[$step]['stepStatus']=array(
+                            'has-error'      => null,
+                            'has-unanswered' => null,
+                            'is-before'      => false,
+                            'is-current'     => true,
+                        );
+                    }else{
+                        $stepIndex[$step]['stepStatus']=array(
+                            'has-error'      => null,
+                            'has-unanswered' => null,
+                            'is-before'      => false,
+                            'is-current'     => false,
+                        );
+                    }
+                }
             }
         }
         return $stepIndex;
@@ -192,6 +205,7 @@ class questionIndexHelper {
     {
         $indexItems=$this->getIndexItems();
         if(!empty($indexItems)){
+            Yii::app()->getClientScript()->registerScript("manageIndex","manageIndex();",\CClientScript::POS_END);
             return Yii::app()->getController()->renderPartial("/survey/system/surveyIndex/groupIndex",array(
                 'type'=>$this->indexType,
                 'indexItems'=>$this->indexItems,

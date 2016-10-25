@@ -12,8 +12,15 @@
     </a>
     <ul class="dropdown-menu">
         <?php foreach($indexItems as $step=>$indexItem): ?>
-            <!-- bs class for testing : except text-danger : all other can use specific class (not from bs ?) but bg-danger is really great here -->
-            <li class="<?php echo ($indexItem['stepStatus']['has-unanswered'])? "bg-warning":"" ?> <?php echo ($indexItem['stepStatus']['has-error'])? "bg-danger":"" ?> <?php echo (!$indexItem['stepStatus']['is-before'])? "text-muted":"" ?> <?php echo ($indexItem['stepStatus']['is-current'])? "current active":"" ?>">
+            <?php
+                /* bs class for testing : bg-danger is really great here, but only if menu is set in navigator or after */
+                $statusClass = $indexItem['stepStatus']['has-unanswered'] ? " bg-warning":"";
+                $statusClass.= $indexItem['stepStatus']['has-error'] ? " bg-danger index-item-error":"";
+                $statusClass.= $indexItem['stepStatus']['is-before'] ? " index-item-before":"";
+                $statusClass.= $indexItem['stepStatus']['is-current'] ? " active index-item-current":"";
+
+            ?>
+            <li class="<?php echo $statusClass; ?>">
                 <a href='<?php echo $indexItem['url']; ?>' data-limesurvey-submit='<?php echo $indexItem['submit']; ?>'>
                     <?php echo $indexItem['text']; ?>
                 </a>

@@ -88,6 +88,7 @@ class SurveyRuntimeHelper {
         {
             $previewquestion = true;
         }
+
         //        if (isset($param['newtest']) && $param['newtest'] == "Y")
         //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
         $show_empty_group = false;
@@ -765,13 +766,16 @@ class SurveyRuntimeHelper {
         }
 
         //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-
         /**
          * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
          *
          */
-        $questionindex = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
-        $questionindexmenu = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
+        if(!$previewquestion && !$previewgrp){
+            Yii::import('application.helpers.questionIndexHelper',true);
+            $questionIndexHelper=new questionIndexHelper;
+            $questionindex = $questionIndexHelper->getIndexButton();
+            $questionindexmenu = $questionIndexHelper->getIndexLink();
+        }
 
         sendCacheHeaders();
         doHeader();
@@ -989,6 +993,11 @@ class SurveyRuntimeHelper {
         */
         if (!$previewgrp && !$previewquestion)
         {
+            /* Question index with information on each step, we are after page, we can call EM */
+            //$questionIndexHelper=new questionIndexHelper;
+            $questionIndexHelper->getStepInfo=true;
+            $questionindex = $questionIndexHelper->getIndexButton();
+            $questionindexmenu = $questionIndexHelper->getIndexLink();
 
             $aNavigator = surveymover();
             $moveprevbutton = $aNavigator['sMovePrevButton'];

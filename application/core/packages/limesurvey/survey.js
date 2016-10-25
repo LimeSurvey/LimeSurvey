@@ -10,9 +10,10 @@
  */
 
 function manageIndex(){
-    $("#index").on('click','li,.row',function(e){
-        if(!$(e.target).is('button')){
-            $(this).children("[name='move']").click();
+    /* only needed if it's not inside form (form#limesurvey) */
+    $(".ls-index-buttons").on('click','[name="move"]',function(e){
+        if(!$(this).closest('form').length && $('form#limesurvey').length==1){
+            $(this).clone().addClass("hidden").appendTo('form#limesurvey').click();
         }
     });
 }
