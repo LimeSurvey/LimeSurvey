@@ -114,3 +114,6 @@ label.radio-label, label.checkbox-label {
 
 .survey-expiry-wrapper {
   margin-top: 75px; }
+
+.btn-default {
+  border-color: #999; }
