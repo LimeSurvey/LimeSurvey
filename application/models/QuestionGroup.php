@@ -245,6 +245,13 @@ class QuestionGroup extends LSActiveRecord
         return $command->query();
     }
 
+    public function getQuestionsInGroup(){
+        $iGroupId = $this->gid;
+        $aQuestionIds = $this->getQuestionIdsInGroup($iGroupId);
+
+        return count($aQuestionIds);
+    }
+
     public function getbuttons()
     {
         // Find out if the survey is active to disable add-button

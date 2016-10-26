@@ -517,13 +517,13 @@ class questiongroups extends Survey_Common_Action
      * @see: https://github.com/mar10/fancytree/wiki/TutorialLoadData#pass-a-javascript-array
      *
      * @param int $surveyid
-     * @param string $langage
+     * @param string $language
      * @return string (json array)
      */
-    public function getGroupExplorerDatas($surveyid, $langage)
+    public function getGroupExplorerDatas($surveyid, $language)
     {
         $iSurveyID = (int) $surveyid;
-        $aGroups   = QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $langage);   // Get an array of Groups and questions
+        $aGroups   = QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $language);   // Get an array of Groups and questions
         $aDatas    = array();                                                               // The indexed array
 
         // Two task :
@@ -533,21 +533,37 @@ class questiongroups extends Survey_Common_Action
             $aGroupArray = array();
 
             $aGroupArray["key"]    = $aGroup->gid;                           // The key is used by fancy tree to build the node id.
-            $aGroupArray["title"]  = $aGroup->sanitized_group_name;          // The title will be shown as text
+            $aGroupArray["gid"]    = $aGroup->gid;
+            $aGroupArray["title"]  = (  // The title will be shown as text, but be truncated to max 28 letters
+                (mb_strlen($aGroup->sanitized_group_name, Yii::app()->charset) > 28) 
+                ? mb_substr($string, 0, 26, Yii::app()->charset)."…" 
+                : $aGroup->sanitized_group_name);          
             $aGroupArray["folder"] = true;                                   // Means it's a node with children
+            $aGroupArray["href"] = Yii::app()->createUrl('admin/questiongroups/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid));                                   // Means it's a node with children
+            $aGroupArray['extraClasses']   = 'lsi-tree-group-item';
             $aGroupArray['buttonlinks'] = array(
                 array(
                     'title'  => gT('Add a question to this group'),
-                    'url'    => 'someurl',
-                    'icon'   => 'glyphicon glyphicon-plus-sign',
+                    'url'    => Yii::app()->createUrl('admin/questions/sa/newquestion/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid)),
+                    'icon'   => 'fa fa-plus-circle',
                     'toggle' => 'tooltip',
+                    'cssclasses' => 'btn btn-xs btn-success',
 
                 ),
                 array(
-                    'title'    => 'test',
-                    'url'   => 'someurlTEST',
-                    'icon'  => 'glyphicon glyphicon-trash',
-                    'cssclasses' => 'btn btn-xs btn-danger',
+                    'title'    => gT('Delete this Group'),
+                    'url'   => Yii::app()->createUrl('admin/questiongroups/sa/delete/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid)),
+                    'icon'  => 'fa fa-trash-o',
+                    'toggle' => 'modal',
+                    'target' => '#confirmation-modal',
+                    'cssclasses' => 'btn btn-xs btn-danger deleteNode'
+                ),
+                array(
+                    'title'    => gT('Edit this group'),
+                    'url'   => Yii::app()->createUrl('admin/questiongroups/sa/edit/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid)),
+                    'icon'  => 'fa fa-edit',
+                    'toggle' => 'tooltip',
+                    'cssclasses' => 'btn btn-xs btn-default',
                 ),
             );
 
@@ -560,9 +576,24 @@ class questiongroups extends Survey_Common_Action
                 $aDatasQuestions['tooltip']  = $oQuestion->getSanitized_question();
                 $aDatasQuestions['href']     = Yii::app()->createUrl('admin/questions/sa/view/', array('surveyid' => $surveyid, 'gid' => $aGroup->gid, 'qid' => $oQuestion->qid));
                 $aDatasQuestions['toggle']   = 'tooltip';
-                $aDatasQuestions['placement']   = 'left';
+                $aDatasQuestions['placement']   = 'bottom';
+                $aDatasQuestions['extraClasses']   = 'lsi-tree-question-item';
                 $aDatasQuestions['buttonlinks'] = array(
-
+                    array(
+                    'title'    => gT('Delete this Question'),
+                    'url'   => Yii::app()->createUrl('admin/questions/sa/delete/', array('surveyid' => $iSurveyID, 'qid' => $oQuestion->qid)),
+                    'icon'  => 'fa fa-trash-o',
+                    'toggle' => 'modal',
+                    'target' => '#confirmation-modal',
+                    'cssclasses' => 'btn btn-xs btn-danger deleteNode',
+                ),
+                array(
+                    'title'    => gT('Edit this group'),
+                    'url'   => Yii::app()->createUrl('admin/questions/sa/editquestion/', array('surveyid' => $iSurveyID, 'qid' => $oQuestion->qid)),
+                    'icon'  => 'fa fa-edit',
+                    'toggle' => 'tooltip',
+                    'cssclasses' => 'btn btn-xs btn-default',
+                ),
                 );
 
                 $aGroupArray["children"][] = $aDatasQuestions;             // Doing that, we push the questions in the children array, as an unindexed array (no count)
@@ -574,10 +605,47 @@ class questiongroups extends Survey_Common_Action
         echo json_encode($jDatas);
     }
 
-    function getQuestionDetailData($surveyid, $langage, $gid, $qid){
+    function getQuestionDetailData($surveyid, $language, $gid=null, $qid=null){
         $iSurveyID = (int) $surveyid;
-        $oQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $langage));
+        if($qid === null){
+            $jDetailsArray = $this->collectQuestionGroupDetail($surveyid, $language, $gid);
+        } else {
+            $jDetailsArray = $this->collectQuestionDetail($surveyid, $language, $qid);
+        }
 
+        echo json_encode($jDetailsArray);
+        Yii::app()->end();
+    }
+    private function collectQuestionGroupDetail($surveyid, $language, $gid){
+
+        $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $language));
+        $jDetailsArray = array(print_r($oQuestionGroup,true));
+        $jDetailContent = "<div class='container-center'>
+            <dl>
+            <dt>".gT('Description')."</dt>
+            <dd class='text-right'>&nbsp;".$oQuestionGroup->getGroupDescription($gid,$language)."</dd>
+            
+            <dt>".gT('Questions')."</dt>
+            <dd class='text-right'>&nbsp;".$oQuestionGroup->questionsInGroup."</dd>
+
+            <dt>".gT('Randomization Group')."</dt>
+            <dd class='text-right'>&nbsp;".$oQuestionGroup->randomization_group."</dd>
+
+            <dt>".gT('Relevance')."</dt>
+            <dd class='text-right'>&nbsp;".LimeExpressionManager::UnitTestConvertConditionsToRelevance($surveyid,$oQuestionGroup->gid)."</dd>
+
+        </dl>";
+
+        $jDetailsArray = array(
+            'success' => true,
+            'title' => $oQuestionGroup->sanitized_group_name,
+            'content' => $jDetailContent
+        );
+        return $jDetailsArray;
+    }
+    private function collectQuestionDetail($surveyid, $language, $qid){
+
+        $oQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $language));
         $jDetailContent = "<div class='container-center'>
             <dl>
             <dt>".gT('Code')."</dt>
@@ -593,7 +661,7 @@ class questiongroups extends Survey_Common_Action
             <dd class='text-right'>&nbsp;".$oQuestion->otherIcon."</dd>
 
             <dt>".gT('Relevance equation')."</dt>
-            <dd class='text-right'>&nbsp;".LimeExpressionManager::UnitTestConvertConditionsToRelevance($iSurveyID,$oQuestion->qid)."</dd>
+            <dd class='text-right'>&nbsp;".LimeExpressionManager::UnitTestConvertConditionsToRelevance($surveyid,$oQuestion->qid)."</dd>
         </dl>";
 
         $jDetailsArray = array(
@@ -601,11 +669,8 @@ class questiongroups extends Survey_Common_Action
             'title' => $oQuestion->sanitized_title,
             'content' => $jDetailContent
         );
-
-        echo json_encode($jDetailsArray);
-        Yii::app()->end();
+        return $jDetailsArray;
     }
-
     /**
      * Renders template(s) wrapped in header and footer
      *
