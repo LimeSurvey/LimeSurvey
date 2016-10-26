@@ -1,6 +1,6 @@
-<div id="register">
-{if(REGISTERERROR,"<div class='alert alert-danger' role='alert'>"+REGISTERERROR+"</div>")}
-<div class='h3'>{REGISTERMESSAGE1}</div>
-<div class='h4'>{REGISTERMESSAGE2}</div>
-<div class="form register-form">{REGISTERFORM}</div>
+<div class="register well">
+  <div class='h3'>{REGISTERMESSAGE1}</div>
+  <div>{REGISTERMESSAGE2}</div>
+  {REGISTERERROR}
+  <div class="register-form">{REGISTERFORM}</div>
 </div>

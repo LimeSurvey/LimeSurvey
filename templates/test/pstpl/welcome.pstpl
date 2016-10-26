@@ -1,10 +1,10 @@
 {CHECKJAVASCRIPT}
 <div class="h1">{SURVEYNAME}</div>
-{if(!is_empty(SURVEYDESCRIPTION),'<div class="jumbotron surveydescrition">'+SURVEYDESCRIPTION+'</div>','')}
+<div class="lead surveydescrition">{SURVEYDESCRIPTION}</div>
 {LANGUAGECHANGER}
 <div class="welcome">
 	<div class="surveywelcome">
 	{WELCOME}
-	{if(!is_empty(THEREAREXQUESTIONS),"<div class='therearexquestions'>"+THEREAREXQUESTIONS+"</div>","")}
+	{THEREAREXQUESTIONS}
 	</div>
 </div>

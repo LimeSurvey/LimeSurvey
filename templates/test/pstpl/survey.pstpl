@@ -1,5 +1,5 @@
 <div class="h1">{SURVEYNAME}</div>
-{if(!is_empty(SURVEYDESCRIPTION),'<div class="jumbotron surveydescrition">'+SURVEYDESCRIPTION+'</div>','')}
+<div class="lead surveydescrition">{SURVEYDESCRIPTION}</div>
 
 <!-- Because without JS : LANGUAGECHANGER NEED to be in the form -->
 {LANGUAGECHANGER}

@@ -291,6 +291,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         {
             $_therearexquestions = gT("There are {NUMBEROFQUESTIONS} questions in this survey.");    //Note this line MUST be before {NUMBEROFQUESTIONS}
         };
+        $_therearexquestions = "<div class='question-count-text'>".$_therearexquestions."</div>";
     }
     else
     {
