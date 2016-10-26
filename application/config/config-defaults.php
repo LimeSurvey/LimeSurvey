@@ -336,9 +336,9 @@ $config['maxforgottenpasswordemaildelay'] =  1500000;
 
 $config['pdfdefaultfont'] = 'auto';              //Default font for the pdf Export
 /**
-*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific langage - this font are included in tcpdf core
+*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific language - this font are included in tcpdf core
 *  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
-*  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
+*  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile']=array(
     'ar'=>'dejavusans',// 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
@@ -407,7 +407,7 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 $config['chartfontfile']='auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific langage - this font must reside in <limesurvey root folder>/fonts
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
 *  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile']=array(
