@@ -45,10 +45,10 @@ th {
 
 #welcome-container {
   background: white;
-  margin-top: 100px;
-  border-left: 1px solid #999;
-  border-right: 1px solid #999;
-  border-top: 1px solid #999; }
+  margin-top: 0px;
+  border: 1px solid #999;
+  margin-bottom: 15px;
+  padding-bottom: 15px; }
 
 .privacy-container {
   background: white;
@@ -60,3 +60,12 @@ th {
 .yesno-button,
 .gender-button {
   max-width: 400px; }
+
+#outerframeContainer {
+  padding-bottom: 30px; }
+
+td.radio-item, td.checkbox-item {
+  text-align: center; }
+
+tr.ls-heading th {
+  text-align: center; }

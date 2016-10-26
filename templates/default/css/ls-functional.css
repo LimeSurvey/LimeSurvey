@@ -1,6 +1,5 @@
 #top-container {
-  position: relative;
-  top: 70px; }
+  position: relative; }
 
 #outer-frame {
   position: relative; }
@@ -8,9 +7,6 @@
 .form-horizontal .control-label {
   text-align: left;
   font-weight: normal; }
-
-.ls-label-xs-visibility {
-  display: none; }
 
 .ls-language-changer-item {
   text-align: center; }
@@ -47,17 +43,6 @@ ul.ls-answers {
 .ls-js-hidden-sr {
   display: none; }
 
-.array-checkbox td,
-.array-yes-uncertain-no td,
-.array-flexible-row td,
-.array-flexible-column td,
-.array-5-pt td,
-.array-10-pt td,
-.array-increase-same-decrease td,
-.array-flexible-duel-scale td,
-.array-flexible-dual-scale td {
-  text-align: center; }
-
 .ls-choice {
   background: white; }
 
@@ -69,3 +54,9 @@ ul.ls-answers {
 
 .text-right {
   float: right; }
+
+.survey-expiry-wrapper {
+  margin-top: 75px; }
+
+.ls-label-xs-visibility {
+  display: none; }
