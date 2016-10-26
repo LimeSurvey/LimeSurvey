@@ -148,7 +148,7 @@ class index extends CAction {
             $asMessage = array(gT('The token you provided doesn\'t match the one in your session.'));
             $aUrl=array(
                 'url'=>$sReloadUrl,
-                'type'=>'restartsurvey',
+                'type'=>'restart-survey',
                 'description'=>gT("Click here to start the survey.")
             );
             killSurveySession($surveyid);
@@ -173,7 +173,7 @@ class index extends CAction {
             );
             $aUrl=array(
                 'url'=>$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam),
-                'type'=>'restartsurvey',
+                'type'=>'restart-survey',
                 'description'=>gT("Click here to start the survey.")
             );
             killSurveySession($surveyid);
@@ -198,7 +198,7 @@ class index extends CAction {
                 );
                 App()->getController()->renderExitMessage(
                     $surveyid,
-                    'norights-410',
+                    'norights-401',
                     $aMessage,
                     null,
                     $aErrors
