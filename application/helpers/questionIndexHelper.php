@@ -29,6 +29,17 @@ class questionIndexHelper {
     private $iSurveyId;
 
     /**
+     * Index type : 0 : none, 1 incremental, 2 full
+     * @var int indexType
+     */
+    public $indexType;
+    /**
+     * Survey format : A : all in one, G: Group, S: questions
+     * @var string surveyFormat
+     */
+    public $surveyFormat;
+
+    /**
      * Indexed actual items,
      * @var array[]
      */
@@ -50,7 +61,16 @@ class questionIndexHelper {
         //~ if(isset($this->indexItems) && $this->iSurveyId!=LimeExpressionManager::getLEMsurveyId()){
             //~ $this->indexItems=null;
         //~ }
+        /* Put all in contruct variable ? */
         $this->iSurveyId=LimeExpressionManager::getLEMsurveyId();
+        $oSurvey=Survey::model()->findByPk($this->iSurveyId);
+        if($oSurvey){
+            $this->indexType=$oSurvey->questionindex;
+            $this->surveyFormat=$oSurvey->format;
+        }else{
+            $this->indexType=0;
+            $this->surveyFormat=null;
+        }
     }
 
     /**
@@ -60,35 +80,28 @@ class questionIndexHelper {
      */
     public function getIndexItems()
     {
+        /* Must add control on $this->getStepInfo */
         //~ if(is_array($this->indexItems)){
             //~ return $this->indexItems;
         //~ }
-        $oSurvey=\Survey::model()->findByPk($this->iSurveyId);
-        /* No survey => no index, don't set indexItems, maybe we where in survey after */
-        if(!$oSurvey){
+        if(!$this->indexType){
             return array();
         }
         /* @todo Find if we where in preview mode : deactivate index or not set if preview */
-
-        $this->indexType=$oSurvey->questionindex;
-        switch ($oSurvey->format){
+        switch ($this->surveyFormat){
             case 'A': //All in one : no indexItems
                 $this->indexItems=array();
                 return $this->indexItems;
             case 'G': //Group at a time
                 $this->indexItems=$this->getIndexItemsGroups($this->indexType);
                 return $this->indexItems;
-            case 'Q': //Group at a time
+            case 'S': //Question at a time
                 $this->indexItems=$this->getIndexItemsQuestions($this->indexType);
                 return $this->indexItems;
             default:
         }
     }
 
-    private function getIndexStep()
-    {
-        $indexItems=$this->getIndexItems();
-    }
     /**
      * return the index item in goup by group mode
      * @var integer $type : 0 : None , 1 : Incremental, 2: full
@@ -105,10 +118,13 @@ class questionIndexHelper {
         $stepIndex=array();
         foreach($sessionLem['grouplist'] as $step=>$groupInfo)
         {
-            $groupInfo['step'] = $step + 1; /* We don't have a step if group is not relevant ? */
-            if( ($type>1 || $groupInfo['step'] <= $sessionLem['maxstep']) // type==1 : incremental : must control step (start at or -1 ?)
-                && LimeExpressionManager::GroupIsRelevant($groupInfo['gid'])
+            /* EM step start at 1, we start at 0*/
+            $groupInfo['step'] = $step + 1;
+            if( ($type>1 || $groupInfo['step'] <= $sessionLem['maxstep'])  // type==1 : incremental : must control step
+                && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // always add it if unrelevant/hidden : only tested after when try to view it (in EM)
             ){
+                /* @todo : fix string ? */
+                /* viewHelper::flatEllipsizeText(LimeExpressionManager::ProcessString($groupInfo['group_name']),true,80,"&hellip;",0.6); for exemple */
                 $stepIndex[$step]=array(
                     'gid'=>$groupInfo['gid'],
                     'text'=>$groupInfo['group_name'],
@@ -116,56 +132,26 @@ class questionIndexHelper {
                     'step'=>$groupInfo['step'],
                     'url'=>Yii::app()->getController()->createUrl("survey/index",array('sid'=>$this->iSurveyId,'move'=>$groupInfo['step'])),
                     'submit'=>ls_json_encode(array('move'=>$groupInfo['step'])),
+                    'stepStatus'=>array(
+                        'is-before' => ($groupInfo['step'] < $sessionLem['step']),
+                        'is-seen' => ($groupInfo['step'] < $sessionLem['maxstep']),
+                        'is-current' => ($groupInfo['step'] == $sessionLem['step']),
+                    ),
                 );
                 if($this->getStepInfo){
                     /* Get the current group info */
                     if ($groupInfo['step'] <= $sessionLem['maxstep'] && $groupInfo['step'] != $sessionLem['step']){
                         /* @todo test until maxstep, but without try to submit */
                         $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($step);// Danger: Update the actual group, do it only after display all question in the page
-                        $stepIndex[$step]['stepStatus']=array(
-                            'has-error'      => (bool) ($stepInfo['mandViolation'] || !$stepInfo['valid']),
-                            'has-unanswered' => (bool) $stepInfo['anyUnanswered'],
-                            'is-before'      => true,
-                            'is-current'     => false,
-                        );
-                    }elseif($groupInfo['step'] == $sessionLem['step']){
-                        $stepIndex[$step]['stepStatus']=array(
-                            'has-error'      => false,
-                            'has-unanswered' => false,
-                            'is-before'      => false,
-                            'is-current'     => true,
-                        );
+                        $stepIndex[$step]['stepStatus']['has-error'] = (bool) ($stepInfo['mandViolation'] || !$stepInfo['valid']);
+                        $stepIndex[$step]['stepStatus']['has-unanswered'] = (bool) $stepInfo['anyUnanswered'];
                     }else{
-                        $stepIndex[$step]['stepStatus']=array(
-                            'has-error'      => false,
-                            'has-unanswered' => false,
-                            'is-before'      => false,
-                            'is-current'     => false,
-                        );
+                        $stepIndex[$step]['stepStatus']['has-error'] = null;
+                        $stepIndex[$step]['stepStatus']['has-unanswered'] = null;
                     }
                 }else{
-                    if($groupInfo['step'] < $sessionLem['step']){
-                        $stepIndex[$step]['stepStatus']=array(
-                            'has-error'      => null,
-                            'has-unanswered' => null,
-                            'is-before'      => true,
-                            'is-current'     => false,
-                        );
-                    }elseif($groupInfo['step'] == $sessionLem['step']){
-                        $stepIndex[$step]['stepStatus']=array(
-                            'has-error'      => null,
-                            'has-unanswered' => null,
-                            'is-before'      => false,
-                            'is-current'     => true,
-                        );
-                    }else{
-                        $stepIndex[$step]['stepStatus']=array(
-                            'has-error'      => null,
-                            'has-unanswered' => null,
-                            'is-before'      => false,
-                            'is-current'     => false,
-                        );
-                    }
+                    $stepIndex[$step]['stepStatus']['has-error'] = null;
+                    $stepIndex[$step]['stepStatus']['has-unanswered'] = null;
                 }
             }
         }
@@ -178,21 +164,27 @@ class questionIndexHelper {
      */
     private function getIndexItemsQuestions($type)
     {
-        return array("I do it ...");
+        $sessionLem=Yii::app()->session["survey_{$this->iSurveyId}"];
+        $questionList=$sessionLem['fieldmap'];
+        /* Remove all uneeded fieldmap : not needed : we test the "questionSeq" */
+        $stepIndex=array();
+        foreach($sessionLem['fieldmap'] as $step=>$questionInfo)
+        {
+
+        }
+        return array("WIP");
     }
 
     /**
      * Return html for list of link
+     * @return string : html to be used
      */
     public function getIndexLink()
     {
         $indexItems=$this->getIndexItems();
         if(!empty($indexItems)){
             Yii::app()->getClientScript()->registerScript("activateActionLink","activateActionLink();",\CClientScript::POS_END);
-            return Yii::app()->getController()->renderPartial("/survey/system/surveyIndex/groupIndexMenuLink",array(
-                'type'=>$this->indexType,
-                'indexItems'=>$this->indexItems,
-            ),true);
+            return $this->getIndexHtml($this->surveyFormat,'link');
         }else{
             return '';
         }
@@ -200,18 +192,51 @@ class questionIndexHelper {
 
     /**
      * Return html for list of button
+     * @return string : html to be used
      */
     public function getIndexButton()
     {
         $indexItems=$this->getIndexItems();
         if(!empty($indexItems)){
             Yii::app()->getClientScript()->registerScript("manageIndex","manageIndex();",\CClientScript::POS_END);
-            return Yii::app()->getController()->renderPartial("/survey/system/surveyIndex/groupIndex",array(
-                'type'=>$this->indexType,
-                'indexItems'=>$this->indexItems,
-            ),true);
+            return $this->getIndexHtml($this->surveyFormat);
         }else{
             return '';
         }
+    }
+    /**
+     * Return html with params
+     * @var string : $surveyFormat (G|S)
+     * @var string : $viewType (link|button)
+     *
+     * @return string : html to be used
+     */
+    private function getIndexHtml($surveyFormat,$viewType='button')
+    {
+        switch($surveyFormat){
+            case 'G':
+                $viewFile="groupIndex";
+                break;
+            case 'S':
+                $viewFile="questionIndex";
+                break;
+            default:
+                Yii::log("Uknow survey format for question index, must be G or S.", 'error','application.helpers.questionIndexHelper');
+                return "";
+        }
+        switch($viewType){
+            case 'button':
+                break;
+            case 'link':
+                $viewFile.="MenuLink";
+                break;
+            default:
+                Yii::log("Uknow view type for question index, must be button or link.", 'error','application.helpers.questionIndexHelper');
+                return "";
+        }
+        return Yii::app()->getController()->renderPartial("/survey/system/surveyIndex/{$viewFile}",array(
+            'type'=>$this->indexType,
+            'indexItems'=>$this->indexItems,
+        ),true);
     }
 }
