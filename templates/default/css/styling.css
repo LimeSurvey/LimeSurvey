@@ -60,3 +60,6 @@ th {
 .yesno-button,
 .gender-button {
   max-width: 400px; }
+
+#outerframeContainer {
+  padding-bottom: 30px; }

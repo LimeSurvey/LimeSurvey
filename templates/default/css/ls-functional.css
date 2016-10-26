@@ -43,17 +43,6 @@ ul.ls-answers {
 .ls-js-hidden-sr {
   display: none; }
 
-.array-checkbox td,
-.array-yes-uncertain-no td,
-.array-flexible-row td,
-.array-flexible-column td,
-.array-5-pt td,
-.array-10-pt td,
-.array-increase-same-decrease td,
-.array-flexible-duel-scale td,
-.array-flexible-dual-scale td {
-  text-align: center; }
-
 .ls-choice {
   background: white; }
 
@@ -71,6 +60,3 @@ ul.ls-answers {
 
 .ls-label-xs-visibility {
   display: none; }
-
-tr.ls-heading th {
-  text-align: center; }
