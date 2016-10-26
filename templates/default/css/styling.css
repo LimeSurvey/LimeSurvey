@@ -96,3 +96,12 @@ label.radio-label, label.checkbox-label {
 .multiple-short-txt .form-group,
 .numeric-multi .form-group {
   margin-bottom: 10px; }
+
+.well {
+  background-color: #fff;
+  border: 1px solid #999;
+  border-radius: 0px;
+  box-shadow: none;
+  margin-bottom: 20px;
+  min-height: 20px;
+  padding: 15px; }
