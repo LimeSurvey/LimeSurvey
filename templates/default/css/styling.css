@@ -105,3 +105,12 @@ label.radio-label, label.checkbox-label {
   margin-bottom: 20px;
   min-height: 20px;
   padding: 15px; }
+
+.multiple-opt .ls-answers li {
+  margin-bottom: 10px; }
+
+.ls-choice {
+  background: white; }
+
+.survey-expiry-wrapper {
+  margin-top: 75px; }

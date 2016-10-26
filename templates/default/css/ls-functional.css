@@ -15,6 +15,9 @@
   margin-top: 15px;
   margin-bottom: 0; }
 
+.ls-label-xs-visibility {
+  display: none; }
+
 @media (max-width: 768px) {
   .ls-label-xs-visibility {
     display: normal; } }
@@ -37,14 +40,8 @@ ul.ls-answers {
 .ls-js-hidden-sr {
   display: none; }
 
-.ls-choice {
-  background: white; }
-
 .checkbox, .radio {
   display: table-cell; }
 
-.survey-expiry-wrapper {
-  margin-top: 75px; }
-
-.ls-label-xs-visibility {
-  display: none; }
+.slider.slider-horizontal {
+  width: 100%; }
