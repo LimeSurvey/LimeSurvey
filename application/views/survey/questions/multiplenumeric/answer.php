@@ -30,7 +30,7 @@
         'sInputContainerWidth'=>$sInputContainerWidth,
         'prefix'=>$prefix,
         'suffix'=>$suffix,
-    ),true);
+    ),false);
 ?>
 
 </ul>
