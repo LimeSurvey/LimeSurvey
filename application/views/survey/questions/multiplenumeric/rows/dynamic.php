@@ -25,7 +25,7 @@
                 {<?php echo $sumRemainingEqn;?>}
             </div>
             <?php if ($suffix != ''): ?>
-                <div class="ls-input-group-extra suffix-text suffix text-right">
+                <div class="ls-input-group-extra suffix-text suffix text-left">
                     <?php echo $suffix; ?>
                 </div>
             <?php endif; ?>
@@ -48,7 +48,7 @@
                 {<?php echo $sumEqn; ?>}
             </div>
             <?php if ($suffix != ''): ?>
-                <div class="ls-input-group-extra suffix-text suffix text-right">
+                <div class="ls-input-group-extra suffix-text suffix text-left">
                     <?php echo $suffix; ?>
                 </div>
             <?php endif; ?>
