@@ -5,6 +5,13 @@ div[id^="question"] {
   background-color: #ededed;
   margin-bottom: 1em; }
 
+.question-help-container .questionhelp {
+  padding-bottom: 5px;
+  padding-top: 5px; }
+
+.ls-em-tip {
+  padding-top: 5px; }
+
 .group-description-container {
   margin-bottom: 15px; }
 
@@ -16,7 +23,9 @@ div[id^="question"] {
 .question-answer-container {
   border-left: 1px solid #999;
   border-right: 1px solid #999;
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid #999; }
+
+.answer-container {
   padding-top: 10px;
   padding-bottom: 10px; }
 
@@ -69,3 +78,21 @@ td.radio-item, td.checkbox-item {
 
 tr.ls-heading th {
   text-align: center; }
+
+.answer-container .form-group {
+  margin-bottom: 0; }
+
+label.radio-label, label.checkbox-label {
+  display: inline; }
+
+.choice-5-pt-radio .answer-item {
+  margin-right: 10px; }
+
+@media (max-width: 768px) {
+  .choice-5-pt-radio .answer-item {
+    display: block; } }
+
+.multiple-opt-comments .form-group,
+.multiple-short-txt .form-group,
+.numeric-multi .form-group {
+  margin-bottom: 10px; }

@@ -19,12 +19,6 @@
   .ls-label-xs-visibility {
     display: normal; } }
 
-.question-help-container .questionhelp {
-  padding-bottom: 5px; }
-
-.ls-em-tip {
-  padding-top: 5px; }
-
 div.question-help:empty {
   display: none; }
 
