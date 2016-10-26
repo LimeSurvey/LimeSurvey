@@ -8,9 +8,6 @@
   text-align: left;
   font-weight: normal; }
 
-.ls-label-xs-visibility {
-  display: none; }
-
 .ls-language-changer-item {
   text-align: center; }
 
@@ -71,3 +68,9 @@ ul.ls-answers {
 
 .survey-expiry-wrapper {
   margin-top: 75px; }
+
+.ls-label-xs-visibility {
+  display: none; }
+
+tr.ls-heading th {
+  text-align: center; }

@@ -47,7 +47,8 @@ th {
   background: white;
   margin-top: 0px;
   border: 1px solid #999;
-  margin-bottom: 15px; }
+  margin-bottom: 15px;
+  padding-bottom: 15px; }
 
 .privacy-container {
   background: white;

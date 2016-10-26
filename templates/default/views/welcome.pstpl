@@ -1,15 +1,17 @@
 <div class="alert alert-danger" role="alert"  id="checkjavascript">
     {CHECKJAVASCRIPT}
 </div>
+
 <script>
-document.getElementById("checkjavascript").style.display = 'none';
+  document.getElementById("checkjavascript").style.display = 'none';
 </script>
+
 <!-- Survey Description -->
 <div class="row" id="welcome-container">
 
   <div class="survey-description col-sm-12 ">
     <h1>{SURVEYNAME}</h1><br />
-    <p class="survey-description-text text-info">{SURVEYDESCRIPTION}</p>
+    <p class="survey-description-text">{SURVEYDESCRIPTION}</p>
   </div>
 
 
