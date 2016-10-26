@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+	<script src="//code.jquery.com/jquery-1.12.1.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win8/ui.fancytree.css" rel="stylesheet" type="text/css">
+
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+	<script src="test-dnd-sortable-5.js" type="text/javascript"></script>
+
+	<style type="text/css" media="screen,print">
+		body,div,h5,h4,h3,h2,h1,p { margin: 0; padding: 0; }
+		body { padding: 1%; font-family: lucidiagrande, helvetica; }
+		h1,h2,h3,h4,h5 { margin: 1% 0; }
+		.column { display: inline-block; width: 45%; margin: 1%; padding: 1%; vertical-align: top; border: 1px solid gray; }
+		.selected { background-color: #ffff50; outline: 2px solid #008; }
+		#sortablelist2 { list-style-type: none; list-style-image; none; margin-left: 0; display: inline; }
+		#sortablelist2 li { margin-left: 0; display: inline; }
+
+	/* Only for the TODO list */
+
+	li.done {
+		text-decoration: line-through;
+		color: gray;
+	}
+
+	/* Current CSS would scale embedded images to 16x16 */
+
+	.fancytree-container img {
+		height: 50px;
+		width: inherit;
+	}
+
+	/* Current Win8 theme would style 'active' in nearly the same color as 'selected' */
+
+	span.fancytree-node.fancytree-active,
+	span.fancytree-node.fancytree-active:hover {
+		background-color: inherit;
+		outline: 1px solid #DEDEDE;
+	}
+	.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-active,
+	.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-active:hover {
+		background-color: inherit;
+		outline: 1px solid #26A0DA;
+	}
+	span.fancytree-node.fancytree-selected,
+	span.fancytree-node.fancytree-selected:hover {
+		background-color: #F7F7F7;
+		border-color: #DEDEDE;
+	}
+	.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-selected,
+	.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-selected:hover {
+		background-color: #CBE8F6;
+		border-color: #26A0DA;
+	}
+	</style>
+</head>
+
+<body>
+
+<h2>Fancytree Drag &amp; Drop - Advanced Example</h2>
+
+<div class="column">
+	<h3>Fancytree</h3>
+	<div id="fancytree"></div>
+</div>
+
+<div class="column">
+	<h3>Source List (realized as tree)</h3>
+	<div id="fancytree2">
+
+	<ul id="sourceItems">
+		<li><img src="http://24.media.tumblr.com/99157be93c9dcd2b69dcb5968577d72c/tumblr_mnw347ZXUP1r83y3do1_250.jpg" height="50"> Bugatti Atlantic</li>
+		<li><img src="http://25.media.tumblr.com/0edbf543510b5ad91d6eb3584f3e48c9/tumblr_mnbokkaAHL1r2szepo1_250.jpg" height="50"> Porsche 911 (w/girl)</li>
+		<li><img src="http://25.media.tumblr.com/7fa5fe7abcf9cceafa1f3fbc5ea6751e/tumblr_mmhjvbFYfc1qzleu4o1_250.jpg" height="50"> Lamborghini Miura</li>
+		<li><img src="http://24.media.tumblr.com/86172205e20353fe369f66986ee8f67e/tumblr_mnufj449bY1sseamio1_250.jpg" height="100"> Item 4</li>
+		<li><img src="http://25.media.tumblr.com/14bbabd6fdbcd0208ad77bcc435b6c5d/tumblr_mnbpfmnRrT1rgzuyso8_250.jpg" height="100"> Item 5</li>
+	</ul>
+	</div>
+</div>
+
+
+<h4>Photo Gallery List - &lt;ul> list as standard jQuery Draggable (but not Sortable)</h4>
+<ul id="sortablelist2" class="sortablelist">
+	<li><img src="http://24.media.tumblr.com/99157be93c9dcd2b69dcb5968577d72c/tumblr_mnw347ZXUP1r83y3do1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/06312c3198ed1b0d85f8f2f1620cae1d/tumblr_mnw347ZXUP1r83y3do2_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/bb105bd6e9623476f0be2f40db2eb170/tumblr_mij3dtodG21r0zreto1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/tumblr_lol5ruap5f1qilaalo1_250.png" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/0edbf543510b5ad91d6eb3584f3e48c9/tumblr_mnbokkaAHL1r2szepo1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/d84c049e074b59ec12e50c2c9598a8aa/tumblr_mnxh31gA6c1qm6egko1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/8881052c0c630915a6f6cfb9a6c379c4/tumblr_mntktonwtd1s5d86co1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/27febde8cd26656115970904f8dc8057/tumblr_mnmn0gIl9W1sshgazo1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/86172205e20353fe369f66986ee8f67e/tumblr_mnufj449bY1sseamio1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/7fa5fe7abcf9cceafa1f3fbc5ea6751e/tumblr_mmhjvbFYfc1qzleu4o1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/e2f22d7ffc546dc7c4ca174ec77a3ccf/tumblr_mnbpfmnRrT1rgzuyso3_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/14bbabd6fdbcd0208ad77bcc435b6c5d/tumblr_mnbpfmnRrT1rgzuyso8_250.jpg" height="100"></li>
+</ul>
+
+
+<h4>Todos for Left Fancytree</h4>
+<ul>
+	<li class="done">Native cross-tree copyTo
+	<li class="done">Native cross-tree moveTo
+	<li>(Non-)contiguous multi-select using modifier key (Ctrl/Opt)
+	<li>Drag &amp; Drop reorder of nodes from the same tree (multi selected)
+	<li class="done">Drag &amp; Drop single or multiple selected nodes from left tree
+		(including lazy-loading)
+	<li>Native support for multi-node DnD (currently implemented using the std. callbacks):<br>
+		- includes multi-node helper image<br>
+		- Also sometimes the order is reverted.
+	<li>Native support for multi select with Click + SHIFT and CTRL (currently implemented using the std. callbacks)<br>
+		SHIFT: Only inside the same parent.<br>
+		Also, Click + Shift could allow to <b>extend</b>b> a current range.
+	<li>Prevent dropping from left list to the active node
+	<li>Update a counter and send an ajax request on drop
+	<li>Currently we also implement a 'pill' or 'badge' on the line item that
+		shows how many sub-items are in the folder, they are similar to these
+		Badges - http://twitter.github.io/bootstrap/components.html#labels-badges.
+</ul>
+
+
+<h4>Todos for Right Fancytree</h4>
+<ul>
+	<li class="done">Images inside nodes are scaled to 16x16
+	<li class="done">Drop target marker should consider the real node height
+	<li class="done">(Non-)contiguous multi-select using modifier key (Ctrl/Opt)
+	<li class="done">Drag &amp; Drop reorder of nodes from the same tree (multi selected)
+	<li class="done">Add Fancytree-like D&D target icons to Sortable list sorts
+		so they look the same as Fancytree sorts & drops
+	<li>Optimize CSS for better disambiguation of 'Selcted' vs. 'Active' nodes<br>
+		Suggestions welcome!
+	<li>'Nothing is droppable on the right side (though the right is multi-selectable and sortable within itself)'<br>
+		QUESTION: shouldn't it be possible to drop from the gallery here?
+</ul>
+
+
+<h4>Todos for Photo Gallery Draggable List</h4>
+<ul>
+	<li>Click one Sortable list item to highlight it, then Shift Click another
+		item to select multiple contiguous items in Sortable list [like your OS does]
+	<li>Dragging a Draggable over the right tree does not revert, although invalid
+	<li>Make Sortable --> no working solution yet, so the should not be a MUST HAVE
+</ul>
+
+</body>
+</html>

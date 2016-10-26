@@ -1,0 +1,34 @@
+<!-- Header -->
+<h3>
+	{{#if vernacularName}} {{vernacularName}} {{else}} {{canonicalName}} {{/if}}
+	{{#if profile.extinct}} <span class="label label-danger">Extinct</span> {{/if}}
+	<small>{{rank}}</small>
+</h3>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+	<li role="presentation" class="active">
+		<a href="#tabDetails" aria-controls="tabDetails" role="tab" data-toggle="tab">
+			Details
+		</a>
+	</li>
+	<li role="presentation">
+		<a href="#tabMedia" aria-controls="tabMedia" role="tab" data-toggle="tab">
+			Media
+			<span id="mediaCounter" class="badge"></span>
+		</a>
+	</li>
+</ul>
+<!-- Tab panes -->
+<div class="tab-content">
+	<div role="tabpanel" class="tab-pane active pane panel panel-default" id="tabDetails">
+		{{> tmplDetails}}
+	</div>
+	<div role="tabpanel" class="tab-pane panel panel-default" id="tabMedia">
+		{{> tmplMedia}}
+	</div>
+</div>
+<hr>
+<small>
+Accessed via <a href="http://www.gbif.org/dataset/{{datasetKey}}">GBIF Secretariat: GBIF Backbone Taxonomy</a> on {{now}}.<br>
+Open <a href="http://www.gbif.org/species/{{key}}"target="_blank">Authorative Information on GBIF</a>.
+</small>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+		<title>
+			Fancytree - Example
+		</title>
+		<script src="../lib/jquery.js" type="text/javascript">
+		</script>
+		<script src="../lib/jquery-ui.custom.js" type="text/javascript">
+		</script>
+		<link href="../src/skin-xp/ui.fancytree.css" rel="stylesheet" type="text/css">
+		<script src="../src/jquery.fancytree.js" type="text/javascript">
+		</script>
+		<script type="text/javascript">
+			function ExpandAll3() {
+				var start = new Date().getTime();
+
+				$("#tree").fancytree("getRootNode").visit(function(node) {
+					node.setExpanded(true);
+				});
+
+				var end = new Date().getTime();
+				var time = end - start;
+				console.log('expand time: ' + time);
+
+				expanddone = new Date().getTime();
+			}
+			$(function() {
+				//no animations and no render/create node events
+				console.time("initial_load");
+				$("#tree").fancytree({
+					source: {
+						url: "ajax10k_nodes.json"
+					},
+					lazyLoad: function(event, data) {
+						data.result = {url: "ajax10k_nodes.json"};
+					},
+					init: function(event, data) {
+						console.timeEnd("initial_load");
+						console.info("loaded " + data.tree.count() + " nodes");
+					}
+				});
+
+				$("#btnExpandAll").click(function() {
+					ExpandAll3();
+				});
+				$("#btnLoadCur").click(function() {
+					console.time("load");
+					$.ui.fancytree.getTree().getActiveNode().load(false).done(function(){
+						console.timeEnd("load");
+					});
+				});
+				$("#btnLoadCurForce").click(function() {
+					console.time("load force");
+					$.ui.fancytree.getTree().getActiveNode().load(true).done(function(){
+						console.timeEnd("load force");
+					});
+				});
+				$("#btnPageRender").click(function() {
+					var end = new Date().getTime();
+					var holdingtime = end - expanddone;
+
+					$("#pagerender").text(holdingtime);
+
+				});
+			});
+
+			var expanddone;
+		</script>
+	</head>
+
+	<body class="example">
+		<button id="btnExpandAll"> Expand All Folders </button>
+		<button id="btnPageRender">
+			Click After the Page Stops Rendering (scrollbar appears/icons load)
+		</button>
+		<button id="btnLoadCur"> Load </button>
+		<button id="btnLoadCurForce"> Load(force) </button>
+		<br>Page render <span id="pagerender"> </span>
+		<p>
+			Tree with embedded JSON data
+		</p>
+		<div id="tree" class="sampletree">
+		</div>
+	</body>
+
+</html>

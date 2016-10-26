@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+	<script src="//code.jquery.com/jquery-1.12.1.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+
+	<style type="text/css" media="screen,print">
+		body,div,h5,h4,h3,h2,h1,p { margin: 0; padding: 0; }
+		body { padding: 1%; font-family: lucidiagrande, helvetica; }
+		h1,h2,h3,h4,h5 { margin: 1% 0; }
+
+		.column { display: inline-block; width: 45%; margin: 1%; padding: 1%; vertical-align: top; border: 1px solid gray; }
+		.selected { background-color: #ffff50; }
+
+		#sortablelist2 { list-style-type: none; list-style-image: none; margin-left: 0; /*display: inline;*/ }
+		#sortablelist2 li { margin-left: 0; display: inline-block; }
+	</style>
+
+	<script type="text/javascript" charset="utf-8">
+
+		$(document).ready(function(){
+
+			// fancytree on left
+			$("#fancytree").fancytree({
+				extensions: ["dnd"],
+//				source: { url: "unit/ajax-tree-plain.json" },
+				source: [
+						 {title: "Folder1", folder: true },
+						 {title: "Folder2", folder: true },
+						 {title: "Folder3", folder: true }
+						 ],
+				dnd: {
+//					preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+//					preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+					autoExpandMS: 400,
+					dragStart: function(node, data) {
+						return false;
+					},
+					dragEnter: function(node, data) {
+					   return true;
+					},
+					dragDrop: function(node, data) {
+//						alert("drop");
+//						data.otherNode.moveTo(node, data.hitMode);
+						node.getParent().addChildren([{title: "new node dropped"}]);//, node.getNextSibling());
+					}
+				},
+				activate: function(event, data) {
+	//				alert("activate " + data.node);
+				},
+				lazyLoad: function(event, data) {
+//                    data.result = {url: "fancytree-master/demo/ajax-sub2.json"}
+					data.result = {url: "unit/ajax-sub2.json"}
+				}
+			});
+
+			// sortable list on right
+			$('#sortablelist1').sortable({
+//				revert: true,
+				opacity: 0.3,
+//				connectWith: "fancytree-container",
+//                connectToFancytree: true,
+				update: function(event, ui) {
+					alert("update");
+				},
+				start: function(event,ui) {
+
+					console.log('sortable drag start');
+
+					// add selected siblings to ui item
+					ui.item.siblings(".selected").appendTo(ui.item);
+
+				},
+				stop: function(event,ui) {
+
+					console.log('sortable drag stop');
+
+					// drop item after the li
+					ui.item.after(ui.item.find("li"));
+				},
+			});
+
+			// sortable list on right
+			$('#sortablelist2').sortable({
+//              revert: true,
+				opacity: 0.3,
+//                connectWith: "#sortablelist1",
+//                connectToFancytree: true,
+				update: function(event, ui) {
+//                    alert("update");
+				},
+				start: function(event,ui) {
+					console.log('sortable drag start');
+
+					// add selected siblings to ui item
+					ui.item.siblings(".selected").appendTo(ui.item);
+
+				},
+				stop: function(event,ui) {
+
+					console.log('sortable drag stop');
+
+					// drop item after the li
+					ui.item.after(ui.item.find("li"));
+				},
+			});
+/*
+			$("#sortablelist1 li").draggable({
+				revert: false, //"invalid",
+//		        connectToFancytree: true,
+				connctToSortable: "#sortablelist1",
+				cursorAt: { top: -5, left: -5 },
+				helper: "clone"
+			});
+*/
+			// click event for the highlighting of line items, filtered by modifier key
+/*
+			$(".sortablelist li").click(function(event){
+				var ctrl = event.ctrlKey || event.altKey || event.metaKey;
+				if (ctrl) {
+					//$("#sortablelist").sortable("option", "helper", 'clone');
+					$(this).toggleClass('selected');
+				} else {
+					$(".sortablelist li").removeClass('selected');
+					$(this).addClass('selected');
+				}
+			});
+*/
+		});
+
+	</script>
+</head>
+<body>
+
+<h2>Fancytree Drag &amp; Drop - Advanced Example</h2>
+
+<div class="column">
+	<h3>Fancytree</h3>
+	<div id="fancytree"></div>
+</div>
+
+<div class="column">
+	<h3>Sortable List 1</h3>
+	<ul id="sortablelist1" class="sortablelist">
+		<li>Item 1</li>
+		<li>Item 2</li>
+		<li>Item 3</li>
+		<li>Item 4</li>
+		<li>Item 5</li>
+		<li><img src="http://24.media.tumblr.com/99157be93c9dcd2b69dcb5968577d72c/tumblr_mnw347ZXUP1r83y3do1_250.jpg" height="50"> Bugatti Atlantic</li>
+		<li><img src="http://25.media.tumblr.com/0edbf543510b5ad91d6eb3584f3e48c9/tumblr_mnbokkaAHL1r2szepo1_250.jpg" height="50"> Porsche 911 (w/girl)</li>
+		<li><img src="http://25.media.tumblr.com/7fa5fe7abcf9cceafa1f3fbc5ea6751e/tumblr_mmhjvbFYfc1qzleu4o1_250.jpg" height="50"> Lamborghini Miura</li>
+	</ul>
+</div>
+
+<h4>Requirements</h4>
+<ul>
+	<li>Non-contiguous multi-select of sortable list items using modifier key (Ctrl/Opt) <i>(Provided)</i></li>
+	<li>Drag &amp; Drop reorder of Sortable list items (single or multiple) with Ajax update <i>(Provided)</i></li>
+	<li>Drag &amp; Drop single or multiple selected Sortable list items and drop them on to the Fancy tree where they belong (including lazy-loading)</li>
+</ul>
+
+<h4>Extras</h4>
+<ul>
+	<li>Add Fancytree-like D&D target icons to Sortable list sorts so they look the same as Fancytree sorts & drops</li>
+	<li>Click one Sortable list item to highlight it, then Shift Click another item to select multiple contiguous items in Sortable list [like your OS does]</li>
+</ul>
+
+<br>
+<br>
+
+<h3>Sortable List - Photo Gallery List</h3>
+<p>Ideally you would also be able to get all those things working for a photo gallery as well as for a regular list</p>
+<ul id="sortablelist2" class="sortablelist">
+	<li><img src="http://24.media.tumblr.com/99157be93c9dcd2b69dcb5968577d72c/tumblr_mnw347ZXUP1r83y3do1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/06312c3198ed1b0d85f8f2f1620cae1d/tumblr_mnw347ZXUP1r83y3do2_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/bb105bd6e9623476f0be2f40db2eb170/tumblr_mij3dtodG21r0zreto1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/tumblr_lol5ruap5f1qilaalo1_250.png" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/0edbf543510b5ad91d6eb3584f3e48c9/tumblr_mnbokkaAHL1r2szepo1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/d84c049e074b59ec12e50c2c9598a8aa/tumblr_mnxh31gA6c1qm6egko1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/8881052c0c630915a6f6cfb9a6c379c4/tumblr_mntktonwtd1s5d86co1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/27febde8cd26656115970904f8dc8057/tumblr_mnmn0gIl9W1sshgazo1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/86172205e20353fe369f66986ee8f67e/tumblr_mnufj449bY1sseamio1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/7fa5fe7abcf9cceafa1f3fbc5ea6751e/tumblr_mmhjvbFYfc1qzleu4o1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/e2f22d7ffc546dc7c4ca174ec77a3ccf/tumblr_mnbpfmnRrT1rgzuyso3_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/14bbabd6fdbcd0208ad77bcc435b6c5d/tumblr_mnbpfmnRrT1rgzuyso8_250.jpg" height="100"></li>
+</ul>
+
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+body {
+	padding: 0 1em;
+}
+
+/* Style distinct search result columns */
+/*
+#searchResultTree th:nth-child(1),
+#searchResultTree td:nth-child(1) {
+}
+*/
+
+/* Style tree container */
+#taxonTree {
+	padding-bottom: 20px;
+}
+#taxonTree .fancytree-container {
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	max-height: 600px;
+}
+
+#searchResultTree  td > div.truncate {
+	max-height: 3em;
+	/*max-width: 100%;*/
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/*white-space: nowrap;*/
+	/*color: red;*/
+}
+
+/* Set to different containers while requests are pending:; */
+.busy {
+	color: gray;
+	background-image: url("busy_bg_fff.png");
+	background-repeat: repeat;
+}
+
+/* Improve connection lines for bootstrap pane tabs */
+div.panel[role=tabpanel] {
+	border-top-width: 0;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+	padding: 3px;
+}
+
+/* Fix alignment for bootstrap media list */
+.media-left {
+	display: inline-block;
+	vertical-align: top;
+}
+.media-body {
+	display: inline-block;
+}
+
+/* Fix bootstrap media thumbnails */
+a.thumbnail {
+	overflow: hidden;
+}
+a.thumbnail:hover,
+a.thumbnail:active {
+	text-decoration: none;
+}
+
+/* Fix bootstrap media carousel */
+div.carousel-inner >.item >img {
+	max-height: 40em;
+	/*height: 50em;*/
+}
+img.media-object {
+	max-height: 64px;
+	max-width: 64px;
+}

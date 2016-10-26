@@ -1,0 +1,18 @@
+[
+	{"title": "html", "expanded": true, "folder": true, "children": [
+		{"title": "head", "folder": true, "children": [
+			{"title": "meta"},
+			{"title": "title"}
+		]},
+		{"title": "body", "expanded": true, "folder": true, "children": [
+			{"title": "ul", "expanded": true, "children": [
+				{"title": "li"},
+				{"title": "li"}
+			]},
+			{"title": "h1"},
+			{"title": "h2", "expanded": true, "children": [
+				{"title": "a"}
+			]}
+		]}
+	]}
+]

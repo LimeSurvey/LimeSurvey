@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - 3rd Party Example: Context menu</title>
+
+	<link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/start/jquery-ui.css" />
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+
+	<!-- jquery-contextmenu (https://github.com/mar10/jquery-ui-contextmenu/) -->
+	<script src="//cdn.jsdelivr.net/jquery.ui-contextmenu/1.8.2/jquery.ui-contextmenu.min.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css">
+	<script src="sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<style type="text/css">
+	.ui-menu {
+	  width: 100px;
+	  font-size: 63%;
+	  z-index: 3; /* over ext-wide titles */
+	}
+</style>
+
+<!-- Add code to initialize the tree when the document is loaded: -->
+	<script type="text/javascript">
+	$(function() {
+		$("#tree").fancytree({
+//            extensions: ['dnd'],
+			source: {
+				url: "ajax-tree-plain.json"
+			},
+			lazyLoad: function(event, data) {
+				data.result = { url: "ajax-sub2.json" }
+			}
+		});
+
+		$("#tree").contextmenu({
+			delegate: "span.fancytree-title",
+//			menu: "#options",
+			menu: [
+					{title: "Cut", cmd: "cut", uiIcon: "ui-icon-scissors"},
+					{title: "Copy", cmd: "copy", uiIcon: "ui-icon-copy"},
+					{title: "Paste", cmd: "paste", uiIcon: "ui-icon-clipboard", disabled: false },
+					{title: "----"},
+					{title: "Edit", cmd: "edit", uiIcon: "ui-icon-pencil", disabled: true },
+					{title: "Delete", cmd: "delete", uiIcon: "ui-icon-trash", disabled: true },
+					{title: "More", children: [
+						{title: "Sub 1", cmd: "sub1"},
+						{title: "Sub 2", cmd: "sub1"}
+						]}
+					],
+			beforeOpen: function(event, ui) {
+				var node = $.ui.fancytree.getNode(ui.target);
+				// Modify menu entries depending on node status
+				$("#tree").contextmenu("enableEntry", "paste", node.isFolder());
+				// Show/hide single entries
+//        		$("#tree").contextmenu("showEntry", "cut", false);
+
+				// Activate node on right-click
+				node.setActive();
+			},
+			select: function(event, ui) {
+				var node = $.ui.fancytree.getNode(ui.target);
+				alert("select " + ui.cmd + " on " + node);
+			}
+		});
+	});
+	</script>
+</head>
+
+<body class="example">
+
+<h1>Example: use 'jquery.contextmenu'</h1>
+
+<div class="description">
+	<p>
+	This example integrates the
+	<a href="https://github.com/mar10/jquery-ui-contextmenu" target="_blank" class="external">jquery-ui-contextmenu plugin</a>,
+	which is maintained independantly from Fancytree and is based on
+	<a href="http://api.jqueryui.com/menu/">jQuery UI Menu</a>
+	(part of jQuery UI 1.9+).
+   </p>
+</div>
+
+<div>
+ <label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+</div>
+
+<!-- Tree wrapper -->
+<div id="tree"></div>
+
+<!-- Menu definition -->
+<!--
+<ul id="options" class="ui-helper-hidden">
+	<li><a href="#action1"><span class="ui-icon custom-icon-firefox"></span>Action 1</a>
+	<li><a href="#action2"><span class="ui-icon ui-icon-heart"></span>Action 2</a>
+	<li class="ui-state-disabled"><a href="#action3">Action 3</a>
+	<li>----
+	<li><a>Extra</a>
+		<ul>
+			<li><a href="#action4">sub4</a>
+			<li><a href="#action5">sub5</a>
+		</ul>
+</ul>
+ -->
+<hr />
+
+<div id="selected-action">Click right mouse button on node</div>
+
+<!-- Start_Exclude: This block is not part of the sample code -->
+<hr>
+
+<p class="sample-links  no_code">
+ <a class="hideInsideFS" href="https://github.com/mar10/fancytree">jquery.fancytree.js project home</a>
+ <a class="hideOutsideFS" href="#">Link to this page</a>
+ <a class="hideInsideFS" href="index.html">Example Browser</a>
+ <a href="#" id="codeExample">View source code</a>
+</p>
+
+<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+<!-- End_Exclude -->
+
+</body>
+</html>

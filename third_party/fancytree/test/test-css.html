@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Test CSS | Fancytree</title>
+
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+<!--
+	<link href="../../src/skin-awesome/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+-->
+	<link href="../src/skin-win8/ui.fancytree.css" class="skinswitcher" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.table.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.columnview.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="../demo/sample.css" rel="stylesheet" type="text/css">
+	<script src="../demo/sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<style type="text/css">
+</style>
+
+	<!-- Add code to initialize the tree when the document is loaded: -->
+<script type="text/javascript">
+var SOURCE = [
+	{title: "Item 1", key: "node1"},
+	{title: "Folder 2", folder: true, expanded: true, key: "node2",
+		children: [
+			{title: "Sub-item 2.1", key: "node2.1", selected: true},
+			{title: "Sub-item 2.2", key: "node2.2", selected: true}
+		]
+	},
+	{title: "Folder 3", folder: true, expanded: true, key: "node3",
+		children: [
+			{title: "Sub-item 2.1", key: "node2.1", selected: false,
+				children: [
+							{title: "Sub-item 2.1.1", key: "node2.1.1", selected: true},
+							{title: "Sub-item 2.1.2", key: "node2.1.2", selected: true}
+						]
+				},
+			{title: "Sub-item 2.2", key: "node2.2", selected: true}
+		]
+	},
+	{title: "Folder 4", folder: true, expanded: true, key: "node4",
+		children: [
+			{title: "Sub-item 2.1", key: "node2.1", selected: true},
+			{title: "Sub-item 2.2", key: "node2.2", selected: false},
+			{title: "Sub-item 2.3 (unselectable)", key: "node2.3", selected: false, unselectable: true}
+		]
+	},
+	{title: "Item 3", key: "node3", lazy: true}
+	];
+var SOURCE2 = [
+	{title: "Folder 3", folder: true, expanded: true, key: "node3",
+		children: [
+			{title: "Sub-item 2.1", key: "node2.1", selected: false,
+				children: [
+							{title: "Sub-item 2.1.1", key: "node2.1.1", selected: true},
+							{title: "Sub-item 2.1.2", key: "node2.1.2", selected: false}
+						]
+				},
+			{title: "Sub-item 2.2", key: "node2.2", selected: true}
+		]
+	}
+	];
+
+	$(function(){
+		// Adjust skinswitcher for current folder layout
+		$("#skinswitcher")
+			.skinswitcher("option", "base", "../src/")
+			.skinswitcher("addChoices", [
+				{name: "Vista-org", value: "vista-org", href: "skin-vista/ui.fancytree-org.css"},
+				{name: "Lion-org", value: "lion-org", href: "skin-lion/ui.fancytree-org.css"},
+				{name: "Awesome", value: "awesome", href: "skin-awesome/ui.fancytree-org.css"},
+				{name: "XP-org", value: "xp-org", href: "skin-xp/ui.fancytree-org.css"},
+				{name: "Win7-org", value: "win7-org", href: "skin-win7/ui.fancytree-org.css"},
+				{name: "Win8-org", value: "win8-org", href: "skin-win8/ui.fancytree-org.css"}
+				]);
+			// .skinswitcher("change", "win7");
+
+		// Initialize Fancytree
+		$("#tree").fancytree({
+			extensions: ["dnd"],
+			checkbox: true,
+			selectMode: 3,
+			source: SOURCE,
+			lazyLoad: function(event, ctx) {
+				ctx.result = SOURCE2;
+				ctx.tree.rootNode.fixSelection3FromEndNodes();
+			},
+			loadChildren: function(event, ctx) {
+				ctx.tree.debug("loadChildren");
+				ctx.node.fixSelection3FromEndNodes();
+			},
+			dnd: {
+				preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+				preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+				autoExpandMS: 400,
+				dragStart: function(node, data) {
+					return true;
+				},
+				dragEnter: function(node, data) {
+					return node.folder ? ["over"] : ["before", "after"];
+				},
+				dragDrop: function(node, data) {
+					node.addNode({title: $(data.draggable.element).text()}, data.hitMode);
+					return false;
+				}
+			}
+		});
+		$("#treegrid").fancytree({
+			extensions: ["table"],
+			checkbox: true,
+			table: {
+				indentation: 20,      // indent 20px per node level
+				nodeColumnIdx: 2,     // render the node title into the 2nd column
+				checkboxColumnIdx: 0  // render the checkboxes into the 1st column
+			},
+			source: {
+				url: "../demo/ajax-tree-plain.json"
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "../demo/ajax-sub2.json"}
+			},
+			renderColumns: function(event, data) {
+				var node = data.node,
+					$tdList = $(node.tr).find(">td");
+				// (index #0 is rendered by fancytree by adding the checkbox)
+				$tdList.eq(1).text(node.getIndexHier()).addClass("alignRight");
+				// (index #2 is rendered by fancytree)
+				$tdList.eq(3).text(node.key);
+				$tdList.eq(4).html("<input type='checkbox' name='like' value='" + node.key + "'>");
+			}
+		});
+		$("#columnview").fancytree({
+			extensions: ["columnview"],
+			checkbox: true,
+			source: {
+				url: "../demo/ajax-tree-plain.json"
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "../demo/ajax-sub2.json"};
+			}
+		});
+	});
+</script>
+
+<!-- Start_Exclude: This block is not part of the sample code -->
+<script>
+$(function(){
+/*
+	addSampleButton({
+		label: "Generate <input> elements",
+		code: function(){
+			$("#tree").fancytree("getTree").generateInput();
+			$("#tree2").fancytree("getTree").generateInput();
+		}
+	});
+*/
+});
+</script>
+<!-- End_Exclude -->
+
+</head>
+
+<body class="example">
+	<h1>Testcase for issue #XXX</h1>
+
+	<div class="description">
+	</div>
+	<div>
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+	</div>
+	<hr>
+	<div id="tree">
+	</div>
+
+	<hr>
+
+	<table id="treegrid">
+		<colgroup>
+		<col width="30px"></col>
+		<col width="30px"></col>
+		<col width="*"></col>
+		<col width="50px"></col>
+		<col width="30px"></col>
+		</colgroup>
+		<thead>
+			<tr> <th></th> <th>#</th> <th></th> <th>Key</th> <th>Like</th> </tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+	<hr>
+
+	<table id="columnview">
+		<colgroup>
+		<col width="300px"></col>
+		<col width="300px"></col>
+		<col width="300px"></col>
+		</colgroup>
+		<thead>
+			<tr> <th>1</th> <th>2</th> <th>3</th> </tr>
+		</thead>
+		<tbody>
+			<tr> <td>?</td> <td>?</td> <td>?</td> </tr>
+		</tbody>
+	</table>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<p id="sampleButtons">
+	</p>
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree/">Fancytree project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>

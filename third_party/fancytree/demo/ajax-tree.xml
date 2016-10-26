@@ -1,0 +1,30 @@
+<children>
+	<node>
+		<title> Node 1</title>
+	</node>
+	<node folder="true" expanded="true" key="42">
+		<title> Node 2 (expanded folder)</title>
+		<children>
+			<node>
+				<title> Node 2.1</title>
+			</node>
+			<node>
+				<title> Node 2.2</title>
+			</node>
+		</children>
+	</node>
+	<node folder="true">
+		<title> Node 3 (collapsed folder)</title>
+		<children>
+			<node>
+				<title> Node 3.1</title>
+			</node>
+			<node>
+				<title> Node 3.2</title>
+			</node>
+		</children>
+	</node>
+	<node folder="true" lazy="true">
+		<title> Node 4 (lazy)</title>
+	</node>
+</children>

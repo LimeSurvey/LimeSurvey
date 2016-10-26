@@ -1,0 +1,35 @@
+<?js
+    var params = data.params,
+		funcname = data.name,
+		returns = data.returns,
+		args = "()",
+		ret = (data.kind === "class" ? "new" : "void");
+
+	if(returns){
+        var returnTypes = [];
+        returns.forEach(function(r) {
+            if (r.type && r.type.names) {
+                if (! returnTypes.length) { returnTypes = r.type.names; }
+            }
+        });
+        ret = (returnTypes.length ? '{' + returnTypes.join('|') + '}' : '');
+	}
+	if(params){
+		args = [];
+	    params.forEach(function(param) {
+    	    if (!param) { return; }
+        	var name = param.name;
+	        if (param.optional || param.nullable) {
+    	        name = "<span class='optional'>" + name + "</span>";
+        	}
+	        if (typeof param.defaultvalue !== 'undefined') {
+    	        name = name + "=<span class='default'>" + param.defaultvalue + "</span>";
+        	}
+	        args.push(name);
+    	});
+		args = "(" + args.join(", ") + ")";
+	}
+?>
+
+<span class="type-signature"><?js= ret ?></span>
+<span class="name"><?js= funcname ?></span><span class=""><?js= args ?></span>

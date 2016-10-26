@@ -1,0 +1,8 @@
+<children>
+	<node lazy="true">
+		<title> SubNode 1 (lazy)</title>
+	</node>
+	<node folder="true" lazy="true">
+		<title> SubNode 1 (lazy)</title>
+	</node>
+</children>

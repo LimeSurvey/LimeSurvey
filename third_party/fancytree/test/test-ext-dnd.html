@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Test D'n'D - Fancytree</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.columnview.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.table.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="../demo/sample.css" rel="stylesheet" type="text/css">
+	<script src="../demo/sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<style type="text/css">
+	.draggable,
+	.droppable {
+		border: 1px solid green;
+		padding: 3px;
+		background-color: silver;
+	}
+	/* Prevent scrolling while DND */
+	ul.fancytree-container {
+		position: inherit;
+	}
+	/* Fancytree extension 'table' */
+	table.fancytree-ext-table {
+		font-size: 80%;
+		width: 100%;
+	}
+	table.fancytree-ext-table tbody tr:nth-child(even){
+		background-color: #f4f4f8;
+	}
+	table.fancytree-ext-table tbody tr td {
+		border: 1px solid lightgray;
+	}
+
+	/* Fancytree extension 'columnview' */
+	table.fancytree-ext-columnview {
+		font-size: 80%;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	table.fancytree-ext-columnview tbody tr[0] {
+		height: 200px;
+	}
+</style>
+
+<script type="text/javascript">
+	$(function(){
+		var count = 1;
+		// Attach the fancytree widget to an existing <div id="tree"> element
+		// and pass the tree options as an argument to the fancytree() function:
+		$("#tree").fancytree({
+			extensions: ["dnd"],
+			checkbox: true,
+//			debugLevel: 1,
+			source: {
+				url: "unit/ajax-tree-plain.json"
+			},
+			activate: function(event, data) {
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "unit/ajax-sub2.json"}
+			},
+			dnd: {
+				preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+				preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+				autoExpandMS: 400,
+				draggable: {
+					//zIndex: 1000,
+					// appendTo: "body",
+					// helper: "clone",
+					scroll: false,
+					revert: "invalid"
+				},
+				dragStart: function(node, data) {
+					if( data.originalEvent.shiftKey ){
+						console.log("dragStart with SHIFT");
+					}
+					// allow dragging `node`:
+					return true;
+				},
+				dragEnter: function(node, data) {
+					// Prevent dropping a parent below another parent (only sort
+					// nodes under the same parent)
+/* 					if(node.parent !== data.otherNode.parent){
+						return false;
+					}
+					// Don't allow dropping *over* a node (would create a child)
+					return ["before", "after"];
+*/
+				   return true;
+				},
+				dragDrop: function(node, data) {
+					if( !data.otherNode ){
+						// It's a non-tree draggable
+						var title = $(data.draggable.element).text() + " (" + (count)++ + ")";
+						node.addNode({title: title}, data.hitMode);
+						return;
+					}
+					data.otherNode.moveTo(node, data.hitMode);
+				}
+			}
+		});
+		$("#treetable").fancytree({
+			extensions: ["table", "dnd"],
+			checkbox: true,
+			source: {
+				url: "unit/ajax-tree-plain.json"
+			},
+			activate: function(event, data) {
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "unit/ajax-sub2.json"}
+			},
+			renderColumns: function(event, data) {
+				var node = data.node,
+					$tdList = $(node.tr).find(">td");
+				$tdList.eq(1).text(node.key);
+				$tdList.eq(2).text(!!node.folder);
+			},
+			dnd: {
+				preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+				preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+				autoExpandMS: 400,
+				draggable: {
+					//zIndex: 1000,
+					// appendTo: "body",
+					// helper: "clone",
+					scroll: false,
+					revert: "invalid"
+				},
+
+				dragStart: function(node, data) {
+					return true;
+				},
+				dragEnter: function(node, data) {
+					// Prevent dropping a parent below another parent (only sort
+					// nodes under the same parent)
+/* 					if(node.parent !== data.otherNode.parent){
+						return false;
+					}
+					// Don't allow dropping *over* a node (would create a child)
+					return ["before", "after"];
+*/
+				   return true;
+				},
+				dragDrop: function(node, data) {
+					data.otherNode.moveTo(node, data.hitMode);
+				}
+			}
+		});
+		$("#columnview").fancytree({
+			extensions: ["columnview", "dnd"],
+			checkbox: true,
+			source: {
+				url: "unit/ajax-tree-plain.json"
+			},
+			activate: function(event, data) {
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "unit/ajax-sub2.json"}
+			},
+			dnd: {
+				preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+				preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+				autoExpandMS: 400,
+				dragStart: function(node, data) {
+					return true;
+				},
+				dragEnter: function(node, data) {
+					// Prevent dropping a parent below another parent (only sort
+					// nodes under the same parent)
+/* 					if(node.parent !== data.otherNode.parent){
+						return false;
+					}
+					// Don't allow dropping *over* a node (would create a child)
+					return ["before", "after"];
+*/
+				   return true;
+				},
+				dragDrop: function(node, data) {
+					data.otherNode.moveTo(node, data.hitMode);
+				}
+			}
+		});
+		$(".draggable").draggable({
+			revert: true, //"invalid",
+			cursorAt: { top: -5, left: -5 },
+			connectToFancytree: true   // let Fancytree accept drag events
+		});
+		$(".droppable").droppable({
+			drop: function(event, ui){
+				var sourceNode = $(ui.helper).data("ftSourceNode");
+				alert("Dropped source node " + sourceNode);
+			}
+		});
+		// Adjust skinswitcher for current folder layout
+		// $("#skinswitcher")
+		// 	.skinswitcher("option", "base", "../../src/")
+		// 	.skinswitcher("addChoices", [
+		// 		{name: "Vista-less", value: "vista-less", href: "skin-vista/ui-fancytree.css"},
+		// 		{name: "Lion-less", value: "lion-less", href: "skin-lion/ui-fancytree.css"},
+		// 		{name: "Awesome", value: "awesome", href: "skin-awesome/ui-fancytree.css"},
+		// 		{name: "XP-less", value: "xp-less", href: "skin-xp/ui-fancytree.css"},
+		// 		{name: "Win7-less", value: "win7-less", href: "skin-win7/ui-fancytree.css"},
+		// 		{name: "Win8-less", value: "win8-less", href: "skin-win8/ui-fancytree.css"}
+		// 		])
+		// 	.skinswitcher("change", "win7-less");
+
+	});
+	</script>
+</head>
+<body class="example">
+	<h1>Example: extended drag'n'drop sample</h1>
+	<div class="description">
+		This sample features
+		<ul>
+		<li>drag'n'drop between different tree instances
+		<li>drag'n'drop between different tree types
+		<li>dragging multiple nodes
+		</ul>
+	</div>
+	<p class="warning">
+		TODO: this is work in progress.
+	</p>
+	<div>
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+	</div>
+	<!-- Add a <table> element where the tree should appear: -->
+	<p class="description">
+		Standard tree:
+	</p>
+	<div id="tree"></div>
+
+	<p class="draggable">
+		Draggable.
+	</p>
+	<p class="droppable">
+		Droppable.
+	</p>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<p class="description">
+		Table tree:
+	</p>
+	<table id="treetable">
+		<colgroup>
+		<col width="*"></col>
+		<col width="200px"></col>
+		<col width="100px"></col>
+		</colgroup>
+		<thead>
+			<tr> <th></th> <th>Key</th> <th>Folder</th> </tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<p class="description">
+		Columnview tree:
+	</p>
+	<table id="columnview">
+		<colgroup>
+		<col width="300px"></col>
+		<col width="300px"></col>
+		<col width="300px"></col>
+		</colgroup>
+		<thead>
+			<tr> <th>1</th> <th>2</th> <th>3</th> </tr>
+		</thead>
+		<tbody>
+			<tr> <td>?</td> <td>?</td> <td>?</td> </tr>
+		</tbody>
+	</table>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<hr>
+	<p class="sample-links  no_code"></p>
+	<!-- End_Exclude -->
+</body>
+</html>

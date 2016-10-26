@@ -1,0 +1,6 @@
+{
+	"status": "fault",
+	"faultMsg": "uh-oh",
+	"faultCode": -1,
+	"faulDetails": "..."
+}

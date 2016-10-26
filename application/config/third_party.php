@@ -329,10 +329,10 @@ return array(
     'fancytree' => array(
         'basePath' => 'third_party.fancytree',
         'js' => array(
-            'jquery.fancytree-all.min.js'
+            'dist/jquery.fancytree-all.js'
         ),
         'css' => array(
-            'skin-bootstrap-n/ui.fancytree.min.css'
+            'dist/skin-bootstrap/ui.fancytree.min.css'
         ),
     ),
 );

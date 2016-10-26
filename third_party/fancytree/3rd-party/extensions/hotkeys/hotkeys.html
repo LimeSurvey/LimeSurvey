@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - 3rd Party Example: Hot keys</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+	<link href="../../../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../../../src/jquery.fancytree.js" type="text/javascript"></script>
+
+	<script src="js/jquery.hotkeys.js" type="text/javascript"></script>
+	<script src="js/jquery.fancytree.hotkeys.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../../../lib/prettify.css" rel="stylesheet">
+	<script src="../../../lib/prettify.js" type="text/javascript"></script>
+	<link href="../../../demo/sample.css" rel="stylesheet" type="text/css">
+	<script src="../../../demo/sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+	<!-- Add code to initialize the tree when the document is loaded: -->
+	<script type="text/javascript">
+	$(function() {
+		$('#tree').fancytree({
+			extensions: ['hotkeys'],
+			source: {
+				url: '../../../demo/ajax-tree-local.json'
+			},
+			hotkeys: {
+				keyup: {
+					'shift+a': function(node) {
+						$('#selected-action').append(document.createTextNode('Key up "Shift + a" on node ' + node)).append('<br />');
+					}
+				},
+				keydown: {
+					'shift+a': function(node) {
+						$('#selected-action').append(document.createTextNode('Key down "Shift + a" on node ' + node)).append('<br />');
+					}
+				},
+				keypress: {
+					'shift+a': function(node) {
+						$('#selected-action').append(document.createTextNode('Key press "Shift + a" on node ' + node)).append('<br />');
+					}
+				}
+			},
+			lazyLoad: function(event, data) {
+				data.result = { url: '../../ajax-sub2.json' }
+			}
+		});
+	});
+	</script>
+</head>
+
+<body class="example">
+
+<h1>Example: 'hotkeys' extension</h1>
+
+<div class="description">
+    <p>
+    <a href="https://github.com/jeresig/jquery.hotkeys" target="_blank" class="external">jQuery Hotkeys plugin</a>. Author <b>John Resig</b>
+   </p>
+</div>
+
+<div>
+ <label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+</div>
+
+<!-- Tree wrapper -->
+<div id="tree"></div>
+
+<hr />
+
+<div id="selected-action">Activate one node and click "Shift + a":<br /></div>
+
+<!-- Start_Exclude: This block is not part of the sample code -->
+<hr>
+
+<p class="sample-links  no_code">
+ <a class="hideInsideFS" href="https://github.com/mar10/fancytree">jquery.fancytree.js project home</a>
+ <a class="hideOutsideFS" href="#">Link to this page</a>
+ <a class="hideInsideFS" href="index.html">Example Browser</a>
+ <a href="#" id="codeExample">View source code</a>
+</p>
+
+<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+<!-- End_Exclude -->
+
+</body>
+</html>

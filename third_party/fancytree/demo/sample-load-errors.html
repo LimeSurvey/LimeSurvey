@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example</title>
+
+	<script src="../lib/jquery.js" type="text/javascript"></script>
+	<script src="../lib/jquery-ui.custom.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.table.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css">
+	<script src="sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<script type="text/javascript">
+	function createNode(e, ctx) {
+		// add fake <input/> to the node
+		var $input = $("<input/>").val(ctx.node.title);
+		$("span.fancytree-title", ctx.node.li).before($input);
+	}
+
+	$(function () {
+		var source = [
+			{ key: "ajax", title: "Successful lazy loading via ajax", lazy: true },
+			{ key: "custom", title: "Successful lazy loading via custom source", lazy: true },
+			{ key: "ajax-error", title: "Ajax error while lazy loading", lazy: true },
+			{ key: "custom-error", title: "Custom error while lazy loading", lazy: true }
+		];
+
+		function lazyLoad(event, data) {
+			switch (data.node.key) {
+				case "ajax":
+					data.result = { url: "ajax-sub2.json" /*, debugDelay: 5000*/ };
+					break;
+				case "custom":
+					data.result = $.Deferred(function (dfd) {
+						setTimeout(function () {
+							dfd.resolve([
+								{ title: "Sub item 1" },
+								{ title: "Sub item 2" }
+							]);
+						}, 1000);
+					});
+					break;
+				case "ajax-error":
+					data.result = { url: "not-found.json" };
+					break;
+				case "custom-error":
+					data.result = $.Deferred(function (dfd) {
+						setTimeout(function () {
+							dfd.reject(new Error("TEST ERROR"));
+						}, 1000);
+					});
+					break;
+				default:
+					data.result = [];
+			}
+		}
+
+		function loadError(e,data) {
+			var error = data.error;
+			if (error.status && error.statusText) {
+				data.message = "Ajax error: " + data.message;
+				data.details = "Ajax error: " + error.statusText + ", status code = " + error.status;
+			} else {
+				data.message = "Custom error: " + data.message;
+				data.details = "An error occurred during loading: " + error;
+			}
+		}
+
+		$("#tree1").fancytree({
+			source: source,
+			ajax: { debugDelay: 1000 },
+			lazyLoad: lazyLoad
+		});
+
+		$("#tree2").fancytree({
+			source: source,
+			ajax: { debugDelay: 1000 },
+			lazyLoad: lazyLoad,
+			loadError: loadError
+		});
+
+		$("#table1").fancytree({
+			source: source,
+			ajax: { debugDelay: 1000 },
+			lazyLoad: lazyLoad,
+			extensions: ["table"]
+		});
+
+		$("#table2").fancytree({
+			source: source,
+			ajax: { debugDelay: 1000 },
+			lazyLoad: lazyLoad,
+			loadError: loadError,
+			extensions: ["table"]
+		});
+	});
+</script>
+</head>
+
+<body class="example">
+	<h1>Example: lazy load errors handling</h1>
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<div class="description">
+		This example demonstrates how to handle errors which can occur during lazy loading.
+	</div>
+	<div>
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+	</div>
+	<hr>
+	<!-- End_Exclude -->
+
+	<div>
+		<label>No 'loadError' handler:</label>
+		<div id="tree1"></div>
+	</div>
+	<br/>
+
+	<div>
+		<label>'loadError' handler is specified:</label>
+		<div id="tree2"></div>
+	</div>
+	<br/>
+
+	<div>
+		<label>No 'loadError' handler (table extension):</label>
+		<table id="table1" style="width:100%">
+			<thead style="display: none"><tr><th></th></tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<br/>
+
+	<div>
+		<label>'loadError' handler is specified (table extension):</label>
+		<table id="table2" style="width:100%">
+			<thead style="display: none"><tr><th></th></tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<p id="sampleButtons">
+	</p>
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree/">Fancytree project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>
