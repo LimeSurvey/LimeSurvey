@@ -1,14 +1,14 @@
 <!-- Navigator hidden-xs-->
 
-<div class="row" id="navigator-container">
-    <div class="save-all hidden">
+<div class="rows" id="navigator-container">
+    <div class="row save-all hidden">
         {SAVE}
         {CLEARALL}
     </div>
 
-    <div class="save-all clearfix">
-      <div class="text-left">{MOVEPREVBUTTON}</div>
-      <div class="text-right">{MOVENEXTBUTTON}</div>
+    <div class="row save-all clearfix">
+      <div class="col-sm-6 text-left">{MOVEPREVBUTTON}</div>
+      <div class="col-sm-6 text-right">{MOVENEXTBUTTON}</div>
     </div>
 </div>
 
