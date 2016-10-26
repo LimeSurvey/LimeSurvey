@@ -43,12 +43,6 @@ ul.ls-answers {
 .checkbox, .radio {
   display: table-cell; }
 
-.text-left {
-  float: left; }
-
-.text-right {
-  float: right; }
-
 .survey-expiry-wrapper {
   margin-top: 75px; }
 
