@@ -10,7 +10,7 @@
 <div class="row" id="welcome-container">
 
   <div class="survey-description col-sm-12 ">
-    <h1>{SURVEYNAME}</h1><br />
+    <h1>{SURVEYNAME}</h1>
     <p class="survey-description-text">{SURVEYDESCRIPTION}</p>
   </div>
 
