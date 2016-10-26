@@ -1,16 +1,4 @@
-
-		</div><!--end #main-->
-		<div id="navigation" class="aside">
-			<!-- Place for some navigation -->
-		</div>
-		<div id="extra" class="aside">
-			<!-- Place for some extra -->
-		</div>
 	</div><!--end #content -->
-	<div id="footer" class="footer">
-		<div class="container">
-			<p class="text-muted">A place for user manager text and link (legal notice / website link : must be removed when releasing.</p>
-		</div>
-		<!--  -->
-	</div>
+	<!-- Here it a place for a footer -->
+
 </div><!-- end container-->

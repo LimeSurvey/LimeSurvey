@@ -21,8 +21,8 @@
             echo $sColumns;
         ?>
     </colgroup>
-    <thead>
-        <tr class="ls-heading" aria-hidden="true">
+    <thead aria-hidden="true">
+        <tr class="ls-heading">
             <td>&nbsp;</td>
             <?php
                 // rows/cell/thead.php

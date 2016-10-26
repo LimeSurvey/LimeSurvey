@@ -28,8 +28,8 @@
         <?php endif;?>
     </colgroup>
 
-    <thead>
-        <tr aria-hidden="true">
+    <thead aria-hidden="true">
+        <tr class="ls-heading">
             <td>&nbsp;</td>
 
             <?php foreach ($labelans as $ld): ?>

@@ -32,6 +32,5 @@
             </div>
         </div>
     </div>
-    <div id="content">
-        <div id="main" class="container-fluid">
-            {FLASHMESSAGE}<!-- To be reviewed -->
+    <div id="content"  class="container-fluid">
+        {FLASHMESSAGE}<!-- To be reviewed -->

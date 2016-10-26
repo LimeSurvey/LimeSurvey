@@ -14,7 +14,7 @@
 </tbody>
 
 <tbody>
-    <tr class="repeat headings hidden-xs" aria-hidden="true">
+    <tr class="ls-heading ls-repeat-heading hidden-xs" aria-hidden="true">
         <th>&nbsp;</th>
         <?php foreach ($labelans as $ld): ?>
             <td>

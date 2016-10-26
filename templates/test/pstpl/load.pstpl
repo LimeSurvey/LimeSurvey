@@ -1,9 +1,10 @@
 <div class='load-page'>
-  <div class="h2">{LOADHEADING}</div>
-  {LOADERROR}
+  <div class="h3">{LOADHEADING}</div>
+  {LANGUAGECHANGER}
   <div class="well">
     {LOADMESSAGE}
+    {LOADERROR}
     <div class="form-load">{LOADFORM}</div>
+    <div class='url-wrapper url-return-wrapper'>{RETURNTOSURVEY}</div>
   </div>
-  <div class='text-center'><div class='btn btn-sm'>{RETURNTOSURVEY}</div></div>
 </div>

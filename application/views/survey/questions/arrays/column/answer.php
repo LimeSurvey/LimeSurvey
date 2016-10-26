@@ -20,12 +20,12 @@
                 <!-- @todo : control if radiogroup can be used in col : https://www.w3.org/TR/wai-aria/roles -->
         <?php endforeach; ?>
     </colgroup>
-    <thead>
-        <tr class=''>
+    <thead><!-- The global concept is hard to understand : must control if aria-labelledby for radio-group is OK and if we can add aria-hidden here -->
+        <tr class='ls-heading'><!-- unsure for ls-heading class here -->
             <td>&nbsp;</td>
             <?php
             foreach ($aQuestions as $i=>$question): ?>
-                <th id="answertext<?php echo $question['myfname'];?>" class="answertext control-label <?php if($question['errormandatory']){ echo " error-mandatory";} ?>">
+                <th id="answertext<?php echo $question['myfname'];?>" class="answertext control-label <?php if($question['errormandatory']){ echo " has-error error-mandatory";} ?>">
                     <?php echo $question['question']; ?>
                 </th>
             <?php endforeach; ?>
