@@ -32,71 +32,12 @@
                 options['placement'] = node.data.placement;
                 options['selector']  = node.data.selector;
                 options['template']  = node.data.template;
-                options['title']     = node.data.title;
                 options['trigger']   = node.data.trigger;
                 options['viewport']  = node.data.viewport;
+                options['title']     = node.data.title;
 
                 $("span.fancytree-title", node.span).tooltip(options);
-            }
-
-            if (node.data.buttonlinks)
-            {
-                //console.log(node.data.buttons);
-                $.each( node.data.buttonlinks, function( key, button ){
-                    //console.log(button);
-
-                    var jQbutton = $('<a role="button"></a>)');
-                    jQbutton.attr("href",button.url);
-
-                    if (button.cssclasses)
-                    {
-                        jQbutton.addClass(button.cssclasses);
-                    }
-                    else
-                    {
-                        jQbutton.addClass("btn btn-xs btn-default");
-                    }
-
-                    if (button.toggle)
-                    {
-                        jQbutton.data("toggle", button.toggle);
-                    }
-                    if (button.placement)
-                    {
-                        jQbutton.data("placement", button.placement);
-                    }
-
-                    if (button.title)
-                    {
-                        jQbutton.attr("title", button.title);
-                    }
-
-
-                    if (button.icon)
-                    {
-                        jQbutton.append('<i class="'+button.icon+'"></i>');
-                    }
-
-                    if (button.buttontext)
-                    {
-                        jQbutton.append(button.buttontext);
-                    }
-
-                    $("span.fancytree-title", node.span).append(' ').append( jQbutton );
-
-                    if (button.toggle=='tooltip')
-                    {
-                        jQbutton.tooltip();
-                    }
-
-                    if (button.toggle=='popover')
-                    {
-                        jQbutton.popover();
-                    }
-
-                } );
-            }
-
+            } 
          }
      });
  }(jQuery));

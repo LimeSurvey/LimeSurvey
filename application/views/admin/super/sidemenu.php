@@ -96,11 +96,36 @@
 
             </div>
 
-            <?php echo $quickmenu; ?>
 
+
+            <?php 
+            echo $quickmenu; 
+            /*var_dump($oSurvey);*/
+            $activeQuestion = Yii::app()->request->getQuery('qid', null); 
+            $activeQuestionGroup = Yii::app()->request->getQuery('gid', null); 
+            $newQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyid);
+            $newQuestionToGroupLink = $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyid."/gid/".$activeQuestionGroup);
+            ?>
             <!-- Main Menu -->
             <div class="side-menu-container hidden-xs">
+            <!-- Add new Questiongroup, add new Question => quickadd -->
                 <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="<?php if (!$showSideMenu): echo 'display: none;'; endif; ?>">
+                <div class="container-fluid" id="quickadd-button-bar">
+                    <div class="row">
+                        <?php if($activeQuestionGroup): ?>
+                        <div class="col-xs-6">
+                            <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><?php eT("Add Questiongroup");?></button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button id="quickadd-add-new-question" onclick="location.href='<?php echo $newQuestionToGroupLink; ?>'" title="<?php eT('Add question to current questiongroup');?>" data-toggle="tooltip" class="btn btn-primary btn-block"><?php eT("Add Question");?></button>
+                        </div>
+                        <?php else: ?>
+                        <div class="col-xs-12">
+                            <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><?php eT("Add Questiongroup");?></button>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
 
                     <!-- Question & Groups-->
                     <li class="panel panel-default dropdownlvl1" id="dropdown">
@@ -118,7 +143,10 @@
                                         'sidemenu' => $sidemenu,
                                         'aGroups' => $aGroups,
                                         'iSurveyId' => $surveyid,
-                                        'bSurveyIsActive' => $bSurveyIsActive
+                                        'bSurveyIsActive' => $bSurveyIsActive,
+                                        'language' => $oSurvey->language,
+                                        'iQuestionId' => $activeQuestion,
+                                        'iQuestionGroupId' => $activeQuestionGroup,
                                     )); ?>
 
                                     <?php if($permission):?>
