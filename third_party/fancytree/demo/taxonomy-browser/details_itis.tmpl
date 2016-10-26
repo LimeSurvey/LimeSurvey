@@ -1,0 +1,127 @@
+<h3>{{scientificName.combinedName}} <small>Taxonomy and Nomenclature</small></h3>
+<dl>
+	<dt>TSN</dt>
+		<dd>{{tsn}}</dd>
+	<dt>Kingdom</dt>
+		<dd>{{kingdom.kingdomName}}</dd>
+	<dt>Taxonomic Rank</dt>
+		<dd>{{taxRank.rankName}}</dd>
+	<dt>Synonym(s)</dt>
+		<dd>
+			<ul>
+				{{#each synonymList.synonyms}}
+				<li>
+					{{#if this}} {{this.sciName}} {{else}} n.a. {{/if}}
+				</li>
+				{{/each}}
+			</ul>
+		</dd>
+	<dt>Common Name(s)</dt>
+		<dd>
+			<ul>
+				{{#each commonNameList.commonNames}}
+				<li>
+					{{#if this}} {{this.commonName}} {{else}} n.a. {{/if}}
+				</li>
+				{{/each}}
+			</ul>
+		</dd>
+	<dt>Valid Name</dt>
+		<dd>todo</dd>
+</dl>
+Retrieved [month, day, year], from the Integrated Taxonomic Information System on-line database, 
+<a href="http://www.itis.gov">http://www.itis.gov</a>.
+Open <a href="http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={{tsn}}&search_kingdom=every&search_span=exactly_for&categories=All&source=html&search_credRating=All"
+	target="_blank">
+	Authorative Information on ITIS
+</a>.
+<div class="body">
+	{{body}}
+</div>
+<!--
+Taxonomy and Nomenclature
+ 	 	 	 
+ 	Kingdom:	Animalia	 
+ 	Taxonomic Rank:	Species	 
+ 	Common Name(s):	 	 
+ 	Valid Name:	Homo sapiens Linnaeus, 1758
+ 
+ 	 	 	 
+ 	Taxonomic Status:	 	 
+ 	Current Standing:	invalid - junior synonym 	 
+ 	 	 	 
+ 	Data Quality Indicators:	 	 
+ 	Record Credibility Rating:	verified - standards met	 
+ 	 	 	 
+ References
+ 	 	 	 
+ 	Expert(s):	 	 
+ 	Expert:	 	 
+ 	Notes:	 	 
+ 	Reference for:	 	 
+ 	 	 	 
+ 	Other Source(s):	 	 
+ 	Source:	 	 
+ 	Acquired:	 	 
+ 	Notes:	 	 
+ 	Reference for:	 	 
+ 	 	 	 
+ 	Publication(s):	 	 
+ 	Author(s)/Editor(s):	Groves, Colin P.	 
+ 	Publication Date:	2001 	 
+ 	Article/Chapter Title:	 	 
+ 	Journal/Book Name, Vol. No.:	Primate Taxonomy 	 
+ 	Page(s):	viii+350 	 
+ 	Publisher:	Smithsonian Institution Press 	 
+ 	Publication Place:	Washington, DC, USA 	 
+ 	ISBN/ISSN:	1-56098-872-X 	 
+ 	Notes:	 	 
+ 	Reference for:	Homo aethiopicus 	 
+ 	 	 	 
+ 	Author(s)/Editor(s):	Wilson, Don E., and DeeAnn M. Reeder, eds.	 
+ 	Publication Date:	2005 	 
+ 	Article/Chapter Title:	 	 
+ 	Journal/Book Name, Vol. No.:	Mammal Species of the World: A Taxonomic and Geographic Reference, 3rd ed., vol. 1 	 
+ 	Page(s):	xxxv + 743 	 
+ 	Publisher:	Johns Hopkins University Press 	 
+ 	Publication Place:	Baltimore, Maryland, USA 	 
+ 	ISBN/ISSN:	0-8018-8221-4 	 
+ 	Notes:	 	 
+ 	Reference for:	Homo aethiopicus 	 
+ 	 	 	 
+
+ Geographic Information
+ 	 	 	 
+ 	Geographic Division:	 	 
+ 	 	 	 
+ 	Jurisdiction/Origin:	 	 
+ 	
+ 
+
+ 	 
+ Comments
+ 	 	 	 
+ 	Comment:	Comments: see comments under species	 
+ 	
+ 
+
+ 	 
+ other off-site resources
+ 	 	 	 
+ 	
+Additional off-site resources may be available for this taxon. ITIS will build search links for all of the following that return results:
+
+Global Biodiversity Information Facility (GBIF) Data Portal
+BioOne Journals
+National Center for Biotechnology Information (NCBI) Entrez Life Sciences Search
+Google Images
+Convention on International Trade in Endangered Species (CITES) of Wild Fauna and Flora Search
+United Nations Environment Programme (UNEP) World Conservation Monitoring Centre (WCMC) Search
+Threatened and Endangered Species (TESS) Search
+U.S. Fish and Wildlife Service (FWS) Search
+Ocean Biogeographic Information System (OBIS) Search
+USDA PLANTS Database Search
+NatureServe Explorer Search
+Please be patient. The time it takes to return results depends on the speed of the individual sites and may take several minutes.
+
+-->

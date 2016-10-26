@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example</title>
+
+	<script src="../lib/jquery.js" type="text/javascript"></script>
+	<script src="../lib/jquery-ui.custom.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css">
+	<script src="sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+   <style type="text/css">
+		#tree {
+			vertical-align: top;
+			width: 250px;
+		}
+		iframe {
+			border: 1px dotted gray;
+		}
+	</style>
+	<!-- Add code to initialize the tree when the document is loaded: -->
+	<script type="text/javascript">
+	$(function(){
+		// Attach the dynatree widget to an existing <div id="tree"> element
+		// and pass the tree options as an argument to the dynatree() function:
+		$("#tree").fancytree({
+//          autoCollapse: true,
+			minExpandLevel: 1,
+			postinit: function(isReloading, isError) {
+				this.reactivate();
+			},
+			focus: function(event, data) {
+				// Auto-activate focused node after 2 seconds
+				data.node.scheduleAction("activate", 2000);
+			},
+			activate: function(event, data) {
+				var node = data.node;
+				// Use <a> href and target attributes to load the content:
+				if( node.data.href ){
+					// Open target
+					window.open(node.data.href, node.data.target);
+					// or open target in iframe
+//                $("[name=contentFrame]").attr("src", node.data.href);
+				}
+			}
+		});
+	});
+	</script>
+</head>
+<body class="example">
+	<h1>Example: URL navigation and iframes</h1>
+	<p class="description">
+		This sample shows, how to use fancytree as a navigation menu.<br>
+		The tree initialization uses <code>&lt;a href='URL', target='TARGET'>title&lt;/a></code>
+		tags.<br>
+		The <code>activate</code> handler then uses <code>node.data.href</code>
+		to open the the pages in the embedded iframe.<br>
+		Note that the navigation will fallback to standard HTML links,
+		when JavaScript is disabled.<br>
+		A focused node will automatically be activated after 2 seconds (use the
+		keyboard to try this out).<br>
+		<br>
+		The [Toggle tree] button in the embedded welcome page also gives an example on
+		how to access a tree that exists outside the own frame.
+	</p>
+	<div>
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+	</div>
+
+	<table>
+	<colgroup>
+		<col width="300px" valign="top">
+		<col width="90%">
+	</colgroup>
+	<tr>
+		<td valign="top">
+			<!-- Add a <div> element where the tree should appear: -->
+			<div id="tree">
+			<ul>
+				<li class="expanded folder">Search engines
+				<ul>
+					<li><a href="http://duckduckgo.com" target="contentFrame">DuckDuckGo</a>
+					<li><a href="http://duckduckgo.com" target="_self">DuckDuckGo (target='_self')</a>
+					<li><a href="http://duckduckgo.com" target="_top" title="This link replaces the current page">DuckDuckGo (target='_top')</a>
+					<li><a href="http://www.bing.com" target="contentFrame">Bing</a>
+					<li><a href="http://www.wolframalpha.com/" target="contentFrame">WolframAlpha</a>
+				</ul>
+				<li class="expanded folder">jQuery
+				<ul>
+					<li><a href="http://www.jquery.com/" target="contentFrame">jQuery</a>
+					<li><a href="http://ui.jquery.com/" target="contentFrame">jQuery UI</a>
+					<li><a href="http://api.jquery.com/" target="contentFrame">API browser</a>
+					<li><a href="http://wwwendt.de/tech/fancytree/doc/jsdoc/index.html" target="contentFrame">Fancytree</a>
+				</ul>
+				<li class="expanded folder">Misc
+				<ul>
+					<li><a href="sample-iframe-1.html" target="contentFrame">Welcome</a>
+				</ul>
+			</ul>
+			</div>
+		</td>
+
+		<td>
+			<iframe src="sample-iframe-1.html" name="contentFrame" width="100%" height="500"
+					scrolling="yes" marginheight="0" marginwidth="0" frameborder="0">
+			  <p>Your browser does not support iframes</p>
+			</iframe>
+		</td>
+	</tr>
+	</table>
+
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree/">Fancytree project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>

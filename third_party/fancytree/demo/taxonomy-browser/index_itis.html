@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Taxonomy Browser</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"
+		type="text/javascript"></script>
+
+	<script type="text/javascript">
+	// Fix BBQ for jQuery >= 1.9 (see https://github.com/cowboy/jquery-bbq/pull/42)
+	if( !$.browser ) {
+		console.warn("Monkey-patching jQuery.browser.msie to get BBQ working");
+		var ua = navigator.userAgent.toLowerCase();
+		$.browser = { msie: /msie/.test(ua) && !/opera/.test(ua) };
+	}
+	</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/jquery.ba-bbq.min.js"
+		type="text/javascript"></script>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"
+		type="text/javascript"></script>
+
+	<link href="//cdn.jsdelivr.net/jquery.fancytree/2/skin-bootstrap/ui.fancytree.min.css"
+		rel="stylesheet" type="text/css">
+<!--
+	<script src="//cdn.jsdelivr.net/jquery.fancytree/2/jquery.fancytree-all.min.js"
+		type="text/javascript"></script>
+-->
+	<script src="../../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../../src/jquery.fancytree.edit.js" type="text/javascript"></script>
+	<script src="../../src/jquery.fancytree.filter.js" type="text/javascript"></script>
+	<script src="../../src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+	<script src="../../src/jquery.fancytree.table.js" type="text/javascript"></script>
+	<script src="../../src/jquery.fancytree.wide.js" type="text/javascript"></script>
+
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="taxonomy-browser-itis.js" type="text/javascript"></script>
+<!--
+	<script src="details.tmpl" id="tmplDetails" type="text/x-handlebars-template"></script>
+-->
+</head>
+
+<body>
+	<div class="page-header">
+		<h1>Taxonomy Browser</h1>
+	</div>
+<!--
+	<div class="panel panel-default">
+	  <div class="panel-body">
+		Search and browse the <a href="http://www.itis.gov/web_service.html">ITIS</a> database.
+	  </div>
+	</div>
+-->
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Search <acronym title="Integrated Taxonomic Information System">ITIS</acronym></h3>
+		</div>
+		<div class="panel-body">
+
+			<input type="text" name="query" id="query" autocorrect="off"
+				placeholder="Enter Search Phrase">
+			<button id="btnResetSearch" class="btn btn-default btn-sm">&times;</button>
+			<button id="btnSearch" class="btn btn-default btn-sm">Search</button>
+
+			<div class="collapse" id="searchResultPane">
+				<table id="searchResultTree"
+					class="table table-striped table-hover table-condensed table-bordered">
+					<colgroup>
+					<col width="10em"></col>
+					<col width="*"></col>
+					<col width="10em"></col>
+					<col width="10em"></col>
+					<col width="250em"></col>
+					</colgroup>
+					<thead>
+						<tr> <th class="hidden-xs">TSN</th> <th>Scientific Name</th> <th>Common Names</th> <th>Match Type</th> <th>Author</th> </tr>
+					</thead>
+					<tbody>
+						<tr> <td class="hidden-xs"></td> <td></td> <td></td> <td></td> <td></td> </tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<div class="btn-group">
+				<button id="btnPin" class="btn btn-default btn-xs">Pin</button>
+				<button id="btnUnpin" class="btn btn-default btn-xs">Unpin</button>
+			</div>
+
+			<div id="taxonTree">
+			</div>
+		</div>
+		<div class="col-md-8">
+			<ol class="breadcrumb">
+				<li class="active">Please select an element.</li>
+			</ol>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#tabDetails" aria-controls="tabDetails" role="tab" data-toggle="tab">
+						Details</a></li>
+				<li role="presentation">
+					<a href="#tabWikipedia" aria-controls="tabWikipedia" role="tab" data-toggle="tab">
+						Wikipedia</a></li>
+				<li role="presentation">
+					<a href="#tabNCBI" aria-controls="tabNCBI" role="tab" data-toggle="tab">
+						Other</a></li>
+			</ul>
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active pane panel panel-default" id="tabDetails">
+<!--
+					Details provided by
+					<acronym title="Integrated Taxonomic Information System">ITIS</acronym>:
+-->
+					<div id="tsnDetails">
+						No data to display.
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane panel panel-default" id="tabWikipedia">
+					wiki
+				</div>
+				<div role="tabpanel" class="tab-pane panel panel-default" id="tabNCBI">
+					ncbi
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			Disclaimer
+		</div>
+		<div class="panel-body">
+			<p>
+				This site accesses data from external sources, namely the
+				<a href="http://www.itis.gov">Integrated Taxonomic Information System (ITIS)</a> database.
+				There is no guarantee, that the display is correct, complete, or
+				permanently available. Please refer to those original sources for
+				authorative information.
+			</p>
+			<p>
+				Copyright &copy; 2015 Martin Wendt. Created as a demo for
+				<a href="https://github.com/mar10/fancytree">Fancytree</a>.
+			</p>
+		</div>
+	</div>
+</body>
+</html>
