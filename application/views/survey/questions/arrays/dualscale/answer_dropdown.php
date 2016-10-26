@@ -23,7 +23,7 @@
 <!-- Header -->
 
 <thead>
-    <tr>
+    <tr class="ls-heading">
         <td>&nbsp;</td>
         <th class='left-header'><?php echo $leftheader; ?></th>
         <td>&nbsp;</td>
