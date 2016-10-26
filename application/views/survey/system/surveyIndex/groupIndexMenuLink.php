@@ -14,13 +14,11 @@
         <?php foreach($indexItems as $step=>$indexItem): ?>
             <?php
                 /* bs class for testing : bg-danger is really great here, but only if menu is set in navigator or after */
-                $statusClass = $indexItem['stepStatus']['has-unanswered'] ? " bg-warning":"";
-                $statusClass.= $indexItem['stepStatus']['has-error'] ? " bg-danger index-item-error":"";
-                $statusClass.= $indexItem['stepStatus']['is-before'] ? " index-item-before":"";
-                $statusClass.= $indexItem['stepStatus']['is-current'] ? " active index-item-current":"";
-
+                $statusClass = $indexItem['stepStatus']['index-item-unanswered']? " bg-warning":"";
+                $statusClass.= $indexItem['stepStatus']['index-item-error']? " bg-danger":"";
+                $statusClass.= $indexItem['stepStatus']['index-item-current']? " active":"";
             ?>
-            <li class="<?php echo $statusClass; ?>">
+            <li class="<?php echo $indexItem['coreClass']; ?><?php echo $statusClass; ?>">
                 <a href='<?php echo $indexItem['url']; ?>' data-limesurvey-submit='<?php echo $indexItem['submit']; ?>'>
                     <?php echo $indexItem['text']; ?>
                 </a>

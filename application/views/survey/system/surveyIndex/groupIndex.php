@@ -11,14 +11,12 @@
     </div>
     <?php foreach($indexItems as $step=>$indexItem): ?>
         <?php
-            $statusClass = $indexItem['stepStatus']['has-unanswered']? " list-group-item-warning  index-item-unanswered":"";
-            $statusClass.= $indexItem['stepStatus']['has-error']? " list-group-item-danger index-item-error":"";
-            $statusClass.= $indexItem['stepStatus']['is-before']? " index-item-before":"";
-            $statusClass.= $indexItem['stepStatus']['is-seen']? " index-item-seen":"";
-            $statusClass.= $indexItem['stepStatus']['is-current']? " active index-item-current":"";
+            $statusClass = $indexItem['stepStatus']['index-item-unanswered']? " list-group-item-warning":"";
+            $statusClass.= $indexItem['stepStatus']['index-item-error']? " list-group-item-danger":"";
+            $statusClass.= $indexItem['stepStatus']['index-item-current']? " active":"";
         ?>
         <button type="submit" name="move" value="<?php echo $indexItem['step']; ?>"
-            class="list-group-item <?php echo $statusClass; ?>">
+            class="<?php echo $indexItem['coreClass']; ?> list-group-item <?php echo $statusClass; ?>">
             <?php echo $indexItem['text']; ?>
         </button>
     <?php endforeach; ?>

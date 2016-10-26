@@ -133,26 +133,29 @@ class questionIndexHelper {
                     'url'=>Yii::app()->getController()->createUrl("survey/index",array('sid'=>$this->iSurveyId,'move'=>$groupInfo['step'])),
                     'submit'=>ls_json_encode(array('move'=>$groupInfo['step'])),
                     'stepStatus'=>array(
-                        'is-before' => ($groupInfo['step'] < $sessionLem['step']),
-                        'is-seen' => ($groupInfo['step'] < $sessionLem['maxstep']),
-                        'is-current' => ($groupInfo['step'] == $sessionLem['step']),
-                    ),
+                        'index-item-before' => ($groupInfo['step'] < $sessionLem['step']), /* did we need a before ? seen seems better */
+                        'index-item-seen' => ($groupInfo['step'] <= $sessionLem['maxstep']),
+                        'index-item-current' => ($groupInfo['step'] == $sessionLem['step']),
+                    ),/* order have importance for css : last on is apply */
                 );
                 if($this->getStepInfo){
                     /* Get the current group info */
                     if ($groupInfo['step'] <= $sessionLem['maxstep'] && $groupInfo['step'] != $sessionLem['step']){
                         /* @todo test until maxstep, but without try to submit */
                         $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($step);// Danger: Update the actual group, do it only after display all question in the page
-                        $stepIndex[$step]['stepStatus']['has-error'] = (bool) ($stepInfo['mandViolation'] || !$stepInfo['valid']);
-                        $stepIndex[$step]['stepStatus']['has-unanswered'] = (bool) $stepInfo['anyUnanswered'];
+                        $stepIndex[$step]['stepStatus']['index-item-error'] = (bool) ($stepInfo['mandViolation'] || !$stepInfo['valid']);
+                        $stepIndex[$step]['stepStatus']['index-item-unanswered'] = (bool) $stepInfo['anyUnanswered'];
                     }else{
-                        $stepIndex[$step]['stepStatus']['has-error'] = null;
-                        $stepIndex[$step]['stepStatus']['has-unanswered'] = null;
+                        $stepIndex[$step]['stepStatus']['index-item-error'] = null;
+                        $stepIndex[$step]['stepStatus']['index-item-unanswered'] = null;
                     }
                 }else{
-                    $stepIndex[$step]['stepStatus']['has-error'] = null;
-                    $stepIndex[$step]['stepStatus']['has-unanswered'] = null;
+                    $stepIndex[$step]['stepStatus']['index-item-error'] = null;
+                    $stepIndex[$step]['stepStatus']['index-item-unanswered'] = null;
                 }
+                /* contruct coreClass */
+                $aClass=array_filter($stepIndex[$step]['stepStatus']);
+                $stepIndex[$step]['coreClass']=implode(" ",array_merge(array('index-item'),array_keys($aClass)));
             }
         }
         return $stepIndex;
@@ -161,18 +164,55 @@ class questionIndexHelper {
     /**
      * return the index item in question by question mode
      * @param integer $type : 0 : None , 1 : Incremental, 2: full
+     * @return array[][] : array of question in array of group
      */
     private function getIndexItemsQuestions($type)
     {
         $sessionLem=Yii::app()->session["survey_{$this->iSurveyId}"];
         $questionList=$sessionLem['fieldmap'];
+        $groupList=$sessionLem['grouplist'];
         /* Remove all uneeded fieldmap : not needed : we test the "questionSeq" */
         $stepIndex=array();
-        foreach($sessionLem['fieldmap'] as $step=>$questionInfo)
+        $prevStep=-1;
+        $prevGroupSeq=-1;
+        foreach($sessionLem['fieldmap'] as $step=>$questionFieldmap)
         {
-
+            if(isset($questionFieldmap['questionSeq']) && $questionFieldmap['questionSeq']!=$prevStep){ // Sub question have same questionSeq
+                /* This question can be in index */
+                $step=$questionFieldmap['questionSeq']+1;
+                $oAttributeHidden=QuestionAttribute::model()->find("qid=:qid and attribute LIKE :attribute",array(":qid"=>$questionFieldmap['qid'],":attribute"=>'hidden'));
+                if( ($step <= $sessionLem['maxstep'] ) // || $type>1 : need testing for complet, but can work, do it after merging to answers_html + develop
+                   && LimeExpressionManager::QuestionIsRelevant($questionFieldmap['qid']) // relevanceStatus
+                   && !($oAttributeHidden && $oAttributeHidden->value) // attribute hidden
+                ) {
+                    /* Control if we are in a new group : always at first question*/
+                    //$GroupId=(isset($questionFieldmap['random_gid']) && $questionFieldmap['random_gid']) ? $questionFieldmap['random_gid'] : $questionFieldmap['gid'];
+                    if($questionFieldmap['groupSeq']!=$prevGroupSeq){
+                        // add the previous group if it's not empty (all question hidden etc ....)
+                        if(!empty($questionInGroup)){
+                            $actualGroup['questions']=$questionInGroup;
+                            $stepIndex[]=$actualGroup;
+                        }
+                        //add the group
+                        $actualGroup=$groupList[$questionFieldmap['groupSeq']];
+                        $questionInGroup=array();
+                        $prevGroupSeq=$questionFieldmap['groupSeq'];
+                    }
+                    $questionInfo=array();
+                    $questionInfo['code']=$questionFieldmap['title'];
+                    $questionInfo['text']=LimeExpressionManager::ProcessString($questionFieldmap['question']);
+                    $questionInGroup[]=$questionInfo;
+                }
+                /* Update the previous step */
+                $prevStep=$questionFieldmap['questionSeq'];
+            }
         }
-        return array("WIP");
+        /* Add the last group */
+        if(!empty($questionInGroup)){
+            $actualGroup['questions']=$questionInGroup;
+            $stepIndex[]=$actualGroup;
+        }
+        return $stepIndex;
     }
 
     /**
