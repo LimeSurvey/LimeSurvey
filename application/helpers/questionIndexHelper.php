@@ -104,7 +104,7 @@ class questionIndexHelper {
 
     /**
      * return the index item in goup by group mode
-     * @var integer $type : 0 : None , 1 : Incremental, 2: full
+     * @param integer $type : 0 : None , 1 : Incremental, 2: full
      */
     private function getIndexItemsGroups($type)
     {
@@ -160,7 +160,7 @@ class questionIndexHelper {
 
     /**
      * return the index item in question by question mode
-     * @var integer $type : 0 : None , 1 : Incremental, 2: full
+     * @param integer $type : 0 : None , 1 : Incremental, 2: full
      */
     private function getIndexItemsQuestions($type)
     {
@@ -206,8 +206,8 @@ class questionIndexHelper {
     }
     /**
      * Return html with params
-     * @var string : $surveyFormat (G|S)
-     * @var string : $viewType (link|button)
+     * @param string : $surveyFormat (G|S)
+     * @param string : $viewType (link|button)
      *
      * @return string : html to be used
      */
