@@ -63,3 +63,9 @@ th {
 
 #outerframeContainer {
   padding-bottom: 30px; }
+
+td.radio-item, td.checkbox-item {
+  text-align: center; }
+
+tr.ls-heading th {
+  text-align: center; }
