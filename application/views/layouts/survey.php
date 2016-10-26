@@ -31,6 +31,10 @@ if (!headers_sent())
 <?php
     $oTemplate = Template::model()->getInstance($this->sTemplate);
     App()->getClientScript()->registerPackage('fontawesome');
+    foreach($oTemplate->packages as $package)
+    {
+        App()->getClientScript()->registerPackage((string) $package);
+    }
     // Maybe can add language changer here
     /* Add head by template + star body (if template start body here ....) */
     echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),$this->aReplacementData,$this->aGlobalData);
