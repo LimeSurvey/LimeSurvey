@@ -1,4 +1,4 @@
-<div class="clearfix save-message">
+<div class="well clearfix save-message">
     <div class="h2">{SAVEHEADING}</div>
     <div class="text-info">
         {SAVEMESSAGE}
