@@ -19,11 +19,8 @@
 /* Using http://webaim.org/techniques/css/invisiblecontent/ technique : better with less part (to be more easily updatable by template ? : can use initial) */
 .js .ls-js-hidden-sr{
   position:absolute;
-  left:-10000px;
+  left:-100000rem;
   top:auto;
-  width:1px;
-  height:1px;
-  overflow:hidden;
 }
 
 /* For relanceOnOff ? */

@@ -6,7 +6,7 @@
       <div class="col-xs-6 text-right">{MOVENEXTBUTTON}</div>
     </div>
     <!-- Same than navbar, but inside form -->
-    <div class="row">
+    <div class="row ls-js-hidden">
         <div class="col-sm-6 col-xs-12">
             {SAVE}
             {CLEARALL}
