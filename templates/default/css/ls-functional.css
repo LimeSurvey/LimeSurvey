@@ -1,9 +1,3 @@
-#top-container {
-  position: relative; }
-
-#outer-frame {
-  position: relative; }
-
 .form-horizontal .control-label {
   text-align: left;
   font-weight: normal; }
@@ -15,33 +9,27 @@
   margin-top: 15px;
   margin-bottom: 0; }
 
-.ls-label-xs-visibility {
+.ls-label-xs-visibility,
+div.question-help:empty,
+#indexcontainer,
+.ls-js-hidden-sr {
   display: none; }
 
 @media (max-width: 768px) {
   .ls-label-xs-visibility {
     display: normal; } }
 
-div.question-help:empty {
-  display: none; }
-
-ul.ls-answers {
-  margin-bottom: 0; }
-
-.ls-answers .form-group:last-child {
-  margin-bottom: 0; }
-
+ul.ls-answers,
+.ls-answers .form-group:last-child,
 .ls-answers table {
   margin-bottom: 0; }
-
-#indexcontainer {
-  display: none; }
-
-.ls-js-hidden-sr {
-  display: none; }
 
 .checkbox, .radio {
   display: table-cell; }
 
 .slider.slider-horizontal {
   width: 100%; }
+
+.list-radio .control-label,
+.multiple-opt .control-label {
+  display: inline; }

@@ -1,5 +1,5 @@
 body {
-  background: #ccc; }
+  background: #f6f6f6; }
 
 #top-container {
   position: relative;
@@ -9,7 +9,7 @@ body {
   position: relative; }
 
 div[id^="question"] {
-  background-color: #ededed;
+  background-color: #ffffff;
   margin-bottom: 1em; }
 
 .group-container {
@@ -20,12 +20,12 @@ div[id^="question"] {
 .question-title-container {
   padding-top: 5px;
   padding-bottom: 5px;
-  background: #286090; }
+  background: #2C3E50; }
 
 .question-answer-container {
-  border-left: 1px solid #999;
-  border-right: 1px solid #999;
-  border-bottom: 1px solid #999;
+  border-left: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
   padding-top: 10px;
   padding-bottom: 10px; }
 
@@ -33,7 +33,7 @@ div[id^="question"] {
   border: 1px solid grey; }
 
 .progress-bar {
-  background: #286090; }
+  background: #2C3E50; }
 
 .form-horizontal .control-label {
   text-align: left;
@@ -82,15 +82,15 @@ div.question-help:empty {
 #welcome-container {
   background: white;
   margin-top: 100px;
-  border-left: 1px solid #999;
-  border-right: 1px solid #999;
-  border-top: 1px solid #999; }
+  border-left: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
+  border-top: 1px solid #dbdbdb; }
 
 .privacy-container {
   background: white;
-  border-left: 1px solid #999;
-  border-right: 1px solid #999;
-  border-bottom: 1px solid #999;
+  border-left: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
   margin-bottom: 15px; }
 
 ul.ls-answers {
