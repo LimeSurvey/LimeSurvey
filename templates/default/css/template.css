@@ -107,17 +107,24 @@ div[id^="question"] {
   background-color: #ffffff;
   margin-bottom: 1em; }
 
+.question-title-container {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #2C3E50; }
+
+@media (min-width: 769px) {
+  div[id^="question"] {
+    margin-bottom: 2em; }
+  .question-title-container {
+    padding-top: 15px;
+    padding-bottom: 15px; } }
+
 .question-help-container .questionhelp {
   padding-bottom: 5px;
   padding-top: 5px; }
 
 .ls-em-tip {
   padding-top: 5px; }
-
-.question-title-container {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  background: #2C3E50; }
 
 .question-answer-container {
   border-left: 1px solid #dbdbdb;
