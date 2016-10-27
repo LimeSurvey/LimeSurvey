@@ -470,14 +470,24 @@ class Participant extends LSActiveRecord
         //Create the filter for the extra attributes
         foreach($this->allExtraAttributes as $name => $attribute) {
             if(isset($extraAttributeParams[$name]) && $extraAttributeParams[$name]) {
-                $extraAttributeValues[$name] =  "'".$extraAttributeParams[$name]."'";
+                $extraAttributeValues[$name] =  $extraAttributeParams[$name];
             }
         }
 
         // Include a query for each extra attribute to filter
         foreach ($extraAttributeValues as $attributeId => $value) {
+
+            $attributeType = $this->allExtraAttributes[$attributeId]['attribute_type'];
             $attributeId = (int) substr($attributeId, 3);
-            $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '" . $attributeId . "' AND value = " . $value;
+
+            // Use "LIKE" for text-box, equal for other types
+            if ($attributeType == 'TB') {
+                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '" . $attributeId . "' AND value LIKE '%" . $value . "%'";
+            }
+            else {
+                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '" . $attributeId . "' AND value = '" . $value . "'";
+            }
+
             $criteria->addCondition( '"t"."participant_id" IN (('. $callParticipantAttributes .'))');
         }
 
