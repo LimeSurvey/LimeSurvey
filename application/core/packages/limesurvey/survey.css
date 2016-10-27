@@ -99,4 +99,16 @@
 .form-inline .input-group .ls-input-group-extra{width: auto;white-space: initial;}
 .form-inline .ls-input-group .ls-input-group-extra{width: auto;white-space: initial;}
 
-
+/* index button */
+.ls-index-buttons .list-group .list-group-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.ls-index-buttons .list-group:not(:last-child) {
+    margin-bottom: -1px;
+}
+.ls-index-buttons .list-group:not(:last-child) .list-group-item:last-child  {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: -1px;
+}

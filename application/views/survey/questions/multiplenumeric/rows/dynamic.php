@@ -16,11 +16,19 @@
             <?php eT('Remaining: ');?>
         </div>
         <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
-            <?php echo $prefix; ?>
+            <?php if ($prefix != ''): ?>
+                <div class="ls-input-group-extra prefix-text prefix text-right">
+                    <?php echo $prefix; ?>
+                </div>
+            <?php endif; ?>
             <div id="remainingvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-remaining"><!-- alteranative class : form-control : display like an input:text -->
                 {<?php echo $sumRemainingEqn;?>}
             </div>
-            <?php echo $suffix; ?>
+            <?php if ($suffix != ''): ?>
+                <div class="ls-input-group-extra suffix-text suffix text-left">
+                    <?php echo $suffix; ?>
+                </div>
+            <?php endif; ?>
         </div>
     </li>
 <?php endif; ?>
@@ -31,11 +39,19 @@
             <?php eT('Total: ');?>
         </div>
        <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
-            <?php echo $prefix; ?>
+            <?php if ($prefix != ''): ?>
+                <div class="ls-input-group-extra prefix-text prefix text-right">
+                    <?php echo $prefix; ?>
+                </div>
+            <?php endif; ?>
             <div id="totalvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-total">
                 {<?php echo $sumEqn; ?>}
             </div>
-            <?php echo $suffix; ?>
+            <?php if ($suffix != ''): ?>
+                <div class="ls-input-group-extra suffix-text suffix text-left">
+                    <?php echo $suffix; ?>
+                </div>
+            <?php endif; ?>
         </div>
     </li>
 <?php endif; ?>
