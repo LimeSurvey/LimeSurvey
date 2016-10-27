@@ -25,7 +25,7 @@
                     /* bs class for testing : bg-danger is really great here, but only if menu is set in navigator or after */
                     $statusClass = $indexItem['stepStatus']['index-item-unanswered']? " bg-warning":"";
                     $statusClass.= $indexItem['stepStatus']['index-item-error']? " bg-danger":"";
-                    $statusClass.= $indexItem['stepStatus']['index-item-current']? " active":"";
+                    $statusClass.= $indexItem['stepStatus']['index-item-current']? " disabled":"";
                 ?>
                 <li class="<?php echo $indexItem['coreClass']; ?><?php echo $statusClass; ?>">
                     <a href='<?php echo $indexItem['url']; ?>' data-limesurvey-submit='<?php echo $indexItem['submit']; ?>'>

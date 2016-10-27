@@ -1,5 +1,5 @@
 <!-- Start group -->
-<div class="row group-container">
+<div class="group-container">
     <div class="group-title-container">
         <h3 class="group-title">{GROUPNAME}</h3>
     </div>

@@ -13,7 +13,7 @@
         <?php
             $statusClass = $indexItem['stepStatus']['index-item-unanswered']? " list-group-item-warning":"";
             $statusClass.= $indexItem['stepStatus']['index-item-error']? " list-group-item-danger":"";
-            $statusClass.= $indexItem['stepStatus']['index-item-current']? " active":"";
+            $statusClass.= $indexItem['stepStatus']['index-item-current']? " disabled":"";
         ?>
         <button type="submit" name="move" value="<?php echo $indexItem['step']; ?>"
             class="<?php echo $indexItem['coreClass']; ?> list-group-item <?php echo $statusClass; ?>">

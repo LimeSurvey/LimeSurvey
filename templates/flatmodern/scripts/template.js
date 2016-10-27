@@ -44,7 +44,12 @@ $(document).ready(function(){
 
 $(document).ready(function()
 {
-
+    fixBodyPadding();
+    // If list of nav-bar action is empty: remove it (else .navbar-toggle is shown on small screen) //
+    if(!$("#navbar li").length){
+        $("#navbar").remove();
+        $("[data-target='#navbar']").remove();
+    }
     // Scroll to first error
     if($(".input-error").length > 0) {
         $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
@@ -58,35 +63,6 @@ $(document).ready(function()
     }
 
     $('.if-no-js').hide();
-
-    //var outerframeDistanceFromTop = 50;
-    //topsurveymenubar
-    var topsurveymenubarHeight = $('#topsurveymenubar').innerHeight();
-    var outerframeDistanceFromTop = topsurveymenubarHeight;
-    // Manage top container
-    if(!$.trim($('#topContainer .container').html()))
-    {
-        $('#topContainer').hide();
-    }
-    else
-    {
-        $('#topContainer').css({
-            top: topsurveymenubarHeight+'px',
-        });
-
-        $topContainerHeight = $('#topContainer').height();
-        outerframeDistanceFromTop += $topContainerHeight;
-    }
-
-    if(!$.trim($('#surveynametitle').html()))
-    {
-        if(!$.trim($('#surveydescription').html()))
-        {
-            $('#survey-header').hide();
-        }
-    }
-
-    $('#outerframeContainer').css({marginTop:outerframeDistanceFromTop+'px'});
 
     $('.language-changer').each(function(){
         $that = $(this);
@@ -112,26 +88,6 @@ $(document).ready(function()
             $that.hide();
         }
     });
-
-
-    // clearall
-    if ($('#clearallbtnlink').length > 0){
-        $('#clearallbtnlink').on('click', function()
-        {
-            $('#clearall').trigger('click');
-        });
-    }
-
-    // Question index
-    if($('.linkToButton').length > 0){
-        $('.linkToButton').on('click', function()
-        {
-            $btnToClick = $($(this).attr('data-button-to-click'));
-            $btnToClick.trigger('click');
-            return false;
-        });
-    }
-
 
     // Errors
     if($('.ls-em-tip').length>0)
@@ -194,7 +150,9 @@ $(document).ready(function()
 
 
 });
-
+$(window).resize(function () {
+    fixBodyPadding();
+});
 
 window.alert = function(message, title) {
     if($("#bootstrap-alert-box-modal").length == 0) {
@@ -221,3 +179,11 @@ window.alert = function(message, title) {
         $("#bootstrap-alert-box-modal").modal('show');
     });
 };
+
+/**
+ * fix padding of body according to navbar-fixed-top
+ */
+function fixBodyPadding(){
+    /* The 50 px is fixed in template.css */
+    $("body").css("padding-top",$(".navbar-fixed-top").height+"px")
+}

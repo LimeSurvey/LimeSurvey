@@ -168,23 +168,27 @@ class questionIndexHelper {
     private function getIndexItemsQuestions($type)
     {
         $sessionLem=Yii::app()->session["survey_{$this->iSurveyId}"];
+        /* get field map : have more info*/
         $questionList=$sessionLem['fieldmap'];
+        /* get group list : for information about group ...*/
         $groupList=$sessionLem['grouplist'];
+        /* get the step infor from LEM : for alreay seen questin : give if error/show and answered ...*/
         $stepInfos = LimeExpressionManager::GetStepIndexInfo();
-        /* Remove all uneeded fieldmap : not needed : we test the "questionSeq" */
+
+        /* The final step index to return */
         $stepIndex=array();
         $prevStep=-1;
         $prevGroupSeq=-1;
         foreach($sessionLem['fieldmap'] as $step=>$questionFieldmap)
         {
-            if(isset($questionFieldmap['questionSeq']) && $questionFieldmap['questionSeq']!=$prevStep){ // Sub question have same questionSeq
+            if(isset($questionFieldmap['questionSeq']) && $questionFieldmap['questionSeq']!=$prevStep ){ // Sub question have same questionSeq, and no questionSeq : must be hidden (lastpage, id, seed ...)
                 /* This question can be in index */
                 $questionStep=$questionFieldmap['questionSeq']+1;
                 $stepInfo=isset($stepInfos[$questionFieldmap['questionSeq']]) ? $stepInfos[$questionFieldmap['questionSeq']]: array('show'=>true,'anyUnanswered'=>null,'anyErrors'=>null);
                 if( ($questionStep <= $sessionLem['maxstep'] ) // || $type>1 : index can be shown : but next step is disable somewhere
                    && $stepInfo['show']// attribute hidden + relevance : @todo review EM function ?
                 ) {
-                    /* Control if we are in a new group : always at first question*/
+                    /* Control if we are in a new group : always true at first question*/
                     //$GroupId=(isset($questionFieldmap['random_gid']) && $questionFieldmap['random_gid']) ? $questionFieldmap['random_gid'] : $questionFieldmap['gid'];
                     if($questionFieldmap['groupSeq']!=$prevGroupSeq){
                         // add the previous group if it's not empty (all question hidden etc ....)
@@ -199,12 +203,13 @@ class questionIndexHelper {
                             'text'=>LimeExpressionManager::ProcessString($groupInfo['group_name']),
                             'description'=>LimeExpressionManager::ProcessString($groupInfo['description']),
                         );
+                        /* The 'show' question in this group */
                         $questionInGroup=array();
                         $prevGroupSeq=$questionFieldmap['groupSeq'];
                     }
                     $questionInfo=array(
                         'qid'=>$questionFieldmap['qid'],
-                        'code'=>$questionFieldmap['title'],
+                        'code'=>$questionFieldmap['title'], /* @todo : If survey us set to show question code : we must show it */
                         'text'=>LimeExpressionManager::ProcessString($questionFieldmap['question']),
                         'step'=>$questionStep,
                         'url'=>Yii::app()->getController()->createUrl("survey/index",array('sid'=>$this->iSurveyId,'move'=>$questionStep)),

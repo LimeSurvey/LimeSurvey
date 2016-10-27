@@ -26,13 +26,15 @@ function manageIndex(){
  */
 function activateLanguageChanger(){
     $('.ls-language-changer-item').on('change','select',function() {
+        console.log('change');
         if(!$(this).closest('form').length){
             /* we are not in a forum, can not submit directly */
             if($('form#limesurvey').length==1){
+                console.log('limesurvey');
                 /* The limesurvey form exist in document, move select and button inside and click */
                 $("form#limesurvey [name='lang']").remove();// Remove existing lang selector
-                $("<input type='hidden']>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));
-                $(this).closest('.ls-language-changer-item').find(".ls-change-lang").clone().addClass("ls-js-hidden").appendTo($('form#limesurvey')).click();
+                $("<input type='hidden'>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));
+                $(this).closest('.ls-language-changer-item').find("[type='submit']").clone().addClass("ls-js-hidden").appendTo($('form#limesurvey')).click();
             }else{
                 // If there are no form : we can't use it */
                 if($(this).data('targeturl')){

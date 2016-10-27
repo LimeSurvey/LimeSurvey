@@ -1,3 +1,4 @@
+/* Replace googe font by included font (see mantis) */
 /* lato-regular - latin */
 @font-face {
   font-family: 'Lato';
@@ -41,15 +42,15 @@
 }
 
 /*!
- * bootswatch v3.3.6
+ * bootswatch v3.3.7
  * Homepage: http://bootswatch.com
  * Copyright 2012-2016 Thomas Park
  * Licensed under MIT
  * Based on Bootstrap
 */
 /*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
@@ -1151,7 +1152,6 @@ a:focus {
   text-decoration: underline;
 }
 a:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -1468,9 +1468,6 @@ ol ul,
 ul ol,
 ol ol {
   margin-bottom: 0;
-}
-li {
-  margin-bottom: 15px;
 }
 .list-unstyled {
   padding-left: 0;
@@ -2585,7 +2582,6 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -2681,6 +2677,13 @@ input[type="search"] {
 .form-group {
   margin-bottom: 15px;
 }
+.radio,
+.checkbox {
+  position: relative;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 .radio label,
 .checkbox label {
   min-height: 21px;
@@ -2697,7 +2700,10 @@ input[type="search"] {
   margin-left: -20px;
   margin-top: 4px \9;
 }
-
+.radio + .radio,
+.checkbox + .checkbox {
+  margin-top: -5px;
+}
 .radio-inline,
 .checkbox-inline {
   position: relative;
@@ -2711,7 +2717,7 @@ input[type="search"] {
 .radio-inline + .radio-inline,
 .checkbox-inline + .checkbox-inline {
   margin-top: 0;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 input[type="radio"][disabled],
 input[type="checkbox"][disabled],
@@ -3067,7 +3073,6 @@ select[multiple].input-lg {
 .btn.focus,
 .btn:active.focus,
 .btn.active.focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -4333,8 +4338,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-toggle {
-  position: absolute;
-  right: 0px;
+  position: relative;
   float: right;
   margin-right: 15px;
   padding: 9px 10px;
@@ -5171,9 +5175,8 @@ a.thumbnail.active {
   margin-bottom: 21px;
   background-color: #ecf0f1;
   border-radius: 4px;
-  -webkit-box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 .progress-bar {
   float: left;
@@ -5189,7 +5192,6 @@ a.thumbnail.active {
   -webkit-transition: width 0.6s ease;
   -o-transition: width 0.6s ease;
   transition: width 0.6s ease;
-  padding-top: 0.4em;
 }
 .progress-striped .progress-bar,
 .progress-bar-striped {
@@ -7014,6 +7016,8 @@ input:focus {
 }
 .progress {
   height: 10px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 .progress .progress-bar {
   font-size: 10px;
@@ -7058,43 +7062,3 @@ a.list-group-item-danger.active:focus {
 .popover {
   color: #2c3e50;
 }
-
-
-/**
- * Question design
- */
- body{
-     background-color: #f6f6f6;
- }
-
- .answer-container, .question-help-container
- {
-     border-color: #dbdbdb;
- }
-
-
- /** Header **/
- .question-title-container, .question-valid-container {
-     background-color: #233140;
- }
-
-
-
- .question-valid-container .text-danger{
-     color: #E75041;
- }
-
- .question-valid-container .text-info{
-     color: #B9CC14;
- }
-
- /* Arrow */
- .question-valid-container:after {
-     border-top-color: #233140;
- }
-
-
-/* Errors */
- .input-error {
-     border: 1px solid #E75041;
- }

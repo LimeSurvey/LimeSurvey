@@ -1,19 +1,24 @@
- body
- {
-     /*padding-top: 50px; now define in JS to fit any title length */
+body
+{
      padding-bottom: 10px;
- }
+     background-color: #f6f6f6;
+}
 
+/* The header */
+body
+{
+     padding-top: 60px;/* now is redefine in JS to fit any title length */
+}
+.navbar-action-link{
+padding-right:1em; /* really close to window without */
+}
 .remove-margins {
     margin: 0;
 }
 .remove-padding {
     padding: 0;
 }
-div[id^="group-"]>div {
-    //background-color: #fff;
-    //margin-bottom: 1em;
- }
+
 
  div[id^="group-"]>div.group-container {
      background-color: transparent;
@@ -30,8 +35,6 @@ div[id^="group-"]>div {
 }
 
 #topContainer {
-    position: absolute;
-    /*top: 55px; now define in JS to fit any title length */
     width: 100%;
     padding: 1em;
     border-bottom: none;
@@ -58,9 +61,6 @@ div[id^="group-"]>div {
     color: #2c3e50;
 }
 
-#main-row, #welcome-container {
-    background-color: transparent;
-}
  /**
  * Navigator
  */
@@ -69,9 +69,6 @@ div[id^="group-"]>div {
      margin-top: 4em;
      padding-top: 1em;
      padding-bottom: 1em;
- }
- #navigator-container>div
- {
  }
 
  #main-col {
@@ -83,55 +80,6 @@ div[id^="group-"]>div {
      margin: 0 auto;
  }
 
-
-/**
-* navigator
-*/
-#loadallbtn{
-    white-space: normal;
-}
-
-
-.label-col {
-    min-width: 10%;
-    position: relative;
-    min-height: 1px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-li.responsive-content
-{
-    display: block;
-    position: relative;
-    float: left;
-    width: 100%;
-}
-
-/* Don't wrap "No answer" for 10-point array */
-.table-in-qanda-2 thead th {
-    white-space: nowrap;
-}
-
-
-/**
-* slider
-**/
-.numeric-multi ul.slider.computed {
-  width: 22em;
-}
-
-.numeric-multi ul.computed li label,.numeric-multi ul.slider.computed li label
-  {
-  padding-right: 0%;
-}
-
-.numeric-multi div.multinum-slider {
-  width: auto;
-  float: left;
-  margin-top: 1.5em;
-  margin-bottom: 0.2em;
-}
 
 /** UI Slider **/
 
@@ -267,9 +215,10 @@ html body .navbar.navbar-default.navbar-fixed-top {
 .gender-button .gender-icon {
     font-size: 2em;
 }
-
+/* Title of survey can be big, allow multiline, but leave the minimum */
 .navbar-brand {
     height: auto;
+    min-height:60px;
 }
 
 /* For striped tables */
@@ -544,25 +493,6 @@ only screen and (max-width: 760px),
         right: 0.5em;
     }
 
-    /* Increase-same-decrease array */
-    .row-inc-same-dec .radio-item,
-    .thead-inc-same-dec th {
-        text-align: left;
-    }
-
-    .table-multi-num.no-more-tables tr {
-        border: none;
-    }
-
-    /* Used for <td></td> in multiple-numeric */
-    td.hide-on-small-screen {
-        display: none;
-    }
-
-    #langchanger-label {
-        padding-top: 11px;
-    }
-
     .col-xs-12.question-container {
         padding-right: 0;
         padding-left: 0;
@@ -624,40 +554,9 @@ only screen and (max-width: 760px),
 
 }
 
-/* On iPad etc only */
-@media only screen and (max-width: 800px) and (min-width: 768px) {
-    .five-point-choice .noanswer-item {
-        padding: 0;
-    }
-
-
-}
-
-@media only screen and (max-width: 1000px) and (min-width: 800px) {
-    .table-10-point-array td.answer-item.text-center
-    {
-        padding-left: 10px;
-    }
-
-    .table-10-point-array  > thead > tr > th
-    {
-        text-align: left;
-        padding-right: 0px;
-    }
-}
-
-
 /**
  * Display adjust, question type by question type
  */
-
-.radio input[type="radio"]:disabled + label
-{
-    opacity: 0.25;
-}
-
-
-
 
 /* center the label text in no more table mode */
 .label-text{
@@ -671,18 +570,9 @@ only screen and (max-width: 760px),
     margin-left: 0px;
 }
 
-.label-clickable:hover
-{
-    cursor: pointer;
-}
-
 .table > tbody > tr > th
 {
     vertical-align: middle;
-}
-
-table.numbers-only th, table.numbers-only input {
-    text-align: right;
 }
 
 .othertext-label-checkox-container {
@@ -699,15 +589,8 @@ table.numbers-only th, table.numbers-only input {
      vertical-align: middle;
  }
 
- /* alignment for small screens*/
- .multiple-choice-with-comment.table > tbody > tr > td.comment-container {
-     padding-left: 14px;
- }
-.checkbox input[type="checkbox"] {
-    margin-left: 0px;
-}
 
-.short-free-text .prefix, .short-free-text .suffix,.geoloc-item .search-icon, .geoloc-item .checkbox  {
+.geoloc-item .search-icon, .geoloc-item .checkbox  {
     padding-top: 10px;
 }
 
@@ -724,10 +607,10 @@ table.numbers-only th, table.numbers-only input {
 }
 
 .question-title-container {
-  color: white;
-  padding-top:2em;
-  padding-bottom:1em;
+  padding-top: 2em;padding-bottom:1em;
 }
+.question-number,.question-code{float:left;margin:0 0.3em}
+.question-number:empty,.question-code:empty{display:none}
 
 .question-valid-container {
   position: relative;
@@ -742,7 +625,9 @@ table.numbers-only th, table.numbers-only input {
 .question-valid-container .text-info{
   font-weight: bold;
 }
-
+.answer-container, .question-help-container {
+    border-color: #dbdbdb;
+}
 .answer-container {
   border-width: 0px 1px 0px 1px;
   border-style: solid;
