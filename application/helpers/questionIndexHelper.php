@@ -123,12 +123,11 @@ class questionIndexHelper {
             if( ($type>1 || $groupInfo['step'] <= $sessionLem['maxstep'])  // type==1 : incremental : must control step
                 && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // always add it if unrelevant/hidden : only tested after when try to view it (in EM)
             ){
-                /* @todo : fix string ? */
-                /* viewHelper::flatEllipsizeText(LimeExpressionManager::ProcessString($groupInfo['group_name']),true,80,"&hellip;",0.6); for exemple */
+                /* string to EM : leave fix (remove script , flatten other ...) to view */
                 $stepIndex[$step]=array(
                     'gid'=>$groupInfo['gid'],
-                    'text'=>$groupInfo['group_name'],
-                    'description'=>$groupInfo['description'],
+                    'text'=>LimeExpressionManager::ProcessString($groupInfo['group_name']),
+                    'description'=>LimeExpressionManager::ProcessString($groupInfo['description']),
                     'step'=>$groupInfo['step'],
                     'url'=>Yii::app()->getController()->createUrl("survey/index",array('sid'=>$this->iSurveyId,'move'=>$groupInfo['step'])),
                     'submit'=>ls_json_encode(array('move'=>$groupInfo['step'])),
@@ -171,6 +170,7 @@ class questionIndexHelper {
         $sessionLem=Yii::app()->session["survey_{$this->iSurveyId}"];
         $questionList=$sessionLem['fieldmap'];
         $groupList=$sessionLem['grouplist'];
+        $stepInfos = LimeExpressionManager::GetStepIndexInfo();
         /* Remove all uneeded fieldmap : not needed : we test the "questionSeq" */
         $stepIndex=array();
         $prevStep=-1;
@@ -179,11 +179,10 @@ class questionIndexHelper {
         {
             if(isset($questionFieldmap['questionSeq']) && $questionFieldmap['questionSeq']!=$prevStep){ // Sub question have same questionSeq
                 /* This question can be in index */
-                $step=$questionFieldmap['questionSeq']+1;
-                $oAttributeHidden=QuestionAttribute::model()->find("qid=:qid and attribute LIKE :attribute",array(":qid"=>$questionFieldmap['qid'],":attribute"=>'hidden'));
-                if( ($step <= $sessionLem['maxstep'] ) // || $type>1 : need testing for complet, but can work, do it after merging to answers_html + develop
-                   && LimeExpressionManager::QuestionIsRelevant($questionFieldmap['qid']) // relevanceStatus
-                   && !($oAttributeHidden && $oAttributeHidden->value) // attribute hidden
+                $questionStep=$questionFieldmap['questionSeq']+1;
+                $stepInfo=isset($stepInfos[$questionFieldmap['questionSeq']]) ? $stepInfos[$questionFieldmap['questionSeq']]: array('show'=>true,'anyUnanswered'=>null,'anyErrors'=>null);
+                if( ($questionStep <= $sessionLem['maxstep'] ) // || $type>1 : index can be shown : but next step is disable somewhere
+                   && $stepInfo['show']// attribute hidden + relevance : @todo review EM function ?
                 ) {
                     /* Control if we are in a new group : always at first question*/
                     //$GroupId=(isset($questionFieldmap['random_gid']) && $questionFieldmap['random_gid']) ? $questionFieldmap['random_gid'] : $questionFieldmap['gid'];
@@ -194,14 +193,48 @@ class questionIndexHelper {
                             $stepIndex[]=$actualGroup;
                         }
                         //add the group
-                        $actualGroup=$groupList[$questionFieldmap['groupSeq']];
+                        $groupInfo=$groupList[$questionFieldmap['groupSeq']];
+                        $actualGroup=array(
+                            'gid'=>$groupInfo['gid'],
+                            'text'=>LimeExpressionManager::ProcessString($groupInfo['group_name']),
+                            'description'=>LimeExpressionManager::ProcessString($groupInfo['description']),
+                        );
                         $questionInGroup=array();
                         $prevGroupSeq=$questionFieldmap['groupSeq'];
                     }
-                    $questionInfo=array();
-                    $questionInfo['code']=$questionFieldmap['title'];
-                    $questionInfo['text']=LimeExpressionManager::ProcessString($questionFieldmap['question']);
-                    $questionInGroup[]=$questionInfo;
+                    $questionInfo=array(
+                        'qid'=>$questionFieldmap['qid'],
+                        'code'=>$questionFieldmap['title'],
+                        'text'=>LimeExpressionManager::ProcessString($questionFieldmap['question']),
+                        'step'=>$questionStep,
+                        'url'=>Yii::app()->getController()->createUrl("survey/index",array('sid'=>$this->iSurveyId,'move'=>$questionStep)),
+                        'submit'=>ls_json_encode(array('move'=>$questionStep)),
+                        'stepStatus'=>array(
+                              'index-item-before' => ($questionStep < $sessionLem['step']), /* did we need a before ? seen seems better */
+                              'index-item-seen' => ($questionStep <= $sessionLem['maxstep']),
+                              'index-item-current' => ($questionStep == $sessionLem['step']),
+                          ),/* order have importance for css : last on is apply */
+
+                    );
+                    /* Get the step status */
+                    if(true || $this->getStepInfo){
+                        /* Get the current group info */
+                        /* We can not validate a question after step ... @todo : create a new EM function ? Do it manually ? */
+                        if ($questionStep <= $sessionLem['maxstep'] && $questionStep != $sessionLem['step']){
+
+                            $questionInfo['stepStatus']['index-item-error'] = (bool) $stepInfo['anyErrors'];
+                            $questionInfo['stepStatus']['index-item-unanswered'] = (bool) $stepInfo['anyUnanswered'];
+                        }else{
+                            $questionInfo['stepStatus']['index-item-error'] = null;
+                            $questionInfo['stepStatus']['index-item-unanswered'] = null;
+                        }
+                    }else{
+                        $questionInfo['stepStatus']['index-item-error'] = null;
+                        $questionInfo['stepStatus']['index-item-unanswered'] = null;
+                    }
+                    $aClass=array_filter($questionInfo['stepStatus']);
+                    $questionInfo['coreClass']=implode(" ",array_merge(array('index-item'),array_keys($aClass)));
+                    $questionInGroup[$questionStep]=$questionInfo;
                 }
                 /* Update the previous step */
                 $prevStep=$questionFieldmap['questionSeq'];
@@ -274,6 +307,7 @@ class questionIndexHelper {
                 Yii::log("Uknow view type for question index, must be button or link.", 'error','application.helpers.questionIndexHelper');
                 return "";
         }
+        Yii::import('application.helpers.viewHelper', true);
         return Yii::app()->getController()->renderPartial("/survey/system/surveyIndex/{$viewFile}",array(
             'type'=>$this->indexType,
             'indexItems'=>$this->indexItems,
