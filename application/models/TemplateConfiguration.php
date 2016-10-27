@@ -61,7 +61,9 @@ class TemplateConfiguration extends CFormModel
         // If it's called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '')
         {
-            throw new TemplateException("Template needs either template name or survey id");
+            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            $sTemplateName=Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
+            //throw new TemplateException("Template needs either template name or survey id");
         }
         $this->sTemplateName = $sTemplateName;
         $this->iSurveyId     = (int) $iSurveyId;
@@ -80,6 +82,7 @@ class TemplateConfiguration extends CFormModel
         // If the template directory doesn't exist, it can be that:
         // - user deleted a custom theme
         // In any case, we just set Default as the template to use
+
         if (!is_dir($this->path))
         {
             $this->sTemplateName = 'default';

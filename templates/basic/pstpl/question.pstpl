@@ -1,8 +1,8 @@
 <div {QUESTION_ESSENTIALS} class="well question-wrapper {QUESTION_CLASS} {QUESTION_MAN_CLASS} {QUESTION_INPUT_ERROR_CLASS}">
 	<div class="question-text-wrapper">
 		{QUESTION_MANDATORY}
-		{if(!is_empty(QUESTION_NUMBER),"<span class='label label-default question-number'>"+QUESTION_NUMBER+"</span>","")}
-		{if(!is_empty(QUESTION_CODE),"<span class='label label-info question-code'>"+QUESTION_CODE+"</span>","")}
+		<span class='label label-default question-number'>{QUESTION_NUMBER}</span>
+		<span class='label label-info question-code'>{QUESTION_CODE}</span>
 		<div class="question-text h3 text-info">{QUESTION_TEXT}</div>
 	</div>
 	<div class="help-wrapper">
