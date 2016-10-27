@@ -60,7 +60,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #ffffff; }
   .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
     color: #ddd; }
-
+/* on little screen : allow more height to title navbar-brand height from bs is for word, not string */
+.navbar-brand{
+  min-height:50px;
+  height:auto;
+}
 .btn-primary {
   background-color: #2c3e50;
   border-color: #2c3e50;

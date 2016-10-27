@@ -1,14 +1,21 @@
 <!-- Navigator hidden-xs-->
 
 <div class="rows" id="navigator-container">
-    <div class="row save-all hidden">
-        {SAVE}
-        {CLEARALL}
+    <div class="row navigator clearfix">
+      <div class="col-xs-6 text-left">{MOVEPREVBUTTON}</div>
+      <div class="col-xs-6 text-right">{MOVENEXTBUTTON}</div>
+    </div>
+    <!-- Same than navbar, but inside form -->
+    <div class="row">
+        <div class="col-sm-6 col-xs-12">
+            {SAVE}
+            {CLEARALL}
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            {QUESTION_INDEX}
+        </div>
     </div>
 
-    <div class="row save-all clearfix">
-      <div class="col-sm-6 text-left">{MOVEPREVBUTTON}</div>
-      <div class="col-sm-6 text-right">{MOVENEXTBUTTON}</div>
-    </div>
+
 </div>
 
