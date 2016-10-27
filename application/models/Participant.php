@@ -470,15 +470,27 @@ class Participant extends LSActiveRecord
         //Create the filter for the extra attributes
         foreach($this->allExtraAttributes as $name => $attribute) {
             if(isset($extraAttributeParams[$name]) && $extraAttributeParams[$name]) {
-                $extraAttributeValues[] =  "'".$extraAttributeParams[$name]."'";
+                $extraAttributeValues[$name] =  $extraAttributeParams[$name];
             }
         }
-        $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE value IN (".join(', ',$extraAttributeValues).")";
 
-        if(!empty($extraAttributeValues))
-        { 
-            $criteria->addCondition( '"t"."participant_id" IN (('. $callParticipantAttributes .'))');
+        // Include a query for each extra attribute to filter
+        foreach ($extraAttributeValues as $attributeId => $value) {
+
+            $attributeType = $this->allExtraAttributes[$attributeId]['attribute_type'];
+            $attributeId = (int) substr($attributeId, 3);
+
+            // Use "LIKE" for text-box, equal for other types
+            if ($attributeType == 'TB') {
+                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '" . $attributeId . "' AND value LIKE '%" . $value . "%'";
+            }
+            else {
+                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '" . $attributeId . "' AND value = '" . $value . "'";
+            }
+
+            $criteria->addCondition( '"t"."participant_id" IN ('. $callParticipantAttributes .')');
         }
+
         $DBCountActiveSurveys = SurveyLink::model()->tableName();
         $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
 
@@ -488,18 +500,16 @@ class Participant extends LSActiveRecord
             't.participant_id',
             't.participant_id AS id',   // This is need to avoid confusion between t.participant_id and shares.participant_id
         );
-        if($this->extraCondition)
-        {
+        if($this->extraCondition) {
             $criteria->mergeWith($this->extraCondition);
         }
         $sort->attributes = $sortAttributes;
-        $sort->defaultOrder = 't.created DESC';
+        $sort->defaultOrder = 't.lastname ASC';
 
         // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone
         // Superadmins can see all users.
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
-        if (!$isSuperAdmin)
-        {
+        if (!$isSuperAdmin) {
             $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' OR t.owner_uid = shares.share_uid OR shares.share_uid = -1');
         }
 

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-10-21 06:48:38+00:00\n"
+"POT-Creation-Date: 2016-10-26 08:40:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1349,7 +1349,7 @@ msgstr ""
 #: application/views/admin/dataentry/vvimport_result.php:22
 #: application/views/admin/survey/Question/question_view.php:103
 #: application/views/admin/survey/Question/question_view.php:119
-#: application/views/admin/survey/activateSurvey_view.php:85
+#: application/views/admin/survey/activateSurvey_view.php:78
 #: application/views/admin/survey/deleteSurvey_view.php:8
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:52
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:161
@@ -1443,8 +1443,8 @@ msgstr ""
 #: application/helpers/export_helper.php:286
 #: application/helpers/export_helper.php:294
 #: application/helpers/export_helper.php:298
-#: application/helpers/export_helper.php:1378
-#: application/helpers/export_helper.php:1397
+#: application/helpers/export_helper.php:1379
+#: application/helpers/export_helper.php:1398
 #: application/helpers/expressions/em_manager_helper.php:3616
 #: application/helpers/expressions/em_manager_helper.php:3620
 #: application/helpers/questionHelper.php:58
@@ -1523,11 +1523,11 @@ msgstr ""
 #: application/views/admin/survey/Question/question_view.php:139
 #: application/views/admin/survey/Question/question_view.php:157
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:63
-#: application/views/admin/survey/activateSurvey_view.php:105
-#: application/views/admin/survey/activateSurvey_view.php:126
-#: application/views/admin/survey/activateSurvey_view.php:150
-#: application/views/admin/survey/activateSurvey_view.php:169
-#: application/views/admin/survey/activateSurvey_view.php:189
+#: application/views/admin/survey/activateSurvey_view.php:98
+#: application/views/admin/survey/activateSurvey_view.php:117
+#: application/views/admin/survey/activateSurvey_view.php:139
+#: application/views/admin/survey/activateSurvey_view.php:155
+#: application/views/admin/survey/activateSurvey_view.php:172
 #: application/views/admin/survey/queXMLSurvey_view.php:37
 #: application/views/admin/survey/queXMLSurvey_view.php:49
 #: application/views/admin/survey/queXMLSurvey_view.php:61
@@ -1556,7 +1556,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1342
 #: application/helpers/common_helper.php:1519
 #: application/helpers/export_helper.php:300
-#: application/helpers/export_helper.php:1397
+#: application/helpers/export_helper.php:1398
 #: application/helpers/expressions/em_manager_helper.php:3622
 #: application/helpers/userstatistics_helper.php:1325
 #: application/views/admin/dataentry/content_view.php:697
@@ -1588,8 +1588,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1518
 #: application/helpers/export_helper.php:295
 #: application/helpers/export_helper.php:299
-#: application/helpers/export_helper.php:1378
-#: application/helpers/export_helper.php:1397
+#: application/helpers/export_helper.php:1379
+#: application/helpers/export_helper.php:1398
 #: application/helpers/expressions/em_manager_helper.php:3617
 #: application/helpers/expressions/em_manager_helper.php:3621
 #: application/helpers/questionHelper.php:57
@@ -1667,11 +1667,11 @@ msgstr ""
 #: application/views/admin/survey/Question/question_view.php:141
 #: application/views/admin/survey/Question/question_view.php:159
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:62
-#: application/views/admin/survey/activateSurvey_view.php:110
-#: application/views/admin/survey/activateSurvey_view.php:130
-#: application/views/admin/survey/activateSurvey_view.php:153
-#: application/views/admin/survey/activateSurvey_view.php:172
-#: application/views/admin/survey/activateSurvey_view.php:193
+#: application/views/admin/survey/activateSurvey_view.php:103
+#: application/views/admin/survey/activateSurvey_view.php:121
+#: application/views/admin/survey/activateSurvey_view.php:142
+#: application/views/admin/survey/activateSurvey_view.php:158
+#: application/views/admin/survey/activateSurvey_view.php:176
 #: application/views/admin/survey/queXMLSurvey_view.php:38
 #: application/views/admin/survey/queXMLSurvey_view.php:50
 #: application/views/admin/survey/queXMLSurvey_view.php:62
@@ -1699,7 +1699,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1360
 #: application/helpers/common_helper.php:1525
 #: application/helpers/export_helper.php:303
-#: application/helpers/export_helper.php:1402
+#: application/helpers/export_helper.php:1403
 #: application/helpers/expressions/em_manager_helper.php:3625
 #: application/helpers/userstatistics_helper.php:1343
 #: application/views/admin/dataentry/content_view.php:721
@@ -1717,7 +1717,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1361
 #: application/helpers/common_helper.php:1527
 #: application/helpers/export_helper.php:304
-#: application/helpers/export_helper.php:1402
+#: application/helpers/export_helper.php:1403
 #: application/helpers/expressions/em_manager_helper.php:3626
 #: application/helpers/userstatistics_helper.php:1344
 #: application/views/admin/dataentry/content_view.php:722
@@ -1735,7 +1735,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1362
 #: application/helpers/common_helper.php:1526
 #: application/helpers/export_helper.php:305
-#: application/helpers/export_helper.php:1402
+#: application/helpers/export_helper.php:1403
 #: application/helpers/expressions/em_manager_helper.php:3627
 #: application/helpers/userstatistics_helper.php:1345
 #: application/views/admin/dataentry/content_view.php:723
@@ -1780,7 +1780,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1466
 #: application/helpers/common_helper.php:1510
 #: application/helpers/export_helper.php:290
-#: application/helpers/export_helper.php:1382
+#: application/helpers/export_helper.php:1383
 #: application/helpers/expressions/em_manager_helper.php:3613
 #: application/helpers/userstatistics_helper.php:1449
 #: application/views/admin/dataentry/content_view.php:94
@@ -1800,7 +1800,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1467
 #: application/helpers/common_helper.php:1509
 #: application/helpers/export_helper.php:291
-#: application/helpers/export_helper.php:1382
+#: application/helpers/export_helper.php:1383
 #: application/helpers/expressions/em_manager_helper.php:3612
 #: application/helpers/userstatistics_helper.php:1450
 #: application/views/admin/dataentry/content_view.php:95
@@ -1826,10 +1826,10 @@ msgstr ""
 #: application/helpers/common_helper.php:1549
 #: application/helpers/common_helper.php:2024
 #: application/helpers/common_helper.php:2290
-#: application/helpers/export_helper.php:945
-#: application/helpers/export_helper.php:954
-#: application/helpers/export_helper.php:1053
-#: application/helpers/export_helper.php:1068
+#: application/helpers/export_helper.php:946
+#: application/helpers/export_helper.php:955
+#: application/helpers/export_helper.php:1054
+#: application/helpers/export_helper.php:1069
 #: application/helpers/qanda_helper.php:2469
 #: application/helpers/questionHelper.php:628
 #: application/helpers/questionHelper.php:642
@@ -4068,7 +4068,7 @@ msgstr ""
 #: application/views/admin/survey/Question/question_subviews/_modals.php:58
 #: application/views/admin/survey/Question/question_subviews/_modals.php:89
 #: application/views/admin/survey/Question/question_subviews/_modals.php:114
-#: application/views/admin/survey/activateSurvey_view.php:213
+#: application/views/admin/survey/activateSurvey_view.php:191
 #: application/views/admin/survey/deactivateSurvey_view.php:64
 #: application/views/admin/survey/deleteSurvey_view.php:29
 #: application/views/admin/survey/subview/addPanelIntegrationParameter_view.php:43
@@ -7132,7 +7132,7 @@ msgstr ""
 msgid "(Automatic)"
 msgstr ""
 
-#: application/helpers/export_helper.php:1285
+#: application/helpers/export_helper.php:1286
 msgid "Only answer the following question if:"
 msgstr ""
 
@@ -15304,63 +15304,63 @@ msgstr ""
 msgid "Warning: Please read this carefully before proceeding!"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:50
+#: application/views/admin/survey/activateSurvey_view.php:49
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:55
+#: application/views/admin/survey/activateSurvey_view.php:52
 msgid "Once a survey is activated you can no longer:"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:59
+#: application/views/admin/survey/activateSurvey_view.php:56
 msgid "Add or delete groups"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:60
+#: application/views/admin/survey/activateSurvey_view.php:57
 msgid "Add or delete questions"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:61
+#: application/views/admin/survey/activateSurvey_view.php:58
 msgid "Add or delete subquestions or change their codes"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:68
+#: application/views/admin/survey/activateSurvey_view.php:63
 msgid "Additionally the following settings cannot be changed when the survey is active."
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:69
+#: application/views/admin/survey/activateSurvey_view.php:64
 msgid "Please check these settings now:"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:78
+#: application/views/admin/survey/activateSurvey_view.php:71
 msgid "Anonymized responses?"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:85
+#: application/views/admin/survey/activateSurvey_view.php:78
 msgid "If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:121
+#: application/views/admin/survey/activateSurvey_view.php:112
 msgid "Date stamp?"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:144
+#: application/views/admin/survey/activateSurvey_view.php:133
 msgid "Save IP address?"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:165
+#: application/views/admin/survey/activateSurvey_view.php:151
 msgid "Save referrer URL?"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:185
+#: application/views/admin/survey/activateSurvey_view.php:168
 msgid "Save timings?"
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:205
+#: application/views/admin/survey/activateSurvey_view.php:184
 msgid "Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr ""
 
-#: application/views/admin/survey/activateSurvey_view.php:211
+#: application/views/admin/survey/activateSurvey_view.php:189
 msgid "Save & activate survey"
 msgstr ""
 

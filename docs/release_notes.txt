@@ -35,6 +35,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from  2.55 (build 161021) to 2.55.1 (build 161026) Oct 26 2016
+-Fixed issue #11606: Date/Time filed does not record the answer (Olle Haerstedt)
+-Fixed issue #11813: Default order of responses not set to response ID when browsing or exporting (Carsten Schmitz)
+-Fixed issue #11821: Apache error uploading images kcfinder (Carsten Schmitz)
+-Fixed issue #11823: Screen for activation of survey too narrow (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by seniorcoach, maxzomborszki
+
 Changes from  2.54.5 (build 161019) to 2.55 (build 161021) Oct 21 2016
 -New feature: Quick-add conditions in the condition designer (Olle Haerstedt)
 -Fixed issue #11727: 'Undefined index: LEMsid' with a plugin sidebody URL (Olle Haerstedt)
