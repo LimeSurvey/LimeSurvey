@@ -1,8 +1,45 @@
+/* lato-regular - latin */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/lato-v11-latin-regular.eot");
+  /* IE9 Compat Modes */
+  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/lato-v11-latin-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/lato-v11-latin-regular.woff2") format("woff2"), url("../fonts/lato-v11-latin-regular.woff") format("woff"), url("../fonts/lato-v11-latin-regular.ttf") format("truetype"), url("../fonts/lato-v11-latin-regular.svg#Lato") format("svg");
+  /* Legacy iOS */ }
+
+/* lato-italic - latin */
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  src: url("../fonts/lato-v11-latin-italic.eot");
+  /* IE9 Compat Modes */
+  src: local("Lato Italic"), local("Lato-Italic"), url("../fonts/lato-v11-latin-italic.eot?#iefix") format("embedded-opentype"), url("../fonts/lato-v11-latin-italic.woff2") format("woff2"), url("../fonts/lato-v11-latin-italic.woff") format("woff"), url("../fonts/lato-v11-latin-italic.ttf") format("truetype"), url("../fonts/lato-v11-latin-italic.svg#Lato") format("svg");
+  /* Legacy iOS */ }
+
+/* lato-700 - latin */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/lato-v11-latin-700.eot");
+  /* IE9 Compat Modes */
+  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/lato-v11-latin-700.eot?#iefix") format("embedded-opentype"), url("../fonts/lato-v11-latin-700.woff2") format("woff2"), url("../fonts/lato-v11-latin-700.woff") format("woff"), url("../fonts/lato-v11-latin-700.ttf") format("truetype"), url("../fonts/lato-v11-latin-700.svg#Lato") format("svg");
+  /* Legacy iOS */ }
+
 body {
-  background: #ccc; }
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.42857143;
+  color: #2c3e50;
+  background-color: #ffffff; }
+
+body {
+  background: #f6f6f6; }
 
 div[id^="question"] {
-  background-color: #ededed;
+  background-color: #ffffff;
   margin-bottom: 1em; }
 
 .question-help-container .questionhelp {
@@ -18,12 +55,12 @@ div[id^="question"] {
 .question-title-container {
   padding-top: 5px;
   padding-bottom: 5px;
-  background: #286090; }
+  background: #2C3E50; }
 
 .question-answer-container {
-  border-left: 1px solid #999;
-  border-right: 1px solid #999;
-  border-bottom: 1px solid #999; }
+  border-left: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb; }
 
 .answer-container {
   padding-top: 10px;
@@ -33,7 +70,7 @@ div[id^="question"] {
   border: 1px solid grey; }
 
 .progress-bar {
-  background: #286090; }
+  background: #2C3E50; }
 
 label {
   font-weight: normal; }
@@ -52,18 +89,17 @@ label {
 th {
   font-weight: normal; }
 
-#welcome-container {
-  background: white;
-  margin-top: 0px;
-  border: 1px solid #999;
-  margin-bottom: 15px;
-  padding-bottom: 15px; }
+h1, h2, h3, h4, h5, h6 {
+  color: #2C3E50; }
+
+.survey-description h1 {
+  text-align: center; }
 
 .privacy-container {
   background: white;
-  border-left: 1px solid #999;
-  border-right: 1px solid #999;
-  border-bottom: 1px solid #999;
+  border-left: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
   margin-bottom: 15px; }
 
 .yesno-button,
@@ -98,13 +134,8 @@ label.radio-label, label.checkbox-label {
   margin-bottom: 10px; }
 
 .well {
-  background-color: #fff;
-  border: 1px solid #999;
-  border-radius: 0px;
-  box-shadow: none;
   margin-bottom: 20px;
-  min-height: 20px;
-  padding: 15px; }
+  min-height: 20px; }
 
 .multiple-opt .ls-answers li {
   margin-bottom: 10px; }
@@ -116,4 +147,38 @@ label.radio-label, label.checkbox-label {
   margin-top: 75px; }
 
 .btn-default {
-  border-color: #999; }
+  border-color: #dbdbdb; }
+
+tr.ls-even {
+  background: #f9f9f9; }
+
+tr.ls-odd {
+  background: #ecf0f1; }
+
+.table-bordered {
+  border: none; }
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+  border: none; }
+
+.survey-description-text {
+  color: #3498db; }
+
+.navbar-default {
+  background-color: #2c3e50;
+  border-color: transparent; }
+
+.navbar-default .navbar-brand {
+  color: #ffffff; }
+  .navbar-default .navbar-brand:hover {
+    color: #ddd; }
+
+.navbar-default .navbar-nav > li > a {
+  color: #ffffff; }
+  .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
+    color: #ddd; }
