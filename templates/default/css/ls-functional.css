@@ -1,14 +1,3 @@
-.form-horizontal .control-label {
-  text-align: left;
-  font-weight: normal; }
-
-.ls-language-changer-item {
-  text-align: center; }
-
-.ls-timer-content.alert {
-  margin-top: 15px;
-  margin-bottom: 0; }
-
 .ls-label-xs-visibility,
 div.question-help:empty,
 #indexcontainer,
@@ -18,11 +7,6 @@ div.question-help:empty,
 @media (max-width: 768px) {
   .ls-label-xs-visibility {
     display: normal; } }
-
-ul.ls-answers,
-.ls-answers .form-group:last-child,
-.ls-answers table {
-  margin-bottom: 0; }
 
 .checkbox, .radio {
   display: table-cell; }

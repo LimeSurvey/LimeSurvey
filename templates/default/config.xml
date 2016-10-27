@@ -31,7 +31,7 @@
       <filename>css/bootstrap-slider.css</filename>
       <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
       <filename>css/ls-functional.css</filename>
-      <filename>css/styling.css</filename>
+      <filename>css/template.css</filename>
     </css>
     <js>
       <filename>scripts/template.js</filename>
@@ -78,8 +78,8 @@
     -->
   <files_editable>
     <css>
-      <filename>css/flat_and_modern.css</filename>
       <filename>css/template.css</filename>
+      <filename>css/ls-functional.css</filename>
     </css>
     <js>
       <filename>scripts/template.js</filename>
