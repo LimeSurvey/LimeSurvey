@@ -7,7 +7,7 @@
 /**
  * Always set an empty LSvar
  */
-var LSvar=LSvar || { }
+var LSvar=LSvar || { };
 /**
  * Manage the index
  */
@@ -73,7 +73,7 @@ function activateLanguageChanger(){
 function activateActionLink(){
     /* If no limesurvey form : don't need it */
     if(!$('form#limesurvey').length){
-        $(document).remove('[data-limesurvey-submit]');
+        $('[data-limesurvey-submit]').remove();
     }
     /* Submit limesurvey form on click */
     else{
@@ -107,11 +107,12 @@ function activateActionLink(){
 function activateConfirmButton(){
     $(document).on('click',"button[data-confirmedby]", function(event){
         // @todo : allow multiple here : remove extra
-        if(!$("[name='"+$(this).data('confirmedby')+"']").is(":checked"))
+        var cbConfirm=$(this).parent().find("[name='"+$(this).data('confirmedby')+"']");
+        if(!$(cbConfirm).is(":checked"))
         {
-            text=$("[name='"+$(this).data('confirmedby')+"']").parent("label").text();
+            text=$(cbConfirm).parent("label").text();
             if (confirm(text)) {
-                $("[name='"+$(this).data('confirmedby')+"']").prop('checked',true);
+                $(cbConfirm).clone().addClass('ls-js-hidden').appendTo('#limesurvey').prop('checked',true);
                 return true;
             }
             return false;

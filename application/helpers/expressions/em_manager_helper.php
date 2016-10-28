@@ -5525,10 +5525,12 @@
 
         /**
         * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
-        * @param <type> $seq
-        * @param <type> $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
-        * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
-        * @return <type>
+        * @param integer $seq : the sequatial step
+        * @param boolean $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed. @see var $sPreviewMode
+        * @param boolean $processPOST : add the updated value to be saved in the database
+        * @param boolean $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
+        *
+        * @return array $this->lastMoveResult
         */
         static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false) {
             $now = microtime(true);

@@ -16,12 +16,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-//~ namespace ls\helpers;
-//~ use Yii;
-//~ use LimeExpressionManager;
-//~ use viewHelper;
+namespace ls\helpers;
+use Yii;
+use LimeExpressionManager;
 
 class questionIndexHelper {
+
+    /**
+     * Singleton
+     * @var questionIndexHelper
+     */
+    private static $instance = null;
+
     /**
      * Actual survey id
      * @var int surveyid
@@ -32,12 +38,12 @@ class questionIndexHelper {
      * Index type : 0 : none, 1 incremental, 2 full
      * @var int indexType
      */
-    public $indexType;
+    private $indexType;
     /**
      * Survey format : A : all in one, G: Group, S: questions
      * @var string surveyFormat
      */
-    public $surveyFormat;
+    private $surveyFormat;
 
     /**
      * Indexed actual items,
@@ -46,24 +52,17 @@ class questionIndexHelper {
     private $indexItems;
 
     /**
-     * Add the step information to the indexed items from ExpressionManager
-     * Actually get the step information set the value of current step, can be done after done the current page, not before
-     * @var boolean
-     */
-    public $getStepInfo=false;
-
-    /**
      * Set the surveyid when construct
      */
-    public function __construct()
+    private function __construct($iSurveyId)
     {
         /* Not needed actually : we have only one survey at a time */
         //~ if(isset($this->indexItems) && $this->iSurveyId!=LimeExpressionManager::getLEMsurveyId()){
             //~ $this->indexItems=null;
         //~ }
         /* Put all in contruct variable ? */
-        $this->iSurveyId=LimeExpressionManager::getLEMsurveyId();
-        $oSurvey=Survey::model()->findByPk($this->iSurveyId);
+        $this->iSurveyId=$iSurveyId;
+        $oSurvey=\Survey::model()->findByPk($this->iSurveyId);
         if($oSurvey){
             $this->indexType=$oSurvey->questionindex;
             $this->surveyFormat=$oSurvey->format;
@@ -73,6 +72,15 @@ class questionIndexHelper {
         }
     }
 
+    public static function getInstance()
+    {
+        if (empty(self::$instance))
+        {
+            self::$instance= new questionIndexHelper(LimeExpressionManager::getLEMsurveyId());
+        }
+
+        return self::$instance;
+    }
     /**
      * Get the array of all step for this session
      *
@@ -115,13 +123,16 @@ class questionIndexHelper {
         if(empty($sessionLem['grouplist'])){
             return array();
         }
+        /* get the step info from LEM : for already seen group : give if error/show and answered ...*/
+        $stepInfos = LimeExpressionManager::GetStepIndexInfo();
         $stepIndex=array();
         foreach($sessionLem['grouplist'] as $step=>$groupInfo)
         {
             /* EM step start at 1, we start at 0*/
             $groupInfo['step'] = $step + 1;
-            if( ($type>1 || $groupInfo['step'] <= $sessionLem['maxstep'])  // type==1 : incremental : must control step
-                && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // always add it if unrelevant/hidden : only tested after when try to view it (in EM)
+            $stepInfo = isset($stepInfos[$step]) ? $stepInfos[$step]: array('show'=>true,'anyUnanswered'=>null,'anyErrors'=>null);
+            if( ($type>1 || $groupInfo['step'] <= $sessionLem['maxstep'])
+                && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // $stepInfo['show'] is incomplete (for unrelevant group after the 'not submitted due to error group') GroupIsRelevant control it really
             ){
                 /* string to EM : leave fix (remove script , flatten other ...) to view */
                 $stepIndex[$step]=array(
@@ -134,25 +145,13 @@ class questionIndexHelper {
                     'stepStatus'=>array(
                         'index-item-before' => ($groupInfo['step'] < $sessionLem['step']), /* did we need a before ? seen seems better */
                         'index-item-seen' => ($groupInfo['step'] <= $sessionLem['maxstep']),
+                        'index-item-unanswered' => $stepInfo['anyUnanswered'],
+                        'index-item-error' => $stepInfo['anyErrors'],
                         'index-item-current' => ($groupInfo['step'] == $sessionLem['step']),
                     ),/* order have importance for css : last on is apply */
                 );
-                if($this->getStepInfo){
-                    /* Get the current group info */
-                    if ($groupInfo['step'] <= $sessionLem['maxstep'] && $groupInfo['step'] != $sessionLem['step']){
-                        /* @todo test until maxstep, but without try to submit */
-                        $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($step);// Danger: Update the actual group, do it only after display all question in the page
-                        $stepIndex[$step]['stepStatus']['index-item-error'] = (bool) ($stepInfo['mandViolation'] || !$stepInfo['valid']);
-                        $stepIndex[$step]['stepStatus']['index-item-unanswered'] = (bool) $stepInfo['anyUnanswered'];
-                    }else{
-                        $stepIndex[$step]['stepStatus']['index-item-error'] = null;
-                        $stepIndex[$step]['stepStatus']['index-item-unanswered'] = null;
-                    }
-                }else{
-                    $stepIndex[$step]['stepStatus']['index-item-error'] = null;
-                    $stepIndex[$step]['stepStatus']['index-item-unanswered'] = null;
-                }
-                /* contruct coreClass */
+                $stepIndex[$step]['stepStatus']['index-item-error'] = $stepInfo['anyErrors'];
+                $stepIndex[$step]['stepStatus']['index-item-unanswered'] = $stepInfo['anyUnanswered'];
                 $aClass=array_filter($stepIndex[$step]['stepStatus']);
                 $stepIndex[$step]['coreClass']=implode(" ",array_merge(array('index-item'),array_keys($aClass)));
             }
@@ -215,28 +214,13 @@ class questionIndexHelper {
                         'url'=>Yii::app()->getController()->createUrl("survey/index",array('sid'=>$this->iSurveyId,'move'=>$questionStep)),
                         'submit'=>ls_json_encode(array('move'=>$questionStep)),
                         'stepStatus'=>array(
-                              'index-item-before' => ($questionStep < $sessionLem['step']), /* did we need a before ? seen seems better */
-                              'index-item-seen' => ($questionStep <= $sessionLem['maxstep']),
-                              'index-item-current' => ($questionStep == $sessionLem['step']),
+                            'index-item-before' => ($questionStep < $sessionLem['step']), /* did we need a before ? seen seems better */
+                            'index-item-seen' => ($questionStep <= $sessionLem['maxstep']),
+                            'index-item-unanswered' => $stepInfo['anyUnanswered'],
+                            'index-item-error' => $stepInfo['anyErrors'],
+                            'index-item-current' => ($questionStep == $sessionLem['step']),
                           ),/* order have importance for css : last on is apply */
-
                     );
-                    /* Get the step status */
-                    if(true || $this->getStepInfo){
-                        /* Get the current group info */
-                        /* We can not validate a question after step ... @todo : create a new EM function ? Do it manually ? */
-                        if ($questionStep <= $sessionLem['maxstep'] && $questionStep != $sessionLem['step']){
-
-                            $questionInfo['stepStatus']['index-item-error'] = (bool) $stepInfo['anyErrors'];
-                            $questionInfo['stepStatus']['index-item-unanswered'] = (bool) $stepInfo['anyUnanswered'];
-                        }else{
-                            $questionInfo['stepStatus']['index-item-error'] = null;
-                            $questionInfo['stepStatus']['index-item-unanswered'] = null;
-                        }
-                    }else{
-                        $questionInfo['stepStatus']['index-item-error'] = null;
-                        $questionInfo['stepStatus']['index-item-unanswered'] = null;
-                    }
                     $aClass=array_filter($questionInfo['stepStatus']);
                     $questionInfo['coreClass']=implode(" ",array_merge(array('index-item'),array_keys($aClass)));
                     $questionInGroup[$questionStep]=$questionInfo;

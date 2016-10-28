@@ -771,10 +771,8 @@ class SurveyRuntimeHelper {
          *
          */
         if(!$previewquestion && !$previewgrp){
-            Yii::import('application.helpers.questionIndexHelper',true);
-            $questionIndexHelper=new questionIndexHelper;
-            $questionindex = $questionIndexHelper->getIndexButton();
-            $questionindexmenu = $questionIndexHelper->getIndexLink();
+            $questionindex = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
+            $questionindexmenu = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
         }
 
         sendCacheHeaders();
@@ -992,12 +990,6 @@ class SurveyRuntimeHelper {
         */
         if (!$previewgrp && !$previewquestion)
         {
-            /* Question index with information on each step, we are after page, we can call EM */
-            //$questionIndexHelper=new questionIndexHelper;
-            $questionIndexHelper->getStepInfo=true;
-            $questionindex = $questionIndexHelper->getIndexButton();
-            $questionindexmenu = $questionIndexHelper->getIndexLink();
-
             $aNavigator = surveymover();
             $moveprevbutton = $aNavigator['sMovePrevButton'];
             $movenextbutton = $aNavigator['sMoveNextButton'];

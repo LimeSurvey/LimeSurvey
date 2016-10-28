@@ -17,12 +17,12 @@ echo CHtml::openTag("div",array("class"=>"form-inline ls-{$name}-form"));
         'class'=>"$class btn btn-default",
         'data-confirmedby'=>$confirmedby,
         'title'=>gT("This action need confirmation."),
-        'aria-labelledby'=>$confirmedby, /* ? must be reviewed */
+        'aria-label'=>gT("This action need confirmation with the next checkbox."), /* ? must be reviewed */
     ));
-    echo CHtml::openTag("div",array("class"=>"form-group ls-js-hidden checkbox-item"));
-        echo CHtml::checkBox($confirmedby,false,array('value'=>$confirmvalue,'id'=>$confirmedby));
-        echo CHtml::tag("label",array('for'=>$confirmedby,'class'=>'control-label'),gT("Are you sure you want to clear all your responses?"));
-    echo CHtml::closeTag("div");
+    echo CHtml::openTag("label",array("class"=>"form-group ls-js-hidden"));
+        echo CHtml::checkBox($confirmedby,false,array('value'=>$confirmvalue));
+        echo CHtml::tag("span",array('class'=>'control-label'),gT("Are you sure you want to clear all your responses?"));
+    echo CHtml::closeTag("label");
 echo CHtml::closeTag("div");
 ?>
 <!-- end of views/survey/system/actionButton/moveNext -->
