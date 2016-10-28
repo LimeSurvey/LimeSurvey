@@ -488,7 +488,7 @@ class Participant extends LSActiveRecord
                 $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '" . $attributeId . "' AND value = '" . $value . "'";
             }
 
-            $criteria->addCondition( '"t"."participant_id" IN ('. $callParticipantAttributes .')');
+            $criteria->addCondition( 't.participant_id IN ('. $callParticipantAttributes .')');
         }
 
         $DBCountActiveSurveys = SurveyLink::model()->tableName();
