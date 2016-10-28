@@ -26,7 +26,7 @@ if (!headers_sent())
     Yii::app()->loadHelper('surveytranslator');
     $lang=App()->getLanguage();
     $langDir= (getLanguageRTL(App()->getLanguage())) ? "rtl": "ltr";
-?><html lang="<?php echo $lang ?>" class="no-js <?php echo $lang ?> dir-<?php  echo $langDir  ?>">
+?><html lang="<?php echo $lang ?>" class="no-js <?php echo $lang ?> dir-<?php  echo $langDir  ?>" <?php echo ($langDir=='rtl' ? 'dir="rtl"':''); ?>>
 <head>
 <?php
     App()->clientScript->registerScript("nojsReplace","(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);",CClientScript::POS_HEAD);
