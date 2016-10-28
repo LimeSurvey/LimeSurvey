@@ -109,4 +109,10 @@
     border-bottom-right-radius: 0;
     margin-bottom: -1px;
 }
-/* survey list : only in template ? */
+/* dropdown-sub-menu  for question index : no ls specific, then no ls- template can use it easily */
+.dropdown-menu .dropdown-sub-menu{
+display:block;
+position:relative;
+float:none;
+box-shadow: 0 0 0 #fff;
+}
