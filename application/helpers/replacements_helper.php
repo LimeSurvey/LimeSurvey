@@ -53,7 +53,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         'showqnumcode',
         'showxquestions',
         'sitelogo',
-        'surveylist',
         'templatedir',
         'thissurvey',
         'token',
@@ -222,16 +221,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $surveyformat .= " showqnumcode-".$thissurvey['showqnumcode'];
     }
     // real survey contact
-    if (isset($surveylist) && isset($surveylist['contact']))
-    {
-        $surveycontact = $surveylist['contact'];
-    }
-    elseif (isset($surveylist) && isset($thissurvey['admin']) && $thissurvey['admin']!="")
-    {
-        $surveycontact=sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['admin'],$thissurvey['adminemail']);
-    }
-    else
-    {
+    if(isset($thissurvey['admin']) && $thissurvey['admin']!=""){
+        $surveycontact=sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['admin'],encodeEmail($thissurvey['adminemail']));
+    }elseif(Yii::app()->getConfig("siteadminname")){
+        $surveycontact=sprintf(gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail")));
+    }else{
         $surveycontact="";
     }
 
@@ -584,7 +578,6 @@ EOD;
     $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : '';    // global
     $coreReplacements['MOVEPREVBUTTON'] = isset($moveprevbutton) ? $moveprevbutton : '';    // global
     $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : '';    // global
-    $coreReplacements['NOSURVEYID'] = (isset($surveylist))?$surveylist['nosid']:'';
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
@@ -610,8 +603,6 @@ EOD;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
     $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : '';  // global
     $coreReplacements['SURVEYLANGUAGE'] = App()->language;
-    $coreReplacements['SURVEYLIST'] = (isset($surveylist))?$surveylist['list']:'';
-    $coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
     $coreReplacements['TEMPLATECSS'] = $_templatecss;

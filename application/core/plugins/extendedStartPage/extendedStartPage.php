@@ -1,6 +1,6 @@
 <?php
 /**
- * Extended startpage plugin to display more information about the 
+ * Extended startpage plugin to display more information about the
  * sctive surveys on the startpage.
  *
  * @since 2016-07-22
@@ -11,7 +11,7 @@ class ExtendedStartpage extends \ls\pluginmanager\PluginBase
 {
     static protected $description = 'Extended start page view';
     static protected $name = 'extendStartpage';
-    
+
     public function init()
     {
         $this->subscribe('beforeSurveysStartpageRender');

@@ -19,6 +19,12 @@ padding-right:1em; /* really close to window without */
     padding: 0;
 }
 
+/* specific for survey listing */
+@media (min-width: 768px) {
+  .surveys-list .btn-group {
+    width: 50%;
+  }
+}
 
  div[id^="group-"]>div.group-container {
      background-color: transparent;

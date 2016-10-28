@@ -1,7 +1,5 @@
 <?php
 /**
- * @todo : remove this one : move to public MUST BE DONE !
- *
  * @var string sTemplate : the template to be used
  * @var array aData : the global var for templatereplace
  * @var array aReplacementData  : the array of replacement for templatereplace
@@ -39,7 +37,7 @@ if (!headers_sent())
         Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
         App()->bootstrap->registerAllScripts();
     }
-     Yii::app()->clientScript->registerPackage('survey-template');
+    Yii::app()->clientScript->registerPackage('survey-template');
     // Maybe can add language changer here
     /* Add head by template + star body (if template start body here ....) */
     echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),$this->aReplacementData,$this->aGlobalData);
