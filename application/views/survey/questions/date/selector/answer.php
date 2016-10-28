@@ -72,7 +72,6 @@
                 ),
                 'htmlOptions' => array(
                     'onkeypress' => $goodchars,
-                    'onchange' => "$checkconditionFunction",
                 )
             ));
         ?>

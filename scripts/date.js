@@ -29,7 +29,7 @@ function doPopupDate(qId) {
     }
 
     $("#question"+qId).find('div.input-group.date').on('dp.change', function(){
-        $(this).find('input').trigger('change');
+        $(this).find('input').trigger('keyup');
     });
 }
 
@@ -220,7 +220,6 @@ function dateUpdater() {
             $('#answer'+thisid).val('INVALID');
             $('#answer'+thisid).change();
             // QCODE.NAOK return "" if real value is INVALID (because can be shown to user), then do it manually (line 721 em_javascript)
-            $("#vmsg_22_dropdown_dates").removeClass('good').addClass('error');
         }
         else
         {

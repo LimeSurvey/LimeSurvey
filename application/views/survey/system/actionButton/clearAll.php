@@ -8,7 +8,7 @@
 ?>
 <!-- views/survey/system/actionButton/moveNext -->
 <?php
-echo CHtml::openTag("div",array("class"=>"form-inline"));
+echo CHtml::openTag("div",array("class"=>"form-inline ls-{$name}-form"));
     echo CHtml::htmlButton(gT("Exit and clear survey"),array(
         'type'=>'submit',
         'id'=>false,
