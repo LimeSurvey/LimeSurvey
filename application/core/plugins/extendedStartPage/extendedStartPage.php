@@ -21,7 +21,7 @@ class ExtendedStartpage extends \ls\pluginmanager\PluginBase
         $event = $this->getEvent();
         $aData = $event->get('aData');
 
-        $html = $this->renderPartial('publicSurveyList_extended',$aData,true,true );
+        $html = $this->renderPartial('publicSurveyList_extended',$aData,true );
         $event->append('result',array('html'=>$html));
     }
 
