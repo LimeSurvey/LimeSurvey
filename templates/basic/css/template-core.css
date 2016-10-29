@@ -1,6 +1,7 @@
 /**
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
+label,th{font-weight:400}
 /* Boostrap don't do some reset : do it in answer part*/
 .ls-answers img,.ls-answers video,.ls-answers svg{
   max-width: 100%;height: auto;
@@ -79,6 +80,11 @@ margin: 0;
     height:1px;
     overflow:hidden;
 }
+/* Some specif question review */
+  .yesno-button .btn,.gender-button .btn{
+    white-space: normal;
+  }
+
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
@@ -90,13 +96,13 @@ only screen and (max-width: 760px),
         display: block;
         text-align:left;
     }
+    table.ls-answers{border:0 none}
+    .ls-answers tr {margin-bottom:1em;}
     .ls-answers thead{display:none} /* We don't need it for accessibility : we already have the label */
 
-    .ls-answers tbody td{text-align:left;}
+
 
     .ls-answers > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
-    .ls-answers tbody .answertext{text-align:left}
-    .ls-answers .answertextright{text-align:right}
     /* Show the label */
     label.ls-label-xs-visibility
     {
@@ -134,4 +140,13 @@ only screen and (max-width: 760px),
 
     /* bs fix */
     .ls-answers td.visible-xs,.ls-answers th.visible-xs{display:block !important}
+
+    /* fix some border */
+    .ls-answers>tbody>tr>td, .ls-answers>tbody>tr>th{border-width:0 1px 1px;}
+    .ls-answers > tbody > tr:hover{background-color:inherit;}
+    /* aligment */
+    .ls-answers tbody .answertext{text-align:left}
+    .ls-answers tbody td{text-align:left;}
+    .ls-answers .answertextright{text-align:center}
+    .dir-rtl .ls-answers .answertextright{text-align:center}
 }

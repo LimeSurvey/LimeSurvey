@@ -5,7 +5,7 @@
  */
 ?>
 <!-- views/survey/system/questionhelp -->
-<div class="text-info questionhelp">
-    <span class="fa fa-question-circle" aria-hidden="true"></span>
-    &nbsp;<?php echo $questionHelp; ?>
+<div class="ls-questionhelp">
+    <span class="fa fa-question-circle pull-left" aria-hidden="true"></span>
+    <?php echo $questionHelp; ?>
 </div>

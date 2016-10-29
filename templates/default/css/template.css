@@ -156,10 +156,11 @@ label {
 th {
   font-weight: normal; }
 
-.yesno-button,
-.gender-button {
-  max-width: 400px; }
-
+@media (min-width: 768px) {
+  .yesno-button,.gender-button {
+    width: 50%;
+  }
+}
 #outerframeContainer {
   padding-bottom: 30px; }
 
@@ -171,9 +172,6 @@ tr.ls-heading th {
 
 .answer-container .form-group {
   margin-bottom: 0; }
-
-label.radio-label, label.checkbox-label {
-  display: inline; }
 
 .choice-5-pt-radio .answer-item {
   margin-right: 10px; }

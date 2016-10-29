@@ -13,10 +13,17 @@ div.question-help:empty,
 .slider.slider-horizontal {
   width: 100%; }
 
-.list-radio .control-label,
-.multiple-opt .control-label {
-  display: inline; }
-
+.radio-item label, .checkbox-item label {
+    display: block;
+}
+.radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {
+    display: inline-block;
+    height: 17px;
+    left: 0;
+    margin-left: -20px;
+    position: absolute;
+    width: 17px;
+}
 [type="text"][data-number="1"] {
   text-align: right; }
 

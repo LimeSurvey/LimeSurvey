@@ -10,8 +10,18 @@ li.radio-item,li.checkbox-item{display:block}
 
 /* Else big label break*/
 .radio-item label,.checkbox-item label {display:block}
+.radio-item,.checkbox-item {
+    position: relative;
+}
+.radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {/*give near same position to real button (except in td : can fix but not needed )*/
+    display: inline-block;
+    height: 17px;
+    left: 0;
+    position: absolute;
+    width: 17px;
+}
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {
-    position:absolute;
+    opacity:1;
 }
 /**
  * Table .question feature
@@ -60,7 +70,7 @@ margin: 0;
     margin-left:0;
 }
 .radio-item label.ls-label-xs-visibility::after,.checkbox-item label.ls-label-xs-visibility::after {
-    margin-left:0;
+    margin-left:0;padding-left:0;
 }
 .checkbox-item label.ls-label-xs-visibility::after {
     line-height:17px;width:17px;text-align:center;text-indent: 0;

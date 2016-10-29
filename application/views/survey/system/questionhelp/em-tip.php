@@ -8,7 +8,7 @@
  * @var $vtip
  */
 ?>
-<div id='<?php echo $coreId; ?>' class='text-info <?php echo $coreClass; ?>'>
+<div id='<?php echo $coreId; ?>' class='ls-question-message <?php echo $coreClass; ?>'>
     <span class='fa fa-exclamation-circle' aria-hidden="true"></span>
     <?php echo $vtip; ?>
 </div>

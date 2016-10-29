@@ -17,22 +17,27 @@ html {
 /* Some no boostrap class */
 .ls-language-changer-item{text-align:right}
 .dir-rtl .ls-language-changer-item{text-align:left}
-.answers-wrapper {
-    margin: 0;
-    padding: 0.5em 15px;
-    border:1px dotted #ccc;
-    background:#fff;
-    border-radius:4px;
-}
 /**
  * For the question label (number/code and mandatory)
  * If user add p or div : one line more
  */
+.question-text{font-weight:500;font-size:18px}
 .question-number,.question-code{float:left;margin:0 0.3em}
 /**
  * Some specific
  */
-.boilerplate .answers-wrapper,
-.equation .answers-wrapper{
-display:none;
+.boilerplate .answers-wrapper,.equation .answers-wrapper{
+    display:none;
+}
+.question-help:empty{display:none}
+
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+  .ls-answers th.control-label {
+    border-top-left-radius: 4px;border-top-right-radius: 4px;font-weight:500;
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+  }
 }

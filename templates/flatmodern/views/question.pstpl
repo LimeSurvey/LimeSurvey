@@ -22,7 +22,7 @@
     </div>
 
     <!-- Survey question help -->
-    <div class="question-help-container  col-xs-12">
+    <div class="question-help-container text-info col-xs-12">
       {QUESTIONHELP}
     </div>
 </div>

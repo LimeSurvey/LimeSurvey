@@ -69,7 +69,6 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
       if(ui.sender){ // sender is set only if different
           ui.item
       }
-      console.log(ui.item,ui.sender);
       maxanswers=parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
       if($(this).attr("id")=='sortable-rank-'+qID && $(maxanswers>0 && '#sortable-rank-'+qID+' li').length > maxanswers) {
         sortableAlert (qID,showpopups,maxanswers);
