@@ -7,11 +7,10 @@
 /**
  * Always set an empty LSvar
  */
-var LSvar=LSvar || { };
+var LSvar = LSvar || { };
 /**
  * Manage the index
  */
-
 function manageIndex(){
     /* only needed if it's not inside form (form#limesurvey) */
     $(".ls-index-buttons").on('click','[name="move"]',function(e){
@@ -26,7 +25,6 @@ function manageIndex(){
  */
 function activateLanguageChanger(){
     $('.ls-language-changer-item').on('change','select',function() {
-        console.log('change');
         if(!$(this).closest('form').length){
             /* we are not in a forum, can not submit directly */
             if($('form#limesurvey').length==1){
@@ -103,7 +101,9 @@ function activateActionLink(){
     }
 }
 
-/* Ask confirmation on click on .needconfirm*/
+/**
+ *  Ask confirmation on click on .needconfirm
+ */
 function activateConfirmButton(){
     $(document).on('click',"button[data-confirmedby]", function(event){
         // @todo : allow multiple here : remove extra
@@ -119,7 +119,9 @@ function activateConfirmButton(){
         }
     });
 }
-/* Trigger tip class when classChangeGood/classChangeError happen */
+/**
+ * Trigger tip class when classChangeGood/classChangeError happen
+ */
 function triggerEmClassChange(){
     /* The tips */
     $(document).on('classChangeError','.ls-em-tip', function(event){
@@ -142,4 +144,16 @@ function triggerEmClassChange(){
     $(document).on('classChangeGood','input,select,textarea', function(event){
         $(this).closest(".form-control").removeClass("has-warning");
     });
+}
+
+/**
+ * showStartPopups : Take all message in startPopups json array and launch an alert with text
+ */
+function showStartPopups(){
+    if(LSvar.showpopup && $(LSvar.startPopups).length){
+        startPopup=LSvar.startPopups.map(function(text) {
+            return $("<div/>").html(text).text();
+        });
+        alert(startPopup.join("\n"));
+    }
 }

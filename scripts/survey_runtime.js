@@ -16,11 +16,7 @@
 // But put it in ready : allowing update by template.js (before moving at end of HTML : best place */
 $(document).ready(function()
 {
-    limesurveySubmitHandler();
     tableCellAdapters();
-    showStartPopups();
-    addClassEmpty();
-    noScrollOnSelect();
     doToolTipTable();
 
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
@@ -79,19 +75,6 @@ function setJsVar(){
     numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
 }
-// Deactivate all other button on submit
-// Did we really need this .....
-function limesurveySubmitHandler(){
-    // Return false disallow all other system
-    $(document).on("click",".disabled",function(){return false});
-    $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
-
-    $(document).on('click',"#limesurvey .button,#limesurvey .ls-move-btn", function(event){
-        $(this).prop('active',true).addClass('active');
-        $("#limesurvey .button,#limesurvey .ls-move-btn").not($(this)).prop('disabled',true).addClass('disabled');
-    });
-}
-
 
 /**
  * checkconditions : javascript function attach to some element
@@ -224,52 +207,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     checkconditions(newval, name, type, evt_type);
 }
 
-/**
- * showStartPopups : Take all message in startPopups json array and launch an alert with text
- */
-function showStartPopups(){
-    if(typeof showpopup=="undefined"){showpopup=1;}
-    if(typeof startPopups=="undefined"){startPopups=[];}
-    if(showpopup){
-        $.each(startPopups,function(key, text){
-            alert($("<div/>").html(text).text());// Parse HTML because of &#039;
-        });
-    }
-}
 
-
-/**
- * Put a empty class on empty answer text item (limit to answers part)
- * @author Denis Chenu / Shnoulle
- */
-function addClassEmpty()
-{
-    $('.answer-item input.text[value=""]').addClass('empty');
-    $('.answer-item input[type=text][value=""]').addClass('empty');
-    $('.answer-item textarea').each(function(index) {
-    if ($(this).val() == ""){
-        $(this).addClass('empty');
-    }
-    });
-    $("body").delegate(".answer-item input.text,.text-item input[type=text],.answer-item textarea","blur focusout",function(){
-    if ($(this).val() == ""){
-        $(this).addClass('empty');
-    }else{
-        $(this).removeClass('empty');
-    }
-    });
-}
-
-/**
- * Disable scroll on select, put it in function to allow update in template
- * Shnoulle at 2016-10-10 Why adding this ?
- */
-function noScrollOnSelect()
-{
-    $(".ls-answers").find("select").each(function () {
-        hookEvent($(this).attr('id'),'mousewheel',noScroll);
-    });
-}
 /**
  * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
  * Using delegate the can be outside document.ready (using .on is possible but on $(document) then : less readbale
@@ -277,9 +215,6 @@ function noScrollOnSelect()
  */
 function tableCellAdapters()
 {
-//	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
-//		e.stopPropagation();
-//	});
     $(".ls-answers tbody").on('click',' td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
         var eventTarget=$(event.target).prop("tagName");// Alternative us data
         var eventActivate=$(this).find("input:radio,input:checkbox");

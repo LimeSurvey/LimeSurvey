@@ -189,6 +189,13 @@ html, body {
 .ls-even{
 background-color:#f9f9f9;
 }
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    .ls-answers > tbody > tr.ls-even:hover {
+        background-color:#f9f9f9;
+    }
+}
 /**
  * Gender buttons
  */

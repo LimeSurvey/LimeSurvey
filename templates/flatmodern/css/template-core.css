@@ -21,7 +21,7 @@ li.radio-item,li.checkbox-item{display:block}
     width: 17px;
 }
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {
-    opacity:1;
+    opacity:0;
 }
 /**
  * Table .question feature
@@ -54,7 +54,7 @@ margin: 0;
     padding-left: 22px;
 }
 /* show partially sr-only inside table */
-.radio-item label.ls-label-xs-visibility,.checkbox-item label.ls-label-xs-visibility{
+.radio-item .ls-label-xs-visibility,.checkbox-item .ls-label-xs-visibility{
     display:inline-block;
     position:relative;
     left:auto;
@@ -103,25 +103,21 @@ only screen and (max-width: 760px),
     .ls-answers tbody .answertext{text-align:left}
     .ls-answers .answertextright{text-align:right}
     /* Show the label */
-    label.ls-label-xs-visibility
+    .ls-answers .ls-label-xs-visibility
     {
         display:block;
         position:relative;
         left:auto;
         width: auto;
         height: auto;
+        overflow:initial;
     }
-    .radio-item label.ls-label-xs-visibility,.checkbox-item label.ls-label-xs-visibility{
-        display:block;
-        left:auto;
-        overflow:visible;
-        width: auto;
-        height: auto;
+    .ls-answers .radio-item .ls-label-xs-visibility,.ls-answers .checkbox-item .ls-label-xs-visibility{
         margin-left:0;
         line-height: initial;
         text-indent: initial;
     }
-    .question label.ls-label-xs-visibility > *
+    .ls-answers .ls-label-xs-visibility > *
     {
         position:relative;
         left:auto;
@@ -136,7 +132,9 @@ only screen and (max-width: 760px),
     .ls-answers .radio-item label.ls-label-xs-visibility::after,.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
         margin-left:-20px;
     }
-
+    .ls-answers > tbody > tr:hover {
+        background-color: transparent;
+    }
     /* bs fix */
     .ls-answers td.visible-xs,.ls-answers th.visible-xs{display:block !important}
 }

@@ -1,11 +1,17 @@
-.ls-label-xs-visibility,
-div.question-help:empty,
-.ls-js-hidden-sr {
-  display: none; }
+div.question-help:empty{
+  display: none;
+}
 
 @media (max-width: 768px) {
   .ls-label-xs-visibility {
-    display: normal; } }
+    position:relative;
+    left:auto;
+    top:auto;
+    width:initial;
+    height:initial;
+    overflow:initial;
+  }
+}
 
 .checkbox, .radio {
   display: table-cell; }

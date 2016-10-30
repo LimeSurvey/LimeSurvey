@@ -53,7 +53,6 @@ $(document).ready(function()
     // Scroll to first error
     if($(".input-error").length > 0) {
         $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
-            console.log('answer error found');
             $firstError = $(".input-error").first();
             $pixToScroll = ( $firstError.offset().top - 100 );
             $('html, body').animate({
@@ -153,24 +152,20 @@ $(document).ready(function()
 $(window).resize(function () {
     fixBodyPadding();
 });
+//~ /**
+ //~ * showStartPopups : replace core function : allow HTML and use it.
+ //~ */
+function showStartPopups(){
+    if(LSvar.showpopup && $(LSvar.startPopups).length){
+        startPopup=LSvar.startPopups.map(function(text) {
+            return "<p>"+text+"</p>";
+        });
+        $("#bootstrap-alert-box-modal .modal-body").html(startPopup);
+        $("#bootstrap-alert-box-modal").modal('show');
+    }
+}
 
 window.alert = function(message, title) {
-    if($("#bootstrap-alert-box-modal").length == 0) {
-        $("body").append('<div id="bootstrap-alert-box-modal" class="modal fade">\
-            <div class="modal-dialog">\
-                <div class="modal-content">\
-                    <div class="modal-header" style="min-height:40px;">\
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
-                        <h4 class="modal-title"></h4>\
-                    </div>\
-                    <div class="modal-body"><p></p></div>\
-                    <div class="modal-footer">\
-                        <a href="#" data-dismiss="modal" class="btn btn-default">Close</a>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>');
-    }
     $("#bootstrap-alert-box-modal .modal-header h4").text(title || "");
     $("#bootstrap-alert-box-modal .modal-body p").text(message || "");
 

@@ -31,6 +31,8 @@ class index extends CAction {
         $aRadix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);
         $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
         $aLSJavascriptVar['lang']=new stdClass;
+        $aLSJavascriptVar['showpopup']=(int)Yii::app()->getConfig('showpopups');
+        $aLSJavascriptVar['startPopup']=new stdClass;
         $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
 
         // Template configuration

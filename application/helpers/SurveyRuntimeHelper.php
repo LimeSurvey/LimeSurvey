@@ -804,10 +804,8 @@ class SurveyRuntimeHelper {
                 $aPopup[]=$fpopup;
             }
         }
-        Yii::app()->clientScript->registerScript("showpopup","showpopup=".(int)Yii::app()->getConfig('showpopups').";",CClientScript::POS_HEAD);
-        //if(count($aPopup))
-        Yii::app()->clientScript->registerScript('startPopup',"startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
-
+        Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
         $hiddenfieldnames = implode("|", $inputnames);
 
         if (isset($upload_file) && $upload_file)
@@ -1054,7 +1052,9 @@ class SurveyRuntimeHelper {
             $aRadix=getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
             $aLSJavascriptVar['lang']=new stdClass; // To add more easily some lang string here
-
+            $aLSJavascriptVar['showpopup']=(int)Yii::app()->getConfig('showpopups');
+            $aLSJavascriptVar['startPopups']=new stdClass;
+            $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             /*
             $aCfieldnameWithDependences = Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);
             foreach($aCfieldnameWithDependences as $sCfieldname)
