@@ -26,13 +26,11 @@ li.radio-item,li.checkbox-item{display:block}
 table.ls-answers{table-layout:fixed}
 table.ls-answers{width:100%}
 /* Basic alignment */
-.ls-answers > tbody > tr > td
+.ls-answers > tbody > tr > td,.ls-answers > tbody > tr > th
 {vertical-align:middle}
 .ls-answers tbody td
 {text-align:center}
-.ls-answers tbody th
-{vertical-align:middle}
-.ls-answers thead th
+.ls-answers > thead > tr > th
 {text-align:center;vertical-align:bottom}
 
 .ls-answers .answertextright{text-align:left}
@@ -80,11 +78,15 @@ margin: 0;
     height:1px;
     overflow:hidden;
 }
-/* Some specif question review */
+/* Some specific question review */
   .yesno-button .btn,.gender-button .btn{
     white-space: normal;
   }
-
+.boilerplate .answers-wrapper,.equation .answers-wrapper{
+    display:none;
+}
+/* Hide emty question-help */
+.question-help:empty{display:none}
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
@@ -99,9 +101,7 @@ only screen and (max-width: 760px),
     table.ls-answers{border:0 none}
     .ls-answers tr {margin-bottom:1em;}
     .ls-answers thead{display:none} /* We don't need it for accessibility : we already have the label */
-
-
-
+    .ls-answers tbody >tr >th:empty{display:none}
     .ls-answers > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
     /* Show the label */
     label.ls-label-xs-visibility
@@ -122,7 +122,7 @@ only screen and (max-width: 760px),
         line-height: initial;
         text-indent: initial;
     }
-    .question label.ls-label-xs-visibility > *
+    .ls-answers label.ls-label-xs-visibility > *
     {
         position:relative;
         left:auto;

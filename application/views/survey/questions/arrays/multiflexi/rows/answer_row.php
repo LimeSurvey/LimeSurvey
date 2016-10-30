@@ -34,9 +34,7 @@
 
     <!-- right -->
     <?php if($rightTd): ?>
-        <td class="answertextright">
-            <?php echo $answertextright; ?>
-        </td>
+        <td class="answertextright"><?php echo $answertextright; ?></td>
     <?php endif;?>
 </tr>
 <!-- end of answer_row -->

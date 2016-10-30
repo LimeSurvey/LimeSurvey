@@ -24,9 +24,9 @@
 
 <thead>
     <tr class="ls-heading">
-        <td>&nbsp;</td>
+        <td></td>
         <th class='left-header'><?php echo $leftheader; ?></th>
-        <td>&nbsp;</td>
+        <td></td>
         <th class='right-header'><?php echo $rightheader; ?></th>
     </tr>
 </thead>
@@ -38,18 +38,6 @@
 
     <?php foreach ($aSubQuestions as $ansrow): ?>
         <!-- <tr> -->
-        <?php
-            echo CHtml::tag(
-                "tr",
-                array(
-                    'id'=> "javatbd{$ansrow['myfname']}",
-
-                    'role'=>"group",
-                ),
-                "",
-                false
-            );
-        ?>
         <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>"
             <!-- Answer text (actual question) -->
 
@@ -137,9 +125,7 @@
                     <div class="ls-input-group">
                 <?php endif; ?>
                 <?php if ($ddprefix != ''): ?>
-                    <div class="ddprefix ls-input-group-extra">
-                        <?php echo $ddprefix; ?>
-                    </div>
+                    <div class="ddprefix ls-input-group-extra"><?php echo $ddprefix; ?></div>
                 <?php endif; ?>
                 <select class='form-control' name="<?php echo $ansrow['myfname1']; ?>" id="answer<?php echo $ansrow['myfid1']; ?>" aria-labelledby="label-<?php echo $ansrow['myfname']; ?>"">
                     <!-- Please choose... -->
@@ -165,9 +151,7 @@
 
                 </select>
                 <?php if ($ddsuffix != ''): ?>
-                    <div class="ddsuffix ls-input-group-extra">
-                        <?php echo $ddsuffix; ?>
-                    </div>
+                    <div class="ddsuffix ls-input-group-extra"><?php echo $ddsuffix; ?></div>
                 <?php endif; ?>
                 <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
                     </div>

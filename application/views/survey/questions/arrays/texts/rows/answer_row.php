@@ -32,11 +32,9 @@
     <!-- Total -->
     <?php if($rightTd): ?>
         <?php if($rightTdEmpty): ?>
-            <td class="answertextright">&nbsp;</td>
+            <td class="answertextright"></td>
         <?php else: ?>
-            <td class="answertextright">
-                <?php echo $answertext; ?>
-            </td>
+            <td class="answertextright"><?php echo $answertext; ?></td>
         <?php endif; ?>
     <?php endif;?>
 

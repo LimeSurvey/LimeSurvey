@@ -33,18 +33,18 @@
     <thead>
         <?php if ($leftheader != '' || $rightheader !=''): ?>
             <tr class="ls-heading groups header_row">
-                <th class="header_answer_text">&nbsp;</th>
+                <th class="header_answer_text"></th>
                 <th colspan="<?php echo count($labelans0); ?>" class="dsheader text-center"><?php echo $leftheader; ?></th>
 
                 <?php if (count($labelans1) > 0): ?>
-                    <td class="header_separator">&nbsp;</td>  <!-- // Separator -->
+                    <td class="header_separator"></td>  <!-- // Separator -->
                     <th colspan="<?php echo count($labelans1); ?>" class="dsheader text-center"><?php echo $rightheader; ?></th>
                 <?php endif; ?>
 
                 <?php if($shownoanswer || $rightexists): ?>
-                    <td class="header_separator <?php echo $rigthclass; ?>">&nbsp;</td>
+                    <td class="header_separator <?php echo $rigthclass; ?>"></td>
                     <?php if($shownoanswer): ?>
-                        <th class="header_no_answer">&nbsp;</th>
+                        <th class="header_no_answer"></th>
                     <?php endif; ?>
                 <?php endif; ?>
             </tr>
@@ -168,9 +168,7 @@
 
             <!-- Separator for no-answer -->
             <?php if ($shownoanswer || $rightexists): ?>
-                <td class="answertextright dual_scale_separator information-item">
-                    <?php echo $answertextright; ?>
-                </td>
+                <td class="answertextright dual_scale_separator information-item"><?php echo $answertextright; ?></td>
             <?php endif; ?>
 
             <!-- No answer column -->

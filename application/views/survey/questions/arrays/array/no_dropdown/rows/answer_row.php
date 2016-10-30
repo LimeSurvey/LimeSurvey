@@ -20,9 +20,7 @@
         echo $answer_tds;
     ?>
     <?php if ($right_exists): ?>
-        <th class='answertextright'>
-            <?php echo $answertextright; ?>
-        </th>
+        <th class='answertextright'><?php echo $answertextright; ?></th>
     <?php endif; ?>
 
     <?php

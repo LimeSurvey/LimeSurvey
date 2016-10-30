@@ -33,10 +33,6 @@
     </td>
 
     <?php if ($right_exists): ?>
-        <th class='answertextright'>
-            <label>
-                <?php echo $answertextright; ?>
-            </label>
-        </th>
+        <th class='answertextright'><?php echo $answertextright; ?></th>
     <?php endif; ?>
 </tr>

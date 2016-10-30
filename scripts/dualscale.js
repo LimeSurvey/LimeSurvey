@@ -21,10 +21,8 @@
  */
 function doDualScaleRadio(qID) {
   // We can do it before document ready, because function come after answers and we use delegate
-  $("#question"+qID+" .jshide").hide();
-
   // Lauch EM with hidden input
-  $("#question"+qID+" table.question").delegate(".noanswer-item :radio","click",function(){
+  $("#question"+qID+" .ls-answers").delegate(".noanswer-item :radio","click",function(){
     $(this).closest(".answers-list").find(":radio[value='']").prop("checked", true);
     name=$(this).attr("name");
     name0=name.replace("#1","_0");
@@ -34,7 +32,7 @@ function doDualScaleRadio(qID) {
     ExprMgr_process_relevance_and_tailoring('change',name0,'hidden');
     ExprMgr_process_relevance_and_tailoring('change',name1,'hidden');
   });
-  $("#question"+qID+" table.question").delegate(".answer-item:not(.noanswer-item)  :radio","click",function(){
+  $("#question"+qID+" .ls-answers").delegate(".answer-item:not(.noanswer-item)  :radio","click",function(){
     $(this).closest(".answers-list").find(":radio[value='']").prop("checked", false);
     name=$(this).attr("name");
     name=name.replace('#','_');
@@ -49,9 +47,10 @@ function doDualScaleRadio(qID) {
  *
  * @author Denis Chenu (Shnoulle)
  * @param {number} qId The qid of the question where apply.
+ * @todo : control if it's needed since em_javascript have his own function (or fix em_javascript function)
  */
 function doDualScaleDropDown(qID) {
-  $("#question"+qID+" table.question").delegate("select","change",function(){
+  $("#question"+qID+" .ls-answers").delegate("select","change",function(){
     name=$(this).attr("name");
     name=name.replace('#','_');
     value=""+$(this).val();

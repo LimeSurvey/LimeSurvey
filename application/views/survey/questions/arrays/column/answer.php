@@ -22,7 +22,7 @@
     </colgroup>
     <thead><!-- The global concept is hard to understand : must control if aria-labelledby for radio-group is OK and if we can add aria-hidden here -->
         <tr class='ls-heading'><!-- unsure for ls-heading class here -->
-            <td>&nbsp;</td>
+            <td></td>
             <?php
             foreach ($aQuestions as $i=>$question): ?>
                 <th id="answertext<?php echo $question['myfname'];?>" class="answertext control-label <?php if($question['errormandatory']){ echo " has-error error-mandatory";} ?>">
