@@ -887,7 +887,7 @@ function do_5pointchoice($ia)
         }
         $aData = array(
             'name'                   => $ia[1],
-            'value'                  => $fp,
+            'value'                  => "",
             'id'                     => $ia[1],
             'labelText'              => gT('No answer'),
             'itemExtraClass'         => 'noanswer-item',

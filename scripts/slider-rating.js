@@ -52,10 +52,11 @@ function getRatingSlider(qID){
     },
     //Method setting the value on the EM-calculateable part
     setValueAndColorize = function(index){
-      answersList.find('input[type=radio][value='+index+']').prop('checked',true).trigger('click');
+      answersList.find('input[type=radio][value='+index+']').trigger('click');
       $("#emoji_slider_container_"+qID).find(".slider-label").find('i').removeClass('emoji-color'); //remove all other color-classes
       if(index==6){ //if it is the "no Answer" set, add text-danger instead of emoji-color
-         $("#emoji_slider_container_"+qID).find(".slider-label-"+index).find('i').addClass('text-danger');
+         $("#emoji_slider_container_"+qID).find(".slider-label-6").find('i').addClass('text-danger');
+         answersList.find('input[type=radio][value=""]').trigger('click');
       } else {
         $("#emoji_slider_container_"+qID).find(".slider-label-6").find('i').removeClass('text-danger');
         $("#emoji_slider_container_"+qID).find(".slider-label-"+index).find('i').addClass('emoji-color');
@@ -81,7 +82,7 @@ function getRatingSlider(qID){
       return (answersList.find('.noanswer-item').length > 0);
     },
     checkOpenValue = function(){
-      var openValue = answersList.find("input:radio:checked").val() || (checkHasNoAnswerOption() ? 6 : 1); //Select either noAnswer, or the preselected
+      var openValue = (answersList.find("input:radio:checked").val() || 0)*1; //Select either noAnswer, or the preselected
       return openValue || false;
     },
     relativeOffset = function(rawOffset){
@@ -117,7 +118,7 @@ function getRatingSlider(qID){
     //Register the events
     bindEventsToContainer = function(){
       //Register the click event on the slider container
-      //this event will trigger when the slider area is clicked, 
+      //this event will trigger when the slider area is clicked,
       //to move the slider to where the click was generated
       $("#emoji_slider_grab_container_"+qID).on('click', onSetHandlePosition );
       //Registers to the event, when the handle is dragged.
@@ -145,7 +146,7 @@ function getRatingSlider(qID){
       }
       //append the colored line on the bottom
         package.sliderGrabContainer.append(package.sliderLine);
-      //append the handle  
+      //append the handle
         package.sliderGrabContainer.append(package.sliderHandle);
 
     //Append things to the main elemen
@@ -168,7 +169,10 @@ function getRatingSlider(qID){
     if(openValue){
       setValueAndColorize(openValue);
       setSliderPosition(getSliderPositionFromIndex(openValue), package.sliderGrabContainer);
-      }
+    }else if(checkHasNoAnswerOption()){
+      setValueAndColorize(6);
+      setSliderPosition(getSliderPositionFromIndex(6), package.sliderGrabContainer);
+    }
   }
 
   return doRatingSlider;

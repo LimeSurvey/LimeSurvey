@@ -9,7 +9,7 @@
  *
  * @author Denis Chenu (Shnoulle)
  * @author Markus Fluer (lacrioque)
- * 
+ *
  * @param {number} qId The qid of the question where apply.
  */
 function doRatingStar(qID) {
@@ -33,18 +33,12 @@ function doRatingStar(qID) {
   //Define stars-element container
   var starsHtmlElement=$("<div class='stars-list answers-list noread' ></div>");
 
-  //Check if there is a given answer  
-  var openValue=answersList.find("input:radio:checked").val();
-
-  //Reset openValue to null, when no Answer is chosen
-  if(openValue == numberOfPossibleAnswers){
-    openValue = null;
-  }
-
+  //Check if there is a given answer : set itto 0 if '' or null
+  var openValue=(answersList.find("input:radio:checked").val()  || 0)*1;
   //Add no-answer-option to stars List
-  if(itemNoAnswer){ 
+  if(itemNoAnswer){
     starsHtmlElement
-      .append("<div class='star-rating star-cancel' data-star='"+(numberOfPossibleAnswers)+"' title='"+$('#question'+qID+' .noanswer-item label').html()+"'><i class='fa fa-ban'></i></div>");
+      .append("<div class='star-rating star-cancel' data-star='' title='"+$('#question'+qID+' .noanswer-item label').html()+"'><i class='fa fa-ban'></i></div>");
   } else {
     numberOfPossibleAnswers++;
   }
@@ -52,7 +46,7 @@ function doRatingStar(qID) {
   //Add stars to the container
   for (i=1; i<numberOfPossibleAnswers; i++) {
     //if there is a selected answer, add the fitting classes
-    var classes = openValue!=null ?  "star-rated-on star-rating star " : "star-rating star ";
+    var classes = openValue!="" ?  "star-rated-on star-rating star " : "star-rating star ";
     //light all stars lower thgan the selected
     if(i<=openValue){
       classes+=" star-rated";
@@ -76,7 +70,7 @@ function doRatingStar(qID) {
         //add/remove classes from sibling-elements
         $(this).siblings('.star-rating').each(function(){
           //smaller than the chosen and not "no answer" => add class to emphasize them
-          if($(this).data('star') < thisnum && thisnum != numberOfPossibleAnswers){ 
+          if($(this).data('star') < thisnum && thisnum != numberOfPossibleAnswers){
             $(this).addClass("star-drained");
           } else {
             $(this).addClass("star-stub");
@@ -106,11 +100,11 @@ function doRatingStar(qID) {
       $(this).addClass("star-rated").addClass("star-thisrated").addClass("star-rated-on");
       //iterate through the siblings to mark the stars lower than the current
       $(this).siblings('.star-rating').each(function(){
-        if($(this).data("star") < thischoice){ 
+        if($(this).data("star") < thischoice){
           $(this).addClass("star-rated").addClass("star-rated-on");
         }
       });
-      // if cancel, remove all classes 
+      // if cancel, remove all classes
       if($(this).hasClass('star-cancel')){
         $(this).siblings('.star-rating').removeClass("star-rated-on").removeClass("star-rated");
       }
