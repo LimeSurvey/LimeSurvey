@@ -34,7 +34,7 @@ class SurveyRuntimeHelper {
 
         $oTemplate = Template::model()->getInstance('', $surveyid);
         $sTemplatePath = $oTemplate->path;
-        $sTemplateViewPath = $oTemplate->viewPath;
+        $sTemplateViewPath = $oTemplate->pstplPath;
 
         $flashmessage = makeFlashMessage();
 

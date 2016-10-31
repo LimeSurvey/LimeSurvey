@@ -81,7 +81,7 @@ class printablesurvey extends Survey_Common_Action
             //Fix $templatename : control if print_survey.pstpl exist
             $oTemplate = Template::model()->getTemplateConfiguration($templatename);
             $sFullTemplatePath = $oTemplate->path;
-            if($oTemplate->viewPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl')
+            if($oTemplate->pstplPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl')
             {
                 $templatename = $templatename;// Change nothing
             }
@@ -1596,7 +1596,7 @@ class printablesurvey extends Survey_Common_Action
      */
     private function _populate_template( $oTemplate, $template , $input  , $line = '')
     {
-        $full_path = $oTemplate->viewPath.DIRECTORY_SEPARATOR.'print_'.$template.'.pstpl';
+        $full_path = $oTemplate->pstplPath.DIRECTORY_SEPARATOR.'print_'.$template.'.pstpl';
         $full_constant = 'TEMPLATE'.$template.'.pstpl';
         if(!defined($full_constant))
         {

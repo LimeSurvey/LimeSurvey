@@ -104,7 +104,7 @@
                 $aReplacementData['MESSAGE']=$message;
                 $aReplacementData['URL']='';
                 $this->aReplacementData=$aReplacementData['ERROR']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
-                $content=templatereplace(file_get_contents($oTemplate->viewPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
+                $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
                 $this->render("/survey/system/display",array('content'=>$content));
                 App()->end();
             }
@@ -168,7 +168,7 @@
                 $sOutput .= "</table>\n";
                 $this->aGlobalData['thissurvey']=$aSurveyInfo;
                 $sOutput=templatereplace($sOutput, array() , $sData, '', $aSurveyInfo['anonymized']=="Y",NULL, array(), true);// Do a static replacement
-                $content=templatereplace(file_get_contents($oTemplate->viewPath.'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$this->aGlobalData);
+                $content=templatereplace(file_get_contents($oTemplate->pstplPath.'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$this->aGlobalData);
                 $this->render("/survey/system/display",array('content'=>$sOutput));
                 App()->end();
             }

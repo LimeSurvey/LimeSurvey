@@ -106,7 +106,7 @@ class Save
         $saveForm .= CHtml::endForm();
         $aReplacements['SAVEFORM'] = $saveForm;
 
-        $content = templatereplace(file_get_contents($oTemplate->viewPath."save.pstpl"),$aReplacements,$aData);
+        $content = templatereplace(file_get_contents($oTemplate->pstplPath."save.pstpl"),$aReplacements,$aData);
         App()->getController()->layout="survey";
         App()->getController()->sTemplate=$sTemplate;
         App()->getController()->aGlobalData=$aData;
@@ -115,17 +115,6 @@ class Save
             'content'=>$content,
         ));
         Yii::app()->end();
-
-        //~ echo templatereplace(file_get_contents($oTemplate->viewPath."save.pstpl"),array(),$redata);
-        //~ //END
-        //~ echo "<input type='hidden' name='thisstep' value='$thisstep' />\n";
-        //~ echo CHtml::hiddenField('token',$clienttoken)."\n";
-        //~ echo "<input type='hidden' name='saveprompt' value='Y' />\n";
-        //~ echo "</form>";
-
-        //~ echo templatereplace(file_get_contents($oTemplate->viewPath."endpage.pstpl"),array(),$redata);
-        //~ echo "</html>\n";
-        //~ exit;
     }
 
     function savedcontrol()

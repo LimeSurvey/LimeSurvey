@@ -40,12 +40,12 @@ if (!headers_sent())
     Yii::app()->clientScript->registerPackage('survey-template');
     // Maybe can add language changer here
     /* Add head by template + start body (if template start body here ....) */
-    echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),$this->aReplacementData,$this->aGlobalData);
+    echo templatereplace(file_get_contents($oTemplate->pstplPath."startpage.pstpl"),$this->aReplacementData,$this->aGlobalData);
     if(!empty($this->bStartSurvey)){
-        echo templatereplace(file_get_contents($oTemplate->viewPath."survey.pstpl"),$this->aReplacementData,$this->aGlobalData);
+        echo templatereplace(file_get_contents($oTemplate->pstplPath."survey.pstpl"),$this->aReplacementData,$this->aGlobalData);
     }
     echo $content;
-    echo templatereplace(file_get_contents($oTemplate->viewPath."endpage.pstpl"),$this->aReplacementData,$this->aGlobalData);
+    echo templatereplace(file_get_contents($oTemplate->pstplPath."endpage.pstpl"),$this->aReplacementData,$this->aGlobalData);
 ?>
 </body>
 </html>

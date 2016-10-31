@@ -168,7 +168,7 @@ function gettemplatefilename($template, $templatefile) {
     {
         case 'pstpl':
             $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
-            return $oEditedTemplate->viewPath.$templatefile;
+            return $oEditedTemplate->pstplPath.$templatefile;
             break;
         case 'css':
             return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;

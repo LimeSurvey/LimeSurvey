@@ -896,7 +896,7 @@ function buildsurveysession($surveyid,$preview=false)
     $oTemplate = Template::model()->getInstance('', $surveyid);
     App()->getController()->sTemplate=$oTemplate->name;
     $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
+    $sTemplateViewPath = $oTemplate->pstplPath;
 
     /**
     * This method has multiple outcomes that virtually do the same thing
@@ -2130,7 +2130,7 @@ function checkCompletedQuota($surveyid,$return=false)
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
+    $sTemplateViewPath = $oTemplate->pstplPath;
 
 
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
@@ -2317,7 +2317,7 @@ function display_first_page() {
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
+    $sTemplateViewPath = $oTemplate->pstplPath;
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
     echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off', 'class'=>'frontend_helper'));
 

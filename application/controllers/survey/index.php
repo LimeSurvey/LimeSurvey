@@ -318,7 +318,7 @@ class index extends CAction {
 
         //SET THE TEMPLATE DIRECTORY
         $oTemplate = Template::model()->getInstance('', $surveyid);
-        $thistpl = $oTemplate->viewPath;
+        $thistpl = $oTemplate->pstplPath;
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
@@ -556,7 +556,7 @@ class index extends CAction {
                 dbExecuteAssoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);
             }
             killSurveySession($surveyid);
-            $content=templatereplace(file_get_contents($oTemplate->viewPath."clearall.pstpl"),array());
+            $content=templatereplace(file_get_contents($oTemplate->pstplPath."clearall.pstpl"),array());
             $this->getController()->layout='survey';
             $this->getController()->render("/survey/system/display",array('content'=>$content));
             App()->end();

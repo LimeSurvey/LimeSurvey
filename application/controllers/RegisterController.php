@@ -218,7 +218,7 @@ class RegisterController extends LSYii_Controller {
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
         $aData['languagechanger'] = makeLanguageChangerSurvey(App()->language);
         $oTemplate = Template::model()->getInstance(null, $iSurveyId);
-        return templatereplace(file_get_contents($oTemplate->viewPath . "/register.pstpl"),$aReplacement,$aData);
+        return templatereplace(file_get_contents($oTemplate->pstplPath . "/register.pstpl"),$aReplacement,$aData);
     }
 
     /**
@@ -478,7 +478,7 @@ class RegisterController extends LSYii_Controller {
             $this->aReplacementData['content']=self::getRegisterForm($iSurveyId);
         }else{
             // Must use message.pstpl
-            $this->aReplacementData['content']=templatereplace(file_get_contents($oTemplate->viewPath . "/message.pstpl"),
+            $this->aReplacementData['content']=templatereplace(file_get_contents($oTemplate->pstplPath . "/message.pstpl"),
                 array(
                     'MESSAGEID'=>'register-message',
                     'ERROR'=>'',

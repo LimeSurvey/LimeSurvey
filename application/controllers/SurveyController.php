@@ -128,7 +128,7 @@ class SurveyController extends LSYii_Controller
         $aReplacementData['MESSAGE']=$message;
         $aReplacementData['URL']=$url;
         $this->aReplacementData=$aReplacementData['ERROR']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
-        $content=templatereplace(file_get_contents($oTemplate->viewPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
+        $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
         $this->render("/survey/system/display",array('content'=>$content));
         App()->end();
     }

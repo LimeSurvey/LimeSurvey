@@ -100,5 +100,5 @@
         "SURVEYLIST"=> $list,
     );
     $oTemplate = Template::model()->getInstance(App()->getconfig("defaulttemplate"));
-    echo templatereplace(file_get_contents($oTemplate->viewPath."/surveylist.pstpl"),$data,$this->aGlobalData,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->pstplPath."/surveylist.pstpl"),$data,$this->aGlobalData,'survey['.__LINE__.']');
 ?>

@@ -48,7 +48,7 @@ class Load_answers {
         $loadForm .= CHtml::endForm();
         $aReplacements['LOADFORM'] = $loadForm;
 
-        $content = templatereplace(file_get_contents($oTemplate->viewPath."load.pstpl"),$aReplacements,$aData);
+        $content = templatereplace(file_get_contents($oTemplate->pstplPath."load.pstpl"),$aReplacements,$aData);
         App()->getController()->layout="survey";
         App()->getController()->sTemplate=$sTemplate;
         App()->getController()->aGlobalData=$aData;

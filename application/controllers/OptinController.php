@@ -110,7 +110,8 @@ class OptinController extends LSYii_Controller {
         {
             App()->bootstrap->register();
         }
-        $thistpl = $oTemplate->viewPath;
+        App()->clientScript->registerPackage('survey-template');
+        $thistpl = $oTemplate->pstplPath;
 
         echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'),array(), $aSupportData);
         $aData['html'] = $html;
