@@ -3,12 +3,12 @@
     <!-- Those metadatas will be display in the template configuration page. They are not used for now. -->
     <metadatas>
         <name>Basic</name>
-        <creationDate>14/04/2016</creationDate>
+        <creationDate>2016-10-31</creationDate>
         <author>Denis Chenu</author>
         <authorEmail>denis@sondages.pro</authorEmail>
         <license>GNU General Public License version 3 or later and MIT</license>
-        <version>0.2</version>
-        <description>Basic template for LimeSurvey, based on core bootsrap, with awesome button.</description>
+        <version>1.0</version>
+        <description>Basic template for LimeSurvey, using lumen from boostswatch, with awesome button.</description>
         <!--
              The last_update field must be updated before each release,
              to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
@@ -23,6 +23,7 @@
         -->
         <css>
             <filename>css/jquery-ui.css</filename>
+            <!-- Use you own boostrap css here -->
             <filename>css/bootswatch-lumen.css</filename>
             <filename>css/awesome-bootstrap-checkbox.css</filename>
             <filename>css/template-core.css</filename>
@@ -70,6 +71,8 @@
     <engine>
         <cssframework>bootstrap</cssframework>
         <pstpldirectory>pstpl</pstpldirectory>
+        <!-- we can set to an invalid directory : we don't use it -->
+        <viewsdirectory>views</viewsdirectory>
         <filesdirectory>files</filesdirectory>
 
         <!--

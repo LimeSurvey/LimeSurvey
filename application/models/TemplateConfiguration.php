@@ -71,7 +71,11 @@ class TemplateConfiguration extends CFormModel
         if ($sTemplateName=='')
         {
             $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
-            $this->sTemplateName = $this->oSurvey->template;
+            if($this->oSurvey){
+                $this->sTemplateName = $this->oSurvey->template;
+            }else{
+                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
+            }
         }
 
         // We check if  it's a CORE template

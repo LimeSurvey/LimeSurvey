@@ -43,7 +43,6 @@
         {
             Yii::app()->loadHelper("frontend");
             Yii::import('application.libraries.admin.pdf');
-
             $iSurveyID = (int)$surveyid;
             $sExportType = $printableexport;
 
@@ -73,6 +72,8 @@
                 $sLanguage = Yii::app()->getConfig("defaultlang");
             }
             SetSurveyLanguage($iSurveyID, $sLanguage);
+            SurveyRuntimeHelper->setJavascriptVar($iSurveyID);
+
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             $oTemplate = Template::model()->getInstance(null, $iSurveyID);
             if($oTemplate->cssFramework == 'bootstrap')

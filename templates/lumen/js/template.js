@@ -2,6 +2,13 @@
  * @file Do your own javascript function here
  */
 $(document).ready(function(){
+
+  // If list of nav-bar action is empty: remove it (else .navbar-toggle is shown on small screen) //
+  if(!$("#navbar li").length){
+      $("#navbar").remove();
+      $("[data-target='#navbar']").remove();
+  }
+
   /* Remove the input error if finally all answers is OK */
   $('.question-wrapper.mandatory.panel-warning .ls-answers').on('blur',':not(other-text-item) input:text',function(){
     if($(this).closest(".ls-answers").find(":not(other-text-item) input:text[value='']").filter(function(){ return !$(this).val(); }).length==0){
