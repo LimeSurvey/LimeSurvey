@@ -22,7 +22,7 @@
             <?php eT('Your answer'); ?>
         </label>
         <?php if ($prefix !== '' || $suffix !== ''): ?>
-            <div class="input-group">
+            <div class="ls-input-group">
         <?php endif; ?>
             <!-- Prefix -->
             <?php if ($prefix !== ''): ?>
@@ -36,8 +36,8 @@
                 name="<?php echo $name; ?>"
                 id="answer<?php echo $name;?>"
                 value="<?php echo $dispVal; ?>"
-                <?php echo $maxlength; ?>
-                size="<?php echo $inputsize; ?>"
+                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
             />
 
             <!-- Suffix -->

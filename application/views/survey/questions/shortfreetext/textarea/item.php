@@ -11,6 +11,7 @@
  * @var $checkconditionFunction      $checkconditionFunction.'(this.value, this.name, this.type)
  * @var $dispVal
  */
+tracevar($maxlength);
 ?>
 
 <!-- Short free text, textarea item -->
@@ -22,7 +23,7 @@
             <?php eT('Your answer'); ?>
         </label>
         <?php if ($prefix !== '' || $suffix !== ''): ?>
-            <div class="input-group">
+            <div class="ls-input-group">
         <?php endif; ?>
             <!-- Prefix -->
             <?php if ($prefix !== ''): ?>
@@ -34,8 +35,8 @@
                 name="<?php echo $name;?>"
                 id="<?php echo $freeTextId;?>"
                 rows="<?php echo $drows; ?>"
-                cols="<?php echo $inputsize; ?>"
-                <?php echo $maxlength; ?>
+                <?php echo ($inputsize ? 'cols="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
             ><?php echo $dispVal; ?></textarea>
 
             <!-- Suffix -->

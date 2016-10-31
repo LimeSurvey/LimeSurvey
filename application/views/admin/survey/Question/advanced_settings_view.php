@@ -79,13 +79,13 @@ $currentfieldset='';
 
                         // Integer
                         case 'integer':?>
-                            <input type='text' class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
+                            <input type='number' min="1" step="1" pattern="\d+" class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
                             <?php
                             break;
 
                         // Interger
                         case 'columns':?>
-                            <input type='number' min="1" max="12" class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
+                            <input type='number' min="1" max="12" step="1" class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
                             <?php
                             break;
 

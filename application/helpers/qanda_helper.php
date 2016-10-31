@@ -3463,9 +3463,8 @@ function do_shortfreetext($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars  = intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength      = "maxlength='{$maximum_chars}' ";
-        $extraclass    .=" maxchars maxchars-".$maximum_chars;
+        $maxlength      = intval(trim($aQuestionAttributes['maximum_chars']));
+        $extraclass    .=" maxchars maxchars-".$maxlength;
     }
     else
     {
@@ -3480,7 +3479,11 @@ function do_shortfreetext($ia)
     {
         $col = 12; /* Add a inline iof no col is set : see https://bugs.limesurvey.org/view.php?id=11734 too */
     }
-    $inputsize=50; /* @todo : move it to attribute ? see https://bugs.limesurvey.org/view.php?id=11734 */
+    if(ctype_digit(trim($aQuestionAttributes['input_size']))){
+        $inputsize=trim($aQuestionAttributes['input_size']);
+    }else{
+        $inputsize=null;
+    }
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
     {
         $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
@@ -3672,7 +3675,7 @@ function do_shortfreetext($ia)
         );
         App()->getClientScript()->registerPackage('leaflet');
         Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
-        Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar),CClientScript::POS_HEAD);
+        Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar).";",CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
 

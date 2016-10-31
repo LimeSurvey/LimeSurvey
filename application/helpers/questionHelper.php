@@ -674,10 +674,20 @@ class questionHelper
         'caption' =>    gT('Show grand total')
         );
 
+        self::$attributes["input_size"]=array(
+            "types"=>"S",
+            'category'=>gT('Display'),
+            'sortorder'=>100,
+            'inputtype'=>'integer',
+            'default'=>'',
+            "help"=>gT("Set the size to the input or textarea, the input will be displayed with approximately this size in width."),
+            "caption"=>gT("Text input size")
+        );
+
         self::$attributes["input_boxes"]=array(
         "types"=>":",
         'category'=>gT('Display'),
-        'sortorder'=>100,
+        'sortorder'=>110,
         'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),

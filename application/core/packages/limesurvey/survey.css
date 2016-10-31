@@ -26,18 +26,6 @@
 /* For relanceOnOff ? */
 .ls-irrelevant {display: none !important;}
 
-/* Todo : default asterisk : why not put directly <i class fa> inside ?
-*/
-/*
-.asterisk {}
-.asterisk:before {
-    content: "\f069";
-    display: inline-block;
-    font-family: FontAwesome;
-    font-size: inherit;
-    line-height:1;
-}
-*/
 .form-horizontal .control-label.col-sm-12 {
     text-align: left;
 }
@@ -63,7 +51,7 @@
     border-collapse: separate;
     display: table;
     position: relative;
-    width:100%;
+/*  width:100%; */
 }
 
 .ls-input-group .form-control {
@@ -87,9 +75,11 @@
   font-size: inherit;/* 1.4rem; BS use 10px for html and 14px for body */
   font-weight: normal;
   line-height: 1;
-  text-align: center;
   border: 1px hidden transparent;
 }
+.answer-item textarea[cols]{width:initial;max-width:100%}
+.answer-item input[type='text'][size]{width:initial;max-width:100%}
+.answer-item textarea[cols]  + .ls-input-group-extra,.answer-item input[type='text'][size] + .ls-input-group-extra{width:initial}
 
 /* in inline form : width need to be auto */
 .form-inline .ls-input-group{display: inline-table;vertical-align: middle;width:auto}
