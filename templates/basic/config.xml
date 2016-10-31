@@ -23,9 +23,8 @@
         -->
         <css>
             <filename>css/jquery-ui.css</filename>
-            <filename>css/bootstrap.min.css</filename>
-            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
-            <!--<filename>assets/css/bootstrap-theme.css</filename>-->
+            <filename>css/bootswatch-lumen.css</filename>
+            <filename>css/awesome-bootstrap-checkbox.css</filename>
             <filename>css/template-core.css</filename>
             <filename>css/template.css</filename>
         </css>
@@ -40,9 +39,10 @@
             <css>
                 <!-- must fix some part -->
                 <filename>css/jquery-ui.css</filename>
-                <filename>css/bootstrap.min.css</filename>
-                <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
-                <!--<filename>assets/css/bootstrap-theme.css</filename>-->
+                <filename>css/cosmo.css</filename>
+                <filename>css/bootstrap-rtl.css</filename>
+                <filename>css/awesome-bootstrap-checkbox.css</filename>
+                <!-- <filename>css/awesome-bootstrap-checkbox-rtl.css</filename> -->
                 <filename>css/template-core.css</filename>
                 <filename>css/template.css</filename>
             </css>

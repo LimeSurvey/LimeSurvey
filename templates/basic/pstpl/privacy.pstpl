@@ -1,1 +1,4 @@
-<div id="privacy">{PRIVACYMESSAGE}</div>
+<div class="privacy-message">
+  <div class="h4">{PRIVACYHEADING}</div>
+  <div class="text-info">{PRIVACYMESSAGE}</div>
+</div>

@@ -12,7 +12,7 @@
 </head>
 <body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
 <div id="container">
-    <div id="head" class="navbar navbar-inverse navbar-static-top">
+    <div id="head" class="navbar navbar-default navbar-static-top">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">

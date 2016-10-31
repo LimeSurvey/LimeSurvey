@@ -24,16 +24,17 @@ html {
 .question-text{font-weight:500;font-size:18px}
 .question-number,.question-code{float:left;margin:0 0.3em}
 /**
- * Some specific
+ * Some specific to boostrap theme
  */
 
 @media
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
   .ls-answers th.control-label {
-    border-top-left-radius: 4px;border-top-right-radius: 4px;font-weight:500;
+    border-top-left-radius: 3px;border-top-right-radius: 3px;font-weight:500;
+    font-size:16px;
     color: #fff;
-    background-color: #337ab7;
-    border-color: #337ab7;
+    background-color: #158cba;
+    border-color: #158cba;
   }
 }

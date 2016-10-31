@@ -1,23 +1,35 @@
 /**
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
+/* Some partial reset */
+.ls-answers img,.ls-answers video,.ls-answers svg{max-width: 100%;height: auto;}
 label,th{font-weight:400}
-/* Boostrap don't do some reset : do it in answer part*/
-.ls-answers img,.ls-answers video,.ls-answers svg{
-  max-width: 100%;height: auto;
+
+/**
+ *  Question part
+ */
+/* Hide emty question-help */
+.question-help:empty{display:none}
+.help-wrapper{padding-top:0;padding-bottom:0}
+.boilerplate .answers-wrapper,.equation .answers-wrapper{
+    display:none;
+}
+/**
+ * Answers part (ls-answers)
+ */
+/* Shown :text numeric at right */
+[type='text'][data-number='1']{text-align:right}
+/* Some specific question review */
+.yesno-button .btn,.gender-button .btn{
+    white-space: normal;
 }
 /* awesome-bootstrap-checkbox */
 li.radio-item,li.checkbox-item{display:block}
 
 /* Else big label break*/
 .radio-item label,.checkbox-item label {display:block}
-.radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {
-    position:absolute;
-}
-/**
- * Shown :text numeric at right
- */
-[type='text'][data-number='1']{text-align:right}
+/* don't take place in wrapper */
+.radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {position:absolute;}
 
 /**
  * Table .question feature
@@ -78,15 +90,7 @@ margin: 0;
     height:1px;
     overflow:hidden;
 }
-/* Some specific question review */
-  .yesno-button .btn,.gender-button .btn{
-    white-space: normal;
-  }
-.boilerplate .answers-wrapper,.equation .answers-wrapper{
-    display:none;
-}
-/* Hide emty question-help */
-.question-help:empty{display:none}
+
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
@@ -148,5 +152,4 @@ only screen and (max-width: 760px),
     .ls-answers tbody .answertext{text-align:left}
     .ls-answers tbody td{text-align:left;}
     .ls-answers .answertextright{text-align:center}
-    .dir-rtl .ls-answers .answertextright{text-align:center}
 }
