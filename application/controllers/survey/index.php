@@ -244,17 +244,26 @@ class index extends CAction {
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
 
-        if ( $this->_didSessionTimeOut($surveyid) )
+        if ( $this->_didSessionTimeout($surveyid) )
         {
             $aErrors=array(gT('We are sorry but your session has expired.'));
             $aMessage = array(
                 gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
             );
+            $aReloadUrlParam=array('lang'=>App()->language,'newtest'=>'Y');
+            if($clienttoken){
+                $aReloadUrlParam['token']=$clienttoken;
+            }
+            $aUrl=array(
+                'url'=>$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam),
+                'type'=>'restart-survey',
+                'description'=>gT("Click here to start the survey.")
+            );
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'session-timeout',
                     $aMessage,
-                    null,
+                    $aUrl,
                     $aErrors
             );
         };
@@ -717,14 +726,11 @@ class index extends CAction {
 
     function _didSessionTimeout($surveyid)
     {
-        return !isset($_SESSION['survey_'.$surveyid]['s_lang']) && isset($_POST['thisstep']);
+        return (!isset($_SESSION['survey_'.$surveyid]['step']) && null !== App()->request->getPost('thisstep') );
     }
 
     function _canUserPreviewSurvey($iSurveyID)
     {
-        if ( !isset($_SESSION['loginID']) ) // This is not needed because Permission::model()->hasSurveyPermission control connexion
-            return false;
-
         return Permission::model()->hasSurveyPermission($iSurveyID,'surveycontent','read');
     }
 
