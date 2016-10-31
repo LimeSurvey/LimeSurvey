@@ -79,7 +79,13 @@ $currentfieldset='';
 
                         // Integer
                         case 'integer':?>
-                            <input type='number' min="1" step="1" pattern="\d+" class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
+                            <?php echo CHtml::numberField($aAttribute['name'],$aAttribute['value'],array(
+                                'class'=>"form-control",
+                                'step'=>1,
+                                'pattern'=>'\d+',
+                                'min'=>(isset($aAttribute['min'])?$aAttribute['min']:1),
+                                'max'=>(isset($aAttribute['max'])?$aAttribute['max']:null)
+                            )); ?>
                             <?php
                             break;
 

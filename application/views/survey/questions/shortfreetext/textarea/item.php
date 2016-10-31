@@ -11,13 +11,15 @@
  * @var $checkconditionFunction      $checkconditionFunction.'(this.value, this.name, this.type)
  * @var $dispVal
  */
-tracevar($maxlength);
 ?>
 
 <!-- Short free text, textarea item -->
-<div class="<?php echo $coreClass; ?> <?php echo $extraclass; ?> form-horizontal short-free-text row">
-
-    <div class='col-sm-<?php echo $col; ?>'>
+<?php if($withColumn): ?>
+<div class='<?php echo $coreClass; ?> row'>
+    <div class="<?php echo $extraclass; ?>">
+<?php else: ?>
+<div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
+<?php endif; ?>
         <!-- Label -->
         <label class='control-label sr-only' for='answer<?php echo $name; ?>' >
             <?php eT('Your answer'); ?>
@@ -46,5 +48,9 @@ tracevar($maxlength);
         <?php if ($prefix !== '' || $suffix !== ''): ?>
             </div>
         <?php endif; ?>
+<?php if($withColumn): ?>
     </div>
 </div>
+<?php else: ?>
+</div>
+<?php endif; ?>

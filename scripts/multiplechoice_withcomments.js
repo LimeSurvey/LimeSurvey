@@ -1,12 +1,12 @@
 function doMultipleChoiceWithComments(qID,when)
 {
-  var question=$("#question"+qID+" .subquestions-list");
+  var question=$("#question"+qID+" .questions-list");
   if (jQuery.inArray(when, ['checked','unchecked'])<0){when='checked'}
   if(!question) return;
 
   if(when=='checked')
   {
-    question.on('click','input.checkbox',function(event){
+    question.on('click','input:checkbox',function(event){
       var commentinput=$("#answer"+$(this)[0].name+"comment");
       if(!$(this)[0].checked){
         commentinput.val("");
@@ -15,16 +15,16 @@ function doMultipleChoiceWithComments(qID,when)
         commentinput.focus();
       }
     });
-    question.on('keyup focusout',':not(.other-item) input.text',function(event){
+    question.on('keyup focusout',':not(.other-item) input:text',function(event){
       var checkboxinput=$("#answer"+$(this)[0].name.replace("comment",""));
       if($(this)[0].value==""){
         checkboxinput[0].checked=false;
       }else{
         checkboxinput[0].checked=true;
       }
-      checkboxinput.triggerHandler("click");
+      checkboxinput.trigger("change");
     });
-    question.on('focusout','.other-item .comment input.text',function(event){
+    question.on('focusout','.other-item .comment-item input:text',function(event){
       var otherinput=$("#answer"+$(this)[0].name.replace("comment",""));
       if($(this)[0].value==""){
         otherinput.val("");
@@ -34,7 +34,7 @@ function doMultipleChoiceWithComments(qID,when)
         otherinput.focus();
       }
     });
-    question.on('focusout','.other-item .option input.text',function(event){
+    question.on('focusout','.other-item .other-text-item input:text',function(event){
       var commentinput=$("#answer"+$(this)[0].name+"comment");
       //console.log($(this)[0].value);
       if($(this)[0].value==""){
@@ -49,7 +49,7 @@ function doMultipleChoiceWithComments(qID,when)
 
   if(when=='unchecked')
   {
-    question.on('click','input.checkbox',function(event){
+    question.on('click','input:checkbox',function(event){
       var commentinput=$("#answer"+$(this)[0].name+"comment");
       if($(this)[0].checked){
         commentinput.val("");
@@ -58,16 +58,16 @@ function doMultipleChoiceWithComments(qID,when)
         commentinput.focus();
       }
     });
-    question.on('keyup focusout',':not(.other-item) input.text',function(event){
+    question.on('keyup focusout',':not(.other-item) input:text',function(event){
       var checkboxinput=$("#answer"+$(this)[0].name.replace("comment",""));
       if(!$(this)[0].value==""){
         checkboxinput[0].checked=false;
       }else{
         //checkboxinput[0].checked=true;
       }
-      checkboxinput.triggerHandler("click");
+      checkboxinput.trigger("change");
     });
-    question.on('focusout','.other-item .comment input.text',function(event){
+    question.on('focusout','.other-item .comment-item input:text',function(event){
       var otherinput=$("#answer"+$(this)[0].name.replace("comment",""));
       if(!$(this)[0].value==""){
         otherinput.val("");
@@ -77,7 +77,7 @@ function doMultipleChoiceWithComments(qID,when)
         otherinput.focus();
       }
     });
-    question.on('focusout','.other-item .option input.text',function(event){
+    question.on('focusout','.other-item .other-text-item input:text',function(event){
       var commentinput=$("#answer"+$(this)[0].name+"comment");
       //console.log($(this)[0].value);
       if(!$(this)[0].value==""){

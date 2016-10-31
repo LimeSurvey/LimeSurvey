@@ -25,9 +25,8 @@
 ?>
 <!-- answer_row -->
 <li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group clearfix'  <?php echo $sDisplayStyle ;?>>
-
     <!-- Checkbox + label -->
-    <div class="col-sm-6 col-xs-12">
+    <div class="col-sm-<?php echo $sLabelWidth; ?> col-xs-12">
         <div class="checkbox-item answer-item form-group">
             <input
                 class="<?php echo $classes; echo $kpclass; ?>"
@@ -37,7 +36,6 @@
                 id="<?php echo $id;?>"
                 value="<?php echo $value?>"
                 <?php echo $checked;?>
-                onclick="<?php echo $checkconditionFunction;?>"
               />
 
             <label id="label-<?php echo $id;?>" for="<?php echo $id;?>" class="control-label checkbox-label"><?php echo $labeltext;?></label>
@@ -55,16 +53,14 @@
     </div>
 
     <!-- Comment -->
-    <div class="col-sm-6 col-xs-12">
+    <div class="col-sm-<?php echo $sInputContainerWidth; ?> col-xs-12">
         <div class="form-group answer-item text-item comment-item">
             <input
                 class='form-control <?php echo $kpclass; ?>'
                 type='text'
-                size='40'
                 id='<?php echo $inputCommentId;?>'
                 name='<?php echo $inputCommentName; ?>'
                 value='<?php echo $inputCOmmentValue; ?>'
-                onkeyup='<?php echo $checkconditionFunctionComment;?>'
                 aria-labelled='label-<?php echo $id;?>'
             />
         </div>

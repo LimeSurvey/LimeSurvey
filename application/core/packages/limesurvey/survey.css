@@ -81,11 +81,11 @@
 .answer-item textarea[cols]{width:initial;max-width:100%}
 .answer-item input[type='text'][size]{width:initial;max-width:100%}
 .ls-input-sized .ls-input-group-extra{width:initial}
-
+.ls-input-sized .ls-input-group{width:auto;max-width:100%;display:table}
 /* in inline form : width need to be auto */
 .form-inline .ls-input-group{display: inline-table;vertical-align: middle;width:auto}
-.form-inline .input-group .ls-input-group-extra{width: auto;white-space: initial;}
 .form-inline .ls-input-group .ls-input-group-extra{width: auto;white-space: initial;}
+.form-inline .ls-input-group {width: auto;white-space: initial;}
 
 /* index button */
 .ls-index-buttons .list-group .list-group-item:first-child {

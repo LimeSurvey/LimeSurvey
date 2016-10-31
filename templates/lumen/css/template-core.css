@@ -25,6 +25,43 @@ label,th{font-weight:400}
 .yesno-button .btn,.gender-button .btn{
     white-space: normal;
 }
+/* USing fa for date, not glyphicon : @todo: move to a date.css or another way to fix it */
+.glyphicon.glyphicon-calendar,
+.glyphicon.glyphicon-time,
+.glyphicon.glyphicon-chevron-left,
+.glyphicon.glyphicon-chevron-right,
+.glyphicon.glyphicon-screenshot,
+.glyphicon.glyphicon-trash,
+.glyphicon.glyphicon-remove
+{
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-calendar::before{
+  content: "\f073";
+}
+.glyphicon-time::before{
+  content: "\f017";
+}
+.glyphicon-chevron-left::before{
+  content: "\f053";
+}
+.glyphicon-chevron-right::before{
+  content: "\f054";
+}
+.glyphicon-screenshot::before{
+  content: "\f274";/*today : fa-calendar-check-o*/
+}
+.glyphicon-trash::before{
+  content: "\f014"; /* trash-o */
+}
+.glyphicon-remove::before{
+  content: "\f00d";
+}
 /* awesome-bootstrap-checkbox */
 li.radio-item,li.checkbox-item{display:block}
 

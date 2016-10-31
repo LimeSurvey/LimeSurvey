@@ -58,24 +58,26 @@ class questionHelper
         "caption"=>gT('Sort answers alphabetically'));
 
         self::$attributes["answer_width"]=array(
-        "types"=>"ABCEF1:;",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'integer',
-        'min'=>'1',
-        'max'=>'100',
-        "help"=>gT('Set the percentage width of the (sub-)question column (1-100)'),
-        "caption"=>gT('(Sub-)question width'));
+            "types"=>"ABCEF1:;",
+            'category'=>gT('Display'),
+            'sortorder'=>100,
+            'inputtype'=>'integer',
+            'min'=>'1',
+            'max'=>'100',
+            "help"=>gT('Set the percentage width of the (sub-)question column (1-100)'),
+            "caption"=>gT('(Sub-)question width')
+        );
 
         self::$attributes["answer_width_bycolumn"]=array(
-        "types"=>"H",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'integer',
-        'min'=>'1',
-        'max'=>'100',
-        "help"=>gT('Set the percentage width of the answers column (1-100)'),
-        "caption"=>gT('Answers column width'));
+            "types"=>"H",
+            'category'=>gT('Display'),
+            'sortorder'=>100,
+            'inputtype'=>'integer',
+            'min'=>'0',
+            'max'=>'100',
+            "help"=>gT('Set the percentage width of the answers column (1-100)'),
+            "caption"=>gT('Answers column width')
+        );
 
         self::$attributes["repeat_headings"]=array(
         "types"=>"F:1;",
@@ -981,11 +983,12 @@ class questionHelper
             11=>'92%',
             12=>'100%'
         ),
-        "help"=>gT('Relative width of the input element'),
-        "caption"=>gT('Input box width'));
+        "help"=>gT('Relative width of the text input wrapper element'),
+        "caption"=>gT('Text input box width'));
 
+        /* Do EXACTLY the same than text_input_width for K(multinum): must move K here and rename in a DB update and remove it + fix when import*/
         self::$attributes["text_input_columns"]=array(
-        "types"=>"Q",
+        "types"=>"QP",
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
@@ -1005,8 +1008,8 @@ class questionHelper
             11=>'92%',
             12=>'100%'
         ),
-        "help"=>gT('Relative width of the input element'),
-        "caption"=>gT('Input box width'));
+        "help"=>gT('Relative width of the text input wrapper element'),
+        "caption"=>gT('Text input box width'));
 
         self::$attributes["label_input_columns"]=array(
         "types"=>"KQ",
@@ -1032,6 +1035,30 @@ class questionHelper
         "help"=>gT('Relative width of the labels'),
         "caption"=>gT('Label column width'));
 
+        /* Same than label_input_columns for multiple choice*/
+        self::$attributes["choice_input_columns"]=array(
+        "types"=>"P",
+        'category'=>gT('Display'),
+        'sortorder'=>90,
+        'inputtype'=>'singleselect',
+        'default'=>'',
+        'options'=>array(
+            ''=>gT("Default"),
+            1=>'8%',
+            2=>'17%',
+            3=>'25%',
+            4=>'33%',
+            5=>'41%',
+            6=>'50%',
+            7=>'58%',
+            8=>'67%',
+            9=>'75%',
+            10=>'83%',
+            11=>'92%',
+            12=>'100%'
+        ),
+        "help"=>gT('Relative width of checkbox wrapper element'),
+        "caption"=>gT('Choice column width'));
 
         self::$attributes["use_dropdown"]=array(
         "types"=>"1FO",

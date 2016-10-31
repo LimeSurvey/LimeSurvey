@@ -2375,11 +2375,11 @@ function do_multiplechoice_withcomments($ia)
     {
         $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator                 = $sSeparator['separator'];
-        $oth_checkconditionFunction = "fixnum_checkconditions";
+        $otherNumber                  = 1;
     }
     else
     {
-        $oth_checkconditionFunction = "checkconditions";
+        $otherNumber                  = 0;
     }
 
     if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
@@ -2417,6 +2417,37 @@ function do_multiplechoice_withcomments($ia)
     else
     {
         $label_width = 0;
+    }
+
+    /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
+    $attributeInputContainerWidth=intval(trim($aQuestionAttributes['text_input_columns']));
+    if($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12){
+        $attributeInputContainerWidth=null;
+    }
+    $attributeLabelWidth=intval(trim($aQuestionAttributes['choice_input_columns']));
+    if($attributeLabelWidth < 1 || $attributeLabelWidth > 12){/* old system or imported */
+        $attributeLabelWidth=null;
+    }
+    if(!$attributeInputContainerWidth && !$attributeLabelWidth){
+        $sInputContainerWidth=8;
+        $sLabelWidth=4;
+        $defaultWidth=true;
+    }else{
+        if($attributeInputContainerWidth){
+            $sInputContainerWidth=$attributeInputContainerWidth;
+        }elseif($attributeLabelWidth==12){
+            $sInputContainerWidth=12;
+        }else{
+            $sInputContainerWidth=12-$attributeLabelWidth;
+        }
+        if($attributeLabelWidth){
+            $sLabelWidth=$attributeLabelWidth;
+        }elseif($attributeInputContainerWidth==12){
+            $sLabelWidth=12;
+        }else{
+            $sLabelWidth=12-$attributeInputContainerWidth;
+        }
+        $defaultWidth=false;
     }
 
     // Size of elements depends on longest text item
@@ -2472,8 +2503,7 @@ function do_multiplechoice_withcomments($ia)
             'id'                            => 'answer'.$myfname,
             'value'                         => 'Y', // TODO : check if it should be the same than javavalue
             'classes'                       => '',
-            'checkconditionFunction'        => $checkconditionFunction.'(this.value, this.name, this.type)',
-            'checkconditionFunctionComment' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'otherNumber'                   => $otherNumber,
             'labeltext'                     => $ansrow['question'],
             'javainput'                     => true,
             'javaname'                      => 'java'.$myfname,
@@ -2483,6 +2513,8 @@ function do_multiplechoice_withcomments($ia)
             'commentLabelText'              => gT('Make a comment on your choice here:'),
             'inputCommentName'              => $myfname2,
             'inputCOmmentValue'             => (isset( $inputCOmmentValue))?$inputCOmmentValue :'',
+            'sInputContainerWidth'          => $sInputContainerWidth,
+            'sLabelWidth'                   => $sLabelWidth,
         ), true);
 
     }
@@ -2524,8 +2556,7 @@ function do_multiplechoice_withcomments($ia)
             'id'                            => 'answer'.$myfname,
             'value'                         => $value, // TODO : check if it should be the same than javavalue
             'classes'                       => '',
-            'checkconditionFunction'        => $oth_checkconditionFunction.'(this.value, this.name, this.type)',
-            'checkconditionFunctionComment' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'otherNumber'                   => $otherNumber,
             'labeltext'                     => $othertext,
             'inputCommentId'                => 'answer'.$myfname2,
             'commentLabelText'              => gT('Make a comment on your choice here:'),
@@ -2535,6 +2566,8 @@ function do_multiplechoice_withcomments($ia)
             'javainput'                     => false,
             'javaname'                      => '',
             'javavalue'                     => '',
+            'sInputContainerWidth'          => $sInputContainerWidth,
+            'sLabelWidth'                   => $sLabelWidth
         ), true);
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
@@ -2551,11 +2584,7 @@ function do_multiplechoice_withcomments($ia)
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js");
-        $answer .= "<script type='text/javascript'>\n"
-        . "  /*<![CDATA[*/\n"
-        ." doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n"
-        ." /*]]>*/\n"
-        ."</script>\n";
+        Yii::app()->getClientScript()->registerScript("doMultipleChoiceWithComments{$ia[0]}","doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');",CClientScript::POS_END);
     }
 
     return array($answer, $inputnames);
@@ -2756,8 +2785,37 @@ function do_multipleshorttext($ia)
         $inputsize=null;
     }
 
-    $sInputContainerWidth = (trim($aQuestionAttributes['text_input_columns'])!='')?$aQuestionAttributes['text_input_columns']:'6';
-    $sLabelWidth          = (trim($aQuestionAttributes['label_input_columns'])!='')?$aQuestionAttributes['label_input_columns']:'6';
+    /* Find the col-sm width : if non is set : default, if one is set, set another one to be 12, if two is set : no change*/
+    /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
+    $attributeInputContainerWidth=intval(trim($aQuestionAttributes['text_input_columns']));
+    if($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12){
+        $attributeInputContainerWidth=null;
+    }
+    $attributeLabelWidth=intval(trim($aQuestionAttributes['label_input_columns']));
+    if($attributeLabelWidth < 1 || $attributeLabelWidth > 12){/* old system or imported */
+        $attributeLabelWidth=null;
+    }
+    if(!$attributeInputContainerWidth && !$attributeLabelWidth){
+        $sInputContainerWidth=8;
+        $sLabelWidth=4;
+        $defaultWidth=true;
+    }else{
+        if($attributeInputContainerWidth){
+            $sInputContainerWidth=$attributeInputContainerWidth;
+        }elseif($attributeLabelWidth==12){
+            $sInputContainerWidth=12;
+        }else{
+            $sInputContainerWidth=12-$attributeLabelWidth;
+        }
+        if($attributeLabelWidth){
+            $sLabelWidth=$attributeLabelWidth;
+        }elseif($attributeInputContainerWidth==12){
+            $sLabelWidth=12;
+        }else{
+            $sLabelWidth=12-$attributeInputContainerWidth;
+        }
+        $defaultWidth=false;
+    }
 
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
     {
@@ -2937,24 +2995,38 @@ function do_multiplenumeric($ia)
 
     $kpclass            = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $numbersonly_slider = ''; // DEPRECATED
-    if (trim($aQuestionAttributes['text_input_width'])!='')
-    {
-        $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $sInputContainerWidth=$col;
+
+    /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
+    $attributeInputContainerWidth=intval(trim($aQuestionAttributes['text_input_width']));
+    if($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12){
+        $attributeInputContainerWidth=null;
     }
-    else
-    {
-        $sInputContainerWidth= 6;
+    $attributeLabelWidth=intval(trim($aQuestionAttributes['label_input_columns']));
+    if($attributeLabelWidth < 1 || $attributeLabelWidth > 12){/* old system or imported */
+        $attributeLabelWidth=null;
     }
-    if (trim($aQuestionAttributes['label_input_columns'])!=''){
-        $sLabelWidth=intval($aQuestionAttributes['label_input_columns']);
+    if(!$attributeInputContainerWidth && !$attributeLabelWidth){
+        $sInputContainerWidth=8;
+        $sLabelWidth=4;
+        $defaultWidth=true;
     }else{
-        if($sInputContainerWidth<12){
-            $sLabelWidth=12-$sInputContainerWidth;
+        if($attributeInputContainerWidth){
+            $sInputContainerWidth=$attributeInputContainerWidth;
+        }elseif($attributeLabelWidth==12){
+            $sInputContainerWidth=12;
         }else{
-            $sLabelWidth=12;
+            $sInputContainerWidth=12-$attributeLabelWidth;
         }
+        if($attributeLabelWidth){
+            $sLabelWidth=$attributeLabelWidth;
+        }elseif($attributeInputContainerWidth==12){
+            $sLabelWidth=12;
+        }else{
+            $sLabelWidth=12-$attributeInputContainerWidth;
+        }
+        $defaultWidth=false;
     }
+
     $prefixclass = "numeric";
 
     if ($aQuestionAttributes['slider_layout']==1)
@@ -3064,13 +3136,7 @@ function do_multiplenumeric($ia)
             }
 
             if($slider_layout){
-                $fixedInputContainerWidth=$sInputContainerWidth;
-                $fixedLabelWidth=$sLabelWidth;
                 $sliderWidth = 12;
-                /* actually slider reset is in answer part : good idea or not ? */
-                //~ if($slider_reset){
-                    //~ $sliderWidth-=3;
-                //~ }
                 if($slider_separator != '')
                 {
                     $aAnswer     = explode($slider_separator,$ansrow['question']);
@@ -3081,23 +3147,11 @@ function do_multiplenumeric($ia)
                     $sliders     = true;
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if(!empty($sliderleft)){
-                        $fixedLabelWidth-=2;
-                        $fixedInputContainerWidth+=2;
                         $sliderWidth-=2;
                     }
                     if(!empty($sliderright)){
-                        $fixedLabelWidth-=2;
-                        $fixedInputContainerWidth+=2;
                         $sliderWidth-=2;
                     }
-                    if($fixedLabelWidth<=0){
-                        $fixedLabelWidth=12;
-                    }
-                    if($fixedInputContainerWidth>12){
-                        $fixedLabelWidth=12;
-                        $fixedInputContainerWidth=12;
-                    }
-
                     $sliders   = true;// What is the usage ?
                 }else{
                     $theanswer = $ansrow['question'];
@@ -3236,8 +3290,8 @@ function do_multiplenumeric($ia)
                     'sliderright'            => $sliderright,
                     'prefix'                 => $prefix,
                     'suffix'                 => $suffix,
-                    'sInputContainerWidth'   => $fixedInputContainerWidth,
-                    'sLabelWidth'            => $fixedLabelWidth,
+                    'sInputContainerWidth'   => $sInputContainerWidth,
+                    'sLabelWidth'            => $sLabelWidth,
                     'sliderWidth'            => $sliderWidth,
                     'inputsize'              => $inputsize,
                     'myfname'                => $myfname,
@@ -3487,13 +3541,15 @@ function do_shortfreetext($ia)
         $maxlength  = "";
     }
 
-    if (trim($aQuestionAttributes['text_input_width'])!='')
+    if (trim($aQuestionAttributes['text_input_width'])!='' && intval(trim($aQuestionAttributes['location_mapservice']))==0)
     {
-        $col         = intval(($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12);
+        $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
+        $extraclass .= " col-sm-".trim($col);
+        $withColumn =true;
     }
     else
     {
-        $col = 12; /* Add a inline iof no col is set : see https://bugs.limesurvey.org/view.php?id=11734 too */
+        $withColumn =false;
     }
     if(ctype_digit(trim($aQuestionAttributes['input_size']))){
         $inputsize=trim($aQuestionAttributes['input_size']);
@@ -3563,7 +3619,7 @@ function do_shortfreetext($ia)
             'prefix'                 => $prefix,
             'suffix'                 => $suffix,
             'inputsize'              => $inputsize,
-            'col'                    => $col
+            'withColumn'             => $withColumn
         ), true);
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==1)
@@ -3647,7 +3703,7 @@ function do_shortfreetext($ia)
             'questionHelp'           => $questionHelp,
             'question_text_help'     => (isset( $question_text ))? $question_text['help']:'',
             'inputsize'              => $inputsize,
-            'col'                    => $col
+            'withColumn'             => $withColumn
         ), true);
 
     }
@@ -3718,7 +3774,7 @@ function do_shortfreetext($ia)
             'currentLat'=>$currentLatLong[0],
             'currentLong'=>$currentLatLong[1],
             'inputsize'              => $inputsize,
-            'col'                    => $col
+            'withColumn'             => $withColumn
         );
         $answer = doRender('/survey/questions/shortfreetext/location_mapservice/item_100', $itemDatas, true);
     }
@@ -3743,7 +3799,7 @@ function do_shortfreetext($ia)
             'dispVal'=>$dispVal,
             'maxlength'=>$maxlength,
             'inputsize'              => $inputsize,
-            'col'                    => $col
+            'withColumn'             => $withColumn
         );
         $answer = doRender('/survey/questions/shortfreetext/text/item', $itemDatas, true);
 
@@ -4067,11 +4123,10 @@ function do_array_5point($ia)
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth = $aQuestionAttributes['answer_width'];
-        $coreClass .= " answerwidth-".trim($aQuestionAttributes['answer_width']);
     }
     else
     {
-        $answerwidth = 25;
+        $answerwidth = 33;
     }
     $cellwidth  = 5; // number of columns
 
@@ -4274,11 +4329,10 @@ function do_array_10point($ia)
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth=$aQuestionAttributes['answer_width'];
-        $coreClass .= " answerwidth-".trim($aQuestionAttributes['answer_width']);
     }
     else
     {
-        $answerwidth = 20;
+        $answerwidth = 33;
     }
     $cellwidth  = 10; // number of columns
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
@@ -4422,7 +4476,7 @@ function do_array_yesnouncertain($ia)
     $qrow                    = $qresult->readAll();
     $other                   = isset($qrow['other']) ? $qrow['other'] : '';
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+    $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
     $cellwidth               = 3; // number of columns
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
@@ -4533,7 +4587,7 @@ function do_array_increasesamedecrease($ia)
     $qquery                  = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult                 = dbExecuteAssoc($qquery);   //Checked
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+    $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
     $cellwidth               = 3; // number of columns
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
@@ -4677,7 +4731,7 @@ function do_array($ia)
     // No-dropdown layout
     if ($useDropdownLayout === false && count($lresult) > 0)
     {
-        $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+        $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
         $columnswidth            = 100-$answerwidth;
         $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
@@ -4891,7 +4945,7 @@ function do_array($ia)
     // Dropdown layout
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
-        $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:50;
+        $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
         $columnswidth            = 100-$answerwidth;
         foreach($lresult as $lrow)
         {
@@ -5161,9 +5215,9 @@ function do_array_texts($ia)
         };
     }
 
-    $answerwidth = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+    $answerwidth = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
 
-    $columnswidth = 100-($answerwidth*2);
+    $columnswidth = 100-($answerwidth);
     $lquery       = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult      = Yii::app()->db->createCommand($lquery)->query();
     $labelans     = array();
@@ -5532,18 +5586,13 @@ function do_array_multiflexi($ia)
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth    = $aQuestionAttributes['answer_width'];
-        $useAnswerWidth = true;
     }
     else
     {
-        $answerwidth    = 20;
-
-        // If answerwidth is not given, we want to default to Bootstrap column.
-        // Otherwise bug on phone screen.
-        $useAnswerWidth = false;
+        $answerwidth    = 33;
     }
 
-    $columnswidth   = 100-($answerwidth*2);
+    $columnswidth   = 100-($answerwidth);
     $lquery         = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult        = dbExecuteAssoc($lquery);
     $aQuestions     = $lresult->readAll();
@@ -5558,9 +5607,9 @@ function do_array_multiflexi($ia)
 
     if ($numrows=count($labelans))
     {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
+        //~ if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth  =   $columnswidth/$numrows;
-        $cellwidth  =   sprintf('%02d', $cellwidth);
+
         $sQuery     = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
         $iCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
@@ -6016,7 +6065,7 @@ function do_array_dual($ia)
 
     $leftheader     = (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')?$leftheader= $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]:'';
     $rightheader    = (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')?$aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]:'';
-    $answerwidth    = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+    $answerwidth    = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
 
     // Find if we have rigth and center text
     /* All of this part seem broken actually : we don't send it to view and don't explode it */
@@ -6398,7 +6447,7 @@ function do_array_dual($ia)
 /**
  * Depending on prefix and suffix, the center col will vary
  * on sm screens (xs is always 12).
- *
+ * @deprecated or @todo : fix it
  * @param string $prefix
  * @param string $suffix
  * @return int

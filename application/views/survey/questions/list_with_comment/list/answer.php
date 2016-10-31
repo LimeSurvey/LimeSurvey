@@ -40,7 +40,6 @@
                 name="<?php echo $name; ?>"
                 id="<?php echo $id; ?>"
                 rows="<?php echo $tarows;?>"
-                cols="30"
                 ><?php if($has_comment_saved):?><?php echo $comment_saved;?><?php endif;?></textarea>
     </div>
 </div>

@@ -47,6 +47,9 @@ $(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:n
         //~ ExprMgr_process_relevance_and_tailoring("click",$(this).attr("name"),"radio");
     //~ }
 });
+$(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
+});
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty
