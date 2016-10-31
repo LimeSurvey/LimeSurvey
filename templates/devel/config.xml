@@ -3,12 +3,12 @@
     <!-- Those metadatas will be display in the template configuration page. They are not used for now. -->
     <metadatas>
         <name>Base</name>
-        <creationDate>2016-08-07</creationDate>
+        <creationDate>2016-10-31</creationDate>
         <author>Denis Chenu</author>
         <authorEmail>denis@sondages.pro</authorEmail>
         <license>GNU General Public License version 3 or later and MIT</license>
         <version>0.2</version>
-        <description>Testing template for 3.0 LS version, must be removed after.</description>
+        <description>A minimal staring point for your own template.</description>
         <!--
              The last_update field must be updated before each release,
              to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
