@@ -31,7 +31,7 @@
 
             <!-- Input -->
             <input
-                class="form-control text <?php echo $kpclass;?>"
+                class="form-control <?php echo $kpclass;?>"
                 type="text"
                 name="<?php echo $name; ?>"
                 id="answer<?php echo $name;?>"

@@ -37,8 +37,9 @@
                 name="<?php echo $myfname; ?>"
                 id="answer<?php echo $myfname; ?>"
                 value="<?php echo $dispVal; ?>"
-                <?php echo $maxlength; ?>
-                <?php if($numbersonly): echo "data-number='{$numbersonly}'"; endif; ?>
+                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+                <?php echo ($numbersonly)? "data-number='{$numbersonly}'":""; ?>
                 />
             <?php if ($suffix != ''): ?>
                 <div class="ls-input-group-extra suffix-text suffix text-right">

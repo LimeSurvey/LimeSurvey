@@ -675,7 +675,7 @@ class questionHelper
         );
 
         self::$attributes["input_size"]=array(
-            "types"=>"S",
+            "types"=>"STUQNMK:;",
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',
@@ -961,7 +961,7 @@ class questionHelper
         "caption"=>gT('Answer suffix'));
 
         self::$attributes["text_input_width"]=array(
-        "types"=>"KNSTU;",
+        "types"=>"KNSTU",
         'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',

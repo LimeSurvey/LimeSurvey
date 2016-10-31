@@ -33,6 +33,13 @@ li.radio-item,li.checkbox-item{display:block}
 /* don't take place in wrapper */
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {position:absolute;}
 
+/* on little screen center text-right and text-left : package issue or template ?*/
+
+@media only screen and (max-width: 760px){
+  .ls-answers .col-xs-12.text-right{text-align:center}
+  .ls-answers .col-xs-12.text-left{text-align:center}
+}
+
 /**
  * Table .question feature
  */

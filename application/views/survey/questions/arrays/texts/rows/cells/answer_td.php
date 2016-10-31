@@ -22,8 +22,8 @@
         name="<?php echo $myfname2; ?>"
         id="answer<?php echo $myfname2; ?>"
         class="form-control <?php echo $kpclass; ?>"
-        <?php echo $maxlength; ?>
-        size="<?php echo $inputsize; ?>"
+        <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+        <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
         value="<?php echo $value;?>"
         data-number='<?php echo $isNumber; ?>'
         data-integer='<?php echo $isInteger; ?>'

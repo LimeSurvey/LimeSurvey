@@ -2742,13 +2742,18 @@ function do_multipleshorttext($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars = intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength     = "maxlength='{$maximum_chars}' ";
-        $extraclass   .= " maxchars maxchars-".$maximum_chars;
+        $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));
+        $extraclass   .= " ls-input-maxchars";
     }
     else
     {
         $maxlength = "";
+    }
+    if(ctype_digit(trim($aQuestionAttributes['input_size']))){
+        $inputsize=trim($aQuestionAttributes['input_size']);
+        $extraclass    .=" ls-input-sized";
+    }else{
+        $inputsize=null;
     }
 
     $sInputContainerWidth = (trim($aQuestionAttributes['text_input_columns'])!='')?$aQuestionAttributes['text_input_columns']:'6';
@@ -2831,6 +2836,7 @@ function do_multipleshorttext($ia)
                     'numbersonly'            => $numbersonly,
                     'sInputContainerWidth'   => $sInputContainerWidth,
                     'sLabelWidth'            => $sLabelWidth,
+                    'inputsize'              => $inputsize,
                     'extraclass'             => $extraclass,
                     'sDisplayStyle'          => $sDisplayStyle,
                     'prefix'                 => $prefix,
@@ -2838,7 +2844,6 @@ function do_multipleshorttext($ia)
                     'question'               => $ansrow['question'],
                     'prefix'                 => $prefix,
                     'kpclass'                => $kpclass,
-                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
                 ), true);
@@ -2850,6 +2855,7 @@ function do_multipleshorttext($ia)
                     'numbersonly'            => $numbersonly,
                     'sInputContainerWidth'   => $sInputContainerWidth,
                     'sLabelWidth'            => $sLabelWidth,
+                    'inputsize'              => $inputsize,
                     'extraclass'             => $extraclass,
                     'sDisplayStyle'          => $sDisplayStyle,
                     'prefix'                 => $prefix,
@@ -2857,7 +2863,6 @@ function do_multipleshorttext($ia)
                     'question'               => $ansrow['question'],
                     'prefix'                 => $prefix,
                     'kpclass'                => $kpclass,
-                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
                 ), true);
@@ -2896,13 +2901,18 @@ function do_multiplenumeric($ia)
     $coreClass              ="ls-answers subquestion-list questions-list ";
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
-        $maximum_chars = intval(trim($aQuestionAttributes['maximum_chars'])); // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maxlength     = "maxlength='{$maximum_chars}' ";
-        $extraclass   .= " maxchars maxchars-".$maximum_chars;
+        $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));/* must be limited to 32 : -(10 number)dot(20 numbers) ! DECIMAL sql */
+        $extraclass   .= " ls-input-maxchars";
     }
     else
     {
-        $maxlength = " maxlength='25' ";
+        $maxlength = 20;
+    }
+    if(ctype_digit(trim($aQuestionAttributes['input_size']))){
+        $inputsize=trim($aQuestionAttributes['input_size']);
+        $extraclass    .=" ls-input-sized";
+    }else{
+        $inputsize=null;
     }
 
     if ($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]!='')
@@ -3203,6 +3213,7 @@ function do_multiplenumeric($ia)
                     'suffix'                 => $suffix,
                     'sInputContainerWidth'   => $sInputContainerWidth,
                     'sLabelWidth'            => $sLabelWidth,
+                    'inputsize'              => $inputsize,
                     'myfname'                => $myfname,
                     'dispVal'                => $sValue,
                     'maxlength'              => $maxlength,
@@ -3228,6 +3239,7 @@ function do_multiplenumeric($ia)
                     'sInputContainerWidth'   => $fixedInputContainerWidth,
                     'sLabelWidth'            => $fixedLabelWidth,
                     'sliderWidth'            => $sliderWidth,
+                    'inputsize'              => $inputsize,
                     'myfname'                => $myfname,
                     'dispVal'                => $sValue,
                     'maxlength'              => $maxlength,
@@ -3355,13 +3367,12 @@ function do_numerical($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0 && intval(trim($aQuestionAttributes['maximum_chars']))<20)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars= intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength= " maxlength='{$maximum_chars}' ";
-        $extraclass .=" maxchars maxchars-".$maximum_chars;
+        $maxlength= intval(trim($aQuestionAttributes['maximum_chars']));
+        $extraclass .=" ls-input-maxchars";
     }
     else
     {
-        $maxlength= " maxlength='20' ";
+        $maxlength= 20;
     }
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
@@ -3373,7 +3384,12 @@ function do_numerical($ia)
     {
         $withColumn =false;
     }
-    $inputsize=10; /* @todo : move it to attribute ? see https://bugs.limesurvey.org/view.php?id=11734 */
+    if(ctype_digit(trim($aQuestionAttributes['input_size']))){
+        $inputsize=trim($aQuestionAttributes['input_size']);
+        $extraclass    .=" ls-input-sized";
+    }else{
+        $inputsize=null;
+    }
     if (trim($aQuestionAttributes['num_value_int_only'])==1)
     {
         $acomma           = "";
@@ -3464,7 +3480,7 @@ function do_shortfreetext($ia)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         $maxlength      = intval(trim($aQuestionAttributes['maximum_chars']));
-        $extraclass    .=" maxchars maxchars-".$maxlength;
+        $extraclass    .=" ls-input-maxchars";
     }
     else
     {
@@ -3481,6 +3497,7 @@ function do_shortfreetext($ia)
     }
     if(ctype_digit(trim($aQuestionAttributes['input_size']))){
         $inputsize=trim($aQuestionAttributes['input_size']);
+        $extraclass    .=" ls-input-sized";
     }else{
         $inputsize=null;
     }
@@ -3784,9 +3801,8 @@ function do_longfreetext($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars = intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength     = "maxlength='{$maximum_chars}' ";
-        $extraclass   .= " maxchars maxchars-".$maximum_chars;
+        $maxlength = intval(trim($aQuestionAttributes['maximum_chars']));
+        $extraclass   .= " ls-input-maxchars";
     }
     else
     {
@@ -3812,7 +3828,12 @@ function do_longfreetext($ia)
     {
         $withColumn = false;
     }
-    $tiwidth=40;
+    if(ctype_digit(trim($aQuestionAttributes['input_size']))){
+        $inputsize=trim($aQuestionAttributes['input_size']);
+        $extraclass    .=" ls-input-sized";
+    }else{
+        $inputsize=null;
+    }
 
     $dispVal = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]):'';
 
@@ -3825,7 +3846,7 @@ function do_longfreetext($ia)
         'drows'                  => $drows,
         'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
         'dispVal'                => $dispVal,
-        'tiwidth'                => $tiwidth,
+        'inputsize'              => $inputsize,
         'maxlength'              => $maxlength,
     ), true);
 
@@ -3864,9 +3885,8 @@ function do_hugefreetext($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars= intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength= "maxlength='{$maximum_chars}' ";
-        $extraclass .=" maxchars maxchars-".$maximum_chars;
+        $maxlength= intval(trim($aQuestionAttributes['maximum_chars']));
+        $extraclass .=" ls-input-maxchars";
     }
     else
     {
@@ -3891,7 +3911,12 @@ function do_hugefreetext($ia)
     {
         $withColumn = false;
     }
-    $tiwidth=70;
+    if(ctype_digit(trim($aQuestionAttributes['input_size']))){
+        $inputsize=trim($aQuestionAttributes['input_size']);
+        $extraclass    .=" ls-input-sized";
+    }else{
+        $inputsize=null;
+    }
 
     $dispVal="";
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
@@ -3908,7 +3933,7 @@ function do_hugefreetext($ia)
         'drows'=>$drows,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'dispVal'=>$dispVal,
-        'tiwidth'=>$tiwidth,
+        'inputsize'=>$inputsize,
         'maxlength'=>$maxlength,
     );
     $answer = doRender('/survey/questions/longfreetext/answer', $itemDatas, true);
@@ -4999,8 +5024,8 @@ function do_array_texts($ia)
     $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
-    $coreClass                  = "ls-answers subquestion-list questions-list";
-    $coreClass                 .= " text-array";
+    $coreClass                  = "ls-answers subquestion-list questions-list text-array";
+    $extraclass                 = "";
     $coreRowClass               = "subquestion-list questions-list";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header.");
 
@@ -5045,15 +5070,19 @@ function do_array_texts($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars   = intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength       = "maxlength='{$maximum_chars}' ";
-        $coreClass     .= " maxchars maxchars-".$maximum_chars;
+        $maxlength   = intval(trim($aQuestionAttributes['maximum_chars']));
+        $extraclass     .= " ls-input-maxchars";
     }
     else
     {
         $maxlength  = "";
     }
-
+    if(ctype_digit(trim($aQuestionAttributes['input_size']))){
+        $inputsize=trim($aQuestionAttributes['input_size']);
+        $extraclass    .=" ls-input-sized";
+    }else{
+        $inputsize=null;
+    }
     if ($aQuestionAttributes['numbers_only']==1)
     {
         $checkconditionFunction = "fixnum_checkconditions";
@@ -5338,6 +5367,7 @@ function do_array_texts($ia)
                     'showGrandTotal'            => $showGrandTotal,
                     'q_table_id_HTML'           => $q_table_id_HTML,
                     'coreClass'                 => $coreClass,
+                    'extraclass'                => $extraclass,
                     'totals_class'              => $totals_class,
                     'showtotals'                => $showtotals,
                     'row_head'                  => $row_head,
@@ -5474,13 +5504,18 @@ function do_array_multiflexi($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars   = intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength       = "maxlength='{$maximum_chars}' ";
-        $extraclass     .=" maxchars maxchars-".$maximum_chars; // @todo : move to data or fix class
+        $maxlength   = intval(trim($aQuestionAttributes['maximum_chars']));
+        $extraclass     .=" ls-input-maxchars"; // @todo : move to data or fix class
     }
     else
     {
         $maxlength  = "";
+    }
+    if(ctype_digit(trim($aQuestionAttributes['input_size']))){
+        $inputsize=trim($aQuestionAttributes['input_size']);
+        $extraclass    .=" ls-input-sized";
+    }else{
+        $inputsize=null;
     }
 
     if ($thissurvey['nokeyboard']=='Y')
@@ -5683,6 +5718,7 @@ function do_array_multiflexi($ia)
                                         'sSeparator'                => $sSeparator,
                                         'kpclass'                   => $kpclass,
                                         'maxlength'                 => $maxlength,
+                                        'inputsize'                 =>$inputsize
                                     ),  true);
 
 
@@ -5749,6 +5785,7 @@ function do_array_multiflexi($ia)
         $answer = doRender('/survey/questions/arrays/multiflexi/answer', array(
                             'answertypeclass'   => $answertypeclass,
                             'coreClass'         => $coreClass,
+                            'extraclass'        => $extraclass,
                             'answerwidth'       => $answerwidth,
                             'labelans'          => $labelans,
                             'cellwidth'         => $cellwidth,

@@ -25,13 +25,12 @@
     </label>
 
     <textarea
-        class="form-control textarea <?php echo $kpclass; ?>"
+        class="form-control <?php echo $kpclass; ?>"
         name="<?php echo $name; ?>"
         id="answer<?php echo $name; ?>"
         rows="<?php echo $drows; ?>"
-        cols="<?php echo $tiwidth; ?>"
-        <?php echo $maxlength; ?>
-        onkeyup="<?php echo $checkconditionFunction;?>"
+        <?php echo ($inputsize ? 'cols="'.$inputsize.'"': '') ; ?>
+        <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
     ><?php echo $dispVal;?></textarea>
 <?php if($withColumn): ?>
     </div>

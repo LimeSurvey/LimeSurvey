@@ -77,9 +77,10 @@
   line-height: 1;
   border: 1px hidden transparent;
 }
+/* size or cols => set to with initial but max-width don't work with table-cell .... */
 .answer-item textarea[cols]{width:initial;max-width:100%}
 .answer-item input[type='text'][size]{width:initial;max-width:100%}
-.answer-item textarea[cols]  + .ls-input-group-extra,.answer-item input[type='text'][size] + .ls-input-group-extra{width:initial}
+.ls-input-sized .ls-input-group-extra{width:initial}
 
 /* in inline form : width need to be auto */
 .form-inline .ls-input-group{display: inline-table;vertical-align: middle;width:auto}

@@ -58,8 +58,8 @@
                 class="multiflexitext form-control <?php echo $kpclass;?> text-right"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
-                <?php echo $maxlength; ?>
-                size=5
+                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
                 value="<?php echo $value; ?>"
                 data-number="true"
                 />

@@ -257,4 +257,5 @@
 .slider-list .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2.5em;}
 .slider-list .ls-input-group.col-sm-12{margin-top:0.5em;margin-bottom: 2.5em;}
 /* reset button */
-.btn-slider-reset{text-align:center;margin-top:-2em;}
+.ls-input-group-reset{position:relative}
+.btn-slider-reset{text-align:center;top:-2em;position:relative}

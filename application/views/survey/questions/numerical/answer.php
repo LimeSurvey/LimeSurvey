@@ -28,7 +28,7 @@
     </label>
 
     <?php if ($prefix !== '' || $suffix !== ''): ?>
-        <div class="input-group">
+        <div class="ls-input-group">
     <?php endif; ?>
     <!-- Prefix -->
     <?php if ($prefix !== ''): ?>
@@ -38,12 +38,12 @@
     <input
         class='form-control <?php echo $answertypeclass; ?>'
         type="text"  <?php // Want to use HTML5 number type? Think again: Doesn't work as we want with locale: http://stackoverflow.com/questions/13412204/localization-of-input-type-number | Shnoulle 20161005 : but type=number is localized by default :) ?>
-        size="<?php echo $inputsize;?>"
         name="<?php echo $id;?>"
         title="<?php echo eT('Only numbers may be entered in this field.');?>"
         id="answer<?php echo $id;?>"
         value="<?php echo $fValue;?>"
-        <?php echo $maxlength; ?>
+        <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+        <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
         data-number='1'
         data-integer='<?php echo $integeronly; ?>'
         />

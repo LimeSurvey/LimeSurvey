@@ -25,7 +25,7 @@
 <!-- Multi Text -->
 
 <!-- answer -->
-<table <?php echo $q_table_id_HTML;?> class="<?php echo $coreClass;?> table table-bordered table-hover <?php echo $totals_class;?>">
+<table <?php echo $q_table_id_HTML;?> class="<?php echo $coreClass;?> <?php echo $extraclass;?> table table-bordered table-hover <?php echo $totals_class;?>">
     <colgroup class="col-responses">
 
         <!-- Column for answer label -->

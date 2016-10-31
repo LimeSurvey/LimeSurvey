@@ -39,10 +39,11 @@
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname; ?>"
             value="<?php echo $dispVal;?>"
-            onkeyup="<?php echo $checkconditionFunction; ?>"
             title="<?php eT('Only numbers may be entered in this field.'); ?>"
-            <?php echo $maxlength; ?>
-            data-number="true"
+            <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+            <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+            data-number="1"
+            data-integer="<?php echo $integeronly;?>"
             />
         <?php if ($suffix != ''): ?>
             <div class="ls-input-group-extra suffix-text suffix text-left">

@@ -14,7 +14,7 @@
  */
 ?>
 <!-- answer -->
-<table class="<?php echo $coreClass; ?> table table-bordered table-hover">
+<table class="<?php echo $coreClass; ?> <?php echo $extraclass; ?>table table-bordered table-hover">
 
     <colgroup class="col-responses">
         <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
@@ -30,18 +30,14 @@
 
     <thead aria-hidden="true">
         <tr class="ls-heading">
-            <td>&nbsp;</td>
+            <td></td>
 
             <?php foreach ($labelans as $ld): ?>
-                <th>
-                    <?php echo $ld;?>
-                </th>
+                <th><?php echo $ld;?></th>
             <?php endforeach;?>
 
             <?php if ($right_exists):?>
-                <th>
-                    &nbsp;
-                </th>
+                <th></th>
             <?php endif;?>
         </tr>
     </thead>
