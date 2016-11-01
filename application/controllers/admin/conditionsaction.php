@@ -2013,7 +2013,8 @@ class conditionsaction extends Survey_Common_Action {
             }
             elseif (is_array($request->getPost('EDITcanswers'))) { // was a predefined answers post
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
-                $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$request->getPost('EDITcanswers')[0]."');\n";
+                $EDITcanswers = $request->getPost('EDITcanswers');
+                $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$EDITcanswers[0]."');\n";
             }
 
             if ($request->getPost('csrctoken') != '') {

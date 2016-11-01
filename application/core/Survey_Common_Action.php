@@ -256,6 +256,10 @@ class Survey_Common_Action extends CAction
         {
             $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
 
+            // Needed to evaluate EM expressions in question summary
+            // See bug #11845
+            LimeExpressionManager::StartProcessingPage(false,true);
+
             $this->_titlebar($aData);
 
             //// Each view will call the correct bar as a subview.
