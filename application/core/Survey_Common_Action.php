@@ -258,7 +258,6 @@ class Survey_Common_Action extends CAction
 
             // Needed to evaluate EM expressions in question summary
             // See bug #11845
-            LimeExpressionManager::SetSurveyId($aData['surveyid']);
             LimeExpressionManager::StartProcessingPage(false,true);
 
             $this->_titlebar($aData);
