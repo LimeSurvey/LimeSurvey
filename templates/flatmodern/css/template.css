@@ -224,7 +224,9 @@ only screen and (max-width: 760px),
 html body .navbar.navbar-default.navbar-fixed-top {
     z-index: 2000;
 }
-
+.file-upload-modal,.modal{
+    z-index: 2001;
+}
 .gender-button .gender-icon {
     font-size: 2em;
 }
