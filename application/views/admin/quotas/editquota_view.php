@@ -24,9 +24,10 @@
                     <div class='col-sm-9'>
                         <select name="quota_action" id="quota_action" class="form-control">
                             <option value ="1" <?php if($quotainfo['action'] == 1) echo "selected='selected'"; ?>><?php eT("Terminate survey");?></option>
-                            <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Terminate survey with warning");?></option>
+                            <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Allow user to update last answers before submit and terminate survey.");?></option>
                         </select>
                     </div>
+                    <div class="col-sm-9 col-sm-offset-3 help-block"><?php eT("To allow update : one of the question tested must be viewed in the last page before quota.The end url action is done only after confirm survey.");?></div>
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='autoload_url'><?php eT("Autoload URL:");?></label>

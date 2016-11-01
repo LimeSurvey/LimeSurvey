@@ -2061,15 +2061,16 @@ function checkCompletedQuota($surveyid,$return=false)
         return;
     }
     static $aMatchedQuotas; // EM call 2 times quotas with 3 lines of php code, then use static.
+    static $aPostedQuotaFields=array(); // Keep the posted field for the quota submit
     if(!$aMatchedQuotas)
     {
         $aMatchedQuotas=array();
-        $quota_info=$aQuotasInfo = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        $aQuotasInfo = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
         // $aQuotasInfo have an 'active' key, we don't use it ?
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
         // OK, we have some quota, then find if this $_SESSION have some set
-        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
+        //$aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
         foreach ($aQuotasInfo as $aQuotaInfo)
         {
             if(!$aQuotaInfo['active'])
@@ -2099,8 +2100,10 @@ function checkCompletedQuota($surveyid,$return=false)
                 {
                     $iMatchedAnswers++;
                 }
-                if(in_array($sFieldName,$aPostedFields))// Need only one posted value
+                if(!is_null(App()->request->getPost($sFieldName))){// Need only one posted value
                     $bPostedField=true;
+                    $aPostedQuotaFields[$sFieldName]=App()->getRequest()->getPost($sFieldName);
+                }
             }
             // Condition to count quota : Answers are the same in quota + an answer is submitted at this time (bPostedField) OR all questions is hidden (bAllHidden)
             $bAllHidden=QuestionAttribute::model()->countByAttributes(array('qid'=>$aQuotaQid),'attribute=:attribute',array(':attribute'=>'hidden'))==count($aQuotaQid);
@@ -2160,11 +2163,13 @@ function checkCompletedQuota($surveyid,$return=false)
     $sUrl=$event->get('url',$aMatchedQuota['quotals_url']);
     $sUrlDescription=$event->get('urldescrip',$aMatchedQuota['quotals_urldescrip']);
     $sAction=$event->get('action',$aMatchedQuota['action']);
+    /* Tag if we close or not the survey */
+    $closeSurvey=($sAction=="1" || App()->getRequest()->getPost('move')=='confirmquota');
     $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
-
     // Doing the action and show the page
-    if ($sAction == "1" && $sClientToken)
+    if ($closeSurvey && $sClientToken){
         submittokens(true);
+    }
     // Construct the default message
     $sMessage = templatereplace($sMessage,array(),$aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
     $sUrl = passthruReplace($sUrl, $aSurveyInfo);
@@ -2174,7 +2179,7 @@ function checkCompletedQuota($surveyid,$return=false)
     // Construction of default message inside quotamessage class
     $sHtmlQuotaMessage = "<div class='quotamessage limesurveycore'>\n";
     $sHtmlQuotaMessage.= "\t".$sMessage."\n";
-    if($sUrl)
+    if($sUrl && $closeSurvey)
     {
         $sHtmlQuotaUrl = App()->getController()->renderPartial("/survey/system/url",array(
             'url'=>$sUrl,
@@ -2187,16 +2192,13 @@ function checkCompletedQuota($surveyid,$return=false)
     }
 
     // Add the navigator with Previous button if quota allow modification.
-    if ($sAction == "2")
+    if (!$closeSurvey )
     {
         $sQuotaStep = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
         $sMovePrev = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>$sQuotaStep,'class'=>"ls-move-btn ls-move-previous-btn"),true);
-        /* Not completly tested submit : @todo test it */
-        $sMoveSubmit = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"movesubmit",'class'=>"ls-move-btn ls-move-submit-btn"),true);
-        $sMoveSubmit = "";
+        $sMoveSubmit = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"confirmquota",'class'=>"ls-move-btn ls-move-submit-btn"),true);
         $sNavigator = "$sMovePrev $sMoveSubmit";
 
-        //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
         $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','class'=>'survey-form-container QuotaMessage'));
         $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array(
             'MOVEPREVBUTTON' => $sMovePrev,
@@ -2206,6 +2208,10 @@ function checkCompletedQuota($surveyid,$return=false)
         ),$aDataReplacement);
         $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$surveyid);
         $sHtmlQuotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
+        foreach($aPostedQuotaFields as $field=>$post){
+            $sHtmlQuotaMessage.= CHtml::hiddenField($field,$post);
+        }
+        $sHtmlQuotaMessage.= CHtml::hiddenField('thisstep',$sQuotaStep);
         $sHtmlQuotaMessage.= CHtml::endForm();
     }
 
@@ -2215,10 +2221,9 @@ function checkCompletedQuota($surveyid,$return=false)
 
     // Send page to user and end.
     sendCacheHeaders();
-    if($sAutoloadUrl == 1 && $sUrl != "")
+    if($closeSurvey && $sAutoloadUrl == 1 && $sUrl != "")
     {
-        if ($sAction == "1")
-            killSurveySession($surveyid);
+        killSurveySession($surveyid);
         header("Location: ".$sUrl);
     }
     doHeader();
@@ -2226,8 +2231,9 @@ function checkCompletedQuota($surveyid,$return=false)
     echo templatereplace(file_get_contents($sTemplateViewPath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
     echo templatereplace(file_get_contents($sTemplateViewPath."/endpage.pstpl"),array(),$aDataReplacement);
     doFooter();
-    if ($sAction == "1")
+    if ($closeSurvey){
         killSurveySession($surveyid);
+    }
     Yii::app()->end();
 }
 
@@ -2423,6 +2429,7 @@ function SetSurveyLanguage($surveyid, $sLanguage)
 
 /**
 * getMove get move button clicked
+* @return string
 **/
 function getMove()
 {
@@ -2430,14 +2437,17 @@ function getMove()
     // We can control is save and load are OK : todo fix according to survey settings
     // Maybe allow $aAcceptedMove in Plugin
     $move=Yii::app()->request->getParam('move');
+    /* @deprecated since we use button and not input with different value. */
     foreach($aAcceptedMove as $sAccepteMove)
     {
         if(Yii::app()->request->getParam($sAccepteMove))
             $move=$sAccepteMove;
     }
+    /* Good idea, but used ? */
     if($move=='clearall' && App()->request->getPost('confirm-clearall')!='confirm'){
             $move="clearcancel";
     }
+    /* default move (user don't click on a button, but use enter in a input:text or a select */
     if($move=='default')
     {
         $surveyid=Yii::app()->getConfig('surveyID');

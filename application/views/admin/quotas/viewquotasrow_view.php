@@ -17,7 +17,7 @@
         <?php if ($quotalisting['action'] == 1) {
                 eT("Terminate survey");
             } elseif ($quotalisting['action'] == 2) {
-                eT("Terminate survey with warning");
+                eT("Allow user to update answers before submit.");
         } ?>
     </td>
     <td <?php echo $highlight;?>><?php echo is_null($completed) ? gT("N/A"): $completed ;?></td>
