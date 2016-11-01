@@ -182,6 +182,11 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['prevstep']=$_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
             }
 
+            /* quota submitted */
+            if(isset($move) && $move=='confirmquota'){
+                checkCompletedQuota($surveyid);
+            }
+
             if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
             {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);

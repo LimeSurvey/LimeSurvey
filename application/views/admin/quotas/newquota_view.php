@@ -29,9 +29,10 @@
                     <div class="col-sm-5">
                         <select id="quota_action" name="quota_action" class="form-control">
                             <option value ="1"><?php eT("Terminate survey");?></option>
-                            <option value ="2"><?php eT("Terminate survey with warning");?></option>
+                            <option value ="2"><?php eT("Allow user to update last answers before submit and terminate survey.");?></option>
                         </select>
                     </div>
+                    <div class="col-sm-5 col-sm-offset-2 help-block"><?php eT("To allow update : one of the question tested must be viewed in the last page before quota.The end url action is done only after confirm survey.");?></div>
                 </div>
 
                 <!-- -->
@@ -41,7 +42,7 @@
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'autoload_url',
                             'id'=>'autoload_url',
-                            'value' => 1,
+                            'value' => 0,
                             'onLabel'=>gT('Yes'),
                             'offLabel' => gT('No')));
                         ?>
