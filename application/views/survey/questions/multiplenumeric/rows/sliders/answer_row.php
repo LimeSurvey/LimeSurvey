@@ -33,38 +33,33 @@
         <?php echo $labelText; ?>
     </label>
     <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?> container-fluid">
-        <div class="ls-input-group">
-                <?php if (!empty($sliderleft)): ?>
-                    <div class='col-xs-12 col-sm-2 slider-left text-right'><?php echo $sliderleft;?></div>
-                <?php endif; ?>
-                <div class="slider-container col-xs-12 col-sm-<?php echo $sliderWidth ?>">
-                <?php
-                /* FF show issue + prefix/suffix must be encoded */
-                echo CHtml::textField($myfname,$dispVal,array(
-                    'class'=>'form-control',
-                    'id'=>"answer{$myfname}",
-                    'data-slider-value'=>($dispVal ? $dispVal : ''),
-                    'data-slider-min'=>$slider_min,
-                    'data-slider-max'=>$slider_max,
-                    'data-slider-step'=>$slider_step,
-                    'data-slider-orientation'=>$slider_orientation,
-                    'data-slider-handle'=>$slider_handle,
-                    'data-slider-tooltip'=>'always',
-                    'data-slider-reset'=>$slider_reset,
-                    'data-slider-prefix'=>$prefix,
-                    'data-slider-suffix'=>$suffix,
-                    'data-separator'=>$sSeparator,
-                    'data-number'=>true,
-                    'data-integer'=>$integeronly,
-                ));
-                ?>
-                    <?php if($slider_showminmax): ?>
-                        <div class='pull-left help-block'><?php echo $slider_min; ?></div>
-                        <div class='pull-right help-block'><?php echo $slider_max; ?></div>
-                    <?php endif; ?>
-                </div>
-                <?php if (!empty($sliderright)): ?>
-                    <div class='col-xs-12 col-sm-2 slider-right text-left'><?php echo $sliderright;?></div>
+            <?php if (!empty($sliderleft)): ?>
+                <div class='col-xs-12 col-sm-2 slider-left text-right'><?php echo $sliderleft;?></div>
+            <?php endif; ?>
+            <div class="slider-container ls-input-group col-xs-12 col-sm-<?php echo $sliderWidth ?>">
+            <?php
+            /* FF show issue + prefix/suffix must be encoded */
+            echo CHtml::textField($myfname,$dispVal,array(
+                'class'=>'form-control',
+                'id'=>"answer{$myfname}",
+                'data-slider-value'=>($dispVal ? $dispVal : ''),
+                'data-slider-min'=>$slider_min,
+                'data-slider-max'=>$slider_max,
+                'data-slider-step'=>$slider_step,
+                'data-slider-orientation'=>$slider_orientation,
+                'data-slider-handle'=>$slider_handle,
+                'data-slider-tooltip'=>'always',
+                'data-slider-reset'=>$slider_reset,
+                'data-slider-prefix'=>$prefix,
+                'data-slider-suffix'=>$suffix,
+                'data-separator'=>$sSeparator,
+                'data-number'=>true,
+                'data-integer'=>$integeronly,
+            ));
+            ?>
+                <?php if($slider_showminmax): ?>
+                    <div class='pull-left help-block'><?php echo $slider_min; ?></div>
+                    <div class='pull-right help-block'><?php echo $slider_max; ?></div>
                 <?php endif; ?>
                 <?php if ($slider_reset): ?>
                     <div class="ls-input-group-extra ls-no-js-hidden ls-input-group-reset">
@@ -73,8 +68,11 @@
                     </div>
                     </div>
                 <?php endif; ?>
-                <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo ($dispVal ? 0 : 1);?>" />
-        </div>
+            </div>
+            <?php if (!empty($sliderright)): ?>
+                <div class='col-xs-12 col-sm-2 slider-right text-left'><?php echo $sliderright;?></div>
+            <?php endif; ?>
+            <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo ($dispVal ? 0 : 1);?>" />
     </div>
 </li>
 <!-- end of answer_row -->

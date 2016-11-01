@@ -71,10 +71,12 @@ li.radio-item,li.checkbox-item{display:block}
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {position:absolute;}
 
 /* on little screen center text-right and text-left : package issue or template ?*/
-
 @media only screen and (max-width: 760px){
-  .ls-answers .col-xs-12.text-right{text-align:center}
-  .ls-answers .col-xs-12.text-left{text-align:center}
+  .ls-answers .col-xs-12 .prefix-text{text-align:left}
+  .ls-answers .col-xs-12 .suffix-text{text-align:right}
+  .ls-input-sized .col-xs-12 .ls-input-group{display:block;width:auto;}
+  .ls-input-sized .col-xs-12 .ls-input-group-extra,.ls-input-sized .col-xs-12 .form-control{display:block;float:none}
+  .ls-input-sized .col-xs-12 .form-control{margin-left:auto;margin-right:auto}
 }
 
 /**

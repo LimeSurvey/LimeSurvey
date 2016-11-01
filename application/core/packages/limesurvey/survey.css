@@ -45,7 +45,9 @@
  * The answers part
  * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
  **/
-
+@media (max-width: 768px) {
+.ls-answers .text-right,.ls-answers .text-left {text-align:center;} /* center or inverse ? */
+}
 /* ls-input-group : near same behaviour than BS. */
 .ls-input-group {
     border-collapse: separate;
@@ -53,7 +55,6 @@
     position: relative;
 /*  width:100%; */
 }
-
 .ls-input-group .form-control {
     float: left;
     margin-bottom: 0;
@@ -82,12 +83,24 @@
 .answer-item input[type='text'][size]{width:initial;max-width:100%}
 .ls-input-sized .ls-input-group-extra{width:initial}
 .ls-input-sized .ls-input-group{width:auto;max-width:100%;display:table}
+/* I really don't know what core must do : add it to template */
+/*
+@media (max-width: 768px) {
+.ls-input-sized .col-xs-12 .ls-input-group{display:block}
+.ls-input-sized  .col-xs-12 .ls-input-group-extra,.ls-input-group .col-xs-12 .form-control{display:block;float:none}
+}
+*/
 /* in inline form : width need to be auto */
 .form-inline .ls-input-group{display: inline-table;vertical-align: middle;width:auto}
 .form-inline .ls-input-group .ls-input-group-extra{width: auto;white-space: initial;}
 .form-inline .ls-input-group {width: auto;white-space: initial;}
 
-/* index button */
+
+
+/**
+ * Question index : must be move to index.css ?
+ **/
+/* button */
 .ls-index-buttons .list-group .list-group-item:first-child {
     border-top-left-radius: 0;
     border-top-right-radius: 0;

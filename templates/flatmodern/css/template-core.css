@@ -84,6 +84,15 @@ margin: 0;
     height:1px;
     overflow:hidden;
 }
+/* on little screen center text-right and text-left : template issue */
+/* for ls-input-sized + ls-input-group-extra if use € for example as suffix : it's really OK and better to leave like it */
+@media only screen and (max-width: 760px){
+  .ls-answers .col-xs-12 .prefix-text{text-align:left}
+  .ls-answers .col-xs-12 .suffix-text{text-align:right}
+  .ls-input-sized .col-xs-12.ls-input-group{display:block;width:100%;}
+  .ls-input-sized .col-xs-12 .ls-input-group-extra,.ls-input-sized .col-xs-12 .form-control{display:block;float:none}
+  .ls-input-sized .col-xs-12 .form-control{margin-left:auto;margin-right:auto}
+}
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)

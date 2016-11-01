@@ -249,13 +249,18 @@
 
 /* Add some margin for the tooltip */
 /* same line */
-.slider-list .ls-input-group{margin-top:2.5em}
-@media (min-width: 768px) {
-.slider-list .control-label{margin-top:2.5em}
+.slider-list .ls-input-group{margin-top:2em}
+@media (max-width: 768px) {
+.slider-list .slider-left,.slider-list .slider-right {text-align:center;}
+}
+@media (min-width: 769px) {
+.slider-list .control-label{margin-top:2em}
+.slider-list .slider-left,.slider-list .slider-right {margin-top: 2em;}
+}
 }
  /* different line */
-.slider-list .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2.5em;}
-.slider-list .ls-input-group.col-sm-12{margin-top:0.5em;margin-bottom: 2.5em;}
+.slider-list .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2em;}
+.slider-list .ls-input-group.col-sm-12{margin-top:0.5em;margin-bottom: 2em;}
 /* reset button */
 .ls-input-group-reset{position:relative}
-.btn-slider-reset{text-align:center;top:-2em;position:relative}
+.btn-slider-reset{text-align:center;top:-1em;position:relative}
