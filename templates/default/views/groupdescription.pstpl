@@ -1,7 +1,2 @@
 <!-- Group description -->
-  <div class="col-xs-12 group-description-container">
-    <div class="group-description">
-      {GROUPDESCRIPTION}
-    </div>
-  </div>
-
+    <div class="group-description row well">{GROUPDESCRIPTION}</div>

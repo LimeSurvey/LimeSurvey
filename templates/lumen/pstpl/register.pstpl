@@ -1,6 +1,0 @@
-<div class="register well">
-  <div class='h3'>{REGISTERMESSAGE1}</div>
-  <div>{REGISTERMESSAGE2}</div>
-  {REGISTERERROR}
-  <div class="register-form">{REGISTERFORM}</div>
-</div>

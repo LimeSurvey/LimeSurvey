@@ -1,5 +1,0 @@
-<div class="h1">{SURVEYNAME}</div>
-<div id="clearall">
-	<div class="answercleared">{ANSWERSCLEARED}</div>
-	<div class="url url-restart">{RESTART}</div>
-</div>

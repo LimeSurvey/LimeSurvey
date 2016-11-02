@@ -1,4 +1,0 @@
-<div class="completed-wrapper">
-	<div class='completed-text'>{COMPLETED}</div>
-	{URL}
-</div>
