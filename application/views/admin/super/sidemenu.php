@@ -114,14 +114,14 @@
                     <div class="row">
                         <?php if($activeQuestionGroup): ?>
                         <div class="col-xs-6">
-                            <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><?php eT("Add Questiongroup");?></button>
+                            <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><?php eT("Add questiongroup");?></button>
                         </div>
                         <div class="col-xs-6">
-                            <button id="quickadd-add-new-question" onclick="location.href='<?php echo $newQuestionToGroupLink; ?>'" title="<?php eT('Add question to current questiongroup');?>" data-toggle="tooltip" class="btn btn-primary btn-block"><?php eT("Add Question");?></button>
+                            <button id="quickadd-add-new-question" onclick="location.href='<?php echo $newQuestionToGroupLink; ?>'" title="<?php eT('Add question to current questiongroup');?>" data-toggle="tooltip" class="btn btn-primary btn-block"><?php eT("Add question");?></button>
                         </div>
                         <?php else: ?>
                         <div class="col-xs-12">
-                            <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><?php eT("Add Questiongroup");?></button>
+                            <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><?php eT("Add questiongroup");?></button>
                         </div>
                         <?php endif; ?>
                     </div>
