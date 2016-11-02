@@ -11,7 +11,7 @@
  */
 ?>
 <?php if($sumRemainingEqn):?>
-    <li class="form-group">
+    <li class="form-group ls-group-remaining">
         <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
             <?php eT('Remaining: ');?>
         </div>
@@ -21,7 +21,7 @@
                     <?php echo $prefix; ?>
                 </div>
             <?php endif; ?>
-            <div id="remainingvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-remaining"><!-- alteranative class : form-control : display like an input:text -->
+            <div id="remainingvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-remaining"><!-- alternative class : form-control : display like an input:text -->
                 {<?php echo $sumRemainingEqn;?>}
             </div>
             <?php if ($suffix != ''): ?>
@@ -34,7 +34,7 @@
 <?php endif; ?>
 
 <?php if($sumEqn):?>
-    <li class="form-group">
+    <li class="form-group ls-group-total">
         <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
             <?php eT('Total: ');?>
         </div>
