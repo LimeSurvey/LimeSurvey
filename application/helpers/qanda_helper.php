@@ -3372,7 +3372,9 @@ function do_multiplenumeric($ia)
         App()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/bootstrap-slider/bootstrap-slider.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."numeric-slider.js");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') ."numeric-slider.css");
-        App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}';");
+        if($slider_handle == 'custom'){/* unsure we still need it : in aJsonOptions : must choose the best */
+            App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}}';");
+        }
         $aJsonOptions=json_encode(array(
             'slider_custom_handle'=>$slider_custom_handle
         ));

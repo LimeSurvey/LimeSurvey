@@ -17,3 +17,9 @@
         </div>
     </div>
 </div>
+<!-- some template.js function launched before ready -->
+<script type="text/javascript">
+/*<![CDATA[*/
+    sliderSuffixClone();
+/*]]>*/
+</script>

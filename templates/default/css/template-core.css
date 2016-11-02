@@ -26,6 +26,12 @@ li.radio-item,li.checkbox-item{display:block}
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {
     opacity:0;
 }
+@media only screen and (max-width: 760px) {
+.slider-list .slider-left{text-align:left}
+.slider-list .slider-right {text-align:right;}
+.rtl .slider-list .slider-left{text-align:right}
+.rtl .slider-list .slider-right {text-align:left;}
+}
 /**
  * Table .question feature
  */

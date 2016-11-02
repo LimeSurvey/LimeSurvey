@@ -24,9 +24,7 @@
  */
 function focusFirst(Event)
 {
-
     $('#limesurvey :input:visible:enabled:first').focus();
-
 }
 /*
  * The focusFirst function is added to the eventlistener, when the page is loaded.
@@ -60,8 +58,6 @@ $(document).ready(function()
              }, 'fast');
         });
     }
-
-    $('.if-no-js').hide();
 
     $('.language-changer').each(function(){
         $that = $(this);
@@ -181,6 +177,21 @@ window.alert = function(message, title) {
 function fixBodyPadding(){
     /* The 50 px is fixed in template.css */
     $("body").css("padding-top",$(".navbar-fixed-top").height+"px")
+}
+/**
+ * fix padding of body according to navbar-fixed-top
+ */
+function sliderSuffixClone(){
+$(".numeric-multi .slider-item .slider-right").each(function(){
+    if($(this).closest(".slider-item").find(".slider-left").length){
+        var colWidth="6";
+    }else{
+        var colWidth="12";
+    }
+    $(this).clone().removeClass("col-xs-12").addClass("visible-xs-block col-xs-"+colWidth).prop("aria-hidden",true).insertBefore($(this).prev(".slider-container"));
+    $(this).addClass("hidden-xs");
+    $(this).closest(".slider-item").find(".slider-left").removeClass("col-xs-12").addClass("col-xs-6");
+});
 }
 //Hide the Answer and the helper field
 $(document).ready(

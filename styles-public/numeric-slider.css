@@ -249,7 +249,7 @@
 
 /* Add some margin for the tooltip */
 /* same line */
-.slider-list .ls-input-group{margin-top:2em}
+.slider-list .slider-container{margin-top:2em}
 @media (max-width: 768px) {
 .slider-list .slider-left,.slider-list .slider-right {text-align:center;}
 }
@@ -260,7 +260,7 @@
 }
  /* different line */
 .slider-list .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2em;}
-.slider-list .ls-input-group.col-sm-12{margin-top:0.5em;margin-bottom: 2em;}
+.slider-list .col-sm-12 .ls-input-group{margin-top:0.5em;margin-bottom: 2em;}
 /* reset button */
 .ls-input-group-reset{position:relative}
 .btn-slider-reset{text-align:center;top:-1em;position:relative}
