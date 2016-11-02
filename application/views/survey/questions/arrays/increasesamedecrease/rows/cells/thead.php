@@ -5,10 +5,10 @@
 ?>
 
 <!-- thead -->
-<th  class=""><?php eT("Increase");?></th>
-<th class=""><?php eT("Same");?></th>
-<th class=""><?php eT("Decrease");?></th>
+<th><?php eT("Increase");?></th>
+<th><?php eT("Same");?></th>
+<th><?php eT("Decrease");?></th>
 <?php if($no_answer):?>
-    <th class=""><?php eT("No answer");?></th>
+    <th><?php eT("No answer");?></th>
 <?php endif;?>
 <!-- end of  thead -->

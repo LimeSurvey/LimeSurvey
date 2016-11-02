@@ -22,9 +22,9 @@
             echo $sColumns;
         ?>
     </colgroup>
-    <thead class="thead-inc-same-dec" aria-hidden="true">
+    <thead aria-hidden="true">
         <tr class="ls-heading">
-            <td>&nbsp;</td>
+            <td></td>
             <?php
                 // rows/cell/thead.php
                 echo $sHeaders;
