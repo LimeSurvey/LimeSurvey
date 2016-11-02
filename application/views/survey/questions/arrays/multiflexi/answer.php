@@ -14,7 +14,7 @@
  */
 ?>
 <!-- answer -->
-<table class="<?php echo $coreClass; ?> <?php echo $extraclass; ?>table table-bordered table-hover">
+<table class="<?php echo $coreClass; ?> <?php echo $extraclass; ?> table table-bordered table-hover">
 
     <colgroup class="col-responses">
         <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
