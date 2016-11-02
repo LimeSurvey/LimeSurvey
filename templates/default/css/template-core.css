@@ -3,7 +3,7 @@
  */
 /* Boostrap don't do some reset : do it in answer part*/
 .ls-answers img,.ls-answers video,.ls-answers svg{
-  max-width: 100%;height: auto;
+  max-width: 100%;height: auto !important;/* HTML included add width and height : force it */
 }
 label, th {
     font-weight: normal;
@@ -45,7 +45,7 @@ table.ls-answers{width:100%}
 {text-align:center}
 .ls-answers tbody th
 {text-align:right;vertical-align:middle}
-.ls-answers thead th
+.ls-answers .ls-heading th
 {text-align:center;vertical-align:bottom}
 
 .ls-answers tbody .answertext{text-align:right}
