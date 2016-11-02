@@ -1,4 +1,6 @@
 <div class="completed-wrapper">
-	<div class='completed-text'>{COMPLETED}</div>
-	<div class='end-url'>"+{URL}+"</div>
+	<div class='completed-text'>{COMPLETED}
+	{URL}
+	</div>
+
 </div>

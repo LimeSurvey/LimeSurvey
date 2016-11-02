@@ -1,4 +1,0 @@
-<div id="well clearall">
-	<div class="answer-cleared h2 text-warning">{ANSWERSCLEARED}</div>
-	<div class="url url-restart">{RESTART}</div>
-</div>

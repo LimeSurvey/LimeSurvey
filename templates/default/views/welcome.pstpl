@@ -1,27 +1,10 @@
-<div class="alert alert-danger" role="alert"  id="checkjavascript">
-    {CHECKJAVASCRIPT}
-</div>
-
-<script>
-  document.getElementById("checkjavascript").style.display = 'none';
-</script>
-
-<!-- Survey Description -->
-<div class="row" id="welcome-container">
-
-  <div class="survey-description col-sm-12 ">
-    <h1>{SURVEYNAME}</h1>
-    <p class="survey-description-text">{SURVEYDESCRIPTION}</p>
-  </div>
+{CHECKJAVASCRIPT}
 
 
-  <!-- Survey Welcome -->
-  <div class="survey-welcome col-sm-12">
-    <p class="survey-welcome-text">{WELCOME}</p>
-  </div>
 
-  <!-- Question number -->
-  <div class="questions-number col-sm-12">
-    <p class="questions-number-text">{THEREAREXQUESTIONS}</p>
-  </div>
+<div id="welcome-container">
+  <h1 class="survey-name text-center">{SURVEYNAME}</h1>
+  <span class="text-info text-center survey-description">{SURVEYDESCRIPTION}</span>
+  <span class="survey-welcome">{WELCOME}</span>
+  <span class="number-of-questions">{THEREAREXQUESTIONS}</span>
 </div>

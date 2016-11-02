@@ -1,9 +1,0 @@
-<div class='{FORMID}-page'>
-  <div class="h3">{FORMHEADING}</div>
-  {LANGUAGECHANGER}
-  <div class="well">
-    {FORMMESSAGE}
-    {FORMERROR}
-    <div class="form-{FORMID}">{FORM}</div>
-  </div>
-</div>

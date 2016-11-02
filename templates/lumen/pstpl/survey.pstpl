@@ -1,7 +1,0 @@
-<div class="h1">{SURVEYNAME}</div>
-<div class="lead surveydescrition">{SURVEYDESCRIPTION}</div>
-
-<!-- Because without JS : LANGUAGECHANGER NEED to be in the form -->
-{LANGUAGECHANGER}
-{PERCENTCOMPLETE}
-
