@@ -21,7 +21,7 @@
                     <?php echo $prefix; ?>
                 </div>
             <?php endif; ?>
-            <div id="remainingvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-remaining"><!-- alternative class : form-control : display like an input:text -->
+            <div id="remainingvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-remaining" data-number="1"><!-- alternative class : form-control : display like an input:text -->
                 {<?php echo $sumRemainingEqn;?>}
             </div>
             <?php if ($suffix != ''): ?>
@@ -44,7 +44,7 @@
                     <?php echo $prefix; ?>
                 </div>
             <?php endif; ?>
-            <div id="totalvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-total">
+            <div id="totalvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-total" data-number="1">
                 {<?php echo $sumEqn; ?>}
             </div>
             <?php if ($suffix != ''): ?>

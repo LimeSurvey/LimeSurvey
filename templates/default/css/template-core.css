@@ -8,6 +8,9 @@
 label, th {
     font-weight: normal;
 }
+/* Show input number at right alignment */
+[data-number='1']{text-align:right}
+.rtl [data-number='1']{text-align:left}
 /* awesome-bootstrap-checkbox */
 li.radio-item,li.checkbox-item{display:block}
 
