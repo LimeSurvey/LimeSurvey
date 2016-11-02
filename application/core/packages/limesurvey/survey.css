@@ -53,15 +53,14 @@
     border-collapse: separate;
     display: table;
     position: relative;
-/*  width:100%; */
-}
-.ls-input-group .form-control {
-    float: left;
-    margin-bottom: 0;
-    width: 100%;
 }
 .ls-input-group  .form-control {
     display: table-cell;
+    float: left;
+    margin-bottom: 0;
+    position: relative;
+    width: 100%;
+    z-index: 2;
 }
 .ls-input-group-extra {
   display: table-cell;
@@ -80,16 +79,10 @@
 }
 /* size or cols => set to with initial but max-width don't work with table-cell .... */
 .answer-item textarea[cols]{width:initial;max-width:100%}
-.answer-item input[type='text'][size]{width:initial;max-width:100%}
+.answer-item .form-control[size]{width:initial;max-width:100%}
 .ls-input-sized .ls-input-group-extra{width:initial}
-.ls-input-sized .ls-input-group{width:auto;max-width:100%;display:table}
-/* I really don't know what core must do : add it to template */
-/*
-@media (max-width: 768px) {
-.ls-input-sized .col-xs-12 .ls-input-group{display:block}
-.ls-input-sized  .col-xs-12 .ls-input-group-extra,.ls-input-group .col-xs-12 .form-control{display:block;float:none}
-}
-*/
+.ls-input-sized .ls-input-group{width:auto;max-width:100%;display:table;table-layout:fixed}
+
 /* in inline form : width need to be auto */
 .form-inline .ls-input-group{display: inline-table;vertical-align: middle;width:auto}
 .form-inline .ls-input-group .ls-input-group-extra{width: auto;white-space: initial;}

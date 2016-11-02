@@ -26,28 +26,33 @@
         <?php echo $labelText; ?>
     </label>
 
-    <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
-        <?php if ($prefix != ''): ?>
-            <div class="ls-input-group-extra prefix-text prefix text-right">
-                <?php echo $prefix; ?>
-            </div>
+    <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+        <?php if ($prefix != '' || $suffix != ''): ?>
+            <div class="ls-input-group">
         <?php endif; ?>
-
-        <input
-            class="form-control numeric <?php echo $kpclass;?>"
-            type="text"
-            name="<?php echo $myfname;?>"
-            id="answer<?php echo $myfname; ?>"
-            value="<?php echo $dispVal;?>"
-            title="<?php eT('Only numbers may be entered in this field.'); ?>"
-            <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
-            <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
-            data-number="1"
-            data-integer="<?php echo $integeronly;?>"
-            />
-        <?php if ($suffix != ''): ?>
-            <div class="ls-input-group-extra suffix-text suffix text-left">
-                <?php echo $suffix; ?>
+            <?php if ($prefix != ''): ?>
+                <div class="ls-input-group-extra prefix-text prefix text-right">
+                    <?php echo $prefix; ?>
+                </div>
+            <?php endif; ?>
+            <input
+                class="form-control numeric <?php echo $kpclass;?>"
+                type="text"
+                name="<?php echo $myfname;?>"
+                id="answer<?php echo $myfname; ?>"
+                value="<?php echo $dispVal;?>"
+                title="<?php eT('Only numbers may be entered in this field.'); ?>"
+                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+                data-number="1"
+                data-integer="<?php echo $integeronly;?>"
+                />
+            <?php if ($suffix != ''): ?>
+                <div class="ls-input-group-extra suffix-text suffix text-left">
+                    <?php echo $suffix; ?>
+                </div>
+            <?php endif; ?>
+        <?php if ($prefix != '' || $suffix != ''): ?>
             </div>
         <?php endif; ?>
     </div>
