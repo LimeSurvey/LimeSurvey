@@ -1,15 +1,10 @@
-<div class="alert alert-danger" role="alert"  id="checkjavascript">
-    {CHECKJAVASCRIPT}
-</div>
-
-<script>
-  document.getElementById("checkjavascript").style.display = 'none';
-</script>
+{CHECKJAVASCRIPT}
 
 
-<div id="welcome-container"> 
-  <h1 class="survey-name">{SURVEYNAME}</h1>
-  <span class="text-info survey-description">{SURVEYDESCRIPTION}</span>
+
+<div id="welcome-container">
+  <h1 class="survey-name text-center">{SURVEYNAME}</h1>
+  <span class="text-info text-center survey-description">{SURVEYDESCRIPTION}</span>
   <span class="survey-welcome">{WELCOME}</span>
-  <span class="number-of-questions">{THEREAREXQUESTIONS}</span> 
+  <span class="number-of-questions">{THEREAREXQUESTIONS}</span>
 </div>

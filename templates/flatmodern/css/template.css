@@ -3,20 +3,13 @@ body
      padding-bottom: 10px;
      background-color: #f6f6f6;
 }
-
 /* The header */
 body
 {
      padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
 .navbar-action-link{
-padding-right:1em; /* really close to window without */
-}
-.remove-margins {
-    margin: 0;
-}
-.remove-padding {
-    padding: 0;
+    padding-right:1em; /* really close to window without */
 }
 
 /* specific for survey listing */
@@ -39,33 +32,31 @@ padding-right:1em; /* really close to window without */
     background-color: #fff;
     padding: 1em;
 }
-
-#topContainer {
+.top-container {
     width: 100%;
-    padding: 1em;
+    padding: 0;
     border-bottom: none;
     background-color: #ecf0f1;
     color: inherit;
-    margin-bottom: 30px;
+    margin-bottom:2em;
 }
-
-.progress {
+.top-container .top-content{
+padding-top:1em;padding-bottom:1em;
+}
+.top-container .top-content:empty{display:none}
+.group-description:empty{display:none}
+.group-title:empty{display:none}
+.top-container .progress {
     height: 21px;
-    margin-bottom: 1em;
+    margin-bottom: 0;
 }
-
-#surveynametitle {
-    font-size: 4em;
+.top-container .progress {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
 }
-
-#surveydescription, #surveynametitle, #welcome-container h1 {
-    color: #2c3e50;
-    text-align: center;
+.progress .progress-bar {
+    line-height:19px;
 }
-
-#surveydescription, .group-name {
-    color: #2c3e50;
-}
+.top-container .form-change-lang {text-align:center}
 
  /**
  * Navigator
@@ -93,27 +84,11 @@ padding-right:1em; /* really close to window without */
     margin-bottom: 30px;
 }
 
-#indexcontainer {
-  display : none;
-}
-
 .radio-list li
 {
     display: block;
     clear: both;
 }
-/*
-.checkbox, .radio
-{
-    float: left;
-}
-
-.label-radio span
-{
-    display: inline-block;
-    padding-top: 3px;
-}
-*/
 .question-item .other-label
 {
     margin: 0px;
@@ -123,13 +98,6 @@ padding-right:1em; /* really close to window without */
 /**
  * For em-type
  */
- .strong
- {
-     font-weight: bold;
-     display: inline-block;
-     padding: 0.2em;
- }
-
  .hide-tip
  {
      display: none;
@@ -237,9 +205,6 @@ html body .navbar.navbar-default.navbar-fixed-top {
 }
 
 /* For striped tables */
-.array2 {
-    background-color: #f9f9f9;
-}
 
 /* Make sure table covers hole page */
 table {
@@ -343,38 +308,6 @@ table > tbody > tr > td.ddprefix {
     vertical-align: middle;
 }
 
-
-/*
-    Arrays Question
-*/
-
-/* center the radio list in the td*/
-/*
-td.answer-item.text-center
-{
-    padding-left: 39px;
-}
-
-table.array-no-dropdown  td.answer-item.text-center
-{
-    padding-left: 45px;
-}
-
-.table-5-point-array td.answer-item.text-center
-{
-    padding-left: 54px;
-}
-
-.table-10-point-array  td.answer-item.text-center
-{
-    padding-left: 40px;
-}
-
-.table-10-point-array  thead tr th.text-center
-{
-    padding-left: 0px;
-}
-*/
 
 /**
  * On big screen only, iPad and up
@@ -573,17 +506,6 @@ only screen and (max-width: 760px),
  * Display adjust, question type by question type
  */
 
-/* center the label text in no more table mode */
-.label-text{
-    margin-top: -24px;
-    margin-left: 20px;
-}
-
-/* ...except for dual-scale and array-by-column */
-.table-dual-scale .label-text, .array-by-columns-div .label-text {
-    margin-top: 0px;
-    margin-left: 0px;
-}
 
 .table > tbody > tr > th
 {
@@ -594,16 +516,6 @@ only screen and (max-width: 760px),
     padding-top: 5px;
     margin-right: 5px;
 }
-
-.multiple-choice-with-comment.table, .table-multi-num.table{
-    table-layout: auto;
-    width: initial;
-}
- .multiple-choice-with-comment.table > tbody > tr > td {
-     padding-left: 18px;
-     vertical-align: middle;
- }
-
 
 .geoloc-item .search-icon, .geoloc-item .checkbox  {
     padding-top: 10px;
@@ -678,31 +590,9 @@ only screen and (max-width: 760px),
 */
 
 /* Asterix */
-.asterisk {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-.asterisk:before {
-    content: "\f069";
-}
-
-
-/* Check javascript */
-#checkjavascript {
-    margin-top: 100px;
-    z-index: 999;
-    right: 100px;
-    position: fixed;
-    width: 300px;
-}
-
-/*label font weight*/
-label, th {
-    font-weight: normal;
+.input-error .asterisk {
+    font-size: 1.2em;
+    margin-top:-0.2em;
 }
 
 #surveys-list-container
@@ -732,9 +622,6 @@ label, th {
     top: 10px;
 }
 
-.list-unstyled.radio-list {
-    //padding-left: 15px;
-}
 
 div.yes-no .btn-group label {
   white-space:normal;
@@ -767,48 +654,4 @@ div.yes-no .btn-group label {
     .vertical-divider.right {
     border: none;
     }
-}
-/*** Small helper classes, that are not shipped with bootstrap but fit in well***/
-.ls-custom-padding{
-    padding: 1px;
-}
-.ls-custom-padding.two{
-    padding: 2px;
-}
-.ls-custom-padding.three{
-    padding: 3px;
-}
-.ls-custom-padding.four{
-    padding: 4px;
-}
-.ls-custom-padding.five{
-    padding: 5px;
-}
-.ls-custom-padding.fifteen{
-    padding: 15px;
-}
-.ls-custom-padding.eighteen{
-    padding: 18px;
-}
-
-.ls-custom-margin{
-    margin: 1px;
-}
-.ls-custom-margin.two{
-    margin: 2px;
-}
-.ls-custom-margin.three{
-    margin: 3px;
-}
-.ls-custom-margin.four{
-    margin: 4px;
-}
-.ls-custom-margin.five{
-    margin: 5px;
-}
-.ls-custom-margin.fifteen{
-    margin: 15px;
-}
-.ls-custom-margin.eighteen{
-    margin: 18px;
 }

@@ -8596,6 +8596,7 @@ EOD;
                 $relevant=false;
                 $qid = $qinfo['info']['qid'];
                 $gseq = $qinfo['info']['gseq'];
+                /* Never use posted value : must be fixed and find real actual relevance */
                 $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
                 $grelevant = (isset($_POST['relevanceG' . $gseq]) ? ($_POST['relevanceG' . $gseq] == 1) : false);
                 $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;

@@ -5,6 +5,9 @@
 .ls-answers img,.ls-answers video,.ls-answers svg{
   max-width: 100%;height: auto;
 }
+label, th {
+    font-weight: normal;
+}
 /* awesome-bootstrap-checkbox */
 li.radio-item,li.checkbox-item{display:block}
 
