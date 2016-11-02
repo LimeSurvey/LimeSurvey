@@ -58,6 +58,35 @@ padding-top:1em;padding-bottom:1em;
 }
 .top-container .form-change-lang {text-align:center}
 
+/**
+ * Question part
+ */
+.ls-questionhelp{position: relative;}
+.dir-ltr .ls-questionhelp{margin-left:1.2em;}
+.dir-rtl .ls-questionhelp{margin-right:1.2em;}
+
+.ls-questionhelp:before{content:"\f059"}
+.ls-questionhelp:before {
+    display: block;
+    position:absolute;
+    font-family: FontAwesome;
+    font-size: inherit;
+    line-height: inherit;
+    height:100%;
+}
+/* If you want to center the icon */
+/*
+.ls-questionhelp:before {
+    top:50%;
+    margin-top:-0.7em;
+}
+*/
+.dir-ltr .ls-questionhelp:before {
+    left:-1.1em;
+}
+.dir-rtl .ls-questionhelp:before {
+    right:0;
+}
  /**
  * Navigator
  */
