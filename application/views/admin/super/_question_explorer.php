@@ -45,7 +45,7 @@
                 </div>
             </div>
             <!-- the fancytree container, here is where the magic happens -->
-            <div id="fancytree" class="row" data-show-expand-collapse="1" data-expand-all="<?php eT('Expand All');?>" data-collapse-all="<?php eT('Collapse All'); ?>"></div>
+            <div id="fancytree" class="row" data-show-expand-collapse="1" data-expand-all="<?php eT('Expand all');?>" data-collapse-all="<?php eT('Collapse all'); ?>"></div>
             <!-- The necessary scripts and variables for the fancytree-library -->
             <script>
                 var sourceUrl = "<?php echo  Yii::app()->urlManager->createUrl("admin/questiongroups/sa/getGroupExplorerDatas", array("surveyid"=>$iSurveyId, "language" => $language));?>";

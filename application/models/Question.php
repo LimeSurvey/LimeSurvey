@@ -834,11 +834,11 @@ class Question extends LSActiveRecord
         }
         return $sIcon;
     }
-    public function getEllipsized_question()
+    public function getEllipsized_question($length = 60)
     {
         if(!isset($this->ellipsized_question) )
         {
-            $this->ellipsized_question = viewHelper::flatEllipsizeText($this->getSanitized_question(),true,60,'[...]',0.5);
+            $this->ellipsized_question = viewHelper::flatEllipsizeText($this->getSanitized_question(),true,$length,'[...]',0.5);
         }
         return $this->ellipsized_question;
     }
