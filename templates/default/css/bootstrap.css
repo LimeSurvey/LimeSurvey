@@ -1,3 +1,14 @@
+/**
+ * This file is the boostrap file with color and theme
+ * You can replace this file by another bootsrap file
+ * DON'T UPDATE THIS FILE : REPLACE IT
+ * Some best solution :
+ * - Use getbootstrap.com/customize/ to do your customized file
+ * - Use bootswatch.com/ theme (here it's flatly with removing the need of external fonts
+ * - Use another theme genrator (pikock.github.io/bootstrap-magic/ for example)
+ * - Use {LESS} http://lesscss.org/
+ * - Use SASS github.com/twbs/bootstrap-sass
+ */
 /* Replace googe font by included font (see mantis) */
 /* lato-regular - latin */
 @font-face {

@@ -42,7 +42,10 @@ $(document).ready(function(){
 
 $(document).ready(function()
 {
+    /* Some function are launched in endpage.pstpl */
     fixBodyPadding();
+    addHoverColumn();
+
     // If list of nav-bar action is empty: remove it (else .navbar-toggle is shown on small screen) //
     if(!$("#navbar li").length){
         $("#navbar").remove();
@@ -192,6 +195,21 @@ $(".numeric-multi .slider-item .slider-right").each(function(){
     $(this).addClass("hidden-xs");
     $(this).closest(".slider-item").find(".slider-left").removeClass("col-xs-12").addClass("col-xs-6");
 });
+}
+/**
+ * Add class hover to column in table-col-hover
+ * We can't use CSS solution : need no background
+ */
+function addHoverColumn(){
+    $(".table-col-hover").on({
+        mouseenter: function () {
+            $(this).closest(".table-col-hover").find("col").eq($(this).parent(".answers-list").children().index($(this))).addClass("hover");
+        },
+        mouseleave: function () {
+            $(this).closest(".table-col-hover").find("col").removeClass("hover");
+        }
+    }, ".answer-item");
+
 }
 //Hide the Answer and the helper field
 $(document).ready(

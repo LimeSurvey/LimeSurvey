@@ -1,10 +1,8 @@
 {CHECKJAVASCRIPT}
 
-
-
 <div id="welcome-container">
   <h1 class="survey-name text-center">{SURVEYNAME}</h1>
-  <span class="text-info text-center survey-description">{SURVEYDESCRIPTION}</span>
-  <span class="survey-welcome">{WELCOME}</span>
-  <span class="number-of-questions">{THEREAREXQUESTIONS}</span>
+  <div class="text-info text-center survey-description">{SURVEYDESCRIPTION}</div>
+  <div class="survey-welcome h4 text-primary">{WELCOME}</div>
+  <div class="number-of-questions text-muted">{THEREAREXQUESTIONS}</div>
 </div>

@@ -7,7 +7,7 @@
  * @var $cellwidth
  */
  ?>
-<table class="<?php echo $coreClass; ?> table table-bordered table-hover array-by-columns">
+<table class="<?php echo $coreClass; ?> table table-bordered table-col-hover">
     <colgroup>
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <?php foreach ($aQuestions as $i=>$question): ?>

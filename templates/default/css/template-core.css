@@ -44,11 +44,13 @@ table.ls-answers{width:100%}
 /* Basic alignment */
 .ls-answers > tbody > tr > td
 {vertical-align:middle}
-.ls-answers tbody td
+.ls-answers > tbody > tr > td
 {text-align:center}
-.ls-answers tbody th
+.ls-answers > tbody > tr > td .form-control /* for .form-control[size] */
+{margin-left:auto;margin-right:auto}/* display:inline-block is OK too */
+.ls-answers > tbody > tr > th
 {text-align:right;vertical-align:middle}
-.ls-answers .ls-heading th
+.ls-answers .ls-heading > th
 {text-align:center;vertical-align:bottom}
 
 .ls-answers tbody .answertext{text-align:right}

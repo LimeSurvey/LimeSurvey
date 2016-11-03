@@ -107,11 +107,6 @@ padding-top:1em;padding-bottom:1em;
  }
 
 
-/** UI Slider **/
-
-.withslider {
-    margin-bottom: 30px;
-}
 
 .radio-list li
 {
@@ -185,6 +180,12 @@ html, body {
  */
 .ls-even{
 background-color:#f9f9f9;
+}
+/* This, maybe, work in CSS4 :) */
+/* Actual solution : js only*/
+.table-col-hover col:hover,
+.table-col-hover col.hover{
+    background-color: #ecf0f1;
 }
 @media
 only screen and (max-width: 760px),
