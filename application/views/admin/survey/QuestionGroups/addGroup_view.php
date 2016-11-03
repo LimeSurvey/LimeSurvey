@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for='group_name_<?php echo $grouplang; ?>'><?php eT("Title:"); ?></label>
                                 <div class="col-sm-3">
-                                    <input class="form-control group_title" type='text' size='80' maxlength='100' name='group_name_<?php echo $grouplang; ?>' id='group_name_<?php echo $grouplang; ?>' /><span class='annotation'> <?php eT("Required"); ?></span></li>
+                                    <input class="form-control group_title" type='text' size='80' maxlength='100' name='group_name_<?php echo $grouplang; ?>' id='group_name_<?php echo $grouplang; ?>' /></li>
                                 </div>
                             </div>
 
