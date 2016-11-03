@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-10-26 08:40:17+00:00\n"
+"POT-Creation-Date: 2016-11-03 14:39:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -104,7 +104,7 @@ msgid "Main Admin Screen"
 msgstr ""
 
 #: application/controllers/AdminController.php:90
-#: application/core/Survey_Common_Action.php:365
+#: application/core/Survey_Common_Action.php:369
 #: application/views/admin/index.php:4 plugins/Demo/Example/Example.php:53
 msgid "LimeSurvey online manual"
 msgstr ""
@@ -413,8 +413,8 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:109
 #: application/controllers/admin/questiongroups.php:137
 #: application/controllers/admin/questiongroups.php:179
-#: application/controllers/admin/questiongroups.php:328
-#: application/controllers/admin/questiongroups.php:433
+#: application/controllers/admin/questiongroups.php:313
+#: application/controllers/admin/questiongroups.php:418
 #: application/controllers/admin/questions.php:116
 #: application/controllers/admin/questions.php:159
 #: application/controllers/admin/questions.php:254
@@ -1261,12 +1261,12 @@ msgid "Not found"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:529
-#: application/controllers/admin/conditionsaction.php:2231
+#: application/controllers/admin/conditionsaction.php:2232
 msgid "From token table"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:532
-#: application/controllers/admin/conditionsaction.php:2234
+#: application/controllers/admin/conditionsaction.php:2235
 msgid "Inexistant token table"
 msgstr ""
 
@@ -1428,7 +1428,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1057
 #: application/controllers/admin/quotas.php:589
 #: application/controllers/admin/tokens.php:2341
-#: application/core/Survey_Common_Action.php:1190
+#: application/core/Survey_Common_Action.php:1194
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:239
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:261
@@ -1578,7 +1578,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1059
 #: application/controllers/admin/quotas.php:590
 #: application/controllers/admin/tokens.php:2343
-#: application/core/Survey_Common_Action.php:1186
+#: application/core/Survey_Common_Action.php:1190
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:265
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:276
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:54
@@ -2130,8 +2130,8 @@ msgid "Next choice"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:910
-#: application/core/Survey_Common_Action.php:496
-#: application/core/Survey_Common_Action.php:859
+#: application/core/Survey_Common_Action.php:500
+#: application/core/Survey_Common_Action.php:863
 #: application/helpers/common_helper.php:302
 #: application/helpers/common_helper.php:361
 #: application/helpers/common_helper.php:941
@@ -2571,7 +2571,7 @@ msgstr ""
 
 #: application/controllers/admin/participantsaction.php:780
 #: application/controllers/admin/templates.php:172
-#: application/core/Survey_Common_Action.php:1377
+#: application/core/Survey_Common_Action.php:1381
 #: application/views/admin/homepagesettings/index.php:9
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/question_subviews/_modals.php:113
@@ -2922,10 +2922,10 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:43
 #: application/controllers/admin/questiongroups.php:143
 #: application/controllers/admin/questiongroups.php:188
-#: application/controllers/admin/questiongroups.php:267
-#: application/controllers/admin/questiongroups.php:301
-#: application/controllers/admin/questiongroups.php:446
-#: application/controllers/admin/questiongroups.php:520
+#: application/controllers/admin/questiongroups.php:252
+#: application/controllers/admin/questiongroups.php:286
+#: application/controllers/admin/questiongroups.php:431
+#: application/controllers/admin/questiongroups.php:504
 #: application/controllers/admin/questions.php:438
 #: application/controllers/admin/questions.php:648
 #: application/controllers/admin/questions.php:697
@@ -2966,27 +2966,27 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:242
-msgid "Question group was not saved. Please check if the survey is active."
+#: application/controllers/admin/questiongroups.php:233
+msgid "Question group was not saved."
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:248
+#: application/controllers/admin/questiongroups.php:237
 msgid "New question group was saved."
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:252
+#: application/controllers/admin/questiongroups.php:238
 msgid "You can now %sadd a question%s in this group."
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:292
+#: application/controllers/admin/questiongroups.php:277
 msgid "The question group was deleted."
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:295
+#: application/controllers/admin/questiongroups.php:280
 msgid "Group could not be deleted"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:414
+#: application/controllers/admin/questiongroups.php:399
 #: application/controllers/admin/quotas.php:404
 #: application/controllers/admin/surveyadmin.php:822
 #: application/views/admin/assessments_view.php:197
@@ -3002,7 +3002,7 @@ msgstr ""
 msgid "Base language"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:511
+#: application/controllers/admin/questiongroups.php:495
 msgid "Question group successfully saved."
 msgstr ""
 
@@ -3010,8 +3010,8 @@ msgstr ""
 #: application/controllers/admin/responses.php:69
 #: application/controllers/admin/surveyadmin.php:977
 #: application/core/Survey_Common_Action.php:70
-#: application/core/Survey_Common_Action.php:645
-#: application/core/Survey_Common_Action.php:950
+#: application/core/Survey_Common_Action.php:649
+#: application/core/Survey_Common_Action.php:954
 #: application/models/Survey.php:665
 msgid "Invalid survey ID"
 msgstr ""
@@ -4384,7 +4384,7 @@ msgid "Saved"
 msgstr ""
 
 #: application/controllers/admin/translate.php:292
-#: application/core/Survey_Common_Action.php:750
+#: application/core/Survey_Common_Action.php:754
 #: application/views/admin/survey/Question/questionbar_view.php:19
 #: application/views/admin/survey/Question/questionbar_view.php:79
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:22
@@ -4395,7 +4395,7 @@ msgid "Preview survey"
 msgstr ""
 
 #: application/controllers/admin/translate.php:292
-#: application/core/Survey_Common_Action.php:754
+#: application/core/Survey_Common_Action.php:758
 #: application/core/plugins/QuickMenu/QuickMenu.php:242
 #: application/views/admin/survey/Question/questionbar_view.php:21
 #: application/views/admin/survey/Question/questionbar_view.php:81
@@ -4831,7 +4831,7 @@ msgid "You have exceeded the number of maximum login attempts. Please wait %d mi
 msgstr ""
 
 #: application/core/LSUserIdentity.php:130
-#: application/core/Survey_Common_Action.php:450
+#: application/core/Survey_Common_Action.php:454
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr ""
 
@@ -4859,94 +4859,94 @@ msgstr ""
 msgid "Invalid email address."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:492
+#: application/core/Survey_Common_Action.php:496
 msgid "Activated"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1063
+#: application/core/Survey_Common_Action.php:1067
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:32
 msgid "Responses to this survey are anonymized."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1067
+#: application/core/Survey_Common_Action.php:1071
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:30
 msgid "Responses to this survey are NOT anonymized."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1071
+#: application/core/Survey_Common_Action.php:1075
 msgid "It is presented question by question."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1075
+#: application/core/Survey_Common_Action.php:1079
 msgid "It is presented group by group."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1079
+#: application/core/Survey_Common_Action.php:1083
 msgid "It is presented on one single page."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1085
+#: application/core/Survey_Common_Action.php:1089
 msgid "No question index will be shown with this format."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1089
+#: application/core/Survey_Common_Action.php:1093
 msgid "A question index will be shown; participants will be able to jump between viewed questions."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1093
+#: application/core/Survey_Common_Action.php:1097
 msgid "A full question index will be shown; participants will be able to jump between relevant questions."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1098
+#: application/core/Survey_Common_Action.php:1102
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:33
 msgid "Responses will be date stamped."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1102
+#: application/core/Survey_Common_Action.php:1106
 msgid "IP Addresses will be logged"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1106
+#: application/core/Survey_Common_Action.php:1110
 msgid "Referrer URL will be saved."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1110
+#: application/core/Survey_Common_Action.php:1114
 msgid "It uses cookies for access control."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1114
+#: application/core/Survey_Common_Action.php:1118
 msgid "If tokens are used, the public may register for this survey"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1118
+#: application/core/Survey_Common_Action.php:1122
 msgid "Participants can save partially finished surveys"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1122
+#: application/core/Survey_Common_Action.php:1126
 msgid "Basic email notification is sent to:"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1126
+#: application/core/Survey_Common_Action.php:1130
 msgid "Detailed email notification with response data is sent to:"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1202
+#: application/core/Survey_Common_Action.php:1206
 msgid "Survey cannot be activated yet."
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1205
+#: application/core/Survey_Common_Action.php:1209
 msgid "You need to add question groups"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1209
+#: application/core/Survey_Common_Action.php:1213
 msgid "You need to add questions"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1370
+#: application/core/Survey_Common_Action.php:1374
 msgid "Copy failed"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1386
+#: application/core/Survey_Common_Action.php:1390
 msgid "Forbidden Extension"
 msgstr ""
 
@@ -10787,6 +10787,10 @@ msgstr ""
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr ""
 
+#: application/models/QuestionGroup.php:353
+msgid "You can not add a group if survey is active."
+msgstr ""
+
 #: application/models/Survey.php:56
 msgid "running"
 msgstr ""
@@ -14982,7 +14986,6 @@ msgid "Replace label set?"
 msgstr ""
 
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:37
-#: application/views/admin/survey/QuestionGroups/addGroup_view.php:46
 #: application/views/admin/survey/subview/tabCopy_view.php:20
 #: application/views/admin/survey/subview/tabCopy_view.php:33
 #: application/views/admin/survey/subview/tabCreate_view.php:42
