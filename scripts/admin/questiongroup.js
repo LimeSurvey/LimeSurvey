@@ -9,21 +9,3 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
-
-$(document).ready(function(){
-    $('#newquestiongroup').submit(function(){
-        bResult=true;  
-        $('.group_title').each( function()
-            {
-                if ($(this).val()=='')
-                {
-                    bResult=false;  
-                }
-        }); 
-        if (!bResult)
-        {
-            alert(sEnterTitle); 
-        }
-        return bResult;    
-    });
-});

@@ -229,11 +229,11 @@ class database extends Survey_Common_Action
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
             if (!Yii::app()->request->getPost('bFullPOST'))
             {
-                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."));
+                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."),'error');
             }
             else
             {
-                Yii::app()->session['flashmessage']= gT("Answer options were successfully saved.");
+                Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
             }
             LimeExpressionManager::SetDirtyFlag();
             if ($sDBOutput != '')

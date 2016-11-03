@@ -348,9 +348,9 @@ class QuestionGroup extends LSActiveRecord
         if (parent::beforeSave())
         {
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-
-            if ($surveyIsActive && $this->getIsNewRecord())
+            if ($surveyIsActive && $this->getIsNewRecord()) /* And for multi lingual, when add a new language ? */
             {
+                $this->addError('gid',gT("You can not add a group if survey is active."));
                 return false;
             }
             return true;
