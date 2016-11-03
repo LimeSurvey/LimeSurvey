@@ -35,6 +35,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+
+Changes from  2.55.1 (build 161026) to 2.55.2 (build 161103) Nov 3 2016
+-Fixed issue #11843: Error when filtering by a custom attribute in CPDB with MySQL (Olle Haerstedt)
+-Fixed issue #11844: Clicking 'Set Conditions' to enter conditions (Olle Haerstedt)
+-Fixed issue #11845: Relevance Equation code is missing syntax highlighting and not recognising question variables (Olle Haerstedt)
+-Fixed issue #11851: Unstyled HTML when editing default answer options for yes-no question (Olle Haerstedt)
+-Fixed issue #11858: When adding a new group In multi lingual : only 1st language is created (Denis Chenu)
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Portuguese (Brazil) by thiagosmartins, mauriciofurtado, holch, flaviove
+
 Changes from  2.55 (build 161021) to 2.55.1 (build 161026) Oct 26 2016
 -Fixed issue #11606: Date/Time filed does not record the answer (Olle Haerstedt)
 -Fixed issue #11813: Default order of responses not set to response ID when browsing or exporting (Carsten Schmitz)
