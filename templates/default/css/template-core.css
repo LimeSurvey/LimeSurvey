@@ -10,7 +10,10 @@ label, th {
 }
 /* Show input number at right alignment */
 [data-number='1']{text-align:right}
-.rtl [data-number='1']{text-align:left}
+.dir-rtl [data-number='1']{text-align:left}
+.slider-list .ls-group-remaining [data-number='1'],
+.slider-list .ls-group-total [data-number='1']
+{text-align:center}
 /* awesome-bootstrap-checkbox */
 li.radio-item,li.checkbox-item{display:block}
 
@@ -32,8 +35,8 @@ li.radio-item,li.checkbox-item{display:block}
 @media only screen and (max-width: 760px) {
 .slider-list .slider-left{text-align:left}
 .slider-list .slider-right {text-align:right;}
-.rtl .slider-list .slider-left{text-align:right}
-.rtl .slider-list .slider-right {text-align:left;}
+.dir-rtl .slider-list .slider-left{text-align:right}
+.dir-rtl .slider-list .slider-right {text-align:left;}
 }
 /**
  * Table .question feature
@@ -55,9 +58,11 @@ table.ls-answers{width:100%}
 
 .ls-answers tbody .answertext{text-align:right}
 .ls-answers .answertextright{text-align:left}
-
+.dir-rtl .ls-answers tbody .answertext{text-align:left}
+.dir-rtl .ls-answers .answertextright{text-align:right}
 /**
  *  awesome-bootstrap-checkbox inside table with an sr-only label
+ * @todo : .dir-rtl
  */
 /* reset the margin and review the padding set by boostrap */
 table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{
