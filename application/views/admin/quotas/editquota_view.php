@@ -1,6 +1,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
+            <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=> gT("New quota"))); ?>
             <h3>
                 <?php eT("Edit quota");?>
             </h3>
@@ -27,7 +28,7 @@
                             <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Allow user to update his last answers before terminate survey.");?></option>
                         </select>
                     </div>
-                    <div class="col-sm-9 col-sm-offset-3 help-block"><?php eT("To allow update : one of the question tested must be viewed in the last page before quota.The end url action is done only after confirm survey.");?></div>
+                    <div class="col-sm-9 col-sm-offset-3 help-block"><?php eT("To allow update : one of the question of quota must be in the last page before quota.");?></div>
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='autoload_url'><?php eT("Autoload URL:");?></label>
@@ -40,6 +41,7 @@
                             'offLabel' => gT('No')));
                         ?>
                     </div>
+                    <div class="col-sm-9 col-sm-offset-3 help-block"><?php eT("The url is used only when quota happen (terminate survey).");?></div>
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='active'><?php eT("Active:");?></label>
