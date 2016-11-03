@@ -24,7 +24,7 @@
         </colgroup>
     <?php endif; ?>
     <?php if ($shownoanswer || $rightexists): ?>
-        <col class="separator right_separator" style="width: <?php echo $rightwidth; ?>">
+        <col class="separator rigth_separator" style="width: <?php echo $rigthwidth; ?>%">
     <?php endif; ?>
     <?php if ($shownoanswer): ?>
         <col class="col-no-answer"  style="width: <?php echo $cellwidth; ?>%;" />
@@ -34,15 +34,14 @@
         <?php if ($leftheader != '' || $rightheader !=''): ?>
             <tr class="ls-heading groups header_row">
                 <th class="header_answer_text"></th>
-                <th colspan="<?php echo count($labelans0); ?>" class="dsheader text-center"><?php echo $leftheader; ?></th>
-
+                <th colspan="<?php echo count($labelans0); ?>" class="dsheader"><?php echo $leftheader; ?></th>
                 <?php if (count($labelans1) > 0): ?>
                     <td class="header_separator"></td>  <!-- // Separator -->
-                    <th colspan="<?php echo count($labelans1); ?>" class="dsheader text-center"><?php echo $rightheader; ?></th>
+                    <th colspan="<?php echo count($labelans1); ?>" class="dsheader"><?php echo $rightheader; ?></th>
                 <?php endif; ?>
 
                 <?php if($shownoanswer || $rightexists): ?>
-                    <td class="header_separator <?php echo $rightclass; ?>"></td>
+                    <td class="header_separator <?php echo $rigthclass; ?>"></td>
                     <?php if($shownoanswer): ?>
                         <th class="header_no_answer"></th>
                     <?php endif; ?>
@@ -90,7 +89,7 @@
             <?php endif; ?>
 
             <!-- tr -->
-            <tr id="" role="group" aria-describedby="answertext<?php echo $ansrow['myfname']; ?>"
+            <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" aria-describedby="answertext<?php echo $ansrow['myfname']; ?>"
                 class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['showmandatoryviolation']) ? " has-error" : ""; ?>"
             >
             <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?>">
@@ -112,7 +111,7 @@
             <!-- First label set -->
             <?php foreach ($labelcode0 as $j => $ld): ?>
                 <?php if ($j === 0 && $leftheader != ''): ?>
-                    <td class='visible-xs leftheader'><?php echo $leftheader; ?></td>
+                    <td class='visible-xs leftheader'><?php echo $leftheader; ?></td><!-- this break column count : no visual issue, but HTML issue : A table row was X columns wide and exceeded the column count established using column markup. -->
                 <?php endif; ?>
                 <td class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item">
                     <input
@@ -149,7 +148,7 @@
                 <!-- Second label set -->
                 <?php foreach ($labelcode1 as $k => $ld): ?>
                     <?php if ($k === 0 && $rightheader != ''): ?>
-                        <td class='visible-xs rightheader'><?php echo $rightheader; ?></td>
+                        <td class='visible-xs rightheader'><?php echo $rightheader; ?></td><!-- this break column count : no visual issue, but HTML issue : A table row was X columns wide and exceeded the column count established using column markup. -->
                     <?php endif; ?>
                     <td class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item">
                         <input
@@ -173,7 +172,7 @@
 
             <!-- No answer column -->
             <?php if ($shownoanswer): ?>
-                <td class="dual_scale_no_answer answer-item radio-item noanswer-item">
+                <td class="answer-item radio-item noanswer-item">
                     <?php if (count($labelans1) > 0): ?>
                             <input
                                 type='radio'
