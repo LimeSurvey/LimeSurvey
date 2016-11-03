@@ -24,7 +24,7 @@
         </colgroup>
     <?php endif; ?>
     <?php if ($shownoanswer || $rightexists): ?>
-        <col class="separator rigth_separator" style="width: <?php echo $rigthwidth; ?>">
+        <col class="separator right_separator" style="width: <?php echo $rightwidth; ?>">
     <?php endif; ?>
     <?php if ($shownoanswer): ?>
         <col class="col-no-answer"  style="width: <?php echo $cellwidth; ?>%;" />
@@ -42,7 +42,7 @@
                 <?php endif; ?>
 
                 <?php if($shownoanswer || $rightexists): ?>
-                    <td class="header_separator <?php echo $rigthclass; ?>"></td>
+                    <td class="header_separator <?php echo $rightclass; ?>"></td>
                     <?php if($shownoanswer): ?>
                         <th class="header_no_answer"></th>
                     <?php endif; ?>
