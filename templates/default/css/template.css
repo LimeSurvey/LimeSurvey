@@ -165,6 +165,8 @@ padding-top:1em;padding-bottom:1em;
 .js td.radio-item,.js td.checkbox-item{
     cursor: pointer;
 }
+/* Show more the heading in table */
+.ls-answers .ls-heading th{font-weight:700}
 /* Max width for some answer part */
 @media (min-width: 768px) {
   .yesno-button,.gender-button {
@@ -216,15 +218,6 @@ html body .navbar.navbar-default.navbar-fixed-top {
     min-height:60px;
 }
 
-/* For striped tables */
-
-/* Make sure table covers hole page */
-table {
-    width: 100%;
-}
-
-
-
 /* Wrap text in e.g. gender button "No answer */
 .wrap-normal {
     white-space: normal;
@@ -248,27 +241,6 @@ table {
      vertical-align: middle;
 }
 
-/* Make file upload modal fit to iframe */
-.file-upload-modal-body iframe {
-    height: inherit;
-    width: 100%;
-    border: none;
-}
-.file-upload-modal-body {
-    padding: 0;
-    height: 500px;
-}
-.file-upload-modal-footer {
-    margin-top: 0;
-}
-
-.slider.slider-horizontal {
-    width: 100%;
-
-    /* The reset button will be under the slider, so allow some margin */
-    margin-bottom: 1em;
-}
-
 #yii-flash-message {
     margin-top: 3em;
 }
@@ -281,24 +253,11 @@ table {
     vertical-align: middle !important;
 }
 
-table.table-multi-text tbody tr th {
-    vertical-align: middle;
-}
-
-table.ls-answers.subquestion-list.questions-list.table-multi-text thead tr th {
-    text-align: center;
-}
 
 /* Used for date-picker icon within input */
 .form-control-feedback {
     right: 1em;
     left: auto;
-}
-
-/* Used for multiple numeric sum and remain
- * Overwrite Bootstrap label font-size 75% */
-.label {
-    font-size: 90%;
 }
 
 body .navbar-default .navbar-brand:hover {
@@ -308,11 +267,6 @@ body .navbar-default .navbar-brand:hover {
 /* Only use <label> to get vertical align easy. Don't want boldness. */
 .no-label {
     font-weight: normal;
-}
-
-/* Center radio buttons in array-by-column */
-.table-array-by-column td.radio-item.text-center.answer-item {
-    padding-left: 47px;
 }
 
 table > tbody > tr > td.ddprefix {

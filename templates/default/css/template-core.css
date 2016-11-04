@@ -5,9 +5,9 @@
 .ls-answers img,.ls-answers video,.ls-answers svg{
   max-width: 100%;height: auto !important;/* HTML included add width and height : force it */
 }
-label, th {
-    font-weight: normal;
-}
+/* The sub question part must not be more visible than question */
+.ls-answers label,.ls-answers th{font-weight:400}
+
 /* Show input number at right alignment */
 [data-number='1']{text-align:right}
 .dir-rtl [data-number='1']{text-align:left}
