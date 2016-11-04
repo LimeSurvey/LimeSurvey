@@ -38,7 +38,7 @@
 
     <?php foreach ($aSubQuestions as $ansrow): ?>
         <!-- <tr> -->
-        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>"
+        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>">
             <!-- Answer text (actual question) -->
 
             <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?>">
@@ -127,7 +127,7 @@
                 <?php if ($ddprefix != ''): ?>
                     <div class="ddprefix ls-input-group-extra"><?php echo $ddprefix; ?></div>
                 <?php endif; ?>
-                <select class='form-control' name="<?php echo $ansrow['myfname1']; ?>" id="answer<?php echo $ansrow['myfid1']; ?>" aria-labelledby="label-<?php echo $ansrow['myfname']; ?>"">
+                <select class='form-control' name="<?php echo $ansrow['myfname1']; ?>" id="answer<?php echo $ansrow['myfid1']; ?>" aria-labelledby="label-<?php echo $ansrow['myfname']; ?>">
                     <!-- Please choose... -->
                     <?php if ($ansrow['sActualAnswer1'] == ''): ?>
                         <option value="" <?php echo SELECTED; ?> ><?php eT('Please choose...'); ?></option>

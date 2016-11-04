@@ -6154,12 +6154,12 @@ function do_array_dual($ia)
             $aData['separatorwidth'] = $centerexists ? $answerwidth/2 : $separatorwidth;
             $aData['shownoanswer'] = $shownoanswer;
             $aData['rightexists'] = $rightexists;
-            $aData['rigthwidth'] = $rightexists ? $answerwidth/2 : $rightwidth;
+            $aData['rightwidth'] = $rightexists ? $answerwidth/2 : $rightwidth;
 
             // build first row of header if needed
             $aData['leftheader'] = $leftheader;
             $aData['rightheader'] = $rightheader;
-            $aData['rigthclass'] = ($rightexists) ? " header_answer_text_right" : "";
+            $aData['rightclass'] = ($rightexists) ? " header_answer_text_right" : "";
 
             // And no each line of body
             $trbc = '';

@@ -311,34 +311,14 @@ class UploaderController extends SurveyController {
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template'])."/";
         App()->clientScript->registerScript('sNeededScriptVar',$sNeededScriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('sLangScriptVar',$sLangScriptVar,CClientScript::POS_HEAD);
+        $oTemplate = Template::model()->getInstance('',$surveyid);
+        Yii::app()->clientScript->registerPackage( 'survey-template' );
+
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js');
         App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
         App()->bootstrap->register();
-
-        if (file_exists($sTemplateDir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
-        {
-            Yii::app()->getClientScript()->registerCssFile("{$sTemplateUrl}jquery-ui-custom.css");
-        }
-        elseif(file_exists($sTemplateDir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
-        {
-            Yii::app()->getClientScript()->registerCssFile("{$sTemplateUrl}jquery-ui.css");
-        }
-        else
-        {
-            Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
-        }
-
-        $oTemplate = Template::model()->getInstance('', $aSurveyInfo['sid']);
-        foreach ($oTemplate->packages as $package)
-        {
-            App()->getClientScript()->registerPackage((string) $package);
-        }
-        foreach ($oTemplate->config->files->css->filename as $cssFile)
-        {
-            App()->clientScript->registerCssFile("{$sTemplateUrl}" . (string) $cssFile);
-        }
 
         $header = getHeader($meta);
 
