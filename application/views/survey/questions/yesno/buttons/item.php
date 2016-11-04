@@ -21,7 +21,7 @@
             <?php echo $yChecked; ?>
         />
         <label for="answer<?php echo $name;?>Y">
-            <span class="fa fa-check" aria-hidden="true"></span> <?php eT('Yes');?>
+            <span class="fa fa-check ls-icon" aria-hidden="true"></span> <?php eT('Yes');?>
         </label>
     </li>
     <!-- No -->
@@ -34,7 +34,7 @@
             <?php echo $nChecked; ?>
         />
         <label for="answer<?php echo $name;?>Y">
-            <span class="fa fa-ban" aria-hidden="true"></span> <?php eT('No');?>
+            <span class="fa fa-ban ls-icon" aria-hidden="true"></span> <?php eT('No');?>
         </label>
     </li>
 
@@ -49,7 +49,7 @@
                 <?php echo $naChecked; ?>
             />
             <label for="answer<?php echo $name;?>Y">
-                <span class="fa fa-circle-thin" aria-hidden="true"></span> <?php eT('No answer');?>
+                <span class="fa fa-circle-thin ls-icon" aria-hidden="true"></span> <?php eT('No answer');?>
             </label>
         </li>
     <?php endif;?>

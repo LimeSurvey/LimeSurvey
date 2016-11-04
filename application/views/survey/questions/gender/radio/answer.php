@@ -54,7 +54,6 @@
                 id="answer<?php echo $name;?>"
                 value=""
                 <?php echo $naChecked;?>
-                onclick="<?php echo $checkconditionFunction; ?>"
             />
             <label for="answer<?php echo $name;?>" class="control-label radio-label">
                 <?php eT('No answer'); ?>

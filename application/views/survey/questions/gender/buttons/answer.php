@@ -25,7 +25,7 @@
             <?php echo $fChecked; ?>
         />
         <label for="answer<?php echo $name;?>F">
-            <span class="fa fa-venus" aria-hidden="true"></span> <?php eT('Female');?>
+            <span class="fa fa-venus ls-icon" aria-hidden="true"></span> <?php eT('Female');?>
         </label>
     </li>
 
@@ -40,7 +40,7 @@
             <?php echo $mChecked;?>
         />
         <label for="answer<?php echo $name;?>M">
-            <span class="fa fa-mars" aria-hidden="true"></span> <?php eT('Male');?>
+            <span class="fa fa-mars ls-icon" aria-hidden="true"></span> <?php eT('Male');?>
         </label>
     </li>
 
@@ -56,7 +56,7 @@
             <?php echo $naChecked;?>
         />
         <label for="answer<?php echo $name;?>">
-            <span class="fa fa-genderless" aria-hidden="true"></span> <?php eT('No answer'); ?>
+            <span class="fa fa-genderless ls-icon" aria-hidden="true"></span> <?php eT('No answer'); ?>
         </label>
     </li>
     <?php endif;?>

@@ -19,10 +19,6 @@ body
   }
 }
 
- div[id^="group-"]>div.group-container {
-     background-color: transparent;
- }
-
 .group-title-container {
   padding: 1em;
   background:transparent;
@@ -87,15 +83,11 @@ padding-top:1em;padding-bottom:1em;
 .dir-rtl .ls-questionhelp:before {
     right:0;
 }
- /**
- * Navigator
- */
 
- #navigator-container {
-     margin-top: 4em;
-     padding-top: 1em;
-     padding-bottom: 1em;
- }
+
+/**
+ * Unsure part
+ */
 
  #main-col {
      margin-top: 1em;
@@ -161,12 +153,19 @@ padding-top:1em;padding-bottom:1em;
 
 }
 
-html, body {
-    height: 90%;
-}
 /**
- * Max width for some answer part
+ * Specific question part
  */
+.radio-item label,.checkbox-item label {
+    cursor: pointer;
+}
+.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+    cursor: pointer;
+}
+.js td.radio-item,.js td.checkbox-item{
+    cursor: pointer;
+}
+/* Max width for some answer part */
 @media (min-width: 768px) {
   .yesno-button,.gender-button {
     float: left;
@@ -175,16 +174,14 @@ html, body {
     width: 50%;
   }
 }
-/**
- * table color
- */
+/* table color */
 .ls-even{
 background-color:#f9f9f9;
 }
-/* This, maybe, work in CSS4 :) */
-/* Actual solution : js only*/
-.table-col-hover col:hover,
-.table-col-hover col.hover{
+
+.table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
+.table-col-hover col.hover /* Actual solution : js only*/
+{
     background-color: #ecf0f1;
 }
 @media
@@ -198,25 +195,12 @@ only screen and (max-width: 760px),
  * Gender buttons
  */
 
-/* Not selected */
-
-.gender-button button{
-    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.16), 2px 2px 2px 0 rgba(0, 0, 0, 0.12);
-    margin-left: 1em;
-}
-
-/* selected */
-.gender-button .btn:focus {
-    box-shadow: none;
-}
-
-.gender-button .btn:focus .gender-text{
-    text-decoration: underline;
-}
-
 /* General */
-.gender-button .btn span {
+.button-item .ls-icon {
     display: block;
+}
+.button-item .ls-icon {
+    font-size: 1.4em;
 }
 
 html body .navbar.navbar-default.navbar-fixed-top {
@@ -225,9 +209,7 @@ html body .navbar.navbar-default.navbar-fixed-top {
 .file-upload-modal,.modal{
     z-index: 2001;
 }
-.gender-button .gender-icon {
-    font-size: 2em;
-}
+
 /* Title of survey can be big, allow multiline, but leave the minimum */
 .navbar-brand {
     height: auto;
