@@ -11,7 +11,7 @@
 ?>
 
 <!-- year -->
-<label for="year<?php echo $yearId; ?>" class="hide">
+<label for="year<?php echo $yearId; ?>" class="sr-only">
     <?php eT('Year'); ?>
 </label>
 

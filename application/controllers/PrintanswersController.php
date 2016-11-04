@@ -72,15 +72,13 @@
                 $sLanguage = Yii::app()->getConfig("defaultlang");
             }
             SetSurveyLanguage($iSurveyID, $sLanguage);
-            SurveyRuntimeHelper->setJavascriptVar($iSurveyID);
-
+            Yii::import('application.helpers.SurveyRuntimeHelper');
+            $SurveyRuntimeHelper = new SurveyRuntimeHelper();
+            $SurveyRuntimeHelper->setJavascriptVar($iSurveyID);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             $oTemplate = Template::model()->getInstance(null, $iSurveyID);
-            if($oTemplate->cssFramework == 'bootstrap')
-            {
-                App()->bootstrap->register();
-            }
-
+            /* Need a Template function to replace this line */
+            Yii::app()->clientScript->registerPackage( 'survey-template' );
 
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
