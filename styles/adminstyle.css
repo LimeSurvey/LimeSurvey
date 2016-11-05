@@ -262,3 +262,23 @@ li input+label { display: inline;}
 iframe#dialog{display:block; width:100%!important; height:100%!important;margin:0;padding:0;border:0}
 /* fix .form30 css for cke_editor table */
 .form30 table.cke_editor{float:none}
+
+/* response table : must fix it at 50/50 */
+.detailbrowsetable{width:100%;table-layout:fixed;}
+.detailbrowsetable th{width:45%}
+.detailbrowsetable td{width:55%;}
+#responsedetail{max-width:100%;width:100%;table-layout:fixed;}
+#responsedetail td{width:50%}
+#responsedetail tr td:first-child{width:30%}
+
+/* Tag is put in question part : must be reviewed ? */
+#responsedetail table{table-layout:auto;}
+#responsedetail td,#responsedetail th
+{
+-ms-word-break: break-all;
+     word-break: break-all;
+     word-break: break-word;
+-webkit-hyphens: auto;
+   -moz-hyphens: auto;
+        hyphens: auto;
+}

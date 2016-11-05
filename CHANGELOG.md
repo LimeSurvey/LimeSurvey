@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## Unreleased
+
+### Fix
+- Table in reponse view and response edit can take a big width and are unusuable
+
 ## [1.0.28] - 2016-10-23
 
 ### Fix
