@@ -1139,7 +1139,6 @@ class database extends Survey_Common_Action
         }
         else
         {
-
             // For Bootstrap Version usin YiiWheels switch :
             $_POST['mandatory'] = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
             $_POST['other'] = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
