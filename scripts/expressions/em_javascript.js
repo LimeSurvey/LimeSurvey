@@ -17,11 +17,38 @@
  * Copyright (c) 2013 Kevin van Zonneveld (http://kvz.io)
  * and Contributors (http://phpjs.org/authors)
  */
+/**
+ * Trigger event relevance true/false
+ */
+(function($) {
+    $.fn.extend({
+        relevanceOn: function(options) {
+            var defaults = {
+                style: 'hidden'
+            };
+            options = $.extend(defaults, options);
+            options.status = true;
+            $(this).trigger('relevance',options);
+            return this;
+        },
+        relevanceOff: function(options) {
+            var defaults = {
+                style: 'hidden'
+            };
+            options = $.extend(defaults, options);
+            options.status = false;
+            $(this).trigger('relevance',options);
+            return this;
+        }
+    });
+})(jQuery);
 
-/* Default event to trigger on answer part
- * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations
- * Actually only for list with comment and select in ranking
+/**
+ * Default event to trigger on answer part
+ * Launch function according to anser-item type
+ * @todo : checkconditions/fixnum_checkconditions in this function
  **/
+/* text/number item */
 $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item :text:not([onkeyup])",function(event){
     // 'keyup' can be replaced by event.type (but not really needed)
     // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
@@ -34,12 +61,14 @@ $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item
         checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
     }
 });
+/* select/dropdown item */
 $(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
     //~ if($.isFunction(window.ExprMgr_process_relevance_and_tailoring )){
         //~ ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
     //~ }
 });
+/* radio/button item */
 $(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
     //~ $('#java'+$(this).attr("name")).val($(this).val());
@@ -47,9 +76,14 @@ $(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:n
         //~ ExprMgr_process_relevance_and_tailoring("click",$(this).attr("name"),"radio");
     //~ }
 });
+/* checkbox item */
 $(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
+
+/**
+ * All EM function (see em_core_helper.php)
+ */
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty

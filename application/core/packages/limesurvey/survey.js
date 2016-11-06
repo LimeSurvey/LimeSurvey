@@ -8,6 +8,39 @@
  * Always set an empty LSvar
  */
 var LSvar = LSvar || { };
+
+/**
+ * Action to do when relevance is set to on or off
+ */
+function triggerEmRelevance(){
+    /* Global ! question and subquestion */
+    $(document).on('relevance',function(event,data) {
+        if(data.style=='disabled'){
+            if(data.status){
+                $(event.target).prop("disabled", false ); // Review for ranking
+                $(event.target).closest("li,tr").removeClass("ls-unrelevant ls-disabled");
+            }else{
+                $(event.target).prop( "disabled", true );
+                $(event.target).closest("li,tr").addClass("ls-unrelevant ls-disabled");/* target is set to input : must move to line : one event needed only */
+            }
+        }
+        else{ // data.style=='hidden'
+            if(data.status){
+                $(event.target).removeClass("ls-unrelevant ls-hidden");
+                //$(event.target).show(); /* Set inlined display:none : class is better : can be replaced in template BUT : display none use !important */
+            }else{
+                $(event.target).addClass("ls-unrelevant ls-hidden");
+                //$(event.target).hide();
+            }
+        }
+    });
+    /* @todo : updateColors replacement */
+    $(".subquestion-list,.answers-list").on('relevance',function(event,data) {
+
+    });
+
+}
+
 /**
  * Manage the index
  */
