@@ -34,6 +34,16 @@ function triggerEmRelevance(){
             }
         }
     });
+    /* In All in one : show/hide group acccirding to number of ls-hidden question */
+    $("body.allinone [id^='group-']").on('relevance',"[id^='question']",function(event,data) {
+        if(data.status){
+            $(this).closest("[id^='group-']").removeClass("ls-unrelevant ls-hidden");
+        }else{
+            if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
+                $(this).closest("[id^='group-']").addClass("ls-unrelevant ls-hidden");
+            }
+        }
+    });
     /* @todo : updateColors replacement */
     $(".subquestion-list,.answers-list").on('relevance',function(event,data) {
 
