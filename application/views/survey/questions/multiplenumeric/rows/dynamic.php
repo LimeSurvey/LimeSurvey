@@ -10,56 +10,48 @@
  * @var $suffix
  */
 ?>
-<?php if($sumRemainingEqn || $sumEqn):?>
-  <div class="col-sm-push-<?php echo $sLabelWidth; ?> col-sm-<?php echo $sInputContainerWidth; ?>">
-    <div class="ls-group-remaining-total">
-      <table>    
-        <?php if($sumRemainingEqn):?>
-          <tr class="form-group ls-group-remaining">
-            <td class="control-label">
-              <?php eT('Remaining: ');?>
-            </td>
-            
-            <td class="ls-input-group">
-              <?php if ($prefix != ''): ?>
+<?php if($sumRemainingEqn):?>
+    <li class="form-group ls-group-remaining">
+        <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
+            <?php eT('Remaining: ');?>
+        </div>
+        <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+            <?php if ($prefix != ''): ?>
                 <div class="ls-input-group-extra prefix-text prefix text-right">
-                  <?php echo $prefix; ?>
+                    <?php echo $prefix; ?>
                 </div>
-              <?php endif; ?>
-              <div id="remainingvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-remaining" data-number="1"><!-- alternative class : form-control : display like an input:text -->
-                      {<?php echo $sumRemainingEqn;?>}
-              </div>
-              <?php if ($suffix != ''): ?>
+            <?php endif; ?>
+            <div id="remainingvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-remaining" data-number="1"><!-- alternative class : form-control : display like an input:text -->
+                {<?php echo $sumRemainingEqn;?>}
+            </div>
+            <?php if ($suffix != ''): ?>
                 <div class="ls-input-group-extra suffix-text suffix text-left">
-                  <?php echo $suffix; ?>
+                    <?php echo $suffix; ?>
                 </div>
-              <?php endif; ?>
-            </td>
-          </tr>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
+    </li>
+<?php endif; ?>
 
-        <?php if($sumEqn):?>
-          <tr class="form-group ls-group-total">
-            <td class="control-label">
-              <?php eT('Total: ');?>
-            </td>
-            <td class="ls-input-group">
-              <?php if ($prefix != ''): ?>
+<?php if($sumEqn):?>
+    <li class="form-group ls-group-total">
+        <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
+            <?php eT('Total: ');?>
+        </div>
+       <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+            <?php if ($prefix != ''): ?>
                 <div class="ls-input-group-extra prefix-text prefix text-right">
-                  <?php echo $prefix; ?>
+                    <?php echo $prefix; ?>
                 </div>
-              <?php endif; ?>
-              <div id="totalvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-total" data-number="1">
-              {<?php echo $sumEqn; ?>}
-              </div>
-              <?php if ($suffix != ''): ?>
+            <?php endif; ?>
+            <div id="totalvalue_<?php echo $id; ?>" class="form-control-static numeric dynamic-total" data-number="1">
+                {<?php echo $sumEqn; ?>}
+            </div>
+            <?php if ($suffix != ''): ?>
                 <div class="ls-input-group-extra suffix-text suffix text-left">
-                  <?php echo $suffix; ?>
+                    <?php echo $suffix; ?>
                 </div>
-              <?php endif; ?>
-            </td>
-          </tr>
-        <?php endif; ?>
-      </table>
-   </div>
+            <?php endif; ?>
+        </div>
+    </li>
 <?php endif; ?>
