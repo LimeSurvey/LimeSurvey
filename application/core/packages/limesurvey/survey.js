@@ -20,19 +20,26 @@ function triggerEmRelevance(){
 
 /* On question */
 function triggerEmRelevanceQuestion(){
+    /* Action on this question */
     $("[id^='question']").on('relevance:on',function(event,data) {
         if(event.target != this) return; /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. Don't want to stop propagation. */
         $(this).removeClass("ls-unrelevant ls-hidden");
-        $(this).closest("[id^='group-']:not(.ls-unrelevant)").removeClass("ls-hidden");
     });
     $("[id^='question']").on('relevance:off',function(event,data) {
         if(event.target != this) return;
         $(this).addClass("ls-unrelevant ls-hidden");
+    });
+    /* In all in one mode : need updating group too */
+    $(".allinone [id^='group-']:not(.ls-unrelevant) [id^='question']").on('relevance:on',function(event,data) {
+        if(event.target != this) return;
+        $(this).closest("[id^='group-']").removeClass("ls-hidden");
+    });
+    $(".allinone [id^='group-']:not(.ls-unrelevant) [id^='question']").on('relevance:off',function(event,data) {
+        if(event.target != this) return;
         if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
             $(this).closest("[id^='group-']").addClass("ls-hidden");
         }
     });
-
 }
 function triggerEmRelevanceGroup(){
     $("[id^='group-']").on('relevance:on',function(event,data) {
