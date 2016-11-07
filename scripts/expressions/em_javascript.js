@@ -17,21 +17,6 @@
  * Copyright (c) 2013 Kevin van Zonneveld (http://kvz.io)
  * and Contributors (http://phpjs.org/authors)
  */
-/**
- * Trigger event relevance true/false
- */
-(function($) {
-    $.fn.extend({
-        relevanceOn: function(options) {
-            $(this).trigger('relevance:on',options);
-            return this;
-        },
-        relevanceOff: function(options) {
-            $(this).trigger('relevance:off',options);
-            return this;
-        }
-    });
-})(jQuery);
 
 /**
  * Default event to trigger on answer part
