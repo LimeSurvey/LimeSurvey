@@ -7218,22 +7218,6 @@
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-                        // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
-                        if( ! empty($sq['type'])) {
-                            // js to fix colors
-                            $relParts[] = "updateColors($('#question".$arg['qid']."').find('table.question'));\n";
-                            // js to fix headings
-                            $repeatheadings = Yii::app()->getConfig("repeatheadings");
-                            if(isset($LEM->qattr[$arg['qid']]['repeat_headings']) && $LEM->qattr[$arg['qid']]['repeat_headings'] !== "") {
-                                $repeatheadings = $LEM->qattr[$arg['qid']]['repeat_headings'];
-                            }
-                            if($repeatheadings > 0)
-                            {
-                                $relParts[] = "updateHeadings($('#question".$arg['qid']."').find('table.question'), "
-                                .$repeatheadings.");\n";
-                            }
-                        }
-                        // end
                         //this change is optional....changes to array should prevent "if( )"
                         $relParts[] = "  if ( " . (empty($sq['relevancejs'])?'1':$sq['relevancejs']) . " ) {\n";
                         if ($afHide)
@@ -7242,15 +7226,15 @@
                         }
                         else
                         {
-                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').relevanceOn({ style : 'disabled' });\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                         }
                         if ($sq['isExclusiveJS'] != '')
                         {
                             $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').relevanceOff({ style : 'disabled' });\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                             $relParts[] = "    }\n";
                             $relParts[] = "    else {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').relevanceOn({ style : 'disabled' });\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                             $relParts[] = "    }\n";
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -7262,23 +7246,23 @@
                             if ($sq['irrelevantAndExclusiveJS'] != '')
                             {
                                 $relParts[] = "    if ( " . $sq['irrelevantAndExclusiveJS'] . " ) {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').relevanceOff({ style : 'disabled' });\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                                 $relParts[] = "    }\n";
                                 $relParts[] = "    else {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').relevanceOn({ style : 'disabled' });\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                                 if ($afHide)
                                 {
                                     $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').relevanceOff();\n";
                                 }
                                 else
                                 {
-                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "$inputSelector').relevanceOff({ style : 'disabled' });\n";
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                                 }
                                 $relParts[] = "    }\n";
                             }
                             else
                             {
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').relevanceOff({ style : 'disabled' });\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                             }
                         }
                         else
@@ -7289,7 +7273,7 @@
                             }
                             else
                             {
-                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').relevanceOff({ style : 'disabled' });\n";
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                             }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";

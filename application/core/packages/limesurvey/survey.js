@@ -17,11 +17,11 @@ function triggerEmRelevance(){
     $(document).on('relevance',function(event,data) {
         if(data.style=='disabled'){
             if(data.status){
-                $(event.target).prop("disabled", false ); // Review for ranking
-                $(event.target).closest("li,tr").removeClass("ls-unrelevant ls-disabled");
+                $(event.target).removeClass("ls-unrelevant ls-disabled");
+                $(event.target).find('input').prop("disabled", false );
             }else{
-                $(event.target).prop( "disabled", true );
-                $(event.target).closest("li,tr").addClass("ls-unrelevant ls-disabled");/* target is set to input : must move to line : one event needed only */
+                $(event.target).addClass("ls-unrelevant ls-disabled");
+                $(event.target).find('input').prop( "disabled", true );
             }
         }
         else{ // data.style=='hidden'
