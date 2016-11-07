@@ -3183,29 +3183,3 @@ function time () {
     return Math.floor(new Date().getTime() / 1000);
 }
 
-// updates the repeated headings in a dynamic table
-function updateHeadings(tab, rep)
-{
-    tab.find('.repeat').remove();
-    var header = tab.find('thead>tr');
-    var trs = tab.find('tr:visible');
-    trs.each(function(i, tr)
-    {
-        // add heading but not for the first and the last rows
-        if(i != 0 && i % rep == 0 && i != trs.length-1)
-        {
-            header.clone().addClass('repeat').addClass('headings').insertAfter(tr);
-        }
-    });
-}
-
-// updates the colors in a dynamic table
-function updateColors(tab)
-{
-    $(tab).find('tr:not(.ls-heading):visible').each(function(i, tr)
-    {
-        console.log($(tr));
-        // fix line colors
-        $(tr).removeClass('ls-odd ls-even').addClass(((i+1)%2 == 0) ? "ls-odd" : "ls-even");
-    });
-}
