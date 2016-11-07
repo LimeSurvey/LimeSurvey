@@ -1346,7 +1346,7 @@ class participantsaction extends Survey_Common_Action
         }
 
         // Generate HTML for alternative languages
-        $languagesOfAttribute = [];
+        $languagesOfAttribute = array();
         foreach($model->participant_attribute_names_lang as $single_language)
         {
             $languagesOfAttribute[$single_language['lang']] = $single_language['attribute_name']; 
