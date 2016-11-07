@@ -17,8 +17,8 @@
 *
 * This controller performs export actions
 *
-* @package		LimeSurvey
-* @subpackage	Backend
+* @package        LimeSurvey
+* @subpackage    Backend
 */
 class export extends Survey_Common_Action {
 
@@ -349,7 +349,7 @@ class export extends Survey_Common_Action {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         //for scale 1=nominal, 2=ordinal, 3=scale
 
-        //		$typeMap = $this->_getTypeMap();
+        //        $typeMap = $this->_getTypeMap();
 
         $filterstate = incompleteAnsFilterState();
         $spssver = returnGlobal('spssver');
@@ -358,7 +358,7 @@ class export extends Survey_Common_Action {
         {
             if ( ! Yii::app()->session['spssversion'] )
             {
-                Yii::app()->session['spssversion'] = 2;	//Set default to 2, version 16 or up
+                Yii::app()->session['spssversion'] = 2;    //Set default to 2, version 16 or up
             }
 
             $spssver = Yii::app()->session['spssversion'];
@@ -373,14 +373,14 @@ class export extends Survey_Common_Action {
 
         switch ( $spssver )
         {
-            case 1:	//<16
-                $iLength	 = '255'; // Set the max text length of the Value
+            case 1:    //<16
+                $iLength     = '255'; // Set the max text length of the Value
                 break;
-            case 2:	//>=16
-                $iLength	 = '16384'; // Set the max text length of the Value
+            case 2:    //>=16
+                $iLength     = '16384'; // Set the max text length of the Value
                 break;
             default:
-                $iLength	 = '16384'; // Set the max text length of the Value
+                $iLength     = '16384'; // Set the max text length of the Value
         }
 
         $headerComment = '*$Rev: 121017 $' . " $filterstate $spssver.\n";
@@ -938,6 +938,10 @@ class export extends Survey_Common_Action {
 
         foreach($aSurveys as $iSurveyID)
         {
+            $iSurveyID=filter_var($iSurveyID,FILTER_VALIDATE_INT);
+            if ($iSurveyID===false) {
+                continue;
+            }
             if(Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export'))
             {
                 $archiveName                    = "";
