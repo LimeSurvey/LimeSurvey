@@ -1,7 +1,7 @@
 <?php
 /**
  * This view display the result of backup process, and warn about database
- * 
+ *
  * @var int $destinationBuild the destination build
  * @var string $basefilename the base file name of the backup file
  * @var string $tempdir the temp dir where the backup file is saved

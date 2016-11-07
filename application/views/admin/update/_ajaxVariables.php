@@ -13,6 +13,7 @@
   * Test UPDATE
   */
 $p = new CHtmlPurifier();
+/* The Purifier makes not mucg sense as it does not really prevent SQL injection */
 ?>
 
 <script>
@@ -21,18 +22,17 @@ $p = new CHtmlPurifier();
 </script>
 
 <?php if(isset($_REQUEST['update'])):?>
-    <input type="hidden" id="update_step" value="<?php echo $p->purify($_REQUEST['update']); ?>"/>
-
+    <?php echo CHtml::hiddenField('update_step',$p->purify($_REQUEST['update']),array('id'=>'update_step'));?>
 <?php else:?>
-    <input type="hidden" id="update_step" value=""/>
+    <?php echo CHtml::hiddenField('update_step','',array('id'=>'update_step'));?>
 <?php endif;?>
 
 <?php if(isset($_REQUEST['destinationBuild'])):?>
-    <input type="hidden" id="destinationBuildForAjax" value="<?php echo $p->purify($_REQUEST['destinationBuild']); ?>"/>
+    <?php echo CHtml::hiddenField('destinationBuildForAjax',(int)$_REQUEST['destinationBuild'],array('id'=>'destinationBuildForAjax'));?>
 <?php endif;?>
 
 <?php if(isset($_REQUEST['access_token'])):?>
-    <input type="hidden" id="access_tokenForAjax" value="<?php echo $p->purify($_REQUEST['access_token']); ?>"/>
+    <?php echo CHtml::hiddenField('access_tokenForAjax',$p->purify($_REQUEST['access_token']),array('id'=>'access_tokenForAjax'));?>
 <?php endif;?>
 
  <input id="updatebothbranchdatas" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getbothbuttons"); ?>"/>
