@@ -234,7 +234,7 @@ class update extends Survey_Common_Action
 
                 if (Yii::app()->request->getPost('datasupdateinfo'))
                 {
-                    $updateinfos= unserialize ( base64_decode( ( Yii::app()->request->getPost('datasupdateinfo') )));
+                    $updateinfos= json_decode( base64_decode( Yii::app()->request->getPost('datasupdateinfo') ),true);
 
                     $updateModel = new UpdateForm();
                     $backupInfos = $updateModel->backupFiles($updateinfos);
@@ -286,7 +286,7 @@ class update extends Survey_Common_Action
 
                 if ( Yii::app()->request->getPost('datasupdateinfo') )
                 {
-                    $updateinfos = unserialize ( base64_decode( ( Yii::app()->request->getPost('datasupdateinfo') )));
+                    $updateinfos = json_decode ( base64_decode ( Yii::app()->request->getPost('datasupdateinfo') ), true);
 
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
                     $updateModel = new UpdateForm();
@@ -582,7 +582,7 @@ class update extends Survey_Common_Action
      */
     private function _parseToView($updateinfos)
     {
-        $data=serialize($updateinfos);
+        $data=json_encode($updateinfos);
         return base64_encode($data);
     }
 
