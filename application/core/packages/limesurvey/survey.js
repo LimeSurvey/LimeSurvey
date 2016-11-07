@@ -13,44 +13,53 @@ var LSvar = LSvar || { };
  * Action to do when relevance is set to on or off
  */
 function triggerEmRelevance(){
-    /* Global ! question and subquestion */
-    $(document).on('relevance',function(event,data) {
-        if(data.style=='disabled'){
-            if(data.status){
-                $(event.target).removeClass("ls-unrelevant ls-disabled");
-                $(event.target).find('input').prop("disabled", false );
-            }else{
-                $(event.target).addClass("ls-unrelevant ls-disabled");
-                $(event.target).find('input').prop( "disabled", true );
-            }
-        }
-        else{ // data.style=='hidden'
-            if(data.status){
-                $(event.target).removeClass("ls-unrelevant ls-hidden");
-                //$(event.target).show(); /* Set inlined display:none : class is better : can be replaced in template BUT : display none use !important */
-            }else{
-                $(event.target).addClass("ls-unrelevant ls-hidden");
-                //$(event.target).hide();
-            }
-        }
-    });
-    /* In All in one : show/hide group acccirding to number of ls-hidden question */
-    $("body.allinone [id^='group-']").on('relevance',"[id^='question']",function(event,data) {
-        if(data.status){
-            $(this).closest("[id^='group-']").removeClass("ls-unrelevant ls-hidden");
-        }else{
-            if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
-                $(this).closest("[id^='group-']").addClass("ls-unrelevant ls-hidden");
-            }
-        }
-    });
-    /* @todo : updateColors replacement */
-    $(".subquestion-list,.answers-list").on('relevance',function(event,data) {
+    triggerEmRelevanceQuestion();
+    triggerEmRelevanceGroup();
+    triggerEmRelevanceSubQuestion();
+}
 
+/* On question */
+function triggerEmRelevanceQuestion(){
+    $("[id^='question']").on('relevance:on',function(event,data) {
+        if(event.target != this) return; /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. Don't want to stop propagation. */
+        $(this).removeClass("ls-unrelevant ls-hidden");
+        $(this).closest("[id^='group-']:not(.ls-unrelevant)").removeClass("ls-hidden");
+    });
+    $("[id^='question']").on('relevance:off',function(event,data) {
+        if(event.target != this) return;
+        $(this).addClass("ls-unrelevant ls-hidden");
+        if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
+            $(this).closest("[id^='group-']").addClass("ls-hidden");
+        }
     });
 
 }
-
+function triggerEmRelevanceGroup(){
+    $("[id^='group-']").on('relevance:on',function(event,data) {
+        if(event.target != this) return;
+        $(this).removeClass("ls-unrelevant ls-hidden");
+    });
+    $("[id^='group-']").on('relevance:off',function(event,data) {
+        if(event.target != this) return;
+        $(this).addClass("ls-unrelevant ls-hidden");
+    });
+}
+function triggerEmRelevanceSubQuestion(){
+    $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
+        data = $.extend({style:'hidden'}, data);
+        $(this).removeClass("ls-unrelevant ls-"+data.style);
+        if(data.style=='disabled'){
+            $(event.target).find('input').prop("disabled", false );
+        }
+    });
+    $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
+        data = $.extend({style:'hidden'}, data);
+        $(this).addClass("ls-unrelevant ls-"+data.style);
+        if(data.style=='disabled'){
+            $(event.target).find('input').prop("disabled", true );
+        }
+    });
+}
 /**
  * Manage the index
  */

@@ -23,21 +23,11 @@
 (function($) {
     $.fn.extend({
         relevanceOn: function(options) {
-            var defaults = {
-                style: 'hidden'
-            };
-            options = $.extend(defaults, options);
-            options.status = true;
-            $(this).trigger('relevance',options);
+            $(this).trigger('relevance:on',options);
             return this;
         },
         relevanceOff: function(options) {
-            var defaults = {
-                style: 'hidden'
-            };
-            options = $.extend(defaults, options);
-            options.status = false;
-            $(this).trigger('relevance',options);
+            $(this).trigger('relevance:off',options);
             return this;
         }
     });
