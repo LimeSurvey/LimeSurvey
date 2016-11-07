@@ -34,10 +34,10 @@ body
     border-bottom: none;
     background-color: #ecf0f1;
     color: inherit;
-    margin-bottom:2em;
+
 }
 .top-container .top-content{
-padding-top:1em;padding-bottom:1em;
+padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 }
 .top-container .top-content:empty{display:none}
 .group-description:empty{display:none}

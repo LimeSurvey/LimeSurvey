@@ -43,8 +43,9 @@ $(document).ready(function(){
 $(document).ready(function()
 {
     /* Some function are launched in endpage.pstpl */
-    fixBodyPadding();
+    hideEmptyPart();
     addHoverColumn();
+    triggerEmClassChangeTemplate();
 
     // If list of nav-bar action is empty: remove it (else .navbar-toggle is shown on small screen) //
     if(!$("#navbar li").length){
@@ -69,65 +70,6 @@ $(document).ready(function()
             $that.hide();
         }
     });
-
-    $('.group-description-container').each(function(){
-        $that = $(this);
-        if(!$.trim($that.children('div').html()))
-        {
-            $that.hide();
-        }
-    });
-
-    // Hide question help container if empty
-    $('.questionhelp').each(function(){
-        $that = $(this);
-        if(!$.trim($that.html()))
-        {
-            $that.hide();
-        }
-    });
-
-    // Errors
-    if($('.ls-em-tip').length>0)
-    {
-        // On Document Load (the EM js is done before ? */
-        $('.ls-em-tip').each(function(){
-            if($(this).hasClass('ls-em-error'))
-            {
-                $(this).parents('div.questionhelp').removeClass('text-info').addClass('text-danger');
-            }
-        });
-
-        // On em change
-        $('.ls-em-tip').each(function(){
-            $(this).on('classChangeError', function() {
-                $parent = $(this).parent('div.questionhelp');
-                $parent.removeClass('text-info',1);
-                $parent.addClass('text-danger',1);
-
-                if ($parent.hasClass('hide-tip'))
-                {
-                    $parent.removeClass('hide-tip',1);
-                    $parent.addClass('tip-was-hidden',1);
-                }
-
-                $questionContainer = $(this).parents('div.question-container');
-                $questionContainer.addClass('input-error');
-            });
-
-            $(this).on('classChangeGood', function() {
-                $parent = $(this).parents('div.questionhelp');
-                $parent.removeClass('text-danger');
-                $parent.addClass('text-info');
-                if ($parent.hasClass('tip-was-hidden'))
-                {
-                    $parent.removeClass('tip-was-hidden').addClass('hide-tip');
-                }
-                $questionContainer = $(this).parents('div.question-container');
-                $questionContainer.removeClass('input-error');
-            });
-        });
-    }
 
     // Hide the menu buttons at the end of the Survey
     if($(".hidemenubutton").length>0)
@@ -176,13 +118,15 @@ window.alert = function(message, title) {
 
 /**
  * fix padding of body according to navbar-fixed-top
+ * in endpage and in $(window).resize
  */
 function fixBodyPadding(){
     /* The 50 px is fixed in template.css */
-    $("body").css("padding-top",$(".navbar-fixed-top").height+"px")
+    console.log($(".navbar-fixed-top").height());
+    $("body").css("padding-top",$(".navbar-fixed-top").height()+"px")
 }
 /**
- * fix padding of body according to navbar-fixed-top
+ * Set suffix/prefix clone for little screen (at top)
  */
 function sliderSuffixClone(){
 $(".numeric-multi .slider-item .slider-right").each(function(){
@@ -211,22 +155,53 @@ function addHoverColumn(){
     }, ".answer-item");
 
 }
-//Hide the Answer and the helper field
-$(document).ready(
-    function(){
-        $('.question-container').each(function(){
-            if($(this).find('div.answer-container').find('input').length == 1)
-            {
-                if($(this).find('div.answer-container').find('input[type=hidden]').length >0
-                    && $(this).find('div.answer-container').find('select').length < 1)
-                {
-                    $(this).find('div.answer-container').css({display: 'none'});
-                }
-                if(trim($(this).find('div.question-help-container').find('div').html()) == "")
-                {
-                    $(this).find('div.question-help-container').css({display: 'none'});
-                }
-            }
-        });
-    }
-);
+/**
+ * Hide some part if empty
+ * Some can be needed if contain only js
+ * Some are not really needed : little margin only is shown
+ */
+function hideEmptyPart()
+{
+    $(".question-help-container").each(function(){
+        if($(this).text().trim()==""){/* Only if have only script tag inside */
+            $(this).hide();
+        }
+    });
+    $(".group-description").each(function(){
+        if($(this).text().trim()==""){/* Only if have only script tag inside */
+            $(this).hide();
+        }
+    });
+}
+
+/**
+ * Update some class when em-tips is success/error
+ * @see core/package/limesurvey/survey.js:triggerEmClassChange
+ */
+function triggerEmClassChangeTemplate(){
+    $('.ls-em-tip').on('classChangeError', function() {
+        /* If user choose hide-tip : leave it */
+        //~ $parent = $(this).parent('div.qquestion-valid-container');
+        //~ if ($parent.hasClass('hide-tip'))
+        //~ {
+            //~ $parent.removeClass('hide-tip',1);
+            //~ $parent.addClass('tip-was-hidden',1);
+        //~ }
+        $questionContainer = $(this).parents('div.question-container');
+        $questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+    });
+
+    $('.ls-em-tip').on('classChangeGood', function() {
+        /* If user choose hide-tip : leave it */
+        //~ $parent = $(this).parents('div.question-valid-container');
+        //~ $parent.removeClass('text-danger');
+        //~ $parent.addClass('text-info');
+        //~ if ($parent.hasClass('tip-was-hidden'))
+        //~ {
+            //~ $parent.removeClass('tip-was-hidden').addClass('hide-tip');
+        //~ }
+        $questionContainer = $(this).parents('div.question-container');
+        $questionContainer.removeClass('input-error');/* Not working with mandatory question ... */
+    });
+
+}

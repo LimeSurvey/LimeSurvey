@@ -1,5 +1,5 @@
 <!-- Question -->
-<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} question-wrapper row">
+<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} question-container row">
 
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">
@@ -22,7 +22,5 @@
     </div>
 
     <!-- Survey question help -->
-    <div class="question-help-container text-info col-xs-12">
-      {QUESTIONHELP}
-    </div>
+    <div class="question-help-container text-info col-xs-12">{QUESTIONHELP}</div>
 </div>
