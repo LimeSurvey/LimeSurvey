@@ -696,55 +696,69 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
  */
 function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
 {
-    $htmltbody2 = '';
-    $surveyid=$thissurvey['sid'];
+    /* Disabled actually : no inline style */
+    return "";
+    //~ $htmltbody2 = '';
+    //~ $surveyid=$thissurvey['sid'];
+    //~ if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
+    //~ {
+        //~ // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
+        //~ if (isset($aQuestionAttributes['exclude_all_others']))
+        //~ {
+            //~ $disableit=false;
+            //~ foreach(explode(';',trim($aQuestionAttributes['exclude_all_others'])) as $eo)
+            //~ {
+                //~ $eorow = $ia[1] . $eo;
+                //~ if ((!isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow])
+                    //~ && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y"))
+                //~ {
+                    //~ $disableit = true;
+                //~ }
+            //~ }
+            //~ if ($disableit)
+            //~ {
+                //~ $htmltbody2 .= " disabled='disabled'";
+            //~ }
+            //~ else
+            //~ {
+                //~ if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
+                //~ {
+                    //~ $htmltbody2 .= " style='display: none'";
+                //~ }
+                //~ else
+                //~ {
+                    //~ $htmltbody2 .= " disabled='disabled'";
+                //~ }
+            //~ }
+        //~ }
+        //~ else
+        //~ {
+            //~ if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
+            //~ {
+                //~ $htmltbody2 .= " style='display: none'";
+            //~ }
+            //~ else
+            //~ {
+                //~ $htmltbody2 .= " disabled='disabled'";
+            //~ }
+        //~ }
+    //~ }
+
+    //~ return $htmltbody2;
+}
+/**
+ * @todo Return the Expression manager class of a subquestion
+ * @param integer $surveyid : the survey id
+ * @param string $subquestionName : the target name
+ * @param array $aQuestionAttributes : the attribute of the question (for array_filter_style actually)
+ */
+function getExpressionManagerClass($surveyid,$subquestionName,$aQuestionAttributes=null)
+{
     if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
     {
-        // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
-        if (isset($aQuestionAttributes['exclude_all_others']))
-        {
-            $disableit=false;
-            foreach(explode(';',trim($aQuestionAttributes['exclude_all_others'])) as $eo)
-            {
-                $eorow = $ia[1] . $eo;
-                if ((!isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow])
-                    && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y"))
-                {
-                    $disableit = true;
-                }
-            }
-            if ($disableit)
-            {
-                $htmltbody2 .= " disabled='disabled'";
-            }
-            else
-            {
-                if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
-                {
-                    $htmltbody2 .= " style='display: none'";
-                }
-                else
-                {
-                    $htmltbody2 .= " disabled='disabled'";
-                }
-            }
-        }
-        else
-        {
-            if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
-            {
-                $htmltbody2 .= " style='display: none'";
-            }
-            else
-            {
-                $htmltbody2 .= " disabled='disabled'";
-            }
-        }
+
     }
-
-    return $htmltbody2;
 }
-
 /**
  * @param string $rowname
  * @param string $valuename

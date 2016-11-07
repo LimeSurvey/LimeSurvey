@@ -18,10 +18,12 @@
  * and Contributors (http://phpjs.org/authors)
  */
 
-/* Default event to trigger on answer part
- * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations
- * Actually only for list with comment and select in ranking
+/**
+ * Default event to trigger on answer part
+ * Launch function according to anser-item type
+ * @todo : checkconditions/fixnum_checkconditions in this function
  **/
+/* text/number item */
 $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item :text:not([onkeyup])",function(event){
     // 'keyup' can be replaced by event.type (but not really needed)
     // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
@@ -34,12 +36,14 @@ $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item
         checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
     }
 });
+/* select/dropdown item */
 $(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
     //~ if($.isFunction(window.ExprMgr_process_relevance_and_tailoring )){
         //~ ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
     //~ }
 });
+/* radio/button item */
 $(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
     //~ $('#java'+$(this).attr("name")).val($(this).val());
@@ -47,9 +51,14 @@ $(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:n
         //~ ExprMgr_process_relevance_and_tailoring("click",$(this).attr("name"),"radio");
     //~ }
 });
+/* checkbox item */
 $(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
+
+/**
+ * All EM function (see em_core_helper.php)
+ */
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty
@@ -3174,29 +3183,3 @@ function time () {
     return Math.floor(new Date().getTime() / 1000);
 }
 
-// updates the repeated headings in a dynamic table
-function updateHeadings(tab, rep)
-{
-    tab.find('.repeat').remove();
-    var header = tab.find('thead>tr');
-    var trs = tab.find('tr:visible');
-    trs.each(function(i, tr)
-    {
-        // add heading but not for the first and the last rows
-        if(i != 0 && i % rep == 0 && i != trs.length-1)
-        {
-            header.clone().addClass('repeat').addClass('headings').insertAfter(tr);
-        }
-    });
-}
-
-// updates the colors in a dynamic table
-function updateColors(tab)
-{
-    $(tab).find('tr:not(.ls-heading):visible').each(function(i, tr)
-    {
-        console.log($(tr));
-        // fix line colors
-        $(tr).removeClass('ls-odd ls-even').addClass(((i+1)%2 == 0) ? "ls-odd" : "ls-even");
-    });
-}

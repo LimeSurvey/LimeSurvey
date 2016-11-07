@@ -893,7 +893,7 @@ class SurveyRuntimeHelper {
             $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
             if  ($gnoshow && !$previewgrp)
             {
-                echo " class='hidden'";
+                echo " class='ls-hidden'";/* Unsure for reason : hidden or unrelevant ?*/
             }
             echo ">\n";
             echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
@@ -986,6 +986,7 @@ class SurveyRuntimeHelper {
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        Yii::app()->clientScript->registerScript('triggerEmRelevance',"triggerEmRelevance();",CClientScript::POS_END);
         LimeExpressionManager::FinishProcessingPage();
 
         /**
@@ -1172,16 +1173,28 @@ class SurveyRuntimeHelper {
 
         }
         // Core value :the classes
-        $aReplacement['QUESTION_CLASS'] = Question::getQuestionClass($sType);
-
+        $aQuestionClass=array(
+            Question::getQuestionClass($sType),
+        );
+        /* Add the relevance class */
+        if (!$lemQuestionInfo['relevant'])
+        {
+            $aQuestionClass[]='ls-unrelevant';
+            $aQuestionClass[]='ls-hidden';
+        }
+        if ($lemQuestionInfo['hidden'])
+        {
+            $aQuestionClass[]='ls-hidden';
+        }
         //get additional question classes from question attribute
         $aQuestionAttributes = getQuestionAttributeValues($aQuestionQanda[4]);
 
         //add additional classes
         if(isset($aQuestionAttributes['cssclass']))
         {
-            $aReplacement['QUESTION_CLASS'] .= " ".$aQuestionAttributes['cssclass'];
+            $aQuestionClass[]=htmlentities($aQuestionAttributes['cssclass']);
         }
+        $aReplacement['QUESTION_CLASS'] =implode(" ",$aQuestionClass);
 
         $aMandatoryClass = array();
         if ($lemQuestionInfo['info']['mandatory'] == 'Y')// $aQuestionQanda[0]['mandatory']=="*"
@@ -1203,10 +1216,6 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION_MANDATORY']=$aQuestionQanda[0]['mandatory'];
         // For QUESTION_ESSENTIALS
         $aHtmlOptions=array();
-        if ((!$lemQuestionInfo['relevant']) || ($lemQuestionInfo['hidden']))// && $lemQuestionInfo['info']['type'] == '*'))
-        {
-            $aHtmlOptions['style'] = 'display: none;';
-        }
 
         // Launch the event
         $event = new PluginEvent('beforeQuestionRender');
@@ -1248,8 +1257,10 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
         $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $event->get('file_valid_message');
         $aReplacement['QUESTION_MANDATORY'] = $event->get('mandatory',$aReplacement['QUESTION_MANDATORY']);
-        // Always add id for QUESTION_ESSENTIALS
-        $aHtmlOptions['id']="question{$iQid}";
+        //Another data for QUESTION_ESSENTIALS
+        $aHtmlOptions= (array) $event->get('aHtmlOptions');
+        unset($aHtmlOptions['class']);// Disallowing update/set class
+        $aHtmlOptions['id']="question{$iQid}";// Always add id for QUESTION_ESSENTIALS
         $aReplacement['QUESTION_ESSENTIALS']=CHtml::renderAttributes($aHtmlOptions);
 
         return $aReplacement;
