@@ -2795,7 +2795,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->AddCustomHeader($val);
         }
     }
-    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
+    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.org)");
     if (get_magic_quotes_gpc() != "0")    {$body = stripcslashes($body);}
     if ($ishtml)
     {
