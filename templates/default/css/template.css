@@ -666,3 +666,17 @@ div.yes-no .btn-group label {
     padding-left:28px;
   }
 }
+/**
+ * Force suffix / prefix as block
+ * using force-prefix-block/force-suffix-block on Question class
+ */
+@media only screen and (max-width: 760px){
+    .force-prefix-block .prefix-text{display:block;width:100%;}
+    .dir-ltr .force-prefix-block .prefix-text{text-align:left;}
+    .dir-rtl .force-prefix-block .prefix-text{text-align:right;}
+    .force-suffix-block .form-control{display:block;width:100%;float: none;}
+    .force-suffix-block .suffix-text{display:block;width:100%;}
+    .dir-ltr .force-suffix-block .suffix-text{text-align:left;}
+    .dir-rtl .force-suffix-block .suffix-text{text-align:right;}
+    .force-suffix-block.force-prefix-block .ls-input-group{display:block}
+}
