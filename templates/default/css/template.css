@@ -57,6 +57,47 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 /**
  * Question part
  */
+/** Question Design **/
+
+.question-container {
+  margin-bottom: 2em;
+  background:white;
+}
+
+.question-title-container {
+  padding-top: 2em;padding-bottom:1em;
+}
+.question-number,.question-code{float:left;margin:0 0.3em}
+.question-number:empty,.question-code:empty{display:none}
+
+.question-valid-container {
+  position: relative;
+  text-align: center;
+  padding-bottom: 1em;
+}
+
+.question-valid-container .text-danger{
+  font-weight: bold;
+}
+
+.question-valid-container .text-info{
+  font-weight: bold;
+}
+.answer-container, .question-help-container {
+    border-color: #dbdbdb;
+}
+.answer-container {
+  border-width: 0px 1px 0px 1px;
+  border-style: solid;
+  padding-top: 3em;
+  padding-bottom:1.5em;
+}
+
+.question-help-container {
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+}
+/* little icon near the question-help */
 .ls-questionhelp{position: relative;}
 .dir-ltr .ls-questionhelp{margin-left:1.2em;}
 .dir-rtl .ls-questionhelp{margin-right:1.2em;}
@@ -180,7 +221,9 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .ls-even{
 background-color:#f9f9f9;
 }
-
+/* dynamic group (multipe-numeric) .form-control-static same padding and border width than form-control for better alignment */
+.ls-group-dynamic .form-control-static{border: 2px solid transparent;padding-left:15px;padding-right:15px;}
+/* array by column hover column */
 .table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
 .table-col-hover col.hover /* Actual solution : js only*/
 {
@@ -492,46 +535,7 @@ only screen and (max-width: 760px),
 }
 
 
-/** Question Design **/
 
-.question-wrapper {
-  margin-bottom: 2em;
-  background:white;
-}
-
-.question-title-container {
-  padding-top: 2em;padding-bottom:1em;
-}
-.question-number,.question-code{float:left;margin:0 0.3em}
-.question-number:empty,.question-code:empty{display:none}
-
-.question-valid-container {
-  position: relative;
-  text-align: center;
-  padding-bottom: 1em;
-}
-
-.question-valid-container .text-danger{
-  font-weight: bold;
-}
-
-.question-valid-container .text-info{
-  font-weight: bold;
-}
-.answer-container, .question-help-container {
-    border-color: #dbdbdb;
-}
-.answer-container {
-  border-width: 0px 1px 0px 1px;
-  border-style: solid;
-  padding-top: 3em;
-  padding-bottom:1.5em;
-}
-
-.question-help-container {
-  border-width: 0px 1px 1px 1px;
-  border-style: solid;
-}
 
 /* Give help text some space */
 .questionhelp {

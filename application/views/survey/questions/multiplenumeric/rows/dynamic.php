@@ -11,7 +11,7 @@
  */
 ?>
 <?php if($sumRemainingEqn):?>
-    <li class="form-group ls-group-remaining">
+    <li class="form-group ls-group-remaining ls-group-dynamic">
         <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
             <?php eT('Remaining: ');?>
         </div>
@@ -34,7 +34,7 @@
 <?php endif; ?>
 
 <?php if($sumEqn):?>
-    <li class="form-group ls-group-total">
+    <li class="form-group ls-group-total ls-group-dynamic">
         <div class="control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>">
             <?php eT('Total: ');?>
         </div>

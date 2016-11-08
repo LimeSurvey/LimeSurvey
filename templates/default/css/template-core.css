@@ -11,9 +11,8 @@
 /* Show input number at right alignment */
 [data-number='1']{text-align:right}
 .dir-rtl [data-number='1']{text-align:left}
-.slider-list .ls-group-remaining [data-number='1'],
-.slider-list .ls-group-total [data-number='1']
-{text-align:center}
+.slider-list .ls-group-dynamic [data-number='1']{text-align:center}
+
 /* awesome-bootstrap-checkbox */
 li.radio-item,li.checkbox-item{display:block}
 
