@@ -9157,7 +9157,7 @@ EOD;
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
-
+            $aAttributesDefinitions=\ls\helpers\questionHelper::getAttributesDefinitions();
             $allErrors = array();
             $warnings = 0;
 
@@ -9337,73 +9337,94 @@ EOD;
                 }
                 if (count($attrs) > 0)
                 {
-                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
+                    $attrTable = "<table class='logicfileattributetable'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
                     foreach ($attrs as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
                             continue;
                         }
-                        switch ($key)
-                        {
-                            // @todo: Rather compares the current attribute value to the defaults in the question attributes array to decide which ones should show (only the ones that are non-standard)
-                            default:
-                            case 'exclude_all_others':
-                            case 'exclude_all_others_auto':
-                            case 'hidden':
-                                if ($value == false || $value == '0') {
-                                    $value = NULL; // so can skip this one - just using continue here doesn't work.
-                                }
-                                break;
-                            case 'time_limit_action':
-                                if ( $value == '1') {
-                                    $value = NULL; // so can skip this one - just using continue here doesn't work.
-                                }
-                            case 'relevance':
-                                $value = NULL;  // means an outdate database structure
-                                break;
-                            case 'array_filter':
-                            case 'array_filter_exclude':
-                            case 'code_filter':
-                            case 'date_max':
-                            case 'date_min':
-                            case 'em_validation_q_tip':
-                            case 'em_validation_sq_tip':
-                                break;
-                            case 'equals_num_value':
-                            case 'em_validation_q':
-                            case 'em_validation_sq':
-                            case 'max_answers':
-                            case 'max_num_value':
-                            case 'max_num_value_n':
-                            case 'min_answers':
-                            case 'min_num_value':
-                            case 'min_num_value_n':
-                            case 'min_num_of_files':
-                            case 'max_num_of_files':
-                            case 'multiflexible_max':
-                            case 'multiflexible_min':
-                            case 'slider_accuracy':
-                            case 'slider_min':
-                            case 'slider_max':
-                            case 'slider_default':
-                                $value = '{' . $value . '}';
-                                $LEM->ProcessString($value, $qid,NULL,false,1,1,false,false);
-                                $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
-                                if ($LEM->em->HasErrors())
-                                {
-                                    ++$errorCount;
-                                }
-                                break;
-                            case 'other_replace_text':
-                            case 'show_totals':
-                            case 'regex_validation':
-                                break;
-                            case 'other':
-                                if ($value == 'N') {
-                                    $value = NULL; // so can skip this one
-                                }
-                                break;
+                        if($key=='other' && $value=="N"){/* BUt : it's not an attribute ? And already have a subquestion with 'other' . */
+                            continue;
                         }
+                        if($key=='relevance'){/* BUt : it's not an attribute ? */
+                            continue;
+                        }
+                        if(isset($aAttributesDefinitions[$key]['default']) && $value==$aAttributesDefinitions[$key]['default']){
+                            continue;
+                        }
+                        if(isset($aAttributesDefinitions[$key]['expression']) && $aAttributesDefinitions[$key]['expression']>0){
+                            if($aAttributesDefinitions[$key]['expression']>1){
+                                $value = '{' . $value . '}';
+                            }
+                            $LEM->ProcessString($value, $qid,NULL,false,1,1,false,false);
+                            $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
+                            if ($LEM->em->HasErrors())
+                            {
+                                ++$errorCount;
+                            }
+                        }
+
+                        //~ switch ($key)
+                        //~ {
+                            //~ // @todo: Rather compares the current attribute value to the defaults in the question attributes array to decide which ones should show (only the ones that are non-standard)
+                            //~ default:
+                            //~ case 'exclude_all_others':
+                            //~ case 'exclude_all_others_auto':
+                            //~ case 'hidden':
+                                //~ if ($value == false || $value == '0') {
+                                    //~ $value = NULL; // so can skip this one - just using continue here doesn't work.
+                                //~ }
+                                //~ break;
+                            //~ case 'time_limit_action':
+                                //~ if ( $value == '1') {
+                                    //~ $value = NULL; // so can skip this one - just using continue here doesn't work.
+                                //~ }
+                            //~ case 'relevance':
+                                //~ $value = NULL;  // means an outdate database structure
+                                //~ break;
+                            //~ case 'array_filter':
+                            //~ case 'array_filter_exclude':
+                            //~ case 'code_filter':
+                            //~ case 'date_max':
+                            //~ case 'date_min':
+                            //~ case 'em_validation_q_tip':
+                            //~ case 'em_validation_sq_tip':
+                                //~ break;
+                            //~ case 'equals_num_value':
+                            //~ case 'em_validation_q':
+                            //~ case 'em_validation_sq':
+                            //~ case 'max_answers':
+                            //~ case 'max_num_value':
+                            //~ case 'max_num_value_n':
+                            //~ case 'min_answers':
+                            //~ case 'min_num_value':
+                            //~ case 'min_num_value_n':
+                            //~ case 'min_num_of_files':
+                            //~ case 'max_num_of_files':
+                            //~ case 'multiflexible_max':
+                            //~ case 'multiflexible_min':
+                            //~ case 'slider_accuracy':
+                            //~ case 'slider_min':
+                            //~ case 'slider_max':
+                            //~ case 'slider_default':
+                                //~ $value = '{' . $value . '}';
+                                //~ $LEM->ProcessString($value, $qid,NULL,false,1,1,false,false);
+                                //~ $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
+                                //~ if ($LEM->em->HasErrors())
+                                //~ {
+                                    //~ ++$errorCount;
+                                //~ }
+                                //~ break;
+                            //~ case 'other_replace_text':
+                            //~ case 'show_totals':
+                            //~ case 'regex_validation':
+                                //~ break;
+                            //~ case 'other':
+                                //~ if ($value == 'N') {
+                                    //~ $value = NULL; // so can skip this one
+                                //~ }
+                                //~ break;
+                        //~ }
                         if (is_null($value)) {
                             continue;   // since continuing from within a switch statement doesn't work
                         }

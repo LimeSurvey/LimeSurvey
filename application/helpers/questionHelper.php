@@ -51,8 +51,10 @@ class questionHelper
         'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'switch',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
+        'options'=>array(
+            0=>gT('No'),
+            1=>gT('Yes')
+        ),
         'default'=>0,
         "help"=>gT("Sort the answer options alphabetically"),
         "caption"=>gT('Sort answers alphabetically'));
@@ -84,7 +86,7 @@ class questionHelper
         'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'integer',
-         'default'=>'',
+        'default'=>'',
         "help"=>gT('Repeat headings every X subquestions (Set to 0 to deactivate heading repeat, deactivate minimum repeat headings from config).'),
         "caption"=>gT('Repeat headers'));
 
@@ -259,18 +261,21 @@ class questionHelper
         "default"=>"");
 
         self::$attributes["equals_num_value"]=array(
-        "types"=>"K",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('Multiple numeric inputs sum must equal this value'),
-        "caption"=>gT('Equals sum value'));
+            "types"=>"K",
+            'category'=>gT('Input'),
+            'sortorder'=>100,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('Multiple numeric inputs sum must equal this value'),
+            "caption"=>gT('Equals sum value')
+        );
 
         self::$attributes["em_validation_q"]=array(
         "types"=>":;ABCDEFKMNOPQRSTU",
         'category'=>gT('Logic'),
         'sortorder'=>200,
         'inputtype'=>'textarea',
+        'expression'=>2,
         "help"=>gT('Enter a boolean equation to validate the whole question.'),
         "caption"=>gT('Question validation equation'));
 
@@ -288,6 +293,7 @@ class questionHelper
         'category'=>gT('Logic'),
         'sortorder'=>220,
         'inputtype'=>'textarea',
+        'expression'=>2,
         "help"=>gT('Enter a boolean equation to validate each sub-question.'),
         "caption"=>gT('Sub-question validation equation'));
 
@@ -501,28 +507,34 @@ class questionHelper
             'caption'=>gT('CSS class(es)'));
 
         self::$attributes["max_answers"]=array(
-        "types"=>"MPR1:;ABCEFKQ",
-        'category'=>gT('Logic'),
-        'sortorder'=>11,
-        'inputtype'=>'integer',
-        "help"=>gT('Limit the number of possible answers'),
-        "caption"=>gT('Maximum answers'));
+            "types"=>"MPR1:;ABCEFKQ",
+            'category'=>gT('Logic'),
+            'sortorder'=>11,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('Limit the number of possible answers'),
+            "caption"=>gT('Maximum answers')
+        );
 
         self::$attributes["max_num_value"]=array(
-        "types"=>"K",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('Maximum sum value of multiple numeric input'),
-        "caption"=>gT('Maximum sum value'));
+            "types"=>"K",
+            'category'=>gT('Input'),
+            'sortorder'=>100,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('Maximum sum value of multiple numeric input'),
+            "caption"=>gT('Maximum sum value')
+        );
 
         self::$attributes["max_num_value_n"]=array(
-        "types"=>"NK",
-        'category'=>gT('Input'),
-        'sortorder'=>110,
-        'inputtype'=>'integer',
-        "help"=>gT('Maximum value of the numeric input'),
-        "caption"=>gT('Maximum value'));
+            "types"=>"NK",
+            'category'=>gT('Input'),
+            'sortorder'=>110,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('Maximum value of the numeric input'),
+            "caption"=>gT('Maximum value')
+        );
 
         //    self::$attributes["max_num_value_sgqa"]=array(
         //    "types"=>"K",
@@ -551,44 +563,54 @@ class questionHelper
         "caption"=>gT('Maximum characters'));
 
         self::$attributes["min_answers"]=array(
-        "types"=>"MPR1:;ABCEFKQ",
-        'category'=>gT('Logic'),
-        'sortorder'=>10,
-        'inputtype'=>'integer',
-        "help"=>gT('Ensure a minimum number of possible answers (0=No limit)'),
-        "caption"=>gT('Minimum answers'));
+            "types"=>"MPR1:;ABCEFKQ",
+            'category'=>gT('Logic'),
+            'sortorder'=>10,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('Ensure a minimum number of possible answers (0=No limit)'),
+            "caption"=>gT('Minimum answers')
+        );
 
         self::$attributes["min_num_value"]=array(
-        "types"=>"K",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('The sum of the multiple numeric inputs must be greater than this value'),
-        "caption"=>gT('Minimum sum value'));
+            "types"=>"K",
+            'category'=>gT('Input'),
+            'sortorder'=>100,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('The sum of the multiple numeric inputs must be greater than this value'),
+            "caption"=>gT('Minimum sum value')
+        );
 
         self::$attributes["min_num_value_n"]=array(
-        "types"=>"NK",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'integer',
-        "help"=>gT('Minimum value of the numeric input'),
-        "caption"=>gT('Minimum value'));
+            "types"=>"NK",
+            'category'=>gT('Input'),
+            'sortorder'=>100,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('Minimum value of the numeric input'),
+            "caption"=>gT('Minimum value')
+        );
 
         self::$attributes["multiflexible_max"]=array(
-        "types"=>":",
-        'category'=>gT('Display'),
-        'sortorder'=>112,
-        'inputtype'=>'text',
-        "help"=>gT('Maximum value for array(mult-flexible) question type'),
-        "caption"=>gT('Maximum value'));
+            "types"=>":",
+            'category'=>gT('Display'),
+            'sortorder'=>112,
+            'inputtype'=>'text',
+            'expression'=>2,// Really ? Only if shown as text then
+            "help"=>gT('Maximum value for array(mult-flexible) question type'),
+            "caption"=>gT('Maximum value')
+        );
 
         self::$attributes["multiflexible_min"]=array(
-        "types"=>":",
-        'category'=>gT('Display'),
-        'sortorder'=>110,
-        'inputtype'=>'text',
-        "help"=>gT('Minimum value for array(multi-flexible) question type'),
-        "caption"=>gT('Minimum value'));
+            "types"=>":",
+            'category'=>gT('Display'),
+            'sortorder'=>110,
+            'inputtype'=>'text',
+            'expression'=>2,// Really ? Only if shown as text then
+            "help"=>gT('Minimum value for array(multi-flexible) question type'),
+            "caption"=>gT('Minimum value')
+        );
 
         self::$attributes["multiflexible_step"]=array(
         "types"=>":",
@@ -823,144 +845,172 @@ class questionHelper
 
         self::$attributes["slider_layout"]=array(
         "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>1,
-        'inputtype'=>'switch',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Use slider layout'),
-        "caption"=>gT('Use slider layout'));
+            'category'=>gT('Slider'),
+            'sortorder'=>1,
+            'inputtype'=>'switch',
+            'options'=>array(
+                0=>gT('No'),
+                1=>gT('Yes')
+            ),
+            'default'=>0,
+            "help"=>gT('Use slider layout'),
+            "caption"=>gT('Use slider layout')
+        );
 
         self::$attributes["slider_min"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>10,
-        'inputtype'=>'text',
-        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
-        "caption"=>gT('Slider minimum value'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>10,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
+            "caption"=>gT('Slider minimum value')
+        );
 
         self::$attributes["slider_max"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>11,
-        'inputtype'=>'text',
-        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
-        "caption"=>gT('Slider maximum value'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>11,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
+            "caption"=>gT('Slider maximum value')
+        );
 
         self::$attributes["slider_accuracy"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>30,
-        'inputtype'=>'text',
-        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
-        "caption"=>gT('Slider accuracy'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>30,
+            'inputtype'=>'text',
+            'expression'=>2,
+            "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
+            "caption"=>gT('Slider accuracy')
+        );
 
         self::$attributes["slider_default"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>50,
-        'inputtype'=>'text',
-        "help"=>gT('Slider start as this value (this will set the initial value). You can use Expression manager, but this must be a number before showing the page.'),
-        "caption"=>gT('Slider initial value'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>50,
+            'inputtype'=>'text',
+            'expression'=>2, // must be controlled : unsure
+            "help"=>gT('Slider start as this value (this will set the initial value). You can use Expression manager, but this must be a number before showing the page.'),
+            "caption"=>gT('Slider initial value')
+        );
 
         self::$attributes["slider_middlestart"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>40,
-        'inputtype'=>'switch',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
-        "caption"=>gT('Slider starts at the middle position'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>40,
+            'inputtype'=>'switch',
+            'options'=>array(0=>gT('No'),
+            1=>gT('Yes')),
+            'default'=>0,
+            "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
+            "caption"=>gT('Slider starts at the middle position')
+        );
 
         self::$attributes["slider_orientation"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>2,
-        'inputtype'=>'buttongroup',
-        'options'=>array(0=>gT('Horizontal','unescaped'),
-        1=>gT('Vertical','unescaped')),
-        'default'=>0,
-        "help"=>gT('Set the orientation.'),
-        "caption"=>gT('Orientation'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>2,
+            'inputtype'=>'buttongroup',
+            'options'=>array(
+                0=>gT('Horizontal','unescaped'),
+                1=>gT('Vertical','unescaped')
+            ),
+            'default'=>0,
+            "help"=>gT('Set the orientation.'),
+            "caption"=>gT('Orientation')
+        );
 
         self::$attributes["slider_handle"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>3,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Circle'),
-        1=>gT('Square'), 2=>gT('Triangle'), 3=>gT('Custom')),
-        'default'=>0,
-        "help"=>gT("Set the handle shape. 'Custom' is defined in CSS using the Font Awesome font."),
-        "caption"=>gT('Handle shape'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>3,
+            'inputtype'=>'singleselect',
+            'options'=>array(
+                0=>gT('Circle'),
+                1=>gT('Square'),
+                2=>gT('Triangle'),
+                3=>gT('Custom')
+            ),
+            'default'=>0,
+            "help"=>gT("Set the handle shape. 'Custom' is defined in CSS using the Font Awesome font."),
+            "caption"=>gT('Handle shape')
+        );
 
         self::$attributes["slider_custom_handle"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>4,
-        'inputtype'=>'text',
-        'default'=>'f1ae',
-        "help"=>gT('Accepts Font Awesome Unicode characters.'),
-        "caption"=>gT('Custom handle Unicode code'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>4,
+            'inputtype'=>'text',
+            'default'=>'f1ae',
+            "help"=>gT('Accepts Font Awesome Unicode characters.'),
+            "caption"=>gT('Custom handle Unicode code')
+        );
 
         self::$attributes["slider_rating"]=array(
-        "types"=>"5",
-        'category'=>gT('Display'),
-        'sortorder'=>90,
-        'inputtype'=>'buttongroup',
-        'options'=>array(
-        0=>gT('Off','unescaped'),
-        1=>gT('Stars','unescaped'),
-        2=>gT('Slider with emoticon','unescaped'),
-        ),
-        'default'=>0,
-        "help"=>gT('Use slider layout'),
-        "caption"=>gT('Use slider layout'));
+            "types"=>"5",
+            'category'=>gT('Display'),
+            'sortorder'=>90,
+            'inputtype'=>'buttongroup',
+            'options'=>array(
+                0=>gT('Off','unescaped'),
+                1=>gT('Stars','unescaped'),
+                2=>gT('Slider with emoticon','unescaped'),
+            ),
+            'default'=>0,
+            "help"=>gT('Use slider layout'),
+            "caption"=>gT('Use slider layout')
+        );
 
         self::$attributes["slider_reset"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>50,
-        'inputtype'=>'switch',
-        'options'=>array(
-        0=>gT('No'),
-        1=>gT('Yes'),
-        ),
-        'default'=>0,
-        "help"=>gT('Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.'),
-        "caption"=>gT('Allow reset the slider'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>50,
+            'inputtype'=>'switch',
+            'options'=>array(
+                0=>gT('No'),
+                1=>gT('Yes'),
+            ),
+            'default'=>0,
+            "help"=>gT('Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.'),
+            "caption"=>gT('Allow reset the slider')
+        );
 
         self::$attributes["slider_showminmax"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>100,
-        'inputtype'=>'switch',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Display min and max value under the slider'),
-        "caption"=>gT('Display slider min and max value'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>100,
+            'inputtype'=>'switch',
+            'options'=>array(
+                0=>gT('No'),
+                1=>gT('Yes')
+            ),
+            'default'=>0,
+            "help"=>gT('Display min and max value under the slider'),
+            "caption"=>gT('Display slider min and max value')
+        );
 
         self::$attributes["slider_separator"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>110,
-        'inputtype'=>'text',
-        "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
-        'default'=>'|',
-        "caption"=>gT('Slider left/right text separator'));
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>110,
+            'inputtype'=>'text',
+            "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
+            'default'=>'|',
+            "caption"=>gT('Slider left/right text separator')
+        );
 
         self::$attributes["suffix"]=array(
-        "types"=>"KNQS",
-        'category'=>gT('Display'),
-        'sortorder'=>11,
-        'inputtype'=>'text',
-        'i18n'=>true,
-        "help"=>gT('Add a suffix to the answer field'),
-        "caption"=>gT('Answer suffix'));
+            "types"=>"KNQS",
+            'category'=>gT('Display'),
+            'sortorder'=>11,
+            'inputtype'=>'text',
+            'i18n'=>true,
+            "help"=>gT('Add a suffix to the answer field'),
+            "caption"=>gT('Answer suffix')
+        );
 
         self::$attributes["text_input_width"]=array(
         "types"=>"KNSTU",
@@ -1424,6 +1474,7 @@ class questionHelper
          *      'category' : Where to put it
          *      'sortorder' : Qort order in this category
          *      'inputtype' : type of input
+         *      'expression' : 2 to force Exprerssion Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
          *      'options' : optionnal options if input type need it
          *      'default' : the default value
          *      'caption' : the label
