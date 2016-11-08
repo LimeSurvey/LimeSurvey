@@ -19,30 +19,30 @@
 <!-- List with comment, list style, -->
 
 <!-- answer -->
-<div class="list">
-    <div class="list-unstyled answers-list radio-list">
+<div class="<?php echo $coreClass; ?> row">
+    <div class="answers-list radio-list col-sm-6 col-xs-12">
+        <ul class="list-unstyled">
+            <?php
+                // rows/row.php
+                echo $sRows;
+            ?>
 
-        <?php
-            // rows/row.php
-            echo $sRows;
-        ?>
+        </ul>
+    </div>
 
+    <div class="form-group answer-item text-item col-sm-6 col-xs-12">
+        <label class="control-label" for="<?php echo $id; ?>">
+            <?php echo $hint_comment;?>:
+        </label>
+
+        <textarea
+                class="form-control <?php echo $kpclass; ?>"
+                name="<?php echo $name; ?>"
+                id="<?php echo $id; ?>"
+                rows="<?php echo $tarows;?>"
+                ><?php if($has_comment_saved):?><?php echo $comment_saved;?><?php endif;?></textarea>
     </div>
 </div>
-
-<p class="comment answer-item text-item">
-    <label for="<?php echo $id; ?>">
-        <?php echo $hint_comment;?>:
-    </label>
-
-    <textarea
-            class="textarea form-control <?php echo $kpclass; ?>"
-            name="<?php echo $name; ?>"
-            id="<?php echo $id; ?>"
-            rows="<?php echo $tarows;?>"
-            cols="30"
-            ><?php if($has_comment_saved):?><?php echo $comment_saved;?><?php endif;?></textarea>
-</p>
 
 <input
         class="radio"

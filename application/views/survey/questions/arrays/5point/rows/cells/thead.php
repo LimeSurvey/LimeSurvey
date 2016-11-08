@@ -9,7 +9,7 @@
 ?>
 
 <!-- thead -->
-<th class="<?php echo $class; ?> text-center" style="<?php echo $style; ?>" >
+<th class="<?php echo $class; ?>">
     <?php echo $th_content;?>
 </th>
 <!-- end of thead -->

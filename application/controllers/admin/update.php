@@ -234,7 +234,7 @@ class update extends Survey_Common_Action
 
                 if (Yii::app()->request->getPost('datasupdateinfo'))
                 {
-                    $updateinfos= unserialize ( base64_decode( ( Yii::app()->request->getPost('datasupdateinfo') )));
+                    $updateinfos= json_decode( base64_decode( Yii::app()->request->getPost('datasupdateinfo') ),true);
 
                     $updateModel = new UpdateForm();
                     $backupInfos = $updateModel->backupFiles($updateinfos);
@@ -286,7 +286,7 @@ class update extends Survey_Common_Action
 
                 if ( Yii::app()->request->getPost('datasupdateinfo') )
                 {
-                    $updateinfos = unserialize ( base64_decode( ( Yii::app()->request->getPost('datasupdateinfo') )));
+                    $updateinfos = json_decode ( base64_decode ( Yii::app()->request->getPost('datasupdateinfo') ), true);
 
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
                     $updateModel = new UpdateForm();
@@ -500,7 +500,7 @@ class update extends Survey_Common_Action
     }
     /**
      * this function render the update buttons
-     * @param object $serverAnswer the update server answer (getInfo)
+     * @param string $crosscheck
      */
     private function _getButtons($crosscheck)
     {
@@ -577,12 +577,12 @@ class update extends Survey_Common_Action
     /**
      * This function convert the huge updateinfos array to a base64 string, so it can be parsed to the view to be inserted in an hidden input element.
      *
-     * @param array $udpateinfos the udpadte infos array returned by the update server
+     * @param array $updateinfos the udpadte infos array returned by the update server
      * @return $string
      */
     private function _parseToView($updateinfos)
     {
-        $data=serialize($updateinfos);
+        $data=json_encode($updateinfos);
         return base64_encode($data);
     }
 

@@ -176,9 +176,10 @@ function makegraph($currentstep, $total)
 /**
 * This function creates the language selector for a particular survey
 *
-* @param mixed $sSelectedLanguage The language in which all information is shown
+* @param string $sSelectedLanguage : lang to be selected (forced)
+* @param boolean $withForm : add a form (method="get") around the select
 */
-function makeLanguageChangerSurvey($sSelectedLanguage)
+function makeLanguageChangerSurvey($sSelectedLanguage="",$withForm=false)
 {
     $surveyid = Yii::app()->getConfig('surveyID');
     Yii::app()->loadHelper("surveytranslator");
@@ -188,56 +189,52 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
     {
         $aAllLanguages=getLanguageData(true);
         $aSurveyLangs=array_intersect_key($aAllLanguages,array_flip($aSurveyLangs)); // Sort languages by their locale name
-        $sClass="languagechanger";
-        $sHTMLCode="";
+        $sClass="ls-language-changer-item";
+        $btnClass='ls-change-lang';
         $sAction=Yii::app()->request->getParam('action','');// Different behaviour if preview
         $sSelected="";
-        if(substr($sAction,0,7)=='preview')
-        {
-            $route="/survey/index/sid/{$surveyid}";
-            if ($sAction=='previewgroup' && intval(Yii::app()->request->getParam('gid',0)))
+        $routeParams=array(
+            "sid"=>$surveyid,
+        );
+        if(substr($sAction,0,7)=='preview'){
+            $routeParams["action"]=$sAction;
+            if (intval(Yii::app()->request->getParam('gid',0)))
             {
-                $route.="/action/previewgroup/gid/".intval(Yii::app()->request->getParam('gid',0));
+                $routeParams['gid']=intval(Yii::app()->request->getParam('gid',0));
             }
             if ($sAction=='previewquestion' && intval(Yii::app()->request->getParam('gid',0)) && intval(Yii::app()->request->getParam('qid',0)))
             {
-                $route.="/action/previewquestion/gid/".intval(Yii::app()->request->getParam('gid',0))."/qid/".intval(Yii::app()->request->getParam('qid',0));
+                $routeParams['qid']=intval(Yii::app()->request->getParam('qid',0));
             }
             if (!is_null(Yii::app()->request->getParam('token')))
             {
-                $route.="/token/".Yii::app()->request->getParam('token');
+                $routeParams['token']=Yii::app()->request->getParam('token');
             }
-            $sClass.=" previewmode";
-            // Maybe add other param (for prefilling by URL): then need a real createUrl with array
-#            foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
-#            {
-#                $sTargetURL=Yii::app()->getController()->createUrl($route."/lang/$sLangCode");
-#                $aListLang[$sTargetURL]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
-#                if(App()->language==$sLangCode)
-#                    $sSelected=$sTargetURL;
-#            }
+            // @todo : add other params (for prefilling by URL in preview mode)
+            $sClass.=" ls-no-js-hidden ls-previewmode-language-dropdown ";
+            $sTargetURL=Yii::app()->getController()->createUrl("survey/index",$routeParams);
+        }else{
+            $sTargetURL=null;
         }
-        else
-        {
-            $route="/survey/index/sid/{$surveyid}";
-        }
-        $sTargetURL=Yii::app()->getController()->createUrl($route);
+
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang)
         {
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
         }
-        $sSelected=App()->language;
-        $sClass .= ' form-control ';
+        $sSelected=($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
 
         $languageChangerDatas = array(
             'sSelected' => $sSelected ,
             'aListLang' => $aListLang ,
             'sClass'    => $sClass    ,
-            'sTargetURL'=> $sTargetURL,
+            'targetUrl' => $sTargetURL,
         );
-
-        $sHTMLCode = Yii::app()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);
+        if($withForm){
+            $sHTMLCode = App()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChangerForm', $languageChangerDatas, true);
+        }else{
+            $sHTMLCode = App()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);
+        }
         return $sHTMLCode;
     }
     else
@@ -257,37 +254,17 @@ function makeLanguageChanger($sSelectedLanguage)
     $aLanguages=getLanguageDataRestricted(true);// Order by native
     if(count($aLanguages)>1)
     {
-#        $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
-#        foreach(getLanguageDataRestricted(true) as $sLanguageID=>$aLanguageProperties)
-#        {
-#            $sLanguageUrl=Yii::app()->getController()->createUrl('survey/index',array('lang'=>$sLanguageID));
-#            $sHTMLCode .= "<option value='{$sLanguageUrl}'";
-#            if($sLanguageID == $sSelectedLanguage)
-#            {
-#                $sHTMLCode .= " selected='selected' ";
-#                $sHTMLCode .= ">{$aLanguageProperties['nativedescription']}</option>\n";
-#            }
-#            else
-#            {
-#                $sHTMLCode .= ">".$aLanguageProperties['nativedescription'].' - '.$aLanguageProperties['description']."</option>\n";
-#            }
-#        }
-#        $sHTMLCode .= "</select>\n";
-
-        $sClass= "languagechanger form-control";
+        $sClass= "ls-language-changer-item";
         foreach ($aLanguages as $sLangCode => $aLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT,'UTF-8').' - '.$aLanguage['description'];
         $sSelected=$sSelectedLanguage;
 
-        $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get', array('class' => 'form-horizontal'));
-        $sHTMLCode.=CHtml::label(gT("Language:"), 'lang',array('class'=>'control-label col-xs-4 col-sm-8'));
-        $sHTMLCode .= "<div class='col-xs-7 col-sm-2'>";
-        $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
-        $sHTMLCode .= "</div>";
-        $sHTMLCode .= "<div class='col-xs-1 col-sm-2'>";
-        $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".gT("Change the language")."</button>";
-        $sHTMLCode .= "</div>";
-        $sHTMLCode.= CHtml::endForm();
+        $languageChangerDatas = array(
+            'sSelected' => $sSelected ,
+            'aListLang' => $aListLang ,
+            'sClass'    => $sClass    ,
+        );
+        $sHTMLCode = Yii::app()->getController()->renderPartial('/surveys/LanguageChangerForm', $languageChangerDatas, true);
         return $sHTMLCode;
     }
     else
@@ -456,7 +433,7 @@ function addtoarray_single($array1, $array2)
 * If $quotaexit is set to true then the user exited the survey due to a quota
 * restriction and the according token is only marked as 'Q'
 *
-* @param mixed $quotaexit
+* @param boolean $quotaexit
 */
 function submittokens($quotaexit=false)
 {
@@ -478,6 +455,7 @@ function submittokens($quotaexit=false)
 
     // check how many uses the token has left
     $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    $token->scenario = 'FinalSubmit';  // Do not XSS filter token data
 
     if ($quotaexit==true)
     {
@@ -886,7 +864,7 @@ function submitfailed($errormsg = '', $query = null)
 function buildsurveysession($surveyid,$preview=false)
 {
     Yii::trace('start', 'survey.buildsurveysession');
-    global $secerror, $clienttoken;
+    global $clienttoken;
     global $tokensexist;
     global $move, $rooturl;
 
@@ -916,8 +894,9 @@ function buildsurveysession($surveyid,$preview=false)
     $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
+    App()->getController()->sTemplate=$oTemplate->name;
     $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
+    $sTemplateViewPath = $oTemplate->pstplPath;
 
     /**
     * This method has multiple outcomes that virtually do the same thing
@@ -951,7 +930,6 @@ function buildsurveysession($surveyid,$preview=false)
         } else {
             $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
-
         $subscenarios['tokenValid'] = ((!empty($oTokenEntry) && ($clienttoken != "")));
     }
     else
@@ -963,9 +941,8 @@ function buildsurveysession($surveyid,$preview=false)
     if($scenarios['captchaRequired'])
     {
         //Check if the Captcha was correct
-        $loadsecurity = returnGlobal('loadsecurity',true);
         $captcha = Yii::app()->getController()->createAction('captcha');
-        $subscenarios['captchaCorrect'] = $captcha->validate($loadsecurity, false);
+        $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity'), false);
     }
     else
     {
@@ -973,16 +950,18 @@ function buildsurveysession($surveyid,$preview=false)
         $loadsecurity = false;
     }
 
+
     //RenderWay defines which html gets rendered to the user_error
     // Possibilities are main,register,correct
     $renderCaptcha = "";
     $renderToken = "";
-
+    /**
+     * @todo : create 2 new function to create and call form
+     */
     //Define array to render the partials
     $aEnterTokenData = array();
     $aEnterTokenData['bNewTest'] =  false;
     $aEnterTokenData['bDirectReload'] =  false;
-    $aEnterTokenData['error'] = $secerror;
     $aEnterTokenData['iSurveyId'] = $surveyid;
     $aEnterTokenData['sKpClass'] = $kpclass; // ???
     $aEnterTokenData['sLangCode'] = $sLangCode;
@@ -997,26 +976,40 @@ function buildsurveysession($surveyid,$preview=false)
         $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
     }
 
-    $FlashError = "";
-
-    // Scenario => Captcha required
-   if($scenarios['captchaRequired'] && !$preview)
-    {
-        list($renderCaptcha, $FlashError) = testCaptcha($aEnterTokenData, $subscenarios, $surveyid, $loadsecurity);
-    }
+    $aEnterErrors=array();
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
         //Test if token is valid
         list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
+        if(!empty($FlashError)){
+            $aEnterErrors['token']=$FlashError;
+        }
     }
 
-    //If there were errors, display through yii->FlashMessage
-    if($FlashError !== ""){
-        $aEnterTokenData['errorMessage'] = $FlashError;
+    // Scenario => Captcha required
+    if($scenarios['captchaRequired'] && !$preview) {
+
+        //Apply the captcYii::app()->getRequest()->getPost($id);haEnabled flag to the partial
+        $aEnterTokenData['bCaptchaEnabled'] = true;
+        // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
+        if (!$subscenarios['captchaCorrect']) {
+            if(App()->getRequest()->getPost('loadsecurity')){
+                $aEnterErrors['captcha']=gT("Your answer to the security question was not correct - please try again.");
+            }elseif(null!==App()->getRequest()->getPost('loadsecurity')){
+                $aEnterErrors['captcha']=gT("Your must answer to the security question - please try again.");
+            }
+            $renderCaptcha='main';
+        }
+        else {
+            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
+            $renderCaptcha='correct';
+        }
     }
 
+    $aEnterTokenData['aEnterErrors']=$aEnterErrors;
     $renderWay = getRenderWay($renderToken, $renderCaptcha);
     $redata = compact(array_keys(get_defined_vars()));
+    /* This funtion end if an form need to be shown */
     renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
     // Reset all the session variables and start again
@@ -1141,6 +1134,7 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
 
 /**
  * Prefill startvalues from command line param
+ * @param integer $surveyid
  * @return void
  */
 function prefillFromCommandLine($surveyid)
@@ -1179,6 +1173,7 @@ function prefillFromCommandLine($surveyid)
 
 /**
  * @param array $fieldmap
+ * @param integer $surveyid
  * @return void
  */
 function initFieldArray($surveyid, array $fieldmap)
@@ -1259,7 +1254,8 @@ function initFieldArray($surveyid, array $fieldmap)
  * @param array $subscenarios
  * @param int $surveyid
  * @param boolean $loadsecurity
- * @return array ($renderCaptcha, $FlashError)
+ * @todo This does not work for some reason, copied the code back. See bug #11739.
+ * @return string[] ($renderCaptcha, $FlashError)
  */
 function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $loadsecurity)
 {
@@ -1272,7 +1268,7 @@ function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $lo
     {
         if ($loadsecurity)
         { // was a bad answer
-            $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
+            $FlashError.=gT("Your answer to the security question was not correct - please try again.");
         }
         $renderCaptcha='main';
     }
@@ -1539,7 +1535,7 @@ function finalizeRandomization($fieldmap)
  * @param array $thissurvey
  * @param array $aEnterTokenData
  * @param string $clienttoken
- * @return array ($renderToken, $FlashError)
+ * @return string[] ($renderToken, $FlashError)
  */
 function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
 {
@@ -1560,12 +1556,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         }
         else
         { //token was wrong
-            $errorMsg= ""
-            . gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
-            . sprintf( gT("For further information please contact %s"), $thissurvey['adminname'])
-            . "(<a href='mailto:".$thissurvey['adminemail']."'>"
-            . $thissurvey['adminemail']."</a>)";
-
+            $errorMsg= gT("The token you have provided is either not valid, or has already been used.");
             $FlashError .= $errorMsg;
 
             $renderToken='main';
@@ -1629,26 +1620,35 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
 {
     switch($renderWay){
         case "main": //Token required, maybe Captcha required
-            sendCacheHeaders();
-            doHeader();
-            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
-
+            App()->getController()->layout="survey";
+            App()->getController()->aReplacementData=$aEnterTokenData;
+            App()->getController()->bStartSurvey=true;
             // render token form
-            if($scenarios['tokenRequired']){
-                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
-            } else {
-                App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
-            }
 
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
-            doFooter();
+            if($scenarios['tokenRequired']){
+                $aReplacements['FORMID'] = 'token';
+            } else {
+                $aReplacements['FORMID'] = 'captcha';
+            }
+            $aReplacements['FORMHEADING'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/heading",$aEnterTokenData,true);
+            $aReplacements['FORMMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/message",$aEnterTokenData,true);
+            $aReplacements['FORMERROR'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/error",$aEnterTokenData,true);
+
+            $aReplacements['FORM'] = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
+            $aReplacements['FORM'].= App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/form",$aEnterTokenData,true);
+            /* @ todo : some hidden field must be moved here : in controller */
+            $aReplacements['FORM'].= CHtml::endForm();
+            $content = templatereplace(file_get_contents($sTemplateViewPath."form.pstpl"),$aReplacements,$aData);
+            App()->getController()->render("/survey/system/display",array(
+                'content'=>$content,
+            ));
             Yii::app()->end();
             break;
         case "register": //Register new user
             // Add the event and test if done
             Yii::app()->runController("register/index/sid/{$surveyid}");
             Yii::app()->end();
+            /* We never get here */
             echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
             break;
         case "correct": //Nothing to hold back, render survey
@@ -1753,7 +1753,7 @@ function surveymover()
     $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
     $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep']))?$_SESSION['survey_'.$surveyid]['maxstep']:false;
     $iSessionTotalSteps=(isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
-    $sClass="submit button";
+    $sClass="ls-move-btn";
     $sSurveyMover = "";
 
     // Count down
@@ -1788,34 +1788,27 @@ function surveymover()
         $sMoveNext="";
     }
 
-    $sClass .= " btn btn-lg ";
 
     // Construction of mover
-    $sMovePrevButton = '';
+
     if($sMovePrev){
-        $sLangMoveprev=gT("Previous");
+        $sMovePrevButton = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>$sMovePrev,'class'=>"$sClass ls-move-previous-btn"),true);
         //$sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
-        $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass." btn-default"));
-    }
-    if($sMovePrev && $sMoveNext){
-        $sSurveyMover .= " ";
+        //~ $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass." btn-default"));
+    }else{
+        $sMovePrevButton = '';
     }
 
-    $sMoveNextButton = '';
     if($sMoveNext){
-
         if($sMoveNext=="movesubmit"){
-            $sLangMovenext=gT("Submit");
-            $sAccessKeyNext='l';// Why l ?
+            $sMoveNextButton = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"movesubmit",'class'=>"$sClass ls-move-submit-btn"),true);
         }else{
-            $sLangMovenext=gT("Next");
-            $sAccessKeyNext='n';
+            $sMoveNextButton = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"$sClass ls-move-next-btn"),true);
         }
-
-        //$sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
-        $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass." btn-primary"));
-     }
-    //return $sSurveyMover;
+        //~ $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass." btn-primary"));
+    }else{
+        $sMoveNextButton = '';
+    }
     return array('sMovePrevButton' => $sMovePrevButton, 'sMoveNextButton'=>$sMoveNextButton);
 }
 
@@ -1823,7 +1816,7 @@ function surveymover()
 * Caculate assessement scores
 *
 * @param mixed $surveyid
-* @param mixed $returndataonly - only returns an array with data
+* @param boolean $returndataonly - only returns an array with data
 */
 function doAssessment($surveyid, $returndataonly=false)
 {
@@ -1985,6 +1978,7 @@ function doAssessment($surveyid, $returndataonly=false)
 * A list of groups in this survey, ordered by group name.
 * @param int surveyid
 * @param string language
+* @param integer $surveyid
 */
 function UpdateGroupList($surveyid, $language)
 {
@@ -2067,15 +2061,16 @@ function checkCompletedQuota($surveyid,$return=false)
         return;
     }
     static $aMatchedQuotas; // EM call 2 times quotas with 3 lines of php code, then use static.
+    static $aPostedQuotaFields=array(); // Keep the posted field for the quota submit
     if(!$aMatchedQuotas)
     {
         $aMatchedQuotas=array();
-        $quota_info=$aQuotasInfo = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        $aQuotasInfo = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
         // $aQuotasInfo have an 'active' key, we don't use it ?
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
         // OK, we have some quota, then find if this $_SESSION have some set
-        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
+        //$aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
         foreach ($aQuotasInfo as $aQuotaInfo)
         {
             if(!$aQuotaInfo['active'])
@@ -2105,8 +2100,10 @@ function checkCompletedQuota($surveyid,$return=false)
                 {
                     $iMatchedAnswers++;
                 }
-                if(in_array($sFieldName,$aPostedFields))// Need only one posted value
+                if(!is_null(App()->request->getPost($sFieldName))){// Need only one posted value
                     $bPostedField=true;
+                    $aPostedQuotaFields[$sFieldName]=App()->getRequest()->getPost($sFieldName);
+                }
             }
             // Condition to count quota : Answers are the same in quota + an answer is submitted at this time (bPostedField) OR all questions is hidden (bAllHidden)
             $bAllHidden=QuestionAttribute::model()->countByAttributes(array('qid'=>$aQuotaQid),'attribute=:attribute',array(':attribute'=>'hidden'))==count($aQuotaQid);
@@ -2136,7 +2133,7 @@ function checkCompletedQuota($surveyid,$return=false)
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
+    $sTemplateViewPath = $oTemplate->pstplPath;
 
 
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
@@ -2166,11 +2163,13 @@ function checkCompletedQuota($surveyid,$return=false)
     $sUrl=$event->get('url',$aMatchedQuota['quotals_url']);
     $sUrlDescription=$event->get('urldescrip',$aMatchedQuota['quotals_urldescrip']);
     $sAction=$event->get('action',$aMatchedQuota['action']);
+    /* Tag if we close or not the survey */
+    $closeSurvey=($sAction=="1" || App()->getRequest()->getPost('move')=='confirmquota');
     $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
-
     // Doing the action and show the page
-    if ($sAction == "1" && $sClientToken)
+    if ($closeSurvey && $sClientToken){
         submittokens(true);
+    }
     // Construct the default message
     $sMessage = templatereplace($sMessage,array(),$aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
     $sUrl = passthruReplace($sUrl, $aSurveyInfo);
@@ -2180,18 +2179,39 @@ function checkCompletedQuota($surveyid,$return=false)
     // Construction of default message inside quotamessage class
     $sHtmlQuotaMessage = "<div class='quotamessage limesurveycore'>\n";
     $sHtmlQuotaMessage.= "\t".$sMessage."\n";
-    $sHtmlQuotaUrl=($sUrl)? "<a href='".$sUrl."'>".$sUrlDescription."</a>" : "";
+    if($sUrl && $closeSurvey)
+    {
+        $sHtmlQuotaUrl = App()->getController()->renderPartial("/survey/system/url",array(
+            'url'=>$sUrl,
+            '$description'=>$sUrlDescription,
+            'type'=>"survey-quotaurl",
+            'coreClass'=>"ls-endurl ls-quotaurl",
+        ),true);
+    }else{
+        $sHtmlQuotaUrl="";
+    }
 
     // Add the navigator with Previous button if quota allow modification.
-    if ($sAction == "2")
+    if (!$closeSurvey )
     {
         $sQuotaStep = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
-        $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button btn btn-default"));
-        //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
+        $sMovePrev = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>$sQuotaStep,'class'=>"ls-move-btn ls-move-previous-btn"),true);
+        $sMoveSubmit = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"confirmquota",'class'=>"ls-move-btn ls-move-submit-btn"),true);
+        $sNavigator = "$sMovePrev $sMoveSubmit";
+
         $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','class'=>'survey-form-container QuotaMessage'));
-        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array('MOVEPREVBUTTON'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
+        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array(
+            'MOVEPREVBUTTON' => $sMovePrev,
+            'MOVENEXTBUTTON' => $sMoveSubmit,
+            'NAVIGATOR' => $sNavigator,
+            'SAVE'=>''
+        ),$aDataReplacement);
         $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$surveyid);
         $sHtmlQuotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
+        foreach($aPostedQuotaFields as $field=>$post){
+            $sHtmlQuotaMessage.= CHtml::hiddenField($field,$post);
+        }
+        $sHtmlQuotaMessage.= CHtml::hiddenField('thisstep',$sQuotaStep);
         $sHtmlQuotaMessage.= CHtml::endForm();
     }
 
@@ -2201,10 +2221,9 @@ function checkCompletedQuota($surveyid,$return=false)
 
     // Send page to user and end.
     sendCacheHeaders();
-    if($sAutoloadUrl == 1 && $sUrl != "")
+    if($closeSurvey && $sAutoloadUrl == 1 && $sUrl != "")
     {
-        if ($sAction == "1")
-            killSurveySession($surveyid);
+        killSurveySession($surveyid);
         header("Location: ".$sUrl);
     }
     doHeader();
@@ -2212,8 +2231,9 @@ function checkCompletedQuota($surveyid,$return=false)
     echo templatereplace(file_get_contents($sTemplateViewPath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
     echo templatereplace(file_get_contents($sTemplateViewPath."/endpage.pstpl"),array(),$aDataReplacement);
     doFooter();
-    if ($sAction == "1")
+    if ($closeSurvey){
         killSurveySession($surveyid);
+    }
     Yii::app()->end();
 }
 
@@ -2303,7 +2323,7 @@ function display_first_page() {
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
+    $sTemplateViewPath = $oTemplate->pstplPath;
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
     echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off', 'class'=>'frontend_helper'));
 
@@ -2368,7 +2388,7 @@ function resetTimers()
 * Control if language exist in this survey, else set to survey default language
 * if $surveyid <= 0 : set the language to default site language
 * @param int $surveyid
-* @param string $language
+* @param string $sLanguage
 */
 function SetSurveyLanguage($surveyid, $sLanguage)
 {
@@ -2409,6 +2429,7 @@ function SetSurveyLanguage($surveyid, $sLanguage)
 
 /**
 * getMove get move button clicked
+* @return string
 **/
 function getMove()
 {
@@ -2416,14 +2437,17 @@ function getMove()
     // We can control is save and load are OK : todo fix according to survey settings
     // Maybe allow $aAcceptedMove in Plugin
     $move=Yii::app()->request->getParam('move');
+    /* @deprecated since we use button and not input with different value. */
     foreach($aAcceptedMove as $sAccepteMove)
     {
         if(Yii::app()->request->getParam($sAccepteMove))
             $move=$sAccepteMove;
     }
+    /* Good idea, but used ? */
     if($move=='clearall' && App()->request->getPost('confirm-clearall')!='confirm'){
             $move="clearcancel";
     }
+    /* default move (user don't click on a button, but use enter in a input:text or a select */
     if($move=='default')
     {
         $surveyid=Yii::app()->getConfig('surveyID');

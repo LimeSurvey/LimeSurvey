@@ -53,6 +53,10 @@ class limereplacementfields extends Survey_Common_Action
         $this->getController()->render('/admin/limeReplacementFields_view', $data);
     }
 
+    /**
+     * @param integer $gid
+     * @param integer $qid
+     */
     private function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
     {
         $previousQuestion = null;
@@ -79,6 +83,10 @@ class limereplacementfields extends Survey_Common_Action
         return $questionList;
     }
 
+    /**
+     * @param integer $gid
+     * @param integer $qid
+     */
     private function _shouldAddQuestion($action, $gid, $qid, array $question, $previousQuestion)
     {
         switch ($action)
@@ -100,7 +108,7 @@ class limereplacementfields extends Survey_Common_Action
 
             case 'addquestion':
                 if (empty($gid)) {
-                    safeDie("No GID provided.");
+                    safeDie("No GID provided. Please save the question and try again.");
                 }
 
                 if (!is_null($previousQuestion) && $previousQuestion['gid'] == $gid && $question['gid'] != $gid ) {
@@ -132,6 +140,9 @@ class limereplacementfields extends Survey_Common_Action
         }
     }
 
+    /**
+     * @param integer $gid
+     */
     private function _addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
     {
         if ($action == 'tokens' && $questionType == 'email-conf' || $surveyformat == "S") {
@@ -179,6 +190,9 @@ class limereplacementfields extends Survey_Common_Action
         return $cquestions;
     }
 
+    /**
+     * @param integer $surveyid
+     */
     private function _getReplacementFields($fieldtype, $surveyid)
     {
 

@@ -14,21 +14,29 @@
 <!-- Long Free Text -->
 
 <!-- answer -->
-<p class='question answer-item text-item <?php echo $extraclass; ?>'>
-    <label for='answer<?php echo $name; ?>' class='hide label'>
+<?php if($withColumn): ?>
+<div class='<?php echo $coreClass; ?> row'>
+    <div class="<?php echo $extraclass; ?>">
+<?php else: ?>
+<div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
+<?php endif; ?>
+    <label for='answer<?php echo $name; ?>' class='sr-only control-label'>
         <?php eT('Your answer'); ?>
     </label>
 
-<textarea
-    class="form-control textarea <?php echo $kpclass; ?>"
-    name="<?php echo $name; ?>"
-    id="answer<?php echo $name; ?>"
-    rows="<?php echo $drows; ?>"
-    cols="<?php echo $tiwidth; ?>"
-    <?php echo $maxlength; ?>
-    onkeyup="<?php echo $checkconditionFunction;?>"
->
-<?php echo $dispVal;?>
-</textarea>
-</p>
+    <textarea
+        class="form-control <?php echo $kpclass; ?>"
+        name="<?php echo $name; ?>"
+        id="answer<?php echo $name; ?>"
+        rows="<?php echo $drows; ?>"
+        <?php echo ($inputsize ? 'cols="'.$inputsize.'"': '') ; ?>
+        <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+    ><?php echo $dispVal;?></textarea>
+<?php if($withColumn): ?>
+    </div>
+</div>
+<?php else: ?>
+</div>
+<?php endif; ?>
+
 <!-- end of answer -->

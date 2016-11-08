@@ -7,8 +7,6 @@
  */
  ?>
 
- <!-- column_header -->
-     <!-- on small screen, each column is full widht, so it look like a single colunm-->
-    <div class="col-sm-<?php echo $iColumnWidth?> col-xs-12">
-        <div class="row">
+<!-- on small screen, each column is full widht, so it look like a single colunm-->
+<ul class="list-unstyled col-sm-<?php echo $iColumnWidth?> col-xs-12">
 <!-- end of column_header -->

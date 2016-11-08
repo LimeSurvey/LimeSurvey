@@ -14,38 +14,45 @@
  */
 ?>
 
-<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal short-free-text">
-
-    <div class='form-group'>
-
-        <!-- Label -->
-        <label class='control-label col-xs-12 col-sm-2 hide label' for='answer<?php echo $name; ?>' >
-            <?php eT('Your answer'); ?>
-        </label>
-
+<?php if($withColumn): ?>
+<div class='<?php echo $coreClass; ?> row'>
+    <div class="<?php echo $extraclass; ?>">
+<?php else: ?>
+<div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
+<?php endif; ?>
+    <!-- Label -->
+    <label class='control-label sr-only' for='answer<?php echo $name; ?>' >
+        <?php eT('Your answer'); ?>
+    </label>
+    <?php if ($prefix !== '' || $suffix !== ''): ?>
+        <div class="ls-input-group">
+    <?php endif; ?>
         <!-- Prefix -->
         <?php if ($prefix !== ''): ?>
-            <span class='col-xs-12 col-sm-2 prefix-text-right prefix'><?php echo $prefix; ?></span>
+            <div class='ls-input-group-extra prefix-text prefix text-right'><?php echo $prefix; ?></div>
         <?php endif; ?>
 
         <!-- Input -->
-        <div class='col-xs-12 col-sm-<?php echo max($sm_col - 5, 6); ?>'>
-            <input
-                class="form-control text <?php echo $kpclass;?>"
-                type="text"
-                size="<?php echo $tiwidth; ?>"
-                name="<?php echo $name; ?>"
-                id="answer<?php echo $name;?>"
-                value="<?php echo $dispVal; ?>"
-                <?php echo $maxlength; ?>
-                onkeyup="<?php echo $checkconditionFunction; ?>"
-            />
-        </div>
+        <input
+            class="form-control <?php echo $kpclass;?>"
+            type="text"
+            name="<?php echo $name; ?>"
+            id="answer<?php echo $name;?>"
+            value="<?php echo $dispVal; ?>"
+            <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+            <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+        />
 
         <!-- Suffix -->
         <?php if ($suffix !== ''): ?>
-            <span class='col-xs-12 col-sm-2 text-left suffix'><?php echo $suffix; ?></span>
+            <div class='ls-input-group-extra suffix-text suffix text-left'><?php echo $suffix; ?></div>
         <?php endif; ?>
-
+    <?php if ($prefix !== '' || $suffix !== ''): ?>
+        </div>
+    <?php endif; ?>
+<?php if($withColumn): ?>
     </div>
 </div>
+<?php else: ?>
+</div>
+<?php endif; ?>

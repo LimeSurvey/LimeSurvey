@@ -304,7 +304,7 @@ class pdf extends TCPDF {
   /**
    *
    * obsolete
-   * @param $text
+   * @param string $text
    * @param $format
    * @return unknown_type
    */

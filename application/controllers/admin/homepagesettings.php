@@ -174,6 +174,7 @@ class homepagesettings extends Survey_Common_Action
             'bShowLogo'=>(getGlobalSetting('show_logo')=="show"),
             'bShowLastSurveyAndQuestion'=>(getGlobalSetting('show_last_survey_and_question')=="show"),
             'bShowSurveyList'=>(getGlobalSetting('show_survey_list')=="show"),
+            'bShowSurveyListSearch'=>(getGlobalSetting('show_survey_list_search')=="show"),
             'iBoxesByRow'=>(int) getGlobalSetting('boxes_by_row'),
             'iBoxesOffset'=>(int) getGlobalSetting('boxes_offset'),
         );
@@ -247,24 +248,43 @@ class homepagesettings extends Survey_Common_Action
     }
 
 
-        /**
-         * Performs the AJAX toggle of sshow_survey_list
-         */
-        public function toggleShowSurveyList()
+    /**
+     * Performs the AJAX toggle of show_survey_list
+     */
+    public function toggleShowSurveyList()
+    {
+        if (Yii::app()->getConfig('demoMode'))
         {
-            if (Yii::app()->getConfig('demoMode'))
-            {
-                Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
-                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
-            }
-
-            if ( Permission::model()->hasGlobalPermission('settings', 'update') )
-            {
-                $bShowSurveyList = (getGlobalSetting('show_survey_list')=="show")?"hide":"show";
-                setGlobalSetting('show_survey_list', $bShowSurveyList);
-                echo $bShowSurveyList;
-            }
+            Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
         }
+
+        if ( Permission::model()->hasGlobalPermission('settings', 'update') )
+        {
+            $bShowSurveyList = (getGlobalSetting('show_survey_list')=="show")?"hide":"show";
+            setGlobalSetting('show_survey_list', $bShowSurveyList);
+            echo $bShowSurveyList;
+        }
+    }
+
+    /**
+     * Performs the AJAX toggle of show_survey_list_search
+     */
+    public function toggleShowSurveyListSearch()
+    {
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+        }
+
+        if ( Permission::model()->hasGlobalPermission('settings', 'update') )
+        {
+            $bShowSurveyListSearch = (getGlobalSetting('show_survey_list_search')=="show")?"hide":"show";
+            setGlobalSetting('show_survey_list_search', $bShowSurveyListSearch);
+            echo $bShowSurveyListSearch;
+        }
+    }
 
     /**
      * Performs the AJAX update of box setting

@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.50+!
+Welcome to LimeSurvey v2.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,6 +34,212 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+
+
+Changes from  2.55.1 (build 161026) to 2.55.2 (build 161103) Nov 3 2016
+-Fixed issue #11843: Error when filtering by a custom attribute in CPDB with MySQL (Olle Haerstedt)
+-Fixed issue #11844: Clicking 'Set Conditions' to enter conditions (Olle Haerstedt)
+-Fixed issue #11845: Relevance Equation code is missing syntax highlighting and not recognising question variables (Olle Haerstedt)
+-Fixed issue #11851: Unstyled HTML when editing default answer options for yes-no question (Olle Haerstedt)
+-Fixed issue #11858: When adding a new group In multi lingual : only 1st language is created (Denis Chenu)
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Portuguese (Brazil) by thiagosmartins, mauriciofurtado, holch, flaviove
+
+Changes from  2.55 (build 161021) to 2.55.1 (build 161026) Oct 26 2016
+-Fixed issue #11606: Date/Time filed does not record the answer (Olle Haerstedt)
+-Fixed issue #11813: Default order of responses not set to response ID when browsing or exporting (Carsten Schmitz)
+-Fixed issue #11821: Apache error uploading images kcfinder (Carsten Schmitz)
+-Fixed issue #11823: Screen for activation of survey too narrow (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by seniorcoach, maxzomborszki
+
+Changes from  2.54.5 (build 161019) to 2.55 (build 161021) Oct 21 2016
+-New feature: Quick-add conditions in the condition designer (Olle Haerstedt)
+-Fixed issue #11727: 'Undefined index: LEMsid' with a plugin sidebody URL (Olle Haerstedt)
+-Fixed issue #11758: Better error message for replacement fields (Olle Haerstedt)
+-Fixed issue #11794: Show scenario number when edit condition (Olle Haerstedt)
+-Fixed issue #11818: Non-sanitized output in massive actions for question list (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from  2.54.4 (build 161018) to 2.54.5 (build 161019) Oct 19 2016
+-Fixed issue #11805: Timestamp hours does not display correctly in 'invitations sent' window (Olle Haerstedt)
+-Fixed issue #11809: Restrictions for mass actions not correct working in response browsing (Olle Haerstedt)
+-Fixed issue #11815: Can't login, no input field for login (LouisGac)
+#Updated translation: Chinese (Simplified) by yooyooh, yanglaw, leadingsoci
+
+Changes from  2.54.3 (build 161014) to 2.54.4 (build 161018) Oct 18, 2016
+-Fixed issue #11702: Dropdown question : 2 'no answer' if value selected is 0 (Denis Chenu)
+-Fixed issue #11731: Regexp validation for short-text question (Olle Haerstedt)
+-Fixed issue #11740: Decimal throwerreor with negative value (Denis Chenu)
+-Fixed issue #11753: Date validation issues (Olle Haerstedt)
+-Fixed issue #11768: Window for old token tables too small (Olle Haerstedt)
+-Fixed issue #11802: Remove unused files (Olle Haerstedt)
+-Fixed issue #11806: Blank page in conditions (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by kpadm, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: German by Joffm, c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, kmaksat, vipgroup
+#Updated translation: Spanish (Spain) by aesteban
+
+Changes from  2.54.2 (build 161012) to 2.54.3 (build 161014) Oct 14, 2016
+-Fixed issue #11746: Notice when previewing a hidden question and debug mode activated (Carsten Schmitz)
+-Fixed issue #11765: Admin data entry doesn't work if survey has restricted access (Olle Haerstedt)
+-Fixed issue: Mass-exporting survey archives shows error (Carsten Schmitz)
+-Fixed issue: Remove session warning message from question organizer (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21, DenisChenu
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Spanish (Spain) by aesteban
+
+Changes from  2.54.1 (build 161010) to 2.54.2 (build 161012) Oct 12, 2016
+-Fixed issue #11752: Mandatory radio star show 4 stars only (markusfluer)
+-Fixed issue #11760: Helper class ls\ajax\AjaxHelper uses echo keyword as method name (Olle Haerstedt)
+-Fixed issue #11772: Expression manager convert_value does not obey strict setting (Olle Haerstedt)
+-Fixed issue #11775: Gender question condition faulty (Olle Haerstedt)
+-Fixed issue #11780: Typo - The file has been successfuly uploaded (Olle Haerstedt)
+-Fixed issue #11785: Warn if input is too big in question organizer (Olle Haerstedt)
+-Fixed issue: SPSS data export corrupted (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz, surveyunihi, ecoplan
+#Updated translation: German (Informal) by c_schmitz, actxcellence
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Spain) by xtingray, larjona, aesteban
+
+Changes from  2.54 (build 161007) to 2.54.1 (build 161010) Oct 10, 2016
+-Fixed issue #11760: White screen/error when opening CPDB
+
+Changes from  2.53 (build 161004) to 2.54 (build 161007) Oct 07, 2016
+-New feature #11683: i18n for EM validations tip (Denis Chenu)
+-New feature: Choose language when exporting SPSS data (Carsten Schmitz)
+-New translation: Bengali (Carsten Schmitz)
+-Fixed issue #10614: Crash during installation if password and confirmation password don't match (Alfredo Esteban)
+-Fixed issue #11682: Possible illegal string offset with some attribute (Denis Chenu)
+-Fixed issue #11730: Minimum width warning for admin interface showing when it shouldn't (Carsten Schmitz)
+-Fixed issue #11732: (partial) Slider reset don't reset to default position (Denis Chenu)
+-Fixed issue #11757: tmp/assets directory is missing (Carsten Schmitz)
+-Fixed issue: Crash during installation if admin email is empty (Alfredo Esteban)
+-Fixed issue: TLS handshake used even if no TLS is set in SMTP settings (Carsten Schmitz)
+-Fixed issue: XSS filter for attributes is applied when the participant is marked as completed or quota out (Carsten Schmitz)
+#Updated translation: Bengali by khadijaashraf
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from  2.52 (build 160908) to 2.53 (build 161004) Oct 04, 2016
+-New feature #11626: beforeTokenEmail for confirmation email (Denis Chenu)
+-New feature: Add model for beforeTokenEmail event (name in the DB for surveyls_email_model) (Denis Chenu)
+-New feature: Add survey for survey id in beforeTokenEmail event (Denis Chenu)
+-Updated feature: Added setting to toggle search box on home page survey listing (#11710) (Matthew Favetti)
+-Updated feature: Allow custom links in home page boxes (#11548) (Matthew Favetti)
+-Updated feature: User can now choose whether or not to create sample question and group when a creating survey (#11605) (Matthew Favetti)
+-Fixed issue: [security] Persistent XSS in the attributes of a token (Alfredo Esteban)
+-Fixed issue #11542: Implement setting to display more than 10 users per page (Matthew Favetti)
+-Fixed issue #11586: Window size problem for admin screens (Carsten Schmitz)
+-Fixed issue #11621: Dashes and leading numbers not allowed in database names (Carsten Schmitz)
+-Fixed issue #11678: some misplaced text string etc in Print answers after survey completition (Alfredo Esteban)
+-Fixed issue #11681: Clicking "Undo" right after page load erases everything in template source code editor (Carsten Schmitz)
+-Fixed issue #11684: Download all files for these responses is missing (Olle Haerstedt)
+-Fixed issue #11685: Survey header in mobile view breaking into next line (LouisGac)
+-Fixed issue #11690: Mandatory indication is missing in question list (Matthew Favetti)
+-Fixed issue #11691: Can't upload CSV files with valid tokens (Denis Chenu)
+-Fixed issue #11698: ConfortUpdate cannot download the zip file via proxy (Matthew Favetti)
+-Fixed issue #11700: Mandatory array (dropdown) is not mandatory (Denis Chenu)
+-Fixed issue #11708: Question code not shown when 'Show question code only' is selected in survey settings (Matthew Favetti)
+-Fixed issue #11710: Add 'search box' on Home page survey list (Matthew Favetti)
+-Fixed issue #11712: Bootsrap3 Class for plugin settings (Denis Chenu)
+-Fixed issue #11713: Unclear message when setting an expiration date (Carsten Schmitz)
+-Fixed issue #11736: Uncaught ReferenceError: Decimal is not defined (Matthew Favetti)
+-Fixed issue #11739: No redirect to survey after token use (Olle Haerstedt)
+-Fixed issue: Control characters break XML export (Carsten Schmitz)
+-Fixed issue: Copying a survey takes a very long time due to slow link replacement (Carsten Schmitz)
+-Fixed issue: Last browser version show ranking right to left and not left to right (Denis Chenu)
+-Fixed issue: SQL error with postgresql when filling integer fields in tokens list (Alfredo Esteban)
+-Fixed issue: UID not logged when creating token (Alfredo Esteban)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Danish by c_schmitz
+#Updated translation: Finnish by tigger, jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by c_schmitz, ecoplan
+#Updated translation: Hungarian by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by kmaksat, vipgroup
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+
+Changes from  2.51.4 (build 160908) to 2.52 (build 160920) Sept 20, 2016
+-New feature #11626: beforeTokenEmail for confirmation email (Denis Chenu)
+-New feature: Add model for beforeTokenEmail event (name in the DB for surveyls_email_model) (Denis Chenu)
+-New feature: Add survey for survey id in beforeTokenEmail event (Denis Chenu)
+-Fixed issue #11574: Search box in main survey list is case sensitive (Alfredo Esteban)
+-Fixed issue #11639: Bad design when using the function Copy conditions (Olle Haerstedt)
+-Fixed issue #11642: Update CKEditor to Version 4.5.11 (Carsten Schmitz)
+-Fixed issue #11644: SQL error in postgresql when filtering by date types in participants list and responses list (Olle Haerstedt)
+-Fixed issue #11647: Can not use LANGUAGECHANGER inside a survey (Denis Chenu)
+-Fixed issue #11650: Array dropdown : answer_width don't set answer column width (Denis Chenu)
+-Fixed issue #11651: Multiple question exportation to SPSS unclear (Denis Chenu)
+-Fixed issue #11663: KCFinder Image Browse Server not working when using db sessions (Gabriele Mambrini) (Denis Chenu)
+-Fixed issue #11664: When using core variable in relevance or in attribute : update language during survey break expression (Denis Chenu)
+-Fixed issue: ~ and _ in tokens hard to manually enter (Carsten Schmitz)
+-Fixed issue: import template skipped "woff2" files, and warn as "skipped" the folders. (LouisGac)
+-Fixed issue: Language changer not holding language with activated captcha (markusfluer)
+-Fixed issue: SQL error with postgresql when filling integer fields in tokens list (Alfredo Esteban)
+-Fixed issue: Tokens are silently sanitized on import - should be skipped instead with proper error message in import summary (Carsten Schmitz)
+-Fixed issue: Version number not updated (Carsten Schmitz)
+#Updated translation: Albanian by amirbuzo
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Hebrew by lior
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Slovak by dusanm
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
 
 Changes from  2.51.3 (build 160907) to 2.51.4 (build 160908) Sept 08, 2016
 -Fixed issue #11615: Input is not properly supressed when setting "numbers only" restriction (markusfluer)

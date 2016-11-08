@@ -17,42 +17,32 @@
 ?>
 
 <!-- answer_row_other -->
-<div id='javatbd<?php echo $myfname; ?>' class='col-xs-12 form-group answer-item radio-item radio' <?php echo $sDisplayStyle; ?> >
+<li id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-text-item form-inline' <?php echo $sDisplayStyle; ?> >
     <!-- Checkbox + label -->
-    <div class="pull-left othertext-label-checkox-container">
+    <div class="form-group othertext-label-checkox-container radio-item">
         <input
-        class="radio"
         type="radio"
         value="-oth-"
         name="<?php echo $name; ?>"
         id="SOTH<?php echo $name;?>"
         <?php echo $checkedState;?>
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
-        aria-labelledby="label-SOTH<?php echo $name; ?>"
         />
 
-        <label for="SOTH<?php echo $name; ?>" class="answertext control-label label-radio"></label>
-
-        <!--
-             The label text is provided inside a div,
-             so final user can add paragraph, div, or whatever he wants in the subquestion text
-             This field is related to the input thanks to attribute aria-labelledby
-        -->
-        <div class="label-text label-clickable" id="label-SOTH<?php echo $name; ?>">
-                <?php echo $othertext; ?>&nbsp;
-        </div>
+        <label for="SOTH<?php echo $name; ?>" class="control-label label-radio" id="label-id-<?php echo $name; ?>"><?php echo $othertext; ?></label>
     </div>
 
     <!-- comment -->
-    <div class="pull-left ">
+    <div class="form-group text-item other-text-item">
         <input
         type="text"
-        class="form-control text <?php echo $kpclass; ?> input-sm"
+        class="form-control <?php echo $kpclass; ?> input-sm"
         id="answer<?php echo $name; ?>othertext"
         name="<?php echo $name; ?>other"
         title="<?php eT('Other'); ?>" <?php echo $answer_other;?>
-        onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $name; ?>').click(); };  <?php echo $oth_checkconditionFunction; ?>"
+        onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $name; ?>').click(); };  <?php echo $oth_checkconditionFunction; ?>",
+        aria-labelledby="label-id-<?php echo $name; ?>"
         />
     </div>
-</div>
+</li>
 <!-- end of answer_row_other -->

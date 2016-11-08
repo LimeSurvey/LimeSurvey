@@ -13,6 +13,9 @@
 */
 
 
+/**
+ * @param string $file
+ */
 function doreplacement($file,$data, $oTemplate='')
 {
     //Produce sample page from template file
@@ -41,13 +44,13 @@ function getListOfFiles($wh){
 /**
 * Load this editfile
 *
-* @param string $templatename
+* @param string $template name
 * @param string $templatefile
-* @param array $templates
+* @param string[] $templates directory
 * @return string
 */
 function filetext($templatename,$templatefile,$templates) {
-    $sFileName = gettemplatefilename($templates[$templatename],$templatefile);
+    $sFileName = gettemplatefilename($templatename,$templatefile);
     if (file_exists($sFileName))
     {
         return file_get_contents($sFileName);
@@ -57,6 +60,9 @@ function filetext($templatename,$templatefile,$templates) {
     }
 }
 
+/**
+ * @param string $target
+ */
 function mkdir_p($target){
     //creates a new directory
     //Returns 1 for success
@@ -140,6 +146,7 @@ function templateExtractFilter($p_event, &$p_header)
     $info = pathinfo($p_header['filename']);
     // Deny files with multiple extensions in general
     if (substr_count($info['basename'],'.')!=1) return 0;
+
     if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'],$aAllowExtensions)) {
         return 1;
     }
@@ -156,34 +163,21 @@ function templateExtractFilter($p_event, &$p_header)
 * @param string $templatefile
 */
 function gettemplatefilename($template, $templatefile) {
+    $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
     switch (pathinfo($templatefile, PATHINFO_EXTENSION))
     {
         case 'pstpl':
-            // Default 2.5 templates
-            if (file_exists($template.'/views/'.$templatefile))
-            {
-                return $template.'/views/'.$templatefile;
-            }
-            // Default 2.06 templates
-            elseif(file_exists($template.'/'.$templatefile))
-            {
-                return $template.'/'.$templatefile;
-            }
-            // Something else
-            else
-            {
-                $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
-                return $template.'/'.$oEditedTemplate->viewPath.'/'.$templatefile;
-            }
+            $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
+            return $oEditedTemplate->pstplPath.$templatefile;
             break;
         case 'css':
-            return $template.'/'.$templatefile;
+            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
             break;
         case 'js':
-            return $template.'/'.$templatefile;
+            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
             break;
         default:
-            return $template.'/'.$templatefile;
+            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
             break;
     }
 }

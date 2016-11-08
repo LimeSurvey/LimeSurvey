@@ -12,8 +12,7 @@
 <!-- Array -->
 
 <!-- answer -->
-<div class="no-more-tables no-more-tables-array-dropdown">
-    <table class="table table-condensed question subquestion-list questions-list  <?php echo $extraclass; ?>">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-array-dropdown">
     <colgroup class="col-responses">
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <col class="odd" style='width: <?php echo $columnswidth; ?>%;' />
@@ -21,12 +20,11 @@
             <col class="col-answersright" style='width: <?php echo $answerwidth; ?>%;' />
         <?php endif; ?>
     </colgroup>
-        <tbody>
-            <?php
-                // rows/answer_row.php
-                echo $sRows;
-            ?>
-        </tbody>
-    </table>
-</div>
+    <tbody>
+        <?php
+            // rows/answer_row.php
+            echo $sRows;
+        ?>
+    </tbody>
+</table>
 <!-- end of answer -->

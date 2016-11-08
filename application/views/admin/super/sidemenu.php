@@ -146,10 +146,10 @@
                                             <li class="disabled">
                                                 <a href='#'>
                                                     <span class="icon-organize"></span>
-                                                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo gT("Question group/question organizer disabled").' - '.gT("This survey is currently active."); ?>">
-                                                    <?php eT("Question organizer"); ?>
+                                                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo gT("Question group/question organizer disabled").' - '.gT("This survey is currently active."); ?>">
+                                                        <?php eT("Question organizer"); ?>
+                                                    </span>
                                                 </a>
-                                                </span>
                                             </li>
                                         <?php else: ?>
                                             <li>

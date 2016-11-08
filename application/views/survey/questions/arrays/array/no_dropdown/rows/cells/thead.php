@@ -6,7 +6,7 @@
 ?>
 
 <!-- thead -->
-<th  class='<?php echo $class;?> text-center'>
+<th  class='<?php echo $class;?>'>
     <?php echo $content;?>
 </th>
 <!-- end of thead -->

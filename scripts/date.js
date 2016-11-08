@@ -1,21 +1,21 @@
 $(document).ready(function(){
-
     // dropdown dates
     $('.namecontainer').each(function(){
         var name = $(this).data('name');
         doPopupDate(name);
     });
 });
-/*
+
+/**
  * Function to launch timepicker in question id
  */
-function doPopupDate(qId){
+function doPopupDate(qId) {
 
     if($("#question"+qId+" .popupdate").length){
         var basename = $("#question"+qId+" .popupdate").attr("id").substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
-        $("#question"+qId+" .popupdate").datetimepicker({
+        var $dp = $("#question"+qId+" .popupdate").datetimepicker({
             changeYear: true,
             changeMonth: true,
             defaultDate: +0,
@@ -23,15 +23,17 @@ function doPopupDate(qId){
             firstDay: "1",
             duration: 'fast',
             // set more options at "runtime"
-            beforeShow: setPickerOptions
+            show: setPickerOptions,
+            onShow: setPickerOptions,
         }, $.datepicker.regional[language]);
     }
-    
+
     $("#question"+qId).find('div.input-group.date').on('dp.change', function(){
-        $(this).find('input').trigger('change');
+        $(this).find('input').trigger('keyup');
     });
 }
-/*
+
+/**
  * Function to launch timepicker in question id
  */
 function doDropDownDate(qId){
@@ -41,12 +43,14 @@ function doDropDownDate(qId){
         //dateUpdater();
     });
 }
-/* This function is called each time shortly before the picker pops up.
- *  Here we set all the picker options that can be different from question to question.
+
+/**
+ * This function is called each time shortly before the picker pops up.
+ * Here we set all the picker options that can be different from question to question.
+ * @param {object} input
  */
-function setPickerOptions(input)
+function setPickerOptions(basename)
 {
-    var basename = input.id.substr(6);
     var format=$('#dateformat'+basename).val();
 
     //split format into a date part and a time part
@@ -118,9 +122,16 @@ function setPickerOptions(input)
     }
 
     // set minimum and maximum dates for calender
-    datemin=$('#datemin'+basename).text();
-    datemax=$('#datemax'+basename).text();
+    var datemin=$('#datemin'+basename).text();
+    var datemax=$('#datemax'+basename).text();
+    datemin2 = moment(datemin.substr(0,10), "YYYY-MM-DD");
+    datemax2 = moment(datemax.substr(0,10), "YYYY-MM-DD");
 
+    var $dp = $('#answer' + basename + '_datetimepicker');
+    $dp.data('DateTimePicker').minDate(datemin2);
+    $dp.data('DateTimePicker').maxDate(datemax2);
+
+    // TODO: Not used, since BS datepicker
     return {
         // set minimum and maximum date
         // remove the time component for Firefox
@@ -209,7 +220,6 @@ function dateUpdater() {
             $('#answer'+thisid).val('INVALID');
             $('#answer'+thisid).change();
             // QCODE.NAOK return "" if real value is INVALID (because can be shown to user), then do it manually (line 721 em_javascript)
-            $("#vmsg_22_dropdown_dates").removeClass('good').addClass('error');
         }
         else
         {

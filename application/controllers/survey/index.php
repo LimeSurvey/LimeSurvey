@@ -30,6 +30,9 @@ class index extends CAction {
         $aLangData=getLanguageData();
         $aRadix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);
         $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
+        $aLSJavascriptVar['lang']=new stdClass;
+        $aLSJavascriptVar['showpopup']=(int)Yii::app()->getConfig('showpopups');
+        $aLSJavascriptVar['startPopup']=new stdClass;
         $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
 
         // Template configuration
@@ -143,25 +146,46 @@ class index extends CAction {
         if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) )
         {
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>App()->language,'newtest'=>'Y'));
-            $asMessage = array(
-            gT('Token mismatch'),
-            gT('The token you provided doesn\'t match the one in your session.'),
-            "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
+            $aErrors=array(gT('Token mismatch'));
+            $asMessage = array(gT('The token you provided doesn\'t match the one in your session.'));
+            $aUrl=array(
+                'url'=>$sReloadUrl,
+                'type'=>'restart-survey',
+                'description'=>gT("Click here to start the survey.")
             );
-            $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
+            killSurveySession($surveyid);
+            App()->getController()->renderExitMessage(
+                $surveyid,
+                'restart-survey',
+                $aMessage,
+                $aUrl,
+                $aErrors
+            );
         }
 
         if ( $this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) // No test for response update
         {
             $aReloadUrlParam=array('lang'=>App()->language,'newtest'=>'Y');
-            if($clienttoken){$aReloadUrlParam['token']=$clienttoken;}
-            $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam);
-            $asMessage = array(
-            gT('Previous session is set to be finished.'),
-            gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
-            "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
+            if($clienttoken){
+                $aReloadUrlParam['token']=$clienttoken;
+            }
+            $aErrors=array(gT('Previous session is set to be finished.'));
+            $aMessage = array(
+                gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
             );
-            $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
+            $aUrl=array(
+                'url'=>$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam),
+                'type'=>'restart-survey',
+                'description'=>gT("Click here to start the survey.")
+            );
+            killSurveySession($surveyid);
+            App()->getController()->renderExitMessage(
+                $surveyid,
+                'restart-survey',
+                $aMessage,
+                $aUrl,
+                $aErrors
+            );
         }
 
         $previewmode=false;
@@ -169,11 +193,18 @@ class index extends CAction {
         {
             if(!$this->_canUserPreviewSurvey($surveyid))
             {
-                $asMessage = array(
-                    gT('Error'),
-                    gT("We are sorry but you don't have permissions to do this.")
+                // @todo : throw a 401
+                $aErrors=array(gT('Error'));
+                $aMessage = array(
+                    gT("We are sorry but you don't have permissions to do this."),
                 );
-                $this->_niceExit($redata, __LINE__, null, $asMessage);
+                App()->getController()->renderExitMessage(
+                    $surveyid,
+                    'norights-401',
+                    $aMessage,
+                    null,
+                    $aErrors
+                 );
             }
             else
             {
@@ -188,12 +219,18 @@ class index extends CAction {
 
             if ($bPreviewRight === false)
             {
-                $asMessage = array(
-                gT("Error"),
-                gT("We are sorry but you don't have permissions to do this."),
-                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                // @todo : throw a 401
+                $aErrors=array(gT('Error'));
+                $aMessage = array(
+                    gT("We are sorry but you don't have permissions to do this."),
                 );
-                $this->_niceExit($redata, __LINE__, null, $asMessage);
+                App()->getController()->renderExitMessage(
+                    $surveyid,
+                    'norights-410',
+                    $aMessage,
+                    null,
+                    $aErrors
+                 );
             }
         }
 
@@ -207,16 +244,28 @@ class index extends CAction {
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
 
-        if ( $this->_didSessionTimeOut($surveyid) )
+        if ( $this->_didSessionTimeout($surveyid) )
         {
-            // @TODO is this still required ?
-            $asMessage = array(
-                gT("Error"),
-                gT("We are sorry but your session has expired."),
+            $aErrors=array(gT('We are sorry but your session has expired.'));
+            $aMessage = array(
                 gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
-                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
-            $this->_niceExit($redata, __LINE__, null, $asMessage);
+            $aReloadUrlParam=array('lang'=>App()->language,'newtest'=>'Y');
+            if($clienttoken){
+                $aReloadUrlParam['token']=$clienttoken;
+            }
+            $aUrl=array(
+                'url'=>$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam),
+                'type'=>'restart-survey',
+                'description'=>gT("Click here to start the survey.")
+            );
+            App()->getController()->renderExitMessage(
+                $surveyid,
+                'session-timeout',
+                    $aMessage,
+                    $aUrl,
+                    $aErrors
+            );
         };
 
 
@@ -269,32 +318,41 @@ class index extends CAction {
 
         //SET THE TEMPLATE DIRECTORY
         $oTemplate = Template::model()->getInstance('', $surveyid);
-        $thistpl = $oTemplate->viewPath;
+        $thistpl = $oTemplate->pstplPath;
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
         if ($thissurvey['expiry']!='' and dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N' && !$previewmode)
         {
-            $redata = compact(array_keys(get_defined_vars()));
-            $asMessage = array(
-            gT("Error"),
-            gT("This survey is no longer available."),
-            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            $aErrors=array(gT('Error'));
+            $aMessage = array(
+                gT("We are sorry but the survey is expired and no longer available."),
+                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']) /* Maybe better to move this to a global replacement 'surveycontact' */
             );
-
-            $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
+            App()->getController()->renderExitMessage(
+                $surveyid,
+                'survey-expiry',
+                $aMessage,
+                null,
+                $aErrors
+             );
         }
 
         //MAKE SURE SURVEY IS ALREADY VALID
         if ($thissurvey['startdate']!='' and  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)<$thissurvey['startdate'] && $thissurvey['active']!='N' && !$previewmode)
         {
-            $redata = compact(array_keys(get_defined_vars()));
-            $asMessage = array(
-            gT("Error"),
-            gT("This survey is not yet started."),
-            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            $aErrors=array(gT('Error'));
+            $aMessage = array(
+                gT("This survey is not yet started."),
+                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
             );
-            $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
+            App()->getController()->renderExitMessage(
+                $surveyid,
+                'survey-notstart',
+                $aMessage,
+                null,
+                $aErrors
+             );
         }
 
         //CHECK FOR PREVIOUSLY COMPLETED COOKIE
@@ -302,29 +360,33 @@ class index extends CAction {
         $sCookieName="LS_".$surveyid."_STATUS";
         if (isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1 && (!isset($param['newtest']) || $param['newtest'] != "Y"))
         {
-            $redata = compact(array_keys(get_defined_vars()));
-            $asMessage = array(
-            gT("Error"),
-            gT("You have already completed this survey."),
-            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            $aErrors=array(gT('Error'));
+            $aMessage = array(
+                gT("You have already completed this survey."),
+                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
             );
-
-            $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
+            App()->getController()->renderExitMessage(
+                $surveyid,
+                'survey-notstart',
+                $aMessage,
+                null,
+                $aErrors
+             );
         }
 
         //LOAD SAVED SURVEY
         if (Yii::app()->request->getParam('loadall') == "reload")
         {
-            $errormsg="";
+            $aLoadErrorMsg=array();
             $sLoadName=Yii::app()->request->getParam('loadname');
             $sLoadPass=Yii::app()->request->getParam('loadpass');
             if ( isset($sLoadName) && !$sLoadName)
             {
-                $errormsg .= gT("You did not provide a name")."<br />\n";
+                $aLoadErrorMsg['name']=gT("You did not provide a name.");
             }
             if ( isset($sLoadPass) && !$sLoadPass)
             {
-                $errormsg .= gT("You did not provide a password")."<br />\n";
+                $aLoadErrorMsg['password']=gT("You did not provide a password.");
             }
 
             // if security question answer is incorrect
@@ -333,15 +395,14 @@ class index extends CAction {
             {
                 $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
                 $captcha = Yii::app()->getController()->createAction('captcha');
-                $captchaCorrect = $captcha->validate( $sLoadsecurity, false);
-            
+                $captchaCorrect = $captcha->validate( $sLoadSecurity, false);
                 if(empty($sLoadSecurity))
                 {
-                    $errormsg .= gT("You did not answer to the security question.")."<br />\n";
+                    $aLoadErrorMsg['captchaempty']=gT("You did not answer to the security question.");
                 }
                 elseif ( !$captchaCorrect )
                 {
-                    $errormsg .= gT("The answer to the security question is incorrect.")."<br />\n";
+                    $aLoadErrorMsg['captcha']=gT("The answer to the security question is incorrect.");
                 }
             }
 
@@ -352,12 +413,12 @@ class index extends CAction {
                     Yii::app()->setConfig('move','reload');
                     $move = "reload";// veyRunTimeHelper use $move in $arg
                 } else {
-                    $errormsg .= gT("There is no matching saved survey");
+                    $aLoadErrorMsg['matching']=gT("There is no matching saved survey.");
                 }
                 randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
             }
-            if ($errormsg) {
+            if (count($aLoadErrorMsg)) {
                 Yii::app()->setConfig('move',"loadall");// Show loading form
             }
         }
@@ -365,10 +426,14 @@ class index extends CAction {
         //Allow loading of saved survey
         if (Yii::app()->getConfig('move')=="loadall")
         {
-            $redata = compact(array_keys(get_defined_vars()));
+            $aLoadErrorMsg=empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
             Yii::import("application.libraries.Load_answers");
             $tmp = new Load_answers();
-            $tmp->run($redata);
+            $tmp->run(array(
+                "surveyid"=>$surveyid, // Not really needed : already in App()->getConfig('surveyID')
+                "aLoadErrorMsg"=>$aLoadErrorMsg,
+                "clienttoken"=>isset($clienttoken)? $clienttoken : null ,
+            ));
         }
 
 
@@ -387,18 +452,6 @@ class index extends CAction {
             } else {
                 $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
-
-            // if (!isset($tokenInstance) && !$previewmode)
-            // {
-            //     //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-            //     $asMessage = array(
-            //     null,
-            //     gT("This is a controlled survey. You need a valid token to participate."),
-            //     sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
-            //     );
-
-            //     $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
-            // }
         }
         if ($tokensexist == 1 && isset($token) && $token!="" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) //check if token is in a valid time frame
         {
@@ -430,13 +483,17 @@ class index extends CAction {
                     {
                         $sError = gT("This is a controlled survey. You need a valid token to participate.");
                     }
-                    $asMessage = array(
-                        $sError,
+                    $aMessage = array(
                         gT("We are sorry but you are not allowed to enter this survey."),
-                        sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
+                        sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
                     );
-
-                    $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
+                    App()->getController()->renderExitMessage(
+                        $surveyid,
+                        'survey-notstart',
+                        $aMessage,
+                        null,
+                        array($sError)
+                     );
                 }
                 else
                 {
@@ -499,26 +556,10 @@ class index extends CAction {
                 dbExecuteAssoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);
             }
             killSurveySession($surveyid);
-            sendCacheHeaders();
-            doHeader();
-
-            $redata = compact(array_keys(get_defined_vars()));
-            $this->_printTemplateContent($thistpl.'/startpage.pstpl', $redata, __LINE__);
-            echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
-            ."\t<script type='text/javascript'>\n"
-            ."\t<!--\n"
-            ."function checkconditions(value, name, type, evt_type)\n"
-            ."\t{\n"
-            ."\t}\n"
-            ."\t//-->\n"
-            ."\t</script>\n\n";
-
-            //Present the clear all page using clearall.pstpl template
-            $this->_printTemplateContent($thistpl.'/clearall.pstpl', $redata, __LINE__);
-
-            $this->_printTemplateContent($thistpl.'/endpage.pstpl', $redata, __LINE__);
-            doFooter();
-            exit;
+            $content=templatereplace(file_get_contents($oTemplate->pstplPath."clearall.pstpl"),array());
+            $this->getController()->layout='survey';
+            $this->getController()->render("/survey/system/display",array('content'=>$content));
+            App()->end();
         }
 
 
@@ -685,14 +726,11 @@ class index extends CAction {
 
     function _didSessionTimeout($surveyid)
     {
-        return !isset($_SESSION['survey_'.$surveyid]['s_lang']) && isset($_POST['thisstep']);
+        return (!isset($_SESSION['survey_'.$surveyid]['step']) && null !== App()->request->getPost('thisstep') );
     }
 
     function _canUserPreviewSurvey($iSurveyID)
     {
-        if ( !isset($_SESSION['loginID']) ) // This is not needed because Permission::model()->hasSurveyPermission control connexion
-            return false;
-
         return Permission::model()->hasSurveyPermission($iSurveyID,'surveycontent','read');
     }
 
@@ -700,75 +738,10 @@ class index extends CAction {
         return (isset($_SESSION['USER_RIGHT_PREVIEW']) && ($_SESSION['USER_RIGHT_PREVIEW'] == $iSurveyID));
     }
 
-    function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
-    {
-        $oTemplate = Template::model()->getInstance('', $redata['surveyid']);
-        $asMessage[]="<input type='hidden' class='hidemenubutton'/>";
 
-        if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
-        {
-            $thissurvey=getSurveyInfo($redata['surveyid']);
-            $sTemplateDir= $oTemplate->viewPath;
-        }
-        else
-        {
-            $sTemplateDir= $oTemplate->viewPath;
-        }
-        sendCacheHeaders();
-
-        doHeader();
-
-        $oTemplate = $this->oTemplate; //$oTemplate->viewPath;
-
-        echo "<!-- survey/index/_niceExit -->";
-        $this->_printTemplateContent($oTemplate->viewPath.'/startpage.pstpl', $redata, $iDebugLine);
-        $this->_printMessage($asMessage);
-        $this->_printTemplateContent($oTemplate->viewPath.'/endpage.pstpl', $redata, $iDebugLine);
-
-        doFooter();
-        exit;
-    }
-
-    function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
-    {
-
-        killSurveySession($surveyid);
-        $thissurvey=getSurveyInfo($surveyid);
-        if($thissurvey)
-        {
-            $templatename=$thissurvey['template'];
-        }
-        else
-        {
-            $templatename=Yii::app()->getConfig('defaulttemplate');;
-        }
-        // Let's redirect the client to the same URL after having reset the session
-        $this->_niceExit($redata, $iDebugLine, $templatename, $asMessage);
-    }
-
-
-
-    function _printMessage($asLines)
-    {
-        if ( func_num_args() > 1 )
-            $asLines = func_get_args();
-
-        if ( count($asLines) == 0 )
-            return;
-
-        $sError = array_shift($asLines);
-
-        echo "\t<div id='wrapper'>\n";
-        echo "\t<p id='tokenmessage'>\n";
-        if ( $sError != null )
-        {
-            echo "\t<span class='error'>".$sError."</span><br /><br />\n";
-        }
-        echo "\t".implode ("<br /><br />\n\t", $asLines)."<br /><br />\n";
-        echo "\t</p>\n";
-        echo "\t</div>\n";
-    }
-
+    /**
+     * @deprecated
+     */
     function _printTemplateContent($sTemplateFile, &$redata, $iDebugLine = -1)
     {
         echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');

@@ -10,33 +10,17 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list array<?php echo $zebra; ?>">
-    <th class="answertext">
-        <?php if($error): ?>
-            <div class="label label-danger" role="alert">
-                <?php echo $answertext; ?>
-            </div>
-        <?php else:?>
-            <?php echo $answertext; ?>
-        <?php endif; ?>
-
-        <input
-            type="hidden"
-            name="java<?php echo $myfname; ?>"
-            id="java<?php echo $myfname;?>"
-            value="<?php echo $value;?>"
-        />
+<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? " ls-odd" : " ls-even"; ?><?php echo ($error) ? " has-error" : ""; ?>" role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
+    <th id="answertext<?php echo $myfname;?>" class="answertext control-label <?php if($error){ echo " ls-error-mandatory";} ?>">
+        <?php echo $answertext;?>
+        <input name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" type="hidden">
     </th>
-
     <?php
         // Defined in answer_td view
         echo $answer_tds;
     ?>
-
     <?php if ($right_exists): ?>
-        <th class='answertextright'>
-            <?php echo $answertextright; ?>
-        </th>
+        <th class='answertextright'><?php echo $answertextright; ?></th>
     <?php endif; ?>
 
     <?php

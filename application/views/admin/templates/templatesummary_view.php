@@ -108,13 +108,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                     <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                     <input type='hidden' name='action' value='templateuploadfile' />
-                    <?php if(isset($_GET['editfile'])):?>
-                        <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
-                        <?php endif;?>
-                    <?php if(isset($_GET['useindex'])):?>
-                        <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
-                        <?php endif;?>
-
                     </form>
                     <?php
                 }

@@ -16,21 +16,9 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="<?php //TODO: alternation ?> well subquestion-list questions-list array<?php echo $zebra; ?> <?php echo $sDisplayStyle;?>">
-    <?php if ($useAnswerWidth): ?>
-        <th class="answertext" style='width:<?php echo $answerwidth;?>%;' >
-    <?php else: ?>
-        <th class="answertext col-xs-12 col-sm-6">
-    <?php endif;?>
-
-
-        <?php if($error): ?>
-            <div class="label label-danger" role="alert">
-                <?php echo $answertext; ?>
-            </div>
-        <?php else: ?>
-            <?php echo $answertext; ?>
-        <?php endif;?>
+<tr id="javatbd<?php echo $myfname;?>" class="<?php echo $coreRowClass;?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php if($error){ echo " has-error";} ?>" <?php echo $sDisplayStyle;?> role="group" aria-describedby="answertext<?php echo $myfname;?>">
+    <th class="answertext control-label" id="answertext<?php echo $myfname;?>">
+        <?php echo $answertext; ?>
         <input
             type="hidden"
             name="java<?php echo $myfname;?>"
@@ -46,9 +34,7 @@
 
     <!-- right -->
     <?php if($rightTd): ?>
-        <td class="answertextright" style='text-align:left; width: <?php echo $answerwidth; ?>'>
-            <?php echo $answertextright; ?>
-        </td>
+        <td class="answertextright"><?php echo $answertextright; ?></td>
     <?php endif;?>
 </tr>
 <!-- end of answer_row -->

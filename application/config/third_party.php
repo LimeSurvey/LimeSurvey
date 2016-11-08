@@ -295,6 +295,45 @@ return array(
         'js' => array(
             'Uri.js'
         ),
+    ),
+
+    'bootstrap-datetimepicker' => array(
+        'basePath' => 'third_party.bootstrap-datetimepicker',
+        'css' => array(
+            'css/bootstrap-datetimepicker.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-datetimepicker.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'bootstrap-switch' => array(
+        'basePath' => 'third_party.bootstrap-switch',
+        'css' => array(
+            'css/bootstrap-switch.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-switch.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'emoji' => array(
+        'basePath' => 'third_party.emojifont',
+        'css' => array(
+            'css/emoji.css',
+            'css/ss-emoji.css'
+        )
     )
+
 
 );

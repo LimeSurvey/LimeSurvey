@@ -45,7 +45,7 @@ use SurveyDynamic;
 
         /**
         * Builds and executes a SQL statement for creating a new DB table.
-        * @param mixed $plugin The plugin object, id or name.
+        * @param \QuickMenu $plugin The plugin object, id or name.
         * @param string $sTableName the name of the table to be created. The name will be properly quoted and prefixed by the method.
         * @param array $aColumns the columns (name=>definition) in the new table.
         * @param string $sOptions additional SQL fragment that will be appended to the generated SQL.
@@ -116,7 +116,7 @@ use SurveyDynamic;
         /**
          * Creates a new active record object instance.
          * @param iPlugin $plugin
-         * @param string $sTableNamem
+         * @param string $sTableName
          * @param string $scenario
          * @param string $bPluginTable True if the table is plugin specific.
          * @return PluginDynamic
@@ -143,7 +143,7 @@ use SurveyDynamic;
         }
         /**
         * Check if a table does exist in the database
-        * @param mixed $plugin
+        * @param iPlugin $plugin
         * @param string $sTableName Table name to check for (without dbprefix!))
         * @return boolean True or false if table exists or not
         */
@@ -242,7 +242,7 @@ use SurveyDynamic;
         /**
         * Gets a key value list using the group name as value and the group id
         * as key.
-        * @param type $surveyId
+        * @param boolean $surveyId
         * @return type
         */
         public function getGroupList($surveyId)

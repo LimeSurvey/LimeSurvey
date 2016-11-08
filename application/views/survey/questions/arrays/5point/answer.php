@@ -11,38 +11,32 @@
 <!-- Array 5 point choice -->
 
 <!-- answer -->
-<div class="no-more-tables no-more-tables-5-point">
-    <table class="table question table-5-point-array subquestion-list questions-list <?php echo $extraclass; ?>">
-
-        <!-- Columns -->
-        <colgroup class="col-responses">
-            <col class="col-answers" />
-
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-5-point-array">
+    <!-- Columns -->
+    <colgroup class="col-responses">
+        <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
+        <?php
+            // columns/col.php
+            echo $sColumns;
+        ?>
+    </colgroup>
+    <!-- Table headers -->
+    <thead aria-hidden="true">
+        <tr class="ls-heading"><!-- same class for repeat heading too -->
+            <td>&nbsp;</td> <!-- This is NOT an header cell https://github.com/Shnoulle/LimeSurvey-Shnoulle/issues/14#issuecomment-252034424 -->
             <?php
-                // columns/col.php
-                echo $sColumns;
+                // rows/cell/thead.php
+                echo $sHeaders;
             ?>
-        </colgroup>
+        </tr>
+    </thead>
+    <!-- Table Body -->
+    <tbody>
+        <?php
+            // rows/answer_row.php
+            echo $sRows;
+        ?>
+    </tbody>
+</table>
 
-        <!-- Table headers -->
-        <thead>
-            <tr class="array1 dontread">
-                <th>&nbsp;</th>
-
-                <?php
-                    // rows/cell/thead.php
-                    echo $sHeaders;
-                ?>
-            </tr>
-        </thead>
-
-        <!-- Table Body -->
-        <tbody>
-            <?php
-                // rows/answer_row.php
-                echo $sRows;
-            ?>
-        </tbody>
-    </table>
-</div>
 <!-- end of answer -->

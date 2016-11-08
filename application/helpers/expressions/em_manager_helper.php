@@ -820,7 +820,7 @@
          /**
         * Return array database name as key, LEM name as value
         * @example (['gender'] => '38612X10X145')
-        * @param <integer> $surveyId
+        * @param integer $iSurveyId
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
                 $LEM =& LimeExpressionManager::singleton();
@@ -3603,6 +3603,9 @@
             $this->groupSeqInfo = array();
             $this->gseq2relevanceStatus = array();
 
+            /* Add the core replacement before question code : needed if use it in equation , use SID to never send error */
+            templatereplace("{SID}");
+
             // Since building array of allowable answers, need to know preset values for certain question types
             $presets = array();
             $presets['G'] = array(  //GENDER drop-down list
@@ -4503,7 +4506,7 @@
 
         /**
         * Create JavaScript needed to process sub-question-level relevance (e.g. for array_filter and  _exclude)
-        * @param <type> $eqn - the equation to parse
+        * @param string $eqn - the equation to parse
         * @param <type> $questionNum - the question number - needed to align relavance and tailoring blocks
         * @param <type> $rowdivid - the javascript ID that needs to be shown/hidden in order to control array_filter visibility
         * @param <type> $type - the type of sub-question relevance (e.g. 'array_filter', 'array_filter_exclude')
@@ -4637,7 +4640,7 @@
 
         /**
          * Expand "self.suffix" and "that.qcode.suffix" into canonical list of variable names
-         * @param type $qseq
+         * @param integer $qseq
          * @param type $varname
          */
         static function GetAllVarNamesForQ($qseq,$varname)
@@ -4767,7 +4770,6 @@
         /**
         * Should be first function called on each page - sets/clears internally needed variables
         * @param <type> $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
-        * @param <type> $rooturl - if set, this tells LEM to enable hyperlinking of syntax highlighting to ease editing of questions
         * @param <boolean> $initializeVars - if true, initializes the replacement variables to enable syntax highlighting on admin pages
         */
         static function StartProcessingPage($allOnOnePage=false,$initializeVars=false)
@@ -4864,7 +4866,6 @@
             $LEM->indexGseq=array();
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
-            templatereplace("{}"); // Needed for coreReplacements in relevance equation (in all mode)
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
             {
                 $startingValues = array();
@@ -5331,7 +5332,7 @@
                         $sdata['refurl'] = getenv("HTTP_REFERER");
                     }
                 }
-                $sdata['seed'] = $_SESSION[$this->sessid]['startingValues']['seed'];
+                $sdata['seed'] = $_SESSION[$this->sessid]['startingValues']['seed'];// isset ?
 
                 $sdata = array_filter($sdata);
                 SurveyDynamic::sid($this->sid);
@@ -5431,7 +5432,7 @@
                     }
                     else
                     {
-                        $setter[] = dbQuoteID($key) . "=" . dbQuoteAll($val);
+                        $setter[] = dbQuoteID($key) . "=" . dbQuoteAll(stripCtrlChars($val));
                     }
                 }
                 $query .= implode(', ', $setter);
@@ -5524,10 +5525,12 @@
 
         /**
         * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
-        * @param <type> $seq
-        * @param <type> $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
-        * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
-        * @return <type>
+        * @param integer $seq : the sequatial step
+        * @param boolean $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed. @see var $sPreviewMode
+        * @param boolean $processPOST : add the updated value to be saved in the database
+        * @param boolean $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
+        *
+        * @return array $this->lastMoveResult
         */
         static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false) {
             $now = microtime(true);
@@ -5622,7 +5625,7 @@
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                                'finished'=>true,
+                                'finished'=>true, /* Maybe is better to NEVER set finished to true when use JumpTo, but only when NavigateForwards */
                                 'message'=>$message,
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
@@ -6579,11 +6582,13 @@
                         if (trim($vtip) != "")
                         {
                             $tipsDatas = array(
-                                'qid'   =>$qid,
-                                'vclass'=>$vclass,
-                                'vtip'  =>$vtip,
+                                'qid'       =>$qid,
+                                'coreId'    =>"vmsg_{$qid}_{$vclass}", // If it's not this id : EM is broken
+                                'coreClass' =>"ls-em-tip em_{$vclass}",
+                                'vclass'    =>$vclass,
+                                'vtip'      =>$vtip,
                             );
-                            $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', $tipsDatas, true);
+                            $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/em-tip', $tipsDatas, true);
                         }
                     }
 
@@ -7047,6 +7052,8 @@
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
         * Also create list of variables that need to be declared
+        *
+        * @return : line to be added to content Javacript line + hidden input (can't use register script...)
         */
         static function GetRelevanceAndTailoringJavaScript()
         {
@@ -7057,7 +7064,11 @@
             $jsParts=array();
             $allJsVarsUsed=array();
             $rowdividList=array();   // list of subquestions needing relevance entries
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");;
+            /* All function for expression manager */
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
+            /* Call the function when trigerring event */
+            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
+
             $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
             if ($LEM->surveyMode == 'group')
@@ -7200,47 +7211,30 @@
 
                     // Do all sub-question filtering (e..g array_filter)
                     /**
-                     * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row
+                     * $afHide - if true, then use jQuery.relevanceOn().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
                     $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-                        // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
-                        if( ! empty($sq['type'])) {
-                            // js to fix colors
-                            $relParts[] = "updateColors($('#question".$arg['qid']."').find('table.question'));\n";
-                            // js to fix headings
-                            $repeatheadings = Yii::app()->getConfig("repeatheadings");
-                            if(isset($LEM->qattr[$arg['qid']]['repeat_headings']) && $LEM->qattr[$arg['qid']]['repeat_headings'] !== "") {
-                                $repeatheadings = $LEM->qattr[$arg['qid']]['repeat_headings'];
-                            }
-                            if($repeatheadings > 0)
-                            {
-                                $relParts[] = "updateHeadings($('#question".$arg['qid']."').find('table.question'), "
-                                .$repeatheadings.");\n";
-                            }
-                        }
-                        // end
                         //this change is optional....changes to array should prevent "if( )"
                         $relParts[] = "  if ( " . (empty($sq['relevancejs'])?'1':$sq['relevancejs']) . " ) {\n";
                         if ($afHide)
                         {
-                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:on');\n";
                         }
                         else
                         {
-                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:on',{ style : 'disabled' });\n";
                         }
                         if ($sq['isExclusiveJS'] != '')
                         {
                             $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:off',{ style : 'disabled' });\n";
                             $relParts[] = "    }\n";
                             $relParts[] = "    else {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " th.answertext').removeClass('text-muted');\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:on',{ style : 'disabled' });\n";
                             $relParts[] = "    }\n";
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -7252,36 +7246,34 @@
                             if ($sq['irrelevantAndExclusiveJS'] != '')
                             {
                                 $relParts[] = "    if ( " . $sq['irrelevantAndExclusiveJS'] . " ) {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " th.answertext').addClass('text-muted');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:off',{ style : 'disabled' });\n";
                                 $relParts[] = "    }\n";
                                 $relParts[] = "    else {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . " th.answertext').removeClass('text-muted');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:on',{ style : 'disabled' });\n";
                                 if ($afHide)
                                 {
-                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').rtrigger('relevance:off');\n";
                                 }
                                 else
                                 {
-                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:off',{ style : 'disabled' });\n";
                                 }
                                 $relParts[] = "    }\n";
                             }
                             else
                             {
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:off',{ style : 'disabled' });\n";
                             }
                         }
                         else
                         {
                             if ($afHide)
                             {
-                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:off');\n";
                             }
                             else
                             {
-                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:off',{ style : 'disabled' });\n";
                             }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -7337,9 +7329,9 @@
                         if($validationJS!='')
                         {
                             $valParts[] = "\n  if(" . $validationJS . "){\n";
-                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');;\n";
+                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').trigger('classChangeGood');\n";
                             $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').trigger('classChangeError');\n";
                             $valParts[] = "  }\n";
                         }
                     }
@@ -7378,9 +7370,9 @@
                             if($_validationJS!='')
                             {
                                 $valParts[] = "\n  if(" . $_validationJS . "){\n";
-                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').removeClass('error').addClass('good').trigger('classChangeGood');\n";
+                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').trigger('classChangeGood');\n";
                                 $valParts[] = "  }\n  else {\n";
-                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').trigger('classChangeError');\n";
                                 switch ($vclass)
                                 {
                                     case 'sum_range':
@@ -7404,9 +7396,9 @@
                         }
 
                         $valParts[] = "\n  if(isValidSum" . $arg['qid'] . "){\n";
-                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('error').addClass('good').trigger('classChangeGood');\n";
+                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').trigger('classChangeGood');\n";
                         $valParts[] = "  }\n  else {\n";
-                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').trigger('classChangeError');\n";
                         $valParts[] = "  }\n";
 
                         // color-code single-entry fields as needed
@@ -7418,9 +7410,9 @@
                             case 'T':
                             case 'U':
                                 $valParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
-                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');\n";
+                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').trigger('classChangeGood');\n";
                                 $valParts[] = "  }\n  else {\n";
-                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').trigger('classChangeError');\n";
                                 $valParts[] = "  }\n";
                                 break;
                             default:
@@ -7446,9 +7438,9 @@
                                     break;
                             }
                             $valParts[] = "\n  if(isValidOtherComment" . $arg['qid'] . "){\n";
-                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');\n";
+                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').trigger('classChangeGood');\n";
                             $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
+                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').trigger('classChangeError');\n";
                             $valParts[] = "  }\n";
                             break;
                             default:
@@ -7470,14 +7462,14 @@
                     }
 
                     if ($arg['hidden']) {
-                        $relParts[] = "  // This question should always be hidden\n";
-                        $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+                        $relParts[] = "  // This question should always be hidden : not relevance, hidden question\n";
+                        $relParts[] = "  $('#question" . $arg['qid'] . "').addClass('hidden');\n";
                     }
                     else {
                         if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)))
                         {
                             // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
-                            $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
+                            $relParts[] = "  $('#question" . $arg['qid'] . "').trigger('relevance:on');\n";
                             if ($arg['type'] == 'S')
                             {
                                 $relParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
@@ -7509,7 +7501,7 @@
                         if( !($arg['hidden'] && $arg['type']=="*"))// Equation question type don't update visibility of group if hidden ( child of bug #08315).
                             $dynamicQinG[$arg['gseq']][$arg['qid']]=true;
                         $relParts[] = "else {\n";
-                        $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+                        $relParts[] = "  $('#question" . $arg['qid'] . "').trigger('relevance:off');\n";
                         $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                         $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                         $relParts[] = "}\n";
@@ -7611,7 +7603,7 @@
                     //                $jsParts[] = "\n// Process Relevance for Group " . $gr['gid'];
                     //                $jsParts[] = ": { " . $gr['eqn'] . " }";
                     $jsParts[] = "\nif (" . $gr['relevancejs'] . ") {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').show();\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:on');\n";
                     $jsParts[] = "  relChangeG" . $gr['gseq'] . "=true;\n";
                     $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
 
@@ -7648,7 +7640,7 @@
                     }
 
                     $jsParts[] = "}\nelse {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').hide();\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:off');\n";
                     $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
                     $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
                     $jsParts[] = "}\n";
@@ -7698,11 +7690,11 @@
                     $relStatusTest = "($('#relevance" . implode("').val()=='1' || $('#relevance", array_keys($dynamicQidsInG)) . "').val()=='1')";
 
                     $jsParts[] = "\nif (" . $relStatusTest . ") {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').show();\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:on');\n";
                     $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='0') { relChangeG" . $gr['gseq'] . "=true; }\n";
                     $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
                     $jsParts[] = "}\nelse {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').hide();\n";
+                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:off');\n";
                     $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
                     $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
                     $jsParts[] = "}\n";
@@ -8227,12 +8219,19 @@ EOD;
             }
         }
 
+        /**
+         * @param string $string
+         */
         private function gT($string,  $escapemode = 'html')
         {
             return gT($string, $escapemode);
         }
 
 
+        /**
+         * @param string $sTextToTranslate
+         * @param integer $number
+         */
         private function ngT($sTextToTranslate, $number, $escapemode = 'html')
         {
             return ngT($sTextToTranslate, $number, $escapemode);
@@ -8240,7 +8239,7 @@ EOD;
 
         /**
         * Returns true if the survey is using comma as the radix
-        * @return type
+        * @return boolean
         */
         public static  function usingCommaAsRadix()
         {
@@ -8288,8 +8287,8 @@ EOD;
 
         /**
         * Deprecate obsolete question attributes.
-        * @param boolean $changedb - if true, updates parameters and deletes old ones
-        * @param type $iSureyID - if set, then only for that survey
+        * @param boolean $changeDB - if true, updates parameters and deletes old ones
+        * @param type $iSurveyID - if set, then only for that survey
         * @param type $onlythisqid - if set, then only for this question ID
         */
         public static function UpgradeQuestionAttributes($changeDB=false,$iSurveyID=NULL,$onlythisqid=NULL)
@@ -8578,6 +8577,7 @@ EOD;
                 $relevant=false;
                 $qid = $qinfo['info']['qid'];
                 $gseq = $qinfo['info']['gseq'];
+                /* Never use posted value : must be fixed and find real actual relevance */
                 $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
                 $grelevant = (isset($_POST['relevanceG' . $gseq]) ? ($_POST['relevanceG' . $gseq] == 1) : false);
                 $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;
@@ -8733,12 +8733,21 @@ EOD;
                     return false;
         }
 
+        /**
+         * @param integer $gseq
+         * @param integer $qseq
+         * @param string|null $attr
+         */
         static public function GetVarAttribute($name,$attr,$default,$gseq,$qseq)
         {
             $LEM =& LimeExpressionManager::singleton();
             return $LEM->_GetVarAttribute($name,$attr,$default,$gseq,$qseq);
         }
 
+        /**
+         * @param integer $gseq
+         * @param integer $qseq
+         */
         private function _GetVarAttribute($name,$attr,$default,$gseq,$qseq)
         {
             $args = explode(".", $name);

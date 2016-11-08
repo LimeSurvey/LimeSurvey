@@ -11,12 +11,11 @@
 <!-- Multiple Choice -->
 
 <!-- answer -->
-<div class="row multiple-choice-container subquestion-list questions-list checkbox-list">
-        <input type="hidden" name="MULTI<?php echo $name; ?>" value="<?php echo $anscount; ?>" />
-
-        <?php
-            // rows/answer_row*.php
-            echo $sRows;
-        ?>
-</div>
+<input type="hidden" name="MULTI<?php echo $name; ?>" value="<?php echo $anscount; ?>" />
+<div class="<?php echo $coreClass;?> row">
+<?php
+    // rows/answer_row*.php
+    echo $sRows;
+?>
 <!-- end of answer -->
+</div>

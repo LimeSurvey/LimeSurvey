@@ -33,7 +33,6 @@
             <filename>lime-admin-colors.css</filename>
             <filename>fonts.css</filename>
             <filename>statistics.css</filename>
-            <filename>bootstrap-switch.min.css</filename>
             <filename>jcarousel.responsive.css</filename>
             <filename>attributeMap.css</filename>
             <filename>attributeMapToken.css</filename>
@@ -45,7 +44,6 @@
             <filename>panelclickable.js</filename>
             <filename>panelsanimation.js</filename>
             <filename>sidemenu.js</filename>
-            <filename>bootstrap-switch.min.js</filename>
             <filename>jquery.jcarousel.min.js</filename>
             <filename>jcarousel.responsive.js</filename>
         </js>

@@ -1,9 +1,9 @@
 <?php
 /**
 * LimeSurvey
-* Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
+* License: GNU/GPL License v3 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
@@ -14,21 +14,18 @@
 namespace ls\helpers;
 
 /**
- * General helper class for generating views.
+ * General helper class for question + question setting system
  */
 class questionHelper
 {
-    /**
-     * The question attribute definition for this LimeSurvey installation
-     */
+    /* @var array[]|null The question attribute definition for this LimeSurvey installation */
     protected static $attributes;
-    /**
-     * The question attribute (settings) by question type
-     */
+    /* @var array[] The question attribute (settings) by question type*/
     protected static $questionAttributesSettings=array();
 
     /**
      * Return all the definitions of Question attributes core+extended value
+     * @return array[]
      */
     public static function getAttributesDefinitions()
     {
@@ -61,14 +58,26 @@ class questionHelper
         "caption"=>gT('Sort answers alphabetically'));
 
         self::$attributes["answer_width"]=array(
-        "types"=>"ABCEF1:;",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'integer',
-        'min'=>'1',
-        'max'=>'100',
-        "help"=>gT('Set the percentage width of the (sub-)question column (1-100)'),
-        "caption"=>gT('(Sub-)question width'));
+            "types"=>"ABCEF1:;",
+            'category'=>gT('Display'),
+            'sortorder'=>100,
+            'inputtype'=>'integer',
+            'min'=>'1',
+            'max'=>'100',
+            "help"=>gT('Set the percentage width of the (sub-)question column (1-100)'),
+            "caption"=>gT('(Sub-)question width')
+        );
+
+        self::$attributes["answer_width_bycolumn"]=array(
+            "types"=>"H",
+            'category'=>gT('Display'),
+            'sortorder'=>100,
+            'inputtype'=>'integer',
+            'min'=>'0',
+            'max'=>'100',
+            "help"=>gT('Set the percentage width of the answers column (1-100)'),
+            "caption"=>gT('Answers column width')
+        );
 
         self::$attributes["repeat_headings"]=array(
         "types"=>"F:1;",
@@ -270,6 +279,7 @@ class questionHelper
         'category'=>gT('Logic'),
         'sortorder'=>210,
         'inputtype'=>'textarea',
+        'i18n'=>true,
         "help"=>gT('This is a hint text that will be shown to the participant describing the question validation equation.'),
         "caption"=>gT('Question validation tip'));
 
@@ -286,6 +296,7 @@ class questionHelper
         'category'=>gT('Logic'),
         'sortorder'=>230,
         'inputtype'=>'textarea',
+        'i18n'=>true,
         "help"=>gT('This is a tip shown to the participant describing the sub-question validation equation.'),
         "caption"=>gT('Sub-question validation tip'));
 
@@ -665,10 +676,20 @@ class questionHelper
         'caption' =>    gT('Show grand total')
         );
 
+        self::$attributes["input_size"]=array(
+            "types"=>"STUQNMK:;",
+            'category'=>gT('Display'),
+            'sortorder'=>100,
+            'inputtype'=>'integer',
+            'default'=>'',
+            "help"=>gT("Set the size to the input or textarea, the input will be displayed with approximately this size in width."),
+            "caption"=>gT("Text input size")
+        );
+
         self::$attributes["input_boxes"]=array(
         "types"=>":",
         'category'=>gT('Display'),
-        'sortorder'=>100,
+        'sortorder'=>110,
         'inputtype'=>'switch',
         'options'=>array(0=>gT('No'),
         1=>gT('Yes')),
@@ -942,12 +963,13 @@ class questionHelper
         "caption"=>gT('Answer suffix'));
 
         self::$attributes["text_input_width"]=array(
-        "types"=>"KNSTU;",
+        "types"=>"KNSTU",
         'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'default'=>'12',
+        'default'=>'',
         'options'=>array(
+            ''=>gT("Default"),
             1=>'8%',
             2=>'17%',
             3=>'25%',
@@ -961,16 +983,18 @@ class questionHelper
             11=>'92%',
             12=>'100%'
         ),
-        "help"=>gT('Relative width of the input element'),
-        "caption"=>gT('Input box width'));
+        "help"=>gT('Relative width of the text input wrapper element'),
+        "caption"=>gT('Text input box width'));
 
+        /* Do EXACTLY the same than text_input_width for K(multinum): must move K here and rename in a DB update and remove it + fix when import*/
         self::$attributes["text_input_columns"]=array(
-        "types"=>"Q",
+        "types"=>"QP",
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
-        'default'=>'6',
+        'default'=>'',
         'options'=>array(
+            ''=>gT("Default"),
             1=>'8%',
             2=>'17%',
             3=>'25%',
@@ -984,16 +1008,17 @@ class questionHelper
             11=>'92%',
             12=>'100%'
         ),
-        "help"=>gT('Relative width of the input element'),
-        "caption"=>gT('Input box width'));
+        "help"=>gT('Relative width of the text input wrapper element'),
+        "caption"=>gT('Text input box width'));
 
         self::$attributes["label_input_columns"]=array(
-        "types"=>"Q",
+        "types"=>"KQ",
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
-        'default'=>'6',
+        'default'=>'',
         'options'=>array(
+            ''=>gT("Default"),
             1=>'8%',
             2=>'17%',
             3=>'25%',
@@ -1010,6 +1035,30 @@ class questionHelper
         "help"=>gT('Relative width of the labels'),
         "caption"=>gT('Label column width'));
 
+        /* Same than label_input_columns for multiple choice*/
+        self::$attributes["choice_input_columns"]=array(
+        "types"=>"P",
+        'category'=>gT('Display'),
+        'sortorder'=>90,
+        'inputtype'=>'singleselect',
+        'default'=>'',
+        'options'=>array(
+            ''=>gT("Default"),
+            1=>'8%',
+            2=>'17%',
+            3=>'25%',
+            4=>'33%',
+            5=>'41%',
+            6=>'50%',
+            7=>'58%',
+            8=>'67%',
+            9=>'75%',
+            10=>'83%',
+            11=>'92%',
+            12=>'100%'
+        ),
+        "help"=>gT('Relative width of checkbox wrapper element'),
+        "caption"=>gT('Choice column width'));
 
         self::$attributes["use_dropdown"]=array(
         "types"=>"1FO",

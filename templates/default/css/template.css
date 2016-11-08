@@ -1,245 +1,160 @@
- body
- {
-     /*padding-top: 50px; now define in JS to fit any title length */
+body
+{
      padding-bottom: 10px;
- }
-
-.remove-margins {
-    margin: 0;
+     background-color: #f6f6f6;
 }
-.remove-padding {
-    padding: 0;
+/* The header */
+body
+{
+     padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
-div[id^="group-"]>div {
-    background-color: #fff;
-    margin-bottom: 1em;
- }
-
- div[id^="group-"]>div.group-container {
-     background-color: transparent;
- }
-
-.language-changer {
-    background-color: #fff;
-    padding: 1em;
+.navbar-action-link{
+    padding-right:1em; /* really close to window without */
 }
 
-#topContainer {
-    position: absolute;
-    /*top: 55px; now define in JS to fit any title length */
+/* specific for survey listing */
+@media (min-width: 761px) {
+  .surveys-list .btn-group {
+    width: 50%;
+  }
+}
+
+.group-title-container {
+  padding: 1em;
+  background:transparent;
+}
+
+.top-container {
     width: 100%;
-    padding: 1em;
+    padding: 0;
     border-bottom: none;
-}
+    background-color: #ecf0f1;
+    color: inherit;
 
-.progress {
+}
+.top-container .top-content{
+padding-top:1em;padding-bottom:1em;margin-bottom:2em;
+}
+.top-content .form-change-lang{float:right}
+.dir-rtl .top-content .form-change-lang{float:left}
+
+.top-container .top-content:empty{display:none}
+.group-description:empty{display:none}
+.group-title:empty{display:none}
+.top-container .progress {
     height: 21px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
-
-#surveynametitle {
-    font-size: 4em;
+.top-container .progress {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
 }
-
-#surveydescription, #surveynametitle, #welcome-container h1 {
-    color: #2c3e50;
-    text-align: center;
+.progress .progress-bar {
+    line-height:19px;
 }
+.top-container .form-change-lang {text-align:center}
 
-.group-name {
-
-}
-
-#surveydescription, .group-name {
-    color: #2c3e50;
-}
-
-#main-row, #welcome-container {
-    background-color: transparent;
-}
- /**
- * Navigator
+/**
+ * Question part
  */
+/** Question Design **/
 
- #navigator-container {
-     margin-top: 4em;
-     padding-top: 1em;
-     padding-bottom: 1em;
- }
- #navigator-container>div
- {
- }
+.question-container {
+  margin-bottom: 2em;
+  background:white;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.question-title-container {
+  padding-top: 1em;
+  padding-bottom:1em;
+}
+.question-number,.question-code{float:left;margin:0 0.3em}
+.question-number:empty,.question-code:empty{display:none}
+
+.question-valid-container {
+  position: relative;
+  text-align: center;
+  //padding-bottom: 1em;
+}
+
+.ls-question-help,
+.ls-questionhelp{
+  margin-bottom:5px;
+}
+
+.question-valid-container .text-danger{
+  font-weight: bold;
+}
+
+.question-valid-container .text-info{
+  font-weight: bold;
+}
+.answer-container, .question-help-container {
+    border-color: #dbdbdb;
+}
+.answer-container {
+  border-width: 0px 1px 0px 1px;
+  border-style: solid;
+  margin-top: 0.5em;
+  margin-bottom:0.5em;
+}
+
+.ls-answers{
+  padding-top:15px;
+  padding-bottom:15px;
+  margin-bottom:0;
+}
+
+.question-help-container {
+  border-width: 0px 1px 0px 1px;
+  border-style: solid;
+}
+/* little icon near the question-help */
+.ls-questionhelp{position: relative;}
+.dir-ltr .ls-questionhelp{margin-left:1.2em;}
+.dir-rtl .ls-questionhelp{margin-right:1.2em;}
+
+.ls-questionhelp:before{content:"\f059"}
+.ls-questionhelp:before {
+    display: block;
+    position:absolute;
+    font-family: FontAwesome;
+    font-size: inherit;
+    line-height: inherit;
+    height:100%;
+}
+/* If you want to center the icon */
+/*
+.ls-questionhelp:before {
+    top:50%;
+    margin-top:-0.7em;
+}
+*/
+.dir-ltr .ls-questionhelp:before {
+    left:-1.1em;
+}
+.dir-rtl .ls-questionhelp:before {
+    right:0;
+}
+
+/**
+ * Unsure part
+ */
 
  #main-col {
      margin-top: 1em;
  }
-
-.row {
-}
 
  .col-centered{
      float: none;
      margin: 0 auto;
  }
 
-
-/**
-* navigator
-*/
-#loadallbtn{
-    white-space: normal;
-}
-
-
-.label-col {
-    min-width: 10%;
-    position: relative;
-    min-height: 1px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-li.responsive-content
-{
-    display: block;
-    position: relative;
-    float: left;
-    width: 100%;
-}
-
-/* Don't wrap "No answer" for 10-point array */
-.table-in-qanda-2 thead th {
-    white-space: nowrap;
-}
-
-
-/**
-* slider
-**/
-.numeric-multi ul.slider.computed {
-  width: 22em;
-}
-
-.numeric-multi ul.computed li label,.numeric-multi ul.slider.computed li label
-  {
-  padding-right: 0%;
-}
-
-.numeric-multi div.multinum-slider {
-  width: auto;
-  float: left;
-  margin-top: 1.5em;
-  margin-bottom: 0.2em;
-}
-
-/** UI Slider **/
-.numeric-multi label.slider-label {
-  display: table-cell;
-  width: auto !important;
-  padding: 0 1em 0.2em 0;
-  margin-top: 1.3em;
-  vertical-align: middle;
-}
-
-.numeric-multi .ui-slider-handle {
-    top: -0.35em;
-}
-
-.ui-slider-1 {
-  width: 200px;
-  height: 9px;
-  margin-bottom: 20px;
-}
-
-.ui-slider-2 {
-  width: 200px;
-  height: 23px;
-  position: relative;
-  background-image: url(../../images/slider-bg-2.png);
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-
-.slider_callout {
-  height: 20px;
-  width: 100px;
-  overflow: hidden;
-  position: absolute;
-  top: -20px;
-  margin-left: -3px;
-  color: #284a6e;
-  font-size: 90%;
-  font-weight: bold;
-  text-align: left;
-}
-
-.slider_showmin {
-  float: left;
-  width: 50px;
-  margin: 15px 0 0 -0.3em;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 0.7em;
-  font-weight: normal;
-  text-align: left;
-}
-
-.slider_showmax {
-  float: right;
-  width: 50px;
-  margin: 15px -0.3em 0 0;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 0.7em;
-  font-weight: normal;
-  text-align: right;
-}
-
-.slider_lefttext {
-  display: table-cell;
-  padding-top: 1.5em;
-  padding-right: 11px;
-  padding-bottom: 3px;
-  vertical-align: top;
-  text-align: right;
-  font-size: 0.9em;
-}
-
-.slider_righttext {
-  display: table-cell;
-  padding-top: 1.5em;
-  padding-left: 11px;
-  padding-bottom: 3px;
-  vertical-align: top;
-  font-size: 0.9em;
-}
-
-.withslider {
-    margin-bottom: 30px;
-}
-
-
-
-
-
-
-#indexcontainer {display : none;}
-
 .radio-list li
 {
     display: block;
     clear: both;
 }
-/*
-.checkbox, .radio
-{
-    float: left;
-}
-
-.label-radio span
-{
-    display: inline-block;
-    padding-top: 3px;
-}
-*/
 .question-item .other-label
 {
     margin: 0px;
@@ -249,13 +164,6 @@ li.responsive-content
 /**
  * For em-type
  */
- .strong
- {
-     font-weight: bold;
-     display: inline-block;
-     padding: 0.2em;
- }
-
  .hide-tip
  {
      display: none;
@@ -279,10 +187,6 @@ li.responsive-content
     text-align: center;
 }
 
-/*#outerframeContainer {
-    height: 100%;
-}*/
-
 #surveyListFooter {
     width: 100%;
     text-align: center;
@@ -291,63 +195,74 @@ li.responsive-content
     margin-top: 10px;
 }
 
-#surveyListFooter div{
-
+/**
+ * Specific question part
+ */
+.radio-item label,.checkbox-item label {
+    cursor: pointer;
 }
-
-html, body {
-    height: 90%;
+.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+    cursor: pointer;
 }
-
+.js td.radio-item,.js td.checkbox-item{
+    cursor: pointer;
+}
+/* Show more the heading in table */
+.ls-answers .ls-heading th{font-weight:700}
+/* Max width for some answer part */
+@media (min-width: 768px) {
+  .yesno-button,.gender-button {
+    width: 50%;
+  }
+  .yesno-button,.gender-button {
+    float: left;
+  }
+  .dir-rtl .yesno-button,.dir-rtl .gender-button {
+    float: right;
+  }
+}
+/* table color */
+.ls-even{
+background-color:#f9f9f9;
+}
+/* dynamic group (multipe-numeric) .form-control-static same padding and border width than form-control for better alignment */
+.ls-group-dynamic .form-control-static{border: 2px solid transparent;padding-left:15px;padding-right:15px;}
+/* array by column hover column */
+.table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
+.table-col-hover col.hover /* Actual solution : js only*/
+{
+    background-color: #ecf0f1;
+}
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    .ls-answers > tbody > tr.ls-even:hover {
+        background-color:#f9f9f9;
+    }
+}
 /**
  * Gender buttons
  */
 
-/* Not selected */
-.gender-button button{
-    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.16), 2px 2px 2px 0 rgba(0, 0, 0, 0.12);
-    margin-left: 1em;
-}
-
-/* selected */
-.gender-button .btn:focus {
-    box-shadow: none;
-}
-
-.gender-button .btn:focus .gender-text{
-    text-decoration: underline;
-}
-
 /* General */
-.gender-button .btn span {
+.button-item .ls-icon {
     display: block;
+}
+.button-item .ls-icon {
+    font-size: 1.4em;
 }
 
 html body .navbar.navbar-default.navbar-fixed-top {
     z-index: 2000;
 }
-
-.gender-button .gender-icon {
-    font-size: 2em;
+.file-upload-modal,.modal{
+    z-index: 2001;
 }
 
+/* Title of survey can be big, allow multiline, but leave the minimum */
 .navbar-brand {
     height: auto;
-}
-
-/* For striped tables */
-.array2 {
-    background-color: #f9f9f9;
-}
-
-/* Make sure table covers hole page */
-table {
-    width: 100%;
-}
-
-/* Give help text some space */
-.question-help {
-    margin-top: 1em;
+    min-height:60px;
 }
 
 /* Wrap text in e.g. gender button "No answer */
@@ -373,46 +288,6 @@ table {
      vertical-align: middle;
 }
 
-/* Make file upload modal fit to iframe */
-.file-upload-modal-body iframe {
-    height: inherit;
-    width: 100%;
-    border: none;
-}
-.file-upload-modal-body {
-    padding: 0;
-    height: 500px;
-}
-.file-upload-modal-footer {
-    margin-top: 0;
-}
-
-.slider.slider-horizontal {
-    width: 100%;
-
-    /* The reset button will be under the slider, so allow some margin */
-    margin-bottom: 1em;
-}
-
-/* When slider has both show-min-max and reset button, add space between
- * left badge and reset button */
-.slider-min-badge {
-    margin-right: 1em;
-}
-
-.slider-left-span {
-    text-align: right;
-}
-
-.slider-right-span {
-    text-align: left;
-}
-
-.slider-container {
-    margin-top: 3.5em;
-    margin-bottom: 2.5em;
-}
-
 #yii-flash-message {
     margin-top: 3em;
 }
@@ -425,24 +300,11 @@ table {
     vertical-align: middle !important;
 }
 
-table.table-multi-text tbody tr th {
-    vertical-align: middle;
-}
-
-table.question.subquestion-list.questions-list.table-multi-text thead tr th {
-    text-align: center;
-}
 
 /* Used for date-picker icon within input */
 .form-control-feedback {
     right: 1em;
     left: auto;
-}
-
-/* Used for multiple numeric sum and remain
- * Overwrite Bootstrap label font-size 75% */
-.label {
-    font-size: 90%;
 }
 
 body .navbar-default .navbar-brand:hover {
@@ -454,51 +316,16 @@ body .navbar-default .navbar-brand:hover {
     font-weight: normal;
 }
 
-/* Center radio buttons in array-by-column */
-.table-array-by-column td.radio-item.text-center.answer-item {
-    padding-left: 47px;
-}
-
 table > tbody > tr > td.ddprefix {
     padding-right: 1em;
     vertical-align: middle;
 }
 
 
-/*
-    Arrays Question
-*/
-
-/* center the radio list in the td*/
-td.answer-item.text-center
-{
-    padding-left: 39px;
-}
-
-table.array-no-dropdown  td.answer-item.text-center
-{
-    padding-left: 45px;
-}
-
-.table-5-point-array td.answer-item.text-center
-{
-    padding-left: 54px;
-}
-
-.table-10-point-array  td.answer-item.text-center
-{
-    padding-left: 40px;
-}
-
-.table-10-point-array  thead tr th.text-center
-{
-    padding-left: 0px;
-}
-
 /**
  * On big screen only, iPad and up
  */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 761px) {
 
     .table-dual-scale .separator {
         width: 6%;
@@ -519,8 +346,21 @@ table.array-no-dropdown  td.answer-item.text-center
  * (Both in portrait mode.)
  * We don't have to collapse tables on pads.
  */
-@media only screen and (max-width: 801px) {
-
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    table.ls-answers  tbody {
+        padding: 0 1em 0 1em;
+    }
+    table.ls-answers  tr{
+        border: 0 none;
+        padding: 1em;
+    }
+    table.ls-answers  tr th {
+        font-size: 1.1em;
+        text-align: center;
+        color: #317eac;
+    }
     /*
         No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
         whereas visible-xs-block respect bootstrap standards (767px)
@@ -534,82 +374,40 @@ table.array-no-dropdown  td.answer-item.text-center
         display: inline-block !important;
     }
 
-    /* Remove margin */
-    .row {
-        margin: 0;
-        padding: 0;
-    }
-
     /* Add some margin for multiple short text */
     .form-group.row {
         margin-bottom: 15px;
     }
 
-    /* Force table to not be like tables anymore */
-    .no-more-tables table,
-    .no-more-tables thead,
-    .no-more-tables tbody,
-    .no-more-tables th,
-    .no-more-tables td {
-        display: block;
+    table.ls-answers tbody {
+        padding: 0;
     }
 
-    .no-more-tables tbody th,
-    .no-more-tables tbody td,
-    .no-more-tables tbody tr {
-        width: 100% !important;
-    }
-
-    .no-more-tables tr {
-        display: inline-block;
-    }
-
-    .no-more-tables tbody {
-        padding: 0 1em 0 1em;
-    }
-
-    /* Hide table headers (but not display: none;, for accessibility) */
-    .no-more-tables thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    .no-more-tables tr,
-    .array-by-columns-div .radio-list {
+    table.ls-answers  tr{
         border: 1px solid #ccc;
-        padding: 1em;
+        padding: 0;
+        margin-bottom:1em;
     }
 
     /* Line header ; color is h4 color */
-    .no-more-tables tr th,
-    .array-by-columns-div .answertext {
+    table.ls-answers tr th {
         font-size: 1.1em;
-        text-align: center;
+        text-align: left;
         color: #317eac;
     }
 
-    .no-more-tables tr th {
-        text-align: left;
-    }
-
-    .array-by-columns-div .answertext {
+    .array-by-columns .answertext {
         padding: 8px;
         padding-left: 0;
         text-align: left;
         font-weight: bold;
     }
 
-    .array-by-columns-div .radio-item {
+    .array-by-columns .radio-item {
         padding-bottom: 8px;
     }
 
-    .no-more-tables .checkbox  {
-        position: relative;
-        top: 6px;
-    }
-
-    .no-more-tables td {
+    table.ls-answers td {
         /* Behave  like a "row" */
         min-height: 2em;
         border: none;
@@ -618,55 +416,6 @@ table.array-no-dropdown  td.answer-item.text-center
         padding-bottom: 1em;
         white-space: normal;
         text-align:left ;
-    }
-
-    .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
-        padding-left:1.5em;
-    }
-
-
-    .no-more-tables td:before {
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align:left;
-        font-weight: bold;
-    }
-
-    /*
-    Label the data
-    */
-    /*.no-more-tables td:before { content: attr(data-title); }*/
-
-    .no-more-tables-10-point td {
-    }
-
-    /* Don't wrap "No answer" on two lines */
-    .no-more-tables-10-point label {
-        white-space: nowrap;
-    }
-
-    .no-more-tables-10-point td:before, .no-more-tables-5-point td:before {
-        /* Now like a table header */
-        position: relative;
-        left: 2px;
-        /* Top/left values mimic padding */
-    }
-
-    /* When tables are collapsed, remove margin top so the labels look centered */
-    input[type="radio"],
-    .radio input[type="radio"],
-    .radio-inline input[type="radio"] {
-      margin-top: 4px;
-    }
-
-    .five-point-choice .col-xs-12 {
-        padding-bottom: 8px;  /* For 5-point-choice; TODO: Should look like 5-point-array? */
     }
 
     /* Hide the first column in array-by-column */
@@ -693,32 +442,9 @@ table.array-no-dropdown  td.answer-item.text-center
         text-align: left;
     }
 
-    table.question.subquestion-list.questions-list tr th.answertext {
-        text-align: left;
-    }
-
     /* Used for date-picker icon within input */
     .form-control-feedback {
         right: 0.5em;
-    }
-
-    /* Increase-same-decrease array */
-    .row-inc-same-dec .radio-item,
-    .thead-inc-same-dec th {
-        text-align: left;
-    }
-
-    .table-multi-num.no-more-tables tr {
-        border: none;
-    }
-
-    /* Used for <td></td> in multiple-numeric */
-    td.hide-on-small-screen {
-        display: none;
-    }
-
-    #langchanger-label {
-        padding-top: 11px;
     }
 
     .col-xs-12.question-container {
@@ -782,65 +508,14 @@ table.array-no-dropdown  td.answer-item.text-center
 
 }
 
-/* On iPad etc only */
-@media only screen and (max-width: 800px) and (min-width: 768px) {
-    .five-point-choice .noanswer-item {
-        padding: 0;
-    }
-
-
-}
-
-@media only screen and (max-width: 1000px) and (min-width: 800px) {
-    .table-10-point-array td.answer-item.text-center
-    {
-        padding-left: 10px;
-    }
-
-    .table-10-point-array  > thead > tr > th
-    {
-        text-align: left;
-        padding-right: 0px;
-    }
-}
-
-
 /**
  * Display adjust, question type by question type
  */
 
-.radio input[type="radio"]:disabled + label
-{
-    opacity: 0.25;
-}
-
-
-
-
-/* center the label text in no more table mode */
-.label-text{
-    margin-top: -24px;
-    margin-left: 20px;
-}
-
-/* ...except for dual-scale and array-by-column */
-.table-dual-scale .label-text, .array-by-columns-div .label-text {
-    margin-top: 0px;
-    margin-left: 0px;
-}
-
-.label-clickable:hover
-{
-    cursor: pointer;
-}
 
 .table > tbody > tr > th
 {
     vertical-align: middle;
-}
-
-table.numbers-only th, table.numbers-only input {
-    text-align: right;
 }
 
 .othertext-label-checkox-container {
@@ -848,24 +523,7 @@ table.numbers-only th, table.numbers-only input {
     margin-right: 5px;
 }
 
-.multiple-choice-with-comment.table, .table-multi-num.table{
-    table-layout: auto;
-    width: initial;
-}
- .multiple-choice-with-comment.table > tbody > tr > td {
-     padding-left: 18px;
-     vertical-align: middle;
- }
-
- /* alignment for small screens*/
- .multiple-choice-with-comment.table > tbody > tr > td.comment-container {
-     padding-left: 14px;
- }
-.checkbox input[type="checkbox"] {
-    margin-left: 0px;
-}
-
-.short-free-text .prefix, .short-free-text .suffix,.geoloc-item .search-icon, .geoloc-item .checkbox  {
+.geoloc-item .search-icon, .geoloc-item .checkbox  {
     padding-top: 10px;
 }
 
@@ -876,52 +534,9 @@ table.numbers-only th, table.numbers-only input {
 
 
 
-/** Question Design **/
-
-body div.row .question-container {
-    margin-bottom: 2em;
-}
-
-.answer-container, .question-help-container
-{
-    border-style: solid;
-}
-
-.answer-container
-{
-    border-width: 0px 1px 0px 1px;
-    padding-top: 3em;
-    background-color: white;
-}
-
-.question-help-container
-{
-    border-width: 0px 1px 1px 1px;
-    padding-bottom: 5px;
-}
-
-
-/** Header **/
-
-.question-title-container {
-    color: white;
-    padding: 2em 1em 1em 1em;
-
-}
-
-.questionvalidcontainer {
-    position: relative;
-    text-align: center;
-    padding-bottom: 1em;
-}
-
-.questionvalidcontainer .text-danger{
-    font-weight: bold;
-}
-
-.questionvalidcontainer .text-info{
-    color: #B9CC14;
-    font-weight: bold;
+/* Give help text some space */
+.questionhelp {
+  padding-bottom:0.5em;
 }
 
 /* Arrow */
@@ -942,31 +557,9 @@ body div.row .question-container {
 */
 
 /* Asterix */
-.asterisk {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-.asterisk:before {
-    content: "\f069";
-}
-
-
-/* Check javascript */
-#checkjavascript {
-    margin-top: 100px;
-    z-index: 999;
-    right: 100px;
-    position: fixed;
-    width: 300px;
-}
-
-/*label font weight*/
-label, th {
-    font-weight: normal;
+.input-error .asterisk {
+    font-size: 1.2em;
+    margin-top:-0.2em;
 }
 
 #surveys-list-container
@@ -996,17 +589,9 @@ label, th {
     top: 10px;
 }
 
-.list-unstyled.radio-list {
-    padding-left: 15px;
-}
 
 div.yes-no .btn-group label {
   white-space:normal;
-}
-
-
-.multipleco-other-topic {
-    max-width: 150px;
 }
 
 .privacy-header{
@@ -1037,51 +622,47 @@ div.yes-no .btn-group label {
     border: none;
     }
 }
-/*** Small helper classes, that are not shipped with bootstrap but fit in well***/
-.ls-custom-padding{
-    padding: 1px;
-}
-.ls-custom-padding.two{
-    padding: 2px;
-}
-.ls-custom-padding.three{
-    padding: 3px;
-}
-.ls-custom-padding.four{
-    padding: 4px;
-}
-.ls-custom-padding.five{
-    padding: 5px;
-}
-.ls-custom-padding.fifteen{
-    padding: 15px;
-}
-.ls-custom-padding.eighteen{
-    padding: 18px;
-}
 
-.ls-custom-margin{
-    margin: 1px;
-}
-.ls-custom-margin.two{
-    margin: 2px;
-}
-.ls-custom-margin.three{
-    margin: 3px;
-}
-.ls-custom-margin.four{
-    margin: 4px;
-}
-.ls-custom-margin.five{
-    margin: 5px;
-}
-.ls-custom-margin.fifteen{
-    margin: 15px;
-}
-.ls-custom-margin.eighteen{
-    margin: 18px;
-}
+@media only screen and (max-device-width: 760px){
+  h1, .h3{
+    font-size:18px;
+  }
 
-.label-danger {
-    white-space: normal;
+  .h4{
+    font-size:16px;
+  }
+
+  .question-container{
+    margin-bottom:1em;
+  }
+
+  .question-title-container{
+    padding-top:5px;
+    padding-bottom: 5px;
+  }
+
+  .answer-container{
+    //padding-top:0.5em;
+    //padding-bottom:0.5em;
+  }
+
+  .ls-question-help,
+  .ls-questionhelp{
+    font-size:14px;
+  }
+
+  .table-bordered{
+    border:none;
+  }
+
+  .ls-answers tr:last-child{
+    margin-bottom:0;
+  }
+
+  .ls-answers > tbody > tr > td.radio-item ,
+  .ls-answers > tbody > tr > td.checkbox-item{
+    min-height:44px; /*minimal height for touching with finger */
+    padding-top:10px;
+    padding-left:28px;
+  }
 }

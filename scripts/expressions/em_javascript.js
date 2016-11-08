@@ -18,11 +18,13 @@
  * and Contributors (http://phpjs.org/authors)
  */
 
-/* Default event to trigger on answer part
- * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations
- * Actually only for list with comment and select in ranking
+/**
+ * Default event to trigger on answer part
+ * Launch function according to anser-item type
+ * @todo : checkconditions/fixnum_checkconditions in this function
  **/
-$(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not([onkeyup])",function(event){
+/* text/number item */
+$(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item :text:not([onkeyup])",function(event){
     // 'keyup' can be replaced by event.type (but not really needed)
     // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
     if($(this).data("number"))// data-type ?
@@ -34,12 +36,29 @@ $(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not(
         checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
     }
 });
-$(document).on("change",".select-item select:not([onchange])",function(event){
-    //$('#java'+$(this).attr("name")).val($(this).val()); Not needed for ranking, needed for ? select already have val() and are unique by name
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
-        ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
+/* select/dropdown item */
+$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
+    //~ if($.isFunction(window.ExprMgr_process_relevance_and_tailoring )){
+        //~ ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
+    //~ }
+});
+/* radio/button item */
+$(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:not([onclick])",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
+    //~ $('#java'+$(this).attr("name")).val($(this).val());
+    //~ if($.isFunction(window.ExprMgr_process_relevance_and_tailoring )){
+        //~ ExprMgr_process_relevance_and_tailoring("click",$(this).attr("name"),"radio");
+    //~ }
+});
+/* checkbox item */
+$(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 
+/**
+ * All EM function (see em_core_helper.php)
+ */
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty
@@ -254,7 +273,7 @@ function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTransl
                 iNearestIndex = i;
             }
         }
-        if ( iStrict !== 1 ) {
+        if ( iStrict != 1 ) {
             return aToValues[iNearestIndex];
         }
     }
@@ -584,11 +603,12 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    var numtest = new Decimal(value);
-                    if(!numtest.isNaN()){
+                    try {
+                        var numtest = new Decimal(value);
                         return parseFloat(numtest.valueOf());
-                    } else {
-                        shown = value; // what about "no answer"?
+                    }
+                    catch(e) {
+                        shown = value;
                     }
                     break;
                 case 'M': //Multiple choice checkbox
@@ -598,11 +618,12 @@ function LEMval(alias)
                     }
                     else {
                         if (attr.type == 'P' && varName.match(/comment$/)) {
-                            var numtest = new Decimal(value);
-                            if(!numtest.isNaN()){
+                            try {
+                                var numtest = new Decimal(value);
                                 shown = parseFloat(numtest.valueOf());
-                            } else {
-                                shown = value; // what about "no answer"?
+                            }
+                            catch(e) {
+                                shown = value;
                             }
                         }
                         else {
@@ -706,7 +727,13 @@ function LEMval(alias)
                 {
                     if(bNumRealValue)
                     {
-                        return parseFloat(new Decimal(value).valueOf());
+                        try {
+                            var numtest = new Decimal(value);
+                            return parseFloat(numtest.valueOf());
+                        }
+                        catch(e) {
+                            return value;
+                        }
                     }
                     else
                     {
@@ -721,7 +748,13 @@ function LEMval(alias)
 //                if (newval != parseFloat(newval)) {
 //                   return '';
 //                }
-                return parseFloat(new Decimal(newval).valueOf());
+                try {
+                    var numtest = new Decimal(value);
+                    return parseFloat(numtest.valueOf());
+                }
+                catch(e) {
+                    return value;
+                }
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
@@ -730,7 +763,7 @@ function LEMval(alias)
                 var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).attr('value');
 
                 // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
-                sdatetimePattern=typeof sdatetimePattern=='undefined'? 'yy-mm-dd HH:MM': sdatetimePattern;
+                sdatetimePattern =typeof sdatetimePattern == 'undefined'? 'YYYY-MM-DD HH:mm': sdatetimePattern;
 
                 if (sdatetimePattern==null) {
                     sdatetimePattern="";
@@ -739,7 +772,7 @@ function LEMval(alias)
                     value="";
                 }
                 else {
-                    value= moment(value,sdatetimePattern).format(sdatetimePattern); 
+                    value= moment(value,sdatetimePattern).format('YYYY-MM-DD HH:mm');
                 }
                 return value;
             }
@@ -750,8 +783,14 @@ function LEMval(alias)
                 return value;
             }
             else {
-                var decimal_safe = new Decimal(value);
-                return parseFloat(decimal_safe.valueOf());
+                // If it's not a decimal number, just return value
+                try {
+                    var decimal_safe = new Decimal(value);
+                    return parseFloat(decimal_safe.valueOf());
+                }
+                catch (ex) {
+                    return value;
+                }
             }
         }
         case 'rowdivid':
@@ -784,9 +823,7 @@ function LEMfixnum(value)
  */
 function LEMstrip_tags(htmlString)
 {
-   var tmp = document.createElement("DIV");
-   tmp.innerHTML = htmlString;
-   return tmp.textContent||tmp.innerText;
+   return $("<div/>").html(htmlString).text();
 }
 
 /**
@@ -3146,29 +3183,3 @@ function time () {
     return Math.floor(new Date().getTime() / 1000);
 }
 
-// updates the repeated headings in a dynamic table
-function updateHeadings(tab, rep)
-{
-    tab.find('.repeat').remove();
-    var header = tab.find('thead>tr');
-    var trs = tab.find('tr:visible');
-    trs.each(function(i, tr)
-    {
-        // add heading but not for the first and the last rows
-        if(i != 0 && i % rep == 0 && i != trs.length-1)
-        {
-            header.clone().addClass('repeat').addClass('headings').insertAfter(tr);
-        }
-    });
-}
-
-// updates the colors in a dynamic table
-function updateColors(tab)
-{
-    var trs = tab.find('tr:visible');
-    trs.each(function(i, tr)
-    {
-        // fix line colors
-        $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
-    });
-}

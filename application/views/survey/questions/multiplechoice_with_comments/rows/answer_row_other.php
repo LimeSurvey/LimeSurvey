@@ -24,62 +24,35 @@
  */
 ?>
 <!-- answer_row -->
-<tr class='<?php echo $liclasses;?>'>
+<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group other-item clearfix' <?php echo $sDisplayStyle ;?>>
 
     <!-- Checkbox + label -->
-
-    <td class=""  <?php echo $sDisplayStyle ;?>>
-
-        <label for="<?php echo $id;?>" class="answertext control-label"></label>
-
-        <!--
-             The label text is provided inside a div,
-             so final user can add paragraph, div, or whatever he wants in the subquestion text
-             This field is related to the input thanks to attribute aria-labelledby
-        -->
-        <div class="label-text label-clickable" id="label-<?php echo $id;?>">
-            <?php echo $labeltext;?>
-        </div>
-
-        <input
-           class="text other form-control input-sm  multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
-
-           type="text"
-           name="<?php echo $name; ?>"
-           id="<?php echo $id;?>"
-           title="<?php eT('Other'); ?>"
-           size="10"
-           onkeyup="<?php echo $checkconditionFunction;?>"
-           value="<?php  echo $value; ?>"
-        />
-
-        <?php if($javainput):?>
+    <div class="col-sm-<?php echo $sLabelWidth; ?> col-xs-12">
+        <div class="form-group answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
+            <label for="<?php echo $id;?>" class="label-text control-label ls-input-group-extra" id="label-<?php echo $id;?>" ><?php echo $labeltext;?></label>
             <input
-            type='hidden'
-            name='<?php echo $javaname?>'
-            id='<?php echo $javaname?>'
-            value='<?php echo $javavalue;?>'
-            <?php echo $checked;?>
+               class="other-text form-control input-sm multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
+               type="text"
+               name="<?php echo $name; ?>"
+               id="<?php echo $id;?>"
+               value="<?php  echo $value; ?>"
+               data-number=<?php echo $otherNumber;?>
             />
-        <?php endif;?>
-    </td>
+        </div>
+    </div>
 
     <!-- Comment -->
-    <td <?php echo $sDisplayStyle; ?> class="comment-container">
-        <label for='<?php echo $inputCommentId;?>' class="answer-comment hide control-label">
-            <?php echo $commentLabelText;?>
-        </label>
-
-        <input
-            class='form-control text input-sm <?php echo $kpclass; ?>'
-
-            type='text'
-            size='40'
-            id='<?php echo $inputCommentId;?>'
-            name='<?php echo $inputCommentName; ?>'
-            value='<?php echo $inputCOmmentValue; ?>'
-            onkeyup='<?php echo $checkconditionFunctionComment;?>'
-        />
-    </td>
-</tr>
+    <div class="col-sm-<?php echo $sInputContainerWidth; ?> col-xs-12 ">
+        <div class="form-group answer-item text-item comment-item">
+            <input
+                class='form-control <?php echo $kpclass; ?>'
+                type='text'
+                id='<?php echo $inputCommentId;?>'
+                name='<?php echo $inputCommentName; ?>'
+                value='<?php echo $inputCOmmentValue; ?>'
+                aria-labelledby='label-<?php echo $id; ?> <?php echo $id; ?>'
+            />
+        </div>
+    </div>
+</li>
 <!-- end of answer_row -->

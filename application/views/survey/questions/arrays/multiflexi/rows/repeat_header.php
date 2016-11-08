@@ -14,18 +14,18 @@
 </tbody>
 
 <tbody>
-    <tr class="dontread repeat headings hidden-xs">
+    <tr class="ls-heading ls-repeat-heading hidden-xs" aria-hidden="true">
         <th>&nbsp;</th>
         <?php foreach ($labelans as $ld): ?>
-            <th  class='th-11  text-<?php echo $textAlignment;?>'>
+            <td>
                 <?php echo $ld;?>
-            </th>
+            </td>
         <?php endforeach;?>
 
         <?php if ($right_exists):?>
-            <th>
+            <td>
                 &nbsp;
-            </th>
+            </td>
         <?php endif;?>
     </tr>
 <!-- end of repeat header -->

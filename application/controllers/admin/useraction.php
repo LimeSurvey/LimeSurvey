@@ -34,6 +34,8 @@ class UserAction extends Survey_Common_Action
 
     /**
     * Get Post- or Paramvalue depending on where to get it
+    * @param string $param
+    * @return string
     */
     private function _getPostOrParam($param){
         $value = Yii::app()->request->getPost($param);
@@ -58,15 +60,10 @@ class UserAction extends Survey_Common_Action
 
         $aData = array();
         // Page size
-        if (Yii::app()->request->getParam('pageSize'))
-        {
-            Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSize', (int)Yii::app()->request->getParam('pageSize'));
         }
-        else
-        {
-            Yii::app()->user->setState('pageSize',(int)Yii::app()->params['defaultPageSize']);
-        }
-        $aData['pageSize']= Yii::app()->user->getState('pageSize');
+        $aData['pageSize']= Yii::app()->user->getState('pageSize', (int)Yii::app()->params['defaultPageSize']);
 
         $aData['title_bar']['title'] = gT('User administration');
         $aData['fullpagebar']['closebutton']['url'] = true;
@@ -794,6 +791,9 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
+    /**
+     * @param string $str
+     */
     private function escape_str($str, $like = FALSE)
     {
         if (is_array($str)) {
@@ -811,6 +811,9 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
+    /**
+     * @param string $str
+     */
     private function remove_invisible_characters($str, $url_encoded = TRUE)
     {
         $non_displayables = array();
@@ -833,6 +836,9 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
+    /**
+     * @param string $classMsg
+     */
     private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
 

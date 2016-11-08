@@ -6,17 +6,4 @@
  * @var $time_limit
  */
 ?>
-<div class="row" id="timer_header">
-    <div class="col-xs-12">
-        <input
-            type='hidden'
-            name='timerquestion'
-            value='<?php echo $timersessionname; ?>'
-        />
-
-        <input
-            type='hidden'
-            name='<?php echo $timersessionname; ?>'
-            id='<?php echo $timersessionname; ?>'
-            value='<?php echo $time_limit; ?>'
-        />
+<div class="timer_header">

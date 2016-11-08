@@ -1,4 +1,4 @@
-/*
+/**
  * @license This file is part of LimeSurvey
  * See COPYRIGHT.php for copyright notices and details.
  *
@@ -7,96 +7,98 @@
 /**
  * Change multi numeric question type to slider question type
  *
- * @author Denis Chenu (Shnoulle)
  * @param {number} qId The qid of the question where apply.
  */
-function doNumericSlider(qID,jsonOptions) {
 
-    var slider_list=$("#question"+qID+" .slider-list");
-    var havevalue,startvalue;
-    if(slider_list)
-    {
-        // Remove not needed tips
-        $("#question"+qID+" .em_value_range").remove();
-        // Construction of HTML
-        var htmlSlider="<div id='container-myfname' class='multinum-slider'>\n"
-            + "<div id='slider-myfname' class='ui-slider-1'>\n"
-            + ((jsonOptions.slider_showminmax==1)? "<div id='slider-left-myfname' class='slider_showmin slider-showmin'>"+jsonOptions.slider_mintext+"</div>\n" : "")
-            + "<div id='slider-callout-myfname' class='slider_callout slider-callout'></div>\n"
-            + "<div id='slider-handle-myfname' class='ui-slider-handle'></div>\n"
-            + ((jsonOptions.slider_showminmax==1)? "<div id='slider-right-myfname' class='slider_showmax slider-showmax'>"+jsonOptions.slider_maxtext+"</div>\n" : "")
-            + "</div>\n"
-            + "</div>\n";
-        var htmlSliderResest=((jsonOptions.slider_reset==1)? "<a id='slider-reset-myfname' class='slider-reset' title='"+jsonOptions.lang.reset+"'>"+jsonOptions.lang.reset+"</a>\n" : "");
-        // Replace each input by the slider
-        $("#question"+qID).find('.slider-list').find('.answer-item').each(function(){
-            var thisinput=$(this).find(".input").find('input.text').first();
-            var myfname=$(thisinput).attr('name');
-            if($(thisinput).attr('value'))
-            {
-                var actualval=$(thisinput).attr('value').replace(LSvar.sLEMradix,".");
-            }
-            else
-            {
-                var actualval=0;
-            }
+function doNumericSlider(qID,options) {
+  $("#vmsg_"+qID+"_default").text(sliderTranslation.help);
+  $("#question"+qID+" .slider-container").each(function()
+  {
+    var inputEl = $(this).find("input:text");
+    var myfname = $(inputEl).attr("name");
+    var prefix = $(inputEl).data('slider-prefix');
+    var suffix = $(inputEl).data('slider-suffix');
+    var dispVal= $(inputEl).data('slider-value');
+    var separator = $(inputEl).data('separator');
+    var sliderNoActionEl = $('#slider_user_no_action_' + myfname);
+    /* need to fix actual value : force to number */
+    dispVal = Number(dispVal.toString().replace(separator,'.'));
+    // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
+    // Use closure for namespace, so we can use theSlider variable for all sliders.
+    //~ (function () {
+      var theSlider = $(inputEl).bootstrapSlider({
+          //~ value : dispVal,
+          formatter: function (value) {
+              if($(sliderNoActionEl).val()=="1"){
+                 return null;
+              }
+              displayValue = value.toString().replace('.',separator);
+              return prefix + displayValue + suffix;
+          }
+      });
+      $(this).find(".slider-handle").addClass("bg-primary");// bg-info is not dark enough
 
-            var havevalue=false;
-            var startvalue=false;
-            if(actualval!=""){
-                havevalue=true;
-                startvalue=actualval;
-            }else if(jsonOptions.slider_startvalue!="NULL"){
-                startvalue=parseFloat(jsonOptions.slider_startvalue);
-            }
-            $(this).find(".input").hide();
-            $(htmlSlider.replace(/myfname/g,myfname)).insertAfter($(this).find(".input"));
-            $(htmlSliderResest.replace(/myfname/g,myfname)).appendTo($(this));
-            // Launch slider (http://api.jqueryui.com/slider/)
-            $("#container-"+myfname).slider({
-                value:startvalue,
-                min: parseFloat(jsonOptions.slider_min),
-                max: parseFloat(jsonOptions.slider_max),
-                step: parseFloat(jsonOptions.slider_step),
-                create: function() {
-                    $('#slider-callout-'+myfname).appendTo($('#container-'+myfname+' .ui-slider-handle').get(0));
-                },
-                slide: function( event, ui ) {
-                    displayvalue=''+ui.value;
-                    displayvalue=displayvalue.replace(/\./,LSvar.sLEMradix);
-                    $(thisinput).val(displayvalue);
-                    $(thisinput).triggerHandler("keyup");
-                    $('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + displayvalue + jsonOptions.slider_suffix);
-                }
-            });
-            // Update the value of the input if Slider start is set
-            if(havevalue || ( startvalue && jsonOptions.slider_displaycallout)){
-                startvalue=''+startvalue;
-                startvalue=startvalue.replace(/\./,LSvar.sLEMradix);
-                $("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + startvalue + jsonOptions.slider_suffix);
-                $(thisinput).val(startvalue);
-                $(thisinput).triggerHandler("keyup"); // Needed for EM
-            }
-            // Reset on click on .slider-reset
-            $(this).on("click",".slider-reset",function(){
-                if(jsonOptions.slider_startvalue=="NULL"){
-                    $( "#container-"+myfname ).slider( "option", "value", "" );
-                }else{
-                    $( "#container-"+myfname ).slider( "option", "value", jsonOptions.slider_startvalue );
-                }
-                if(jsonOptions.slider_displaycallout && jsonOptions.slider_startvalue!="NULL"){
-                    $('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + jsonOptions.slider_startvalue.replace(/\./,LSvar.sLEMradix) + jsonOptions.slider_suffix);
-                    $(thisinput).val(jsonOptions.slider_startvalue);
-                }else{
-                    $('#slider-callout-'+myfname).text("");
-                    $(thisinput).val("");
-                }
-                $(thisinput).triggerHandler("keyup"); // Needed for EM
-            });
-            // Replace default em tip
-            $("#question"+qID).find(".em_default").text(jsonOptions.lang.tip);
-        });
-    }
-    //Fix buggy chrome/webkit engine which doesn't properly apply the css rules after this insertion
-    $("#question"+qID).hide().show(0);
+
+      // When user change the value of the slider :
+      // we need to show the tooltip (if it was hidden)
+      // and to update the value of the input element with correct format
+      theSlider.on('slideStart', function(){
+          $('#javatbd' + myfname).find('div.tooltip').show(); // Show the tooltip
+          $(sliderNoActionEl).val(0); // The user did an action
+          value = $(inputEl).val(); // We get the current value of the bootstrapSlider
+          displayValue = value.toString().replace('.',separator); // We format it with the right separator
+          $(inputEl).val(displayValue); // We parse it to the element
+      });
+      theSlider.on('change', function(event) {
+      });
+      theSlider.on('slideStop', function(event) {
+          $(inputEl).val(event.value.toString().replace('.',separator)).trigger('keyup');// We call the EM by the event
+      });
+
+      // If user no action is on, we hide the tooltip
+      // And we set the value to null
+      // Fix it : must be the default value
+      if($(sliderNoActionEl).val()=="1")
+      {
+          $('#javatbd' + myfname).find('div.tooltip').hide();
+          $(inputEl).val(null); // .trigger('keyup');
+      }
+
+      // Click the reset button
+      $('#answer' + myfname + '_resetslider').on('click', function() {
+          $('#javatbd' + myfname).find('div.tooltip').hide();
+          // Pretend user didn't do anything
+          $(sliderNoActionEl).val("1");
+          // Position slider button at beginning
+          theSlider.bootstrapSlider('setValue', null);
+          // Set value to null
+          $(inputEl).val(null).trigger('keyup');
+      });
+
+      // On form submission, if user action is still on,
+      // we must force the value of the input to ''
+      // and force the thousand separator (this bug still affect 2.06)
+      $("form").submit(function (e) {
+          if($(sliderNoActionEl).val()=="1")
+          {
+              $(inputEl).val("");
+          }
+      });
+    //~ });
+  });
+
 }
+/*
+var myfname = '<?php echo $myfname; ?>';
+var $inputEl = $('#answer' + myfname);
+var $sliderNoActionEl = $('#slider_user_no_action_' + myfname);
+var $prefix = $inputEl.data('slider-prefix');
+var $suffix = $inputEl.data('slider-suffix');
+// We start the slider, and provide it the formated value with prefix and suffix for its tooltip
+// Use closure for namespace, so we can use theSlider variable for all sliders.
+(function () {
+
+
+
+
+*/

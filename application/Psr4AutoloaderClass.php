@@ -99,7 +99,7 @@ class Psr4AutoloaderClass
      * Loads the class file for a given class name.
      *
      * @param string $class The fully-qualified class name.
-     * @return mixed The mapped file name on success, or boolean false on
+     * @return string|false The mapped file name on success, or boolean false on
      * failure.
      */
     public function loadClass($class)
@@ -138,7 +138,7 @@ class Psr4AutoloaderClass
      * 
      * @param string $prefix The namespace prefix.
      * @param string $relative_class The relative class name.
-     * @return mixed Boolean false if no mapped file can be loaded, or the
+     * @return false|string Boolean false if no mapped file can be loaded, or the
      * name of the mapped file that was loaded.
      */
     protected function loadMappedFile($prefix, $relative_class)

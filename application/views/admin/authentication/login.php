@@ -116,6 +116,7 @@
                     <div class="row login-submit login-content">
                         <div class="col-lg-12">
                                 <p><input type='hidden' name='action' value='login' />
+                                   <input type='hidden' id='width' name='width' value='' />
                                     <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in');?></button><br />
                                     <br/>
                                     <?php
@@ -138,5 +139,8 @@
 
 <!-- Set focus on user input -->
 <script type='text/javascript'>
-    document.getElementById('user').focus();
+$( document ).ready(function() {
+    $('#user').focus();
+    $("#width").val($(window).width());
+});
 </script>

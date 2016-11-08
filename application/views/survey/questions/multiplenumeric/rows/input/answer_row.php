@@ -20,50 +20,41 @@
 ?>
 <!-- answer_row -->
 
-<tr  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item" <?php echo $sDisplayStyle;?>>
-    <td class='text-right align-middle'>
-        <?php if($alert):?>
-            <label class="control-label numeric-label label label-danger errormandatory"  role="alert">
-                <?php echo $labelText;?>
-            </label> <!-- alert -->
-        <?php else:?>
-            <label class='control-label numeric-label' for="answer<?php echo $myfname; ?>">
-                <?php echo $labelText;?>
-            </label>
-        <?php endif;?>
-    </td>
+<li id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item text-item form-group<?php echo $extraclass;?><?php if($alert):?> has-error<?php endif; ?>" <?php echo $sDisplayStyle;?>>
+    <!--  color code missing mandatory questions red -->
+    <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?><?php if($alert):?> errormandatory<?php endif; ?>' for="answer<?php echo$myfname;?>">
+        <?php echo $labelText; ?>
+    </label>
 
-    <?php if (!empty($prefix)): ?>
-        <td class='text-right align-middle'>
-            <label class='no-label'>
-                <?php echo $prefix; ?>
-            </label>
-        </td>
-    <?php endif; ?>
-
-    <td>
-        <div class="col-sm-<?php echo $tiwidth;?>">
+    <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+        <?php if ($prefix != '' || $suffix != ''): ?>
+            <div class="ls-input-group">
+        <?php endif; ?>
+            <?php if ($prefix != ''): ?>
+                <div class="ls-input-group-extra prefix-text prefix text-right">
+                    <?php echo $prefix; ?>
+                </div>
+            <?php endif; ?>
             <input
-                class="text form-control numeric <?php echo $kpclass;?>"
+                class="form-control numeric <?php echo $kpclass;?>"
                 type="text"
                 name="<?php echo $myfname;?>"
                 id="answer<?php echo $myfname; ?>"
                 value="<?php echo $dispVal;?>"
-                onkeyup="<?php echo $checkconditionFunction; ?>"
                 title="<?php eT('Only numbers may be entered in this field.'); ?>"
-                <?php echo $maxlength; ?>
+                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+                data-number="1"
+                data-integer="<?php echo $integeronly;?>"
                 />
-        </div>
-        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $dispVal;?>" />
-    </td>
-
-    <?php if (!empty($suffix)): ?>
-        <td class='align-middle'>
-            <label class='no-label'>
-                <?php echo $suffix;?>
-            </label>
-        </td>
-    <?php endif; ?>
-
-</tr>
+            <?php if ($suffix != ''): ?>
+                <div class="ls-input-group-extra suffix-text suffix text-left">
+                    <?php echo $suffix; ?>
+                </div>
+            <?php endif; ?>
+        <?php if ($prefix != '' || $suffix != ''): ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</li>
 <!-- end of answer_row -->

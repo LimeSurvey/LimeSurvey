@@ -14,45 +14,28 @@
  * @var $prefix
  */
 ?>
-<!-- Multiple Numerical -->
-
+<!-- Multiple Numerical with slider -->
 <!-- answer -->
-<div class='subquestion-list questions-list text-list <?php echo $prefixclass?>-list'>
+<ul class='<?php echo $coreClass?> list-unstyled form-horizontal'>
+    <?php
+        // rows/answer_row.php
+        echo $sRows;
+    ?>
+<?php
+    doRender("/survey/questions/multiplenumeric/rows/dynamic",array(
+        'id'=>$id,
+        'sumRemainingEqn'=>$sumRemainingEqn,
+        'sumEqn'=>$sumEqn,
+        'sLabelWidth'=>$sLabelWidth,
+        'sInputContainerWidth'=>$sInputContainerWidth,
+        'prefix'=>$prefix,
+        'suffix'=>$suffix,
+    ),false);
+?>
 
-        <?php
-            // rows/answer_row.php
-            echo $sRows;
-        ?>
-
-        <?php if($equals_num_value):?>
-            <div class='multiplenumerichelp help-block'>
-                <div class='label label-default'>
-                    <label>
-                        <?php eT('Remaining: ');?>
-                    </label>
-                    <span id="remainingvalue_<?php echo $id; ?>" class="dynamic_remaining">
-                        <?php echo $prefix; ?>
-                        {<?php echo $sumRemainingEqn;?>}
-                        <?php echo $suffix; ?>
-                    </span>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if($displaytotal):?>
-
-            <div class='multiplenumerichelp help-block'>
-                <div class='label label-default'>
-                    <label class=""><?php eT('Total: '); ?></label>
-                    <span id="totalvalue_<?php echo $id; ?>" class="">
-                        <?php echo $prefix; ?>
-                        <?php // NO SPACE AFTER BRACKET !!!! ?>
-                        {<?php echo $sumEqn; ?>}
-                        <?php echo $suffix; ?>
-                    </span>
-                </div>
-            </div>
-
-        <?php endif; ?>
-</div>
+</ul>
 <!-- endof answer -->
+<!-- Add some data for slider javascript -->
+<div class="hidden">
+
+</div>

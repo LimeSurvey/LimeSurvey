@@ -15,33 +15,33 @@
 <!-- 5 point choice -->
 
 <!-- answer -->
-<div id="<?php echo $id; ?>" class="answers-list five-point-choice radio-list">
-
+<ul class="<?php echo $coreClass;?> list-unstyled form-inline">
     <?php
         // item_row.php
         echo $sRows;
     ?>
+</ul>
+<!-- Value for expression manager javascript (use id) ; no need to submit -->
+<input
+    type="hidden"
+    name="java<?php echo $name;?>"
+    id="java<?php echo $name;?>"
+    value="<?php echo $sessionValue;?>"
+    disabled="disabled"
+/>
 
-    <!-- 5 point choice footer -->
-    <input
-        type="hidden"
-        name="java<?php echo $name;?>"
-        id="java<?php echo $name;?>"
-        value="<?php echo $sessionValue;?>"
-    />
-
-    <?php if($slider_rating==1):?>
-        <script type='text/javascript'>
-        <!--
-            doRatingStar( <?php echo  $sliderId;?> );
-        -->
-        </script>
-    <?php elseif($slider_rating==2):?>
-        <script type='text/javascript'>
-        <!--
-            doRatingSlider( <?php echo  $sliderId; ?> );
-        -->
-        </script>
-    <?php endif;?>
-</div>
+<?php if($slider_rating==1):?>
+    <script type='text/javascript'>
+    <!--
+        doRatingStar( <?php echo  $sliderId;?> );
+    -->
+    </script>
+<?php elseif($slider_rating==2):?>
+    <script type='text/javascript'>
+    <!--
+        var doRatingSlider_<?php echo  $sliderId; ?> = new getRatingSlider( <?php echo  $sliderId; ?> );
+        doRatingSlider_<?php echo  $sliderId; ?>();
+    -->
+    </script>
+<?php endif;?>
 <!-- end of answer -->

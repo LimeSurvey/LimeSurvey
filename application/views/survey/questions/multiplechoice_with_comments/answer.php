@@ -12,10 +12,10 @@
 
 <!-- answer -->
 <input type='hidden' name='<?php echo $name; ?>' value='<?php echo $value;?>' />
-<table class="multiple-choice-with-comment list-unstyled subquestion-list questions-list checkbox-text-list no-more-tables table table-condensed table-hover">
+<ul class="<?php echo $coreClass; ?> list-unstyled">
     <?php
         // rows/answer_row.php
         echo $sRows;
     ?>
-</table>
+</ul>
 <!-- end of answer -->

@@ -2,7 +2,6 @@
 namespace ls\pluginmanager;
 use \User;
 use LSAuthResult;
-use Permission;
 
 abstract class AuthPluginBase extends PluginBase {
     

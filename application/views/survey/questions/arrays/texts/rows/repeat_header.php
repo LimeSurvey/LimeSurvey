@@ -10,12 +10,12 @@
 </tbody>
 
 <tbody>
-    <tr class="dontread repeat headings hidden-xs">
-        <td style='width: <?php echo $answerwidth;?>%;'>
+    <tr class="repeat headings hidden-xs" aria-hidden="true">
+        <td>
             &nbsp;
         </td>
         <?php foreach ($labelans as $i=>$ld):?>
-            <th class="answertext">
+            <th>
                 <?php echo $ld;?>
             </th>
         <?php endforeach;?>

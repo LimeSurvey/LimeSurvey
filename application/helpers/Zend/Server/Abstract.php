@@ -117,7 +117,6 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
      * Lowercase's a string by reference
      *
      * @deprecated
-     * @param  string $string value
      * @param  string $key
      * @return string Lower cased string
      */

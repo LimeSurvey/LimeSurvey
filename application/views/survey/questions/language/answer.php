@@ -10,8 +10,8 @@
 <!-- Language -->
 
 <!-- answer -->
-<p class="question answer-item dropdown-item langage-item col-sm-3">
-    <label for='answer<?php echo $name; ?>' class='hide label'>
+<div class="<?php echo $coreClass;?> form-group form-inline">
+    <label for='answer<?php echo $name; ?>' class='sr-only control-label'>
         <?php eT('Choose your language'); ?>
     </label>
 
@@ -24,7 +24,7 @@
         <?php endforeach;?>
     </select>
     <input type="hidden" name="java<?php echo $name; ?>" id="java<?php echo $name; ?>" value="<?php echo $sLang; ?>" />
-</p>
+</div>
 
 <script type='text/javascript'>
 /*<![CDATA[*/

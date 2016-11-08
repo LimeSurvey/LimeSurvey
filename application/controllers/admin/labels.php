@@ -170,7 +170,6 @@ class labels extends Survey_Common_Action
     * Function to load new/edit labelset screen.
     *
     * @access public
-    * @param mixed $action
     * @param integer $lid
     * @return
     */

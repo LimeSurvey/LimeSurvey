@@ -107,6 +107,7 @@
                                 'type' => 'raw',
                                 'name' => 'mandatory',
                                 'value'=> '$data->mandatoryIcon',
+                                 'htmlOptions' => array('class' => 'text-center'),
                             ),
 
                             array(
@@ -114,6 +115,7 @@
                                 'type' => 'raw',
                                 'name' => 'other',
                                 'value'=> '$data->otherIcon',
+                                 'htmlOptions' => array('class' => 'text-center'),
                             ),
 
 

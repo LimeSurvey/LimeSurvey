@@ -25,67 +25,65 @@
 <!-- Multi Text -->
 
 <!-- answer -->
-<div class="no-more-tables no-more-tables-array-multi-text">
-    <table <?php echo $q_table_id_HTML;?> class="table question subquestion-list questions-list <?php echo $extraclass;?> <?php echo $num_class;?> <?php echo $totals_class;?>">
+<table <?php echo $q_table_id_HTML;?> class="<?php echo $coreClass;?> <?php echo $extraclass;?> table table-bordered table-hover <?php echo $totals_class;?>">
+    <colgroup class="col-responses">
 
-        <colgroup class="col-responses">
+        <!-- Column for answer label -->
+        <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
 
-            <!-- Column for answer label -->
-            <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
+        <!-- columns for answers -->
+        <?php foreach ($labelans as $i=>$ld):?>
+            <col class="<?php // TODO: array2 alternation ?> <?php //echo $classes; ?>" style='width: <?php echo $cellwidth; ?>%;' />
+        <?php endforeach;?>
 
-            <!-- columns for answers -->
+        <!-- columns for right -->
+        <?php if ($right_exists):?>
+            <col class="answertextright <?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;' />
+        <?php endif;?>
+
+        <!-- columns for Grand Total -->
+        <?php if ($showGrandTotal):?>
+            <col class="grandtotal <?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;' />
+        <?php endif;?>
+    </colgroup>
+
+    <thead aria-hidden="true">
+        <tr class="ls-heading">
+            <td>
+                &nbsp;
+            </td>
             <?php foreach ($labelans as $i=>$ld):?>
-                <col class="<?php // TODO: array2 alternation ?> <?php //echo $classes; ?>" style='width: <?php echo $cellwidth; ?>%;' />
+                <th>
+                    <?php echo $ld;?>
+                </th>
             <?php endforeach;?>
 
-            <!-- columns for right -->
             <?php if ($right_exists):?>
-                <col class="answertextright <?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;' />
+                <td>&nbsp;</td>
             <?php endif;?>
-
-            <!-- columns for Grand Total -->
-            <?php if ($showGrandTotal):?>
-                <col class="<?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;' />
-            <?php endif;?>
-        </colgroup>
-
-        <thead>
-            <tr class="dontread">
-                <td style='width: <?php echo $answerwidth;?>%;'>
-                    &nbsp;
-                </td>
-                <?php foreach ($labelans as $i=>$ld):?>
-                    <th class="answertext">
-                        <?php echo $ld;?>
-                    </th>
-                <?php endforeach;?>
-
-                <?php if ($right_exists):?>
-                    <td>&nbsp;</td>
-                <?php endif;?>
-
-                <?php
-                    echo $col_head;
-                ?>
-            </tr>
-        </thead>
-
-        <tbody>
 
             <?php
-                // Defined in answer_row view
-                echo $sRows;
+                echo $col_head;
             ?>
+        </tr>
+    </thead>
 
-            <?php if($showtotals):?>
-                <tr class="total">
-                    <?php echo $row_head; ?>
-                    <?php echo $total; ?>
-                </tr>
-            <?php endif;?>
-        </tbody>
-    </table>
-</div>
+    <tbody>
+
+        <?php
+            // Defined in answer_row view
+            echo $sRows;
+        ?>
+
+        <?php if($showtotals):?>
+            <tr class="total">
+                <?php echo $row_head; ?>
+                <?php echo $total; ?>
+            </tr>
+        <?php endif;?>
+    </tbody>
+</table>
+
 
 <?php if(empty($q_table_id)): ?>
     <script type="text/javascript">

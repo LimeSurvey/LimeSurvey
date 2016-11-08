@@ -20,7 +20,16 @@
     * @access public
     */
     class PrintanswersController extends LSYii_Controller {
-
+    /* @var string : Default layout when using render : leave at bare actually : just send content */
+    public $layout= 'survey';
+    /* @var string the template name to be used when using layout */
+    public $sTemplate= 'default';
+    /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
+    public $aReplacementData= array();
+    /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
+    public $aGlobalData= array();
+    /* @var boolean did we need survey.pstpl when using layout */
+    public $bStartSurvey= false;
 
 
         /**
@@ -34,7 +43,6 @@
         {
             Yii::app()->loadHelper("frontend");
             Yii::import('application.libraries.admin.pdf');
-
             $iSurveyID = (int)$surveyid;
             $sExportType = $printableexport;
 
@@ -64,31 +72,39 @@
                 $sLanguage = Yii::app()->getConfig("defaultlang");
             }
             SetSurveyLanguage($iSurveyID, $sLanguage);
+            Yii::import('application.helpers.SurveyRuntimeHelper');
+            $SurveyRuntimeHelper = new SurveyRuntimeHelper();
+            $SurveyRuntimeHelper->setJavascriptVar($iSurveyID);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             $oTemplate = Template::model()->getInstance(null, $iSurveyID);
-            if($oTemplate->cssFramework == 'bootstrap')
-            {
-                App()->bootstrap->register();
-            }
-
+            /* Need a Template function to replace this line */
+            Yii::app()->clientScript->registerPackage( 'survey-template' );
 
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
             //display "sorry but your session has expired"
             {
-                sendCacheHeaders();
-                doHeader();
-
-                /// $oTemplate is a global variable defined in controller/survey/index
-                echo templatereplace(file_get_contents($oTemplate->viewPath.'/startpage.pstpl'),array());
-                echo "<center><br />\n"
-                ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
-                ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-                ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
-                ."</center><br />\n";
-                echo templatereplace(file_get_contents($oTemplate->viewPath.'/endpage.pstpl'),array());
-                doFooter();
-                exit;
+                $oTemplate = Template::model()->getInstance('', $iSurveyID);
+                $this->sTemplate=$oTemplate->sTemplateName;
+                $error=$this->renderPartial("/survey/system/errorWarning",array(
+                    'aErrors'=>array(
+                        gT("We are sorry but your session has expired."),
+                    ),
+                ),true);
+                $message=$this->renderPartial("/survey/system/message",array(
+                    'aMessage'=>array(
+                        gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
+                    ),
+                ),true);
+                /* Set the data for templatereplace */
+                $this->aGlobalData['thissurvey']=getSurveyInfo($iSurveyID);
+                $this->aReplacementData=$aReplacementData['MESSAGEID']='session-timeout';
+                $aReplacementData['MESSAGE']=$message;
+                $aReplacementData['URL']='';
+                $this->aReplacementData=$aReplacementData['ERROR']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+                $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
+                $this->render("/survey/system/display",array('content'=>$content));
+                App()->end();
             }
             //Fin session time out
             $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
@@ -109,8 +125,8 @@
             if ($sExportType != 'pdf')
             {
                 $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
-                ."<center><input class='btn btn-default' type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
-                $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
+                ."<div class='text-center'><input class='btn btn-default' type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></div></form>";
+                $sOutput .= "\t<div class='h3 printouttitle'>".gT("Survey name (ID):")." $sSurveyName ($iSurveyID)</div>";
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
                 LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
@@ -127,44 +143,32 @@
                 unset ($aFullResponseTable['startlanguage']);
                 unset ($aFullResponseTable['datestamp']);
                 unset ($aFullResponseTable['startdate']);
-                $sOutput .= "<table class='printouttable' >\n";
+                $sOutput .= "<table class='printouttable table table-bordered table-striped table-condensed' >\n";
                 foreach ($aFullResponseTable as $sFieldname=>$fname)
                 {
                     if (substr($sFieldname,0,4) == 'gid_')
                     {
-                            $sOutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
-                            $sOutput .= "\t<tr class='printanswersgroupdesc'><td colspan='2'>{$fname[1]}</td></tr>\n";
+                            $sOutput .= "\t<tr class='printanswersgroup info'><th colspan='2'>{$fname[0]}</th></tr>\n";
+                            $sOutput .= "\t<tr class='printanswersgroupdesc info'><td colspan='2'>{$fname[1]}</td></tr>\n";
                     }
                     elseif ($sFieldname=='submitdate')
                     {
                         if($sAnonymized != 'Y')
                         {
-                                $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                                $sOutput .= "\t<tr class='printanswersquestion'><th>{$fname[0]} {$fname[1]}</th><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                         }
                     }
                     elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it
                     {
-                        $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".flattenText($fname[2])."</td></tr>";
+                        $sOutput .= "\t<tr class='printanswersquestion'><th>{$fname[0]} {$fname[1]}</th><td class='printanswersanswertext'>".flattenText($fname[2])."</td></tr>";
                     }
                 }
                 $sOutput .= "</table>\n";
-                $sData['thissurvey']=$aSurveyInfo;
+                $this->aGlobalData['thissurvey']=$aSurveyInfo;
                 $sOutput=templatereplace($sOutput, array() , $sData, '', $aSurveyInfo['anonymized']=="Y",NULL, array(), true);// Do a static replacement
-                ob_start(function($buffer, $phase) {
-                    App()->getClientScript()->render($buffer);
-                    App()->getClientScript()->reset();
-                    return $buffer;
-                });
-                ob_implicit_flush(false);
-
-                sendCacheHeaders();
-                doHeader();
-                echo templatereplace(file_get_contents($oTemplate->viewPath.'/startpage.pstpl'),array(),$sData);
-                echo templatereplace(file_get_contents($oTemplate->viewPath.'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
-                echo templatereplace(file_get_contents($oTemplate->viewPath.'/endpage.pstpl'),array(),$sData);
-                echo "</body></html>";
-
-                ob_flush();
+                $content=templatereplace(file_get_contents($oTemplate->pstplPath.'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$this->aGlobalData);
+                $this->render("/survey/system/display",array('content'=>$sOutput));
+                App()->end();
             }
             if($sExportType == 'pdf')
             {

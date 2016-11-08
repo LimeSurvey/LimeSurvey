@@ -116,7 +116,15 @@ class NotificationController extends Survey_Common_Action
      * @param bool $showLoader If true, show spinning loader instead of messages (fetch them using ajax)
      * @return string HTML
      */
-    public static function getMenuWidget($surveyId = null, $showLoader = false) {
+    public static function getMenuWidget($surveyId = null, $showLoader = false)
+    {
+        // Make sure database version is high enough.
+        // This is needed since admin bar is loaded during
+        // database update procedure.
+        if (Yii::app()->getConfig('DBVersion') < 259) {
+            return '';
+        }
+
         $data = array();
         $data['surveyId'] = $surveyId;
         $data['showLoader'] = $showLoader;
@@ -131,14 +139,12 @@ class NotificationController extends Survey_Common_Action
         $data['bellColor'] = $data['nrOfNewNotifications'] == 0 ? 'text-success' : 'text-warning';
 
         // If we have any important notification we might as well load everything
-        if ($data['nrOfImportantNotifications'] > 0)
-        {
+        if ($data['nrOfImportantNotifications'] > 0) {
             $data['showLoader'] = false;
         }
 
         // Only load all messages when we're not showing spinning loader
-        if (!$data['showLoader'])
-        {
+        if (!$data['showLoader']) {
             $data['notifications'] = Notification::getNotifications($surveyId);
         }
 

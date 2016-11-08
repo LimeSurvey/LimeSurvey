@@ -66,7 +66,7 @@
 
                 $aHtmlOptions = array(
                     'empty'    => gT('<No default value>'),
-                    'class'    => $sElement_id,
+                    'class'    => $sElement_id . ' form-control',
                     'onchange' => '// show EM Value Field
                                    if ($(this).val() == "EM"){
                                        $("#"+$(this).closest("select").attr("id")+ "_EM").removeClass("hide");
@@ -74,7 +74,6 @@
                                        $("#"+$(this).closest("select").attr("id")+ "_EM").addClass("hide");} '
                 );
 
-                echo '<li>';
                 echo CHtml::dropDownList($sElement_id, $select, $aList, $aHtmlOptions);
 
                 // textfield preparation
@@ -87,7 +86,6 @@
                         'class' => $sEmfield_css_class,
                         'width' => 100
                     ));
-                echo '</li>';
             }
         }
     }

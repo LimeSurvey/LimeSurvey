@@ -49,7 +49,7 @@ class DefaultValue extends LSActiveRecord
      * Returns the primary key of this table
      *
      * @access public
-     * @return array
+     * @return string[]
      */
     public function primaryKey()
     {

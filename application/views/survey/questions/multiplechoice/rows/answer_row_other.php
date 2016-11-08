@@ -18,41 +18,31 @@
 ?>
 
 <!-- answer_row_other -->
-<div class="col-sm-12">
-    <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group checkbox' <?php echo $sDisplayStyle; ?> >
+    <li id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-text-item form-group form-inline' <?php echo $sDisplayStyle; ?> >
 
         <!-- Checkbox + label -->
-        <div class="pull-left othertext-label-checkox-container">
+        <div class="form-group checkbox-item othertext-label-checkox-container">
             <!-- checkbox -->
             <input
-                class="checkbox other-checkbox dontread"
+                class="other-checkbox"
                 type="checkbox"
                 name="<?php echo $myfname; ?>cbox"
                 id="answer<?php echo $myfname; ?>cbox"
                 <?php echo $checkedState; ?>
-                aria-labelledby="label-<?php echo $myfname;?>cbox"
-             />
-
-             <!-- label -->
-             <label for="answer<?php echo $myfname;?>cbox" class="answertext"></label>
-             <!--
-                  The label text is provided inside a div,
-                  so final user can add paragraph, div, or whatever he wants in the subquestion text
-                  This field is related to the input thanks to attribute aria-labelledby
-             -->
-             <div class="label-text label-clickable" id="label-<?php echo $myfname;?>cbox">
-                     <?php echo $othertext; ?>
-             </div>
+                aria-hidden="true"
+            />
+            <label for="answer<?php echo $myfname;?>cbox" class="answertext" id="label-<?php echo $myfname; ?>-other"><?php echo $othertext; ?></label>
         </div>
 
         <!-- comment -->
-        <div class="pull-left">
+        <div class="form-group text-item other-text-item">
             <input
-                class="form-control input-sm text <?php echo $kpclass; ?>"
+                class="form-control input-sm <?php echo $kpclass; ?>"
                 type="text"
                 name="<?php echo $myfname; ?>"
                 id="answer<?php echo $myfname; ?>"
                 value="<?php echo $sValue; ?>"
+                aria-labelledby="label-<?php echo $myfname; ?>-other"
             />
         </div>
 
@@ -64,10 +54,6 @@
             id="java<?php echo $myfname; ?>"
             value="<?php echo $sValueHidden; ?>"
         />
-
-        </div> <!-- Form group ; item row -->
-</div>
-
 <script type='text/javascript'>
     $('#answer<?php echo $myfname; ?>').bind('keyup focusout',function(event)
     {
@@ -101,4 +87,5 @@
         };
     });
 </script>
+</li> <!-- Form group ; item row -->
 <!-- end of answer_row_other -->

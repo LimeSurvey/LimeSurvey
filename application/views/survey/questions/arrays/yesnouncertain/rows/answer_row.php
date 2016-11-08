@@ -17,90 +17,62 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list array<?php echo $zebra; ?>"  <?php echo $sDisplayStyle; ?>>
+<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? "ls-odd" : "ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>"  <?php echo $sDisplayStyle; ?> role="radiogroup" aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
-    <th class="answertext">
+    <th class="answertext control-label" id="answertext<?php echo $myfname;?>">
+         <?php echo $answertext;?>
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value; ?>" />
-        <?php if($error): ?>
-            <div class="label label-danger" role="alert">
-                <?php echo $answertext;?>
-            </div>
-        <?php else: ?>
-            <?php echo $answertext;?>
-        <?php endif;?>
     </th>
 
     <!-- Yes -->
-    <td class="answer_cell_Y answer-item radio-item text-center radio">
+    <td class="answer_cell_Y answer-item radio-item">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname;?>-Y"
             value="Y"
             <?php echo $Ychecked;?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
-            aria-labelledby="label-answer<?php echo $myfname;?>-Y"
             />
-        <label for="answer<?php echo $myfname;?>-Y"></label>
-        <!--
-             The label text is provided inside a div,
-             To respect the global HTML flow of other question types
-        -->
-        <div class="visible-xs-block label-text" id="label-answer<?php echo $myfname;?>-Y">
+        <label for="answer<?php echo $myfname;?>-Y" class="ls-label-xs-visibility">
             <?php eT("Yes"); ?>
-        </div>
+        </label>
     </td>
 
     <!-- Uncertain -->
-    <td class="answer_cell_U answer-item radio-item text-center radio">
+    <td class="answer_cell_U answer-item radio-item">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname; ?>"
             id="answer<?php echo $myfname;?>-U"
             value="U"
             <?php echo $Uchecked?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
-            aria-labelledby="label-answer<?php echo $myfname;?>-U"
         />
-        <label for="answer<?php echo $myfname; ?>-U"></label>
-        <!--
-             The label text is provided inside a div,
-             To respect the global HTML flow of other question types
-        -->
-        <div class="visible-xs-block label-text" id="label-answer<?php echo $myfname;?>-U">
+        <label for="answer<?php echo $myfname; ?>-U" class="ls-label-xs-visibility">
             <?php eT("Uncertain");?>
-        </div>
+        </label>
     </td>
 
     <!-- No -->
-    <td class="answer_cell_N answer-item radio-item text-center radio">
+    <td class="answer_cell_N answer-item radio-item">
         <input
-            class="radio"
             type="radio"
             name="<?php echo $myfname;?>"
             id="answer<?php echo $myfname;?>-N"
             value="N"
             <?php echo $Nchecked?>
             onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
-            aria-labelledby="label-answer<?php echo $myfname;?>-N"
         />
-        <label for="answer<?php echo $myfname;?>-N"></label>
-        <!--
-             The label text is provided inside a div,
-             To respect the global HTML flow of other question types
-        -->
-        <div class="visible-xs-block label-text" id="label-answer<?php echo $myfname;?>-N">
+        <label for="answer<?php echo $myfname;?>-N" class="ls-label-xs-visibility">
             <?php eT("No"); ?>
-        </div>
+        </label>
     </td>
 
     <!-- No Answer -->
     <?php if($no_answer):?>
-        <td class="answer-item radio-item noanswer-item text-center radio">
+        <td class="answer_cell_ answer-item radio-item noanswer-item">
             <input
-                class="radio"
                 type="radio"
                 name="<?php echo $myfname;?>"
                 id="answer<?php echo $myfname;?>-"
@@ -108,14 +80,9 @@
                 <?php echo $NAchecked?>
                 onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
             />
-            <label for="answer<?php echo $myfname;?>-"></label>
-            <!--
-                 The label text is provided inside a div,
-                 To respect the global HTML flow of other question types
-            -->
-            <div class="visible-xs-block label-text" id="label-answer<?php echo $myfname;?>-">
+            <label for="answer<?php echo $myfname;?>-" class="ls-label-xs-visibility">
                 <?php eT("No answer");?>
-            </div>
+            </label>
         </td>
     <?php endif;?>
 </tr>

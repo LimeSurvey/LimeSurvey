@@ -37,10 +37,20 @@
             <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLastSurveyAndQuestion');?>" />
         </div>
 
+        <br/><br/>
+    </div>
+
+    <div class="row">
         <label class="col-sm-2 control-label"><?php eT("Show survey list:");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_survey_list', 'id'=>'show_survey_list', 'value'=>$bShowSurveyList, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
             <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowSurveyList');?>" />
+        </div>
+
+        <label class="col-sm-2 control-label"><?php eT("Show search box on survey list:");?> </label>
+        <div class="col-sm-2">
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_survey_list_search', 'id'=>'show_survey_list_search', 'value'=>$bShowSurveyListSearch, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+            <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowSurveyListSearch');?>" />
         </div>
 
         <br/><br/>

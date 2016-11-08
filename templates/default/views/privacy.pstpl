@@ -1,5 +1,6 @@
 <div class="row privacy">
     <div class="col-sm-12 col-centered">
-        <p>{PRIVACYMESSAGE}</p>
+        <div class="h4 text-primary">{PRIVACYHEADING}</div>
+        <div>{PRIVACYMESSAGE}</div>
     </div>
 </div>

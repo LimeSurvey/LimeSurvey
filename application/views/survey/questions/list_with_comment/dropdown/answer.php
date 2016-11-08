@@ -19,41 +19,41 @@
  */
 ?>
 
+<div class="ls-answers row">
+    <div class="answer-item dropdown-item col-sm-6 col-xs-12">
+        <select
+                class="select form-control"
+                name="<?php echo $name;?>"
+                id="<?php echo $id;?>"
+                onchange="<?php echo $checkconditionFunction;?>" >
 
-<p class="select answer-item dropdown-item">
-    <select
-            class="select form-control"
-            name="<?php echo $name;?>"
-            id="<?php echo $id;?>"
-            onchange="<?php echo $checkconditionFunction;?>" >
+                <?php if($show_noanswer):?>
+                    <option class="noanswer-item" value="" SELECTED>
+                        <?php eT('Please choose...');?>
+                    </option>
+                <?php endif;?>
 
-            <?php if($show_noanswer):?>
-                <option class="noanswer-item" value="" SELECTED>
-                    <?php eT('Please choose...');?>
-                </option>
-            <?php endif;?>
+                <?php
+                    // rows/option.php
+                    echo $sOptions;
+                ?>
 
-            <?php
-                // rows/option.php
-                echo $sOptions;
-            ?>
+        </select>
+    </div>
 
-    </select>
-</p>
+    <div class="answer-item text-item col-sm-6 col-xs-12">
+        <label for="answer<?php echo $name ;?>comment">
+            <?php echo $label_text;?>:
+        </label>
 
+        <textarea
+            class="form-control textarea <?php echo $kpclass; ?>"
+            name="<?php echo $name;?>comment"
+            id="answer<?php echo $name ;?>comment"
+            rows="<?php echo $tarows; ?>"
+            cols="<?php echo $maxoptionsize; ?>"
+        ><?php if($has_comment_saved):?><?php echo $comment_saved; ?><?php endif;?></textarea>
 
-<p class="comment answer-item text-item">
-    <label for="answer<?php echo $name ;?>comment">
-        <?php echo $label_text;?>:
-    </label>
-
-    <textarea
-                        class="form-control textarea <?php echo $kpclass; ?>"
-                        name="<?php echo $name;?>comment"
-                        id="answer<?php echo $name ;?>comment"
-                        rows="<?php echo $tarows; ?>"
-                        cols="<?php echo $maxoptionsize; ?>"
-    ><?php if($has_comment_saved):?><?php echo $comment_saved; ?><?php endif;?></textarea>
-
-    <input class="radio" type="hidden" name="java<?php echo $name?>" id="java<?php echo $name?>" value="<?php echo $value;?>" />
-</p>
+        <input class="radio" type="hidden" name="java<?php echo $name?>" id="java<?php echo $name?>" value="<?php echo $value;?>" />
+    </div>
+</div>

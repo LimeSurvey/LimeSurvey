@@ -24,63 +24,46 @@
  */
 ?>
 <!-- answer_row -->
-<tr class='<?php echo $liclasses;?>'>
-
+<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group clearfix'  <?php echo $sDisplayStyle ;?>>
     <!-- Checkbox + label -->
-    <!-- <div class="pull-left othertext-label-checkox-container checkbox"  <?php // echo $sDisplayStyle ;?>> -->
-    <td class="checkbox"  <?php echo $sDisplayStyle ;?> id="javatbd<?php echo $name; ?>">
-        <input
-            class="checkbox <?php echo $classes; echo $kpclass; ?>"
-            title="<?php echo $title;?>"
-            type="checkbox"
-            name="<?php echo $name; ?>"
-            id="<?php echo $id;?>"
-            value="<?php echo $value?>"
-            <?php echo $checked;?>
-            onclick="<?php echo $checkconditionFunction;?>"
-            aria-labelledby="label-<?php echo $id;?>"
-          />
-
-        <label for="<?php echo $id;?>" class="answertext control-label"></label>
-
-        <!--
-             The label text is provided inside a div,
-             so final user can add paragraph, div, or whatever he wants in the subquestion text
-             This field is related to the input thanks to attribute aria-labelledby
-        -->
-        <div class="label-text label-clickable" id="label-<?php echo $id;?>">
-            <?php echo $labeltext;?>
-        </div>
-
-
-        <?php if($javainput):?>
+    <div class="col-sm-<?php echo $sLabelWidth; ?> col-xs-12">
+        <div class="checkbox-item answer-item form-group">
             <input
-            type='hidden'
-            name='<?php echo $javaname?>'
-            id='<?php echo $javaname?>'
-            value='<?php echo $javavalue;?>'
-            <?php echo $checked;?>
-            />
-        <?php endif;?>
-    </td>
+                class="<?php echo $classes; echo $kpclass; ?>"
+                title="<?php echo $title;?>"
+                type="checkbox"
+                name="<?php echo $name; ?>"
+                id="<?php echo $id;?>"
+                value="<?php echo $value?>"
+                <?php echo $checked;?>
+              />
+
+            <label id="label-<?php echo $id;?>" for="<?php echo $id;?>" class="control-label checkbox-label"><?php echo $labeltext;?></label>
+
+            <?php if($javainput):?>
+                <input
+                type='hidden'
+                name='<?php echo $javaname?>'
+                id='<?php echo $javaname?>'
+                value='<?php echo $javavalue;?>'
+                <?php echo $checked;?>
+                />
+            <?php endif;?>
+        </div>
+    </div>
 
     <!-- Comment -->
-    <!-- <div class="pull-left"  <?php // echo $sDisplayStyle; ?>> -->
-    <td <?php echo $sDisplayStyle; ?> class="comment-container">
-    <!-- <div class="comment col-xs-12 form-group" <?php // echo $sDisplayStyle; ?>> -->
-        <label for='<?php echo $inputCommentId;?>' class="answer-comment hide control-label">
-            <?php echo $commentLabelText;?>
-        </label>
-
-        <input
-            class='form-control text input-sm <?php echo $kpclass; ?>'
-            type='text'
-            size='40'
-            id='<?php echo $inputCommentId;?>'
-            name='<?php echo $inputCommentName; ?>'
-            value='<?php echo $inputCOmmentValue; ?>'
-            onkeyup='<?php echo $checkconditionFunctionComment;?>'
-        />
-    </td>
-</tr>
+    <div class="col-sm-<?php echo $sInputContainerWidth; ?> col-xs-12">
+        <div class="form-group answer-item text-item comment-item">
+            <input
+                class='form-control <?php echo $kpclass; ?>'
+                type='text'
+                id='<?php echo $inputCommentId;?>'
+                name='<?php echo $inputCommentName; ?>'
+                value='<?php echo $inputCOmmentValue; ?>'
+                aria-labelled='label-<?php echo $id;?>'
+            />
+        </div>
+    </div>
+</li>
 <!-- end of answer_row -->

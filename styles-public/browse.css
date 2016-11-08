@@ -3,7 +3,8 @@
  * Style for browsing response : in Cgrid
  */
 
- #responses-grid table thead tr th {
+/* Note: The child selector is necessary to not affect date time picker */
+ #responses-grid > table > thead > tr > th {
      min-width: 120px;
      text-align: center;
  }

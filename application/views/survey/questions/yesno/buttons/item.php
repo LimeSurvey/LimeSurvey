@@ -7,74 +7,59 @@
  * @var $nChecked
  * @var $naChecked
  * @var $noAnswer
- * @var $checkconditionFunction         $checkconditionFunction(this.value, this.name, this.type)
  * @var $value                          $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$name]
  */
 ?>
-
-<div class="list-unstyled answers-list radio-list">
-
-    <div class='col-xs-12 col-sm-6'>  <!-- Full width on Phone; otherwise half width -->
-      <div class="btn-group btn-group-justified" data-toggle="buttons" id="<?php echo $name;?>-container">
-
-        <!-- Yes -->
-        <label class="btn btn-primary <?php if($yChecked){ echo "active";}?>"  id="label-answer<?php echo $name;?>Y">
-          <input
-              class="radio"
-              type="radio"
-              name="<?php echo $name;?>"
-              id="answer<?php echo $name;?>Y"
-              value="Y"
-              <?php echo $yChecked; ?>
-              onclick="<?php echo $checkconditionFunction; ?>"
-          />
-          <?php eT('Yes');?>
+<ul class="<?php echo $coreClass;?> list-unstyled form-inline btn-group btn-group-justified" data-toggle="buttons">
+    <!-- Yes -->
+    <li id="javatbd<?php echo $name;?>Y" class="button-item form-group btn btn-primary <?php if($yChecked){ echo "active";}?>">
+        <input
+            type="radio"
+            name="<?php echo $name;?>"
+            id="answer<?php echo $name;?>Y"
+            value="Y"
+            <?php echo $yChecked; ?>
+        />
+        <label for="answer<?php echo $name;?>Y">
+            <span class="fa fa-check ls-icon" aria-hidden="true"></span> <?php eT('Yes');?>
         </label>
+    </li>
+    <!-- No -->
+    <li id="javatbd<?php echo $name;?>N" class="button-item form-group btn btn-primary <?php if($nChecked){ echo "active";}?>">
+        <input
+            type="radio"
+            name="<?php echo $name;?>"
+            id="answer<?php echo $name;?>N"
+            value="N"
+            <?php echo $nChecked; ?>
+        />
+        <label for="answer<?php echo $name;?>Y">
+            <span class="fa fa-ban ls-icon" aria-hidden="true"></span> <?php eT('No');?>
+        </label>
+    </li>
 
-        <!-- No -->
-        <label class="btn btn-primary <?php if($nChecked){ echo "active";}?>"  id="label-answer<?php echo $name;?>N">
+    <!-- No answer -->
+    <?php if($noAnswer):?>
+        <li id="javatbd<?php echo $name;?>" class="button-item form-group btn btn-primary <?php if($naChecked){ echo "active";}?>">
             <input
-                class="radio"
                 type="radio"
                 name="<?php echo $name;?>"
-                id="answer<?php echo $name;?>N"
-                value="N"
-                <?php echo $nChecked; ?>
-                onclick="<?php echo $checkconditionFunction;?>"
+                id="answer<?php echo $name;?>"
+                value=""
+                <?php echo $naChecked; ?>
             />
-            <?php eT('No');?>
-        </label>
-
-        <!-- No answer -->
-        <?php if($noAnswer):?>
-            <label class="btn btn-primary <?php if($naChecked){ echo "active";}?>" id="label-answer<?php echo $name;?>">
-
-                <input
-                    class="radio"
-                    type="radio"
-                    name="<?php echo $name;?>"
-                    id="answer<?php echo $name;?>"
-                    value=""
-                    <?php echo $naChecked; ?>
-                    onclick="<?php echo $checkconditionFunction;?>"
-                    />
-                    <?php eT('No answer');?>
-
+            <label for="answer<?php echo $name;?>Y">
+                <span class="fa fa-circle-thin ls-icon" aria-hidden="true"></span> <?php eT('No answer');?>
             </label>
-        <?php endif;?>
-      </div>
-    </div>
+        </li>
+    <?php endif;?>
+</ul>
+<!-- Value for expression manager javascript (use id) ; no need to submit -->
+<input
+    type="hidden"
+    name="java<?php echo $name;?>"
+    id="java<?php echo $name;?>"
+    value="<?php echo $value;?>"
+    disabled="disabled"
+/>
 
-      <input
-          type="hidden"
-          name="java<?php echo $name;?>"
-          id="java<?php echo $name;?>"
-          value="<?php echo $value;?>"
-      />
-</div>
-
-<script>
-$(document).on('change', 'div#<?php echo $name;?>-container input:radio', function (event) {
-    checkconditions(this.value, this.name, this.type);
-});
-</script>

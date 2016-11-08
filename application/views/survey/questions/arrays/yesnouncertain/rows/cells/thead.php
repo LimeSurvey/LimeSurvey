@@ -5,10 +5,10 @@
 ?>
 
 <!-- thead -->
-<th class="dontread text-center"><?php eT('Yes');?></th>
-<th class="dontread text-center"><?php eT('Uncertain');?></th>
-<th class="dontread text-center"><?php eT('No');?></th>
+<th><?php eT('Yes');?></th>
+<th><?php eT('Uncertain');?></th>
+<th><?php eT('No');?></th>
 <?php if($no_answer):?>
-    <th class="dontread text-center"><?php eT('No answer'); ?></th>
+    <th><?php eT('No answer'); ?></th>
 <?php endif;?>
 <!-- end of  thead -->

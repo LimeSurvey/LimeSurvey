@@ -11,22 +11,14 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="well array<?php echo $zebra; ?> answers-list radio-list"  <?php echo $sDisplayStyle; ?>>
-    <th class="answertext" style="width: <?php echo $answerwidth;?>%;">
-        <?php if($error): ?>
-            <div class="label label-danger" role="alert">
-                <?php echo $answertext;?>
-            </div>
-        <?php else: ?>
-            <?php echo $answertext;?>
-        <?php endif;?>
+<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list form-group <?php echo ($odd) ? "ls-odd" : "ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
+    <th id="answertext<?php echo $myfname;?>"class="answertext control-label">
+        <?php echo $answertext;?>
         <input name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" type="hidden">
     </th>
-
     <?php
         // defined in rows/cells/*
         echo $answer_tds;
     ?>
-
 </tr>
 <!-- end of answer_row -->

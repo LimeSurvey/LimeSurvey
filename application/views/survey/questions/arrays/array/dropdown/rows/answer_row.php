@@ -10,17 +10,11 @@
  * @var $tdRight
  */
 ?>
-<tr id="javatbd<?php echo $myfname;?>" class="well question-item answer-item dropdown-item array<?php echo $zebra; ?>">
-    <th class="answertext align-middle">
-        <?php if($error): ?>
-            <div class="label label-danger" role="alert">
-                <?php echo $answertext; ?>
-            </div>
-        <?php else:?>
-            <label for="answer<?php echo $myfname;?>">
-                <?php echo $answertext; ?>
-            </label>
-        <?php endif; ?>
+<tr id="javatbd<?php echo $myfname;?>" class="question-item answer-item dropdown-item <?php echo ($odd) ? " ls-odd" : " ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>" >
+    <th class="answertext">
+        <label for="answer<?php echo $myfname;?>">
+            <?php echo $answertext; ?>
+        </label>
         <input
             type="hidden"
             name="java<?php echo $myfname; ?>"
@@ -39,10 +33,6 @@
     </td>
 
     <?php if ($right_exists): ?>
-        <th class='answertextright align-middle'>
-            <label>
-                <?php echo $answertextright; ?>
-            </label>
-        </th>
+        <th class='answertextright'><?php echo $answertextright; ?></th>
     <?php endif; ?>
 </tr>

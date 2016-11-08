@@ -23,7 +23,7 @@
 ?>
 
 <!-- answer_td -->
-<td class="answer-cell-5 answer_cell_<?php echo $ld;?> question-item answer-item <?php echo $answertypeclass; ?>-item <?php echo $extraclass; ?>">
+<td class="answer_cell_<?php echo $ld;?> answer-item <?php echo $answertypeclass; ?> <?php echo $extraclass; ?>">
         <input
             type="hidden"
             name="java<?php echo $myfname2;?>"
@@ -31,26 +31,19 @@
             value="<?php echo $value; ?>"
         />
 
-        <label for="answer<?php echo $myfname2;?>" class='col-xs-12 col-sm-12'></label>
-
-        <div class="text-right visible-xs" id="label-answer<?php echo $myfname2;?>">
+        <label for="answer<?php echo $myfname2;?>" class='ls-label-xs-visibility'>
             <?php echo $dataTitle;?>
-        </div>
+        </label>
         <?php if($inputboxlayout == false):?>
             <!-- InputBox Layout False -->
             <select
                 class="multiflexiselect form-control text-right"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
-                onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
-                aria-labelledby="label-answer<?php echo $myfname2;?>"
             >
-
                 <option value="">
                     <?php eT('...'); ?>
                 </option>
-
-
                 <?php for($ii=$minvalue; ($reverse?$ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue): ?>
                     <?php $selected = (isset($value) && (string) $value == (string)$ii)?'SELECTED':''; ?>
                     <option value="<?php echo str_replace('.',$sSeparator,$ii); ?>" <?php echo $selected;?>>
@@ -62,13 +55,13 @@
             <!-- InputBox Layout -->
             <input
                 type='text'
-                class="multiflexitext text form-control <?php echo $kpclass;?> text-right"
+                class="multiflexitext form-control <?php echo $kpclass;?> text-right"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
-                <?php echo $maxlength; ?>
-                size=5
-                onkeyup="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
+                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
                 value="<?php echo $value; ?>"
+                data-number="true"
                 />
         <?php endif; ?>
 </td>

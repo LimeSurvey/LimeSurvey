@@ -52,44 +52,69 @@ Notes
 2. saved table no longer exists.
 */
 
-class Save {
 
-    function showsaveform()
+
+class Save
+{
+    /**
+     * @var string[] $aErrors :list of errors when try saving
+     */
+    public $aSaveErrors=array();
+    /**
+     * Show the save form
+     * @param integer $iSurveyId
+     *
+     * @return void
+     */
+    function showsaveform($iSurveyId)
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
-        global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
-        $redata = compact(array_keys(get_defined_vars()));
-        $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
-        sendCacheHeaders();
-        doHeader();
-        $oTemplate = Template::model()->getInstance(null, $surveyid);
-        echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(),$redata);
-        echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
-        ."\t<script type='text/javascript'>\n"
-        ."\t<!--\n"
-        ."function checkconditions(value, name, type, evt_type)\n"
-        ."\t{\n"
-        ."\t}\n"
-        ."\t//-->\n"
-        ."\t</script>\n\n";
+        //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
+        $thisstep = isset($_SESSION['survey_'.$iSurveyId]['step']) ? $_SESSION['survey_'.$iSurveyId]['step'] : 0;
+        $clienttoken = isset($_SESSION['survey_'.$iSurveyId]['token']) ? $_SESSION['survey_'.$iSurveyId]['token'] : '';
+        $aData=array(
+            'surveyid'=>$iSurveyId,
+            'clienttoken'=>$clienttoken, // send in caller, call only one time
+        );
+        $oSurvey=Survey::model()->findByPk($iSurveyId);
+        $sTemplate=$oSurvey->template;
+        $oTemplate = Template::model()->getInstance($sTemplate);
 
-        echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post')."\n";
-
-        //PRESENT OPTIONS SCREEN
-        if (isset($errormsg) && $errormsg != "")
-        {
-            $errormsg .= "<p>".gT("Please try again.")."</p>";
+        $aReplacements['SAVEHEADING'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/heading",array(),true);
+        $aReplacements['SAVEMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/message",array(),true);
+        if($oSurvey->anonymized=="Y"){
+            $aReplacements['SAVEALERT'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/anonymized",array(),true);
         }
-        echo templatereplace(file_get_contents($oTemplate->viewPath."save.pstpl"),array(),$redata);
-        //END
-        echo "<input type='hidden' name='thisstep' value='$thisstep' />\n";
-        echo CHtml::hiddenField('token',$clienttoken)."\n";
-        echo "<input type='hidden' name='saveprompt' value='Y' />\n";
-        echo "</form>";
+        if(!empty($this->aSaveErrors)){
+                $aReplacements['SAVEERROR'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/error",array('aSaveErrors'=>$this->aSaveErrors),true);
+        }else{
+                $aReplacements['SAVEERROR'] = "";
+        }
+        /* Construction of the form */
+        if(function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)){
+                $captcha=Yii::app()->getController()->createUrl('/verification/image',array('sid'=>$iSurveyId));
+        }else{
+                $captcha=null;
+        }
+        $saveForm  = CHtml::beginForm(array("/survey/index","sid"=>$iSurveyId), 'post',array('id'=>'form-save','class'=>'ls-form'));
+        $saveForm .= CHtml::hiddenField('savesubmit','save');
+        $saveForm .= App()->getController()->renderPartial("/survey/frontpage/saveForm/form",array('captcha'=>$captcha),true);
+        if ($clienttoken)
+        {
+            $saveForm .= CHtml::hiddenField('token',$clienttoken);
+        }
+        $saveForm .= CHtml::endForm();
+        $aReplacements['SAVEFORM'] = $saveForm;
 
-        echo templatereplace(file_get_contents($oTemplate->viewPath."endpage.pstpl"),array(),$redata);
-        echo "</html>\n";
-        exit;
+        $content = templatereplace(file_get_contents($oTemplate->pstplPath."save.pstpl"),$aReplacements,$aData);
+        App()->getController()->layout="survey";
+        App()->getController()->sTemplate=$sTemplate;
+        App()->getController()->aGlobalData=$aData;
+        App()->getController()->aReplacementData=$aReplacements;
+        App()->getController()->render("/survey/system/display",array(
+            'content'=>$content,
+        ));
+        Yii::app()->end();
     }
 
     function savedcontrol()
@@ -113,40 +138,44 @@ class Save {
 
         //Check that the required fields have been completed.
         $errormsg = '';
-        if (empty($_POST['savename'])) $errormsg .= gT("You must supply a name for this saved session.")."<br />\n";
-        if (empty($_POST['savepass'])) $errormsg .= gT("You must supply a password for this saved session.")."<br />\n";
-        if (empty($_POST['savepass']) || empty($_POST['savepass2']) || $_POST['savepass'] != $_POST['savepass2'])
-        {
-            $errormsg .= gT("Your passwords do not match.")."<br />\n";
+        if (!Yii::app()->request->getPost('savename')){
+            $this->aSaveErrors[]=gT("You must supply a name for this saved session.");
         }
+        if (!Yii::app()->request->getPost('savepass')){
+            $this->aSaveErrors[]= gT("You must supply a password for this saved session.");
+        }
+        if (Yii::app()->request->getPost('savepass') != Yii::app()->request->getPost('savepass2'))
+        {
+            $this->aSaveErrors[]=gT("Your passwords do not match.");
+        }
+
         // if security question asnwer is incorrect
         if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
         {
-            if (empty($_POST['loadsecurity'])
+            if (!Yii::app()->request->getPost('loadsecurity')
              || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
-             || $_POST['loadsecurity'] != $_SESSION['survey_'.$surveyid]['secanswer']
+             || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']
             )
             {
-                $errormsg .= gT("The answer to the security question is incorrect.")."<br />\n";
+                $this->aSaveErrors[]=gT("The answer to the security question is incorrect.");
             }
         }
 
-        if (!empty($errormsg))
+        if (!empty($this->aSaveErrors))
         {
             return;
         }
-
-        $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
-        $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
-        if (strpos($_POST['savename'],'/')!==false || strpos($_POST['savepass'],'/')!==false || strpos($_POST['savename'],'&')!==false || strpos($_POST['savepass'],'&')!==false
-            || strpos($_POST['savename'],'\\')!==false || strpos($_POST['savepass'],'\\')!==false)
+        $saveName=Yii::app()->request->getPost('savename');
+        $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $saveName));
+        if (strpos($saveName,'/')!==false || strpos($saveName,'/')!==false || strpos($saveName,'&')!==false || strpos($saveName,'&')!==false
+            || strpos($saveName,'\\')!==false || strpos($saveName,'\\')!==false)
         {
-            $errormsg .= gT("You may not use slashes or ampersands in your name or password.")."<br />\n";
+            $this->aSaveErrors[]=gT("You may not use slashes or ampersands in your name or password.");
             return;
         }
         elseif (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
         {
-            $errormsg .= gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
+            $this->aSaveErrors[]=gT("This name has already been used for this survey. You must use a unique save name.");
             return;
         }
         else

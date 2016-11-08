@@ -1157,13 +1157,16 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', 'organizeGroupsAndQuestions_view', $aData);
     }
 
+    /**
+     * Reorder groups and questions
+     * @param int $iSurveyID
+     * @return void
+     */
     private function _reorderGroup($iSurveyID)
     {
-        $AOrgData = array();
-        parse_str(Yii::app()->request->getPost('orgdata'), $AOrgData);
-
         $grouporder = 0;
-        foreach ($AOrgData['list'] as $ID => $parent)
+        $orgdata = $this->getOrgdata();
+        foreach ($orgdata as $ID => $parent)
         {
             if ($parent == 'root' && $ID[0] == 'g') {
                 QuestionGroup::model()->updateAll(array('group_order' => $grouporder), 'gid=:gid', array(':gid' => (int)substr($ID, 1)));
@@ -1193,9 +1196,31 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Get the new question organization from the post data.
+     * This function replaces parse_str, since parse_str
+     * is bound by max_input_vars.
+     * @return array
+     */
+    protected function getOrgdata()
+    {
+        $request = Yii::app()->request;
+        $orgdata = $request->getPost('orgdata');
+        $ex = explode('&', $orgdata);
+        $vars = array();
+        foreach ($ex as $str) {
+            list($list, $target) = explode('=', $str);
+            $list = str_replace('list[', '', $list);
+            $list = str_replace(']', '', $list);
+            $vars[$list] = $target;
+        }
+
+        return $vars;
+    }
+
+    /**
     * survey::_fetchSurveyInfo()
     * Load survey information based on $action.
-    * @param mixed $action
+    * @param string $action
     * @param mixed $iSurveyID
     * @return
     */
@@ -1379,35 +1404,11 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * survey::_tabImport()
-    * Load "Import" tab.
-    * @param mixed $iSurveyID
-    * @return
-    */
-    private function _tabImport()
-    {
-        $aData = array();
-        return $aData;
-    }
-
-    /**
-    * survey::_tabCopy()
-    * Load "Copy" tab.
-    * @param mixed $iSurveyID
-    * @return
-    */
-    private function _tabCopy()
-    {
-        $aData = array();
-        return $aData;
-    }
-
-    /**
-    * survey::_tabResourceManagement()
-    * Load "Resources" tab.
-    * @param mixed $iSurveyID
-    * @return
-    */
+     * survey::_tabResourceManagement()
+     * Load "Resources" tab.
+     * @param mixed $iSurveyID
+     * @return
+     */
     private function _tabResourceManagement($iSurveyID)
     {
         global $sCKEditorURL;
@@ -1507,6 +1508,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
+        App()->clientScript->registerPackage('bootstrap-switch');
         App()->getClientScript()->registerPackage('jqgrid');
 
     }
@@ -1665,36 +1667,28 @@ class SurveyAdmin extends Survey_Common_Action
             $langsettings->insertNewSurvey($aInsertData);
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
-            // Now create a new dummy group
-            $aInsertData=array();
-            $aInsertData[Survey::model()->findByPk($iNewSurveyid)->language]=array(
-                'sid' => $iNewSurveyid,
-                'group_name' => gt('My first question group','html',Survey::model()->findByPk($iNewSurveyid)->language),
-                'description' => '',
-                'group_order' => 1,
-                'language' => Survey::model()->findByPk($iNewSurveyid)->language,
-                'grelevance' => '1');
-            $iNewGroupID=QuestionGroup::model()->insertNewGroup($aInsertData);
-            // Now create a new dummy question
-            $oQuestion= new Question;
-            $oQuestion->sid = $iNewSurveyid;
-            $oQuestion->gid = $iNewGroupID;
-            $oQuestion->type = 'T';
-            $oQuestion->title = 'Q00';
-            $oQuestion->question = gt('A first example question. Please answer this question:','html',Survey::model()->findByPk($iNewSurveyid)->language);
-            $oQuestion->help = gt('This is a question help text.','html',Survey::model()->findByPk($iNewSurveyid)->language);
-            $oQuestion->mandatory = 'N';
-            $oQuestion->relevance = '1';
-            $oQuestion->question_order = 1;
-            $oQuestion->language = Survey::model()->findByPk($iNewSurveyid)->language;
-            $oQuestion->save();
-            $iNewQuestionID=$oQuestion->qid;
 
-            Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."),'info');
+            $createSample = (int)App()->request->getPost('createsample', 0) === 1;
 
+            if($createSample) {
+                $iNewGroupID = $this->_createSampleGroup($iNewSurveyid);
+                $iNewQuestionID = $this->_createSampleQuestion($iNewSurveyid, $iNewGroupID);
+
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."),'info');
+            }
+            else {
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created."),'info');
+            }
+
+            // Figure out destination
             if (App()->request->getPost('saveandclose'))
             {
-                $this->getController()->redirect(array("admin/questions/sa/view/surveyid/{$iNewSurveyid}/gid/{$iNewGroupID}/qid/{$iNewQuestionID}"));
+                if($createSample) {
+                    $this->getController()->redirect(array("admin/questions/sa/view/surveyid/{$iNewSurveyid}/gid/{$iNewGroupID}/qid/{$iNewQuestionID}"));
+                }
+                else {
+                    $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
+                }
             }
             else
             {
@@ -1702,6 +1696,51 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
         }
+    }
+
+    /**
+    * This private function creates a sample group
+    *
+    * @param integer $iSurveyID  The survey ID that the sample group will belong to
+    */
+    private function _createSampleGroup($iSurveyID)
+    {
+        // Now create a new dummy group
+        $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $aInsertData = array();
+        $aInsertData[$sLanguage] = array(
+            'sid' => $iSurveyID,
+            'group_name' => gt('My first question group','html',$sLanguage),
+            'description' => '',
+            'group_order' => 1,
+            'language' => $sLanguage,
+            'grelevance' => '1');
+        return QuestionGroup::model()->insertNewGroup($aInsertData);
+    }
+
+    /**
+    * This private function creates a sample question
+    *
+    * @param integer $iSurveyID  The survey ID that the sample question will belong to
+    * @param mixed $iGroupID  The group ID that the sample question will belong to
+    */
+    private function _createSampleQuestion($iSurveyID, $iGroupID)
+    {
+        // Now create a new dummy question
+        $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $oQuestion= new Question;
+        $oQuestion->sid = $iSurveyID;
+        $oQuestion->gid = $iGroupID;
+        $oQuestion->type = 'T';
+        $oQuestion->title = 'Q00';
+        $oQuestion->question = gt('A first example question. Please answer this question:','html',$sLanguage);
+        $oQuestion->help = gt('This is a question help text.','html',$sLanguage);
+        $oQuestion->mandatory = 'N';
+        $oQuestion->relevance = '1';
+        $oQuestion->question_order = 1;
+        $oQuestion->language = $sLanguage;
+        $oQuestion->save();
+        return $oQuestion->qid;
     }
 
     /**

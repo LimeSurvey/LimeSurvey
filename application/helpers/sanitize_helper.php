@@ -262,6 +262,9 @@ function sanitize_int($integer, $min='', $max='')
 // sanitize a username
 // TODO: define the exact format of the username
 // allow for instance 0-9a-zA-Z@_-.
+/**
+ * @param string $string
+ */
 function sanitize_user($string)
 {
     $username_length=64;

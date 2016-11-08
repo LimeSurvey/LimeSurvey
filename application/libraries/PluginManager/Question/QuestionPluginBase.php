@@ -20,9 +20,7 @@
         protected $storage = 'DbStorage';
         /**
          * 
-         * @param PluginManager $pluginManager
          * @param string $id
-         * @param int $responseId Pass a response id to load results.
          */
         
         public function __construct(PluginManager $manager, $id) {

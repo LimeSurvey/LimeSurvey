@@ -7,6 +7,5 @@
  */
  ?>
  <!-- column_footer -->
-        </div>
-    </div> <!-- the last opened column -->
+</ul>
 <!-- end of column_footer -->

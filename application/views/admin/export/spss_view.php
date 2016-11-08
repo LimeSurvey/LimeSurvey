@@ -28,6 +28,19 @@
             ));?>
         </div>
     </div>
+    <?php
+    if (count($aLanguages)>1)
+    { ?>
+        <div class="form-group row">
+            <label for='exportlang'  class='col-sm-2  form-control-label'><?php eT("Language:");?></label>
+            <div class="col-sm-2">
+                <?php echo CHtml::dropDownList('exportlang', $sBaseLanguage, $aLanguages, array('class'=>'form-control')); ?>
+            </div>
+        </div>
+        <?php } else { ?>
+            <?php echo CHtml::hiddenField('exportlang', $sBaseLanguage); ?>
+
+        <?php } ?>
     <div class="form-group row">
         <label for='limit' class='col-sm-2  form-control-label'><?php eT("Limit:");?></label>
         <div class="col-sm-1">

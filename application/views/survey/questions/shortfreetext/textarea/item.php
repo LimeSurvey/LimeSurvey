@@ -14,23 +14,43 @@
 ?>
 
 <!-- Short free text, textarea item -->
-<div class='question answer-item text-item <?php echo $extraclass;?>' >
-
-    <div class='form-group'>
-
-        <label for='<?php echo $freeTextId;?>' class='hide label'>
-            <?php echo $labelText;?>
+<?php if($withColumn): ?>
+<div class='<?php echo $coreClass; ?> row'>
+    <div class="<?php echo $extraclass; ?>">
+<?php else: ?>
+<div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
+<?php endif; ?>
+        <!-- Label -->
+        <label class='control-label sr-only' for='answer<?php echo $name; ?>' >
+            <?php eT('Your answer'); ?>
         </label>
+        <?php if ($prefix !== '' || $suffix !== ''): ?>
+            <div class="ls-input-group">
+        <?php endif; ?>
+            <!-- Prefix -->
+            <?php if ($prefix !== ''): ?>
+                <div class='ls-input-group-extra prefix-text prefix text-right'><?php echo $prefix; ?></div>
+            <?php endif; ?>
 
-        <textarea
-            class="form-control textarea <?php echo $kpclass; ?> col-xs-12"
-            name="<?php echo $name;?>"
-            id="<?php echo $freeTextId;?>"
-            rows="<?php echo $drows; ?>"
-            cols="<?php echo $tiwidth; ?>"
-            <?php echo $maxlength; ?>
-            onkeyup="<?php echo $checkconditionFunction; ?>"
-        ><?php echo $dispVal; ?></textarea>
+            <textarea
+                class="form-control textarea <?php echo $kpclass; ?>"
+                name="<?php echo $name;?>"
+                id="<?php echo $freeTextId;?>"
+                rows="<?php echo $drows; ?>"
+                <?php echo ($inputsize ? 'cols="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+            ><?php echo $dispVal; ?></textarea>
 
+            <!-- Suffix -->
+            <?php if ($suffix !== ''): ?>
+                <div class='ls-input-group-extra suffix-text suffix text-left'><?php echo $suffix; ?></div>
+            <?php endif; ?>
+        <?php if ($prefix !== '' || $suffix !== ''): ?>
+            </div>
+        <?php endif; ?>
+<?php if($withColumn): ?>
     </div>
 </div>
+<?php else: ?>
+</div>
+<?php endif; ?>

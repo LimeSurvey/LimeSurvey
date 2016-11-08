@@ -18,35 +18,37 @@
 ?>
 
 <!--answer_row_inputtext -->
-<div id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-horizontal <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
-    <div class="form-group row">
-
-        <?php if ($alert):?>
-            <!--  color code missing mandatory questions red -->
-            <div class="col-xs-12 col-sm-<?php echo $sLabelWidth; ?> control-label">
-                <div class="label label-danger errormandatory pull-right" role="alert">
-                    <?php echo $question; ?>
+<li id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-group<?php if($alert):?> has-error<?php endif; ?><?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
+    <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
+        <?php echo $question; ?>
+    </label>
+    <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
+        <?php if ($prefix != '' || $suffix != ''): ?>
+            <div class="ls-input-group">
+        <?php endif; ?>
+            <?php if ($prefix != ''): ?>
+                <div class="ls-input-group-extra prefix-text prefix text-right">
+                    <?php echo $prefix; ?>
                 </div>
-            </div>
-        <?php else:?>
-            <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
-                <?php echo $question; ?>
-            </label>
-        <?php endif;?>
-
-        <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
-            <?php echo $prefix; ?>
+            <?php endif; ?>
             <input
-                class="text <?php echo $kpclass; ?> form-control"
+                class="form-control <?php echo $kpclass; ?>"
                 type="text"
                 name="<?php echo $myfname; ?>"
                 id="answer<?php echo $myfname; ?>"
                 value="<?php echo $dispVal; ?>"
-                onkeyup="<?php echo $checkconditionFunction; ?>"
-                <?php echo $maxlength; ?>
+                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+                <?php echo ($numbersonly)? "data-number='{$numbersonly}'":""; ?>
                 />
-            <?php echo $suffix; ?>
-        </div>
+            <?php if ($suffix != ''): ?>
+                <div class="ls-input-group-extra suffix-text suffix text-right">
+                    <?php echo $suffix; ?>
+                </div>
+            <?php endif; ?>
+        <?php if ($prefix != '' || $suffix != ''): ?>
+            </div>
+        <?php endif; ?>
     </div>
-</div>
+</li>
 <!-- end of answer_row_inputtext -->

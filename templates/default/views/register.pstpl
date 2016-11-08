@@ -1,11 +1,11 @@
-<div class='jumbotron'>
-    <div class="container clearfix">
-        <h2>{REGISTERMESSAGE1}</h2>
-        <h3><small class='text-info'>{REGISTERMESSAGE2}</small></h3>
+<div class="well clearfix  register-message">
+    <div class="h2">{REGISTERMESSAGE1}</div>
+    <div class="text-info">
+        {REGISTERMESSAGE2}
     </div>
 </div>
-{REGISTERERROR}
+
 <div class="register-form">
-    <div class="container">{REGISTERFORM}</div>
+    {REGISTERERROR}
+    {REGISTERFORM}
 </div>
-<input type='hidden' class='hidemenubutton'/>
