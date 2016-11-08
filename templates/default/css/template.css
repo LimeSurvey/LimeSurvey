@@ -13,7 +13,7 @@ body
 }
 
 /* specific for survey listing */
-@media (min-width: 768px) {
+@media (min-width: 761px) {
   .surveys-list .btn-group {
     width: 50%;
   }
@@ -321,7 +321,7 @@ table > tbody > tr > td.ddprefix {
 /**
  * On big screen only, iPad and up
  */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 761px) {
 
     .table-dual-scale .separator {
         width: 6%;
@@ -375,24 +375,21 @@ only screen and (max-width: 760px),
         margin-bottom: 15px;
     }
 
-    table.ls-answers  tbody {
-        padding: 0 1em 0 1em;
+    table.ls-answers tbody {
+        padding: 0;
     }
 
-    table.ls-answers tr{
+    table.ls-answers  tr{
         border: 1px solid #ccc;
-        padding: 1em;
+        padding: 0;
+        margin-bottom:1em;
     }
 
     /* Line header ; color is h4 color */
     table.ls-answers tr th {
         font-size: 1.1em;
-        text-align: center;
-        color: #317eac;
-    }
-
-    table.ls-answers tr th {
         text-align: left;
+        color: #317eac;
     }
 
     .array-by-columns .answertext {

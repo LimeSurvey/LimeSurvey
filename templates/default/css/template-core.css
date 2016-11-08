@@ -43,17 +43,15 @@ li.radio-item,li.checkbox-item{display:block}
 /* We have some settings to set width of the table : use it */
 table.ls-answers{table-layout:fixed}
 table.ls-answers{width:100%}
-/* Basic alignment */
-.ls-answers > tbody > tr > td
-{vertical-align:middle}
-.ls-answers > tbody > tr > td
-{text-align:center}
-.ls-answers > tbody > tr > td .form-control /* for .form-control[size] */
-{margin-left:auto;margin-right:auto}/* display:inline-block is OK too */
-.ls-answers > tbody > tr > th
-{text-align:right;vertical-align:middle}
-.ls-answers .ls-heading > th
-{text-align:center;vertical-align:bottom}
+/* Basic alignment forced vertical due to bs*/
+.ls-answers > tbody > tr > td{vertical-align:middle}
+.ls-answers > tbody > tr > th{vertical-align:middle}
+.ls-answers .ls-heading > th{vertical-align:bottom}/* class replace multiple tag */
+/* Basic alignment base horizontal due to no-more-table*/
+.ls-answers tbody td{text-align:center}
+.ls-answers td .form-control{margin-left:auto;margin-right:auto} /* for .form-control[size] *//* display:inline-block is OK too */
+.ls-answers th{text-align:right;}
+.ls-answers .ls-heading th{text-align:center;}
 
 .ls-answers tbody .answertext{text-align:right}
 .ls-answers .answertextright{text-align:left}
