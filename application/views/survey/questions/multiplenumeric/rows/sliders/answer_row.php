@@ -34,9 +34,14 @@
     </label>
     <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?> container-fluid">
             <?php if (!empty($sliderleft)): ?>
-                <div class='col-xs-12 col-sm-2 slider-left text-right'><?php echo $sliderleft;?></div>
+                <div class='col-xs-6 col-sm-2 slider-left text-right'><?php echo $sliderleft;?></div>
             <?php endif; ?>
-            <div class="slider-container ls-input-group col-xs-12 col-sm-<?php echo $sliderWidth ?>">
+
+            <?php if (!empty($sliderright)): ?>
+                <div class='col-xs-6 col-sm-2 col-sm-push-<?php echo $sliderWidth ?> slider-right text-left'><?php echo $sliderright;?></div>
+            <?php endif; ?>
+
+            <div class="slider-container ls-input-group col-xs-12 col-sm-<?php echo $sliderWidth ?> col-sm-pull-2">
             <?php
             /* FF show issue + prefix/suffix must be encoded */
             echo CHtml::textField($myfname,$dispVal,array(
@@ -69,9 +74,7 @@
                     </div>
                 <?php endif; ?>
             </div>
-            <?php if (!empty($sliderright)): ?>
-                <div class='col-xs-12 col-sm-2 slider-right text-left'><?php echo $sliderright;?></div>
-            <?php endif; ?>
+            
             <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo ($dispVal ? 0 : 1);?>" />
     </div>
 </li>
