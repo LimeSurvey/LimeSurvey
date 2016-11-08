@@ -61,10 +61,12 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .question-container {
   margin-bottom: 2em;
   background:white;
+  border-bottom: 1px solid #dbdbdb;
 }
 
 .question-title-container {
-  padding-top: 2em;padding-bottom:1em;
+  padding-top: 1em;
+  padding-bottom:1em;
 }
 .question-number,.question-code{float:left;margin:0 0.3em}
 .question-number:empty,.question-code:empty{display:none}
@@ -72,7 +74,12 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .question-valid-container {
   position: relative;
   text-align: center;
-  padding-bottom: 1em;
+  //padding-bottom: 1em;
+}
+
+.ls-question-help,
+.ls-questionhelp{
+  margin-bottom:5px;
 }
 
 .question-valid-container .text-danger{
@@ -88,12 +95,18 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .answer-container {
   border-width: 0px 1px 0px 1px;
   border-style: solid;
-  padding-top: 3em;
-  padding-bottom:1.5em;
+  //padding-top: 3em;
+  //padding-bottom:1.5em;
+}
+
+.ls-answers{
+  padding-top:15px;
+  padding-bottom:15px;
+  margin-bottom:0;
 }
 
 .question-help-container {
-  border-width: 0px 1px 1px 1px;
+  border-width: 0px 1px 0px 1px;
   border-style: solid;
 }
 /* little icon near the question-help */
@@ -124,7 +137,6 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     right:0;
 }
 
-
 /**
  * Unsure part
  */
@@ -137,8 +149,6 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
      float: none;
      margin: 0 auto;
  }
-
-
 
 .radio-list li
 {
@@ -177,20 +187,12 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     text-align: center;
 }
 
-/*#outerframeContainer {
-    height: 100%;
-}*/
-
 #surveyListFooter {
     width: 100%;
     text-align: center;
     margin-bottom: 0;
     padding-bottom: 0;
     margin-top: 10px;
-}
-
-#surveyListFooter div{
-
 }
 
 /**
@@ -619,4 +621,48 @@ div.yes-no .btn-group label {
     .vertical-divider.right {
     border: none;
     }
+}
+
+@media only screen and (max-width: 760px){
+  h1, .h3{
+    font-size:18px;
+  }
+  
+  .h4{
+    font-size:16px;
+  }
+  
+  .question-container{
+    margin-bottom:1em;
+  }
+  
+  .question-title-container{
+    padding-top:5px;
+    padding-bottom: 5px;
+  }
+  
+  .answer-container{
+    //padding-top:0.5em;
+    //padding-bottom:0.5em;
+  }
+  
+  .ls-question-help, 
+  .ls-questionhelp{
+    font-size:14px;
+  }
+  
+  .table-bordered{
+    border:none;
+  }
+  
+  .ls-answers tr:last-child{
+    margin-bottom:0;
+  }
+  
+  .ls-answers > tbody > tr > td.radio-item ,
+  .ls-answers > tbody > tr > td.checkbox-item{
+    min-height:44px; /*minimal height for touching with finger */
+    padding-top:10px;
+    padding-left:28px;
+  }
 }
