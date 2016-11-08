@@ -95,8 +95,8 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .answer-container {
   border-width: 0px 1px 0px 1px;
   border-style: solid;
-  margin-top: 0.5em;
-  margin-bottom:0.5em;
+  padding-top: 0.5em;
+  padding-bottom:0.5em;
 }
 
 .ls-answers{
