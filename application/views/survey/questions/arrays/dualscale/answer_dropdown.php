@@ -21,16 +21,16 @@
     <col class="dsheader"  style='width: <?php echo $cellwidth; ?>%;' />
 </colgroup>
 <!-- Header -->
-
-<thead>
-    <tr class="ls-heading">
-        <td></td>
-        <th class='left-header'><?php echo $leftheader; ?></th>
-        <td></td>
-        <th class='right-header'><?php echo $rightheader; ?></th>
-    </tr>
-</thead>
-
+<?php if ($leftheader != '' || $rightheader !=''): ?>
+    <thead>
+        <tr class="ls-heading">
+            <td></td>
+            <th class='left-header'><?php echo $leftheader; ?></th>
+            <td></td>
+            <th class='right-header'><?php echo $rightheader; ?></th>
+        </tr>
+    </thead>
+<?php endif; ?>
 
 <tbody>
 
@@ -64,6 +64,9 @@
             <!-- First dropdown -->
 
             <td class="answer-item dropdown-item">
+                <?php if ($leftheader != '') : ?>
+                    <div  class='visible-xs leftheader control-label'><?php echo $leftheader; ?></div>
+                <?php endif; ?>
                 <?php if ($ddsuffix != '' || $ddprefix != ''): ?>
                     <div class="ls-input-group">
                 <?php endif; ?>
@@ -120,6 +123,9 @@
             <!-- Second dropdown -->
 
             <td class="answer-item dropdown-item">
+                <?php if ($rightheader != '') : ?>
+                    <div  class='visible-xs rightheader control-label'><?php echo $rightheader; ?></div>
+                <?php endif; ?>
                 <!-- We don't need another label : aria-labelledby for accessibility, and we have only 2 line in phone and no-more-table -->
                 <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
                     <div class="ls-input-group">
