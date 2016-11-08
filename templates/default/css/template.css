@@ -623,7 +623,7 @@ div.yes-no .btn-group label {
     }
 }
 
-@media only screen and (max-width: 760px){
+@media only screen and (max-device-width: 760px){
   h1, .h3{
     font-size:18px;
   }

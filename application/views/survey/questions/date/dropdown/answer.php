@@ -16,12 +16,10 @@
 
 <!-- answer -->
 <div class="<?php echo $coreClass;?> form-group form-inline">
-    <div class="ls-input-group">
     <?php
         // rows/*.php
         echo $sRows;
     ?>
-    </div>
 </div>
 
 <!-- For Expression Manager ? -->

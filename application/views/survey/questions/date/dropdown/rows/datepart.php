@@ -1,1 +1,1 @@
-<span class="ls-input-group-extra"><?php echo $datepart; ?></span>
+<span class="hidden-xs"><?php echo $datepart; ?></span>
