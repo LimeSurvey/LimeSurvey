@@ -121,8 +121,7 @@ window.alert = function(message, title) {
  * in endpage and in $(window).resize
  */
 function fixBodyPadding(){
-    /* The 50 px is fixed in template.css */
-    console.log($(".navbar-fixed-top").height());
+    /* The 60 px is fixed in template.css */
     $("body").css("padding-top",$(".navbar-fixed-top").height()+"px")
 }
 /**
@@ -203,5 +202,29 @@ function triggerEmClassChangeTemplate(){
         $questionContainer = $(this).parents('div.question-container');
         $questionContainer.removeClass('input-error');/* Not working with mandatory question ... */
     });
-
+}
+/**
+ * Hide question if all sub-questions is hidden
+ * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
+ * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
+ * Must be before ready (event happen before ready)
+ */
+function hideQuestionWithRelevanceSubQuestion(){
+    $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
+        if(event.target != this) return; // not needed now, but after (2016-11-07)
+        data = $.extend({style:'hidden'}, data);
+        if(data.style=='hidden'){
+            $(this).closest("[id^='question']:not(.ls-unrelevant)").removeClass("ls-hidden")
+        }
+    });
+    $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
+        if(event.target != this) return; // not needed now, but after (2016-11-07)
+        data = $.extend({style:'hidden'}, data);
+        console.log(data.style);
+        if(data.style=='hidden'){
+            if($(this).closest("[id^='question']").find("[id^='javatbd']:visible").length==0){
+                $(this).closest("[id^='question']").addClass("ls-hidden");// ls-hidden only is used only for Equation question type actually (but think must fix and use another class)
+            }
+        }
+    });
 }

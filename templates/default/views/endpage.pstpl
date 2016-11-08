@@ -22,5 +22,6 @@
 /*<![CDATA[*/
     sliderSuffixClone();
     fixBodyPadding();
+    hideQuestionWithRelevanceSubQuestion();
 /*]]>*/
 </script>
