@@ -10,6 +10,9 @@
 
 <table class="<?php echo $coreClass; ?> table table-bordered table-hover">
     <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' >
+    <?php if ($leftheader != '' || $rightheader !=''): ?>
+        <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
+    <?php endif; ?>
     <colgroup class="col-responses group-1">
         <?php foreach ($labelans0 as $ld): ?>
             <col style='width: <?php echo $cellwidth; ?>%;' >
@@ -17,6 +20,9 @@
     </colgroup>
     <?php if (count($labelans1) > 1): ?>
         <col class="separator" style="width: <?php echo $separatorwidth; ?>">
+        <?php if ($leftheader != '' || $rightheader !=''): ?>
+            <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
+        <?php endif; ?>
         <colgroup class="col-responses group-2">
             <?php foreach ($labelans1 as $ld): ?>
                 <col style='width: <?php echo $cellwidth; ?>%;' >
@@ -34,9 +40,15 @@
         <?php if ($leftheader != '' || $rightheader !=''): ?>
             <tr class="ls-heading groups header_row">
                 <th class="header_answer_text"></th>
+                <?php if ($leftheader != '' || $rightheader !=''): ?>
+                    <td class="hidden"></td>
+                <?php endif; ?>
                 <th colspan="<?php echo count($labelans0); ?>" class="dsheader"><?php echo $leftheader; ?></th>
                 <?php if (count($labelans1) > 0): ?>
                     <td class="header_separator"></td>  <!-- // Separator -->
+                    <?php if ($leftheader != '' || $rightheader !=''): ?>
+                        <td class="hidden"></td>
+                    <?php endif; ?>
                     <th colspan="<?php echo count($labelans1); ?>" class="dsheader"><?php echo $rightheader; ?></th>
                 <?php endif; ?>
 
@@ -57,6 +69,8 @@
                     'labelans1'    => $labelans1,
                     'shownoanswer' => $shownoanswer,
                     'rightexists'  => $rightexists,
+                    'leftheader'   => $leftheader,
+                    'rightheader'  => $rightheader,
                     'class'        => ''
                 ),
                 true
@@ -81,6 +95,8 @@
                                 'labelans1'    => $labelans1,
                                 'shownoanswer' => $shownoanswer,
                                 'rightexists'  => $rightexists,
+                                'leftheader'   => $leftheader,
+                                'rightheader'  => $rightheader,
                                 'class'        => 'hidden-xs repeat headings'
                             ),
                             true
@@ -110,8 +126,8 @@
 
             <!-- First label set -->
             <?php foreach ($labelcode0 as $j => $ld): ?>
-                <?php if ($j === 0 && $leftheader != ''): ?>
-                    <td class='visible-xs leftheader'><?php echo $leftheader; ?></td><!-- this break column count : no visual issue, but HTML issue : A table row was X columns wide and exceeded the column count established using column markup. -->
+                <?php if ($j === 0 && ($leftheader != '' || $rightheader !='')): ?>
+                    <td class='visible-xs leftheader'><?php echo $leftheader; ?></td>
                 <?php endif; ?>
                 <td class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item">
                     <input
@@ -147,7 +163,7 @@
 
                 <!-- Second label set -->
                 <?php foreach ($labelcode1 as $k => $ld): ?>
-                    <?php if ($k === 0 && $rightheader != ''): ?>
+                    <?php if ($k === 0 && ($leftheader != '' || $rightheader !='')): ?>
                         <td class='visible-xs rightheader'><?php echo $rightheader; ?></td><!-- this break column count : no visual issue, but HTML issue : A table row was X columns wide and exceeded the column count established using column markup. -->
                     <?php endif; ?>
                     <td class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item">
