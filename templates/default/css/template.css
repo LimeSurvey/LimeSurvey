@@ -95,8 +95,8 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .answer-container {
   border-width: 0px 1px 0px 1px;
   border-style: solid;
-  //padding-top: 3em;
-  //padding-bottom:1.5em;
+  margin-top: 0.5em;
+  margin-bottom:0.5em;
 }
 
 .ls-answers{
@@ -627,38 +627,38 @@ div.yes-no .btn-group label {
   h1, .h3{
     font-size:18px;
   }
-  
+
   .h4{
     font-size:16px;
   }
-  
+
   .question-container{
     margin-bottom:1em;
   }
-  
+
   .question-title-container{
     padding-top:5px;
     padding-bottom: 5px;
   }
-  
+
   .answer-container{
     //padding-top:0.5em;
     //padding-bottom:0.5em;
   }
-  
-  .ls-question-help, 
+
+  .ls-question-help,
   .ls-questionhelp{
     font-size:14px;
   }
-  
+
   .table-bordered{
     border:none;
   }
-  
+
   .ls-answers tr:last-child{
     margin-bottom:0;
   }
-  
+
   .ls-answers > tbody > tr > td.radio-item ,
   .ls-answers > tbody > tr > td.checkbox-item{
     min-height:44px; /*minimal height for touching with finger */
