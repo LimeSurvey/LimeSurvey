@@ -1473,10 +1473,10 @@ th {
     padding-bottom: 30px;
   }
 }
-.pull-right.flip {
+.dir-rtl .pull-right {
   float: left !important;
 }
-.pull-left.flip {
+.dir-rtl .pull-left {
   float: right !important;
 }
 /*# sourceMappingURL=bootstrap-rtl.css.map */

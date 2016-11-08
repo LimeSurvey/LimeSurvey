@@ -24,10 +24,13 @@ li.radio-item,li.checkbox-item{display:block}
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {/*give near same position to real button (except in td : can fix but not needed )*/
     display: inline-block;
     height: 17px;
-    left: 0;
+
     position: absolute;
     width: 17px;
 }
+.dir-ltr .radio-item input[type="radio"],.dir-ltr .checkbox-item input[type="checkbox"] {left: 0;}
+.dir-rtl .radio-item input[type="radio"],.dir-rtl .checkbox-item input[type="checkbox"] {right: 0;}
+
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {
     opacity:0;
 }
@@ -50,7 +53,7 @@ table.ls-answers{width:100%}
 /* Basic alignment base horizontal due to no-more-table*/
 .ls-answers tbody td{text-align:center}
 .ls-answers td .form-control{margin-left:auto;margin-right:auto} /* for .form-control[size] *//* display:inline-block is OK too */
-.ls-answers th{text-align:right;}
+.ls-answers tbody .control-label{text-align:right;}
 .ls-answers .ls-heading th{text-align:center;}
 
 .ls-answers tbody .answertext{text-align:right}
@@ -62,44 +65,44 @@ table.ls-answers{width:100%}
  * @todo : .dir-rtl
  */
 /* reset the margin and review the padding set by boostrap */
-table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{
-margin: 0;
-}
-.ls-answers td.radio-item,.ls-answers td.checkbox-item{
-    padding: 2px;
-    padding-left: 22px;
-}
+table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{margin: 0;}
+.ls-answers td.radio-item,..ls-answers td.checkbox-item{padding: 2px;}
+.dir-ltr .ls-answers td.radio-item,.dir-ltr .ls-answers td.checkbox-item{padding-left: 22px;}
+.dir-rtl .ls-answers td.radio-item,.dir-rtl .ls-answers td.checkbox-item{padding-right: 22px;}
+
 /* show partially sr-only inside table */
 .radio-item .ls-label-xs-visibility,.checkbox-item .ls-label-xs-visibility{
     display:inline-block;
     position:relative;
-    left:auto;
     overflow:hidden;
     width: 17px;
     height: 17px;
-    margin-left:-20px;
     line-height: 21px;
     text-indent: 21px;
 }
+.dir-ltr .radio-item .ls-label-xs-visibility,.dir-ltr .checkbox-item .ls-label-xs-visibility{left:auto;margin-left:-20px;}
+.dir-rtl .radio-item .ls-label-xs-visibility,.dir-rtl .checkbox-item .ls-label-xs-visibility{right:auto;margin-right:-20px;}
+
 /* no argin on label : no margiun after and before too */
-.radio-item label.ls-label-xs-visibility::before,.checkbox-item label.ls-label-xs-visibility::before{
-    margin-left:0;
-}
-.radio-item label.ls-label-xs-visibility::after,.checkbox-item label.ls-label-xs-visibility::after {
-    margin-left:0;padding-left:0;
-}
+.dir-ltr .radio-item label.ls-label-xs-visibility::before,.dir-ltr .checkbox-item label.ls-label-xs-visibility::before{margin-left:0;}
+.dir-rtl .radio-item label.ls-label-xs-visibility::before,.dir-rtl .checkbox-item label.ls-label-xs-visibility::before{margin-right:0;}
+.dir-ltr .radio-item label.ls-label-xs-visibility::after,.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {margin-left:0;padding-left:0;}
+.dir-rtl .radio-item label.ls-label-xs-visibility::after,.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {margin-right:0;padding-right:0;}
+
 .checkbox-item label.ls-label-xs-visibility::after {
     line-height:17px;width:17px;text-align:center;text-indent: 0;
 }
 /* Hide the other content inside sr-only */
 .radio-item label.ls-label-xs-visibility > * ,.checkbox-item label.ls-label-xs-visibility > *{
     position:absolute;
-    left:-10000px;
     top:auto;
     width:1px;
     height:1px;
     overflow:hidden;
 }
+.dir-ltr .radio-item label.ls-label-xs-visibility > * ,.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {left:-10000px;}
+.dir-rtl .radio-item label.ls-label-xs-visibility > * ,.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {left:-10000px;}
+
 /* on little screen center text-right and text-left : template issue */
 /* for ls-input-sized + ls-input-group-extra if use € for example as suffix : it's really OK and better to leave like it */
 @media only screen and (max-width: 760px){
@@ -107,7 +110,8 @@ margin: 0;
   .ls-answers .col-xs-12 .suffix-text{text-align:right}
   .ls-input-sized .col-xs-12.ls-input-group{display:block;width:100%;}
   .ls-input-sized .col-xs-12 .ls-input-group-extra,.ls-input-sized .col-xs-12 .form-control{display:block;float:none}
-  .ls-input-sized .col-xs-12 .form-control{margin-left:auto;margin-right:auto}
+  .dir-ltr .ls-input-sized .col-xs-12 .form-control{margin-left:auto;margin-right:auto}
+  .dir-rtl .ls-input-sized .col-xs-12 .form-control{margin-left:auto;margin-right:auto}
 }
 /*
 Max width before this PARTICULAR table gets nasty
@@ -116,47 +120,59 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 @media
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
-    table.ls-answers,.ls-answers thead,.ls-answers tbody,.ls-answers th,.ls-answers td,.ls-answers tr {
-        display: block;
-        text-align:left;
-    }
+    table.ls-answers,.ls-answers thead,.ls-answers tbody,.ls-answers th,.ls-answers td,.ls-answers tr {display: block;}
+    .dir-ltr table.ls-answers,.dir-ltr .ls-answers thead,.dir-ltr .ls-answers tbody,.dir-ltr .ls-answers th,.dir-ltr .ls-answers td,.ls-answers tr {text-align:left;}
+    .dir-rtl table.ls-answers,.dir-rtl .ls-answers thead,.dir-rtl .ls-answers tbody,.dir-rtl .ls-answers th,.dir-rtl .ls-answers td,.ls-answers tr {text-align:right;}
+
     .ls-answers thead{display:none} /* We don't need it for accessibility : we already have the label */
 
     .ls-answers tbody td{text-align:left;}
+    .dir-rtl .ls-answers tbody td{text-align:right;}
 
+/*
     .ls-answers > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
-    .ls-answers tbody .answertext{text-align:left}
+*/
+
+    .ls-answers tbody .control-label{text-align:left}
+    .dir-rtl .ls-answers tbody .control-label{text-align:right}
     .ls-answers .answertextright{text-align:right}
+    .dir-rtl .ls-answers .answertextright{text-align:left}
+
     /* Show the label */
     .ls-answers .ls-label-xs-visibility
     {
         display:block;
         position:relative;
-        left:auto;
         width: auto;
         height: auto;
         overflow:initial;
     }
+    .dir-ltr .ls-answers .ls-label-xs-visibility{left:auto;}
+    .dir-rtl .ls-answers .ls-label-xs-visibility{right:auto;}
+
     .ls-answers .radio-item .ls-label-xs-visibility,.ls-answers .checkbox-item .ls-label-xs-visibility{
-        margin-left:0;
         line-height: initial;
         text-indent: initial;
     }
+    .dir-ltr .ls-answers .radio-item .ls-label-xs-visibility,.dir-ltr .ls-answers .checkbox-item .ls-label-xs-visibility{margin-left:0;}
+    .dir-rtl .ls-answers .radio-item .ls-label-xs-visibility,.dir-rtl .ls-answers .checkbox-item .ls-label-xs-visibility{margin-right:0;}
+
     .ls-answers .ls-label-xs-visibility > *
     {
         position:relative;
-        left:auto;
         top:auto;
         width:auto;
         height:auto;
         overflow:auto;
     }
-    .ls-answers .radio-item label.ls-label-xs-visibility::before,.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-        margin-left:-20px;
-    }
-    .ls-answers .radio-item label.ls-label-xs-visibility::after,.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-        margin-left:-20px;
-    }
+    .dir-ltr .ls-answers .ls-label-xs-visibility > * {left:auto;}
+    .dir-rtl .ls-answers .ls-label-xs-visibility > * {right:auto;}
+
+    .dir-ltr .ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-ltr .ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-left:-20px;}
+    .dir-rtl .ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl .ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:-20px;}
+    .dir-ltr .ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr .ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:-20px;}
+    .dir-rtl .ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-rtl .ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-right:-20px;}
+
     .ls-answers > tbody > tr:hover {
         background-color: transparent;
     }

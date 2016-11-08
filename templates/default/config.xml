@@ -54,8 +54,8 @@
                 <!-- include bootstrap-rtl from Morteza Ansarinia (http://github.com/morteza) -->
                 <!-- Allow updating only boostrap.css : to be tested -->
                 <filename>css/bootstrap-rtl.css</filename>
-                <!-- disable it actually : template.css must be light, can use .dir-rtl/.dir-ltr -->
-                <!-- <filename>css/template-rtl.css</filename>-->
+                <filename>css/template-core.css</filename>
+                <filename>css/template.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>

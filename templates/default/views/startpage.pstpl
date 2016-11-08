@@ -35,7 +35,7 @@
 
     <!-- Top container -->
     <div class="top-container">
-      <div class="container top-content">{PERCENTCOMPLETE}{LANGUAGECHANGER}</div> <!-- must hide it without javascript -->
+      <div class="container top-content">{LANGUAGECHANGER}{PERCENTCOMPLETE}</div> <!-- must hide it without javascript -->
     </div>
 
     <div class="outerframe container" id="outerframeContainer">

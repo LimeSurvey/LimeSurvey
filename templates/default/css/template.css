@@ -24,10 +24,6 @@ body
   background:transparent;
 }
 
-.language-changer {
-    background-color: #fff;
-    padding: 1em;
-}
 .top-container {
     width: 100%;
     padding: 0;
@@ -39,6 +35,9 @@ body
 .top-container .top-content{
 padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 }
+.top-content .form-change-lang{float:right}
+.dir-rtl .top-content .form-change-lang{float:left}
+
 .top-container .top-content:empty{display:none}
 .group-description:empty{display:none}
 .group-title:empty{display:none}
@@ -211,10 +210,13 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 /* Max width for some answer part */
 @media (min-width: 768px) {
   .yesno-button,.gender-button {
-    float: left;
+    width: 50%;
   }
   .yesno-button,.gender-button {
-    width: 50%;
+    float: left;
+  }
+  .dir-rtl .yesno-button,.dir-rtl .gender-button {
+    float: right;
   }
 }
 /* table color */
@@ -435,10 +437,6 @@ only screen and (max-width: 760px),
 
     /* As above, collapse prefix/suffix to above/below input */
     .prefix-text-right {
-        text-align: left;
-    }
-
-    table.ls-answers.subquestion-list.questions-list tr th.answertext {
         text-align: left;
     }
 
