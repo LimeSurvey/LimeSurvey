@@ -21,5 +21,7 @@
 <script type="text/javascript">
 /*<![CDATA[*/
     sliderSuffixClone();
+    fixBodyPadding();
+    hideQuestionWithRelevanceSubQuestion();
 /*]]>*/
 </script>

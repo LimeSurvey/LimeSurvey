@@ -13,7 +13,7 @@ body
 }
 
 /* specific for survey listing */
-@media (min-width: 768px) {
+@media (min-width: 761px) {
   .surveys-list .btn-group {
     width: 50%;
   }
@@ -34,10 +34,10 @@ body
     border-bottom: none;
     background-color: #ecf0f1;
     color: inherit;
-    margin-bottom:2em;
+
 }
 .top-container .top-content{
-padding-top:1em;padding-bottom:1em;
+padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 }
 .top-container .top-content:empty{display:none}
 .group-description:empty{display:none}
@@ -57,6 +57,47 @@ padding-top:1em;padding-bottom:1em;
 /**
  * Question part
  */
+/** Question Design **/
+
+.question-container {
+  margin-bottom: 2em;
+  background:white;
+}
+
+.question-title-container {
+  padding-top: 2em;padding-bottom:1em;
+}
+.question-number,.question-code{float:left;margin:0 0.3em}
+.question-number:empty,.question-code:empty{display:none}
+
+.question-valid-container {
+  position: relative;
+  text-align: center;
+  padding-bottom: 1em;
+}
+
+.question-valid-container .text-danger{
+  font-weight: bold;
+}
+
+.question-valid-container .text-info{
+  font-weight: bold;
+}
+.answer-container, .question-help-container {
+    border-color: #dbdbdb;
+}
+.answer-container {
+  border-width: 0px 1px 0px 1px;
+  border-style: solid;
+  padding-top: 3em;
+  padding-bottom:1.5em;
+}
+
+.question-help-container {
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+}
+/* little icon near the question-help */
 .ls-questionhelp{position: relative;}
 .dir-ltr .ls-questionhelp{margin-left:1.2em;}
 .dir-rtl .ls-questionhelp{margin-right:1.2em;}
@@ -180,7 +221,9 @@ padding-top:1em;padding-bottom:1em;
 .ls-even{
 background-color:#f9f9f9;
 }
-
+/* dynamic group (multipe-numeric) .form-control-static same padding and border width than form-control for better alignment */
+.ls-group-dynamic .form-control-static{border: 2px solid transparent;padding-left:15px;padding-right:15px;}
+/* array by column hover column */
 .table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
 .table-col-hover col.hover /* Actual solution : js only*/
 {
@@ -278,7 +321,7 @@ table > tbody > tr > td.ddprefix {
 /**
  * On big screen only, iPad and up
  */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 761px) {
 
     .table-dual-scale .separator {
         width: 6%;
@@ -332,24 +375,21 @@ only screen and (max-width: 760px),
         margin-bottom: 15px;
     }
 
-    table.ls-answers  tbody {
-        padding: 0 1em 0 1em;
+    table.ls-answers tbody {
+        padding: 0;
     }
 
-    table.ls-answers tr{
+    table.ls-answers  tr{
         border: 1px solid #ccc;
-        padding: 1em;
+        padding: 0;
+        margin-bottom:1em;
     }
 
     /* Line header ; color is h4 color */
     table.ls-answers tr th {
         font-size: 1.1em;
-        text-align: center;
-        color: #317eac;
-    }
-
-    table.ls-answers tr th {
         text-align: left;
+        color: #317eac;
     }
 
     .array-by-columns .answertext {
@@ -492,46 +532,7 @@ only screen and (max-width: 760px),
 }
 
 
-/** Question Design **/
 
-.question-wrapper {
-  margin-bottom: 2em;
-  background:white;
-}
-
-.question-title-container {
-  padding-top: 2em;padding-bottom:1em;
-}
-.question-number,.question-code{float:left;margin:0 0.3em}
-.question-number:empty,.question-code:empty{display:none}
-
-.question-valid-container {
-  position: relative;
-  text-align: center;
-  padding-bottom: 1em;
-}
-
-.question-valid-container .text-danger{
-  font-weight: bold;
-}
-
-.question-valid-container .text-info{
-  font-weight: bold;
-}
-.answer-container, .question-help-container {
-    border-color: #dbdbdb;
-}
-.answer-container {
-  border-width: 0px 1px 0px 1px;
-  border-style: solid;
-  padding-top: 3em;
-  padding-bottom:1.5em;
-}
-
-.question-help-container {
-  border-width: 0px 1px 1px 1px;
-  border-style: solid;
-}
 
 /* Give help text some space */
 .questionhelp {

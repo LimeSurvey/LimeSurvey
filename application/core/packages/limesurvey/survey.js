@@ -8,6 +8,116 @@
  * Always set an empty LSvar
  */
 var LSvar = LSvar || { };
+
+/**
+ * Action to do when relevance is set to on or off
+ */
+function triggerEmRelevance(){
+    triggerEmRelevanceQuestion();
+    triggerEmRelevanceGroup();
+    triggerEmRelevanceSubQuestion();
+}
+
+/* On question */
+function triggerEmRelevanceQuestion(){
+    /* Action on this question */
+    $("[id^='question']").on('relevance:on',function(event,data) {
+        if(event.target != this) return; /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. Don't want to stop propagation. */
+        $(this).removeClass("ls-unrelevant ls-hidden");
+    });
+    $("[id^='question']").on('relevance:off',function(event,data) {
+        if(event.target != this) return;
+        $(this).addClass("ls-unrelevant ls-hidden");
+    });
+    /* In all in one mode : need updating group too */
+    $(".allinone [id^='group-']:not(.ls-unrelevant) [id^='question']").on('relevance:on',function(event,data) {
+        if(event.target != this) return;
+        $(this).closest("[id^='group-']").removeClass("ls-hidden");
+    });
+    $(".allinone [id^='group-']:not(.ls-unrelevant) [id^='question']").on('relevance:off',function(event,data) {
+        if(event.target != this) return;
+        if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
+            $(this).closest("[id^='group-']").addClass("ls-hidden");
+        }
+    });
+}
+/* On Group */
+function triggerEmRelevanceGroup(){
+    $("[id^='group-']").on('relevance:on',function(event,data) {
+        if(event.target != this) return;
+        $(this).removeClass("ls-unrelevant ls-hidden");
+    });
+    $("[id^='group-']").on('relevance:off',function(event,data) {
+        if(event.target != this) return;
+        $(this).addClass("ls-unrelevant ls-hidden");
+    });
+}
+/* On sub-question and answers-list */
+function triggerEmRelevanceSubQuestion(){
+    $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
+        if(event.target != this) return; // not needed now, but after (2016-11-07)
+        data = $.extend({style:'hidden'}, data);
+        $(this).removeClass("ls-unrelevant ls-"+data.style);
+        if(data.style=='disabled'){
+            $(event.target).find('input').prop("disabled", false );
+        }
+        if(data.style=='hidden'){
+            updateLineClass($(this));
+            updateRepeatHeading($(this).closest(".ls-answers"));
+        }
+    });
+    $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
+        if(event.target != this) return; // not needed now, but after (2016-11-07)
+        data = $.extend({style:'hidden'}, data);
+        $(this).addClass("ls-unrelevant ls-"+data.style);
+        if(data.style=='disabled'){
+            $(event.target).find('input').prop("disabled", true );
+        }
+        if(data.style=='hidden'){
+            updateLineClass($(this));
+            updateRepeatHeading($(this).closest(".ls-answers"));
+        }
+    });
+}
+/**
+ * Update lines class when relevance:(on|off) happen
+ */
+function updateLineClass(line){
+    if($(line).hasClass("ls-odd") || $(line).hasClass("ls-even")){
+        $(line).closest(".ls-answers").find(".ls-odd:visible,.ls-even:visible").each(function(index){ // not limited to table
+            $(this).removeClass('ls-odd ls-even').addClass(((index+1)%2 == 0) ? "ls-odd" : "ls-even");
+        });
+    }
+}
+/**
+ * Update repeat heading
+ */
+function updateRepeatHeading(answers){
+    /* Update only (at start) when all hidden line is done : @todo : do it only once */
+    $(function() {
+        if($(answers).data("repeatHeading") || $(answers).find("tbody").find(".ls-heading").length){
+            /* set the data the first time */
+            if(!$(answers).data("repeatHeading")){
+                var repeatHeading=$(answers).find("tbody:first tr").length;/* first body don't have heading */
+                $(answers).data("repeatHeading",repeatHeading)
+                $(answers).data("repeatHeader",$(answers).find("tbody .ls-heading").filter(":first")[0].outerHTML);
+            }else{
+                var repeatHeading=$(answers).data("repeatHeading");
+            }
+            /* can remove the heading and clone this one of thead */
+            var header = $(answers).data("repeatHeader");
+            $(answers).find("tbody .ls-heading").remove();
+            var lines=$(answers).find('tr:visible');
+            var max=$(answers).find('tr:visible').length-1;
+            $(lines).each(function(index){
+                if(index != 0 && index % repeatHeading == 0 && index < max)
+                {
+                    $(header).insertAfter($(this));
+                }
+            });
+        }
+    });
+}
 /**
  * Manage the index
  */
