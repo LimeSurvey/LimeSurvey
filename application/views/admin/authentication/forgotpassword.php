@@ -33,12 +33,12 @@
                             </div>
                             <span>
                                 <label for="user"><?php eT('User name'); ?></label>
-                                <input name="user" id="user" type="text"  size="40" maxlength="40" class="form-control" value="" />
+                                <input name="user" id="user" type="text"  size="40" maxlength="64" class="form-control" value="" />
                             </span>
                             <span>
                                 <label for="email"><?php eT('Email'); ?>
 
-                                </label><input name="email" id="email" type="email"  size="40" maxlength="40" class="form-control" value="" />
+                                </label><input name="email" id="email" type="email"  size="40" maxlength="254" class="form-control" value="" />
                             </span>
 
                         </div>
