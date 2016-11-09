@@ -37,15 +37,9 @@
         <!-- Do nothing -->
     <?php endif;?>
 
-    <!-- To handle correctly the side menu positioning -->
-        <div
-            class="absolute-wrapper hidden-xs"
-            style="z-index: 100; <?php if (!$showSideMenu): echo 'left: -250px;'; endif; ?> ">
-        </div>
-
+<div id="sideMenuContainer" class="sidemenu-container">
     <!-- sideMenu -->
     <div class="side-menu <?php if (!$showSideMenu): echo ' side-menu-hidden'; endif; ?> hidden-xs" id="sideMenu" style="z-index: 101;">
-
         <nav class="navbar navbar-default hidden-xs">
 
             <!-- Header : General -->
@@ -65,7 +59,7 @@
                         <!-- Brand -->
                         <a id='sidemenu-home' class="col-sm-7 navbar-brand hideside toggleside" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
                             <div class="brand-name-wrapper hidden-xs">
-                                    <span class="glyphicon glyphicon-home"></span>&nbsp;
+                                    <span class="fa fa-home"></span>&nbsp;
                                     <?php eT("Survey");?>
                             </div>
                         </a>
@@ -73,20 +67,20 @@
                         <!-- chevrons to stretch the side menu -->
                         <?php if (getLanguageRTL($_SESSION['adminlang'])): ?>
                             <div class='col-sm-5'>
-                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
-                                    <span class="glyphicon glyphicon-chevron-left" ></span>
+                                <a draggable="true" style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
+                                    <i class="fa fa-bars" style="transform:rotate(90deg);">&nbsp;</i>
                                 </a>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
-                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                    <i class="fa fa-chevron-right"></i>
                                 </a>
                             </div>
                         <?php else: ?>
                             <div class='col-sm-5'>
-                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
-                                    <span class="glyphicon glyphicon-chevron-right" ></span>
+                                <a draggable="true" style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
+                                    <i class="fa fa-bars" style="transform:rotate(90deg);">&nbsp;</i>
                                 </a>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
-                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <i class="fa fa-chevron-left"></i>
                                 </a>
                             </div>
                         <?php endif; ?>
@@ -214,3 +208,4 @@
             </div><!-- /.navbar-collapse -->
         </nav>
  </div>
+</div>

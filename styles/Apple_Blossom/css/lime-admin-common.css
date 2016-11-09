@@ -556,10 +556,12 @@ div.panel.disabled {
 }
 
 .side-menu {
-  position: absolute;
+  position: relative;
   width: 300px;
   padding: 0;
-  left: 0; }
+  left: 0; 
+  float:left;
+  }
   .side-menu .navbar {
     border: none;
     box-shadow: none; }
@@ -831,7 +833,9 @@ div.panel.disabled {
     margin-top: 70px;
     position: relative;
     animation: bodyslideout 300ms forwards;
-    transform-style: preserve-3d; }
+    transform-style: preserve-3d; 
+    float: left;
+    }
 
   .body-slide-in {
     animation: bodyslidein 300ms forwards;

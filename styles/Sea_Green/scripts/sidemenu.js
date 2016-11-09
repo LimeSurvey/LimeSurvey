@@ -1,14 +1,163 @@
+
+var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSelector, options){
+    
+    //define options, or standardized values
+    options = options || {};
+    options.fixedTopMargin = options.fixedTopMargin || $('#questiongroupbarid').height()+2;
+    options.baseWidth = options.baseWidth || 320;
+
+    var 
+    //define DOM Variables
+        oSideMenu   = $(sidemenuSelector),
+        oSideBody   = $(sideBodySelector),
+        oDragButton = $(dragButtonSelector),
+    
+    //define calculateble values
+        wWidth      = $('html').width(),
+        wHeight     = $('html').height(),
+        dHeight     = oSideBody.parent().height(),
+    
+    //define runtimevariables
+        offsetX     = 0,
+        offsetY     = 0,
+        position    = 0,
+
+//////define methods
+    //setter methods to set the items
+        setBody = function(newValue){
+            oSideBody.css({'margin-left': (newValue+10)+"px"})
+        },
+        setMenu = function(newValue){
+            oSideMenu.css({'width': newValue});
+        },
+        setDraggable = function(newValue){
+          //  oDragButton.css({'left': (newValue)+"px"})
+        },
+        collapseSidebar = function(){
+            return true;
+        },
+
+    //definer and mutators
+        defineOffset = function(oX,oY){
+            offsetX = oX;
+            offsetY = oY;
+        },
+
+    //utility and calculating methods
+        calculateValue = function(xClient){
+            var sidebarWidth = xClient+(oDragButton.width()-offsetX);
+            var sidebodyMargin = sidebarWidth+Math.floor(wWidth/120);
+            var buttonLeftTop = xClient-offsetX;
+            return {sidebar : sidebarWidth, body : sidebodyMargin, button: buttonLeftTop};
+        },
+        saveOffsetValue = function(offset){
+            try{
+                window.localStorage.setItem('ls_admin_view_sidemenu',offset);
+            } catch(e){}
+        },
+        setDivisionOn = function(xClient,save){
+            save = save || false;
+            var oValues = calculateValue(xClient);
+            setBody(oValues.body);
+            setMenu(oValues.sidebar);
+            setDraggable(oValues.button);
+            if(save){
+                saveOffsetValue(xClient);
+            }
+        },
+
+    //eventHandler
+        onDblClick = function(e){
+            setDivisionOn(options.baseWidth);
+            window.localStorage.setItem('ls_admin_view_sidemenu',null);
+        },
+        onDragStartMethod = function(e){
+            // console.log('dragstart triggered', e);
+            defineOffset(e.offsetX, e.offsetY);
+        },
+        onDragMethod = function(e){
+            // console.log('drag triggered', e);
+            position =  e.clientX;
+            setDivisionOn(position);
+        },
+        onDragEndMethod = function(e){
+            // console.log('dragend triggered', e);
+            position =  e.clientX;
+            setDivisionOn(position,true);
+            if(position <  wWidth/8 ){
+                collapseSidebar();
+            }
+        };
+
+    try{
+        var savedOffset = window.localStorage.getItem('ls_admin_view_sidemenu');
+    } catch(e){}
+
+    var startOffset = parseInt(savedOffset) || options.baseWidth;
+
+    setDivisionOn(startOffset);
+
+    oDragButton
+        .on('dblclick', onDblClick)
+        .on('dragstart', onDragStartMethod)
+        .on('drag', onDragMethod)
+        .on('dragend', onDragEndMethod);
+}
+
+var WindowBindings = function(){
+    var surveybar = $('.surveybar'),
+        sideBody = $('.side-body'),
+        sidemenu = $('#sideMenuContainer'),
+        upperContainer = $('#in_survey_common'),
+    
+    //calculated vars
+        maxHeight =  $(window).height() - $('#in_survey_common').offset().top - 10,
+    
+    //methods
+        //Stick the side menu and the survey bar to the top
+        onWindowScroll = function(e){
+            $toTop = (surveybar.offset().top - $(window).scrollTop());
+
+            if($toTop <= 0)
+            {
+                surveybar.addClass('navbar-fixed-top');
+                sidemenu.css({position:"fixed", top: "45px"});
+            }
+
+            if ($(window).scrollTop() <= 45)
+            {
+                surveybar.removeClass('navbar-fixed-top');
+                sidemenu.css({position:"absolute", top: "auto"});
+                sidemenu.removeClass('fixed-top');
+            }
+        },
+        //fixSizings
+        onWindowResize = function(){
+            maxHeight =  ($(window).height() - $('#in_survey_common').offset().top - 45);
+            sidemenu.css({'height': (maxHeight)+"px", 'overflow': 'auto' });
+            sidemenu.find('#fancytree').css({'max-height': (maxHeight/3)+"px", 'overflow': 'auto' });
+        }
+    onWindowResize();
+    $(window).on('scroll',onWindowScroll);
+    $(window).on('resize',onWindowResize);
+};
+
+
 /**
  * Side Menu
  */
+    
 $(document).ready(function(){
+   
+    new SideMenuMovement('#sideMenuContainer', '.side-body', '#scaleSidebar', {baseWidth: 320});
+    new WindowBindings();
+
     var close = $('#chevronClose');
-    var stretch = $('#chevronStretch');
+    var stretch = $('#scaleSidebar');
     var sideBody = $('.side-body');
     var sideMenu = $('#sideMenu');
     var absoluteWrapper = $('.absolute-wrapper');
     var sidemenusContainer = $('.sidemenuscontainer');
-    var accordionContainer = $('#accordion-container');
     var quickmenuContainer = $('#quick-menu-container');
 
     // Check if we have a right-to-left language
@@ -226,205 +375,9 @@ $(document).ready(function(){
             chevronChangeState('opened', 'stretched');
             enableChevrons();
     });
-
-    /**
-    * Stretch the accordion
-    */
-    jQuery(document).on('click', '.handleAccordion.opened', function(){
-        // Disable this feature for RTL for now
-        if (rtl) {
-            return;
-        }
-
-        $('.handleAccordion').addClass('disabled');
-
-        accordionContainer.css({
-            position: 'absolute',
-            right: 0,
-        });
-
-        accordionContainer.width(accordionContainer.width());
-        accordionContainer.height((sideBody.height()-50));
-
-        accordionContainer.animate(
-            {
-                width: '100%',
-            }, 500, function() {
-                $('.handleAccordion span').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
-                $('.handleAccordion').removeClass('opened').addClass('stretched');
-                $('.handleAccordion').removeClass('disabled');
-        });
-
-        // jQgrid is so jQgriding its jQgrid...
-        if($('#panelintegration').length){
-            $('#gbox_urlparams').width('90%');
-            $('#gview_urlparams').width('90%');
-            $('.ui-state-default.ui-jqgrid-hdiv').width('90%');
-            $('.ui-jqgrid-htable.table').width('90%');
-            $('.ui-jqgrid-labels th').width('14%');
-            $('.ui-jqgrid-bdiv').width('100%');
-            $('#urlparams').width('90%');
-            $('.jqgfirstrow').width('14%');
-            $('#pagerurlparams').width('90%');
-        }
-    });
-
-    /**
-    * Unstretched the accordion
-    */
-    jQuery(document).on('click', '.handleAccordion.stretched', function(){
-        $('.handleAccordion').addClass('disabled');
-        accordionContainer.animate(
-            {
-                width: '41.66666666666667%',// Bootstrap value for col-sm-5
-                //width: '33.33333333333333%', // Bootstrap value for col-sm-4
-            }, 500, function() {
-                $('.handleAccordion span').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-left');
-                $('.handleAccordion').removeClass('stretched').addClass('opened');
-                $('.handleAccordion').removeClass('disabled');
-
-                accordionContainer.css({
-                    position: 'static',
-                });
-
-        });
-    });
-
-    /**
-     * Adjust height of side body when opening the accordion (to push the footer)
-     */
-    $('#accordion').on('shown.bs.collapse', function () {
-        adjustSideBodyHeight($('#accordion'), 200, 0);
-    })
-
-    /**
-     * Unfix the side menu when opening question explorer
-     */
-     var $explorer = $('#explorer');
-     var $sidemenu  = $('#sideMenu');
-
-    function afterOpenExplorer() {
-
-        // If the side bar is fixed to top, we must unfix it first
-        if ( $sidemenu.hasClass('fixed-top'))
-        {
-         toTop = ( $(window).scrollTop() + 45 ); // 45px is the heigh of the top menu bar
-         $sidemenu.css({position:"absolute", top: toTop+"px"});
-        }
-        $sidemenu.addClass('exploring');
-
-        // Adjust height of side body when opening the sidemenu (to push the footer)
-        adjustSideBodyHeight($sidemenu, 0, 500); // 500ms is the time of the show question animation
-     }
-
-     if ( $("#open-explorer").length ) {
-        $('#explorer-lvl1').collapse({"toggle": true, 'parent': '#explorer'});
-        afterOpenExplorer();
-     }
-
-     if ( $("#open-questiongroup").length ) {
-         $gid = $("#open-questiongroup").data('gid');
-         $questionGroup = $('#questions-group-'+$gid);
-         $groupCaret = $('#caret-'+$gid);
-         $questionGroup.toggle(0);
-         $groupCaret.toggleClass('fa-caret-right');
-         $groupCaret.toggleClass('fa-caret-down');
-     }
-
-     $explorer.on('shown.bs.collapse', function () {
-         afterOpenExplorer();
-     });
-
-     $explorer.on('hidden.bs.collapse', function(){
-         $sidemenu.removeClass('exploring');
-     });
-
-     // Opening the questions list of the group
-     $('.explorer-group').click(function(){
-         $that = $(this);
-         $gid = $that.data('question-group-id');
-         $questionGroup = $('#questions-group-'+$gid);
-         $groupCaret = $('#caret-'+$gid);
-         $questionGroup.toggle(500);
-         $groupCaret.toggleClass('fa-caret-right');
-         $groupCaret.toggleClass('fa-caret-down');
-         adjustSideBodyHeight($sidemenu, 0, 500); //500 ms for the open animation to complete
-         return false;
-     });
-
-
-          var windowswidth = window.innerWidth;
-          var sideBodyWidth = sideBody.width();
-          $( window ).resize(function() {
-              sideBody.width( sideBodyWidth - (windowswidth - window.innerWidth) );
-              windowswidth = window.innerWidth;
-              sideBodyWidth = sideBody.width();
-
-              if( sideBodyWidth < 1420 )
-              {
-                  if(accordionContainer.hasClass('col-md-6'))
-                  {
-                      $('#accordion-container').removeClass('col-md-6').addClass('col-md-12');
-                  }
-              }
-              else
-              {
-                 if(accordionContainer.hasClass('col-md-12'))
-                 {
-                    $('#accordion-container').removeClass('col-md-12').addClass('col-md-6');
-                 }
-              }
-          });
-
-
 });
 
 
-/**
- * Stick the side menu and the survey bar to the top
- */
-$(function()
-{
-    if ( $('.surveybar').length ) {
-        var surveybar = $('.surveybar');
-        var sidemenu = $('.side-menu');
-
-        $(window).scroll(function() {
-            $toTop = (surveybar.offset().top - $(window).scrollTop());
-
-            if($toTop <= 0)
-            {
-                surveybar.addClass('navbar-fixed-top');
-
-                // We fix the side menu only if not exploring the questions
-                if( ! sidemenu.hasClass('exploring'))
-                {
-                    sidemenu.css({position:"fixed", top: "45px"}); // 45px is the height of menu bar
-                    sidemenu.addClass('fixed-top');
-                }
-            }
-
-            if ($(window).scrollTop() <= 45)
-            {
-                surveybar.removeClass('navbar-fixed-top');
-                sidemenu.css({position:"absolute", top: "auto"});
-                sidemenu.removeClass('fixed-top');
-            }
-
-            // When exploring questions, we need to be sure that no empty white space will left on top of the side bar
-            if (sidemenu.hasClass('exploring'))
-            {
-                $sideMenutoTop = (sidemenu.offset().top - $(window).scrollTop());
-
-                if ($sideMenutoTop > 0 && surveybar.hasClass('navbar-fixed-top') )
-                {
-                    toTop = ( $(window).scrollTop() + 45 ); // 45px is the heigh of the top menu bar
-                    sidemenu.css({position:"absolute", top: toTop+"px"});
-                }
-            }
-        });
-    }
-});
 
 var drop_delete_fn = function () {};
 
