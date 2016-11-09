@@ -1112,9 +1112,13 @@ class SurveyRuntimeHelper {
             return $aReplacement;
         }
         $iQid=$aQuestionQanda[4];
+        /* Need actual EM status */
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
+        /* Allow Question Attribute to update some part */
+        $aQuestionAttributes = getQuestionAttributeValues($iQid);
+
         $iSurveyId=Yii::app()->getConfig('surveyID');// Or : by SGQA of question ? by Question::model($iQid)->sid;
-        $oSurveyId=Survey::model()->findByPk($iSurveyId);
+        //~ $oSurveyId=Survey::model()->findByPk($iSurveyId); // Not used since 2.50
         $sType=$lemQuestionInfo['info']['type'];
 
         // Core value : not replaced
@@ -1125,9 +1129,9 @@ class SurveyRuntimeHelper {
         $sCode=$aQuestionQanda[5];
         $iNumber=$aQuestionQanda[0]['number'];
 
+        /* QUESTION_CODE + QUESTION_NUMBER */
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
         $aSurveyinfo = getSurveyInfo($iSurveyId);
-
         // Check global setting to see if survey level setting should be applied
         if($showqnumcode_global_ == 'choose') { // Use survey level settings
             $showqnumcode_ = $aSurveyinfo['showqnumcode']; //B, N, C, or X
@@ -1164,13 +1168,9 @@ class SurveyRuntimeHelper {
         // Core value : user text
         $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];
         $aReplacement['QUESTIONHELP']=$lemQuestionInfo['info']['help'];// User help
-        // To be moved in a extra plugin : QUESTIONHELP img adding
-        $sTemplateDir=Template::model()->getTemplatePath($oSurveyId->template);
-        $sTemplateUrl=Template::model()->getTemplateURL($oSurveyId->template);
         if(flattenText($aReplacement['QUESTIONHELP'], true,true) != '')
         {
             $aReplacement['QUESTIONHELP']= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/questionhelp', array('questionHelp'=>$aReplacement['QUESTIONHELP']), true);;
-
         }
         // Core value :the classes
         $aQuestionClass=array(
@@ -1182,17 +1182,17 @@ class SurveyRuntimeHelper {
             $aQuestionClass[]='ls-unrelevant';
             $aQuestionClass[]='ls-hidden';
         }
-        if ($lemQuestionInfo['hidden'])
-        {
+        if ($lemQuestionInfo['hidden']){ /* Can use aQuestionAttributes too */
+            $aQuestionClass[]='ls-hidden-attribute';/* another string ? */
             $aQuestionClass[]='ls-hidden';
         }
-        //get additional question classes from question attribute
-        $aQuestionAttributes = getQuestionAttributeValues($aQuestionQanda[4]);
-
         //add additional classes
-        if(isset($aQuestionAttributes['cssclass']))
-        {
-            $aQuestionClass[]=htmlentities($aQuestionAttributes['cssclass']);
+        if(isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass']!=""){
+            /* Got to use static expression */
+            $emCssClass=trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), false, 1, 1, false, false, true));/* static var is the lmast one ...*/
+            if($emCssClass!=""){
+                $aQuestionClass[]=Chtml::encode($emCssClass);
+            }
         }
         $aReplacement['QUESTION_CLASS'] =implode(" ",$aQuestionClass);
 
