@@ -1215,6 +1215,7 @@ function do_date($ia)
             'qid'                    => $ia[0],
             'hideCalendar'           => $hideCalendar
         ), true);
+        App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]});",CClientScript::POS_END);
     }
     $inputnames[]=$ia[1];
 

@@ -46,29 +46,29 @@
                     'format' => $dateformatdetailsjs,
                     'allowInputToggle' =>true,
                     'showClear' => true,
-                            'tooltips' => array(
-                                'clear'=> gT('Clear selection'),
-                                'prevMonth'=> gT('Previous month'),
-                                'nextMonth'=> gT('Next month'),
-                                'selectYear'=> gT('Select year'),
-                                'prevYear'=> gT('Previous year'),
-                                'nextYear'=> gT('Next year'),
-                                'selectDecade'=> gT('Select decade'),
-                                'prevDecade'=> gT('Previous decade'),
-                                'nextDecade'=> gT('Next decade'),
-                                'prevCentury'=> gT('Previous century'),
-                                'nextCentury'=> gT('Next century'),
-                                'selectTime'=> gT('Select time')
-                            ),
+                    'tooltips' => array(
+                        'clear'=> gT('Clear selection'),
+                        'prevMonth'=> gT('Previous month'),
+                        'nextMonth'=> gT('Next month'),
+                        'selectYear'=> gT('Select year'),
+                        'prevYear'=> gT('Previous year'),
+                        'nextYear'=> gT('Next year'),
+                        'selectDecade'=> gT('Select decade'),
+                        'prevDecade'=> gT('Previous decade'),
+                        'nextDecade'=> gT('Next decade'),
+                        'prevCentury'=> gT('Previous century'),
+                        'nextCentury'=> gT('Next century'),
+                        'selectTime'=> gT('Select time')
+                    ),
                     'locale' => convertLStoDateTimePickerLocale($language),
-
                     /**
                      * $maxdate and $mindate can be expressions from EM. In that case, set them to 1900.
                      * The expressions will be evaluated dynamically later (see divs at bottom of this page).
                      */
                     'maxDate' => $maxdate[0] == '{' ? '1900' : $maxdate,
                     'minDate' => $mindate[0] == '{' ? '1900' : $mindate,
-                    'sideBySide' => true
+                    'sideBySide' => true,
+                    'keepOpen'=> true,
                 ),
                 'htmlOptions' => array(
                     'onkeypress' => $goodchars,
@@ -113,11 +113,3 @@
 <input type='hidden' class="namecontainer" data-name="<?php echo $qid; ?>" />
 
 <!-- end of answer -->
-
-<script>
-$(document).ready(function() {
-    $('#answer' + '<?php echo $name; ?>' + '_datetimepicker').on('dp.show', function(ev) {
-        setPickerOptions('<?php echo $name; ?>');
-    });
-});
-</script>

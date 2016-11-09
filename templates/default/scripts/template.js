@@ -1,8 +1,8 @@
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
+ * License: GNU/GPL License v3 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
@@ -13,35 +13,26 @@
  * Description: Javascript file for templates. Put JS-functions for your template here.
  *
  *
- * $Id:$
  */
 
 
-/*
+/**
  * The function focusFirst puts the Focus on the first non-hidden element in the Survey.
- *
  * Normally this is the first input field (the first answer).
  */
 function focusFirst(Event)
 {
     $('#limesurvey :input:visible:enabled:first').focus();
 }
-/*
- * The focusFirst function is added to the eventlistener, when the page is loaded.
- *
- * This can be used to start other functions on pageload as well. Just put it inside the 'ready' function block
+
+/**
+ * Code included inside this will only run once the page Document Object Model (DOM) is ready for JavaScript code to execute
+ * @see https://learn.jquery.com/using-jquery-core/document-ready/
  */
-
-/* Uncomment below if you want to use the focusFirst function */
-/*
-$(document).ready(function(){
-    focusFirst();
-});
-*/
-
-
 $(document).ready(function()
 {
+    /* Uncomment below if you want to use the focusFirst function */
+    //focusFirst();
     /* Some function are launched in endpage.pstpl */
     hideEmptyPart();
     addHoverColumn();
@@ -87,15 +78,17 @@ $(document).ready(function()
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
-
-
 });
+/**
+ * Code included inside this will run each time windows is resized
+ * @see https://api.jquery.com/resize/
+ */
 $(window).resize(function () {
     fixBodyPadding();
 });
-//~ /**
- //~ * showStartPopups : replace core function : allow HTML and use it.
- //~ */
+/**
+ * showStartPopups : replace core function : allow HTML and use it.
+ */
 function showStartPopups(){
     if(LSvar.showpopup && $(LSvar.startPopups).length){
         startPopup=LSvar.startPopups.map(function(text) {
@@ -105,13 +98,13 @@ function showStartPopups(){
         $("#bootstrap-alert-box-modal").modal('show');
     }
 }
-
+/**
+ * Replace all existing alert default javascript function
+ */
 window.alert = function(message, title) {
-    $("#bootstrap-alert-box-modal .modal-header h4").text(title || "");
-    $("#bootstrap-alert-box-modal .modal-body p").text(message || "");
-
-    $(document).ready(function()
-    {
+    $(function() {
+        $("#bootstrap-alert-box-modal .modal-header .h4").text(title || "");
+        $("#bootstrap-alert-box-modal .modal-body").html("<p>"+message+"</p>" || "");
         $("#bootstrap-alert-box-modal").modal('show');
     });
 };
@@ -220,7 +213,6 @@ function hideQuestionWithRelevanceSubQuestion(){
     $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
-        console.log(data.style);
         if(data.style=='hidden'){
             if($(this).closest("[id^='question']").find("[id^='javatbd']:visible").length==0){
                 $(this).closest("[id^='question']").addClass("ls-hidden");// ls-hidden only is used only for Equation question type actually (but think must fix and use another class)

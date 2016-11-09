@@ -1,31 +1,25 @@
-$(document).ready(function(){
-    // dropdown dates
-    $('.namecontainer').each(function(){
-        var name = $(this).data('name');
-        doPopupDate(name);
-    });
-});
-
 /**
  * Function to launch timepicker in question id
  */
 function doPopupDate(qId) {
 
-    if($("#question"+qId+" .popupdate").length){
-        var basename = $("#question"+qId+" .popupdate").attr("id").substr(6);
+    if($("#question"+qId+" .date-item").length){
+        $("#question"+qId+" .glyphicon-calendar").removeClass("glyphicon glyphicon-calendar").addClass("fa fa-calendar");
+        var basename = $("#question"+qId+" .date-item .form-control").attr("id").substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
-        var $dp = $("#question"+qId+" .popupdate").datetimepicker({
-            changeYear: true,
-            changeMonth: true,
-            defaultDate: +0,
-            // TODO: add support for minute interval, different month identifiers and times without minutes
-            firstDay: "1",
-            duration: 'fast',
-            // set more options at "runtime"
-            show: setPickerOptions,
-            onShow: setPickerOptions,
-        }, $.datepicker.regional[language]);
+        /* We can set options after */
+        $('#answer'+basename+'_datetimepicker').data("DateTimePicker").icons({
+            time: 'fa fa-clock-o',
+            date: 'fa fa-calendar',
+            up: 'fa fa-chevron-up',
+            down: 'fa fa-chevron-down',
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-calendar-check-o',
+            clear: 'fa fa-trash-o',
+            close: 'fa fa-closee'
+        });
     }
 
     $("#question"+qId).find('div.input-group.date').on('dp.change', function(){
