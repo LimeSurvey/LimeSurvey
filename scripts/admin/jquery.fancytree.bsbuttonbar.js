@@ -46,7 +46,8 @@
              },
              renderButtons = function(node){
                 var baseButton = $('<a role="button"></a>)'),
-                    buttonContainer = $('<div class="btn-group pull-right clearfix fancytree-innerhtml-buttonbar" role="group"></div>');
+                    buttonContainer = $('<div class="btn-group pull-right fancytree-innerhtml-buttonbar" role="group"></div>'),
+                    container = $('<div class="row text-right" style="margin:0;padding:0;height:15px;"></div>');
 
                 //console.log(node.data.buttons);
                 $.each( node.data.buttonlinks, function( key, button ){
@@ -98,7 +99,8 @@
                     }
 
                 } );
-                $(node.span).find('.fancytree-innerhtml-container').append(buttonContainer);
+                container.append(buttonContainer);
+                $(node.span).find('.fancytree-innerhtml-container').prepend(container);
                 
              };
              this._superApply(arguments);

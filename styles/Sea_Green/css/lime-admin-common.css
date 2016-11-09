@@ -555,11 +555,23 @@ div.panel.disabled {
   height: 100%;
 }
 
-.side-menu {
-  position: absolute;
+.sidemenu-container {
+  position:fixed;
   width: 300px;
-  padding: 0;
-  left: 0; }
+  float:left; 
+  overflow:auto;
+  height:100vh;
+  clear: left; 
+  background: #fff;
+  z-index:100;
+}
+.side-menu {
+  position: relative;
+  width: 100%;
+  padding: 2px;
+  height:100%;
+  margin:0;
+  }
   .side-menu #quickadd-button-bar {
     margin: 0;
     padding: 0;
@@ -819,7 +831,7 @@ div.panel.disabled {
 
 .side-body {
   min-height: 800px;
-  margin-left: 320px;
+  margin-left: 310px;
 }
 
 .side-body-margin {
