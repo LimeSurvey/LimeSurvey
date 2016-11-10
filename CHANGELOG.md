@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## Unreleased
+
+### Feature
+- Set secure cookies by default is connexion is secure
+
 ## [1.1.0] - 2016-11-10
 
 ### Fix

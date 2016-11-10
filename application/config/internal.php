@@ -47,13 +47,15 @@ $internalConfig = array(
         ),
         'request' => array(
             'class'=>'LSHttpRequest',
+            'enableCsrfValidation'=>true,    // CSRF protection
+            'enableCookieValidation'=>false,   // Enable to activate cookie protection
+            'csrfCookie' => array(
+                'secure' => (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off'), // @see session
+            ),
             'noCsrfValidationRoutes'=>array(
                 'remotecontrol',
                 'plugins/unsecure',
             ),
-
-            'enableCsrfValidation'=>true,    // CSRF protection
-            'enableCookieValidation'=>false   // Enable to activate cookie protection
         ),
         'user' => array(
             'class' => 'LSWebUser',
@@ -87,6 +89,8 @@ $internalConfig = array(
         'session' => array(
             'cookieParams' => array(
                 'httponly' => true,
+                // Set secure if needed , some dumb server need || $_SERVER['SERVER_PORT'] == 443 . See @link http://stackoverflow.com/a/2886224/2239406
+                'secure'=>(!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off'),
             ),
         ),
         'messages' => array(
