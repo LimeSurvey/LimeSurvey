@@ -6617,6 +6617,7 @@
             /**
              * Control value against value from survey : see #11611
              */
+            $sgqas = explode('|',$LEM->qid2code[$qid]); /* Must remove all session alert, even if unrelevant or hidden */
             foreach($sgqas as $sgqa)
             {
                 $validityString=self::getValidityString($sgqa);
