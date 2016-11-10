@@ -111,13 +111,15 @@ $internalConfig = array(
 
         'request' => array(
             'class'=>'LSHttpRequest',
+            'enableCsrfValidation'=>true,    // CSRF protection
+            'enableCookieValidation'=>false   // Enable to activate cookie protection
             'noCsrfValidationRoutes'=>array(
                 'remotecontrol',
                 'plugins/unsecure',
             ),
-
-            'enableCsrfValidation'=>true,    // CSRF protection
-            'enableCookieValidation'=>false   // Enable to activate cookie protection
+            'csrfCookie' => array(
+                'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)
+            ),
         ),
         'user' => array(
             'class' => 'LSWebUser',
@@ -146,7 +148,7 @@ $internalConfig = array(
         'session' => array(
             'cookieParams' => array(
                 'httponly' => true,
-                'secure'=> isset($_SERVER['HTTPS']) && ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)
+                'secure'=> ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)
             ),
         ),
         'messages' => array(
