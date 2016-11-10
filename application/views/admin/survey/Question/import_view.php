@@ -20,8 +20,19 @@
                             <li><?php echo gT("Label sets") . ": " . $aImportResults['labelsets'] . " (" . $aImportResults['labels'] ?>)</li>
                         <?php endif;?>
                         <li><?php echo gT("Question attributes:") . $aImportResults['question_attributes'] ?></li>
-                    </ul>                    
+                    </ul>
                 </p>
+                <?php if (!empty($aImportResults['importwarnings'])): ?>
+                    <h2 class="warning"><?php eT("Warnings");?>:</h2>
+                    <ul  class="list-unstyled">
+                        <?php
+                            foreach ($aImportResults['importwarnings'] as $warning)
+                            { ?>
+                            <li><?php echo $warning; ?></li>
+                            <?php
+                        } ?>
+                    </ul>
+                <?php endif; ?>
                 <p class="text-info"><?php eT("Question import is complete.") ?></p>
                 <p>
                     <a href="<?php echo $this->createUrl('admin/questions/sa/view/surveyid/' . $surveyid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>"  class="btn btn-default btn-lg" /><?php eT("Go to question") ?></a>
@@ -29,4 +40,4 @@
             </div>
         </div>
     </div>
-</div>            
+</div>

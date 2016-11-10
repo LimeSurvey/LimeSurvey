@@ -410,14 +410,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         {
             $insertdata[(string)$key]=(string)$value;
         }
-        if ($options['autorename'])
-        {
-            // Check if code already exists
-            while (Question::model()->countByAttributes(array('title'=>$insertdata['title'],'sid'=>$iNewSID))>0)
-            {
-                $insertdata['title']=randomChars(5);
-            }
-        }
+
         $iOldSID=$insertdata['sid'];
         $insertdata['sid']=$iNewSID;
         $insertdata['gid']=$newgid;
@@ -434,21 +427,29 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
             $insertdata['qid']=$aQIDReplacements[$oldqid];
         }
 
-        $ques = new Question;
-        if ($insertdata)
-            XSSFilterArray($insertdata);
-        foreach ($insertdata as $k => $v)
-            $ques->$k = $v;
-        $result = $ques->save();
-        if (!$result)
+        $oQuestion = new Question('import');
+        $oQuestion->setAttributes($insertdata, false);
+        if(!$oQuestion->validate(array('title')) && $options['autorename']){
+            if(isset($sNewTitle)){
+                $oQuestion->title=$sNewTitle;
+            }else{
+                $sOldTitle=$oQuestion->title;
+                $oQuestion->title=$sNewTitle=$oQuestion->getNewTitle();
+                if(!$sNewTitle){
+                    $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
+                    return $results;
+                }
+                $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
+            }
+        }
+        if (!$oQuestion->save())
         {
-            $results['fatalerror'] = CHtml::errorSummary($ques,gT("The question could not be imported for the following reasons:"));
+            $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
             return $results;
         }
         if (!isset($aQIDReplacements[$oldqid]))
         {
-            $newqid=getLastInsertID($ques->tableName());
-            $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
+            $newqid=$aQIDReplacements[$oldqid]=$oQuestion->qid;
         }
     }
 
