@@ -27,7 +27,7 @@
             <div class="ls-input-group">
         <?php endif; ?>
             <?php if ($prefix != ''): ?>
-                <div class="ls-input-group-extra prefix-text prefix text-right">
+                <div class="ls-input-group-extra prefix-text prefix">
                     <?php echo $prefix; ?>
                 </div>
             <?php endif; ?>
@@ -42,7 +42,7 @@
                 <?php echo ($numbersonly)? "data-number='{$numbersonly}'":""; ?>
                 />
             <?php if ($suffix != ''): ?>
-                <div class="ls-input-group-extra suffix-text suffix text-right">
+                <div class="ls-input-group-extra suffix-text suffix">
                     <?php echo $suffix; ?>
                 </div>
             <?php endif; ?>

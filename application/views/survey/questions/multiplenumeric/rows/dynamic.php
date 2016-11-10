@@ -17,7 +17,7 @@
         </div>
         <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
             <?php if ($prefix != ''): ?>
-                <div class="ls-input-group-extra prefix-text prefix text-right">
+                <div class="ls-input-group-extra prefix-text prefix">
                     <?php echo $prefix; ?>
                 </div>
             <?php endif; ?>
@@ -25,7 +25,7 @@
                 {<?php echo $sumRemainingEqn;?>}
             </div>
             <?php if ($suffix != ''): ?>
-                <div class="ls-input-group-extra suffix-text suffix text-left">
+                <div class="ls-input-group-extra suffix-text suffix">
                     <?php echo $suffix; ?>
                 </div>
             <?php endif; ?>
@@ -40,7 +40,7 @@
         </div>
        <div class="ls-input-group col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
             <?php if ($prefix != ''): ?>
-                <div class="ls-input-group-extra prefix-text prefix text-right">
+                <div class="ls-input-group-extra prefix-text prefix">
                     <?php echo $prefix; ?>
                 </div>
             <?php endif; ?>
@@ -48,7 +48,7 @@
                 {<?php echo $sumEqn; ?>}
             </div>
             <?php if ($suffix != ''): ?>
-                <div class="ls-input-group-extra suffix-text suffix text-left">
+                <div class="ls-input-group-extra suffix-text suffix">
                     <?php echo $suffix; ?>
                 </div>
             <?php endif; ?>

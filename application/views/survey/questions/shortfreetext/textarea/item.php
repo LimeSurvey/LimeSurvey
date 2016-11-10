@@ -29,7 +29,7 @@
         <?php endif; ?>
             <!-- Prefix -->
             <?php if ($prefix !== ''): ?>
-                <div class='ls-input-group-extra prefix-text prefix text-right'><?php echo $prefix; ?></div>
+                <div class='ls-input-group-extra prefix-text prefix'><?php echo $prefix; ?></div>
             <?php endif; ?>
 
             <textarea
@@ -43,7 +43,7 @@
 
             <!-- Suffix -->
             <?php if ($suffix !== ''): ?>
-                <div class='ls-input-group-extra suffix-text suffix text-left'><?php echo $suffix; ?></div>
+                <div class='ls-input-group-extra suffix-text suffix'><?php echo $suffix; ?></div>
             <?php endif; ?>
         <?php if ($prefix !== '' || $suffix !== ''): ?>
             </div>
