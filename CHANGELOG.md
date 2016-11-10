@@ -5,6 +5,10 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ### Fix
 - Table in reponse view and response edit can take a big width and are unusuable
+- readonly for readonly attribute
+
+### Feature
+- Allow self signed or invalid TLS/SSL smtp server (with ssl_allow_self_signed in config)
 
 ## [1.0.28] - 2016-10-23
 

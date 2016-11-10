@@ -4063,6 +4063,17 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             break;
         case "smtp":
             $mail->IsSMTP();
+            if ($emailsmtpssl==''){
+                $mail->SMTPAutoTLS = false;
+            }elseif(Yii::app()->getConfig('ssl_allow_self_signed')){
+                $mail->SMTPOptions = array(
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+            }
             if ($emailsmtpdebug>0)
             {
                 $mail->SMTPDebug = $emailsmtpdebug;
