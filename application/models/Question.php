@@ -831,9 +831,10 @@ class Question extends LSActiveRecord
 
     /**
      * Get an new title/code for a question
+     * @param integer|string $index base for question code (exemple : inde of question when survey import)
      * @return string|null : new title, null if impossible
      */
-    public function getNewTitle()
+    public function getNewTitle($index=0)
     {
         $sOldTitle=$this->title;
         if($this->validate(array('title'))){
@@ -849,16 +850,7 @@ class Question extends LSActiveRecord
         $attempts = 0;
         while (!$this->validate(array('title')))
         {
-            if (!isset($index))
-            {
-                $index = 0;
-                $rand = mt_rand(0, 1024);
-            }
-            else
-            {
-                $index++;
-            }
-            $sNewTitle='r' . $rand  . 'q' . $index;
+            $sNewTitle= 'q' . $index.'r' . $rand ;
             $this->title = $sNewTitle;
             $attempts++;
             if ($attempts > 10)
