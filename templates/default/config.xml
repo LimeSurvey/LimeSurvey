@@ -15,7 +15,8 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>1.0</version>
+        <version>2.0</version>
+        <apiVersion>3</apiVersion>
         <description>Default LimeSurvey Template.</description>
         <last_update>2016-11-07 23:59:00</last_update>
     </metadatas>
@@ -110,7 +111,7 @@
         <packages>
             <package>jqueryui</package>
             <package>jquery-touch-punch</package>
-            <!-- Add the limesurvey needed package. Without : no backwards-compatible for minor version -->
+            <package>fontawesome</package>
             <package>limesurvey-public</package>
         </packages>
     </engine>

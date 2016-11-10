@@ -31,7 +31,6 @@ if (!headers_sent())
 <?php
     App()->clientScript->registerScript("nojsReplace","(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);",CClientScript::POS_HEAD);
     $oTemplate = Template::model()->getInstance($this->sTemplate);
-    App()->getClientScript()->registerPackage('fontawesome');
     if($oTemplate->cssFramework == 'bootstrap')
     {
         Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');

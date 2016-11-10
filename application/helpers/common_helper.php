@@ -5636,7 +5636,6 @@ function getHeader($meta = false)
     {
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
-    App()->getClientScript()->registerPackage('fontawesome');
     $header = "<!DOCTYPE html>\n";
     $class = "no-js $languagecode";
     $header .= "<html lang=\"{$languagecode}\"";

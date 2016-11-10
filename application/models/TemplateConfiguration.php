@@ -25,6 +25,7 @@ class TemplateConfiguration extends CFormModel
     public $sTemplateName='';                   // The template name
     public $iSurveyId='';                       // The current Survey Id. It can be void. It's use only to retreive the current template of a given survey
     public $config;                             // Will contain the config.xml
+    public $apiVersion;                         // Version of the LS API when created
 
     public $pstplPath;                           // Path of the pstpl files
     public $viewPath;                           // Path of the views files (php files to replace existing core views)
@@ -93,7 +94,9 @@ class TemplateConfiguration extends CFormModel
             $this->sTemplateName = 'default';
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-            setGlobalSetting('defaulttemplate', 'default');
+            if(!$this->iSurveyId){
+                setGlobalSetting('defaulttemplate', 'default');
+            }
         }
 
         // If the template don't have a config file (maybe it has been deleted, or whatever),
@@ -120,6 +123,7 @@ class TemplateConfiguration extends CFormModel
         }
 
 
+
         //////////////////////
         // Config file loading
 
@@ -132,13 +136,18 @@ class TemplateConfiguration extends CFormModel
 
         // Template configuration
         // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
+        $this->apiVersion               = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion:0;
+
         $this->pstplPath                 = (isset($this->config->engine->pstpldirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR                            : $this->path;
         $this->viewPath                 = (isset($this->config->engine->viewdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR                            : '';
 
         $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                                                 : '';
         $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
-        $this->packages                 = (isset($this->config->engine->packages->package))        ? $this->config->engine->packages->package                                                                             : array();
+        $this->packages                 = (isset($this->config->engine->packages->package))        ? (array) $this->config->engine->packages->package                                                                             : array();
+
+        /* Add options/package according to apiVersion */
+        $this->fixTemplateByApi();
 
         // overwrite_question_views accept different values : "true" or "yes"
         $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
@@ -261,4 +270,31 @@ class TemplateConfiguration extends CFormModel
         return Template::isStandardTemplate($this->sTemplateName);
     }
 
+    /**
+     * Fix template accorfing to apiVersion
+     */
+    private function fixTemplateByApi()
+    {
+        if($this->apiVersion<3){
+            $this->packages[]= 'fontawesome';
+            $this->packages[]= 'limesurvey-public';
+            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl")){
+                $messagePstpl  =  "<div id='{MESSAGEID}-wrapper'>\n"
+                                . "    {ERROR}\n"
+                                . "    <div class='{MESSAGEID}-text'>{MESSAGE}</div>\n"
+                                . "    {URL}"
+                                . "</div>";
+                file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl",$messagePstpl);
+            }
+            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl")){
+                $formTemplate  =  "<div class='{FORMID}-page'>\n"
+                                . "    <div class='form-heading'>{FORMHEADING}</div>\n"
+                                . "    {FORMMESSAGE}\n"
+                                . "    {FORMERROR}\n"
+                                . "    <div class='form-{FORMID}'>{FORM}</div>\n"
+                                . "</div>";
+                file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl",$formTemplate);
+            }
+        }
+    }
 }
