@@ -850,6 +850,7 @@ class Question extends LSActiveRecord
         $attempts = 0;
         while (!$this->validate(array('title')))
         {
+            $rand = mt_rand(0, 1024);
             $sNewTitle= 'q' . $index.'r' . $rand ;
             $this->title = $sNewTitle;
             $attempts++;
