@@ -235,7 +235,7 @@ class questions extends Survey_Common_Action
                                    href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$surveyid.'">'
                                    .gT("Return to question list").'</a></p>';
                 $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
-                die();
+                App()->end();
             }
 
             unlink($sFullFilepath);

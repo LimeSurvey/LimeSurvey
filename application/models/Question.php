@@ -829,7 +829,39 @@ class Question extends LSActiveRecord
         return $sIcon;
     }
 
-
+    /**
+     * Get an new title/code for a question
+     * @param integer|string $index base for question code (exemple : inde of question when survey import)
+     * @return string|null : new title, null if impossible
+     */
+    public function getNewTitle($index=0)
+    {
+        $sOldTitle=$this->title;
+        if($this->validate(array('title'))){
+            return $sOldTitle;
+        }
+        /* Maybe it's an old invalid title : try to fix it */
+        $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+        if (is_numeric(substr($sNewTitle,0,1)))
+        {
+            $sNewTitle='q' . $sNewTitle;
+        }
+        /* Maybe there are another question with same title try to fix it 10 times */
+        $attempts = 0;
+        while (!$this->validate(array('title')))
+        {
+            $rand = mt_rand(0, 1024);
+            $sNewTitle= 'q' . $index.'r' . $rand ;
+            $this->title = $sNewTitle;
+            $attempts++;
+            if ($attempts > 10)
+            {
+                $this->addError('title', 'Failed to resolve question code problems after 10 attempts.');
+                return null;
+            }
+        }
+        return $sNewTitle;
+    }
 
     public function search()
     {
@@ -959,4 +991,5 @@ class Question extends LSActiveRecord
         ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
         ." AND parent_qid=0")->read();
     }
+
 }
