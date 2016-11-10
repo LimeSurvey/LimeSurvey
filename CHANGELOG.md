@@ -1,16 +1,13 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## Unreleased
-
-### Feature
-- Set secure cookies by default is connexion is secure
 
 ## [1.1.0] - 2016-11-10
 
 ### Fix
 - Table in reponse view and response edit can take a big width and are unusuable
 - readonly for readonly attribute
+- Set secure cookies by default is connexion is secure
 
 ### Feature
 - Allow self signed or invalid TLS/SSL smtp server (with ssl_allow_self_signed in config)
