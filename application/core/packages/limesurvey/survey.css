@@ -58,13 +58,17 @@
 @media (max-width: 768px) {
 .ls-answers .text-right,.ls-answers .text-left {text-align:center;}
 }
-/* ls-input-group : near same behaviour than BS input-group / input-group-addon */
-/* BUT : only with big screen : see @link https://bugs.limesurvey.org/view.php?id=11882 */
+
+/**
+ * .ls-input-group (prefix/sufix): near same behaviour than BS input-group / input-group-addon */
+/* BUT : only with big screen : see @link https://bugs.limesurvey.org/view.php?id=11882
+ * Add .suffix-prefix-force in question to force with little screen too
+ **/
 /* some can be out of media part */
-  .ls-input-group {
-      border-collapse: separate;
-      position: relative;
-  }
+.ls-input-group {
+    border-collapse: separate;
+    position: relative;
+}
 @media (min-width: 768px) {
   .ls-input-group {
       display: table;
@@ -82,13 +86,8 @@
     white-space: nowrap;
     vertical-align: middle;
     display: table-cell;
-  }
-  .ls-input-group-extra {
     padding: 0.6rem 1.2rem;
-    font-size: inherit;/* 1.4rem; BS use 10px for html and 14px for body */
-    font-weight: normal;
     line-height: 1;
-    border: 1px hidden transparent;
   }
   .ls-input-sized .ls-input-group-extra{width:initial}
   .ls-input-sized .ls-input-group{width:auto;max-width:100%;display:table;table-layout:fixed}
@@ -97,7 +96,26 @@
   .form-inline .ls-input-group .ls-input-group-extra{width: auto;white-space: initial;}
   .form-inline .ls-input-group {width: auto;white-space: initial;}
 }
-
+/* Specific class for forced */
+.suffix-prefix-force .ls-input-group {
+  display: table;
+}
+.suffix-prefix-force .ls-input-group  .form-control {
+  display: table-cell;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 2;
+}
+.dir-ltr .suffix-prefix-force .ls-input-group  .form-control {float: left;}
+.dir-rtl .suffix-prefix-force .ls-input-group  .form-control {float: right;}
+.suffix-prefix-force .ls-input-group-extra {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+    padding: 0.6rem 1.2rem;
+    line-height: 1;
+}
 
 
 
