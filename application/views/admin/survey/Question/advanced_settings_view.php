@@ -22,7 +22,7 @@
                 <?php
                     if ($aAttribute['readonly'] && $bIsActive)
                     {
-                        $readonly="disabled";
+                        $readonly="readonly";
                     }
                     else
                     {
