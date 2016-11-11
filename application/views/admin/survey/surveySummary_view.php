@@ -53,6 +53,13 @@ $surveyid = $surveyinfo['sid'];
                                 <?php eT('Set below if your questions are shown one at a time, group by group or all on one page.');?>
                             </div>
                         <?php endif;?>
+
+                        <?php if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+                                <strong><?php eT('This template is out of date.');?></strong> <?php eT('We can not guarantee optimum operation. It would be preferable to use a new template.');?>
+                            </div>
+                        <?php endif;?>
                     </div>
                 </div>
 

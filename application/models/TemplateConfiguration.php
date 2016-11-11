@@ -25,7 +25,10 @@ class TemplateConfiguration extends CFormModel
     public $sTemplateName='';                   // The template name
     public $iSurveyId='';                       // The current Survey Id. It can be void. It's use only to retreive the current template of a given survey
     public $config;                             // Will contain the config.xml
-    public $apiVersion;                         // Version of the LS API when created
+    /**
+     * @var integer : the actual api version. Must be private : disallow update
+     */
+    private $apiVersion;                        // Version of the LS API when created
 
     public $pstplPath;                           // Path of the pstpl files
     public $viewPath;                           // Path of the views files (php files to replace existing core views)
@@ -296,5 +299,13 @@ class TemplateConfiguration extends CFormModel
                 file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl",$formTemplate);
             }
         }
+    }
+
+    /**
+     * get the template API version
+     */
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
     }
 }

@@ -1346,6 +1346,7 @@ class templates extends Survey_Common_Action
         $aData['highlighter'] = $highlighter;
         $aData['screens'] = $screens;
         $aData['templatename'] = $templatename;
+        $aData['templateapiversion'] = $oEditedTemplate->getApiVersion();
         $aData['templates'] = $aAllTemplates;
         $aData['editfile'] = $editfile;
         $aData['screenname'] = $screenname;

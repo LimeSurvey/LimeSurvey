@@ -287,7 +287,17 @@
                 ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the copied template:")."', '".gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>');
             ?>
         </div>
-        <?php endif;?>
-
-
+    <?php endif;?>
+    <?php if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+            <div class="h4">
+                <span class="glyphicon glyphicon-info-sign" ></span>
+                <?php eT('This template is out of date.');?>
+            </div>
+            <?php
+                printf(gT("We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API"),intval(App()->getConfig("versionnumber")));
+            ?>
+        </div>
+    <?php endif;?>
 </div>

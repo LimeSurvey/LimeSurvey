@@ -12,7 +12,7 @@
  *150413
  */
 
-$config['versionnumber'] = '2.55.3 (develop)'; /* I don't found actually a better way to have : 'master verion + info it'a develop : ,someone have another idea ? */
+$config['versionnumber'] = '3.0.0 alpha (2.55.3 merged)'; /* I don't found actually a better way to have : 'master verion + info it'a develop : ,someone have another idea ? */
 $config['dbversionnumber'] = 261;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
