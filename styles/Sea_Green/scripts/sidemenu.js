@@ -5,6 +5,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
     options = options || {};
     options.fixedTopMargin = options.fixedTopMargin || $('#questiongroupbarid').height()+2;
     options.baseWidth = options.baseWidth || 320;
+    options.rtl = options.rtl || false;
 
     var 
     //define DOM Variables
@@ -25,7 +26,12 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
 //////define methods
     //setter methods to set the items
         setBody = function(newValue){
-            oSideBody.css({'margin-left': (newValue+10)+"px"})
+            if(options.rtl) {
+                oSideBody.css({'margin-right': (newValue+10)+"px"});
+            } else {
+                oSideBody.css({'margin-left': (newValue+10)+"px"});
+            }
+
         },
         setMenu = function(newValue){
             oSideMenu.css({'width': newValue});
@@ -33,8 +39,19 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         setDraggable = function(newValue){
           //  oDragButton.css({'left': (newValue)+"px"})
         },
-        collapseSidebar = function(){
-            return true;
+        collapseSidebar = function(position){
+            setDivisionOn(50,true);
+            if(oSideMenu.data('collapsed') != true){ 
+                oSideMenu.find('.sidemenuscontainer').css({'margin-left': '86px',});
+                oSideMenu.data('collapsed',true).css('overflow','hidden');
+            }
+        },
+        unCollapseSidebar = function(position){
+            setDivisionOn(position,true);
+            if(oSideMenu.data('collapsed') != false){
+                oSideMenu.find('.sidemenuscontainer').css({'margin-left': 'initial',});
+                oSideMenu.data('collapsed',false).css('overflow','initial');
+            }
         },
 
     //definer and mutators
@@ -45,9 +62,11 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
 
     //utility and calculating methods
         calculateValue = function(xClient){
-            var sidebarWidth = xClient+(oDragButton.width()-offsetX);
-            var sidebodyMargin = sidebarWidth+Math.floor(wWidth/120);
+
+            var sidebarWidth = xClient+(xClient>50 ? (50-offsetX) : 1);
+            var sidebodyMargin = sidebarWidth+Math.floor(wWidth/200);
             var buttonLeftTop = xClient-offsetX;
+
             return {sidebar : sidebarWidth, body : sidebodyMargin, button: buttonLeftTop};
         },
         saveOffsetValue = function(offset){
@@ -83,9 +102,10 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         onDragEndMethod = function(e){
             // console.log('dragend triggered', e);
             position =  e.clientX;
-            setDivisionOn(position,true);
             if(position <  wWidth/8 ){
-                collapseSidebar();
+                collapseSidebar(position);
+            } else {
+                unCollapseSidebar(position);
             }
         };
 
@@ -94,8 +114,12 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
     } catch(e){}
 
     var startOffset = parseInt(savedOffset) || options.baseWidth;
-
-    setDivisionOn(startOffset);
+    
+    if(startOffset <  wWidth/8 ){
+        collapseSidebar(position);
+    } else {
+        unCollapseSidebar(position);
+    }
 
     oDragButton
         .on('dblclick', onDblClick)
@@ -127,15 +151,14 @@ var WindowBindings = function(){
             if ($(window).scrollTop() <= 45)
             {
                 surveybar.removeClass('navbar-fixed-top');
-                sidemenu.css({position:"absolute", top: "auto"});
+                sidemenu.css({position:"absolute", top: "auto", 'height': ($(window).height() - 45)+"px"});
                 sidemenu.removeClass('fixed-top');
             }
         },
         //fixSizings
         onWindowResize = function(){
-            maxHeight =  ($(window).height() - $('#in_survey_common').offset().top - 45);
-            sidemenu.css({'height': (maxHeight)+"px", 'overflow': 'auto' });
-            sidemenu.find('#fancytree').css({'max-height': (maxHeight/3)+"px", 'overflow': 'auto' });
+            maxHeight =  ($(window).height() - $('#in_survey_common').offset().top -1);
+            sidemenu.find('#fancytree').css({'max-height': (maxHeight/4)+"px", 'overflow': 'auto' });
         }
     onWindowResize();
     $(window).on('scroll',onWindowScroll);

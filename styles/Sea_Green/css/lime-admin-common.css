@@ -555,6 +555,10 @@ div.panel.disabled {
   height: 100%;
 }
 
+#in_survey_common{
+  padding: 0 5px;
+}
+
 .sidemenu-container {
   position:fixed;
   width: 300px;
