@@ -78,8 +78,6 @@ class PluginManager extends Survey_Common_Action
     /**
      * Activate or deactivate a plugin
      *
-     * @param String $type activate/deactivate
-     * @param int $id Plugin id
      * @return void
      */
     public function changestate(){
