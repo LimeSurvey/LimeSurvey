@@ -37,6 +37,28 @@ CHANGE LOG
 
 
 
+Changes from  2.55.2 (build 161103) to 2.55.3 (build 161111) Nov 11 2016
+-Fixed issue #11872: Opening Central Participant Database returns 500 error for PHP 5.3 (Olle Haerstedt)
+-Fixed issue #11875: Added a form and csrf to the plugin activation/deactivation (markusfluer)
+-Fixed issue #11875: [security] XSS & SQL injection vulnerabilities in administration (Carsten Schmitz)
+-Fixed issue #11886: lsq file bug import (Denis Chenu)
+-Fixed issue: Email field too short when requesting new password (Carsten Schmitz)
+-Fixed issue: [security] If SSL is used CRSF cookies did not have secure flag (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+
 Changes from  2.55.1 (build 161026) to 2.55.2 (build 161103) Nov 3 2016
 -Fixed issue #11843: Error when filtering by a custom attribute in CPDB with MySQL (Olle Haerstedt)
 -Fixed issue #11844: Clicking 'Set Conditions' to enter conditions (Olle Haerstedt)
