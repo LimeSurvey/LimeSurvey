@@ -1,7 +1,7 @@
 
 <div id="question{QUESTION_ID}" class="question-wrapper {QUESTION_CLASS}">
     <div class="q-text">
-        <div class="label label-default pull-left">{QUESTION_NUMBER}</div> <div class="label label-primary pull-left">{QUESTION_CODE}</div>
+        <div class="label label-default pull-left question-code">{QUESTION_PRINT_CODE}</div>
         <div class="h3"><div class="mandatory pull-left">{QUESTION_MANDATORY}</div> {QUESTION_TEXT} </div>
         <div class="q-scenaria">{QUESTION_SCENARIO}</div>
         <div class="q-type-help">{QUESTION_TYPE_HELP}</div>

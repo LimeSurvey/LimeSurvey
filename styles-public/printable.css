@@ -21,6 +21,6 @@ height:1.4em;
 border:1px solid #000;
 margin:0 0.1em;
 }
-.form-control.input-textarea,.form-control.input-text,.form-control.input-rank{border:1px solid #000;margin:0.1em;}
+.form-control.print-control{border:1px solid #000;margin:0.1em;max-width:100%}
 .table{width:100%;table-layout:fixed}
-.form-control{max-width:100%}
+.print-control.input-other,.print-control.input-othercomment,.print-control.input-rank{display:inline-block}
