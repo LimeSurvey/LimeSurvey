@@ -843,13 +843,13 @@ function alternation($alternate = '' , $type = 'col')
     */
     if($type == 'row')// Row is sub question OR Y Axis subquestion : it must be column for array by column
     {
-        $odd  = 'ls-odd'; // should be row_odd
-        $even = 'ls-even'; // should be row_even
+        $odd  = 'ls-odd';
+        $even = 'ls-even';
     }
     else // cols is answers part OR X axis subquestion : it must the row in array by column
     {
-        $odd  = 'ls-col-odd';  // should be col_odd
-        $even = 'ls-col-even'; // should be col_even
+        $odd  = 'ls-col-odd';
+        $even = 'ls-col-even';
     };
     if($alternate == $odd)
     {
@@ -2529,6 +2529,7 @@ function buildLabelSetCheckSumArray()
 
 /**
 * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
+* @depecated : use QuestionAttribute::model()->getQuestionAttributes($iQID); directly
 * @param $iQID The question ID
 * @return array$bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
 */

@@ -37,6 +37,7 @@
             <filename>scripts/template.js</filename>
         </js>
         <print_css>
+            <filename>css/bootstrap.css</filename>
             <filename>css/print_template.css</filename>
         </print_css>
 
@@ -62,7 +63,9 @@
                 <filename>scripts/template.js</filename>
             </js>
             <print_css>
-                <filename>css/print_template-rtl.css</filename>
+                <filename>css/bootstrap.css</filename>
+                <filename>css/bootstrap-rtl.css</filename>
+                <filename>css/print_template.css</filename>
             </print_css>
         </rtl>
 
