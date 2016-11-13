@@ -3353,7 +3353,6 @@ function do_multiplenumeric($ia)
             {
                 $equals_num_value = true;
             }
-
             $displaytotal = true;
         }
 

@@ -118,11 +118,6 @@
 }
 
 
-
-
-
-
-
 /**
  * Question index : must be move to index.css ?
  **/
@@ -146,3 +141,5 @@ position:relative;
 float:none;
 box-shadow: 0 0 0 #fff;
 }
+
+.ls-group-dynamic .control-label,.ls-group-dynamic .form-control-static{display:inline-block}

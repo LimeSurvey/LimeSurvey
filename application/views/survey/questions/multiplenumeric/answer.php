@@ -22,7 +22,7 @@
         echo $sRows;
     ?>
 <?php
-    doRender("/survey/questions/multiplenumeric/rows/dynamic",array(
+    doRender("/survey/questions/multiplenumeric/rows/dynamic_slider",array(
         'id'=>$id,
         'sumRemainingEqn'=>$sumRemainingEqn,
         'sumEqn'=>$sumEqn,
@@ -32,10 +32,4 @@
         'suffix'=>$suffix,
     ),false);
 ?>
-
 </ul>
-<!-- endof answer -->
-<!-- Add some data for slider javascript -->
-<div class="hidden">
-
-</div>
