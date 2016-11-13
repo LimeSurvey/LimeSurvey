@@ -1338,14 +1338,6 @@ class printablesurvey extends Survey_Common_Action
                                         $answertext=$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].")");
                                     }
 
-                                    if (trim($qidattributes['answer_width'])!='')
-                                    {
-                                        $sInsertStyle=' style="width:'.$qidattributes['answer_width'].'%" ';
-                                    }
-                                    else
-                                    {
-                                        $sInsertStyle='';
-                                    }
                                     $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
 
                                     for ($i=1; $i<=$fcount; $i++)
@@ -1781,7 +1773,7 @@ class printablesurvey extends Survey_Common_Action
             $answerBaseWidth=null;
         }
         if(intval($labelBaseWidth) < 1 || intval($labelBaseWidth) > 12){
-            $sLabelWidth=null;
+            $labelBaseWidth=null;
         }
         if(!$answerBaseWidth && !$labelBaseWidth){
             $sInputContainerWidth=8;
@@ -1794,8 +1786,8 @@ class printablesurvey extends Survey_Common_Action
             }else{
                 $sInputContainerWidth=12-$attributeLabelWidth;
             }
-            if($attributeLabelWidth){
-                $sLabelWidth=$attributeLabelWidth;
+            if($labelBaseWidth){
+                $sLabelWidth=$labelBaseWidth;
             }elseif($answerBaseWidth==12){
                 $sLabelWidth=12;
             }else{
