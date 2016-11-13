@@ -69,9 +69,9 @@ table.ls-answers{width:100%}
  */
 /* reset the margin and review the padding set by boostrap */
 table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{margin: 0;}
-.ls-answers td.radio-item,..ls-answers td.checkbox-item{padding: 2px;}
-.dir-ltr .ls-answers td.radio-item,.dir-ltr .ls-answers td.checkbox-item{padding-left: 22px;}
-.dir-rtl .ls-answers td.radio-item,.dir-rtl .ls-answers td.checkbox-item{padding-right: 22px;}
+.ls-answers td.radio-item,.ls-answers td.checkbox-item{padding: 0;}
+.dir-ltr .ls-answers td.radio-item,.dir-ltr .ls-answers td.checkbox-item{padding-left: 20px;}
+.dir-rtl .ls-answers td.radio-item,.dir-rtl .ls-answers td.checkbox-item{padding-right: 20px;}
 
 /* show partially sr-only inside table */
 .radio-item .ls-label-xs-visibility,.checkbox-item .ls-label-xs-visibility{
@@ -121,10 +121,9 @@ only screen and (max-width: 760px),
 
     table.ls-answers tbody td{text-align:left;}
     .dir-rtl table.ls-answers tbody td{text-align:right;}
-
-/*
-    table.ls-answers > tbody > tr > td.radio-item{padding:4px;padding-left: 24px;}
-*/
+    .ls-answers td.radio-item,.ls-answers td.checkbox-item{padding: 4px;}
+    .dir-ltr .ls-answers td.radio-item,.dir-ltr .ls-answers td.checkbox-item{padding-left: 24px;}
+    .dir-rtl .ls-answers td.radio-item,.dir-rtl .ls-answers td.checkbox-item{padding-right: 24px;}
 
     table.ls-answers tbody .control-label{text-align:left}
     .dir-rtl table.ls-answers tbody .control-label{text-align:right}

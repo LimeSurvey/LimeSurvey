@@ -159,6 +159,7 @@
                         </label>
                     </div>
                     <?php endif; ?>
+                    <?php echo $ansrow['answertextcenter']; ?>
                 </td>
 
                 <!-- Second label set -->
@@ -183,7 +184,7 @@
 
             <!-- Separator for no-answer -->
             <?php if ($shownoanswer || $rightexists): ?>
-                <td class="answertextright dual_scale_separator information-item"><?php echo $answertextright; ?></td>
+                <td class="answertextright dual_scale_separator information-item"><?php echo $ansrow['answertextright']; ?></td>
             <?php endif; ?>
 
             <!-- No answer column -->

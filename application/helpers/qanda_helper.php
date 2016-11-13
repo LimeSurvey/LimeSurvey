@@ -4747,7 +4747,13 @@ function do_array($ia)
     // No-dropdown layout
     if ($useDropdownLayout === false && count($lresult) > 0)
     {
-        $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
+        if(trim($aQuestionAttributes['answer_width'])!=''){
+            $answerwidth=trim($aQuestionAttributes['answer_width']);
+            $defaultWidth=false;
+        }else{
+            $answerwidth=33;
+            $defaultWidth=true;
+        }
         $columnswidth            = 100-$answerwidth;
         $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
@@ -4755,7 +4761,12 @@ function do_array($ia)
         if ($iCount>0)
         {
             $right_exists = true;
-            $answerwidth  = $answerwidth/2;
+            /* put the right answer to same width : take place in answer width only if it's not default */
+            if($defaultWidth){
+                $columnswidth-=$answerwidth;
+            }else{
+                $answerwidth  = $answerwidth/2;
+            }
         }
         else
         {
@@ -4961,7 +4972,13 @@ function do_array($ia)
     // Dropdown layout
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
-        $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
+        if(trim($aQuestionAttributes['answer_width'])!=''){
+            $answerwidth=trim($aQuestionAttributes['answer_width']);
+            $defaultWidth=false;
+        }else{
+            $answerwidth=33;
+            $defaultWidth=true;
+        }
         $columnswidth            = 100-$answerwidth;
         foreach($lresult as $lrow)
         {
@@ -4977,7 +4994,12 @@ function do_array($ia)
         if ($iCount>0)
         {
             $right_exists = true;
-            $answerwidth  = $answerwidth/2;
+            /* put the right answer to same width : take place in answer width only if it's not default */
+            if($defaultWidth){
+                $columnswidth-=$answerwidth;
+            }else{
+                $answerwidth  = $answerwidth/2;
+            }
         }
         else
         {
@@ -5231,8 +5253,13 @@ function do_array_texts($ia)
         };
     }
 
-    $answerwidth = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
-
+    if(trim($aQuestionAttributes['answer_width'])!=''){
+        $answerwidth=trim($aQuestionAttributes['answer_width']);
+        $defaultWidth=false;
+    }else{
+        $answerwidth=33;
+        $defaultWidth=true;
+    }
     $columnswidth = 100-($answerwidth);
     $lquery       = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult      = Yii::app()->db->createCommand($lquery)->query();
@@ -5265,7 +5292,11 @@ function do_array_texts($ia)
         if ($ansresult>0)
         {
             $right_exists = true;
-            $answerwidth  = $answerwidth/2;
+            if($defaultWidth){
+                $columnswidth-=$answerwidth;
+            }else{
+                $answerwidth  = $answerwidth/2;
+            }
             $caption     .= gT("The last cell gives some information.");
         }
         else
@@ -5632,7 +5663,11 @@ function do_array_multiflexi($ia)
         if ($iCount>0)
         {
             $right_exists    =  true;
-            $answerwidth     =  $answerwidth/2;
+            if($defaultWidth){
+                $columnswidth-=$answerwidth;
+            }else{
+                $answerwidth  = $answerwidth/2;
+            }
             $caption        .=  gT("The last cell gives some information.");
         }
         else
@@ -5923,7 +5958,14 @@ function do_arraycolumns($ia)
 
         if ($anscount>0)
         {
-            $answerwidth=(trim($aQuestionAttributes['answer_width_bycolumn'])!="" ? intval($aQuestionAttributes['answer_width_bycolumn']) : 33);
+            if(trim($aQuestionAttributes['answer_width'])!=''){
+                $answerwidth=trim($aQuestionAttributes['answer_width']);
+                $defaultWidth=false;
+            }else{
+                $answerwidth=33;
+                $defaultWidth=true;
+            }
+            $columnswidth   = 100-($answerwidth);
             $cellwidth=(100 -$answerwidth) / $anscount ;
 
             $aData['anscount'] = $anscount;
@@ -6081,8 +6123,13 @@ function do_array_dual($ia)
 
     $leftheader     = (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')?$leftheader= $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]:'';
     $rightheader    = (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')?$aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]:'';
-    $answerwidth    = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:33;
-
+    if(trim($aQuestionAttributes['answer_width'])!=''){
+        $answerwidth=trim($aQuestionAttributes['answer_width']);
+        $defaultWidth=false;
+    }else{
+        $answerwidth=33;
+        $defaultWidth=true;
+    }
     // Find if we have rigth and center text
     /* All of this part seem broken actually : we don't send it to view and don't explode it */
     $sQuery         = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
@@ -6092,8 +6139,8 @@ function do_array_dual($ia)
     $centerCount    = Yii::app()->db->createCommand($sQuery)->queryScalar();
     $centerexists   = ($centerCount>0);// $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
     /* Then always set to false : see bug https://bugs.limesurvey.org/view.php?id=11750 */
-    $rightexists=false;
-    $centerexists=false;
+    //~ $rightexists=false;
+    //~ $centerexists=false;
     // Label and code for input
     foreach ($aAnswersScale0 as $lrow)
     {
@@ -6155,8 +6202,18 @@ function do_array_dual($ia)
                 $columnswidth-=4;
                 $separatorwidth=4;
             }
+            if($numColExtraAnswer > 0){
+                $extraanswerwidth  = $answerwidth/$numColExtraAnswer;/* If there are 2 separator : set to 1/2 else to same */
+                if($defaultWidth){
+                    $columnswidth-=$answerwidth;
+
+                }else{
+                    $answerwidth  = $answerwidth/2;
+                }
+            }else{
+
+            }
             $cellwidth=$columnswidth/$numrows;
-            $answerwidth=$answerwidth/(1 + $numColExtraAnswer*0.5);
 
             // Header row and colgroups
             $aData['answerwidth'] = $answerwidth;
@@ -6165,10 +6222,10 @@ function do_array_dual($ia)
             $aData['labelcode0'] = $labelcode0;
             $aData['labelans1'] = $labelans1;
             $aData['labelcode1'] = $labelcode1;
-            $aData['separatorwidth'] = $centerexists ? $answerwidth/2 : $separatorwidth;
+            $aData['separatorwidth'] = $centerexists ? $extraanswerwidth : $separatorwidth;
             $aData['shownoanswer'] = $shownoanswer;
             $aData['rightexists'] = $rightexists;
-            $aData['rightwidth'] = $rightexists ? $answerwidth/2 : $rightwidth;
+            $aData['rightwidth'] = $rightexists ? $extraanswerwidth : $rightwidth;
 
             // build first row of header if needed
             $aData['leftheader'] = $leftheader;
@@ -6207,7 +6264,7 @@ function do_array_dual($ia)
                 {
                     $answertextright="";
                 }
-                if($centerexists)
+                if(strpos($answertextright,'|'))
                 {
                     $answertextcenter=substr($answertextright,0, strpos($answertextright,'|'));
                     $answertextright=substr($answertextright,strpos($answertextright,'|')+1);
@@ -6228,7 +6285,10 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['myfname1'] = $myfname1;
                 $aData['aSubQuestions'][$i]['myfid1'] = $myfid1;
 
-                $aData['aSubQuestions'][$i]['answertext'] = $ansrow['question'];
+                $aData['aSubQuestions'][$i]['answertext'] = $answertext;
+                $aData['aSubQuestions'][$i]['answertextcenter'] = $answertextcenter;
+                $aData['aSubQuestions'][$i]['answertextright'] = $answertextright;
+
                 $aData['aSubQuestions'][$i]['odd'] =  ($i % 2);
                 /* Check the Sub Q mandatory violation */
                 if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))

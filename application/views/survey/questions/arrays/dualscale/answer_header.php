@@ -16,7 +16,9 @@
         <th class=''><?php echo $ld; ?></th>
     <?php endforeach; ?>
     <?php if (count($labelans1) > 0): ?>
-        <td class="header_separator"></td>  <!-- Separator : and No answer for accessibility for first colgroup -->
+        <td class="header_separator"><?php if ($shownoanswer): ?>
+        <?php eT('No answer'); ?>
+        <?php endif; ?></td>  <!-- Separator : and No answer for accessibility for first colgroup -->
         <?php foreach ($labelans1 as $ld): ?>
             <th  class=''><?php echo $ld; ?></th>
         <?php endforeach; ?>
