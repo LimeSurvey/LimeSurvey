@@ -5633,10 +5633,12 @@ function do_array_multiflexi($ia)
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth    = $aQuestionAttributes['answer_width'];
+        $defaultWidth=false;
     }
     else
     {
         $answerwidth    = 33;
+        $defaultWidth=true;
     }
 
     $columnswidth   = 100-($answerwidth);
@@ -6211,7 +6213,7 @@ function do_array_dual($ia)
                     $answerwidth  = $answerwidth/2;
                 }
             }else{
-
+                $extraanswerwidth=$separatorwidth;
             }
             $cellwidth=$columnswidth/$numrows;
 
