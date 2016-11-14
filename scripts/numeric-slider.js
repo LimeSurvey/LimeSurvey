@@ -33,6 +33,7 @@ function doNumericSlider(qID,options) {
       if(dispVal===''){
         $('#javatbd' + myfname).find('div.tooltip').hide();
         theSlider.bootstrapSlider('setValue', $('#answer' + myfname).data('position'),false,false);
+        $(inputEl).val('').trigger('keyup');/* If value is out of range : slider is set to min or max (OK) , but event happen (surely setValue happen a second time here)*/
       }
 
       // When user change the value of the slider :

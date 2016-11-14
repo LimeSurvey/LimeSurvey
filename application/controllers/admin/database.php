@@ -1135,6 +1135,7 @@ class database extends Survey_Common_Action
 
         if (strlen(Yii::app()->request->getPost('title')) < 1)
         {
+            /* Already done in model : must control if return a good system or not here : BUT difficult to submit an empty string here */
             Yii::app()->setFlashMessage(gT("The question could not be added. You must enter at least a question code."),'error');
         }
         else
@@ -1240,7 +1241,7 @@ class database extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("Question could not be created."),'error');
 
             } else {
-                if ($sAction == 'copyquestion') {
+                if (Yii::app()->request->getPost('action') == 'copyquestion') {
                     if (returnGlobal('copysubquestions') == 1)
                     {
                         $aSQIDMappings = array();
