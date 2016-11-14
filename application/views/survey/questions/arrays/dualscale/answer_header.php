@@ -12,6 +12,9 @@
 ?>
 <tr class="ls-heading header_row <?php echo $class; ?>" aria-hidden="true">
     <td class="header_answer_text"></td>
+    <?php if ($leftheader != '' || $rightheader !=''): ?>
+        <td class="hidden"></td>
+    <?php endif; ?>
     <?php foreach ($labelans0 as $ld): ?>
         <th class=''><?php echo $ld; ?></th>
     <?php endforeach; ?>
@@ -19,6 +22,9 @@
         <td class="header_separator"><?php if ($shownoanswer): ?>
         <div class="ls-js-hidden"><?php eT('No answer'); ?></div>
         <?php endif; ?></td>  <!-- Separator : and No answer for accessibility for first colgroup -->
+        <?php if ($leftheader != '' || $rightheader !=''): ?>
+            <td class="hidden"></td>
+        <?php endif; ?>
         <?php foreach ($labelans1 as $ld): ?>
             <th  class=''><?php echo $ld; ?></th>
         <?php endforeach; ?>
@@ -29,5 +35,4 @@
     <?php if ($shownoanswer): ?>
         <th class="header_no_answer"><?php eT('No answer'); ?></th>
     <?php endif; ?>
-
 </tr>
