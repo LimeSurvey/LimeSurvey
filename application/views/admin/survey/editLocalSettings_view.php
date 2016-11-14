@@ -98,7 +98,7 @@
                 'value'=> $esrow['surveyls_numberformat'] ,
                 'selectOptions'=>$aRadixPoint,
                 'htmlOptions' => array(
-                    "style" => "z-index:-1"
+                    "style" => "z-index:0"
                 )
                 ));
             ?>
