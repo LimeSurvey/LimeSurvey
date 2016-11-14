@@ -17,7 +17,7 @@
     <?php endforeach; ?>
     <?php if (count($labelans1) > 0): ?>
         <td class="header_separator"><?php if ($shownoanswer): ?>
-        <?php eT('No answer'); ?>
+        <div class="ls-js-hidden"><?php eT('No answer'); ?></div>
         <?php endif; ?></td>  <!-- Separator : and No answer for accessibility for first colgroup -->
         <?php foreach ($labelans1 as $ld): ?>
             <th  class=''><?php echo $ld; ?></th>
