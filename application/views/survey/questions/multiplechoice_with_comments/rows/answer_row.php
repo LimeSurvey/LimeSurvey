@@ -46,7 +46,6 @@
                 name='<?php echo $javaname?>'
                 id='<?php echo $javaname?>'
                 value='<?php echo $javavalue;?>'
-                <?php echo $checked;?>
                 />
             <?php endif;?>
         </div>
@@ -61,7 +60,7 @@
                 id='<?php echo $inputCommentId;?>'
                 name='<?php echo $inputCommentName; ?>'
                 value='<?php echo $inputCOmmentValue; ?>'
-                aria-labelled='label-<?php echo $id;?>'
+                aria-labelledby='label-<?php echo $id;?>'
             />
         </div>
     </div>

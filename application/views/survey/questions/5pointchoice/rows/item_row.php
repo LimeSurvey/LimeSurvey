@@ -13,14 +13,13 @@
 ?>
 
 <!-- item_row -->
-<li id="javatbd<?php echo $name; ?>" class="form-group answer-item radio-item <?php echo $itemExtraClass; ?>">
+<li id="javatbd<?php echo $name.$value; ?>" class="form-group answer-item radio-item <?php echo $itemExtraClass; ?>">
     <input
         type="radio"
         name="<?php echo $name; ?>"
         id="answer<?php echo $id; ?>"
         value="<?php echo $value;?>"
         <?php echo $checkedState; ?>
-        onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
     />
     <label for="answer<?php echo $id; ?>" class="control-label radio-label"><?php echo $labelText; ?></label>
 </li>

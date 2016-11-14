@@ -12,7 +12,7 @@
  */
 ?>
 <!-- answer_row -->
-<li id='javatbd<?php echo $name; ?>' class="form-group <?php echo $li_classes; ?>">
+<li id='javatbd<?php echo $name.$value; ?>' class="form-group <?php echo $li_classes; ?>">
     <input
         type="radio"
         name="<?php echo $name; ?>"
