@@ -3224,7 +3224,7 @@ function do_multiplenumeric($ia)
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])){
                 $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
             }
-            elseif( $slider_default !== "" && $slider_default_set){
+            elseif( $slider_layout && $slider_default !== "" && $slider_default_set){
                 $sValue                = $slider_default;
             }else{
                 $sValue                = '';
@@ -5944,8 +5944,8 @@ function do_arraycolumns($ia)
 
         if ($anscount>0)
         {
-            if(trim($aQuestionAttributes['answer_width'])!=''){
-                $answerwidth=trim($aQuestionAttributes['answer_width']);
+            if(trim($aQuestionAttributes['answer_width_bycolumn'])!=''){
+                $answerwidth=trim($aQuestionAttributes['answer_width_bycolumn']);
                 $defaultWidth=false;
             }else{
                 $answerwidth=33;

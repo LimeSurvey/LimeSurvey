@@ -10359,7 +10359,7 @@ EOD;
                         }
                         break;
                     case 'I': // Language switch
-                        if(!in_array($value,Survey::model()->findByPk($LEM->sessid)->getAllLanguages()))
+                        if(!in_array($value,Survey::model()->findByPk($LEM->sid)->getAllLanguages()))
                         {
                             $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
                             return false;
