@@ -17,9 +17,9 @@
     <tr class="ls-heading ls-repeat-heading hidden-xs" aria-hidden="true">
         <th>&nbsp;</th>
         <?php foreach ($labelans as $ld): ?>
-            <td>
+            <th>
                 <?php echo $ld;?>
-            </td>
+            </th>
         <?php endforeach;?>
 
         <?php if ($right_exists):?>
