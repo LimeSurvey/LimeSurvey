@@ -10,14 +10,14 @@
 </tbody>
 
 <tbody>
-    <tr class="repeat headings hidden-xs" aria-hidden="true">
-        <td>
+    <tr class="ls-heading ls-repeat-heading hidden-xs" aria-hidden="true">
+        <th>
             &nbsp;
-        </td>
+        </th>
         <?php foreach ($labelans as $i=>$ld):?>
-            <th>
+            <td>
                 <?php echo $ld;?>
-            </th>
+            </td>
         <?php endforeach;?>
 
         <?php if ($right_exists):?>
