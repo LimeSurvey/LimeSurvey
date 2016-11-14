@@ -99,6 +99,7 @@ $(document).ready(function(){
 function PostParameterGrid()
 {
     rows= jQuery("#urlparams").jqGrid('getRowData');
+    $.each( rows , function (key,value){rows[key]['act'] = '';rows[key]['id'] = '';rows[key]['title'] = '';});
     $('#allurlparams').val($.toJSON(rows));
     if (($('#allowregister').val()=='Y' || $.trim($('#emailresponseto').val())!='' || $.trim($('#emailnotificationto').val())!='')&& $.trim($('#adminemail').val())=='')
     {
