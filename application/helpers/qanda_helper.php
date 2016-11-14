@@ -3057,6 +3057,7 @@ function do_multiplenumeric($ia)
         $slider_maxtext       = $slider_max =  (is_numeric($slider_max))?$slider_max:100;
         $slider_default       = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}",$ia[0],array(),false,1,1,false,false,true));
         $slider_default       = (is_numeric($slider_default))?$slider_default:"";
+        $slider_default_set   = (bool) ($aQuestionAttributes['slider_default_set'] && $slider_default!=='');
         $slider_orientation   = (trim($aQuestionAttributes['slider_orientation'])==0)?'horizontal':'vertical';
         $slider_custom_handle = (trim($aQuestionAttributes['slider_custom_handle']));
 
@@ -3079,13 +3080,13 @@ function do_multiplenumeric($ia)
                 break;
         }
 
-        if ($slider_default == '' && $aQuestionAttributes['slider_middlestart']==1)
-        {
-            $slider_middlestart = intval(($slider_max + $slider_min)/2);
-        }
-        else
-        {
-            $slider_middlestart = '';
+        /* Put the slider init to initial state (when no click is set or when 'reset') */
+        if($slider_default !== ''){ /* can be 0 */
+            $slider_position=$slider_default;
+        }elseif ($aQuestionAttributes['slider_middlestart']==1){
+            $slider_position = intval(($slider_max + $slider_min)/2);
+        }else{
+            $slider_position = '';
         }
 
         $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
@@ -3218,32 +3219,15 @@ function do_multiplenumeric($ia)
             // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/scripts/bootstrap-slider.js#l1453-l1461
             // If the bootstrapSlider were updated, most of this javascript would not be necessary.
 
-            $sValue = null;
-
-            if(App()->request->getPost('slider_user_no_action_'.$myfname))
-            {
-                $slider_user_no_action = App()->request->getPost('slider_user_no_action_'.$myfname);
+            $sValue = '';
+            // value stored in _SESSION
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])){
+                $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
             }
-            else
-            {
-                $slider_user_no_action = 1;
-
-                // value stored in _SESSION
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-                {
-                    $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                    $slider_user_no_action = 0;
-                }
-                elseif( $slider_default != "" )
-                {
-                    $sValue                = $slider_default;
-                    $slider_user_no_action = 0;
-                }
-                elseif( isset($slider_middlestart) && $slider_middlestart!='')
-                {
-                    $sValue = $slider_middlestart;
-                }
-
+            elseif( $slider_default !== "" && $slider_default_set){
+                $sValue                = $slider_default;
+            }else{
+                $sValue                = '';
             }
 
 
@@ -3320,11 +3304,11 @@ function do_multiplenumeric($ia)
                     'slider_mintext'         => $slider_mintext ,
                     'slider_max'             => $slider_max     ,
                     'slider_maxtext'         => $slider_maxtext ,
-                    'slider_default'         => $slider_default ,
+                    'slider_position'        => $slider_position ,
+                    'slider_reset_set'       => $slider_default_set,
                     'slider_handle'          => (isset($slider_handle ))? $slider_handle:'',
                     'slider_reset'           => $slider_reset,
                     'slider_custom_handle'   => $slider_custom_handle,
-                    'slider_user_no_action'  => $slider_user_no_action,
                     'slider_showminmax'      => $aQuestionAttributes['slider_showminmax'],
                     'sSeparator'             => $sSeparator,
                     'sUnformatedValue'       => $sUnformatedValue,

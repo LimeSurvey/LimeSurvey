@@ -926,7 +926,7 @@ class questionHelper
             'sortorder'=>50,
             'inputtype'=>'text',
             'expression'=>2, // must be controlled : unsure
-            "help"=>gT('Slider start as this value (this will set the initial value). You can use Expression manager, but this must be a number before showing the page.'),
+            "help"=>gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page.'),
             "caption"=>gT('Slider initial value')
         );
 
@@ -939,6 +939,17 @@ class questionHelper
             'default'=>0,
             "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
             "caption"=>gT('Slider starts at the middle position')
+        );
+
+        self::$attributes["slider_default_set"]=array(
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>51,
+            'inputtype'=>'switch',
+            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'default'=>1, /* before 3.0 : this is the default behaviour */
+            "help"=>gT('When using slider initial value : did this set the value.'),
+            "caption"=>gT('Slider initial value set at start')
         );
 
         self::$attributes["slider_orientation"]=array(

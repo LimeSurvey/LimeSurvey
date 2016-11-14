@@ -42,7 +42,7 @@
             echo CHtml::textField($myfname,$dispVal,array(
                 'class'=>'form-control',
                 'id'=>"answer{$myfname}",
-                'data-slider-value'=>($dispVal ? $dispVal : ''),
+                'data-slider-value'=>$dispVal,
                 'data-slider-min'=>$slider_min,
                 'data-slider-max'=>$slider_max,
                 'data-slider-step'=>$slider_step,
@@ -55,6 +55,8 @@
                 'data-separator'=>$sSeparator,
                 'data-number'=>true,
                 'data-integer'=>$integeronly,
+                'data-position'=>$slider_position,
+                'data-set-position'=>$slider_reset_set
             ));
             ?>
                 <?php if($slider_showminmax): ?>
