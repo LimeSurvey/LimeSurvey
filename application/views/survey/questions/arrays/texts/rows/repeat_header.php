@@ -15,9 +15,9 @@
             &nbsp;
         </th>
         <?php foreach ($labelans as $i=>$ld):?>
-            <td>
+            <th>
                 <?php echo $ld;?>
-            </td>
+            </th> 
         <?php endforeach;?>
 
         <?php if ($right_exists):?>
