@@ -1,4 +1,30 @@
 // $Id: surveysettings.js 9757 2011-02-09 20:52:33Z c_schmitz $
+
+    $("#copysurveyform").submit(copysurvey);
+    
+var defineActions = function(dataArray){
+    var buttonEdit = $('<button><i class="fa fa-edit"></i></button>');
+    var buttonDelete = $('<button><i class="fa fa-trash"></i></button>');
+    var container = $('<div></div>');
+    buttonEdit
+        .addClass('btn btn-xs btn-default surveysettings_edit_intparameter')
+        .data('id',dataArray.id)
+        .data('sid',dataArray.sid)
+        .data('qid',(dataArray.qid || null))
+        .data('sqid',(dataArray.qid || null))
+        .appendTo(container);
+    buttonDelete
+        .addClass('btn btn-xs btn-danger surveysettings_delete_intparameter')
+        .data('id',dataArray.id)
+        .data('sid',dataArray.sid)
+        .data('qid',(dataArray.qid || null))
+        .data('sqid',(dataArray.qid || null))
+        .appendTo(container);
+    
+    return container.html();
+};
+
+
 $(document).on('click',"[data-copy] :submit",function(){
     $("form :input[value='"+$(this).val()+"']").click();
 });
@@ -14,44 +40,42 @@ $(document).ready(function(){
     $("[data-copy]").each(function(){
         $(this).html($("#"+$(this).data('copy')).html());
     });
-
-    $("#copysurveyform").submit(copysurvey);
-    
-    var defineActions = function(dataArray){
-        var buttonEdit = $('<button><i class="fa fa-edit"></i></button>');
-        var buttonDelete = $('<button><i class="fa fa-trash"></i></button>');
-        var container = $('<div></div>');
-        buttonEdit.addClass('btn btn-xs btn-default surveysettings_edit_intparameter').data('id',dataArray.id).data('sid',dataArray.sid).appendTo(container);
-        buttonDelete.addClass('btn btn-xs btn-danger surveysettings_delete_intparameter').data('id',dataArray.id).data('sid',dataArray.sid).appendTo(container);
-        
-        return container.html();
-    }
     
     $.ajax({
         url : jsonUrl,
         dataType: 'json',
         method: "GET",
         success: function(results){
-
+            console.log(results);
             var dataSet = [];
             $.each(results.rows, function(i,row){
-                var rowArray = [
-                    row.id,
-                    defineActions(row.datas),
-                    row.parameter,
-                    row.question
-                ];
+                var rowArray = {
+                "id" : row.id,
+                "actionBtn" : defineActions(row.datas),
+                "parameter" : row.parameter,
+                "targetQuestionText" : row.question,
+                "sid" : row.datas.sid,
+                "qid" : row.datas.qid,
+                "sqid" : row.datas.sqid
+                };
                 dataSet.push(rowArray);
             });
 
             $("#urlparams").DataTable({
                 columns:[
                     {title: 'id', visible: false},
-                    {title: sAction, orderable: false},
-                    {title: sParameter},
-                    {title: sTargetQuestion}
+                    {name: 'actionBtn', label: sAction, orderable: false},
+                    {name: 'parameter', label: sParameter},
+                    {name: 'targetQuestionText', label: sTargetQuestion},
+                    {title: 'sid', visible: false},
+                    {title: 'qid', visible: false},
+                    {title: 'sqid', visible: false}
                     ],
                 data: dataSet,
+                createdRow: function(thisRow,data,dataIndex){
+                    console.log(data);
+                    $(thisRow).data('rawdata',JSON.stringify(data));
+                },
                 rowId: 'id',
                 paging: false,
                 dom: "<'#dt-toolbar'>f<t>i"
@@ -65,7 +89,8 @@ $(document).ready(function(){
             $("#urlparams").css('width','100%')
                 .on('click', '.surveysettings_edit_intparameter', function(e){
                     e.preventDefault();
-                    console.log($(this));                    
+                    console.log(JSON.parse($(this).closest('tr').data('rawdata')));  
+                    editParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));                  
                 })
                 .on('click', '.surveysettings_delete_intparameter', function(e){
                     e.preventDefault();
@@ -159,8 +184,15 @@ $(document).ready(function(){
  */
 function PostParameterGrid()
 {
-    // rows= jQuery("#urlparams").jqGrid('getRowData');
-    // $('#allurlparams').val($.toJSON(rows));
+    var rowsData = [];
+    jQuery("#urlparams").DataTable().rows().each(
+        function(rowId, tableLoop, rowLoop){
+            rowsData.push(this.data());
+        }
+    )
+    console.log(rowsData);
+    $('#allurlparams').val(JSON.stringify(rows));
+    
     // if (($('#allowregister').val()=='Y' || $.trim($('#emailresponseto').val())!='' || $.trim($('#emailnotificationto').val())!='')&& $.trim($('#adminemail').val())=='')
     // {
     //     alert (sAdminEmailAddressNeeded);
@@ -188,21 +220,20 @@ function saveParameter()
     aIDs=sIDs.split('-');
     sTargetQID=aIDs[0];
     sTargetSQID=aIDs[1];
-    if ($("#dlgEditParameter").data('action')=='add')
-    {
+    if ($("#dlgEditParameter").data('action')=='add') {
        sGUID = guidGenerator();
        $("#urlparams").DataTable().row.add([
             sGUID,
             defineActions({
-                id: sGUID,
-                sid: $('#id').val(), 
+                id  : sGUID,
+                sid : $('#id').val(), 
+                qid : sTargetQID,
+                sqid: sTargetSQID
             }),
             sParamname,
             $("#targetquestion option:selected").text()
         ]);
-    }
-    else
-    {
+    } else {
         var rowId = $('#dlgEditParameter').data('rowid');
          $("#urlparams").DataTable().row('#'+rowId).edit([
             rowId,
@@ -210,14 +241,17 @@ function saveParameter()
             defineActions({
                 id: sGUID,
                 sid: sTargetQID, 
+                qid : sTargetQID,
+                sqid: sTargetSQID
             }),
             $("#targetquestion option:selected").text()
          ]);
 
     }
+    $("#urlparams").DataTable().draw();
 }
 
-function newParameter(event)
+function newParameter(data)
 {
     $("#targetquestion").val('');
     $('#paramname').val('');
@@ -226,13 +260,12 @@ function newParameter(event)
     $("#dlgEditParameter").dialog("open");
 }
 
-function editParameter(rowid)
-{
-    aRowData=jQuery("#urlparams").getRowData(rowid);
-    $("#targetquestion").val(aRowData.targetqid+'-'+aRowData.targetsqid);
+function editParameter(event, aRowData){
+
+    $("#targetquestion").val(aRowData.qid+'-'+aRowData.sqid);
     $('#paramname').val(aRowData.parameter);
     $("#dlgEditParameter").data('action','edit');
-    $("#dlgEditParameter").data('rowid',rowid);
+    $("#dlgEditParameter").data('rowid',aRowData.id);
     $("#dlgEditParameter").dialog("option", "title", sEditParam);
     $("#dlgEditParameter").dialog("open");
 }

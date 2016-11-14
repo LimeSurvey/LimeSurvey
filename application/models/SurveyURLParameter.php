@@ -26,6 +26,17 @@
         }
 
         /**
+        * Returns the primary key of this table
+        *
+        * @access public
+        * @return string
+        */
+        public function primaryKey()
+        {
+            return 'id';
+        }
+
+        /**
         * Returns the setting's table name to be used by the model
         *
         * @access public
@@ -42,6 +53,10 @@
                 left join {{questions}} q on q.qid=up.targetqid
                 left join {{questions}} sq on q.qid=up.targetsqid
             where up.sid=:surveyid")->bindParam(":surveyid", $iSurveyID, PDO::PARAM_INT)->query();
+        }
+
+        public function compareToArray($compareToArray){
+            
         }
 
         function deleteRecords($aConditions)
