@@ -20,22 +20,19 @@ function doNumericSlider(qID,options) {
     var suffix = $(inputEl).data('slider-suffix');
     var dispVal= $(inputEl).data('slider-value');
     var separator = $(inputEl).data('separator');
-    /* need to fix actual value : force to number */
-    //~ dispVal = Number(dispVal.toString().replace(separator,'.'));
     // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
-    // Use closure for namespace, so we can use theSlider variable for all sliders.
       var theSlider = $(inputEl).bootstrapSlider({
           formatter: function (value) {
               displayValue = value.toString().replace('.',separator);
               return prefix + displayValue + suffix;
           }
       });
+      /* Put some color taken from default boostrap file : allow user to more easily update it*/
       $(this).find(".slider-handle").addClass("bg-primary");// bg-info is not dark enough
-      /* If dispVal is not set : move to this : but don't set value */
+      /* If dispVal is not set : move to this : but don't set value : event is set to false,false */
       if(dispVal===''){
-        theSlider.bootstrapSlider('setValue', $('#answer' + myfname).data('position'));
         $('#javatbd' + myfname).find('div.tooltip').hide();
-        $(inputEl).val('').trigger('keyup');
+        theSlider.bootstrapSlider('setValue', $('#answer' + myfname).data('position'),false,false);
       }
 
       // When user change the value of the slider :
@@ -50,19 +47,14 @@ function doNumericSlider(qID,options) {
       theSlider.on('change', function(event) {
       });
       theSlider.on('slideStop', function(event) {
-          $('#javatbd' + myfname).find('div.tooltip').show();
           $(inputEl).val(event.value.toString().replace('.',separator)).trigger('keyup');// We call the EM by the event
       });
 
-      // If user no action is on, we hide the tooltip
-      // And we set the value to null
-      // Fix it : must be the default value
-
-      // Click the reset button
+      /* reset action */
       $('#answer' + myfname + '_resetslider').on('click', function() {
-          // Pretend user didn't do anything
-          // Position slider button at beginning
+          /* Position slider button at position */
           theSlider.bootstrapSlider('setValue', $('#answer' + myfname).data('position'));
+          /* if don't set position : reset to '' */
           if(!$('#answer' + myfname).data('set-position')){
             $('#javatbd' + myfname).find('div.tooltip').hide();
             $(inputEl).val('').trigger('keyup');
@@ -74,17 +66,3 @@ function doNumericSlider(qID,options) {
   });
 
 }
-/*
-var myfname = '<?php echo $myfname; ?>';
-var $inputEl = $('#answer' + myfname);
-var $sliderNoActionEl = $('#slider_user_no_action_' + myfname);
-var $prefix = $inputEl.data('slider-prefix');
-var $suffix = $inputEl.data('slider-suffix');
-// We start the slider, and provide it the formated value with prefix and suffix for its tooltip
-// Use closure for namespace, so we can use theSlider variable for all sliders.
-(function () {
-
-
-
-
-*/
