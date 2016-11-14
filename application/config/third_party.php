@@ -71,9 +71,9 @@ return array(
     'jqgrid' => array(
         'basePath' => 'third_party.jqgrid',
         'js' => array(
-            'js/jquery.jqGrid.min.js',
-            'js/i18n/grid.locale-en.js',
-            'plugins/jquery.searchFilter.js'
+            // 'js/jquery.jqGrid.min.js',
+            // 'js/i18n/grid.locale-en.js',
+            // 'plugins/jquery.searchFilter.js'
         ),
         'css' => array(
             //'css/ui.jqgrid.css'
@@ -324,6 +324,20 @@ return array(
             'jquery',
             'bootstrap',
             'moment'
+        )
+    ),
+
+    'jquery-datatable' => array(
+        'basePath' => 'third_party.jquery-datatable',
+        'css' => array(
+            'datatables.min.css'
+        ),
+        'js' => array(
+            'datatables.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
         )
     )
 
