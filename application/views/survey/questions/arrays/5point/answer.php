@@ -23,7 +23,7 @@
     <!-- Table headers -->
     <thead aria-hidden="true">
         <tr class="ls-heading"><!-- same class for repeat heading too -->
-            <td>&nbsp;</td> <!-- This is NOT an header cell https://github.com/Shnoulle/LimeSurvey-Shnoulle/issues/14#issuecomment-252034424 -->
+            <td></td>
             <?php
                 // rows/cell/thead.php
                 echo $sHeaders;

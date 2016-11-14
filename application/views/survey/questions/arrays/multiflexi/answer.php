@@ -37,7 +37,7 @@
             <?php endforeach;?>
 
             <?php if ($right_exists):?>
-                <th></th>
+                <td></td>
             <?php endif;?>
         </tr>
     </thead>
