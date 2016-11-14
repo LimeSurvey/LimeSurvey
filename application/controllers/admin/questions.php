@@ -1716,6 +1716,10 @@ class questions extends Survey_Common_Action
         }
     }
 
+    private function getQuestionAttribute($type, $qid=0){
+
+    }
+
     /**
     * This function prepares the data for the advanced question attributes view
     *
@@ -1729,8 +1733,13 @@ class questions extends Survey_Common_Action
         $qid = (int) Yii::app()->request->getParam('qid',0);
         $type = Yii::app()->request->getParam('question_type');
         $thissurvey = getSurveyInfo($surveyid);
+
         if(!$thissurvey) die();
-        $aLanguages = array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
+
+        $aLanguages = array_merge(
+            array(Survey::model()->findByPk($surveyid)->language), 
+            Survey::model()->findByPk($surveyid)->additionalLanguages
+            );
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
         uasort($aAttributesWithValues, 'categorySort');
@@ -1761,6 +1770,7 @@ class questions extends Survey_Common_Action
         }
         $aData['bIsActive'] = ($thissurvey['active']=='Y');
         $aData['attributedata'] = $aAttributesPrepared;
+        
         $this->getController()->renderPartial('/admin/survey/Question/advanced_settings_view', $aData);
     }
 

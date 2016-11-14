@@ -62,10 +62,9 @@ class participantsaction extends Survey_Common_Action
     private function _loadjqGrid($sScript = '', $aData = array())
     {
         $aData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
-        App()->getClientScript()->registerPackage('jqgrid');
         if (!empty($sScript))
         {
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', $sScript . '.js');
+            App()->getClientScript()->registerPackage('jquery-datatable');
             $this->_renderWrappedTemplate('participants', array('participantsPanel', $sScript), $aData);
         }
     }

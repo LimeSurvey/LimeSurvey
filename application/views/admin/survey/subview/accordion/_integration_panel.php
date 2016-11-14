@@ -23,10 +23,13 @@
 </script>
 
 <!-- jQgrid container -->
-<div id='panelintegration' class=" tab-pane fade in">
-    <table id="urlparams" style='margin:0 auto;'><tr><td>&nbsp;</td></tr></table>
-    <div id="pagerurlparams"></div>
-    <input type='hidden' id='allurlparams' name='allurlparams' value='' />
+<div id='panelintegration' class=" tab-pane fade in text-center" >
+    <div class="container-center">
+        <div class="row">
+            <table id="urlparams" class='table dataTable table-striped table-borders' ></table>
+            <input type='hidden' id='allurlparams' name='allurlparams' value='' />
+        </div>
+    </div>
 </div>
 
 <!-- Modal box to add a parameter -->
