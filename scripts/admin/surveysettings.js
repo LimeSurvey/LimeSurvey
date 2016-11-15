@@ -93,12 +93,36 @@ $(document).ready(function(){
                 })
                 .on('click', '.surveysettings_delete_intparameter', function(e){
                     e.preventDefault();
-                    console.log($(this));
+                   deleteParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));
                 });
                 
         },
         error: console.log
     }   );
+    
+    $("#dlgEditParameter").dialog({ 
+        autoOpen: false, 
+        width: 700 
+    }); 
+ 
+    $('#btnCancelParams').click(function(){ 
+        $("#dlgEditParameter").dialog("close"); 
+    }); 
+ 
+    $('#btnSaveParams').click(saveParameter); 
+    $('#addnewsurvey').submit(PostParameterGrid); 
+    $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form 
+     
+    $( "#tabs" ).bind( "tabsactivate", function(event, ui) { 
+        if (ui.newTab.index() > 4)    // Hide on import and copy tab, otherwise show 
+        { 
+            $('#btnSave').hide(); 
+        } 
+        else 
+        { 
+            $('#btnSave').show(); 
+        } 
+    }); 
 });
 /**
  * Bind to submit event
@@ -125,6 +149,7 @@ function PostParameterGrid()
     //      $('#adminemail').focus();
     //     return false;
     // }
+
 }
 
 /**
@@ -146,6 +171,8 @@ function saveParameter()
     } catch(e){
         rowData = {};
     }
+    
+
     if ($("#dlgEditParameter").data('action')=='add') {
        var sGUID = guidGenerator();
        $("#urlparams").DataTable().row.add({
@@ -202,6 +229,11 @@ function editParameter(event, aRowData){
     $("#dlgEditParameter").data('rawdata',JSON.stringify(aRowData));
     $("#dlgEditParameter").dialog("option", "title", sEditParam);
     $("#dlgEditParameter").dialog("open");
+}
+function deleteParameter(event, aRowData){
+    $("#urlparams").DataTable().row('#'+aRowData.id).remove();
+    $("#urlparams").DataTable().draw();
+    PostParameterGrid();
 }
 
 function templatechange(template)
