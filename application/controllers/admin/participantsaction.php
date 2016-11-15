@@ -56,20 +56,6 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
-     * Loads jqGrid for the view
-     * @param string $sScript Subaction
-     */
-    private function _loadjqGrid($sScript = '', $aData = array())
-    {
-        $aData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
-        if (!empty($sScript))
-        {
-            App()->getClientScript()->registerPackage('jquery-datatable');
-            $this->_renderWrappedTemplate('participants', array('participantsPanel', $sScript), $aData);
-        }
-    }
-
-    /**
     * Renders template(s) wrapped in header and footer
     *
     * @param string $sAction Current action, the folder to fetch views from
@@ -2033,7 +2019,7 @@ class participantsaction extends Survey_Common_Action
     }
 
     /*
-     * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
+     * Sends the data in JSON format extracted from the database to be displayed using the datatable
      * Echoes json
      * @return void
      */

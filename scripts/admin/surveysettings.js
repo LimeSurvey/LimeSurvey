@@ -50,30 +50,29 @@ $(document).ready(function(){
             var dataSet = [];
             $.each(results.rows, function(i,row){
                 var rowArray = {
-                "id" : row.id,
-                "actionBtn" : defineActions(row.datas),
-                "parameter" : row.parameter,
+                "id"                 : row.id,
+                "actionBtn"          : defineActions(row.datas),
+                "parameter"          : row.parameter,
                 "targetQuestionText" : row.question,
-                "sid" : row.datas.sid,
-                "qid" : row.datas.qid,
-                "sqid" : row.datas.sqid
+                "sid"                : row.datas.sid,
+                "qid"                : row.datas.targetqid || "",
+                "sqid"               : row.datas.targetsqid || ""
                 };
                 dataSet.push(rowArray);
             });
 
             $("#urlparams").DataTable({
                 columns:[
-                    {title: 'id', visible: false},
-                    {name: 'actionBtn', label: sAction, orderable: false},
-                    {name: 'parameter', label: sParameter},
-                    {name: 'targetQuestionText', label: sTargetQuestion},
-                    {title: 'sid', visible: false},
-                    {title: 'qid', visible: false},
-                    {title: 'sqid', visible: false}
+                    {data: 'id', visible: false},
+                    {data: 'actionBtn', label: sAction, orderable: false},
+                    {data: 'parameter', label: sParameter},
+                    {data: 'targetQuestionText', label: sTargetQuestion},
+                    {data: 'sid', visible: false},
+                    {data: 'qid', visible: false},
+                    {data: 'sqid', visible: false}
                     ],
                 data: dataSet,
                 createdRow: function(thisRow,data,dataIndex){
-                    console.log(data);
                     $(thisRow).data('rawdata',JSON.stringify(data));
                 },
                 rowId: 'id',
@@ -89,7 +88,7 @@ $(document).ready(function(){
             $("#urlparams").css('width','100%')
                 .on('click', '.surveysettings_edit_intparameter', function(e){
                     e.preventDefault();
-                    console.log(JSON.parse($(this).closest('tr').data('rawdata')));  
+                    // console.log(($(this).closest('tr').data('rawdata')));  
                     editParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));                  
                 })
                 .on('click', '.surveysettings_delete_intparameter', function(e){
@@ -184,14 +183,18 @@ $(document).ready(function(){
  */
 function PostParameterGrid()
 {
-    var rowsData = [];
-    jQuery("#urlparams").DataTable().rows().each(
+    var rowsData = [],
+        dt = $("#urlparams").DataTable();
+    dt.rows().every(
         function(rowId, tableLoop, rowLoop){
-            rowsData.push(this.data());
+            rowsData.push(dt.row(rowId).data());
         }
     )
-    console.log(rowsData);
-    $('#allurlparams').val(JSON.stringify(rows));
+    var jsonString = "{}";
+    try{
+        jsonString = JSON.stringify(rowsData);
+    } catch(e){}
+    $('#allurlparams').val(jsonString);
     
     // if (($('#allowregister').val()=='Y' || $.trim($('#emailresponseto').val())!='' || $.trim($('#emailnotificationto').val())!='')&& $.trim($('#adminemail').val())=='')
     // {
@@ -209,46 +212,55 @@ function PostParameterGrid()
  */
 function saveParameter()
 {
-    sParamname=$.trim($('#paramname').val());
+    var sParamname=$.trim($('#paramname').val());
     if (sParamname=='' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname=='sid' || sParamname=='newtest' || sParamname=='token' || sParamname=='lang')
     {
         $("#dlgEditParameter").prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+sEnterValidParam+'</div>');
         return;
     }
     $("#dlgEditParameter").dialog("close");
-    sIDs=$("#targetquestion").val();
-    aIDs=sIDs.split('-');
-    sTargetQID=aIDs[0];
-    sTargetSQID=aIDs[1];
+    try{
+        var rowData = JSON.parse($("#dlgEditParameter").data('rawdata'));
+    } catch(e){
+        rowData = {};
+    }
     if ($("#dlgEditParameter").data('action')=='add') {
-       sGUID = guidGenerator();
-       $("#urlparams").DataTable().row.add([
-            sGUID,
-            defineActions({
-                id  : sGUID,
-                sid : $('#id').val(), 
-                qid : sTargetQID,
-                sqid: sTargetSQID
-            }),
-            sParamname,
-            $("#targetquestion option:selected").text()
-        ]);
+       var sGUID = guidGenerator();
+       $("#urlparams").DataTable().row.add({
+            "id"                 : sGUID,            
+            "actionBtn"          : defineActions({
+                id   : sGUID,
+                sid  : iSurveyId, 
+                qid  : $("#targetquestion").val().split('-').shift() || "",
+                sqid : $("#targetquestion").val().split('-').pop()|| ""
+            }),            
+            "parameter"          : sParamname,
+            "targetQuestionText" : $("#targetquestion option:selected").text() || rowData.targetQuestionText,
+            "sid"                : iSurveyId,
+            qid                  : $("#targetquestion").val().split('-').shift() || "",
+            sqid                 : $("#targetquestion").val().split('-').pop()|| ""
+       });
     } else {
-        var rowId = $('#dlgEditParameter').data('rowid');
-         $("#urlparams").DataTable().row('#'+rowId).edit([
-            rowId,
-            sParamname,
-            defineActions({
-                id: sGUID,
-                sid: sTargetQID, 
-                qid : sTargetQID,
-                sqid: sTargetSQID
-            }),
-            $("#targetquestion option:selected").text()
-         ]);
+        var rowData = {
+            "id"                 : rowData.id,            
+            "actionBtn"          : defineActions({
+                id  : rowData.id,
+                sid : iSurveyId, 
+                qid : rowData.qid,
+                sqid: rowData.sqid
+            }),            
+            "parameter"          : sParamname,
+            "targetQuestionText" : $("#targetquestion option:selected").text()  || rowData.targetQuestionText,
+            sid                  : iSurveyId,
+            qid                  : $("#targetquestion").val().split('-').shift() || "",
+            sqid                 : $("#targetquestion").val().split('-').pop()|| ""
+       };
+        $($("#urlparams").DataTable().row('#'+rowData.id).node()).data('rawdata', JSON.stringify(rowData));
+        $("#urlparams").DataTable().row('#'+rowData.id).data(rowData);
 
     }
     $("#urlparams").DataTable().draw();
+    PostParameterGrid();
 }
 
 function newParameter(data)
@@ -265,7 +277,7 @@ function editParameter(event, aRowData){
     $("#targetquestion").val(aRowData.qid+'-'+aRowData.sqid);
     $('#paramname').val(aRowData.parameter);
     $("#dlgEditParameter").data('action','edit');
-    $("#dlgEditParameter").data('rowid',aRowData.id);
+    $("#dlgEditParameter").data('rawdata',JSON.stringify(aRowData));
     $("#dlgEditParameter").dialog("option", "title", sEditParam);
     $("#dlgEditParameter").dialog("open");
 }

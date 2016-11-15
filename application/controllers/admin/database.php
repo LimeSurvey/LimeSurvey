@@ -1315,13 +1315,17 @@ class database extends Survey_Common_Action
                     {
                         continue;  // this parameter name seems to be invalid - just ignore it
                     }
-                    unset($aURLParam['act']);
+                    $aURLParam['targetqid']  = $aURLParam['qid'];
+                    $aURLParam['targetsqid'] = $aURLParam['sqid'];
+                    unset($aURLParam['actionBtn']);
                     unset($aURLParam['title']);
                     unset($aURLParam['id']);
+                    unset($aURLParam['qid']);
+                    unset($aURLParam['targetQuestionText']);
+                    unset($aURLParam['sqid']);
                     if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
                     if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
                     $aURLParam['sid']=$iSurveyID;
-
                     $param = new SurveyURLParameter;
                     foreach ($aURLParam as $k => $v)
                         $param->$k = $v;

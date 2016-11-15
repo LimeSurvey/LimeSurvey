@@ -20,6 +20,7 @@
     var sEnterValidParam = "<?php  eT('You have to enter a valid parameter name.','js');?>";
     var sAddParam = "<?php  eT('Add URL parameter','js');?>";
     var sEditParam = "<?php  eT('Edit URL parameter','js');?>";
+    var iSurveyId = "<?php  echo $surveyid; ?>";
 </script>
 
 <!-- jQgrid container -->
