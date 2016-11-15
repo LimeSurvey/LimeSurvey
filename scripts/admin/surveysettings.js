@@ -46,7 +46,7 @@ $(document).ready(function(){
         dataType: 'json',
         method: "GET",
         success: function(results){
-            console.log(results);
+            // console.log(results);
             var dataSet = [];
             $.each(results.rows, function(i,row){
                 var rowArray = {
@@ -99,7 +99,7 @@ $(document).ready(function(){
         },
         error: console.log
     }   );
-    
+
     $("#dlgEditParameter").dialog({ 
         autoOpen: false, 
         width: 700 
