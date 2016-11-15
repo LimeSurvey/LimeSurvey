@@ -67,34 +67,6 @@ return array(
         )
     ),
 
-    // jQgrid
-    'jqgrid' => array(
-        'basePath' => 'third_party.jqgrid',
-        'js' => array(
-            // 'js/jquery.jqGrid.min.js',
-            // 'js/i18n/grid.locale-en.js',
-            // 'plugins/jquery.searchFilter.js'
-        ),
-        'css' => array(
-            //'css/ui.jqgrid.css'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-
-    ),
-
-    'jqgrid.addons' => array(
-        'basePath' => 'third_party.jqgrid.plugins',
-        'js' => array(
-            'grid.addons.js'
-        ),
-        'depends' => array(
-            'jqgrid'
-        )
-
-    ),
-
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
         'basePath' => 'third_party.jquery-bindWithDelay',
@@ -333,7 +305,7 @@ return array(
             'datatables.min.css'
         ),
         'js' => array(
-            'datatables.min.js'
+            'datatables.js'
         ),
         'depends' => array(
             'jquery',

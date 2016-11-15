@@ -1,13 +1,13 @@
 <?php
 /**
  * Right accordion, integration pannel
- * Use jqGrid, needs surveysettings.js
+ * Use datatables, needs surveysettings.js
  */
     $yii = Yii::app();
     $controller = $yii->getController();
 ?>
 
-<!-- jQgrid data -->
+<!-- Datatable translation-data -->
 <script type="text/javascript">
     var jsonUrl = "<?php echo App()->createUrl('admin/survey', array('sa' => 'getUrlParamsJson', 'surveyid' => $surveyid))?>";
     var imageUrl = "<?php echo $yii->getConfig("adminimageurl");?>";
@@ -23,7 +23,7 @@
     var iSurveyId = "<?php  echo $surveyid; ?>";
 </script>
 
-<!-- jQgrid container -->
+<!-- datatable container -->
 <div id='panelintegration' class=" tab-pane fade in text-center" >
     <div class="container-center">
         <div class="row">

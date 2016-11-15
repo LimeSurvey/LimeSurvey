@@ -618,7 +618,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * This function updates the data edited in the jqgrid
+     * This function updates the data edited in the view
      *
      * @param aray $data
      * @return void

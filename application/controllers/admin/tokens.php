@@ -318,20 +318,7 @@ class tokens extends Survey_Common_Action
         $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
 
         // Javascript
-        //App()->getClientScript()->registerPackage('jqgrid');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
-
-
-        // CSS
-        // Right to Left
-        if (getLanguageRTL($_SESSION['adminlang']))
-        {
-            $this->registerCssFile( 'ADMIN', 'jqgrid-rtl.css' );
-        }
-        else
-        {
-            $this->registerCssFile( 'ADMIN', 'jqgrid.css' );
-        }
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::import('application.libraries.Date_Time_Converter', true);
@@ -416,8 +403,8 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Called by jqGrid if a token is saved after editing
-    *
+    * Called by  if a token is saved after editing
+    * @todo Check if method is still in use 
     * @param mixed $iSurveyId The Survey ID
     */
     public function editToken($iSurveyId)

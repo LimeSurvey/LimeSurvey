@@ -98,86 +98,8 @@ $(document).ready(function(){
                 
         },
         error: console.log
-}   );
-/*
-    // $("#urlparams").jqGrid({ url:jsonUrl,
-    //     datatype: "json",
-    //     colNames:[sAction,'','',sParameter,'','',sTargetQuestion],
-    //     colModel:[
-    //         {name:'act',index:'act', width:80,sortable:false},
-    //         {name:'id',index:'id', hidden:true},
-    //         {name:'sid',index:'sid', hidden:true},
-    //         {name:'parameter',index:'parameter', width:100},
-    //         {name:'targetqid',index:'targetqid', hidden:true},
-    //         {name:'targetsqid',index:'targetsqid', hidden:true},
-    //         {name:'title',index:'title', width:240}
-    //     ],
-    //     direction: $('html').attr('dir'),
-    //     sortname: 'parameter',
-    //     pager: '#pagerurlparams',
-    //     loadonce: true,
-    //     hidegrid: false,
-    //     pginput: false,
-    //     pgbuttons: false,
-    //     viewrecords: true,
-    //     width: 420,
-    //     shrinkToFit: true,
-    //     rowNum: 100,
-    //     sortorder: "asc",
-    //     editurl: jsonUrl, // this is dummy existing url
-    //     emptyrecords : sNoParametersDefined,
-    //     caption: sURLParameters,
-    //     gridComplete: function() {
-    //         var ids = jQuery("#urlparams").jqGrid('getDataIDs');
-    //         for(var i=0;i < ids.length;i++)
-    //         {
-    //             var cl = ids[i];
-    //             be = "<span data-toggle='tooltip' data-placement='top' data-original-title='Edit' title='Edit' style='cursor:pointer;' class='glyphicon glyphicon-edit text-success' value='E' onclick=\"editParameter('"+cl+"');\"></span>";
-    //             de = "<span data-toggle='tooltip' data-placement='top' data-original-title='Delete' title='Delete' style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\"></span>";
-    //             jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
-    //         }
-    //         //$('[data-toggle="tooltip"]').tooltip(); // TODO: Does not work - why?
-    //     }
-    // }).navGrid('#pagerurlparams', {
-    //     del:false,
-    //     edit:false,
-    //     refresh:false,
-    //     search:false,
-    //     add:false
-    // }, {}).jqGrid('navButtonAdd',"#pagerurlparams", {
-    //     buttonicon:'ui-icon-plusthick',
-    //     caption: sAddParam,
-    //     id: 'btnAddParam',
-    //     onClickButton: newParameter
-    // });
-    */
-
-    $("#dlgEditParameter").dialog({
-        autoOpen: false,
-        width: 700
-    });
-
-    $('#btnCancelParams').click(function(){
-        $("#dlgEditParameter").dialog("close");
-    });
-
-    $('#btnSaveParams').click(saveParameter);
-    $('#addnewsurvey').submit(PostParameterGrid);
-    $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form
-    
-    $( "#tabs" ).bind( "tabsactivate", function(event, ui) {
-        if (ui.newTab.index() > 4)    // Hide on import and copy tab, otherwise show
-        {
-            $('#btnSave').hide();
-        }
-        else
-        {
-            $('#btnSave').show();
-        }
-    });
-
+    }   );
 });
-
 /**
  * Bind to submit event
  */
