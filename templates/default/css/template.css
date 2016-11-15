@@ -623,7 +623,8 @@ div.yes-no .btn-group label {
     }
 }
 
-@media only screen and (max-device-width: 760px){
+@media only screen and (max-device-width: 760px){ 
+
   h1, .h3{
     font-size:18px;
   }
@@ -654,9 +655,14 @@ div.yes-no .btn-group label {
   .table-bordered{
     border:none;
   }
-
-  .ls-answers tr:last-child{
+  
+  .ls-answers tbody:last-child tr:last-child{
     margin-bottom:0;
+  }
+  
+  .ls-answers{
+    padding-top:0;
+    padding-bottom:0;
   }
 
   .ls-answers > tbody > tr > td.radio-item ,
@@ -665,4 +671,8 @@ div.yes-no .btn-group label {
     padding-top:10px;
     padding-left:28px;
   }
+  
+  .ls-answers.table > tbody + tbody {
+    border-top: none; /*overriding Bootstrap */
+}
 }
