@@ -2180,3 +2180,9 @@ table#responsedetail tr td{
 #quick-add-condition-modal .modal-dialog {
     width: 800px;
 }
+
+#login-panel {
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto
+}
