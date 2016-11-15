@@ -4123,10 +4123,12 @@ function do_array_5point($ia)
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth = $aQuestionAttributes['answer_width'];
+        $defaultWidth=false;
     }
     else
     {
         $answerwidth = 33;
+        $defaultWidth=true;
     }
     $columnswidth            = 100-$answerwidth;
     $colCount  = 5; // number of columns
