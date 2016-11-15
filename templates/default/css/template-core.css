@@ -1,7 +1,7 @@
 /**
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
-/* Boostrap don't do some reset : do it in answer part*/
+/* bootstrap don't do some reset : do it in answer part*/
 .ls-answers img,.ls-answers video,.ls-answers svg{
   max-width: 100%;height: auto !important;/* HTML included add width and height : force it */
 }
@@ -67,7 +67,7 @@ table.ls-answers{width:100%}
  *  awesome-bootstrap-checkbox inside table with an sr-only label
  * @todo : .dir-rtl
  */
-/* reset the margin and review the padding set by boostrap */
+/* reset the margin and review the padding set by bootstrap */
 table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{margin: 0;}
 /* We need complete width in array , but don't touch to padding-(top|bottom) */
 .dir-ltr .ls-answers td.radio-item,.dir-ltr .ls-answers td.checkbox-item{padding-left: 20px;padding-right: 0;}

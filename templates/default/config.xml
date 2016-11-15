@@ -6,7 +6,7 @@
 -->
 
 <config>
-    <!-- Those metadatas will be display in the template configuration page. They are not used for now. -->
+    <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadatas>
         <name>Default</name>
         <creationDate>08/01/2016</creationDate>
@@ -23,7 +23,7 @@
 
     <!--
         Here the list of the css/js files to load.
-        Any file here will be loaded via the asset manager
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
     -->
     <files>
         <css>
@@ -92,7 +92,7 @@
 
     <!-- Here datas about how LimeSurvey should load the template -->
     <engine>
-        <!-- If empty, bootstrap css/js files will not be loaded. In the future, we could had more engines, like foundation -->
+        <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
         <cssframework>bootstrap</cssframework>
         <!-- Path of the pstpl files -->
         <pstpldirectory>views</pstpldirectory>
@@ -110,7 +110,7 @@
         <filesdirectory>files</filesdirectory>
 
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party -->
-        <!-- If bootstrap is registred as a css framework, it will be loaded first -->
+        <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
             <package>jqueryui</package>
             <package>jquery-touch-punch</package>
