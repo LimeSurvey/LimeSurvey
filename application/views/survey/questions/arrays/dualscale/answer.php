@@ -108,7 +108,7 @@
             <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" aria-describedby="answertext<?php echo $ansrow['myfname']; ?>"
                 class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['showmandatoryviolation']) ? " has-error" : ""; ?>"
             >
-            <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?>">
+            <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label<?php if($ansrow['showmandatoryviolation']){ echo " error-mandatory";} ?>">
                 <?php echo $ansrow['answertext']; ?>
                 <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>"
                     id="java<?php echo $ansrow['myfid0']; ?>" value=""
@@ -127,9 +127,9 @@
             <!-- First label set -->
             <?php foreach ($labelcode0 as $j => $ld): ?>
                 <?php if ($j === 0 && ($leftheader != '' || $rightheader !='')): ?>
-                    <td class='visible-xs leftheader'><?php echo $leftheader; ?></td>
+                    <td class='visible-xs leftheader information-item'><?php echo $leftheader; ?></td>
                 <?php endif; ?>
-                <td class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item">
+                <td class="answer_cell_1_<?php echo $ld; ?> answer-item radio-item">
                     <input
                         type="radio"
                         name="<?php echo $ansrow['myfname0']; ?>"
@@ -144,7 +144,7 @@
             <?php endforeach; ?>
 
             <?php if (count($labelans1) > 0):  // if second label set is used ?>
-                <td class="dual_scale_separator information-item <?php if($shownoanswer): ?>  radio-item noanswer-item <?php endif; ?>">
+                <td class="dual_scale_separator information-item <?php if($shownoanswer): ?>answer_cell_1_ radio-item noanswer-item <?php endif; ?>">
                     <?php if ($shownoanswer): // No answer for accessibility and no javascript (but visible-xs-block visible-xs-block even with no js: need reworking) ?>
                     <div class="ls-js-hidden">
                         <input
@@ -165,7 +165,7 @@
                 <!-- Second label set -->
                 <?php foreach ($labelcode1 as $k => $ld): ?>
                     <?php if ($k === 0 && ($leftheader != '' || $rightheader !='')): ?>
-                        <td class='visible-xs rightheader'><?php echo $rightheader; ?></td><!-- this break column count : no visual issue, but HTML issue : A table row was X columns wide and exceeded the column count established using column markup. -->
+                        <td class='visible-xs rightheader information-item'><?php echo $rightheader; ?></td>
                     <?php endif; ?>
                     <td class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item">
                         <input
@@ -189,7 +189,7 @@
 
             <!-- No answer column -->
             <?php if ($shownoanswer): ?>
-                <td class="answer-item radio-item noanswer-item">
+                <td class="answer_cell_2_ answer-item radio-item noanswer-item">
                     <?php if (count($labelans1) > 0): ?>
                             <input
                                 type='radio'

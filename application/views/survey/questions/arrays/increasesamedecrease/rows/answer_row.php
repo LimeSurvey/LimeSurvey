@@ -22,7 +22,7 @@
 <!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="row-inc-same-dec answers-list radio-list <?php echo ($odd) ? "ls-odd" : "ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>"  <?php echo $sDisplayStyle; ?>  role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
-    <th class="answertext control-label" id="answertext<?php echo $myfname;?>">
+    <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php if($error){ echo " error-mandatory";} ?>">
         <?php echo $answertext;?>
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" />
     </th>
@@ -74,7 +74,7 @@
 
     <!-- No Answer -->
     <?php if($no_answer):?>
-        <td class="answer-item radio-item noanswer-item">
+        <td class="answer_cell_ answer-item noanswer-item radio-item">
             <input
                 type="radio"
                 name="<?php echo $myfname;?>"

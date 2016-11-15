@@ -11,7 +11,7 @@
  */
 ?>
 <tr id="javatbd<?php echo $myfname;?>" class="question-item answer-item dropdown-item <?php echo ($odd) ? " ls-odd" : " ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>" >
-    <th class="answertext">
+    <th class="answertext control-label<?php echo ($error) ? " error-mandatory" : ""; ?>"">
         <label for="answer<?php echo $myfname;?>">
             <?php echo $answertext; ?>
         </label>
@@ -31,8 +31,7 @@
             <?php endforeach; ?>
         </select>
     </td>
-
     <?php if ($right_exists): ?>
-        <th class='answertextright'><?php echo $answertextright; ?></th>
+        <th class='answertextright information-item'><?php echo $answertextright; ?></th>
     <?php endif; ?>
 </tr>

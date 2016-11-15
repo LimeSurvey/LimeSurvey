@@ -1,15 +1,13 @@
 <?php
 /**
- * Array 5 point choice
- *
+ * Array header : answer or sub question
  * @var $class
- * @var $style
- * @var $th_content
+ * @var $content
  */
 ?>
 
 <!-- thead -->
 <th class="<?php echo $class; ?>">
-    <?php echo $th_content;?>
+    <?php echo $content;?>
 </th>
 <!-- end of thead -->

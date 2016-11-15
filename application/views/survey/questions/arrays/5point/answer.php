@@ -23,7 +23,6 @@
     <!-- Table headers -->
     <thead aria-hidden="true">
         <tr class="ls-heading"><!-- same class for repeat heading too -->
-            <td></td>
             <?php
                 // rows/cell/thead.php
                 echo $sHeaders;

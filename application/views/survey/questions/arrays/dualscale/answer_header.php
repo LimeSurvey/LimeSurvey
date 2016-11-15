@@ -11,12 +11,12 @@
 
 ?>
 <tr class="ls-heading header_row <?php echo $class; ?>" aria-hidden="true">
-    <td class="header_answer_text"></td>
+    <td></td>
     <?php if ($leftheader != '' || $rightheader !=''): ?>
         <td class="hidden"></td>
     <?php endif; ?>
     <?php foreach ($labelans0 as $ld): ?>
-        <th class=''><?php echo $ld; ?></th>
+        <th class='answer-text'><?php echo $ld; ?></th>
     <?php endforeach; ?>
     <?php if (count($labelans1) > 0): ?>
         <td class="header_separator"><?php if ($shownoanswer): ?>
@@ -26,13 +26,13 @@
             <td class="hidden"></td>
         <?php endif; ?>
         <?php foreach ($labelans1 as $ld): ?>
-            <th  class=''><?php echo $ld; ?></th>
+            <th class='answer-text'><?php echo $ld; ?></th>
         <?php endforeach; ?>
     <?php endif; ?>
     <?php if ($shownoanswer || $rightexists): ?>
         <td class="header_separator rigth_separator"></td>
     <?php endif; ?>
     <?php if ($shownoanswer): ?>
-        <th class="header_no_answer"><?php eT('No answer'); ?></th>
+        <th class="answer-text noanswer-text"><?php eT('No answer'); ?></th>
     <?php endif; ?>
 </tr>

@@ -4128,14 +4128,13 @@ function do_array_5point($ia)
     {
         $answerwidth = 33;
     }
-    $cellwidth  = 5; // number of columns
+    $columnswidth            = 100-$answerwidth;
+    $colCount  = 5; // number of columns
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        ++$cellwidth; // add another column
+        ++$colCount; // add another column
     }
-
-    $cellwidth  = round((( 100 - ($answerwidth*2) ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -4161,6 +4160,16 @@ function do_array_5point($ia)
             $right_exists  = true;
         }
     }
+    if ($right_exists)
+    {
+        /* put the right answer to same width : take place in answer width only if it's not default */
+        if($defaultWidth){
+            $columnswidth-=$answerwidth;
+        }else{
+            $answerwidth  = $answerwidth/2;
+        }
+    }
+    $cellwidth=$columnswidth/$colCount;
     for ($xc=1; $xc<=5; $xc++)
     {
         $sColumns  .= doRender('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
@@ -4177,31 +4186,32 @@ function do_array_5point($ia)
         $sColumns  .= doRender('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$answerwidth), true);
     }
 
+    $sHeaders .= doRender('/survey/questions/global/table/cell/head-information', array(
+        'class'=>'',
+        'content'=>'',
+    ), true);
     for ($xc=1; $xc<=5; $xc++)
     {
-        $sHeaders .= doRender('/survey/questions/arrays/5point/rows/cells/thead', array(
-            'class'=>'th-'.$xc,
-            'style'=>'',
-            'th_content'=>$xc,
+        $sHeaders .= doRender('/survey/questions/global/table/cell/head-header', array(
+            'class'=>'answer-text',
+            'content'=>$xc,
         ), true);
     }
 
     // Header for suffix
     if ($right_exists)
     {
-        $sHeaders .= doRender('/survey/questions/arrays/5point/rows/cells/thead', array(
+        $sHeaders .= doRender('/survey/questions/global/table/cell/head-information', array(
             'class'=>'answertextright',
-            'style'=>'',
-            'th_content'=>'&nbsp;',
+            'content'=>'',
         ), true);
     }
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $sHeaders .= doRender('/survey/questions/arrays/5point/rows/cells/thead', array(
-            'class'=>'th-',
-            'style'=>'',
-            'th_content'=>gT('No answer'),
+        $sHeaders .= doRender('/survey/questions/global/table/cell/head-header', array(
+            'class'=>'answer-text noanswer-text',
+            'content'=>gT('No answer'),
         ), true);
     }
 
@@ -4250,15 +4260,13 @@ function do_array_5point($ia)
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>$answertext2,
             ), true);
-             $textAlignClass = "text-right";
         }
         elseif ($right_exists)
         {
             $answer_tds .= doRender('/survey/questions/arrays/5point/rows/cells/answer_td_answertext', array(
                 'answerwidth'=>$answerwidth,
-                'answertext2'=>'&nbsp;',
+                'answertext2'=>'',
             ), true);
-             $textAlignClass = "text-right";
         }
 
         // ==>tds
@@ -4370,21 +4378,23 @@ function do_array_10point($ia)
     }
 
     $sHeaders = '';
+    $sHeaders .= doRender('/survey/questions/global/table/cell/head-information', array(
+        'class'=>'',
+        'content'=>'',
+    ), true);
     for ($xc=1; $xc<=10; $xc++)
     {
-        $sHeaders .= doRender('/survey/questions/arrays/10point/rows/cells/thead', array(
-            'class'=>'th-3',
-            'style'=>'',
-            'th_content'=>$xc,
+        $sHeaders .= doRender('/survey/questions/global/table/cell/head-header', array(
+            'class'=>'answer-text',
+            'content'=>$xc,
         ), true);
     }
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $sHeaders .= doRender('/survey/questions/arrays/10point/rows/cells/thead', array(
-            'class'=>'th-4',
-            'style'=>'',
-            'th_content'=>gT('No answer'),
+        $sHeaders .= doRender('/survey/questions/global/table/cell/head-header', array(
+            'class'=>'answer-text noanswer-text',
+            'content'=>gT('No answer'),
         ), true);
     }
 
@@ -4739,9 +4749,7 @@ function do_array($ia)
             $defaultWidth=true;
         }
         $columnswidth            = 100-$answerwidth;
-        $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
-        $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-
+        $iCount=intval(Question::model()->count("parent_qid=:qid and question like :separator",array(':qid'=>$ia[0],":separator"=>'%|%')));
         if ($iCount>0)
         {
             $right_exists = true;
@@ -4756,6 +4764,7 @@ function do_array($ia)
         {
             $right_exists = false;
         }
+
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1)
         {
@@ -4785,14 +4794,14 @@ function do_array($ia)
 
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $sHeaders = doRender('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+        $sHeaders = doRender('/survey/questions/global/table/cell/head-information', array(
             'class'   => '',
-            'content' => '&nbsp;',
+            'content' => '',
         ),  true);
 
         foreach ($labelans as $ld)
         {
-            $sHeaders .= doRender('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+            $sHeaders .= doRender('/survey/questions/global/table/cell/head-header', array(
                 'class'   => 'answer-text',
                 'content' => $ld,
             ),  true);
@@ -4800,15 +4809,15 @@ function do_array($ia)
 
         if ($right_exists)
         {
-            $sHeaders .= doRender('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+            $sHeaders .= doRender('/survey/questions/global/table/cell/head-information', array(
                 'class'     => '',
-                'content'   => '&nbsp;',
+                'content'   => '',
             ),  true);
         }
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
         {
-            $sHeaders .= doRender('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+            $sHeaders .= doRender('/survey/questions/global/table/cell/head-header', array(
                 'class'   => 'answer-text noanswer-text',
                 'content' => gT('No answer'),
             ),  true);
@@ -4843,7 +4852,7 @@ function do_array($ia)
             }
             else
             {
-                $answertextright = null;
+                $answertextright = '';
             }
 
             $error          = (in_array($myfname, $aMandatoryViolationSubQ))?true:false;             /* Check the mandatory sub Q violation */
@@ -4866,25 +4875,6 @@ function do_array($ia)
                 $thiskey++;
             }
 
-            /*
-            if (strpos($answertextsave,'|'))
-            {
-                $answertext        = substr($answertextsave,strpos($answertextsave,'|')+1);
-
-                $sHeaders .= doRender('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
-                    'class'   => 'answertextright',
-                    'content' => $answertext,
-                ),  true);
-            }
-            elseif ($right_exists)
-            {
-                $sHeaders .= doRender('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
-                    'class'   => 'answertextright',
-                    'content' => '&nbsp;',
-                ),  true);
-            }
-            */
-
             // NB: $ia[6] = mandatory
             $no_answer_td = '';
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -4898,13 +4888,12 @@ function do_array($ia)
                             'checkconditionFunction' => $checkconditionFunction,
                         ),  true);
             }
-
             $sRows .= doRender('/survey/questions/arrays/array/no_dropdown/rows/answer_row', array(
                         'answer_tds' => $answer_tds,
                         'no_answer_td' => $no_answer_td,
                         'myfname'    => $myfname,
                         'answertext' => $answertext,
-                        'answertextright' => $right_exists ? $answertextright : null,
+                        'answertextright' => $answertextright,
                         'right_exists' => $right_exists,
                         'value'      => $value,
                         'error'      => $error,

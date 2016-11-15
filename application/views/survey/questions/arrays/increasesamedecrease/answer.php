@@ -24,7 +24,6 @@
     </colgroup>
     <thead aria-hidden="true">
         <tr class="ls-heading">
-            <td></td>
             <?php
                 // rows/cell/thead.php
                 echo $sHeaders;
