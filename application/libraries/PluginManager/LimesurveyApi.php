@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace ls\pluginmanager;
 use Yii;
 use User;
@@ -14,7 +14,7 @@ use SurveyDynamic;
         /**
          * Read a key from the application config, and when not set
          * return the default value
-         * 
+         *
          * @param string $key          The key to search for in the application config
          * @param mixed  $defaultValue Value to return when not found, default is false
          * @return mixed
@@ -23,7 +23,7 @@ use SurveyDynamic;
         {
             return App()->getConfig($key, $defaultValue);
         }
-        
+
         /**
          * Generates the real table name from plugin and tablename.
          * @param iPlugin $plugin
@@ -50,7 +50,7 @@ use SurveyDynamic;
         * @param array $aColumns the columns (name=>definition) in the new table.
         * @param string $sOptions additional SQL fragment that will be appended to the generated SQL.
         * @return integer number of rows affected by the execution.
-        */        
+        */
         public function createTable($plugin, $sTableName, $aColumns, $sOptions=null)
         {
             if (null !== $sTableName = $this->getTableName($plugin, $sTableName))
@@ -164,10 +164,10 @@ use SurveyDynamic;
             $result = \LimeExpressionManager::ProcessString($expression);
             return $result;
         }
-        
+
         /**
          * Get the current request object
-         * 
+         *
          * @return LSHttpRequest
          */
         public function getRequest()
@@ -177,7 +177,7 @@ use SurveyDynamic;
 
         /**
         * Gets a survey response from the database.
-        * 
+        *
         * @param int $surveyId
         * @param int $responseId
         */
@@ -250,7 +250,7 @@ use SurveyDynamic;
             $result = \QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
             return $result;
         }
-        
+
         /**
         * Retrieves user details for the currently logged in user
         * Returns false if the user is not logged and returns null if the user does not exist anymore for some reason (should not really happen)
@@ -294,28 +294,42 @@ use SurveyDynamic;
         /**
          * Retrieves user details for a user
          * Returns null if the user does not exist anymore for some reason (should not really happen)
-         * 
+         *
          * @param int $iUserID The userid
          * @return User
          */
         public function getUser($iUserID){
             return \User::model()->findByPk($iUserID);
         }
-        
+
         /**
          * Get the user object for a given username
-         * 
+         *
          * @param string $username
          * @return User|null Returns the user, or null when not found
          */
         public function getUserByName($username)
-        { 
+        {
             $user = \User::model()->findByAttributes(array('users_name' => $username));
 
             return $user;
         }
 
-        
+        /**
+         * Get the user object for a given email
+         *
+         * @param string $username
+         * @return User|null Returns the user, or null when not found
+         */
+        public function getUserByEmail($email)
+        {
+            $user = \User::model()->findByAttributes(array('email' => $email));
+
+            return $user;
+        }
+
+
+
         /**
         * Retrieves user permission details for a user
         * @param $iUserID int The User ID
@@ -325,8 +339,8 @@ use SurveyDynamic;
         */
         public function getPermissionSet($iUserID, $iEntityID=null, $sEntityName=null){
             return \Permission::model()->getPermissions($iUserID, $iEntityID, $sEntityName);
-        }        
-        
+        }
+
         /**
         * Retrieves Participant data
         * @param $iParticipantID int The Participant ID
@@ -400,7 +414,7 @@ use SurveyDynamic;
                 throw new Exception("Can't find a plugin with name " . $name);
             }
         }
-        
+
     }
 
 ?>
