@@ -2226,3 +2226,7 @@ table#responsedetail tr td{
     align-items: center;
     justify-content: center;
 }
+
+.welcome div.panel.disabled * {
+        opacity: 0.7;
+}
