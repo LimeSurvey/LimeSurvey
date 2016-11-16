@@ -1,0 +1,34 @@
+/**
+ * Drag-n-drop ranking default styles
+ * @license This file is part of LimeSurvey under GNU/GPL License v2 or later, see LICENSE.php
+ */
+
+/* Add some space atbootom of the list to allow move it here */
+.sortable-list{
+    padding-bottom:2em;
+    border: 1px dotted #CCC;
+    padding-bottom:2em;
+}
+.list-samechoiceheight .sortable-list{
+    padding-bottom:0;/* min-height and border-box don't seem goo enoug at 2 : if same-height: don't need padding */
+    -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+.sortable-list .ls-choice {
+    border: 1px solid #CCC;
+    background:#fff; /* Don't found a good boostrap color : put 'common' */
+    min-height: 1.5em;
+    padding:0.3em;
+    margin:0;
+    cursor:move;
+}
+.list-samechoiceheight .ls-choice,
+.list-samelistheight .ls-choice{
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+.sortable-list .ls-rank-placeholder {
+    border: 1px dotted #CCC;
+}

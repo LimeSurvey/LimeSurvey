@@ -16,7 +16,23 @@ return array(
             'survey.js',
         ),
         'depends' => array(
-            //'bootstrap',
+            'fontawesome',
+            //'bootstrap', //limesurvey in future must work without boostrap
         )
-    )
+    ),
+    /* Ranking question type */
+    'question-ranking'=>array(
+        'basePath' => 'core.questions.ranking',
+        'css'=> array(
+            'ranking.css',
+        ),
+        'js'=>array(
+            'ranking.js',
+        ),
+        'depends' => array(
+            'jqueryui',
+            'jquery-touch-punch',
+            'jquery-actual',
+        )
+    ),
 );

@@ -202,7 +202,7 @@ function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
   {
     var totalHeight=0;
     $('.connectedSortable'+qID+' li').each(function(){
-      totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
+      totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});/* Border not inside */
     });
     /* Add the padding to min-height */
     $('.connectedSortable'+qID).css('min-height',totalHeight+'px').addClass("ls-sameheight");

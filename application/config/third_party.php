@@ -38,7 +38,7 @@ return array(
     'bootstrap' => array(
         'basePath' => 'bootstrap',
         'css'=> array(
-            'css/bootstrap.css',
+            'css/bootstrap.css',/* Admin need it, not public */
             'css/yiistrap.css',
         ),
         'depends' => array(

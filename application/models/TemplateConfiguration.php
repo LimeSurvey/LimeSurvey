@@ -279,7 +279,6 @@ class TemplateConfiguration extends CFormModel
     private function fixTemplateByApi()
     {
         if($this->apiVersion<3){
-            $this->packages[]= 'fontawesome';
             $this->packages[]= 'limesurvey-public';
             if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl")){
                 $messagePstpl  =  "<div id='{MESSAGEID}-wrapper'>\n"

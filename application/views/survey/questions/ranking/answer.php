@@ -30,7 +30,7 @@
             echo  $sSelects;
         ?>
     </ul>
-    <div class="dragDropTable ls-no-js-hidden answers-list row" aria-hidden="true">
+    <div class="dragDropTable ls-no-js-hidden answers-list<?php echo ($samechoiceheight) ? " list-samechoiceheight": "" ?><?php echo ($samelistheight) ? " list-samelistheight": "" ?> row" aria-hidden="true">
         <div class="col-sm-6 col-xs-6">
             <strong class="SortableTitle"><?php echo $rank_title;?></strong>
             <!-- @todo : move htmlblock at the good place -->

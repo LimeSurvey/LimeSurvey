@@ -27,7 +27,6 @@
     -->
     <files>
         <css>
-            <filename>css/jquery-ui-custom.css</filename>
             <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
             <filename>css/bootstrap.css</filename>
             <filename>css/template-core.css</filename>
@@ -50,7 +49,6 @@
         -->
         <rtl>
             <css>
-                <filename>css/jquery-ui-custom-rtl.css</filename>
                 <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
                 <filename>css/bootstrap.css</filename>
                 <!-- include bootstrap-rtl from Morteza Ansarinia (http://github.com/morteza) -->
@@ -112,10 +110,6 @@
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
-<!--
-            <package>jqueryui</package>
-            <package>jquery-touch-punch</package>
--->
             <package>fontawesome</package>
             <package>limesurvey-public</package>
         </packages>
