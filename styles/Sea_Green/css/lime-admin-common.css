@@ -2226,3 +2226,8 @@ table#responsedetail tr td{
     align-items: center;
     justify-content: center;
 }
+
+input[type="file"].form-control {
+    border: none;
+    padding-left: 0px;
+}
