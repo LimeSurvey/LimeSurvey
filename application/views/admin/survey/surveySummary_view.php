@@ -65,7 +65,7 @@ $surveyid = $surveyinfo['sid'];
                         <!-- Switch : Show questions group by group -->
                         <?php $switchvalue = ($surveyinfo['format']=='G') ? 1 : 0 ; ?>
                         <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                            <div class="row">
+                            <div class="row row-eq-height">
                                 <div class="col-sm-12">
 
                                     <label for="switch"><?php eT('Format:');?></label>
@@ -91,7 +91,7 @@ $surveyid = $surveyinfo['sid'];
 
 
                         <!-- Add Question / group -->
-                        <div class="row">
+                        <div class="row row-eq-height">
                             <!-- Survey active, so it's impossible to add new group/question -->
                             <?php if ($activated == "Y"): ?>
 
