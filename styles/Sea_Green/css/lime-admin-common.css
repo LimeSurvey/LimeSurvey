@@ -2186,3 +2186,19 @@ table#responsedetail tr td{
   margin-left: auto;
   margin-right: auto
 }
+
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+.welcome .panel {
+    height: 90%;
+    min-width: 200px;
+}
