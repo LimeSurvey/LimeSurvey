@@ -112,8 +112,10 @@
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
+<!--
             <package>jqueryui</package>
             <package>jquery-touch-punch</package>
+-->
             <package>fontawesome</package>
             <package>limesurvey-public</package>
         </packages>

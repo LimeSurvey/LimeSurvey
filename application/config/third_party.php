@@ -5,7 +5,8 @@
  * Defining them here allows for easy inclusion in views.
  */
 
-
+/* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
+/* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
 if (!isset($_GET['isAjax']))
 {
     $aJquery = array(
@@ -303,6 +304,7 @@ return array(
         'css' => array(
             'css/emoji.css',
             'css/ss-emoji.css'
+        ),
     ),
     'jquery-datatable' => array(
         'basePath' => 'third_party.jquery-datatable',
@@ -317,6 +319,4 @@ return array(
             'bootstrap'
         )
     )
-
-
 );

@@ -98,20 +98,7 @@ $internalConfig = array(
         'clientScript'=>array(
             'packages' => array_merge(
                 require('third_party.php'),
-                array(
-                    'limesurvey-public'=>array(
-                        'basePath' => 'core.limesurvey',
-                        'css'=> array(
-                            'survey.css',
-                        ),
-                        'js'=>array(
-                            'survey.js',
-                        ),
-                        'depends' => array(
-                            'bootstrap',
-                        )
-                    )
-                )
+                require('packages.php')
             )
         ),
 

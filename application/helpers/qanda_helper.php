@@ -2074,7 +2074,10 @@ function do_ranking($ia)
         $inputnames[]=$myfname;
     }
 
+    App()->getClientScript()->registerPackage('jqueryui');
+    App()->getClientScript()->registerPackage('jquery-touch-punch');
     App()->getClientScript()->registerPackage('jquery-actual'); // Needed to with jq1.9 ?
+
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."ranking.js");
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "ranking.css");
 
