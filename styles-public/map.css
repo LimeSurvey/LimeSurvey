@@ -3,9 +3,12 @@
 [dir="ltr"] .coordinate-item{margin:0 0 0 1em}
 .geoname_search {
   position: relative;
-  z-index: 10000;
+  z-index: 2;
   float:right;
   width:15em;
+}
+.leaflet-top, .leaflet-bottom {
+    z-index: initial;
 }
 .geoname_restrict{
   float:left;
