@@ -97,9 +97,13 @@ class Date_Time_Converter
         $this->seconds 		= '00';
         $this->minutes		= '00';
         $this->hours		= '00';
-        $this->days			= '01';
-        $this->months		= '01';
-        $this->years		= '1970';
+
+        // Default must be set to "today", otherwise
+        // saving only hour will calculate wrong timestamp.
+        // See bug #11606.
+        $this->days         = date('d');
+        $this->months       = date('m');
+        $this->years        = date('Y');
         $this->ampm			= 'am';
     }
 

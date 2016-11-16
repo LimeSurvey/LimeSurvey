@@ -254,7 +254,7 @@ function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTransl
 				iNearestIndex = i;
 			}
 		}
-		if ( iStrict !== 1 ) {
+		if ( iStrict != 1 ) {
 			return aToValues[iNearestIndex];
 		}
 	}

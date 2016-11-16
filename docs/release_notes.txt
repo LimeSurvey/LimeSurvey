@@ -60,6 +60,14 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.06LTS (build 160801) to 2.6.1LTS (build 161024) Oct 24, 2016
+-Fixed issue #11455: MapQuest discontinued their free services (Markus FlÃ¼r)
+-Fixed issue #11509: numerical input option integer only leads to positive integer input only (Denis Chenu)
+-Fixed issue #11613: Importing a participant having an empty token field is not possible (Carsten Schmitz)
+-Fixed issue #11772: Expression manager convert_value does not obey strict setting (Olle Haerstedt)
+-Fixed issue #11827: Email bounce processing fails on PHP 7 (Carsten Schmitz)
+-Fixed issue: ~ and _ in tokens hard to manually enter (Carsten Schmitz)
+
 Changes from 2.06LTS (build 160524) to 2.06LTS (build 160801) Aug 1, 2016
 -Fixed issue #10226: {ANSWERTABLE} includes <script> placed in question text (LouisGac)
 -Fixed issue #10952: Conditions do not show up in conditions designer after creation if using MSSQL and connecting from Linux using FreeTDS (Carsten Schmitz)

@@ -51,12 +51,13 @@ function OSGeoInitialize(question,latLng){
 		};
 		var name = question.substr(0,question.length - 2);
 		// tiles layers def
+		// If not latLng is set the Map will center to Hamburg
 		var MapOption=LSmaps[name];
 		if(isNaN(MapOption.latitude) || MapOption.latitude==""){
-			MapOption.latitude=0;
+			MapOption.latitude=53.582665;
 		}
 		if(isNaN(MapOption.longitude) || MapOption.longitude==""){
-			MapOption.longitude=0;
+			MapOption.longitude=10.018924;
 		}
 		var mapOSM = L.tileLayer(tileServerURL.OSM+".png", {
 			maxZoom: 19,
@@ -91,7 +92,6 @@ function OSGeoInitialize(question,latLng){
 			"Cyclemap": mapCYC,
 			"Traffic Map" : mapTRA
 		};
-
 		var overlays = {
 		};
 		var map = L.map("map_"+name, {
@@ -144,6 +144,26 @@ function OSGeoInitialize(question,latLng){
 			}
 		)
 
+        // Zoom to 11 when switching to Aerial or Hybrid views - bug 10589
+        var layer2Name, layer3Name, layerIndex = 0;
+        for (var key in baseLayers) {
+            if (!baseLayers.hasOwnProperty(key)) {
+                continue;
+            }
+            if(layerIndex == 1) {
+                layer2Name = key;
+            }
+            else if(layerIndex == 2) {
+                layer3Name = key;
+            }
+            layerIndex++;
+        }
+        map.on('baselayerchange', function(e) {
+            if(e.name == layer2Name || e.name == layer3Name) {
+                map.setZoom(11);
+            }
+        });
+
 		marker.on('dragend', function(e){
 				var marker = e.target;
 				var position = marker.getLatLng();
@@ -194,7 +214,7 @@ function OSGeoInitialize(question,latLng){
 			appendTo: $("#searchbox_"+name).parent(),
 			source: function( request, response ) {
 				$.ajax({
-					url: "http://api.geonames.org/searchJSON",
+					url: "//api.geonames.org/searchJSON",
 					dataType: "jsonp",
 					data: {
 						username : LSmap.geonameUser,
