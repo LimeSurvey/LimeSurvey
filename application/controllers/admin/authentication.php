@@ -64,7 +64,7 @@ class Authentication extends Survey_Common_Action
             }
             else if ($failed) {
                 $message = $result[1];
-                App()->user->setFlash('loginError', $message);
+                App()->user->setFlash('error', $message);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
             }
         }
@@ -87,7 +87,7 @@ class Authentication extends Survey_Common_Action
 
         // Plugins, include core plugins, can't be activated by default.
         // So after a fresh installation, core plugins are not activated
-        // They need to be manually loaded. 
+        // They need to be manually loaded.
         if (!class_exists('Authdb', false)) {
             $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
             if (!$plugin) {

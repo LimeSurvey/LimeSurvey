@@ -2180,3 +2180,58 @@ table#responsedetail tr td{
 #quick-add-condition-modal .modal-dialog {
     width: 800px;
 }
+
+#login-panel {
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto
+}
+
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+.welcome .panel {
+    height: 90%;
+    min-width: 200px;
+}
+
+.welcome .panel-heading {
+    height: 25%;
+    display:flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.welcome .panel-body {
+    height: 75%;
+    width: 100%;
+}
+
+.welcome .panel-body .panel-body-ico, .welcome .panel-body .panel-body-link {
+    width: 100%;
+    height: 50%;
+}
+
+
+.welcome .panel-body .panel-body-link {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="file"].form-control {
+    border: none;
+    padding-left: 0px;
+}
+
+#insertmethod-container{
+    display: none;
+}

@@ -126,7 +126,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function newsurvey()
     {
-        App()->getClientScript()->registerPackage('jqgrid');
         if (!Permission::model()->hasGlobalPermission('surveys','create'))
         {
             Yii::app()->user->setFlash('error', gT("Access denied"));
@@ -1455,10 +1454,13 @@ class SurveyAdmin extends Survey_Common_Action
         where up.sid={$iSurveyID} and (q.language='{$sBaseLanguage}' or q.language is null) and (sq.language='{$sBaseLanguage}' or sq.language is null)";
         $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
         $i = 0;
-        $aData = new stdClass();
+        $aData = array(
+            'rows' => array()
+        );
         foreach ($oResult as $oRow)
         {
-            $aData->rows[$i]['id'] = $oRow['id'];
+            $row=array();
+            $row['id'] = $oRow['id'];
             if (!is_null($oRow['question']))
             {
                         $oRow['title'] .= ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
@@ -1467,22 +1469,21 @@ class SurveyAdmin extends Survey_Common_Action
             {
                         $oRow['title'] = gT('(No target question)');
             }
-
             if ($oRow['sqquestion'] != '')
             {
                 $oRow['title'] .= (' - ' . ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
             }
-            unset($oRow['sqquestion']);
-            unset($oRow['sqtitle']);
-            unset($oRow['question']);
-
-            $aData->rows[$i]['cell'] = array_values($oRow);
+            $row['question'] = $oRow['title'];
+            $row['parameter'] = $oRow['parameter'];
+            $row['datas'] = $oRow;
+            
+            $aData['rows'][] = $row;
             $i++;
         }
 
-        $aData->page = 1;
-        $aData->records = count($oResult);
-        $aData->total = 1;
+        $aData['page'] = 1;
+        $aData['records'] = count($oResult);
+        $aData['total'] = 1;
 
         echo ls_json_encode($aData);
     }
@@ -1509,7 +1510,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
         App()->clientScript->registerPackage('bootstrap-switch');
-        App()->getClientScript()->registerPackage('jqgrid');
+        App()->getClientScript()->registerPackage('jquery-datatable');
 
     }
 

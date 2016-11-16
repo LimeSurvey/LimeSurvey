@@ -67,34 +67,6 @@ return array(
         )
     ),
 
-    // jQgrid
-    'jqgrid' => array(
-        'basePath' => 'third_party.jqgrid',
-        'js' => array(
-            'js/jquery.jqGrid.min.js',
-            'js/i18n/grid.locale-en.js',
-            'plugins/jquery.searchFilter.js'
-        ),
-        'css' => array(
-            //'css/ui.jqgrid.css'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-
-    ),
-
-    'jqgrid.addons' => array(
-        'basePath' => 'third_party.jqgrid.plugins',
-        'js' => array(
-            'grid.addons.js'
-        ),
-        'depends' => array(
-            'jqgrid'
-        )
-
-    ),
-
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
         'basePath' => 'third_party.jquery-bindWithDelay',
@@ -260,7 +232,7 @@ return array(
         )
     ),
 
-    // Decimal.js calculate in js 
+    // Decimal.js calculate in js
     'decimal' => array(
         'basePath' => 'third_party.decimal',
         'js' => array(
@@ -270,7 +242,7 @@ return array(
         )
     ),
 
-    // Moment.js use real simple dateTime modification 
+    // Moment.js use real simple dateTime modification
     'moment' => array(
         'basePath' => 'third_party.moment',
         'js' => array(
@@ -326,12 +298,23 @@ return array(
             'moment'
         )
     ),
-
     'emoji' => array(
         'basePath' => 'third_party.emojifont',
         'css' => array(
             'css/emoji.css',
             'css/ss-emoji.css'
+    ),
+    'jquery-datatable' => array(
+        'basePath' => 'third_party.jquery-datatable',
+        'css' => array(
+            'datatables.min.css'
+        ),
+        'js' => array(
+            'datatables.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
         )
     )
 

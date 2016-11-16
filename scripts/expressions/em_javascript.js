@@ -481,7 +481,15 @@ function LEMval(alias)
     if (LEMradix === ',') {
         newval = str.split(',').join('.');
     }
-
+    var checkNumericRegex = new RegExp(/^[-0-9,\.]*$/);
+    if(checkNumericRegex.test(newval)){
+        try{
+            newval = new Decimal(newval);
+        } catch(e){
+            if(e)
+                newval = new Decimal(newval.toString().replace(/,/,'.'));
+        }
+    }
     if (newval == parseFloat(newval)) {
         if (newval.length > 0 && newval[0]==0) {
             return newval;   // so keep 0 prefixes on numbers
@@ -587,12 +595,12 @@ function LEMval(alias)
                     }
                     shown = answer;
                     break;
+                case 'N': //NUMERICAL QUESTION TYPE
+                case 'K': //MULTIPLE NUMERICAL QUESTION
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case '5': //5 POINT CHOICE radio-buttons
-                case 'N': //NUMERICAL QUESTION TYPE
-                case 'K': //MULTIPLE NUMERICAL QUESTION
                 case 'Q': //MULTIPLE SHORT TEXT
                 case ';': //ARRAY (Multi Flexi) Text
                 case 'S': //SHORT FREE TEXT
@@ -603,14 +611,7 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    try {
-                        var numtest = new Decimal(value);
-                        return parseFloat(numtest.valueOf());
-                    }
-                    catch(e) {
                         shown = value;
-                    }
-                    break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
                     if (typeof attr.question === 'undefined' || value == '') {
@@ -714,47 +715,33 @@ function LEMval(alias)
                 {
                     return "";
                 }
-                // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
-                if (LEMradix === ',' && onSamePage )
-                {
-                    var regValidateNum = /^-?\d*\,?\d*$/;
-                }
-                else
-                {
-                    var regValidateNum = /^-?\d*\.?\d*$/;
-                }
-                if(!regValidateNum.test(value))
+                var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
+                
+
+                if(checkNumericRegex.test(value))
                 {
                     if(bNumRealValue)
                     {
-                        try {
-                            var numtest = new Decimal(value);
-                            return parseFloat(numtest.valueOf());
-                        }
-                        catch(e) {
-                            return value;
+                        try{
+                            var numtest = new Decimal(newval);
+                        } catch(e){
+                            var numtest = new Decimal(newval.toString().replace(/,/,'.'));
                         }
                     }
                     else
                     {
                         return '';
                     }
+
+
+                    // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
+                    if (LEMradix === ',' && onSamePage )
+                    {
+                        value = numtst.toString().replace(/\./,',');
+                    }
                 }
-                newval=value;
-                if (LEMradix === ',') {
-                    newval = value.split(',').join('.');
-                }
-//                Already sone with regValidateNum.test(value)
-//                if (newval != parseFloat(newval)) {
-//                   return '';
-//                }
-                try {
-                    var numtest = new Decimal(value);
-                    return parseFloat(numtest.valueOf());
-                }
-                catch(e) {
-                    return value;
-                }
+
+                return value;
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
