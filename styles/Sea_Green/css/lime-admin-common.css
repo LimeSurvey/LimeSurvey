@@ -2231,3 +2231,7 @@ input[type="file"].form-control {
     border: none;
     padding-left: 0px;
 }
+
+#insertmethod-container{
+    display: none;
+}
