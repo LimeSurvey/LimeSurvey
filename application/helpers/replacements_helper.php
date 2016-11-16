@@ -318,8 +318,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_dateoutput = '-';
     }
 
-    $_submitbutton = "<input class='submit btn btn-default' type='submit' value=' " . gT("Submit") . " ' name='move2' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" />";
-
     if (isset($thissurvey['surveyls_url']) and $thissurvey['surveyls_url'] != "")
     {
         if (trim($thissurvey['surveyls_urldescription']) != '')
@@ -383,15 +381,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_saveall = "";
         $_savelinks = "";
-    }
-
-    if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N")
-    {
-        $_strreview = "";
-    }
-    else
-    {
-        $_strreview = gT("If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses.");
     }
 
     if(isset($surveyid))
@@ -595,9 +584,6 @@ EOD;
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
     $coreReplacements['SITENAME'] = Yii::app()->getConfig('sitename');
     $coreReplacements['SITELOGO'] = $sitelogo;
-    $coreReplacements['SUBMITBUTTON'] = $_submitbutton;
-    $coreReplacements['SUBMITCOMPLETE'] = "<strong>".gT("Thank you!")."<br /><br />".gT("You have completed answering the questions in this survey.")."</strong><br /><br />".gT("Click on 'Submit' now to complete the process and save your answers.");
-    $coreReplacements['SUBMITREVIEW'] = $_strreview;
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
     $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : '';  // global
