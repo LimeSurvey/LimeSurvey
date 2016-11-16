@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## unreleased
+## [1.1.1] - 2016-11-16
 
 ### Fix
 - Expression manager convert_value does not obey strict setting (Olle Haerstedt) (2.6.1lts)
