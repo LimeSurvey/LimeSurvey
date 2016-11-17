@@ -157,14 +157,17 @@ function LEMpi()
 function LEMsum()
 {
     // takes variable number of arguments, returns their sum
-    var result=0;
+    var result= new Decimal(0);
     for (i=0;i<arguments.length;++i) {
-        var arg = arguments[i];
-        if (!isNaN(arg)) {
-            result += (+arg);
+        var arg = arguments[i] || 0;
+        try{
+            arg = new Decimal(arg);
+        } catch(e){
+            arg = new Decimal(arg.toString().replace(/,/,'.'));
         }
+        result = result.add(arg);
     }
-    return result;
+    return result.toString();
 }
 
 function LEMintval(a)
@@ -205,8 +208,10 @@ function LEMis_int(mixed_var)
  */
 function LEMis_numeric(mixed_var)
 {
-    var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
-    return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
+    var isNumericRegex = new RegExp(/(-)?\d*(,|\.)?\d*/);
+    return isNumericRegex.test(mixed_var.toString());
+    // var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
+    // return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
 }
 
 function LEMis_string(a)
@@ -701,24 +706,17 @@ function LEMval(alias)
 
                 if(checkNumericRegex.test(value))
                 {
-                    if(bNumRealValue)
-                    {
-                        try{
-                            var numtest = new Decimal(newval);
-                        } catch(e){
-                            var numtest = new Decimal(newval.toString().replace(/,/,'.'));
-                        }
-                    }
-                    else
-                    {
-                        return '';
-                    }
 
-
+                    try{
+                        var numtest = new Decimal(value);
+                    } catch(e){
+                        var numtest = new Decimal(value.toString().replace(/,/,'.'));
+                    }
+                
                     // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
                     if (LEMradix === ',' && onSamePage )
                     {
-                        value = numtst.toString().replace(/\./,',');
+                        value = numtest.toString().replace(/\./,',');
                     }
                 }
 
