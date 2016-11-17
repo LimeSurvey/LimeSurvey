@@ -131,7 +131,10 @@ class Authdb extends AuthPluginBase
 
         if ($user == null){
           $user = $this->api->getUserByEmail($username);
-          $this->setUsername($user->users_name);
+          
+          if (is_object($user)){
+              $this->setUsername($user->users_name);
+          }
         }
 
         if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
