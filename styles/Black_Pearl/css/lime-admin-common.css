@@ -2196,6 +2196,7 @@ table#responsedetail tr td{
   display: -webkit-flex;
   display: -ms-flexbox;
   display:         flex;
+  margin-bottom: 30px;
 }
 
 .welcome .panel {
