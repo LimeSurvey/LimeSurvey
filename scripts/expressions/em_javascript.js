@@ -703,6 +703,9 @@ function LEMval(alias)
                             value = answerParts[0];
                         }
                         break;
+                    case 'N': //NUMERICAL QUESTION TYPE
+                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                    
                 }
             }
 
@@ -723,13 +726,16 @@ function LEMval(alias)
                     }
                 
                     // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
-                    if (LEMradix === ',' && onSamePage )
-                    {
-                        value = numtest.toString().replace(/\./,',');
-                    }
+                    // if (LEMradix === ',' && onSamePage )
+                    // {
+                    //     value = numtest.toString().replace(/\./,',');
+                    // }
+                    value = numtest.valueOf();
                     if(value.length < length && firstLetterIsNull){
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
+
+                    value = parseFloat(value);
                 }
                 return value;
             }
