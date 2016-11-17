@@ -107,11 +107,10 @@
         <!-- Asset manager will copy the whole template directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
         <filesdirectory>files</filesdirectory>
 
-        <!-- Here, you can publish packages set as third party extensions in application/config/third_party -->
+        <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
-            <package>fontawesome</package>
-            <package>limesurvey-public</package>
+            <package>limesurvey-public</package><!-- LimeSurvey can be broken without this file : it's your own decision to remove it -->
         </packages>
     </engine>
 </config>
