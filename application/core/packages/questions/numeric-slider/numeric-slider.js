@@ -22,6 +22,7 @@ function doNumericSlider(qID,options) {
     var separator = $(inputEl).data('separator');
     // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
       var theSlider = $(inputEl).bootstrapSlider({
+          id : 'slider-'+myfname,
           formatter: function (value) {
               displayValue = value.toString().replace('.',separator);
               return prefix + displayValue + suffix;
@@ -48,6 +49,8 @@ function doNumericSlider(qID,options) {
       theSlider.on('change', function(event) {
       });
       theSlider.on('slideStop', function(event) {
+          console.log(separator);
+          console.log(event.value.toString().replace('.',separator));
           $(inputEl).val(event.value.toString().replace('.',separator)).trigger('keyup');// We call the EM by the event
       });
 

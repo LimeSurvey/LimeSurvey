@@ -46,6 +46,15 @@ return array(
         )
     ),
 
+    // bootstrap-slider : for multinumeric with slider
+    'bootstrap-slider' => array(
+        'basePath' => 'third_party.bootstrap-slider',
+        'js' => array(
+            'bootstrap-slider.min.js'
+        ),
+        /* according to readme : JQuery is optional and the plugin can operate with or without it. boostrap must be loaded for css only */
+    ),
+
     'fontawesome' => array(
         //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
         'basePath' => 'third_party.fontawesome',

@@ -3269,7 +3269,6 @@ function do_multiplenumeric($ia)
                     'dispVal'                => $sValue,
                     'maxlength'              => $maxlength,
                     'labelText'              => $labelText,
-                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type, \'onchange\','.$integeronly.')',
                     'integeronly'=> $integeronly,
                 ), true);
             }else{
@@ -3295,8 +3294,8 @@ function do_multiplenumeric($ia)
                     'dispVal'                => $sValue,
                     'maxlength'              => $maxlength,
                     'labelText'              => $labelText,
-                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
                     'slider_orientation'     => $slider_orientation,
+                    'slider_value'           => $sUnformatedValue,
                     'slider_step'            => $slider_step    ,
                     'slider_min'             => $slider_min     ,
                     'slider_mintext'         => $slider_mintext ,
@@ -3365,9 +3364,7 @@ function do_multiplenumeric($ia)
             'help'=>gT('Please click and drag the slider handles to enter your answer.')
         );
         App()->getClientScript()->registerScript("sliderTranslation","var sliderTranslation=".json_encode($sliderTranslation).";\n",CClientScript::POS_HEAD);
-        App()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/bootstrap-slider/bootstrap-slider.js");
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."numeric-slider.js");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') ."numeric-slider.css");
+        App()->getClientScript()->registerPackage("question-numeric-slider");
         if($slider_handle == 'custom'){/* unsure we still need it : in aJsonOptions : must choose the best */
             App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}}';");
         }

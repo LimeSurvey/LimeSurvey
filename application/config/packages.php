@@ -1,14 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * Core packages , no third_party
- *
+ * sees third_party.php for third party package
  * @license GPL v3
+ * core path is application/core/packages
  *
  */
 return array(
     /* For public template functionnality */
     'limesurvey-public'=>array(
-        'basePath' => 'core.limesurvey',
+        'basePath' => 'core.limesurvey',/* public part only : rename directory ? */
         'css'=> array(
             'survey.css',
         ),
@@ -33,6 +34,19 @@ return array(
             'jqueryui',
             'jquery-touch-punch',
             'jquery-actual',
+        )
+    ),
+    /* numeric slider question : numerci question type with slider */
+    'question-numeric-slider'=>array(
+        'basePath' => 'core.questions.numeric-slider',
+        'css'=> array(
+            'numeric-slider.css',
+        ),
+        'js'=>array(
+            'numeric-slider.js',
+        ),
+        'depends' => array(
+            'bootstrap-slider',
         )
     ),
 );
