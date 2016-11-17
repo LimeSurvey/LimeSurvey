@@ -150,7 +150,7 @@
             for(var i in formData){
                 shadowForm.append('<input name="'+formData[i]['name']+'" value="'+formData[i]['value']+'" />');
             }
-            shadowForm.submit();
+            shadowForm.css({width: '1px', height: '1px', 'overflow': 'hidden'}).appendTo('body').submit();
         });
     };
     jQuery(function($) {
