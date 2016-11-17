@@ -1225,6 +1225,7 @@ class SurveyRuntimeHelper {
         $event->set('code', $sCode);
         $event->set('qid', $iQid);
         $event->set('gid', $aReplacement['GID']);
+        $event->set('sgq', $aReplacement['SGQ']);
         // User text
         $event->set('text', $aReplacement['QUESTION_TEXT']);
         $event->set('questionhelp', $aReplacement['QUESTIONHELP']);
