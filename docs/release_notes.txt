@@ -35,7 +35,28 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from  2.56 (build 161117) to 2.56.1 (build 161118) Nov 17 2016
+-Fixed issue: Numerical parsing errors of various kind (Markus Flür)
 
+Changes from  2.55.3 (build 161111) to 2.56 (build 161117) Nov 17 2016
+-Fixed issue #10324: CSS on login page needs fixing (Louis Gac)
+-Fixed issue #11585: VV export/import dialogs are not styled (LouisGac)
+-Fixed issue #11695: When using file questions all possible files are shown, even empty ones (Louis Gac)
+-Fixed issue #11814: Graphics options are all turned on (Louis Gac)
+-fixed issue #11847: Don't move all template in asset directory (views not needed) (Louis Gac)
+-Fixed issue #11849: Numeric valid item with, show as error (markusfluer)
+-Fixed issue #11901: Unable to update Decimal mark (Markus Flür)
+-Fixed issue #11906: Сan not see the quota name when you select an answer for quota (LouisGac)
+-Fixed issue #11911: Unable to (de)activate plugins (via GUI) (markusfluer)
+-Fixed issue #11913: Cross-site scripting vulnerability in Version 2.55.2+161103 (LouisGac)
+-Fixed issue: Boxes on home page and quick actions don't have the same height on small screens. (LouisGac)
+-New feature #11741: Login limesurvey using the email address (Louis Gac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Greek by c_schmitz, kiolalis
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Russian by ddrmoscow, t6nnp6nn, vipgroup
+#Updated translation: Vietnamese by rinodung
 
 Changes from  2.55.2 (build 161103) to 2.55.3 (build 161111) Nov 11 2016
 -Fixed issue #11872: Opening Central Participant Database returns 500 error for PHP 5.3 (Olle Haerstedt)

@@ -467,7 +467,7 @@ class quotas extends Survey_Common_Action
             $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
 
             foreach ($result as $aQuotaDetails){
-                $quota_name = $aQuotaDetails['name'];
+                $sQuotaName = $aQuotaDetails['name'];
             }
 
             $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));

@@ -2196,11 +2196,16 @@ table#responsedetail tr td{
   display: -webkit-flex;
   display: -ms-flexbox;
   display:         flex;
+  margin-bottom: 30px;
 }
 
 .welcome .panel {
-    height: 90%;
+    height: 110%;
     min-width: 200px;
+}
+
+.welcome .panel-body {
+    padding: 0px;
 }
 
 .welcome .panel-heading {
@@ -2217,12 +2222,25 @@ table#responsedetail tr td{
 
 .welcome .panel-body .panel-body-ico, .welcome .panel-body .panel-body-link {
     width: 100%;
-    height: 50%;
-}
-
-
-.welcome .panel-body .panel-body-link {
     display:flex;
     align-items: center;
     justify-content: center;
+
+}
+
+.welcome .panel-body .panel-body-ico{
+    height: 70%;
+}
+
+.welcome .panel-body .panel-body-link {
+    height: 30%;
+}
+
+input[type="file"].form-control {
+    border: none;
+    padding-left: 0px;
+}
+
+#insertmethod-container{
+    display: none;
 }
