@@ -262,5 +262,9 @@
 .slider-list .slider-item .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2em;}
 .slider-list .slider-item .col-sm-12 .ls-input-group{margin-top:0.5em;margin-bottom: 2em;}
 /* reset button */
-.ls-input-group-reset{position:relative}
-.btn-slider-reset{text-align:center;top:-1em;position:relative}
+.ls-input-group-reset{margin-top:1em}
+.btn-slider-reset{text-align:center;position:relative;}
+@media (min-width: 768px) {
+  .ls-input-group-reset{position:relative;margin-top:0}
+  .btn-slider-reset{top:-1em;margin-top:0}
+}
