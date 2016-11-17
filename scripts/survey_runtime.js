@@ -236,7 +236,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     {
         evt_type = 'onchange';
     }
-    checkconditions(newval, name, type, evt_type);
+    checkconditions(cleansedValue, name, type, evt_type);
 }
 
 // Set jquery-ui to LS Button
