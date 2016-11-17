@@ -35,6 +35,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from  2.56 (build 161117) to 2.56.1 (build 161118) Nov 17 2016
+-Fixed issue: Numerical parsing errors of various kind (Markus Flür)
+
 Changes from  2.55.3 (build 161111) to 2.56 (build 161117) Nov 17 2016
 -Fixed issue #10324: CSS on login page needs fixing (Louis Gac)
 -Fixed issue #11585: VV export/import dialogs are not styled (LouisGac)
