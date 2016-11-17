@@ -40,6 +40,11 @@ $(document).on("change",".select-item select:not([onchange])",function(event){
         ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
 });
 
+var pad = function(num,places) {
+  var zero = places - num.toString().length + 1;
+  return Array(+(zero > 0 && zero)).join("0") + num;
+}
+
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty
@@ -168,6 +173,8 @@ function LEMsum()
             }
             //create decimal checks!
             result = result.add(arg);
+        } else if(arg === true){
+            result = result.add(1);
         }
     }
     return result.toString();
@@ -705,11 +712,10 @@ function LEMval(alias)
                     return "";
                 }
                 var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
-                
-
-                if(checkNumericRegex.test(value))
+                if(checkNumericRegex.test(value) && !bNumRealValue)
                 {
-
+                    var length = value.length;
+                    var firstLetterIsNull = value.split("").shift() === '0';
                     try{
                         var numtest = new Decimal(value);
                     } catch(e){
@@ -721,8 +727,10 @@ function LEMval(alias)
                     {
                         value = numtest.toString().replace(/\./,',');
                     }
+                    if(value.length < length && firstLetterIsNull){
+                        value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
+                    }
                 }
-
                 return value;
             }
 
@@ -755,7 +763,7 @@ function LEMval(alias)
                 // If it's not a decimal number, just return value
                 try {
                     var decimal_safe = new Decimal(value);
-                    return parseFloat(decimal_safe.valueOf());
+                    return pad(decimal_safe,value.length);
                 }
                 catch (ex) {
                     return value;
