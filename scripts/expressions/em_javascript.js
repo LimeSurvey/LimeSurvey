@@ -219,7 +219,7 @@ function LEMis_int(mixed_var)
 function LEMis_numeric(mixed_var)
 {
     var isNumericRegex = new RegExp(/^(-)?\d*(,|\.)?\d*$/);
-    return isNumericRegex.test(mixed_var.toString());
+    return ( ( ( typeof mixed_var === 'string' && isNumericRegex.test(mixed_var)) || typeof mixed_var === 'number') && mixed_var !== '' && !isNaN(mixed_var));
     // var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
     // return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
 }
@@ -734,10 +734,8 @@ function LEMval(alias)
                     if(value.length < length && firstLetterIsNull){
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
-
-                    value = parseFloat(value);
                 }
-                return value;
+                return parseFloat(value);
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
