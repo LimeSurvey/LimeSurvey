@@ -680,10 +680,31 @@ class SurveyRuntimeHelper {
 
     private function initsDirtyStep()
     {
+        // retrieve datas from local variable
+        $surveyid      = $this->surveyid;
+        $surveyMode    = $this->surveyMode;
+        $surveyOptions = $this->surveyOptions;
+        $LEMdebugLevel = $this->LEMdebugLevel;
+        $LEMsessid     = $this->LEMsessid;
+
         //$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
         $_SESSION[$LEMsessid]['step']   = $_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];
         LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
         LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
+    }
+
+    private function initTotalAndMaxSteps()
+    {
+        $LEMsessid     = $this->LEMsessid;
+
+        if (!isset($_SESSION[$LEMsessid]['totalsteps'])){
+            $_SESSION[$LEMsessid]['totalsteps'] = 0;
+        }
+
+        if (!isset($_SESSION[$LEMsessid]['maxstep'])){
+            $_SESSION[$LEMsessid]['maxstep'] = 0;
+        }
+
     }
 
     private function runPage()
@@ -725,16 +746,11 @@ class SurveyRuntimeHelper {
             $this->initsDirtyStep();
         }
 
+        $this->initTotalAndMaxSteps();
+
         // Proabably for readdata
         $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
-        if (!isset($_SESSION[$LEMsessid]['totalsteps'])){
-            $_SESSION[$LEMsessid]['totalsteps'] = 0;
-        }
-
-        if (!isset($_SESSION[$LEMsessid]['maxstep'])){
-            $_SESSION[$LEMsessid]['maxstep'] = 0;
-        }
 
         if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey']){
             // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
