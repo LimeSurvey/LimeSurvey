@@ -16,7 +16,6 @@ class SurveyRuntimeHelper {
 
     // Template datas
     private $oTemplate;
-    private $sTemplatePath;
     private $sTemplateViewPath;
 
     // LEM Datas
@@ -98,7 +97,6 @@ class SurveyRuntimeHelper {
         $this->setJavascriptVar($surveyid);
 
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
-        $sTemplatePath     = $this->sTemplatePath     = $oTemplate->path;
         $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
 
         $flashmessage = makeFlashMessage();
