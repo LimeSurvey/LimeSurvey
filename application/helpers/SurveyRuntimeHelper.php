@@ -51,6 +51,7 @@ class SurveyRuntimeHelper {
     // strings
     private $completed;
     private $content;
+    private $blocks;
 
     private function getSurveyMode($thissurvey)
     {
@@ -481,8 +482,7 @@ class SurveyRuntimeHelper {
                     if ($thissurvey['assessments'] == "Y"){
 
                         $assessments = $this->assessments = doAssessment($surveyid);
-                        if ($assessments)
-                        {
+                        if ($assessments){
                             $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                         }
                     }
@@ -500,16 +500,15 @@ class SurveyRuntimeHelper {
 
 
                     $content = '';
-
                     $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
 
                     //echo $thissurvey['url'];
                     //Check for assessments
-                    if ($thissurvey['assessments'] == "Y")
-                    {
-                        $assessments = doAssessment($surveyid);
-                        if ($assessments)
-                        {
+                    if ($thissurvey['assessments'] == "Y"){
+
+                        $assessments = $this->assessments = doAssessment($surveyid);
+
+                        if ($assessments){
                             $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                         }
                     }
@@ -517,29 +516,29 @@ class SurveyRuntimeHelper {
                     $this->content = $content;
 
                     if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == ''){
-                        $completed = "<p>".gT("Thank you!")."</p>";
-                        $completed.= "<p>".gT("Your survey responses have been recorded.")."</p>";
+                        $completed  = "<p>".gT("Thank you!")."</p>";
+                        $completed .= "<p>".gT("Your survey responses have been recorded.")."</p>";
                     }else{
                         $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                     }
 
                     // Link to Print Answer Preview  **********
                     if ($thissurvey['printanswers'] == 'Y'){
-                        $completed.= App()->getController()->renderPartial("/survey/system/url",array(
-                            'url'=>Yii::app()->getController()->createUrl("/printanswers/view",array('surveyid'=>$surveyid)),
-                            'description'=>gT("Print your answers."),
-                            'type'=>"survey-print",
-                            'coreClass'=>"ls-print",
+                        $completed .= App()->getController()->renderPartial("/survey/system/url",array(
+                            'url'         => Yii::app()->getController()->createUrl("/printanswers/view",array('surveyid'=>$surveyid)),
+                            'description' => gT("Print your answers."),
+                            'type'        => "survey-print",
+                            'coreClass'   => "ls-print",
                         ),true);
                     }
 
                     // Link to Public statistics  **********
                     if ($thissurvey['publicstatistics'] == 'Y'){
-                        $completed.= App()->getController()->renderPartial("/survey/system/url",array(
-                            'url'=>Yii::app()->getController()->createUrl("/statistics_user/action/",array('surveyid'=>$surveyid,'language'=>App()->getLanguage())),
-                            'description'=>gT("View the statistics for this survey."),
-                            'type'=>"survey-statistics",
-                            'coreClass'=>"ls-statistics",
+                        $completed .= App()->getController()->renderPartial("/survey/system/url",array(
+                            'url'         => Yii::app()->getController()->createUrl("/statistics_user/action/",array('surveyid'=>$surveyid,'language'=>App()->getLanguage())),
+                            'description' => gT("View the statistics for this survey."),
+                            'type'        => "survey-statistics",
+                            'coreClass'   => "ls-statistics",
                         ),true);
                     }
 
@@ -548,11 +547,10 @@ class SurveyRuntimeHelper {
                     //*****************************************
 
                     $_SESSION[$LEMsessid]['finished'] = true;
-                    $_SESSION[$LEMsessid]['sid'] = $surveyid;
+                    $_SESSION[$LEMsessid]['sid']      = $surveyid;
 
                     sendCacheHeaders();
-                    if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
-                    {
+                    if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url']){
                         //Automatically redirect the page to the "url" setting for the survey
                         header("Location: {$thissurvey['surveyls_url']}");
                     }
@@ -560,23 +558,25 @@ class SurveyRuntimeHelper {
                     doHeader();
                     echo $content;
                 }
+
                 $redata['completed'] = $completed;
 
                 // @todo Remove direct session access.
                 $event = new PluginEvent('afterSurveyComplete');
-                if (isset($_SESSION[$LEMsessid]['srid']))
-                {
+                if (isset($_SESSION[$LEMsessid]['srid'])){
                     $event->set('responseId', $_SESSION[$LEMsessid]['srid']);
                 }
+
                 $event->set('surveyId', $surveyid);
                 App()->getPluginManager()->dispatchEvent($event);
                 $blocks = array();
 
-                foreach ($event->getAllContent() as $blockData)
-                {
+                foreach ($event->getAllContent() as $blockData){
                     /* @var $blockData PluginEventContent */
                     $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
                 }
+
+                $this->blocks = $blocks;
 
                 $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
                 $redata['thissurvey']['surveyls_url'] = $thissurvey['surveyls_url'];
