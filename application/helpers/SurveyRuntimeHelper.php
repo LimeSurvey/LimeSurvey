@@ -138,7 +138,6 @@ class SurveyRuntimeHelper {
                 $surveyOptions = $this->surveyOptions;
                 $LEMdebugLevel = $this->LEMdebugLevel;
 
-
                 buildsurveysession($surveyid);
                 randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
@@ -165,53 +164,42 @@ class SurveyRuntimeHelper {
             // Proabably for readdata
             $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
-            if (!isset($_SESSION[$LEMsessid]['totalsteps']))
-            {
+            if (!isset($_SESSION[$LEMsessid]['totalsteps'])){
                 $_SESSION[$LEMsessid]['totalsteps'] = 0;
             }
-            if (!isset($_SESSION[$LEMsessid]['maxstep']))
-            {
+
+            if (!isset($_SESSION[$LEMsessid]['maxstep'])){
                 $_SESSION[$LEMsessid]['maxstep'] = 0;
             }
 
-            if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey'])
-            {
+            if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey']){
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
-                if (isset($moveResult['seq']) &&  App()->request->getPost('thisstep',$moveResult['seq']) == $moveResult['seq'])
-                {
+
+                if (isset($moveResult['seq']) &&  App()->request->getPost('thisstep',$moveResult['seq']) == $moveResult['seq']){
 
                     /* then pressing F5 or otherwise refreshing the current page, which is OK
                      * Seems OK only when movenext but not with move by index : same with $moveResult = LimeExpressionManager::GetLastMoveResult(true);
                      */
-                    $LEMskipReprocessing=true;
-                    $move = "movenext"; // so will re-display the survey
-                }
-                else
-                {
+                    $LEMskipReprocessing = true;
+                    $move                = "movenext"; // so will re-display the survey
+                }else{
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
-                    $LEMskipReprocessing=true;
-                    $move = "movenext"; // so will re-display the survey
-                    $invalidLastPage=true;
-                    $backpopup=gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
+                    $LEMskipReprocessing = true;
+                    $move                = "movenext"; // so will re-display the survey
+                    $invalidLastPage     = true;
+                    $backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
-            if(isset($move) && $move=="clearcancel")
-            {
+            
+            if(isset($move) && $move=="clearcancel"){
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
-                //$backpopup=gT("Clear all need confirmation.");
             }
-            if (isset($move))
-            {
-                if(!in_array($move,array("clearall","changelang","saveall","reload")))
-                    $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step'];
-                else // Accepted $move without error
-                    $_SESSION[$LEMsessid]['prevstep']= $move;
+
+            if (isset($move)){
+                $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
             }
-            else
-            {
-                //$_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
-            }
+
             if (!isset($_SESSION[$LEMsessid]['prevstep']))
             {
                 $_SESSION[$LEMsessid]['prevstep']=$_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
