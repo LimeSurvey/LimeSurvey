@@ -13,6 +13,12 @@
 */
 
 class SurveyRuntimeHelper {
+
+    // Template datas
+    private $oTemplate;
+    private $sTemplatePath;
+    private $sTemplateViewPath;
+
     /**
     * Main function
     *
@@ -24,17 +30,16 @@ class SurveyRuntimeHelper {
         global $errormsg;
         extract($args);
 
-        if (!$thissurvey)
-        {
+        if (!$thissurvey){
             $thissurvey = getSurveyInfo($surveyid);
         }
 
         $LEMsessid = 'survey_' . $surveyid;
         $this->setJavascriptVar($surveyid);
 
-        $oTemplate = Template::model()->getInstance('', $surveyid);
-        $sTemplatePath = $oTemplate->path;
-        $sTemplateViewPath = $oTemplate->pstplPath;
+        $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
+        $sTemplatePath     = $this->sTemplatePath     = $oTemplate->path;
+        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
 
         $flashmessage = makeFlashMessage();
 
