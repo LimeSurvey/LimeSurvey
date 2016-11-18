@@ -373,7 +373,8 @@ class SurveyRuntimeHelper {
             //Now, we check mandatory questions if necessary
             //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
             global $notanswered;
-
+            $this->notvalidated = $notanswered;
+            
             if (isset($moveResult) && !$moveResult['finished']){
                 $unansweredSQList = $this->unansweredSQList = $moveResult['unansweredSQs'];
                 if (strlen($unansweredSQList) > 0){
@@ -385,9 +386,9 @@ class SurveyRuntimeHelper {
                 //CHECK INPUT
                 $invalidSQList = $this->invalidSQList = $moveResult['invalidSQs'];
                 if (strlen($invalidSQList) > 0){
-                    $notvalidated = explode('|', $invalidSQList);
+                    $notvalidated = $this->notvalidated = explode('|', $invalidSQList);
                 }else{
-                    $notvalidated = array();
+                    $notvalidated = $this->notvalidated = array();
                 }
             }
 
