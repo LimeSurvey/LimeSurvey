@@ -102,8 +102,8 @@ class SurveyRuntimeHelper {
         $flashmessage = makeFlashMessage();
 
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
-        $LEMdebugLevel       = $this->$LEMdebugLevel;
-        $LEMskipReprocessing = $this->$LEMskipReprocessing;
+        $LEMdebugLevel       = $this->LEMdebugLevel;
+        $LEMskipReprocessing = $this->LEMskipReprocessing;
 
         $surveyMode    = $this->getSurveyMode($thissurvey);
         $surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
@@ -111,13 +111,12 @@ class SurveyRuntimeHelper {
 
         //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
         $previewgrp = false;
-        if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup'))
-        {
+        if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup')){
             $previewgrp = true;
         }
+
         $previewquestion = false;
-        if ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion'))
-        {
+        if ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')){
             $previewquestion = true;
         }
 
