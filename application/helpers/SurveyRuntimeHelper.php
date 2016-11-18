@@ -647,7 +647,7 @@ class SurveyRuntimeHelper {
         return $surveyOptions;
     }
 
-    private function inits()
+    private function initFirstStep()
     {
         // retrieve datas from local variable
         $surveyid      = $this->surveyid;
@@ -665,17 +665,25 @@ class SurveyRuntimeHelper {
         if($surveyid != LimeExpressionManager::getLEMsurveyId())
             LimeExpressionManager::SetDirtyFlag();
 
-        // Start survey
+        // Init $LEM states.
         LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
         $_SESSION[$LEMsessid]['step'] = 0;
 
-        // Welcome page. 
+        // Welcome page.
         if ($surveyMode == 'survey'){
             LimeExpressionManager::JumpTo(1, false, false, true);
         }elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'){
             $moveResult                   = $this->moveResult = LimeExpressionManager::NavigateForwards();
             $_SESSION[$LEMsessid]['step'] = 1;
         }
+    }
+
+    private function initsDirtyStep()
+    {
+        //$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
+        $_SESSION[$LEMsessid]['step']   = $_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];
+        LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+        LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
     }
 
     private function runPage()
@@ -712,12 +720,9 @@ class SurveyRuntimeHelper {
         // First time the survey is loaded
         if (!isset($_SESSION[$LEMsessid]['step']))
         {
-            $this->inits();
+            $this->initFirstStep();
         }elseif($surveyid != LimeExpressionManager::getLEMsurveyId()){
-            $_SESSION[$LEMsessid]['step']   = $_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];//$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
-
-            LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
-            LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
+            $this->initsDirtyStep();
         }
 
         // Proabably for readdata
