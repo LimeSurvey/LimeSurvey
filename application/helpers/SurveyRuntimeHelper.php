@@ -678,7 +678,7 @@ class SurveyRuntimeHelper {
         }
     }
 
-    private function initsDirtyStep()
+    private function initDirtyStep()
     {
         // retrieve datas from local variable
         $surveyid      = $this->surveyid;
@@ -715,7 +715,7 @@ class SurveyRuntimeHelper {
         $surveyOptions = $this->surveyOptions;
         $LEMdebugLevel = $this->LEMdebugLevel;
         $LEMsessid     = $this->LEMsessid;
-                
+
         if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey']){
             // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
             $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
@@ -764,16 +764,15 @@ class SurveyRuntimeHelper {
         $completed              = $this->completed              ;
         $content                = $this->content                ;
         $blocks                 = $this->blocks                 ;
-        $notvalidated           = $this->notvalidated;
-
-        $LEMsessid = $this->LEMsessid;
+        $notvalidated           = $this->notvalidated           ;
+        $LEMsessid              = $this->LEMsessid              ;
 
         // First time the survey is loaded
         if (!isset($_SESSION[$LEMsessid]['step']))
         {
             $this->initFirstStep();
         }elseif($surveyid != LimeExpressionManager::getLEMsurveyId()){
-            $this->initsDirtyStep();
+            $this->initDirtyStep();
         }
 
         $this->initTotalAndMaxSteps();
@@ -783,21 +782,21 @@ class SurveyRuntimeHelper {
 
         $this->checkIfUseBrowserNav();
 
-        if(isset($move) && $move=="clearcancel"){
-            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
-        }
-
         if (isset($move)){
+            if ( $move=="clearcancel"){
+                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
+            }
             $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
+
+            /* quota submitted */
+            if(isset($move) && $move=='confirmquota'){
+                checkCompletedQuota($surveyid);
+            }
+
         }
 
         if (!isset($_SESSION[$LEMsessid]['prevstep'])){
             $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
-        }
-
-        /* quota submitted */
-        if(isset($move) && $move=='confirmquota'){
-            checkCompletedQuota($surveyid);
         }
 
         if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
