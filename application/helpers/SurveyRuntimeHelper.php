@@ -23,10 +23,11 @@ class SurveyRuntimeHelper {
     private $LEMskipReprocessing = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 
     // Survey settings
+    private $thissurvey;
     private $surveyid            = null;
     private $show_empty_group    = false;
     private $surveyMode;
-    private $surveyOptions;    
+    private $surveyOptions;
 
     private function getSurveyMode($thissurvey)
     {
@@ -98,6 +99,8 @@ class SurveyRuntimeHelper {
             $thissurvey = getSurveyInfo($surveyid);
         }
 
+        $this->thissurvey = $thissurvey;
+
         $LEMsessid = 'survey_' . $surveyid;
         $this->setJavascriptVar($surveyid);
 
@@ -128,10 +131,12 @@ class SurveyRuntimeHelper {
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION[$LEMsessid]['step']))
             {
+                $thissurvey    = $this->thissurvey;
                 $surveyid      = $this->surveyid;
                 $surveyMode    = $this->surveyMode;
                 $surveyOptions = $this->surveyOptions;
                 $LEMdebugLevel = $this->LEMdebugLevel;
+
 
 
                 buildsurveysession($surveyid);
