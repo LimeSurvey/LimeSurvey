@@ -56,7 +56,7 @@
                         <div class="col-sm-8">
                             <a href="#" data-question-group-id="<?php echo $aGroup->gid; ?>" class="explorer-group">
                                 <span id="caret-<?php echo $aGroup->gid; ?>" class="fa fa-caret-right caret-explorer-group"></span>&nbsp;&nbsp;
-                                <span class="question-explorer-group-name"><?php echo $aGroup->group_name;?></span>
+                                <span class="question-explorer-group-name"><?php echo flattenText($aGroup->group_name);?></span>
                             </a>
                         </div>
 
