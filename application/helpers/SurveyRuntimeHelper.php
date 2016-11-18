@@ -107,8 +107,7 @@ class SurveyRuntimeHelper {
         return $surveyOptions;
     }
 
-    //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
-    private function runFirstPage()
+    private function runPage()
     {
 
         // Todo: check which ones are really needed
@@ -615,7 +614,7 @@ class SurveyRuntimeHelper {
         $this->filenotvalidated       = isset( $filenotvalidated       )?$filenotvalidated       :null ;
         $this->completed              = isset( $completed              )?$completed              :null ;
         $this->content                = isset( $content                )?$content                :null ;
-        $this->blocks                 = isset( $blocks                 )?$blocks                 :null ;        
+        $this->blocks                 = isset( $blocks                 )?$blocks                 :null ;
     }
 
     /**
@@ -655,7 +654,7 @@ class SurveyRuntimeHelper {
             $_SESSION[$LEMsessid]['prevstep'] = 2;
             $_SESSION[$LEMsessid]['maxstep'] = 0;
         }else{
-            $this->runFirstPage();
+            $this->runPage();
 
             // For redata
             // TODO: check what is really used
