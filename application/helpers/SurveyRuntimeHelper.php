@@ -184,11 +184,11 @@ class SurveyRuntimeHelper {
                     /* then pressing F5 or otherwise refreshing the current page, which is OK
                      * Seems OK only when movenext but not with move by index : same with $moveResult = LimeExpressionManager::GetLastMoveResult(true);
                      */
-                    $LEMskipReprocessing = true;
+                    $LEMskipReprocessing = $this->LEMskipReprocessing =  true;
                     $move                = "movenext"; // so will re-display the survey
                 }else{
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
-                    $LEMskipReprocessing = true;
+                    $LEMskipReprocessing = $this->LEMskipReprocessing = true;
                     $move                = "movenext"; // so will re-display the survey
                     $invalidLastPage     = true;
                     $backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
@@ -273,7 +273,7 @@ class SurveyRuntimeHelper {
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
                     $moveResult = $this->moveResult = LimeExpressionManager::GetLastMoveResult(true);
-                    $LEMskipReprocessing=true;
+                    $LEMskipReprocessing = $this->LEMskipReprocessing = true;
                 }
             }
             if (isset($moveResult) && isset($moveResult['seq']) )// Reload at first page (welcome after click previous fill an empty $moveResult array
@@ -352,7 +352,7 @@ class SurveyRuntimeHelper {
                 }
 
                 $moveResult =  $this->moveResult = LimeExpressionManager::GetLastMoveResult(true);
-                $LEMskipReprocessing=true;
+                $LEMskipReprocessing = $this->LEMskipReprocessing = true;
 
                 // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
             }
