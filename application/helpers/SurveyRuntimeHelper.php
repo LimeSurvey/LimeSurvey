@@ -32,6 +32,7 @@ class SurveyRuntimeHelper {
 
     // moves
     private $moveResult;
+    private $move;
 
     private function getSurveyMode($thissurvey)
     {
@@ -185,11 +186,11 @@ class SurveyRuntimeHelper {
                      * Seems OK only when movenext but not with move by index : same with $moveResult = LimeExpressionManager::GetLastMoveResult(true);
                      */
                     $LEMskipReprocessing = $this->LEMskipReprocessing =  true;
-                    $move                = "movenext"; // so will re-display the survey
+                    $move                = $this->move                = "movenext"; // so will re-display the survey
                 }else{
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
                     $LEMskipReprocessing = $this->LEMskipReprocessing = true;
-                    $move                = "movenext"; // so will re-display the survey
+                    $move                = $this->move  = "movenext"; // so will re-display the survey
                     $invalidLastPage     = true;
                     $backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
@@ -258,7 +259,7 @@ class SurveyRuntimeHelper {
                 }
                 if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1)
                 {
-                    $move = (int) $move;
+                    $move = $this->move = (int) $move;
                     if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep'])))
                     {
                         $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false);
@@ -266,7 +267,7 @@ class SurveyRuntimeHelper {
                 }
                 elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2)
                 {
-                    $move = (int) $move;
+                    $move = $this->move   = (int) $move;
                     $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
                 }
                 if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0))
@@ -290,7 +291,7 @@ class SurveyRuntimeHelper {
                 }
                 if ($moveResult['finished'] == true)
                 {
-                    $move = 'movesubmit';
+                    $move = $this->move = 'movesubmit';
                 }
                 else
                 {
@@ -300,7 +301,7 @@ class SurveyRuntimeHelper {
                 if ($move == "movesubmit" && $moveResult['finished'] == false)
                 {
                     // then there are errors, so don't finalize the survey
-                    $move = "movenext"; // so will re-display the survey
+                    $move = $this->move  = "movenext"; // so will re-display the survey
                     $invalidLastPage = true;
                 }
             }
