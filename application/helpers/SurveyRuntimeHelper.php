@@ -23,6 +23,7 @@ class SurveyRuntimeHelper {
     private $LEMskipReprocessing = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 
     // Survey settings
+    private $surveyid            = null;
     private $show_empty_group    = false;
 
     private function getSurveyMode($thissurvey)
@@ -89,6 +90,8 @@ class SurveyRuntimeHelper {
         global $errormsg;
         extract($args);
 
+        $this->surveyid = $surveyid;
+
         if (!$thissurvey){
             $thissurvey = getSurveyInfo($surveyid);
         }
@@ -116,16 +119,14 @@ class SurveyRuntimeHelper {
         //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
         $show_empty_group = $this->show_empty_group;
 
-        if ($previewgrp || $previewquestion)
-        {
+        if ($previewgrp || $previewquestion){
             $_SESSION[$LEMsessid]['prevstep'] = 2;
             $_SESSION[$LEMsessid]['maxstep'] = 0;
-        }
-        else
-        {
+        }else{
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION[$LEMsessid]['step']))
             {
+                $surveyid = $this->surveyid;
                 buildsurveysession($surveyid);
                 randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
