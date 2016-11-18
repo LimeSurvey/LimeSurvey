@@ -30,9 +30,11 @@ class SurveyRuntimeHelper {
     private $surveyOptions;
     private $totalquestions;
 
+
     // moves
     private $moveResult;
     private $move;
+    private $invalidLastPage;
 
     private function getSurveyMode($thissurvey)
     {
@@ -190,8 +192,8 @@ class SurveyRuntimeHelper {
                 }else{
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
                     $LEMskipReprocessing = $this->LEMskipReprocessing = true;
-                    $move                = $this->move  = "movenext"; // so will re-display the survey
-                    $invalidLastPage     = true;
+                    $move                = $this->move                = "movenext"; // so will re-display the survey
+                    $invalidLastPage     = $this->invalidLastPage     = true;
                     $backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
@@ -302,7 +304,7 @@ class SurveyRuntimeHelper {
                 {
                     // then there are errors, so don't finalize the survey
                     $move = $this->move  = "movenext"; // so will re-display the survey
-                    $invalidLastPage = true;
+                    $invalidLastPage = $this->invalidLastPage = true;
                 }
             }
 
