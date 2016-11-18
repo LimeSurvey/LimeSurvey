@@ -23,6 +23,26 @@ class SurveyRuntimeHelper {
     private $LEMdebugLevel       = 0;     // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
     private $LEMskipReprocessing = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 
+
+    private function getSurveyMode($thissurvey)
+    {
+        switch ($thissurvey['format'])
+        {
+            case "A": //All in one
+                $surveyMode = 'survey';
+                break;
+            default:
+            case "S": //One at a time
+                $surveyMode = 'question';
+                break;
+            case "G": //Group at a time
+                $surveyMode = 'group';
+                break;
+        }
+
+        return $surveyMode;
+    }
+
     /**
     * Main function
     *
@@ -51,19 +71,9 @@ class SurveyRuntimeHelper {
         $LEMdebugLevel       = $this->$LEMdebugLevel;
         $LEMskipReprocessing = $this->$LEMskipReprocessing;
 
-        switch ($thissurvey['format'])
-        {
-            case "A": //All in one
-                $surveyMode = 'survey';
-                break;
-            default:
-            case "S": //One at a time
-                $surveyMode = 'question';
-                break;
-            case "G": //Group at a time
-                $surveyMode = 'group';
-                break;
-        }
+        $surveyMode = $this->getSurveyMode($thissurvey);
+
+
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['separator'];
 
