@@ -599,23 +599,22 @@ class SurveyRuntimeHelper {
         global $errormsg;
         extract($args);
 
-        $this->surveyid = $surveyid;
+        // $LEMdebugLevel - customizable debugging for Lime Expression Manager
+        $LEMdebugLevel       = $this->LEMdebugLevel;
+        $LEMskipReprocessing = $this->LEMskipReprocessing;
 
-        if (!$thissurvey){
-            $thissurvey = getSurveyInfo($surveyid);
-        }
+        // Template settings
+        $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
+        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
+
+        // Survey settings
+        $this->surveyid = $surveyid;
+        $thissurvey     = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
 
         $this->thissurvey = $thissurvey;
         $LEMsessid        = $this->LEMsessid = 'survey_' . $surveyid;
 
         $this->setJavascriptVar($surveyid);
-
-        $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
-        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;        
-
-        // $LEMdebugLevel - customizable debugging for Lime Expression Manager
-        $LEMdebugLevel       = $this->LEMdebugLevel;
-        $LEMskipReprocessing = $this->LEMskipReprocessing;
 
         $surveyMode    = $this->surveyMode    = $this->getSurveyMode($thissurvey);
         $surveyOptions = $this->surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
