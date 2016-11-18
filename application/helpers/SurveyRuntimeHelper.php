@@ -938,6 +938,30 @@ class SurveyRuntimeHelper {
         }
     }
 
+    private function saveSubmitIfNeeded()
+    {
+        // retrieve datas from local variable
+        $thissurvey    = $this->thissurvey;
+
+        if ($thissurvey['active'] == "Y" && Yii::app()->request->getParam('savesubmit') ){
+            // The response from the save form
+            // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
+            Yii::import("application.libraries.Save");
+            $cSave = new Save();
+
+            $popup = $this->popup = $cSave->savedcontrol();
+
+            if (!empty($cSave->aSaveErrors)){
+                $cSave->showsaveform($thissurvey['sid']); // reshow the form if there is an error
+            }
+
+            $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
+            $LEMskipReprocessing = $this->LEMskipReprocessing = true;
+
+            // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
+        }
+    }
+
     private function runPage()
     {
 
@@ -977,6 +1001,7 @@ class SurveyRuntimeHelper {
         $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set
         $this->displayFirstPageIfNeeded();
         $this->saveAllIfNeeded();
+        $this->saveSubmitIfNeeded();
 
         $move       = $this->move;
         $moveResult = $this->moveResult;
@@ -984,23 +1009,6 @@ class SurveyRuntimeHelper {
         $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions']; // Proabably for redata
 
 
-        if ($thissurvey['active'] == "Y" && Yii::app()->request->getParam('savesubmit') ){
-            // The response from the save form
-            // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
-            Yii::import("application.libraries.Save");
-            $cSave = new Save();
-
-            $popup = $this->popup = $cSave->savedcontrol();
-
-            if (!empty($cSave->aSaveErrors)){
-                $cSave->showsaveform($thissurvey['sid']); // reshow the form if there is an error
-            }
-
-            $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
-            $LEMskipReprocessing = $this->LEMskipReprocessing = true;
-
-            // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
-        }
 
         //Now, we check mandatory questions if necessary
         //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
