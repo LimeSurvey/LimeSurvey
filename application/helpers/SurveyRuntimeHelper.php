@@ -48,6 +48,8 @@ class SurveyRuntimeHelper {
     private $invalidSQList;
     private $filenotvalidated;
 
+    // strings
+    private $completed;
 
     private function getSurveyMode($thissurvey)
     {
@@ -425,21 +427,20 @@ class SurveyRuntimeHelper {
                 $this->thissurvey = $thissurvey;
 
                 //END PAGE - COMMIT CHANGES TO DATABASE
-                if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
-                {
-                    if ($thissurvey['assessments'] == "Y")
-                    {
+                 //If survey is not active, don't really commit
+                if ($thissurvey['active'] != "Y"){
+
+                    if ($thissurvey['assessments'] == "Y"){
                         $assessments = $this->assessments = doAssessment($surveyid);
                     }
+
                     sendCacheHeaders();
                     doHeader();
-
 
                     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
 
                     //Check for assessments
-                    if ($thissurvey['assessments'] == "Y" && $assessments)
-                    {
+                    if ($thissurvey['assessments'] == "Y" && $assessments){
                         echo templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
                     }
 
@@ -452,16 +453,17 @@ class SurveyRuntimeHelper {
                     }
                     */
                     // can't kill session before end message, otherwise INSERTANS doesn't work.
-                    $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
+                    $completed  = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
                     $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                     $completed .= gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
-                    if ($thissurvey['printanswers'] == 'Y')
-                    {
+
+                    if ($thissurvey['printanswers'] == 'Y'){
                         // 'Clear all' link is only relevant for survey with printanswers enabled
                         // in other cases the session is cleared at submit time
                         $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . gT("Clear Responses") . "</a><br /><br />\n";
                     }
 
+                    $this->completed = $completed;
 
                 }
                 else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -512,19 +514,15 @@ class SurveyRuntimeHelper {
                     }
 
 
-                    if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == '')
-                    {
+                    if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == ''){
                         $completed = "<p>".gT("Thank you!")."</p>";
                         $completed.= "<p>".gT("Your survey responses have been recorded.")."</p>";
-                      }
-                    else
-                    {
+                    }else{
                         $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                     }
 
                     // Link to Print Answer Preview  **********
-                    if ($thissurvey['printanswers'] == 'Y')
-                    {
+                    if ($thissurvey['printanswers'] == 'Y'){
                         $completed.= App()->getController()->renderPartial("/survey/system/url",array(
                             'url'=>Yii::app()->getController()->createUrl("/printanswers/view",array('surveyid'=>$surveyid)),
                             'description'=>gT("Print your answers."),
@@ -534,8 +532,7 @@ class SurveyRuntimeHelper {
                     }
 
                     // Link to Public statistics  **********
-                    if ($thissurvey['publicstatistics'] == 'Y')
-                    {
+                    if ($thissurvey['publicstatistics'] == 'Y'){
                         $completed.= App()->getController()->renderPartial("/survey/system/url",array(
                             'url'=>Yii::app()->getController()->createUrl("/statistics_user/action/",array('surveyid'=>$surveyid,'language'=>App()->getLanguage())),
                             'description'=>gT("View the statistics for this survey."),
@@ -543,6 +540,9 @@ class SurveyRuntimeHelper {
                             'coreClass'=>"ls-statistics",
                         ),true);
                     }
+
+                    $this->completed = $completed;
+
                     //*****************************************
 
                     $_SESSION[$LEMsessid]['finished'] = true;
