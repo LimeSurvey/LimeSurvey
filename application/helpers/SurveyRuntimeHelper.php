@@ -36,6 +36,9 @@ class SurveyRuntimeHelper {
     private $move;
     private $invalidLastPage;
 
+    // popup
+    private $backpopup;
+
     private function getSurveyMode($thissurvey)
     {
         switch ($thissurvey['format'])
@@ -194,7 +197,7 @@ class SurveyRuntimeHelper {
                     $LEMskipReprocessing = $this->LEMskipReprocessing = true;
                     $move                = $this->move                = "movenext"; // so will re-display the survey
                     $invalidLastPage     = $this->invalidLastPage     = true;
-                    $backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
+                    $backpopup           = $this->backpopup           =  gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
 
@@ -207,7 +210,7 @@ class SurveyRuntimeHelper {
             }
 
             if (!isset($_SESSION[$LEMsessid]['prevstep'])){
-                $_SESSION[$LEMsessid]['prevstep']=$_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
+                $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
             }
 
             /* quota submitted */
@@ -251,46 +254,49 @@ class SurveyRuntimeHelper {
                         // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
                         if($thissurvey['questionindex']==2) // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
                             LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
+
                         $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps'] + 1, false);
                     }
                 }
-                if (isset($move) && $move=='changelang')
-                {
+
+                if (isset($move) && $move=='changelang'){
                     // jump to current step using new language, processing POST values
                     $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, true, true);  // do process the POST data
                 }
-                if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1)
-                {
+
+                if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1){
                     $move = $this->move = (int) $move;
-                    if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep'])))
-                    {
+
+                    if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep']))){
                         $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false);
                     }
                 }
-                elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2)
-                {
-                    $move = $this->move   = (int) $move;
+                elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2){
+                    $move       = $this->move       = (int) $move;
                     $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
                 }
-                if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0))
-                {
+
+                if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0)){
                     // Just in case not set via any other means, but don't do this if it is the welcome page
-                    $moveResult = $this->moveResult = LimeExpressionManager::GetLastMoveResult(true);
+                    $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
                     $LEMskipReprocessing = $this->LEMskipReprocessing = true;
                 }
             }
-            if (isset($moveResult) && isset($moveResult['seq']) )// Reload at first page (welcome after click previous fill an empty $moveResult array
-            {
+
+            // Reload at first page (welcome after click previous fill an empty $moveResult array
+            if (isset($moveResult) && isset($moveResult['seq']) ){
                 // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
-                if($moveResult['finished'] == true && $move != 'movesubmit' && $thissurvey['questionindex']==2)// we already done if move == 'movesubmit', don't do it again
-                {
+                // we already done if move == 'movesubmit', don't do it again
+                if($moveResult['finished'] == true && $move != 'movesubmit' && $thissurvey['questionindex']==2){
                     //LimeExpressionManager::JumpTo(-1, false, false, true);
                     LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
                     $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
-                    if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
+                    if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs'])){
                         $moveResult['finished'] = true;
                         $this->moveResult = $moveResult;
+                    }
                 }
+                
                 if ($moveResult['finished'] == true)
                 {
                     $move = $this->move = 'movesubmit';
