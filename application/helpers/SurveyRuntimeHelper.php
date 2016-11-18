@@ -602,30 +602,23 @@ class SurveyRuntimeHelper {
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel       = $this->LEMdebugLevel;
         $LEMskipReprocessing = $this->LEMskipReprocessing;
+        $LEMsessid           = $this->LEMsessid = 'survey_' . $surveyid;
 
         // Template settings
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
         $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
 
         // Survey settings
-        $this->surveyid = $surveyid;
-        $thissurvey     = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
-
+        $this->surveyid   = $surveyid;
+        $thissurvey       = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
         $this->thissurvey = $thissurvey;
-        $LEMsessid        = $this->LEMsessid = 'survey_' . $surveyid;
+        $surveyMode       = $this->surveyMode    = $this->getSurveyMode($thissurvey);
+        $surveyOptions    = $this->surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
+        $previewgrp       = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
+        $previewquestion  = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $show_empty_group = $this->show_empty_group;
 
         $this->setJavascriptVar($surveyid);
-
-        $surveyMode    = $this->surveyMode    = $this->getSurveyMode($thissurvey);
-        $surveyOptions = $this->surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
-
-        $previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
-
-
-        //        if (isset($param['newtest']) && $param['newtest'] == "Y")
-        //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
-        $show_empty_group = $this->show_empty_group;
 
         if ($previewgrp || $previewquestion){
             $_SESSION[$LEMsessid]['prevstep'] = 2;
