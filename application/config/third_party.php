@@ -12,7 +12,8 @@ if (!isset($_GET['isAjax']))
     $aJquery = array(
         'basePath' => 'third_party.jquery',
         'js' => array(
-            'jquery-2.2.4.min.js'
+            'jquery-3.1.1.js',
+            'jquery-migrate-3.0.0.js',
         ));
 }
 else
@@ -29,6 +30,7 @@ return array(
 
     // jQuery
     'jquery' => $aJquery,
+    /* Idea : add an alternative jquery-no-debug : and move jquery-no-debug to jquery in internal if debug==0 */
 
 
     // Bootstrap
@@ -65,9 +67,9 @@ return array(
 
     // jQuery UI
     'jqueryui' => array(
-        'basePath' => 'third_party.jqueryui',
+        'basePath' => 'third_party.jquery-ui',
         'js' => array(
-            'js/jquery-ui-1.11.4.min.js'
+            'jquery-ui.js'
         ),
         'css' => array(
             //'css/jquery-ui.css'
