@@ -108,17 +108,10 @@ class SurveyRuntimeHelper {
         $surveyMode    = $this->getSurveyMode($thissurvey);
         $surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
 
+        $previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
+        $previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
 
-        //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
-        $previewgrp = false;
-        if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup')){
-            $previewgrp = true;
-        }
 
-        $previewquestion = false;
-        if ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')){
-            $previewquestion = true;
-        }
 
         //        if (isset($param['newtest']) && $param['newtest'] == "Y")
         //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
