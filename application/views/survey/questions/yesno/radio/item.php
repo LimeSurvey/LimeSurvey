@@ -12,7 +12,7 @@
  */
 ?>
 
-<ul class="<?php echo $coreClass;?> list-unstyled form-inline">
+<ul class="<?php echo $coreClass;?> list-unstyled form-inline" role="radio-group" aria-describedby="ls-question-text-<?php echo $name; ?>">
     <!-- Yes -->
     <li id="javatbd<?php echo $name;?>Y"  class="form-group answer-item radio-item">
         <input
@@ -38,7 +38,6 @@
         />
         <label for="answer<?php echo $name;?>N" class="control-label answer-text" >
             <?php eT('No');?>
-
         </label>
     </li>
 

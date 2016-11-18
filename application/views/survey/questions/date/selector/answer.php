@@ -72,6 +72,7 @@
                 ),
                 'htmlOptions' => array(
                     'onkeypress' => $goodchars,
+                    'aria-describedby' => "ls-question-text-{$name}"
                 )
             ));
         ?>

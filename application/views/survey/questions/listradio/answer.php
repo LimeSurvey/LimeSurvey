@@ -12,7 +12,7 @@
 <!-- answer -->
 <?php echo $sTimer; ?>
 
-<div class="<?php echo $coreClass;?> row">
+<div class="<?php echo $coreClass;?> row" role="radio-group" aria-describedby="ls-question-text-<?php echo $name; ?>">
 <?php
     // rows/answer_row.php
     echo $sRows;

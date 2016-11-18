@@ -18,14 +18,12 @@
 <!-- answer-->
 
 <div class="<?php echo $coreClass ?>  form-group form-inline">
-    <label for="answer<?php echo $name; ?>" class="sr-only control-label">
-        <?php eT('Please choose'); ?>
-    </label>
     <select
             class="form-control list-question-select"
             name="<?php echo $name; ?>"
             id="answer<?php echo $name; ?>"
             <?php  echo ($dropdownSize) ? "size=$dropdownSize" : "" ; ?>
+            aria-labelledby="ls-question-text-<?php echo $name; ?>"
     >
         <?php
             // rows/option.php

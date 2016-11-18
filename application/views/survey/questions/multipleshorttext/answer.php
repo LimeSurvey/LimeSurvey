@@ -9,7 +9,7 @@
 <!-- Multiple Shor Text -->
 
 <!-- answer -->
-<ul class="<?php echo $coreClass?> list-unstyled form-horizontal">
+<ul class="<?php echo $coreClass?> list-unstyled form-horizontal" role="group" aria-describedby="ls-question-text-<?php echo $sgq; ?>">
     <?php
         echo $sRows;
     ?>

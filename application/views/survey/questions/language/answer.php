@@ -15,7 +15,12 @@
         <?php eT('Choose your language'); ?>
     </label>
 
-    <select name="<?php echo $name;?>" id="answer<?php echo $name;?>" onchange="<?php echo $checkconditionFunction;?>" class="languagesurvey form-control" >
+    <select
+        name="<?php echo $name;?>"
+        id="answer<?php echo $name;?>"
+        class="languagesurvey form-control"
+        aria-describedby="ls-question-text-<?php echo $name; ?>"
+    >
         <?php foreach ($answerlangs as $ansrow):?>
             <option value="<?php echo $ansrow; ?>" <?php if ($sLang == $ansrow):?> SELECTED <?php endif;?>>
                 <?php $aLanguage=getLanguageNameFromCode($ansrow, true); ?>

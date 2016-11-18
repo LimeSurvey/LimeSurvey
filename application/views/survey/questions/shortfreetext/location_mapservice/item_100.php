@@ -17,9 +17,9 @@
  */
 ?>
 
-<div class="<?php echo $coreClass; ?> <?php echo $extraclass; ?> row">
+<div class="<?php echo $coreClass; ?> <?php echo $extraclass; ?> row" role="group" aria-describedby="ls-question-text-<?php echo $name; ?>">
 
-    <div class="geoname_search col-xs-12 col-sm-12 " >
+    <div class="geoname_search col-sm-12 " >
         <div class="input-group">
             <div class="input-group-addon search-icon">
                 <span class="fa fa-search"></span>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="col-xs-12 if-no-js col-sm-12 form-inline">
+    <div class="col-sm-12 form-inline">
         <!-- No javascript need a way to answer -->
         <?php /* Where is the answer-item ? answer-item geoloc-item */ ?>
         <input
@@ -102,14 +102,14 @@
             value="<?php echo $location_mapservice; ?>"
             />
     </div>
-    <div class="col-xs-12">
+    <div class="col-sm-12">
     <!-- Map -->
         <div id="map_<?php echo $name; ?>" style="width: 100%; height: <?php echo $location_mapheight; ?>px;">
     </div>
     </div>
 
     <?php if($questionHelp):?>
-        <div class="questionhelp col-xs-12">
+        <div class="questionhelp col-sm-12">
             <?php echo $question_text_help; ?>
         </div>
     <?php endif;?>

@@ -19,9 +19,9 @@
 <!-- List with comment, list style, -->
 
 <!-- answer -->
-<div class="<?php echo $coreClass; ?> row">
+<div class="<?php echo $coreClass; ?> row" role="group" aria-describedby="ls-question-text-<?php echo $sgq; ?>">
     <div class="answers-list radio-list col-sm-6 col-xs-12">
-        <ul class="list-unstyled">
+        <ul class="list-unstyled" role="radio-group">
             <?php
                 // rows/row.php
                 echo $sRows;
@@ -34,7 +34,6 @@
         <label class="control-label" for="<?php echo $id; ?>">
             <?php echo $hint_comment;?>:
         </label>
-
         <textarea
                 class="form-control <?php echo $kpclass; ?>"
                 name="<?php echo $name; ?>"
@@ -44,11 +43,13 @@
     </div>
 </div>
 
+<!-- EM use id , but no need to submit -->
 <input
         class="radio"
         type="hidden"
         name="<?php echo $java_name;?>"
         id="<?php echo $java_id;?>"
         value="<?php echo $java_value;?>"
+        disabled
       />
 <!-- end of answer -->

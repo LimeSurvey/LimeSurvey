@@ -12,7 +12,7 @@
 
 <!-- answer -->
 <input type='hidden' name='<?php echo $name; ?>' value='<?php echo $value;?>' />
-<ul class="<?php echo $coreClass; ?> list-unstyled">
+<ul class="<?php echo $coreClass; ?> list-unstyled" role="group" aria-describedby="ls-question-text-<?php echo $sgq; ?>">
     <?php
         // rows/answer_row.php
         echo $sRows;

@@ -23,10 +23,6 @@
 <?php else: ?>
 <div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
 <?php endif; ?>
-    <label for='answer<?php echo $id;?>' class='control-label sr-only'>
-            <?php eT('Your answer'); ?>
-    </label>
-
     <?php if ($prefix !== '' || $suffix !== ''): ?>
         <div class="ls-input-group">
     <?php endif; ?>
@@ -46,6 +42,7 @@
         <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
         data-number='1'
         data-integer='<?php echo $integeronly; ?>'
+        aria-labelledby="ls-question-text-<?php echo $name; ?>"
         />
     <!-- Suffix -->
     <?php if ($suffix !== ''): ?>

@@ -14,8 +14,7 @@
 <!--Gender question, radio display -->
 
 <!-- answer -->
-<ul class="<?php echo $coreClass;?> list-unstyled form-inline">
-
+<ul class="<?php echo $coreClass;?> list-unstyled form-inline" role="radio-group" aria-describedby="ls-question-text-<?php echo $name; ?>" >
     <!-- Female -->
     <li id='javatbd<?php echo $name; ?>F' class="form-group answer-item radio-item">
         <input

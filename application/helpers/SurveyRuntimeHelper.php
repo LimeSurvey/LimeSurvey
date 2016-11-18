@@ -1165,8 +1165,8 @@ class SurveyRuntimeHelper {
         }
 
         $aReplacement['QUESTION']=$aQuestionQanda[0]['all'] ; // Deprecated : only used in old template (very old)
-        // Core value : user text
-        $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];
+        // Core value : user text : add an id for labelled-by and described-by
+        $aReplacement['QUESTION_TEXT'] = CHtml::tag("div", array('id'=>"ls-question-text-{$aReplacement['SGQ']}",'class'=>"ls-label-question"),$aQuestionQanda[0]['text']);
         $aReplacement['QUESTIONHELP']=$lemQuestionInfo['info']['help'];// User help
         if(flattenText($aReplacement['QUESTIONHELP'], true,true) != '')
         {

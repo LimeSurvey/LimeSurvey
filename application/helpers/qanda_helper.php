@@ -1861,6 +1861,7 @@ function do_listwithcomment($ia)
             'hint_comment'      => $hint_comment,
             'kpclass'           => $kpclass,
             'name'              => $ia[1].'comment',
+            'sqg'               => $ia[1],
             'tarows'            => floor($tarows),
             'has_comment_saved' => isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
             'comment_saved'     => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
@@ -2589,7 +2590,8 @@ function do_multiplechoice_withcomments($ia)
     $answer = doRender('/survey/questions/multiplechoice_with_comments/answer', array(
         'sRows' => $sRows,
         'coreClass'=>$coreClass,
-        'name'=>'MULTI'.$ia[1],
+        'name'=>'MULTI'.$ia[1], /* ? name is not $ia[1] */
+        'sgq'=> $ia[1],
         'value'=> $anscount
     ), true);
 
@@ -2945,6 +2947,7 @@ function do_multipleshorttext($ia)
         $answer = doRender('/survey/questions/multipleshorttext/answer', array(
                     'sRows' => $sRows,
                     'coreClass'=>$coreClass,
+                    'sgq'=>$ia[1],
                   ), true);
 
     }
@@ -3345,6 +3348,7 @@ function do_multiplenumeric($ia)
                         'prefixclass'      => $prefixclass,
                         'equals_num_value' => $equals_num_value,
                         'id'               => $ia[0],
+                        'sgq'              => $ia[1],
                         'prefix'           => $prefix,
                         'suffix'           => $suffix,
                         'sumRemainingEqn'  => (isset($qinfo))?$qinfo['sumRemainingEqn']:'',

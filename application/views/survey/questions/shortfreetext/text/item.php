@@ -20,10 +20,6 @@
 <?php else: ?>
 <div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
 <?php endif; ?>
-    <!-- Label -->
-    <label class='control-label sr-only' for='answer<?php echo $name; ?>' >
-        <?php eT('Your answer'); ?>
-    </label>
     <?php if ($prefix !== '' || $suffix !== ''): ?>
         <div class="ls-input-group">
     <?php endif; ?>
@@ -41,6 +37,7 @@
             value="<?php echo $dispVal; ?>"
             <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
             <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+            aria-labelledby="ls-question-text-<?php echo $name; ?>"
         />
 
         <!-- Suffix -->

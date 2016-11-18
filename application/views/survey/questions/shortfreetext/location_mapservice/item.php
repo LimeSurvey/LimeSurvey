@@ -22,18 +22,19 @@
     zoom['<?php echo $name;?>'] = <?php echo $location_mapzoom;?>;
 </script>
 
-<div class="<?php echo $coreClass; ?> <?php echo $extraclass;?>">
+<div class="<?php echo $coreClass; ?> <?php echo $extraclass;?>" row" role="group" aria-describedby="ls-question-text-<?php echo $name; ?>">
     <!-- Input Text Location -->
-    <input
-        class="text location <?php echo $kpclass; ?> if-no-js"
-        type="text"
-        size="20"
-        name="<?php echo $name; ?>_c"
-        id="answer<?php echo $name; ?>_c"
-        value="<?php echo $currentLocation; ?>"
-        onchange="<?php echo $checkconditionFunction; ?>"
-        />
-
+    <div class="col-sm-12" >
+            <input
+                class="text location <?php echo $kpclass; ?>"
+                type="text"
+                size="20"
+                name="<?php echo $name; ?>_c"
+                id="answer<?php echo $name; ?>_c"
+                value="<?php echo $currentLocation; ?>"
+                onchange="<?php echo $checkconditionFunction; ?>"
+                />
+    </div>
     <!-- Map -->
     <div
         id="gmap_canvas_<?php echo $name; ?>_c"
@@ -65,7 +66,7 @@
         />
 
     <?php if($questionHelp):?>
-        <div class="questionhelp">
+        <div class="questionhelp col-sm-12">
             <?php echo $question_text_help; ?>
         </div>
     <?php endif;?>

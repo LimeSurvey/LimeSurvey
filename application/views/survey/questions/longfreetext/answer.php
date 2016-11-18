@@ -20,10 +20,6 @@
 <?php else: ?>
 <div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
 <?php endif; ?>
-    <label for='answer<?php echo $name; ?>' class='sr-only control-label'>
-        <?php eT('Your answer'); ?>
-    </label>
-
     <textarea
         class="form-control <?php echo $kpclass; ?>"
         name="<?php echo $name; ?>"
@@ -31,6 +27,7 @@
         rows="<?php echo $drows; ?>"
         <?php echo ($inputsize ? 'cols="'.$inputsize.'"': '') ; ?>
         <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+        aria-labelledby="ls-question-text-<?php echo $name; ?>"
     ><?php echo $dispVal;?></textarea>
 <?php if($withColumn): ?>
     </div>
