@@ -19,6 +19,7 @@ class SurveyRuntimeHelper {
     private $sTemplateViewPath;
 
     // LEM Datas
+    private $LEMsessid;
     private $LEMdebugLevel          = 0;     // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
     private $LEMskipReprocessing    = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 
@@ -606,7 +607,7 @@ class SurveyRuntimeHelper {
 
         $this->thissurvey = $thissurvey;
         $LEMsessid        = $this->LEMsessid = 'survey_' . $surveyid;
-        
+
         $this->setJavascriptVar($surveyid);
 
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
@@ -660,6 +661,8 @@ class SurveyRuntimeHelper {
             $completed              = $this->completed              ;
             $content                = $this->content                ;
             $blocks                 = $this->blocks                 ;
+
+            $LEMsessid = $this->LEMsessid;
 
         }
 
