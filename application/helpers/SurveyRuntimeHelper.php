@@ -28,6 +28,7 @@ class SurveyRuntimeHelper {
     private $show_empty_group    = false;
     private $surveyMode;
     private $surveyOptions;
+    private $totalquestions;
 
     private function getSurveyMode($thissurvey)
     {
@@ -138,7 +139,6 @@ class SurveyRuntimeHelper {
                 $LEMdebugLevel = $this->LEMdebugLevel;
 
 
-
                 buildsurveysession($surveyid);
                 randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
@@ -152,17 +152,18 @@ class SurveyRuntimeHelper {
                 if ($surveyMode == 'survey'){
                     LimeExpressionManager::JumpTo(1, false, false, true);
                 }elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'){
-                    $moveResult = LimeExpressionManager::NavigateForwards();
+                    $moveResult                   = LimeExpressionManager::NavigateForwards();
                     $_SESSION[$LEMsessid]['step'] = 1;
                 }
-            }
-            elseif($surveyid != LimeExpressionManager::getLEMsurveyId())
-            {
-                $_SESSION[$LEMsessid]['step']=$_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];//$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
+            }elseif($surveyid != LimeExpressionManager::getLEMsurveyId()){
+                $_SESSION[$LEMsessid]['step']   = $_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];//$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
+
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
             }
-            $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+
+            // Proabably for readdata
+            $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
             {
