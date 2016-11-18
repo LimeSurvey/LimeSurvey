@@ -35,7 +35,7 @@ class SurveyRuntimeHelper {
 
     // moves
     private $moveResult             = null;
-    private $move;
+    private $move                   = null;
     private $invalidLastPage;
 
     // popup
@@ -737,6 +737,26 @@ class SurveyRuntimeHelper {
         }
     }
 
+    private function moveFirstChecks()
+    {
+        $move = $this->move;
+        $surveyid      = $this->surveyid;
+        $LEMsessid     = $this->LEMsessid;
+
+        if ( $move=="clearcancel"){
+            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
+        }
+
+        /* quota submitted */
+        if ( $move=='confirmquota'){
+            checkCompletedQuota($surveyid);
+        }
+
+        $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
+
+
+    }
+
     private function runPage()
     {
 
@@ -782,18 +802,8 @@ class SurveyRuntimeHelper {
 
         $this->checkIfUseBrowserNav();
 
-        if (isset($move)){
-            if ( $move=="clearcancel"){
-                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
-            }
-            $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
+        $this->moveFirstChecks();
 
-            /* quota submitted */
-            if(isset($move) && $move=='confirmquota'){
-                checkCompletedQuota($surveyid);
-            }
-
-        }
 
         if (!isset($_SESSION[$LEMsessid]['prevstep'])){
             $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
@@ -813,7 +823,7 @@ class SurveyRuntimeHelper {
         }else if (!$LEMskipReprocessing){
 
             //Move current step ###########################################################################
-            if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['questionindex'] > 0)){
+            if ($move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['questionindex'] > 0)){
                 $moveResult = $this->moveResult = LimeExpressionManager::NavigateBackwards();
 
                 if ($moveResult['at_start']){
@@ -823,11 +833,11 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if (isset($move) && $move == "movenext"){
+            if ( $move == "movenext"){
                 $moveResult = $this->moveResult = LimeExpressionManager::NavigateForwards();
             }
 
-            if (isset($move) && ($move == 'movesubmit')){
+            if (($move == 'movesubmit')){
                 if ($surveyMode == 'survey'){
                     $moveResult = $this->moveResult =  LimeExpressionManager::NavigateForwards();
                 }else{
@@ -840,19 +850,19 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if (isset($move) && $move=='changelang'){
+            if ( $move=='changelang'){
                 // jump to current step using new language, processing POST values
                 $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, true, true);  // do process the POST data
             }
 
-            if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1){
+            if (isNumericInt($move) && $thissurvey['questionindex'] == 1){
                 $move = $this->move = (int) $move;
 
                 if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep']))){
                     $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false);
                 }
             }
-            elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2){
+            elseif ( isNumericInt($move) && $thissurvey['questionindex'] == 2){
                 $move       = $this->move       = (int) $move;
                 $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
             }
