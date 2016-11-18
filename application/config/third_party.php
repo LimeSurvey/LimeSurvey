@@ -318,6 +318,10 @@ return array(
         'js' => array(
             'jspdf.debug.js'
             // 'jspdf.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
         )
     )
 

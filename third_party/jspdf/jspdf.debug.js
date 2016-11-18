@@ -7013,20 +7013,28 @@ Q\n";
   		}
   		return isHandledElsewhere;
   	};
+    // This method is not working for more complex tables.
+
   	tableToJson = function tableToJson(table, renderer) {
-  		var data, headers, i, j, rowData, tableRow, table_obj, table_with, cell, l;
-  		data = [];
-  		headers = [];
+  		var $table, data, head, body, footer, i, j, rowData, tableRow, table_obj, table_width, cell, l;
+  		$table = jQuery(table);
+        data = [];
+  		head = {};
+        head = {};
   		i = 0;
-  		l = table.rows[0].cells.length;
-  		table_with = table.clientWidth;
+
+        //ok so the first row should define the length? ever heard of a headrow? 
+  		l = $table.find('thead').find('tr').find('td').length;
+          
+
+  		table_width = table.clientWidth;
   		while (i < table.rows.length) {
   			cell = table.rows[0].cells[i];
               if(cell){
                     headers[i] = {
                         name: cell.textContent.toLowerCase().replace(/\s+/g, ''),
                         prompt: cell.textContent.replace(/\r?\n/g, ''),
-                        width: cell.clientWidth / table_with * renderer.pdf.internal.pageSize.width
+                        width: cell.clientWidth / table_width * renderer.pdf.internal.pageSize.width
                     };
   			    }
   			i++;
@@ -7050,6 +7058,7 @@ Q\n";
   			headers: headers
   		};
   	};
+
   	var SkipNode = {
   		SCRIPT: 1,
   		STYLE: 1,
@@ -7058,7 +7067,9 @@ Q\n";
   		EMBED: 1,
   		SELECT: 1
   	};
+
   	var listCount = 1;
+
   	_DrillForContent = function DrillForContent(element, renderer, elementHandlers) {
   		var cn, cns, fragmentCSS, i, isBlock, l, px2pt, table2json, cb;
   		cns = element.childNodes;

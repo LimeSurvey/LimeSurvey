@@ -180,9 +180,7 @@ function init_chart_js_graph_with_datas($type,$qid)
     );
 }
 
-$(document).ready(function() {
-    //for nicely printed statistics
-    $('body').addClass('onStatistics'); 
+var onDocumentReady =  function(){
 
     if ($('#completionstateSimpleStat').length>0)
     {
@@ -266,8 +264,6 @@ $(document).ready(function() {
 
             $type = $(this).data('type');
             $qid = $(this).data('qid');
-
-            console.log($type);
 
             // chartjs
             if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
@@ -565,7 +561,10 @@ $(document).ready(function() {
      {
         changeGraphType('showpie', this.parentNode);
      });
-});
+};
+$(document).ready(onDocumentReady);
+$(document).on('triggerReady', onDocumentReady);
+
 
 var isWaiting = {};
 
@@ -730,13 +729,40 @@ function changeGraphType (cmd, id) {
 
 }
 
+/**
+ * Handlers and builders for the different question types based on their answers
+ * The html has to be recreated for the jspdf to work
+ */
+var elementHandlers = {
+    'thead': function(element, renderer){
+
+    }
+}
+
 $(document).ready(function(){
+    
+    $('body').addClass('onStatistics');
+
+
+    $('body').on('click','#action_js_preview_to_print', function(){
+        var openWindow = window.open("about:blank","", "_blank");
+        var head = "";
+        $('head').find('link').each(function(i,item){head = head+item.outerHTML});
+        $('document').find('script').each(function(i,item){head = head+item.outerHTML});
+        var body = "";
+        $('#statisticsview').find('.statisticstable').each(function(i,item){body = body + item.outerHTML});
+
+        var html = "<html><head>" + head + "</head><body>" + body + "<body></html>" ;
+        openWindow.document.write(html);
+        $(openWindow.document).trigger('triggerReady');
+        console.log($('head'));
+    });
     $('body').on('click','#action_js_export_to_pdf', function(){
         var doc = new jsPDF();
         console.log("Getting the pdf");
         $('#statisticsview').find('.statisticstable').each(function(i, table){
             doc.addPage();
-            doc.fromHTML(table, 210, 297, {width: 590});
+            doc.fromHTML(table, 210, 297, {width: 590, elementHandlers: elementHandlers});
 
         });
         var dataurl = doc.output('dataurlnewwindow');
