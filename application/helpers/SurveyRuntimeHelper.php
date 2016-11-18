@@ -707,6 +707,36 @@ class SurveyRuntimeHelper {
 
     }
 
+    private function checkIfUseBrowserNav()
+    {
+        // retrieve datas from local variable
+        $surveyid      = $this->surveyid;
+        $surveyMode    = $this->surveyMode;
+        $surveyOptions = $this->surveyOptions;
+        $LEMdebugLevel = $this->LEMdebugLevel;
+        $LEMsessid     = $this->LEMsessid;
+                
+        if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey']){
+            // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
+            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
+
+            if (isset($moveResult['seq']) &&  App()->request->getPost('thisstep',$moveResult['seq']) == $moveResult['seq']){
+
+                /* then pressing F5 or otherwise refreshing the current page, which is OK
+                 * Seems OK only when movenext but not with move by index : same with $moveResult = LimeExpressionManager::GetLastMoveResult(true);
+                 */
+                $LEMskipReprocessing = $this->LEMskipReprocessing =  true;
+                $move                = $this->move                = "movenext"; // so will re-display the survey
+            }else{
+                // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
+                $LEMskipReprocessing = $this->LEMskipReprocessing = true;
+                $move                = $this->move                = "movenext"; // so will re-display the survey
+                $invalidLastPage     = $this->invalidLastPage     = true;
+                $backpopup           = $this->backpopup           =  gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
+            }
+        }
+    }
+
     private function runPage()
     {
 
@@ -751,26 +781,7 @@ class SurveyRuntimeHelper {
         // Proabably for readdata
         $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
-
-        if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey']){
-            // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
-            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
-
-            if (isset($moveResult['seq']) &&  App()->request->getPost('thisstep',$moveResult['seq']) == $moveResult['seq']){
-
-                /* then pressing F5 or otherwise refreshing the current page, which is OK
-                 * Seems OK only when movenext but not with move by index : same with $moveResult = LimeExpressionManager::GetLastMoveResult(true);
-                 */
-                $LEMskipReprocessing = $this->LEMskipReprocessing =  true;
-                $move                = $this->move                = "movenext"; // so will re-display the survey
-            }else{
-                // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
-                $LEMskipReprocessing = $this->LEMskipReprocessing = true;
-                $move                = $this->move                = "movenext"; // so will re-display the survey
-                $invalidLastPage     = $this->invalidLastPage     = true;
-                $backpopup           = $this->backpopup           =  gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
-            }
-        }
+        $this->checkIfUseBrowserNav();
 
         if(isset($move) && $move=="clearcancel"){
             $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
