@@ -38,9 +38,12 @@ class SurveyRuntimeHelper {
 
     // popup
     private $backpopup;
+    private $popup;
 
     // response
     private $oResponse;
+    private $unansweredSQList;
+    private $notanswered;
 
 
     private function getSurveyMode($thissurvey)
@@ -353,7 +356,9 @@ class SurveyRuntimeHelper {
                 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
-                $popup = $cSave->savedcontrol();
+
+                $popup = $this->popup = $cSave->savedcontrol();
+
                 if (!empty($cSave->aSaveErrors)){
                     $cSave->showsaveform($thissurvey['sid']); // reshow the form if there is an error
                 }
@@ -369,11 +374,11 @@ class SurveyRuntimeHelper {
             global $notanswered;
 
             if (isset($moveResult) && !$moveResult['finished']){
-                $unansweredSQList = $moveResult['unansweredSQs'];
+                $unansweredSQList = $this->unansweredSQList = $moveResult['unansweredSQs'];
                 if (strlen($unansweredSQList) > 0){
-                    $notanswered = explode('|', $unansweredSQList);
+                    $notanswered = $this->notanswered =explode('|', $unansweredSQList);
                 }else{
-                    $notanswered = array();
+                    $notanswered = $this->notanswered = array();
                 }
 
                 //CHECK INPUT
