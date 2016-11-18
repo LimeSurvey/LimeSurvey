@@ -50,6 +50,7 @@ class SurveyRuntimeHelper {
 
     // strings
     private $completed;
+    private $content;
 
     private function getSurveyMode($thissurvey)
     {
@@ -465,21 +466,20 @@ class SurveyRuntimeHelper {
 
                     $this->completed = $completed;
 
-                }
-                else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
-                {
-                    if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
-                    {
+                }else{
+
+                    //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
+                    //don't use cookies if tokens are being used
+                    if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) {
                         setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
                     }
 
-
-                    $content = '';
+                    $content  = '';
                     $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
 
                     //Check for assessments
-                    if ($thissurvey['assessments'] == "Y")
-                    {
+                    if ($thissurvey['assessments'] == "Y"){
+
                         $assessments = $this->assessments = doAssessment($surveyid);
                         if ($assessments)
                         {
@@ -487,9 +487,10 @@ class SurveyRuntimeHelper {
                         }
                     }
 
+                    $this->content = $content;
+
                     //Update the token if needed and send a confirmation email
-                    if (isset($_SESSION['survey_'.$surveyid]['token']))
-                    {
+                    if (isset($_SESSION['survey_'.$surveyid]['token'])){
                         submittokens();
                     }
 
@@ -513,6 +514,7 @@ class SurveyRuntimeHelper {
                         }
                     }
 
+                    $this->content = $content;
 
                     if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == ''){
                         $completed = "<p>".gT("Thank you!")."</p>";
