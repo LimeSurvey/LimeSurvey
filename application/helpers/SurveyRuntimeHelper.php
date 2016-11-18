@@ -746,7 +746,7 @@ class SurveyRuntimeHelper {
 
     private function moveFirstChecks()
     {
-        $move = $this->move;
+        $move          = $this->move;
         $surveyid      = $this->surveyid;
         $LEMsessid     = $this->LEMsessid;
 
@@ -771,47 +771,19 @@ class SurveyRuntimeHelper {
         }
     }
 
-    private function runPage()
+    private function setMoveResult()
     {
 
-        // Todo: check which ones are really needed
-        $LEMdebugLevel          = $this->LEMdebugLevel          ;
+        // retrieve datas from local variable
+        $thissurvey    = $this->thissurvey;
+        $surveyid      = $this->surveyid;
+        $surveyMode    = $this->surveyMode;
+        $surveyOptions = $this->surveyOptions;
+        $LEMdebugLevel = $this->LEMdebugLevel;
+        $LEMsessid     = $this->LEMsessid;
+        $move          = $this->move;
         $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
-        $thissurvey             = $this->thissurvey             ;
-        $surveyid               = $this->surveyid               ;
-        $show_empty_group       = $this->show_empty_group       ;
-        $surveyMode             = $this->surveyMode             ;
-        $surveyOptions          = $this->surveyOptions          ;
-        $totalquestions         = $this->totalquestions         ;
-        $bTokenAnswerPersitance = $this->bTokenAnswerPersitance ;
-        $assessments            = $this->assessments            ;
-        $moveResult             = $this->moveResult             ;
-        $move                   = $this->move                   ;
-        $invalidLastPage        = $this->invalidLastPage        ;
-        $backpopup              = $this->backpopup              ;
-        $popup                  = $this->popup                  ;
-        $oResponse              = $this->oResponse              ;
-        $unansweredSQList       = $this->unansweredSQList       ;
-        $notanswered            = $this->notanswered            ;
-        $invalidSQList          = $this->invalidSQList          ;
-        $filenotvalidated       = $this->filenotvalidated       ;
-        $completed              = $this->completed              ;
-        $content                = $this->content                ;
-        $blocks                 = $this->blocks                 ;
-        $notvalidated           = $this->notvalidated           ;
-        $LEMsessid              = $this->LEMsessid              ;
-
-        $this->initFirstStep();                                                 // If it's the first time user load this survey, will init session and LEM
-        $this->initTotalAndMaxSteps();
-        $this->checkIfUseBrowserNav();                                          // Check if user used browser navigation, or relaoded page
-        $this->moveFirstChecks();                                               // If the move is clearcancel, or confirmquota, then the process will stop here
-        $this->checkPrevStep();                                                 // Ceck if prev step is set, else set it
-
-
-        $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions']; // Proabably for redata
-
-        $this>setMoveResult();
-
+        
         if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
 
             LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
@@ -876,6 +848,48 @@ class SurveyRuntimeHelper {
                 $LEMskipReprocessing = $this->LEMskipReprocessing = true;
             }
         }
+    }
+
+    private function runPage()
+    {
+
+        // Todo: check which ones are really needed
+        $LEMdebugLevel          = $this->LEMdebugLevel          ;
+        $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
+        $thissurvey             = $this->thissurvey             ;
+        $surveyid               = $this->surveyid               ;
+        $show_empty_group       = $this->show_empty_group       ;
+        $surveyMode             = $this->surveyMode             ;
+        $surveyOptions          = $this->surveyOptions          ;
+        $totalquestions         = $this->totalquestions         ;
+        $bTokenAnswerPersitance = $this->bTokenAnswerPersitance ;
+        $assessments            = $this->assessments            ;
+        $moveResult             = $this->moveResult             ;
+        $move                   = $this->move                   ;
+        $invalidLastPage        = $this->invalidLastPage        ;
+        $backpopup              = $this->backpopup              ;
+        $popup                  = $this->popup                  ;
+        $oResponse              = $this->oResponse              ;
+        $unansweredSQList       = $this->unansweredSQList       ;
+        $notanswered            = $this->notanswered            ;
+        $invalidSQList          = $this->invalidSQList          ;
+        $filenotvalidated       = $this->filenotvalidated       ;
+        $completed              = $this->completed              ;
+        $content                = $this->content                ;
+        $blocks                 = $this->blocks                 ;
+        $notvalidated           = $this->notvalidated           ;
+        $LEMsessid              = $this->LEMsessid              ;
+
+        $this->initFirstStep();                                                 // If it's the first time user load this survey, will init session and LEM
+        $this->initTotalAndMaxSteps();
+        $this->checkIfUseBrowserNav();                                          // Check if user used browser navigation, or relaoded page
+        $this->moveFirstChecks();                                               // If the move is clearcancel, or confirmquota, then the process will stop here
+        $this->checkPrevStep();                                                 // Ceck if prev step is set, else set it
+
+
+        $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions']; // Proabably for redata
+
+        $this->setMoveResult();
 
         // Reload at first page (welcome after click previous fill an empty $moveResult array
         if (isset($moveResult) && isset($moveResult['seq']) ){
