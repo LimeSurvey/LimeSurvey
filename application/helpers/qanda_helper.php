@@ -3704,7 +3704,7 @@ function do_shortfreetext($ia)
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==100)
     {
-        $coreClass      .= " map-item geoloc-item";
+        $coreClass       = " map-item geoloc-item";
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentCenter   = $currentLatLong = null;
 
@@ -3742,6 +3742,7 @@ function do_shortfreetext($ia)
 
         );
         App()->getClientScript()->registerPackage('leaflet');
+        App()->getClientScript()->registerPackage('jqueryui');/* for autocomplete : must replace with select2 or another */
         Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar).";",CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");

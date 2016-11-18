@@ -18,7 +18,9 @@
 
 /* awesome-bootstrap-checkbox */
 li.radio-item,li.checkbox-item{display:block}
-
+/* map item : .input-group-addon.checkbox-item : put awesome padding */
+.dir-ltr .input-group-addon.radio-item,.dir-ltr .input-group-addon.checkbox-item {padding-left: 25px;}
+.dir-rtl .input-group-addon.radio-item,.dir-rtl .input-group-addon.checkbox-item {padding-right: 25px;}
 /* Else big label break*/
 .radio-item label,.checkbox-item label {display:block}
 .radio-item,.checkbox-item {

@@ -4,17 +4,32 @@
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
  */
+/* Tag if debug is set : debug is set in user config file and this file is directly required in internal.php where $userConfig var arry is set */
+/* This allow us to use minified version according to debug */
+$debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
 if (!isset($_GET['isAjax']))
 {
-    $aJquery = array(
-        'basePath' => 'third_party.jquery',
-        'js' => array(
-            'jquery-3.1.1.js',
-            'jquery-migrate-3.0.0.js',
-        ));
+    if($debug >=2 ){
+        /* If debug mode is set to 2 or more : we show whole error of jquery migration : even jquery-ui error */
+        $aJquery = array(
+            'basePath' => 'third_party.jquery',
+            'js' => array(
+                'jquery-3.1.1.js',
+                'jquery-migrate-3.0.0.js',
+            )
+        );
+    }else{
+        $aJquery = array(
+            'basePath' => 'third_party.jquery',
+            'js' => array(
+                'jquery-3.1.1.min.js',
+                'jquery-migrate-3.0.0.min.js',
+            )
+        );
+    }
 }
 else
 {
@@ -69,10 +84,10 @@ return array(
     'jqueryui' => array(
         'basePath' => 'third_party.jquery-ui',
         'js' => array(
-            'jquery-ui.js'
+            ($debug >=2 ) ? 'jquery-ui.js' : 'jquery-ui.min.js',
         ),
         'css' => array(
-            //'css/jquery-ui.css'
+            'jquery-ui.structure.css', /* else autocomplete or other broken */
         ),
         'depends' => array(
             'jquery',

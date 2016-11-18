@@ -17,7 +17,7 @@
  */
 ?>
 
-<div class="question answer-item geoloc-item <?php echo $extraclass; ?> row">
+<div class="<?php echo $coreClass; ?> <?php echo $extraclass; ?> row">
 
     <div class="geoname_search col-xs-12 col-sm-12 " >
         <div class="input-group">
@@ -45,6 +45,7 @@
 
     <div class="col-xs-12 if-no-js col-sm-12 form-inline">
         <!-- No javascript need a way to answer -->
+        <?php /* Where is the answer-item ? answer-item geoloc-item */ ?>
         <input
             type="hidden"
             name="<?php echo $name; ?>"
@@ -108,7 +109,7 @@
     </div>
 
     <?php if($questionHelp):?>
-        <div class="questionhelp">
+        <div class="questionhelp col-xs-12">
             <?php echo $question_text_help; ?>
         </div>
     <?php endif;?>
