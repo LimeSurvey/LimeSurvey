@@ -45,6 +45,7 @@ class SurveyRuntimeHelper {
     private $unansweredSQList;
     private $notanswered;
     private $invalidSQList;
+    private $filenotvalidated;
 
 
     private function getSurveyMode($thissurvey)
@@ -374,7 +375,7 @@ class SurveyRuntimeHelper {
             //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
             global $notanswered;
             $this->notvalidated = $notanswered;
-            
+
             if (isset($moveResult) && !$moveResult['finished']){
                 $unansweredSQList = $this->unansweredSQList = $moveResult['unansweredSQs'];
                 if (strlen($unansweredSQList) > 0){
@@ -394,7 +395,7 @@ class SurveyRuntimeHelper {
 
             // CHECK UPLOADED FILES
             // TMSW - Move this into LEM::NavigateForwards?
-            $filenotvalidated = checkUploadedFileValidity($surveyid, $move);
+            $filenotvalidated = $this->filenotvalidated = checkUploadedFileValidity($surveyid, $move);
 
             //SEE IF THIS GROUP SHOULD DISPLAY
             $show_empty_group = false;
