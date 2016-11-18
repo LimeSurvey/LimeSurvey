@@ -124,7 +124,7 @@ class SurveyRuntimeHelper {
 
         }
 
-
+        // We really need to replace redata by something else. 
         $redata = compact(array_keys(get_defined_vars()));
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
