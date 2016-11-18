@@ -41,6 +41,7 @@ class SurveyRuntimeHelper {
     // popup
     private $backpopup;
     private $popup;
+    private $notvalidated;
 
     // response
     private $oResponse;
@@ -134,6 +135,7 @@ class SurveyRuntimeHelper {
         $completed              = $this->completed              ;
         $content                = $this->content                ;
         $blocks                 = $this->blocks                 ;
+        $notvalidated           = $this->notvalidated;
 
         $LEMsessid = $this->LEMsessid;
 
@@ -615,6 +617,7 @@ class SurveyRuntimeHelper {
         $this->completed              = isset( $completed              )?$completed              :null ;
         $this->content                = isset( $content                )?$content                :null ;
         $this->blocks                 = isset( $blocks                 )?$blocks                 :null ;
+        $this->notvalidated           = isset( $notvalidated           )?$notvalidated           :null;
     }
 
     /**
@@ -681,7 +684,7 @@ class SurveyRuntimeHelper {
             $completed              = $this->completed              ;
             $content                = $this->content                ;
             $blocks                 = $this->blocks                 ;
-
+            $notvalidated           = $this->notvalidated           ;
             $LEMsessid = $this->LEMsessid;
 
         }
