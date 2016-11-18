@@ -311,6 +311,14 @@ return array(
             'jquery',
             'bootstrap'
         )
+    ),
+
+    'jspdf' => array(
+        'basePath' => 'third_party.jspdf',
+        'js' => array(
+            'jspdf.debug.js'
+            // 'jspdf.min.js'
+        )
     )
 
 

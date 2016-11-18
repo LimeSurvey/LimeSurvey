@@ -805,6 +805,7 @@ class statistics extends Survey_Common_Action {
         //Call the javascript file
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'statistics.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'json-js/json2.min.js');
+        yii::app()->clientScript->registerPackage('jspdf');
         echo $this->_renderWrappedTemplate('export', 'statistics_user_view', $aData);
      }
 
@@ -829,6 +830,7 @@ class statistics extends Survey_Common_Action {
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
         yii::app()->clientScript->registerPackage('bootstrap-switch');
+        yii::app()->clientScript->registerPackage('jspdf');
 
         $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']) );
 

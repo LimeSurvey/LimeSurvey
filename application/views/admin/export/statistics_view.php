@@ -7,7 +7,11 @@
 
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
-
+<div class="container-center">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4 col-xs-12"><button id="action_js_export_to_pdf" class="btn btn-primary btn-block"><?php eT("Export to PDF");?></button></div>
+    </div>
+</div>
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;

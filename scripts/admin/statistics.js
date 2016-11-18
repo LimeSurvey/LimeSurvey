@@ -729,3 +729,16 @@ function changeGraphType (cmd, id) {
     });
 
 }
+
+$(document).ready(function(){
+    $('body').on('click','#action_js_export_to_pdf', function(){
+        var doc = new jsPDF();
+        console.log("Getting the pdf");
+        $('#statisticsview').find('.statisticstable').each(function(i, table){
+            doc.addPage();
+            doc.fromHTML(table, 210, 297, {width: 590});
+
+        });
+        var dataurl = doc.output('dataurlnewwindow');
+    });
+});
