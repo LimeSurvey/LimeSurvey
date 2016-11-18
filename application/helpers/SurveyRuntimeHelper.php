@@ -19,6 +19,10 @@ class SurveyRuntimeHelper {
     private $sTemplatePath;
     private $sTemplateViewPath;
 
+    // LEM Datas
+    private $LEMdebugLevel       = 0;     // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
+    private $LEMskipReprocessing = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
+
     /**
     * Main function
     *
@@ -44,8 +48,9 @@ class SurveyRuntimeHelper {
         $flashmessage = makeFlashMessage();
 
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
-        $LEMdebugLevel = 0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
-        $LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
+        $LEMdebugLevel       = $this->$LEMdebugLevel;
+        $LEMskipReprocessing = $this->$LEMskipReprocessing;
+
         switch ($thissurvey['format'])
         {
             case "A": //All in one
