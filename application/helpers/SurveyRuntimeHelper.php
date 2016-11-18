@@ -588,6 +588,36 @@ class SurveyRuntimeHelper {
         }
     }
 
+    private function setVarFromArgs($args)
+    {
+        extract($args);
+
+        // Todo: check which ones are really needed
+        $this->LEMdebugLevel          = isset( $LEMdebugLevel          )?$LEMdebugLevel          :null ;
+        $this->LEMskipReprocessing    = isset( $LEMskipReprocessing    )?$LEMskipReprocessing    :null ;
+        $this->thissurvey             = isset( $thissurvey             )?$thissurvey             :null ;
+        $this->surveyid               = isset( $surveyid               )?$surveyid               :null ;
+        $this->show_empty_group       = isset( $show_empty_group       )?$show_empty_group       :null ;
+        $this->surveyMode             = isset( $surveyMode             )?$surveyMode             :null ;
+        $this->surveyOptions          = isset( $surveyOptions          )?$surveyOptions          :null ;
+        $this->totalquestions         = isset( $totalquestions         )?$totalquestions         :null ;
+        $this->bTokenAnswerPersitance = isset( $bTokenAnswerPersitance )?$bTokenAnswerPersitance :null ;
+        $this->assessments            = isset( $assessments            )?$assessments            :null ;
+        $this->moveResult             = isset( $moveResult             )?$moveResult             :null ;
+        $this->move                   = isset( $move                   )?$move                   :null ;
+        $this->invalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
+        $this->backpopup              = isset( $backpopup              )?$backpopup              :null ;
+        $this->popup                  = isset( $popup                  )?$popup                  :null ;
+        $this->oResponse              = isset( $oResponse              )?$oResponse              :null ;
+        $this->unansweredSQList       = isset( $unansweredSQList       )?$unansweredSQList       :null ;
+        $this->notanswered            = isset( $notanswered            )?$notanswered            :null ;
+        $this->invalidSQList          = isset( $invalidSQList          )?$invalidSQList          :null ;
+        $this->filenotvalidated       = isset( $filenotvalidated       )?$filenotvalidated       :null ;
+        $this->completed              = isset( $completed              )?$completed              :null ;
+        $this->content                = isset( $content                )?$content                :null ;
+        $this->blocks                 = isset( $blocks                 )?$blocks                 :null ;        
+    }
+
     /**
     * Main function
     *
@@ -597,6 +627,7 @@ class SurveyRuntimeHelper {
     function run($surveyid,$args)
     {
         global $errormsg;
+        $this->setVarFromArgs($args);
         extract($args);
 
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
