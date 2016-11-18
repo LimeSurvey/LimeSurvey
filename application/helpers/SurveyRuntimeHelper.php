@@ -124,7 +124,7 @@ class SurveyRuntimeHelper {
 
         }
 
-        // We really need to replace redata by something else. 
+        // We really need to replace redata get_defined_vars by something else.
         $redata = compact(array_keys(get_defined_vars()));
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
@@ -647,6 +647,37 @@ class SurveyRuntimeHelper {
         return $surveyOptions;
     }
 
+    private function inits()
+    {
+        // retrieve datas from local variable
+        $surveyid      = $this->surveyid;
+        $surveyMode    = $this->surveyMode;
+        $surveyOptions = $this->surveyOptions;
+        $LEMdebugLevel = $this->LEMdebugLevel;
+        $LEMsessid     = $this->LEMsessid;
+
+        // Init session, randomization and filed array
+        buildsurveysession($surveyid);
+        randomizationGroupsAndQuestions($surveyid);
+        initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
+
+        // Check surveyid coherence
+        if($surveyid != LimeExpressionManager::getLEMsurveyId())
+            LimeExpressionManager::SetDirtyFlag();
+
+        // Start survey
+        LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+        $_SESSION[$LEMsessid]['step'] = 0;
+
+        // Welcome page. 
+        if ($surveyMode == 'survey'){
+            LimeExpressionManager::JumpTo(1, false, false, true);
+        }elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'){
+            $moveResult                   = $this->moveResult = LimeExpressionManager::NavigateForwards();
+            $_SESSION[$LEMsessid]['step'] = 1;
+        }
+    }
+
     private function runPage()
     {
 
@@ -678,30 +709,10 @@ class SurveyRuntimeHelper {
 
         $LEMsessid = $this->LEMsessid;
 
+        // First time the survey is loaded
         if (!isset($_SESSION[$LEMsessid]['step']))
         {
-            $thissurvey    = $this->thissurvey;
-            $surveyid      = $this->surveyid;
-            $surveyMode    = $this->surveyMode;
-            $surveyOptions = $this->surveyOptions;
-            $LEMdebugLevel = $this->LEMdebugLevel;
-
-            buildsurveysession($surveyid);
-            randomizationGroupsAndQuestions($surveyid);
-            initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
-
-            if($surveyid != LimeExpressionManager::getLEMsurveyId())
-                LimeExpressionManager::SetDirtyFlag();
-
-            LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
-            $_SESSION[$LEMsessid]['step'] = 0;
-
-            if ($surveyMode == 'survey'){
-                LimeExpressionManager::JumpTo(1, false, false, true);
-            }elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'){
-                $moveResult                   = $this->moveResult = LimeExpressionManager::NavigateForwards();
-                $_SESSION[$LEMsessid]['step'] = 1;
-            }
+            $this->inits();
         }elseif($surveyid != LimeExpressionManager::getLEMsurveyId()){
             $_SESSION[$LEMsessid]['step']   = $_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];//$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
 
