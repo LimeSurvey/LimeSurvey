@@ -9,8 +9,8 @@
  */
 ?>
 <!-- _statisticsoutput_header -->
-<div class="col-lg-<?php echo $nbcols; ?> sol-sm-12">
-<table class='statisticstable table table-bordered'>
+<div class="col-lg-<?php echo $nbcols; ?> sol-sm-12 printable">
+<table class='statisticstable table table-bordered printable'>
     <thead>
         <tr class='success'>
             <th colspan='4' align='center' style='text-align: center; '>
