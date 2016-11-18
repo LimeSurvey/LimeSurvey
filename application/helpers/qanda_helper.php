@@ -1861,7 +1861,7 @@ function do_listwithcomment($ia)
             'hint_comment'      => $hint_comment,
             'kpclass'           => $kpclass,
             'name'              => $ia[1].'comment',
-            'sqg'               => $ia[1],
+            'sgq'               => $ia[1],
             'tarows'            => floor($tarows),
             'has_comment_saved' => isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
             'comment_saved'     => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
@@ -1938,14 +1938,13 @@ function do_listwithcomment($ia)
             'name'                   => $ia[1],
             'coreClass'              => $coreClass,
             'id'                     => 'answer'.$ia[1],
-            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'sgq'                    => $ia[1],
             'show_noanswer'          => is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]),
             'label_text'             => $hint_comment,
             'kpclass'                => $kpclass,
             'tarows'                 => $tarows,
             'maxoptionsize'          => $maxoptionsize,
-            'has_comment_saved'      => isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
-            'comment_saved'          => htmlspecialchars( $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
+            'comment_saved'          => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),/* htmlspecialchars(null)=="" right ? */
             'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         ), true);
 

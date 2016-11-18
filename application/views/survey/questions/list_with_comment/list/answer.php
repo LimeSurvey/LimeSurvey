@@ -19,15 +19,22 @@
 <!-- List with comment, list style, -->
 
 <!-- answer -->
-<div class="<?php echo $coreClass; ?> row" role="group" aria-describedby="ls-question-text-<?php echo $sgq; ?>">
+<div class="<?php echo $coreClass; ?> row" role="group" aria-labelledby="ls-question-text-<?php echo $sgq; ?>">
     <div class="answers-list radio-list col-sm-6 col-xs-12">
         <ul class="list-unstyled" role="radio-group">
             <?php
                 // rows/row.php
                 echo $sRows;
             ?>
-
         </ul>
+        <!-- EM use id , but no need to submit -->
+        <input
+                type="hidden"
+                name="<?php echo $java_name;?>"
+                id="<?php echo $java_id;?>"
+                value="<?php echo $java_value;?>"
+                disabled
+              />
     </div>
 
     <div class="form-group answer-item text-item col-sm-6 col-xs-12">
@@ -39,17 +46,9 @@
                 name="<?php echo $name; ?>"
                 id="<?php echo $id; ?>"
                 rows="<?php echo $tarows;?>"
-                ><?php if($has_comment_saved):?><?php echo $comment_saved;?><?php endif;?></textarea>
+                ><?php echo $comment_saved;?></textarea>
     </div>
 </div>
 
-<!-- EM use id , but no need to submit -->
-<input
-        class="radio"
-        type="hidden"
-        name="<?php echo $java_name;?>"
-        id="<?php echo $java_id;?>"
-        value="<?php echo $java_value;?>"
-        disabled
-      />
+
 <!-- end of answer -->
