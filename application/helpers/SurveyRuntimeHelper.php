@@ -30,6 +30,7 @@ class SurveyRuntimeHelper {
     private $surveyOptions;
     private $totalquestions;
     private $bTokenAnswerPersitance;
+    private $assessments;
 
     // moves
     private $moveResult;
@@ -398,21 +399,19 @@ class SurveyRuntimeHelper {
             $filenotvalidated = $this->filenotvalidated = checkUploadedFileValidity($surveyid, $move);
 
             //SEE IF THIS GROUP SHOULD DISPLAY
-            $show_empty_group = false;
+            $show_empty_group = $this->show_empty_group = false;
 
             if ($_SESSION[$LEMsessid]['step'] == 0)
-                $show_empty_group = true;
+                $show_empty_group = $this->show_empty_group = true;
 
-            $redata = compact(array_keys(get_defined_vars()));
+            $redata = compact(array_keys(get_defined_vars()));                  // must replace this by something better
 
             //SUBMIT ###############################################################################
-            if ((isset($move) && $move == "movesubmit"))
-            {
+            if ((isset($move) && $move == "movesubmit")){
                 //                setcookie("limesurvey_timers", "", time() - 3600); // remove the timers cookies   //@todo fix - sometimes results in headers already sent error
-                if ($thissurvey['refurl'] == "Y")
-                {
-                    if (!in_array("refurl", $_SESSION[$LEMsessid]['insertarray'])) //Only add this if it doesn't already exist
-                    {
+                if ($thissurvey['refurl'] == "Y"){
+                    //Only add this if it doesn't already exist
+                    if (!in_array("refurl", $_SESSION[$LEMsessid]['insertarray'])){
                         $_SESSION[$LEMsessid]['insertarray'][] = "refurl";
                     }
                 }
@@ -423,12 +422,14 @@ class SurveyRuntimeHelper {
                 $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
                 $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata, 'URLReplace', false, NULL, array(), true );   // to do INSERTANS substitutions
 
+                $this->thissurvey = $thissurvey;
+
                 //END PAGE - COMMIT CHANGES TO DATABASE
                 if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
                 {
                     if ($thissurvey['assessments'] == "Y")
                     {
-                        $assessments = doAssessment($surveyid);
+                        $assessments = $this->assessments = doAssessment($surveyid);
                     }
                     sendCacheHeaders();
                     doHeader();
@@ -477,7 +478,7 @@ class SurveyRuntimeHelper {
                     //Check for assessments
                     if ($thissurvey['assessments'] == "Y")
                     {
-                        $assessments = doAssessment($surveyid);
+                        $assessments = $this->assessments = doAssessment($surveyid);
                         if ($assessments)
                         {
                             $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
