@@ -25,6 +25,8 @@ class SurveyRuntimeHelper {
     // Survey settings
     private $surveyid            = null;
     private $show_empty_group    = false;
+    private $surveyMode;
+    private $surveyOptions;    
 
     private function getSurveyMode($thissurvey)
     {
@@ -108,8 +110,8 @@ class SurveyRuntimeHelper {
         $LEMdebugLevel       = $this->LEMdebugLevel;
         $LEMskipReprocessing = $this->LEMskipReprocessing;
 
-        $surveyMode    = $this->getSurveyMode($thissurvey);
-        $surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
+        $surveyMode    = $this->surveyMode    = $this->getSurveyMode($thissurvey);
+        $surveyOptions = $this->surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
 
         $previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
@@ -126,7 +128,12 @@ class SurveyRuntimeHelper {
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION[$LEMsessid]['step']))
             {
-                $surveyid = $this->surveyid;
+                $surveyid      = $this->surveyid;
+                $surveyMode    = $this->surveyMode;
+                $surveyOptions = $this->surveyOptions;
+                $LEMdebugLevel = $this->LEMdebugLevel;
+
+
                 buildsurveysession($surveyid);
                 randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
@@ -136,12 +143,10 @@ class SurveyRuntimeHelper {
 
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 $_SESSION[$LEMsessid]['step'] = 0;
-                if ($surveyMode == 'survey')
-                {
+
+                if ($surveyMode == 'survey'){
                     LimeExpressionManager::JumpTo(1, false, false, true);
-                }
-                elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
-                {
+                }elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'){
                     $moveResult = LimeExpressionManager::NavigateForwards();
                     $_SESSION[$LEMsessid]['step'] = 1;
                 }
