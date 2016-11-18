@@ -30,6 +30,9 @@ class SurveyRuntimeHelper {
     private $surveyOptions;
     private $totalquestions;
 
+    // moves
+    private $moveResult;
+
     private function getSurveyMode($thissurvey)
     {
         switch ($thissurvey['format'])
@@ -151,7 +154,7 @@ class SurveyRuntimeHelper {
                 if ($surveyMode == 'survey'){
                     LimeExpressionManager::JumpTo(1, false, false, true);
                 }elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'){
-                    $moveResult                   = LimeExpressionManager::NavigateForwards();
+                    $moveResult                   = $this->moveResult = LimeExpressionManager::NavigateForwards();
                     $_SESSION[$LEMsessid]['step'] = 1;
                 }
             }elseif($surveyid != LimeExpressionManager::getLEMsurveyId()){
@@ -174,7 +177,7 @@ class SurveyRuntimeHelper {
 
             if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey']){
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
-                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
+                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
 
                 if (isset($moveResult['seq']) &&  App()->request->getPost('thisstep',$moveResult['seq']) == $moveResult['seq']){
 
@@ -191,17 +194,16 @@ class SurveyRuntimeHelper {
                     $backpopup           = gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
-            
+
             if(isset($move) && $move=="clearcancel"){
-                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
+                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
             }
 
             if (isset($move)){
                 $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
             }
 
-            if (!isset($_SESSION[$LEMsessid]['prevstep']))
-            {
+            if (!isset($_SESSION[$LEMsessid]['prevstep'])){
                 $_SESSION[$LEMsessid]['prevstep']=$_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
             }
 
@@ -210,69 +212,67 @@ class SurveyRuntimeHelper {
                 checkCompletedQuota($surveyid);
             }
 
-            if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
-            {
+            if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
+
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
-                if(isset($_SESSION[$LEMsessid]['maxstep']) && $_SESSION[$LEMsessid]['maxstep']>$_SESSION[$LEMsessid]['step'] && $thissurvey['questionindex'] )// Do it only if needed : we don't need it if we don't have index
-                {
+
+                // Do it only if needed : we don't need it if we don't have index
+                if(isset($_SESSION[$LEMsessid]['maxstep']) && $_SESSION[$LEMsessid]['maxstep']>$_SESSION[$LEMsessid]['step'] && $thissurvey['questionindex'] ){
                     LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['maxstep'], false, false);
                 }
-                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
+
+                $moveResult = $this->moveResult =  LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
                 unset($_SESSION[$LEMsessid]['LEMtokenResume']);
-            }
-            else if (!$LEMskipReprocessing)
-            {
+            }else if (!$LEMskipReprocessing){
+
                 //Move current step ###########################################################################
-                if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['questionindex'] > 0))
-                {
-                    $moveResult = LimeExpressionManager::NavigateBackwards();
-                    if ($moveResult['at_start'])
-                    {
+                if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['questionindex'] > 0)){
+                    $moveResult = $this->moveResult = LimeExpressionManager::NavigateBackwards();
+
+                    if ($moveResult['at_start']){
                         $_SESSION[$LEMsessid]['step'] = 0;
                         unset($moveResult); // so display welcome page again
+                        unset($this->moveResult);
                     }
                 }
-                if (isset($move) && $move == "movenext")
-                {
-                    $moveResult = LimeExpressionManager::NavigateForwards();
+
+                if (isset($move) && $move == "movenext"){
+                    $moveResult = $this->moveResult = LimeExpressionManager::NavigateForwards();
                 }
-                if (isset($move) && ($move == 'movesubmit'))
-                {
-                    if ($surveyMode == 'survey')
-                    {
-                        $moveResult = LimeExpressionManager::NavigateForwards();
-                    }
-                    else
-                    {
+
+                if (isset($move) && ($move == 'movesubmit')){
+                    if ($surveyMode == 'survey'){
+                        $moveResult = $this->moveResult =  LimeExpressionManager::NavigateForwards();
+                    }else{
                         // may be submitting from the navigation bar, in which case need to process all intervening questions
                         // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
                         if($thissurvey['questionindex']==2) // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
                             LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
-                        $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps'] + 1, false);
+                        $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps'] + 1, false);
                     }
                 }
                 if (isset($move) && $move=='changelang')
                 {
                     // jump to current step using new language, processing POST values
-                    $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, true, true);  // do process the POST data
+                    $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, true, true);  // do process the POST data
                 }
                 if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1)
                 {
                     $move = (int) $move;
                     if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep'])))
                     {
-                        $moveResult = LimeExpressionManager::JumpTo($move, false);
+                        $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false);
                     }
                 }
                 elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2)
                 {
                     $move = (int) $move;
-                    $moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
+                    $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
                 }
                 if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0))
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
-                    $moveResult = LimeExpressionManager::GetLastMoveResult(true);
+                    $moveResult = $this->moveResult = LimeExpressionManager::GetLastMoveResult(true);
                     $LEMskipReprocessing=true;
                 }
             }
@@ -283,9 +283,10 @@ class SurveyRuntimeHelper {
                 {
                     //LimeExpressionManager::JumpTo(-1, false, false, true);
                     LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
-                    $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
+                    $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
                     if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
                         $moveResult['finished'] = true;
+                        $this->moveResult = $moveResult;
                 }
                 if ($moveResult['finished'] == true)
                 {
@@ -319,7 +320,7 @@ class SurveyRuntimeHelper {
             {
                 $bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid);
                 // must do this here to process the POSTed values
-                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
+                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
                 if (!isset($_SESSION[$LEMsessid]['scid']) && !$bTokenAnswerPersitance )
                 {
                     Yii::import("application.libraries.Save");
@@ -350,7 +351,7 @@ class SurveyRuntimeHelper {
                     $cSave->showsaveform($thissurvey['sid']); // reshow the form if there is an error
                 }
 
-                $moveResult = LimeExpressionManager::GetLastMoveResult(true);
+                $moveResult =  $this->moveResult = LimeExpressionManager::GetLastMoveResult(true);
                 $LEMskipReprocessing=true;
 
                 // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
@@ -590,6 +591,7 @@ class SurveyRuntimeHelper {
                 exit;
             }
         }
+
 
         $redata = compact(array_keys(get_defined_vars()));
 
