@@ -43,6 +43,40 @@ class SurveyRuntimeHelper {
         return $surveyMode;
     }
 
+    private function getRadix($thissurvey)
+    {
+        $radix = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $radix = $radix['separator'];
+        return $radix;
+    }
+
+    private function getSurveyOptions($thissurvey, $LEMdebugLevel, $timeadjust, $clienttoken )
+    {
+        $radix      = $this->getRadix($thissurvey);
+        $surveyOptions = array(
+            'active'                      => ($thissurvey['active'] == 'Y'),
+            'allowsave'                   => ($thissurvey['allowsave'] == 'Y'),
+            'anonymized'                  => ($thissurvey['anonymized'] != 'N'),
+            'assessments'                 => ($thissurvey['assessments'] == 'Y'),
+            'datestamp'                   => ($thissurvey['datestamp'] == 'Y'),
+            'deletenonvalues'             => Yii::app()->getConfig('deletenonvalues'),
+            'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
+            'ipaddr'                      => ($thissurvey['ipaddr'] == 'Y'),
+            'radix'                       => $radix,
+            'refurl'                      => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : NULL),
+            'savetimings'                 => ($thissurvey['savetimings'] == "Y"),
+            'surveyls_dateformat'         => ( ($timeadjust!=0) ? $thissurvey['surveyls_dateformat'] : 1),
+            'startlanguage'               => (isset(App()->language) ? App()->language : $thissurvey['language']),
+            'target'                      => Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
+            'tempdir'                     => Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
+            'timeadjust'                  => $timeadjust,
+            'token'                       => $clienttoken,
+        );
+
+        return $surveyOptions;
+    }
+
+
     /**
     * Main function
     *
@@ -71,31 +105,9 @@ class SurveyRuntimeHelper {
         $LEMdebugLevel       = $this->$LEMdebugLevel;
         $LEMskipReprocessing = $this->$LEMskipReprocessing;
 
-        $surveyMode = $this->getSurveyMode($thissurvey);
+        $surveyMode    = $this->getSurveyMode($thissurvey);
+        $surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
 
-
-        $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
-        $radix = $radix['separator'];
-
-        $surveyOptions = array(
-            'active' => ($thissurvey['active'] == 'Y'),
-            'allowsave' => ($thissurvey['allowsave'] == 'Y'),
-            'anonymized' => ($thissurvey['anonymized'] != 'N'),
-            'assessments' => ($thissurvey['assessments'] == 'Y'),
-            'datestamp' => ($thissurvey['datestamp'] == 'Y'),
-            'deletenonvalues'=>Yii::app()->getConfig('deletenonvalues'),
-            'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
-            'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
-            'radix'=>$radix,
-            'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : NULL),
-            'savetimings' => ($thissurvey['savetimings'] == "Y"),
-            'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
-            'startlanguage'=>(isset(App()->language) ? App()->language : $thissurvey['language']),
-            'target' => Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
-            'tempdir' => Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
-            'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
-            'token' => (isset($clienttoken) ? $clienttoken : NULL),
-        );
 
         //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
         $previewgrp = false;
