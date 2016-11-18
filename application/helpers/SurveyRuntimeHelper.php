@@ -44,6 +44,7 @@ class SurveyRuntimeHelper {
     private $oResponse;
     private $unansweredSQList;
     private $notanswered;
+    private $invalidSQList;
 
 
     private function getSurveyMode($thissurvey)
@@ -382,7 +383,7 @@ class SurveyRuntimeHelper {
                 }
 
                 //CHECK INPUT
-                $invalidSQList = $moveResult['invalidSQs'];
+                $invalidSQList = $this->invalidSQList = $moveResult['invalidSQs'];
                 if (strlen($invalidSQList) > 0){
                     $notvalidated = explode('|', $invalidSQList);
                 }else{
