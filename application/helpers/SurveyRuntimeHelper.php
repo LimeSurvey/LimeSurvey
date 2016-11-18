@@ -611,9 +611,7 @@ class SurveyRuntimeHelper {
         $this->setJavascriptVar($surveyid);
 
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
-        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
-
-        $flashmessage = makeFlashMessage();
+        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;        
 
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel       = $this->LEMdebugLevel;
