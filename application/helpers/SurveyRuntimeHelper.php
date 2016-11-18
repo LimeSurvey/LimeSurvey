@@ -782,8 +782,8 @@ class SurveyRuntimeHelper {
         $LEMdebugLevel = $this->LEMdebugLevel;
         $LEMsessid     = $this->LEMsessid;
         $move          = $this->move;
-        $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
-        
+        $LEMskipReprocessing    = $this->LEMskipReprocessing;
+
         if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
 
             LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
@@ -850,6 +850,45 @@ class SurveyRuntimeHelper {
         }
     }
 
+    private function checkIfFinished()
+    {
+        // retrieve datas from local variable
+        $surveyid      = $this->surveyid;
+        $surveyMode    = $this->surveyMode;
+        $surveyOptions = $this->surveyOptions;
+        $move          = $this->move;
+        $moveResult    = $this->moveResult;    
+
+        // Reload at first page (welcome after click previous fill an empty $moveResult array
+        if (isset($moveResult) && isset($moveResult['seq']) ){
+            // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
+            // we already done if move == 'movesubmit', don't do it again
+            if($moveResult['finished'] == true && $move != 'movesubmit' && $thissurvey['questionindex']==2){
+                //LimeExpressionManager::JumpTo(-1, false, false, true);
+                LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
+                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
+                if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs'])){
+                    $moveResult['finished'] = true;
+                    $this->moveResult = $moveResult;
+                }
+            }
+
+            if ($moveResult['finished'] == true){
+                $move = $this->move = 'movesubmit';
+            }else{
+                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1
+                $stepInfo                     = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+            }
+
+            if ($move == "movesubmit" && $moveResult['finished'] == false){
+                // then there are errors, so don't finalize the survey
+                $move            = $this->move            = "movenext"; // so will re-display the survey
+                $invalidLastPage = $this->invalidLastPage = true;
+            }
+        }
+
+    }
+
     private function runPage()
     {
 
@@ -884,40 +923,15 @@ class SurveyRuntimeHelper {
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav();                                          // Check if user used browser navigation, or relaoded page
         $this->moveFirstChecks();                                               // If the move is clearcancel, or confirmquota, then the process will stop here
-        $this->checkPrevStep();                                                 // Ceck if prev step is set, else set it
+        $this->checkPrevStep();                                                 // Check if prev step is set, else set it
+        $this->setMoveResult();
+        $this->checkIfFinised();
 
+        $move       = $this->move;
+        $moveResult = $this->moveResult;
 
         $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions']; // Proabably for redata
 
-        $this->setMoveResult();
-
-        // Reload at first page (welcome after click previous fill an empty $moveResult array
-        if (isset($moveResult) && isset($moveResult['seq']) ){
-            // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
-            // we already done if move == 'movesubmit', don't do it again
-            if($moveResult['finished'] == true && $move != 'movesubmit' && $thissurvey['questionindex']==2){
-                //LimeExpressionManager::JumpTo(-1, false, false, true);
-                LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
-                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
-                if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs'])){
-                    $moveResult['finished'] = true;
-                    $this->moveResult = $moveResult;
-                }
-            }
-
-            if ($moveResult['finished'] == true){
-                $move = $this->move = 'movesubmit';
-            }else{
-                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1
-                $stepInfo                     = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-            }
-
-            if ($move == "movesubmit" && $moveResult['finished'] == false){
-                // then there are errors, so don't finalize the survey
-                $move            = $this->move            = "movenext"; // so will re-display the survey
-                $invalidLastPage = $this->invalidLastPage = true;
-            }
-        }
 
         // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
         // Previously we used to keep the session and redirect the user to the
