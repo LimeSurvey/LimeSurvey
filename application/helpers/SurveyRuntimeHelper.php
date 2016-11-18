@@ -656,26 +656,33 @@ class SurveyRuntimeHelper {
         $LEMdebugLevel = $this->LEMdebugLevel;
         $LEMsessid     = $this->LEMsessid;
 
-        // Init session, randomization and filed array
-        buildsurveysession($surveyid);
-        randomizationGroupsAndQuestions($surveyid);
-        initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
+        // First time the survey is loaded
+        if (!isset($_SESSION[$LEMsessid]['step']))
+        {
+            // Init session, randomization and filed array
+            buildsurveysession($surveyid);
+            randomizationGroupsAndQuestions($surveyid);
+            initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
 
-        // Check surveyid coherence
-        if($surveyid != LimeExpressionManager::getLEMsurveyId())
-            LimeExpressionManager::SetDirtyFlag();
+            // Check surveyid coherence
+            if($surveyid != LimeExpressionManager::getLEMsurveyId())
+                LimeExpressionManager::SetDirtyFlag();
 
-        // Init $LEM states.
-        LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
-        $_SESSION[$LEMsessid]['step'] = 0;
+            // Init $LEM states.
+            LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+            $_SESSION[$LEMsessid]['step'] = 0;
 
-        // Welcome page.
-        if ($surveyMode == 'survey'){
-            LimeExpressionManager::JumpTo(1, false, false, true);
-        }elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'){
-            $moveResult                   = $this->moveResult = LimeExpressionManager::NavigateForwards();
-            $_SESSION[$LEMsessid]['step'] = 1;
+            // Welcome page.
+            if ($surveyMode == 'survey'){
+                LimeExpressionManager::JumpTo(1, false, false, true);
+            }elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N'){
+                $moveResult                   = $this->moveResult = LimeExpressionManager::NavigateForwards();
+                $_SESSION[$LEMsessid]['step'] = 1;
+            }
+        }elseif($surveyid != LimeExpressionManager::getLEMsurveyId()){
+            $this->initDirtyStep();
         }
+
     }
 
     private function initDirtyStep()
@@ -753,8 +760,15 @@ class SurveyRuntimeHelper {
         }
 
         $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
+    }
 
+    private function checkPrevStep()
+    {
+        $LEMsessid     = $this->LEMsessid;
 
+        if (!isset($_SESSION[$LEMsessid]['prevstep'])){
+            $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
+        }
     }
 
     private function runPage()
@@ -787,27 +801,16 @@ class SurveyRuntimeHelper {
         $notvalidated           = $this->notvalidated           ;
         $LEMsessid              = $this->LEMsessid              ;
 
-        // First time the survey is loaded
-        if (!isset($_SESSION[$LEMsessid]['step']))
-        {
-            $this->initFirstStep();
-        }elseif($surveyid != LimeExpressionManager::getLEMsurveyId()){
-            $this->initDirtyStep();
-        }
-
+        $this->initFirstStep();                                                 // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
-
-        // Proabably for readdata
-        $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
-
-        $this->checkIfUseBrowserNav();
-
-        $this->moveFirstChecks();
+        $this->checkIfUseBrowserNav();                                          // Check if user used browser navigation, or relaoded page
+        $this->moveFirstChecks();                                               // If the move is clearcancel, or confirmquota, then the process will stop here
+        $this->checkPrevStep();                                                 // Ceck if prev step is set, else set it
 
 
-        if (!isset($_SESSION[$LEMsessid]['prevstep'])){
-            $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
-        }
+        $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions']; // Proabably for redata
+
+        $this>setMoveResult();
 
         if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
 
