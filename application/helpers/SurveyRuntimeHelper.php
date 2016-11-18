@@ -39,6 +39,8 @@ class SurveyRuntimeHelper {
     // popup
     private $backpopup;
 
+    // response
+    private $oResponse;
 
 
     private function getSurveyMode($thissurvey)
@@ -341,22 +343,22 @@ class SurveyRuntimeHelper {
                     $oResponse = SurveyDynamic::model($surveyid)->findByPk($iResponseID);
                     $oResponse->lastpage = $_SESSION[$LEMsessid]['step'];
                     $oResponse->save();
+
+                    $this->oResponse = $oResponse;
                 }
             }
 
-            if ($thissurvey['active'] == "Y" && Yii::app()->request->getParam('savesubmit') )
-            {
+            if ($thissurvey['active'] == "Y" && Yii::app()->request->getParam('savesubmit') ){
                 // The response from the save form
                 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
                 $popup = $cSave->savedcontrol();
-                if (!empty($cSave->aSaveErrors))
-                {
+                if (!empty($cSave->aSaveErrors)){
                     $cSave->showsaveform($thissurvey['sid']); // reshow the form if there is an error
                 }
 
-                $moveResult =  $this->moveResult = LimeExpressionManager::GetLastMoveResult(true);
+                $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
                 $LEMskipReprocessing = $this->LEMskipReprocessing = true;
 
                 // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
@@ -366,26 +368,19 @@ class SurveyRuntimeHelper {
             //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
             global $notanswered;
 
-            if (isset($moveResult) && !$moveResult['finished'])
-            {
+            if (isset($moveResult) && !$moveResult['finished']){
                 $unansweredSQList = $moveResult['unansweredSQs'];
-                if (strlen($unansweredSQList) > 0)
-                {
+                if (strlen($unansweredSQList) > 0){
                     $notanswered = explode('|', $unansweredSQList);
-                }
-                else
-                {
+                }else{
                     $notanswered = array();
                 }
 
                 //CHECK INPUT
                 $invalidSQList = $moveResult['invalidSQs'];
-                if (strlen($invalidSQList) > 0)
-                {
+                if (strlen($invalidSQList) > 0){
                     $notvalidated = explode('|', $invalidSQList);
-                }
-                else
-                {
+                }else{
                     $notvalidated = array();
                 }
             }
