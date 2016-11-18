@@ -857,7 +857,8 @@ class SurveyRuntimeHelper {
         $surveyMode    = $this->surveyMode;
         $surveyOptions = $this->surveyOptions;
         $move          = $this->move;
-        $moveResult    = $this->moveResult;    
+        $moveResult    = $this->moveResult;
+        $LEMsessid     = $this->LEMsessid;
 
         // Reload at first page (welcome after click previous fill an empty $moveResult array
         if (isset($moveResult) && isset($moveResult['seq']) ){
@@ -887,6 +888,54 @@ class SurveyRuntimeHelper {
             }
         }
 
+    }
+
+    private function displayFirstPageIfNeeded()
+    {
+        // retrieve datas from local variable
+        $surveyMode    = $this->surveyMode;
+        $LEMsessid     = $this->LEMsessid;
+
+        // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
+        // Previously we used to keep the session and redirect the user to the
+        // submit page.
+        if ($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0){
+            $_SESSION[$LEMsessid]['test']=time();
+            display_first_page();
+            Yii::app()->end(); // So we can still see debug messages
+        }
+    }
+
+    private function saveAllIfNeeded()
+    {
+        // retrieve datas from local variable
+        $thissurvey    = $this->thissurvey;
+        $surveyid      = $this->surveyid;
+        $LEMsessid     = $this->LEMsessid;
+
+        // TODO FIXME
+         // Don't test if save is allowed
+        if ($thissurvey['active'] == "Y" && Yii::app()->request->getPost('saveall')){
+            $bTokenAnswerPersitance = $this->bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && $surveyid!=null && tableExists('tokens_'.$surveyid);
+
+            // must do this here to process the POSTed values
+            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
+            if (!isset($_SESSION[$LEMsessid]['scid']) && !$bTokenAnswerPersitance ){
+                Yii::import("application.libraries.Save");
+                $cSave = new Save();
+                $cSave->showsaveform($thissurvey['sid']); // generates a form and exits, awaiting input
+            }else{
+                // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
+                // Now update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic, otherwise we land on
+                // the previous page when we return.
+                $iResponseID         = $_SESSION[$LEMsessid]['srid'];
+                $oResponse           = SurveyDynamic::model($surveyid)->findByPk($iResponseID);
+                $oResponse->lastpage = $_SESSION[$LEMsessid]['step'];
+                $oResponse->save();
+
+                $this->oResponse = $oResponse;
+            }
+        }
     }
 
     private function runPage()
@@ -925,46 +974,15 @@ class SurveyRuntimeHelper {
         $this->moveFirstChecks();                                               // If the move is clearcancel, or confirmquota, then the process will stop here
         $this->checkPrevStep();                                                 // Check if prev step is set, else set it
         $this->setMoveResult();
-        $this->checkIfFinised();
+        $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set
+        $this->displayFirstPageIfNeeded();
+        $this->saveAllIfNeeded();
 
         $move       = $this->move;
         $moveResult = $this->moveResult;
 
         $totalquestions = $this->totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions']; // Proabably for redata
 
-
-        // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
-        // Previously we used to keep the session and redirect the user to the
-        // submit page.
-        if ($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0){
-            $_SESSION[$LEMsessid]['test']=time();
-            display_first_page();
-            Yii::app()->end(); // So we can still see debug messages
-        }
-
-        // TODO FIXME
-         // Don't test if save is allowed
-        if ($thissurvey['active'] == "Y" && Yii::app()->request->getPost('saveall')){
-            $bTokenAnswerPersitance = $this->bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid);
-
-            // must do this here to process the POSTed values
-            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
-            if (!isset($_SESSION[$LEMsessid]['scid']) && !$bTokenAnswerPersitance ){
-                Yii::import("application.libraries.Save");
-                $cSave = new Save();
-                $cSave->showsaveform($thissurvey['sid']); // generates a form and exits, awaiting input
-            }else{
-                // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
-                // Now update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic, otherwise we land on
-                // the previous page when we return.
-                $iResponseID = $_SESSION[$LEMsessid]['srid'];
-                $oResponse = SurveyDynamic::model($surveyid)->findByPk($iResponseID);
-                $oResponse->lastpage = $_SESSION[$LEMsessid]['step'];
-                $oResponse->save();
-
-                $this->oResponse = $oResponse;
-            }
-        }
 
         if ($thissurvey['active'] == "Y" && Yii::app()->request->getParam('savesubmit') ){
             // The response from the save form
