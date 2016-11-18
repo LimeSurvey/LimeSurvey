@@ -23,14 +23,16 @@
 .js .ls-js-hidden{display: none !important;}
 .no-js .ls-no-js-hidden{display: none !important;}
 
-/* Using http://webaim.org/techniques/css/invisiblecontent/ technique : better with less part (to be more easily updatable by template ? : can use initial) */
+/* Using http://webaim.org/techniques/css/invisiblecontent/ technique : better with less part (to be more easily updatable by template : can use initial or inherit) */
 .js .ls-js-hidden-sr{
   position:absolute;
   top:auto;
+  width:1px;
+  white-space: nowrap;
+  height:1px;
+  overflow:hidden;
+  clip: rect(0, 0, 0, 0);
 }
-.js.dir-ltr .ls-js-hidden-sr{left:-100000rem;}
-.js.dir-rtl .ls-js-hidden-sr{right:-100000rem;}
-
 
 /* For relanceOnOff ? */
 .ls-irrelevant {display: none !important;}
@@ -42,11 +44,11 @@
   position:absolute;
   top:auto;
   width:1px;
+  white-space: nowrap;
   height:1px;
   overflow:hidden;
+  clip: rect(0, 0, 0, 0);
 }
-.dir-ltr .ls-label-xs-visibility{left:-100000rem;}
-.dir-rtl .ls-label-xs-visibility{right:-100000rem;}
 
 /* size or cols => set to with initial and add a max-width .... */
 .answer-item .form-control[size],.answer-item .form-control[cols]{width:initial;max-width:100%}
@@ -69,7 +71,11 @@
     border-collapse: separate;
     position: relative;
 }
-@media (min-width: 768px) {
+/**
+ * Except for really little screen : show ls-input-group in same line
+ * ls-input-group used for suffix/preffix (a lot of time : very little and reset button
+ */
+@media (min-width: 481px) {
   .ls-input-group {
       display: table;
   }

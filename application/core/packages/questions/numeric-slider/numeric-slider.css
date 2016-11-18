@@ -264,7 +264,7 @@
 /* reset button */
 .ls-input-group-reset{margin-top:1em}
 .btn-slider-reset{text-align:center;position:relative;}
-@media (min-width: 768px) {
+@media (min-width: 481px) {
   .ls-input-group-reset{position:relative;margin-top:0}
   .btn-slider-reset{top:-1em;margin-top:0}
 }

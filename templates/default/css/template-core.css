@@ -5,6 +5,9 @@
 .ls-answers img,.ls-answers video,.ls-answers svg{
   max-width: 100%;height: auto !important;/* HTML included add width and height : force it */
 }
+.sr-only {
+  white-space: nowrap; /* See https://github.com/h5bp/html5-boilerplate/issues/1874 and https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
+}
 /* The sub question part must not be more visible than question */
 .ls-answers label,.ls-answers th{font-weight:400}
 
@@ -24,7 +27,6 @@ li.radio-item,li.checkbox-item{display:block}
 .radio-item input[type="radio"],.checkbox-item input[type="checkbox"] {/*give near same position to real button (except in td : can fix but not needed )*/
     display: inline-block;
     height: 17px;
-
     position: absolute;
     width: 17px;
 }
