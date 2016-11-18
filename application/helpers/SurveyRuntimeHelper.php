@@ -23,6 +23,8 @@ class SurveyRuntimeHelper {
     private $LEMdebugLevel       = 0;     // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
     private $LEMskipReprocessing = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 
+    // Survey settings
+    private $show_empty_group    = false;
 
     private function getSurveyMode($thissurvey)
     {
@@ -112,10 +114,9 @@ class SurveyRuntimeHelper {
         $previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
 
 
-
         //        if (isset($param['newtest']) && $param['newtest'] == "Y")
         //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
-        $show_empty_group = false;
+        $show_empty_group = $this->show_empty_group;
 
         if ($previewgrp || $previewquestion)
         {
