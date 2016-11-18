@@ -24,7 +24,7 @@
                             foreach ($failedgroupcheck as $fg)
                             { ?>
 
-                            <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$fg[0]); ?>'><?php echo $fg[1]; ?></a>")<?php echo $fg[2]; ?></li>
+                            <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$fg[0]); ?>'><?php echo flattenText($fg[1]); ?></a>")<?php echo $fg[2]; ?></li>
                             <?php }
                         } ?>
                     </ul>
