@@ -19,13 +19,13 @@ class SurveyRuntimeHelper {
     private $sTemplateViewPath;
 
     // LEM Datas
-    private $LEMdebugLevel       = 0;     // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
-    private $LEMskipReprocessing = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
+    private $LEMdebugLevel          = 0;     // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
+    private $LEMskipReprocessing    = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 
     // Survey settings
     private $thissurvey;
-    private $surveyid            = null;
-    private $show_empty_group    = false;
+    private $surveyid               = null;
+    private $show_empty_group       = false;
     private $surveyMode;
     private $surveyOptions;
     private $totalquestions;
@@ -33,7 +33,7 @@ class SurveyRuntimeHelper {
     private $assessments;
 
     // moves
-    private $moveResult;
+    private $moveResult             = null;
     private $move;
     private $invalidLastPage;
 
@@ -81,6 +81,7 @@ class SurveyRuntimeHelper {
 
     private function getSurveyOptions($thissurvey, $LEMdebugLevel, $timeadjust, $clienttoken )
     {
+        $LEMsessid  = $this->LEMsessid;
         $radix      = $this->getRadix($thissurvey);
         $surveyOptions = array(
             'active'                      => ($thissurvey['active'] == 'Y'),
@@ -105,9 +106,37 @@ class SurveyRuntimeHelper {
         return $surveyOptions;
     }
 
+    //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
     private function runFirstPage()
     {
-        //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
+
+        // Todo: check which ones are really needed
+        $LEMdebugLevel          = $this->LEMdebugLevel          ;
+        $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
+        $thissurvey             = $this->thissurvey             ;
+        $surveyid               = $this->surveyid               ;
+        $show_empty_group       = $this->show_empty_group       ;
+        $surveyMode             = $this->surveyMode             ;
+        $surveyOptions          = $this->surveyOptions          ;
+        $totalquestions         = $this->totalquestions         ;
+        $bTokenAnswerPersitance = $this->bTokenAnswerPersitance ;
+        $assessments            = $this->assessments            ;
+        $moveResult             = $this->moveResult             ;
+        $move                   = $this->move                   ;
+        $invalidLastPage        = $this->invalidLastPage        ;
+        $backpopup              = $this->backpopup              ;
+        $popup                  = $this->popup                  ;
+        $oResponse              = $this->oResponse              ;
+        $unansweredSQList       = $this->unansweredSQList       ;
+        $notanswered            = $this->notanswered            ;
+        $invalidSQList          = $this->invalidSQList          ;
+        $filenotvalidated       = $this->filenotvalidated       ;
+        $completed              = $this->completed              ;
+        $content                = $this->content                ;
+        $blocks                 = $this->blocks                 ;
+
+        $LEMsessid = $this->LEMsessid;
+
         if (!isset($_SESSION[$LEMsessid]['step']))
         {
             $thissurvey    = $this->thissurvey;
@@ -576,8 +605,8 @@ class SurveyRuntimeHelper {
         }
 
         $this->thissurvey = $thissurvey;
-
-        $LEMsessid = 'survey_' . $surveyid;
+        $LEMsessid        = $this->LEMsessid = 'survey_' . $surveyid;
+        
         $this->setJavascriptVar($surveyid);
 
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
@@ -607,7 +636,7 @@ class SurveyRuntimeHelper {
             $this->runFirstPage();
 
             // For redata
-            // TODO: check what is really used 
+            // TODO: check what is really used
             $LEMdebugLevel          = $this->LEMdebugLevel          ;
             $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
             $thissurvey             = $this->thissurvey             ;
@@ -639,8 +668,7 @@ class SurveyRuntimeHelper {
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
         //SEE IF $surveyid EXISTS ####################################################################
-        if ($surveyExists < 1)
-        {
+        if ($surveyExists < 1){
             //SURVEY DOES NOT EXIST. POLITELY EXIT.
             echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
             echo "\t<center><br />\n";
@@ -649,43 +677,40 @@ class SurveyRuntimeHelper {
             doFooter();
             exit;
         }
-        createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
-        //GET GROUP DETAILS
 
-        if ($surveyMode == 'group' && $previewgrp)
-        {
+        createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
+
+        //GET GROUP DETAILS
+        if ($surveyMode == 'group' && $previewgrp){
             //            setcookie("limesurvey_timers", "0"); //@todo fix - sometimes results in headers already sent error
             $_gid = sanitize_int($param['gid']);
 
             LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $LEMdebugLevel);
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
-            if ($gseq == -1)
-            {
+            if ($gseq == -1){
                 echo gT('Invalid group number for this survey: ') . $_gid;
                 exit;
             }
+
             $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
-            if (is_null($moveResult))
-            {
+            if (is_null($moveResult)){
                 echo gT('This group contains no questions.  You must add questions to this group before you can preview it');
                 exit;
             }
-            if (isset($moveResult))
-            {
+
+            if (isset($moveResult)){
                 $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
             }
 
-            $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-            $gid = $stepInfo['gid'];
-            $groupname = $stepInfo['gname'];
+            $stepInfo         = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+            $gid              = $stepInfo['gid'];
+            $groupname        = $stepInfo['gname'];
             $groupdescription = $stepInfo['gtext'];
-        }
-        else
-        {
-            if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist']))
-            {
-                $gid = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
-                $groupname = gT("Submit your answers");
+
+        }else{
+            if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
+                $gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
+                $groupname        = gT("Submit your answers");
                 $groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
             }
             else if ($surveyMode != 'survey')
