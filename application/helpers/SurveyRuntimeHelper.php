@@ -55,6 +55,545 @@ class SurveyRuntimeHelper {
     private $content;
     private $blocks;
 
+    /**
+    * Main function
+    *
+    * @param mixed $surveyid
+    * @param mixed $args
+    */
+    public function run($surveyid,$args)
+    {
+        global $errormsg;
+        $this->setVarFromArgs($args);
+        extract($args);
+
+        // $LEMdebugLevel - customizable debugging for Lime Expression Manager
+        $LEMdebugLevel       = $this->LEMdebugLevel;
+        $LEMskipReprocessing = $this->LEMskipReprocessing;
+        $LEMsessid           = $this->LEMsessid = 'survey_' . $surveyid;
+
+        // Template settings
+        $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
+        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
+
+        // Survey settings
+        $this->surveyid   = $surveyid;
+        $thissurvey       = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
+        $this->thissurvey = $thissurvey;
+        $surveyMode       = $this->surveyMode    = $this->getSurveyMode($thissurvey);
+        $surveyOptions    = $this->surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
+        $previewgrp       = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
+        $previewquestion  = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $show_empty_group = $this->show_empty_group;
+
+        $this->setJavascriptVar($surveyid);
+
+        if ($previewgrp || $previewquestion){
+            $_SESSION[$LEMsessid]['prevstep'] = 2;
+            $_SESSION[$LEMsessid]['maxstep'] = 0;
+        }else{
+            $this->runPage();
+
+            // For redata
+            // TODO: check what is really used
+            $LEMdebugLevel          = $this->LEMdebugLevel          ;
+            $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
+            $thissurvey             = $this->thissurvey             ;
+            $surveyid               = $this->surveyid               ;
+            $show_empty_group       = $this->show_empty_group       ;
+            $surveyMode             = $this->surveyMode             ;
+            $surveyOptions          = $this->surveyOptions          ;
+            $totalquestions         = $this->totalquestions         ;
+            $bTokenAnswerPersitance = $this->bTokenAnswerPersitance ;
+            $assessments            = $this->assessments            ;
+            $moveResult             = $this->moveResult             ;
+            $move                   = $this->move                   ;
+            $invalidLastPage        = $this->invalidLastPage        ;
+            $backpopup              = $this->backpopup              ;
+            $popup                  = $this->popup                  ;
+            $oResponse              = $this->oResponse              ;
+            $unansweredSQList       = $this->unansweredSQList       ;
+            $notanswered            = $this->notanswered            ;
+            $invalidSQList          = $this->invalidSQList          ;
+            $filenotvalidated       = $this->filenotvalidated       ;
+            $completed              = $this->completed              ;
+            $content                = $this->content                ;
+            $blocks                 = $this->blocks                 ;
+            $notvalidated           = $this->notvalidated           ;
+            $LEMsessid = $this->LEMsessid;
+
+        }
+
+
+        $redata = compact(array_keys(get_defined_vars()));
+
+        // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
+        //SEE IF $surveyid EXISTS ####################################################################
+        if ($surveyExists < 1){
+            //SURVEY DOES NOT EXIST. POLITELY EXIT.
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
+            echo "\t<center><br />\n";
+            echo "\t" . gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
+            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
+            doFooter();
+            exit;
+        }
+
+        createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
+
+        //GET GROUP DETAILS
+        if ($surveyMode == 'group' && $previewgrp){
+            //            setcookie("limesurvey_timers", "0"); //@todo fix - sometimes results in headers already sent error
+            $_gid = sanitize_int($param['gid']);
+
+            LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $LEMdebugLevel);
+            $gseq = LimeExpressionManager::GetGroupSeq($_gid);
+            if ($gseq == -1){
+                echo gT('Invalid group number for this survey: ') . $_gid;
+                exit;
+            }
+
+            $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
+            if (is_null($moveResult)){
+                echo gT('This group contains no questions.  You must add questions to this group before you can preview it');
+                exit;
+            }
+
+            if (isset($moveResult)){
+                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
+            }
+
+            $stepInfo         = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+            $gid              = $stepInfo['gid'];
+            $groupname        = $stepInfo['gname'];
+            $groupdescription = $stepInfo['gtext'];
+
+        }else{
+            if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
+                $gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
+                $groupname        = gT("Submit your answers");
+                $groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
+            }
+            else if ($surveyMode != 'survey')
+            {
+                if ($previewquestion) {
+                    $_qid = sanitize_int($param['qid']);
+                    LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
+                    $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
+                    $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
+                    $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                } else {
+                    $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                }
+
+                $gid = $stepInfo['gid'];
+                $groupname = $stepInfo['gname'];
+                $groupdescription = $stepInfo['gtext'];
+            }
+        }
+        if ($previewquestion)
+        {
+            $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
+        }
+
+        if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
+        {
+            $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
+        }
+
+        // If the survey uses answer persistence and a srid is registered in SESSION
+        // then loadanswers from this srid
+        /* Only survey mode used this - should all?
+        if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
+        $thissurvey['anonymized'] == "N" &&
+        isset($_SESSION[$LEMsessid]['srid']) &&
+        $thissurvey['active'] == "Y")
+        {
+        loadanswers();
+        }
+        */
+
+        //******************************************************************************************************
+        //PRESENT SURVEY
+        //******************************************************************************************************
+
+        $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['step']));
+
+        Yii::app()->getController()->loadHelper('qanda');
+        setNoAnswerMode($thissurvey);
+
+        //Iterate through the questions about to be displayed:
+        $inputnames = array();
+
+        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
+        {
+            $gid = $gl['gid'];
+            $qnumber = 0;
+
+            if ($surveyMode != 'survey')
+            {
+                $onlyThisGID = $stepInfo['gid'];
+                if ($onlyThisGID != $gid)
+                {
+                    continue;
+                }
+            }
+
+            // TMSW - could iterate through LEM::currentQset instead
+
+            //// To diplay one question, all the questions are processed ?
+            if (!isset($qanda))
+            {
+                $qanda=array();
+            }
+            foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia)
+            {
+                ++$qnumber;
+                $ia[9] = $qnumber; // incremental question count;
+
+                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))// Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
+                {
+                    if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid'])
+                    {
+                        continue;
+                    }
+                    $qidattributes = getQuestionAttributeValues($ia[0]);
+                    if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
+                    {
+                        continue;
+                    }
+
+                    //Get the answers/inputnames
+                    // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
+                    // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
+                    list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia, $surveyid);
+                    if ($plus_qanda)
+                    {
+                        $plus_qanda[] = $ia[4];
+                        $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+                        // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
+                        if(isset($ia[10]))
+                            $plus_qanda['finalgroup']=$ia[10];
+                        else
+                            $plus_qanda['finalgroup']=$ia[5];
+                        $qanda[] = $plus_qanda;
+                    }
+                    if ($plus_inputnames)
+                    {
+                        $inputnames = addtoarray_single($inputnames, $plus_inputnames);
+                    }
+
+                    //Display the "mandatory" popup if necessary
+                    // TMSW - get question-level error messages - don't call **_popup() directly
+                    if ($okToShowErrors && $stepInfo['mandViolation'])
+                    {
+                        list($mandatorypopup, $popup) = mandatory_popup($ia, $notanswered);
+                    }
+
+                    //Display the "validation" popup if necessary
+                    if ($okToShowErrors && !$stepInfo['valid'])
+                    {
+                        list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
+                    }
+
+                    // Display the "file validation" popup if necessary
+                    if ($okToShowErrors && isset($filenotvalidated))
+                    {
+                        list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
+                    }
+                }
+                if ($ia[4] == "|")
+                    $upload_file = TRUE;
+            } //end iteration
+        }
+
+        if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
+        {
+            if ($show_empty_group)
+            {
+                $percentcomplete = makegraph($_SESSION[$LEMsessid]['totalsteps'] + 1, $_SESSION[$LEMsessid]['totalsteps']);
+            }
+            else
+            {
+                $percentcomplete = makegraph($_SESSION[$LEMsessid]['step'], $_SESSION[$LEMsessid]['totalsteps']);
+            }
+        }
+        if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey'))
+        {
+            $languagechanger = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang']);
+        }
+
+        //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+        /**
+         * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
+         *
+         */
+        if(!$previewquestion && !$previewgrp){
+            $questionindex = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
+            $questionindexmenu = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
+        }
+
+        sendCacheHeaders();
+        doHeader();
+
+        /////////////////////////////////
+        // First call to templatereplace
+
+        echo "<!-- SurveyRunTimeHelper -->";
+        $redata = compact(array_keys(get_defined_vars()));
+        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
+        $aPopup=array(); // We can move this part where we want now
+        if (isset($backpopup))
+        {
+            $aPopup[]=$backpopup;// If user click reload: no need other popup
+        }
+        else
+        {
+            if (isset($popup))
+            {
+                $aPopup[]=$popup;
+            }
+            if (isset($vpopup))
+            {
+                $aPopup[]=$vpopup;
+            }
+            if (isset($fpopup))
+            {
+                $aPopup[]=$fpopup;
+            }
+        }
+        Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
+        $hiddenfieldnames = implode("|", $inputnames);
+
+        if (isset($upload_file) && $upload_file)
+            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container surveyRunTimeUploadFile'))."\n
+            <!-- INPUT NAMES -->
+            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+        else
+            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container  surveyRunTime'))."\n
+            <!-- INPUT NAMES -->
+            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+        // <-- END FEATURE - SAVE
+
+        // The default submit button
+        echo CHtml::htmlButton("default",array('type'=>'submit','id'=>"defaultbtn",'value'=>"default",'name'=>'move','class'=>"submit hidden",'style'=>'display:none'));
+        if ($surveyMode == 'survey')
+        {
+            if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
+            {
+                //Hide the welcome screen if explicitly set
+            }
+            else
+            {
+                echo templatereplace(file_get_contents($sTemplateViewPath."welcome.pstpl"), array(), $redata) . "\n";
+            }
+
+            if ($thissurvey['anonymized'] == "Y")
+            {
+                echo templatereplace(file_get_contents($sTemplateViewPath."privacy.pstpl"), array(), $redata) . "\n";
+            }
+        }
+
+        // <-- START THE SURVEY -->
+        if ($surveyMode != 'survey')
+        {
+            /* Why survey.pstpl is not included in all in one mode ?*/
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"), array(), $redata);
+        }
+
+        // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
+        // We don't need runonce actually (140228): the script was updated and replaced by EM see #08783 (grep show no other runonce)
+        // echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
+
+        $showpopups=Yii::app()->getConfig('showpopups');
+
+        //Display the "mandatory" message on page if necessary
+        if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
+        {
+            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
+        }
+
+        //Display the "validation" message on page if necessary
+        if (!$showpopups && !$stepInfo['valid'] && $okToShowErrors)
+        {
+            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
+        }
+
+        //Display the "file validation" message on page if necessary
+        if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
+        {
+            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
+        }
+
+        $_gseq = -1;
+        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
+        {
+            $gid = $gl['gid'];
+            ++$_gseq;
+            $groupname = $gl['group_name'];
+            $groupdescription = $gl['description'];
+
+            if ($surveyMode != 'survey' && $gid != $onlyThisGID)
+            {
+                continue;
+            }
+
+            $redata = compact(array_keys(get_defined_vars()));
+            Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
+            echo "\n\n<!-- START THE GROUP (in SurveyRunTime ) -->\n";
+            echo "\n\n<div id='group-$_gseq'";
+            $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
+            if  ($gnoshow && !$previewgrp)
+            {
+                echo " class='ls-hidden'";/* Unsure for reason : hidden or unrelevant ?*/
+            }
+            echo ">\n";
+            echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
+            echo "\n";
+
+            $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
+            $aSurveyinfo = getSurveyInfo($surveyid);
+
+            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
+            if(($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')){
+                $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
+            } else {
+                $showgroupinfo_ = $showgroupinfo_global_;
+            }
+
+            $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
+
+            if (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_)
+            {
+                echo templatereplace(file_get_contents($sTemplateViewPath."groupdescription.pstpl"), array(), $redata);
+            }
+            echo "\n";
+
+            echo "\n\n<!-- PRESENT THE QUESTIONS (in SurveyRunTime )  -->\n";
+
+            foreach ($qanda as $qa) // one entry per QID
+            {
+                // Test if finalgroup is in this qid (for all in one survey, else we do only qanda for needed question (in one by one or group by goup)
+                if ($gid != $qa['finalgroup']) {
+                    continue;
+                }
+                $qid = $qa[4];
+                $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
+                $lastgrouparray = explode("X", $qa[7]);
+                $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
+                $lastanswer = $qa[7];
+
+
+
+
+                $n_q_display = '';
+                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
+                {
+                    continue; // skip this one
+                }
+
+
+                $aReplacement=array();
+                $question = $qa[0];
+                //===================================================================
+                // The following four variables offer the templating system the
+                // capacity to fully control the HTML output for questions making the
+                // above echo redundant if desired.
+                $question['sgq'] = $qa[7];
+                $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
+                $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
+                //===================================================================
+
+                $question_template = file_get_contents($sTemplateViewPath.'question.pstpl');
+                // Fix old template : can we remove it ? Old template are surely already broken by another issue
+                if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
+                {
+                    // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
+                    $question_template = str_replace('{QUESTION_ESSENTIALS}', '', $question_template);
+                    $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
+                    $question_template ="<div {QUESTION_ESSENTIALS} class='{QUESTION_CLASS} {QUESTION_MAN_CLASS} {QUESTION_INPUT_ERROR_CLASS}'"
+                                        . $question_template
+                                        . "</div>";
+                }
+                $redata = compact(array_keys(get_defined_vars()));
+                $aQuestionReplacement=$this->getQuestionReplacement($qa);
+                echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
+
+            }
+            if (!empty($qanda))
+            {
+                if ($surveyMode == 'group') {
+                    echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+                }
+                if ($surveyMode == 'question') {
+                    echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
+                }
+            }
+
+            echo "\n\n<!-- END THE GROUP -->\n";
+            echo templatereplace(file_get_contents($sTemplateViewPath."endgroup.pstpl"), array(), $redata);
+            echo "\n\n</div>\n";
+            Yii::app()->setConfig('gid','');
+        }
+
+        LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
+        echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        Yii::app()->clientScript->registerScript('triggerEmRelevance',"triggerEmRelevance();",CClientScript::POS_END);
+        LimeExpressionManager::FinishProcessingPage();
+
+        /**
+        * Navigator
+        */
+        if (!$previewgrp && !$previewquestion)
+        {
+            $aNavigator = surveymover();
+            $moveprevbutton = $aNavigator['sMovePrevButton'];
+            $movenextbutton = $aNavigator['sMoveNextButton'];
+            $navigator = $moveprevbutton.' '.$movenextbutton;
+
+            $redata = compact(array_keys(get_defined_vars()));
+
+            echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
+            echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
+            echo "\n";
+
+            if ($thissurvey['active'] != "Y")
+            {
+                echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
+            }
+
+            echo "<!-- generated in SurveyRuntimeHelper -->";
+            echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
+            echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+            echo "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
+            $_SESSION[$LEMsessid]['LEMpostKey'] = mt_rand();
+            echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
+
+            if (isset($token) && !empty($token))
+            {
+                echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+            }
+        }
+
+        if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)
+        {
+            echo LimeExpressionManager::GetDebugTimingMessage();
+        }
+        if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
+        {
+            echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
+        }
+        echo "</form>\n";
+
+        echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
+
+        echo "\n";
+
+        doFooter();
+
+    }
+
     private function getSurveyMode($thissurvey)
     {
         switch ($thissurvey['format'])
@@ -618,545 +1157,6 @@ class SurveyRuntimeHelper {
         $this->content                = isset( $content                )?$content                :null ;
         $this->blocks                 = isset( $blocks                 )?$blocks                 :null ;
         $this->notvalidated           = isset( $notvalidated           )?$notvalidated           :null;
-    }
-
-    /**
-    * Main function
-    *
-    * @param mixed $surveyid
-    * @param mixed $args
-    */
-    function run($surveyid,$args)
-    {
-        global $errormsg;
-        $this->setVarFromArgs($args);
-        extract($args);
-
-        // $LEMdebugLevel - customizable debugging for Lime Expression Manager
-        $LEMdebugLevel       = $this->LEMdebugLevel;
-        $LEMskipReprocessing = $this->LEMskipReprocessing;
-        $LEMsessid           = $this->LEMsessid = 'survey_' . $surveyid;
-
-        // Template settings
-        $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
-        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
-
-        // Survey settings
-        $this->surveyid   = $surveyid;
-        $thissurvey       = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
-        $this->thissurvey = $thissurvey;
-        $surveyMode       = $this->surveyMode    = $this->getSurveyMode($thissurvey);
-        $surveyOptions    = $this->surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
-        $previewgrp       = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $previewquestion  = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
-        $show_empty_group = $this->show_empty_group;
-
-        $this->setJavascriptVar($surveyid);
-
-        if ($previewgrp || $previewquestion){
-            $_SESSION[$LEMsessid]['prevstep'] = 2;
-            $_SESSION[$LEMsessid]['maxstep'] = 0;
-        }else{
-            $this->runPage();
-
-            // For redata
-            // TODO: check what is really used
-            $LEMdebugLevel          = $this->LEMdebugLevel          ;
-            $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
-            $thissurvey             = $this->thissurvey             ;
-            $surveyid               = $this->surveyid               ;
-            $show_empty_group       = $this->show_empty_group       ;
-            $surveyMode             = $this->surveyMode             ;
-            $surveyOptions          = $this->surveyOptions          ;
-            $totalquestions         = $this->totalquestions         ;
-            $bTokenAnswerPersitance = $this->bTokenAnswerPersitance ;
-            $assessments            = $this->assessments            ;
-            $moveResult             = $this->moveResult             ;
-            $move                   = $this->move                   ;
-            $invalidLastPage        = $this->invalidLastPage        ;
-            $backpopup              = $this->backpopup              ;
-            $popup                  = $this->popup                  ;
-            $oResponse              = $this->oResponse              ;
-            $unansweredSQList       = $this->unansweredSQList       ;
-            $notanswered            = $this->notanswered            ;
-            $invalidSQList          = $this->invalidSQList          ;
-            $filenotvalidated       = $this->filenotvalidated       ;
-            $completed              = $this->completed              ;
-            $content                = $this->content                ;
-            $blocks                 = $this->blocks                 ;
-            $notvalidated           = $this->notvalidated           ;
-            $LEMsessid = $this->LEMsessid;
-
-        }
-
-
-        $redata = compact(array_keys(get_defined_vars()));
-
-        // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
-        //SEE IF $surveyid EXISTS ####################################################################
-        if ($surveyExists < 1){
-            //SURVEY DOES NOT EXIST. POLITELY EXIT.
-            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
-            echo "\t<center><br />\n";
-            echo "\t" . gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
-            doFooter();
-            exit;
-        }
-
-        createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
-
-        //GET GROUP DETAILS
-        if ($surveyMode == 'group' && $previewgrp){
-            //            setcookie("limesurvey_timers", "0"); //@todo fix - sometimes results in headers already sent error
-            $_gid = sanitize_int($param['gid']);
-
-            LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $LEMdebugLevel);
-            $gseq = LimeExpressionManager::GetGroupSeq($_gid);
-            if ($gseq == -1){
-                echo gT('Invalid group number for this survey: ') . $_gid;
-                exit;
-            }
-
-            $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
-            if (is_null($moveResult)){
-                echo gT('This group contains no questions.  You must add questions to this group before you can preview it');
-                exit;
-            }
-
-            if (isset($moveResult)){
-                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
-            }
-
-            $stepInfo         = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-            $gid              = $stepInfo['gid'];
-            $groupname        = $stepInfo['gname'];
-            $groupdescription = $stepInfo['gtext'];
-
-        }else{
-            if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
-                $gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
-                $groupname        = gT("Submit your answers");
-                $groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
-            }
-            else if ($surveyMode != 'survey')
-            {
-                if ($previewquestion) {
-                    $_qid = sanitize_int($param['qid']);
-                    LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
-                    $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
-                    $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                    $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-                } else {
-                    $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-                }
-
-                $gid = $stepInfo['gid'];
-                $groupname = $stepInfo['gname'];
-                $groupdescription = $stepInfo['gtext'];
-            }
-        }
-        if ($previewquestion)
-        {
-            $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
-        }
-
-        if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
-        {
-            $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
-        }
-
-        // If the survey uses answer persistence and a srid is registered in SESSION
-        // then loadanswers from this srid
-        /* Only survey mode used this - should all?
-        if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
-        $thissurvey['anonymized'] == "N" &&
-        isset($_SESSION[$LEMsessid]['srid']) &&
-        $thissurvey['active'] == "Y")
-        {
-        loadanswers();
-        }
-        */
-
-        //******************************************************************************************************
-        //PRESENT SURVEY
-        //******************************************************************************************************
-
-        $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['step']));
-
-        Yii::app()->getController()->loadHelper('qanda');
-        setNoAnswerMode($thissurvey);
-
-        //Iterate through the questions about to be displayed:
-        $inputnames = array();
-
-        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
-        {
-            $gid = $gl['gid'];
-            $qnumber = 0;
-
-            if ($surveyMode != 'survey')
-            {
-                $onlyThisGID = $stepInfo['gid'];
-                if ($onlyThisGID != $gid)
-                {
-                    continue;
-                }
-            }
-
-            // TMSW - could iterate through LEM::currentQset instead
-
-            //// To diplay one question, all the questions are processed ?
-            if (!isset($qanda))
-            {
-                $qanda=array();
-            }
-            foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia)
-            {
-                ++$qnumber;
-                $ia[9] = $qnumber; // incremental question count;
-
-                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))// Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
-                {
-                    if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid'])
-                    {
-                        continue;
-                    }
-                    $qidattributes = getQuestionAttributeValues($ia[0]);
-                    if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
-                    {
-                        continue;
-                    }
-
-                    //Get the answers/inputnames
-                    // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
-                    // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                    list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia, $surveyid);
-                    if ($plus_qanda)
-                    {
-                        $plus_qanda[] = $ia[4];
-                        $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
-                        // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
-                        if(isset($ia[10]))
-                            $plus_qanda['finalgroup']=$ia[10];
-                        else
-                            $plus_qanda['finalgroup']=$ia[5];
-                        $qanda[] = $plus_qanda;
-                    }
-                    if ($plus_inputnames)
-                    {
-                        $inputnames = addtoarray_single($inputnames, $plus_inputnames);
-                    }
-
-                    //Display the "mandatory" popup if necessary
-                    // TMSW - get question-level error messages - don't call **_popup() directly
-                    if ($okToShowErrors && $stepInfo['mandViolation'])
-                    {
-                        list($mandatorypopup, $popup) = mandatory_popup($ia, $notanswered);
-                    }
-
-                    //Display the "validation" popup if necessary
-                    if ($okToShowErrors && !$stepInfo['valid'])
-                    {
-                        list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
-                    }
-
-                    // Display the "file validation" popup if necessary
-                    if ($okToShowErrors && isset($filenotvalidated))
-                    {
-                        list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
-                    }
-                }
-                if ($ia[4] == "|")
-                    $upload_file = TRUE;
-            } //end iteration
-        }
-
-        if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
-        {
-            if ($show_empty_group)
-            {
-                $percentcomplete = makegraph($_SESSION[$LEMsessid]['totalsteps'] + 1, $_SESSION[$LEMsessid]['totalsteps']);
-            }
-            else
-            {
-                $percentcomplete = makegraph($_SESSION[$LEMsessid]['step'], $_SESSION[$LEMsessid]['totalsteps']);
-            }
-        }
-        if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey'))
-        {
-            $languagechanger = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang']);
-        }
-
-        //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-        /**
-         * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
-         *
-         */
-        if(!$previewquestion && !$previewgrp){
-            $questionindex = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
-            $questionindexmenu = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
-        }
-
-        sendCacheHeaders();
-        doHeader();
-
-        /////////////////////////////////
-        // First call to templatereplace
-
-        echo "<!-- SurveyRunTimeHelper -->";
-        $redata = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
-        $aPopup=array(); // We can move this part where we want now
-        if (isset($backpopup))
-        {
-            $aPopup[]=$backpopup;// If user click reload: no need other popup
-        }
-        else
-        {
-            if (isset($popup))
-            {
-                $aPopup[]=$popup;
-            }
-            if (isset($vpopup))
-            {
-                $aPopup[]=$vpopup;
-            }
-            if (isset($fpopup))
-            {
-                $aPopup[]=$fpopup;
-            }
-        }
-        Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
-        Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
-        $hiddenfieldnames = implode("|", $inputnames);
-
-        if (isset($upload_file) && $upload_file)
-            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container surveyRunTimeUploadFile'))."\n
-            <!-- INPUT NAMES -->
-            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-        else
-            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container  surveyRunTime'))."\n
-            <!-- INPUT NAMES -->
-            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-        // <-- END FEATURE - SAVE
-
-        // The default submit button
-        echo CHtml::htmlButton("default",array('type'=>'submit','id'=>"defaultbtn",'value'=>"default",'name'=>'move','class'=>"submit hidden",'style'=>'display:none'));
-        if ($surveyMode == 'survey')
-        {
-            if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
-            {
-                //Hide the welcome screen if explicitly set
-            }
-            else
-            {
-                echo templatereplace(file_get_contents($sTemplateViewPath."welcome.pstpl"), array(), $redata) . "\n";
-            }
-
-            if ($thissurvey['anonymized'] == "Y")
-            {
-                echo templatereplace(file_get_contents($sTemplateViewPath."privacy.pstpl"), array(), $redata) . "\n";
-            }
-        }
-
-        // <-- START THE SURVEY -->
-        if ($surveyMode != 'survey')
-        {
-            /* Why survey.pstpl is not included in all in one mode ?*/
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"), array(), $redata);
-        }
-
-        // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
-        // We don't need runonce actually (140228): the script was updated and replaced by EM see #08783 (grep show no other runonce)
-        // echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
-
-        $showpopups=Yii::app()->getConfig('showpopups');
-
-        //Display the "mandatory" message on page if necessary
-        if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
-        {
-            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
-        }
-
-        //Display the "validation" message on page if necessary
-        if (!$showpopups && !$stepInfo['valid'] && $okToShowErrors)
-        {
-            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
-        }
-
-        //Display the "file validation" message on page if necessary
-        if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
-        {
-            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
-        }
-
-        $_gseq = -1;
-        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
-        {
-            $gid = $gl['gid'];
-            ++$_gseq;
-            $groupname = $gl['group_name'];
-            $groupdescription = $gl['description'];
-
-            if ($surveyMode != 'survey' && $gid != $onlyThisGID)
-            {
-                continue;
-            }
-
-            $redata = compact(array_keys(get_defined_vars()));
-            Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
-            echo "\n\n<!-- START THE GROUP (in SurveyRunTime ) -->\n";
-            echo "\n\n<div id='group-$_gseq'";
-            $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
-            if  ($gnoshow && !$previewgrp)
-            {
-                echo " class='ls-hidden'";/* Unsure for reason : hidden or unrelevant ?*/
-            }
-            echo ">\n";
-            echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
-            echo "\n";
-
-            $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
-            $aSurveyinfo = getSurveyInfo($surveyid);
-
-            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
-            if(($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')){
-                $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
-            } else {
-                $showgroupinfo_ = $showgroupinfo_global_;
-            }
-
-            $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
-
-            if (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_)
-            {
-                echo templatereplace(file_get_contents($sTemplateViewPath."groupdescription.pstpl"), array(), $redata);
-            }
-            echo "\n";
-
-            echo "\n\n<!-- PRESENT THE QUESTIONS (in SurveyRunTime )  -->\n";
-
-            foreach ($qanda as $qa) // one entry per QID
-            {
-                // Test if finalgroup is in this qid (for all in one survey, else we do only qanda for needed question (in one by one or group by goup)
-                if ($gid != $qa['finalgroup']) {
-                    continue;
-                }
-                $qid = $qa[4];
-                $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
-                $lastgrouparray = explode("X", $qa[7]);
-                $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
-                $lastanswer = $qa[7];
-
-
-
-
-                $n_q_display = '';
-                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
-                {
-                    continue; // skip this one
-                }
-
-
-                $aReplacement=array();
-                $question = $qa[0];
-                //===================================================================
-                // The following four variables offer the templating system the
-                // capacity to fully control the HTML output for questions making the
-                // above echo redundant if desired.
-                $question['sgq'] = $qa[7];
-                $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
-                $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
-                //===================================================================
-
-                $question_template = file_get_contents($sTemplateViewPath.'question.pstpl');
-                // Fix old template : can we remove it ? Old template are surely already broken by another issue
-                if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
-                {
-                    // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
-                    $question_template = str_replace('{QUESTION_ESSENTIALS}', '', $question_template);
-                    $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
-                    $question_template ="<div {QUESTION_ESSENTIALS} class='{QUESTION_CLASS} {QUESTION_MAN_CLASS} {QUESTION_INPUT_ERROR_CLASS}'"
-                                        . $question_template
-                                        . "</div>";
-                }
-                $redata = compact(array_keys(get_defined_vars()));
-                $aQuestionReplacement=$this->getQuestionReplacement($qa);
-                echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
-
-            }
-            if (!empty($qanda))
-            {
-                if ($surveyMode == 'group') {
-                    echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
-                }
-                if ($surveyMode == 'question') {
-                    echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
-                }
-            }
-
-            echo "\n\n<!-- END THE GROUP -->\n";
-            echo templatereplace(file_get_contents($sTemplateViewPath."endgroup.pstpl"), array(), $redata);
-            echo "\n\n</div>\n";
-            Yii::app()->setConfig('gid','');
-        }
-
-        LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
-        echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
-        Yii::app()->clientScript->registerScript('triggerEmRelevance',"triggerEmRelevance();",CClientScript::POS_END);
-        LimeExpressionManager::FinishProcessingPage();
-
-        /**
-        * Navigator
-        */
-        if (!$previewgrp && !$previewquestion)
-        {
-            $aNavigator = surveymover();
-            $moveprevbutton = $aNavigator['sMovePrevButton'];
-            $movenextbutton = $aNavigator['sMoveNextButton'];
-            $navigator = $moveprevbutton.' '.$movenextbutton;
-
-            $redata = compact(array_keys(get_defined_vars()));
-
-            echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-            echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
-            echo "\n";
-
-            if ($thissurvey['active'] != "Y")
-            {
-                echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
-            }
-
-            echo "<!-- generated in SurveyRuntimeHelper -->";
-            echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
-            echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-            echo "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
-            $_SESSION[$LEMsessid]['LEMpostKey'] = mt_rand();
-            echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
-
-            if (isset($token) && !empty($token))
-            {
-                echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-            }
-        }
-
-        if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)
-        {
-            echo LimeExpressionManager::GetDebugTimingMessage();
-        }
-        if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
-        {
-            echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
-        }
-        echo "</form>\n";
-
-        echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
-
-        echo "\n";
-
-        doFooter();
-
     }
 
     /**
