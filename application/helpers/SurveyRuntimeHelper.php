@@ -758,6 +758,13 @@ class SurveyRuntimeHelper {
         return $surveyOptions;
     }
 
+    /**
+     * If it's the first time the survey is loaded:
+     * - Init session, randomization and filed array
+     * - Check surveyid coherence
+     * - Init $LEM states.
+     * - Decide if Welcome page should be shown
+     */
     private function initFirstStep()
     {
         // retrieve datas from local variable
