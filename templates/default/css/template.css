@@ -674,5 +674,14 @@ div.yes-no .btn-group label {
   
   .ls-answers.table > tbody + tbody {
     border-top: none; /*overriding Bootstrap */
-}
+  }
+  
+  .help-block:last-child{
+    margin-bottom:0;
+  }
+  
+  .ls-questionhelp,
+  .help-block{
+    font-size:90%;
+  }
 }
