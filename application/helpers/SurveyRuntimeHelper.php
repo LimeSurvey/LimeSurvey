@@ -1142,6 +1142,9 @@ class SurveyRuntimeHelper {
         }
     }
 
+    /**
+     * Perform submit if asked by user
+     */
     private function moveSubmitIfNeeded($redata)
     {
         // retrieve datas from local variable
@@ -1346,6 +1349,7 @@ class SurveyRuntimeHelper {
             exit;
         }
     }
+
 
     private function setVarFromArgs($args)
     {
