@@ -874,6 +874,9 @@ class SurveyRuntimeHelper {
         }
     }
 
+    /**
+     * Check if the move is clearcancel or confirmquota
+     */
     private function moveFirstChecks()
     {
         $move          = $this->move;
