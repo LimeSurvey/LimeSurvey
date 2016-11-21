@@ -14,46 +14,59 @@
 
 class SurveyRuntimeHelper {
 
+    /**
+     * In the 2.x version of LimeSurvey and priors, the main run method  was using a variable called redata fed via get_defined_vars. It was making hard to move piece of code to subfuntions.
+     * Those private variables are just a step to make easier refactorisation of this file, to have a global overview about what is set in this helper, and to move easely piece of code to new methods:
+     * The methods get/set the private variables, and defore calling get_defined_vars, variables are created from thos private variables.
+     * It's just a first step. get_defined_vars should be removed, and most of the private here should be moved to the correct object:
+     * i.e: all the private variable concerning the survey should be moved to the survey model and replaced by a $oSurvey
+     */
+
     // Template datas
-    private $oTemplate;
-    private $sTemplateViewPath;
+    private $oTemplate;                                                         // Template configuration object (set in model TemplateConfiguration)
+    private $sTemplateViewPath;                                                 // Path of the PSTPL files in template
 
     // LEM Datas
     private $LEMsessid;
-    private $LEMdebugLevel          = 0;     // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
-    private $LEMskipReprocessing    = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
+    private $LEMdebugLevel          = 0;                                        // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
+    private $LEMskipReprocessing    = false;                                    // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 
-    // Survey settings
-    private $thissurvey;
-    private $surveyid               = null;
-    private $show_empty_group       = false;
-    private $surveyMode;
-    private $surveyOptions;
-    private $totalquestions;
-    private $bTokenAnswerPersitance;
-    private $assessments;
+    // Survey settings:
+    // TODO: To respect object oriented design, all those "states" should be move to SurveyDynamic model, or its related models via relations.
+    // The only private variable here should be $oSurvey.
+    private $thissurvey;                                                        // Array returned by common_helper::getSurveyInfo(); (survey row + language settings );
+    private $surveyid               = null;                                     // The survey id
+    private $show_empty_group       = false;                                    // True only when $_SESSION[$LEMsessid]['step'] == 0 ; Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
+    private $surveyMode;                                                        // {Group By Group,  All in one, Question by question}
+    private $surveyOptions;                                                     // Few options comming from thissurvey, App->getConfig, LEM. Could be replaced by $oSurvey + relations ; the one coming from LEM and getConfig should be public variable on the surveyModel, set via public methods (active, allowsave, anonymized, assessments, datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings, surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
+    private $totalquestions;                                                    // Number of question in the survey. Same, should be moved to survey model.
+    private $bTokenAnswerPersitance;                                            // Are token used? Same...
+    private $assessments;                                                       // Is assement used? Same...
 
     // moves
-    private $moveResult             = null;
-    private $move                   = null;
-    private $invalidLastPage;
+    private $moveResult             = null;                                     // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
+    private $move                   = null;                                     // The move requested by user. Set by frontend_helper::getMove() from the POST request.
+    private $invalidLastPage;                                                   // Just a variable used to check if user submitted a survey while it's not finished. Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
 
-    // popup
-    private $backpopup;
-    private $popup;
-    private $notvalidated;
+    // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
+    // They could probably be merged.
+    private $backpopup;                                                         // "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
+    private $popup;                                                             // savedcontrol, mandatory_popup
+    private $notvalidated;                                                      // question validation error
 
     // response
-    private $oResponse;
-    private $unansweredSQList;
-    private $notanswered;
-    private $invalidSQList;
-    private $filenotvalidated;
+    // TODO:  To respect object oriented design, all those "states" should be move to Response model, or its related models via relations.
+    private $oResponse;                                                         // An instance of the response model.
+    private $notanswered;                                                       // A global variable...Should be $oResponse->notanswered
+    private $unansweredSQList;                                                  // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
+    private $invalidSQList;                                                     // Invalid answered, fed from $moveResult(LEM). Its logic should be in Response model.
+    private $filenotvalidated;                                                  // Same, but specific to file question type. (seems to be problematic by the past)
 
     // strings
-    private $completed;
-    private $content;
-    private $blocks;
+    private $completed;                                                         // The string containing the completed message
+    private $content;                                                           // The content... It contains the result of the different templatereplace (so all the replacement of the pstpl files)
+    private $blocks;                                                            // Divs containing the HTML generated by plugins trying to override quanda_helper 
+
 
     /**
     * Main function
@@ -1166,6 +1179,7 @@ class SurveyRuntimeHelper {
                 /* @var $blockData PluginEventContent */
                 $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
             }
+
 
             $this->blocks = $blocks;
 
