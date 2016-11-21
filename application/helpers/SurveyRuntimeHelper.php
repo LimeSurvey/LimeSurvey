@@ -1113,8 +1113,10 @@ class SurveyRuntimeHelper {
         }
     }
 
-    //Now, we check mandatory questions if necessary
-    //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+    /**
+     * check mandatory questions if necessary
+     * CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+     */
     private function setNotAnsweredAndNotValidated()
     {
         // retrieve datas from local variable
