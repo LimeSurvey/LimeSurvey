@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## Unrealeased
+
+### Feature
+- Show (all) errors when try to import VV file
+
 ## [1.1.1] - 2016-11-16
 
 ### Fix

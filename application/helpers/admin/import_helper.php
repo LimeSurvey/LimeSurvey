@@ -1933,8 +1933,8 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
             {
                 $oTransaction->rollBack();
                 $aResponsesError[]=$aResponses[$iIdReponsesKey];
-                // Show some error to user ?
-                // $CSVImportResult['errors'][]=$oException->getMessage(); // Show it in view
+                // Show some error to user
+                $CSVImportResult['errors'][]=$oException->getMessage(); // Show it in view
                 // tracevar($oException->getMessage());// Show it in console (if debug is set)
             }
 
