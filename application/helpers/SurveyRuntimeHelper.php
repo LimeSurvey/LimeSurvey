@@ -895,6 +895,9 @@ class SurveyRuntimeHelper {
         $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
     }
 
+    /**
+     * Define prev step if not set in session.
+     */
     private function checkPrevStep()
     {
         $LEMsessid     = $this->LEMsessid;
