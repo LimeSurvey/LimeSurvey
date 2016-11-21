@@ -214,7 +214,7 @@ class questionHelper
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'text',
-            'expression'=>1,/* What for "tomorrow" etc ....*/
+            'expression'=>2,/* What for "tomorrow" etc ....*/
             "help"=>gT('Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.'),
             "caption"=>gT('Minimum date')
         );
@@ -224,7 +224,7 @@ class questionHelper
             'category'=>gT('Display'),
             'sortorder'=>111,
             'inputtype'=>'text',
-            'expression'=>1,
+            'expression'=>2,
             "help"=>gT('Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.'),
             "caption"=>gT('Maximum date')
         );

@@ -23,80 +23,16 @@
     <label for='answer<?php echo $name;?>' class='sr-only control-label'>
         <?php echo sprintf(gT('Date in the format: %s'), $dateformatdetails); ?>
     </label>
-        <?php /* Old input, not used since switching to Bootstrap DateTimePicker
-        <input
-            class='form-control'
-            type="text"
-            size="<?php echo $iLength;?>"
-            name="<?php echo $name;?>"
-            id="answer<?php echo $name;?>"
-            value="<?php echo $dateoutput;?>"
-            maxlength="<?php echo $iLength;?>"
-            onkeypress="<?php echo $goodchars;?>"
-            onchange="<?php echo $checkconditionFunction;?>"
-        />
-        */
-        ?>
-
-        <?php $this->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                'name' => $name,
-                'id' => "answer" . $name,
-                'value' => $dateoutput,
-                'pluginOptions' => array(
-                    'format' => $dateformatdetailsjs,
-                    'allowInputToggle' =>true,
-                    'showClear' => true,
-                    'tooltips' => array(
-                        'clear'=> gT('Clear selection'),
-                        'prevMonth'=> gT('Previous month'),
-                        'nextMonth'=> gT('Next month'),
-                        'selectYear'=> gT('Select year'),
-                        'prevYear'=> gT('Previous year'),
-                        'nextYear'=> gT('Next year'),
-                        'selectDecade'=> gT('Select decade'),
-                        'prevDecade'=> gT('Previous decade'),
-                        'nextDecade'=> gT('Next decade'),
-                        'prevCentury'=> gT('Previous century'),
-                        'nextCentury'=> gT('Next century'),
-                        'selectTime'=> gT('Select time')
-                    ),
-                    'locale' => convertLStoDateTimePickerLocale($language),
-                    /**
-                     * $maxdate and $mindate can be expressions from EM. In that case, set them to 1900.
-                     * The expressions will be evaluated dynamically later (see divs at bottom of this page).
-                     */
-                    'maxDate' => $maxdate[0] == '{' ? '1900' : $maxdate,
-                    'minDate' => $mindate[0] == '{' ? '1900' : $mindate,
-                    'sideBySide' => true,
-                    'keepOpen'=> true,
-                ),
-                'htmlOptions' => array(
-                    'onkeypress' => $goodchars,
-                    'aria-describedby' => "ls-question-text-{$name}"
-                )
-            ));
-        ?>
-    <script>
-        $(document).ready(function() {
-            // Min and max date sets default value, so use this to override it
-            $('#answer<?php echo $name; ?>').val('<?php echo $dateoutput; ?>');
-        });
-    </script>
-
-    <input
-        type='hidden'
-        name="dateformat<?php echo $name;?>"
-        id="dateformat<?php echo $name;?>"
-        value="<?php echo $dateformatdetailsjs;?>"
-    />
-
-    <input
-        type='hidden'
-        name="datelanguage<?php echo $name;?>"
-        id="datelanguage<?php echo $name;?>"
-        value="<?php echo $language;?>"
-    />
-
+    <div id="answer<?php echo $name; ?>_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="<?php echo $name;?>"><!-- data-basename used in js function -->
+        <?php echo CHtml::textField($name,$dateoutput,array(
+            'id' => "answer" . $name,
+            'class'=>"form-control date-control date",
+            'aria-describedby' => "ls-question-text-{$name}",
+        )); ?>
+        <div class="input-group-addon btn btn-default">
+            <i class="fa fa-calendar" aria-hidden="true"></i><span class="sr-only"><?php echo gT("Open the date time chooser"); ?></span>
+        </div>
+    </div>
     <?php if($hidetip):?>
     <p class="tip help-block">
         <?php echo sprintf(gT('Format: %s'),$dateformatdetails); ?>
@@ -105,12 +41,22 @@
 
 </div>
 
-<div class='hidden nodisplay' style='display:none'>
+<div class='hidden' style='display:none'>
     <!-- Obs: No spaces in the div - it will mess up Javascript string parsing -->
     <div id='datemin<?php echo $name;?>'><?php echo $mindate; ?></div>
     <div id='datemax<?php echo $name;?>'><?php echo $maxdate; ?></div>
 </div>
-
-<input type='hidden' class="namecontainer" data-name="<?php echo $qid; ?>" />
-
+<?php
+    /* Set option for launch, can not set to default : maybe more than one datetimepicker in page */
+    $aJsonOption=array(
+        'format' => $dateformatdetailsjs,
+        /* get the same default value than qanda_helper */
+        'minDate' => $mindate[0] == '{' ? '1900-01-01' : $mindate,
+        'maxDate' => $maxdate[0] == '{' ? '2037-12-31' : $maxdate,
+    );
+    $jsonOptions=json_encode($aJsonOption);
+    App()->getClientScript()->registerScript("doDatetimepicker{$name}","jQuery('#answer{$name}_datetimepicker').datetimepicker({$jsonOptions});",CClientScript::POS_END);
+     // Min and max date sets default value, so use this to override it
+    App()->getClientScript()->registerScript("resetDate{$name}","$('#answer{$name}').val('{$dateoutput}');;",CClientScript::POS_END);
+    ?>
 <!-- end of answer -->

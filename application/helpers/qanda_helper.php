@@ -984,7 +984,6 @@ function do_date($ia)
 
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
-    App()->getClientScript()->registerPackage('moment');
 
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='')
@@ -1240,6 +1239,43 @@ function do_date($ia)
             'qid'                    => $ia[0],
             'hideCalendar'           => $hideCalendar
         ), true);
+        if(!App()->getClientScript()->isScriptRegistered("setDatePickerGlobalOption")){
+            App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
+            /* Global datepicker configuration */
+            $aDefaultDatePicker=array(
+                'locale'=>convertLStoDateTimePickerLocale(App()->language),
+                'tooltips' => array(
+                    'clear'=> gT('Clear selection'),
+                    'prevMonth'=> gT('Previous month'),
+                    'nextMonth'=> gT('Next month'),
+                    'selectYear'=> gT('Select year'),
+                    'prevYear'=> gT('Previous year'),
+                    'nextYear'=> gT('Next year'),
+                    'selectDecade'=> gT('Select decade'),
+                    'prevDecade'=> gT('Previous decade'),
+                    'nextDecade'=> gT('Next decade'),
+                    'prevCentury'=> gT('Previous century'),
+                    'nextCentury'=> gT('Next century'),
+                    'selectTime'=> gT('Select time')
+                ),
+                'icons' => array(
+                    'time'=> 'fa fa-clock-o',
+                    'date'=> 'fa fa-calendar',
+                    'up'=> 'fa fa-chevron-up',
+                    'down'=> 'fa fa-chevron-down',
+                    'previous'=> 'fa fa-chevron-left',
+                    'next'=> 'fa fa-chevron-right',
+                    'today'=> 'fa fa-calendar-check-o',
+                    'clear'=> 'fa fa-trash-o',
+                    'close'=> 'fa fa-closee'
+                ),
+                'allowInputToggle' =>true,
+                'showClear' => true,
+                'sideBySide' => true,
+                //~ 'debug'=>true
+            );
+            App()->getClientScript()->registerScript("setDatePickerGlobalOption","$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )",CClientScript::POS_BEGIN);
+        }
         App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]});",CClientScript::POS_END);
     }
     $inputnames[]=$ia[1];
