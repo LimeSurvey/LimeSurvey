@@ -313,13 +313,22 @@ return array(
         )
     ),
 
+    'es6promise' => array(
+        'basePath' => 'third_party.es6promise',
+        'js' => array(
+            'es6-promise.auto.min.js'
+        )
+    ),
+
     'jspdf' => array(
         'basePath' => 'third_party.jspdf',
         'js' => array(
+            'html2canvas.js',
             'jspdf.debug.js'
             // 'jspdf.min.js'
         ),
         'depends' => array(
+            'es6promise',
             'jquery',
             'bootstrap'
         )

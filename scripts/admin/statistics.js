@@ -757,14 +757,21 @@ $(document).ready(function(){
         $(openWindow.document).trigger('triggerReady');
         console.log($('head'));
     });
+
     $('body').on('click','#action_js_export_to_pdf', function(){
         var doc = new jsPDF();
+        var sizes = {};
+        var j = 0;
         console.log("Getting the pdf");
         $('#statisticsview').find('.statisticstable').each(function(i, table){
-            doc.addPage();
-            doc.fromHTML(table, 210, 297, {width: 590, elementHandlers: elementHandlers});
-
+            sizes[i] = {h: $(table).height(),w: $(table).width()}
+            html2canvas(table).then(function(canvas) {
+                doc.addPage();
+                var imgData = canvas.toDataURL("image/png");
+                doc.addImage(imgData, 'PNG', sizes[j].w, sizes[j].h, 210, 297);
+                var dataurl = doc.output('dataurlnewwindow');
+                j++;
+            });
         });
-        var dataurl = doc.output('dataurlnewwindow');
     });
 });
