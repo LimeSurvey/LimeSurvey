@@ -6617,6 +6617,7 @@
                     }
                 }
             }
+
             /**
              * Control value against value from survey : see #11611
              */
@@ -6638,16 +6639,15 @@
                     $qvalid=false;
                 }
             }
-
+            $prettyPrintValidTip = $stringToParse;
+            $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
+            // TODO check for errors?
+            if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX))
+            {
+                $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
+            }
             if (!$qvalid)
             {
-                $prettyPrintValidTip = $stringToParse;
-                $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
-                // TODO check for errors?
-                if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX))
-                {
-                    $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
-                }
                 $invalidSQs = $LEM->qid2code[$qid]; // TODO - currently invalidates all - should only invalidate those that truly fail validation rules.
             }
             /////////////////////////////////////////////////////////
