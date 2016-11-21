@@ -712,6 +712,11 @@ class SurveyRuntimeHelper {
         return $surveyMode;
     }
 
+    /**
+     * Retreive the radix
+     * @param  array   $thissurvey (an array containg the datas of the dynamic survey model and its related language model )
+     * @return string
+     */
     private function getRadix($thissurvey)
     {
         $radix = getRadixPointData($thissurvey['surveyls_numberformat']);
