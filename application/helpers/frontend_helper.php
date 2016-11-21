@@ -1139,7 +1139,18 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
  */
 function prefillFromCommandLine($surveyid)
 {
-    $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
+    // This keys will never be prefilled
+    $reservedGetValues = array(
+        'token',
+        'sid',
+        'gid',
+        'qid',
+        'lang',
+        'newtest',
+        'action',
+        'seed'
+    );
+
     if (!isset($_SESSION['survey_' . $surveyid]['startingValues']))
     {
         $startingValues=array();
