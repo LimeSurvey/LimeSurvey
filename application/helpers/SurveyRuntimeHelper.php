@@ -805,7 +805,7 @@ class SurveyRuntimeHelper {
 
     /**
      * If a step is requested, but the survey id in the session is different from the requested one
-     * It reload the needed infos for the requested survey and jump to the requested step. 
+     * It reload the needed infos for the requested survey and jump to the requested step.
      */
     private function initDirtyStep()
     {
@@ -822,6 +822,9 @@ class SurveyRuntimeHelper {
         LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
     }
 
+    /**
+     * Seems to be a quick fix to avoid the total and max steps to be null...
+     */
     private function initTotalAndMaxSteps()
     {
         $LEMsessid     = $this->LEMsessid;
@@ -836,6 +839,11 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * It checks if user used the browser navigation (prev, next, reload page etc)
+     * and feed te backpopup variable if needed
+     *
+     */
     private function checkIfUseBrowserNav()
     {
         // retrieve datas from local variable
