@@ -28,7 +28,7 @@ class SurveyRuntimeHelper {
 
     // LEM Datas
     private $LEMsessid;
-    private $LEMdebugLevel          = 0;                                        // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
+    private $LEMdebugLevel          = 0;                                        // customizable debugging for Lime Expression Manager ; LEM_DEBUG_TIMING;   (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
     private $LEMskipReprocessing    = false;                                    // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 
     // Survey settings:
@@ -724,6 +724,13 @@ class SurveyRuntimeHelper {
         return $radix;
     }
 
+    /**
+     * Retreives dew options comming from thissurvey, App->getConfig, LEM.
+     * TODO: move to survey model
+     *
+     * @param array $thissurvey     an array containing all the survey needed infos
+     * @param int   $LEMdebugLevel  customizable debugging for Lime Expression Manager
+     */
     private function getSurveyOptions($thissurvey, $LEMdebugLevel, $timeadjust, $clienttoken )
     {
         $LEMsessid  = $this->LEMsessid;
