@@ -106,7 +106,15 @@ $currentfieldset='';
 
                         // Textarea
                         case 'textarea':?>
+                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
+                                <div class="input-group">
+                                    <div class="input-group-addon">{</div>
+                            <?php } ?>
                             <textarea class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>'><?php echo $aAttribute['value'];?></textarea>
+                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
+                                    <div class="input-group-addon">}</div>
+                                </div>
+                            <?php } ?>
                             <?php
                             break;
                     }
