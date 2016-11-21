@@ -908,7 +908,7 @@ class SurveyRuntimeHelper {
     }
 
     /**
-     * Set the moveResult variable 
+     * Set the moveResult variable, depending on the user move request
      */
     private function setMoveResult()
     {
@@ -989,6 +989,9 @@ class SurveyRuntimeHelper {
         }
     }
 
+    /**
+     * Test if the the moveresult is finished, to decide to set the new $move value
+     */
     private function checkIfFinished()
     {
         // retrieve datas from local variable
