@@ -685,6 +685,14 @@ class SurveyRuntimeHelper {
 
     }
 
+
+    /**
+     * Retreive the survey format (mode?)
+     * TODO: move to survey model
+     *
+     * @param  array   $thissurvey (an array containg the datas of the dynamic survey model and its related language model )
+     * @return string
+     */
     private function getSurveyMode($thissurvey)
     {
         switch ($thissurvey['format'])
