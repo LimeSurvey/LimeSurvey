@@ -1154,6 +1154,7 @@ class SurveyRuntimeHelper {
         $move              = $this->move;
         $moveResult        = $this->moveResult;
         $LEMsessid         = $this->LEMsessid;
+        $LEMdebugLevel     = $this->LEMdebugLevel;
         $thissurvey        = $this->thissurvey;
         $sTemplateViewPath = $this->sTemplateViewPath;
 
@@ -1358,7 +1359,7 @@ class SurveyRuntimeHelper {
      * Then, before performing the get_defined_var, the private variables are used to recreate those variables. So we can move piece of codes to sub methods.
      * setVarFromArgs($args) will set the original state of those private variables using the parameter $args passed to the run() method
      *
-     * @params array $args 
+     * @params array $args
      */
     private function setVarFromArgs($args)
     {
