@@ -608,6 +608,20 @@ class SurveyRuntimeHelper {
     }
 
 
+    /**
+     * This method perform different tasks that should be distributed in different functions.
+     * The execution order could probably be improved.
+     *
+     * - It init the needed variables for navigation: initFirstStep, initTotalAndMaxSteps, setMoveResult
+     * - Then perform all the needed checks before moving:
+     *   + did the participant used browser navigation?
+     *   + did he pressed clear cancel, is he a confirmed quota?
+     *   + Is the previous step set?
+     *   + Is the survey finished?
+     *   + Should the first page be displayed?
+     *   + Are all the answer validated? (like: participant didn't answered to a mandatory question)
+     * - Then it will save the survey or submit it if needed. ?
+     */
     private function runPage()
     {
 
@@ -669,7 +683,7 @@ class SurveyRuntimeHelper {
         //SUBMIT ###############################################################################
         $this->moveSubmitIfNeeded($redata);
 
-    }    
+    }
 
     private function getSurveyMode($thissurvey)
     {
