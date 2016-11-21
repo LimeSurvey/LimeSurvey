@@ -45,6 +45,11 @@
 * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 */
 
+// ==================================================================
+// setting constants for 'checked' and 'selected' inputs
+define('CHECKED' , ' checked="checked"' , true);
+define('SELECTED' , ' selected="selected"' , true);
+
 /**
 * setNoAnswerMode
 */
@@ -815,10 +820,25 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
     return array($htmltbody2, "");
 }
 
-// ==================================================================
-// setting constants for 'checked' and 'selected' inputs
-define('CHECKED' , ' checked="checked"' , true);
-define('SELECTED' , ' selected="selected"' , true);
+/**
+ * @param string $sUseKeyPad
+ * @return string
+ */
+function testKeypad($sUseKeyPad)
+{
+    if ($sUseKeyPad=='Y')
+    {
+        includeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
+    return $kpclass;
+}
+
+
 
 // ==================================================================
 // QUESTION METHODS =================================================
@@ -837,6 +857,7 @@ function do_boilerplate($ia)
 
     $answer .= doRender('/survey/questions/boilerplate/answer', array(
         'ia'=>$ia,
+        'basename'=>$ia[1],/* is this needed ? */
         'coreClass'=>'ls-answers hidden',
     ), true);
     $inputnames[]=$ia[1];
@@ -853,6 +874,7 @@ function do_equation($ia)
 
     $answer       = doRender('/survey/questions/equation/answer', array(
         'name'      => $ia[1],
+        'basename'  => $ia[1],
         'sValue'    => $sValue,
         'sEquation' => $sEquation,
         'coreClass' => 'ls-answers em_equation hidden'
@@ -935,6 +957,7 @@ function do_5pointchoice($ia)
         'coreClass'     => "ls-answers answers-list radio-list",
         'sliderId'      => $ia[0],
         'name'          => $ia[1],
+        'basename'      => $ia[1],
         'sessionValue'  => $sessionValue,
         'sRows'         => $sRows,
         'slider_rating' => $slider_rating,
@@ -1168,6 +1191,7 @@ function do_date($ia)
             'sRows'                  => $sRows,
             'coreClass'              => $coreClass,
             'name'                   => $ia[1],
+            'basename'               => $ia[1],
             'dateoutput'             => htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'dateformatdetails'      => $dateformatdetails['jsdate'],
@@ -1201,6 +1225,7 @@ function do_date($ia)
         // HTML for date question using datepicker
         $answer = doRender('/survey/questions/date/selector/answer', array(
             'name'                   => $ia[1],
+            'basename'               => $ia[1],
             'coreClass'              => $coreClass,
             'iLength'                => $iLength,
             'mindate'                => $mindate,
@@ -1241,6 +1266,7 @@ function do_language($ia)
 
     $languageData = array(
         'name'=>$ia[1],
+        'basename'=> $ia[1],
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'answerlangs'=>$answerlangs,
         'sLang'=>$sLang,
@@ -1493,6 +1519,7 @@ function do_list_dropdown($ia)
         'sOptions'               => $sOptions,
         'sOther'                 => $sOther,
         'name'                   => $ia[1],
+        'basename'               => $ia[1],
         'dropdownSize'           => $dropdownSize,
         'checkconditionFunction' => $checkconditionFunction,
         'value'                  => $value,
@@ -1767,6 +1794,7 @@ function do_list_radio($ia)
             'sTimer'=>$sTimer,
             'sRows' => $sRows,
             'name'  => $ia[1],
+            'basename' => $ia[1],
             'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
             'coreClass'=>$coreClass,
     ), true);
@@ -1857,11 +1885,11 @@ function do_listwithcomment($ia)
         $answer = doRender('/survey/questions/list_with_comment/list/answer', array(
             'sRows'             => $sRows,
             'id'                => 'answer'.$ia[1].'comment',
+            'basename'          => $ia[1],
             'coreClass'         => $coreClass,
             'hint_comment'      => $hint_comment,
             'kpclass'           => $kpclass,
             'name'              => $ia[1].'comment',
-            'sgq'               => $ia[1],
             'tarows'            => floor($tarows),
             'has_comment_saved' => isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
             'comment_saved'     => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
@@ -1938,7 +1966,7 @@ function do_listwithcomment($ia)
             'name'                   => $ia[1],
             'coreClass'              => $coreClass,
             'id'                     => 'answer'.$ia[1],
-            'sgq'                    => $ia[1],
+            'basename'               => $ia[1],
             'show_noanswer'          => is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]),
             'label_text'             => $hint_comment,
             'kpclass'                => $kpclass,
@@ -2104,6 +2132,7 @@ function do_ranking($ia)
                     'labeltext'         => (isset($labeltext))?$labeltext:'',
                     'qId'               => $ia[0],
                     'rankingName'       => $ia[1],
+                    'basename'          => $ia[1],
                     'max_answers'       => $max_answers,
                     'min_answers'       => $min_answers,
                     'answers'           => $answers,
@@ -2115,20 +2144,6 @@ function do_ranking($ia)
                     'samelistheight'    => $aQuestionAttributes["samelistheight"],
             ), true);
     return array($answer, $inputnames);
-}
-
-function testKeypad($sUseKeyPad)
-{
-    if ($sUseKeyPad=='Y')
-    {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    }
-    else
-    {
-        $kpclass = "";
-    }
-    return $kpclass;
 }
 
 // ---------------------------------------------------------------
@@ -2359,6 +2374,7 @@ function do_multiplechoice($ia)
     $answer = doRender('/survey/questions/multiplechoice/answer', array(
                 'sRows'    => $sRows,
                 'name'     => $ia[1],
+                'basename' => $ia[1],
                 'anscount' => $anscount,
                 'coreClass'=> $coreClass,
             ), true);
@@ -2590,7 +2606,7 @@ function do_multiplechoice_withcomments($ia)
         'sRows' => $sRows,
         'coreClass'=>$coreClass,
         'name'=>'MULTI'.$ia[1], /* ? name is not $ia[1] */
-        'sgq'=> $ia[1],
+        'basename'=> $ia[1],
         'value'=> $anscount
     ), true);
 
@@ -2673,6 +2689,7 @@ function do_file_upload($ia)
         'value' => $value,
         'filecountvalue'=>$filecountvalue,
         'coreClass'=>$coreClass,
+        'basename' => $ia[1],
     );
     $answer .= doRender('/survey/questions/file_upload/answer', $fileuploadDatas, true);
 
@@ -2946,7 +2963,7 @@ function do_multipleshorttext($ia)
         $answer = doRender('/survey/questions/multipleshorttext/answer', array(
                     'sRows' => $sRows,
                     'coreClass'=>$coreClass,
-                    'sgq'=>$ia[1],
+                    'basename'=>$ia[1],
                   ), true);
 
     }
@@ -3206,18 +3223,8 @@ function do_multiplenumeric($ia)
             // The value of the slider depends on many possible different parameters, by order of priority :
             // 1. The value stored in the session
             // 2. Else the default Answer   (set by EM and stored in session, so same case than 1)
-            // 3. Else the init value
-            // 4. Else the middle start
-            // 5. If no value at all, or if middle start, the "user no action" is recorded as null in the database
-
-            // For bootstrap slider, the value can't be NULL so we set it by default to the slider minimum value.
-            // The old behaviour of "null" value (corresponding to user no action) is implemented via $slider_user_no_action
-            // It could be used to show a temporary "No Answer" checkbox (hidden when user touch the slider)
-
-            // Most of this javascript is here to handle the fact that bootstrapSlider need numerical value in the input
-            // It can't accept "NULL" nor anyother thousand separator than "." (else it become a string)
-            // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/scripts/bootstrap-slider.js#l1453-l1461
-            // If the bootstrapSlider were updated, most of this javascript would not be necessary.
+            // 3. Else the slider_default value : if slider_default_set set the value here
+            // 4. Else the middle start or slider_default or nothing : leave the value to "" for the input, show slider pos at this position
 
             $sValue = '';
             // value stored in _SESSION
@@ -3347,7 +3354,7 @@ function do_multiplenumeric($ia)
                         'prefixclass'      => $prefixclass,
                         'equals_num_value' => $equals_num_value,
                         'id'               => $ia[0],
-                        'sgq'              => $ia[1],
+                        'basename'         => $ia[1],
                         'prefix'           => $prefix,
                         'suffix'           => $suffix,
                         'sumRemainingEqn'  => (isset($qinfo))?$qinfo['sumRemainingEqn']:'',
@@ -3382,10 +3389,6 @@ function do_multiplenumeric($ia)
 
     return array($answer, $inputnames);
 }
-
-
-
-
 
 // ---------------------------------------------------------------
 function do_numerical($ia)
@@ -3483,6 +3486,7 @@ function do_numerical($ia)
         'coreClass'              => $coreClass,
         'withColumn'             => $withColumn,
         'id'                     => $ia[1],
+        'basename'               => $ia[1],
         'prefix'                 => $prefix,
         'answertypeclass'        => $answertypeclass,
         'inputsize'              => $inputsize,
@@ -3497,9 +3501,6 @@ function do_numerical($ia)
     $mandatory=null;
     return array($answer, $inputnames, $mandatory);
 }
-
-
-
 
 // ---------------------------------------------------------------
 function do_shortfreetext($ia)
@@ -3607,8 +3608,8 @@ function do_shortfreetext($ia)
             'extraclass'             => $extraclass,
             'coreClass'              => $coreClass,
             'freeTextId'             => 'answer'.$ia[1],
-            'labelText'              => gT('Your answer'),
             'name'                   => $ia[1],
+            'basename'               => $ia[1],
             'drows'                  => $drows,
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'dispVal'                => $dispVal,
@@ -3688,8 +3689,8 @@ function do_shortfreetext($ia)
             'extraclass'             => $extraclass,
             'coreClass'              => $coreClass,
             'freeTextId'             => 'answer'.$ia[1],
-            'labelText'              => gT('Your answer'),
             'name'                   => $ia[1],
+            'basename'               => $ia[1],
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
             'kpclass'                => $kpclass,
@@ -3761,6 +3762,7 @@ function do_shortfreetext($ia)
             'extraclass'=>$extraclass,
             'coreClass'=> $coreClass,
             'name'=>$ia[1],
+            'basename'               => $ia[1],
             'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
             'strBuild'=>$strBuild,
@@ -3791,7 +3793,7 @@ function do_shortfreetext($ia)
             'extraclass'=>$extraclass,
             'coreClass'=> $coreClass,
             'name'=>$ia[1],
-            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'basename'               => $ia[1],
             'prefix'=>$prefix,
             'suffix'=>$suffix,
             'kpclass'=>$kpclass,
@@ -3898,6 +3900,7 @@ function do_longfreetext($ia)
         'withColumn'             =>$withColumn,
         'kpclass'                => $kpclass,
         'name'                   => $ia[1],
+        'basename'               => $ia[1],
         'drows'                  => $drows,
         'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
         'dispVal'                => $dispVal,
@@ -3985,6 +3988,7 @@ function do_hugefreetext($ia)
         'withColumn'=>$withColumn,
         'kpclass'=>$kpclass,
         'name'=>$ia[1],
+        'basename'=> $ia[1],
         'drows'=>$drows,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'dispVal'=>$dispVal,
@@ -4034,11 +4038,11 @@ function do_yesno($ia)
     $noAnswer = (isset($noAnswer))?$noAnswer:false;
     $itemDatas = array(
         'name'=>$ia[1],
+        'basename'=>$ia[1],
         'yChecked' => $yChecked,
         'nChecked' => $nChecked,
         'naChecked'=> $naChecked,
         'noAnswer' => $noAnswer,
-        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'displayType'=>$displayType,
     );
@@ -4079,6 +4083,7 @@ function do_gender($ia)
 
     $itemDatas = array(
         'name'                   => $ia[1],
+        'basename'               => $ia[1],
         'fChecked'               => $fChecked,
         'mChecked'               => $mChecked,
         'naChecked'              => $naChecked,
@@ -4305,6 +4310,7 @@ function do_array_5point($ia)
                 'answerwidth'   => $answerwidth,
                 'sHeaders'   => $sHeaders,
                 'sRows'      => $sRows,
+                'basename' => $ia[1],
             ), true);
 
     //$answer .= $answer_t_content;
@@ -4468,6 +4474,7 @@ function do_array_10point($ia)
                         'sColumns'      => $sColumns,
                         'sHeaders'      => $sHeaders,
                         'sRows'         => $sRows,
+                        'basename' => $ia[1],
                     ),
                 true);
     return array($answer, $inputnames);
@@ -4581,6 +4588,7 @@ function do_array_yesnouncertain($ia)
                     'sHeaders'    => $sHeaders,
                     'sRows'       => (isset($sRows))?$sRows:'',
                     'anscount'    => $anscount,
+                    'basename' => $ia[1],
                 ), true);
 
     return array($answer, $inputnames);
@@ -4689,6 +4697,7 @@ function do_array_increasesamedecrease($ia)
         'sHeaders'   => $sHeaders,
         'sRows'      => $sRows,
         'anscount'   => $anscount,
+        'basename' => $ia[1],
     ), true);
 
     return array($answer, $inputnames);
@@ -4940,6 +4949,7 @@ function do_array($ia)
             'coreClass'  => $coreClass,
             'sHeaders'   => $sHeaders,
             'sColumns'   => $sColumns,
+            'basename' => $ia[1],
         ),  true);
     }
 
@@ -5067,6 +5077,7 @@ function do_array($ia)
         $answer = doRender('/survey/questions/arrays/array/dropdown/answer', array
         (
             'coreClass' => $coreClass,
+            'basename' => $ia[1],
             'sRows'      => $sRows,
             'answerwidth'=> $answerwidth,
             'columnswidth'=> $columnswidth,
@@ -5442,6 +5453,7 @@ function do_array_texts($ia)
                     'showGrandTotal'            => $showGrandTotal,
                     'q_table_id_HTML'           => $q_table_id_HTML,
                     'coreClass'                 => $coreClass,
+                    'basename' => $ia[1],
                     'extraclass'                => $extraclass,
                     'totals_class'              => $totals_class,
                     'showtotals'                => $showtotals,
@@ -5861,6 +5873,7 @@ function do_array_multiflexi($ia)
         $answer = doRender('/survey/questions/arrays/multiflexi/answer', array(
                             'answertypeclass'   => $answertypeclass,
                             'coreClass'         => $coreClass,
+                            'basename' => $ia[1],
                             'extraclass'        => $extraclass,
                             'answerwidth'       => $answerwidth,
                             'labelans'          => $labelans,
@@ -6014,6 +6027,7 @@ function do_arraycolumns($ia)
                 $inputnames[]=$myfname;
             }
             $aData['coreClass']=$coreClass;
+            $aData['basename']=$ia[1];
             // Render question
             $answer = doRender(
                 '/survey/questions/arrays/column/answer',
@@ -6138,6 +6152,7 @@ function do_array_dual($ia)
         {
             $aData = array();
             $aData['coreClass'] = $coreClass;
+            $aData['basename'] = $ia[1];
             $aData['answertypeclass'] = $answertypeclass;
 
             $columnswidth = 100 - $answerwidth;
@@ -6391,6 +6406,7 @@ function do_array_dual($ia)
         {
             $aData = array();
             $aData['coreClass'] = $coreClass;
+            $aData['basename'] = $ia[1];
 
             $answer = "";
 

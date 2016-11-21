@@ -10,7 +10,7 @@
  * @var $value                          $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$name]
  */
 ?>
-<ul class="<?php echo $coreClass;?> list-unstyled form-inline btn-group btn-group-justified" data-toggle="buttons" role="radio-group" aria-describedby="ls-question-text-<?php echo $name; ?>">
+<ul class="<?php echo $coreClass;?> list-unstyled form-inline btn-group btn-group-justified" data-toggle="buttons" role="radio-group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
     <!-- Yes -->
     <li id="javatbd<?php echo $name;?>Y" class="button-item form-group btn btn-primary <?php if($yChecked){ echo "active";}?>">
         <input

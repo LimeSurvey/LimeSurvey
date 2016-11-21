@@ -15,7 +15,7 @@
 <!-- Date, dropdown layout -->
 
 <!-- answer -->
-<div class="<?php echo $coreClass;?> form-group form-inline" role="group" aria-describedby="ls-question-text-<?php echo $name; ?>">
+<div class="<?php echo $coreClass;?> form-group form-inline" role="group" aria-labelledby="ls-question-text-<?php echo $name; ?>">
     <?php
         // rows/*.php
         echo $sRows;

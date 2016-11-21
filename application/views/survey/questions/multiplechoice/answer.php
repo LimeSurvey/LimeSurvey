@@ -13,7 +13,7 @@
 <!-- answer -->
 <?php /* What is the usage of this input ? */ ?>
 <input type="hidden" name="MULTI<?php echo $name; ?>" value="<?php echo $anscount; ?>" />
-<div class="<?php echo $coreClass;?> row" role="group" aria-describedby="ls-question-text-<?php echo $name; ?>">
+<div class="<?php echo $coreClass;?> row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
 <?php
     // rows/answer_row*.php
     echo $sRows;

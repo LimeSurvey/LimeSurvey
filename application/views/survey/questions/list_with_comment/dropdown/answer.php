@@ -20,7 +20,7 @@
  */
 ?>
 
-<div class="ls-answers row" role="group" aria-labelledby="ls-question-text-<?php echo $sgq; ?>">
+<div class="ls-answers row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
 
     <div class="answer-item dropdown-item col-sm-6 col-xs-12">
         <select

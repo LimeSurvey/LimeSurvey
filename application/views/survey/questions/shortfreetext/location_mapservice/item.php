@@ -22,7 +22,7 @@
     zoom['<?php echo $name;?>'] = <?php echo $location_mapzoom;?>;
 </script>
 
-<div class="<?php echo $coreClass; ?> <?php echo $extraclass;?>" row" role="group" aria-describedby="ls-question-text-<?php echo $name; ?>">
+<div class="<?php echo $coreClass; ?> <?php echo $extraclass;?>" row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
     <!-- Input Text Location -->
     <div class="col-sm-12" >
             <input

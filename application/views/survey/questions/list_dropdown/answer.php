@@ -23,7 +23,7 @@
             name="<?php echo $name; ?>"
             id="answer<?php echo $name; ?>"
             <?php  echo ($dropdownSize) ? "size=$dropdownSize" : "" ; ?>
-            aria-labelledby="ls-question-text-<?php echo $name; ?>"
+            aria-labelledby="ls-question-text-<?php echo $basename; ?>"
     >
         <?php
             // rows/option.php

@@ -24,7 +24,7 @@
 
 <!-- answer -->
 <div class="<?php echo $coreClass; ?>">
-    <ul class="list-unstyled ls-js-hidden-sr answers-list select-list form-horizontal">
+    <ul class="list-unstyled ls-js-hidden-sr answers-list select-list form-horizontal" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
         <?php
             // rows/answer_row.php
             echo  $sSelects;

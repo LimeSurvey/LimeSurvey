@@ -17,7 +17,7 @@
  */
 ?>
 
-<div class="<?php echo $coreClass; ?> <?php echo $extraclass; ?> row" role="group" aria-describedby="ls-question-text-<?php echo $name; ?>">
+<div class="<?php echo $coreClass; ?> <?php echo $extraclass; ?> row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
 
     <div class="geoname_search col-sm-12 " >
         <div class="input-group">

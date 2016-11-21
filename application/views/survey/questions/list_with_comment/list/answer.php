@@ -19,7 +19,7 @@
 <!-- List with comment, list style, -->
 
 <!-- answer -->
-<div class="<?php echo $coreClass; ?> row" role="group" aria-labelledby="ls-question-text-<?php echo $sgq; ?>">
+<div class="<?php echo $coreClass; ?> row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
     <div class="answers-list radio-list col-sm-6 col-xs-12">
         <ul class="list-unstyled" role="radio-group">
             <?php

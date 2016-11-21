@@ -37,7 +37,7 @@
             value="<?php echo $dispVal; ?>"
             <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
             <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
-            aria-labelledby="ls-question-text-<?php echo $name; ?>"
+            aria-labelledby="ls-question-text-<?php echo $basename; ?>"
         />
 
         <!-- Suffix -->

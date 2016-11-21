@@ -42,7 +42,7 @@
         <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
         data-number='1'
         data-integer='<?php echo $integeronly; ?>'
-        aria-labelledby="ls-question-text-<?php echo $name; ?>"
+        aria-labelledby="ls-question-text-<?php echo $basename; ?>"
         />
     <!-- Suffix -->
     <?php if ($suffix !== ''): ?>

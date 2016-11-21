@@ -35,7 +35,7 @@
                 rows="<?php echo $drows; ?>"
                 <?php echo ($inputsize ? 'cols="'.$inputsize.'"': '') ; ?>
                 <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
-                aria-labelledby="ls-question-text-<?php echo $name; ?>"
+                aria-labelledby="ls-question-text-<?php echo $basename; ?>"
             ><?php echo $dispVal; ?></textarea>
 
             <!-- Suffix -->

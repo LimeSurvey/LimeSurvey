@@ -15,7 +15,7 @@
 <!-- 5 point choice -->
 
 <!-- answer -->
-<ul class="<?php echo $coreClass;?> list-unstyled form-inline" role="radio-group" aria-describedby="ls-question-text-<?php echo $name; ?>">
+<ul class="<?php echo $coreClass;?> list-unstyled form-inline" role="radio-group" aria-labelledby="ls-question-text-<?php echo $name; ?>">
     <?php
         // item_row.php
         echo $sRows;
