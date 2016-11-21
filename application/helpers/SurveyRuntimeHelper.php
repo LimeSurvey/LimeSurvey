@@ -1032,6 +1032,9 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * Display the first page if needed
+     */
     private function displayFirstPageIfNeeded()
     {
         // retrieve datas from local variable
