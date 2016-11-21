@@ -803,6 +803,10 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * If a step is requested, but the survey id in the session is different from the requested one
+     * It reload the needed infos for the requested survey and jump to the requested step. 
+     */
     private function initDirtyStep()
     {
         // retrieve datas from local variable
