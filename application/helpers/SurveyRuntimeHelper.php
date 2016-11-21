@@ -907,17 +907,20 @@ class SurveyRuntimeHelper {
         }
     }
 
+    /**
+     * Set the moveResult variable 
+     */
     private function setMoveResult()
     {
 
         // retrieve datas from local variable
-        $thissurvey    = $this->thissurvey;
-        $surveyid      = $this->surveyid;
-        $surveyMode    = $this->surveyMode;
-        $surveyOptions = $this->surveyOptions;
-        $LEMdebugLevel = $this->LEMdebugLevel;
-        $LEMsessid     = $this->LEMsessid;
-        $move          = $this->move;
+        $thissurvey             = $this->thissurvey;
+        $surveyid               = $this->surveyid;
+        $surveyMode             = $this->surveyMode;
+        $surveyOptions          = $this->surveyOptions;
+        $LEMdebugLevel          = $this->LEMdebugLevel;
+        $LEMsessid              = $this->LEMsessid;
+        $move                   = $this->move;
         $LEMskipReprocessing    = $this->LEMskipReprocessing;
 
         if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
