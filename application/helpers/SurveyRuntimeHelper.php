@@ -1051,6 +1051,9 @@ class SurveyRuntimeHelper {
         }
     }
 
+    /**
+     * Perform save all if user asked for it
+     */
     private function saveAllIfNeeded()
     {
         // retrieve datas from local variable
