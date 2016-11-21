@@ -20,7 +20,14 @@ function setSeed($surveyid)
     else
     {
         $seed = mt_rand();
-        $_SESSION['survey_' . $surveyid]['startingValues']['seed'] = $seed;
+
+        // Only set seed if corresponding database column exists.
+        // This mismatch can happen if survey is activated before update to
+        // new version that uses seed.
+        $table = \Yii::app()->db->schema->getTable('survey_' . $surveyid);
+        if (isset($table->columns['seed'])) {
+            $_SESSION['survey_' . $surveyid]['startingValues']['seed'] = $seed;
+        }
     }
     MersenneTwister::init($seed);
 }

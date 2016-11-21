@@ -5339,7 +5339,10 @@
                         $sdata['refurl'] = getenv("HTTP_REFERER");
                     }
                 }
-                $sdata['seed'] = $_SESSION[$this->sessid]['startingValues']['seed'];// isset ?
+
+                if (isset($_SESSION[$this->sessid]['startingValues']['seed'])) {
+                    $sdata['seed'] = $_SESSION[$this->sessid]['startingValues']['seed'];
+                }
 
                 $sdata = array_filter($sdata);
                 SurveyDynamic::sid($this->sid);
