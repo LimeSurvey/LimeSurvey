@@ -510,7 +510,7 @@ class Participant extends LSActiveRecord
         // Superadmins can see all users.
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
         if (!$isSuperAdmin) {
-            $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' OR t.owner_uid = shares.share_uid OR shares.share_uid = -1');
+            $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' OR ' . Yii::app()->user->id . ' = shares.share_uid OR shares.share_uid = -1');
         }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
