@@ -120,8 +120,10 @@
                     <div class="alert alert-info" role="alert" id="view-stats-alert-info">
                         <?php eT('Please select filters and click on the "View statistics" button to generate the statistics.');?>
                     </div>
-
-                    <div id="statsContainerLoading" >
+                <?php else:?>
+                    <?php echo $output; ?>
+                <?php endif;?>
+                    <div id="statsContainerLoading" style="display: <?php echo ($output=="") ? 'block' : 'none' ?>;">
                         <p><?php eT('Please wait, loading data...');?></p>
                         <div class="preloader loading">
                             <span class="slice"></span>
@@ -132,10 +134,6 @@
                             <span class="slice"></span>
                         </div>
                     </div>
-
-                <?php else:?>
-                    <?php echo $output; ?>
-                <?php endif;?>
             </div>
         </div>
     </div>

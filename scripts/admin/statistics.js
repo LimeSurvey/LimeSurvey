@@ -740,7 +740,7 @@ var elementHandlers = {
 }
 
 $(document).ready(function(){
-    
+    $('#statsContainerLoading').clone().appendTo('body');
     $('body').addClass('onStatistics');
 
 
@@ -759,19 +759,50 @@ $(document).ready(function(){
     });
 
     $('body').on('click','#action_js_export_to_pdf', function(){
-        var doc = new jsPDF();
-        var sizes = {};
-        var j = 0;
-        console.log("Getting the pdf");
-        $('#statisticsview').find('.statisticstable').each(function(i, table){
-            sizes[i] = {h: $(table).height(),w: $(table).width()}
-            html2canvas(table).then(function(canvas) {
-                doc.addPage();
-                var imgData = canvas.toDataURL("image/png");
-                doc.addImage(imgData, 'PNG', sizes[j].w, sizes[j].h, 210, 297);
-                var dataurl = doc.output('dataurlnewwindow');
-                j++;
+        var createPDF = new Worker(jspdfworker+"/createpdf_worker.js");
+        var overlay = $('<div></div>')
+            .attr('id','overlay')
+            .css({
+                position: 'fixed', 
+                width: "100%", 
+                height:"100%", 
+                top:0,
+                "z-index" : 5000,
+                "pointer-events": 'none',
+                left:0,
+                right:0,
+                bottom:0, 
+                "background-color": "hsla(0,0%,65%,0.6)"
             });
+        $('#statsContainerLoading').clone().css({display: 'block',position: 'fixed', top:"25%",left:0, width: "100%"}).appendTo(overlay);
+        overlay.appendTo('body');
+
+        createPDF.addEventListener('message', function(e){
+            console.log(e);
+            var data = e.data;
+            if(data.success == true){
+                if(data.type == 'pdfdata'){
+                } else if(data.type == 'progress') {
+                    console.log(data.msg+"% of tables added");
+                } else if(data.type == 'pdfdata') {
+                    return document.location.href = data.msg;
+                } else {
+                    console.log(data.msg);
+                }
+            }
         });
+
+        $('#statisticsview').find('.statisticstable').each(function(i, table){
+            console.log("Selecting the table");
+            $(window).scrollTop($(table).offset().top);
+            var sizes = {h: $(table).height(), w: $(table).width()};
+            createPDF.postMessage({method: 'sendHtml',  html: $(table).html(), sizes : sizes});
+        });
+        createPDF.postMessage({method: 'parseHtml',  key: "somekeythatisnotusedbynow"});
+
+        setInterval(function(){
+            createPDF.postMessage({method: 'checkProgress',  key: "somekeythatisnotusedbynow"});
+        }, 1000);
+
     });
 });

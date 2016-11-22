@@ -324,8 +324,8 @@ return array(
         'basePath' => 'third_party.jspdf',
         'js' => array(
             'html2canvas.js',
-            'jspdf.debug.js'
-            // 'jspdf.min.js'
+            // 'jspdf.debug.js'
+            'jspdf.min.js'
         ),
         'depends' => array(
             'es6promise',
