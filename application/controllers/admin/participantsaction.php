@@ -13,26 +13,25 @@
 */
 
 /**
+ * @param array $a
+ * @param string $subkey
  * @param string $order
+ * @return array
  */
 function subval_sort($a, $subkey, $order)
 {
     $b = array();
     $c = array();
-    foreach ($a as $k => $v)
-    {
+    foreach ($a as $k => $v) {
         $b[$k] = strtolower($v[$subkey]);
     }
-    if ($order == "asc")
-    {
+    if ($order == "asc") {
         asort($b, SORT_REGULAR);
     }
-    else
-    {
+    else {
         arsort($b, SORT_REGULAR);
     }
-    foreach ($b as $key => $val)
-    {
+    foreach ($b as $key => $val) {
         $c[] = $a[$key];
     }
     return $c;
