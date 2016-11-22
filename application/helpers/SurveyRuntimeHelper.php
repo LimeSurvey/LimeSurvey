@@ -17,8 +17,8 @@ class SurveyRuntimeHelper {
     /**
      * In the 2.x version of LimeSurvey and priors, the main run method  was using a variable called redata fed via get_defined_vars. It was making hard to move piece of code to subfuntions.
      * Those private variables are just a step to make easier refactorisation of this file, to have a global overview about what is set in this helper, and to move easely piece of code to new methods:
-     * The methods get/set the private variables, and defore calling get_defined_vars, variables are created from thos private variables.
-     * It's just a first step. get_defined_vars should be removed, and most of the private here should be moved to the correct object:
+     * The methods get/set the private variables, and defore calling get_defined_vars, variables are created from those private variables.
+     * It's just a first step. get_defined_vars should be removed, and most of the private variables here should be moved to the correct object:
      * i.e: all the private variable concerning the survey should be moved to the survey model and replaced by a $oSurvey
      */
 
@@ -77,7 +77,7 @@ class SurveyRuntimeHelper {
     public function run($surveyid,$args)
     {
         global $errormsg;
-        $this->setVarFromArgs($args);
+        $this->setVarFromArgs($args);                                           // Set the private variable from $args
         extract($args);
 
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
@@ -105,35 +105,12 @@ class SurveyRuntimeHelper {
             $_SESSION[$LEMsessid]['prevstep'] = 2;
             $_SESSION[$LEMsessid]['maxstep'] = 0;
         }else{
-            $this->runPage();
+
+            $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
 
             // For redata
-            // TODO: check what is really used
-            $LEMdebugLevel          = $this->LEMdebugLevel          ;
-            $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
-            $thissurvey             = $this->thissurvey             ;
-            $surveyid               = $this->surveyid               ;
-            $show_empty_group       = $this->show_empty_group       ;
-            $surveyMode             = $this->surveyMode             ;
-            $surveyOptions          = $this->surveyOptions          ;
-            $totalquestions         = $this->totalquestions         ;
-            $bTokenAnswerPersitance = $this->bTokenAnswerPersitance ;
-            $assessments            = $this->assessments            ;
-            $moveResult             = $this->moveResult             ;
-            $move                   = $this->move                   ;
-            $invalidLastPage        = $this->invalidLastPage        ;
-            $backpopup              = $this->backpopup              ;
-            $popup                  = $this->popup                  ;
-            $oResponse              = $this->oResponse              ;
-            $unansweredSQList       = $this->unansweredSQList       ;
-            $notanswered            = $this->notanswered            ;
-            $invalidSQList          = $this->invalidSQList          ;
-            $filenotvalidated       = $this->filenotvalidated       ;
-            $completed              = $this->completed              ;
-            $content                = $this->content                ;
-            $blocks                 = $this->blocks                 ;
-            $notvalidated           = $this->notvalidated           ;
-            $LEMsessid = $this->LEMsessid;
+            $aPrivateVariables = $this->getArgs();
+            extract($aPrivateVariables);
 
         }
 
@@ -624,34 +601,6 @@ class SurveyRuntimeHelper {
      */
     private function runPage()
     {
-
-        // Todo: check which ones are really needed
-        $LEMdebugLevel          = $this->LEMdebugLevel          ;
-        $LEMskipReprocessing    = $this->LEMskipReprocessing    ;
-        $thissurvey             = $this->thissurvey             ;
-        $surveyid               = $this->surveyid               ;
-        $show_empty_group       = $this->show_empty_group       ;
-        $surveyMode             = $this->surveyMode             ;
-        $surveyOptions          = $this->surveyOptions          ;
-        $totalquestions         = $this->totalquestions         ;
-        $bTokenAnswerPersitance = $this->bTokenAnswerPersitance ;
-        $assessments            = $this->assessments            ;
-        $moveResult             = $this->moveResult             ;
-        $move                   = $this->move                   ;
-        $invalidLastPage        = $this->invalidLastPage        ;
-        $backpopup              = $this->backpopup              ;
-        $popup                  = $this->popup                  ;
-        $oResponse              = $this->oResponse              ;
-        $unansweredSQList       = $this->unansweredSQList       ;
-        $notanswered            = $this->notanswered            ;
-        $invalidSQList          = $this->invalidSQList          ;
-        $filenotvalidated       = $this->filenotvalidated       ;
-        $completed              = $this->completed              ;
-        $content                = $this->content                ;
-        $blocks                 = $this->blocks                 ;
-        $notvalidated           = $this->notvalidated           ;
-        $LEMsessid              = $this->LEMsessid              ;
-
         $this->initFirstStep();                                                 // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav();                                          // Check if user used browser navigation, or relaoded page
@@ -668,7 +617,6 @@ class SurveyRuntimeHelper {
         // TMSW - Move this into LEM::NavigateForwards?
         $filenotvalidated = $this->filenotvalidated = checkUploadedFileValidity($surveyid, $this->move);
 
-
         //SEE IF THIS GROUP SHOULD DISPLAY
         if ($_SESSION[$LEMsessid]['step'] == 0)
             $show_empty_group = $this->show_empty_group = true;
@@ -682,9 +630,45 @@ class SurveyRuntimeHelper {
 
         //SUBMIT ###############################################################################
         $this->moveSubmitIfNeeded($redata);
-
     }
 
+
+
+    /**
+     * Return an array containing all the private variable, for easy extraction.
+     * It makes easier to move piece of code to methods dispite the use of $redata = compact(array_keys(get_defined_vars()));
+     */
+    private function getArgs()
+    {
+        $aPrivateVariables = array(
+            'LEMdebugLevel'          => $this->LEMdebugLevel          ,
+            'LEMskipReprocessing'    => $this->LEMskipReprocessing    ,
+            'thissurvey'             => $this->thissurvey             ,
+            'surveyid '              => $this->surveyid               ,
+            'show_empty_group'       => $this->show_empty_group       ,
+            'surveyMode'             => $this->surveyMode             ,
+            'surveyOptions'          => $this->surveyOptions          ,
+            'totalquestions'         => $this->totalquestions         ,
+            'bTokenAnswerPersitance' => $this->bTokenAnswerPersitance ,
+            'assessments'            => $this->assessments            ,
+            'moveResult'             => $this->moveResult             ,
+            'move'                   => $this->move                   ,
+            'invalidLastPage'        => $this->invalidLastPage        ,
+            'backpopup'              => $this->backpopup              ,
+            'popup'                  => $this->popup                  ,
+            'oResponse'              => $this->oResponse              ,
+            'unansweredSQList'       => $this->unansweredSQList       ,
+            'notanswered'            => $this->notanswered            ,
+            'invalidSQList'          => $this->invalidSQList          ,
+            'filenotvalidated'       => $this->filenotvalidated       ,
+            'completed'              => $this->completed              ,
+            'content'                => $this->content                ,
+            'blocks'                 => $this->blocks                 ,
+            'notvalidated'           => $this->notvalidated           ,
+            'LEMsessid'              => $this->LEMsessid              ,
+        );
+        return $aPrivateVariables;
+    }
 
     /**
      * Retreive the survey format (mode?)
