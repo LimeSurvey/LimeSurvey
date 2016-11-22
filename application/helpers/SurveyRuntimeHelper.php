@@ -47,6 +47,7 @@ class SurveyRuntimeHelper {
     private $moveResult             = null;                                     // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
     private $move                   = null;                                     // The move requested by user. Set by frontend_helper::getMove() from the POST request.
     private $invalidLastPage;                                                   // Just a variable used to check if user submitted a survey while it's not finished. Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
+    private $stepInfo;
 
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
     // They could probably be merged.
@@ -122,12 +123,11 @@ class SurveyRuntimeHelper {
         if ($surveyExists < 1){
             $this->renderNoMatchingSurvey($sTemplateViewPath, $redata);
         }
-        
+
         // createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
 
         //GET GROUP DETAILS
         if ($surveyMode == 'group' && $previewgrp){
-            //            setcookie("limesurvey_timers", "0"); //@todo fix - sometimes results in headers already sent error
             $_gid = sanitize_int($param['gid']);
 
             LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $LEMdebugLevel);
@@ -147,7 +147,7 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
             }
 
-            $stepInfo         = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+            $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
             $gid              = $stepInfo['gid'];
             $groupname        = $stepInfo['gname'];
             $groupdescription = $stepInfo['gtext'];
@@ -165,9 +165,9 @@ class SurveyRuntimeHelper {
                     LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
                     $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                     $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                    $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                    $stepInfo   =  $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                 } else {
-                    $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                    $stepInfo = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                 }
 
                 $gid = $stepInfo['gid'];
@@ -646,6 +646,7 @@ class SurveyRuntimeHelper {
             'assessments'            => $this->assessments            ,
             'moveResult'             => $this->moveResult             ,
             'move'                   => $this->move                   ,
+            'stepInfo'               => $this->stepInfo               ,
             'invalidLastPage'        => $this->invalidLastPage        ,
             'backpopup'              => $this->backpopup              ,
             'popup'                  => $this->popup                  ,
@@ -1015,7 +1016,7 @@ class SurveyRuntimeHelper {
                 $move = $this->move = 'movesubmit';
             }else{
                 $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1
-                $stepInfo                     = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                $stepInfo                     = $this->stepInfo =  LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
             }
 
             if ($move == "movesubmit" && $moveResult['finished'] == false){
