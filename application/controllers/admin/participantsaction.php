@@ -555,6 +555,9 @@ class participantsaction extends Survey_Common_Action
         }
 
         $extraAttributes = Yii::app()->request->getPost('Attributes');
+        if (is_null($extraAttributes)) {
+            $extraAttributes = array();
+        }
 
         switch ($operation) {
             case 'edit':
@@ -577,7 +580,7 @@ class participantsaction extends Survey_Common_Action
      * @param array $extraAttributes
      * @return void
      */
-    public function updateParticipant($aData, $extraAttributes)
+    public function updateParticipant($aData, array $extraAttributes = array())
     {
         $participant = Participant::model()->findByPk($aData['participant_id']);
 
@@ -598,7 +601,7 @@ class participantsaction extends Survey_Common_Action
         $participant->attributes = $aData;
         $success['participant'] = $participant->save();
 
-        foreach( $extraAttributes as $htmlName => $attributeValue ) {
+        foreach($extraAttributes as $htmlName => $attributeValue ) {
             list(,$attribute_id) = explode('_',$htmlName);
             $data = array(
                 'attribute_id'=>$attribute_id, 
@@ -617,7 +620,7 @@ class participantsaction extends Survey_Common_Action
      * @param array $extraAttributes
      * @return string json
      */
-    public function addParticipant($aData, $extraAttributes)
+    public function addParticipant($aData, array $extraAttributes = array())
     {
         if (Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
             $uuid = Participant::gen_uuid();
