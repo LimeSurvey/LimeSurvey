@@ -1517,7 +1517,7 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTIONHELP']=$lemQuestionInfo['info']['help'];// User help
         if(flattenText($aReplacement['QUESTIONHELP'], true,true) != '')
         {
-            $aReplacement['QUESTIONHELP']= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/questionhelp', array('questionHelp'=>$aReplacement['QUESTIONHELP']), true);;
+            $aReplacement['QUESTIONHELP']= Yii::app()->getController()->renderPartial('//survey/questions/question_help/questionhelp', array('questionHelp'=>$aReplacement['QUESTIONHELP']), true);;
         }
         // Core value :the classes
         $aQuestionClass=array(

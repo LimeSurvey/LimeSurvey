@@ -6393,7 +6393,7 @@
             if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
             {
                 //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='glyphicon glyphicon-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
-                $mandatoryTip = Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
+                $mandatoryTip = Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                         'sMandatoryText'=>$LEM->gT('This question is mandatory'),
                 ), true);
                 switch ($qInfo['type'])
@@ -6410,7 +6410,7 @@
                         if (!($qInfo['type'] == '!' || $qInfo['type'] == 'L'))
                         {
                             $sMandatoryText = $LEM->gT('Please check at least one item.');
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
+                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
                         }
@@ -6425,7 +6425,7 @@
                             }
                             //$mandatoryTip .= "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                             $sMandatoryText = "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
+                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
 
@@ -6451,7 +6451,7 @@
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
                         $sMandatoryText = $LEM->gT('Please complete all parts').'.';
-                        $mandatoryTip .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
+                        $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
                         break;
@@ -6483,7 +6483,7 @@
                                 }
                             }
                             $sMandatoryText = $LEM->gT('Please check at least one box per row').'.';
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
+                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
 
@@ -6495,7 +6495,7 @@
                                 $qmandViolation = true; // TODO - what about 'other'?
                             }
                             $sMandatoryText = $LEM->gT('Please complete all parts').'.';
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
+                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
                         }
@@ -6506,7 +6506,7 @@
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
                         $sMandatoryText = $LEM->gT('Please rank all items').'.';
-                        $mandatoryTip .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
+                        $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
                         break;
@@ -6599,7 +6599,7 @@
                                 'vclass'    =>$vclass,
                                 'vtip'      =>$vtip,
                             );
-                            $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/em-tip', $tipsDatas, true);
+                            $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/em-tip', $tipsDatas, true);
                         }
                     }
 
@@ -6628,7 +6628,7 @@
                 if($validityString && $qrel && !$qhidden)
                 {
                     /* Add the string to be showned , no js error or another class ? */
-                    $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/error-tip', array(
+                    $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/error-tip', array(
                         'qid'=>$qid,
                         'coreId'    =>"vmsg_{$qid}_dberror",
                         'vclass'=>'dberror',

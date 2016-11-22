@@ -1125,13 +1125,13 @@ class templates extends Survey_Common_Action
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                     'QUESTION_CODE' => 'Q1 ',
-                    'QUESTIONHELP' => $this->getController()->renderPartial('/survey/system/questionhelp/questionhelp', array('classes' => '','questionHelp'=>gT("This is some helpful text.")), true),
-                    'QUESTION_MANDATORY' => $this->getController()->renderPartial('/survey/question_help/asterisk', array(), true),
+                    'QUESTIONHELP' => $this->getController()->renderPartial('/survey/questions/question_help/questionhelp', array('classes' => '','questionHelp'=>gT("This is some helpful text.")), true),
+                    'QUESTION_MANDATORY' => $this->getController()->renderPartial('/survey/questions/question_help/asterisk', array(), true),
                     'QUESTION_MAN_CLASS' => ' mandatory',
                     'QUESTION_ESSENTIALS' => 'id="question1"',
                     'QUESTION_CLASS' => 'list-radio',
                     'QUESTION_NUMBER' => '1',
-                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/system/questionhelp/em-tip',array(
+                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/questions/question_help/em-tip',array(
                         'coreId'=>"vmsg_4496_num_answers",
                         'coreClass'=>"em-tip ",// Unsure for this one
                         'vtip'=>gT('Hint when response is valid')
@@ -1148,7 +1148,7 @@ class templates extends Survey_Common_Action
                     'QUESTION_ESSENTIALS' => 'id="question2"',
                     'QUESTION_CLASS' => 'text-long input-error',
                     'QUESTION_NUMBER' => '2',
-                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/system/questionhelp/em-tip',array(
+                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('//survey/questions/question_help/em-tip',array(
                         'coreId'=>"vmsg_4496_num_answers",
                         'coreClass'=>"em-tip text-danger",// Unsure for this one, text-danger is set in JS only
                         'vtip'=>gT('Hint when response is not valid')

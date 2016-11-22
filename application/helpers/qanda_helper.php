@@ -158,7 +158,7 @@ function retrieveAnswers($ia)
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]]))
                     {
                         $message = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]];
-                        $question_text['help'] = doRender('/survey/question_help/error', array('message'=>$message, 'classes'=>''), true);
+                        $question_text['help'] = doRender('/survey/questions/question_help/error', array('message'=>$message, 'classes'=>''), true);
                     }
                 }
             break;
@@ -168,7 +168,7 @@ function retrieveAnswers($ia)
             if ($aQuestionAttributes['hide_tip']==0)
             {
                 $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
+                $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
             }
             break;
 
@@ -177,7 +177,7 @@ function retrieveAnswers($ia)
             if ($aQuestionAttributes['hide_tip']==0)
             {
                 $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
+                $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
             }
             break;
 
@@ -186,7 +186,7 @@ function retrieveAnswers($ia)
             if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
                 $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
+                $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
             }
             break;
 
@@ -203,7 +203,7 @@ function retrieveAnswers($ia)
                 if (!($maxansw || $minansw))
                 {
                     $question_text['help'] = $message = gT('Check any that apply');
-                    $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
+                    $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
                 }
             }
             break;
@@ -213,7 +213,7 @@ function retrieveAnswers($ia)
             if (count($values[1]) > 1)
             {
                 $question_text['help'] = $message = gT('Choose your language');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
+                $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
             }
             break;
 
@@ -226,7 +226,7 @@ function retrieveAnswers($ia)
                 if (!($maxansw || $minansw))
                 {
                     $question_text['help'] = $message = gT('Check any that apply');
-                    $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
+                    $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
                 }
             }
             break;
@@ -319,10 +319,10 @@ function retrieveAnswers($ia)
     if ($ia[6] == 'Y')
     {
 
-        //$qtitle .= doRender('/survey/question_help/asterisk', array(), true);
+        //$qtitle .= doRender('/survey/questions/question_help/asterisk', array(), true);
         //$qtitle .= $qtitle;
         //$question_text['mandatory'] = gT('*');
-        $question_text['mandatory'] = doRender('/survey/question_help/asterisk', array(), true);
+        $question_text['mandatory'] = doRender('/survey/questions/question_help/asterisk', array(), true);
     }
 
     //If this question is mandatory but wasn't answered in the last page
@@ -439,7 +439,7 @@ function validation_message($ia,$show)
     $message    = $qinfo['validTip'];
     if($message != "")
     {
-         $tip = doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>$class, 'id'=>$id ), true);
+         $tip = doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>$class, 'id'=>$id ), true);
     }
     else
     {
@@ -463,7 +463,7 @@ function file_validation_message($ia)
             if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1))
             {
                 $message = gT($filenotvalidated[$k]);
-                $qtitle .=  doRender('/survey/question_help/error', array('message'=>$message, 'classes'=>''), true);
+                $qtitle .=  doRender('/survey/questions/question_help/error', array('message'=>$message, 'classes'=>''), true);
             }
         }
     }
