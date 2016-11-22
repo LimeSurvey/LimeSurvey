@@ -243,25 +243,31 @@ class tokens extends Survey_Common_Action
                 $survey->bouncetime = $datelastbounce;
                 $survey->save();
 
-                if ($bouncetotal > 0)
-                {
+                if ($bouncetotal > 0){
                     printf(gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
-                }
-                else
-                {
+                    eT("NOTE: If some emails has been rejected as spam, or answered automatically, maybe they will not be marked as bounce.");
+                    eT("You can now close this modal box.");
+                }else{
                     printf(gT("%s messages were scanned, none were marked as bounce by the system."), $checktotal);
+                    eT("NOTE: If some emails has been rejected as spam, or answered automatically, maybe they will not be marked as bounce.");
+                    eT("You can now close this modal box.");
                 }
-            }
-            else
-            {
-                eT("Please check your settings");
+            }else{
+                $sSettingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/'.$iSurveyId);
+                eT("The attempt to open the inbox of the bounce email address failed.");
+                echo "<br><strong>";
+                printf(gT("Please %s check your settings %s."), '<a href="'.$sSettingsUrl.'" titlle="bounce settings" >', '</a>');
+                echo "</strong><br> <br/>";
+                eT("Error message returned by IMAP:");
+                echo "<br>";
                 $aErrors = @imap_errors();
 
                 foreach ($aErrors as $sError)
                 {
-                    echo '<br/>'.$sError;
+                    echo $sError.'<br/>';
                 }
-
+                echo "<br><br/>";
+                eT("You can now close this modal box.");
             }
         }
         else
@@ -404,7 +410,7 @@ class tokens extends Survey_Common_Action
 
     /**
     * Called by  if a token is saved after editing
-    * @todo Check if method is still in use 
+    * @todo Check if method is still in use
     * @param mixed $iSurveyId The Survey ID
     */
     public function editToken($iSurveyId)
