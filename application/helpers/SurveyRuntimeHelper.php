@@ -621,14 +621,11 @@ class SurveyRuntimeHelper {
         if ($_SESSION[$this->LEMsessid]['step'] == 0)
             $show_empty_group = $this->show_empty_group = true;
 
-        $move       = $this->move;
-        $moveResult = $this->moveResult;
-
+        $move           = $this->move;
+        $moveResult     = $this->moveResult;
         $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->surveyid]['totalquestions']; // Proabably for redata
+        $redata         = compact(array_keys(get_defined_vars()));                                        // must replace this by something better
 
-        $redata = compact(array_keys(get_defined_vars()));                  // must replace this by something better
-
-        //SUBMIT ###############################################################################
         $this->moveSubmitIfNeeded($redata);
     }
 
@@ -637,6 +634,8 @@ class SurveyRuntimeHelper {
     /**
      * Return an array containing all the private variable, for easy extraction.
      * It makes easier to move piece of code to methods dispite the use of $redata = compact(array_keys(get_defined_vars()));
+     *
+     * @return array
      */
     private function getArgs()
     {
