@@ -5652,9 +5652,6 @@ function getHeader($meta = false)
     $header.= "\t<head>\n";
     if ($meta)
         $header .= $meta;
-    App()->clientScript->registerScript("nojsReplace","(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);",CClientScript::POS_HEAD);
-
-
     return $header;
 }
 

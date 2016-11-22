@@ -14,6 +14,7 @@ return array(
             'survey.css',
         ),
         'js'=>array(
+            'js.js',
             'survey.js',
         ),
         'depends' => array(

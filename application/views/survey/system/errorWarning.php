@@ -1,17 +1,17 @@
 <?php
 /**
  * $aErrors string[]
- *
+ * $class : extraclass (optionnal ? )(@see ??: http://twig.sensiolabs.org/doc/templates.html#other-operators)
  */
 ?>
 <?php if(count($aErrors) > 1) : ?>
-<ul class='text-danger list-unstyled' role='alert'>
+<ul class='<?php echo isset($class) ? $class: "" ?> text-danger list-unstyled' role='alert'>
     <?php foreach($aErrors as $key=>$error) : ?>
     <li><?php echo $error; ?></li>
     <?php endforeach; ?>
 </ul>
 <?php else: ?>
-<p class='text-danger' role='alert'>
+<p class='<?php echo isset($class) ? $class: "" ?> text-danger' role='alert'>
     <?php echo reset($aErrors); ?>
 </p>
 <?php endif; ?>

@@ -103,6 +103,8 @@
             and add this line in it : 'allow_templates_to_overwrite_views'=>1
         -->
         <overwrite_question_views>false</overwrite_question_views>
+        <!-- Path of the views files (can be different than pstpl -->
+        <viewdirectory>views</viewdirectory>
 
         <!-- Asset manager will copy the whole template directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
         <filesdirectory>files</filesdirectory>
@@ -110,7 +112,8 @@
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
-            <package>limesurvey-public</package><!-- LimeSurvey can be broken without this file : it's your own decision to remove it -->
+            <!-- LimeSurvey public part can be broken without this file : it's your own decision to remove it -->
+            <package>limesurvey-public</package>
         </packages>
     </engine>
 </config>
