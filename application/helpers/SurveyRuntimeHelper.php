@@ -618,7 +618,7 @@ class SurveyRuntimeHelper {
         $filenotvalidated = $this->filenotvalidated = checkUploadedFileValidity($this->surveyid, $this->move);
 
         //SEE IF THIS GROUP SHOULD DISPLAY
-        if ($_SESSION[$LEMsessid]['step'] == 0)
+        if ($_SESSION[$this->LEMsessid]['step'] == 0)
             $show_empty_group = $this->show_empty_group = true;
 
         $move       = $this->move;
