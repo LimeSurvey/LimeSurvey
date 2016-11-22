@@ -4228,13 +4228,13 @@ function do_array_5point($ia)
         $sColumns  .= doRender('/survey/questions/answer/arrays/5point/columns/col', array('cellwidth'=>$answerwidth), true);
     }
 
-    $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-information', array(
+    $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_information', array(
         'class'=>'',
         'content'=>'',
     ), true);
     for ($xc=1; $xc<=5; $xc++)
     {
-        $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-header', array(
+        $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class'=>'answer-text',
             'content'=>$xc,
         ), true);
@@ -4243,7 +4243,7 @@ function do_array_5point($ia)
     // Header for suffix
     if ($right_exists)
     {
-        $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-information', array(
+        $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_information', array(
             'class'=>'answertextright',
             'content'=>'',
         ), true);
@@ -4251,7 +4251,7 @@ function do_array_5point($ia)
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-header', array(
+        $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class'=>'answer-text noanswer-text',
             'content'=>gT('No answer'),
         ), true);
@@ -4421,13 +4421,13 @@ function do_array_10point($ia)
     }
 
     $sHeaders = '';
-    $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-information', array(
+        $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_information', array(
         'class'=>'',
         'content'=>'',
     ), true);
     for ($xc=1; $xc<=10; $xc++)
     {
-        $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-header', array(
+        $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
             'class'=>'answer-text',
             'content'=>$xc,
         ), true);
@@ -4435,7 +4435,7 @@ function do_array_10point($ia)
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-header', array(
+        $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
             'class'=>'answer-text noanswer-text',
             'content'=>gT('No answer'),
         ), true);
@@ -4840,14 +4840,14 @@ function do_array($ia)
 
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $sHeaders = doRender('/survey/questions/answer/global/table/cell/head-information', array(
+        $sHeaders = doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_information', array(
             'class'   => '',
             'content' => '',
         ),  true);
 
         foreach ($labelans as $ld)
         {
-            $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-header', array(
+            $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
                 'class'   => 'answer-text',
                 'content' => $ld,
             ),  true);
@@ -4855,7 +4855,7 @@ function do_array($ia)
 
         if ($right_exists)
         {
-            $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-information', array(
+            $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_information', array(
                 'class'     => '',
                 'content'   => '',
             ),  true);
@@ -4863,7 +4863,7 @@ function do_array($ia)
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
         {
-            $sHeaders .= doRender('/survey/questions/answer/global/table/cell/head-header', array(
+            $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
                 'class'   => 'answer-text noanswer-text',
                 'content' => gT('No answer'),
             ),  true);
