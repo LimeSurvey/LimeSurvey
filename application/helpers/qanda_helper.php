@@ -593,13 +593,13 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     $time_limit_warning_message=trim($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 
     //Render timer
-    $timer_html =  doRender('/survey/question_timer/timer', array('iQid'=>$ia[0], 'sWarnId'=>''), true);
+    $timer_html =  doRender('/survey/questions/question_timer/timer', array('iQid'=>$ia[0], 'sWarnId'=>''), true);
     $time_limit_warning_message=str_replace("{TIME}", $timer_html, $time_limit_warning_message);
     $time_limit_warning_display_time=trim($aQuestionAttributes['time_limit_warning_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_display_time']+1 : 0;
     $time_limit_warning_2_message=trim($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 
     //Render timer 2
-    $timer_html =  doRender('/survey/question_timer/timer', array('iQid'=>$ia[0], 'sWarnId'=>'_Warning_2'), true);
+    $timer_html =  doRender('/survey/questions/question_timer/timer', array('iQid'=>$ia[0], 'sWarnId'=>'_Warning_2'), true);
     $time_limit_warning_2_message=str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
     $time_limit_warning_2_display_time=trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time']+1 : 0;
     $time_limit_message_style=trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "";
@@ -617,7 +617,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
         $time_limit=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname];
     }
 
-    $output =  doRender('/survey/question_timer/timer_header', array('timersessionname'=>$timersessionname,'time_limit'=>$time_limit), true);
+    $output =  doRender('/survey/questions/question_timer/timer_header', array('timersessionname'=>$timersessionname,'time_limit'=>$time_limit), true);
 
     if ($thissurvey['timercount'] < 2)
     {
@@ -648,7 +648,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
             $iAction = '3';
         }
 
-        $output .=  doRender('/survey/question_timer/timer_javascript', array(
+        $output .=  doRender('/survey/questions/question_timer/timer_javascript', array(
             'timersessionname'=>$timersessionname,
             'time_limit'=>$time_limit,
             'iAction'=>$iAction,
@@ -661,7 +661,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     }
 
     $output .=  doRender(
-                    '/survey/question_timer/timer_content',
+                    '/survey/questions/question_timer/timer_content',
                     array(
                             'iQid'=>$ia[0],
                             'time_limit_message_style'=>$time_limit_message_style,
@@ -680,7 +680,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
                 );
 
     $output .=  doRender(
-                    '/survey/question_timer/timer_footer',
+                    '/survey/questions/question_timer/timer_footer',
                     array(
                             'iQid'=>$ia[0],
                             'time_limit'=>$time_limit,
