@@ -25,7 +25,7 @@
 <!-- Multi Text -->
 
 <!-- answer -->
-<table <?php echo $q_table_id_HTML;?> class="<?php echo $coreClass;?> <?php echo $extraclass;?> table table-bordered table-hover <?php echo $totals_class;?>">
+<table <?php echo $q_table_id_HTML;?> class="<?php echo $coreClass;?> <?php echo $extraclass;?> table table-bordered table-hover <?php echo $totals_class;?>" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
     <colgroup class="col-responses">
 
         <!-- Column for answer label -->

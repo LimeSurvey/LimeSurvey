@@ -10,7 +10,7 @@
  */
 
 ?>
-<tr class="ls-heading header_row <?php echo $class; ?>" aria-hidden="true">
+<tr class="ls-heading <?php echo $class; ?>" aria-hidden="true">
     <td></td>
     <?php if ($leftheader != '' || $rightheader !=''): ?>
         <td class="hidden"></td>

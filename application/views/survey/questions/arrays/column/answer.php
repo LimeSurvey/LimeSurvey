@@ -7,7 +7,7 @@
  * @var $cellwidth
  */
  ?>
-<table class="<?php echo $coreClass; ?> table table-bordered table-col-hover">
+<table class="<?php echo $coreClass; ?> table table-bordered table-col-hover" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
     <colgroup>
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <?php foreach ($aQuestions as $i=>$question): ?>
@@ -46,8 +46,6 @@
                                 value="<?php echo $ansrow['code']; ?>"
                                 id="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>"
                                 <?php echo $checked[$ansrow['code']][$ld]; ?>
-                                onclick='<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)'
-                                aria-labelledby="label-<?php echo $ansrow['code'];?>"
                                  />
                                 <label class="ls-label-xs-visibility " for="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>">
                                     <?php echo $aQuestions[$i]['question'];?>

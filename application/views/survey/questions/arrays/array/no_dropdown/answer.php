@@ -14,7 +14,7 @@
 <!-- Array -->
 
 <!-- answer -->
-<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-array-radio">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-array-radio" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
     <colgroup class="col-responses">
         <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;' />
         <?php

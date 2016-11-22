@@ -12,7 +12,7 @@
 <!-- Array 10 point choice -->
 
 <!-- answer -->
-<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-10-point-array">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover table-10-point-array" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
     <!-- Columns -->
     <colgroup class="col-responses">
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />

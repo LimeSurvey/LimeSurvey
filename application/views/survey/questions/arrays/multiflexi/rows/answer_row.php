@@ -16,7 +16,7 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="<?php echo $coreRowClass;?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php if($error){ echo " has-error";} ?>" <?php echo $sDisplayStyle;?> role="group" aria-describedby="answertext<?php echo $myfname;?>">
+<tr id="javatbd<?php echo $myfname;?>" class="<?php echo $coreRowClass;?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php if($error){ echo " has-error";} ?>" <?php echo $sDisplayStyle;?> role="group" aria-labelledby="answertext<?php echo $myfname;?>">
     <th class="answertext control-label" id="answertext<?php echo $myfname;?>">
         <?php echo $answertext; ?>
         <input

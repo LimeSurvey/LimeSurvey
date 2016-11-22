@@ -11,7 +11,7 @@
 
 ?>
 
-<table class="<?php echo $coreClass; ?> table table-bordered table-hover">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
 
 <!-- Column groups -->
 <colgroup>

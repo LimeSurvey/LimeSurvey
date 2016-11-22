@@ -11,7 +11,7 @@
  */
 ?>
 <tr id="javatbd<?php echo $myfname;?>" class="question-item answer-item dropdown-item <?php echo ($odd) ? " ls-odd" : " ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>" >
-    <th class="answertext control-label<?php echo ($error) ? " error-mandatory" : ""; ?>"">
+    <th class="answertext control-label<?php echo ($error) ? " error-mandatory" : ""; ?>">
         <label for="answer<?php echo $myfname;?>">
             <?php echo $answertext; ?>
         </label>

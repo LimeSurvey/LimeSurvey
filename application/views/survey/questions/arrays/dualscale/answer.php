@@ -8,7 +8,7 @@
 
 ?>
 
-<table class="<?php echo $coreClass; ?> table table-bordered table-hover">
+<table class="<?php echo $coreClass; ?> table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
     <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' >
     <?php if ($leftheader != '' || $rightheader !=''): ?>
         <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
@@ -105,7 +105,7 @@
             <?php endif; ?>
 
             <!-- tr -->
-            <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" aria-describedby="answertext<?php echo $ansrow['myfname']; ?>"
+            <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" aria-labelledby="answertext<?php echo $ansrow['myfname']; ?>"
                 class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['showmandatoryviolation']) ? " has-error" : ""; ?>"
             >
             <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label<?php if($ansrow['showmandatoryviolation']){ echo " error-mandatory";} ?>">
