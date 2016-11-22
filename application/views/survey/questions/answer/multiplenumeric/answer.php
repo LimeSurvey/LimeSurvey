@@ -22,7 +22,7 @@
         echo $sRows;
     ?>
 <?php
-    doRender("/survey/questions/multiplenumeric/rows/dynamic_slider",array(
+    doRender("/survey/questions/answer/multiplenumeric/rows/dynamic_slider",array(
         'id'=>$id,
         'sumRemainingEqn'=>$sumRemainingEqn,
         'sumEqn'=>$sumEqn,

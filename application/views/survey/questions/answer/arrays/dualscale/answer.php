@@ -63,7 +63,7 @@
 
         <!-- Render header -->
         <?php echo Yii::app()->getController()->renderPartial(
-                '/survey/questions/arrays/dualscale/answer_header',
+                '/survey/questions/answer/arrays/dualscale/answer_header',
                 array(
                     'labelans0'    => $labelans0,
                     'labelans1'    => $labelans1,
@@ -89,7 +89,7 @@
                 <tbody>
                     <!-- Render repeated header -->
                     <?php echo Yii::app()->getController()->renderPartial(
-                            '/survey/questions/arrays/dualscale/answer_header',
+                            '/survey/questions/answer/arrays/dualscale/answer_header',
                             array(
                                 'labelans0'    => $labelans0,
                                 'labelans1'    => $labelans1,

@@ -24,7 +24,7 @@
 ?>
 
 <?php
-    doRender("/survey/questions/multiplenumeric/rows/dynamic",array(
+    doRender("/survey/questions/answer/multiplenumeric/rows/dynamic",array(
         'id'=>$id,
         'sumRemainingEqn'=>$sumRemainingEqn,
         'sumEqn'=>$sumEqn,

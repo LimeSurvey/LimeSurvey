@@ -1,8 +1,8 @@
 <?php
 /* Set some part */
 $sRows="";
-$sRows .= App()->getController()->renderPartial('/survey/questions/listradio/columns/column_header', array('iColumnWidth' => 12), true);
-$sRows .= App()->getController()->renderPartial('/survey/questions/listradio/rows/answer_row', array(
+$sRows .= App()->getController()->renderPartial('/survey/questions/answer/listradio/columns/column_header', array('iColumnWidth' => 12), true);
+$sRows .= App()->getController()->renderPartial('/survey/questions/answer/listradio/rows/answer_row', array(
     'sDisplayStyle' => '',
     'name'          => '1234X56X79',
     'code'          => 'A1',
@@ -10,7 +10,7 @@ $sRows .= App()->getController()->renderPartial('/survey/questions/listradio/row
     'checkedState'  => '',
     'myfname'       => 'answer22549X14X68A1',
 ), true);
-$sRows .= App()->getController()->renderPartial('/survey/questions/listradio/rows/answer_row', array(
+$sRows .= App()->getController()->renderPartial('/survey/questions/answer/listradio/rows/answer_row', array(
     'sDisplayStyle' => '',
     'name'          => '1234X56X79',
     'code'          => 'A2',
@@ -18,7 +18,7 @@ $sRows .= App()->getController()->renderPartial('/survey/questions/listradio/row
     'checkedState'  => 'checked',
     'myfname'       => 'answer22549X14X68A2',
 ), true);
-$sRows .= App()->getController()->renderPartial('/survey/questions/listradio/rows/answer_row', array(
+$sRows .= App()->getController()->renderPartial('/survey/questions/answer/listradio/rows/answer_row', array(
     'sDisplayStyle' => '',
     'name'          => '1234X56X79',
     'code'          => 'A3',
@@ -26,7 +26,7 @@ $sRows .= App()->getController()->renderPartial('/survey/questions/listradio/row
     'checkedState'  => '',
     'myfname'       => 'answer22549X14X68A3',
 ), true);
-$sRows .= App()->getController()->renderPartial('/survey/questions/listradio/rows/answer_row', array(
+$sRows .= App()->getController()->renderPartial('/survey/questions/answer/listradio/rows/answer_row', array(
     'sDisplayStyle' => '',
     'name'          => '1234X56X79',
     'code'          => 'A4',
@@ -34,9 +34,9 @@ $sRows .= App()->getController()->renderPartial('/survey/questions/listradio/row
     'checkedState'  => '',
     'myfname'       => 'answer22549X14X68A4',
 ), true);
-$sRows .= App()->getController()->renderPartial('/survey/questions/listradio/columns/column_footer', array('last'=>true), true);
+$sRows .= App()->getController()->renderPartial('/survey/questions/answer/listradio/columns/column_footer', array('last'=>true), true);
 /* rendering */
-App()->getController()->renderPartial('/survey/questions/listradio/answer', array(
+App()->getController()->renderPartial('/survey/questions/answer/listradio/answer', array(
         'sTimer'=>'',
         'sRows' => $sRows,
         'name'  => '1234X56X79',
