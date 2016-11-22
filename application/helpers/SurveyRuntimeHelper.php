@@ -122,9 +122,8 @@ class SurveyRuntimeHelper {
         if ($surveyExists < 1){
             $this->renderNoMatchingSurvey($sTemplateViewPath, $redata);
         }
-
-
-        createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
+        
+        // createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
 
         //GET GROUP DETAILS
         if ($surveyMode == 'group' && $previewgrp){
