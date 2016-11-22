@@ -293,6 +293,18 @@ LS.CPDB = (function() {
             $.fn.yiiGridView.update('list_central_participants',{ data:{ pageSizeParticipantView: $(this).val() }});
         });
 
+        // Change massive action text depending on check boxes
+        $('.selector_participantCheckbox, #action_toggleAllParticipant').on('click', function() {
+
+            var nrOfChecked = $('.selector_participantCheckbox:checked, #action_toggleAllParticipant:checked').length;
+            if (nrOfChecked == 0) {
+                $('#massive-action-dropdown-selector-text').html(sAllParticipantsText);
+            }
+            else {
+                $('#massive-action-dropdown-selector-text').html(sSelectedParticipantsText);
+            }
+        });
+
     },
     //JS-bindings especially for the attributePanel
     attributePanel = function(){

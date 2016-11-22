@@ -10,9 +10,9 @@
 <!-- Massive actions widget : selector view -->
 <div class="col-sm-4 pull-left dropup listActions" data-pk="<?php echo $this->pk;?>" data-grid-id="<?php echo $this->gridid;?>" id="<?php echo $this->dropupId;?>">
     <!-- Drop Up button selector -->
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      <?php echo $this->dropUpText;?>
-    <span class="caret"></span>
+    <button class="btn btn-default dropdown-toggle" id='massive-action-dropdown-selector' type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span id='massive-action-dropdown-selector-text'><?php echo $this->dropUpText;?></span>
+        <span class="caret"></span>
     </button>
 
     <!-- List of actions -->

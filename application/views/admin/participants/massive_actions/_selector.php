@@ -5,7 +5,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
     'pk'          => 'selectedParticipant',
     'gridid'      => 'list_central_participants',
     'dropupId'    => 'tokenListActions',
-    'dropUpText'  => gT('Selected participant(s)...'),
+    'dropUpText'  => gT('All participant(s)...'),
 
     'aActions'    => array(
         // Delete
