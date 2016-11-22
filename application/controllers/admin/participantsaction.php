@@ -1349,6 +1349,9 @@ class participantsaction extends Survey_Common_Action
             $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")"; 
         }
 
+        // Default visibility to false
+        $model->visible = $model->visible ?: 'FALSE';
+
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_editAttribute',
             $aData,
