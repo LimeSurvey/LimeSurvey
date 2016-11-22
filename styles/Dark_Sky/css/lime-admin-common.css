@@ -2244,3 +2244,132 @@ input[type="file"].form-control {
 #insertmethod-container{
     display: none;
 }
+
+
+/* To make Statistics printable really easy */
+
+@page {
+  size: A4 portrait;
+  margin-left: 0.8cm;
+  margin-right: 0.8cm;
+  margin-top: 1.4cm;
+  margin-bottom: 1.8cm;
+}
+
+@media print{
+
+  html,body {
+    margin: 0;
+    max-width: 90%;
+  }
+  body{
+    text-align: left;
+    padding: 12px;
+    overflow: visible;
+    position: absolute;
+    top: 24px;
+    left: 14px;
+  }
+  
+  body.onStatistics a:not(.printable),
+  body.onStatistics p:not(.printable),
+  body.onStatistics button:not(.printable),
+  body.onStatistics nav:not(.printable),
+  body.onStatistics form:not(.printable),
+  body.onStatistics footer:not(.printable),
+  body.onStatistics h1:not(.printable),
+  body.onStatistics h2:not(.printable),
+  body.onStatistics h3:not(.printable),
+  body.onStatistics h4:not(.printable),
+  body.onStatistics h5:not(.printable), 
+  body.onStatistics .jumbotron,
+  body.onStatistics .menubar,
+  body.onStatistics>div:not(#in_survey_common),
+  body.onStatistics>div#in_survey_common>div>div:not(#statisticsview)
+  {
+    display: none !important;
+    visibility: none !important;
+    overflow: hidden !important;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    margin: 0 !important;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  body.onStatistics div:not(.printable) {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+
+  /*body.onStatistics td:not(.printable),
+  body.onStatistics th:not(.printable),*/
+  /*body.onStatistics table:not(.printable),*/
+
+  body.onStatistics a.printable,
+  body.onStatistics p.printable,
+  body.onStatistics div.printable,
+  body.onStatistics div.printable table,
+  body.onStatistics table.printable,
+  body.onStatistics h1.printable,
+  body.onStatistics h2.printable,
+  body.onStatistics h3.printable,
+  body.onStatistics h4.printable,
+  body.onStatistics h5.printable{
+    width: 95% !important;
+    max-width: 100%;
+    float: none;
+    margin: auto;
+    padding-left: 0 !important;
+  }
+
+  body.onStatistics div.printable{
+    page-break-after  : always;
+    page-break-before : avoid;
+    page-break-inside : avoid;
+    display: block;
+  }
+  body.onStatistics table.printable{
+    page-break-after  : always;
+    page-break-before : avoid;
+    page-break-inside : avoid;
+  }
+
+  body.onStatistics div.printable table.printable{
+    page-break-after  : avoid ;
+    page-break-before : avoid;
+  }
+
+  body.onStatistics table.printable thead,
+  body.onStatistics table.printable tbody,
+  body.onStatistics table.printable tr{
+    width: 100% !important; 
+    margin:0;
+  }
+
+  body.onStatistics table.printable canvas{
+    page-break-after  : avoid;
+    page-break-before : avoid;
+    page-break-inside : avoid;
+  }
+
+  body.onStatistics .side-body{
+    max-width: 100%;
+    margin: 0 !important;
+  }
+  body.onStatistics .side-menu{
+    display: none !important;
+    visibility: none !important;
+    overflow: hidden !important;
+    padding: 0;
+    margin: 0;
+  }
+  body.onStatistics .absolute-wrapper{
+    display: none !important;
+    visibility: none !important;
+    overflow: hidden !important;
+    padding: 0;
+    margin: 0;
+  }
+}

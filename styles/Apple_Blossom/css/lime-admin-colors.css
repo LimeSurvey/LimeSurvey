@@ -896,6 +896,35 @@ fieldset[disabled] .btn-link:focus {
     .dropdown-menu > .disabled > a:focus {
       color: #858585; }
 
+/* Notification list immitates the dropdown menu */
+.notification-list {
+  background-color: #ffffff; }
+  .notification-list .divider {
+    background-color: #e6e6e6; }
+  .notification-list > li > a {
+    color: #35363f; }
+    .notification-list > li > a:hover {
+      color: #ffffff;
+      background-color: #661b19; }
+    .notification-list > li > a:focus {
+      color: #ffffff;
+      background-color: #661b19; }
+  .notification-list > .active > a {
+    color: #ffffff;
+    background-color: #661b19; }
+    .notification-list > .active > a:hover {
+      color: #ffffff;
+      background-color: #661b19; }
+    .notification-list > .active > a:focus {
+      color: #ffffff;
+      background-color: #661b19; }
+  .notification-list > .disabled > a {
+    color: #858585; }
+    .notification-list > .disabled > a:hover {
+      color: #858585; }
+    .notification-list > .disabled > a:focus {
+      color: #858585; }
+
 .dropdown-header {
   color: #858585; }
 
@@ -1175,8 +1204,8 @@ fieldset[disabled] .btn-link:focus {
 
 .alert-info {
   background-color: #ffffff;
-  border: 1px solid #ba4c49;
-  color: #ba4c49; }
+  border: 1px solid #c15e98;
+  color: #c15e98; }
   .alert-info hr {
     border-top-color: #c9c8ab; }
   .alert-info .alert-link {
@@ -1745,10 +1774,12 @@ div.panel.disabled {
   background-color: #802b26;
   border: 1px solid #5d1f1b; }
 
-.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
   color: #fff;
   background: #AA4340; }
 
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning,
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
   background: #a0352f;
   color: #fff; }
@@ -1972,5 +2003,20 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 
 .placeholder {
   background-color: #c6b2a3; }
+
+@keyframes notification-pulse {
+  from {
+    color: #a15426;
+    text-shadow: 0 0 0px #333; }
+  50% {
+    color: #eee;
+    text-shadow: 0 0 6px #faa; }
+  to {
+    color: #a15426;
+    text-shadow: 0 0 0px #333; } }
+.notification-bell-pulse {
+  animation-name: notification-pulse;
+  animation-duration: 1s;
+  animation-iteration-count: 5; }
 
 /*# sourceMappingURL=lime-admin-colors.css.map */
