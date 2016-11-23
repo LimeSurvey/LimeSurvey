@@ -555,11 +555,48 @@ div.panel.disabled {
   height: 100%;
 }
 
-.side-menu {
-  position: absolute;
+#in_survey_common{
+  padding: 0 5px;
+}
+
+.sidemenu-container {
+  position:fixed;
   width: 300px;
-  padding: 0;
-  left: 0; }
+  float:left; 
+  overflow:auto;
+  height:100vh;
+  clear: left; 
+  background: #fff;
+  z-index:100;
+}
+.side-menu {
+  position: relative;
+  width: 100%;
+  padding: 2px;
+  height:100%;
+  margin:0;
+  }
+  .side-menu #quickadd-button-bar {
+    margin: 0;
+    padding: 0;
+    float: left;
+    text-align: center;
+    width:100%;
+  }
+  .side-menu #quickadd-button-bar .row{
+    margin: 8px 0px;
+    padding: 2px 2px;
+    width:100%;
+  }
+  
+  .side-menu #quickadd-button-bar .row>div{
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .side-menu #quickadd-button-bar .row>div>button{
+    white-space: pre-wrap;
+  }
+
   .side-menu .navbar {
     border: none;
     box-shadow: none; }
@@ -568,7 +605,7 @@ div.panel.disabled {
   .side-menu .navbar-nav li {
     display: block;
     width: 100%; }
-    .side-menu .navbar-nav li a {
+    .side-menu .navbar-nav li a:not(.btn) {
       padding: 15px; }
       .side-menu .navbar-nav li a .glyphicon {
         padding-right: 10px; }
@@ -669,6 +706,62 @@ div.panel.disabled {
   .side-menu #explorer-collapse .caret {
     float: none;
     margin-bottom: 9px; }
+/* Side Menu Fancytree*/
+  /* First degree Fancytree => Questiongroups */
+  #explorer .row-with-margin{
+    margin: 5px 15px;
+  }
+  #fancytree{
+    position: relative;
+    width:100%;
+    clear: both;
+  }
+  #fancytree.fancytree-ext-filter-hide ul span.fancytree-node.fancytree-hide, 
+  #fancytree.fancytree-ext-filter-hide ul tr.fancytree-hide{
+    display: none;
+  }
+  #fancytree>ul>li>span {
+    padding: 12px 2px;
+    display: block;
+    width: 99%;
+    margin: auto;
+    white-space: nowrap;
+    position: relative;
+  }
+  #fancytree ul>li>span>span {
+    display: inline-block;
+    font-weight: 400;
+  }
+  /*#fancytree>ul>li span.fancytree-expander {
+    width: 16px;
+    padding-top: 7px;
+    position: absolute;
+    left: 8px;
+  }
+  #fancytree>ul>li span.fancytree-icon {
+    width: 26px;
+    padding-top: 7px;
+    text-align: right;
+    position: absolute;
+  }
+  #fancytree>ul>li span.fancytree-title {
+    width: 99%;
+    padding: 6px 4px 8px 40px;
+    margin:auto;
+  }
+  #fancytree>ul>li span.fancytree-title>a.btn {
+    float: right;
+    clear: both;
+  }*/
+
+  #fancytree ul>li .lsi-tree-question-item .fancytree-title{
+    white-space: pre-wrap;
+    margin: initial;
+  }
+  #fancytree .fancytree-innerhtml-buttonbar{
+    border-radius: 4px;
+    padding: 1px 1px;
+  }
 
 #explorer {
   border: 0;
@@ -742,7 +835,7 @@ div.panel.disabled {
 
 .side-body {
   min-height: 800px;
-  margin-left: 320px;
+  margin-left: 310px;
 }
 
 .side-body-margin {
@@ -2064,6 +2157,7 @@ div[id^="alertmod_"]
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
     float: right;
 }
+
 .yiiLog{margin-bottom:70px}
 
 table#responsedetail tr td{

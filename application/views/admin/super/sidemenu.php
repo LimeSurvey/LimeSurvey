@@ -39,7 +39,7 @@
 
 <div id="sideMenuContainer" class="sidemenu-container">
     <!-- sideMenu -->
-    <div class="side-menu <?php if (!$showSideMenu): echo ' side-menu-hidden'; endif; ?> hidden-xs" id="sideMenu" style="z-index: 101;">
+    <div class="side-menu hidden-xs" id="sideMenu" style="z-index: 101;">
         <nav class="navbar navbar-default hidden-xs">
 
             <!-- Header : General -->
@@ -57,7 +57,7 @@
                     <div class='row no-gutter'>
 
                         <!-- Brand -->
-                        <a id='sidemenu-home' class="col-sm-7 navbar-brand hideside toggleside" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
+                        <a id='sidemenu-home' class="col-sm-7 navbar-brand hideside toggleside col-xs-12" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
                             <div class="brand-name-wrapper hidden-xs">
                                     <span class="fa fa-home"></span>&nbsp;
                                     <?php eT("Survey");?>
@@ -66,21 +66,27 @@
 
                         <!-- chevrons to stretch the side menu -->
                         <?php if (getLanguageRTL($_SESSION['adminlang'])): ?>
-                            <div class='col-sm-5'>
+                            <div class='col-sm-5 col-xs-12'>
                                 <a draggable="true" style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
                                     <i class="fa fa-bars" style="transform:rotate(90deg);">&nbsp;</i>
                                 </a>
-                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" data-collapsed="<?php echo !$showSideMenu; ?>" id="chevronClose">
                                     <i class="fa fa-chevron-right"></i>
+                                </a>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" style="display:none" id="hiddenHome" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
+                                    <i class="fa fa-home"></i>
                                 </a>
                             </div>
                         <?php else: ?>
-                            <div class='col-sm-5'>
+                            <div class='col-sm-5 col-xs-12'>
                                 <a draggable="true" style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
                                     <i class="fa fa-bars" style="transform:rotate(90deg);">&nbsp;</i>
                                 </a>
-                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" data-collapsed="<?php echo !$showSideMenu; ?>" id="chevronClose">
                                     <i class="fa fa-chevron-left"></i>
+                                </a>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" style="display:none" id="hiddenHome" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
+                                    <i class="fa fa-home"></i>
                                 </a>
                             </div>
                         <?php endif; ?>
@@ -93,7 +99,7 @@
 
 
             <?php 
-            echo $quickmenu; 
+            //echo $quickmenu; 
             /*var_dump($oSurvey);*/
             $activeQuestion = Yii::app()->request->getQuery('qid', null); 
             $activeQuestionGroup = Yii::app()->request->getQuery('gid', null); 
@@ -103,7 +109,7 @@
             <!-- Main Menu -->
             <div class="side-menu-container hidden-xs">
             <!-- Add new Questiongroup, add new Question => quickadd -->
-                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="<?php if (!$showSideMenu): echo 'display: none;'; endif; ?>">
+                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="">
                 <div class="container-fluid" id="quickadd-button-bar">
                     <div class="row">
                         <?php if($activeQuestionGroup): ?>
