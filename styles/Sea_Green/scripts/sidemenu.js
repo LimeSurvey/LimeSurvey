@@ -34,17 +34,18 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
 
         },
         setMenu = function(newValue){
-            oSideMenu.css({'width': newValue});
+            oSideMenu.css({'width': newValue+"px"});
         },
         setDraggable = function(newValue){
           //  oDragButton.css({'left': (newValue)+"px"})
         },
         collapseSidebar = function(position){
-            setDivisionOn(50,true);
-            if(oSideMenu.data('collapsed') != true){ 
-                oSideMenu.find('.sidemenuscontainer').css({'margin-left': '86px',});
-                oSideMenu.data('collapsed',true).css('overflow','hidden');
-            }
+            return true;
+            // setDivisionOn(50,true);
+            // if(oSideMenu.data('collapsed') != true){ 
+            //     oSideMenu.find('.sidemenuscontainer').css({'margin-left': '86px',});
+            //     oSideMenu.data('collapsed',true).css('overflow','hidden');
+            // }
         },
         unCollapseSidebar = function(position){
             setDivisionOn(position,true);
@@ -63,7 +64,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
     //utility and calculating methods
         calculateValue = function(xClient){
 
-            var sidebarWidth = xClient+(xClient>50 ? (50-offsetX) : 1);
+            var sidebarWidth = xClient+(xClient>50 ? (50-offsetX) : 50);
             var sidebodyMargin = sidebarWidth+Math.floor(wWidth/200);
             var buttonLeftTop = xClient-offsetX;
 
@@ -115,10 +116,10 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
 
     var startOffset = parseInt(savedOffset) || options.baseWidth;
     
-    if(startOffset <  wWidth/8 ){
-        collapseSidebar(position);
-    } else {
-        unCollapseSidebar(position);
+    unCollapseSidebar(position);
+    // if(startOffset <  wWidth/8 ){
+    //     collapseSidebar(position);
+    // } else {
     }
 
     oDragButton
