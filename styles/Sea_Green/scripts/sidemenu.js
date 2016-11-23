@@ -76,6 +76,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
             } catch(e){}
         },
         setDivisionOn = function(xClient,save){
+            console.log(xClient);
             save = save || false;
             var oValues = calculateValue(xClient);
             setBody(oValues.body);
@@ -116,7 +117,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
 
     var startOffset = parseInt(savedOffset) || options.baseWidth;
     
-    unCollapseSidebar(position);
+    unCollapseSidebar(startOffset);
     // if(startOffset <  wWidth/8 ){
     //     collapseSidebar(position);
     // } else {
