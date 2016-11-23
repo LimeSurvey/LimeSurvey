@@ -10,25 +10,17 @@
  * A normal js script qould run to death on a bigger survey, this webworker 
  */
 
-importScripts('./html2canvas.js'); //this file have to be in the same folder!
-importScripts('./jspdf.min.js'); //this file have to be in the same folder!
+importScripts('./jspdf.debug.js'); //this file have to be in the same folder!
 "use strict";
 var doc = new jsPDF()
- ,  tableObjects = []
+ ,  imgObjects = []
  ,  tables = []
  ,  sizes = []
  ,  preparedPages = 0
  ,  countPages = 0
  ,  responseMethod = ""
- //create a canvas from an htmlobject
- ,  createCanvas = function(i,tableObject){
-        var canvas = html2canvas(tableObject.html);
-        sizes.push(tableObject.sizes);
-        tables.push(canvas);
-    }
-//compile the canvasobjects to pages of the pdf
- ,  compileCanvas = function(i, canvas){
-        var imgData = canvas.toDataURL("image/png");
+//compile the image to pages of the pdf
+ ,  compileCanvas = function(i, imgData){
         //Calculate width and height in scale to DIN A4 relation
         var width, height,
             h_max = 247, w_max = 180,
@@ -49,29 +41,23 @@ var doc = new jsPDF()
         doc.addImage(imgData, 'PNG', 15,25, width, height, null, 'FAST');
     }
 //increment the counter and add the html to the array
- ,  catchTableObject = function(object){
-     tableObjects.push(object);
-     countPages = tableObjects.length;
+ ,  catchImgObject = function(object){
+     imgObjects.push(object.image);
+     sizes.push(object.sizes);
+     countPages = imgObjects.length;
     }
 //orchestrate the atomic processes to build the pdf
  ,  runConversion = function(key){
         var def = new Promise(function(resolve, reject){
-            for(var incrementor in tableObjects){
-                createCanvas(incrementor, tableObjects[incrementor] );
-            };
-            countPages = tableImages.length;
-            Promise.all(tables).then(
-                function(tableImages) {
-                    for( var i in tableImages){
-                        var canvas = tableImages[i];
-                        compileCanvas(i,canvas);
-                        preparedPages++;
-                        if((i+1)<countPages) 
-                            doc.addPage();
-                    }
-                    resolve("all done");
-                }
-            );
+            countPages = imgObjects.length;
+            for( var i in imgObjects){
+                var image = imgObjects[i];
+                compileCanvas(i,image);
+                preparedPages++;
+                if((i+1)<countPages) 
+                    doc.addPage();
+            }
+            resolve("all done");
         });
         return def;
     }
@@ -120,7 +106,7 @@ var doc = new jsPDF()
     }
  ,  parseMessage = function(messageEventData){
      switch(messageEventData.method){
-         case "sendHtml": catchTableObject(messageEventData); return createResponse[messageEventData.method](); break;
+         case "sendImg": catchImgObject(messageEventData.object); return createResponse[messageEventData.method](); break;
          case "parseHtml": 
             runConversion(messageEventData.key)
                 .then(function(done){postMessageToHost(createResponse[messageEventData.method](returnPdf(messageEventData.key)))}); 

@@ -123,7 +123,7 @@
                 <?php else:?>
                     <?php echo $output; ?>
                 <?php endif;?>
-                    <div id="statsContainerLoading" style="display: <?php echo ($output=="") ? 'block' : 'none' ?>;">
+                    <div id="statsContainerLoading" >
                         <p><?php eT('Please wait, loading data...');?></p>
                         <div class="preloader loading">
                             <span class="slice"></span>

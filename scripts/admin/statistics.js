@@ -740,7 +740,6 @@ var elementHandlers = {
 }
 
 $(document).ready(function(){
-    $('#statsContainerLoading').clone().appendTo('body');
     $('body').addClass('onStatistics');
 
 
@@ -792,11 +791,15 @@ $(document).ready(function(){
             }
         });
 
+        var sizes = [], j=0;
         $('#statisticsview').find('.statisticstable').each(function(i, table){
             console.log("Selecting the table");
             $(window).scrollTop($(table).offset().top);
-            var sizes = {h: $(table).height(), w: $(table).width()};
-            createPDF.postMessage({method: 'sendHtml',  html: $(table).html(), sizes : sizes});
+            sizes[i] = {h: $(table).height(), w: $(table).width()};
+            html2canvas(table).then(function(canvas){
+                createPDF.postMessage({method: 'sendImg',  object : {image: canvas.toDataURL(), sizes : sizes[j]}});
+                j++;
+            })
         });
         createPDF.postMessage({method: 'parseHtml',  key: "somekeythatisnotusedbynow"});
 
