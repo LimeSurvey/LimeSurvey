@@ -23,10 +23,10 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_popup =
     [
-        ['Save','Createlimereplacementfields'],
+        ['Save','Source','Createlimereplacementfields'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
-        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
-        ['Image','Video','Youtube','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+        ['Image','VideoDetector','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
         '/',
         ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
         ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
@@ -40,15 +40,15 @@ CKEDITOR.editorConfig = function( config )
     ];
     config.toolbar_inline =
     [
-        ['Maximize','Createlimereplacementfields'],
+        ['Source','Createlimereplacementfields'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
-        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
-        ['Image','Video','Youtube','Flash'],['Table','HorizontalRule','Smiley','SpecialChar'],
+        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+        ['Image','VideoDetector','Flash'],['Table','HorizontalRule','Smiley','SpecialChar'],
         ['Bold','Italic','Underline','Strike'],['Subscript','Superscript'],
         ['NumberedList','BulletedList'],['Outdent','Indent','Blockquote','CreateDiv'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
         ['BidiLtr', 'BidiRtl'],
-        [ 'ShowBlocks','Templates'],
+        ['ShowBlocks','Templates'],
         ['Link','Unlink'],
         ['Styles','Format','Font','FontSize'],
         ['Anchor','Iframe'],
@@ -63,7 +63,7 @@ CKEDITOR.editorConfig = function( config )
         ['Link','Unlink','Image'],
         ['Source']
     ];
-   config.extraPlugins = "xml,ajax,limereplacementfields,codemirror,youtube,video";
+   config.extraPlugins = "limereplacementfields,codemirror";
 };
 
 (function () {
