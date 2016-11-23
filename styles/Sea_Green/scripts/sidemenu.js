@@ -120,7 +120,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
     // if(startOffset <  wWidth/8 ){
     //     collapseSidebar(position);
     // } else {
-    }
+    // }
 
     oDragButton
         .on('dblclick', onDblClick)
