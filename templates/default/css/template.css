@@ -123,6 +123,7 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     line-height: inherit;
     height:100%;
 }
+
 /* If you want to center the icon */
 /*
 .ls-questionhelp:before {
@@ -134,7 +135,7 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     left:-1.1em;
 }
 .dir-rtl .ls-questionhelp:before {
-    right:0;
+    right:-1.1em;
 }
 
 /**
@@ -623,7 +624,7 @@ div.yes-no .btn-group label {
     }
 }
 
-@media only screen and (max-device-width: 760px){ 
+@media only screen and (max-device-width: 760px){
 
   h1, .h3{
     font-size:18px;
@@ -655,11 +656,11 @@ div.yes-no .btn-group label {
   .table-bordered{
     border:none;
   }
-  
+
   .ls-answers tbody:last-child tr:last-child{
     margin-bottom:0;
   }
-  
+
   .ls-answers{
     padding-top:0;
     padding-bottom:0;
@@ -671,15 +672,15 @@ div.yes-no .btn-group label {
     padding-top:10px;
     padding-left:28px;
   }
-  
+
   .ls-answers.table > tbody + tbody {
     border-top: none; /*overriding Bootstrap */
   }
-  
+
   .help-block:last-child{
     margin-bottom:0;
   }
-  
+
   .ls-questionhelp,
   .help-block{
     font-size:90%;

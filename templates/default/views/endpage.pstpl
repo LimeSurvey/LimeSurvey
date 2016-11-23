@@ -23,5 +23,6 @@
     sliderSuffixClone();
     fixBodyPadding();
     hideQuestionWithRelevanceSubQuestion();
+    hideEmptyPart();
 /*]]>*/
 </script>

@@ -18,6 +18,7 @@ return array(
             'survey.js',
         ),
         'depends' => array(
+            'jquery',
             'fontawesome',
             //'bootstrap', //limesurvey in future must work without boostrap
         )

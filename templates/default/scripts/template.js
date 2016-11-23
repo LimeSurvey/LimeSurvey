@@ -155,13 +155,23 @@ function addHoverColumn(){
 function hideEmptyPart()
 {
     $(".question-help-container").each(function(){
-        if($(this).text().trim()==""){/* Only if have only script tag inside */
-            $(this).hide();
+        if($(this).text().trim()==""){/* Only if have only script tag inside or empty tag */
+            $(this).addClass("hidden");
         }
     });
     $(".group-description").each(function(){
-        if($(this).text().trim()==""){/* Only if have only script tag inside */
-            $(this).hide();
+        if($(this).text().trim()==""){/* Only if have only script tag inside or empty tag */
+            $(this).addClass("hidden");
+        }
+    });
+    $(".question-help-container.hidden").on("html:updated",function(){
+        if($(this).text().trim()!=""){
+            $(this).removeClass("hidden");
+        }
+    });
+    $(".question-help-container").on("html:updated",function(){ // .question-help-container:not(.hidden) don't work ?
+        if($(this).text().trim()==""){
+            $(this).addClass("hidden");
         }
     });
 }
