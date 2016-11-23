@@ -39,7 +39,6 @@
 
     function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)
     {
-        console.log('gid'+gid);
         controlidena = fieldname + '_popupctrlena';
         controliddis = fieldname + '_popupctrldis';
         numwindows = editorwindowsHash.length;
@@ -48,7 +47,6 @@
         if (activepopup == null)
         {
             document.getElementsByName(fieldname)[0].readOnly=true;
-            document.getElementsByName(fieldname)[0].className='readonly form-control input-lg';
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
 
