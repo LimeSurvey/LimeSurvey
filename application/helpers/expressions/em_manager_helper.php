@@ -9277,7 +9277,7 @@ EOD;
                     }
                     $groupRow = "<tr class='LEMgroup'>"
                     . "<td class='$errClass'>G-$gseq</td>"
-                    . "<td><b>".$ginfo['group_name']."</b><br />[<a target='_blank' href='$editlink'>GID ".$gid."</a>]</td>"
+                    . "<td><b>".viewHelper::flatEllipsizeText($ginfo['group_name'])."</b><br />[<a target='_blank' href='$editlink'>GID ".$gid."</a>]</td>"
                     . "<td>".$sGroupRelevance."</td>"
                     . "<td>".$sGroupText."</td>"
                     . "</tr>\n";

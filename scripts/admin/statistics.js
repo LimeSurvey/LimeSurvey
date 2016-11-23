@@ -181,6 +181,8 @@ function init_chart_js_graph_with_datas($type,$qid)
 }
 
 $(document).ready(function() {
+    //for nicely printed statistics
+    $('body').addClass('onStatistics'); 
 
     if ($('#completionstateSimpleStat').length>0)
     {

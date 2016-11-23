@@ -229,6 +229,7 @@ class conditionsaction extends Survey_Common_Action {
 
         $cquestions = array();
         $canswers   = array();
+        $pquestions = array();
 
         $language = Survey::model()->findByPk($iSurveyID)->language;
         $this->language = $language;
@@ -1989,7 +1990,7 @@ class conditionsaction extends Survey_Common_Action {
     {
         $request = Yii::app()->request;
         $aViewUrls = array('output' => '');
-        if ($subaction == "editthiscondition") { 
+        if ($subaction == "editthiscondition") {
             // in edit mode we read previous values in order to dusplay them in the corresponding inputs
             if ($request->getPost('EDITConditionConst') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value

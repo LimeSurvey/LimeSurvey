@@ -6,16 +6,14 @@
 <noscript>If you see this you have probably JavaScript deactivated. LimeSurvey does not work without Javascript being activated in the browser!</noscript>
 <div class="container-fluid welcome">
     <div class="row text-center">
-        <div class="col-lg-3 col-lg-offset-4 col-sm-6 col-sm-offset-3">
+        <div id="login-panel">
             <div class="panel panel-primary login-pannel" id="pannel-1">
 
                 <!-- Header -->
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-12">
-                          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
+                          <img alt="logo" id="profile-img" class="profile-img-card center-block" src="<?php echo LOGO_URL;?>" />
                              <p><?php eT("Administration");?></p>
-                        </div>
                     </div>
                 </div>
 

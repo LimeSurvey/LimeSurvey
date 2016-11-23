@@ -105,8 +105,9 @@ $internalConfig = array(
         ),
         // These are defaults and are later overwritten in LSYii_Application by a path based on config tempdir/tempurl
         'assetManager' => array(
+            'excludeFiles' => array("config.xml", "assessment.pstpl", "clearall.pstpl",  "completed.pstpl",  "endgroup.pstpl",  "endpage.pstpl",  "groupdescription.pstpl",  "load.pstpl",  "navigator.pstpl",  "printanswers.pstpl",  "print_group.pstpl",  "print_question.pstpl",  "print_survey.pstpl",  "privacy.pstpl",  "question.pstpl",  "register.pstpl",  "save.pstpl",  "startgroup.pstpl",  "startpage.pstpl",  "surveylist.pstpl",  "survey.pstpl",  "welcome.pstpl" ),
             'baseUrl' => '/tmp/assets',
-            'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'
+            'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets',
         ),
 
         'request' => array(
@@ -118,7 +119,7 @@ $internalConfig = array(
                 'plugins/unsecure',
             ),
             'csrfCookie' => array(
-                'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)
+                'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT']== 443))
             ),
         ),
         'user' => array(
@@ -148,7 +149,7 @@ $internalConfig = array(
         'session' => array(
             'cookieParams' => array(
                 'httponly' => true,
-                'secure'=> ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)
+                'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT']== 443))
             ),
         ),
         'messages' => array(

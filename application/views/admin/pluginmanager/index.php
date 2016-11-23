@@ -150,7 +150,8 @@
             for(var i in formData){
                 shadowForm.append('<input name="'+formData[i]['name']+'" value="'+formData[i]['value']+'" />');
             }
-            shadowForm.submit();
+            //Add the shadow form to the body to make it compatible with firefox and older IE browsers
+            shadowForm.css({width: '1px', height: '1px', 'overflow': 'hidden'}).appendTo('body').submit();
         });
     };
     jQuery(function($) {

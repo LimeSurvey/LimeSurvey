@@ -23,7 +23,7 @@
                 <label for="csv_vv_file" class="col-sm-2 control-label">
                     <?php eT("File:");?>
                 </label>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control">
                 </div>
             </div>
@@ -33,11 +33,17 @@
                     <?php eT("Exclude record IDs?"); ?>
                 </label>
                 <div class="col-sm-4">
-                    <?php echo CHtml::checkBox('noid',true,array('value'=>"noid",'onChange' => 'javascript:form.insertmethod.disabled=this.checked')) ?>
+                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'noid',
+                        'value'=> 'noid',
+                        'onLabel'=>gT('Yes'),
+                        'offLabel'=>gT('No')
+                        ));
+                    ?>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="insertmethod-container">
                 <label for="insertmethod" class="col-sm-2 control-label">
                     <?php eT("When an imported record matches an existing record ID:"); ?>
                 </label>
@@ -47,8 +53,8 @@
                             'renumber' => gT("Renumber the new record."),
                             'replace' => gT("Replace the existing record."),
                             'replaceanswers' => gT("Replace answers in file in the existing record."),
-                            ),array('disabled'=>'disabled','class'=>'form-control')); ?>
-
+                            ),array('disabled'=>'disabled','class'=>'form-control'));
+                     ?>
                 </div>
             </div>
 
@@ -57,7 +63,13 @@
                     <?php eT("Import as not finalized answers?"); ?>
                 </label>
                 <div class="col-sm-4">
-                    <?php echo CHtml::checkBox('notfinalized',false,array('value'=>"notfinalized")); ?>
+                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'notfinalized',
+                        'value'=> false,
+                        'onLabel'=>gT('Yes'),
+                        'offLabel'=>gT('No')
+                        ));
+                    ?>
                 </div>
             </div>
 
@@ -75,7 +87,13 @@
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
                 <div class="col-sm-4">
-                    <?php echo CHtml::checkBox('dontdeletefirstline',false,array('value'=>"dontdeletefirstline")); ?>
+                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'dontdeletefirstline',
+                        'value'=> false,
+                        'onLabel'=>gT('Yes'),
+                        'offLabel'=>gT('No')
+                        ));
+                    ?>
                 </div>
             </div>
 
@@ -83,8 +101,14 @@
                 <label for="forceimport" class="col-sm-2 control-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-toggle="tooltip" data-placement="right">
                     <?php eT("Force import:"); ?>
                 </label>
-                <div class="col-sm-4">
-                    <?php echo CHtml::checkBox('forceimport',false,array('value'=>"forceimport")); ?>
+                <div class="col-sm-4">                    
+                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'forceimport',
+                        'value'=> false,
+                        'onLabel'=>gT('Yes'),
+                        'offLabel'=>gT('No')
+                        ));
+                    ?>
                 </div>
             </div>
 
@@ -119,3 +143,17 @@
         <?php } ?>
 
 </div></div></div>
+
+<script>
+$(document).ready(function() {
+    $('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
+        if (!state){
+            $('#insertmethod').removeAttr('disabled');
+            $('#insertmethod-container').show('slow');
+        }else{
+            $('#insertmethod').attr('disabled','disabled');
+            $('#insertmethod-container').hide('slow');
+        }
+    });
+});
+</script>

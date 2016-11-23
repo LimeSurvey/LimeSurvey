@@ -243,25 +243,31 @@ class tokens extends Survey_Common_Action
                 $survey->bouncetime = $datelastbounce;
                 $survey->save();
 
-                if ($bouncetotal > 0)
-                {
+                if ($bouncetotal > 0){
                     printf(gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
-                }
-                else
-                {
+                    eT("NOTE: If some emails has been rejected as spam, or answered automatically, maybe they will not be marked as bounce.");
+                    eT("You can now close this modal box.");
+                }else{
                     printf(gT("%s messages were scanned, none were marked as bounce by the system."), $checktotal);
+                    eT("NOTE: If some emails has been rejected as spam, or answered automatically, maybe they will not be marked as bounce.");
+                    eT("You can now close this modal box.");
                 }
-            }
-            else
-            {
-                eT("Please check your settings");
+            }else{
+                $sSettingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/'.$iSurveyId);
+                eT("The attempt to open the inbox of the bounce email address failed.");
+                echo "<br><strong>";
+                printf(gT("Please %s check your settings %s."), '<a href="'.$sSettingsUrl.'" titlle="bounce settings" >', '</a>');
+                echo "</strong><br> <br/>";
+                eT("Error message returned by IMAP:");
+                echo "<br>";
                 $aErrors = @imap_errors();
 
                 foreach ($aErrors as $sError)
                 {
-                    echo '<br/>'.$sError;
+                    echo $sError.'<br/>';
                 }
-
+                echo "<br><br/>";
+                eT("You can now close this modal box.");
             }
         }
         else
@@ -318,20 +324,7 @@ class tokens extends Survey_Common_Action
         $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
 
         // Javascript
-        //App()->getClientScript()->registerPackage('jqgrid');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
-
-
-        // CSS
-        // Right to Left
-        if (getLanguageRTL($_SESSION['adminlang']))
-        {
-            $this->registerCssFile( 'ADMIN', 'jqgrid-rtl.css' );
-        }
-        else
-        {
-            $this->registerCssFile( 'ADMIN', 'jqgrid.css' );
-        }
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::import('application.libraries.Date_Time_Converter', true);
@@ -416,8 +409,8 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Called by jqGrid if a token is saved after editing
-    *
+    * Called by  if a token is saved after editing
+    * @todo Check if method is still in use
     * @param mixed $iSurveyId The Survey ID
     */
     public function editToken($iSurveyId)

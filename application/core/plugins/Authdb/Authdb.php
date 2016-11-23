@@ -116,6 +116,7 @@ class Authdb extends AuthPluginBase
     {
         // Do nothing if this user is not Authdb type
         $identity = $this->getEvent()->get('identity');
+
         if ($identity->plugin != 'Authdb')
         {
             return;
@@ -128,12 +129,20 @@ class Authdb extends AuthPluginBase
 
         $user = $this->api->getUserByName($username);
 
+        if ($user == null){
+          $user = $this->api->getUserByEmail($username);
+          
+          if (is_object($user)){
+              $this->setUsername($user->users_name);
+          }
+        }
+
         if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
         {
             $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed for this user'));
             return;
         }
-        if ($user !== null and $username==$user->users_name) // Control of equality for uppercase/lowercase with mysql
+        if ($user !== null and ($username==$user->users_name || $username==$user->email)) // Control of equality for uppercase/lowercase with mysql
         {
             if (gettype($user->password)=='resource')
             {

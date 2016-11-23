@@ -46,7 +46,7 @@
         $columnNames='"'.implode('","',$aColumnHeaders).'"';
     }
     $sJsonColumnInformation=json_encode($aTokenColumns);
-    // Build the javasript variables to pass to the jqGrid
+    // Build the javasript variables to pass to the page
 ?>
 <script type="text/javascript">
     var sAddParticipantToCPDBText = '<?php eT("Add participants to central database",'js');?>';

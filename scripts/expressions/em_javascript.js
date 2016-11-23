@@ -40,6 +40,11 @@ $(document).on("change",".select-item select:not([onchange])",function(event){
         ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
 });
 
+var pad = function(num,places) {
+  var zero = places - num.toString().length + 1;
+  return Array(+(zero > 0 && zero)).join("0") + num;
+}
+
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty
@@ -157,14 +162,22 @@ function LEMpi()
 function LEMsum()
 {
     // takes variable number of arguments, returns their sum
-    var result=0;
+    var result= new Decimal(0);
     for (i=0;i<arguments.length;++i) {
-        var arg = arguments[i];
-        if (!isNaN(arg)) {
-            result += (+arg);
+        var arg = arguments[i] || 0;
+        if (LEMis_numeric(arg)){
+            try{ 
+                arg = new Decimal(arg);
+            } catch(e){
+                arg = new Decimal(arg.toString().replace(/,/,'.'));
+            }
+            //create decimal checks!
+            result = result.add(arg);
+        } else if(arg === true){
+            result = result.add(1);
         }
     }
-    return result;
+    return result.toString();
 }
 
 function LEMintval(a)
@@ -205,8 +218,10 @@ function LEMis_int(mixed_var)
  */
 function LEMis_numeric(mixed_var)
 {
-    var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
-    return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
+    var isNumericRegex = new RegExp(/^(-)?\d*(,|\.)?\d*$/);
+    return ( ( ( typeof mixed_var === 'string' && isNumericRegex.test(mixed_var)) || typeof mixed_var === 'number') && mixed_var !== '' && !isNaN(mixed_var));
+    // var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
+    // return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
 }
 
 function LEMis_string(a)
@@ -462,7 +477,15 @@ function LEMval(alias)
     if (LEMradix === ',') {
         newval = str.split(',').join('.');
     }
-
+    var checkNumericRegex = new RegExp(/^[-0-9,\.]*$/);
+    if(checkNumericRegex.test(newval)){
+        try{
+            newval = new Decimal(newval);
+        } catch(e){
+            if(e)
+                newval = new Decimal(newval.toString().replace(/,/,'.'));
+        }
+    }
     if (newval == parseFloat(newval)) {
         if (newval.length > 0 && newval[0]==0) {
             return newval;   // so keep 0 prefixes on numbers
@@ -568,12 +591,12 @@ function LEMval(alias)
                     }
                     shown = answer;
                     break;
+                case 'N': //NUMERICAL QUESTION TYPE
+                case 'K': //MULTIPLE NUMERICAL QUESTION
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case '5': //5 POINT CHOICE radio-buttons
-                case 'N': //NUMERICAL QUESTION TYPE
-                case 'K': //MULTIPLE NUMERICAL QUESTION
                 case 'Q': //MULTIPLE SHORT TEXT
                 case ';': //ARRAY (Multi Flexi) Text
                 case 'S': //SHORT FREE TEXT
@@ -584,14 +607,7 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    try {
-                        var numtest = new Decimal(value);
-                        return parseFloat(numtest.valueOf());
-                    }
-                    catch(e) {
                         shown = value;
-                    }
-                    break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
                     if (typeof attr.question === 'undefined' || value == '') {
@@ -687,6 +703,9 @@ function LEMval(alias)
                             value = answerParts[0];
                         }
                         break;
+                    case 'N': //NUMERICAL QUESTION TYPE
+                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                    
                 }
             }
 
@@ -695,47 +714,28 @@ function LEMval(alias)
                 {
                     return "";
                 }
-                // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
-                if (LEMradix === ',' && onSamePage )
+                var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
+                if(checkNumericRegex.test(value) && !bNumRealValue)
                 {
-                    var regValidateNum = /^-?\d*\,?\d*$/;
-                }
-                else
-                {
-                    var regValidateNum = /^-?\d*\.?\d*$/;
-                }
-                if(!regValidateNum.test(value))
-                {
-                    if(bNumRealValue)
-                    {
-                        try {
-                            var numtest = new Decimal(value);
-                            return parseFloat(numtest.valueOf());
-                        }
-                        catch(e) {
-                            return value;
-                        }
+                    var length = value.length;
+                    var firstLetterIsNull = value.split("").shift() === '0';
+                    try{
+                        var numtest = new Decimal(value);
+                    } catch(e){
+                        var numtest = new Decimal(value.toString().replace(/,/,'.'));
                     }
-                    else
-                    {
-                        return '';
+                
+                    // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
+                    // if (LEMradix === ',' && onSamePage )
+                    // {
+                    //     value = numtest.toString().replace(/\./,',');
+                    // }
+                    value = numtest.valueOf();
+                    if(value.length < length && firstLetterIsNull){
+                        value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
                 }
-                newval=value;
-                if (LEMradix === ',') {
-                    newval = value.split(',').join('.');
-                }
-//                Already sone with regValidateNum.test(value)
-//                if (newval != parseFloat(newval)) {
-//                   return '';
-//                }
-                try {
-                    var numtest = new Decimal(value);
-                    return parseFloat(numtest.valueOf());
-                }
-                catch(e) {
-                    return value;
-                }
+                return parseFloat(value);
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
@@ -767,7 +767,7 @@ function LEMval(alias)
                 // If it's not a decimal number, just return value
                 try {
                     var decimal_safe = new Decimal(value);
-                    return parseFloat(decimal_safe.valueOf());
+                    return pad(decimal_safe,value.length);
                 }
                 catch (ex) {
                     return value;
