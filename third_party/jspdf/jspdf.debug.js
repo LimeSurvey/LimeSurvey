@@ -2039,7 +2039,11 @@
       }
       return jsPDF;
   }(typeof self !== "undefined" && self || typeof window !== "undefined" && window || undefined);
-  /*rollup-keeper-start*/window.tmp = jsPDF;
+  /*rollup-keeper-start*/
+  if(!window)
+    var window = {};
+    
+  window.tmp = jsPDF;
 
   /**
    * jsPDF AcroForm Plugin

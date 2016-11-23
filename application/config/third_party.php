@@ -325,7 +325,8 @@ return array(
         'js' => array(
             'html2canvas.js',
             // 'jspdf.debug.js'
-            'jspdf.min.js'
+            'jspdf.min.js',
+            'createpdf_worker.js'
         ),
         'depends' => array(
             'es6promise',
