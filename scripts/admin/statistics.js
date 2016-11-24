@@ -729,87 +729,61 @@ function changeGraphType (cmd, id) {
 
 }
 
-/**
- * Handlers and builders for the different question types based on their answers
- * The html has to be recreated for the jspdf to work
- */
-var elementHandlers = {
-    'thead': function(element, renderer){
 
-    }
-}
+var createPDFworker = function(tableArray){
+    "use strict";
+    return new Promise(function(res,rej){
+        var createPDF = new CreatePDF();
+        
+        $.each(tableArray, function(i,table){
+            var sizes = {h: $(table).height(), w: $(table).width()};
+            var answerObject = createPDF('sendImg', {html: table, sizes: sizes});
+        });
+        
+        createPDF('getParseHtmlPromise').then(function(resolve){
+            var answerObject = createPDF('exportPdf');
+            var newWindow = window.open(answerObject.msg,600,800);
+            res('done');
+        }, function(reject){
+            rej(arguments);
+        });
+    });
+};
 
 $(document).ready(function(){
     $('body').addClass('onStatistics');
 
-
-    $('body').on('click','#action_js_preview_to_print', function(){
-        var openWindow = window.open("about:blank","", "_blank");
-        var head = "";
-        $('head').find('link').each(function(i,item){head = head+item.outerHTML});
-        $('document').find('script').each(function(i,item){head = head+item.outerHTML});
-        var body = "";
-        $('#statisticsview').find('.statisticstable').each(function(i,item){body = body + item.outerHTML});
-
-        var html = "<html><head>" + head + "</head><body>" + body + "<body></html>" ;
-        openWindow.document.write(html);
-        $(openWindow.document).trigger('triggerReady');
-        console.log($('head'));
-    });
-
-
-    var createPDFworker = function(batchOfTables){
-        return new Promise(function(res,rej){
-            var createPDF = new CreatePDF();
-            $.each(batchOfTables, function(i,table){
-                $(window).scrollTop($(table).offset().top);
-                var sizes = {h: $(table).height(), w: $(table).width()};
-                var answerObject = createPDF('sendImg', {html: table, sizes: sizes});
-            });
-            createPDF('getParseHtmlPromise').then(function(resolve){
-                var answerObject = createPDF('exportPdf');
-                var newWindow = window.open(answerObject.msg,600,800);
-                res('done');
-            });
-        });
-    };
-
-    $('body').on('click','#action_js_export_to_pdf', function(){
-        var overlay = $('<div></div>')
-            .attr('id','overlay')
-            .css({
-                position: 'fixed', 
-                width: "100%", 
-                height:"100%", 
-                top:0,
-                "z-index" : 5000,
-                "pointer-events": 'none',
-                left:0,
-                right:0,
-                bottom:0, 
-                "background-color": "hsla(0,0%,65%,0.6)"
-            });
-        $('#statsContainerLoading').clone().css({display: 'block',position: 'fixed', top:"25%",left:0, width: "100%"}).appendTo(overlay);
-        overlay.appendTo('body');
-
-        var allTables = $('#statisticsview').find('.statisticstable');
-        var promises = [], j=0, count = allTables.length;
-        if(count <= 15){
-            promises.push(createPDFworker(allTables));
-        } else {
-            var tablePackage = [];
-            while(j<count){
-                var end = (allTables.length<=15 ? allTables.length : 15 );
-                tablePackage = allTables.splice(j, end)
-                j=j+end;
-                promises.push(createPDFworker(tablePackage));
+    $('body').on('click','.action_js_export_to_pdf', function(){
+        
+        html2canvas($(this).siblings('table')[0]).then(
+            function(canvas){
+                $('body').prepend($('<img/>').attr('src',canvas.toDataURL()));
             }
-        } 
-
-        Promise.all(promises).then(
-            function(success){overlay.remove();},
-            function(fail){console.log(fail);}
         )
+        
+        
+        // var overlay = $('<div></div>')
+        //     .attr('id','overlay')
+        //     .css({
+        //         position: 'fixed', 
+        //         width: "100%", 
+        //         height:"100%", 
+        //         top:0,
+        //         "z-index" : 5000,
+        //         "pointer-events": 'none',
+        //         left:0,
+        //         right:0,
+        //         bottom:0, 
+        //         "background-color": "hsla(0,0%,65%,0.6)"
+        //     });
+        // $('#statsContainerLoading').clone().css({display: 'block',position: 'fixed', top:"25%",left:0, width: "100%"}).appendTo(overlay);
+        // overlay.appendTo('body');
+
+        // var thisTable = $('#'+$(this).data('questionId'));
+        // createPDFworker.call(null,thisTable).then(
+        //     function(success){overlay.remove();},
+        //     function(){console.log(arguments);}
+        // )
 
 
     });
