@@ -41,7 +41,13 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     group: "sortable-"+qID,
     ghostClass: "ls-rank-placeholder",
     onSort: function (evt) {
-      updateDragDropRank(qID);
+      if($(evt.item).hasClass("disabled")){
+        /* see https://github.com/RubaXa/Sortable/issues/933 */
+        $(evt.item).appendTo('#sortable-choice-'+qID);
+       /* send a console notice 'from is undefined' in jquery.fn.sortable : must fix Sortable before */
+      }else{
+        updateDragDropRank(qID);
+      }
     }
   });
   $('#question'+qID+' .ls-remove').remove();
@@ -49,23 +55,19 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   // Adapt choice and list height
   fixChoiceListHeight(qID,samechoiceheight,samelistheight);
   // Allow users to double click to move to selections from list to list
-    $('#sortable-choice-'+qID).delegate('li','dblclick', function() {
+    $('#sortable-choice-'+qID).on('dblclick','li:not(.disabled)', function() {
       maxanswers=parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
       if($(maxanswers>0 && '#sortable-rank-'+qID+' li').length >= maxanswers) {
         sortableAlert (qID,showpopups,maxanswers);
-        if(showpopups){return false;}
+        return false;
       }
       else {
         $(this).appendTo('#sortable-rank-'+qID+'');
-        $('#sortable-choice-'+qID+'').sortable('refresh');
-        $('#sortable-rank-'+qID+'').sortable('refresh');
       }
       updateDragDropRank(qID);
     });
-    $('#sortable-rank-'+qID).delegate('li','dblclick', function() {
+    $('#sortable-rank-'+qID).on('dblclick','li', function() {
       $(this).appendTo('#sortable-choice-'+qID+'');
-      $('#sortable-choice-'+qID+'').sortable('refresh');
-      $('#sortable-rank-'+qID+'').sortable('refresh');
       updateDragDropRank(qID);
     });
   }
@@ -76,16 +78,11 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
  * @param {number} qId The qid of the question where apply.
  */
 function updateDragDropRank(qID){
-    var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
-    var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
-    var relevancename= "relevance"+$("#ranking-"+qID+"-name").text().trim();
-  var rankingnamewidth=rankingname.length;
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
+  var relevancename= "relevance"+$("#ranking-"+qID+"-name").text().trim();
   $('#question'+qID+' .select-item select').val('');
   $('#sortable-rank-'+qID+' li').each(function(index) {
-    // Get value of ranked item
-    var liID = $(this).attr("id");
-    liValue = liID.substr(rankingnamewidth);
-    $('#question'+qID+' .select-item select').eq(index).val(liValue);
+    $('#question'+qID+' .select-item select').eq(index).val($(this).data("value"));
   });
   // Update #relevance and lauch checkconditions function
   $("[id^=" + relevancename + "]").val('0');
@@ -97,9 +94,9 @@ function updateDragDropRank(qID){
       }
       $(this).trigger("change",{ source : 'dragdrop'});
   });
-    $('#sortable-rank-'+qID+' li').removeClass("text-error");
-    $('#sortable-choice-'+qID+' li').removeClass("text-error");
-    $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("text-error");
+  $('#sortable-rank-'+qID+' li').removeClass("text-error");
+  $('#sortable-choice-'+qID+' li').removeClass("text-error");
+  $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("text-error");
 }
 /**
  * Show an alert if needed
@@ -176,15 +173,21 @@ function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
 function triggerEmRelevanceSortable()
 {
   $(".sortable-item").on('relevance:on',function(event,data) {
-    if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
-    data = $.extend({style:'hidden'}, data);
+    //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
+    //~ data = $.extend({style:'hidden'}, data);
     $(event.target).closest(".ls-answers").find("option[value="+$(event.target).data("value")+"]").prop('disabled',false);
-    $(event.target).removeClass("disabled").prop('disabled',false);
+    $(event.target).removeClass("disabled");
   });
   $(".sortable-item").on('relevance:off',function(event,data) {
-    if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
-    data = $.extend({style:'hidden'}, data);
+    //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
+    //~ data = $.extend({style:'hidden'}, data);
     $(event.target).closest(".ls-answers").find("option[value="+$(event.target).data("value")+"]").prop('disabled',true);
-    $(event.target).addClass("disabled").prop('disabled',true);
+    $(event.target).addClass("disabled");
+    /* reset already ranked item */
+    if($(event.target).parent().hasClass("sortable-rank")){
+      $(event.target).appendTo($(event.target).closest(".answers-list").find(".sortable-choice"));
+      var qID=$(event.target).closest("[id^='question']").attr('id').replace("question","");
+      updateDragDropRank(qID);
+    }
   });
 }

@@ -8,7 +8,7 @@
 /* This allow us to use minified version according to debug */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version */
-$minVersion = ($debug<=2) ? ".min": "";
+$minVersion = ($debug<2) ? ".min": "";
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
 if(isset($_GET['isAjax'])){
