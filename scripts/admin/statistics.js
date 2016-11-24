@@ -757,8 +757,24 @@ $(document).ready(function(){
         console.log($('head'));
     });
 
+
+    var createPDFworker = function(batchOfTables){
+        return new Promise(function(res,rej){
+            var createPDF = new CreatePDF();
+            $.each(batchOfTables, function(i,table){
+                $(window).scrollTop($(table).offset().top);
+                var sizes = {h: $(table).height(), w: $(table).width()};
+                var answerObject = createPDF('sendImg', {html: table, sizes: sizes});
+            });
+            createPDF('getParseHtmlPromise').then(function(resolve){
+                var answerObject = createPDF('exportPdf');
+                var newWindow = window.open(answerObject.msg,600,800);
+                res('done');
+            });
+        });
+    };
+
     $('body').on('click','#action_js_export_to_pdf', function(){
-        var createPDF = new CreatePDF();
         var overlay = $('<div></div>')
             .attr('id','overlay')
             .css({
@@ -776,38 +792,25 @@ $(document).ready(function(){
         $('#statsContainerLoading').clone().css({display: 'block',position: 'fixed', top:"25%",left:0, width: "100%"}).appendTo(overlay);
         overlay.appendTo('body');
 
-        // createPDF.addEventListener('message', function(e){
-        //     console.log(e);
-        //     var data = e.data;
-        //     if(data.success == true){
-        //         if(data.type == 'pdfdata'){
-        //         } else if(data.type == 'progress') {
-        //             console.log(data.msg+"% of tables added");
-        //         } else if(data.type == 'pdfdata') {
-        //             return document.location.href = data.msg;
-        //         } else {
-        //             console.log(data.msg);
-        //         }
-        //     }
-        // });
+        var allTables = $('#statisticsview').find('.statisticstable');
+        var promises = [], j=0, count = allTables.length;
+        if(count <= 15){
+            promises.push(createPDFworker(allTables));
+        } else {
+            var tablePackage = [];
+            while(j<count){
+                var end = (allTables.length<=15 ? allTables.length : 15 );
+                tablePackage = allTables.splice(j, end)
+                j=j+end;
+                promises.push(createPDFworker(tablePackage));
+            }
+        } 
 
-        var sizes = [], j=0;
-        $('#statisticsview').find('.statisticstable').each(function(i, table){
-            console.log("Selecting the table");
-            $(window).scrollTop($(table).offset().top);
-            var sizes = {h: $(table).height(), w: $(table).width()};
-            var answerObject = createPDF('sendImg', {html: table, sizes: sizes});
-            console.log(answerObject);
-            // html2canvas(table).then(function(canvas){
-            //     createPDF.postMessage({method: 'sendImg',  object : {image: canvas.toDataURL(), sizes : sizes[j]}});
-            //     j++;
-            // })
-        });
-        createPDF('getParseHtmlPromise').then(function(resolve){
-            var answerObject = createPDF('exportPdf');
-            console.log(answerObject);
-            return document.location.href = answerObject.msg;
-        });
+        Promise.all(promises).then(
+            function(success){overlay.remove();},
+            function(fail){console.log(fail);}
+        )
+
 
     });
 });
