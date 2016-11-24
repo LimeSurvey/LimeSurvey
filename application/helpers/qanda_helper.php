@@ -2137,8 +2137,13 @@ function do_ranking($ia)
 
         $inputnames[]=$myfname;
     }
-
-    Yii::app()->getClientScript()->registerPackage("question-ranking");
+    if(!App()->getClientScript()->isScriptRegistered("triggerEmRelevanceSortable")){
+        Yii::app()->getClientScript()->registerPackage("question-ranking");
+        App()->getClientScript()->registerScript("triggerEmRelevanceSortable","triggerEmRelevanceSortable()",CClientScript::POS_END);
+        $rankingTranslation='LSvar.lang.rankhelp="'.gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js').'";';
+        App()->getClientScript()->registerScript("rankingTranslation",$rankingTranslation,CClientScript::POS_BEGIN);
+    }
+    App()->getClientScript()->registerScript("doDragDropRank{$ia[0]}","doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]})",CClientScript::POS_END);
 
     if(trim($aQuestionAttributes['choice_title'][App()->language]) != '')
     {
@@ -2156,8 +2161,6 @@ function do_ranking($ia)
     {
         $rank_title=gT("Your Ranking",'js');
     }
-    // hide_tip is managed by css with EM
-    $rank_help = gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
 
     $answer .= doRender('/survey/questions/answer/ranking/answer', array(
                     'coreClass'         => $coreClass,
@@ -2174,7 +2177,6 @@ function do_ranking($ia)
                     'answers'           => $answers,
                     'choice_title'      => $choice_title,
                     'rank_title'        => $rank_title,
-                    'rank_help'         => $rank_help,
                     'showpopups'        => $aQuestionAttributes["showpopups"],
                     'samechoiceheight'  => $aQuestionAttributes["samechoiceheight"],
                     'samelistheight'    => $aQuestionAttributes["samelistheight"],

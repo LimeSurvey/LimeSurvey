@@ -16,12 +16,12 @@
           box-sizing: content-box;
 }
 .sortable-list .ls-choice {
-    border: 1px solid #CCC;
-    background:#fff; /* Don't found a good boostrap color : put 'common' */
-    min-height: 1.5em;
-    padding:0.3em;
-    margin:0;
     cursor:move;
+    cursor:grabbing;
+    border-radius:0;
+}
+.sortable-list .ls-choice.sortable-item {
+    border-radius:0;
 }
 .list-samechoiceheight .ls-choice,
 .list-samelistheight .ls-choice{
@@ -30,5 +30,5 @@
           box-sizing: content-box;
 }
 .sortable-list .ls-rank-placeholder {
-    border: 1px dotted #CCC;
+    opacity:0.5;
 }

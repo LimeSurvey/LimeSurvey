@@ -8,34 +8,23 @@
 /* This allow us to use minified version according to debug */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version */
-$minVersion = ($debug<2) ? ".min": "";
+$minVersion = ($debug<=2) ? ".min": "";
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
-if (!isset($_GET['isAjax']))
-{
-    $aJquery = array(
-        'basePath' => 'third_party.jquery',
-        'js' => array(
-            'jquery-3.1.1'.$minVersion.'.js',
-            'jquery-migrate-3.0.0'.$minVersion.'.js',
-        )
-    );
-}
-else
-{
-    $aJquery = array(
-        'basePath' => 'third_party.jquery',
-        'js' => array(
-
-        ),
-        );
+if(isset($_GET['isAjax'])){
+    return array();
 }
 
 return array(
 
     // jQuery
-    'jquery' => $aJquery,
-
+    'jquery' => array(
+        'basePath' => 'third_party.jquery',
+        'js' => array(
+            'jquery-3.1.1'.$minVersion.'.js',
+            'jquery-migrate-3.0.0'.$minVersion.'.js',
+        )
+    ),
     // Bootstrap
     // This package replace the Yiistrap register() function
     // Then instead of using the composer dependency system for templates (will be used for LS3)
@@ -332,5 +321,15 @@ return array(
             'jquery',
             'bootstrap'
         )
-    )
+    ),
+    /* Used by ranking question type */
+    'rubaxa-sortable' => array(
+        'basePath' => 'third_party.rubaxa-sortable',
+        'js' => array(
+            'jquery.fn.sortable'.$minVersion.'.js'
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    ),
 );

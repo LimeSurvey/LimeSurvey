@@ -6,6 +6,10 @@
  * core path is application/core/packages
  *
  */
+/* needed ? @see third_party.php */
+if(isset($_GET['isAjax'])){
+    return array();
+}
 return array(
     /* For public template functionnality */
     'limesurvey-public'=>array(
@@ -33,8 +37,7 @@ return array(
             'ranking.js',
         ),
         'depends' => array(
-            'jqueryui',
-            'jquery-touch-punch',
+            'rubaxa-sortable',
             'jquery-actual',
         )
     ),
@@ -51,4 +54,5 @@ return array(
             'bootstrap-slider',
         )
     ),
+
 );

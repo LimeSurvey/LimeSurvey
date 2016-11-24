@@ -14,7 +14,7 @@
         <?php echo $labeltext;?>
     </label>
     <div class="col-sm-8">
-        <select  class='form-control ' name="<?php echo $myfname;?>" id="answer<?php echo $myfname;?>">
+        <select  class='form-control' name="<?php echo $myfname;?>" id="answer<?php echo $myfname;?>">
             <?php foreach($options as $option): ?>
                 <option value="<?php echo $option['value'];?>" <?php echo $option['selected'];?> class='<?php echo $option['classes']?>'>
                     <?php echo $option['optiontext'];?>

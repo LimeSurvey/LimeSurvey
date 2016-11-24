@@ -19,68 +19,33 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
   var rankingnamewidth=rankingname.length;
   //Add a class to the question
-  $('#question'+qID+'').addClass('dragDropRanking');
+  $('#question'+qID+'').addClass('sortable-activated');
   // Hide the default answers list but display for media oral or screen reader
   // We are in javascript, then default tip can be replaced
-  $('#question'+qID+' .em_default').html("<div class='sr-only'>"+$('#question'+qID+' .em_default').html()+"</div><div aria-hidden='true'>"+aRankingTranslations.rankhelp+"</div>");
+  $('#question'+qID+' .em_default').html("<div class='sr-only'>"+$('#question'+qID+' .em_default').html()+"</div><div aria-hidden='true'>"+LSvar.lang.rankhelp+"</div>");
   $('#question'+qID+' .answers-list').on("change",".select-item",{source:false},function(event,data){
     data = data || event.data;
     if(data.source!='dragdrop')
       loadDragDropRank(qID);;
   });
 
-  // Add connected sortables elements to the question
-  /* removing existing li */
-  $('#sortable-choice-'+qID+' li, #sortable-rank-'+qID+' li').remove();
+  /* Update rank according to actual value */
 
-  // Get the list of choices from the LimeSurvey question and copy them as items into the sortable choices list
-  var ranked =[];
-  $('#question'+qID+' .answers-list .select-item option:selected').each(function(index, Element) {
-    if($(this).val()!=''){
-      ranked.push($(this).val());
-      htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
-      var liCode = '<li class="ls-choice" id="'+rankingname+$(this).val()+'">' + htmloption + '</li>'
-      $(liCode).appendTo('#sortable-rank-'+qID+'');
-    }
-  });
-  $('#question'+qID+' .answers-list .select-item:first option').each(function(index, Element) {
-    var thisvalue=$(this).val();
-    if(thisvalue!='' && jQuery.inArray(thisvalue,ranked)<0){
-        htmloption=$("#htmlblock-"+qID+'-'+$(this).val()).html();
-        var liCode = '<li class="ls-choice" id="'+rankingname+$(this).val()+'">' + htmloption + '</li>'
-        $(liCode).appendTo('#sortable-choice-'+qID+'');
-    }
-  });
   loadDragDropRank(qID);
-
   // Set up the connected sortable
-  $('#sortable-choice-'+qID+', #sortable-rank-'+qID+'').sortable({
-    connectWith: '.connectedSortable'+qID+'',
-    forceHelperSize: true,
-    forcePlaceholderSize: true,
-    start: function (e, ui) {
-      ui.placeholder.html("&nbsp;");
-    },
-    placeholder: 'ui-sortable-placeholder ls-rank-placeholder',
-    helper: 'clone',
-    delay: 200,
-    revert: 50,
-    receive: function(event, ui) {
-      if(ui.sender){ // sender is set only if different
-          ui.item
-      }
-      maxanswers=parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
-      if($(this).attr("id")=='sortable-rank-'+qID && $(maxanswers>0 && '#sortable-rank-'+qID+' li').length > maxanswers) {
-        sortableAlert (qID,showpopups,maxanswers);
-        if(showpopups){$(ui.sender).sortable('cancel');}
-      }
-      },
-    stop: function(event, ui) {
-      $('#sortable-choice-'+qID+'').sortable('refresh');
-      $('#sortable-rank-'+qID+'').sortable('refresh');
+  $('#sortable-choice-'+qID).sortable({
+    group: "sortable-"+qID,
+    ghostClass: "ls-rank-placeholder",
+  });
+  $('#sortable-rank-'+qID).sortable({
+    group: "sortable-"+qID,
+    ghostClass: "ls-rank-placeholder",
+    onSort: function (evt) {
       updateDragDropRank(qID);
     }
-  }).disableSelection();
+  });
+  $('#question'+qID+' .ls-remove').remove();
+
   // Adapt choice and list height
   fixChoiceListHeight(qID,samechoiceheight,samelistheight);
   // Allow users to double click to move to selections from list to list
@@ -103,9 +68,6 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
       $('#sortable-rank-'+qID+'').sortable('refresh');
       updateDragDropRank(qID);
     });
-  $(function() { // Update height for IE7, maybe for other function too
-    fixChoiceListHeight(qID,samechoiceheight,samelistheight);
-  });
   }
 
 /**
@@ -135,9 +97,9 @@ function updateDragDropRank(qID){
       }
       $(this).trigger("change",{ source : 'dragdrop'});
   });
-    $('#sortable-rank-'+qID+' li').removeClass("error");
-    $('#sortable-choice-'+qID+' li').removeClass("error");
-    $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("error");
+    $('#sortable-rank-'+qID+' li').removeClass("text-error");
+    $('#sortable-choice-'+qID+' li').removeClass("text-error");
+    $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("text-error");
 }
 /**
  * Show an alert if needed
@@ -186,25 +148,43 @@ function loadDragDropRank(qID){
  * @param {number} qId The qid of the question where apply.
  * @param {bool} samechoiceheight
  * @param {bool} samelistheight
+ * actual is still need, @see Additional Notes at http://api.jquery.com/height/
+ * can be replaced by http://stackoverflow.com/a/2548882/2239406 for exemple -jquery3 don't do the job)
  */
 function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
   if(samechoiceheight)
   {
     var maxHeight=0;
-    $('.connectedSortable'+qID+' li').each(function(){
+    $('#sortable-choice-'+qID+' li,#sortable-rank-'+qID+' li').each(function(){
       if ($(this).actual('height')>maxHeight){
         maxHeight=$(this).actual('height');
       }
     });
-    $('.connectedSortable'+qID+' li').css('min-height',maxHeight+'px');
+    $('#sortable-choice-'+qID+' li,#sortable-rank-'+qID+' li').css('min-height',maxHeight+'px');
   }
   if(samelistheight)
   {
     var totalHeight=0;
-    $('.connectedSortable'+qID+' li').each(function(){
+    $('#sortable-choice-'+qID+' li,#sortable-rank-'+qID+' li').each(function(){
       totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});/* Border not inside */
     });
     /* Add the padding to min-height */
-    $('.connectedSortable'+qID).css('min-height',totalHeight+'px').addClass("ls-sameheight");
+    $('#sortable-choice-'+qID+',#sortable-rank-'+qID).css('min-height',totalHeight+'px').addClass("ls-sameheight");
   }
+}
+
+function triggerEmRelevanceSortable()
+{
+  $(".sortable-item").on('relevance:on',function(event,data) {
+    if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
+    data = $.extend({style:'hidden'}, data);
+    $(event.target).closest(".ls-answers").find("option[value="+$(event.target).data("value")+"]").prop('disabled',false);
+    $(event.target).removeClass("disabled").prop('disabled',false);
+  });
+  $(".sortable-item").on('relevance:off',function(event,data) {
+    if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
+    data = $.extend({style:'hidden'}, data);
+    $(event.target).closest(".ls-answers").find("option[value="+$(event.target).data("value")+"]").prop('disabled',true);
+    $(event.target).addClass("disabled").prop('disabled',true);
+  });
 }
