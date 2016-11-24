@@ -767,8 +767,8 @@ $(document).ready(function(){
         // var thisTable = $('#'+$(this).data('questionId'));
         // console.log(thisTable.html());    
         
-        
-        var overlay = $('<div></div>')
+        var $self = $(this),
+            overlay = $('<div></div>')
             .attr('id','overlay')
             .css({
                 position: 'fixed', 
@@ -785,10 +785,15 @@ $(document).ready(function(){
         $('#statsContainerLoading').clone().css({display: 'block',position: 'fixed', top:"25%",left:0, width: "100%"}).appendTo(overlay);
         overlay.appendTo('body');
 
-        var thisTable = $('#'+$(this).data('questionId'));
-        thisTable.find('button').css({display:'none'});
+        var thisTable = $('#'+$self.data('questionId'));
+        $self.css({display:'none'});
+        thisTable.find('.chartjs-buttons').closest('tr').css({display:'none'});
         createPDFworker.call(null,thisTable).then(
-            function(success){overlay.remove(); thisTable.find('button').css({display:''});},
+            function(success){
+                overlay.remove(); 
+                thisTable.find('.chartjs-buttons').closest('tr').css({display:''});
+                $self.css({display:''});
+            },
             function(){console.log(arguments);}
         )
 
