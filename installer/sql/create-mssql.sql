@@ -610,4 +610,4 @@ CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[stat
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '260');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '261');

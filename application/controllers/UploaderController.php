@@ -311,34 +311,14 @@ class UploaderController extends SurveyController {
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template'])."/";
         App()->clientScript->registerScript('sNeededScriptVar',$sNeededScriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('sLangScriptVar',$sLangScriptVar,CClientScript::POS_HEAD);
+        $oTemplate = Template::model()->getInstance('',$surveyid);
+        Yii::app()->clientScript->registerPackage( 'survey-template' );
+
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js');
         App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
         App()->bootstrap->register();
-
-        if (file_exists($sTemplateDir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
-        {
-            Yii::app()->getClientScript()->registerCssFile("{$sTemplateUrl}jquery-ui-custom.css");
-        }
-        elseif(file_exists($sTemplateDir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
-        {
-            Yii::app()->getClientScript()->registerCssFile("{$sTemplateUrl}jquery-ui.css");
-        }
-        else
-        {
-            Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
-        }
-
-        $oTemplate = Template::model()->getInstance('', $aSurveyInfo['sid']);
-        foreach ($oTemplate->packages as $package)
-        {
-            App()->getClientScript()->registerPackage((string) $package);
-        }
-        foreach ($oTemplate->config->files->css->filename as $cssFile)
-        {
-            App()->clientScript->registerCssFile("{$sTemplateUrl}" . (string) $cssFile);
-        }
 
         $header = getHeader($meta);
 
@@ -351,6 +331,7 @@ class UploaderController extends SurveyController {
         $qidattributes=getQuestionAttributeValues($qid);
         $qidattributes['max_filesize']=floor(min($qidattributes['max_filesize']*1024,getMaximumFileUploadSize())/1024);
         $body = '</head><body class="uploader">
+            <div class="model-container clearfix">
                 <div id="notice" class="text-center"></div>
                 <input type="hidden" id="ia"                value="'.$fn.'" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
@@ -368,11 +349,11 @@ class UploaderController extends SurveyController {
                     <button id="button1" class="btn btn-default" type="button" >'.gT("Select file").'</button>
                 </div>
 
-                <p class="uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
+                <p class="alert alert-info uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
                 <div class="uploadstatus" id="uploadstatus"></div>
 
                 <!-- The list of uploaded files -->
-
+            </div>
             </body>
         </html>';
         App()->getClientScript()->render($body);

@@ -1,37 +1,26 @@
 <!-- Question -->
-    <div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} col-xs-12 question-container">
+<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} question-container row">
 
-        <!-- Question title -->
-        <div class="row question-wrapper question-title-container">
-            <div class="col-sm-12 questiontext">
-                <div class="qnumcode question-text">
-                {QUESTION_MANDATORY}{QUESTION_NUMBER} {QUESTION_CODE}{QUESTION_TEXT}
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Question valid message -->
-        <div class="row question-wrapper">
-            <div class="col-sm-12 questionvalidcontainer">
-                {QUESTION_VALID_MESSAGE}
-                {QUESTION_MAN_MESSAGE}
-                {QUESTION_FILE_VALID_MESSAGE}
-            </div>
-        </div>
-
-
-        <!-- Answer -->
-        <div class="row question-wrapper answer-container">
-            <div class="col-sm-12 answer">
-                {ANSWER}
-            </div>
-        </div>
-
-        <!-- Question help -->
-        <div class="row question-wrapper question-help-container">
-            <div class="col-sm-12 question-help">
-                {QUESTIONHELP}
-            </div>
-        </div>
+    <!-- Question text -->
+    <div class="question-title-container bg-primary col-xs-12">
+      {QUESTION_MANDATORY}
+      <span class='text-muted question-number'>{QUESTION_NUMBER}</span>
+      <span class='text-muted question-code'>{QUESTION_CODE}</span>
+      <div class="question-text">{QUESTION_TEXT}</div>
     </div>
+
+    <!-- LimeSurvey valid message and help -->
+    <div class="question-valid-container bg-primary text-info col-xs-12">
+      {QUESTION_VALID_MESSAGE}
+      {QUESTION_MAN_MESSAGE}
+      {QUESTION_FILE_VALID_MESSAGE}
+    </div>
+
+    <!-- Answer -->
+    <div class="answer-container  col-xs-12">
+        {ANSWER}
+    </div>
+
+    <!-- Survey question help -->
+    <div class="question-help-container text-info col-xs-12">{QUESTIONHELP}</div>
+</div>

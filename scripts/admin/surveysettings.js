@@ -1,7 +1,7 @@
 // $Id: surveysettings.js 9757 2011-02-09 20:52:33Z c_schmitz $
 
     $("#copysurveyform").submit(copysurvey);
-    
+
 var defineActions = function(dataArray){
     var buttonEdit = $('<button><i class="fa fa-edit"></i></button>');
     var buttonDelete = $('<button><i class="fa fa-trash"></i></button>');
@@ -20,7 +20,7 @@ var defineActions = function(dataArray){
         .data('qid',(dataArray.qid || null))
         .data('sqid',(dataArray.qid || null))
         .appendTo(container);
-    
+
     return container.html();
 };
 
@@ -40,7 +40,7 @@ $(document).ready(function(){
     $("[data-copy]").each(function(){
         $(this).html($("#"+$(this).data('copy')).html());
     });
-    
+
     $.ajax({
         url : jsonUrl,
         dataType: 'json',
@@ -88,41 +88,41 @@ $(document).ready(function(){
             $("#urlparams").css('width','100%')
                 .on('click', '.surveysettings_edit_intparameter', function(e){
                     e.preventDefault();
-                    // console.log(($(this).closest('tr').data('rawdata')));  
-                    editParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));                  
+                    // console.log(($(this).closest('tr').data('rawdata')));
+                    editParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));
                 })
                 .on('click', '.surveysettings_delete_intparameter', function(e){
                     e.preventDefault();
                    deleteParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));
                 });
-                
+
         },
         error: console.log
     }   );
 
-    $("#dlgEditParameter").dialog({ 
-        autoOpen: false, 
-        width: 700 
-    }); 
- 
-    $('#btnCancelParams').click(function(){ 
-        $("#dlgEditParameter").dialog("close"); 
-    }); 
- 
-    $('#btnSaveParams').click(saveParameter); 
-    $('#addnewsurvey').submit(PostParameterGrid); 
-    $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form 
-     
-    $( "#tabs" ).bind( "tabsactivate", function(event, ui) { 
-        if (ui.newTab.index() > 4)    // Hide on import and copy tab, otherwise show 
-        { 
-            $('#btnSave').hide(); 
-        } 
-        else 
-        { 
-            $('#btnSave').show(); 
-        } 
-    }); 
+    $("#dlgEditParameter").dialog({
+        autoOpen: false,
+        width: 700
+    });
+
+    $('#btnCancelParams').click(function(){
+        $("#dlgEditParameter").dialog("close");
+    });
+
+    $('#btnSaveParams').click(saveParameter);
+    $('#addnewsurvey').submit(PostParameterGrid);
+    $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form
+
+    $( "#tabs" ).bind( "tabsactivate", function(event, ui) {
+        if (ui.newTab.index() > 4)    // Hide on import and copy tab, otherwise show
+        {
+            $('#btnSave').hide();
+        }
+        else
+        {
+            $('#btnSave').show();
+        }
+    });
 });
 /**
  * Bind to submit event
@@ -141,7 +141,7 @@ function PostParameterGrid()
         jsonString = JSON.stringify(rowsData);
     } catch(e){}
     $('#allurlparams').val(jsonString);
-    
+
     // if (($('#allowregister').val()=='Y' || $.trim($('#emailresponseto').val())!='' || $.trim($('#emailnotificationto').val())!='')&& $.trim($('#adminemail').val())=='')
     // {
     //     alert (sAdminEmailAddressNeeded);
@@ -171,18 +171,18 @@ function saveParameter()
     } catch(e){
         rowData = {};
     }
-    
+
 
     if ($("#dlgEditParameter").data('action')=='add') {
        var sGUID = guidGenerator();
        $("#urlparams").DataTable().row.add({
-            "id"                 : sGUID,            
+            "id"                 : sGUID,
             "actionBtn"          : defineActions({
                 id   : sGUID,
-                sid  : iSurveyId, 
+                sid  : iSurveyId,
                 qid  : $("#targetquestion").val().split('-').shift() || "",
                 sqid : $("#targetquestion").val().split('-').pop()|| ""
-            }),            
+            }),
             "parameter"          : sParamname,
             "targetQuestionText" : $("#targetquestion option:selected").text() || rowData.targetQuestionText,
             "sid"                : iSurveyId,
@@ -191,13 +191,13 @@ function saveParameter()
        });
     } else {
         var rowData = {
-            "id"                 : rowData.id,            
+            "id"                 : rowData.id,
             "actionBtn"          : defineActions({
                 id  : rowData.id,
-                sid : iSurveyId, 
+                sid : iSurveyId,
                 qid : rowData.qid,
                 sqid: rowData.sqid
-            }),            
+            }),
             "parameter"          : sParamname,
             "targetQuestionText" : $("#targetquestion option:selected").text()  || rowData.targetQuestionText,
             sid                  : iSurveyId,
@@ -238,24 +238,10 @@ function deleteParameter(event, aRowData){
 
 function templatechange(template)
 {
+    /* @todo : fix it */
     standardtemplates=[
-        'default',
-        'blue_sky',
-        'metro_ode',
-        'electric_black',
-        'night_mode',
-        'flat_and_modern',
-        'news_paper',
-        'light_and_shadow',
-        'material_design',
-        'readable',
-        'sandstone',
-        'minimalist',
-        'gunmetal',
-        'super_blue',
-        'ubuntu_orange',
-        'yeti'
-];
+        'default'
+    ];
     if (in_array(template,standardtemplates))
     {
         $("#preview").attr('src',standardtemplaterooturl+'/'+template+'/preview.png');

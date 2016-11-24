@@ -21,7 +21,16 @@
 */
 class RegisterController extends LSYii_Controller {
 
-    public $layout = 'bare';
+    /* @var string : Default layout when using render : leave at bare actually : just send content */
+    public $layout= 'survey';
+    /* @var string the template name to be used when using layout */
+    public $sTemplate= 'default';
+    /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
+    public $aReplacementData= array();
+    /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
+    public $aGlobalData= array();
+    /* @var boolean did we need survey.pstpl when using layout */
+    public $bStartSurvey= true;
 
     /**
     * The array of errors to be displayed
@@ -179,9 +188,9 @@ class RegisterController extends LSYii_Controller {
         App()->getPluginManager()->dispatchEvent($event);
         // Allow adding error or replace error with plugin ?
         $this->aRegisterErrors=$event->get('aRegistersErrors');
-        if(!is_null($event->get('registerForm')))
+        if(!is_null($event->get('registerForm'))){
             return $event->get('registerForm');
-
+        }
         $aFieldValue=$this->getFieldValue($iSurveyId);
         $aRegisterAttributes=$this->getExtraAttributeInfo($iSurveyId);
         $aData['iSurveyId'] = $iSurveyId;
@@ -191,32 +200,25 @@ class RegisterController extends LSYii_Controller {
         $aData['sEmail'] = $aFieldValue['sEmail'];
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes']=$aRegisterAttributes;
-        $aData['urlAction']=App()->createUrl('register/index',array('sid'=>$iSurveyId));
         $aData['bCaptcha'] = function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha']);
-        $aReplacement['REGISTERFORM']=$this->renderPartial('registerForm',$aData,true);
+        $aReplacement['REGISTERFORM'] = CHtml::form(App()->createUrl('register/index',array('sid'=>$iSurveyId)),'post',array('id'=>'limesurvey', 'role' => 'form', 'class' => 'ls-form'));
+        $aReplacement['REGISTERFORM'].= $this->renderPartial('/survey/frontpage/registerForm/form',$aData,true);
+        $aReplacement['REGISTERFORM'].= CHtml::endForm();
         if(is_array($this->aRegisterErrors))
         {
-            $sRegisterError="<div class='alert alert-danger' role='alert'>"
-            .implode('<br />',$this->aRegisterErrors)
-            ."</div>";
+            $aReplacement['REGISTERERROR']=$this->renderPartial("/survey/frontpage/registerForm/error",array('aErrors'=>$this->aRegisterErrors),true);
         }
         else
         {
-            $sRegisterError='';
+            $aReplacement['REGISTERERROR']='';
         }
-
-        $aReplacement['REGISTERERROR'] = $sRegisterError;
-        $aReplacement['REGISTERMESSAGE1'] = gT("You must be registered to complete this survey");
-        if($sStartDate=$this->getStartDate($iSurveyId))
-            $aReplacement['REGISTERMESSAGE2'] = sprintf(gT("You may register for this survey but you have to wait for the %s before starting the survey."),$sStartDate)."<br />\n".gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
-        else
-            $aReplacement['REGISTERMESSAGE2'] = gT("You may register for this survey if you wish to take part.")."<br />\n".gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
-
+        $aReplacement['REGISTERMESSAGE1']=$this->renderPartial("/survey/frontpage/registerForm/heading",array(),true);
+        $aReplacement['REGISTERMESSAGE2']=$this->renderPartial("/survey/frontpage/registerForm/message",array('sStartDate'=>$this->getStartDate($iSurveyId)),true);
         $aData['thissurvey'] = $aSurveyInfo;
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
         $aData['languagechanger'] = makeLanguageChangerSurvey(App()->language);
         $oTemplate = Template::model()->getInstance(null, $iSurveyId);
-        return templatereplace(file_get_contents($oTemplate->viewPath . "/register.pstpl"),$aReplacement,$aData);
+        return templatereplace(file_get_contents($oTemplate->pstplPath . "/register.pstpl"),$aReplacement,$aData);
     }
 
     /**
@@ -318,19 +320,18 @@ class RegisterController extends LSYii_Controller {
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $oToken->sent=$today;
             $oToken->save();
-            $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
-                . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
-                . "<p>{$this->sMailMessage}</p>\n"
-                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
-                . "</div>\n";
+            $aMessage=array();
+            $aMessage['mail-thanks']=gT("Thank you for registering to participate in this survey.");
+            $aMessage['mail-message']=$this->sMailMessage;
+            $aMessage['mail-contact']=sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail']);
+            $this->sMessage=$this->renderPartial('/survey/system/message',array('aMessage'=>$aMessage),true);
         }
         else
         {
-            $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
-                . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
-                . "<p>".gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.")."</p>\n"
-                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
-                . "</div>\n";
+            $aMessage['mail-thanks']=gT("Thank you for registering to participate in this survey.");
+            $aMessage['mail-message-error']=gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
+            $aMessage['mail-contact']=sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail']);
+            $this->sMessage=$this->renderPartial('/survey/system/message',array('aMessage'=>$aMessage),true);
         }
         // Allways return true : if we come here, we allways trye to send an email
         return true;
@@ -461,39 +462,46 @@ class RegisterController extends LSYii_Controller {
     private function display($iSurveyId)
     {
         $sLanguage=Yii::app()->language;
-        $aData['surveyid']=$surveyid=$iSurveyId;
-        $aData['thissurvey']=getSurveyInfo($iSurveyId,$sLanguage);
-        $sTemplate=getTemplatePath($aData['thissurvey']['template']);
+        $this->aGlobalData['surveyid']=$surveyid=$iSurveyId;
+        $this->aGlobalData['thissurvey']=getSurveyInfo($iSurveyId,$sLanguage);
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
-        $aData['sitename']=Yii::app()->getConfig('sitename');
-        $aData['aRegisterErrors']=$this->aRegisterErrors;
-        $aData['sMessage']=$this->sMessage;
+        $this->aReplacementData['sitename']=Yii::app()->getConfig('sitename');
+        $this->aReplacementData['aRegisterErrors']=$this->aRegisterErrors;
+        $this->aReplacementData['sMessage']=$this->sMessage;
 
-            $oTemplate = Template::model()->getInstance('', $iSurveyId);
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
-        sendCacheHeaders();
-        doHeader();
-        $aViewData['sTemplate']=$sTemplate;
+        $oTemplate = Template::model()->getInstance('', $iSurveyId);
+        Yii::app()->clientScript->registerPackage( 'survey-template' );
+
+        $this->sTemplate=$oTemplate->name;
         if(!$this->sMessage){
-            $aData['languagechanger']=makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
-            $aViewData['content']=self::getRegisterForm($iSurveyId);
+            $this->aGlobalData['languagechanger']=makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
+            $this->aReplacementData['content']=self::getRegisterForm($iSurveyId);
         }else{
-            $aViewData['content']=templatereplace($this->sMessage);
+            // Must use message.pstpl
+            $this->aReplacementData['content']=templatereplace(file_get_contents($oTemplate->pstplPath . "/message.pstpl"),
+                array(
+                    'MESSAGEID'=>'register-message',
+                    'ERROR'=>'',
+                    'MESSAGE'=>$this->sMessage,
+                )
+                ,$this->aGlobalData
+            );
+
         }
-        $aViewData['aData']=$aData;
         // Test if we come from index or from register
         if(empty(App()->clientScript->scripts)){
+            /* This surely can be moved to layout , but remove iot from surveyController before */
             $oTemplate = Template::model()->getInstance('', $iSurveyId);
             Yii::app()->clientScript->registerPackage( 'survey-template' );
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
             useFirebug();
-            $this->render('/register/display',$aViewData);
+            $this->layout='survey';
+            $this->render('/survey/system/display',$this->aReplacementData);
         }else{
             // Survey/index need renderPartial
-            echo $this->renderPartial('/register/display',$aViewData, true, true);
+            echo $this->render('/survey/system/display',$this->aReplacementData, true, true);
         }
-        doFooter();
     }
 }

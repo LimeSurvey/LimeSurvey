@@ -27,7 +27,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     * @link https://manual.limesurvey.org/Database_versioning for explanations
     * @var array $aCriticalDBVersions An array of cricital database version.
     */
-    $aCriticalDBVersions=array();
+    $aCriticalDBVersions=array(261);
     $aAllUpdates=range($iOldDBVersion+1,Yii::app()->getConfig('dbversionnumber'));
     // If trying to update silenty check if it is really possible
     if ($bSilent && ($iOldDBVersion<258 || count(array_intersect($aCriticalDBVersions,$aAllUpdates))>0))
@@ -1433,16 +1433,60 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
         }
+
         if ($iOldDBVersion < 260) {
             alterColumn('{{participant_attribute_names}}','defaultname',"string(255)",false);
             alterColumn('{{participant_attribute_names_lang}}','attribute_name',"string(255)",false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
         }
+
+        /**
+         * Add seed column in all active survey tables
+         * Might take time to execute
+         * @since 2016-09-01
+         */
+        if ($iOldDBVersion < 261) {
+
+            // Loop all surveys
+            $surveys = Survey::model()->findAll();
+            foreach ($surveys as $survey)
+            {
+                $prefix = Yii::app()->getDb()->tablePrefix;
+                $tableName = $prefix . 'survey_' . $survey->sid;
+
+                // If survey has active table, create seed column
+                $table = Yii::app()->db->schema->getTable($tableName);
+                if ($table)
+                {
+                    if (!isset($table->columns['seed']))
+                    {
+                        Yii::app()->db->createCommand()->addColumn($tableName, 'seed', 'string(31)');
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    // RAND is RANDOM in Postgres
+                    switch (Yii::app()->db->driverName)
+                    {
+                        case 'pgsql':
+                            Yii::app()->db->createCommand("UPDATE $tableName SET seed = ROUND(RANDOM() * 10000000)")->execute();
+                            break;
+                        default:
+                            Yii::app()->db->createCommand("UPDATE $tableName SET seed = ROUND(RAND() * 10000000, 0)")->execute();
+                            break;
+                    }
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
+        }
+
         // Inform superadmin about update
         $superadmins = User::model()->getSuperAdmins();
         Notification::broadcast(array(
             'title' => gT('Database update'),
-            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '260')
+            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '261')
         ), $superadmins);
 
 

@@ -1,44 +1,44 @@
-
-img.uploaded{
-display:block;
-margin:5px auto;
-max-width:96%;
-* width:100%;
-height:auto;
-max-height:100px;
+.file-upload-modal{
+    text-align: center;
 }
-
-
-.delete-file{
-cursor:pointer;
-margin:0 auto;
-display:block;
-width:35px;
-height:35px;
-overflow:hidden;
-text-indent: 40px;
-background:url("img/upload-delete.png") 50% 50% no-repeat;
-border: 0 none;
+.file-upload-modal::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    margin-right: -4px;
+    vertical-align: middle;
 }
-.upload-placeholder
+.file-upload-modal .modal-dialog
 {
-display:block;
-margin:0 auto;
-width:60px;
-height:70px;
-overflow:hidden;
-text-indent: 70px;
-background:url("img/upload-placeholder.png") 50% 50% no-repeat;
+  margin:0 auto;
 }
-.upload-edit
+.file-upload-modal .modal-dialog {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+}
+.rtl .file-upload-modal .modal-dialog {
+    text-align: right;
+}
+.file-upload-modal .modal-body
 {
-cursor:pointer;
-display:block;
-width:35px;
-height:35px;
-overflow:hidden;
-text-indent: 40px;
-background:url("img/upload-edit.png") 50% 50% no-repeat;
-border: 0 none;
+  height:auto;
+  width:auto;
+  max-height:100%;
+  box-sizing:border-box;
+  overflow-y:show;
+  overflow-x:hidden;
 }
+.file-upload-modal-footer{margin-top:0}
 
+.uploader-frame{
+  border:0 none;
+  width:100%;
+  height:100%;
+}
+@media only screen and (max-width: 760px){
+  .file-upload-modal .modal-dialog {
+      margin: 0;
+      width: 100%;
+  }
+}

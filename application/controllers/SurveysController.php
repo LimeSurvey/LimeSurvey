@@ -5,7 +5,18 @@
      */
     class SurveysController extends LSYii_Controller
     {
-        public $layout = 'bare';
+        /* All this part is for PUBLIC view : maybe move to LSYii_Controller ? */
+        /* @var string : Default layout when using render : leave at bare actually : just send content */
+        public $layout= 'public';
+        /* @var string the template name to be used when using layout */
+        public $sTemplate= 'default';
+        /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
+        public $aReplacementData= array();
+        /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
+        public $aGlobalData= array();
+        /* @var boolean did we need survey.pstpl when using layout */
+        public $bStartSurvey= false;
+
         public $defaultAction = 'publicList';
 
         public function actionPublicList($lang = null)
@@ -20,21 +31,14 @@
             }
             $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
 
-
-            if($oTemplate->cssFramework == 'bootstrap')
-            {
-                // We now use the bootstrap package isntead of the Yiistrap TbApi::register() method
-                // Then instead of using the composer dependency system for templates
-                // We can use the package dependency system
-                Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
-                App()->bootstrap->registerAllScripts();
-            }
+            $this->sTemplate = $oTemplate->name;
+            $this->aGlobalData['languagechanger'] = makeLanguageChanger(App()->language);
 
             $aData = array(
                     'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
                     'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
                 );
-            $htmlOut = $this->render('publicSurveyList',  $aData,true );
+            $htmlOut = $this->renderPartial('publicSurveyList',  $aData,true );
 
             $event = new PluginEvent('beforeSurveysStartpageRender', $this);
             $event->set('aData', $aData);
@@ -44,8 +48,15 @@
             {
                 $htmlFromEvent = $event->get('result');
                 $htmlOut = $htmlFromEvent['html'];
+                $this->layout=$event->get('layout',$this->layout); // with bare : directly render whole display, default is to add head/footer etc ... from template
             }
-            echo $htmlOut;
+            $this->render("/surveys/display",array('content'=>$htmlOut));
+            /**
+             * OR
+             * $this->render("/survey/system/display",array('content'=>$htmlOut));
+             * ? template must be allowed to add content after and before all page ?
+             */
+            App()->end();
         }
     }
 ?>

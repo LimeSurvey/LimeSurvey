@@ -42,6 +42,7 @@ $internalConfig = array(
     'aliases' => array(
         // Third party path
         'third_party' => realpath(__DIR__ . '/../../third_party'),
+        'core' => realpath(__DIR__ . '/../../application/core/packages'),
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
@@ -95,7 +96,10 @@ $internalConfig = array(
         ),
 
         'clientScript'=>array(
-            'packages' => require('third_party.php'),
+            'packages' => array_merge(
+                require('third_party.php'),
+                require('packages.php')
+            )
         ),
 
         'urlManager' => array(

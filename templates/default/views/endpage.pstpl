@@ -8,7 +8,7 @@
         <div class="modal-content">
             <div class="modal-header" style="min-height:40px;">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">&nbsp;</h4>
+                <div class="modal-title">&nbsp;</div>
             </div>
             <div class="modal-body"><p></p></div>
             <div class="modal-footer">
@@ -17,3 +17,12 @@
         </div>
     </div>
 </div>
+<!-- some template.js function launched before ready -->
+<script type="text/javascript">
+/*<![CDATA[*/
+    sliderSuffixClone();
+    fixBodyPadding();
+    hideQuestionWithRelevanceSubQuestion();
+    hideEmptyPart();
+/*]]>*/
+</script>

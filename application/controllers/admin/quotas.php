@@ -82,6 +82,11 @@ class quotas extends Survey_Common_Action
         }
     }
 
+    /**
+     *
+     * @param integer $iSurveyId the survey id
+     * @param boolean $quickreport : quick export a csv with actual quotas
+     */
     function index($iSurveyId, $quickreport = false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -198,10 +203,8 @@ class quotas extends Survey_Common_Action
         }
         else
         {
-
-            //// WHY ???????
-
-            header("Content-Disposition: attachment; filename=results-survey" . $iSurveyId . ".csv");
+            /* Export a quickly done csv file */
+            header("Content-Disposition: attachment; filename=quotas-survey" . $iSurveyId . ".csv");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
             header("Pragma: public");
             echo gT("Quota name") . "," . gT("Limit") . "," . gT("Completed") . "," . gT("Remaining") . "\r\n";
@@ -209,7 +212,7 @@ class quotas extends Survey_Common_Action
             {
                 echo $line;
             }
-            die;
+            App()->end();
         }
     }
 

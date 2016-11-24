@@ -1370,20 +1370,19 @@ class ExpressionManager {
 
     /**
      * Generate the function needed to dynamically change the value of a <span> section
-     * @param string $name - the ID name for the function
-     * @param string $eqn
-     * @param integer $questionNum
-     * @return <type>
+     * @param integer $questionNum No longer used
+     * @param string $elementId - the ID name for the function
+     * @param string $eqn No longer used
+     * @return string : javascript part
      */
-    public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
+    public function GetJavaScriptFunctionForReplacement($questionNum, $elementId,$eqn)
     {
         $jsParts = array();
-//        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
-        $jsParts[] = "  try{\n";
-        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=LEMfixnum(\n    ";
+        $jsParts[] = "jQuery('#{$elementId}').html(LEMfixnum(\n";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
-        $jsParts[] = ");\n";
-        $jsParts[] = "  } catch (e) { console.log(e); }\n";
+        $jsParts[] = "));\n";
+        // Add an event after html is updated (see #11937 and really good helper for template manager)
+        $jsParts[] = "jQuery('#{$elementId}').trigger('html:updated');\n";// See http://learn.jquery.com/events/introduction-to-custom-events/#naming-custom-events for colons in name
         return implode('',$jsParts);
     }
 

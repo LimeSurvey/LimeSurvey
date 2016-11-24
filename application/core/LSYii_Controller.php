@@ -32,7 +32,7 @@ abstract class LSYii_Controller extends CController
         parent::__construct($id, $module);
         $this->_checkInstallation();
 
-        Yii::app()->session->init();
+        //Yii::app()->session->init();
         $this->loadLibrary('LS.LS');
         // This will setConfig from database
         $this->loadHelper('globalsettings');

@@ -23,6 +23,9 @@ class Template extends LSActiveRecord
     /** @var Template - The instance of template object */
     private static $instance;
 
+    /** @var string[] list of standard template */
+    private static $standardTemplates = array();
+
     /**
      * Returns the static model of Settings table
      *
@@ -199,19 +202,10 @@ class Template extends LSActiveRecord
 
         $aTemplateList=array();
 
-        if ($handle = opendir($standardtemplaterootdir))
-        {
-            while (false !== ($sFileName = readdir($handle)))
-            {
-                // Why not return directly standardTemplate list ?
-                if (!is_file("$standardtemplaterootdir/$sFileName") && self::isStandardTemplate($sFileName))
-                {
-                    $aTemplateList[$sFileName] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$sFileName;
-                }
-            }
-            closedir($handle);
+        $aStandardTemplates=self::getStandardTemplateList();
+        foreach($aStandardTemplates as $templateName){
+            $aTemplateList[$templateName] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$templateName;
         }
-
         if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir))
         {
             while (false !== ($sFileName = readdir($handle)))
@@ -237,21 +231,11 @@ class Template extends LSActiveRecord
         $standardtemplaterooturl=Yii::app()->getConfig("standardtemplaterooturl");
 
         $aTemplateList=array();
-
-        if ($handle = opendir($standardtemplaterootdir))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
-                // Why not return directly standardTemplate list ?
-                if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
-                {
-                    $aTemplateList[$file]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                    $aTemplateList[$file]['preview'] = $standardtemplaterooturl.'/'.$file.'/preview.png';
-                }
-            }
-            closedir($handle);
+        $aStandardTemplates=self::getStandardTemplateList();
+        foreach($aStandardTemplates as $templateName){
+            $aTemplateList[$templateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$templateName;
+            $aTemplateList[$templateName]['preview'] = $standardtemplaterooturl.'/'.$templateName.'/preview.png';
         }
-
         if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
         {
             while (false !== ($file = readdir($handle)))
@@ -279,13 +263,8 @@ class Template extends LSActiveRecord
     */
     public static function isStandardTemplate($sTemplateName)
     {
-        return in_array($sTemplateName,
-            array(
-                'default',
-                'news_paper',
-                'ubuntu_orange',
-            )
-        );
+        $standardTemplates=self::getStandardTemplateList();
+        return in_array($sTemplateName,$standardTemplates);
     }
 
     /**
@@ -322,5 +301,37 @@ class Template extends LSActiveRecord
                 touch($standardTemplatesPath . $Item);
             }
         }
+    }
+
+    /**
+     * Return the standard template list
+     * @return string[]
+     */
+    public static function getStandardTemplateList()
+    {
+        $standardTemplates=self::$standardTemplates;
+        if(empty($standardTemplates)){
+            $standardTemplates = array();
+            $sStandardTemplateRootDir=Yii::app()->getConfig("standardtemplaterootdir");
+            if ($sStandardTemplateRootDir && $handle = opendir($sStandardTemplateRootDir))
+            {
+                while (false !== ($sFileName = readdir($handle)))
+                {
+                    // Maybe $file[0] != "." to hide Linux hidden directory
+                    if (!is_file("$sStandardTemplateRootDir/$sFileName") && $sFileName[0] != "." && file_exists("{$sStandardTemplateRootDir}/{$sFileName}/config.xml"))
+                    {
+                        $standardTemplates[$sFileName] = $sFileName;
+                    }
+                }
+                closedir($handle);
+            }
+            ksort($standardTemplates);
+            if(!in_array("default",$standardTemplates)){
+                throw new Exception('There are no default template in stantard template root dir.');
+            }
+            self::$standardTemplates = $standardTemplates;
+        }
+
+        return self::$standardTemplates;
     }
 }

@@ -16,12 +16,11 @@ function openUploadModalDialog(){
         buttonsOpts[uploadLang.returnTxt] = function() {
             $(this).dialog("close");
         };
-        var windowwidth = $(window).width()-30;
-        var dialogwidth= Math.min(windowwidth, 940);
 
         $('#file-upload-modal-' + fieldname).modal();
-        $('#file-upload-modal-' + fieldname).on('show.bs.modal', function() {
-            $('#file-upload-modal-' + fieldname).find('iframe').css('height', 'inherit');
+        $(document).on('shown.bs.modal','#file-upload-modal-' + fieldname, function()
+        {
+            updateMaxHeightModalbody($(this));
         });
         $('#file-upload-modal-' + fieldname).on('hide.bs.modal', function() {
             var pass;
@@ -39,6 +38,28 @@ function openUploadModalDialog(){
             return pass;
         });
     });
+}
+
+/* Function to update upload frame
+ *
+ * @param frameName name of the frame (here it's id too :) )
+ * @param integer heigth
+ */
+function updateUploadFrame(frameName,heigth)
+{
+    $("#"+frameName).innerHeight(heigth);
+}
+/* Function to update modal body max height
+ *
+ * @param modal jquery object : the modal
+ */
+function updateMaxHeightModalbody(modal)
+{
+    var modalHeader=$(modal).find(".modal-header").outerHeight();
+    var modalFooter=$(modal).find(".modal-footer").outerHeight();
+    console.log([$(window).height(),modalHeader,modalFooter,(modalHeader+modalFooter)]);
+    var finalMaxHeight=Math.max(150,$(window).height()-(modalHeader+modalFooter+16));// Not less than 150px
+    $(modal).find(".modal-body").css("max-height",finalMaxHeight);
 }
 
 function getQueryVariable(variable, url) {
@@ -100,7 +121,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
 
             if (show_title != 0)
                 display += '<td class="upload title">'+jsonobj[i].title+'</td>';
-            if (show_comment != 0)                                                                                                  
+            if (show_comment != 0)
                 display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
             display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="btn btn-default" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
         }

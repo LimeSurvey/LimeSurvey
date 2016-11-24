@@ -841,15 +841,15 @@ function alternation($alternate = '' , $type = 'col')
     // It has been left in case it becomes useful but probably should be
     // removed.
     */
-    if($type == 'row')
+    if($type == 'row')// Row is sub question OR Y Axis subquestion : it must be column for array by column
     {
-        $odd  = 'array2 well'; // should be row_odd
-        $even = 'array1 well'; // should be row_even
+        $odd  = 'ls-odd';
+        $even = 'ls-even';
     }
-    else
+    else // cols is answers part OR X axis subquestion : it must the row in array by column
     {
-        $odd  = 'odd';  // should be col_odd
-        $even = 'even'; // should be col_even
+        $odd  = 'ls-col-odd';
+        $even = 'ls-col-even';
     };
     if($alternate == $odd)
     {
@@ -1406,8 +1406,6 @@ function returnGlobal($stringname,$bRestrictToString=false)
 
 function sendCacheHeaders()
 {
-    global $embedded;
-    if ( $embedded ) return;
     if (!headers_sent())
     {
         if (Yii::app()->getConfig('x_frame_options','allow')=='sameorigin')
@@ -1817,7 +1815,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['group_name']="";
     }
 
-    /*
     $fieldmap['seed'] = array('fieldname' => 'seed', 'sid' => $surveyid, 'type' => 'seed', 'gid' => '', 'qid' => '', 'aid' => '');
     if ($style == 'full')
     {
@@ -1825,7 +1822,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["seed"]['question']=gT("Seed");
         $fieldmap["seed"]['group_name']="";
     }
-    */
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
@@ -2533,6 +2529,7 @@ function buildLabelSetCheckSumArray()
 
 /**
 * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
+* @depecated : use QuestionAttribute::model()->getQuestionAttributes($iQID); directly
 * @param $iQID The question ID
 * @return array$bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
 */
@@ -5617,12 +5614,14 @@ function getLabelSets($languages = null)
 }
 
 /**
+ * get the header
+ * @var void $meta : not used in any call (2016-10-18)
  * @return string
  */
 function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
-    global $embedded,$surveyid ;
+    global $surveyid ;
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
@@ -5638,29 +5637,22 @@ function getHeader($meta = false)
     {
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
-    App()->getClientScript()->registerPackage('fontawesome');
-    $header=  "<!DOCTYPE html>\n"
-    . "<html lang=\"{$languagecode}\"";
+    $header = "<!DOCTYPE html>\n";
+    $class = "no-js $languagecode";
+    $header .= "<html lang=\"{$languagecode}\"";
 
-    if (getLanguageRTL($languagecode))
-    {
+    if (getLanguageRTL($languagecode)){
         $header.=" dir=\"rtl\" ";
+        $class .= " dir-rtl";
+    }else{
+        $header.=" dir=\"ltr\" ";
+        $class .= " dir-ltr";
     }
-    $header.= ">\n\t<head>\n";
-
+    $header.= " class=\"{$class}\">\n";
+    $header.= "\t<head>\n";
     if ($meta)
         $header .= $meta;
-
-
-    if ( !$embedded )
-    {
-        return $header;
-    }
-
-    global $embedded_headerfunc; // Did this work ? Can be removed or not ?
-
-    if ( function_exists( $embedded_headerfunc ) )
-        return $embedded_headerfunc($header);
+    return $header;
 }
 
 
@@ -5685,16 +5677,7 @@ function getPrintableHeader()
 // If you want to echo the Footer use doFooter() !
 function getFooter()
 {
-    global $embedded;
-    if ( !$embedded )
-    {
-        return "\n\n\t</body>\n</html>\n";
-    }
-
-    global $embedded_footerfunc;
-
-    if ( function_exists( $embedded_footerfunc ) )
-        return $embedded_footerfunc();
+    return "\n\n\t</body>\n</html>\n";
 }
 
 function doFooter()

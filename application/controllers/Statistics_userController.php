@@ -24,7 +24,7 @@
  *
  */
 
-class Statistics_userController extends LSYii_Controller {
+class Statistics_userController extends SurveyController {
 
     /**
      * @var int
@@ -55,23 +55,15 @@ class Statistics_userController extends LSYii_Controller {
     {
         $sLanguage = $language;
         $this->sLanguage = $language;
-        ob_start(function($buffer) {
-            App()->getClientScript()->render($buffer);
-            App()->getClientScript()->reset();
-            return $buffer;
-        });
-        ob_implicit_flush(false);
+
         $iSurveyID = (int) $surveyid;
         $this->iSurveyID = (int) $surveyid;
 
         //$postlang = returnglobal('lang');
-        Yii::import('application.libraries.admin.progressbar',true);
+        //~ Yii::import('application.libraries.admin.progressbar',true);
         Yii::app()->loadHelper("userstatistics");
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('surveytranslator');
-        App()->getClientScript()->registerPackage('jqueryui');
-        App()->getClientScript()->registerPackage('jquery-touch-punch');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
         $data = array();
 
         if(!isset($iSurveyID))
@@ -85,14 +77,14 @@ class Statistics_userController extends LSYii_Controller {
         if (!$iSurveyID)
         {
             //This next line ensures that the $iSurveyID value is never anything but a number.
-            safeDie('You have to provide a valid survey ID.');
+            throw new CHttpException(404,'You have to provide a valid survey ID.');
         }
 
 
         $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $iSurveyID, ':active' => 'Y'));      //Checked
         if (count($actresult) == 0)
         {
-            safeDie('You have to provide a valid survey ID.');
+            throw new CHttpException(404, 'You have to provide a valid survey ID.');
         }
         else
         {
@@ -103,7 +95,7 @@ class Statistics_userController extends LSYii_Controller {
             $thisSurveyCssPath = getTemplateURL($surveyinfo["template"]);
             if ($surveyinfo['publicstatistics']!='Y')
             {
-                safeDie('The public statistics for this survey are deactivated.');
+                throw new CHttpException(404, 'The public statistics for this survey are deactivated.');
             }
 
             //check if graphs should be shown for this survey
@@ -156,7 +148,6 @@ class Statistics_userController extends LSYii_Controller {
         //set survey language for translations
         SetSurveyLanguage($iSurveyID, $sLanguage);
         //Create header
-        sendCacheHeaders();
         $condition = false;
         $sitename = Yii::app()->getConfig("sitename");
 
@@ -251,37 +242,30 @@ class Statistics_userController extends LSYii_Controller {
         $thissurvey = getSurveyInfo($surveyid,$sLanguage);
 
         //SET THE TEMPLATE DIRECTORY
-        $data['sTemplatePath'] = $surveyinfo['template'];// surveyinfo=getSurveyInfo and if survey don't exist : stop before.
-
         //---------- CREATE STATISTICS ----------
-        $redata = compact(array_keys(get_defined_vars()));
-        doHeader();
 
-        /// $oTemplate is a global variable defined in controller/survey/index
-        $oTemplate = Template::model()->getInstance(null, $surveyid);
-        echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(), $redata);
 
 
         //some progress bar stuff
 
         // Create progress bar which is shown while creating the results
-        $prb = new ProgressBar();
-        $prb->pedding = 2;    // Bar Pedding
-        $prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";    // Bar Border Color
+        //~ $prb = new ProgressBar();
+        //~ $prb->pedding = 2;    // Bar Pedding
+        //~ $prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";    // Bar Border Color
 
-        $prb->setFrame();    // set ProgressBar Frame
-        $prb->frame['left'] = 50;    // Frame position from left
-        $prb->frame['top'] =     80;    // Frame position from top
-        $prb->addLabel('text','txt1',gT("Please wait ..."));    // add Text as Label 'txt1' and value 'Please wait'
-        $prb->addLabel('percent','pct1');    // add Percent as Label 'pct1'
-        $prb->addButton('btn1',gT('Go back'),'?action=statistics&amp;sid='.$iSurveyID);    // add Button as Label 'btn1' and action '?restart=1'
+        //~ $prb->setFrame();    // set ProgressBar Frame
+        //~ $prb->frame['left'] = 50;    // Frame position from left
+        //~ $prb->frame['top'] =     80;    // Frame position from top
+        //~ $prb->addLabel('text','txt1',gT("Please wait ..."));    // add Text as Label 'txt1' and value 'Please wait'
+        //~ $prb->addLabel('percent','pct1');    // add Percent as Label 'pct1'
+        //~ $prb->addButton('btn1',gT('Go back'),'?action=statistics&amp;sid='.$iSurveyID);    // add Button as Label 'btn1' and action '?restart=1'
 
-        $prb->show();    // show the ProgressBar
+        //~ $prb->show();    // show the ProgressBar
 
-        // 1: Get list of questions with answers chosen
-        //"Getting Questions and Answer ..." is shown above the bar
-        $prb->setLabelValue('txt1',gT('Getting questions and answers ...'));
-        $prb->moveStep(5);
+        //~ // 1: Get list of questions with answers chosen
+        //~ //"Getting Questions and Answer ..." is shown above the bar
+        //~ $prb->setLabelValue('txt1',gT('Getting questions and answers ...'));
+        //~ $prb->moveStep(5);
 
         // creates array of post variable names
         $postvars = array();
@@ -303,8 +287,8 @@ class Statistics_userController extends LSYii_Controller {
         if (isset($summary) && !empty($summary))
         {
             //"Generating Summaries ..." is shown above the progress bar
-            $prb->setLabelValue('txt1',gT('Generating summaries ...'));
-            $prb->moveStep($process_status);
+            //~ $prb->setLabelValue('txt1',gT('Generating summaries ...'));
+            //~ $prb->moveStep($process_status);
 
             //let's run through the survey // Fixed bug 3053 with array_unique
             $runthrough=array_unique($summary);
@@ -315,7 +299,7 @@ class Statistics_userController extends LSYii_Controller {
 
                 //update progress bar
                 if ($process_status < 100) $process_status++;
-                $prb->moveStep($process_status);
+                //~ $prb->moveStep($process_status);
 
             }    // end foreach -> loop through all questions
 
@@ -328,18 +312,14 @@ class Statistics_userController extends LSYii_Controller {
         //done! set progress bar to 100%
         if (isset($prb))
         {
-            $prb->setLabelValue('txt1',gT('Completed'));
-            $prb->moveStep(100);
-            $prb->hide();
+            //~ $prb->setLabelValue('txt1',gT('Completed'));
+            //~ $prb->moveStep(100);
+            //~ $prb->hide();
         }
 
-        $redata = compact(array_keys(get_defined_vars()));
-        $data['redata'] = $redata;
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'statistics_user.js');
-        $this->renderPartial('/statistics_user_view',$data);
-
-        //output footer
-        echo getFooter();
+        $this->layout="public";
+        $this->render('/statistics_user_view',$data);
 
         //Delete all Session Data
         Yii::app()->session['finished'] = true;

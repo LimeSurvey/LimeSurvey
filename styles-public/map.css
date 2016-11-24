@@ -3,7 +3,7 @@
 [dir="ltr"] .coordinate-item{margin:0 0 0 1em}
 .geoname_search {
   position: relative;
-  z-index: 10000;
+  z-index: 1; /* for autocomplete */
   float:right;
   width:15em;
 }
@@ -16,8 +16,9 @@
 	top: 0;
 	left: 0;
 	cursor: default;
+	background:#fff;
 }
-}
+
 .geoname_search .ui-autocomplete {
 	position: absolute;
 	top: 0;

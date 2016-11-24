@@ -415,7 +415,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
            $aData['showLastQuestion'] = false;
         }
-
+        $aData['templateapiversion'] = Template::model()->getTemplateConfiguration(null,$iSurveyID)->getApiVersion();
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
 

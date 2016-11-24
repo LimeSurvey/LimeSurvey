@@ -25,8 +25,13 @@ class TemplateConfiguration extends CFormModel
     public $sTemplateName='';                   // The template name
     public $iSurveyId='';                       // The current Survey Id. It can be void. It's use only to retreive the current template of a given survey
     public $config;                             // Will contain the config.xml
+    /**
+     * @var integer : the actual api version. Must be private : disallow update
+     */
+    private $apiVersion;                        // Version of the LS API when created
 
-    public $viewPath;                           // Path of the pstpl files
+    public $pstplPath;                          // Path of the pstpl files
+    public $viewPath;                           // Path of the views files (php files to replace existing core views)
     public $siteLogo;                           // Name of the logo file (like: logo.png)
     public $filesPath;                          // Path of the uploaded files
     public $cssFramework;                       // What framework css is used (for now, this parameter is used only to deactive bootstrap for retrocompatibility)
@@ -40,7 +45,7 @@ class TemplateConfiguration extends CFormModel
     public $hasConfigFile='';                   // Does it has a config.xml file?
     public $isOldTemplate;                      // Is it a 2.06 template?
 
-    public $overwrite_question_views=false;     // Does it overwrites the question rendering from quanda.php?
+    public $overwrite_question_views=false;     // Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too.
 
     public $xmlFile;                            // What xml config file does it use? (config/minimal)
 
@@ -61,33 +66,40 @@ class TemplateConfiguration extends CFormModel
         // If it's called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '')
         {
-            throw new TemplateException("Template needs either template name or survey id");
+            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            $sTemplateName=Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
+            //throw new TemplateException("Template needs either template name or survey id");
         }
-
         $this->sTemplateName = $sTemplateName;
         $this->iSurveyId     = (int) $iSurveyId;
 
         if ($sTemplateName=='')
         {
             $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
-            $this->sTemplateName = $this->oSurvey->template;
+            if($this->oSurvey){
+                $this->sTemplateName = $this->oSurvey->template;
+            }else{
+                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
+            }
         }
 
         // We check if  it's a CORE template
         $this->isStandard = $this->setIsStandard();
-
         // If the template is standard, its root is based on standardtemplaterootdir, else, it's a user template, its root is based on usertemplaterootdir
         $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
 
         // If the template directory doesn't exist, it can be that:
         // - user deleted a custom theme
         // In any case, we just set Default as the template to use
+
         if (!is_dir($this->path))
         {
             $this->sTemplateName = 'default';
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-            setGlobalSetting('defaulttemplate', 'default');
+            if(!$this->iSurveyId){
+                setGlobalSetting('defaulttemplate', 'default');
+            }
         }
 
         // If the template don't have a config file (maybe it has been deleted, or whatever),
@@ -114,6 +126,7 @@ class TemplateConfiguration extends CFormModel
         }
 
 
+
         //////////////////////
         // Config file loading
 
@@ -126,11 +139,18 @@ class TemplateConfiguration extends CFormModel
 
         // Template configuration
         // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
-        $this->viewPath                 = (isset($this->config->engine->pstpldirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR                            : $this->path;
+        $this->apiVersion               = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion:0;
+
+        $this->pstplPath                = (isset($this->config->engine->pstpldirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR                            : $this->path;
+        $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR                            : '';
+
         $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                                                 : '';
         $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
-        $this->packages                 = (isset($this->config->engine->packages->package))        ? $this->config->engine->packages->package                                                                             : array();
+        $this->packages                 = (isset($this->config->engine->packages->package))        ? (array) $this->config->engine->packages->package                                                                             : array();
+
+        /* Add options/package according to apiVersion */
+        $this->fixTemplateByApi();
 
         // overwrite_question_views accept different values : "true" or "yes"
         $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
@@ -185,15 +205,6 @@ class TemplateConfiguration extends CFormModel
         $oCssFiles   = $this->config->files->css->filename;                                 // The CSS files of this template
         $oJsFiles    = $this->config->files->js->filename;                                  // The JS files of this template
 
-        $jsDeactivateConsole = "
-            <script> var dummyConsole = {
-                log : function(){},
-                error : function(){}
-            };
-            console = dummyConsole;
-            window.console = dummyConsole;
-        </script>";
-
         if (getLanguageRTL(App()->language))
         {
             $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
@@ -212,12 +223,20 @@ class TemplateConfiguration extends CFormModel
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
         // It will create the asset directory, and publish the css and js files
+        /* @todo : excludeFiles to exlude views and pstpl directory : seem not included in package system */
+        //~ if(trim($this->config->engine->pstpldirectory,".")){/* not needed */
+            //~ Yii::app()->assetManager->excludeFiles[]="/".$this->config->engine->pstpldirectory;
+        //~ }
+        //~ if($this->config->engine->pstpldirectory){/* think asset directory must not get PHP files */
+            //~ Yii::app()->assetManager->excludeFiles[]="/".$this->config->engine->viewdirectory;
+        //~ }
         Yii::app()->clientScript->addPackage( 'survey-template', array(
             'basePath'    => 'survey.template.path',
             'css'         => $aCssFiles,
             'js'          => $aJsFiles,
             'depends'     => $this->depends,
         ) );
+
     }
 
     /**
@@ -251,13 +270,41 @@ class TemplateConfiguration extends CFormModel
 
     private function setIsStandard()
     {
-        return in_array($this->sTemplateName,
-            array(
-                'default',
-                'news_paper',
-                'ubuntu_orange',
-            )
-        );
+        return Template::isStandardTemplate($this->sTemplateName);
     }
 
+    /**
+     * Fix template accorfing to apiVersion
+     */
+    private function fixTemplateByApi()
+    {
+        if($this->apiVersion<3){
+            $this->packages[]= 'limesurvey-public';
+            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl")){
+                $messagePstpl  =  "<div id='{MESSAGEID}-wrapper'>\n"
+                                . "    {ERROR}\n"
+                                . "    <div class='{MESSAGEID}-text'>{MESSAGE}</div>\n"
+                                . "    {URL}"
+                                . "</div>";
+                file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl",$messagePstpl);
+            }
+            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl")){
+                $formTemplate  =  "<div class='{FORMID}-page'>\n"
+                                . "    <div class='form-heading'>{FORMHEADING}</div>\n"
+                                . "    {FORMMESSAGE}\n"
+                                . "    {FORMERROR}\n"
+                                . "    <div class='form-{FORMID}'>{FORM}</div>\n"
+                                . "</div>";
+                file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl",$formTemplate);
+            }
+        }
+    }
+
+    /**
+     * get the template API version
+     */
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
+    }
 }

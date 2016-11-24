@@ -73,26 +73,48 @@ $currentfieldset='';
 
                             // Text
                         case 'text':?>
+                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
+                                <div class="input-group">
+                                    <div class="input-group-addon">{</div>
+                            <?php } ?>
                             <input type='text' class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo htmlspecialchars($aAttribute['value'],ENT_QUOTES, 'UTF-8');?>' />
+                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
+                                    <div class="input-group-addon">}</div>
+                                </div>
+                            <?php } ?>
                             <?php
                             break;
 
                         // Integer
                         case 'integer':?>
-                            <input type='text' class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
+                            <?php echo CHtml::numberField($aAttribute['name'],$aAttribute['value'],array(
+                                'class'=>"form-control",
+                                'step'=>1,
+                                'pattern'=>'\d+',
+                                'min'=>(isset($aAttribute['min'])?$aAttribute['min']:1),
+                                'max'=>(isset($aAttribute['max'])?$aAttribute['max']:null)
+                            )); ?>
                             <?php
                             break;
 
                         // Interger
                         case 'columns':?>
-                            <input type='number' min="1" max="12" class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
+                            <input type='number' min="1" max="12" step="1" class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
                             <?php
                             break;
 
 
                         // Textarea
                         case 'textarea':?>
+                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
+                                <div class="input-group">
+                                    <div class="input-group-addon">{</div>
+                            <?php } ?>
                             <textarea class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>'><?php echo $aAttribute['value'];?></textarea>
+                            <?php if(isset($aAttribute['expression']) && $aAttribute['expression']>=2){?>
+                                    <div class="input-group-addon">}</div>
+                                </div>
+                            <?php } ?>
                             <?php
                             break;
                     }

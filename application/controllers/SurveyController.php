@@ -15,6 +15,16 @@ class SurveyController extends LSYii_Controller
 {
     public $lang = null;
 
+    /* @var string : Default layout when using render : leave at bare actually : just send content */
+    public $layout= 'bare';
+    /* @var string the template name to be used when using layout */
+    public $sTemplate= 'default';
+    /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
+    public $aReplacementData= array();
+    /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
+    public $aGlobalData= array();
+    /* @var boolean did we need survey.pstpl when using layout */
+    public $bStartSurvey= false;
     /**
      * Initialises this controller, does some basic checks and setups
      *
@@ -71,10 +81,55 @@ class SurveyController extends LSYii_Controller
             'uploader' => 'application.controllers.uploader',
             'verification' => 'application.controllers.verification',
             'captcha' => array(
-                'class' => 'CCaptchaAction', 
+                'class' => 'CCaptchaAction',
                 'backColor'=>0xf6f6f6
             )
         );
     }
 
+    //~ /**
+     //~ * Reset the session
+     //~ **/
+    //~ function resetSession($iSurveyId)
+    //~ {
+
+    //~ }
+    /**
+     * Show a message and exit
+     * @param string $sType : type of message
+     * @param string[] $aMessage :  array of message line to be shown
+     * @param string[]|null : $aUrl : if url can/must be set
+     * @param string[]|null $aErrors : array of errors to be shown
+     * @return void
+     **/
+    function renderExitMessage($iSurveyId,$sType,$aMessages=array(),$aUrl=null,$aErrors=null)
+    {
+        $this->layout='survey';
+        $oTemplate = Template::model()->getInstance('', $iSurveyId);
+        $this->sTemplate=$oTemplate->sTemplateName;
+        $message=$this->renderPartial("/survey/system/message",array(
+            'aMessage'=>$aMessages
+        ),true);
+        if(!empty($aUrl)){
+            $url=$this->renderPartial("/survey/system/url",$aUrl,true);
+        }else{
+            $url="";
+        }
+        if(!empty($aErrors)){
+            $error=$this->renderPartial("/survey/system/errorWarning",array(
+                'aErrors'=>$aErrors
+            ),true);
+        }else{
+            $error="";
+        }
+        /* Set the data for templatereplace */
+        $this->aGlobalData['thissurvey']=getSurveyInfo($iSurveyId); /* Did we need it, or did we just use Yii::app()->getConfig('surveyID'); ? */
+        $this->aReplacementData=$aReplacementData['MESSAGEID']=$sType; // Adding this to replacement data : allow to update title (for example)
+        $aReplacementData['MESSAGE']=$message;
+        $aReplacementData['URL']=$url;
+        $this->aReplacementData=$aReplacementData['ERROR']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+        $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
+        $this->render("/survey/system/display",array('content'=>$content));
+        App()->end();
+    }
 }

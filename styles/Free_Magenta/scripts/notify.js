@@ -5,12 +5,10 @@ $(document).ready(function(){
         if($('#breadcrumb-container').length>0)
         {
             //$('#notif-container .alert').prependTo('.side-body');
-            console.log('#breadcrumb-container');
             $('#notif-container .alert').insertAfter('#breadcrumb-container');
         }
         else
         {
-            console.log('#breadcrumb-container');
             $('#notif-container .alert').prependTo('.side-body');
         }
     }

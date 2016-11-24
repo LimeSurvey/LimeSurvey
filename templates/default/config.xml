@@ -6,7 +6,7 @@
 -->
 
 <config>
-    <!-- Those metadatas will be display in the template configuration page. They are not used for now. -->
+    <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadatas>
         <name>Default</name>
         <creationDate>08/01/2016</creationDate>
@@ -15,30 +15,28 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>1.0</version>
+        <version>2.0</version>
+        <apiVersion>3</apiVersion>
         <description>Default LimeSurvey Template.</description>
-        <last_update>2016-05-13 10:46:00</last_update>
+        <last_update>2016-11-14 17:21:00</last_update>
     </metadatas>
 
     <!--
         Here the list of the css/js files to load.
-        Any file here will be loaded via the asset manager
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
     -->
     <files>
         <css>
-            <filename>css/jquery-ui-custom.css</filename>
-            <filename>css/bootstrap-slider.css</filename>
-
             <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
-            <filename>css/flat_and_modern.css</filename>
-
+            <filename>css/bootstrap.css</filename>
+            <filename>css/template-core.css</filename>
             <filename>css/template.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
-            <filename>scripts/bootstrap-slider.js</filename>
         </js>
         <print_css>
+            <filename>css/bootstrap.css</filename>
             <filename>css/print_template.css</filename>
         </print_css>
 
@@ -51,18 +49,21 @@
         -->
         <rtl>
             <css>
-                <filename>css/jquery-ui-custom-rtl.css</filename>
-                <filename>css/bootstrap-slider-rtl.css</filename>
                 <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
-                <filename>css/flat_and_modern-rtl.css</filename>
-                <filename>css/template-rtl.css</filename>
+                <filename>css/bootstrap.css</filename>
+                <!-- include bootstrap-rtl from Morteza Ansarinia (http://github.com/morteza) -->
+                <!-- Allow updating only boostrap.css : to be tested -->
+                <filename>css/bootstrap-rtl.css</filename>
+                <filename>css/template-core.css</filename>
+                <filename>css/template.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>
-                <filename>scripts/bootstrap-slider.js</filename>
             </js>
             <print_css>
-                <filename>css/print_template-rtl.css</filename>
+                <filename>css/bootstrap.css</filename>
+                <filename>css/bootstrap-rtl.css</filename>
+                <filename>css/print_template.css</filename>
             </print_css>
         </rtl>
 
@@ -79,18 +80,17 @@
     -->
     <files_editable>
             <css>
-                <filename>css/flat_and_modern.css</filename>
                 <filename>css/template.css</filename>
+                <filename>css/bootstrap.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>
-                <filename>scripts/bootstrap-slider.js</filename>
             </js>
     </files_editable>
 
     <!-- Here datas about how LimeSurvey should load the template -->
     <engine>
-        <!-- If empty, bootstrap css/js files will not be loaded. In the future, we could had more engines, like foundation -->
+        <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
         <cssframework>bootstrap</cssframework>
         <!-- Path of the pstpl files -->
         <pstpldirectory>views</pstpldirectory>
@@ -103,15 +103,17 @@
             and add this line in it : 'allow_templates_to_overwrite_views'=>1
         -->
         <overwrite_question_views>false</overwrite_question_views>
+        <!-- Path of the views files (can be different than pstpl -->
+        <viewdirectory>views</viewdirectory>
 
         <!-- Asset manager will copy the whole template directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
         <filesdirectory>files</filesdirectory>
 
-        <!-- Here, you can publish packages set as third party extensions in application/config/third_party -->
-        <!-- If bootstrap is registred as a css framework, it will be loaded first -->
+        <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
+        <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
-            <package>jqueryui</package>
-            <package>jquery-touch-punch</package>
+            <!-- LimeSurvey public part can be broken without this file : it's your own decision to remove it -->
+            <package>limesurvey-public</package>
         </packages>
     </engine>
 </config>

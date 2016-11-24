@@ -4,15 +4,22 @@
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
  */
-
-
+/* Tag if debug is set : debug is set in user config file and this file is directly required in internal.php where $userConfig var arry is set */
+/* This allow us to use minified version according to debug */
+$debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+/* To add more easily min version */
+$minVersion = ($debug<2) ? ".min": "";
+/* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
+/* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
 if (!isset($_GET['isAjax']))
 {
     $aJquery = array(
         'basePath' => 'third_party.jquery',
         'js' => array(
-            'jquery-2.2.4.min.js'
-        ));
+            'jquery-3.1.1'.$minVersion.'.js',
+            'jquery-migrate-3.0.0'.$minVersion.'.js',
+        )
+    );
 }
 else
 {
@@ -29,7 +36,6 @@ return array(
     // jQuery
     'jquery' => $aJquery,
 
-
     // Bootstrap
     // This package replace the Yiistrap register() function
     // Then instead of using the composer dependency system for templates (will be used for LS3)
@@ -37,12 +43,21 @@ return array(
     'bootstrap' => array(
         'basePath' => 'bootstrap',
         'css'=> array(
-            'css/bootstrap.css',
+            'css/bootstrap.css',/* Admin need it, not public */
             'css/yiistrap.css',
         ),
         'depends' => array(
             'jquery',
         )
+    ),
+
+    // bootstrap-slider : for multinumeric with slider
+    'bootstrap-slider' => array(
+        'basePath' => 'third_party.bootstrap-slider',
+        'js' => array(
+            'bootstrap-slider.min.js'
+        ),
+        /* according to readme : JQuery is optional and the plugin can operate with or without it. boostrap must be loaded for css only */
     ),
 
     'fontawesome' => array(
@@ -55,12 +70,12 @@ return array(
 
     // jQuery UI
     'jqueryui' => array(
-        'basePath' => 'third_party.jqueryui',
+        'basePath' => 'third_party.jquery-ui',
         'js' => array(
-            'js/jquery-ui-1.11.4.min.js'
+            'jquery-ui'.$minVersion.'.js',
         ),
         'css' => array(
-            //'css/jquery-ui.css'
+            'jquery-ui.structure.css', /* else autocomplete or other broken */
         ),
         'depends' => array(
             'jquery',
@@ -232,7 +247,7 @@ return array(
         )
     ),
 
-    // Decimal.js calculate in js 
+    // Decimal.js calculate in js
     'decimal' => array(
         'basePath' => 'third_party.decimal',
         'js' => array(
@@ -242,7 +257,7 @@ return array(
         )
     ),
 
-    // Moment.js use real simple dateTime modification 
+    // Moment.js use real simple dateTime modification
     'moment' => array(
         'basePath' => 'third_party.moment',
         'js' => array(
@@ -270,9 +285,9 @@ return array(
     ),
 
     'bootstrap-datetimepicker' => array(
-        'basePath' => 'third_party.bootstrap-datetimepicker',
+        'basePath' => 'third_party.bootstrap-datetimepicker.build',
         'css' => array(
-            'css/bootstrap-datetimepicker.min.css'
+            'css/bootstrap-datetimepicker'.$minVersion.'.css'
         ),
         'js' => array(
             'js/bootstrap-datetimepicker.min.js'
@@ -298,7 +313,13 @@ return array(
             'moment'
         )
     ),
-
+    'emoji' => array(
+        'basePath' => 'third_party.emojifont',
+        'css' => array(
+            'css/emoji.css',
+            'css/ss-emoji.css'
+        ),
+    ),
     'jquery-datatable' => array(
         'basePath' => 'third_party.jquery-datatable',
         'css' => array(
@@ -312,6 +333,4 @@ return array(
             'bootstrap'
         )
     )
-
-
 );

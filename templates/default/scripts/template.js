@@ -1,8 +1,8 @@
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
+ * License: GNU/GPL License v3 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
@@ -13,42 +13,39 @@
  * Description: Javascript file for templates. Put JS-functions for your template here.
  *
  *
- * $Id:$
  */
 
 
-/*
+/**
  * The function focusFirst puts the Focus on the first non-hidden element in the Survey.
- *
  * Normally this is the first input field (the first answer).
  */
 function focusFirst(Event)
 {
-
     $('#limesurvey :input:visible:enabled:first').focus();
-
 }
-/*
- * The focusFirst function is added to the eventlistener, when the page is loaded.
- *
- * This can be used to start other functions on pageload as well. Just put it inside the 'ready' function block
+
+/**
+ * Code included inside this will only run once the page Document Object Model (DOM) is ready for JavaScript code to execute
+ * @see https://learn.jquery.com/using-jquery-core/document-ready/
  */
-
-/* Uncomment below if you want to use the focusFirst function */
-/*
-$(document).ready(function(){
-    focusFirst();
-});
-*/
-
-
 $(document).ready(function()
 {
+    /* Uncomment below if you want to use the focusFirst function */
+    //focusFirst();
+    /* Some function are launched in endpage.pstpl */
+    hideEmptyPart();
+    addHoverColumn();
+    triggerEmClassChangeTemplate();
 
+    // If list of nav-bar action is empty: remove it (else .navbar-toggle is shown on small screen) //
+    if(!$("#navbar li").length){
+        $("#navbar").remove();
+        $("[data-target='#navbar']").remove();
+    }
     // Scroll to first error
     if($(".input-error").length > 0) {
         $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
-            console.log('answer error found');
             $firstError = $(".input-error").first();
             $pixToScroll = ( $firstError.offset().top - 100 );
             $('html, body').animate({
@@ -57,59 +54,6 @@ $(document).ready(function()
         });
     }
 
-
-    // Make the label clickable
-    $('.label-clickable').each(function(){
-        var $that    = $(this);
-        var attrId = $that.attr('id');
-        if(attrId!=undefined){
-            attrId = attrId.replace("label-", "");
-        } else {
-            attrId = "";
-        }
-        var $inputEl = $("#"+attrId);
-        $that.on('click', function(){
-            console.log($inputEl.attr('id'));
-            $inputEl.trigger( "click" );
-        });
-    });
-
-    $('.if-no-js').hide();
-
-    if($(window).width() < 768 )
-    {
-        // nothing
-    }
-
-    //var outerframeDistanceFromTop = 50;
-    //topsurveymenubar
-    var topsurveymenubarHeight = $('#topsurveymenubar').innerHeight();
-    var outerframeDistanceFromTop = topsurveymenubarHeight;
-    // Manage top container
-    if(!$.trim($('#topContainer .container').html()))
-    {
-        $('#topContainer').hide();
-    }
-    else
-    {
-        $('#topContainer').css({
-            top: topsurveymenubarHeight+'px',
-        });
-
-        $topContainerHeight = $('#topContainer').height();
-        outerframeDistanceFromTop += $topContainerHeight;
-    }
-
-    if(!$.trim($('#surveynametitle').html()))
-    {
-        if(!$.trim($('#surveydescription').html()))
-        {
-            $('#survey-header').hide();
-        }
-    }
-
-    $('#outerframeContainer').css({marginTop:outerframeDistanceFromTop+'px'});
-
     $('.language-changer').each(function(){
         $that = $(this);
         if(!$.trim($that.children('div').html()))
@@ -117,101 +61,6 @@ $(document).ready(function()
             $that.hide();
         }
     });
-
-    $('.group-description-container').each(function(){
-        $that = $(this);
-        if(!$.trim($that.children('div').html()))
-        {
-            $that.hide();
-        }
-    });
-
-    // Hide question help container if empty
-    $('.questionhelp').each(function(){
-        $that = $(this);
-        if(!$.trim($that.html()))
-        {
-            $that.hide();
-        }
-    });
-
-
-    // Load survey button
-    if ($('#loadallbtnlink').length > 0){
-        $('#loadallbtnlink').on('click', function()
-        {
-            $('#loadallbtn').trigger('click');
-        });
-    }
-
-    // Save survey button
-    if ($('#saveallbtnlink').length > 0){
-        $('#saveallbtnlink').on('click', function()
-        {
-            $('#saveallbtn').trigger('click');
-        });
-    }
-
-    // clearall
-    if ($('#clearallbtnlink').length > 0){
-        $('#clearallbtnlink').on('click', function()
-        {
-            $('#clearall').trigger('click');
-        });
-    }
-
-    // Question index
-    if($('.linkToButton').length > 0){
-        $('.linkToButton').on('click', function()
-        {
-            $btnToClick = $($(this).attr('data-button-to-click'));
-            $btnToClick.trigger('click');
-            return false;
-        });
-    }
-
-
-    // Errors
-    if($('.emtip').length>0)
-    {
-        // On Document Load
-        $('.emtip').each(function(){
-            if($(this).hasClass('error'))
-            {
-                $(this).parents('div.questionhelp').removeClass('text-info').addClass('text-danger');
-            }
-        });
-
-        // On em change
-        $('.emtip').each(function(){
-            $(this).on('classChangeError', function() {
-                $parent = $(this).parent('div.questionhelp');
-                $parent.removeClass('text-info',1);
-                $parent.addClass('text-danger',1);
-
-                if ($parent.hasClass('hide-tip'))
-                {
-                    $parent.removeClass('hide-tip',1);
-                    $parent.addClass('tip-was-hidden',1);
-                }
-
-                $questionContainer = $(this).parents('div.question-container');
-                $questionContainer.addClass('input-error');
-            });
-
-            $(this).on('classChangeGood', function() {
-                $parent = $(this).parents('div.questionhelp');
-                $parent.removeClass('text-danger');
-                $parent.addClass('text-info');
-                if ($parent.hasClass('tip-was-hidden'))
-                {
-                    $parent.removeClass('tip-was-hidden').addClass('hide-tip');
-                }
-                $questionContainer = $(this).parents('div.question-container');
-                $questionContainer.removeClass('input-error');
-            });
-        });
-    }
 
     // Hide the menu buttons at the end of the Survey
     if($(".hidemenubutton").length>0)
@@ -229,33 +78,155 @@ $(document).ready(function()
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
-
-
 });
-
-
-window.alert = function(message, title) {
-    if($("#bootstrap-alert-box-modal").length == 0) {
-        $("body").append('<div id="bootstrap-alert-box-modal" class="modal fade">\
-            <div class="modal-dialog">\
-                <div class="modal-content">\
-                    <div class="modal-header" style="min-height:40px;">\
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
-                        <h4 class="modal-title"></h4>\
-                    </div>\
-                    <div class="modal-body"><p></p></div>\
-                    <div class="modal-footer">\
-                        <a href="#" data-dismiss="modal" class="btn btn-default">Close</a>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>');
+/**
+ * Code included inside this will run each time windows is resized
+ * @see https://api.jquery.com/resize/
+ */
+$(window).resize(function () {
+    fixBodyPadding();
+});
+/**
+ * showStartPopups : replace core function : allow HTML and use it.
+ */
+function showStartPopups(){
+    if(LSvar.showpopup && $(LSvar.startPopups).length){
+        startPopup=LSvar.startPopups.map(function(text) {
+            return "<p>"+text+"</p>";
+        });
+        $("#bootstrap-alert-box-modal .modal-body").html(startPopup);
+        $("#bootstrap-alert-box-modal").modal('show');
     }
-    $("#bootstrap-alert-box-modal .modal-header h4").text(title || "");
-    $("#bootstrap-alert-box-modal .modal-body p").text(message || "");
-
-    $(document).ready(function()
-    {
+}
+/**
+ * Replace all existing alert default javascript function
+ */
+window.alert = function(message, title) {
+    $(function() {
+        $("#bootstrap-alert-box-modal .modal-header .h4").text(title || "");
+        $("#bootstrap-alert-box-modal .modal-body").html("<p>"+message+"</p>" || "");
         $("#bootstrap-alert-box-modal").modal('show');
     });
 };
+
+/**
+ * fix padding of body according to navbar-fixed-top
+ * in endpage and in $(window).resize
+ */
+function fixBodyPadding(){
+    /* The 60 px is fixed in template.css */
+    $("body").css("padding-top",$(".navbar-fixed-top").height()+"px")
+}
+/**
+ * Set suffix/prefix clone for little screen (at top)
+ */
+function sliderSuffixClone(){
+$(".numeric-multi .slider-item .slider-right").each(function(){
+    if($(this).closest(".slider-item").find(".slider-left").length){
+        var colWidth="6";
+    }else{
+        var colWidth="12";
+    }
+    $(this).clone().removeClass("col-xs-12").addClass("visible-xs-block col-xs-"+colWidth).prop("aria-hidden",true).insertBefore($(this).prev(".slider-container"));
+    $(this).addClass("hidden-xs");
+    $(this).closest(".slider-item").find(".slider-left").removeClass("col-xs-12").addClass("col-xs-6");
+});
+}
+/**
+ * Add class hover to column in table-col-hover
+ * We can't use CSS solution : need no background
+ */
+function addHoverColumn(){
+    $(".table-col-hover").on({
+        mouseenter: function () {
+            $(this).closest(".table-col-hover").find("col").eq($(this).parent(".answers-list").children().index($(this))).addClass("hover");
+        },
+        mouseleave: function () {
+            $(this).closest(".table-col-hover").find("col").removeClass("hover");
+        }
+    }, ".answer-item");
+
+}
+/**
+ * Hide some part if empty
+ * Some can be needed if contain only js
+ * Some are not really needed : little margin only is shown
+ */
+function hideEmptyPart()
+{
+    $(".question-help-container").each(function(){
+        if($(this).text().trim()==""){/* Only if have only script tag inside or empty tag */
+            $(this).addClass("hidden");
+        }
+    });
+    $(".group-description").each(function(){
+        if($(this).text().trim()==""){/* Only if have only script tag inside or empty tag */
+            $(this).addClass("hidden");
+        }
+    });
+    $(".question-help-container.hidden").on("html:updated",function(){
+        if($(this).text().trim()!=""){
+            $(this).removeClass("hidden");
+        }
+    });
+    $(".question-help-container").on("html:updated",function(){ // .question-help-container:not(.hidden) don't work ?
+        if($(this).text().trim()==""){
+            $(this).addClass("hidden");
+        }
+    });
+}
+
+/**
+ * Update some class when em-tips is success/error
+ * @see core/package/limesurvey/survey.js:triggerEmClassChange
+ */
+function triggerEmClassChangeTemplate(){
+    $('.ls-em-tip').on('classChangeError', function() {
+        /* If user choose hide-tip : leave it */
+        //~ $parent = $(this).parent('div.qquestion-valid-container');
+        //~ if ($parent.hasClass('hide-tip'))
+        //~ {
+            //~ $parent.removeClass('hide-tip',1);
+            //~ $parent.addClass('tip-was-hidden',1);
+        //~ }
+        $questionContainer = $(this).parents('div.question-container');
+        $questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+    });
+
+    $('.ls-em-tip').on('classChangeGood', function() {
+        /* If user choose hide-tip : leave it */
+        //~ $parent = $(this).parents('div.question-valid-container');
+        //~ $parent.removeClass('text-danger');
+        //~ $parent.addClass('text-info');
+        //~ if ($parent.hasClass('tip-was-hidden'))
+        //~ {
+            //~ $parent.removeClass('tip-was-hidden').addClass('hide-tip');
+        //~ }
+        $questionContainer = $(this).parents('div.question-container');
+        $questionContainer.removeClass('input-error');/* Not working with mandatory question ... */
+    });
+}
+/**
+ * Hide question if all sub-questions is hidden
+ * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
+ * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
+ * Must be before ready (event happen before ready)
+ */
+function hideQuestionWithRelevanceSubQuestion(){
+    $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
+        if(event.target != this) return; // not needed now, but after (2016-11-07)
+        data = $.extend({style:'hidden'}, data);
+        if(data.style=='hidden'){
+            $(this).closest("[id^='question']:not(.ls-unrelevant)").removeClass("ls-hidden")
+        }
+    });
+    $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
+        if(event.target != this) return; // not needed now, but after (2016-11-07)
+        data = $.extend({style:'hidden'}, data);
+        if(data.style=='hidden'){
+            if($(this).closest("[id^='question']").find("[id^='javatbd']:visible").length==0){
+                $(this).closest("[id^='question']").addClass("ls-hidden");// ls-hidden only is used only for Equation question type actually (but think must fix and use another class)
+            }
+        }
+    });
+}

@@ -13,16 +13,10 @@
  */
 
 // Some function can be launch before document ready (and seems intersting)
-limesurveySubmitHandler();
-needConfirmHandler();
-tableCellAdapters();
-activateLanguageChanger();
+// But put it in ready : allowing update by template.js (before moving at end of HTML : best place */
 $(document).ready(function()
 {
-    navbuttonsJqueryUi();
-    showStartPopups();
-    addClassEmpty();
-    noScrollOnSelect();
+    tableCellAdapters();
     doToolTipTable();
 
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
@@ -81,40 +75,7 @@ function setJsVar(){
     numRegex = new RegExp('[^-\.,0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
 }
-// Deactivate all other button on submit
-function limesurveySubmitHandler(){
-    // Return false disallow all other system
-    $(document).on("click",".disabled",function(){return false});
-    $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
 
-    $(document).on('click',"#limesurvey .button", function(event){
-        $(this).prop('active',true).addClass('active');
-        $("#limesurvey .button.ui-button" ).not($(this)).button( "option", "disabled", true );
-        $("#limesurvey .button").not($(this)).prop('disabled',true).addClass('disabled');
-    });
-    if (document.all && !document.querySelector) { // IE7 or lower
-        $(function() {
-            $("#defaultbtn").css('display','inline').css('width','0').css('height','0').css('padding','0').css('margin','0').css('overflow','hidden');
-            $("#limesurvey [type='submit']").not("#defaultbtn").first().before($("#defaultbtn"));
-        });
-    }
-}
-
-
-// Ask confirmation on click on .needconfirm
-function needConfirmHandler(){
-    $(document).on('click',"[data-confirmedby]", function(event){
-        text=$("label[for='"+$(this).data('confirmedby')+"']").text();
-        if (confirm(text)) {
-            $("#"+$(this).data('confirmedby')).prop('checked',true);
-            return true;
-        }
-        $(".button.ui-button" ).button( "option", "disabled", false );
-        $(".button").prop('disabled',false).removeClass('disabled');
-        $(this).prop('active',false).removeClass('active');
-        return false;
-    });
-}
 /**
  * checkconditions : javascript function attach to some element
  * Launch ExprMgr_process_relevance_and_tailoring with good value
@@ -239,134 +200,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     checkconditions(cleansedValue, name, type, evt_type);
 }
 
-// Set jquery-ui to LS Button
-function navbuttonsJqueryUi(){
-    $('[dir!="rtl"] #moveprevbtn').button({
-    icons: {
-        primary: 'ui-icon-triangle-1-w'
-    }
-    });
-    $('[dir="rtl"] #moveprevbtn').button({
-    icons: {
-        secondary: 'ui-icon-triangle-1-e'
-    }
-    });
-    $('[dir!="rtl"] #movenextbtn').button({
-    icons: {
-        secondary: 'ui-icon-triangle-1-e'
-    }
-    });
-    $('[dir="rtl"] #movenextbtn').button({
-    icons: {
-        primary: 'ui-icon-triangle-1-w'
-    }
-    });
-    $(".button").button();
-    // TODO trigger handler activate/deactivate to update ui-button class
-}
-/**
- * showStartPopups : Take all message in startPopups json array and launch an alert with text
- */
-function showStartPopups(){
-    if(typeof showpopup=="undefined"){showpopup=1;}
-    if(typeof startPopups=="undefined"){startPopups=[];}
-    if(showpopup){
-        $.each(startPopups,function(key, text){
-            alert($("<div/>").html(text).text());// Parse HTML because of &#039;
-        });
-    }
-}
-/**
- * Update survey just when select a new language
- */
-function activateLanguageChanger(){
-    $(document).on('change','select.languagechanger', function() {
-        if($(this).hasClass('previewmode'))
-        {
-            var target=$(this).data('targeturl');
-            $('<form>', {
-                "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
-                "action": target
-            }).appendTo(document.body).submit();
-            return false;
-        }
-        if(!$(this).closest('form').length){// If there are no form : we can't use it, we need to create and submit. This break no-js compatibility in some page (token for example).
-            if($('form#limesurvey').length==1){ // The limesurvey form exist in document, move select and button inside and click
-                $("form#limesurvey [name='lang']").remove();// Remove existing lang selector
-                $("<input type='hidden']>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));
-                $("#changelangbtn").appendTo($('form#limesurvey'));
-                $('#changelangbtn').click();
-            }else{
-                if($(this).data('targeturl')){
-                    var target=$(this).data('targeturl');
-                }else{
-                    var target=document.location.href;
-                }
-                $('<form>', {
-                    "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
-                    "action": target,
-                    "method": 'post'
-                }).appendTo(document.body).append($("input[name='YII_CSRF_TOKEN']")).submit();
-            }
-        }else{
-            $(this).closest('form').find("[name='lang']").not($(this)).remove();// Remove other lang
-            $('#changelangbtn').click();
-        }
-    });
-    $(function(){
-        $(".changelang.jshide").hide();
-    });
-}
-/**
- * Manage the index
- */
-function manageIndex(){
-    $("#index .jshide").hide();
-    $("#index").on('click','li,.row',function(e){
-        if(!$(e.target).is('button')){
-            $(this).children("[name='move']").click();
-        }
-    });
-    $(function() {
-        $(".outerframe").addClass("withindex");
-        var idx = $("#index");
-        var row = $("#index .row.current");
-        if(row.length)
-            idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
-    });
-}
-/**
- * Put a empty class on empty answer text item (limit to answers part)
- * @author Denis Chenu / Shnoulle
- */
-function addClassEmpty()
-{
-    $('.answer-item input.text[value=""]').addClass('empty');
-    $('.answer-item input[type=text][value=""]').addClass('empty');
-    $('.answer-item textarea').each(function(index) {
-    if ($(this).val() == ""){
-        $(this).addClass('empty');
-    }
-    });
-    $("body").delegate(".answer-item input.text,.text-item input[type=text],.answer-item textarea","blur focusout",function(){
-    if ($(this).val() == ""){
-        $(this).addClass('empty');
-    }else{
-        $(this).removeClass('empty');
-    }
-    });
-}
 
-/**
- * Disable scroll on select, put it in function to allow update in template
- *
- */
-function noScrollOnSelect()
-{
-    $(".question").find("select").each(function () {
-        hookEvent($(this).attr('id'),'mousewheel',noScroll);
-    });
-}
 /**
  * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
  * Using delegate the can be outside document.ready (using .on is possible but on $(document) then : less readbale
@@ -374,10 +208,7 @@ function noScrollOnSelect()
  */
 function tableCellAdapters()
 {
-//	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
-//		e.stopPropagation();
-//	});
-    $(document).on('click','table.question tbody td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
+    $(".ls-answers tbody").on('click',' td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
         var eventTarget=$(event.target).prop("tagName");// Alternative us data
         var eventActivate=$(this).find("input:radio,input:checkbox");
         if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
@@ -604,22 +435,4 @@ function doToolTipTable()
         }
     });
 }
-//Hide the Answer and the helper field in an
-$(document).ready(
-    function(){
-        $('.question-container').each(function(){
-            if($(this).find('div.answer-container').find('input').length == 1)
-            {
-                if($(this).find('div.answer-container').find('input[type=hidden]').length >0
-                    && $(this).find('div.answer-container').find('select').length < 1)
-                {
-                    $(this).find('div.answer-container').css({display: 'none'});
-                }
-                if(trim($(this).find('div.question-help-container').find('div').html()) == "")
-                {
-                    $(this).find('div.question-help-container').css({display: 'none'});
-                }
-            }
-        });
-    }
-);
+

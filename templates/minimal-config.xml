@@ -2,6 +2,7 @@
 <config>
     <metadatas>
         <description>A pre 2.5 template.</description>
+        <apiVersion>0</apiVersion>
     </metadatas>
     <files>
         <!-- Css used in different template from 2.05/06 -->
@@ -11,7 +12,7 @@
             <filename>template.css</filename>
         </css>
         <js>
-            <filename>template.js</filename>            
+            <filename>template.js</filename>
         </js>
         <rtl>
             <css>
