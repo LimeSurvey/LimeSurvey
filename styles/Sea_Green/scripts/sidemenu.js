@@ -50,7 +50,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
             force = force || false;
             console.log("collapsing",oCollapseButton.data('collapsed'));
             var collapsedWidth = isRTL ? wWidth-50 : 50;
-            setDivisionOn(collapsedWidth,true);
+            setDivisionOn(collapsedWidth,false);
             if(oCollapseButton.data('collapsed') != 1 || force){ 
                 oCollapseButton.closest('div').css({'width':'100%'});
                 oSideMenu.find('.side-menu-container').css({'visibility': 'hidden',});
@@ -77,6 +77,19 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         defineOffset = function(oX,oY){
             offsetX = oX;
             offsetY = oY;
+        },
+        getSavedOffset = function(){
+            
+            try{
+                var savedOffset = window.localStorage.getItem('ls_admin_view_sidemenu');
+            } catch(e){}
+
+            console.log('savedOffset', savedOffset || false);
+            var startOffset = savedOffset ? parseInt(savedOffset) : options.baseWidth;
+            console.log('startOffset', startOffset)
+            startOffset = isRTL ? wWidth-startOffset : startOffset;
+
+            return startOffset;
         },
 
     //utility and calculating methods
@@ -119,8 +132,8 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
             if(oCollapseButton.data('collapsed')==0 ){ 
                 collapseSidebar();
             } else {
-                var baseWidth = isRTL ? wWidth-options.baseWidth : options.baseWidth;
-                unCollapseSidebar(baseWidth);
+                var setWidth = getSavedOffset();
+                unCollapseSidebar(setWidth);
             }
         },
         onDragStartMethod = function(e){
@@ -141,14 +154,8 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
                 unCollapseSidebar(position);
             }
         };
-
-    try{
-        var savedOffset = window.localStorage.getItem('ls_admin_view_sidemenu');
-    } catch(e){}
-
-    var startOffset = parseInt(savedOffset) || options.baseWidth;
-
-    startOffset = isRTL ? wWidth-startOffset : startOffset;
+    
+    var startOffset = getSavedOffset();
 
     if(startOffset <  wWidth/8 || oCollapseButton.data('collapsed')==1 ){
         collapseSidebar(true);

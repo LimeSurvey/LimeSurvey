@@ -763,14 +763,21 @@ div.panel.disabled {
     padding: 1px 1px;
   }
 
-#explorer {
+.side-menu #dropdown .panel-body .navbar-nav li#explorer {
   border: 0;
   margin-bottom: 0;
   border-radius: 0;
+  padding-left:1px;
   background-color: transparent;
-  box-shadow: none; }
-  #explorer ul {
-    font-size: 0.9em; }
+  box-shadow: none; 
+}
+
+.side-menu #dropdown .panel-body .navbar-nav #explorer ul {
+    font-size: 0.9em;
+}
+.side-menu #dropdown .panel-body .navbar-nav #explorer ul li{
+  padding-left: 1px;
+}
 
 .dropdownstyle {
   border: 0;

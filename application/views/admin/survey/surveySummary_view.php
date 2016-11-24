@@ -27,8 +27,6 @@ $surveyid = $surveyinfo['sid'];
     <div class="row">
         <div class="col-sm-12 content-right">
 
-<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="Tooltip on leftTooltip on leftTooltip on leftTooltip on leftTooltip on leftTooltip on leftTooltip on leftTooltip on leftTooltip on leftTooltip on leftTooltip on leftTooltip on left">Tooltip on left</button>
-
             <?php
             $aGroups =    QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $surveyinfo['language']);
             ?>

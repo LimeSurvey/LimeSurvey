@@ -20,25 +20,26 @@
              var node = ctx.node;
              var _customwrapper = function(span){
                 //Create the necessary wrap elements
-                var wrapperContainerElement = $("<div class='fancytree-innerhtml-container container-fluid'></div>"),
+                var wrapperContainerElement = $("<div class='fancytree-innerhtml-container container-fluid no-padding'></div>"),
                     wrapperElement = $("<div class='fancytree-innerhtml-row row '></div>"),
                     //now export the created spans from the base-element
                     expandElement = span.find('.fancytree-expander'),
                     iconElement = span.find('.fancytree-icon'),
                     titleElement = span.find('.fancytree-title');
                 //Add the bootstrap classes
-                expandElement.addClass('col-xs-2');
-                iconElement.addClass('col-xs-2');
+                expandElement.addClass('col-xs-1');
+                iconElement.addClass('col-xs-1');
                 titleElement.addClass('col-xs-10');
                 //combine in row-wrapper
-                if(expandElement.hasClass('fa')){
-                    wrapperElement.append(expandElement);
-                    titleElement.removeClass('col-xs-10');
-                    titleElement.addClass('col-xs-8');
-                }
                 wrapperElement
                     .append(iconElement)
                     .append(titleElement);
+
+                if(expandElement.hasClass('fa')){
+                    wrapperElement.append(expandElement);
+                    titleElement.removeClass('col-xs-10');
+                    titleElement.addClass('col-xs-9');
+                }
                 //combine in outer wrapper
                 wrapperContainerElement.append( wrapperElement );
                 //return
