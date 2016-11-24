@@ -133,10 +133,11 @@
     <?php endif;?>
     </td>
 </tr>
-
-<script>
+<?php
+/*<script>
     var labels_<?php echo $qqid; ?>=<?php echo json_encode($graph_labels); // the array of labels ?>;
     var grawdata_<?php echo $qqid;?>=<?php echo json_encode($grawdata); // the datas to generate the graph ?>;
     var labels_percent_<?php echo $qqid; ?>=<?php echo json_encode($graph_labels_percent); // the array of labels ?>;
     var grawdata_percent_<?php echo $qqid;?>=<?php echo json_encode($grawdata_percent); // the datas to generate the graph using percentages (pie, Doughnut, polar ) ?>;
-</script>
+</script>*/
+?>
