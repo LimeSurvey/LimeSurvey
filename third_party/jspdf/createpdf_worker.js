@@ -39,10 +39,9 @@ var CreatePDF = function(){
     ,  addImgObject = function(object){
         var deferred = new Promise(function(resolve, reject){
             var sizes = object.sizes;
-            html2canvas(object.html).then(function(canvas){
-                    var image = canvas.toDataURL();
+            domtoimage.toPng(object.html).then(function(image){
                     resolve({image: image, sizes: sizes});
-                });
+                }, function(error){throw error;});
             });
         promiseObjects.push(deferred);
         }
@@ -60,6 +59,9 @@ var CreatePDF = function(){
                             doc.addPage();
                     }
                     resolve("all done");
+                },
+                function(array){
+                    reject(array);
                 });
             });
             return def;

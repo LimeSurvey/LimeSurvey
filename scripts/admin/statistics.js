@@ -94,8 +94,9 @@ function init_chart_js_graph_with_datasets($type,$qid)
     var canvasId  = 'chartjs-'+$qid;
     var $canvas   = document.getElementById(canvasId).getContext("2d");
     var $canva    = $('#'+canvasId);
-    var $labels   = eval("labels_"+$qid);
-    var $grawdata = eval("grawdata_"+$qid);
+    var $statistics = statisticsData['quid'+$qid];
+    var $labels   = $statistics.labels
+    var $grawdata = $statistics.grawdata
     var $color    = $canva.data('color');
 
     $('#legend-no-percent-'+$qid).show();
@@ -146,8 +147,9 @@ function init_chart_js_graph_with_datas($type,$qid)
     var $canvas   = document.getElementById(canvasId).getContext("2d");
     var $canva    = $('#'+canvasId);
     var $color    = $canva.data('color');
-    var $labels   = eval("labels_percent_"+$qid);
-    var $grawdata = eval("grawdata_percent_"+$qid);
+    var $statistics = statisticsData['quid'+$qid];
+    var $labels   = $statistics.labels
+    var $grawdata = $statistics.grawdata
     var $chartDef = new Array();
 
     $('#legend-no-percent-'+$qid).hide();
@@ -754,36 +756,41 @@ $(document).ready(function(){
     $('body').addClass('onStatistics');
 
     $('body').on('click','.action_js_export_to_pdf', function(){
-        
-        html2canvas($(this).siblings('table')[0]).then(
-            function(canvas){
-                $('body').prepend($('<img/>').attr('src',canvas.toDataURL()));
-            }
-        )
-        
-        
-        // var overlay = $('<div></div>')
-        //     .attr('id','overlay')
-        //     .css({
-        //         position: 'fixed', 
-        //         width: "100%", 
-        //         height:"100%", 
-        //         top:0,
-        //         "z-index" : 5000,
-        //         "pointer-events": 'none',
-        //         left:0,
-        //         right:0,
-        //         bottom:0, 
-        //         "background-color": "hsla(0,0%,65%,0.6)"
-        //     });
-        // $('#statsContainerLoading').clone().css({display: 'block',position: 'fixed', top:"25%",left:0, width: "100%"}).appendTo(overlay);
-        // overlay.appendTo('body');
 
         // var thisTable = $('#'+$(this).data('questionId'));
-        // createPDFworker.call(null,thisTable).then(
-        //     function(success){overlay.remove();},
-        //     function(){console.log(arguments);}
+        // domtoimage.toPng(thisTable[0]).then(
+        //     function(image){
+        //         $('body').prepend($('<img/>').attr('src',image));
+        //     }
         // )
+        
+        // var thisTable = $('#'+$(this).data('questionId'));
+        // console.log(thisTable.html());    
+        
+        
+        var overlay = $('<div></div>')
+            .attr('id','overlay')
+            .css({
+                position: 'fixed', 
+                width: "100%", 
+                height:"100%", 
+                top:0,
+                "z-index" : 5000,
+                "pointer-events": 'none',
+                left:0,
+                right:0,
+                bottom:0, 
+                "background-color": "hsla(0,0%,65%,0.6)"
+            });
+        $('#statsContainerLoading').clone().css({display: 'block',position: 'fixed', top:"25%",left:0, width: "100%"}).appendTo(overlay);
+        overlay.appendTo('body');
+
+        var thisTable = $('#'+$(this).data('questionId'));
+        thisTable.find('button').css({display:'none'});
+        createPDFworker.call(null,thisTable).then(
+            function(success){overlay.remove(); thisTable.find('button').css({display:''});},
+            function(){console.log(arguments);}
+        )
 
 
     });

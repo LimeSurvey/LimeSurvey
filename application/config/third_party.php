@@ -319,15 +319,22 @@ return array(
             'es6-promise.auto.min.js'
         )
     ),
+    
+    'dom2image' => array(
+        'basePath' => 'third_party.dom-to-image',
+        'js' => array(
+            'dist/dom-to-image.min.js',
+        )
+    ),
 
     'jspdf' => array(
         'basePath' => 'third_party.jspdf',
         'js' => array(
-            'html2canvas.js',
             'jspdf.min.js',
             'createpdf_worker.js'
         ),
         'depends' => array(
+            'dom2image',
             'es6promise',
             'jquery',
             'bootstrap'
