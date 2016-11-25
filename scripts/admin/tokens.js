@@ -127,13 +127,13 @@ function submitEditToken(){
         success : function(html, statut){
             $ajaxLoader.hide();
             //Using Try/Catch here to catch errors if there is no grid
-            
+
             try{
                 $.fn.yiiGridView.update('token-grid', {
                     complete: function(s){
                         $modal.modal('hide');
                     } // Update the surveys list
-                });                   
+                });
             } catch(e){
                 if(e){console.log(e); $modal.modal('hide');}
             }finally{
@@ -200,10 +200,10 @@ $(document).ready(function(){
         var $that       = $(this),
             actionUrl  = $that.data('url'),
             $modal      = $('#confirmation-modal');
-        
+
         $modal.data('ajax-url', actionUrl);
         $modal.data('href', "#");
-        $modal.modal('show');   
+        $modal.modal('show');
         $modal.find('.modal-footer-yes-no').find('a.btn-ok').on('click', function(click){
             $.ajax({
                 url: actionUrl,
@@ -214,7 +214,7 @@ $(document).ready(function(){
                             complete: function(s){
                                 $modal.modal('hide');
                             } // Update the surveys list
-                        });                   
+                        });
                     } catch(e){
                         if(e){console.log(e); $modal.modal('hide');}
                     }
@@ -319,13 +319,15 @@ $(document).ready(function(){
 
     $('#startbounceprocessing').click(function(){
 
-        $that               = $(this);
-        $url                = $that.data('url');
-        $modal              = $('#tokenBounceModal');
-        $ajaxLoader         = $('#ajaxContainerLoading');
-        $modalBodyText      = $modal.find('.modal-body-text');
+        var $that               = $(this);
+        var $url                = $that.data('url');
+        var $modal              = $('#tokenBounceModal');
+        var $ajaxLoader         = $('#ajaxContainerLoading');
+        var $modalBodyText      = $modal.find('.modal-body-text');
+        var $limebutton         = $modal.find('.modal-footer .limebutton');
 
         $modalBodyText.empty();
+        $limebutton.empty().append('close');
         $ajaxLoader.show();
         $modal.modal();
 

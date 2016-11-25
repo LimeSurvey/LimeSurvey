@@ -303,6 +303,33 @@ return array(
             'bootstrap'
         )
     ),
+    'es6promise' => array(
+        'basePath' => 'third_party.es6promise',
+        'js' => array(
+            'es6-promise.auto.min.js'
+        )
+    ),
+
+    'dom2image' => array(
+        'basePath' => 'third_party.dom-to-image',
+        'js' => array(
+            'dist/dom-to-image.min.js',
+        )
+    ),
+
+    'jspdf' => array(
+        'basePath' => 'third_party.jspdf',
+        'js' => array(
+            'jspdf.min.js',
+            'createpdf_worker.js'
+        ),
+        'depends' => array(
+            'dom2image',
+            'es6promise',
+            'jquery',
+            'bootstrap'
+        )
+    ),
     /* Used by ranking question type */
     'rubaxa-sortable' => array(
         'basePath' => 'third_party.rubaxa-sortable', /* for sorting ability */
@@ -338,4 +365,5 @@ return array(
             'jquery.autocomplete'.$minVersion.'.js'
         ),
     ),
+
 );
