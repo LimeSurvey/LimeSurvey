@@ -175,7 +175,8 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
 var WindowBindings = function(){
     var surveybar = $('.surveybar'),
         sideBody = $('.side-body'),
-        sidemenu = $('#sideMenuContainer'),
+        sidemenu = $('#sideMenu'),
+        sidemenuContainer = $('#sideMenuContainer'),
         upperContainer = $('#in_survey_common'),
     
     //calculated vars
@@ -189,20 +190,22 @@ var WindowBindings = function(){
             if($toTop <= 0)
             {
                 surveybar.addClass('navbar-fixed-top');
-                sidemenu.css({position:"fixed", top: "45px"});
+                sidemenuContainer.css({position:"fixed", top: "45px"});
             }
 
             if ($(window).scrollTop() <= 45)
             {
                 surveybar.removeClass('navbar-fixed-top');
-                sidemenu.css({position:"absolute", top: "auto", 'height': ($(window).height() - 45)+"px"});
-                sidemenu.removeClass('fixed-top');
+                sidemenuContainer.css({position:"absolute", top: "auto", 'height': ($(window).height() - 45)+"px"});
+                sidemenuContainer.removeClass('fixed-top');
             }
         },
         //fixSizings
         onWindowResize = function(){
-            maxHeight =  ($(window).height() - $('#in_survey_common').offset().top -1);
-            sidemenu.find('#fancytree').css({'max-height': (maxHeight/4)+"px", 'overflow': 'auto' });
+            maxHeight       = ($(window).height()-10);
+            maxHeightInside = (maxHeight - $('#in_survey_common').offset().top-2);
+            sidemenu.css({'max-height': maxHeightInside, overflow: 'auto'});
+            sidemenuContainer.css({'max-height': (maxHeightInside), overflow: 'visible'});
         }
     onWindowResize();
     $(window).on('scroll',onWindowScroll);

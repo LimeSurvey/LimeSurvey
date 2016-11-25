@@ -27,8 +27,8 @@
                     iconElement = span.find('.fancytree-icon'),
                     titleElement = span.find('.fancytree-title');
                 //Add the bootstrap classes
-                expandElement.addClass('col-xs-1');
-                iconElement.addClass('col-xs-1');
+                expandElement.addClass('col-xs-1 font-huge');
+                iconElement.addClass('col-xs-2 font-huge');
                 titleElement.addClass('col-xs-10');
                 //combine in row-wrapper
                 wrapperElement
@@ -92,14 +92,24 @@
 
                     //combine Element
                     buttonContainer.append(jQbutton);
-                    jQbutton = null;
 
                     if (button.toggle)
                     {
                         try{jQbutton.call(button.toggle);}catch(e){}
                     }
+                    
+                    jQbutton = null;
 
                 } );
+                // At last add the all-purpose info-button
+                var infoButton = baseButton.clone(); 
+                infoButton.addClass("btn btn-xs btn-default fancytree-info-button")
+                    .attr('title', generalInfoTitle)
+                    .attr('data-toggle','tooltip')
+                    .append('<i class="fa fa-info">&nbsp;</i>');
+                buttonContainer.append(infoButton);
+                try{infoButton.call(button.toggle);}catch(e){}
+
                 container.append(buttonContainer);
                 $(node.span).find('.fancytree-innerhtml-container').prepend(container);
                 

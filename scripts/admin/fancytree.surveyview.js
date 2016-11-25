@@ -15,19 +15,19 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
     var fancytree = null;
     var glyph_opts = {
         map: {
-            doc: "fa fa-file-o",
-            docOpen: "fa fa-file-o",
+            doc: "fa fa-bars",
+            docOpen: "fa fa-bars text-warning",
             checkbox: "fa fa-square-o",
             checkboxSelected: "fa fa-check-square-o",
             checkboxUnknown: "fa fa-share",
             dragHelper: "glyphicon glyphicon-play",
             dropMarker: "glyphicon glyphicon-arrow-right",
             error: "glyphicon glyphicon-warning-sign",
-            expanderClosed: "fa fa-caret-right",
+            expanderClosed: "fa fa-caret-down",
             expanderLazy: "fa fa-caret-right",  // glyphicon-plus-sign
-            expanderOpen: "fa fa-caret-down",  // glyphicon-collapse-down
-            folder: "fa fa-folder-o",
-            folderOpen: "fa fa-folder-open-o",
+            expanderOpen: "fa fa-caret-up",  // glyphicon-collapse-down
+            folder: "fa fa-bars",
+            folderOpen: "fa fa-bars",
             loading: "glyphicon glyphicon-refresh glyphicon-spin"
         }
     };
@@ -75,8 +75,9 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                 } else {
                     var data = { gid: node.data.gid, qid: node.key };
                 }
-                if (node.isActive()) {
-                    if (node.isExpanded() && !$(event.toElement).hasClass('fancytree-expander')) { event.preventDefault(); }
+
+                if ($(event.toElement).closest('a').hasClass('fancytree-info-button') || $(event.toElement).hasClass('fancytree-info-button')) { 
+                    event.preventDefault();               
                     $.ajax({
                         url: questionDetailUrl,
                         data: data,
@@ -109,10 +110,25 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                 levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
             },
             expand: function (event, data) {
+                console.log(glyph_opts.map.expanderClosed);
+                console.log($(data.node.span)
+                    .find('.fancytree-expander').attr('class'));
                 jQTreeItem.trigger('nodeExpanded', event, data);
+                $(data.node.span)
+                    .find('.fancytree-expander')
+                    .removeClass('fa-caret-down')
+                    .addClass('fa-caret-up');
             },
             collapse: function (event, data) {
+                console.log(glyph_opts.map.expanderClosed);
+                console.log($(data.node.span)
+                    .find('.fancytree-expander').attr('class'));
+
                 jQTreeItem.trigger('nodeCollapsed', event, data);
+                $(data.node.span)
+                    .find('.fancytree-expander')
+                    .removeClass('fa-caret-up')
+                    .addClass('fa-caret-down');
             },
             filter: { mode: 'hide' },
             autoscroll: true

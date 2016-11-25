@@ -43,6 +43,23 @@
   margin-bottom: 5px;
 }
 
+.font-smaller{
+  font-size: 0.8em;
+}
+.font-small{
+  font-size: 0.9em;
+}
+.font-big{
+  font-size: 1.1em;
+}
+.font-bigger{
+  font-size: 1.2em;
+}
+.font-huge{
+  font-size: 1.6em;
+}
+
+
 .ui-datepicker {
   width: 17em;
   padding: .2em .2em 0;
@@ -720,6 +737,8 @@ div.panel.disabled {
   #fancytree.fancytree-ext-filter-hide ul tr.fancytree-hide{
     display: none;
   }
+  
+  
   #fancytree>ul>li>span {
     padding: 12px 2px;
     display: block;
@@ -732,27 +751,6 @@ div.panel.disabled {
     display: inline-block;
     font-weight: 400;
   }
-  /*#fancytree>ul>li span.fancytree-expander {
-    width: 16px;
-    padding-top: 7px;
-    position: absolute;
-    left: 8px;
-  }
-  #fancytree>ul>li span.fancytree-icon {
-    width: 26px;
-    padding-top: 7px;
-    text-align: right;
-    position: absolute;
-  }
-  #fancytree>ul>li span.fancytree-title {
-    width: 99%;
-    padding: 6px 4px 8px 40px;
-    margin:auto;
-  }
-  #fancytree>ul>li span.fancytree-title>a.btn {
-    float: right;
-    clear: both;
-  }*/
 
   #fancytree ul>li .lsi-tree-question-item .fancytree-title{
     white-space: pre-wrap;
@@ -763,19 +761,26 @@ div.panel.disabled {
     padding: 1px 1px;
   }
 
-.side-menu #dropdown .panel-body .navbar-nav li#explorer {
+.side-menu .navbar-nav #explorer:hover {
+  font-weight: normal;
+  color: #35363f;
+
+}
+.side-menu .navbar-nav #explorer {
   border: 0;
   margin-bottom: 0;
   border-radius: 0;
   padding-left:1px;
+  font-weight: normal;
+  color: #35363f;
   background-color: transparent;
   box-shadow: none; 
 }
 
-.side-menu #dropdown .panel-body .navbar-nav #explorer ul {
+.side-menu  .navbar-nav #explorer ul {
     font-size: 0.9em;
 }
-.side-menu #dropdown .panel-body .navbar-nav #explorer ul li{
+.side-menu .navbar-nav #explorer ul li{
   padding-left: 1px;
 }
 
@@ -807,6 +812,8 @@ div.panel.disabled {
   #sideMenu #dropdown li > a:hover {
     width: 100%;
     font-weight: 700; }
+  #sideMenu #dropdown #explorer li{
+    font-weight: normal; }
   #sideMenu #dropdown #explorer li:hover {
     font-weight: 700; }
   #sideMenu #dropdown #explorer li:hover > a {

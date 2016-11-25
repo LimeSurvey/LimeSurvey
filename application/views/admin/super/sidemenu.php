@@ -37,6 +37,10 @@
         <!-- Do nothing -->
     <?php endif;?>
 
+<script>
+var generalInfoTitle = "<?php eT('Show information abaout this Question/Questiongroup'); ?>";
+</script>
+
 <div id="sideMenuContainer" class="sidemenu-container">
     <!-- sideMenu -->
     <div class="side-menu hidden-xs" id="sideMenu" style="z-index: 101;">
@@ -114,14 +118,14 @@
                     <div class="row">
                         <?php if($activeQuestionGroup): ?>
                         <div class="col-xs-6">
-                            <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><?php eT("Add questiongroup");?></button>
+   <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Add questiongroup");?></button>
                         </div>
                         <div class="col-xs-6">
-                            <button id="quickadd-add-new-question" onclick="location.href='<?php echo $newQuestionToGroupLink; ?>'" title="<?php eT('Add question to current questiongroup');?>" data-toggle="tooltip" class="btn btn-primary btn-block"><?php eT("Add question");?></button>
+   <button id="quickadd-add-new-question" onclick="location.href='<?php echo $newQuestionToGroupLink; ?>'" title="<?php eT('Add question to current questiongroup');?>" data-toggle="tooltip" class="btn btn-primary btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Add question");?></button>
                         </div>
                         <?php else: ?>
                         <div class="col-xs-12">
-                            <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><?php eT("Add questiongroup");?></button>
+   <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Add questiongroup");?></button>
                         </div>
                         <?php endif; ?>
                     </div>
@@ -137,7 +141,6 @@
                         <!-- Question Explorer -->
                         <div id="dropdown-lvl1" class="panel-collapse collapse <?php if( isset($sidemenu["questiongroups"]) || isset($sidemenu["listquestions"]) || 1==1 ) echo 'in'; ?>"  <?php if( isset($sidemenu["questiongroups"]) || isset($sidemenu["listquestions"]) ) echo 'aria-expanded="true"'; ?> >
                             <div class="panel-body">
-                                <ul class="nav navbar-nav dropdown-first-level">
                                     <!-- Explorer -->
                                     <?php $this->renderPartial( "/admin/super/_question_explorer", array(
                                         'sidemenu' => $sidemenu,
@@ -148,7 +151,7 @@
                                         'iQuestionId' => $activeQuestion,
                                         'iQuestionGroupId' => $activeQuestionGroup,
                                     )); ?>
-
+                                <ul class="nav navbar-nav dropdown-first-level">
                                     <?php if($permission):?>
                                         <!-- List Groups -->
                                         <li class="toWhite <?php if( isset($sidemenu["listquestiongroups"]) ) echo 'active'; ?>">
