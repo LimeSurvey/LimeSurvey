@@ -26,7 +26,7 @@
             </div>
                 <input
                     id="searchbox_<?php echo $name; ?>"
-                    placeholder="<?php eT("Search"); ?>"
+                    placeholder="<?php eT("Search (3 characters minimum)"); ?>"
                     class="form-control"
                     type="text"
                  />
@@ -60,7 +60,7 @@
             id="answer<?php echo $name; ?>_c"
             value="<?php echo $location_value; ?>"
             />
-
+                <!-- readonly untill update a value can update the coordinate -->
                 <div class="coordinate-item form-group">
                     <label for="answer_lat<?php echo $name; ?>_c" class="control-label">
                         <?php eT("Latitude:"); ?>
@@ -71,6 +71,7 @@
                     name="<?php echo $name; ?>_c1"
                     id="answer_lat<?php echo $name; ?>_c"
                     value="<?php echo $currentLat; ?>"
+                    readonly
                     />
                 </div>
 
@@ -84,6 +85,7 @@
                     name="<?php echo $name; ?>_c2"
                     id="answer_lng<?php echo $name; ?>_c"
                     value="<?php echo $currentLong; ?>"
+                    readonly
                     />
                 </div>
 

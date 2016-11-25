@@ -214,18 +214,7 @@ return array(
         )
     ),
 
-    // jQuery actual
-    'jquery-actual' => array(
-        'basePath' => 'third_party.jquery-actual',
-        'js' => array(
-            'jquery.actual.min.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
-    // jQuery touch punch
+    // jQuery touch punch : seems uneended now ?
     'jquery-touch-punch' => array(
         'basePath' => 'third_party.jquery-touch-punch',
         'js' => array(
@@ -257,15 +246,7 @@ return array(
     ),
 
     // leaflet, needed for short text question with map (OSM)
-    'leaflet' => array(
-        'basePath' => 'third_party.leaflet',
-        'js' => array(
-            'leaflet.js'
-        ),
-        'css' => array(
-            'leaflet.css'
-        ),
-    ),
+
     'jsuri' => array(
         'basePath' => 'third_party.jsUri',
         'js' => array(
@@ -324,12 +305,37 @@ return array(
     ),
     /* Used by ranking question type */
     'rubaxa-sortable' => array(
-        'basePath' => 'third_party.rubaxa-sortable',
+        'basePath' => 'third_party.rubaxa-sortable', /* for sorting ability */
         'js' => array(
             'jquery.fn.sortable'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
         )
+    ),
+    'jquery-actual' => array(
+        'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
+        'js' => array(
+            'jquery.actual.min.js'
+        ),
+        'depends' => array(
+            'jquery'
+        )
+    ),
+    /* Used by short text with map by leaflet */
+    'leaflet' => array(
+        'basePath' => 'third_party.leaflet',
+        'js' => array(
+            'leaflet.js'
+        ),
+        'css' => array(
+            'leaflet.css'
+        ),
+    ),
+    'devbridge-autocomplete' => array(
+        'basePath' => 'third_party.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
+        'js' => array(
+            'jquery.autocomplete'.$minVersion.'.js'
+        ),
     ),
 );
