@@ -169,15 +169,10 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
         },
         bindExpandCollapse = function (tree) {
             var showExpandAndCollapse = jQTreeItem.data("show-expand-collapse") || false,
-                expandAll = jQTreeItem.data("expand-all"),
-                collapseAll = jQTreeItem.data("collapse-all"),
-                buttonExpand = $("<a href='#' class='btn btn-default noChangeBorder'></a>"),
-                buttonCollapse = $("<a href='#' class='btn btn-default noChangeBorder'></a>"),
-                buttonGroup = $("<div class='btn-group btn-group-justified'></div>"),
-                buttonContainer = $("<div class='row row-with-margin'></div>");
+                buttonExpand = $("#fancytree_expand_all_nodes"),
+                buttonCollapse = $("#fancytree_compress_all_nodes");
+
             if ((showExpandAndCollapse == true)) {
-                buttonExpand.text(expandAll);
-                buttonCollapse.text(collapseAll);
 
                 buttonExpand.on('click', function (e) {
                     e.preventDefault();
@@ -195,9 +190,6 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                     });
                     return false;
                 });
-                buttonGroup.append(buttonCollapse).append(buttonExpand);
-                buttonContainer.append(buttonGroup);
-                jQTreeItem.before(buttonContainer);
             }
         },
         run = function (questionId, questionGroupId) {

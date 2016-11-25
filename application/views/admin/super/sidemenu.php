@@ -116,18 +116,24 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                 <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="">
                 <div class="container-fluid" id="quickadd-button-bar">
                     <div class="row">
-                        <?php if($activeQuestionGroup): ?>
-                        <div class="col-xs-6">
-   <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Add questiongroup");?></button>
+                        <div class="col-xs-8">
+                            <?php if($activeQuestionGroup): ?>
+                            <div class="col-xs-6">
+    <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Group");?></button>
+                            </div>
+                            <div class="col-xs-6">
+    <button id="quickadd-add-new-question" onclick="location.href='<?php echo $newQuestionToGroupLink; ?>'" title="<?php eT('Add question to current questiongroup');?>" data-toggle="tooltip" class="btn btn-primary btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Question");?></button>
+                            </div>
+                            <?php else: ?>
+                            <div class="col-xs-12">
+    <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Group");?></button>
+                            </div>
+                            <?php endif; ?>
                         </div>
-                        <div class="col-xs-6">
-   <button id="quickadd-add-new-question" onclick="location.href='<?php echo $newQuestionToGroupLink; ?>'" title="<?php eT('Add question to current questiongroup');?>" data-toggle="tooltip" class="btn btn-primary btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Add question");?></button>
+                        <div class="col-xs-4">
+                            <button id="fancytree_expand_all_nodes" class="btn btn-link btn-lg" data-toggle="tooltip" title="<?php eT('Expand all questionsgroups');?>"><i class="fa fa-expand">&nbsp;</i></button>
+                            <button id="fancytree_compress_all_nodes" class="btn btn-link btn-lg" data-toggle="tooltip" title="<?php eT('Compress all questionsgroups');?>"><i class="fa fa-compress">&nbsp;</i></button>
                         </div>
-                        <?php else: ?>
-                        <div class="col-xs-12">
-   <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Add questiongroup");?></button>
-                        </div>
-                        <?php endif; ?>
                     </div>
                 </div>
 

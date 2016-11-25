@@ -202,12 +202,13 @@ var WindowBindings = function(){
         },
         //fixSizings
         onWindowResize = function(){
-            maxHeight       = ($(window).height()-10);
-            maxHeightInside = (maxHeight - $('#in_survey_common').offset().top-2);
-            sidemenu.css({'max-height': maxHeightInside, overflow: 'auto'});
-            sidemenuContainer.css({'max-height': (maxHeightInside), overflow: 'visible'});
+            maxHeight       = ($('footer').position().top - ($('#surveybarid').position().top +$('#surveybarid').height()));
+            //maxHeightInside = (maxHeight - $('#in_survey_common').offset().top-2);
+            sidemenu.css({'max-height': maxHeight, overflow: 'auto'});
+            sidemenuContainer.css({'max-height': (maxHeight)});
         }
     onWindowResize();
+    onWindowScroll();
     $(window).on('scroll',onWindowScroll);
     $(window).on('resize',onWindowResize);
 };

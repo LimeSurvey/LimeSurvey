@@ -790,7 +790,10 @@ div.panel.disabled {
   border-radius: 0;
   background-color: transparent;
   box-shadow: none; }
-
+  
+#sideMenuContainer{
+  padding-bottom: 62px;
+}
 #sideMenu {
   min-height: 700px;
   overflow: hidden; }
