@@ -131,8 +131,8 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                             <?php endif; ?>
                         </div>
                         <div class="col-xs-4">
-                            <button id="fancytree_expand_all_nodes" class="btn btn-link btn-lg" data-toggle="tooltip" title="<?php eT('Expand all questionsgroups');?>"><i class="fa fa-expand">&nbsp;</i></button>
-                            <button id="fancytree_compress_all_nodes" class="btn btn-link btn-lg" data-toggle="tooltip" title="<?php eT('Compress all questionsgroups');?>"><i class="fa fa-compress">&nbsp;</i></button>
+                            <button id="fancytree_expand_all_nodes" class="btn btn-link btn-lg col-xs-6" data-toggle="tooltip" title="<?php eT('Expand all questionsgroups');?>"><i class="fa fa-expand">&nbsp;</i></button>
+                            <button id="fancytree_compress_all_nodes" class="btn btn-link btn-lg col-xs-6" data-toggle="tooltip" title="<?php eT('Compress all questionsgroups');?>"><i class="fa fa-compress">&nbsp;</i></button>
                         </div>
                     </div>
                 </div>
