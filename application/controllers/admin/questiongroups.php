@@ -534,11 +534,7 @@ class questiongroups extends Survey_Common_Action
 
             $aGroupArray["key"]    = $aGroup->gid;                           // The key is used by fancy tree to build the node id.
             $aGroupArray["gid"]    = $aGroup->gid;
-            $aGroupArray["title"]  = (  // The title will be shown as text, but be truncated to max 28 letters
-                (mb_strlen($aGroup->sanitized_group_name, Yii::app()->charset) > 26) 
-                ? mb_substr($aGroup->sanitized_group_name, 0, 23, Yii::app()->charset)."…" 
-                : $aGroup->sanitized_group_name
-                );          
+            $aGroupArray["title"]  = $aGroup->sanitized_group_name;          //shortening the name is a css thing now          
             $aGroupArray["folder"] = true;                                   // Means it's a node with children
             $aGroupArray["href"] = Yii::app()->createUrl('admin/questiongroups/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid));                                   // Means it's a node with children
             $aGroupArray['extraClasses']   = 'lsi-tree-group-item';
@@ -573,7 +569,7 @@ class questiongroups extends Survey_Common_Action
                 $aDatasQuestions = array();                                                 // The indexed array that will contain questions
                 $aDatasQuestions["key"]      = $oQuestion->qid;
                 $aDatasQuestions["gid"]      = $aGroup->gid;
-                $aDatasQuestions["title"]    = $oQuestion->sanitized_title . ' : ' . $oQuestion->getEllipsized_question(20);
+                $aDatasQuestions["title"]    = "[".$oQuestion->sanitized_title . ']&nbsp;' . $oQuestion->sanitized_question;
                 $aDatasQuestions['href']     = Yii::app()->createUrl('admin/questions/sa/view/', array('surveyid' => $surveyid, 'gid' => $aGroup->gid, 'qid' => $oQuestion->qid));
                 $aDatasQuestions['toggle']   = 'tooltip';
                 $aDatasQuestions['placement']   = 'bottom';

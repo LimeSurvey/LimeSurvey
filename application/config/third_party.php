@@ -304,7 +304,7 @@ return array(
             'dist/jquery.fancytree-all.js'
         ),
         'css' => array(
-            'dist/skin-bootstrap/ui.fancytree.min.css'
+            'dist/skin-bootstrap-ls/ui.fancytree.css'
         ),
     ),
 

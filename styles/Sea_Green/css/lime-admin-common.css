@@ -619,9 +619,14 @@ div.panel.disabled {
     box-shadow: none; }
   .side-menu .navbar-header {
     width: 100%; }
-  .side-menu .navbar-nav li {
+  .side-menu .navbar-nav {
     display: block;
     width: 100%; }
+  .side-menu .navbar-nav li ,
+  .side-menu .navbar-nav ul {
+    display: block;
+    width: 100%; 
+    overflow: hidden;}
     .side-menu .navbar-nav li a:not(.btn) {
       padding: 15px; }
       .side-menu .navbar-nav li a .glyphicon {
@@ -733,11 +738,13 @@ div.panel.disabled {
     width:100%;
     clear: both;
   }
+  #fancytree ul.fancytree-container{
+    border: 0;
+  }
   #fancytree.fancytree-ext-filter-hide ul span.fancytree-node.fancytree-hide, 
   #fancytree.fancytree-ext-filter-hide ul tr.fancytree-hide{
     display: none;
   }
-  
   
   #fancytree>ul>li>span {
     padding: 12px 2px;
@@ -752,8 +759,11 @@ div.panel.disabled {
     font-weight: 400;
   }
 
-  #fancytree ul>li .lsi-tree-question-item .fancytree-title{
-    white-space: pre-wrap;
+  #fancytree .lsi-tree-question-item .fancytree-title{
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin: initial;
   }
   #fancytree .fancytree-innerhtml-buttonbar{
@@ -777,9 +787,6 @@ div.panel.disabled {
   box-shadow: none; 
 }
 
-.side-menu  .navbar-nav #explorer ul {
-    font-size: 0.9em;
-}
 .side-menu .navbar-nav #explorer ul li{
   padding-left: 1px;
 }
@@ -790,10 +797,8 @@ div.panel.disabled {
   border-radius: 0;
   background-color: transparent;
   box-shadow: none; }
-  
-#sideMenuContainer{
-  padding-bottom: 62px;
-}
+
+
 #sideMenu {
   min-height: 700px;
   overflow: hidden; }

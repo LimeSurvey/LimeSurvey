@@ -185,8 +185,10 @@ var WindowBindings = function(){
     //methods
         //Stick the side menu and the survey bar to the top
         onWindowScroll = function(e){
-            $toTop = (surveybar.offset().top - $(window).scrollTop());
-
+            var $toTop = (surveybar.offset().top - $(window).scrollTop());
+            console.log(upperContainer.offset());
+            var topPosition = upperContainer.offset().top;
+                sidemenuContainer.css({position:"fixed", top: topPosition});
             if($toTop <= 0)
             {
                 surveybar.addClass('navbar-fixed-top');
@@ -202,9 +204,9 @@ var WindowBindings = function(){
         },
         //fixSizings
         onWindowResize = function(){
-            maxHeight       = ($('footer').position().top - ($('#surveybarid').position().top +$('#surveybarid').height()));
+            maxHeight       = ($('footer').position().top - (surveybar.position().top +surveybar.height()));
             //maxHeightInside = (maxHeight - $('#in_survey_common').offset().top-2);
-            sidemenu.css({'max-height': maxHeight, overflow: 'auto'});
+            sidemenu.css({'max-height': maxHeight, "overflow-y": 'auto'});
             sidemenuContainer.css({'max-height': (maxHeight)});
         }
     onWindowResize();

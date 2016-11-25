@@ -113,7 +113,6 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
             <!-- Main Menu -->
             <div class="side-menu-container hidden-xs">
             <!-- Add new Questiongroup, add new Question => quickadd -->
-                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="">
                 <div class="container-fluid" id="quickadd-button-bar">
                     <div class="row">
                         <div class="col-xs-8">
@@ -136,17 +135,52 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                         </div>
                     </div>
                 </div>
-
+                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="">
                     <!-- Question & Groups-->
                     <li class="panel panel-default dropdownlvl1" id="dropdown">
-                        <a data-toggle="collapse" id="questions-groups-collapse" href="#dropdown-lvl1" <?php if( isset($sidemenu["questiongroups"]) ) echo 'aria-expanded="true"'; ?>  >
-                            <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions and groups:');?>
-                            <span class="caret"></span>
-                        </a>
+                        <ul class="nav navbar-nav dropdown-first-level">
+                                <?php if($permission):?>
+                                    <!-- List Groups -->
+                                    <li class="toWhite <?php if( isset($sidemenu["listquestiongroups"]) ) echo 'active'; ?>">
+                                        <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
+                                        <a href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
+                                            <span class="glyphicon glyphicon-list"></span>
+                                            <?php eT("List question groups");?>
+                                        </a>
+                                    </li>
 
+                                    <!-- List Questions -->
+                                    <li class="toWhite <?php if( isset($sidemenu["listquestions"]) ) echo 'active'; ?>">
+                                        <a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
+                                            <span class="glyphicon glyphicon-list"></span>
+                                            <?php eT("List questions");?>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+
+                                <!-- Organize questions -->
+                                <?php if($surveycontentupdate):?>
+                                    <?php if ($activated):?>
+                                        <li class="disabled">
+                                            <a href='#'>
+                                                <span class="icon-organize"></span>
+                                                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo gT("Question group/question organizer disabled").' - '.gT("This survey is currently active."); ?>">
+                                                    <?php eT("Question organizer"); ?>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    <?php else: ?>
+                                        <li>
+                                            <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
+                                                <span class="icon-organize"></span>
+                                                <?php eT("Question organizer"); ?>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endif;?>
                         <!-- Question Explorer -->
-                        <div id="dropdown-lvl1" class="panel-collapse collapse <?php if( isset($sidemenu["questiongroups"]) || isset($sidemenu["listquestions"]) || 1==1 ) echo 'in'; ?>"  <?php if( isset($sidemenu["questiongroups"]) || isset($sidemenu["listquestions"]) ) echo 'aria-expanded="true"'; ?> >
-                            <div class="panel-body">
+                    <div id="dropdown-lvl1" >
+                        <div class="panel-body">
                                     <!-- Explorer -->
                                     <?php $this->renderPartial( "/admin/super/_question_explorer", array(
                                         'sidemenu' => $sidemenu,
@@ -157,49 +191,9 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                                         'iQuestionId' => $activeQuestion,
                                         'iQuestionGroupId' => $activeQuestionGroup,
                                     )); ?>
-                                <ul class="nav navbar-nav dropdown-first-level">
-                                    <?php if($permission):?>
-                                        <!-- List Groups -->
-                                        <li class="toWhite <?php if( isset($sidemenu["listquestiongroups"]) ) echo 'active'; ?>">
-                                            <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
-                                            <a href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
-                                                <span class="glyphicon glyphicon-list"></span>
-                                                <?php eT("List question groups");?>
-                                            </a>
-                                        </li>
-
-                                        <!-- List Questions -->
-                                        <li class="toWhite <?php if( isset($sidemenu["listquestions"]) ) echo 'active'; ?>">
-                                            <a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
-                                                <span class="glyphicon glyphicon-list"></span>
-                                                <?php eT("List questions");?>
-                                            </a>
-                                        </li>
-                                    <?php endif; ?>
-
-                                    <!-- Organize questions -->
-                                    <?php if($surveycontentupdate):?>
-                                        <?php if ($activated):?>
-                                            <li class="disabled">
-                                                <a href='#'>
-                                                    <span class="icon-organize"></span>
-                                                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo gT("Question group/question organizer disabled").' - '.gT("This survey is currently active."); ?>">
-                                                        <?php eT("Question organizer"); ?>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        <?php else: ?>
-                                            <li>
-                                                <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
-                                                    <span class="icon-organize"></span>
-                                                    <?php eT("Question organizer"); ?>
-                                                </a>
-                                            </li>
-                                        <?php endif; ?>
-                                    <?php endif;?>
-                                </ul>
                             </div>
                         </div>
+                        </ul>
                     </li>
 
                     <!-- Token -->
