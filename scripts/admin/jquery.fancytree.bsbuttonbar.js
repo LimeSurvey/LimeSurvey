@@ -48,7 +48,8 @@
              renderButtons = function(node){
                 var baseButton = $('<a role="button"></a>)'),
                     buttonContainer = $('<div class="btn-group pull-right fancytree-innerhtml-buttonbar" role="group"></div>'),
-                    container = $('<div class="row text-right" style="margin:0;padding:0;height:15px;"></div>');
+                    container = $('<div class="col-xs-12"></div>'),
+                    row = $('<div class="row text-right" style="margin:0;padding:0;height:15px;"></div>');
 
                 //console.log(node.data.buttons);
                 $.each( node.data.buttonlinks, function( key, button ){
@@ -111,7 +112,8 @@
                 try{infoButton.call(button.toggle);}catch(e){}
 
                 container.append(buttonContainer);
-                $(node.span).find('.fancytree-innerhtml-container').prepend(container);
+                row.append(container);
+                $(node.span).find('.fancytree-innerhtml-container').prepend(row);
                 
              };
              this._superApply(arguments);

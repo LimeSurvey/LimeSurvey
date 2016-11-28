@@ -188,14 +188,14 @@ span.fancytree-node {
   display: inherit;
   width: 100%;
   margin-top: 0px;
-  min-height: 2em;
+  min-height: 1em;
 }
 span.fancytree-title {
   color: #333333;
   cursor: pointer;
   display: inline-block;
   vertical-align: top;
-  min-height: 2em;
+  min-height: 1em;
   padding: 0 3px 0 3px;
   margin: 1px 0 0 0em;
   border: 1px solid transparent;

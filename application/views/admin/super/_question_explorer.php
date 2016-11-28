@@ -31,8 +31,7 @@
     <!-- The actual panle-element which contains the tree, and the filter_input -->
     <div class="panel-body">
         <!-- The filtering input, fixed against submit, by js -->
-        <div class="row row-with-margin">
-            <br/>   
+        <div class="row row-with-margin"> 
             <input class="col-xs-12 form-control" id="searchInQuestionTree" name="searchInQuestionTree" placeholder="<?php eT("Search for question/questiongroup"); ?>" />
         </div>
         <!-- the fancytree container, here is where the magic happens -->
