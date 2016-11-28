@@ -642,6 +642,7 @@ class questiongroups extends Survey_Common_Action
     private function collectQuestionDetail($surveyid, $language, $qid){
 
         $oQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $language));
+        LimeExpressionManager::ProcessString("{" . $oQuestion->relevance . "}", $qid);
         $jDetailContent = "<div class='container-center'>
             <dl>
             <dt>".gT('Code')."</dt>
@@ -657,7 +658,7 @@ class questiongroups extends Survey_Common_Action
             <dd class='text-right'>&nbsp;".$oQuestion->otherIcon."</dd>
 
             <dt>".gT('Relevance equation')."</dt>
-            <dd class='text-right'>&nbsp;".LimeExpressionManager::UnitTestConvertConditionsToRelevance($surveyid,$oQuestion->qid)."</dd>
+            <dd class='text-right'>&nbsp;".LimeExpressionManager::GetLastPrettyPrintExpression()."</dd>
         </dl>";
 
         $jDetailsArray = array(

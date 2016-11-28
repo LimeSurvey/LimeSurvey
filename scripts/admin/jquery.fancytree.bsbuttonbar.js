@@ -27,8 +27,8 @@
                     iconElement = span.find('.fancytree-icon'),
                     titleElement = span.find('.fancytree-title');
                 //Add the bootstrap classes
-                expandElement.addClass('col-xs-2 font-huge pull-right');
-                iconElement.addClass('col-xs-2 font-huge');
+                expandElement.addClass('col-xs-1 font-huge pull-right');
+                iconElement.addClass('col-xs-1 font-huge');
                 titleElement.addClass('col-xs-10');
                 //combine in row-wrapper
                 wrapperElement
@@ -36,6 +36,8 @@
                     .append(titleElement);
 
                 if(expandElement.hasClass('fa')){
+                    var childCount = node.countChildren();
+                    wrapperElement.append("<span class='pull-right'>("+childCount+")&nbsp;</span>");
                     wrapperElement.append(expandElement);
                     titleElement.removeClass('col-xs-10');
                     titleElement.addClass('col-xs-8');
@@ -47,8 +49,8 @@
              },
              renderButtons = function(node){
                 var baseButton = $('<a role="button"></a>)'),
-                    buttonContainer = $('<div class="btn-group pull-right fancytree-innerhtml-buttonbar" role="group"></div>'),
-                    container = $('<div class="col-xs-12"></div>'),
+                    buttonContainer = $('<div class="btn-group btn-group-justified fancytree-innerhtml-buttonbar" role="group"></div>'),
+                    container = $('<div class="col-xs-6"></div>'),
                     row = $('<div class="row text-right" style="margin:0;padding:0;height:15px;"></div>');
 
                 //console.log(node.data.buttons);
@@ -111,6 +113,7 @@
                 buttonContainer.append(infoButton);
                 try{infoButton.call(button.toggle);}catch(e){}
 
+                row.append(container.clone());
                 container.append(buttonContainer);
                 row.append(container);
                 $(node.span).find('.fancytree-innerhtml-container').prepend(row);

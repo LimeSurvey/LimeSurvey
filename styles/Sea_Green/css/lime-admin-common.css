@@ -575,7 +575,10 @@ div.panel.disabled {
 #in_survey_common{
   padding: 0 5px;
 }
-
+.popover{
+    max-width: 45%; /* Max Width of the popover (depending on the container!) */
+    min-width: 25%;
+}
 .sidemenu-container {
   position:fixed;
   width: 300px;
@@ -759,7 +762,7 @@ div.panel.disabled {
     font-weight: 400;
   }
 
-  #fancytree .lsi-tree-question-item .fancytree-title{
+  #fancytree  .fancytree-title{
     white-space: nowrap;
     max-width: 100%;
     overflow: hidden;
