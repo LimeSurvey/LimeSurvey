@@ -181,14 +181,20 @@ var WindowBindings = function(){
     
     //calculated vars
         maxHeight =  $(window).height() - $('#in_survey_common').offset().top - 10,
-    
+        basePosition = {top: 0, left: 0},
     //methods
+        //create the first setting and calculate therefor
+        setInitial = function(){
+            basePosition = sidemenuContainer.offset();
+            onWindowResize();
+            onWindowScroll();
+        },
         //Stick the side menu and the survey bar to the top
         onWindowScroll = function(e){
             var $toTop = (surveybar.offset().top - $(window).scrollTop());
-            console.log(upperContainer.offset());
-            var topPosition = upperContainer.offset().top;
+            var topPosition = (basePosition.top - $(window).scrollTop());
                 sidemenuContainer.css({position:"fixed", top: topPosition});
+
             if($toTop <= 0)
             {
                 surveybar.addClass('navbar-fixed-top');
@@ -198,19 +204,22 @@ var WindowBindings = function(){
             if ($(window).scrollTop() <= 45)
             {
                 surveybar.removeClass('navbar-fixed-top');
-                sidemenuContainer.css({position:"absolute", top: "auto", 'height': ($(window).height() - 45)+"px"});
-                sidemenuContainer.removeClass('fixed-top');
             }
         },
         //fixSizings
         onWindowResize = function(){
-            maxHeight       = ($('footer').position().top - (surveybar.position().top +surveybar.height()));
+            maxHeight       = ($(window).height() - (basePosition.top-5));
+            console.log("body", $('body').height());
+            console.log("base", basePosition.top);
+            console.log("footer", $('footer').height());
+            console.log("maxHeight", maxHeight);
+
             //maxHeightInside = (maxHeight - $('#in_survey_common').offset().top-2);
-            sidemenu.css({'max-height': maxHeight, "overflow-y": 'auto'});
+            sidemenu.css({'height': maxHeight, "overflow-y": 'auto'});
             sidemenuContainer.css({'max-height': (maxHeight)});
         }
-    onWindowResize();
-    onWindowScroll();
+    
+    setInitial();
     $(window).on('scroll',onWindowScroll);
     $(window).on('resize',onWindowResize);
 };

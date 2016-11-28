@@ -581,7 +581,7 @@ div.panel.disabled {
   width: 300px;
   float:left; 
   overflow:auto;
-  height:100vh;
+  height:95%;
   clear: left; 
   background: #fff;
   z-index:100;
@@ -607,8 +607,8 @@ div.panel.disabled {
   }
   
   .side-menu #quickadd-button-bar .row>div{
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 1px;
+    padding-right: 1px;
   }
   .side-menu #quickadd-button-bar .row>div>button{
     white-space: pre-wrap;

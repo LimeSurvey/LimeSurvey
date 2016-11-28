@@ -28,14 +28,11 @@
 <?php endif;?>
 
 <div id="explorer" class=" panel panel-default">
-    <!--<a data-toggle="collapse" id="explorer-collapse" href="#explorer-lvl1">
-        <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Question explorer');?>
-        <span class="caret" ></span>
-    </a>-->
     <!-- The actual panle-element which contains the tree, and the filter_input -->
-    <div class="panel-body container-fluid">
+    <div class="panel-body">
         <!-- The filtering input, fixed against submit, by js -->
         <div class="row row-with-margin">
+            <br/>   
             <input class="col-xs-12 form-control" id="searchInQuestionTree" name="searchInQuestionTree" placeholder="<?php eT("Search for question/questiongroup"); ?>" />
         </div>
         <!-- the fancytree container, here is where the magic happens -->

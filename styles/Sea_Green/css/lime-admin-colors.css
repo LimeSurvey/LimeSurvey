@@ -1774,6 +1774,14 @@ div.panel.disabled {
   background-color: hsl(124, 61%, 15%);
   color: #fefefe;
 }
+#sideMenu #explorer #fancytree>ul li>span.fancytree-active:hover span.fancytree-expander,
+#sideMenu #explorer #fancytree>ul li>span:hover span.fancytree-expander {
+  color: #fefefe;
+}
+
+#sideMenu #explorer #fancytree>ul li>span.fancytree-active .fancytree-icon{
+  text-shadow: 0 0 2px #dedede;
+}
 
 #sideMenu #explorer #fancytree .fancytree-container .fancytree-icon{
   color: hsla(124,46%,35%,1);

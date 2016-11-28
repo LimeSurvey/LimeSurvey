@@ -27,9 +27,9 @@
                     iconElement = span.find('.fancytree-icon'),
                     titleElement = span.find('.fancytree-title');
                 //Add the bootstrap classes
-                expandElement.addClass('col-xs-3 font-huge');
+                expandElement.addClass('col-xs-2 font-huge pull-right');
                 iconElement.addClass('col-xs-2 font-huge');
-                titleElement.addClass('col-xs-9');
+                titleElement.addClass('col-xs-10');
                 //combine in row-wrapper
                 wrapperElement
                     .append(iconElement)
@@ -37,8 +37,8 @@
 
                 if(expandElement.hasClass('fa')){
                     wrapperElement.append(expandElement);
-                    titleElement.removeClass('col-xs-9');
-                    titleElement.addClass('col-xs-7');
+                    titleElement.removeClass('col-xs-10');
+                    titleElement.addClass('col-xs-8');
                 }
                 //combine in outer wrapper
                 wrapperContainerElement.append( wrapperElement );
