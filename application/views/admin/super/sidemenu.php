@@ -134,45 +134,7 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                     <!-- Question & Groups-->
                     <li class="panel panel-default dropdownlvl1" id="dropdown">
                         <ul class="nav navbar-nav dropdown-first-level">
-                                <?php if($permission):?>
-                                    <!-- List Groups -->
-                                    <li class="toWhite <?php if( isset($sidemenu["listquestiongroups"]) ) echo 'active'; ?>">
-                                        <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
-                                        <a href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
-                                            <span class="glyphicon glyphicon-list"></span>
-                                            <?php eT("List question groups");?>
-                                        </a>
-                                    </li>
-
-                                    <!-- List Questions -->
-                                    <li class="toWhite <?php if( isset($sidemenu["listquestions"]) ) echo 'active'; ?>">
-                                        <a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
-                                            <span class="glyphicon glyphicon-list"></span>
-                                            <?php eT("List questions");?>
-                                        </a>
-                                    </li>
-                                <?php endif; ?>
-
-                                <!-- Organize questions -->
-                                <?php if($surveycontentupdate):?>
-                                    <?php if ($activated):?>
-                                        <li class="disabled">
-                                            <a href='#'>
-                                                <span class="icon-organize"></span>
-                                                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo gT("Question group/question organizer disabled").' - '.gT("This survey is currently active."); ?>">
-                                                    <?php eT("Question organizer"); ?>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    <?php else: ?>
-                                        <li>
-                                            <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
-                                                <span class="icon-organize"></span>
-                                                <?php eT("Question organizer"); ?>
-                                            </a>
-                                        </li>
-                                    <?php endif; ?>
-                                <?php endif;?>
+                             
                         <!-- Question Explorer -->
                     <div id="dropdown-lvl1" >
                         <div class="panel-body">

@@ -27,9 +27,9 @@
                     iconElement = span.find('.fancytree-icon'),
                     titleElement = span.find('.fancytree-title');
                 //Add the bootstrap classes
-                expandElement.addClass('col-xs-1 font-huge pull-right');
+                expandElement.addClass('col-xs-1 font-huge ');
                 iconElement.addClass('col-xs-1 font-huge');
-                titleElement.addClass('col-xs-10');
+                titleElement.addClass('col-xs-9');
                 //combine in row-wrapper
                 wrapperElement
                     .append(iconElement)
@@ -37,10 +37,12 @@
 
                 if(expandElement.hasClass('fa')){
                     var childCount = node.countChildren();
-                    wrapperElement.append("<span class='pull-right'>("+childCount+")&nbsp;</span>");
-                    wrapperElement.append(expandElement);
-                    titleElement.removeClass('col-xs-10');
-                    titleElement.addClass('col-xs-8');
+                    var expandContainer = $('<span class="pull-right"></span>');
+                    expandContainer.append("<span class='badge badge-xs'>"+childCount+"</span>");
+                    expandContainer.append(expandElement);
+                    wrapperElement.append(expandContainer);
+                    titleElement.removeClass('col-xs-9');
+                    titleElement.addClass('col-xs-7');
                 }
                 //combine in outer wrapper
                 wrapperContainerElement.append( wrapperElement );
@@ -122,7 +124,7 @@
              this._superApply(arguments);
              var newHtml = _customwrapper($(node.span));
              $(node.span).html(newHtml);
-             renderButtons(node);
+            //  renderButtons(node);
          }
      });
  }(jQuery));
