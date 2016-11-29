@@ -233,7 +233,8 @@ var WindowBindings = function(){
  */
     
 $(document).ready(function(){
-   
-    new SideMenuMovement('#sideMenuContainer', '.side-body', '#scaleSidebar', '#chevronClose', '#hiddenHome', '#sidemenu-home',{baseWidth: 320});
-    new WindowBindings();
+   if($('#sideMenuContainer').length >0){
+        new SideMenuMovement('#sideMenuContainer', '.side-body', '#scaleSidebar', '#chevronClose', '#hiddenHome', '#sidemenu-home',{baseWidth: 320});
+        new WindowBindings();
+    }
 });
