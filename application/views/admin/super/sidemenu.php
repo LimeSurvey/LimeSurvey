@@ -71,7 +71,7 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                         <!-- chevrons to stretch the side menu -->
                         <?php if (getLanguageRTL($_SESSION['adminlang'])): ?>
                             <div class='col-sm-5 col-xs-12'>
-                                <a draggable="true" style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
+                                <a style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
                                     <i class="fa fa-bars" style="transform:rotate(90deg);">&nbsp;</i>
                                 </a>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" data-collapsed="<?php echo !$showSideMenu; ?>" id="chevronClose">
@@ -83,7 +83,7 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                             </div>
                         <?php else: ?>
                             <div class='col-sm-5 col-xs-12'>
-                                <a draggable="true" style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
+                                <a style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
                                     <i class="fa fa-bars" style="transform:rotate(90deg);">&nbsp;</i>
                                 </a>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" data-collapsed="<?php echo !$showSideMenu; ?>" id="chevronClose">

@@ -44,7 +44,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
             oSideMenu.css({'width': newValue+"px"});
         },
         setDraggable = function(newValue){
-          //  oDragButton.css({'left': (newValue)+"px"})
+            // oDragButton.css({'left': (newValue)+"px"})
         },
         collapseSidebar = function(force){
             force = force || false;
@@ -125,7 +125,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
     //eventHandler
         onDblClick = function(e){
             var baseWidth = isRTL ? wWidth-options.baseWidth : options.baseWidth;
-            setDivisionOn(baseWidth);
+            unCollapseSidebar(baseWidth);
             window.localStorage.setItem('ls_admin_view_sidemenu',null);
         },
         onClickCollapseButton = function(e){
@@ -137,22 +137,26 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
             }
         },
         onDragStartMethod = function(e){
-            // console.log('dragstart triggered', e);
+            console.log('dragstart triggered', e);
             defineOffset(e.offsetX, e.offsetY);
+            $('body').on('mousemove.touched', onDragMethod)
+            $('body').on('mouseup.touched', onDragEndMethod)
         },
         onDragMethod = function(e){
-            // console.log('drag triggered', e);
-            position =  e.clientX;
+            console.log('drag triggered', e.screenX);
+
+            position =  e.screenX;
             setDivisionOn(position);
         },
         onDragEndMethod = function(e){
-            // console.log('dragend triggered', e);
-            position =  e.clientX;
+            console.log('dragend triggered', e.screenX);
+            position =  e.screenX;
             if(position <  wWidth/8 ){
                 collapseSidebar();
             } else {
                 unCollapseSidebar(position);
             }
+             $('body').off('.touched');
         };
     
     var startOffset = getSavedOffset();
@@ -165,9 +169,8 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
 
     oDragButton
         .on('dblclick', onDblClick)
-        .on('dragstart', onDragStartMethod)
-        .on('drag', onDragMethod)
-        .on('dragend', onDragEndMethod);
+        .on('mousedown', onDragStartMethod)
+        .on('dragstart', function(e){e.preventDefault();return false;});
     oCollapseButton
         .on('click', onClickCollapseButton);
 };
