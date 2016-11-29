@@ -283,4 +283,20 @@ class LSYii_Application extends CWebApplication
     {
         return $this->plugin;
     }
+
+    /**
+     * @see http://www.yiiframework.com/doc/api/1.1/CApplication#onException-detail
+     * Set surveys/error for 404 error
+     * @param CExceptionEvent $event
+     * @return : void
+     */
+    public function onException($event){
+        if(Yii::app() instanceof CWebApplication){
+            if($event->exception->statusCode=='404'){
+                Yii::app()->setComponent('errorHandler',array(
+                    'errorAction'=>'surveys/error',
+                ));
+            }
+        }
+    }
 }

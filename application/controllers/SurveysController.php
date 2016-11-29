@@ -58,5 +58,25 @@
              */
             App()->end();
         }
+        /**
+         * System error : only 404 error are managed here (2016-11-29)
+         * SurveysController is the default controller set in internal
+         * @see http://www.yiiframework.com/doc/guide/1.1/en/topics.error#handling-errors-using-an-action
+         */
+        public function actionError()
+        {
+            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+
+            $this->sTemplate = $oTemplate->name;
+
+            $error = Yii::app()->errorHandler->error;
+            if ($error){
+                App()->setConfig('sitename',"Not found");
+                $this->render('/system/error'.$error['code'], array('error'=>$error,'admin'=>encodeEmail(Yii::app()->getConfig("siteadminemail"))));
+            }else{
+                throw new CHttpException(404, 'Page not found.');
+            }
+        }
+
     }
 ?>
