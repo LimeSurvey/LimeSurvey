@@ -1,24 +1,45 @@
+
+# Never include config.php
+/application/config/config.php
+
+# upload directory : whole except the index.html and readme.txt
+/upload/*
+!/upload/index.html
+!/upload/admintheme/index.html
+!/upload/labels/index.html
+!/upload/labels/readme.txt
+!/upload/surveys/index.html
+!/upload/surveys/readme.txt
+!/upload/templates/index.html
+!/upload/templates/readme.txt
+
+# tmp directory : whole except the index.html for directory create
+/tmp/*
+/tmp/index.html
+/tmp/assets/index.html
+/tmp/runtime/index.html
+/tmp/upload/index.html
+
+# Some global "temporary files" (see
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE specific
 .settings
 .project
-/upload/surveys/*
-/styles/gringegreen/images/Thumbs.db
-/upload/templates/*
-/tmp/runtime/HTML
+
 /application/controllers/admin/updater.php
-/tmp/*.html
-/tmp/*.lss
-/tmp/*.png
-/tmp/*.xls
-/tmp/*.lsa
-/tmp/upload/fu*
-/upload/.htaccess
+
 /nbproject
-/tmp/assets/*
-/tmp/runtime/cache/*
 /framework
 .svn
 /third_party/jqgrid/src
 .settings/org.eclipse.php.core.prefs
 .buildpath
-/application/config/config.php
 *un~

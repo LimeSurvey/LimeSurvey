@@ -5,6 +5,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ### Feature
 - Show (all) errors when try to import VV file
+- Better gitignore for plugins
 
 ## [1.1.1] - 2016-11-16
 
