@@ -2260,12 +2260,15 @@ input[type="file"].form-control {
 
   html,body {
     margin: 0;
-    max-width: 100%;
+    max-width: 90%;
   }
   body{
-    max-width: 100%;
     text-align: left;
     padding: 12px;
+    overflow: visible;
+    position: absolute;
+    top: 24px;
+    left: 14px;
   }
   
   body.onStatistics a:not(.printable),
@@ -2294,16 +2297,11 @@ input[type="file"].form-control {
     margin-left: 0;
     margin-right: 0;
   }
-  body.onStatistics>div.printable
-  {
-    margin: 2px !important;
-    padding: 2px !important;
+  body.onStatistics div:not(.printable) {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  div.legend span {
-    margin: initial !important;
-    padding: initial !important;
-  }
 
   /*body.onStatistics td:not(.printable),
   body.onStatistics th:not(.printable),*/

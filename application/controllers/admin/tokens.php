@@ -186,14 +186,12 @@ class tokens extends Survey_Common_Action
                 $count = imap_num_msg($mbox);
                 if ($count>0)
                 {
-                    $lasthinfo      = imap_headerinfo($mbox, $count);
-                    $datelcu        = strtotime($lasthinfo->date);
-                    $datelastbounce = $datelcu;
-                    $lastbounce     = $thissurvey['bouncetime'];
-
-                    while ($datelcu > $lastbounce)
-                    {
-                        $header = explode("\r\n", imap_body($mbox, $count, FT_PEEK)); // Don't mark messages as read
+                    $aMessageIDs=imap_search($mbox,'UNSEEN',SE_UID);
+                    if (!$aMessageIDs) {
+                        $aMessageIDs=array();
+                    }
+                    foreach ($aMessageIDs as $sMessageID) {
+                        $header = explode("\r\n", imap_body($mbox, $sMessageID, FT_UID && FT_PEEK )); // Don't mark messages as read
 
                         foreach ($header as $item)
                         {
@@ -222,41 +220,31 @@ class tokens extends Survey_Common_Action
                                         $bouncetotal++;
                                     }
 
-                                    $readbounce = imap_body($mbox, $count); // Put read
+                                    $readbounce = imap_body($mbox, $sMessageID, FT_UID); // Put read
                                     if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
                                     {
-                                        $deletebounce = imap_delete($mbox, $count); // Put delete
+                                        $deletebounce = imap_delete($mbox, $sMessageID, FT_UID); // Put delete
                                     }
                                 }
                             }
                         }
-                        $count--;
-                        @$lasthinfo = imap_headerinfo($mbox, $count);
-                        @$datelc = $lasthinfo->date;
-                        $datelcu = strtotime($datelc);
                         $checktotal++;
                     }
                 }
                 imap_close($mbox);
-                $condn = array('sid' => $iSurveyId);
-                $survey = Survey::model()->findByAttributes($condn);
-                $survey->bouncetime = $datelastbounce;
-                $survey->save();
 
                 if ($bouncetotal > 0){
-                    printf(gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
-                    eT("NOTE: If some emails has been rejected as spam, or answered automatically, maybe they will not be marked as bounce.");
+                    printf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
                     eT("You can now close this modal box.");
                 }else{
-                    printf(gT("%s messages were scanned, none were marked as bounce by the system."), $checktotal);
-                    eT("NOTE: If some emails has been rejected as spam, or answered automatically, maybe they will not be marked as bounce.");
+                    printf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal);
                     eT("You can now close this modal box.");
                 }
             }else{
                 $sSettingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/'.$iSurveyId);
-                eT("The attempt to open the inbox of the bounce email address failed.");
+                eT("Failed to open the inbox of the bounce email account.");
                 echo "<br><strong>";
-                printf(gT("Please %s check your settings %s."), '<a href="'.$sSettingsUrl.'" titlle="bounce settings" >', '</a>');
+                printf(gT("Please %s check your settings %s."), '<a href="'.$sSettingsUrl.'" title="Bounce settings" >', '</a>');
                 echo "</strong><br> <br/>";
                 eT("Error message returned by IMAP:");
                 echo "<br>";

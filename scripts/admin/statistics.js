@@ -94,8 +94,9 @@ function init_chart_js_graph_with_datasets($type,$qid)
     var canvasId  = 'chartjs-'+$qid;
     var $canvas   = document.getElementById(canvasId).getContext("2d");
     var $canva    = $('#'+canvasId);
-    var $labels   = eval("labels_"+$qid);
-    var $grawdata = eval("grawdata_"+$qid);
+    var $statistics = statisticsData['quid'+$qid];
+    var $labels   = $statistics.labels
+    var $grawdata = $statistics.grawdata
     var $color    = $canva.data('color');
 
     $('#legend-no-percent-'+$qid).show();
@@ -146,8 +147,9 @@ function init_chart_js_graph_with_datas($type,$qid)
     var $canvas   = document.getElementById(canvasId).getContext("2d");
     var $canva    = $('#'+canvasId);
     var $color    = $canva.data('color');
-    var $labels   = eval("labels_percent_"+$qid);
-    var $grawdata = eval("grawdata_percent_"+$qid);
+    var $statistics = statisticsData['quid'+$qid];
+    var $labels   = $statistics.labels
+    var $grawdata = $statistics.grawdata
     var $chartDef = new Array();
 
     $('#legend-no-percent-'+$qid).hide();
@@ -180,9 +182,7 @@ function init_chart_js_graph_with_datas($type,$qid)
     );
 }
 
-$(document).ready(function() {
-    //for nicely printed statistics
-    $('body').addClass('onStatistics'); 
+var onDocumentReady =  function(){
 
     if ($('#completionstateSimpleStat').length>0)
     {
@@ -266,8 +266,6 @@ $(document).ready(function() {
 
             $type = $(this).data('type');
             $qid = $(this).data('qid');
-
-            console.log($type);
 
             // chartjs
             if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
@@ -565,7 +563,10 @@ $(document).ready(function() {
      {
         changeGraphType('showpie', this.parentNode);
      });
-});
+};
+$(document).ready(onDocumentReady);
+$(document).on('triggerReady', onDocumentReady);
+
 
 var isWaiting = {};
 
@@ -729,3 +730,73 @@ function changeGraphType (cmd, id) {
     });
 
 }
+
+
+var createPDFworker = function(tableArray){
+    "use strict";
+    return new Promise(function(res,rej){
+        var createPDF = new CreatePDF();
+        
+        $.each(tableArray, function(i,table){
+            var sizes = {h: $(table).height(), w: $(table).width()};
+            var answerObject = createPDF('sendImg', {html: table, sizes: sizes});
+        });
+        
+        createPDF('getParseHtmlPromise').then(function(resolve){
+            var answerObject = createPDF('exportPdf');
+            var newWindow = window.open(answerObject.msg,600,800);
+            res('done');
+        }, function(reject){
+            rej(arguments);
+        });
+    });
+};
+
+$(document).ready(function(){
+    $('body').addClass('onStatistics');
+
+    $('body').on('click','.action_js_export_to_pdf', function(){
+
+        // var thisTable = $('#'+$(this).data('questionId'));
+        // domtoimage.toPng(thisTable[0]).then(
+        //     function(image){
+        //         $('body').prepend($('<img/>').attr('src',image));
+        //     }
+        // )
+        
+        // var thisTable = $('#'+$(this).data('questionId'));
+        // console.log(thisTable.html());    
+        
+        var $self = $(this),
+            overlay = $('<div></div>')
+            .attr('id','overlay')
+            .css({
+                position: 'fixed', 
+                width: "100%", 
+                height:"100%", 
+                top:0,
+                "z-index" : 5000,
+                "pointer-events": 'none',
+                left:0,
+                right:0,
+                bottom:0, 
+                "background-color": "hsla(0,0%,65%,0.6)"
+            });
+        $('#statsContainerLoading').clone().css({display: 'block',position: 'fixed', top:"25%",left:0, width: "100%"}).appendTo(overlay);
+        overlay.appendTo('body');
+
+        var thisTable = $('#'+$self.data('questionId'));
+        $self.css({display:'none'});
+        thisTable.find('.chartjs-buttons').closest('tr').css({display:'none'});
+        createPDFworker.call(null,thisTable).then(
+            function(success){
+                overlay.remove(); 
+                thisTable.find('.chartjs-buttons').closest('tr').css({display:''});
+                $self.css({display:''});
+            },
+            function(){console.log(arguments);}
+        )
+
+
+    });
+});
