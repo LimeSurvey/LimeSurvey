@@ -103,7 +103,7 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
 
 
             <?php 
-            //echo $quickmenu; 
+            echo $quickmenu; 
             /*var_dump($oSurvey);*/
             $activeQuestion = Yii::app()->request->getQuery('qid', null); 
             $activeQuestionGroup = Yii::app()->request->getQuery('gid', null); 
