@@ -77,9 +77,7 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" data-collapsed="<?php echo !$showSideMenu; ?>" id="chevronClose">
                                     <i class="fa fa-chevron-right"></i>
                                 </a>
-                                <a class="btn btn-default hide-button hidden-xs opened pull-right" style="display:none" id="hiddenHome" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
-                                    <i class="fa fa-home"></i>
-                                </a>
+
                             </div>
                         <?php else: ?>
                             <div class='col-sm-5 col-xs-12'>
@@ -88,9 +86,6 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                                 </a>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" data-collapsed="<?php echo !$showSideMenu; ?>" id="chevronClose">
                                     <i class="fa fa-chevron-left"></i>
-                                </a>
-                                <a class="btn btn-default hide-button hidden-xs opened pull-right" style="display:none" id="hiddenHome" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
-                                    <i class="fa fa-home"></i>
                                 </a>
                             </div>
                         <?php endif; ?>

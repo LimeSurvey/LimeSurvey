@@ -1,10 +1,18 @@
 
-var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSelector, collapseButtonSelector, collapsedHomeSelector, uncollapsedHomeSelector, options){
+var SideMenuMovement = function(
+    sidemenuSelector, 
+    sideBodySelector, 
+    dragButtonSelector, 
+    collapseButtonSelector, 
+    uncollapsedHomeSelector, 
+    quickMenuSelector, 
+    options){
     
     //define options, or standardized values
     options = options || {};
     options.fixedTopMargin = options.fixedTopMargin || $('#questiongroupbarid').height()+2;
     options.baseWidth = options.baseWidth || 320;
+    options.collapsedWidth = options.collapsedWidth || 55;
 
     var 
         isRTL       = ($('html').attr('dir') == 'rtl'),
@@ -12,9 +20,9 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         oSideMenu           = $(sidemenuSelector),
         oSideBody           = $(sideBodySelector),
         oDragButton         = $(dragButtonSelector),
-        oCollapseButton      = $(collapseButtonSelector),
+        oCollapseButton     = $(collapseButtonSelector),
         oUnCollapsedHome    = $(uncollapsedHomeSelector),
-        oCollapsedHome      = $(collapsedHomeSelector),
+        oQuickMenu          = $(quickMenuSelector),
     
     //define calculateble values
         wWidth      = $('html').width(),
@@ -48,27 +56,27 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         },
         collapseSidebar = function(force){
             force = force || false;
-            console.log("collapsing",oCollapseButton.data('collapsed'));
-            var collapsedWidth = isRTL ? wWidth-50 : 50;
+            // console.log("collapsing",oCollapseButton.data('collapsed'));
+            oQuickMenu.css('display','');
+            var collapsedWidth = isRTL ? wWidth-options.collapsedWidth : options.collapsedWidth;
             setDivisionOn(collapsedWidth,false);
             if(oCollapseButton.data('collapsed') != 1 || force){ 
                 oCollapseButton.closest('div').css({'width':'100%'});
-                oSideMenu.find('.side-menu-container').css({'visibility': 'hidden',});
+                oSideMenu.find('.side-menu-container').css({'display': 'none'});
                 oCollapseButton.find('i').removeClass(chevronOpened).addClass(chevronClosed);
-                oCollapsedHome.css({display: 'inline-block'});
                 oUnCollapsedHome.css({display: 'none'});
                 oCollapseButton.data('collapsed', 1);
             }
         },
         unCollapseSidebar = function(position){
             setDivisionOn(position,true);
-            console.log(oCollapseButton.data('collapsed'));
+            // console.log(oCollapseButton.data('collapsed'));
+            oQuickMenu.css('display','none');
             if(oCollapseButton.data('collapsed') != 0){
                 oCollapseButton.closest('div').css({'width':''});
-                oSideMenu.find('.side-menu-container').css({'visibility': 'visible',});
+                oSideMenu.find('.side-menu-container').css({'display': ''});
                 oCollapseButton.find('i').removeClass(chevronClosed).addClass(chevronOpened);
                 oUnCollapsedHome.css({display: 'inline-block'});
-                oCollapsedHome.css({display: 'none'});
                 oCollapseButton.data('collapsed', 0);
             }
         },
@@ -79,13 +87,13 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
             offsetY = oY;
         },
         getSavedOffset = function(){
-            
+            var savedOffset = null;
             try{
-                var savedOffset = window.localStorage.getItem('ls_admin_view_sidemenu');
+                var savedOffset = parseInt(localStorage.getItem('ls_admin_view_sidemenu'));
             } catch(e){}
 
-            console.log('savedOffset', savedOffset || false);
-            var startOffset = savedOffset ? parseInt(savedOffset) : options.baseWidth;
+            var startOffset = (isNaN(savedOffset) || !savedOffset) ? options.baseWidth : savedOffset;
+
             console.log('startOffset', startOffset)
             startOffset = isRTL ? wWidth-startOffset : startOffset;
 
@@ -96,11 +104,11 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         calculateValue = function(xClient){
             if(isRTL){
                 xClient = (wWidth-xClient);
-                var sidebarWidth = xClient+(xClient>50 ? (50-offsetX) : 5);
+                var sidebarWidth = xClient+(xClient>options.collapsedWidth ? (50-offsetX) : 5);
                 var sidebodyMargin = sidebarWidth+Math.floor(wWidth/200);
                 var buttonLeftTop = Math.abs(wWidth-(xClient-offsetX));
             } else {
-                var sidebarWidth = xClient+(xClient>50 ? (50-offsetX) : 5);
+                var sidebarWidth = xClient+(xClient>options.collapsedWidth ? (50-offsetX) : 5);
                 var sidebodyMargin = sidebarWidth+Math.floor(wWidth/200);
                 var buttonLeftTop = xClient-offsetX;
             }
@@ -108,7 +116,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         },
         saveOffsetValue = function(offset){
             try{
-                window.localStorage.setItem('ls_admin_view_sidemenu',offset);
+                localStorage.setItem('ls_admin_view_sidemenu',''+offset);
             } catch(e){}
         },
         setDivisionOn = function(xClient,save){
@@ -133,23 +141,24 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
                 collapseSidebar();
             } else {
                 var setWidth = getSavedOffset();
+                console.log('setWidth',setWidth);
                 unCollapseSidebar(setWidth);
             }
         },
         onDragStartMethod = function(e){
-            console.log('dragstart triggered', e);
+            // console.log('dragstart triggered', e);
             defineOffset(e.offsetX, e.offsetY);
             $('body').on('mousemove.touched', onDragMethod)
             $('body').on('mouseup.touched', onDragEndMethod)
         },
         onDragMethod = function(e){
-            console.log('drag triggered', e.screenX);
+            // console.log('drag triggered', e.screenX);
 
             position =  e.screenX;
             setDivisionOn(position);
         },
         onDragEndMethod = function(e){
-            console.log('dragend triggered', e.screenX);
+            // console.log('dragend triggered', e.screenX);
             position =  e.screenX;
             if(position <  wWidth/8 ){
                 collapseSidebar();
@@ -234,7 +243,14 @@ var WindowBindings = function(){
     
 $(document).ready(function(){
    if($('#sideMenuContainer').length >0){
-        new SideMenuMovement('#sideMenuContainer', '.side-body', '#scaleSidebar', '#chevronClose', '#hiddenHome', '#sidemenu-home',{baseWidth: 320});
+        new SideMenuMovement(
+            '#sideMenuContainer', 
+            '.side-body', 
+            '#scaleSidebar', 
+            '#chevronClose', 
+            '#sidemenu-home',
+            '#quick-menu-container',
+            {baseWidth: 320});
         new WindowBindings();
     }
 });

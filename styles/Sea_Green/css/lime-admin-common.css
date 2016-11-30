@@ -632,6 +632,8 @@ div.panel.disabled {
     overflow: hidden;}
     .side-menu .navbar-nav li a:not(.btn) {
       padding: 15px; }
+    .side-menu .navbar-header a.btn {
+      width: 55px; }
       .side-menu .navbar-nav li a .glyphicon {
         padding-right: 10px; }
   .side-menu .navbar-nav .question-link.active {
@@ -1958,10 +1960,10 @@ div#gview_displayresponses th#displayresponses_cb {
 }
 
 #quick-menu-container {
-    position: absolute;
     width: 50px;
-    right: 0;
-    top: 50px;
+    float: left;
+    clear: both;
+    
 }
 
 .quick-icon-wrapper {
