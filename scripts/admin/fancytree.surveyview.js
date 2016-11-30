@@ -7,6 +7,7 @@
  * @param sourceUrl [string] => The URI from where to get the questiontree-data
  * @param questionDetailUrl [string] => The URI from where to get the 
  */
+var clickTimer;
 var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDetailUrl) {
 
     jQTreeItem = $(jQTreeItem);
@@ -38,7 +39,7 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                 try{
                     topOfNode = $(activeNode.span).offset().top;
                 } catch(e){}
-                
+
                 if(topOfNode !== 0) {
                     // console.log('topOfNode',topOfNode);
                     var scrollLength = 0;
@@ -53,6 +54,10 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                     oScrollableContainer.animate({scrollTop: scrollLength}, 300);
                 }
             }
+        },
+        alreadyClicked = {
+                click : false,
+                clickNodeId: false
         },
         createTree = function (nodeKey) {
             var fancytree = jQTreeItem.fancytree({
@@ -73,59 +78,23 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                 }
             },
             dblclick: function (event, data) {
-                if ($(event.toElement).closest('a').hasClass('deleteNode') || $(event.toElement).hasClass('deleteNode')) {
-                    event.preventDefault();
-                    return false;
-                }
                 var node = data.node;
+                var editLink = node.data.buttonlinks.edit.url;
+                clearTimeout(clickTimer);
                 // Use <a> href and target attributes to load the content:
                 if (node.data.href) {
                     // Open target
-                    window.location.href = node.data.href;
+                    window.location.href = editLink;
                 }
             },
             click: function (event, data) {
-                if ($(event.toElement).closest('a').hasClass('deleteNode') || $(event.toElement).hasClass('deleteNode')) {
-                    var element = (
-                        ($(event.toElement).closest('a').length > 0)
-                            ? $(event.toElement).closest('a')
-                            : $(event.toElement)
-                    );
-                    return;
-                }
                 var node = data.node;
-                if (node.data.gid == node.key) {
-                    var data = { gid: node.key };
-                } else {
-                    var data = { gid: node.data.gid, qid: node.key };
-                }
-
-                if ($(event.toElement).closest('a').hasClass('fancytree-info-button') || $(event.toElement).hasClass('fancytree-info-button')) { 
-                    event.preventDefault();               
-                    $.ajax({
-                        url: questionDetailUrl,
-                        data: data,
-                        method: "GET",
-                        dataType: "json"
-                    }).then(
-                        function (success) {
-                            $(node.span).find('.fancytree-title').popover({
-                                title: success.title,
-                                content: success.content,
-                                placement: 'right',
-                                html: true,
-                                delay: { show: 200, hide: 4000 },
-                                container: $('body')
-                            }).popover('show');
-                            $('body').on('click.singlePopover', function () {
-                                $(node.span).find('.fancytree-title').popover('destroy');
-                                $('body').off('click.singlePopover');
-                            });
-                        },
-                        function (error) {
-                            console.log(error);
-                        }
-                        );
+                console.log(event);
+                if(((node.hasChildren() && node.isExpanded()) || !node.hasChildren()) && !$(event.toElement).hasClass('fancytree-expander')){
+                    if (node.data.href) {
+                        // Open target
+                        clickTimer = setTimeout(function(){window.location.href = node.data.href},1000);
+                    }
                 }
             },
             wide: {

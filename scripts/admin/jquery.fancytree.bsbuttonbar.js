@@ -123,7 +123,11 @@
              };
              this._superApply(arguments);
              var newHtml = _customwrapper($(node.span));
-             $(node.span).html(newHtml);
+
+             $(node.span).html(newHtml).tooltip({
+                 title: dblClickTitle
+             });
+             
             //  renderButtons(node);
          }
      });

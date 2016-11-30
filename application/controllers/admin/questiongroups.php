@@ -539,7 +539,7 @@ class questiongroups extends Survey_Common_Action
             $aGroupArray["href"] = Yii::app()->createUrl('admin/questiongroups/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid));                                   // Means it's a node with children
             $aGroupArray['extraClasses']   = 'lsi-tree-group-item';
             $aGroupArray['buttonlinks'] = array(
-                array(
+                "add" => array(
                     'title'  => gT('Add a question to this group'),
                     'url'    => Yii::app()->createUrl('admin/questions/sa/newquestion/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid)),
                     'icon'   => 'fa fa-plus-circle',
@@ -547,7 +547,7 @@ class questiongroups extends Survey_Common_Action
                     'cssclasses' => 'btn btn-xs btn-success',
 
                 ),
-                array(
+                "delete" => array(
                     'title'    => gT('Delete this Group'),
                     'url'   => Yii::app()->createUrl('admin/questiongroups/sa/delete/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid)),
                     'icon'  => 'fa fa-trash-o',
@@ -555,7 +555,7 @@ class questiongroups extends Survey_Common_Action
                     'target' => '#confirmation-modal',
                     'cssclasses' => 'btn btn-xs btn-danger deleteNode'
                 ),
-                array(
+                "edit" => array(
                     'title'    => gT('Edit this group'),
                     'url'   => Yii::app()->createUrl('admin/questiongroups/sa/edit/', array('surveyid' => $iSurveyID, 'gid' => $aGroup->gid)),
                     'icon'  => 'fa fa-edit',
@@ -575,7 +575,7 @@ class questiongroups extends Survey_Common_Action
                 $aDatasQuestions['placement']   = 'bottom';
                 $aDatasQuestions['extraClasses']   = 'lsi-tree-question-item';
                 $aDatasQuestions['buttonlinks'] = array(
-                    array(
+                    "delete" => array(
                     'title'    => gT('Delete this Question'),
                     'url'   => Yii::app()->createUrl('admin/questions/sa/delete/', array('surveyid' => $iSurveyID, 'qid' => $oQuestion->qid)),
                     'icon'  => 'fa fa-trash-o',
@@ -583,7 +583,7 @@ class questiongroups extends Survey_Common_Action
                     'target' => '#confirmation-modal',
                     'cssclasses' => 'btn btn-xs btn-danger deleteNode',
                 ),
-                array(
+                "edit" => array(
                     'title'    => gT('Edit this group'),
                     'url'   => Yii::app()->createUrl('admin/questions/sa/editquestion/', array('surveyid' => $iSurveyID, 'qid' => $oQuestion->qid)),
                     'icon'  => 'fa fa-edit',

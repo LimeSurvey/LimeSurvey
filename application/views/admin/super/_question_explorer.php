@@ -38,6 +38,7 @@
         <div id="fancytree" class="row" data-show-expand-collapse="1" data-expand-all="<?php eT('Expand all');?>" data-collapse-all="<?php eT('Collapse all'); ?>"></div>
         <!-- The necessary scripts and variables for the fancytree-library -->
         <script>
+            var dblClickTitle = "<?php eT('Double-click to edit.');?>";
             var sourceUrl = "<?php echo  Yii::app()->urlManager->createUrl("admin/questiongroups/sa/getGroupExplorerDatas", array("surveyid"=>$iSurveyId, "language" => $language));?>";
             var questionDetailUrl = "<?php echo  Yii::app()->urlManager->createUrl("admin/questiongroups/sa/getQuestionDetailData", array("surveyid" => $iSurveyId, "language" => $language));?>";
             var fancytree = new CreateFancytree($("#fancytree"), $("#searchInQuestionTree"), sourceUrl, questionDetailUrl);
