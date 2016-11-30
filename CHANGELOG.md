@@ -6,6 +6,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 ### Feature
 - Show (all) errors when try to import VV file
 - Better gitignore for plugins
+- Order survey listing by date desc by default
 
 ## [1.1.1] - 2016-11-16
 

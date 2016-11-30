@@ -16,7 +16,7 @@ class Index extends Survey_Common_Action
 
     public function run()
     {
-        
+
 
         if (Yii::app()->session['just_logged_in'])
         {
@@ -29,9 +29,9 @@ class Index extends Survey_Common_Action
             $this->_renderWrappedTemplate('super', $aViewUrls);
         }
         elseif (count(getSurveyList(true)) == 0)
-		{
+        {
             $this->_renderWrappedTemplate('super', 'firststeps');
-		}
+        }
         else
         {
             $this->getController()->redirect(array('admin/survey/sa/index'));

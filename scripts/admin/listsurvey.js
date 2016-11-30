@@ -84,8 +84,8 @@ $(document).ready(function(){
         scrollOffset:0,
         sortable : true,
         hidegrid : false,
-        sortname: 'sid',
-        sortorder: 'asc',
+        sortname: 'date_created',
+        sortorder: 'desc',
         viewrecords : true,
         rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
@@ -97,11 +97,11 @@ $(document).ready(function(){
         },
         loadComplete: function(data){
             // Need this for vertical scrollbar
-			$('#displaysurveys').setGridWidth($("#surveylist-wrapper").innerWidth());
+            $('#displaysurveys').setGridWidth($("#surveylist-wrapper").innerWidth());
             if (jQuery("#displaysurveys").jqGrid('getGridParam','datatype') === "json") {
                 setTimeout(function(){
                     jQuery("#displaysurveys").trigger("reloadGrid");
-					$('#displaysurveys tbody').show();
+                    $('#displaysurveys tbody').show();
                 },100);
             }
         }
