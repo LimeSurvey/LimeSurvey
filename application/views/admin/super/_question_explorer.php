@@ -41,7 +41,7 @@
             var sourceUrl = "<?php echo  Yii::app()->urlManager->createUrl("admin/questiongroups/sa/getGroupExplorerDatas", array("surveyid"=>$iSurveyId, "language" => $language));?>";
             var questionDetailUrl = "<?php echo  Yii::app()->urlManager->createUrl("admin/questiongroups/sa/getQuestionDetailData", array("surveyid" => $iSurveyId, "language" => $language));?>";
             var fancytree = new CreateFancytree($("#fancytree"), $("#searchInQuestionTree"), sourceUrl, questionDetailUrl);
-            fancytree.run("<?php echo $iQuestionId; ?>", "<?php echo $iQuestionGroupId; ?>");
+            var tree = fancytree.run("<?php echo $iQuestionId; ?>", "<?php echo $iQuestionGroupId; ?>", "#sideMenu");
         </script>
     </div>
 </div> 

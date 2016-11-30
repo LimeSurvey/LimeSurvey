@@ -94,7 +94,7 @@ var SideMenuMovement = function(
 
             var startOffset = (isNaN(savedOffset) || !savedOffset) ? options.baseWidth : savedOffset;
 
-            console.log('startOffset', startOffset)
+            // console.log('startOffset', startOffset)
             startOffset = isRTL ? wWidth-startOffset : startOffset;
 
             return startOffset;
@@ -141,7 +141,7 @@ var SideMenuMovement = function(
                 collapseSidebar();
             } else {
                 var setWidth = getSavedOffset();
-                console.log('setWidth',setWidth);
+                // console.log('setWidth',setWidth);
                 unCollapseSidebar(setWidth);
             }
         },
@@ -221,10 +221,10 @@ var WindowBindings = function(){
         //fixSizings
         onWindowResize = function(){
             maxHeight       = ($(window).height() - (basePosition.top-5));
-            console.log("body", $('body').height());
-            console.log("base", basePosition.top);
-            console.log("footer", $('footer').height());
-            console.log("maxHeight", maxHeight);
+            // console.log("body", $('body').height());
+            // console.log("base", basePosition.top);
+            // console.log("footer", $('footer').height());
+            // console.log("maxHeight", maxHeight);
 
             //maxHeightInside = (maxHeight - $('#in_survey_common').offset().top-2);
             sidemenu.css({'height': maxHeight, "overflow-y": 'auto'});

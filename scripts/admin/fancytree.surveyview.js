@@ -12,7 +12,7 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
     jQTreeItem = $(jQTreeItem);
     searchInput = $(searchInput);
 
-    var fancytree = null;
+    var fancytree = null, startNodeKey = null, oScrollableContainer = null;
     var glyph_opts = {
         map: {
             doc: "fa fa-bars",
@@ -31,8 +31,31 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
             loading: "glyphicon glyphicon-refresh glyphicon-spin"
         }
     };
-    var createTree = function (nodeKey) {
-        var fancytree = jQTreeItem.fancytree({
+    var bindScrollTo = function(activeNode){
+            // console.log('activeNode',activeNode);
+            if(activeNode != null){
+                var topOfNode = 0;
+                try{
+                    topOfNode = $(activeNode.span).offset().top;
+                } catch(e){}
+                
+                if(topOfNode !== 0) {
+                    // console.log('topOfNode',topOfNode);
+                    var scrollLength = 0;
+                    if(topOfNode > $(window).height()){
+                        scrollLength = Math.floor((($(window).height()/2)-topOfNode));
+                    } else {
+                        scrollLength = Math.floor((topOfNode-($(window).height()/2)));
+                    }
+                    scrollLength = scrollLength<0 ?  Math.abs(scrollLength) : scrollLength;
+
+                    // console.log('scrollLength',scrollLength);
+                    oScrollableContainer.animate({scrollTop: scrollLength}, 300);
+                }
+            }
+        },
+        createTree = function (nodeKey) {
+            var fancytree = jQTreeItem.fancytree({
 
             extensions: ["glyph", "bstooltip", "filter", "bsbuttonbar"],
             extraClasses: "lsi-fancytree-node",
@@ -45,7 +68,8 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
             clickFolderMode: 3,
             init: function (e, d) {
                 if (nodeKey !== false) {
-                    d.tree.activateKey(nodeKey);
+                    var activeNode = d.tree.activateKey(nodeKey);
+                    bindScrollTo(activeNode);
                 }
             },
             dblclick: function (event, data) {
@@ -110,9 +134,8 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                 levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
             },
             expand: function (event, data) {
-                console.log(glyph_opts.map.expanderClosed);
-                console.log($(data.node.span)
-                    .find('.fancytree-expander').attr('class'));
+                // console.log(glyph_opts.map.expanderClosed);
+                // console.log($(data.node.span).find('.fancytree-expander').attr('class'));
                 jQTreeItem.trigger('nodeExpanded', event, data);
                 $(data.node.span)
                     .find('.fancytree-expander')
@@ -120,9 +143,8 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                     .addClass('fa-caret-up');
             },
             collapse: function (event, data) {
-                console.log(glyph_opts.map.expanderClosed);
-                console.log($(data.node.span)
-                    .find('.fancytree-expander').attr('class'));
+                // console.log(glyph_opts.map.expanderClosed);
+                // console.log($(data.node.span).find('.fancytree-expander').attr('class'));
 
                 jQTreeItem.trigger('nodeCollapsed', event, data);
                 $(data.node.span)
@@ -131,12 +153,11 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                     .addClass('fa-caret-down');
             },
             filter: { mode: 'hide' },
-            autoscroll: true
-
+            autoscroll: false
         });
 
         return fancytree;
-    },
+        },
         bindToSearch = function (tree) {
             var keyEventBreakOnEnter = function (e) {
                 //catch the enterkey
@@ -159,8 +180,8 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                             //  res = !!re.test(text);
                             res = !(!re.test(questionCode) && !re.test(question))
                         if (res) {
-                            console.log("questionCode: ", questionCode);
-                            console.log("question: ", question);
+                            // console.log("questionCode: ", questionCode);
+                            // console.log("question: ", question);
                         }
                         return res;
                     };
@@ -192,16 +213,18 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                 });
             }
         },
-        run = function (questionId, questionGroupId) {
+        run = function (questionId, questionGroupId, scrollableContainerSelector) {
             questionId = questionId || false;
             questionGroupId = questionGroupId || false;
+            oScrollableContainer = $(scrollableContainerSelector);
 
-            var nodeKey = questionId || questionGroupId || false;
+            startNodeKey = questionId || questionGroupId || false;
 
-            fancytree = createTree(nodeKey);
+            fancytree = createTree(startNodeKey);
             var tree = fancytree.fancytree("getTree");
             bindToSearch(tree);
             bindExpandCollapse(tree);
+            bindScrollTo(scrollableContainerSelector, tree);
 
             return tree;
         };
