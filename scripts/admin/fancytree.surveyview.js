@@ -81,20 +81,18 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
                 var node = data.node;
                 var editLink = node.data.buttonlinks.edit.url;
                 clearTimeout(clickTimer);
-                // Use <a> href and target attributes to load the content:
-                if (node.data.href) {
-                    // Open target
-                    window.location.href = editLink;
-                }
+
+                window.location.href = editLink;
+                
             },
             click: function (event, data) {
                 var node = data.node;
                 console.log(event);
-                if(((node.hasChildren() && node.isExpanded()) || !node.hasChildren()) && !$(event.toElement).hasClass('fancytree-expander')){
-                    if (node.data.href) {
-                        // Open target
-                        clickTimer = setTimeout(function(){window.location.href = node.data.href},1000);
-                    }
+                if(((node.hasChildren() && node.isExpanded() && $(event.toElement).hasClass('fancytree-title')) || !node.hasChildren()) && !$(event.toElement).hasClass('fancytree-expander')){
+                    // Open target
+                    clickTimer = setTimeout(function(){window.location.href = node.data.href},1000);
+                    node.setActive();
+                    return false;
                 }
             },
             wide: {
