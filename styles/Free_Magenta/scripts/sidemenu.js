@@ -1,18 +1,28 @@
 
-var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSelector, collapseButtonSelector, options){
+var SideMenuMovement = function(
+    sidemenuSelector, 
+    sideBodySelector, 
+    dragButtonSelector, 
+    collapseButtonSelector, 
+    uncollapsedHomeSelector, 
+    quickMenuSelector, 
+    options){
     
     //define options, or standardized values
     options = options || {};
     options.fixedTopMargin = options.fixedTopMargin || $('#questiongroupbarid').height()+2;
     options.baseWidth = options.baseWidth || 320;
-    options.rtl = options.rtl || false;
+    options.collapsedWidth = options.collapsedWidth || 55;
 
     var 
+        isRTL       = ($('html').attr('dir') == 'rtl'),
     //define DOM Variables
-        oSideMenu       = $(sidemenuSelector),
-        oSideBody       = $(sideBodySelector),
-        oDragButton     = $(dragButtonSelector),
-        oCollapeButton  = $(collapseButtonSelector),
+        oSideMenu           = $(sidemenuSelector),
+        oSideBody           = $(sideBodySelector),
+        oDragButton         = $(dragButtonSelector),
+        oCollapseButton     = $(collapseButtonSelector),
+        oUnCollapsedHome    = $(uncollapsedHomeSelector),
+        oQuickMenu          = $(quickMenuSelector),
     
     //define calculateble values
         wWidth      = $('html').width(),
@@ -23,7 +33,6 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         offsetX     = 0,
         offsetY     = 0,
         position    = 0,
-        isRTL       = ($('html').attr('dir') == 'rtl'),
     
     //define rtl-specific classes
         chevronClosed = (isRTL ? 'fa-chevron-left' : 'fa-chevron-right'),
@@ -43,25 +52,32 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
             oSideMenu.css({'width': newValue+"px"});
         },
         setDraggable = function(newValue){
-          //  oDragButton.css({'left': (newValue)+"px"})
+            // oDragButton.css({'left': (newValue)+"px"})
         },
-        collapseSidebar = function(position){
-            setDivisionOn(50,true);
-            console.log(oCollapeButton.data('collapsed'));
-            if(oCollapeButton.data('collapsed') != true){ 
-                oSideMenu.find('.side-menu-container').css({'visibility': 'hidden',});
-                oCollapeButton.find('i').removeClass(chevronOpened).addClass(chevronClosed);
-                oCollapeButton.data('collapsed', true);
+        collapseSidebar = function(force){
+            force = force || false;
+            // console.log("collapsing",oCollapseButton.data('collapsed'));
+            oQuickMenu.css('display','');
+            var collapsedWidth = isRTL ? wWidth-options.collapsedWidth : options.collapsedWidth;
+            setDivisionOn(collapsedWidth,false);
+            if(oCollapseButton.data('collapsed') != 1 || force){ 
+                oCollapseButton.closest('div').css({'width':'100%'});
+                oSideMenu.find('.side-menu-container').css({'display': 'none'});
+                oCollapseButton.find('i').removeClass(chevronOpened).addClass(chevronClosed);
+                oUnCollapsedHome.css({display: 'none'});
+                oCollapseButton.data('collapsed', 1);
             }
         },
         unCollapseSidebar = function(position){
             setDivisionOn(position,true);
-            console.log(position);
-            console.log(oCollapeButton.data('collapsed'));
-            if(oCollapeButton.data('collapsed') != false){
-                oSideMenu.find('.side-menu-container').css({'visibility': 'visible',});
-                oCollapeButton.find('i').removeClass(chevronClosed).addClass(chevronOpened);
-                oCollapeButton.data('collapsed', false);
+            // console.log(oCollapseButton.data('collapsed'));
+            oQuickMenu.css('display','none');
+            if(oCollapseButton.data('collapsed') != 0){
+                oCollapseButton.closest('div').css({'width':''});
+                oSideMenu.find('.side-menu-container').css({'display': ''});
+                oCollapseButton.find('i').removeClass(chevronClosed).addClass(chevronOpened);
+                oUnCollapsedHome.css({display: 'inline-block'});
+                oCollapseButton.data('collapsed', 0);
             }
         },
 
@@ -70,16 +86,29 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
             offsetX = oX;
             offsetY = oY;
         },
+        getSavedOffset = function(){
+            var savedOffset = null;
+            try{
+                var savedOffset = parseInt(localStorage.getItem('ls_admin_view_sidemenu'));
+            } catch(e){}
+
+            var startOffset = (isNaN(savedOffset) || !savedOffset) ? options.baseWidth : savedOffset;
+
+            console.log('startOffset', startOffset)
+            startOffset = isRTL ? wWidth-startOffset : startOffset;
+
+            return startOffset;
+        },
 
     //utility and calculating methods
         calculateValue = function(xClient){
             if(isRTL){
                 xClient = (wWidth-xClient);
-                var sidebarWidth = xClient+(xClient>50 ? (50-offsetX) : 5);
+                var sidebarWidth = xClient+(xClient>options.collapsedWidth ? (50-offsetX) : 5);
                 var sidebodyMargin = sidebarWidth+Math.floor(wWidth/200);
                 var buttonLeftTop = Math.abs(wWidth-(xClient-offsetX));
             } else {
-                var sidebarWidth = xClient+(xClient>50 ? (50-offsetX) : 5);
+                var sidebarWidth = xClient+(xClient>options.collapsedWidth ? (50-offsetX) : 5);
                 var sidebodyMargin = sidebarWidth+Math.floor(wWidth/200);
                 var buttonLeftTop = xClient-offsetX;
             }
@@ -87,7 +116,7 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
         },
         saveOffsetValue = function(offset){
             try{
-                window.localStorage.setItem('ls_admin_view_sidemenu',offset);
+                localStorage.setItem('ls_admin_view_sidemenu',''+offset);
             } catch(e){}
         },
         setDivisionOn = function(xClient,save){
@@ -103,89 +132,106 @@ var SideMenuMovement = function(sidemenuSelector, sideBodySelector, dragButtonSe
 
     //eventHandler
         onDblClick = function(e){
-            setDivisionOn(options.baseWidth);
+            var baseWidth = isRTL ? wWidth-options.baseWidth : options.baseWidth;
+            unCollapseSidebar(baseWidth);
             window.localStorage.setItem('ls_admin_view_sidemenu',null);
         },
         onClickCollapseButton = function(e){
-            if(!oCollapeButton.data('collapsed') ){ 
+            if(oCollapseButton.data('collapsed')==0 ){ 
                 collapseSidebar();
             } else {
-                unCollapseSidebar(options.baseWidth);
+                var setWidth = getSavedOffset();
+                console.log('setWidth',setWidth);
+                unCollapseSidebar(setWidth);
             }
         },
         onDragStartMethod = function(e){
             // console.log('dragstart triggered', e);
             defineOffset(e.offsetX, e.offsetY);
+            $('body').on('mousemove.touched', onDragMethod)
+            $('body').on('mouseup.touched', onDragEndMethod)
         },
         onDragMethod = function(e){
-            // console.log('drag triggered', e);
-            position =  e.clientX;
+            // console.log('drag triggered', e.screenX);
+
+            position =  e.screenX;
             setDivisionOn(position);
         },
         onDragEndMethod = function(e){
-            // console.log('dragend triggered', e);
-            position =  e.clientX;
+            // console.log('dragend triggered', e.screenX);
+            position =  e.screenX;
             if(position <  wWidth/8 ){
                 collapseSidebar();
             } else {
                 unCollapseSidebar(position);
             }
+             $('body').off('.touched');
         };
+    
+    var startOffset = getSavedOffset();
 
-    try{
-        var savedOffset = window.localStorage.getItem('ls_admin_view_sidemenu');
-    } catch(e){}
-
-    var startOffset = parseInt(savedOffset) || options.baseWidth;
-
-    if(startOffset <  wWidth/8 ){
-        collapseSidebar(position);
+    if(startOffset <  wWidth/8 || oCollapseButton.data('collapsed')==1 ){
+        collapseSidebar(true);
     } else {
         unCollapseSidebar(startOffset);
     }
 
     oDragButton
         .on('dblclick', onDblClick)
-        .on('dragstart', onDragStartMethod)
-        .on('drag', onDragMethod)
-        .on('dragend', onDragEndMethod);
-    oCollapeButton
+        .on('mousedown', onDragStartMethod)
+        .on('dragstart', function(e){e.preventDefault();return false;});
+    oCollapseButton
         .on('click', onClickCollapseButton);
 };
 
 var WindowBindings = function(){
     var surveybar = $('.surveybar'),
         sideBody = $('.side-body'),
-        sidemenu = $('#sideMenuContainer'),
+        sidemenu = $('#sideMenu'),
+        sidemenuContainer = $('#sideMenuContainer'),
         upperContainer = $('#in_survey_common'),
     
     //calculated vars
         maxHeight =  $(window).height() - $('#in_survey_common').offset().top - 10,
-    
+        basePosition = {top: 0, left: 0},
     //methods
+        //create the first setting and calculate therefor
+        setInitial = function(){
+            basePosition = sidemenuContainer.offset();
+            onWindowResize();
+            onWindowScroll();
+        },
         //Stick the side menu and the survey bar to the top
         onWindowScroll = function(e){
-            $toTop = (surveybar.offset().top - $(window).scrollTop());
+            var $toTop = (surveybar.offset().top - $(window).scrollTop());
+            var topPosition = (basePosition.top - $(window).scrollTop());
+                sidemenuContainer.css({position:"fixed", top: topPosition});
 
             if($toTop <= 0)
             {
                 surveybar.addClass('navbar-fixed-top');
-                sidemenu.css({position:"fixed", top: "45px"});
+                sidemenuContainer.css({position:"fixed", top: "45px"});
             }
 
             if ($(window).scrollTop() <= 45)
             {
                 surveybar.removeClass('navbar-fixed-top');
-                sidemenu.css({position:"absolute", top: "auto", 'height': ($(window).height() - 45)+"px"});
-                sidemenu.removeClass('fixed-top');
             }
         },
         //fixSizings
         onWindowResize = function(){
-            maxHeight =  ($(window).height() - $('#in_survey_common').offset().top -1);
-            sidemenu.find('#fancytree').css({'max-height': (maxHeight/4)+"px", 'overflow': 'auto' });
+            maxHeight       = ($(window).height() - (basePosition.top-5));
+            console.log("body", $('body').height());
+            console.log("base", basePosition.top);
+            console.log("footer", $('footer').height());
+            console.log("maxHeight", maxHeight);
+
+            //maxHeightInside = (maxHeight - $('#in_survey_common').offset().top-2);
+            sidemenu.css({'height': maxHeight, "overflow-y": 'auto'});
+            sidemenuContainer.css({'max-height': (maxHeight)});
         }
-    onWindowResize();
+    
+    setInitial();
     $(window).on('scroll',onWindowScroll);
     $(window).on('resize',onWindowResize);
 };
@@ -196,305 +242,15 @@ var WindowBindings = function(){
  */
     
 $(document).ready(function(){
-   
-    new SideMenuMovement('#sideMenuContainer', '.side-body', '#scaleSidebar', '#chevronClose', {baseWidth: 320});
-    new WindowBindings();
-
-    var close = $('#chevronClose');
-    var stretch = $('#scaleSidebar');
-    var sideBody = $('.side-body');
-    var sideMenu = $('#sideMenu');
-    var absoluteWrapper = $('.absolute-wrapper');
-    var sidemenusContainer = $('.sidemenuscontainer');
-    var quickmenuContainer = $('#quick-menu-container');
-
-    // Check if we have a right-to-left language
-    var rtl = $("html").attr('dir') === "rtl";
-
-    if (rtl) {
-        var left_or_right_250 = {right: -250};
-        var left_or_right_0 = {right: 0};
-        var margin_left_or_right = {'margin-right': '320px'};
+   if($('#sideMenuContainer').length >0){
+        new SideMenuMovement(
+            '#sideMenuContainer', 
+            '.side-body', 
+            '#scaleSidebar', 
+            '#chevronClose', 
+            '#sidemenu-home',
+            '#quick-menu-container',
+            {baseWidth: 320});
+        new WindowBindings();
     }
-    else {
-        var left_or_right_250 = {left: -250};
-        var left_or_right_0 = {left: 0};
-        var margin_left_or_right = {'margin-left': '320px'};
-    }
-
-    /**
-    * If the side bar state is set to  "close" on page load, it closes the side menu
-    */
-    if ( $("#close-side-bar").length ) {
-        $('#chevronStretch').removeClass('opened');
-        $('#chevronClose').removeClass('opened');
-
-        $('#chevronStretch').addClass('closed');
-        $('#chevronClose').addClass('closed');
-
-        $that = $('.toggleside');
-
-        $('.side-menu').css($.extend({
-          //opacity: 0.5
-        }, left_or_right_250));
-
-        $thatWidth = sideBody.width();
-        sideBody.width($thatWidth);
-
-        //sideBody.css($.extend({
-          //width: $thatWidth + 250
-        //}, left_or_right_250));
-        sideBody.parent().css( "overflow-x", "hidden" );
-
-        $that.removeClass("hideside");
-        $that.addClass("showside");
-
-        absoluteWrapper.css($.extend({
-          //opacity: 0.5
-        }, left_or_right_250));
-
-        sidemenusContainer.hide();
-        quickmenuContainer.show();
-    }
-    else {
-        quickmenuContainer.hide();
-    }
-
-    // To prevent the user to try to open or close it before the animation ended (because of  $('.side-body').width())
-    function disableChevrons() {
-        close.addClass('disabled');
-        stretch.addClass('disabled');
-    }
-
-    function enableChevrons() {
-        close.removeClass('disabled');
-        stretch.removeClass('disabled');
-    }
-
-    function chevronChangeState(toRemove, toAdd) {
-        close.removeClass(toRemove);
-        stretch.removeClass(toRemove);
-        close.addClass(toAdd);
-        stretch.addClass(toAdd);
-    }
-
-    /**
-     * Adjust height of side body compared to a target, can apply a correction in pixel
-     * $target : the target element
-     * $correction : correction in pixels
-     * $timeout : time to wait before measuring the target height, can be usefull when animations apply to target
-     */
-    function adjustSideBodyHeight($target, $correction, $timeout) {
-        setTimeout(function(){
-            sideBodyHeight = sideBody.height();
-            targetHeight = $target.height();
-            //alert(sidemenuHeight);
-            if( sideBodyHeight < ( targetHeight + $correction ) )
-            {
-                sideBody.height( sideBodyHeight + ( targetHeight - sideBodyHeight ) + $correction );
-            }
-        }, $timeout);
-    }
-
-    /**
-    *  Close sidemenu
-    */
-    // jQuery(document).on('click', '#chevronClose.opened', function(){
-    //     disableChevrons();
-
-    //     // Move the side menu
-    //     sideMenu.animate($.extend({
-    //         //opacity: 0.5
-    //         }, left_or_right_250),
-    //         500,
-    //         function() {}
-    //     );
-
-    //     // To animate correctly the side body, we first must give it a fixed width
-    //     $thatWidth = sideBody.width();
-    //     sideBody.width($thatWidth);
-
-    //     // Move the side body
-    //     sideBody.animate(
-    //        $.extend({
-    //            width: $thatWidth + 250
-    //        }, left_or_right_250),
-    //        500,
-    //        function() {}
-    //    );
-
-    //    absoluteWrapper.animate($.extend({
-    //        //opacity: 0.5
-    //        }, left_or_right_250),
-    //        500,
-    //        function() {}
-    //    );
-
-    //    sidemenusContainer.fadeOut();
-    //    quickmenuContainer.fadeIn();
-
-    //    chevronChangeState('opened', 'closed');
-    //    enableChevrons();
-    // });
-
-    /**
-    * Unstreched side menu
-    */
-    jQuery(document).on('click', '#chevronClose.stretched', function(){
-        disableChevrons();
-        sideMenu.animate({
-                width: 300,
-            }, 500, function() {
-            });
-
-            absoluteWrapper.animate({
-                width: 300,
-            }, 500, function() {
-            });
-
-            sidemenusContainer.animate({
-                width: 300,
-            }, 500);
-
-            chevronChangeState('stretched', 'opened');
-            enableChevrons();
-    });
-
-    /**
-    * Show the side menu
-    */
-    jQuery(document).on('click', '#chevronStretch.closed', function(){
-        disableChevrons();
-
-        sideMenu.animate($.extend({
-                //opacity: 1
-            }, left_or_right_0),
-            500, function() {
-        });
-
-        $thatWidth = sideBody.width();
-        sideBody.width($thatWidth);
-
-        sideBody.animate($.extend({
-            width: $thatWidth - 250
-        }, left_or_right_0, margin_left_or_right),
-        500, function() {
-        });
-
-        absoluteWrapper.animate($.extend({
-            //opacity: 1
-        }, left_or_right_0),
-        500, function() {
-        });
-
-        sidemenusContainer.fadeIn();
-        quickmenuContainer.fadeOut();
-
-        chevronChangeState('closed', 'opened');
-        enableChevrons();
-    });
-
-    /**
-    * Stretch the side menu
-    */
-    jQuery(document).on('click', '#chevronStretch.opened', function(){
-        disableChevrons();
-
-        sideMenu.animate({
-                backgroundColor: "white",
-                //opacity: 1,
-                width: $('body').width(),
-            }, 500, function() {
-            });
-
-            absoluteWrapper.animate({
-                //opacity: 1,
-                backgroundColor: "white",
-                width: $('body').width(),
-            }, 500, function() {
-            });
-
-            sidemenusContainer.animate({
-                opacity: 1,
-                backgroundColor: "white",
-                width: $('body').width(),
-            }, 500);
-
-            chevronChangeState('opened', 'stretched');
-            enableChevrons();
-    });
 });
-
-
-
-var drop_delete_fn = function () {};
-
-/**
- * Drag-n-drop functionality for quick-menu
- * @todo Add this to plugin ExtraQuickMenuItems? Needs to be on every admin page.
- */
-function dragstart_handler(ev) {
-
-    // Use to set a image during dragging
-    //var img = new Image();
-    //img.src = '/limesurvey/styles/Sea_Green/images/donate.png';
-    //ev.dataTransfer.setDragImage(img, 10, 10);
-
-    ev.dataTransfer.dropEffect = 'move';
-    ev.dataTransfer.effectAllowed = 'move';
-    var html = $(ev.target).prop('outerHTML');
-    ev.dataTransfer.setData("text/plain", html);
-
-    drop_delete_fn = function () {
-        $(ev.target).remove();
-    }
-}
-
-function dragover_handler(ev) {
-    ev.preventDefault();
-    $(ev.target).css('background-color', 'black');
-    return false;
-}
-
-function dragleave_handler(ev) {
-    $(ev.target).css('background-color', 'white');
-    ev.preventDefault();
-    return false;
-}
-
-function drop_handler(ev) {
-    ev.preventDefault();
-    // TODO: Why is ev.target not <a>, but <div>?
-    var $target = $(ev.target).parent().parent();
-    var data = ev.dataTransfer.getData("text");
-    $(ev.target).css('background-color', 'white');
-
-    if (data.indexOf("quick-menu-item") < 0)
-    {
-        return;
-    }
-
-    $target.after(data);
-    drop_delete_fn();
-
-    // Delete left-over tooltip
-    $('.tooltip.fade').remove();
-    doToolTip();
-
-    // Collect button name and order number
-    var data = {};
-    $('.quick-menu-item').each(function(i, item) {
-        var name = $(item).data('button-name');
-        data[name] = i;
-    });
-
-    $.ajax({
-        method: 'POST',
-        url: saveQuickMenuButtonOrderLink,
-        data: {buttons: data}
-    }).done(function(response) {
-        // Show save confirmation?
-    });
-
-    //ev.dataTransfer.clearData();
-}

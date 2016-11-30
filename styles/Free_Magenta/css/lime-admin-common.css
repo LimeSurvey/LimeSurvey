@@ -43,6 +43,23 @@
   margin-bottom: 5px;
 }
 
+.font-smaller{
+  font-size: 0.8em;
+}
+.font-small{
+  font-size: 0.9em;
+}
+.font-big{
+  font-size: 1.1em;
+}
+.font-bigger{
+  font-size: 1.2em;
+}
+.font-huge{
+  font-size: 1.6em;
+}
+
+
 .ui-datepicker {
   width: 17em;
   padding: .2em .2em 0;
@@ -558,13 +575,16 @@ div.panel.disabled {
 #in_survey_common{
   padding: 0 5px;
 }
-
+.popover{
+    max-width: 45%; /* Max Width of the popover (depending on the container!) */
+    min-width: 25%;
+}
 .sidemenu-container {
   position:fixed;
   width: 300px;
   float:left; 
   overflow:auto;
-  height:100vh;
+  height:95%;
   clear: left; 
   background: #fff;
   z-index:100;
@@ -590,8 +610,8 @@ div.panel.disabled {
   }
   
   .side-menu #quickadd-button-bar .row>div{
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 1px;
+    padding-right: 1px;
   }
   .side-menu #quickadd-button-bar .row>div>button{
     white-space: pre-wrap;
@@ -602,11 +622,18 @@ div.panel.disabled {
     box-shadow: none; }
   .side-menu .navbar-header {
     width: 100%; }
-  .side-menu .navbar-nav li {
+  .side-menu .navbar-nav {
     display: block;
     width: 100%; }
+  .side-menu .navbar-nav li ,
+  .side-menu .navbar-nav ul {
+    display: block;
+    width: 100%; 
+    overflow: hidden;}
     .side-menu .navbar-nav li a:not(.btn) {
       padding: 15px; }
+    .side-menu .navbar-header a.btn {
+      width: 55px; }
       .side-menu .navbar-nav li a .glyphicon {
         padding-right: 10px; }
   .side-menu .navbar-nav .question-link.active {
@@ -716,10 +743,14 @@ div.panel.disabled {
     width:100%;
     clear: both;
   }
+  #fancytree ul.fancytree-container{
+    border: 0;
+  }
   #fancytree.fancytree-ext-filter-hide ul span.fancytree-node.fancytree-hide, 
   #fancytree.fancytree-ext-filter-hide ul tr.fancytree-hide{
     display: none;
   }
+  
   #fancytree>ul>li>span {
     padding: 12px 2px;
     display: block;
@@ -732,30 +763,12 @@ div.panel.disabled {
     display: inline-block;
     font-weight: 400;
   }
-  /*#fancytree>ul>li span.fancytree-expander {
-    width: 16px;
-    padding-top: 7px;
-    position: absolute;
-    left: 8px;
-  }
-  #fancytree>ul>li span.fancytree-icon {
-    width: 26px;
-    padding-top: 7px;
-    text-align: right;
-    position: absolute;
-  }
-  #fancytree>ul>li span.fancytree-title {
-    width: 99%;
-    padding: 6px 4px 8px 40px;
-    margin:auto;
-  }
-  #fancytree>ul>li span.fancytree-title>a.btn {
-    float: right;
-    clear: both;
-  }*/
 
-  #fancytree ul>li .lsi-tree-question-item .fancytree-title{
-    white-space: pre-wrap;
+  #fancytree  .fancytree-title{
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin: initial;
   }
   #fancytree .fancytree-innerhtml-buttonbar{
@@ -763,14 +776,25 @@ div.panel.disabled {
     padding: 1px 1px;
   }
 
-#explorer {
+.side-menu .navbar-nav #explorer:hover {
+  font-weight: normal;
+  color: #35363f;
+
+}
+.side-menu .navbar-nav #explorer {
   border: 0;
   margin-bottom: 0;
   border-radius: 0;
+  padding-left:1px;
+  font-weight: normal;
+  color: #35363f;
   background-color: transparent;
-  box-shadow: none; }
-  #explorer ul {
-    font-size: 0.9em; }
+  box-shadow: none; 
+}
+
+.side-menu .navbar-nav #explorer ul li{
+  padding-left: 1px;
+}
 
 .dropdownstyle {
   border: 0;
@@ -778,6 +802,7 @@ div.panel.disabled {
   border-radius: 0;
   background-color: transparent;
   box-shadow: none; }
+
 
 #sideMenu {
   min-height: 700px;
@@ -800,6 +825,8 @@ div.panel.disabled {
   #sideMenu #dropdown li > a:hover {
     width: 100%;
     font-weight: 700; }
+  #sideMenu #dropdown #explorer li{
+    font-weight: normal; }
   #sideMenu #dropdown #explorer li:hover {
     font-weight: 700; }
   #sideMenu #dropdown #explorer li:hover > a {
@@ -1933,10 +1960,10 @@ div#gview_displayresponses th#displayresponses_cb {
 }
 
 #quick-menu-container {
-    position: absolute;
     width: 50px;
-    right: 0;
-    top: 50px;
+    float: left;
+    clear: both;
+    
 }
 
 .quick-icon-wrapper {
@@ -2354,12 +2381,15 @@ input[type="file"].form-control {
 
   html,body {
     margin: 0;
-    max-width: 100%;
+    max-width: 90%;
   }
   body{
-    max-width: 100%;
     text-align: left;
     padding: 12px;
+    overflow: visible;
+    position: absolute;
+    top: 24px;
+    left: 14px;
   }
   
   body.onStatistics a:not(.printable),
@@ -2388,16 +2418,11 @@ input[type="file"].form-control {
     margin-left: 0;
     margin-right: 0;
   }
-  body.onStatistics>div.printable
-  {
-    margin: 2px !important;
-    padding: 2px !important;
+  body.onStatistics div:not(.printable) {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  div.legend span {
-    margin: initial !important;
-    padding: initial !important;
-  }
 
   /*body.onStatistics td:not(.printable),
   body.onStatistics th:not(.printable),*/
