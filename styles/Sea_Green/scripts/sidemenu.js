@@ -154,12 +154,12 @@ var SideMenuMovement = function(
         onDragMethod = function(e){
             // console.log('drag triggered', e.screenX);
 
-            position =  e.screenX;
+            position =  e.clientX;
             setDivisionOn(position);
         },
         onDragEndMethod = function(e){
             // console.log('dragend triggered', e.screenX);
-            position =  e.screenX;
+            position =  e.clientX;
             if(position <  wWidth/8 ){
                 collapseSidebar();
             } else {
