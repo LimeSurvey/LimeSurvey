@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>Fancytree - 3rd Party Example: Context menu</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+	<link href="../../../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../../../src/jquery.fancytree.js" type="text/javascript"></script>
+
+	<link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
+	<script src="js/jquery.contextMenu-1.6.5.js" type="text/javascript"></script>
+	<script src="js/jquery.fancytree.contextMenu.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../../../lib/prettify.css" rel="stylesheet">
+	<script src="../../../lib/prettify.js" type="text/javascript"></script>
+	<link href="../../../demo/sample.css" rel="stylesheet" type="text/css">
+	<script src="../../../demo/sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+	<!-- Add code to initialize the tree when the document is loaded: -->
+	<script type="text/javascript">
+	$(function() {
+		$('#tree').fancytree({
+			extensions: ['contextMenu'],
+			source: {
+				url: '../../../demo/ajax-tree-local.json'
+			},
+			contextMenu: {
+				menu: {
+					'edit': { 'name': 'Edit', 'icon': 'edit' },
+					'cut': { 'name': 'Cut', 'icon': 'cut' },
+					'copy': { 'name': 'Copy', 'icon': 'copy' },
+					'paste': { 'name': 'Paste', 'icon': 'paste' },
+					'delete': { 'name': 'Delete', 'icon': 'delete', 'disabled': true },
+					'sep1': '---------',
+					'quit': { 'name': 'Quit', 'icon': 'quit' },
+					'sep2': '---------',
+					'fold1': {
+						'name': 'Sub group',
+						'items': {
+							'fold1-key1': { 'name': 'Foo bar' },
+							'fold2': {
+								'name': 'Sub group 2',
+								'items': {
+									'fold2-key1': { 'name': 'alpha' },
+									'fold2-key2': { 'name': 'bravo' },
+									'fold2-key3': { 'name': 'charlie' }
+								}
+							},
+							'fold1-key3': { 'name': 'delta' }
+						}
+					},
+					'fold1a': {
+						'name': 'Other group',
+						'items': {
+							'fold1a-key1': { 'name': 'echo' },
+							'fold1a-key2': { 'name': 'foxtrot' },
+							'fold1a-key3': { 'name': 'golf' }
+						}
+					}
+				},
+				actions: function(node, action, options) {
+					$('#selected-action').text('Selected action "' + action + '" on node ' + node);
+				}
+			},
+			lazyLoad: function(event, data) {
+				data.result = { url: '../../ajax-sub2.json' }
+			}
+		});
+	});
+	</script>
+</head>
+
+<body class="example">
+
+<h1>Example: 'contextMenu' extension</h1>
+
+<div class="description">
+    <p>
+    This example make use of the `contextMenu` extension that was 
+    <a href="https://github.com/mar10/fancytree/pull/3" target="_blank" class="external">contributed by Tomas Norkūnas</a>. 
+   </p>
+    <p>
+    The extension in turn integrates the  
+    <a href="http://medialize.github.io/jQuery-contextMenu/" target="_blank" class="external">jQuery contextMenu plugin</a>
+    by Rodney Rehm (please report bugs there).
+   </p>
+</div>
+<!--
+<div>
+ <label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+</div>
+-->
+<!-- Tree wrapper -->
+<div id="tree"></div>
+
+<hr />
+
+<div id="selected-action">Click right mouse button on node</div>
+
+<!-- Start_Exclude: This block is not part of the sample code -->
+<hr>
+
+<p class="sample-links  no_code">
+ <a class="hideInsideFS" href="https://github.com/mar10/fancytree">jquery.fancytree.js project home</a>
+ <a class="hideOutsideFS" href="#">Link to this page</a>
+ <a class="hideInsideFS" href="index.html">Example Browser</a>
+ <a href="#" id="codeExample">View source code</a>
+</p>
+
+<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+<!-- End_Exclude -->
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+	"tags"      : {
+		"allowUnknownTags" : true
+	},
+	"plugins"   : ["plugins/markdown"],
+	"templates" : {
+		"cleverLinks"     : false,
+		"monospaceLinks"  : false,
+		"default"         : {
+			"outputSourceFiles" : true
+		},
+		"systemName"      : "Fancytree",
+		"footer"          : "",
+		"copyright"       : "Fancytree Copyright © 2014 Martin Wendt and contributors.",
+		"navType"         : "vertical",
+		"theme"           : "flatly",
+		"linenums"        : true,
+		"collapseSymbols" : true,
+		"inverseNav"      : true
+	},
+	"markdown"  : {
+		"parser"   : "gfm",
+		"hardwrap" : true
+	}
+}

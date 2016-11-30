@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example: Filter</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.filter.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css">
+	<script src="sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<style type="text/css">
+</style>
+
+<!-- Add code to initialize the tree when the document is loaded: -->
+<script type="text/javascript">
+	$(function(){
+		// Attach the fancytree widget to an existing <div id="tree"> element
+		// and pass the tree options as an argument to the fancytree() function:
+		$("#tree").fancytree({
+			extensions: ["filter"],
+			quicksearch: true,
+			source: {
+				url: "ajax-tree-local.json"
+			},
+			filter: {
+				autoApply: true,  // Re-apply last filter if lazy data is loaded
+				counter: true,  // Show a badge with number of matching child nodes near parent icons
+				fuzzy: false,  // Match single characters in order, e.g. 'fb' will match 'FooBar'
+				hideExpandedCounter: true,  // Hide counter badge, when parent is expanded
+				highlight: true,  // Highlight matches by wrapping inside <mark> tags
+				mode: "dimm"  // Grayout unmatched nodes (pass "hide" to remove unmatched node instead)
+			},
+			activate: function(event, data) {
+//				alert("activate " + data.node);
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "ajax-sub2.json"}
+			}
+		// }).on("keydown", function(e){
+		// 	var c = String.fromCharCode(e.which);
+		// 	if( c === "F" && e.ctrlKey ) {
+		// 		$("input[name=search]").focus();
+		// 	}
+		});
+		var tree = $("#tree").fancytree("getTree");
+
+		/*
+		 * Event handlers for our little demo interface
+		 */
+		$("input[name=search]").keyup(function(e){
+			var n,
+				opts = {
+					autoExpand: $("#autoExpand").is(":checked"),
+					leavesOnly: $("#leavesOnly").is(":checked")
+				},
+				match = $(this).val();
+
+			if(e && e.which === $.ui.keyCode.ESCAPE || $.trim(match) === ""){
+				$("button#btnResetSearch").click();
+				return;
+			}
+			if($("#regex").is(":checked")) {
+				// Pass function to perform match
+				n = tree.filterNodes(function(node) {
+					return new RegExp(match, "i").test(node.title);
+				}, opts);
+			} else {
+				// Pass a string to perform case insensitive matching
+				n = tree.filterNodes(match, opts);
+			}
+			$("button#btnResetSearch").attr("disabled", false);
+			$("span#matches").text("(" + n + " matches)");
+		}).focus();
+
+		$("button#btnResetSearch").click(function(e){
+			$("input[name=search]").val("");
+			$("span#matches").text("");
+			tree.clearFilter();
+		}).attr("disabled", true);
+
+		$("fieldset input:checkbox").change(function(e){
+			var id = $(this).attr("id"),
+				flag = $(this).is(":checked");
+
+			switch( id ) {
+			case "autoExpand":
+			case "regex":
+			case "leavesOnly":
+				// Re-apply filter only
+				break;
+			case "hideMode":
+				tree.options.filter.mode = flag ? "hide" : "dimm";
+				break;
+			case "counter":
+			case "fuzzy":
+			case "hideExpandedCounter":
+			case "highlight":
+				tree.options.filter[id] = flag;
+				break;
+			}
+			tree.clearFilter();
+			$("input[name=search]").keyup();
+		});
+
+		$("#counter,#hideExpandedCounter,#highlight").prop("checked", true);
+
+		addSampleButton({
+			label: "Filter active branch",
+			newline: false,
+			code: function(){
+				if( !tree.getActiveNode() ) {
+					alert("Please activate a folder.");
+					return;
+				}
+				tree.filterBranches(function(node){
+					return node.isActive();
+				});
+			}
+		});
+		addSampleButton({
+			label: "Reset filter",
+			newline: false,
+			code: function(){
+				tree.clearFilter();
+			}
+		});
+	});
+</script>
+</head>
+<body class="example">
+	<h1>Example: 'filter' extension</h1>
+	<div class="description">
+		<p>
+			Allow to dimm or hide nodes based on a matching expression.
+		</p>
+		<p>
+			<b>Status:</b> beta.
+			<b>Details:</b>
+			<a href="https://github.com/mar10/fancytree/wiki/ExtFilter"
+				target="_blank" class="external">ext-filter</a>.
+		</p>
+	</div>
+	<div>
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+	</div>
+	<p>
+		<label>Filter:</label>
+		<input name="search" placeholder="Filter..." autocomplete="off">
+		<button id="btnResetSearch">&times;</button>
+		<span id="matches"></span>
+	</p>
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<fieldset>
+		<label for="hideMode">
+			<input type="checkbox" id="hideMode">
+			Hide unmatched nodes
+		</label>
+		<label for="leavesOnly">
+			<input type="checkbox" id="leavesOnly">
+			Leaves only
+		</label>
+		<label for="autoExpand">
+			<input type="checkbox" id="autoExpand">
+			Auto expand
+		</label>
+		<label for="counter">
+			<input type="checkbox" id="counter">
+			Counter badges
+		</label>
+		<label for="hideExpandedCounter">
+			<input type="checkbox" id="hideExpandedCounter">
+			hideExpandedCounter
+		</label>
+		<label for="fuzzy">
+			<input type="checkbox" id="fuzzy">
+			Fuzzy
+		</label>
+		<label for="highlight">
+			<input type="checkbox" id="highlight">
+			Highlight
+		</label>
+		<label for="regex">
+			<input type="checkbox" id="regex">
+			Regular expression
+		</label>
+	</fieldset>
+
+	<p id="sampleButtons">
+	</p>
+	<!-- End_Exclude -->
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<div id="tree">
+	</div>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree">jquery.fancytree.js project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>

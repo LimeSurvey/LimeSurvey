@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+	<link href="../src/skin-win8/ui.fancytree.css" rel="stylesheet" type="text/css">
+
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.wide.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css">
+	<script src="sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<style>
+/*
+	ul.fancytree-container {
+		position: relative;
+	}
+*/
+
+/*
+	span {
+		position: relative;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+*/
+/*
+	span.fancytree-node {
+		-moz-display: flex;
+		-webkit-display: flex;
+		-ms-display: flex;
+		display: flex;
+	}
+*/
+	span.ws-wrap span.fancytree-title {
+		white-space: normal;
+	}
+	span.ws-nowrap span.fancytree-title { white-space: nowrap; }
+	span.ws-pre span.fancytree-title { white-space: pre; }
+
+</style>
+<script type="text/javascript">
+	function drawCanvas() {
+		var canvas = document.getElementById("canvas1"),
+			ctx = canvas && canvas.getContext("2d");
+		if(ctx) {
+			var lingrad = ctx.createLinearGradient( 0, 0, 0, 150 );
+			lingrad.addColorStop( 0, "#0099cc" );
+			lingrad.addColorStop( 0.5, "#fff" );
+			lingrad.addColorStop( 0.5, "#99cc00");
+			lingrad.addColorStop( 1, "#0099ff");
+			ctx.fillStyle = lingrad;
+			ctx.fillRect(0, 0, 400 ,100 );
+			ctx.fillStyle = "rgb(200,0,0)";
+			ctx.fillRect( 10, 10, 55, 55 );
+		}
+	}
+
+	$(function(){
+		$("#tree").fancytree({
+//			extensions: ["wide"],
+			// canvas and video child nodes do not exist before the parent is
+			// expanded, so we trigger rendering on demand
+			expand: function(event, data) {
+				var node = data.node;
+				switch( node.key ) {
+				case "videoParent1":
+					var video = document.getElementById("video1");
+					video.play();
+					break;
+				case "canvasParent1":
+				setTimeout(drawCanvas, 1000);
+					// drawCanvas();
+					break;
+				}
+			}
+		});
+		// Fancytree renders nodes 'lazily', i.e. when they are first expanded.
+		// So we to use live event binding for embedded elements.
+		$("#tree").on("click", "#btn1", function(){
+			alert("Thank you for clicking.");
+			return false;
+		});
+	});
+</script>
+</head>
+<body class="example">
+	<h1>Example: formatted and multi-line titles</h1>
+	<p class="description">
+		This example shows how multi-line and non-text contents is displayed.
+	</p>
+
+	<div id="tree">
+		<ul>
+			<li>Using some <b>bold</b> markup in the text (&lt;li&gt; tag only).
+			<li><span>Using some <b>bold</b> markup in the text (&lt;li&gt;&lt;span&gt; tag).</span>
+
+			<li class="folder">Long line (nowrap)
+				<ul>
+					<li><span>
+					Lorem ipsum dolor sit amet, consectetuer sadipscing elitr, sed
+					diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+					sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+					amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+					nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+					sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+					tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+					At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					</span>
+					<li>Node 2
+				</ul>
+
+			<li class="folder">Long line (wrapping)
+				<ul>
+					<li class="ws-wrap"><span>
+					Lorem ipsum dolor sit amet, consectetuer sadipscing elitr, sed
+					diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+					sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+					amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+					nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+					sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+					tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+					At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					</span>
+					<li>Node 2
+				</ul>
+
+			<li class="folder">Long line (pre formatted)
+				<ul>
+					<li class="ws-pre"><span>Lorem ipsum dolor sit amet, consectetuer sadipscing elitr, sed
+diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+At vero eos et accusam et justo duo dolores et ea rebum.
+Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					</span>
+					<li>Node 2
+				</ul>
+
+			<li class="folder">Long paragraph, with H3, P, and BR
+				<ul>
+					<li><span><h3>Title</h3>
+					<p>
+					Lorem ipsum dolor sit amet, consectetuer sadipscing elitr, sed
+					diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+					sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+					<br>
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+					amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+					nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+					sed diam voluptua.
+					<br>
+					At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+					tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+					At vero eos et accusam et justo duo dolores et ea rebum.
+					<br>
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					</p>
+					</span>
+					<li>Node 2
+				</ul>
+
+			<li class="folder">Long text using BR and P
+				<ul>
+					<li><span>
+					<p>
+					Lorem ipsum dolor sit amet, consectetuer sadipscing elitr, sed <br>
+					diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,  <br>
+					sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. <br>
+					</p>
+					<p>
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit  <br>
+					amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam  <br>
+					nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,  <br>
+					sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. <br>
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <br>
+					</p>
+					<p>
+					Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod  <br>
+					tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  <br>
+					At vero eos et accusam et justo duo dolores et ea rebum.  <br>
+					</p>
+					<p>
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <br>
+					</p>
+					</span>
+					<li>Node 2
+				</ul>
+
+			<li class="folder">Form elements
+				<ul>
+					<li><span>
+						Name: <input type="text" name="name2" />
+						</span>
+					<li><span>
+						Comment:<br><textarea name="comment2"></textarea>
+						</span>
+					<li data-icon="false"><span>
+						<input type="radio" id="rb1_1" name="rb1" value="v1" checked>
+						  <label for="rb1_1">Foo</label>
+						<input type="radio" id="rb1_2" name="rb1" value="v2">
+						  <label for="rb1_2">Bar</label>
+						<input type="radio" id="rb1_3" name="rb1" value="v3">
+						  <label for="rb1_3">Baz</label>
+						</span>
+					<li><span>
+						<button id="btn1" value="123">Click me</button>
+						</span>
+				</ul>
+
+			<li id="videoParent1" class="folder">Video
+				<ul>
+					<li id="videoNode1" data-icon="false"><span>
+						<video id="video1" src="http://simpl.info/video/video/chrome.mp4"
+							controls="controls">
+						  Your browser does not support the <code>video</code> element.
+						</video>
+						</span>
+				</ul>
+<!--
+			<li id="canvasParent1" class="folder">Canvas
+				<ul>
+					<li id="canvasNode1" data-icon="false"><span>
+						<canvas id="canvas1" width="400" height="100">
+						Your browser does not support the <code>canvas</code> element.
+						</canvas>
+						</span>
+				</ul>
+-->
+			<li>item3
+		</ul>
+	</div>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree/">Fancytree project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>

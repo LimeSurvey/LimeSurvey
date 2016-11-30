@@ -1,0 +1,29 @@
+[
+	{"title": "ATX PC Computer Power Supply Troubleshooting", "expanded": true, "folder": true, "children": [
+		{"title": "Power comes on", "extraClasses": "yes", "children": [
+			{"title": "Live screen", "extraClasses": "yes", "children": [
+				{"title": "New build", "extraClasses": "yes", "children": [
+					{"title": "Check power requirement vs. rating.", "extraClasses": "answer"}
+				]},
+				{"title": "<strong>No</strong> new build", "extraClasses": "no", "children": [
+					{"title": "Need two tries to boot", "extraClasses": "yes", "children": [
+						{"title": "Premature power_good signal. Try different power supply.", "extraClasses": "answer"}
+					]},
+					{"title": "Does <strong>not</strong> need two tries to boot", "extraClasses": "no", "children": [
+
+					]}
+				]}
+			]},
+			{"title": "<strong>No</strong> live screen", "extraClasses": "no", "children": [
+				{"title": "Proceed to Video Failure Chart", "extraClasses": "link"}
+			]}
+		]},
+		{"title": "Power comes <strong>not</strong> on", "extraClasses": "no", "children": [
+			{"title": "AC power source tested?", "extraClasses": "yes", "children": [
+			]},
+			{"title": "AC poower source <strong>not</strong> tested", "extraClasses": "no", "children": [
+				{"title": "Connect to known good outlet.", "extraClasses": "answer"}
+			]}
+		]}
+	]}
+]

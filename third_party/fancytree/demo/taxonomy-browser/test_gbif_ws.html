@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Test GBIF Webservice</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	var GBIF_URL = "http://api.gbif.org/v1/";
+
+	$("#btnJson1").click(function(e){
+		$.ajax({
+			// url: GBIF_URL + "enumeration/basic/Kingdom",
+			url: GBIF_URL + "species?rank=kingdom",
+			data: {
+				// rank: "kingdom"
+			},
+			cache: true
+		}).done(function(response){
+			console.log("JSON response", response);
+		}).fail(function(){
+			console.log("JSON fault", arguments);
+		});
+	});
+});
+</script>
+</head>
+
+<body>
+	<div class="page-header">
+		<h1>GBIF</h1>
+	</div>
+		<button id="btnJson1">JSON getHierarchyDownFromTSN</button>
+		<button id="btnJsonp1">JSONP getHierarchyDownFromTSN</button>
+		<button id="btnJson2">JSON searchForAnyMatchPaged</button>
+		<button id="btnJsonp2">JSONP searchForAnyMatchPaged</button>
+</body>
+</html>

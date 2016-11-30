@@ -1,0 +1,151 @@
+	<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Editable Nodes</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.edit.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css">
+	<script src="sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<style type="text/css">
+	span.pending span.fancytree-title {
+		font-style: italic;
+	}
+	span.pending span.fancytree-title:after {
+		content: "\2026"; /* ellipsis */
+	}
+</style>
+<script type="text/javascript">
+// ----------
+
+$(function(){
+	$("#tree").fancytree({
+		extensions: ["edit"],
+		source: {url: "ajax-tree-plain.json"},
+		lazyLoad: function(event, data) {
+			data.result = { url: "ajax-sub2.json", debugDelay: 1000 };
+		},
+		edit: {
+			triggerStart: ["f2", "dblclick", "shift+click", "mac+enter"],
+			beforeEdit: function(event, data){
+				// Return false to prevent edit mode
+			},
+			edit: function(event, data){
+				// Editor was opened (available as data.input)
+			},
+			beforeClose: function(event, data){
+				// Return false to prevent cancel/save (data.input is available)
+				console.log(event.type, event, data);
+				if( data.originalEvent.type === "mousedown" ) {
+					// We could prevent the mouse click from generating a blur event
+					// (which would then again close the editor) and return `false` to keep
+					// the editor open:
+//                  data.originalEvent.preventDefault();
+//                  return false;
+					// Or go on with closing the editor, but discard any changes:
+//                  data.save = false;
+				}
+			},
+			save: function(event, data){
+				// Save data.input.val() or return false to keep editor open
+				console.log("save...", this, data);
+				// Simulate to start a slow ajax request...
+				setTimeout(function(){
+					$(data.node.span).removeClass("pending");
+					// Let's pretend the server returned a slightly modified
+					// title:
+					data.node.setTitle(data.node.title + "!");
+				}, 2000);
+				// We return true, so ext-edit will set the current user input
+				// as title
+				return true;
+			},
+			close: function(event, data){
+				// Editor was removed
+				if( data.save ) {
+					// Since we started an async request, mark the node as preliminary
+					$(data.node.span).addClass("pending");
+				}
+			}
+		}
+	});
+});
+</script>
+
+<!-- Start_Exclude: This block is not part of the sample code -->
+ <script>
+$(function(){
+	addSampleButton({
+		label: "Add child",
+		newline: false,
+		code: function(){
+			var node = $("#tree").fancytree("getActiveNode");
+			if( !node ) {
+				alert("Please activate a parent node.");
+				return;
+			}
+			node.editCreateNode("child", "Node title");
+		}
+	});
+	addSampleButton({
+		label: "Add sibling folder",
+		newline: false,
+		code: function(){
+			var node = $("#tree").fancytree("getActiveNode");
+			node.editCreateNode("after", {
+				title: "Node title",
+				folder: true
+			});
+		}
+	});
+});
+</script>
+<!-- End_Exclude -->
+
+</head>
+
+<body class="example">
+	<h1>Example: 'edit' extension</h1>
+	<div class="description">
+		<p>
+			Allow to change node titles using inline editing.
+		</p>
+		<p>
+			Edit the node titles with `dblclick`, `Shift + click` [F2], or [Enter] (on Mac only).
+		</p>
+		<p>
+			<b>Status:</b> beta.
+			<b>Details:</b>
+			<a href="https://github.com/mar10/fancytree/wiki/ExtEdit"
+				target="_blank" class="external">ext-edit</a>.
+		</p>
+	</div>
+
+	<div id="tree">
+	</div>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<p id="sampleButtons">
+	</p>
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree/">Fancytree project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>

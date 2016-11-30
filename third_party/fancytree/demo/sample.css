@@ -1,0 +1,81 @@
+a.external {
+	background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAAFVBMVEVmmcwzmcyZzP8AZswAZv////////9E6giVAAAAB3RSTlP///////8AGksDRgAAADhJREFUGFcly0ESAEAEA0Ei6/9P3sEcVB8kmrwFyni0bOeyyDpy9JTLEaOhQq7Ongf5FeMhHS/4AVnsAZubxDVmAAAAAElFTkSuQmCC") 100% 50% no-repeat;
+	padding-right: 13px;
+}
+body.example {
+	margin: 15px;
+	font-family: sans-serif;
+	font-size: 1em;
+}
+body.example h1 {
+	font-size: 1.2em;
+}
+body.example h2 {
+	font-size: 1em;
+}
+
+body.example .description,
+body.example .sample-links {
+/*	border: thin solid gray; */
+	background-color: #d0d0f0;
+	padding: 5px;
+	margin: 5px 0;
+	font-size: small;
+}
+
+p.version-info {
+	color: gray;
+	font-size: 0.6em;
+}
+
+p.warning,
+p.info,
+div.info {
+	font-size: small;
+	background-color: #ffffa0;
+	background-image: url(../doc/iconInfo_32x32.png);
+	background-repeat: no-repeat;
+	padding: 5px;
+	padding-left: 40px;
+	min-height: 25px;
+}
+.sampleButtonContainer
+{
+	margin-right: 10px;
+}
+.sampleButtonContainer a
+{
+	color: navy;
+	text-decoration: none;
+	padding: 1px 3px;
+	font-size: 50%;
+}
+p#sampleButtons h5
+{
+	font-size: 9pt;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	font-weight: bold;
+}
+
+p.sample-links a,
+p.sample-links a:visited
+{
+	color: navy;
+	text-decoration: none;
+	margin-left: 15px;
+	padding: 1px 3px;
+	font-size: small;
+}
+p.sample-links a:hover
+{
+	text-decoration: underline;
+}
+
+pre{
+  background:#eee;
+  border:1px solid #999;
+  padding:.5em;
+  margin:.5em;
+  font-size:.9em;
+}

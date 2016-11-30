@@ -2099,4 +2099,5 @@ class questions extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }
+
 }

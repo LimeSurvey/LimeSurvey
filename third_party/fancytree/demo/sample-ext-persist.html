@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example: Persist</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+<!--
+	<script src="../lib/jquery.cookie.js" type="text/javascript"></script>
+-->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/js-cookie/2.0.1/js.cookie.min.js"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.persist.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css">
+	<script src="sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<style type="text/css">
+</style>
+
+<!-- Add code to initialize the tree when the document is loaded: -->
+<script type="text/javascript">
+	$(function(){
+		// Attach the fancytree widget to an existing <div id="tree"> element
+		// and pass the tree options as an argument to the fancytree() function:
+		$("#tree").fancytree({
+			extensions: ["persist"],
+			checkbox: true,
+			selectMode: 3,
+			source: {
+				url: "ajax-tree-plain.json"
+			},
+			persist: {
+				expandLazy: true,
+				// fireActivate: false,    // false: suppress `activate` event after active node was restored
+				// overrideSource: false,  // true: cookie takes precedence over `source` data attributes.
+				store: "auto" // 'cookie', 'local': use localStore, 'session': sessionStore
+			},
+			// don't use this in production code:
+			ajax: {
+				debugDelay: [200, 1000]
+			},
+			init: function(event, data) {
+				data.tree.debug(event.type, data);
+			},
+			restore: function(event, data) {
+				data.tree.debug(event.type, data);
+			},
+			activate: function(event, data) {
+				data.node.debug(event.type, data);
+			},
+			loadChildren: function(event, data) {
+				data.node.debug(event.type, data);
+			},
+			postProcess: function(event, data) {
+				// Create predictable, **unique** keys, which we need for our lazy
+				// persistence example. This is only required for this demo,
+				// because our lazyLoad handler will always return the same
+				// fake data.
+				var prefix = data.node.getIndexHier() + ".";
+				$.each(data.response, function(idx, childEntry){
+					if( childEntry.key == null ) {
+						 childEntry.key = prefix + (idx + 1);
+						 childEntry.title += " (" + childEntry.key + ")";
+					}
+				})
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "ajax-sub2.json"};
+			}
+		});
+		var tree = $("#tree").fancytree("getTree");
+
+		addSampleButton({
+			label: "Reset Cookie",
+			newline: false,
+			code: function(){
+				tree.clearCookies();
+			}
+		});
+
+	});
+</script>
+</head>
+<body class="example">
+	<h1>Example: 'persist' extension</h1>
+	<div class="description">
+		<p>
+			Store and restore tree status using cookies or local storage.
+		</p>
+		<p>
+			- Set options<br>
+			- click, expand, and select nodes<br>
+			- press [F5] to reload.
+		</p>
+		<p>
+			<b>Status:</b> beta.
+			<b>Details:</b>
+			<a href="https://github.com/mar10/fancytree/wiki/ExtPersist"
+				target="_blank" class="external">ext-persist</a>.
+		</p>
+	</div>
+
+	<div>
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+	</div>
+
+	<p id="sampleButtons">
+	</p>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<div id="tree">
+	</div>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree">jquery.fancytree.js project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>

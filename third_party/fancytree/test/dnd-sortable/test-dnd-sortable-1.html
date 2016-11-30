@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example: Drag'n'drop</title>
+<!--
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+-->
+	<script src="//code.jquery.com/jquery-1.12.1.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+
+<style type="text/css">
+	#list1 {
+		list-style: none;
+	}
+	#list1 li {
+		padding:0.5em;
+		margin:0.5em;
+		border:1px solid #AAAAAA;
+		background-color: silver;
+	}
+</style>
+<!-- Add code to initialize the tree when the document is loaded: -->
+<script type="text/javascript">
+	$(function(){
+		/*
+		http://jsfiddle.net/hQnWG/614/
+
+		*/
+		$("#list1").sortable({
+//          cursorAt: { top: -5, left: -5 },
+			cancel: "li"  // prevent standard sorting (should be triggered by Draggable)
+//          start: function(){ return false; }
+		});
+		$("#list1 li").draggable({
+			revert: "invalid",
+			cursorAt: { top: -5, left: -5 },
+//	        helper: "clone",
+			connectToFancytree: true,   // let Fancytree accept drag events
+			connectToSortable: "#list1" // connect to sortable-self
+		});
+		// Attach the fancytree widget to an existing <div id="tree"> element
+		// and pass the tree options as an argument to the fancytree() function:
+		$("#tree").fancytree({
+			extensions: ["dnd"],
+//			source: { url: "unit/ajax-tree-plain.json" },
+			source: [
+				{title: "Folder1", folder: true },
+				{title: "Folder2", folder: true },
+				{title: "Folder3", folder: true }
+				],
+			dnd: {
+				preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+				preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+				autoExpandMS: 400,
+				dragStart: function(node, data) {
+					return true;
+				},
+				dragEnter: function(node, data) {
+					// Don't allow dropping *over* a node (would create a child)
+//					return ["before", "after"];
+					return node.folder ? ["over"] : ["before", "after"];
+//				    return true;
+				},
+				dragDrop: function(node, data) {
+//					data.otherNode.moveTo(node, data.hitMode);
+					console.log("ui", ui, "draggable", draggable);
+					node.addNode({title: $(data.draggable.element).text()}, data.hitMode);
+					return false;
+				}
+			},
+			activate: function(event, data) {
+//				alert("activate " + data.node);
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "unit/ajax-sub2.json"}
+			}
+		});
+	});
+</script>
+</head>
+<body class="example">
+	<h1>Sample: trying to make the list 'sortable' and 'draggable' at the same time</h1>
+	<!-- Add a <table> element where the tree should appear: -->
+	<div id="tree">
+	</div>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<ul id="list1">
+		<li>Item 1
+		<li>Item 2
+		<li>Item 3
+	</ul>
+</body>
+</html>

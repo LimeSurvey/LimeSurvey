@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example: Drag'n'drop</title>
+<!--
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+-->
+	<script src="//code.jquery.com/jquery-1.12.1.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+
+<style type="text/css">
+	#list1 {
+		list-style: none;
+		width: 150px;
+	}
+	#list1 li {
+		padding: 2px;
+		margin: 0.5em;
+		border:2px outset #AAAAAA;
+		background-color: #eef;
+		border-radius: 5px;
+	}
+
+	.item-wrapper {
+	   position: relative;
+	   padding: 3px;
+	}
+
+	.drag-handle {
+	   position: absolute;
+	   border: 3px solid transparent;
+	   left: 0;
+	   right: 0;
+	   top: 0;
+	   bottom: 0;
+	}
+
+	.item-container {
+	   position: relative;
+	   text-align: center;
+	}
+
+	.item-wrapper.mx-state-moving {
+	   background-color: #fcefa1;
+	   color: #000;
+	   margin: 0;
+	}
+</style>
+
+<!-- Add code to initialize the tree when the document is loaded: -->
+
+<script type="text/javascript">
+	$(function(){
+		/*
+		http://jsfiddle.net/hQnWG/614/
+
+		Working Demo
+		http://benknowscode.wordpress.com/2013/04/09/mixing-jquery-ui-draggable-droppable-and-sortable-interaction-widgets/
+		http://bseth99.github.io/projects/jquery-ui/8-draggable-sortable-droppable.html
+		*/
+/*
+		$("#list1").sortable({
+			cursorAt: { top: -5, left: -5 }
+//	        start: function(){ return false; }
+		});
+		$("#list1 li").draggable({
+			revert: "invalid",
+			cursorAt: { top: -5, left: -5 },
+//	        helper: "clone",
+			connectToFancytree: true,   // let Fancytree accept drag events
+			connectToSortable: "#list1" // connect to sortable-self
+		});
+*/
+		function fixHelper( e, ui ) {
+			var $ctr = $(this);
+			ui.helper
+			   .addClass('mx-state-moving ui-corner-all')
+			   .outerWidth($ctr.outerWidth())
+			   .find('.mx-content-hover')
+				  .removeClass('mx-content-hover')
+				  .end();
+		 };
+		 /*
+		$('.drag-container')
+			.find('.item-wrapper').draggable({
+
+			   cursor: 'move',
+			   zIndex: 200,
+			   opacity: 0.75,
+			   scroll: false,
+			   containment: 'window',
+			   appendTo: document.body,
+			   helper: 'clone',
+			   connectToSortable: '.sort-container',
+			   start: fixHelper
+
+			});
+		 */
+		$('.sort-container')
+		  .sortable({
+
+			 containment: 'parent',
+			 handle: '.item-container',
+			 tolerance: 'pointer',
+			 helper: 'clone',
+			 start: fixHelper,
+			 update: function ( e, ui ) {
+
+				 /* Check if the drag handle is missing */
+				 if ( ui.item.find('.drag-handle').length == 0 ) {
+
+					/* It is so increment the item counter */
+					$('.drag-container .item-container').html('Item ' + (++items));
+
+					/*
+						And setup the item so it has a drag handle and
+						responds to drag events
+					*/
+					ui.item
+					   .find('.item-container')
+						  .before( $('<div class="drag-handle">') )
+						  .parent()
+					   .draggable({
+
+							 cursor: 'move',
+							 zIndex: 200,
+							 opacity: 0.75,
+							 handle: '.drag-handle',
+							 scroll: false,
+							 containment: 'window',
+							 appendTo: document.body,
+							 helper: 'clone',
+							 start: fixHelper
+
+						  });
+
+					/*
+					   Reset the containment.  Somehow it breaks when adding
+					   the external item
+					*/
+					$(this).sortable('option', 'containment', 'parent');
+				 }
+			 }
+
+	   }).find('.item-wrapper')
+		  .draggable({
+			 cursor: 'move',
+			 zIndex: 200,
+			 opacity: 0.75,
+			 handle: '.drag-handle',
+			 scroll: false,
+			 containment: 'window',
+			 appendTo: document.body,
+			 helper: 'clone',
+			 start: fixHelper
+		  });
+		// Attach the fancytree widget to an existing <div id="tree"> element
+		// and pass the tree options as an argument to the fancytree() function:
+		$("#tree").fancytree({
+			extensions: ["dnd"],
+			source: {
+				url: "unit/ajax-tree-plain.json"
+			},
+			dnd: {
+				preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+				preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+				autoExpandMS: 400,
+				dragStart: function(node, data) {
+					return true;
+				},
+				dragEnter: function(node, data) {
+					// Don't allow dropping *over* a node (would create a child)
+//					return ["before", "after"];
+					return true;
+				},
+				dragDrop: function(node, data) {
+					/** This function MUST be defined to enable dropping of items on
+					 *  the tree.
+					 */
+//					data.otherNode.moveTo(node, data.hitMode);
+					node.addChildren({title: $(draggable).text()});
+					return false;
+				}
+			},
+			activate: function(event, data) {
+//				alert("activate " + data.node);
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "unit/ajax-sub2.json"}
+			}
+		});
+	});
+</script>
+</head>
+<body class="example">
+	<h1>Sample: trying bseth99</h1>
+	<p>
+		http://benknowscode.wordpress.com/2013/04/09/mixing-jquery-ui-draggable-droppable-and-sortable-interaction-widgets/
+		<br>
+		http://bseth99.github.io/projects/jquery-ui/8-draggable-sortable-droppable.html
+	</p>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<div id="tree">
+	</div>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<ul class="sort-container">
+	<li>
+		<div class="item-wrapper">
+			<div class="drag-handle"></div>
+			<div class="item-container">Item 1</div>
+		</div>
+	</li>
+	<li>
+		<div class="item-wrapper">
+			<div class="drag-handle"></div>
+			<div class="item-container">Item 2</div>
+		</div>
+	</li>
+	<li>
+		<div class="item-wrapper">
+			<div class="drag-handle"></div>
+			<div class="item-container">Item 3</div>
+		</div>
+	</li>
+	</ul>
+</body>
+</html>

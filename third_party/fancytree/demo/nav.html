@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<meta name="robots" content="noindex,follow">
+	<script src="../lib/jquery.js" type="text/javascript"></script>
+	<script src="../lib/jquery-ui.custom.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win8/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="sample.js" type="text/javascript"></script>
+	<title>Fancytree - Example Browser Nav</title>
+
+<style type="text/css">
+body {
+	background-color: #39414A;
+	color: white;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: smaller;
+	background-image: url("nav_bg.png");
+	background-repeat: repeat-x;
+}
+div#tree {
+	position: absolute;
+	height: 95%;
+	width: 95%;
+	padding: 5px;
+	margin-right: 16px;
+}
+ul.fancytree-container {
+	height: 100%;
+	width: 100%;
+	background-color: transparent;
+}
+span.fancytree-node span.fancytree-title {
+	color: white;
+	text-decoration: none;
+}
+span.fancytree-focused span.fancytree-title {
+	outline-color: white;
+}
+span.fancytree-node:hover span.fancytree-title,
+span.fancytree-active span.fancytree-title,
+span.fancytree-active.fancytree-focused span.fancytree-title,
+.fancytree-treefocus span.fancytree-title:hover,
+.fancytree-treefocus span.fancytree-active span.fancytree-title {
+	color: #39414A;
+}
+span.external span.fancytree-title:after {
+	content: "";
+	background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAAFVBMVEVmmcwzmcyZzP8AZswAZv////////9E6giVAAAAB3RSTlP///////8AGksDRgAAADhJREFUGFcly0ESAEAEA0Ei6/9P3sEcVB8kmrwFyni0bOeyyDpy9JTLEaOhQq7Ongf5FeMhHS/4AVnsAZubxDVmAAAAAElFTkSuQmCC") 100% 50% no-repeat;
+	padding-right: 13px;
+}
+/* Remove system outline for focused container */
+.ui-fancytree.fancytree-container:focus {
+	outline: none;
+}
+.ui-fancytree.fancytree-container {
+	border: none;
+}
+</style>
+
+<script type="text/javascript">
+$(function(){
+	// --- Initialize sample trees
+	$("#tree").fancytree({
+		autoActivate: false, // we use scheduleAction()
+		autoCollapse: true,
+//			autoFocus: true,
+		autoScroll: true,
+		clickFolderMode: 3, // expand with single click
+		minExpandLevel: 2,
+		tabindex: "-1", // we don't want the focus frame
+		// scrollParent: null, // use $container
+		focus: function(event, data) {
+			var node = data.node;
+			// Auto-activate focused node after 1 second
+			if(node.data.href){
+				node.scheduleAction("activate", 1000);
+			}
+		},
+		blur: function(event, data) {
+			data.node.scheduleAction("cancel");
+		},
+		activate: function(event, data){
+			var node = data.node,
+				orgEvent = data.originalEvent || {};
+
+			if(node.data.href){
+				window.open(node.data.href, (orgEvent.ctrlKey || orgEvent.metaKey) ? "_blank" : node.data.target);
+			}
+			if( window.parent &&  parent.history && parent.history.pushState ) {
+				// Add #HREF to URL without actually loading content
+				parent.history.pushState({title: node.title}, "", "#" + (node.data.href || ""));
+			}
+		},
+		click: function(event, data){ // allow re-loads
+			var node = data.node,
+				orgEvent = data.originalEvent;
+
+			if(node.isActive() && node.data.href){
+				// data.tree.reactivate();
+				window.open(node.data.href, (orgEvent.ctrlKey || orgEvent.metaKey) ? "_blank" : node.data.target);
+			}
+		}
+	});
+	// On page load, activate node if node.data.href matches the url#href
+	var tree = $(":ui-fancytree").fancytree("getTree"),
+		frameHash = window.parent && window.parent.location.hash;
+
+	if( frameHash ) {
+		frameHash = frameHash.replace("#", "");
+		tree.visit(function(n) {
+			if( n.data.href && n.data.href === frameHash ) {
+				n.setActive();
+				return false; // done: break traversal
+			}
+		});
+	}
+});
+
+</script>
+
+</head>
+
+<body>
+	<div id="tree">
+	<ul>
+	<li class="folder expanded">Documentation
+		<ul>
+			<li class="external"><a target="_blank" href="https://github.com/mar10/fancytree/">Project home</a>
+			<li class="external"><a target="_blank" href="https://github.com/mar10/fancytree/wiki/">Documentation</a>
+			<li class="external"><a target="_blank" href="../doc/jsdoc/">API reference</a>
+		</ul>
+	<li class="folder expanded"> Examples
+		<ul>
+			<li><a target="content" href="welcome.html">Welcome</a>
+			<li><a target="content" href="sample-default.html">Default options</a>
+			<li><a target="content" href="sample-multi-ext.html">Complex demo</a>
+			<li><a target="content" href="sample-ext-bootstrap.html">Bootstrap</a>
+			<li><a target="content" href="sample-source.html">Initialization</a>
+			<li><a target="content" href="sample-events.html">Event handling</a>
+			<li><a target="content" href="sample-configurator.html">Option configurator</a>
+			<li><a target="content" href="sample-iframe.html">URL navigation and &lt;iframe></a>
+			<li><a target="content" href="sample-api.html">Programming API</a>
+			<li><a target="content" href="sample-select.html">Checkbox &amp; select</a>
+			<li><a target="content" href="sample-theming.html">Theming</a>
+			<li><a target="content" href="sample-form.html">Embed in forms</a>
+			<li class="external"><a target="_blank" href="http://wwwendt.de/tech/fancytree/demo/taxonomy-browser/">Taxonomy Browser</a>
+			<li class="folder">Extensions
+				<ul>
+				<li><a target="content" href="sample-ext-childcounter.html">Child counter</a>
+				<li><a target="content" href="sample-ext-clones.html">Clones</a>
+				<li><a target="content" href="sample-ext-columnview.html">Column view</a>
+				<li><a target="content" href="sample-ext-menu.html">Context menu</a>
+				<li><a target="content" href="sample-ext-dnd.html">Drag'n'drop</a>
+				<li><a target="content" href="sample-ext-filter.html">Filter</a>
+				<li><a target="content" href="sample-ext-bootstrap.html">Glyph fonts</a>
+				<li><a target="content" href="sample-ext-edit.html">Inline edit</a>
+				<li class="external"><a target="_blank" href="sample-ext-persist.html">Persist</a>
+				<li><a target="content" href="sample-ext-table.html">Table</a>
+				<li><a target="content" href="sample-ext-themeroller.html">ThemeRoller</a>
+				<li><a target="content" href="sample-ext-wide.html">Wide</a>
+				</ul>
+			<li class="folder">Tweaks
+				<ul>
+				<li><a target="content" href="sample-accordion.html">Accordion</a>
+				<li><a target="content" href="sample-3rd-ui-contextmenu.html">ui-contextmenu</a>
+				<li><a target="content" href="sample-3rd-contextmenu-abs.html">Context menu (ABS), Copy/paste</a>
+				<li><a target="content" href="sample-ext-awesome.html">font-awesome</a>
+				<li><a target="content" href="sample-load-errors.html">Lazy load errors handling</a>
+				<li><a target="content" href="sample-rtl.html">RTL</a>
+				<li><a target="content" href="sample-form.html">Embed in forms</a>
+				<li><a target="content" href="sample-multiline.html">Large nodes</a>
+				<li><a target="content" href="sample-multi-dnd.html">Drag multiple nodes</a>
+				<li><a target="content" href="sample-scroll.html">Smart scrolling</a>
+				<li><a target="content" href="sample-webservice.html">Webservice</a>
+				<li><a target="content" href="../test/test-ext-keyboard.html">Keyboard nav.</a>
+				</ul>
+			<li class="folder">Test
+				<ul>
+				<li class="external"><a target="_blank" href="../test/unit/test-core.html">Core unit tests</a>
+				<li class="external"><a target="_blank" href="../test/unit/test-suite.html">Suite</a>
+				<li><a target="content" href="../test/test-ext-dnd.html">Drag'n'drop</a>
+				<li class="external"><a target="_blank" href="../test/unit/test-bench.html">Benchmarks</a>
+<!--
+				<li><a target="content" href="sample-pyserver.html">Local server</a>
+ -->
+				<li class="folder">DTD
+					<ul>
+					<li><a target="content" href="../test/doctypes/doctype-none.html">No DTD</a>
+					<li><a target="content" href="../test/doctypes/doctype-html4-loose.html">HTML4 transitional</a>
+					<li><a target="content" href="../test/doctypes/doctype-html4-strict.html">HTML4 strict</a>
+					<li><a target="content" href="../test/doctypes/doctype-html5.html">HTML5</a>
+					<li><a target="content" href="../test/doctypes/doctype-xml-transitional.html">XHTML transitional</a>
+					<li><a target="content" href="../test/doctypes/doctype-xml-strict.html">XHTML strict</a>
+					</ul>
+				</ul>
+		</ul>
+		<li class="folder expanded">3rd party
+		<ul>
+			<li class="folder">Extensions
+			<ul>
+				<li><a target="content" href="../3rd-party/extensions/contextmenu/contextmenu.html">contextMenu</a>
+				<li><a target="content" href="../3rd-party/extensions/hotkeys/hotkeys.html">hotkeys</a>
+			</ul>
+			<li class="folder">Samples
+			<ul>
+				<li><a target="content" href="sample-3rd-ui-contextmenu.html">ui-contextmenu</a>
+			</ul>
+		</ul>
+	</ul>
+	</div>
+</body>
+</html>

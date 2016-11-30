@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example: Themeroller</title>
+
+	<link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/start/jquery-ui.css" />
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+	<link href="../src/skin-themeroller/ui.fancytree.css" rel="stylesheet" type="text/css">
+
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.columnview.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.table.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.themeroller.js" type="text/javascript"></script>
+	<!--
+	-->
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css">
+	<script src="sample.js" type="text/javascript"></script>
+
+	<script type="text/javascript" src="../lib/Super-Theme-Switcher/jquery.themeswitcher.js"></script>
+
+<style type="text/css">
+	ul.fancytree-container,
+	table.fancytree-container{
+		font-size: 0.8em;
+	}
+</style>
+
+	<!-- End_Exclude -->
+<style type="text/css">
+	/* Fancytree extension 'table' */
+	table.fancytree-ext-table {
+		width: 100%;
+	}
+	table.fancytree-ext-table tbody tr:nth-child(even){
+		background-color: #f4f4f8;
+	}
+	table.fancytree-ext-table tbody tr td {
+		border: 1px solid lightgray;
+	}
+
+	/* Fancytree extension 'columnview' */
+	table.fancytree-ext-columnview {
+		border-collapse: collapse;
+		width: 100%;
+	}
+	table.fancytree-ext-columnview tbody tr[0] {
+		height: 200px;
+	}
+</style>
+
+<!-- Add code to initialize the tree when the document is loaded: -->
+<script type="text/javascript">
+	$(function(){
+		<!-- Start_Exclude: This block is not part of the sample code -->
+		$("#switcher").themeswitcher({
+			jqueryuiversion: "1",
+			imgpath: "../lib/Super-Theme-Switcher/images/",
+			loadTheme: "Smoothness"
+		});
+		<!-- End_Exclude -->
+		// Attach the fancytree widget to an existing <div id="tree"> element
+		// and pass the tree options as an argument to the fancytree() function:
+		$("#tree").fancytree({
+			extensions: ["themeroller"],
+			checkbox: true,
+			source: [
+				{title: "Node 1"},
+				{title: "Node 2",
+					children: [{title: "Subnode 2.1"}, {title: "Subnode 2.2"}]
+					},
+				{title: "Node 3",
+					children: [{title: "Subnode 3.1"}, {title: "Subnode 3.2"}]
+					},
+				{title: "Node 4"}
+			]
+		});
+		$("#treetable").fancytree({
+			extensions: ["table", "themeroller"],
+			checkbox: true,
+			source: {
+				url: "ajax-tree-plain.json"
+			},
+			activate: function(event, data) {
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "ajax-sub2.json"}
+			},
+			renderColumns: function(event, data) {
+				var node = data.node,
+					$tdList = $(node.tr).find(">td");
+				$tdList.eq(1).text(node.key);
+				$tdList.eq(2).text(!!node.folder);
+			}
+		});
+		$("#columnview").fancytree({
+			extensions: ["columnview", "themeroller"],
+			checkbox: true,
+			source: {
+				url: "ajax-tree-plain.json"
+			},
+			activate: function(event, data) {
+			},
+			lazyLoad: function(event, data) {
+				data.result = {url: "ajax-sub2.json"}
+			}
+		});
+	});
+		</script>
+</head>
+<body class="example">
+	<h1>Example: 'themeroller' extension</h1>
+	<div class="description">
+		<p>
+			Allow to apply <a href="http://jqueryui.com/themeroller/" target="_blank">jQuery Themeroller</a>
+			styles.
+		</p>
+		<p>
+			<b>Status</b>: pre-alpha
+		</p>
+	</div>
+
+	<div>
+		<label for="switcher">Theme:</label> <div id="switcher"></div>
+		<!--
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+		-->
+	</div>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<p class="description">
+		Standard tree:
+	</p>
+	<div id="tree"></div>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<p class="description">
+		Table tree:
+	</p>
+	<table id="treetable">
+		<colgroup>
+		<col width="*"></col>
+		<col width="200px"></col>
+		<col width="100px"></col>
+		</colgroup>
+		<thead>
+			<tr> <th></th> <th>Key</th> <th>Folder</th> </tr>
+		</thead>
+		<tbody>
+			<tr> <td></td> <td></td> <td></td> </tr>
+		</tbody>
+	</table>
+
+	<!-- Add a <table> element where the tree should appear: -->
+	<p class="description">
+		Columnview tree:
+	</p>
+	<table id="columnview">
+		<colgroup>
+		<col width="300px"></col>
+		<col width="300px"></col>
+		<col width="300px"></col>
+		</colgroup>
+		<thead>
+			<tr> <th>1</th> <th>2</th> <th>3</th> </tr>
+		</thead>
+		<tbody>
+			<tr> <td>?</td> <td>?</td> <td>?</td> </tr>
+		</tbody>
+	</table>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree">jquery.fancytree.js project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>
