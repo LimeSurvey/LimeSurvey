@@ -231,12 +231,12 @@
             }
         }
 
-        if ( $fieldtype == 'email-inv' ||
-        $fieldtype == 'email-reg' ||
-        $fieldtype == 'email-conf'||
-        $fieldtype == 'email-admin-notification'||
-        $fieldtype == 'email-admin-resp'||
-        $fieldtype == 'email-rem' )
+        if ( $fieldtype == 'email-invitation' ||
+        $fieldtype == 'email-registration' ||
+        $fieldtype == 'email-confirmation'||
+        $fieldtype == 'email-admin_notification'||
+        $fieldtype == 'email-admin_detailed_notification'||
+        $fieldtype == 'email-reminder' )
         {
             $htmlformatoption = ",fullPage:true\n";
         }
