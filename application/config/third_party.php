@@ -268,6 +268,7 @@ return array(
             'Uri.js'
         ),
     ),
+
     'bootstrap-datetimepicker' => array(
         'basePath' => 'third_party.bootstrap-datetimepicker',
         'css' => array(
@@ -296,16 +297,6 @@ return array(
             'bootstrap',
             'moment'
         )
-    ),
-    
-    'fancytree' => array(
-        'basePath' => 'third_party.fancytree',
-        'js' => array(
-            'dist/jquery.fancytree-all.js'
-        ),
-        'css' => array(
-            'dist/skin-bootstrap-ls/ui.fancytree.css'
-        ),
     ),
 
     'jquery-datatable' => array(

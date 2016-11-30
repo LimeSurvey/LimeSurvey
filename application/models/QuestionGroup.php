@@ -15,9 +15,6 @@
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
-
-    private $sanitized_group_name;
-
     /**
     * Returns the static model of Settings table
     *
@@ -245,13 +242,6 @@ class QuestionGroup extends LSActiveRecord
         return $command->query();
     }
 
-    public function getQuestionsInGroup(){
-        $iGroupId = $this->gid;
-        $aQuestionIds = $this->getQuestionIdsInGroup($iGroupId);
-
-        return count($aQuestionIds);
-    }
-
     public function getbuttons()
     {
         // Find out if the survey is active to disable add-button
@@ -308,28 +298,6 @@ class QuestionGroup extends LSActiveRecord
     }
 
 
-    public function getGroupExplorerDatas($iSurveyID, $language )
-    {
-        $aGroups = self::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $language),array('order'=>'group_order ASC'));
-        if(count($aGroups))
-        {
-            foreach($aGroups as $group)
-            {
-                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$language, "parent_qid"=>'0'), array('order'=>'question_order ASC'));
-            }
-        }
-        return $aGroups;
-    }
-
-    public function getSanitized_group_name()
-    {
-        if(!isset($this->sanitized_group_name))
-        {
-            $this->sanitized_group_name = str_replace( '<br />', ' ', sanitize_html_string(strip_tags($this->group_name)));
-        }
-        return $this->sanitized_group_name;
-
-    }
 
     public function search()
     {

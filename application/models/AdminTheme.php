@@ -388,7 +388,6 @@ class AdminTheme extends CFormModel
             // Third party assets
             'third_party/jquery-tablesorter/tests/assets',
             'third_party/jquery-tablesorter/docs/assets',
-            'third_party/fancytree'
         );
     }
 
