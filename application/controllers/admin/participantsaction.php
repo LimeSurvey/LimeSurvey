@@ -169,16 +169,17 @@ class participantsaction extends Survey_Common_Action
         $this->checkPermission('export');
 
         Yii::app()->loadHelper('export');
+
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin','read')) {
             $iUserID = null;
-        } else {
+        }
+        else {
             $iUserID = Yii::app()->session['loginID'];
         }
         $aAttributeIDs=array_combine($aAttributeIDs,$aAttributeIDs);
-        $query = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
-        if (!$query)
+        $participants = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
+        if (!$participants)
             return false;
 
         // Field names in the first row
@@ -187,10 +188,8 @@ class participantsaction extends Survey_Common_Action
 
         $outputarray[0] = $fields; //fields written to output array
 
-        foreach ($aAttributeIDs as $value)
-        {
-            if ($value == 0)
-            {
+        foreach ($aAttributeIDs as $value) {
+            if ($value == 0) {
                 continue;
             }
             $fields[] = 'a'.$value;
@@ -200,9 +199,8 @@ class participantsaction extends Survey_Common_Action
 
         $fieldNeededKeys=array_fill_keys($fields, '');
         $fieldKeys = array_flip($fields);
-        foreach ($query as $field => $aData)
-        {
-            $outputarray[] = array_merge($fieldNeededKeys,array_intersect_key($aData, $fieldKeys));
+        foreach ($participants as $participantAsArray) {
+            $outputarray[] = array_merge($fieldNeededKeys,array_intersect_key($participantAsArray, $fieldKeys));
         }
         CPDBExport($outputarray, "central_" . time());
     }
