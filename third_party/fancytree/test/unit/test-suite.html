@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>QUnit Composite Test Suite</title>
+<!--
+	<link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+	<link rel="stylesheet" href="../../lib/qunit-composite.css">
+	<script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+	<script src="../../lib/qunit-composite.js"></script>
+-->
+	<link rel="stylesheet" href="../../lib/qunit.css">
+	<link rel="stylesheet" href="../../lib/qunit-composite.css">
+	<script src="../../lib/qunit.js"></script>
+	<script src="../../lib/qunit-composite.js"></script>
+
+	<script>
+		QUnit.testSuites("Core tests", [
+			{ name: "Local copy of jQuery", path: "test-core.html" }
+		]);
+		QUnit.testSuites("Extensions", [
+			{ name: "Table", path: "test-ext-table.html" },
+			{ name: "Misc. Extensions", path: "test-ext-misc.html" }
+		]);
+		QUnit.testSuites("CDN jQuery versions", [
+			{ name: "jQuery 1.latest, jQuery UI 1.latest", path: "test-jQuery-latest.html" },
+			{ name: "jQuery 3.0 beta, jQuery UI 1.latest", path: "test-jQuery-30.html" },
+			{ name: "jQuery 2.1, jQuery UI 1.latest", path: "test-jQuery-20.html" },
+			{ name: "jQuery 1.11+, jQuery UI 1.11+", path: "test-jQuery111-ui111.html" },
+			{ name: "jQuery 1.10+, jQuery UI 1.10+", path: "test-jQuery110-ui110.html" },
+			{ name: "jQuery 1.9+, jQuery UI 1.9+", path: "test-jQuery19-ui19.html" },
+			{ name: "jQuery 1.8, jQuery UI 1.8", path: "test-jQuery18-ui18.html" },
+			{ name: "jQuery 1.7, jQuery UI 1.8.6", path: "test-jQuery-legacy.html" }
+		]);
+		QUnit.testSuites("Misc", [
+			{ name: "Regression tests", path: "test-regression.html" },
+			{ name: "Benchmarks", path: "test-bench.html" },
+			{ name: "Last Build", path: "test-core-build.html" }
+		]);
+	</script>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">
+</div>
+</body>
+</html>

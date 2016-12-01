@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Test Case | Fancytree</title>
+
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+<!--
+	<script src="../lib/jquery.js" type="text/javascript"></script>
+	<script src="../lib/jquery-ui.custom.js" type="text/javascript"></script>
+-->
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css" class="skinswitcher">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="../demo/sample.css" rel="stylesheet" type="text/css">
+	<script src="../demo/sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<style type="text/css">
+ul.fancytree-container{
+	/*height: 150px;*/
+}
+</style>
+
+
+<script type="text/javascript">
+
+$(function(){
+	// Adjust skinswitcher for current folder layout
+	$("select#skinswitcher").skinswitcher("option", "base", "../src/");
+
+	// Initialize Fancytree
+	$("#tree").fancytree({
+		extensions: [],
+		source: [
+			{title: "pws ok", source: "ajax-pws-ok.json", lazy: true},
+			{title: "empty", source: "ajax-empty.json", lazy: true},
+			{title: "not found", source: "not_found.json", lazy: true},
+			{title: "parse error", source: "ajax-parse-error.json", lazy: true},
+			{title: "pws error", source: "ajax-pws-error.json", lazy: true},
+			{title: "sample.json", source: "ajax-sub2.json", lazy: true}
+		],
+		postProcess: function(event, data) {
+			/*
+			This example handles a custom return format for node data of this form:
+			{"status": "ok",
+			 "result": [ (... list of child nodes...) ] }.
+			Error conditions are passed like:
+			{"status": "error",
+			 "faultMsg": "Bad luck :-/"
+			 }
+			*/
+			var response = data.response;
+
+			if( response.status != null ) { // this line is only required, because this sample
+				if( response.status === "ok" ) {
+					data.result = response.result;
+				} else {
+					data.result = {
+						error: response.faultMsg
+					}
+				}
+			}
+		},
+		lazyLoad: function(event, data) {
+			data.node.debug("lazyLoad", data);
+			data.result = {url: data.node.data.source};
+		},
+		loadError: function(event, data) {
+			data.node.debug("loadError", data);
+			// return false;
+		}
+	});
+});
+</script>
+
+<script>
+$(function(){
+	addSampleButton({
+		label: "Remove",
+		newline: false,
+		code: function(){
+			var tree = $("#tree").fancytree("getTree"),
+				node = tree.getActiveNode();
+			// node = tree.getNodeByKey("node1");
+			node.remove();
+		}
+	});
+	addSampleButton({
+		label: "Add Child",
+		newline: false,
+		code: function(){
+			var node,
+				tree = $("#tree").fancytree("getTree");
+			tree.getActiveNode().addChildren({title: "new node" + new Date()});
+		}
+	});
+});
+</script>
+
+</head>
+
+<body class="example">
+	<h1>Testcase for issue #XXX</h1>
+
+	<div class="description">
+	</div>
+	<div>
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+	</div>
+	<hr>
+	<p id="sampleButtons">
+	</p>
+	<hr>
+	<div id="tree">
+	</div>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree/">Fancytree project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>

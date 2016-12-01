@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Test ITIS Webservice</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$("#btnJson1").click(function(e){
+		$.ajax({
+			url: "http://www.itis.gov/ITISWebService/jsonservice/getHierarchyDownFromTSN",
+			data: {
+				tsn: "0"
+			},
+			cache: true
+		}).done(function(response){
+			console.log("JSON response", response);
+		}).fail(function(){
+			console.log("JSON fault", arguments);
+		});
+	});
+	$("#btnJsonp1").click(function(e){
+		$.ajax({
+			url: "http://www.itis.gov/ITISWebService/jsonservice/getHierarchyDownFromTSN",
+			data: {
+				jsonp: "itis_data",
+				tsn: "0"
+			},
+			cache: true,
+			jsonpCallback: "itis_data",
+			dataType: "jsonp"
+		}).done(function(response){
+			console.log("JSONP response", response);
+		}).fail(function(){
+			console.log("JSONP fault", arguments);
+		});
+	});
+
+	$("#btnJson2").click(function(e){
+		$.ajax({
+			url: "http://www.itis.gov/ITISWebService/jsonservice/searchForAnyMatchPaged",
+			data: {
+				srchKey: "Zy",
+				pageSize: 10,
+				pageNum: 1,
+				ascend: false
+			},
+			cache: true
+		}).done(function(response){
+			console.log("JSON response", response);
+		}).fail(function(){
+			console.log("JSON fault", arguments);
+		});
+	});
+	$("#btnJsonp2").click(function(e){
+		$.ajax({
+			url: "http://www.itis.gov/ITISWebService/jsonservice/searchForAnyMatchPaged",
+			data: {
+				jsonp: "itis_data",
+				srchKey: "Zy",
+				pageSize: 10,
+				pageNum: 1,
+				ascend: false
+			},
+			cache: true,
+			jsonpCallback: "itis_data",
+			dataType: "jsonp"
+		}).done(function(response){
+			console.log("JSONP response", response);
+		}).fail(function(){
+			console.log("JSONP fault", arguments);
+		});
+	});
+});
+</script>
+</head>
+
+<body>
+	<div class="page-header">
+		<h1>test</h1>
+	</div>
+		<button id="btnJson1">JSON getHierarchyDownFromTSN</button>
+		<button id="btnJsonp1">JSONP getHierarchyDownFromTSN</button>
+		<button id="btnJson2">JSON searchForAnyMatchPaged</button>
+		<button id="btnJsonp2">JSONP searchForAnyMatchPaged</button>
+</body>
+</html>

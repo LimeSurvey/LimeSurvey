@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Test Keyboard - Fancytree</title>
+
+	<script src="//code.jquery.com/jquery-1.12.1.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+<style type="text/css">
+	/* custom alignment (set by 'renderColumns'' event) */
+	td.alignRight {
+	   text-align: right;
+	}
+	td input[type=input] {
+		width: 40px;
+	}
+</style>
+
+	<link href="../src/skin-win7/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.table.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.gridnav.js" type="text/javascript"></script>
+
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<link href="../lib/prettify.css" rel="stylesheet">
+	<script src="../lib/prettify.js" type="text/javascript"></script>
+	<link href="../demo/sample.css" rel="stylesheet" type="text/css">
+	<script src="../demo/sample.js" type="text/javascript"></script>
+	<!-- End_Exclude -->
+
+<script type="text/javascript">
+SOURCE = [
+	{title: "node 1", folder: true, expanded: true, children: [
+		{title: "node 1.1"},
+		{title: "node 1.2"}
+	 ]},
+	{title: "node 2", folder: true, expanded: false, children: [
+		{title: "node 2.1"},
+		{title: "node 2.2"}
+	 ]}
+];
+$(function(){
+
+	$("#plainTree").fancytree({
+		checkbox: true,
+//		aria: true,
+		source: SOURCE,
+		lazyLoad: function(event, data) {
+			data.result = {url: "../demo/ajax-sub2.json"};
+		}
+	});
+
+
+	$("#tableTree").fancytree({
+		extensions: ["table", "gridnav"],
+		checkbox: true,
+		table: {
+			indentation: 20,      // indent 20px per node level
+			nodeColumnIdx: 2,     // render the node title into the 2nd column
+			checkboxColumnIdx: 0  // render the checkboxes into the 1st column
+		},
+		gridnav: {
+			autofocusInput: false,   // focus first embedded input if node gets activated
+			handleCursorKeys: true,  // Allow UP/DOWN in inputs to move to prev/next node
+			// titlesTabbable: true     // Add all node titles to TAB chain
+		},
+		source: SOURCE,
+		titlesTabbable: true,     // Add all node titles to TAB chain
+		lazyLoad: function(event, data) {
+			data.result = {url: "../demo/ajax-sub2.json"};
+		},
+		renderColumns: function(event, data) {
+			var node = data.node,
+				$select = $("<select>"),
+				$tdList = $(node.tr).find(">td");
+			// (index #0 is rendered by fancytree by adding the checkbox)
+			$tdList.eq(1).text(node.getIndexHier()).addClass("alignRight");
+			// (index #2 is rendered by fancytree)
+			// $tdList.eq(3).text(node.key);
+			$tdList.eq(3).html("<input type='input' value='" + node.key + "'>");
+			$tdList.eq(4).html("<input type='input' value='" + node.key + "'>");
+			$tdList.eq(5).html("<input type='checkbox' value='" + node.key + "'>");
+			$tdList.eq(6).html("<input type='checkbox' value='" + node.key + "'>");
+			$("<option>", {text: "a", value: "a"}).appendTo($select);
+			$("<option>", {text: "b"}).appendTo($select);
+			$tdList.eq(7).html($select);
+		}
+	});
+
+
+	$("#inputTree").fancytree({
+		checkbox: true,
+		source: SOURCE,
+		lazyLoad: function(event, data) {
+			data.result = {url: "../demo/ajax-sub2.json"};
+		},
+		createNode: function(event, data) {
+			// add fake <input/> to the nodes
+			var $input = $("<input/>").val(data.node.title);
+
+			$("span.fancytree-title", data.node.span)
+				.append($input)
+				// .attr("tabindex", "0")
+				;
+		},
+		activate: function(event, data){
+			var node = data.node;
+
+			// Set focus to embedded input
+			$("span.fancytree-title :input", node.span).focus();
+		},
+		keydown: function(event, data){
+			var KC = $.ui.keyCode;
+
+			if( $(event.originalEvent.target).is(":input") ){
+
+				// When inside an input, let the control handle the keys
+				data.result = "preventNav";
+
+				// But do the tree navigation on Ctrl + NAV_KEY
+				switch( event.which ){
+					case KC.LEFT:
+					case KC.RIGHT:
+					case KC.BACKSPACE:
+					case KC.SPACE:
+						if( e.shiftKey ){
+							data.node.navigate(event.which);
+						}
+				}
+			}
+		}
+	}).on("focusin", function(event){
+		// Activate node when embedded input gets focus
+		var node = $.ui.fancytree.getNode(event);
+		if( node && !node.isActive() ){
+			node.setActive();
+		}
+	});
+});
+</script>
+</head>
+
+<body class="example">
+	<h1>Example: keyboard navigation</h1>
+<!--
+	<div class="description">
+		<p>
+			Render a tree as a table (aka 'treegrid').
+		</p>
+		<p>
+			<b>Status</b>: beta
+		</p>
+	</div>
+-->
+	<div>
+		<label for="skinswitcher">Skin:</label> <select id="skinswitcher"></select>
+	</div>
+
+	<!-- Plain Tree -->
+	<h1>Simple Tree</h1>
+	<ul>
+		<li>Behaves like a common listbox.</li>
+	</ul>
+
+	<div>
+		<label>Fake input:<input/></label>
+	</div>
+	<div>
+		<label for="lb1">Fake listbox:</label>
+		(Note that we can TAB over it without selecting or TAB on it and then
+		press DOWN to select. A selected item is dimmed on blur.)<br>
+		<select name="lb1" id="lb1" size="2" multiple="multiple">
+			<option value="a">a</option>
+			<option value="b">b</option>
+		</select>
+	</div>
+	<div id="plainTree"></div>
+
+	<h1>Table Tree</h1>
+	<ul>
+		<li>Try TAB and cursor keys to navigate the grid.</li>
+		<li>Node title is focusable, so we can TAB to a context where SPACE,
+			LEFT, BACK, '-', '+', ... work</li>
+		<li>Setting focus inside an input activates the node.</li>
+		<li>Note: tabbing from outside into the tree will now activate the
+			first node, (used to be the last active node).
+			Setting 'tabbable' only to the active node wouldn't help, because
+			the first row contains a tabbable input element anyway.</li>
+		<li>TODO: focusout is not reliably detected for the container
+			(should dimm active node in Win8 skin)</li>
+		<li>TODO?: gridnav currently assumes that cells contain only one embedded
+			:input</li>
+		<li>TODO: ext-gridnav could be dropped and merged into core and
+			ext-table instead</li>
+		<li>TODO: css should be modified to remove the system focus border from
+			node titles (currently theme dependant)</li>
+	</ul>
+
+	<div>
+		<label>Fake input:<input id="input1"/></label>
+	</div>
+	<table id="tableTree">
+		<colgroup>
+		<col width="30px"></col>
+		<col width="30px"></col>
+		<col width="250px"></col>
+		<col width="50px"></col>
+		<col width="50px"></col>
+		<col width="30px"></col>
+		<col width="30px"></col>
+		<col width="50px"></col>
+		</colgroup>
+		<thead>
+			<tr> <th></th> <th>#</th> <th></th> <th>Ed1</th> <th>Ed2</th> <th>Rb1</th> <th>Rb2</th> <th>Cb</th></tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+	<h1>Tree with embedded controls</h1>
+	<ul>
+		<li>Typical use case is passing 'input' tags as part of the title.</li>
+		<li>There may be many different constructs (one or more embedded controls,
+			inside of after title span, ...).
+			So we handle this with custom event handlers instead of built-in
+			magic.</li>
+		<li>The input controls can keep their own key handling because we return
+			`preventNav` in the `keydown` event.</li>
+		<li>Tree navigation is mapped to SHIFT + original_key by calling
+			`node.navigate()` in the `keydown` event.</li>
+		<li>We bind to `focusin` of embedded :input controls, so we can activate
+			the associated node. </li>
+		<li>on node `activate` we set focus to the embedded input.</li>
+		<li>TODO: css should be modified to remove the system focus border from
+			node titles (currently theme dependant)</li>
+	</ul>
+	<div>
+		<label>Fake input:<input id="input2"/></label>
+	</div>
+	<div id="inputTree"></div>
+
+	<div>
+		<label>Fake input:<input id="input3"/></label>
+	</div>
+	<!-- Start_Exclude: This block is not part of the sample code -->
+	<hr>
+	<p class="sample-links  no_code">
+		<a class="hideInsideFS" href="https://github.com/mar10/fancytree">jquery.fancytree.js project home</a>
+		<a class="hideOutsideFS" href="#">Link to this page</a>
+		<a class="hideInsideFS" href="index.html">Example Browser</a>
+		<a href="#" id="codeExample">View source code</a>
+	</p>
+	<pre id="sourceCode" class="prettyprint" style="display:none"></pre>
+	<!-- End_Exclude -->
+</body>
+</html>

@@ -1,0 +1,194 @@
+<div id="tmplDetails">
+	<div class="row">
+		<div class="col-md-6">
+			<dl>
+				<dt>Scientific Name</dt>
+					<dd>{{scientificName}}
+					{{#if synonym}} <span class="label label-info">Synonym</span> {{/if}}
+					</dd>
+				{{#if vernacularName}}
+				<dt>Vernacular Name</dt>
+					<dd>{{vernacularName}}</dd>
+				{{/if}}
+				<dt>Canonical Name</dt>
+					<dd>{{canonicalName}}</dd>
+				<dt>Taxonomic Status</dt>
+					<dd>{{taxonomicStatus}}</dd>
+				<dt>According to</dt>
+					<dd>{{accordingTo}}</dd>
+				<dt>Key</dt>
+					<dd>{{key}} (Nub: {{nubKey}})</dd>
+				<dt>Habitat</dt>
+					<dd>{{#if profile.marine}} Marine {{else}} Not marine {{/if}}</dd>
+				<dt>Synonym(s)</dt>
+					<dd>
+						<ul>
+							{{#each synonyms}}
+							<li>
+								<a href="#{{this.key}}">{{this.scientificName}}</a>
+							</li>
+							{{else}}
+							<li>n.a.</li>
+							{{/each}}
+						</ul>
+					</dd>
+			</dl>
+			</div>
+		<div class="col-md-6">
+			{{#if media}}
+			<h4>Media</h4>
+			<ul class="media-list">
+				{{#each media}}
+				<li class="media">
+					<div class="media-left">
+						<a href="{{this.identifier}}">
+						  <img class="media-object" src="{{this.identifier}}" alt="{{this.title}}">
+						</a>
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">{{this.title}}</h4>
+						{{this.description}}<br>
+						<small>
+							{{#if this.source}}Source: {{this.source}} {{/if}}
+							{{#if this.publisher}}, Publisher: {{this.publisher}} {{/if}}
+							{{#if this.license}}, License: {{this.license}} {{/if}}
+						</small>
+					</div>
+					{{/each}}
+				</li>
+			</ul>
+			{{else}}
+				No media available.
+			{{/if}}
+<!--
+			{{#if media}}
+				<div class="row">
+				{{#each media}}
+					<div class="col-xs-12 col-md-6 col-lg-3">
+						<a href="{{this.identifier}}" class="thumbnail" target="_blank">
+							<img src="{{this.identifier}}" alt="{{this.title}}" />
+							<div class="caption">
+								<small> {{this.title}} </small>
+							</div>
+						</a>
+					</div>
+				{{/each}}
+				</div>
+			{{else}}
+				No media.
+			{{/if}}
+ -->
+		</div>
+	</div>
+
+<!--
+	<h4>Media</h4>
+
+	{{#if media}}
+	<div class="media">
+		{{#each media}}
+		<div class="media-left">
+			<a class="pull-left" href="{{this.identifier}}" target="_blank">
+			  <img class="media-object" src="{{this.identifier}}" alt="{{this.title}}">
+			</a>
+		</div>
+		<div class="media-body">
+			<h4 class="media-heading">{{this.title}}</h4>
+			{{this.title}}
+		</div>
+		{{/each}}
+	</div>
+	{{else}}
+		No media available.
+	{{/if}}
+
+ -->
+	<h4>Description</h4>
+
+	{{#if descriptions}}
+	<!--
+		<ul>
+			{{#each descriptions}}
+				<li>
+					<a tabindex="0" role="button"
+						data-toggle="popover" data-trigger="focus" data-placement="top"
+						title="{{this.type}} {{this.source}}"
+						data-content="{{this.description}}">
+						{{this.type}} {{this.source}}
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+	-->
+		<ul class="nav nav-pills">
+			{{#each descriptionsByLang}}
+				<!-- Nav tabs -->
+				<li role="presentation" {{#if @first}}class="active"{{/if}}>
+					<a href="#tabDesc{{@key}}" aria-controls="tabDesc{{@key}}" role="tab" data-toggle="tab">
+						{{@key}}
+						<span class="badge">{{this.length}}</span>
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+		<!-- Tab panes -->
+		<div class="tab-content">
+			{{#each descriptionsByLang}}
+				<div role="tabpanel" class="tab-pane pane panel panel-default {{#if @first}}active{{/if}}"
+					id="tabDesc{{@key}}">
+
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+					{{#each this}}
+					  <div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="heading{{@../key}}{{@index}}">
+						  <h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion"
+							  href="#collapse{{@../key}}{{@index}}" aria-controls="collapse{{@../key}}{{@index}}"
+							  aria-expanded="{{#if @first}}true{{else}}false{{/if}}" >
+							  {{this.type}} <small>({{this.source}})</small>
+							</a>
+						  </h4>
+						</div>
+						<div id="collapse{{@../key}}{{@index}}"
+						  class="panel-collapse collapse {{#if @first}}in{{/if}}"
+						  role="tabpanel" aria-labelledby="heading{{@../key}}{{@index}}">
+						  <div class="panel-body">
+							{{this.description}}
+						  </div>
+						</div>
+					  </div>
+					{{/each}}
+					</div>
+				</div>
+			{{/each}}
+		</div>
+<!--
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+		{{#each descriptions}}
+		  <div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="heading{{@index}}">
+			  <h4 class="panel-title">
+				<a role="button" data-toggle="collapse" data-parent="#accordion"
+				  href="#collapse{{@index}}" aria-controls="collapse{{@index}}"
+				  aria-expanded="{{#if @first}}true{{else}}false{{/if}}" >
+				  <span class="badge">{{this.language}}</span> {{this.type}} <small>({{this.source}})</small>
+				</a>
+			  </h4>
+			</div>
+			<div id="collapse{{@index}}"
+			  class="panel-collapse collapse {{#if @first}}in{{/if}}"
+			  role="tabpanel" aria-labelledby="heading{{@index}}">
+			  <div class="panel-body">
+				{{this.description}}
+			  </div>
+			</div>
+		  </div>
+		{{/each}}
+		</div>
+-->
+	{{else}}
+		No description available.
+	{{/if}}
+</div>

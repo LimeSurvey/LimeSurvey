@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+	<script src="//code.jquery.com/jquery-1.12.1.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+
+	<link href="../src/skin-win8/ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="../src/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="../src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+
+	<style type="text/css" media="screen,print">
+		body,div,h5,h4,h3,h2,h1,p { margin: 0; padding: 0; }
+		body { padding: 1%; font-family: lucidiagrande, helvetica; }
+		h1,h2,h3,h4,h5 { margin: 1% 0; }
+		.column { display: inline-block; width: 45%; margin: 1%; padding: 1%; vertical-align: top; border: 1px solid gray; }
+		.selected { background-color: #ffff50; outline: 2px solid #008; }
+		#sortablelist2 { list-style-type: none; list-style-image; none; margin-left: 0; display: inline; }
+		#sortablelist2 li { margin-left: 0; display: inline; }
+
+	/* Only for the TODO list */
+
+	li.done {
+		text-decoration: line-through;
+		color: gray;
+	}
+
+	/* Current CSS would scale embedded images to 16x16 */
+
+	.fancytree-container img {
+		height: 50px;
+		width: inherit;
+	}
+
+	/* Current Win8 theme would style 'active' in nearly the same color as 'selected' */
+
+	span.fancytree-node.fancytree-active,
+	span.fancytree-node.fancytree-active:hover {
+		background-color: inherit;
+		outline: 1px solid #DEDEDE;
+	}
+	.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-active,
+	.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-active:hover {
+		background-color: inherit;
+		outline: 1px solid #26A0DA;
+	}
+	span.fancytree-node.fancytree-selected,
+	span.fancytree-node.fancytree-selected:hover {
+		background-color: #F7F7F7;
+		border-color: #DEDEDE;
+	}
+	.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-selected,
+	.fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-selected:hover {
+		background-color: #CBE8F6;
+		border-color: #26A0DA;
+	}
+	</style>
+
+	<script type="text/javascript" charset="utf-8">
+
+		function getDropSourceList(sourceNode, mode){
+			var res = [];
+			if ( !sourceNode ) {
+				return res;
+			}
+			if( sourceNode.isSelected() ){
+				res = sourceNode.tree.getSelectedNodes();
+				if( mode === "after" ){
+	//	            res.reverse();
+				}
+			} else {
+				res = [ sourceNode ];
+			}
+			return res;
+		}
+
+
+		$(document).ready(function(){
+
+			// fancytree on left
+			$("#fancytree").fancytree({
+				extensions: ["dnd"],
+				source: [
+						 {title: "Folder1", folder: true },
+						 {title: "Folder2", folder: true },
+						 {title: "Folder3", folder: true },
+						 {title: "Lazy1", folder: true, lazy: true }
+						 ],
+//				checkbox: true,
+//				icon: false,
+//                activeVisible: true,
+				dnd: {
+					preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+					preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+					autoExpandMS: 400,
+					dragStart: function(node, data) {
+						// Only allow dragging items, but not folders
+						return !node.folder;
+					},
+					dragEnter: function(node, data) {
+						// Dropping over a folder will always create children,
+						// but we never create children of items
+						return node.folder ? ["over"] : ["before", "after"];
+					},
+					dragDrop: function(node, data) {
+						var newNode, srcNodes;
+						if(data.otherNode){
+							srcNodes = getDropSourceList(data.otherNode);
+							if( node.tree === data.otherNode.tree ) {
+								// moving inside this tree -> sorting
+								for(i = 0; i < srcNodes.length; i++){
+									srcNodes[i].moveTo(node, data.hitMode);
+								}
+							}else{
+								// inter-tree drag&drop
+								for(i = 0; i < srcNodes.length; i++){
+									newNode = srcNodes[i].copyTo(node, data.hitMode, function(n){
+//                                      n.title = "Copy of " + n.title;
+										n.selected = false;
+										n.icon = false;
+									});
+								}
+							}
+						}else{
+							// dropped a standard draggable (not a tree node)
+							var title = ui.helper.html();
+							newNode = node.addNode({title: title}, data.hitMode);
+						}
+						// If we dropped s.th. on a folder, expand it
+						if( newNode && data.hitMode === "over" ) {
+//							node.setExpanded();
+							newNode.setActive();
+						}
+					}
+				},
+				activate: function(event, data) {
+	//				alert("activate " + data.node);
+				},
+				lazyLoad: function(event, data) {
+//                    data.result = {url: "fancytree-master/demo/ajax-sub2.json"}
+					data.result = {url: "unit/ajax-sub2.json"}
+				}
+			});
+
+			/* Fancytree oin the right, simulating a list */
+
+			$("#fancytree2").fancytree({
+				extensions: ["dnd"],
+				selectMode: 2, // multi-select
+				icon: false,
+//                source: "#sourceItems",
+				dnd: {
+					preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+					dragStart: function(node, data) {
+						return true;
+					},
+					dragEnter: function(node, data) {
+						if ( data.otherNode /*&& data.otherNode.tree === node.tree*/ ) {
+							return ["before", "after"];
+						} else{
+							return false;
+						}
+					},
+					dragDrop: function(node, data) {
+						var srcNodes;
+						if(data.otherNode){
+							srcNodes = getDropSourceList(data.otherNode);
+							for(i = srcNodes.length - 1; i >= 0; i--){
+								srcNodes[i].moveTo(node, data.hitMode);
+							}
+//							data.otherNode.moveTo(node, data.hitMode);
+						}
+					}
+				},
+				click: function(event, data) {
+					// Tree is in multiselect mode, so we have to handle
+					// deselecting ourselves
+					var anchor, idx, inc,
+						tree = data.tree,
+						node = data.node;
+
+					if ( event.shiftKey ) {
+						// Select contigous region (only inside a common parent)
+						tree.visit(function(n){
+							n.setSelected(false);
+						});
+						node.setSelected();
+
+						anchor = tree.getActiveNode();
+						if( anchor && anchor.parent === node.parent ) {
+							// select range up to active node (only if within common parent)
+							idx = anchor.getIndex();
+							inc = ( idx <= node.getIndex() ) ? +1 : -1;
+							do{
+								anchor.setSelected();
+								idx += inc;
+								anchor = node.parent.children[idx];
+							} while ( anchor && anchor !== node );
+						}
+					} else if ( event.ctrlKey || event.altKey || event.metaKey ) {
+						node.toggleSelected();
+					} else {
+						data.tree.visit(function(n){
+							n.setSelected(false);
+						});
+						data.node.setSelected();
+					}
+				},
+				activate: function(event, data) {
+					//              alert("activate " + data.node);
+				}
+			});
+
+
+			$("#sortablelist2 li").draggable({
+				revert: "invalid",
+				connectToFancytree: true,
+				cursorAt: { top: -5, left: -5 },
+				helper: "clone"
+			});
+
+/*
+			$("#sortablelist2").sortable({
+//				revert: true
+//				cursorAt: { top: -5, left: -5 }
+//				helper: "clone"
+			});
+*/
+			// click event for the highlighting of line items, filtered by modifier key
+			$("#sortablelist2 li").click(function(event){
+				var ctrl = event.ctrlKey || event.altKey || event.metaKey;
+				if (ctrl) {
+					//$("#sortablelist").sortable("option", "helper", 'clone');
+					$(this).toggleClass('selected');
+				} else {
+					$("#sortablelist2 li").removeClass('selected');
+					$(this).addClass('selected');
+				}
+			});
+
+		});
+
+	</script>
+</head>
+<body>
+
+<h2>Fancytree Drag &amp; Drop - Advanced Example</h2>
+
+<div class="column">
+	<h3>Fancytree</h3>
+	<div id="fancytree"></div>
+</div>
+
+<div class="column">
+	<h3>Source List (realized as tree)</h3>
+	<div id="fancytree2">
+
+	<ul id="sourceItems">
+		<li><img src="http://24.media.tumblr.com/99157be93c9dcd2b69dcb5968577d72c/tumblr_mnw347ZXUP1r83y3do1_250.jpg" height="50"> Bugatti Atlantic</li>
+		<li><img src="http://25.media.tumblr.com/0edbf543510b5ad91d6eb3584f3e48c9/tumblr_mnbokkaAHL1r2szepo1_250.jpg" height="50"> Porsche 911 (w/girl)</li>
+		<li><img src="http://25.media.tumblr.com/7fa5fe7abcf9cceafa1f3fbc5ea6751e/tumblr_mmhjvbFYfc1qzleu4o1_250.jpg" height="50"> Lamborghini Miura</li>
+		<li><img src="http://24.media.tumblr.com/86172205e20353fe369f66986ee8f67e/tumblr_mnufj449bY1sseamio1_250.jpg" height="100"> Item 4</li>
+		<li><img src="http://25.media.tumblr.com/14bbabd6fdbcd0208ad77bcc435b6c5d/tumblr_mnbpfmnRrT1rgzuyso8_250.jpg" height="100"> Item 5</li>
+	</ul>
+	</div>
+</div>
+
+
+<h4>Photo Gallery List - &lt;ul> list as standard jQuery Draggable (but not Sortable)</h4>
+<ul id="sortablelist2" class="sortablelist">
+	<li><img src="http://24.media.tumblr.com/99157be93c9dcd2b69dcb5968577d72c/tumblr_mnw347ZXUP1r83y3do1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/06312c3198ed1b0d85f8f2f1620cae1d/tumblr_mnw347ZXUP1r83y3do2_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/bb105bd6e9623476f0be2f40db2eb170/tumblr_mij3dtodG21r0zreto1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/tumblr_lol5ruap5f1qilaalo1_250.png" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/0edbf543510b5ad91d6eb3584f3e48c9/tumblr_mnbokkaAHL1r2szepo1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/d84c049e074b59ec12e50c2c9598a8aa/tumblr_mnxh31gA6c1qm6egko1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/8881052c0c630915a6f6cfb9a6c379c4/tumblr_mntktonwtd1s5d86co1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/27febde8cd26656115970904f8dc8057/tumblr_mnmn0gIl9W1sshgazo1_250.jpg" height="100"></li>
+	<li><img src="http://24.media.tumblr.com/86172205e20353fe369f66986ee8f67e/tumblr_mnufj449bY1sseamio1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/7fa5fe7abcf9cceafa1f3fbc5ea6751e/tumblr_mmhjvbFYfc1qzleu4o1_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/e2f22d7ffc546dc7c4ca174ec77a3ccf/tumblr_mnbpfmnRrT1rgzuyso3_250.jpg" height="100"></li>
+	<li><img src="http://25.media.tumblr.com/14bbabd6fdbcd0208ad77bcc435b6c5d/tumblr_mnbpfmnRrT1rgzuyso8_250.jpg" height="100"></li>
+</ul>
+
+
+<h4>Requirements, Questions, and Todos</h4>
+<ul>
+	<li>Question: are nodes moved or copied from right to left?<br>
+		Should it be possible to drag from left to right?<br>
+		Should the left tree also support multi-select?
+	<li>Question: any objections to add this sample to the public repository?
+	<li class="done">Images inside nodes are scaled to 16x16
+	<li class="done">Native cross-tree copyTo
+	<li class="done">Native cross-tree moveTo
+	<li class="done">Non-contiguous multi-select of sortable list items using modifier key (Ctrl/Opt)
+	<li class="done">[Req] Click one Sortable list item to highlight it, then Shift Click another
+		item to select multiple contiguous items in Sortable list [like your OS does]
+	<li class="done">[Req] Test with lazy nodes and auto-expand
+	<li class="done">[R]Drag &amp; Drop reorder of single list items
+	<li>[Req] Drag &amp; Drop reorder of Sortable list items (multi selected) with Ajax update<br>
+		Question: what does 'with Ajax update' mean?
+	<li>[Req] Drag &amp; Drop single or multiple selected Sortable list items and
+		drop them on to the Fancy tree where they belong (including lazy-loading)<br>
+		Question: what does 'including lazy-loading' mean?
+	<li class="done">Add Fancytree-like D&D target icons to Sortable list sorts
+		so they look the same as Fancytree sorts & drops
+	<li>Native support for multi-node DnD (includes multi-node helper image) (currently implemented using the std. callbacks)<br>
+		Also sometimes the order is reverted.
+	<li class="done">Drop target marker should consider the real node height
+	<li>Native support for multi select with Click + SHIFT and CTRL (currently implemented using the std. callbacks)<br>
+		Also, Click + Shift could allow to extend a current range.
+	<li>Optimize CSS for better disambiguation of 'Selcted' vs. 'Active' nodes
+	<li>Dragging a Draggable over the right tree does not revert, although invalid
+</ul>
+
+
+</body>
+</html>

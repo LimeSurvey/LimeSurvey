@@ -20,6 +20,10 @@ class Question extends LSActiveRecord
     // Stock the active group_name for questions list filtering
     public $group_name;
 
+    private $ellipsized_question=null;
+    private $sanitized_question=null;
+    private $sanitized_title = null;
+
     /**
     * Returns the static model of Settings table
     *
@@ -28,6 +32,7 @@ class Question extends LSActiveRecord
     * @param string $class
     * @return CActiveRecord
     */
+
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
@@ -802,6 +807,7 @@ class Question extends LSActiveRecord
         return $ansresult;
     }
 
+
     public function getMandatoryIcon()
     {
         if ($this->type != "X"  && $this->type != "|")
@@ -828,39 +834,32 @@ class Question extends LSActiveRecord
         }
         return $sIcon;
     }
-
-    /**
-     * Get an new title/code for a question
-     * @param integer|string $index base for question code (exemple : inde of question when survey import)
-     * @return string|null : new title, null if impossible
-     */
-    public function getNewTitle($index=0)
+    public function getEllipsized_question($length = 60)
     {
-        $sOldTitle=$this->title;
-        if($this->validate(array('title'))){
-            return $sOldTitle;
-        }
-        /* Maybe it's an old invalid title : try to fix it */
-        $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
-        if (is_numeric(substr($sNewTitle,0,1)))
+        if(!isset($this->ellipsized_question) )
         {
-            $sNewTitle='q' . $sNewTitle;
+            $this->ellipsized_question = viewHelper::flatEllipsizeText($this->getSanitized_question(),true,$length,'[...]',0.5);
         }
-        /* Maybe there are another question with same title try to fix it 10 times */
-        $attempts = 0;
-        while (!$this->validate(array('title')))
+        return $this->ellipsized_question;
+    }
+
+    public function getSanitized_question()
+    {
+        if(!isset($this->sanitized_question))
         {
-            $rand = mt_rand(0, 1024);
-            $sNewTitle= 'q' . $index.'r' . $rand ;
-            $this->title = $sNewTitle;
-            $attempts++;
-            if ($attempts > 10)
-            {
-                $this->addError('title', 'Failed to resolve question code problems after 10 attempts.');
-                return null;
-            }
+            $this->sanitized_question = str_replace( '<br />', ' ', sanitize_html_string(strip_tags($this->question)));            
         }
-        return $sNewTitle;
+        return $this->sanitized_question;
+
+    }
+
+    public function getSanitized_title()
+    {
+        if(!isset($this->sanitized_title))
+        {
+            $this->sanitized_title = sanitize_html_string(strip_tags($this->title));
+        }
+        return $this->sanitized_title;
     }
 
     public function search()

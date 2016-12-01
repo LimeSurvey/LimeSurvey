@@ -25,9 +25,9 @@ class limereplacementfields extends Survey_Common_Action
         {
             throw new CHttpException(401);
         }
-        list($replacementFields, $isInstertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
+        list($replacementFields, $isInsertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
 
-        if ($isInstertAnswerEnabled === true)
+        if ($isInsertAnswerEnabled === true)
         {
             //2: Get all other questions that occur before this question that are pre-determined answer types
             $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
@@ -132,7 +132,7 @@ class limereplacementfields extends Survey_Common_Action
                    return false;
                 }
                 return true;
-            case 'emailtemplates':
+            case 'editemailtemplates':
                 // this is the case for email-conf
                 return true;
             default:

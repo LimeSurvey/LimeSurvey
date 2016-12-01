@@ -155,7 +155,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label"  for='googleanalyticsapikey'><?php eT("Google Analytics API key:"); ?></label>
+        <label class="col-sm-2 control-label"  for='googleanalyticsapikey'><?php eT("Google Analytics Tracking ID:"); ?></label>
             <div class="col-sm-3">
                 <input class="form-control"  type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey' value="<?php echo htmlspecialchars(getGlobalSetting('googleanalyticsapikey')); ?>" />
         </div>

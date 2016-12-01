@@ -2286,7 +2286,7 @@ Changes from 2.06+ (build 150911) to 2.06+ (build 150930) Sept 30, 2015
 -Fixed issue #9906: Invalid survey is set finished in response table with index complete (Denis Chenu)
 -Fixed issue #9907: Invitations can not be sent before the start date of the tokens / inappropriate error message (Denis Chenu)
 -Fixed issue #9917: Error when updating a label set name containing a simple quote (Denis Chenu)
--Fixed issue #9919: LSRC2 export return partial answer if langage code is invalid (Denis Chenu)
+-Fixed issue #9919: LSRC2 export return partial answer if language code is invalid (Denis Chenu)
 -Fixed issue: Google Analytics code not running (Joao C Costa)
 -Fixed issue: PHP notice in Expression manager and public with Bad exclusive option with exclude auto (Denis Chenu)
 -Updated feature: New LDAP authentication option (Alfredo Esteban)
@@ -3149,7 +3149,7 @@ Changes from 1.92+ (build 120405) to 1.92+ (build 120412) April 12, 2012
 -Fixed issue #5992: After upgrade to Version 1.92+ Build 120405 the uploaded file information gets corrupted. (Thomas White)
 -Fixed issue #6002: @@SURVEYURL@@ placeholder fails to translate (Thomas White)
 -Fixed issue #5976: Iterate survey sets all "uses_left" to "1" even if there has been set a larger number previously (Carsten Schmitz)
--Fixed issue #5997 : upload windows are on default survey langage (Denis Chenu)
+-Fixed issue #5997 : upload windows are on default survey language (Denis Chenu)
 -Fixed issue: Bad HTML in editgroup(Denis Chenu)
 -Fixed issue: Mssqlnative driver gives back weird date format in export (Carsten Schmitz)
 -Fixed issue: With certain Apache configurations then em_javascript.js file was not readable (Carsten Schmitz)
@@ -3178,7 +3178,7 @@ Changes from 1.92+ (build 120325) to 1.92+ (build 120330) Mar 30, 2012
 -Fixed issue #5957: Cannot check integrity database (Carsten Schmitz)
 -Fixed issue #5962: View Response details does not work correctly if responses are filtered (Carsten Schmitz)
 -Fixed issue: Certain French characters garbled in statistics display and other areas (Carsten Schmitz)
--Fixed issue: Error if s_lang are not in survey langage (Denis Chenu)
+-Fixed issue: Error if s_lang are not in survey language (Denis Chenu)
 -Fixed issue: When trying to export to application then not all fields are shown (Carsten Schmitz)
 
 Changes from 1.92+ (build 120324) to 1.92+ (build 120325) Mar 23, 2012
