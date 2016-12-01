@@ -160,11 +160,12 @@ class participantsaction extends Survey_Common_Action
     /**
      * Export to csv using optional search/filter
      *
+     * @todo Return value never checked?
      * @param type $search  CDCriteria?
      * @paran mixed $mAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes
-     * @return false|null
+     * @return boolean
      */
-    private function csvExport($search = null, $aAttributeIDs=null)
+    private function csvExport($search = null, $aAttributeIDs = null)
     {
         $this->checkPermission('export');
 
@@ -179,8 +180,10 @@ class participantsaction extends Survey_Common_Action
         }
         $aAttributeIDs=array_combine($aAttributeIDs,$aAttributeIDs);
         $participants = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
-        if (!$participants)
+
+        if (empty($participants)) {
             return false;
+        }
 
         // Field names in the first row
         $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
@@ -203,6 +206,8 @@ class participantsaction extends Survey_Common_Action
             $outputarray[] = array_merge($fieldNeededKeys,array_intersect_key($participantAsArray, $fieldKeys));
         }
         CPDBExport($outputarray, "central_" . time());
+
+        return true;
     }
 
     /**
