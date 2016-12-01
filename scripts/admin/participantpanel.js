@@ -1,6 +1,22 @@
 //Namespacing all Methods of the participant panel in one JS-Prototype
 LS = LS || {};
 LS.CPDB = (function() {
+
+    /**
+     * Returns 'all' if no participant is selected, otherwise 'selected'
+     * @private
+     * @return string
+     */
+    function getAllOrSelected() {
+        var nrOfChecked = $('.selector_participantCheckbox:checked, #action_toggleAllParticipant:checked').length;
+        if (nrOfChecked == 0) {
+            return 'all';
+        }
+        else {
+            return 'selected';
+        }
+    }
+
     var
 
     // Basic modal used by all submethods
@@ -436,6 +452,50 @@ LS.CPDB = (function() {
     },
 
     /**
+     * Run when user clicks massive action -> delete
+     * @return
+     */
+    deleteParticipant = function(url) {
+
+        var data = {};
+
+        // Delete-option
+        var selectedOption = $('#delete-participant-select-option').val();
+        data['selectedoption'] = selectedOption;
+
+        data['allOrSelected'] = getAllOrSelected();
+
+        if (getAllOrSelected() == 'all') {
+            // Fetch all filters, used by CDataProvider
+            var inputs = $('#list_central_participants .filters input, #list_central_participants .filters select');
+            for (var i = 0; i < inputs.length; i++) {
+                data[inputs[i].name] = $(inputs[i]).val();
+            }
+        }
+        else {
+            var ids = $('input[name="selectedParticipant[]"]:checked').serializeArray();
+            data['selectedIds'] = '';
+            for (var i = 0; i < ids.length; i++) {
+                data['selectedIds'] += ids[i].value + ',';
+            }
+        }
+
+        console.log(data);
+
+        LS.ajax({
+            url: url,
+            data: data,
+            method: 'POST',
+            success: function(result) {
+                $.fn.yiiGridView.update('list_central_participants',{});
+            },
+            error : function() {
+                console.log(arguments);
+            }
+        });
+    },
+
+    /**
      * Bind all JS functions to button clicks
      * @return
      */
@@ -463,6 +523,7 @@ LS.CPDB = (function() {
         bindButtons: bindButtons,
         shareMassiveAction: shareMassiveAction,
         addParticipantToSurvey: addParticipantToSurvey,
+        deleteParticipant: deleteParticipant,
         deleteSingleParticipantShare: deleteSingleParticipantShare
     };
 

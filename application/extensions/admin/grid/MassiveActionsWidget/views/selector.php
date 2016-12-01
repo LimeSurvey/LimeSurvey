@@ -49,6 +49,7 @@
                         data-action="<?php echo $aAction['action'];?>"
                         data-type="<?php echo $aAction['actionType']; //Direct action, or modal ?>"
                         data-grid-reload="<?php if(isset($aAction['grid-reload'])){echo $aAction['grid-reload'];}else{echo "no";}?>"
+                        data-allow-no-selected="<?php echo (isset($aAction['allow-no-selected']) ? $aAction['allow-no-selected'] : "no"); ?>"
 
                         <?php
                             /**

@@ -23,9 +23,13 @@ $(document).on('click', '.listActions a', function ()
     var $gridid        = $('.listActions').data('grid-id');
     var $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
-    var actionType = $that.data('actionType');
+    var actionType     = $that.data('actionType');
 
-    if( $oCheckedItems == '[]' ) {
+    // Set to 'yes' if you want to activate action even if no box is selected 
+    // (used in CPDB for 'all' action + pagination + advanced filter).
+    var allowNoSelected  = $that.data('allow-no-selected');
+
+    if( $oCheckedItems == '[]' && allowNoSelected == 'no') {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
         $('#error-first-select').modal();

@@ -1,6 +1,81 @@
 <!-- Rendering massive action widget -->
+<div class="col-sm-4 pull-left dropup listActions">
+    <!-- Drop Up button selector -->
+    <button class='btn btn-default dropdown-toggle' id='massive-action-dropdown-selector' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+    <span id='massive-action-dropdown-selector-text'><?php eT('All participant(s)'); ?></span>
+        <span class='caret'></span>
+    </button>
+
+    <!-- List of actions -->
+    <ul class='dropdown-menu listActions'>
+
+        <!-- Header -->
+        <li class='dropdown-header'></li>
+
+        <!-- Delete -->
+        <li>
+            <a href='#' data-toggle='modal' data-target='#myModal'>
+                <span class='text-danger glyphicon glyphicon-trash'></span>
+                <?php eT('Delete'); ?>
+            </a>
+        </li>
+
+        <li role='separator' class='divider'></li>
+
+        <li>
+            <a href='#'>
+                <span class='icon-exportcsv'></span>
+                <?php eT('Export'); ?>
+            </a>
+        </li>
+        <li>
+            <a href='#'>
+                <span class='fa fa-share'></span>
+                <?php eT('Share'); ?>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <span class='fa fa-user-plus'></span>
+                <?php eT('Add participants to survey'); ?>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- Modal for delete -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><?php eT('Delete one or more participants...'); ?></h4>
+            </div>
+            <div class="modal-body">
+                <p><?php eT('Please choose one option.'); ?> </p>
+                <select id='delete-participant-select-option' class="form-control post-value">
+                    <option value="po" selected><?php eT("Delete only from the central panel"); ?></option>
+                    <option value="pt"><?php eT("Delete from the central panel and associated surveys"); ?></option>
+                    <option value="ptta"><?php eT("Delete from central panel, associated surveys and all associated responses"); ?></option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <a 
+                    onclick='LS.CPDB.deleteParticipant("<?php echo App()->createUrl('/admin/participants/sa/deleteParticipant/'); ?>");'
+                    class="btn btn-ok btn-danger"
+                    data-dismiss='modal'
+                >
+                    <span class="fa fa-trash"></span>&nbsp;<?php eT('Delete'); ?>
+                </a>
+                <a class="btn btn-default" data-dismiss="modal"><?php eT('Cancel'); ?></a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
 
+/*
 $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
     'pk'          => 'selectedParticipant',
     'gridid'      => 'list_central_participants',
@@ -17,6 +92,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'iconClasses' => 'text-danger glyphicon glyphicon-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
+            'allow-no-selected' => 'yes',
             'on-success'  => "(function(result) { LS.ajaxHelperOnSuccess(result); })",
 
             // Modal
@@ -82,5 +158,6 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
         )
     )
 ));
+ */
 
 ?>

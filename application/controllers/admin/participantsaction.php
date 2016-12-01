@@ -370,16 +370,35 @@ class participantsaction extends Survey_Common_Action
             ls\ajax\AjaxHelper::outputNoPermission();
         }
 
+        // What to delete (token, answers, ...)
         $selectoption = Yii::app()->request->getPost('selectedoption');
 
-        // First for delete one, second for massive action
+        // Single delete
         $participantId = Yii::app()->request->getPost('participant_id');
-        $participantIds = json_decode(Yii::app()->request->getPost('sItems'), true);
 
-        if (empty($participantIds)) {
+        // Massive action can be either delete all in current filter or only checked rows
+        $allOrSelected = Yii::app()->request->getPost('allOrSelected');
+        Yii::log(print_r($allOrSelected, true), CLogger::LEVEL_TRACE, 'debug');
+
+        // No single delete? Check filter or selected checkboxes
+        if (empty($participantId)) {
+
+            if ($allOrSelected == 'all') {
+                $p = new Participant();
+                $p->setAttributes(Yii::app()->request->getPost('Participant'));
+                $dataProvider = $p->search();
+                $dataProvider->setPagination(false);
+                $participantIds = $dataProvider->getKeys();
+            }
+            else {
+                $participantIds = Yii::app()->request->getPost('selectedIds');
+            }
+        }
+        else {
             $participantIds = $participantId;
         }
 
+        // Collapse into comma-separated list
         if (is_array($participantIds)) {
             $participantIds = join($participantIds, ',');
         }
