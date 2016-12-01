@@ -377,13 +377,12 @@ class participantsaction extends Survey_Common_Action
         $participantId = Yii::app()->request->getPost('participant_id');
 
         // Massive action can be either delete all in current filter or only checked rows
-        $allOrSelected = Yii::app()->request->getPost('allOrSelected');
-        Yii::log(print_r($allOrSelected, true), CLogger::LEVEL_TRACE, 'debug');
+        $filteredOrSelected = Yii::app()->request->getPost('filteredOrSelected');
 
         // No single delete? Check filter or selected checkboxes
         if (empty($participantId)) {
 
-            if ($allOrSelected == 'all') {
+            if ($filteredOrSelected == 'filtered') {
                 $p = new Participant();
                 $p->setAttributes(Yii::app()->request->getPost('Participant'));
                 $dataProvider = $p->search();
@@ -1085,6 +1084,8 @@ class participantsaction extends Survey_Common_Action
     public function exporttocsv()
     {
         $this->checkPermission('export');
+
+        $filteredOrSelected = Yii::app()->request->getPost('filteredOrSelected');
 
         if (Yii::app()->request->getPost('searchcondition','') !== '') // if there is a search condition then only the participants that match the search criteria are counted
         {

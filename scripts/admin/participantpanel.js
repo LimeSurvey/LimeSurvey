@@ -3,14 +3,14 @@ LS = LS || {};
 LS.CPDB = (function() {
 
     /**
-     * Returns 'all' if no participant is selected, otherwise 'selected'
+     * Returns 'filtered' if no participant is selected, otherwise 'selected'
      * @private
      * @return string
      */
-    function getAllOrSelected() {
+    function getFilteredOrSelected() {
         var nrOfChecked = $('.selector_participantCheckbox:checked, #action_toggleAllParticipant:checked').length;
         if (nrOfChecked == 0) {
-            return 'all';
+            return 'filtered';
         }
         else {
             return 'selected';
@@ -77,7 +77,7 @@ LS.CPDB = (function() {
     /**
      * Run when user clicks 'Export'
      * Used for both all participants and checked participants
-     * @param {boolean} all - If true, export all participants
+     * @param {boolean} all - If true, export all participants, no matter filter
      * @return
      */
     onClickExport = function(all) {
@@ -91,6 +91,8 @@ LS.CPDB = (function() {
                 postdata.selectedParticipant.push($(item).val());
             });
         }
+
+        postdata['filteredOrSelected'] = getFilteredOrSelected();
 
         $.ajax({
             url: exporttocsvcountall,
@@ -312,9 +314,8 @@ LS.CPDB = (function() {
         // Change massive action text depending on check boxes
         $('.selector_participantCheckbox, #action_toggleAllParticipant').on('click', function() {
 
-            var nrOfChecked = $('.selector_participantCheckbox:checked, #action_toggleAllParticipant:checked').length;
-            if (nrOfChecked == 0) {
-                $('#massive-action-dropdown-selector-text').html(sAllParticipantsText);
+            if (getFilteredOrSelected() == 'filtered') {
+                $('#massive-action-dropdown-selector-text').html(sFilteredParticipantsText);
             }
             else {
                 $('#massive-action-dropdown-selector-text').html(sSelectedParticipantsText);
@@ -463,9 +464,9 @@ LS.CPDB = (function() {
         var selectedOption = $('#delete-participant-select-option').val();
         data['selectedoption'] = selectedOption;
 
-        data['allOrSelected'] = getAllOrSelected();
+        data['filteredOrSelected'] = getFilteredOrSelected();
 
-        if (getAllOrSelected() == 'all') {
+        if (getFilteredOrSelected() == 'filtered') {
             // Fetch all filters, used by CDataProvider
             var inputs = $('#list_central_participants .filters input, #list_central_participants .filters select');
             for (var i = 0; i < inputs.length; i++) {
@@ -479,8 +480,6 @@ LS.CPDB = (function() {
                 data['selectedIds'] += ids[i].value + ',';
             }
         }
-
-        console.log(data);
 
         LS.ajax({
             url: url,

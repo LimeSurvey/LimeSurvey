@@ -2,7 +2,7 @@
 <div class="col-sm-4 pull-left dropup listActions">
     <!-- Drop Up button selector -->
     <button class='btn btn-default dropdown-toggle' id='massive-action-dropdown-selector' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
-    <span id='massive-action-dropdown-selector-text'><?php eT('All participant(s)'); ?></span>
+    <span id='massive-action-dropdown-selector-text'><?php eT('Filtered participant(s)'); ?></span>
         <span class='caret'></span>
     </button>
 
@@ -14,7 +14,7 @@
 
         <!-- Delete -->
         <li>
-            <a href='#' data-toggle='modal' data-target='#myModal'>
+            <a href='#' data-toggle='modal' data-target='#delete-option-modal'>
                 <span class='text-danger glyphicon glyphicon-trash'></span>
                 <?php eT('Delete'); ?>
             </a>
@@ -23,7 +23,7 @@
         <li role='separator' class='divider'></li>
 
         <li>
-            <a href='#'>
+            <a href='#' onclick='LS.CPDB.onClickExport();'>
                 <span class='icon-exportcsv'></span>
                 <?php eT('Export'); ?>
             </a>
@@ -44,7 +44,7 @@
 </div>
 
 <!-- Modal for delete -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="delete-option-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
