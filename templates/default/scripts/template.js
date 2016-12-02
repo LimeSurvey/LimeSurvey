@@ -94,26 +94,33 @@ function showStartPopups(){
         startPopup=LSvar.startPopups.map(function(text) {
             return "<p>"+text+"</p>";
         });
-        $("#bootstrap-alert-box-modal .modal-body").html(startPopup);
-        $("#bootstrap-alert-box-modal").modal('show');
+        alertSurveyDialog(startPopup);
     }
+}
+/**
+ * Replace alertSurveyDialog from limesurvey-public package
+ * @see application/core/package/limesurvey
+ */
+function alertSurveyDialog(text,title)
+{
+    $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
+    $("#bootstrap-alert-box-modal .modal-body").html("<p>"+text+"</p>" || "");
+    $("#bootstrap-alert-box-modal").modal('show');
 }
 /**
  * Replace all existing alert default javascript function
  */
-window.alert = function(message, title) {
-    $(function() {
-        $("#bootstrap-alert-box-modal .modal-header .h4").text(title || "");
-        $("#bootstrap-alert-box-modal .modal-body").html("<p>"+message+"</p>" || "");
-        $("#bootstrap-alert-box-modal").modal('show');
-    });
-};
+//~ window.alert = function(message, title) {
+    //~ $(function() {
+        //~ $("#bootstrap-alert-box-modal .modal-header .h4").text(title || "");
+        //~ $("#bootstrap-alert-box-modal .modal-body").html("<p>"+message+"</p>" || "");
+        //~ $("#bootstrap-alert-box-modal").modal('show');
+    //~ });
+//~ };
 
 /**
- * Show a confirm dialog
- * @var string text
- * @var string title
- * @var object[] submits : name.value to submit
+ * Replace confirmSurveyDialog from limesurvey-public package
+ * @see application/core/package/limesurvey
  */
 function confirmSurveyDialog(text,title,submits){
     $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title);

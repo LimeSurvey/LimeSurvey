@@ -207,6 +207,9 @@ function activateActionLink(){
 }
 /**
  * function for replacing submit after confirm
+ * @var string text : the text to be shown
+ * @var string optionnal title
+ * @var object[] submits : name.value to submit
  */
 function confirmSurveyDialog(text,title,submits){
     if(confirm(text)){
@@ -267,11 +270,21 @@ function triggerEmClassChange(){
 /**
  * showStartPopups : Take all message in startPopups json array and launch an alert with text
  */
-function showStartPopups(){
+function showStartPopups()
+{
     if(LSvar.showpopup && $(LSvar.startPopups).length){
         startPopup=LSvar.startPopups.map(function(text) {
             return $("<div/>").html(text).text();
         });
-        alert(startPopup.join("\n"));
+        alertSurveyDialog(startPopup.join("\n"),''); // What can be a good title here ? ANd this title must come from PHP
     }
+}
+/**
+ * alertSurveyDialog : Send a warning/alert to the user
+ * @var string text : the text to be shown
+ * @var string optionnal title
+ */
+function alertSurveyDialog(text,title)
+{
+    alert(text);
 }

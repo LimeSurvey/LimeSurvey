@@ -108,7 +108,7 @@ function sortableAlert (qID,showpopups)
 {
     if(showpopups){
         txtAlert=$("#question"+qID+" .em_num_answers").text()
-        alert(txtAlert);
+        alertSurveyDialog(txtAlert,'');
     }
 }
 /**
