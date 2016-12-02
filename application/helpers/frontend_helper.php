@@ -1164,6 +1164,7 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
 
+    
     //RESET ALL THE SESSION VARIABLES AND START AGAIN
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
     unset($_SESSION['survey_'.$surveyid]['fieldarray']);
@@ -1172,7 +1173,9 @@ function buildsurveysession($surveyid,$preview=false)
     unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
-
+    // Generate Session ID
+    Yii:app()->session->regenerateID(true);
+    
     // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
     if (returnGlobal('lang',true))
     {
