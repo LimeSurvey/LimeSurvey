@@ -225,6 +225,15 @@ class participantsaction extends Survey_Common_Action
         $output = array();
         $output[0] = $fields;
 
+        foreach ($attributeIds as $attributeId) {
+            if ($attributeId == 0) {
+                continue;
+            }
+            $fields[] = 'a'.$attributeId;
+            $attributename = ParticipantAttributeName::model()->getAttributeNames($attributeId);
+            $output[0][] = $attributename[0]['attribute_name'];
+        }
+
         $fieldNeededKeys = array_fill_keys($fields, '');
         $fieldKeys = array_flip($fields);
 
@@ -1114,38 +1123,11 @@ class participantsaction extends Survey_Common_Action
     {
         $this->checkPermission('export');
 
-        $filteredOrSelected = Yii::app()->request->getPost('filteredOrSelected');
-
-        if (Yii::app()->request->getPost('searchcondition','') !== '') // if there is a search condition then only the participants that match the search criteria are counted
-        {
-            $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
-            $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
-        } 
-        else 
-        {
-            $search = null;
-        }
-
-        $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
-        $chosenParticipantsArray = explode(',',$chosenParticipants);
-        $searchSelected = new CDbCriteria;
-        if(!empty($chosenParticipants)) {
-            $searchSelected->addInCondition("p.participant_id",$chosenParticipantsArray);
-        }
-        else {
-            $searchSelected = null;
-        }
-
-        if($search) {
-            $search->mergeWith($searchSelected);
-        }
-        else {
-            $search = $searchSelected;
-        }
+        $useGridViewFilter = Yii::app()->request->getPost('filteredOrSelected') == 'filtered';
 
         $aAttributes = explode('+', Yii::app()->request->getPost('attributes', ''));
 
-        if ($filteredOrSelected == 'filtered') {
+        if ($useGridViewFilter) {
             $p = new Participant();
             $p->setAttributes(Yii::app()->request->getPost('Participant'));
             $dataProvider = $p->search();
@@ -1153,6 +1135,32 @@ class participantsaction extends Survey_Common_Action
             $this->csvExportFilter($dataProvider, $aAttributes);
         }
         else {
+            // if there is a search condition then only the participants that match the search criteria are counted
+            if (Yii::app()->request->getPost('searchcondition','') !== '') {
+                $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
+                $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
+            }
+            else {
+                $search = null;
+            }
+
+            $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
+            $chosenParticipantsArray = explode(',',$chosenParticipants);
+            $searchSelected = new CDbCriteria;
+            if(!empty($chosenParticipants)) {
+                $searchSelected->addInCondition("p.participant_id",$chosenParticipantsArray);
+            }
+            else {
+                $searchSelected = null;
+            }
+
+            if($search) {
+                $search->mergeWith($searchSelected);
+            }
+            else {
+                $search = $searchSelected;
+            }
+
             $this->csvExport($search, $aAttributes);
         }
     }
