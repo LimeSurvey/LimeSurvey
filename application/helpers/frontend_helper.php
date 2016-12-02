@@ -1675,6 +1675,7 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
  */
 function resetAllSessionVariables($surveyid)
 {
+    Yii:app()->session->regenerateID(true);
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
     unset($_SESSION['survey_'.$surveyid]['fieldarray']);
     unset($_SESSION['survey_'.$surveyid]['insertarray']);
