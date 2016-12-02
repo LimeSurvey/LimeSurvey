@@ -502,67 +502,6 @@ class index extends CAction {
             }
         }
 
-
-        //Clear session and remove the incomplete response if requested.
-        if (isset($move) && $move == "clearall")
-        {
-            // delete the response but only if not already completed
-            $s_lang = $_SESSION['survey_'.$surveyid]['s_lang'];
-            if (isset($_SESSION['survey_'.$surveyid]['srid']) && !SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']))
-            {
-                // delete the response but only if not already completed
-                $result= dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
-                if($result->count()>0){ // Using count() here *should* be okay for MSSQL because it is a delete statement
-                    // find out if there are any fuqt questions - checked
-                    $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
-                    foreach ($fieldmap as $field)
-                    {
-                        if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
-                        {
-                            if (!isset($qid)) { $qid = array(); }
-                            $qid[] = $field['fieldname'];
-                        }
-                    }
-
-                    // if yes, extract the response json to those questions
-                    if (isset($qid))
-                    {
-                        $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['survey_'.$surveyid]['srid'];
-                        $result = dbExecuteAssoc($query);
-                        foreach($result->readAll() as $row)
-                        {
-                            foreach ($qid as $question)
-                            {
-                                $json = $row[$question];
-                                if ($json == "" || $json == NULL)
-                                    continue;
-
-                                // decode them
-                                $phparray = json_decode($json);
-
-                                foreach ($phparray as $metadata)
-                                {
-                                    $target = Yii::app()->getConfig("uploaddir")."/surveys/".$surveyid."/files/";
-                                    // delete those files
-                                    unlink($target.$metadata->filename);
-                                }
-                            }
-                        }
-                    }
-                    // done deleting uploaded files
-                }
-
-                // also delete a record from saved_control when there is one
-                dbExecuteAssoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);
-            }
-            killSurveySession($surveyid);
-            $content=templatereplace(file_get_contents($oTemplate->pstplPath."clearall.pstpl"),array());
-            $this->getController()->layout='survey';
-            $this->getController()->render("/survey/system/display",array('content'=>$content));
-            App()->end();
-        }
-
-
         //Check to see if a refering URL has been captured.
         if (!isset($_SESSION['survey_'.$surveyid]['refurl']))
         {

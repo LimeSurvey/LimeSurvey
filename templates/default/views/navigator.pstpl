@@ -6,7 +6,7 @@
         {MOVENEXTBUTTON}
     </div>
 </div>
-<div class="navigator row ls-js-hidden">
+<div class="navigator row">
     <div class="col-sm-6 save-clearall-wrapper">
         {SAVE}
         {CLEARALL}

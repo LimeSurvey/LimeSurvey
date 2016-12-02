@@ -189,8 +189,7 @@ function activateActionLink(){
             event.preventDefault();
             var submit=$(this).data('limesurvey-submit');
             var confirmedby=$(this).data('confirmedby');
-            if(!confirmedby || confirm($(this).data('confirmlabel')))
-            {
+            if(!confirmedby){
                 $.each(submit, function(name, value) {
                     $("<input/>",{
                         'type':"hidden",
@@ -198,34 +197,43 @@ function activateActionLink(){
                         'value':value,
                     }).appendTo('form#limesurvey');
                 });
-                $.each(confirmedby, function(name, value) {
-                    $("<input/>",{
-                        'type':"hidden",
-                        'name':name,
-                        'value':value,
-                    }).appendTo('form#limesurvey');
-                });
                 $('form#limesurvey').submit();
+            }else{
+                var submits=$.extend(submit,confirmedby);
+                confirmSurveyDialog($(this).data('confirmlabel'),$(this).text(),submits)
             }
         });
     }
 }
-
+/**
+ * function for replacing submit after confirm
+ */
+function confirmSurveyDialog(text,title,submits){
+    if(confirm(text)){
+        $.each(submits, function(name, value) {
+            $("<input/>",{
+                'type':"hidden",
+                'name':name,
+                'value':value,
+            }).appendTo('form#limesurvey');
+        });
+        $('form#limesurvey').submit();
+    }
+}
 /**
  *  Ask confirmation on click on .needconfirm
  */
 function activateConfirmButton(){
     $(document).on('click',"button[data-confirmedby]", function(event){
-        // @todo : allow multiple here : remove extra
+        var btnConfirm=$(this);
         var cbConfirm=$(this).parent().find("[name='"+$(this).data('confirmedby')+"']");
         if(!$(cbConfirm).is(":checked"))
         {
-            text=$(cbConfirm).parent("label").text();
-            if (confirm(text)) {
-                $(cbConfirm).clone().addClass('ls-js-hidden').appendTo('#limesurvey').prop('checked',true);
-                return true;
-            }
-            return false;
+            event.preventDefault();
+            var submits = { };
+            submits[$(btnConfirm).attr('name')]=$(btnConfirm).val();
+            submits[$(cbConfirm).attr('name')]=$(cbConfirm).val();
+            confirmSurveyDialog($(cbConfirm).parent("label").text(),$(btnConfirm).text(),submits)
         }
     });
 }

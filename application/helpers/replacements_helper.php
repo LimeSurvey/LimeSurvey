@@ -847,7 +847,7 @@ function doHtmlClearAll(){
     if(empty($aClearAll)){
         $aClearAll['button']=App()->getController()->renderPartial("/survey/system/actionButton/clearAll",array(
             'value'=>'clearall',
-            'name'=>'clearall',
+            'name'=>'move',
             'class'=>'ls-clearaction ls-clearall',
             'confirmedby'=>'confirm-clearall',
             'confirmvalue'=>'confirm',
@@ -865,7 +865,7 @@ function doHtmlClearAll(){
         ),true);
         // To replace javascript confirm : https://ethaizone.github.io/Bootstrap-Confirmation/ or http://bootboxjs.com/documentation.html#bb-confirm-dialog or https://nakupanda.github.io/bootstrap3-dialog/ or ....
         /* Don't do it in core actually, but put some language*/
-        App()->getClientScript()->registerScript("activateConfirmLanguage","LSvar.confirmLang=".ls_json_encode(array('yes'=>gT("Yes"),'no'=>gT("No"))),CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript("activateConfirmLanguage","$.extend(LSvar.lang,".ls_json_encode(array('yes'=>gT("Yes"),'no'=>gT("No"))).")",CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
         App()->getClientScript()->registerScript("activateConfirmButton","activateConfirmButton();\n",CClientScript::POS_END);
     }

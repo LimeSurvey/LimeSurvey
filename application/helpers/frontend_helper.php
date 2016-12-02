@@ -2454,10 +2454,6 @@ function getMove()
         if(Yii::app()->request->getParam($sAccepteMove))
             $move=$sAccepteMove;
     }
-    /* Good idea, but used ? */
-    if($move=='clearall' && App()->request->getPost('confirm-clearall')!='confirm'){
-            $move="clearcancel";
-    }
     /* default move (user don't click on a button, but use enter in a input:text or a select */
     if($move=='default')
     {

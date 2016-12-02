@@ -1,4 +1,5 @@
 {CHECKJAVASCRIPT}
+<div class="ls-js-hidden">{LANGUAGECHANGER}</div>
 
 <div id="welcome-container">
   <h1 class="survey-name text-center">{SURVEYNAME}</h1>

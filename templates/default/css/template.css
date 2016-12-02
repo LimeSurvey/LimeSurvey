@@ -37,6 +37,7 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 }
 .top-content .form-change-lang{float:right}
 .dir-rtl .top-content .form-change-lang{float:left}
+.no-js .top-content .form-change-lang{display:none}
 
 .top-container .top-content:empty{display:none}
 .group-description:empty{display:none}

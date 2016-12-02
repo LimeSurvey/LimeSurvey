@@ -8,7 +8,7 @@
         <div class="modal-content">
             <div class="modal-header" style="min-height:40px;">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <div class="modal-title">&nbsp;</div>
+                <div class="modal-title h4">&nbsp;</div>
             </div>
             <div class="modal-body"><p></p></div>
             <div class="modal-footer">

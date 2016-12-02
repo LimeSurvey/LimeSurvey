@@ -5574,7 +5574,6 @@
                         $updatedValues = array();
                     }
                     $message = '';
-
                     $LEM->currentQset = array();    // reset active list of questions
                     $result = $LEM->_ValidateSurvey($force);
                     $message .= $result['message'];
