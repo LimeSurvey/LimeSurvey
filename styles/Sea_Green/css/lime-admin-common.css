@@ -43,23 +43,6 @@
   margin-bottom: 5px;
 }
 
-.font-smaller{
-  font-size: 0.8em;
-}
-.font-small{
-  font-size: 0.9em;
-}
-.font-big{
-  font-size: 1.1em;
-}
-.font-bigger{
-  font-size: 1.2em;
-}
-.font-huge{
-  font-size: 1.6em;
-}
-
-
 .ui-datepicker {
   width: 17em;
   padding: .2em .2em 0;
@@ -572,68 +555,21 @@ div.panel.disabled {
   height: 100%;
 }
 
-#in_survey_common{
-  padding: 0 5px;
-}
-.popover{
-    max-width: 45%; /* Max Width of the popover (depending on the container!) */
-    min-width: 25%;
-}
-.sidemenu-container {
-  position:fixed;
-  width: 300px;
-  float:left; 
-  overflow:auto;
-  height:95%;
-  clear: left; 
-  background: #fff;
-  z-index:100;
-}
 .side-menu {
-  position: relative;
-  width: 100%;
-  padding: 2px;
-  height:100%;
-  margin:0;
-  }
-  .side-menu #quickadd-button-bar {
-    margin: 0;
-    padding: 0;
-    float: left;
-    text-align: center;
-    width:100%;
-  }
-  .side-menu #quickadd-button-bar .row{
-    margin: 8px 0px;
-    padding: 2px 2px;
-    width:100%;
-  }
-  
-  .side-menu #quickadd-button-bar .row>div{
-    padding-left: 1px;
-    padding-right: 1px;
-  }
-  .side-menu #quickadd-button-bar .row>div>button{
-    white-space: pre-wrap;
-  }
-
+  position: absolute;
+  width: 300px;
+  padding: 0;
+  left: 0; }
   .side-menu .navbar {
     border: none;
     box-shadow: none; }
   .side-menu .navbar-header {
     width: 100%; }
-  .side-menu .navbar-nav {
+  .side-menu .navbar-nav li {
     display: block;
     width: 100%; }
-  .side-menu .navbar-nav li ,
-  .side-menu .navbar-nav ul {
-    display: block;
-    width: 100%; 
-    overflow: hidden;}
-    .side-menu .navbar-nav li a:not(.btn) {
+    .side-menu .navbar-nav li a {
       padding: 15px; }
-    .side-menu .navbar-header a.btn {
-      width: 55px; }
       .side-menu .navbar-nav li a .glyphicon {
         padding-right: 10px; }
   .side-menu .navbar-nav .question-link.active {
@@ -733,68 +669,15 @@ div.panel.disabled {
   .side-menu #explorer-collapse .caret {
     float: none;
     margin-bottom: 9px; }
-/* Side Menu Fancytree*/
-  /* First degree Fancytree => Questiongroups */
-  #explorer .row-with-margin{
-    margin: 5px 15px;
-  }
-  #fancytree{
-    position: relative;
-    width:100%;
-    clear: both;
-  }
-  #fancytree ul.fancytree-container{
-    border: 0;
-  }
-  #fancytree.fancytree-ext-filter-hide ul span.fancytree-node.fancytree-hide, 
-  #fancytree.fancytree-ext-filter-hide ul tr.fancytree-hide{
-    display: none;
-  }
-  
-  #fancytree>ul>li>span {
-    padding: 12px 2px;
-    display: block;
-    width: 99%;
-    margin: auto;
-    white-space: nowrap;
-    position: relative;
-  }
-  #fancytree ul>li>span>span {
-    display: inline-block;
-    font-weight: 400;
-  }
 
-  #fancytree  .fancytree-title{
-    white-space: nowrap;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: initial;
-  }
-  #fancytree .fancytree-innerhtml-buttonbar{
-    border-radius: 4px;
-    padding: 1px 1px;
-  }
-
-.side-menu .navbar-nav #explorer:hover {
-  font-weight: normal;
-  color: #35363f;
-
-}
-.side-menu .navbar-nav #explorer {
+#explorer {
   border: 0;
   margin-bottom: 0;
   border-radius: 0;
-  padding-left:1px;
-  font-weight: normal;
-  color: #35363f;
   background-color: transparent;
-  box-shadow: none; 
-}
-
-.side-menu .navbar-nav #explorer ul li{
-  padding-left: 1px;
-}
+  box-shadow: none; }
+  #explorer ul {
+    font-size: 0.9em; }
 
 .dropdownstyle {
   border: 0;
@@ -802,7 +685,6 @@ div.panel.disabled {
   border-radius: 0;
   background-color: transparent;
   box-shadow: none; }
-
 
 #sideMenu {
   min-height: 700px;
@@ -825,8 +707,6 @@ div.panel.disabled {
   #sideMenu #dropdown li > a:hover {
     width: 100%;
     font-weight: 700; }
-  #sideMenu #dropdown #explorer li{
-    font-weight: normal; }
   #sideMenu #dropdown #explorer li:hover {
     font-weight: 700; }
   #sideMenu #dropdown #explorer li:hover > a {
@@ -862,7 +742,7 @@ div.panel.disabled {
 
 .side-body {
   min-height: 800px;
-  margin-left: 310px;
+  margin-left: 320px;
 }
 
 .side-body-margin {
@@ -1960,10 +1840,10 @@ div#gview_displayresponses th#displayresponses_cb {
 }
 
 #quick-menu-container {
+    position: absolute;
     width: 50px;
-    float: left;
-    clear: both;
-    
+    right: 0;
+    top: 50px;
 }
 
 .quick-icon-wrapper {
@@ -2184,7 +2064,6 @@ div[id^="alertmod_"]
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
     float: right;
 }
-
 .yiiLog{margin-bottom:70px}
 
 table#responsedetail tr td{

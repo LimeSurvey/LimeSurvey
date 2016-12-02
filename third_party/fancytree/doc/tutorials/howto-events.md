@@ -1,3 +1,0 @@
-#Howto write events
-
-TODO

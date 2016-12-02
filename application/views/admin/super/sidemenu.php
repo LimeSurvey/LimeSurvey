@@ -37,13 +37,15 @@
         <!-- Do nothing -->
     <?php endif;?>
 
-<script>
-var generalInfoTitle = "<?php eT('Show information abaout this Question/Questiongroup'); ?>";
-</script>
+    <!-- To handle correctly the side menu positioning -->
+        <div
+            class="absolute-wrapper hidden-xs"
+            style="z-index: 100; <?php if (!$showSideMenu): echo 'left: -250px;'; endif; ?> ">
+        </div>
 
-<div id="sideMenuContainer" class="sidemenu-container">
     <!-- sideMenu -->
-    <div class="side-menu hidden-xs" id="sideMenu" style="z-index: 101;">
+    <div class="side-menu <?php if (!$showSideMenu): echo ' side-menu-hidden'; endif; ?> hidden-xs" id="sideMenu" style="z-index: 101;">
+
         <nav class="navbar navbar-default hidden-xs">
 
             <!-- Header : General -->
@@ -61,31 +63,30 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
                     <div class='row no-gutter'>
 
                         <!-- Brand -->
-                        <a id='sidemenu-home' class="col-sm-7 navbar-brand hideside toggleside col-xs-12" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
+                        <a id='sidemenu-home' class="col-sm-7 navbar-brand hideside toggleside" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
                             <div class="brand-name-wrapper hidden-xs">
-                                    <span class="fa fa-home"></span>&nbsp;
+                                    <span class="glyphicon glyphicon-home"></span>&nbsp;
                                     <?php eT("Survey");?>
                             </div>
                         </a>
 
                         <!-- chevrons to stretch the side menu -->
                         <?php if (getLanguageRTL($_SESSION['adminlang'])): ?>
-                            <div class='col-sm-5 col-xs-12'>
-                                <a style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
-                                    <i class="fa fa-bars" style="transform:rotate(90deg);">&nbsp;</i>
+                            <div class='col-sm-5'>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
+                                    <span class="glyphicon glyphicon-chevron-left" ></span>
                                 </a>
-                                <a class="btn btn-default hide-button hidden-xs opened pull-right" data-collapsed="<?php echo !$showSideMenu; ?>" id="chevronClose">
-                                    <i class="fa fa-chevron-right"></i>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
                                 </a>
-
                             </div>
                         <?php else: ?>
-                            <div class='col-sm-5 col-xs-12'>
-                                <a style="z-index:1000001" class="btn btn-default btn-disabled hide-button hidden-xs opened pull-right" title="<?php eT('Drag to resize'); ?>" data-toggle="tooltip" id="scaleSidebar">
-                                    <i class="fa fa-bars" style="transform:rotate(90deg);">&nbsp;</i>
+                            <div class='col-sm-5'>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
+                                    <span class="glyphicon glyphicon-chevron-right" ></span>
                                 </a>
-                                <a class="btn btn-default hide-button hidden-xs opened pull-right" data-collapsed="<?php echo !$showSideMenu; ?>" id="chevronClose">
-                                    <i class="fa fa-chevron-left"></i>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
                                 </a>
                             </div>
                         <?php endif; ?>
@@ -95,57 +96,73 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
 
             </div>
 
+            <?php echo $quickmenu; ?>
 
-
-            <?php 
-            echo $quickmenu; 
-            /*var_dump($oSurvey);*/
-            $activeQuestion = Yii::app()->request->getQuery('qid', null); 
-            $activeQuestionGroup = Yii::app()->request->getQuery('gid', null); 
-            $newQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyid);
-            $newQuestionToGroupLink = $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyid."/gid/".$activeQuestionGroup);
-            ?>
             <!-- Main Menu -->
             <div class="side-menu-container hidden-xs">
-            <!-- Add new Questiongroup, add new Question => quickadd -->
-                <div class="container-fluid" id="quickadd-button-bar">
-                    <div class="row">
-                        <?php if($activeQuestionGroup): ?>
-                        <div class="btn-group col-xs-8" role="group">
-    <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default"><i class="icon-add"></i>&nbsp;<?php eT("Group");?></button>
-    <button id="quickadd-add-new-question" onclick="location.href='<?php echo $newQuestionToGroupLink; ?>'" title="<?php eT('Add question to current questiongroup');?>" data-toggle="tooltip" class="btn btn-primary"><i class="icon-add"></i>&nbsp;<?php eT("Question");?></button>
-                        <?php else: ?>
-                        <div class="btn-group col-xs-8" role="group">
-    <button id="quickadd-add-new-questiongroup" onclick="location.href='<?php echo $newQuestionGroupLink; ?>'" title="<?php eT('Add questiongroup to current survey');?>" data-toggle="tooltip" class="btn btn-default btn-block"><i class="icon-add"></i>&nbsp;<?php eT("Group");?></button>
-                        <?php endif; ?>
-                        </div>
-                        <div class="col-xs-4">
-                            <button id="fancytree_expand_all_nodes" class="btn btn-link btn-lg col-xs-6" data-toggle="tooltip" title="<?php eT('Expand all questionsgroups');?>"><i class="fa fa-expand">&nbsp;</i></button>
-                            <button id="fancytree_compress_all_nodes" class="btn btn-link btn-lg col-xs-6" data-toggle="tooltip" title="<?php eT('Compress all questionsgroups');?>"><i class="fa fa-compress">&nbsp;</i></button>
-                        </div>
-                    </div>
-                </div>
-                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="">
+                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="<?php if (!$showSideMenu): echo 'display: none;'; endif; ?>">
+
                     <!-- Question & Groups-->
                     <li class="panel panel-default dropdownlvl1" id="dropdown">
-                        <ul class="nav navbar-nav dropdown-first-level">
-                             
+                        <a data-toggle="collapse" id="questions-groups-collapse" href="#dropdown-lvl1" <?php if( isset($sidemenu["questiongroups"]) ) echo 'aria-expanded="true"'; ?>  >
+                            <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions and groups:');?>
+                            <span class="caret"></span>
+                        </a>
+
                         <!-- Question Explorer -->
-                    <div id="dropdown-lvl1" >
-                        <div class="panel-body">
+                        <div id="dropdown-lvl1" class="panel-collapse collapse <?php if( isset($sidemenu["questiongroups"]) || isset($sidemenu["listquestions"]) || 1==1 ) echo 'in'; ?>"  <?php if( isset($sidemenu["questiongroups"]) || isset($sidemenu["listquestions"]) ) echo 'aria-expanded="true"'; ?> >
+                            <div class="panel-body">
+                                <ul class="nav navbar-nav dropdown-first-level">
                                     <!-- Explorer -->
                                     <?php $this->renderPartial( "/admin/super/_question_explorer", array(
                                         'sidemenu' => $sidemenu,
                                         'aGroups' => $aGroups,
                                         'iSurveyId' => $surveyid,
-                                        'bSurveyIsActive' => $bSurveyIsActive,
-                                        'language' => $oSurvey->language,
-                                        'iQuestionId' => $activeQuestion,
-                                        'iQuestionGroupId' => $activeQuestionGroup,
+                                        'bSurveyIsActive' => $bSurveyIsActive
                                     )); ?>
+
+                                    <?php if($permission):?>
+                                        <!-- List Groups -->
+                                        <li class="toWhite <?php if( isset($sidemenu["listquestiongroups"]) ) echo 'active'; ?>">
+                                            <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
+                                            <a href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
+                                                <span class="glyphicon glyphicon-list"></span>
+                                                <?php eT("List question groups");?>
+                                            </a>
+                                        </li>
+
+                                        <!-- List Questions -->
+                                        <li class="toWhite <?php if( isset($sidemenu["listquestions"]) ) echo 'active'; ?>">
+                                            <a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
+                                                <span class="glyphicon glyphicon-list"></span>
+                                                <?php eT("List questions");?>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
+
+                                    <!-- Organize questions -->
+                                    <?php if($surveycontentupdate):?>
+                                        <?php if ($activated):?>
+                                            <li class="disabled">
+                                                <a href='#'>
+                                                    <span class="icon-organize"></span>
+                                                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo gT("Question group/question organizer disabled").' - '.gT("This survey is currently active."); ?>">
+                                                        <?php eT("Question organizer"); ?>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        <?php else: ?>
+                                            <li>
+                                                <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
+                                                    <span class="icon-organize"></span>
+                                                    <?php eT("Question organizer"); ?>
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                    <?php endif;?>
+                                </ul>
                             </div>
                         </div>
-                        </ul>
                     </li>
 
                     <!-- Token -->
@@ -169,4 +186,3 @@ var generalInfoTitle = "<?php eT('Show information abaout this Question/Question
             </div><!-- /.navbar-collapse -->
         </nav>
  </div>
-</div>

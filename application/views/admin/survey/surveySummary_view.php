@@ -19,20 +19,11 @@ $surveyid = $surveyinfo['sid'];
          || Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export');
 
 
-?>
 
+?>
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
     <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="glyphicon glyphicon-chevron-right"></span></h3>
-    <div class="row">
-        <div class="col-sm-12 content-right">
-
-            <?php
-            $aGroups =    QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $surveyinfo['language']);
-            ?>
-</div>
-</div>
-
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
 

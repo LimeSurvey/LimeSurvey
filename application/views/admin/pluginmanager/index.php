@@ -129,7 +129,6 @@
                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
         'columns'=>$gridColumns,
         'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-        'afterAjaxUpdate' => 'bindActionButtons()'
         ));
     ?>
 </div>

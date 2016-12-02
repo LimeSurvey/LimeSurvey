@@ -872,7 +872,6 @@ class Survey_Common_Action extends CAction
             {
                 $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
                 $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl));
-
             }
 
             if($aData['gid']==null)
@@ -927,7 +926,6 @@ class Survey_Common_Action extends CAction
             }
 
             // Question explorer
-            /*
             $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language),array('order'=>'group_order ASC'));
             if(count($aGroups))
             {
@@ -944,9 +942,8 @@ class Survey_Common_Action extends CAction
                     }
                 }
             }
-            */
             $aData['quickmenu'] = $this->renderQuickmenu($aData);
-            $aData['aGroups'] = QuestionGroup::model()->getGroupExplorerDatas($iSurveyID, $sumresult1->defaultlanguage->surveyls_language);
+            $aData['aGroups'] = $aGroups;
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
             $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
