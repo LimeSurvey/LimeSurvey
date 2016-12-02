@@ -23,7 +23,7 @@
 ?>
 
 <!-- answer_td -->
-<td class="answer_cell_<?php echo $ld;?> answer-item <?php echo $answertypeclass; ?> <?php echo $extraclass; ?>">
+<td class="answer_cell_<?php echo $ld;?> answer-item <?php echo $answertypeclass; ?> <?php echo $extraclass; ?><?php if($error){ echo " has-error";} ?>">
         <input
             type="hidden"
             name="java<?php echo $myfname2;?>"

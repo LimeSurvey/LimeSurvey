@@ -106,9 +106,9 @@
 
             <!-- tr -->
             <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" aria-labelledby="answertext<?php echo $ansrow['myfname']; ?>"
-                class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['showmandatoryviolation']) ? " has-error" : ""; ?>"
+                class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['showmandatoryviolation']) ? " ls-error-mandatory has-error" : ""; ?>"
             >
-            <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label<?php if($ansrow['showmandatoryviolation']){ echo " error-mandatory";} ?>">
+            <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label">
                 <?php echo $ansrow['answertext']; ?>
                 <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>"
                     id="java<?php echo $ansrow['myfid0']; ?>" value=""

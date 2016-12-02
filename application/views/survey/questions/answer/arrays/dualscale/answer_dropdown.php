@@ -38,10 +38,10 @@
 
     <?php foreach ($aSubQuestions as $ansrow): ?>
         <!-- <tr> -->
-        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>">
+        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php if($ansrow['showmandatoryviolation']){ echo " ls-error-mandatory";} ?>">
             <!-- Answer text (actual question) -->
 
-            <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?>">
+            <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?><?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>">
                 <label class="control-label" for="answer<?php echo $ansrow['myfid0']; ?>" id="label-<?php echo $ansrow['myfname']; ?>">
                     <?php echo $ansrow['question']; ?>
                 </label>
@@ -63,7 +63,7 @@
 
             <!-- First dropdown -->
 
-            <td class="answer-item dropdown-item">
+            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>">
                 <?php if ($leftheader != '') : ?>
                     <div  class='visible-xs leftheader control-label'><?php echo $leftheader; ?></div>
                 <?php endif; ?>
@@ -122,7 +122,7 @@
 
             <!-- Second dropdown -->
 
-            <td class="answer-item dropdown-item">
+            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>">
                 <?php if ($rightheader != '') : ?>
                     <div  class='visible-xs rightheader control-label'><?php echo $rightheader; ?></div>
                 <?php endif; ?>

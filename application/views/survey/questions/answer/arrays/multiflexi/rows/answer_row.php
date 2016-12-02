@@ -16,8 +16,8 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="<?php echo $coreRowClass;?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php if($error){ echo " has-error";} ?>" <?php echo $sDisplayStyle;?> role="group" aria-labelledby="answertext<?php echo $myfname;?>">
-    <th class="answertext control-label" id="answertext<?php echo $myfname;?>">
+<tr id="javatbd<?php echo $myfname;?>" class="<?php echo $coreRowClass;?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php if($error){ echo " ls-error-mandatory";} ?><?php if($error && $layout=="checkbox"){ echo " has-error";} ?>" role="group" aria-labelledby="answertext<?php echo $myfname;?>">
+    <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php if($error && $layout!="checkbox"){ echo " has-error";} ?>">
         <?php echo $answertext; ?>
         <input
             type="hidden"

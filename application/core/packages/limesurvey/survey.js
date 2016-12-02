@@ -17,7 +17,6 @@ function triggerEmRelevance(){
     triggerEmRelevanceGroup();
     triggerEmRelevanceSubQuestion();
 }
-
 /* On question */
 function triggerEmRelevanceQuestion(){
     /* Action on this question */
@@ -79,9 +78,11 @@ function triggerEmRelevanceSubQuestion(){
         }
     });
 }
+
 /**
- * Update lines class when relevance:(on|off) happen
+ * relevance:(on|off) event
  */
+/* Update lines class when relevance:(on|off)  */
 function updateLineClass(line){
     if($(line).hasClass("ls-odd") || $(line).hasClass("ls-even")){
         $(line).closest(".ls-answers").find(".ls-odd:visible,.ls-even:visible").each(function(index){ // not limited to table
@@ -89,9 +90,7 @@ function updateLineClass(line){
         });
     }
 }
-/**
- * Update repeat heading
- */
+/* Update repeat heading */
 function updateRepeatHeading(answers){
     /* Update only (at start) when all hidden line is done : @todo : do it only once */
     $(function() {
@@ -267,6 +266,24 @@ function triggerEmClassChange(){
     });
 }
 
+/**
+ * has-error management for ls-error-mandatory
+ */
+function updateMandatoryErrorClass(){
+    $(".has-error").on("blur",":text,textarea",function(event){
+        if($(this).val()!==""){
+            $(this).closest(".has-error").removeClass("has-error");
+        }
+    });
+    $(".has-error").on("change","select",function(event){
+        if($(this).val()!==""){
+            $(this).closest(".has-error").removeClass("has-error");
+        }
+    });
+    /* @todo : remove ls-error-mandatory in the line when not needed */
+    /* @todo : radio : except with dualsscale it's easy */
+
+}
 /**
  * showStartPopups : Take all message in startPopups json array and launch an alert with text
  */

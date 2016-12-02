@@ -18,7 +18,7 @@
 ?>
 
 <!--answer_row_inputtext -->
-<li id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-group<?php if($alert):?> has-error<?php endif; ?><?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
+<li id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-group<?php if($alert):?> ls-error-mandatory has-error<?php endif; ?><?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
     <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
         <?php echo $question; ?>
     </label>

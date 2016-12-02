@@ -12,7 +12,7 @@
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <?php foreach ($aQuestions as $i=>$question): ?>
             <col
-                class="answers-list radio-list <?php echo ($i % 2)?'ls-odd':'ls-even';?> <?php if($question['errormandatory']): echo " has-error"; endif; ?>"
+                class="answers-list radio-list <?php echo ($i % 2)?'ls-odd':'ls-even';?> <?php if($question['errormandatory']): echo " ls-error-mandatory has-error"; endif; ?>"
                 style='width: <?php echo $cellwidth; ?>%;'
                 role="radiogroup"
                 aria-labelledby="answertext<?php echo $question['myfname'];?>"

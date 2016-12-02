@@ -10,8 +10,8 @@
  * @var $tdRight
  */
 ?>
-<tr id="javatbd<?php echo $myfname;?>" class="question-item answer-item dropdown-item <?php echo ($odd) ? " ls-odd" : " ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>" >
-    <th class="answertext control-label<?php echo ($error) ? " error-mandatory" : ""; ?>">
+<tr id="javatbd<?php echo $myfname;?>" class="question-item answer-item dropdown-item <?php echo ($odd) ? " ls-odd" : " ls-even"; ?><?php echo ($error) ? " ls-error-mandatory has-error" : ""; ?>" >
+    <th class="answertext control-labe">
         <label for="answer<?php echo $myfname;?>">
             <?php echo $answertext; ?>
         </label>
@@ -23,7 +23,7 @@
         />
     </th>
     <td>
-        <select class="form-control" name="<?php echo $myfname; ?>" id="answer<?php echo $myfname; ?>" onchange="checkconditions(this.value, this.name, this.type);">
+        <select class="form-control" name="<?php echo $myfname; ?>" id="answer<?php echo $myfname; ?>">
             <?php foreach($options as $option):?>
                 <option value="<?php echo $option['value'];?>" <?php echo $option['selected'];?>>
                     <?php echo $option['text'];?>

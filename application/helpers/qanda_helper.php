@@ -5421,6 +5421,7 @@ function do_array_texts($ia)
                                     'value'      => $myfname2value,
                                     'isNumber'   => $isNumber,
                                     'isInteger'  => $isInteger,
+                                    'error'      => ($error && $myfname2value===''),
                                 ),  true);
                 $thiskey += 1;
             }
@@ -5591,8 +5592,10 @@ function do_array_multiflexi($ia)
     $inputboxlayout = false;
     $textAlignment  = 'right';
 
+    $layout="";
     if ($aQuestionAttributes['multiflexible_checkbox']!=0)
     {
+        $layout="checkbox";
         $minvalue            =  0;
         $maxvalue            =  1;
         $checkboxlayout      =  true;
@@ -5606,16 +5609,17 @@ function do_array_multiflexi($ia)
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
+        $layout="text";
         $inputboxlayout      =  true;
         $answertypeclass    .= " numeric-item text-item";
         $coreClass          .= " text-array number-array";
         $coreRowClass        .= " text-list number-list";
         $extraclass         .= " numberonly";
         $caption            .= gT("Please enter only numbers.");
-        $textAlignment       = 'right';
     }
     else
     {
+        $layout="dropdown";
         $answertypeclass     = " dropdown-item";
         $coreClass          .= " dropdown-array";
         $coreRowClass        .= " dropdown-list";
@@ -5846,7 +5850,8 @@ function do_array_multiflexi($ia)
                                         'sSeparator'                => $sSeparator,
                                         'kpclass'                   => $kpclass,
                                         'maxlength'                 => $maxlength,
-                                        'inputsize'                 =>$inputsize
+                                        'inputsize'                 => $inputsize,
+                                        'error'                     => ($error && $value==='')
                                     ),  true);
 
 
@@ -5906,6 +5911,7 @@ function do_array_multiflexi($ia)
                                 'answer_tds'        => $answer_tds,
                                 'rightTd'           => $rightTd,
                                 'odd'               => ($j % 2),
+                                'layout'            => $layout
                             ),  true);
             $fn++;
         }

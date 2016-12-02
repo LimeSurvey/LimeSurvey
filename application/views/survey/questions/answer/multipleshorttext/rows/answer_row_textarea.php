@@ -17,7 +17,7 @@
 <!-- answer_row_textarea -->
 <!-- Multiple short texts question, item text area Html -->
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
-<li id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-group <?php if($alert):?> has-error<?php endif; ?><?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
+<li id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-group <?php if($alert):?> ls-error-mandatory has-error<?php endif; ?><?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
         <!--  color code missing mandatory questions red -->
         <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
             <?php echo $question; ?>

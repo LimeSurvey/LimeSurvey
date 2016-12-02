@@ -13,7 +13,7 @@
 ?>
 
 <!-- answer_td -->
-<td class="answer_cell_<?php echo $ld;?> answer-item text-item">
+<td class="answer_cell_<?php echo $ld;?> answer-item text-item<?php echo ($error) ? " has-error" : ""; ?>">
     <label class="ls-label-xs-visibility" for="answer<?php echo $myfname2; ?>">
         <?php echo $labelText;?>
     </label>

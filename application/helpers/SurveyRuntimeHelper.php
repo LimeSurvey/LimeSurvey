@@ -505,6 +505,8 @@ class SurveyRuntimeHelper {
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         Yii::app()->clientScript->registerScript('triggerEmRelevance',"triggerEmRelevance();",CClientScript::POS_END);
+        /* Maybe only if we have mandatory error ?*/
+        Yii::app()->clientScript->registerScript('updateMandatoryErrorClass',"updateMandatoryErrorClass();",CClientScript::POS_END);
         LimeExpressionManager::FinishProcessingPage();
 
         /**

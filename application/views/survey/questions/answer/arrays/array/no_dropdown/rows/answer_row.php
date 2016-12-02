@@ -10,8 +10,8 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? " ls-odd" : " ls-even"; ?><?php echo ($error) ? " has-error" : ""; ?>" role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
-    <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php if($error){ echo " error-mandatory";} ?>">
+<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? " ls-odd" : " ls-even"; ?><?php echo ($error) ? " ls-error-mandatory has-error" : ""; ?>" role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
+    <th id="answertext<?php echo $myfname;?>" class="answertext control-label">
         <?php echo $answertext;?>
         <input name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" type="hidden">
     </th>
