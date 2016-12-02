@@ -87,10 +87,7 @@ var CreateFancytree = function (jQTreeItem, searchInput, sourceUrl, questionDeta
             },
             click: function (event, data) {
                 var node = data.node;
-                // console.log(event);
-                if(event.toElement == null){
-                    event.toElement = event.originalEvent.target;
-                }
+                console.log(event);
                 if(((node.hasChildren() && node.isExpanded() && $(event.toElement).hasClass('fancytree-title')) || !node.hasChildren()) && !$(event.toElement).hasClass('fancytree-expander')){
                     // Open target
                     clickTimer = setTimeout(function(){window.location.href = node.data.href},1000);
