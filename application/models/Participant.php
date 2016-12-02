@@ -740,6 +740,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param boolean $count
      * @param integer $page
      * @param integer $limit
      * @return CDbCommand

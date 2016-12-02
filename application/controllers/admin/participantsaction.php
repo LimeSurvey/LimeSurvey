@@ -160,9 +160,9 @@ class participantsaction extends Survey_Common_Action
     /**
      * Export to csv using optional search/filter
      *
-     * @todo Return value never checked?
-     * @param type $search  CDCriteria?
-     * @paran mixed $mAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes
+     * 
+     * @param CDCriteria $search
+     * @paran mixed $aAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes
      * @return boolean
      */
     private function csvExport($search = null, $aAttributeIDs = null)
@@ -1117,8 +1117,16 @@ class participantsaction extends Survey_Common_Action
             $search = $searchSelected;
         }
 
+        if ($filteredOrSelected == 'filtered') {
+            $p = new Participant();
+            $p->setAttributes(Yii::app()->request->getPost('Participant'));
+            $dataProvider = $p->search();
+            $dataProvider->setPagination(false);
+            $search = $dataProvider->getCriteria();
+        }
+
         $aAttributes=explode('+',Yii::app()->request->getPost('attributes',''));
-        $this->csvExport($search,$aAttributes);
+        $this->csvExport($search, $aAttributes);
     }
 
     /**
