@@ -211,6 +211,32 @@ class participantsaction extends Survey_Common_Action
     }
 
     /**
+     * Copy of csvExport but uses data provider from Participant->search()
+     * @param CDataProvider $dataProvider
+     * @param array $attributeIds
+     * @return void
+     */
+    private function csvExportFilter(CDataProvider $dataProvider, array $attributeIds = array())
+    {
+        $this->checkPermission('export');
+        Yii::app()->loadHelper('export');
+
+        $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
+        $output = array();
+        $output[0] = $fields;
+
+        $fieldNeededKeys = array_fill_keys($fields, '');
+        $fieldKeys = array_flip($fields);
+
+        foreach ($dataProvider->getData() as $participant) {
+            $participantAsArray = $participant->getAttributes();
+            $output[] = array_merge($fieldNeededKeys, array_intersect_key($participantAsArray, $fieldKeys));
+        }
+
+        CPDBExport($output, "central_" . time());
+    }
+
+    /**
      * Returns a string with the number of participants available for export or 0
      *
      * @param type $search
@@ -1117,16 +1143,18 @@ class participantsaction extends Survey_Common_Action
             $search = $searchSelected;
         }
 
+        $aAttributes = explode('+', Yii::app()->request->getPost('attributes', ''));
+
         if ($filteredOrSelected == 'filtered') {
             $p = new Participant();
             $p->setAttributes(Yii::app()->request->getPost('Participant'));
             $dataProvider = $p->search();
             $dataProvider->setPagination(false);
-            $search = $dataProvider->getCriteria();
+            $this->csvExportFilter($dataProvider, $aAttributes);
         }
-
-        $aAttributes=explode('+',Yii::app()->request->getPost('attributes',''));
-        $this->csvExport($search, $aAttributes);
+        else {
+            $this->csvExport($search, $aAttributes);
+        }
     }
 
     /**

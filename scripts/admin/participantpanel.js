@@ -93,6 +93,12 @@ LS.CPDB = (function() {
         }
 
         postdata['filteredOrSelected'] = getFilteredOrSelected();
+        // Fetch all filters, used by CDataProvider
+        // TODO: Code duplication
+        var inputs = $('#list_central_participants .filters input, #list_central_participants .filters select');
+        for (var i = 0; i < inputs.length; i++) {
+            postdata[inputs[i].name] = $(inputs[i]).val();
+        }
 
         $.ajax({
             url: exporttocsvcountall,
