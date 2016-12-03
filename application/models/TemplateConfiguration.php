@@ -148,10 +148,12 @@ class TemplateConfiguration extends CFormModel
         $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
         $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                             : array();
-        /* Add depend package according to packages */
-        $this->depends                  = $this->getDependsPackages();
+
         /* Add options/package according to apiVersion */
         $this->fixTemplateByApi();
+
+        /* Add depend package according to packages */
+        $this->depends                  = $this->getDependsPackages();
 
         // overwrite_question_views accept different values : "true" or "yes"
         $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
@@ -296,6 +298,16 @@ class TemplateConfiguration extends CFormModel
                                 . "    <div class='form-{FORMID}'>{FORM}</div>\n"
                                 . "</div>";
                 file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl",$formTemplate);
+            }
+            $name=(isset($this->config->metadatas->name)) ? (string)$this->config->metadatas->name:null;
+            if(in_array($name,array("Default","News Paper","Ubuntu Orange"))){/* LimeSurvey template only updated via GUI */
+                $packages=new stdClass();
+                $packages->package="template-default";
+                $packages->ltr=new stdClass();
+                $packages->ltr->package="template-default-ltr";
+                $packages->rtl=new stdClass();
+                $packages->rtl->package="template-default-ltr";
+                $this->packages=$packages;
             }
         }
     }
