@@ -18,13 +18,43 @@ return array(
             'survey.css',
         ),
         'js'=>array(
-            'js.js',
             'survey.js',
         ),
         'depends' => array(
             'jquery',
             'fontawesome',
+        )
+    ),
+    /* For public template extended functionnality (based on default template) */
+    'template-default'=>array(
+        'basePath' => 'core.template-default',
+        'css'=> array(
+            'template-core.css',
+        ),
+        'js'=>array(
+            'template-core.js',
+        ),
+        'depends' => array(
+            'limesurvey-public',
             //'bootstrap', //limesurvey in future must work without boostrap
+        )
+    ),
+    'template-default-ltr'=>array( /* complement for ltr */
+        'basePath' => 'core.template-default',
+        'css'=> array(
+            'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
+        ),
+        'depends' => array(
+            'template-default',
+        )
+    ),
+    'template-default-rtl'=>array( /* Same but for rtl */
+        'basePath' => 'core.template-default',
+        'css'=> array(
+            'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css',
+        ),
+        'depends' => array(
+            'template-default',
         )
     ),
     /* Ranking question type */

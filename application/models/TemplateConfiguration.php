@@ -147,8 +147,9 @@ class TemplateConfiguration extends CFormModel
         $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                                                 : '';
         $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
-        $this->packages                 = (isset($this->config->engine->packages->package))        ? (array) $this->config->engine->packages->package                                                                             : array();
-
+        $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                             : array();
+        /* Add depend package according to packages */
+        $this->depends                  = $this->getDependsPackages();
         /* Add options/package according to apiVersion */
         $this->fixTemplateByApi();
 
@@ -156,7 +157,7 @@ class TemplateConfiguration extends CFormModel
         $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
 
         $this->otherFiles               = $this->setOtherFiles();
-        $this->depends                  = $this->packages;  // TODO: remove
+
 
         // Package creation
         $this->createTemplatePackage();
@@ -279,7 +280,6 @@ class TemplateConfiguration extends CFormModel
     private function fixTemplateByApi()
     {
         if($this->apiVersion<3){
-            $this->packages[]= 'limesurvey-public';
             if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl")){
                 $messagePstpl  =  "<div id='{MESSAGEID}-wrapper'>\n"
                                 . "    {ERROR}\n"
@@ -300,6 +300,36 @@ class TemplateConfiguration extends CFormModel
         }
     }
 
+    /**
+     * Get the depends package
+     * @uses $this->package
+     */
+    private function getDependsPackages()
+    {
+        $packages=array('limesurvey-public');
+        if(!empty($this->packages->package)){
+            foreach((array)$this->packages->package as $package){
+                $packages[]=$package;
+            }
+        }
+        /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
+        /* better to use attribute of a xml file, but we broke attribute due to dumb server (5.3 PHP version ....) */
+        /* see https://github.com/LimeSurvey/LimeSurvey/commit/e5268c72ade2eee1ac10f1594815686774f6eb86 */
+        if(!getLanguageRTL(App()->getLanguage())){
+            if(!empty($this->packages->ltr->package)){
+                foreach((array)$this->packages->ltr->package as $package){
+                    $packages[]=$package;
+                }
+            }
+        }else{
+            if(!empty($this->packages->rtl->package)){
+                foreach((array)$this->packages->rtl->package as $package){
+                    $packages[]=$package;
+                }
+            }
+        }
+        return $packages;
+    }
     /**
      * get the template API version
      */

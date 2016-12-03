@@ -5,6 +5,11 @@
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
 /**
+ * no-js/js class by external file : see https://bugs.limesurvey.org/view.php?id=11945
+ */
+(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);
+
+/**
  * Always set an empty LSvar
  */
 var LSvar = LSvar || { };

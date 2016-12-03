@@ -135,7 +135,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             // In debug mode, the Asset Manager is not used
             // So, dev don't need to update the directory date to get the new version of their template.
             // They must think about refreshing their brower's cache (ctrl + F5)
-
+            /* @todo : need to regsiter the packages of 'survey-template' */
             $aOtherFiles = $oTemplate->otherFiles;
 
             //var_dump($aCssFiles);var_dump($aJsFiles);die();
