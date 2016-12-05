@@ -84,7 +84,7 @@ class LSYii_Application extends CWebApplication
         {
             $this->setConfig($key, $value);
         }
-        App()->getAssetManager()->linkAssets = true;
+        /* Don't touch to linkAssets : you can set it in config.php */
         // Asset manager path can only be set after App was constructed because it relies on App()
         App()->getAssetManager()->setBaseUrl($settings['tempurl']. '/assets');
         App()->getAssetManager()->setBasePath($settings['tempdir'] . '/assets');
