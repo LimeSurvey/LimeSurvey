@@ -35,7 +35,16 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from  2.56.1 (build 161117) to 2.57 (build 161202) Dec 2 2016
+Changes from  2.57.0 (build 161202) to 2.57.1 (build 161205) Dec 5 2016
+-Fixed issue #11947: Session.php is a false positive under ASL/clamav (Bert Hankes)
+-Fixed issue #11974: Very slow rendering of first page (Denis Chenu)
+-Fixed issue #11976: Relevance based on array-dual-scale not working properly (Denis Chenu)
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Spanish (Spain) by c_schmitz, aesteban
+
+Changes from  2.56.1 (build 161117) to 2.57.0 (build 161202) Dec 2 2016
 -New feature: Single table PDF export in statistics
 -Fixed issue #11609: Participant panel lists participants in duplicate, and does't list others for non-superadmins (Olle Haerstedt)
 -Fixed issue #11851: Unstyled HTML when editing default answer options for yes-no question (Olle Haerstedt)
