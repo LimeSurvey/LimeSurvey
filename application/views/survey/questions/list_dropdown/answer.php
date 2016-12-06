@@ -17,7 +17,7 @@
 
 <!-- answer-->
 
-<p class="question answer-item dropdown-item col-sm-4">
+<div class="answer-item dropdown-item col-sm-4">
     <label for="answer<?php echo $name; ?>" class="hide label">
         <?php eT('Please choose'); ?>
     </label>
@@ -46,5 +46,5 @@
         // rows/othertext.php
         echo $sOther;
     ?>
-</p>
+</div>
 <!-- end of answer  -->
