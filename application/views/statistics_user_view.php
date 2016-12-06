@@ -8,12 +8,12 @@
             <div id='statsContainer'>
                 <div id='statsHeader'>
                     <h2 class='statsSurveyTitle public-stats__title'><?php echo $thisSurveyTitle; ?></h2>
-                    <div class='statsNumRecords'><?php echo gT("Total records in survey") . " : $totalrecords"; ?></div>
+                    <div class='statsNumRecords public-stats__num-records'><?php echo gT("Total records in survey") . " : $totalrecords"; ?></div>
                 </div>
                 <div class="public-stats__content">
                     <?php if (isset($statisticsoutput) && $statisticsoutput) {
                         echo $statisticsoutput;
-                    } ?><br/>
+                    } ?>
                 </div>
             </div>
             <input type='hidden' class='hidemenubutton'/>
