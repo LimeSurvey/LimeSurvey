@@ -142,7 +142,6 @@ function activateLanguageChanger(){
         if(!$(this).closest('form').length){
             /* we are not in a forum, can not submit directly */
             if($('form#limesurvey').length==1){
-                console.log('limesurvey');
                 /* The limesurvey form exist in document, move select and button inside and click */
                 $("form#limesurvey [name='lang']").remove();// Remove existing lang selector
                 $("<input type='hidden'>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));

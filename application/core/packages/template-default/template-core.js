@@ -6,10 +6,9 @@
 
 /* document ready function */
 $(function() {
-{
     addHoverColumn();
     triggerEmClassChangeTemplate();
-}
+});
 
 /**
  * Dialog and confirm
