@@ -556,8 +556,6 @@ class database extends Survey_Common_Action
 
 
         // Remove invalid question attributes on saving
-
-
         $criteria = new CDbCriteria;
         $criteria->compare('qid',$this->iQuestionID);
         $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
@@ -566,6 +564,7 @@ class database extends Survey_Common_Action
             $criteria->compare('attribute', '<>'.$validAttribute['name']);
         }
         QuestionAttribute::model()->deleteAll($criteria);
+
         $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
         foreach ($validAttributes as $validAttribute)
         {
@@ -577,21 +576,17 @@ class database extends Survey_Common_Action
                 $langCriteria->compare('attribute',$validAttribute['name']);
                 $langCriteria->addNotInCondition('language',$aLanguages);
                 QuestionAttribute::model()->deleteAll($langCriteria);
-                /* But not in don't work for null value in mysql ? */
+                /* delete IS NULL too*/
                 QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL',array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
 
                 foreach ($aLanguages as $sLanguage)
                 {// TODO sanitise XSS
                     $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
-                    if (count($iInsertCount)>0)
-                    {
-                        if ($value!='')
-                        {
+                    $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
+                    if ($iInsertCount>0){
+                        if ($value!=''){
                             QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
-                        }
-                        else
-                        {
+                        }else{
                             QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
                         }
                     }
@@ -608,27 +603,11 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $value=Yii::app()->request->getPost($validAttribute['name']);
-
-                if ($validAttribute['name']=='multiflexible_step' && trim($value)!='') {
-                    $value=floatval($value);
-                    if ($value==0) $value=1;
-                };
-
-                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID));
-                if (count($iInsertCount)>0)
-                {
-                    if($value!=$validAttribute['default'] && trim($value)!="")
-                    {
-                        QuestionAttribute::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                    }
-                    else
-                    {
-                        QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                    }
-                }
-                elseif($value!=$validAttribute['default'] && trim($value)!="")
-                {
+                $value=Yii::app()->request->getPost($validAttribute['name'],'');
+                /* we must have only one element, and this element must be null, then reset always (see #11980)*/
+                /* We can update, but : this happen only for admin and not a lot, then : delete + add */
+                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
+                if($value!=$validAttribute['default'] && trim($value)!==""){
                     $attribute = new QuestionAttribute;
                     $attribute->qid = $this->iQuestionID;
                     $attribute->value = $value;
