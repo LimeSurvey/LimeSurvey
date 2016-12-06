@@ -1384,6 +1384,16 @@
                 // Default validation for question type
                 switch ($type)
                 {
+                    case 'M': //NUMERICAL QUESTION TYPE
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  '',
+                            'qid' => $questionNum,
+                            );
+                        break;
+
                     case 'N': //NUMERICAL QUESTION TYPE
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
@@ -3129,6 +3139,9 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
+                    case 'M':
+                         $qtips['default']=$this->gT('Check any that apply');
+                         break;
                     case 'N':
                         $qtips['default']=$this->gT("Only numbers may be entered in this field.");
                         break;

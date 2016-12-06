@@ -218,11 +218,6 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($aQuestionAttributes["max_answers"]);
                 $minansw=trim($aQuestionAttributes["min_answers"]);
-                if (!($maxansw || $minansw))
-                {
-                    $question_text['help'] = $message = gT('Check any that apply');
-                    $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-                }
             }
             break;
 
