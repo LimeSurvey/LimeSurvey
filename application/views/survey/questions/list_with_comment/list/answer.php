@@ -19,7 +19,7 @@
 <!-- List with comment, list style, -->
 
 <!-- answer -->
-<div class="answer-listcomment">
+<div class="col-sm-12 answer-listcomment">
     <div class="list answer-listcomment__list">
         <div class="list-unstyled answers-list radio-list">
 
