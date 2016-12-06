@@ -2525,6 +2525,52 @@ class remotecontrol_handle
 
     }
 
+    /**
+     * RPC Routine to delete responses of particular token in a survey.
+     * Returns array
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that participants belong
+     * @param array|struct $aAttributeData - An array with the particular fieldnames as keys and their values used to fetch results
+     * @return array Result of the change action
+     */
+    public function delete_responses_by_attributes($sSessionKey, $iSurveyID, $aAttributeData){
+        // check sessionKey is valid or not
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            if (!isset($oSurvey))
+                return array('status' => 'Error: Invalid survey ID');
+            if($oSurvey['active']=='N')
+                return array('status' => 'Error:Survey is inactive');
+            
+                if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
+                {
+                    // get response id from response table using token
+                    $oResults = Response::model($iSurveyID)->findAllByAttributes($aAttributeData);
+                    if($oResults){
+                        foreach($oResults as $oResult) {
+                            $iResponseID = (int) $oResult['id'];
+                            Response::model($iSurveyID)->findByPk($iResponseID)->delete(true);
+                            // delete timings if savetimings is set
+                            if(isset( $oSurvey['savetimings'] ) && $oSurvey['savetimings'] == "Y") {
+                                SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                            }
+                        }
+                        return array('iSurveyID'=>$iSurveyID);
+                    } else {
+                        return array('status' => 'No responses for this token');
+                    }
+                }
+                else
+                {
+                    return array('status' => 'No permission');
+                }    
+        }
+        else
+            return array('status' => 'Invalid Session Key');
+    }
 
 
     /**
