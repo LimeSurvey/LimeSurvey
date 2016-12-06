@@ -20,6 +20,10 @@
     {
 
         /**
+         * Default values
+         */
+
+        /**
         * Returns the static model of Settings table
         *
         * @static

@@ -91,11 +91,20 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         }
         if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',true);
 
-        $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
-
-        if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',false);
+        $group=New QuestionGroup;
+        foreach($insertdata as $k=>$v){
+            if(!in_array($k,$group->getTableSchema()->getColumnNames())){
+                $results['importwarnings'][]=sprintf(gT("%s : Unknow %s Attribute (not imported)."),$group['group_name'],$k);
+            }else{
+                $group->$k = $v;
+            }
+        }
+        if (!$group->save())
+        {
+            $results['fatalerror'] = CHtml::errorSummary($group,gT("The group could not be imported for the following reasons:"));
+            return $results;
+        }
         $results['groups']++;
-
         if (!isset($aGIDReplacements[$oldgid]))
         {
             $newgid=getLastInsertID('{{groups}}');
@@ -135,10 +144,19 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             {
                 $insertdata['qid']=$aQIDReplacements[$oldqid];
             }
-            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
-
-            $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
-            if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',false);
+            $ques= New Question;
+            foreach ($insertdata as $k => $v){
+                if(!in_array($k,$ques->getTableSchema()->getColumnNames())){
+                    $results['importwarnings'][]=sprintf(gT("%s : Unknow %s Attribute (not imported)."),$insertdata['title'],$k);
+                }else{
+                    $ques->$k = $v;
+                }
+            }
+            if (!$ques->save())
+            {
+                $results['fatalerror'] = CHtml::errorSummary($ques,gT("The question could not be imported for the following reasons:"));
+                return $results;
+            }
             if (!isset($aQIDReplacements[$oldqid]))
             {
                 $newqid=getLastInsertID('{{questions}}');
@@ -342,11 +360,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
 {
+    $sBaseLanguage=Survey::model()->findByPk($iNewSID)->language;
+    $aLanguagesSupported=Survey::model()->findByPk($iNewSID)->getAllLanguages();
 
-    $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
-    $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
-    $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
-    $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml->LimeSurveyDocType!='Question') safeDie('This is not a valid LimeSurvey question structure XML file.');
@@ -358,7 +374,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     $results['answers']=0;
     $results['question_attributes']=0;
     $results['subquestions']=0;
-
+    $results['importwarnings']=array();
     $importlanguages=array();
     foreach ($xml->languages->language as $language)
     {
@@ -421,12 +437,17 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
         }
 
         $ques = new Question;
-        if ($insertdata)
+        if ($insertdata){
             XSSFilterArray($insertdata);
-        foreach ($insertdata as $k => $v)
-            $ques->$k = $v;
-        $result = $ques->save();
-        if (!$result)
+        }
+        foreach ($insertdata as $k => $v){
+            if(!in_array($k,$ques->getTableSchema()->getColumnNames())){
+                $results['importwarnings'][]=sprintf(gT("%s : Unknow %s Attribute (not imported)."),$insertdata['title'],$k);
+            }else{
+                $ques->$k = $v;
+            }
+        }
+        if (!$ques->save())
         {
             $results['fatalerror'] = CHtml::errorSummary($ques,gT("The question could not be imported for the following reasons:"));
             return $results;
@@ -466,8 +487,13 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
             if ($insertdata)
                 XSSFilterArray($insertdata);
             $ques = new Question;
-            foreach ($insertdata as $k => $v)
-                $ques->$k = $v;
+            foreach ($insertdata as $k => $v){
+                if(!in_array($k,$ques->getTableSchema()->getColumnNames())){
+                    $results['importwarnings'][]=sprintf(gT("Unknow %s Attribute (not imported)."),$k);
+                }else{
+                    $ques->$k = $v;
+                }
+            }
             $result = $ques->save();
             if ($result)
             {
@@ -499,8 +525,13 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
             $answers = new Answer;
             if ($insertdata)
                 XSSFilterArray($insertdata);
-            foreach ($insertdata as $k => $v)
-                $answers->$k = $v;
+            foreach ($insertdata as $k => $v){
+                if(!in_array($k,$answers->getTableSchema()->getColumnNames())){
+                    $results['importwarnings'][]=sprintf(gT("Unknow %s Attribute (not imported)."),$k);
+                }else{
+                    $answers->$k = $v;
+                }
+            }
             $result = $answers->save();
             $results['answers']++;
         }
@@ -531,8 +562,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
                     $attributes = new QuestionAttribute;
                     if ($insertdata)
                         XSSFilterArray($insertdata);
-                    foreach ($insertdata as $k => $v)
+                    foreach ($insertdata as $k => $v){
                         $attributes->$k = $v;
+                    }
                     $result = $attributes->save();
                 }
             }

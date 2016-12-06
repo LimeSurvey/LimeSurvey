@@ -66,17 +66,21 @@ class questions extends Survey_Common_Action
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
             Yii::app()->loadHelper('admin/import');
 
-            if (strtolower($sExtension) == 'lsq')
+            if (strtolower($sExtension) == 'lsq'){
                 $aImportResults = XMLImportQuestion($sFullFilepath, $surveyid, $gid);
-            else
-                $this->getController()->error(gT('Unknown file extension'));
+            }else{
+                App()->setFlashMessage(gT('Unknown file extension'),'error');
+                $this->getController()->redirect(array('admin/questions','sa'=>'addquestion','surveyid'=>$surveyid,'gid'=>$gid));
+            }
 
             fixLanguageConsistency($surveyid);
 
             if (isset($aImportResults['fatalerror']))
             {
                 unlink($sFullFilepath);
-                $this->getController()->error($aImportResults['fatalerror']);
+                App()->setFlashMessage($aImportResults['fatalerror'],'error');
+                $this->getController()->redirect(array('admin/questions','sa'=>'addquestion','surveyid'=>$surveyid,'gid'=>$gid));
+                //$this->getController()->error($aImportResults['fatalerror']);
             }
 
             unlink($sFullFilepath);
@@ -87,7 +91,6 @@ class questions extends Survey_Common_Action
             $aData['sExtension'] = $sExtension;
             $aViewUrls[] = 'import_view';
         }
-
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -1026,7 +1029,7 @@ class questions extends Survey_Common_Action
         $iLabelID = (int) Yii::app()->request->getParam('lid');
         $aNewLanguages = Yii::app()->request->getParam('languages');
         $bCheckAssessments = Yii::app()->request->getParam('bCheckAssessments',0);
-        $arLabelSet=LabelSet::model()->find('lid=:lid',array(':lid' => $iLabelID)); 
+        $arLabelSet=LabelSet::model()->find('lid=:lid',array(':lid' => $iLabelID));
         $iLabelsWithAssessmentValues=Label::model()->count('lid=:lid AND assessment_value<>0',array(':lid' => $iLabelID));
         $aLabelSetLanguages=explode(' ',$arLabelSet->languages);
         $aErrorMessages=array();
@@ -1053,7 +1056,7 @@ class questions extends Survey_Common_Action
         }
     }
 
-    
+
     /**
     * Load preview of a question screen.
     *

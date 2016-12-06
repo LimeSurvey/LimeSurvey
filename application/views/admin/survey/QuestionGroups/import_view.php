@@ -19,6 +19,17 @@
     }?>
         <li><?php echo gT("Question attributes:") . $aImportResults['question_attributes'] ?></li>
      </ul><br/>
+                <?php if (!empty($aImportResults['importwarnings'])): ?>
+                    <div class='warningheader'><?php eT("Warnings");?>:</div>
+                    <ul  class="list-unstyled">
+                        <?php
+                            foreach ($aImportResults['importwarnings'] as $warning)
+                            { ?>
+                            <li><?php echo $warning; ?></li>
+                            <?php
+                        } ?>
+                    </ul>
+                <?php endif; ?>
      <p><strong><?php eT("Question group import is complete.") ?></strong></p><br />
      <input type='submit' value="<?php eT("Go to question group") ?>" onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$aImportResults['newgid']) ?>', '_top')" />
 </div><br />
