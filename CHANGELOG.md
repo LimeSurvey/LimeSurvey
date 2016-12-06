@@ -1,9 +1,10 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## Unrealeased
+## [1.1.2] - 2016-11-16
 
 ### Feature
+- Allow to import broken lsq and lsg
 - Show (all) errors when try to import VV file
 - Better gitignore for plugins
 - Order survey listing by date desc by default
