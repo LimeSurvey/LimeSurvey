@@ -7,7 +7,7 @@
         <div class="col-sm-12">
             <div id='statsContainer'>
                 <div id='statsHeader'>
-                    <h2 class='h3 statsSurveyTitle public-stats__title'><?php echo $thisSurveyTitle; ?></h2>
+                    <h2 class='statsSurveyTitle public-stats__title'><?php echo $thisSurveyTitle; ?></h2>
                     <div class='statsNumRecords'><?php echo gT("Total records in survey") . " : $totalrecords"; ?></div>
                 </div>
                 <div class="public-stats__content">
