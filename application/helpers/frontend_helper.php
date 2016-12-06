@@ -1023,7 +1023,7 @@ function buildsurveysession($surveyid,$preview=false)
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
         //Test if token is valid
-        list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
+        list($renderToken, $FlashError, $aEnterTokenData) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
     }
 
     //If there were errors, display through yii->FlashMessage
@@ -1569,7 +1569,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         $aEnterTokenData['token'] =  $clienttoken;
         $renderToken='correct';
     }
-    return array($renderToken, $FlashError);
+    return array($renderToken, $FlashError, $aEnterTokenData);
 }
 
 /**
