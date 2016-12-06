@@ -220,11 +220,7 @@ class Question extends LSActiveRecord
         {
             $aLanguages = array($sLanguage);
         }
-
-        if ($iQuestionID)
-        {
-            $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID);
-        }
+        $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID,$sLanguage);
         $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute)
@@ -255,6 +251,7 @@ class Question extends LSActiveRecord
                 }
             }
         }
+
         return $aAttributeNames;
     }
 

@@ -385,7 +385,7 @@ function LEMimplode()
 function LEMregexMatch(pattern,within)
 {
     try {
-        var reg = new RegExp(pattern.substr(1,pattern.length-2));
+        var reg = new RegExp(pattern.substring(1,pattern.length-2));
         return reg.test(within);
     }
     catch (err) {

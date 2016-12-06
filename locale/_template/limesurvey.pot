@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-12-02 13:16:10+00:00\n"
+"POT-Creation-Date: 2016-12-05 14:06:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -676,7 +676,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:514
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:24
 #: application/helpers/qanda_helper.php:2554
-#: application/models/Question.php:732 application/models/QuestionGroup.php:282
+#: application/models/Question.php:729 application/models/QuestionGroup.php:282
 #: application/models/QuestionGroup.php:290
 #: application/views/admin/participants/massive_actions/_selector.php:18
 #: application/views/admin/participants/massive_actions/_selector.php:37
@@ -6273,7 +6273,7 @@ msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:778
 #: application/helpers/userstatistics_helper.php:767
-#: application/models/Question.php:564
+#: application/models/Question.php:561
 msgid "Ranking"
 msgstr ""
 
@@ -8520,7 +8520,7 @@ msgid "Final equation to set in database, defaults to question text."
 msgstr ""
 
 #: application/helpers/questionHelper.php:249
-#: application/models/Question.php:634
+#: application/models/Question.php:631
 msgid "Equation"
 msgstr ""
 
@@ -10613,165 +10613,165 @@ msgstr ""
 msgid "Subquestion codes may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:438
+#: application/models/Question.php:435
 msgid "Array dual scale"
 msgstr ""
 
-#: application/models/Question.php:439 application/models/Question.php:453
-#: application/models/Question.php:460 application/models/Question.php:467
-#: application/models/Question.php:481 application/models/Question.php:488
-#: application/models/Question.php:502 application/models/Question.php:614
-#: application/models/Question.php:621
+#: application/models/Question.php:436 application/models/Question.php:450
+#: application/models/Question.php:457 application/models/Question.php:464
+#: application/models/Question.php:478 application/models/Question.php:485
+#: application/models/Question.php:499 application/models/Question.php:611
+#: application/models/Question.php:618
 msgid "Arrays"
 msgstr ""
 
-#: application/models/Question.php:445
+#: application/models/Question.php:442
 msgid "5 Point Choice"
 msgstr ""
 
-#: application/models/Question.php:446 application/models/Question.php:523
-#: application/models/Question.php:544 application/models/Question.php:607
+#: application/models/Question.php:443 application/models/Question.php:520
+#: application/models/Question.php:541 application/models/Question.php:604
 msgid "Single choice questions"
 msgstr ""
 
-#: application/models/Question.php:452
+#: application/models/Question.php:449
 msgid "Array (5 Point Choice)"
 msgstr ""
 
-#: application/models/Question.php:459
+#: application/models/Question.php:456
 msgid "Array (10 Point Choice)"
 msgstr ""
 
-#: application/models/Question.php:466
+#: application/models/Question.php:463
 msgid "Array (Yes/No/Uncertain)"
 msgstr ""
 
-#: application/models/Question.php:473
+#: application/models/Question.php:470
 msgid "Date/Time"
 msgstr ""
 
-#: application/models/Question.php:474 application/models/Question.php:495
-#: application/models/Question.php:509 application/models/Question.php:516
-#: application/models/Question.php:537 application/models/Question.php:565
-#: application/models/Question.php:593 application/models/Question.php:600
-#: application/models/Question.php:628 application/models/Question.php:635
+#: application/models/Question.php:471 application/models/Question.php:492
+#: application/models/Question.php:506 application/models/Question.php:513
+#: application/models/Question.php:534 application/models/Question.php:562
+#: application/models/Question.php:590 application/models/Question.php:597
+#: application/models/Question.php:625 application/models/Question.php:632
 msgid "Mask questions"
 msgstr ""
 
-#: application/models/Question.php:480
+#: application/models/Question.php:477
 msgid "Array (Increase/Same/Decrease)"
 msgstr ""
 
-#: application/models/Question.php:487
+#: application/models/Question.php:484
 msgid "Array"
 msgstr ""
 
-#: application/models/Question.php:494
+#: application/models/Question.php:491
 msgid "Gender"
 msgstr ""
 
-#: application/models/Question.php:501
+#: application/models/Question.php:498
 msgid "Array by column"
 msgstr ""
 
-#: application/models/Question.php:508
+#: application/models/Question.php:505
 msgid "Language Switch"
 msgstr ""
 
-#: application/models/Question.php:515
+#: application/models/Question.php:512
 msgid "Multiple Numerical Input"
 msgstr ""
 
-#: application/models/Question.php:522
+#: application/models/Question.php:519
 msgid "List (Radio)"
 msgstr ""
 
-#: application/models/Question.php:529
+#: application/models/Question.php:526
 msgid "Multiple choice"
 msgstr ""
 
-#: application/models/Question.php:530 application/models/Question.php:551
+#: application/models/Question.php:527 application/models/Question.php:548
 msgid "Multiple choice questions"
 msgstr ""
 
-#: application/models/Question.php:536
+#: application/models/Question.php:533
 msgid "Numerical Input"
 msgstr ""
 
-#: application/models/Question.php:543
+#: application/models/Question.php:540
 msgid "List with comment"
 msgstr ""
 
-#: application/models/Question.php:550
+#: application/models/Question.php:547
 msgid "Multiple choice with comments"
 msgstr ""
 
-#: application/models/Question.php:557
+#: application/models/Question.php:554
 msgid "Multiple Short Text"
 msgstr ""
 
-#: application/models/Question.php:558 application/models/Question.php:572
-#: application/models/Question.php:579 application/models/Question.php:586
+#: application/models/Question.php:555 application/models/Question.php:569
+#: application/models/Question.php:576 application/models/Question.php:583
 msgid "Text questions"
 msgstr ""
 
-#: application/models/Question.php:571
+#: application/models/Question.php:568
 msgid "Short Free Text"
 msgstr ""
 
-#: application/models/Question.php:578
+#: application/models/Question.php:575
 msgid "Long Free Text"
 msgstr ""
 
-#: application/models/Question.php:585
+#: application/models/Question.php:582
 msgid "Huge Free Text"
 msgstr ""
 
-#: application/models/Question.php:592
+#: application/models/Question.php:589
 msgid "Text display"
 msgstr ""
 
-#: application/models/Question.php:599
+#: application/models/Question.php:596
 msgid "Yes/No"
 msgstr ""
 
-#: application/models/Question.php:606
+#: application/models/Question.php:603
 msgid "List (Dropdown)"
 msgstr ""
 
-#: application/models/Question.php:613
+#: application/models/Question.php:610
 msgid "Array (Numbers)"
 msgstr ""
 
-#: application/models/Question.php:620
+#: application/models/Question.php:617
 msgid "Array (Texts)"
 msgstr ""
 
-#: application/models/Question.php:627
+#: application/models/Question.php:624
 msgid "File upload"
 msgstr ""
 
-#: application/models/Question.php:716
+#: application/models/Question.php:713
 #: application/views/admin/survey/Question/listquestions.php:176
 msgid "Question preview"
 msgstr ""
 
-#: application/models/Question.php:720
+#: application/models/Question.php:717
 #: application/views/admin/survey/Question/editQuestion_view.php:17
 #: application/views/admin/survey/Question/editQuestion_view.php:33
 msgid "Edit question"
 msgstr ""
 
-#: application/models/Question.php:725
+#: application/models/Question.php:722
 #: application/views/admin/survey/Question/question_view.php:3
 msgid "Question summary"
 msgstr ""
 
-#: application/models/Question.php:733
+#: application/models/Question.php:730
 msgid "Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
-#: application/models/Question.php:813 application/models/Question.php:827
+#: application/models/Question.php:810 application/models/Question.php:824
 msgid "Not relevant for this question type"
 msgstr ""
 
