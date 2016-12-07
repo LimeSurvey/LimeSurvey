@@ -1385,6 +1385,7 @@
                 switch ($type)
                 {
                     case 'M': //NUMERICAL QUESTION TYPE
+                    case 'L': //LIST drop-down/radio-button list
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'default',
@@ -3139,6 +3140,9 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
+                    case 'L':
+                        $qtips['default']=$this->gT('Choose one of the following answers');
+                        break;
                     case 'M':
                          $qtips['default']=$this->gT('Check any that apply');
                          break;

@@ -160,11 +160,6 @@ function retrieveAnswers($ia)
 
         case 'L': //LIST drop-down/radio-button list
             $values = do_list_radio($ia);
-            if ($aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case '!': //List - dropdown
