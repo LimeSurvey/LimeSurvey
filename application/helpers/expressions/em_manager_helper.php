@@ -6592,17 +6592,21 @@
                 $hasValidationEqn=true;
 
                 // do this even is starts irrelevant, else will never show this information.
-                // NB: $validationEqn!='', @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
-                if (!$qhidden && $validationEqn!='')
+                if (!$qhidden)
                 {
-                    $validationEqns = $LEM->qid2validationEqn[$qid]['eqn'];
-                    $validationEqn = implode(' and ', $validationEqns);
-                    $qvalid = $LEM->em->ProcessBooleanExpression($validationEqn,$qInfo['gseq'], $qInfo['qseq']);
-                    $hasErrors = $LEM->em->HasErrors();
-                    if (!$hasErrors)
-                    {
-                        $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
+                    // Prevent to validate equation when empty. Only affect question type with default qtip but no validation equation
+                    // @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
+                    if ($validationEqn!=''){
+                        $validationEqns = $LEM->qid2validationEqn[$qid]['eqn'];
+                        $validationEqn = implode(' and ', $validationEqns);
+                        $qvalid = $LEM->em->ProcessBooleanExpression($validationEqn,$qInfo['gseq'], $qInfo['qseq']);
+                        $hasErrors = $LEM->em->HasErrors();
+
+                        if (!$hasErrors){
+                            $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
+                        }
                     }
+
                     $prettyPrintValidEqn = $validationEqn;
                     if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX))
                     {
