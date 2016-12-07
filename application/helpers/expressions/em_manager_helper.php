@@ -1384,6 +1384,7 @@
                 // Default validation for question type
                 switch ($type)
                 {
+                    case 'I':
                     case '!':
                     case 'O':
                     case 'M': //NUMERICAL QUESTION TYPE
@@ -3142,6 +3143,9 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
+                    case 'I':
+                        $qtips['default']=$this->gT('Choose your language');
+                        break;
                     case 'O':
                     case 'L':
                     case '!':

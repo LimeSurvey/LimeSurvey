@@ -180,21 +180,11 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($aQuestionAttributes['max_answers']);
                 $minansw=trim($aQuestionAttributes['min_answers']);
-                if (!($maxansw || $minansw))
-                {
-                    $question_text['help'] = $message = gT('Check any that apply');
-                    $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-                }
             }
             break;
 
         case 'I': //Language Question
             $values=do_language($ia);
-            if (count($values[1]) > 1)
-            {
-                $question_text['help'] = $message = gT('Choose your language');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case 'P': //Multiple choice with comments checkbox + text
