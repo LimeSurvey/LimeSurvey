@@ -1391,11 +1391,25 @@
                 // Default validation for question type
                 switch ($type)
                 {
+                    case 'L': //Some test with radio list
+                        $sq_name = ($this->sgqaNaming)?$qinfo['sgqa'].".NAOK":$qinfo['varName'].".NAOK";
+                        if($qinfo['mandatory']=='Y'){
+                            $eqn='!is_empty('.$sq_name.')';
+                        }else{
+                            $eqn='1';
+                        }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  $eqn,
+                            'qid' => $questionNum,
+                            );
+                        break;
                     case 'I':
                     case '!':
                     case 'O':
                     case 'M': //NUMERICAL QUESTION TYPE
-                    case 'L': //LIST drop-down/radio-button list
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'default',
