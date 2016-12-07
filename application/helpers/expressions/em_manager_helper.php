@@ -1391,6 +1391,20 @@
                 // Default validation for question type
                 switch ($type)
                 {
+                    case 'I':
+                    case '!':
+                    case 'O':
+                    case 'M': //NUMERICAL QUESTION TYPE
+                    case 'L': //LIST drop-down/radio-button list
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  '',
+                            'qid' => $questionNum,
+                            );
+                        break;
+
                     case 'N': //NUMERICAL QUESTION TYPE
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
@@ -3136,6 +3150,17 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
+                    case 'I':
+                        $qtips['default']=$this->gT('Choose your language');
+                        break;
+                    case 'O':
+                    case 'L':
+                    case '!':
+                        $qtips['default']=$this->gT('Choose one of the following answers');
+                        break;
+                    case 'M':
+                         $qtips['default']=$this->gT('Check any that apply');
+                         break;
                     case 'N':
                         $qtips['default']=$this->gT("Only numbers may be entered in this field.");
                         break;
@@ -3503,6 +3528,15 @@
                 {
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
+
+                // Finally, we prevent bugs by removing empty equations
+                // @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
+                foreach ($veqns as $key => $eqn){
+                    if ($eqn=='()'){
+                        unset($veqns[$key]);
+                    }
+                }
+
                 $this->qid2validationEqn[$qid] = array(
                 'eqn' => $veqns,
                 'tips' => $tips,

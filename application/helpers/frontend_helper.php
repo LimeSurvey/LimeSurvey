@@ -1006,7 +1006,17 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
 
+    // Scenario => Token required
+    if ($scenarios['tokenRequired'] && !$preview){
+        //Test if token is valid
+        list($renderToken, $FlashError, $aEnterTokenData) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
+    }
+    if($FlashError !== ""){
+        $aEnterErrors['flash'] = $FlashError;
+    }
+
     $aEnterTokenData['aEnterErrors']=$aEnterErrors;
+
     $renderWay = getRenderWay($renderToken, $renderCaptcha);
     $redata = compact(array_keys(get_defined_vars()));
     /* This funtion end if an form need to be shown */
@@ -1579,7 +1589,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         $aEnterTokenData['token'] =  $clienttoken;
         $renderToken='correct';
     }
-    return array($renderToken, $FlashError);
+    return array($renderToken, $FlashError, $aEnterTokenData);
 }
 
 /**
