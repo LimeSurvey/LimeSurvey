@@ -6550,11 +6550,8 @@ function do_array_dual($ia)
         $inputnames="";
     }
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js");
-    $answer .= "<script type='text/javascript'>\n"
-    . "  <!--\n"
-    ." {$doDualScaleFunction}({$ia[0]});\n"
-    ." -->\n"
-    ."</script>\n";
+    Yii::app()->getClientScript()->registerScript("doDualScaleFunction{$ia[0]}","{$doDualScaleFunction}({$ia[0]});");
+
     return array($answer, $inputnames);
 }
 

@@ -38,10 +38,10 @@
 
     <?php foreach ($aSubQuestions as $ansrow): ?>
         <!-- <tr> -->
-        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php if($ansrow['showmandatoryviolation']){ echo " ls-error-mandatory";} ?>">
+        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php if($ansrow['mandatoryviolation']){ echo " ls-error-mandatory";} ?>">
             <!-- Answer text (actual question) -->
 
-            <th class="answertext control-label" id="answertext<?php echo $ansrow['myfname']; ?><?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>">
+            <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label<?php echo ($ansrow['mandatoryviolation']) ? " text-danger" : ""; ?>">
                 <label class="control-label" for="answer<?php echo $ansrow['myfid0']; ?>" id="label-<?php echo $ansrow['myfname']; ?>">
                     <?php echo $ansrow['question']; ?>
                 </label>
@@ -63,7 +63,7 @@
 
             <!-- First dropdown -->
 
-            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>">
+            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation'] && $ansrow['sActualAnswer0']==='') ? " has-error" : ""; ?>">
                 <?php if ($leftheader != '') : ?>
                     <div  class='visible-xs leftheader control-label'><?php echo $leftheader; ?></div>
                 <?php endif; ?>
@@ -82,7 +82,7 @@
                     aria-labelledby="answertext<?php echo $ansrow['myfname']; ?>"
                 >
                     <!-- Please choose... -->
-                    <?php if ($ansrow['sActualAnswer0'] == ''): ?>
+                    <?php if ($ansrow['sActualAnswer0'] === ''): ?>
                         <option value="" <?php echo SELECTED; ?> >
                             <?php eT('Please choose...'); ?>
                         </option>
@@ -122,7 +122,7 @@
 
             <!-- Second dropdown -->
 
-            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation']) ? " has-error" : ""; ?>">
+            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation'] && $ansrow['sActualAnswer1']==='') ? " has-error" : ""; ?>">
                 <?php if ($rightheader != '') : ?>
                     <div  class='visible-xs rightheader control-label'><?php echo $rightheader; ?></div>
                 <?php endif; ?>
@@ -135,7 +135,7 @@
                 <?php endif; ?>
                 <select class='form-control' name="<?php echo $ansrow['myfname1']; ?>" id="answer<?php echo $ansrow['myfid1']; ?>" aria-labelledby="label-<?php echo $ansrow['myfname']; ?>">
                     <!-- Please choose... -->
-                    <?php if ($ansrow['sActualAnswer1'] == ''): ?>
+                    <?php if ($ansrow['sActualAnswer1'] === ''): ?>
                         <option value="" <?php echo SELECTED; ?> ><?php eT('Please choose...'); ?></option>
                     <?php endif; ?>
 

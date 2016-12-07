@@ -29,8 +29,6 @@ if (!headers_sent())
 ?><html lang="<?php echo $lang ?>" class="no-js <?php echo $lang ?> dir-<?php  echo $langDir  ?>" <?php echo ($langDir=='rtl' ? 'dir="rtl"':''); ?>>
 <head>
 <?php
-    Yii::app()->clientScript->registerPackage('survey-template');
-    //~ App()->clientScript->registerScript("nojsReplace","(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement);",CClientScript::POS_HEAD);
     $oTemplate = Template::model()->getInstance($this->sTemplate);
     if($oTemplate->cssFramework == 'bootstrap')
     {

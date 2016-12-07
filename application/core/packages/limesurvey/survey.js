@@ -272,21 +272,38 @@ function triggerEmClassChange(){
 
 /**
  * has-error management for ls-error-mandatory
+ * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
+ * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template
  */
 function updateMandatoryErrorClass(){
-    $(".has-error").on("blur",":text,textarea",function(event){
+    $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("blur",":text,textarea",function(event){
         if($(this).val()!==""){
+            $(this).closest(".has-error").removeClass("has-error");
+            if(!$(this).closest(".ls-error-mandatory").find(".has-error").length){
+                $(this).closest(".ls-error-mandatory").find(".text-danger").removeClass("text-danger");
+            }
+        }
+    });
+    $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("change","select",function(event){
+        if($(this).val()!==""){
+            $(this).closest(".has-error").removeClass("has-error");
+            if(!$(this).closest(".ls-error-mandatory").find(".has-error").length){
+                $(this).closest(".ls-error-mandatory").find(".text-danger").removeClass("text-danger");
+            }
+        }
+    });
+    $(".ls-error-mandatory.has-error").on("change",":radio",function(event){
+        if($(this).closest(".array-flexible-duel-scale").length){
+            if($(this).closest(".has-error").find("input:radio:checked").length>1){
+                $(this).closest(".has-error").removeClass("has-error");
+            }
+        }else{
             $(this).closest(".has-error").removeClass("has-error");
         }
     });
-    $(".has-error").on("change","select",function(event){
-        if($(this).val()!==""){
-            $(this).closest(".has-error").removeClass("has-error");
-        }
+    $(".ls-error-mandatory.has-error").on("change",":checkbox",function(event){
+        $(this).closest(".has-error").removeClass("has-error");
     });
-    /* @todo : remove ls-error-mandatory in the line when not needed */
-    /* @todo : radio : except with dualsscale it's easy */
-
 }
 /**
  * showStartPopups : Take all message in startPopups json array and launch an alert with text
