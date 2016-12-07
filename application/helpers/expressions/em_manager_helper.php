@@ -6590,7 +6590,10 @@
             if (isset($LEM->qid2validationEqn[$qid]))
             {
                 $hasValidationEqn=true;
-                if (!$qhidden)  // do this even is starts irrelevant, else will never show this information.
+
+                // do this even is starts irrelevant, else will never show this information.
+                // NB: $validationEqn!='', @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
+                if (!$qhidden && $validationEqn!='')
                 {
                     $validationEqns = $LEM->qid2validationEqn[$qid]['eqn'];
                     $validationEqn = implode(' and ', $validationEqns);
