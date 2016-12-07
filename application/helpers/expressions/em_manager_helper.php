@@ -9558,8 +9558,6 @@ EOD;
                 // Must parse Validation this way so that regex (preg) works
                 $prettyValidEqn = '';
                 if ($q['prettyValidEqn'] != '') {
-                    tracevar($q['prettyValidEqn']);
-                    tracevar($q['validEqn']);
                     $validationEqn = $q['validEqn'];
                     if (!isset($LEM->ParseResultCache[$validationEqn]))
                     {
