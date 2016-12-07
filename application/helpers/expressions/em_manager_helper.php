@@ -3509,6 +3509,15 @@
                 {
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
+
+                // Finally, we prevent bugs by removing empty equations
+                // @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
+                foreach ($veqns as $key => $eqn){
+                    if ($eqn=='()'){
+                        unset($veqns[$key]);
+                    }
+                }
+
                 $this->qid2validationEqn[$qid] = array(
                 'eqn' => $veqns,
                 'tips' => $tips,
