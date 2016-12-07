@@ -154,9 +154,20 @@
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
                             $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
                             $colDetails = '';
+
                             if(isset($fieldmap[$column->name]['subquestion'])){
                                 $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion'].'</em><br/>';
                             }
+
+                            if(isset($fieldmap[$column->name]['subquestion1'])){
+                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion1'].'</em><br/>';
+                            }
+
+                            if(isset($fieldmap[$column->name]['subquestion2'])){
+                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion2'].'</em><br/>';
+                            }
+
+
                             $colDetails .= ellipsize($fieldmap[$column->name]['question'], $model->ellipsize_header_value);
 
                             $aColumns[]=
