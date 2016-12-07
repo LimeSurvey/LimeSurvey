@@ -1011,7 +1011,7 @@ function buildsurveysession($surveyid,$preview=false)
         //Test if token is valid
         list($renderToken, $FlashError, $aEnterTokenData) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
     }
-    if($FlashError !== ""){
+    if(isset($FlashError) && $FlashError !== ""){
         $aEnterErrors['flash'] = $FlashError;
     }
 

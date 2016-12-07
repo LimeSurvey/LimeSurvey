@@ -17,9 +17,9 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? "ls-odd" : "ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>"  <?php echo $sDisplayStyle; ?> role="radiogroup" aria-labelledby="answertext<?php echo $myfname;?>">
+<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? "ls-odd" : "ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>" role="radiogroup" aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
-    <th class="answertext control-label<?php if($error){ echo " error-mandatory";} ?>" id="answertext<?php echo $myfname;?>">
+    <th class="answertext control-label<?php if($error){ echo " error-mandatory";} ?><?php echo ($answerwidth==0)? " sr-only":""; ?>" id="answertext<?php echo $myfname;?>">
          <?php echo $answertext;?>
         <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value; ?>" />
     </th>
