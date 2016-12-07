@@ -318,7 +318,30 @@ class TemplateConfiguration extends CFormModel
      */
     private function getDependsPackages()
     {
-        $packages=array('limesurvey-public');
+        $packages=array();
+        /* Start by adding boostrap package , adding boostrap.css if exist */
+        if($this->cssFramework=="bootstrap"){
+
+            /* remove css from boostrap package , adding included boostrap css*/
+            Yii::app()->clientScript->packages['bootstrap']['css']=array();
+            $aBootstrapCss=array(
+                'css/bootstrap.css' /* MUST fix this one : usage of assets or attribute ?*/
+            );
+            $aDepends=array(
+                'bootstrap'
+            );
+            if(getLanguageRTL(App()->getLanguage())){
+                $aDepends[]='bootstrap-rtl';
+            }
+
+            Yii::app()->clientScript->addPackage( 'bootstrap-template', array(
+                'basePath'    => 'survey.template.path',
+                'css'         => $aBootstrapCss,
+                'depends'     => $aDepends,
+            ));
+            $packages[]='bootstrap-template';
+        }
+        $packages[]='limesurvey-public';
         if(!empty($this->packages->package)){
             foreach((array)$this->packages->package as $package){
                 $packages[]=$package;
