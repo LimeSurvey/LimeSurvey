@@ -211,58 +211,12 @@ function OSGeoInitialize(question,latLng){
         function isNumber(n){
             return !isNaN(parseFloat(n)) && isFinite(n);
         }
-        //~ $("#searchbox_"+name).autocomplete({
-            //~ appendTo: $("#searchbox_"+name).parent(),
-            //~ source: function( request, response ) {
-                //~ $.ajax({
-                    //~ url: "http://api.geonames.org/searchJSON",
-                    //~ dataType: "jsonp",
-                    //~ data: {
-                        //~ username : LSmap.geonameUser,
-                        //~ featureClass : 'P',
-                        //~ maxRows : 5,
-                        //~ lang : LSmap.geonameLang,
-                        //~ name_startsWith: request.term
-                    //~ },
-                    //~ beforeSend : function(jqXHR, settings) {
-                        //~ if($("#restrictToExtent_"+name).prop('checked'))
-                        //~ {
-                            //~ settings.url += "&east=" + map.getBounds().getEast() + "&west=" + map.getBounds().getWest() + "&north=" + map.getBounds().getNorth() + "&south=" + map.getBounds().getSouth();
-                        //~ }
-                    //~ },
-                    //~ success: function( data ) {
-                        //~ response($.map(data.geonames, function(item) {
-                        //~ return {
-                            //~ label: item.name + ", " + item.countryName,
-                            //~ lat: item.lat,
-                            //~ lng: item.lng,
-                            //~ source: "GeoNames"
-                            //~ };
-                        //~ }));
-                    //~ }
-                //~ });
-            //~ },
-            //~ minLength: 3,
-            //~ select: function( event, ui ) {
-                //~ if(ui.item.source=="GeoNames")
-                //~ {
-                    //~ map.setView([ui.item.lat, ui.item.lng], 13);
-                    //~ marker.setLatLng([ui.item.lat, ui.item.lng]);
-                    //~ UI_update(ui.item.lat, ui.item.lng);
-                //~ }
-            //~ },
-             //~ open: function() {
-                //~ $( this ).addClass( "searching" );
-            //~ },
-            //~ close: function() {
-                //~ $( this ).removeClass( "searching" );
-            //~ }
-        //~ });
 
         $("#searchbox_"+name).autocomplete({
             serviceUrl : "http://api.geonames.org/searchJSON",
             dataType: "jsonp",
             paramName: 'name_startsWith',
+            deferRequestBy: 500,
             params:{
                 username : LSmap.geonameUser,
                 featureClass : 'P',
