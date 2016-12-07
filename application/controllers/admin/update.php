@@ -69,13 +69,25 @@ class update extends Survey_Common_Action
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
-
+        $aData['fullpagebar']['update'] = true;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/comfortupdate.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/buildComfortButtons.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/displayComfortStep.js');
 
         $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
     }
+
+    public function managekey()
+    {
+        $buttons = 1;
+        $updateModel = new UpdateForm();
+        $serverAnswer = $updateModel->getUpdateInfo($buttons);
+        $aData['serverAnswer'] = $serverAnswer;
+        $aData['fullpagebar']['saveandclosebutton']['form'] = true;
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
+        $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
+    }
+
 
     /**
      * This function return the update buttons for stable branch
