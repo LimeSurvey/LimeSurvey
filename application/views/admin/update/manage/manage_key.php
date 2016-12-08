@@ -8,7 +8,51 @@
     </h3>
 
     <?php if($updateKey): ?>
-        ok
+
+        <div class="tab-pane  in active" style="width: 75%; margin: auto;">
+            <table class="items table">
+                <!-- header -->
+                <thead>
+                    <tr>
+                        <th>
+                            <?php eT('Your update key:'); ?>
+                        </th>
+                        <th>
+                            <?php eT('Valid until:'); ?>
+                        </th>
+                        <th>
+                            <?php eT('Remaining updates:'); ?>
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                             <?php if(!App()->getConfig('hide_update_key')):?>
+                                 <?php echo $updateKey; ?>
+                             <?php else:?>
+                                 <em>XXXXXXXXXXX</em>
+                             <?php endif;?>
+                        </td>
+                        <td>
+                            <?php echo convertToGlobalSettingFormat($updateKeyInfos->validuntil); ?>
+                        </td>
+                        <td>
+                            <?php echo $updateKeyInfos->remaining_updates; ?>
+                        </td>
+                        <td>
+                            <a data-href="<?php echo App()->createUrl('/admin/update/sa/delete_key');?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
+                                <span class="text-danger glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
     <?php else:?>
         <div class="jumbotron message-box ">
             <h2 class="text-success">Pwet</h2>

@@ -898,6 +898,7 @@ class templates extends Survey_Common_Action
             'navigator.pstpl',
             'endpage.pstpl'
         );
+        /* Not used : data updated during rendering */
         $Question = array('startpage.pstpl',
             'survey.pstpl',
             'startgroup.pstpl',
@@ -913,27 +914,33 @@ class templates extends Survey_Common_Action
             'completed.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $Clearall = array('startpage.pstpl',
             'clearall.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $Register = array('startpage.pstpl',
             'survey.pstpl',
             'register.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $Save = array('startpage.pstpl',
             'save.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $Load = array('startpage.pstpl',
             'load.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $printtemplate = array('startpage.pstpl',
             'printanswers.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $printablesurveytemplate = array('print_survey.pstpl',
             'print_group.pstpl',
             'print_question.pstpl'
@@ -1103,7 +1110,7 @@ class templates extends Survey_Common_Action
                 $myoutput[] = "";
                 //$myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $files=$SurveyList;
-                foreach ($SurveyList as $qs)
+                foreach ($files as $qs)
                 {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
                 }
@@ -1182,11 +1189,9 @@ class templates extends Survey_Common_Action
                     'NAVIGATOR' => "$sMoveNext",
                 ));
                 $files=$Welcome ;
-                foreach ($Welcome as $qs) {
+                foreach ($files as $qs) {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
                 }
-
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath  . "/endpage.pstpl", $aData, $oEditedTemplate));
                 break;
 
             case 'register':
@@ -1243,12 +1248,11 @@ class templates extends Survey_Common_Action
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $files=$CompletedTemplate;
                 $myoutput[] = "";
-                foreach ($CompletedTemplate as $qs)
+                foreach ($files as $qs)
                 {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
                 }
                 break;
-
             case 'printablesurvey':
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $files=$printablesurveytemplate;

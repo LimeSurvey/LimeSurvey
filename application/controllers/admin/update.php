@@ -79,21 +79,24 @@ class update extends Survey_Common_Action
 
     public function managekey()
     {
-        $buttons = 1;
-        $updateModel = new UpdateForm();
-        $serverAnswer = $updateModel->getUpdateInfo($buttons);
-        $aData['serverAnswer'] = $serverAnswer;
-        $aData['fullpagebar']['saveandclosebutton']['form'] = true;
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
-        $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            $buttons = 1;
+            $updateModel = new UpdateForm();
+            $serverAnswer = $updateModel->getUpdateInfo($buttons);
+            $aData['serverAnswer'] = $serverAnswer;
+            $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
+            $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
 
-        //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
-        if(!$updateKey) {
-            $this->_renderWrappedTemplate('update/manage/', 'subscribe', $aData);
-        }else{
-            $this->_renderWrappedTemplate('update/manage/', 'manage_key', $aData);
+            //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
+            if(!$updateKey) {
+                $aData['fullpagebar']['saveandclosebutton']['form'] = true;
+                $this->_renderWrappedTemplate('update/manage/', 'subscribe', $aData);
+            }else{
+                $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
+                $this->_renderWrappedTemplate('update/manage/', 'manage_key', $aData);
+            }
         }
-
     }
 
     public function manage_submitkey()
@@ -102,7 +105,6 @@ class update extends Survey_Common_Action
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
-        $aData['fullpagebar']['saveandclosebutton']['form'] = true;
         $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 
@@ -120,9 +122,8 @@ class update extends Survey_Common_Action
                     // If the key is validated by server, we update the local database with this key
                     $updateKey = $updateModel->setUpdateKey($submittedUpdateKey);
                     Yii::app()->session['flashmessage'] = gT("Your key has been updated and validated! You can now use ComfortUpdate.");
-                    $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
                     // then, we render the what returned the server (views and key infos or error )
-                    $this->_renderWrappedTemplate('update/manage/', 'manage_key', $aData);
+                    App()->getController()->redirect('admin/update/sa/managekey');
                 }
                 else
                 {
@@ -154,10 +155,20 @@ class update extends Survey_Common_Action
                     }
 
                     App()->setFlashMessage('<strong>'.gT($title).'</strong> '.gT($message),'error');
-                    $this->_renderWrappedTemplate('update/manage/', 'subscribe', $aData);
+                    App()->getController()->redirect('managekey');
                 }
 
             }
+        }
+    }
+
+    public function delete_key()
+    {
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            SettingGlobal::model()->deleteByPk('update_key');
+            App()->setFlashMessage('Your update key has been removed');
+            App()->getController()->redirect('admin/update/sa/managekey');
         }
     }
 
