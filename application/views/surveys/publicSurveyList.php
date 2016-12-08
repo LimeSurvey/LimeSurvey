@@ -14,9 +14,9 @@
         }
         /* get the col class for with (src : http://encosia.com/using-btn-block-bootstrap-3-dropdown-button-groups) */
         if ($survey->publicstatistics == "Y"){
-            $colClass="col-sm-10 col-md-11";
+            $colClass="col-xs-10 col-md-11";
         }else{
-            $colClass="col-sm-12";
+            $colClass="col-xs-12";
         }
         $surveyLine = CHtml::link(
             $survey->localizedTitle,
@@ -28,7 +28,6 @@
             array(
                 'class' => "surveytitle btn btn-primary {$colClass}",
                 'title'=>gT('Start survey'),
-                // broken : jquery-ui tooltip replace bs tooltip 'data-toggle'=>'tooltip',
                 'lang'=>$surveylang // Must add dir ?
             )
         );
@@ -36,9 +35,8 @@
             $surveyLine .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="sr-only">'. gT('View statistics') .'</span>',
                 array('statistics_user/action', 'surveyid' => $survey->sid,'language' => $surveylang),
                 array(
-                    'class'=>'view-stats btn btn-success col-sm-2 col-md-1',
+                    'class'=>'view-stats btn btn-success col-xs-2 col-md-1',
                     'title'=>gT('View statistics'),
-                    // broken : jquery-ui tooltip replace bs tooltip 'data-toggle'=>'tooltip',
                 )
             );
         }
