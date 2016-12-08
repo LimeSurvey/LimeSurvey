@@ -20,7 +20,6 @@ $(document).ready(function()
         }
         else if ($("#mapservice_"+question_id).val()==100){
             //  Maps
-            //  Maps
             if (osmaps[''+question] == undefined) {
                 osmaps[''+question] = OSGeoInitialize(question,latLng);
             }
@@ -34,8 +33,15 @@ osmaps = new Object;
 zoom = [];
 
 
-function isvalidCoord(val){
-    if (!isNaN(parseFloat(val)) && (val>-180 && val<180)) {
+function isvalidCoord(val,type){
+    if(type=='lat'){
+        var min=-90;
+        var max=90
+    }else{
+        var min=-180;
+        var max=180
+    }
+    if (!isNaN(parseFloat(val)) && (val>min && val<=max)) {
         return true;
     } else {
         return false;
@@ -103,6 +109,7 @@ function OSGeoInitialize(question,latLng){
             maxBounds: ([[-90, -180],[90, 180]]),
             layers: [mapOSM]
         });
+
         //function zoomExtent(){ // todo: restrict to rect ?
         //    map.setView([15, 15],1);
         //}
@@ -141,30 +148,32 @@ function OSGeoInitialize(question,latLng){
         map.on('click',
             function(e) {
                 var coords = L.latLng(e.latlng.lat,e.latlng.lng);
-                marker.setLatLng(coords);
-                UI_update(e.latlng.lat,e.latlng.lng)
+                if(isvalidCoord(coords.lat,'lat') && isvalidCoord(coords.lng,'lng')){
+                    marker.setLatLng(coords);
+                    UI_update(e.latlng.lat,e.latlng.lng);
+                }
             }
         )
 
-        // Zoom to 11 when switching to Aerial or Hybrid views - bug 10589
-        var layer2Name, layer3Name, layerIndex = 0;
-        for (var key in baseLayers) {
-            if (!baseLayers.hasOwnProperty(key)) {
-                continue;
-            }
-            if(layerIndex == 1) {
-                layer2Name = key;
-            }
-            else if(layerIndex == 2) {
-                layer3Name = key;
-            }
-            layerIndex++;
-        }
-        map.on('baselayerchange', function(e) {
-            if(e.name == layer2Name || e.name == layer3Name) {
-                map.setZoom(11);
-            }
-        });
+        // Zoom to 11 when switching to Aerial or Hybrid views - bug 10589 / @deprectaed : layer was updated
+        //~ var layer2Name, layer3Name, layerIndex = 0;
+        //~ for (var key in baseLayers) {
+            //~ if (!baseLayers.hasOwnProperty(key)) {
+                //~ continue;
+            //~ }
+            //~ if(layerIndex == 1) {
+                //~ layer2Name = key;
+            //~ }
+            //~ else if(layerIndex == 2) {
+                //~ layer3Name = key;
+            //~ }
+            //~ layerIndex++;
+        //~ }
+        //~ map.on('baselayerchange', function(e) {
+            //~ if(e.name == layer2Name || e.name == layer3Name) {
+                //~ map.setZoom(MapOption.zoomLevel);
+            //~ }
+        //~ });
 
         marker.on('dragend', function(e){
                 var marker = e.target;
@@ -173,44 +182,45 @@ function OSGeoInitialize(question,latLng){
         });
 
         function UI_update(lat,lng){
-            if (isvalidCoord(lat) && isvalidCoord(lng)) {
-                //$("#answer"+question).val(Math.round(lat*100000)/100000 + " " + Math.round(lng*100000)/100000);
-                $("#answer"+name).val(Math.round(lat*100000)/100000 + ";" + Math.round(lng*100000)/100000).trigger("keyup");
-                $("#answer_lat"+question).val(Math.round(lat*100000)/100000);
-                $("#answer_lng"+question).val(Math.round(lng*100000)/100000);
+            if (isvalidCoord(lat,'lat') && isvalidCoord(lng,'lng')) {
+                $("#answer"+name).val(Math.round(lat*100000)/100000 + ";" + Math.round(lng*100000)/100000);
+                $("#answer_lat"+question).val(Math.round(lat*100000)/100000).removeClass("text-danger").data('prevvalue',Math.round(lat*100000)/100000);
+                $("#answer_lng"+question).val(Math.round(lng*100000)/100000).removeClass("text-danger").data('prevvalue',Math.round(lat*100000)/100000);
             } else {
-                //$("#answer"+question).val("");
-                $("#answer"+name).val("").trigger("keyup");
-                $("#answer_lat"+question).val("");
-                $("#answer_lng"+question).val("");
+                $("#answer"+name).val("");
+                $("#answer_lat"+question).val("").data('prevvalue','');
+                $("#answer_lng"+question).val("").data('prevvalue','');
             }
+            checkconditions($("#answer"+name).val(), name, 'text', 'keyup');
         }
 
-        $('coords[name^='+name+']').each(function() {
-            // Save current value of element
-            $(this).data('oldVal', $(this));
-            // Look for changes
-            $(this).bind("propertychange keyup input cut paste", function(event){
-                // If value has changed...
-                if ($(this).data('oldVal') != $(this).val()) {
-                    // Updated stored value
-                    $(this).data('oldVal', $(this).val());
-                    var newLat = $("#answer_lat"+question).val();
-                    var newLng = $("#answer_lng"+question).val();
-                    if (isNumber(newLat) && isNumber(newLng)) {
-                        $("#answer"+name).val(newLat + ";" + newLng);
-                        marker.setLatLng(L.latLng(newLat,newLng));
-                    } else {
-                        $("#answer"+name).val("-- --");
-                        marker.setLatLng(L.latLng(9999,9999));
-                    }
-                }
-            });
+
+        $('.coords[name^='+name+']').each(function(){
+            $(this).data('prevvalue',$(this).val());
         });
-
-        function isNumber(n){
-            return !isNaN(parseFloat(n)) && isFinite(n);
-        }
+        $('.coords[name^='+name+']').on('blur',function(){
+            if ($(this).data('prevvalue') != $(this).val()) {
+                var newLat = $("#answer_lat"+question).val();
+                if(newLat!=="" && !isvalidCoord(newLat,'lat')){
+                    $("#answer_lat"+question).addClass("text-danger");
+                }else{
+                    $("#answer_lat"+question).removeClass("text-danger");
+                }
+                var newLng = $("#answer_lng"+question).val();
+                if(newLng!="" && !isvalidCoord(newLng)){
+                    $("#answer_lng"+question).addClass("text-danger");
+                }else{
+                    $("#answer_lng"+question).removeClass("text-danger");
+                }
+                if (isvalidCoord(newLat,'lat') && isvalidCoord(newLng,'lng')) {
+                    $("#answer"+name).val(newLat + ";" + newLng);
+                    map.setView([newLat, newLng]);
+                    marker.setLatLng(L.latLng(newLat,newLng));
+                    checkconditions($("#answer"+name).val(), name, 'text', 'keyup');
+                }
+            }
+            $(this).data('prevvalue',$(this).val());
+        });
 
         $("#searchbox_"+name).autocomplete({
             serviceUrl : "http://api.geonames.org/searchJSON",
@@ -249,7 +259,7 @@ function OSGeoInitialize(question,latLng){
             },
             onSelect : function(suggestion) {
                 if(suggestion.data.src=='geoname'){
-                    map.setView([suggestion.data.lat, suggestion.data.lng], 13);
+                    map.setView([suggestion.data.lat, suggestion.data.lng], MapOption.zoomLevel);
                     marker.setLatLng([suggestion.data.lat, suggestion.data.lng]);
                     UI_update(suggestion.data.lat, suggestion.data.lng);
                 }

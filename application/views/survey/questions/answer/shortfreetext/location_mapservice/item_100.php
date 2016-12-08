@@ -67,11 +67,11 @@
                     </label>
                     <input
                     class="coords text form-control"
-                    type="text"
+                    type="number"
+                    step="any"
                     name="<?php echo $name; ?>_c1"
                     id="answer_lat<?php echo $name; ?>_c"
                     value="<?php echo $currentLat; ?>"
-                    readonly
                     />
                 </div>
 
@@ -81,11 +81,11 @@
                     </label>
                     <input
                     class="coords text form-control"
-                    type="text"
+                    type="number"
+                    step="any"
                     name="<?php echo $name; ?>_c2"
                     id="answer_lng<?php echo $name; ?>_c"
                     value="<?php echo $currentLong; ?>"
-                    readonly
                     />
                 </div>
 
