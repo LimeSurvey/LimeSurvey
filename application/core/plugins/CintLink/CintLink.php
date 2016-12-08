@@ -64,15 +64,14 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function beforeActivate()
     {
-        $oDB = Yii::app()->getDb();
+        $db = Yii::app()->getDb();
 
-        $tableDoesNotExist = $oDB->schema->getTable("{{plugin_cintlink_orders}}") === null;
+        $tableDoesNotExist = $db->schema->getTable("{{plugin_cintlink_orders}}") === null;
         if ($tableDoesNotExist)
         {
             $this->createDatabase();
         }
 
-        $this->fetchGlobalVariables();
     }
 
     /**
@@ -142,6 +141,13 @@ class CintLink extends \ls\pluginmanager\PluginBase
      */
     public function actionIndex($surveyId)
     {
+        try {
+            $this->fetchGlobalVariables();
+        }
+        catch (\Exception $ex) {
+            Yii::app()->user->setFlash('error', $this->gT('Could not fetch global variables from Cint: ' . $ex->getMessage()));
+        }
+
         if (empty($surveyId))
         {
             throw new InvalidArgumentException('surveyId cannot be empty');
