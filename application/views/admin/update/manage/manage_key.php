@@ -31,7 +31,11 @@
                 <tbody>
                     <tr>
                         <td>
-                            <?php echo $updateKey; ?>
+                             <?php if(!App()->getConfig('hide_update_key')):?>
+                                 <?php echo $updateKey; ?>
+                             <?php else:?>
+                                 <em>XXXXXXXXXXX</em>
+                             <?php endif;?>
                         </td>
                         <td>
                             <?php echo convertToGlobalSettingFormat($updateKeyInfos->validuntil); ?>
