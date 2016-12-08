@@ -952,6 +952,7 @@ class templates extends Survey_Common_Action
             'navigator.pstpl',
             'endpage.pstpl'
         );
+        /* not used : data updated between load */
         $Question = array('startpage.pstpl',
             'survey.pstpl',
             'startgroup.pstpl',
@@ -967,27 +968,33 @@ class templates extends Survey_Common_Action
             'completed.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $Clearall = array('startpage.pstpl',
             'clearall.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $Register = array('startpage.pstpl',
             'survey.pstpl',
             'register.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $Save = array('startpage.pstpl',
             'save.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $Load = array('startpage.pstpl',
             'load.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $printtemplate = array('startpage.pstpl',
             'printanswers.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $printablesurveytemplate = array('print_survey.pstpl',
             'print_group.pstpl',
             'print_question.pstpl'
@@ -1214,11 +1221,9 @@ class templates extends Survey_Common_Action
                     'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg">'.gT('Next').'</button>'
                 );
                 $files=$Welcome ;
-                foreach ($Welcome as $qs) {
+                foreach ($files as $qs) {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
-
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/endpage.pstpl", $aData, $oEditedTemplate));
                 break;
 
             case 'register':
