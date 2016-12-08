@@ -148,7 +148,7 @@
                         <select name='gid' id='gid' class="form-control">
                             <?php
                             foreach ($groups as $groupId => $groupName) {
-                                echo '<option value="' . $groupId . '"'.(isset($editdata['gid']) && $editdata['gid']== $groupId ? ' selected' : '').'>' . $groupName . '</option>';
+                                echo '<option value="' . $groupId . '"'.(isset($editdata['gid']) && $editdata['gid']== $groupId ? ' selected' : '').'>' . flattenText($groupName) . '</option>';
                             }
                             ?>
                         </select>

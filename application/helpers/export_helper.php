@@ -547,6 +547,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
     {
         $query->limit((int) $limit,  (int) $offset);
     }
+    $query->order('id ASC');
 
     return $query;
 }
@@ -607,7 +608,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
                         if (!$xmlwriter->startElement($Key)) safeDie('Invalid element key: '.$Key);
                         // Remove invalid XML characters
                         if ($Value!=='') {
-                            $Value=str_replace(']]>','',$Value);
+                            $Value=str_replace(']]>',']] >',$Value);
                             $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
                         }
                         $xmlwriter->endElement();

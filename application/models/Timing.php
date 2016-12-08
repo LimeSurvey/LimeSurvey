@@ -51,7 +51,7 @@
                 }
                 return self::$_models[$iSurveyId];
             }
-			new Exception('iSurveyId missing in static call.');
+			throw new Exception('iSurveyId missing in static call.');
         }
 
 

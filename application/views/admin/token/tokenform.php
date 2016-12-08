@@ -111,7 +111,7 @@
                                         {
                                             $completedDBFormat     = $completed;
                                             $bCompletedValue       = "1";
-                                            $completed             = convertToGlobalSettingFormat($completed);
+                                            $completed             = convertToGlobalSettingFormat($completed, true);
                                         }
                                     ?>
 
@@ -238,7 +238,7 @@
                                             {
                                                 $bSwitchValue     = "1";
                                                 $sentDBValue      = $sent;
-                                                $sent             = convertToGlobalSettingFormat($sent);
+                                                $sent             = convertToGlobalSettingFormat($sent, true);
                                             }
 
                                             $bRemindSwitchValue  = "0";
@@ -246,7 +246,7 @@
                                             {
                                                 $bRemindSwitchValue       = "1";
                                                 $remindersentDBValue      = $remindersent;
-                                                $remindersent             = convertToGlobalSettingFormat($remindersent);
+                                                $remindersent             = convertToGlobalSettingFormat($remindersent, true);
                                             }
                                         ?>
 

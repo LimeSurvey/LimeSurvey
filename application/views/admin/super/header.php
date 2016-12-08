@@ -57,6 +57,12 @@
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
+
+<!-- Loading wrapper -->
+<div id='ls-loading'>
+    <span id='ls-loading-spinner' class='fa fa-spinner fa-spin fa-4x'></span>
+</div>
+
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
 <script type='text/javascript'>

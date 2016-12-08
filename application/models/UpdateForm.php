@@ -317,8 +317,8 @@ class UpdateForm extends CFormModel
     {
         foreach ( $updateinfos as $file )
         {
-            $sFileToDelete = str_replace("..", "", $file->file);
-            if ($file->type =='D' && file_exists($this->rootdir.$sFileToDelete) )
+            $sFileToDelete = str_replace("..", "", $file['file']);
+            if ($file['type'] =='D' && file_exists($this->rootdir.$sFileToDelete) )
             {
                 if ( is_file($this->rootdir.$sFileToDelete ) )
                 {
@@ -489,7 +489,7 @@ class UpdateForm extends CFormModel
         {
 
             // To block the access to subdirectories
-            $sFileToZip = str_replace("..", "", $file->file);
+            $sFileToZip = str_replace("..", "", $file['file']);
 
             if (is_file($this->publicdir.$sFileToZip)===true && basename($sFileToZip)!='config.php')
             {

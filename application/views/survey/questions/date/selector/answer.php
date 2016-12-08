@@ -120,3 +120,11 @@
 <input type='hidden' class="namecontainer" data-name="<?php echo $qid; ?>" />
 
 <!-- end of answer -->
+
+<script>
+$(document).ready(function() {
+    $('#answer' + '<?php echo $name; ?>' + '_datetimepicker').on('dp.show', function(ev) {
+        setPickerOptions('<?php echo $name; ?>');
+    });
+});
+</script>

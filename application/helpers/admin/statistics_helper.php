@@ -2451,6 +2451,7 @@ class statistics_helper {
         //loop though the array which contains all answer data
         $ColumnName_RM=array();
         //echo '<pre>'; var_dump($outputs['alist']); echo '</pre>';die;
+        $statisticsoutput_footer  = "<script>";
         foreach ($outputs['alist'] as $al)
         {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
@@ -3086,7 +3087,6 @@ class statistics_helper {
         $aData['bShowCount']      = (isset($bShowCount))?$bShowCount:false;
         $aData['bShowPercentage'] = (isset($bShowPercentage))?$bShowPercentage:false;
         $statisticsoutput         =  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
-
         //loop through all available answers
         ////
         while (isset($gdata[$i]))
@@ -3405,7 +3405,6 @@ class statistics_helper {
             // Generate answer
             // _statisticsoutput_answer
             $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_answer', $aData, true);
-
             $extraline            = false;
             $aggregated           = false;
             $aggregatedPercentage = false;
@@ -3792,11 +3791,11 @@ class statistics_helper {
                 ///
 
                 $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
-
+                $statisticsoutput_footer .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_footer', $aData, true);
             }
-            $statisticsoutput .= "</table></div> <!-- in statistics helper --> \n";
+            $statisticsoutput .= "</table></div><!-- in statistics helper --> \n";
         }
-
+         $statisticsoutput =  $statisticsoutput. $statisticsoutput_footer."</script>";
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);
 
     }

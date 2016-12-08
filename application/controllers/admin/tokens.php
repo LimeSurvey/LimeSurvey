@@ -186,14 +186,12 @@ class tokens extends Survey_Common_Action
                 $count = imap_num_msg($mbox);
                 if ($count>0)
                 {
-                    $lasthinfo      = imap_headerinfo($mbox, $count);
-                    $datelcu        = strtotime($lasthinfo->date);
-                    $datelastbounce = $datelcu;
-                    $lastbounce     = $thissurvey['bouncetime'];
-
-                    while ($datelcu > $lastbounce)
-                    {
-                        $header = explode("\r\n", imap_body($mbox, $count, FT_PEEK)); // Don't mark messages as read
+                    $aMessageIDs=imap_search($mbox,'UNSEEN',SE_UID);
+                    if (!$aMessageIDs) {
+                        $aMessageIDs=array();
+                    }
+                    foreach ($aMessageIDs as $sMessageID) {
+                        $header = explode("\r\n", imap_body($mbox, $sMessageID, FT_UID && FT_PEEK )); // Don't mark messages as read
 
                         foreach ($header as $item)
                         {
@@ -222,46 +220,42 @@ class tokens extends Survey_Common_Action
                                         $bouncetotal++;
                                     }
 
-                                    $readbounce = imap_body($mbox, $count); // Put read
+                                    $readbounce = imap_body($mbox, $sMessageID, FT_UID); // Put read
                                     if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
                                     {
-                                        $deletebounce = imap_delete($mbox, $count); // Put delete
+                                        $deletebounce = imap_delete($mbox, $sMessageID, FT_UID); // Put delete
                                     }
                                 }
                             }
                         }
-                        $count--;
-                        @$lasthinfo = imap_headerinfo($mbox, $count);
-                        @$datelc = $lasthinfo->date;
-                        $datelcu = strtotime($datelc);
                         $checktotal++;
                     }
                 }
                 imap_close($mbox);
-                $condn = array('sid' => $iSurveyId);
-                $survey = Survey::model()->findByAttributes($condn);
-                $survey->bouncetime = $datelastbounce;
-                $survey->save();
 
-                if ($bouncetotal > 0)
-                {
-                    printf(gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
+                if ($bouncetotal > 0){
+                    printf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
+                    eT("You can now close this modal box.");
+                }else{
+                    printf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal);
+                    eT("You can now close this modal box.");
                 }
-                else
-                {
-                    printf(gT("%s messages were scanned, none were marked as bounce by the system."), $checktotal);
-                }
-            }
-            else
-            {
-                eT("Please check your settings");
+            }else{
+                $sSettingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/'.$iSurveyId);
+                eT("Failed to open the inbox of the bounce email account.");
+                echo "<br><strong>";
+                printf(gT("Please %s check your settings %s."), '<a href="'.$sSettingsUrl.'" title="Bounce settings" >', '</a>');
+                echo "</strong><br> <br/>";
+                eT("Error message returned by IMAP:");
+                echo "<br>";
                 $aErrors = @imap_errors();
 
                 foreach ($aErrors as $sError)
                 {
-                    echo '<br/>'.$sError;
+                    echo $sError.'<br/>';
                 }
-
+                echo "<br><br/>";
+                eT("You can now close this modal box.");
             }
         }
         else
@@ -318,20 +312,7 @@ class tokens extends Survey_Common_Action
         $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
 
         // Javascript
-        //App()->getClientScript()->registerPackage('jqgrid');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
-
-
-        // CSS
-        // Right to Left
-        if (getLanguageRTL($_SESSION['adminlang']))
-        {
-            $this->registerCssFile( 'ADMIN', 'jqgrid-rtl.css' );
-        }
-        else
-        {
-            $this->registerCssFile( 'ADMIN', 'jqgrid.css' );
-        }
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::import('application.libraries.Date_Time_Converter', true);
@@ -416,8 +397,8 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Called by jqGrid if a token is saved after editing
-    *
+    * Called by  if a token is saved after editing
+    * @todo Check if method is still in use
     * @param mixed $iSurveyId The Survey ID
     */
     public function editToken($iSurveyId)
@@ -2485,7 +2466,11 @@ class tokens extends Survey_Common_Action
 
     /**
     * Handle token form for addnew/edit actions
+    * @param int $iSurveyId
     * @param string $subaction
+    * @param int $iTokenId
+    * @param boolean $ajax
+    * @return void
     */
     public function _handletokenform($iSurveyId, $subaction, $iTokenId="", $ajax=false)
     {

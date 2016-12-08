@@ -152,7 +152,7 @@ class SurveyDao
                 // Do nothing, all responses
                 break;
         }
-
+        $oRecordSet->order='{{survey_' . $survey->id . '}}.id ASC';
         $survey->responses=$oRecordSet->select($aSelectFields)->query();
     }
 }

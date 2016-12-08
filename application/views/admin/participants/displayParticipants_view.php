@@ -85,7 +85,7 @@
                     CHtml::dropDownList(
                         'pageSizeParticipantView',
                         Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']),
-                        Yii::app()->params['pageSizeOptions'],
+                        Yii::app()->params['pageSizeOptionsTokens'],
                         array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
                     )
                 ),

@@ -78,7 +78,6 @@ $(document).ready(function(){
         }
     });
 
-     //$('#languagetabs').bootTabs();
     $('#radiototal,#radiogroup').change(function() {
         if ($('#radiototal').attr('checked')==true) {
             $('#newgroupselect').attr('disabled','disabled');
@@ -102,64 +101,86 @@ $(document).ready(function(){
 
 });
 
-function populateCanswersSelect(evt) {
-	var fname = $('#cquestions').val();
-	// empty the canswers Select
-	$('#canswers option').remove();
-	var Keys = new Array();
-	// store the indices in the Fieldnames array (to find codes and answers) where fname is found
-	for (var i=0;i<Fieldnames.length;i++) {
-		if (Fieldnames[i] == fname) {
-			Keys[Keys.length]=i;
-		}
-	}
+/**
+ * Object with one public variable: fun, which is
+ * the populateCanswersSelect function.
+ * @constructur
+ */
+populateCanswersSelectObject = function() {
 
-	for (var i=0;i<QFieldnames.length;i++) {
-		if (QFieldnames[i] == fname) {
-			$('#cqid').val(Qcqids[i]);
-			if (Qtypes[i] == 'P' || Qtypes[i] == 'M')
-			{
-				$('#conditiontarget').bootTabs('enable', 0);
-				$('#conditiontarget').bootTabs('option','active', 0);
-				$('#conditiontarget').bootTabs('enable', 1);
-				$('#conditiontarget').bootTabs('disable', 2);
-				$('#conditiontarget').bootTabs('disable', 3);
-				$('#conditiontarget').bootTabs('disable', 4);
-				if ($('#method').val() != '==' || $('#method').val() != '!=')
-				{
-					$('#method').val('==');
-				}
-				$('#method option').not("[value='==']").not("[value='!=']").attr('disabled','disabled');
-			}
-			else
-			{
-				$('#conditiontarget').bootTabs('enable', 0);
-				$('#conditiontarget').bootTabs('enable', 1);
-				$('#conditiontarget').bootTabs('enable', 2);
-				if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
-				$('#conditiontarget').bootTabs('enable', 4);
-				selectTabFromOper();
-				$('#method option').removeAttr('disabled');
-			}
-		}
-	}
+    // Default values for the original add/edit form
+    // They will be overrided by the quick-add form
+    this.cquestionsId      = '#cquestions';
+    this.canswersId        = '#canswers';
+    this.canswersIdNoHash  = 'canswers';
+    this.cqid              = '#cqid';
+    this.conditiontargetId = '#conditiontarget';
+    this.methodId          = '#method';
+    this.canswersToSelectId= '#canswersToSelect';
 
-	for (var i=0;i<Keys.length;i++) {
-		var optionSelected = false;
-		// If we are at page load time, then we may know which option to select
-		if (evt === null)
-		{ // Let's read canswersToSelect and check if we should select the option
-			var selectedOptions = $('#canswersToSelect').val().split(';');
-			for (var j=0;j<selectedOptions.length;j++) {
-				if (Codes[Keys[i]] == selectedOptions[j])
-				{
-					optionSelected = true;
-				}
-			}
-		}
-		document.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Codes[Keys[i]]+' ('+Answers[Keys[i]]+')', Codes[Keys[i]],false,optionSelected);
-	}
-}
+    var that = this;
+
+    this.fun = function(evt) {
+
+        var fname = $(that.cquestionsId).val();
+        // empty the canswers Select
+        $(that.canswersId + ' option').remove();
+        var Keys = new Array();
+        // store the indices in the Fieldnames array (to find codes and answers) where fname is found
+        for (var i=0;i<Fieldnames.length;i++) {
+            if (Fieldnames[i] == fname) {
+                Keys[Keys.length]=i;
+            }
+        }
+
+        for (var i=0;i<QFieldnames.length;i++) {
+            if (QFieldnames[i] == fname) {
+                $(that.cqid).val(Qcqids[i]);
+                if (Qtypes[i] == 'P' || Qtypes[i] == 'M')
+                {
+                    //$(that.conditiontargetId).bootTabs('enable', 0);
+                    //$(that.conditiontargetId).bootTabs('option','active', 0);
+                    //$(that.conditiontargetId).bootTabs('enable', 1);
+                    //$(that.conditiontargetId).bootTabs('disable', 2);
+                    //$(that.conditiontargetId).bootTabs('disable', 3);
+                    //$(that.conditiontargetId).bootTabs('disable', 4);
+                    if ($(that.methodId).val() != '==' || $('#method').val() != '!=')
+                    {
+                        $(that.methodId).val('==');
+                    }
+                    $(that.methodId + ' option').not("[value='==']").not("[value='!=']").attr('disabled','disabled');
+                }
+                else
+                {
+                    //$(that.conditiontargetId).bootTabs('enable', 0);
+                    //$(that.conditiontargetId).bootTabs('enable', 1);
+                    //$(that.conditiontargetId).bootTabs('enable', 2);
+                    //if (!isAnonymousSurvey) {
+                        //$(that.conditiontargetId).bootTabs('enable', 3);
+                    //}
+                    //$(that.conditiontargetId).bootTabs('enable', 4);
+                    selectTabFromOper();
+                    $(that.methodId + ' option').removeAttr('disabled');
+                }
+            }
+        }
+
+        for (var i=0;i<Keys.length;i++) {
+            var optionSelected = false;
+            // If we are at page load time, then we may know which option to select
+            if (evt === null) {
+                // Let's read canswersToSelect and check if we should select the option
+                var selectedOptions = $(that.canswersToSelectId).val().split(';');
+                for (var j=0;j<selectedOptions.length;j++) {
+                    if (Codes[Keys[i]] == selectedOptions[j]) {
+                        optionSelected = true;
+                    }
+                }
+            }
+            document.getElementById(that.canswersIdNoHash).options[document.getElementById(that.canswersIdNoHash).options.length] = new Option(Codes[Keys[i]]+' ('+Answers[Keys[i]]+')', Codes[Keys[i]],false,optionSelected);
+        }
+    }
+};
 
 /**
  * When user selects method in "Comparison operator", we need to
@@ -191,26 +212,36 @@ function selectTabFromOper() {
 	}
 }
 
-$(document).ready(function(){
+/**
+ * Same as selectTabFromOper but for quick-add modal
+ */
+function quickAddSelectTabFromOper() {
+	var val = $('#quick-add-method').val();
+	if(val == 'RX') {
+        $('a[href="#QUICKADD-CANSWERSTAB"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-CONST"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-PREVQUESTIONS"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-TOKENATTRS"]').parent().addClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').trigger('click');
+	}
+	else {
+		//if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
 
-    // We must run this to enable the tabsactivate event
-    $('#conditiontarget, #conditionsource').tabs();
+        $('a[href="#QUICKADD-CANSWERSTAB"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-CONST"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-PREVQUESTIONS"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-TOKENATTRS"]').parent().removeClass('disabled');
+        $('a[href="#QUICKADD-REGEXP"]').parent().addClass('disabled');
 
-	$('#conditiontarget').on('tabsactivate', function(event, ui) {
-		$('#editTargetTab').val('#' + ui.newPanel.prop("id"));	
-	});
+        // If regexp tab is selected, trigger click on first tab instead
+        if ($('a[href="#QUICKADD-REGEXP"]').parent().hasClass('active')) {
+            $('a[href="#QUICKADD-CANSWERSTAB"]').trigger('click');
+        }
+	}
+}
 
-
-	$('#conditionsource').on('tabsactivate', function(event, ui) {
-		$('#editSourceTab').val('#' + ui.newPanel.prop("id"));	
-	});
-
-	// disable RegExp tab onload (new condition)
-	
-	$('#conditiontarget').bootTabs('disable', 4);
-	// disable TokenAttribute tab onload if survey is anonymous
-	if (isAnonymousSurvey) $('#conditiontarget').bootTabs('disable', 3);
-	if (isAnonymousSurvey) $('#conditionsource').bootTabs('disable', 1);
+$(document).ready(function() {
 
 	$('#resetForm').click( function() {
 		$('#canswers option').remove();
@@ -221,59 +252,25 @@ $(document).ready(function(){
 		
 	});
 
-	$('#conditiontarget').find(':input').change(
-		function(evt)
-		{
-			$('#conditiontarget').find(':input').each(
-				function(indx,elt)
-				{
-					if (elt.id != evt.target.id)
-					{
-						if ($(elt).attr('type') == 'select-multiple' || 
-							$(elt).attr('type') == 'select-one' ) {
-							$(elt).find('option:selected').removeAttr("selected");
-						}
-						else {
-							$(elt).val('');	
-						}
-					}
-					return true;
-				}
-			);
-		}
-	);
-
-	$('#conditionsource').find(':input').change(
-		function(evt)
-		{
-			$('#conditionsource').find(':input').each(
-				function(indx,elt)
-				{
-					if (elt.id != evt.target.id)
-					{
-						if ($(elt).attr('type') == 'select-multiple' || 
-							$(elt).attr('type') == 'select-one' ) {
-							$(elt).find('option:selected').removeAttr("selected");
-						}
-						else {
-							$(elt).val('');	
-						}
-					}
-					return true;
-				}
-			);
-			if (evt.target.id == 'csrctoken')
-			{
-				$('#canswers option').remove();
-			}
-		}
-	);
-
 	// Select the condition target Tab depending on operator
-        //selectTabFromOper($('#method').val());
 	$('#method').change(selectTabFromOper);
+	$('#quick-add-method').change(quickAddSelectTabFromOper);
+
+    var p = new populateCanswersSelectObject();
+    populateCanswersSelect = p.fun;
 
 	$('#cquestions').change(populateCanswersSelect);
+
+    // Populate stuff for quick-add modal
+    var p2 = new populateCanswersSelectObject();
+    p2.cquestionsId      = '#quick-add-cquestions';
+    p2.canswersId        = '#quick-add-canswers';
+    p2.canswersIdNoHash  = 'quick-add-canswers';
+    p2.cqid              = '#quick-add-cqid';
+    p2.conditiontargetId = '#quick-add-conditiontarget';
+    p2.methodId          = '#quick-add-method';
+    p2.canswersToSelectId= '#quick-add-canswersToSelectId';
+	$('#quick-add-cquestions').change(p2.fun);
 
 	$('#csrctoken').change(function() {
 		$('#cqid').val(0);
@@ -296,15 +293,33 @@ $(document).ready(function(){
     $('a[href="' + editSourceTab + '"]').trigger('click');
 
     // When user clicks tab, update hidden input
-    $('.src-tab').on('click', function(e) {
+    $('#editconditions .src-tab').on('click', function(e) {
         var href = $(e.currentTarget).find('a').attr('href');
         $('input[name="editSourceTab"]').val(href);
     });
 
     // When user clicks tab, update hidden input
-    $('.target-tab').on('click', function(e) {
+    $('#editconditions .target-tab').on('click', function(e) {
         var href = $(e.currentTarget).find('a').attr('href');
         $('input[name="editTargetTab"]').val(href);
+    });
+
+    // Tab management for quick-add modal
+    var editTargetTab = $('input[name="quick-add-editTargetTab"]').val();
+    var editSourceTab = $('input[name="quick-add-editSourceTab"]').val();
+    $('a[href="' + editTargetTab + '"]').trigger('click');
+    $('a[href="' + editSourceTab + '"]').trigger('click');
+
+    // When user clicks tab, update hidden input
+    $('#quick-add-conditions-form .src-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="quick-add-editSourceTab"]').val(href);
+    });
+
+    // When user clicks tab, update hidden input
+    $('#quick-add-conditions-form .target-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="quick-add-editTargetTab"]').val(href);
     });
 
     // Disable clicks on disabled tabs (regexp)
@@ -315,6 +330,42 @@ $(document).ready(function(){
         }
     });
 
+    // Bind save-buttons in quick-add modal
+    $('#quick-add-condition-save-button').on('click', function(ev) {
+        var formData = $('#quick-add-conditions-form').serializeArray();
+        var url = $('#quick-add-url').html();
+        console.log('formData', formData);
+        LS.ajax({
+            url: url,
+            data: formData,
+            method: 'POST',
+            error: function () {
+                console.log(arguments);
+            }
+        });
+    });
+
+    // Save-and-close for quick-add modal
+    $('#quick-add-condition-save-and-close-button').on('click', function(ev) {
+        var formData = $('#quick-add-conditions-form').serializeArray();
+        var url = $('#quick-add-url').html();
+        LS.ajax({
+            url: url,
+            data: formData,
+            method: 'POST',
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.log(arguments);
+            }
+        });
+    });
+
+    // Close for quick-add modal
+    $('#quick-add-condition-close-button').on('click', function(ev) {
+        location.reload();
+    });
 });
 
 /**
@@ -326,4 +377,15 @@ function scenarioaddbtnOnClickAction() {
     $('#defaultscenariotxt').hide('slow');
     $('.add-scenario-column').removeClass('col-sm-4').addClass('col-sm-2');
     $('#scenario').show('slow');
+}
+
+/**
+ * Redirects to url
+ * Button in scenario to add a condition for this scenario (prefill scenario number)
+ * @param {string} url
+ * @return
+ */
+function addConditionToScenario(url) {
+    location = url + '#formHeader';
+    return false;
 }

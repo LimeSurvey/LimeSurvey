@@ -927,7 +927,9 @@ var LsGlobalNotifier = new NotifyFader();
 function notifyFader(text, classes, styles, customOptions) {
 
     // Hide all modals
-    $('.modal').modal('hide');
+    // TODO: Where is this needed?
+    // TODO: Commented, because doesn't work quick condition quick-add where modal should stay open
+    //$('.modal').modal('hide');
 
     LsGlobalNotifier.create(text, classes, styles, customOptions);
 }
@@ -935,7 +937,7 @@ function notifyFader(text, classes, styles, customOptions) {
 /**
  * Part of ajax helper
  * @param {object} JSON object from server
- * @return {boolean} true if the original success method should be run after this
+ * @return {boolean} true if the original success method should be run after this (always, except on failed login)
  * @todo Localization
  * @todo Branch on message type?
  */
@@ -978,6 +980,7 @@ LS.ajaxHelperOnSuccess = function(response) {
  * Like $.ajax, but with checks for errors,
  * permission etc. Should be used together
  * with the PHP AjaxHelper.
+ * @todo Handle error from server (500)?
  * @param {object} options - Exactly the same as $.ajax options
  * @return {object} ajax promise
  */
@@ -987,12 +990,24 @@ LS.ajax = function(options) {
     var oldError = options.error;
     options.success = function(response) {
 
+        $('#ls-loading').hide();
+
+        // User-supplied success is always run EXCEPT when login fails
         var runOldSuccess = LS.ajaxHelperOnSuccess(response);
 
         if (oldSuccess && runOldSuccess) {
             oldSuccess(response);
         }
     }
+
+    options.error = function(response) {
+        $('#ls-loading').hide();
+        if (oldError) {
+            oldError();
+        }
+    }
+
+    $('#ls-loading').show();
 
     return $.ajax(options);
 }

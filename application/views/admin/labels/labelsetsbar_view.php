@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    var sImageURL = ''; // in 2.06, used to display the icon in jQgrid
+    var sImageURL = ''; // in 2.06, used to display the icon in jQgrid, not necessary anymore
     var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.','js'); ?>';
     var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.",'js'); ?>';
     var quickaddtitle='<?php eT('Quick-add subquestion or answer items','js'); ?>';

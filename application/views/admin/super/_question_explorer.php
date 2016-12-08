@@ -9,6 +9,7 @@
 ?>
 
 <!-- State when page is loaded : for JavaScript-->
+<li id="explorer" class="dropdownlvl2 dropdownstyle panel panel-default">
 <?php if(isset($sidemenu['explorer']['state']) && $sidemenu['explorer']['state']==true):?>
     <input type="hidden" id="open-explorer" />
 
@@ -17,7 +18,6 @@
         <?php endif;?>
     <?php endif;?>
 
-<li id="explorer" class="dropdownlvl2 dropdownstyle panel panel-default">
 <a data-toggle="collapse" id="explorer-collapse" href="#explorer-lvl1">
     <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Question explorer');?>
     <span class="caret" ></span>
@@ -56,7 +56,7 @@
                         <div class="col-sm-8">
                             <a href="#" data-question-group-id="<?php echo $aGroup->gid; ?>" class="explorer-group">
                                 <span id="caret-<?php echo $aGroup->gid; ?>" class="fa fa-caret-right caret-explorer-group"></span>&nbsp;&nbsp;
-                                <span class="question-explorer-group-name"><?php echo $aGroup->group_name;?></span>
+                                <span class="question-explorer-group-name"><?php echo flattenText($aGroup->group_name);?></span>
                             </a>
                         </div>
 

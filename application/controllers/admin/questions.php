@@ -235,7 +235,7 @@ class questions extends Survey_Common_Action
                                    href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$surveyid.'">'
                                    .gT("Return to question list").'</a></p>';
                 $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
-                die();
+                App()->end();
             }
 
             unlink($sFullFilepath);
@@ -1716,6 +1716,10 @@ class questions extends Survey_Common_Action
         }
     }
 
+    private function getQuestionAttribute($type, $qid=0){
+
+    }
+
     /**
     * This function prepares the data for the advanced question attributes view
     *
@@ -1729,8 +1733,13 @@ class questions extends Survey_Common_Action
         $qid = (int) Yii::app()->request->getParam('qid',0);
         $type = Yii::app()->request->getParam('question_type');
         $thissurvey = getSurveyInfo($surveyid);
+
         if(!$thissurvey) die();
-        $aLanguages = array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
+
+        $aLanguages = array_merge(
+            array(Survey::model()->findByPk($surveyid)->language), 
+            Survey::model()->findByPk($surveyid)->additionalLanguages
+            );
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
         uasort($aAttributesWithValues, 'categorySort');
@@ -1761,6 +1770,7 @@ class questions extends Survey_Common_Action
         }
         $aData['bIsActive'] = ($thissurvey['active']=='Y');
         $aData['attributedata'] = $aAttributesPrepared;
+        
         $this->getController()->renderPartial('/admin/survey/Question/advanced_settings_view', $aData);
     }
 
@@ -1948,88 +1958,6 @@ class questions extends Survey_Common_Action
         doHeader();
 
         $showQuestion = "$('#question$qid').show();";
-        $dummy_js = <<< EOD
-            <script type='text/javascript'>
-            <!--
-            LEMradix='$radix';
-            var numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
-            var intRegex = new RegExp('[^-0-9]','g');
-            function fixnum_checkconditions(value, name, type, evt_type, intonly)
-            {
-                newval = new String(value);
-                if (typeof intonly !=='undefined' && intonly==1) {
-                    newval = newval.replace(intRegex,'');
-                }
-                else {
-                    newval = newval.replace(numRegex,'');
-                }
-                if (LEMradix === ',') {
-                    newval = newval.split(',').join('.');
-                }
-                if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {
-                    newval = '';
-                }
-                displayVal = newval;
-                if (LEMradix === ',') {
-                    displayVal = displayVal.split('.').join(',');
-                }
-                if (name.match(/other$/)) {
-                    $('#answer'+name+'text').val(displayVal);
-                }
-                $('#answer'+name).val(displayVal);
-
-                if (typeof evt_type === 'undefined')
-                {
-                    evt_type = 'onchange';
-                }
-                checkconditions(newval, name, type, evt_type);
-            }
-
-            function checkconditions(value, name, type, evt_type)
-            {
-                if (typeof evt_type === 'undefined')
-                {
-                    evt_type = 'onchange';
-                }
-                if (type == 'radio' || type == 'select-one')
-                {
-                    var hiddenformname='java'+name;
-                    document.getElementById(hiddenformname).value=value;
-                }
-                else if (type == 'checkbox')
-                {
-                    if (document.getElementById('answer'+name).checked)
-                    {
-                        $('#java'+name).val('Y');
-                    } else
-                    {
-                        $('#java'+name).val('');
-                    }
-                }
-                else if (type == 'text' && name.match(/other$/) && typeof document.getElementById('java'+name) !== 'undefined' && document.getElementById('java'+name) != null)
-                {
-                    $('#java'+name).val(value);
-                }
-                ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
-                $showQuestion
-            }
-            $(document).ready(function() {
-                $showQuestion
-            });
-            $(document).change(function() {
-                $showQuestion
-            });
-            $(document).bind('keydown',function(e) {
-                        if (e.keyCode == 9) {
-                            $showQuestion
-                            return true;
-                        }
-                        return true;
-                    });
-        // -->
-        </script>
-EOD;
-
 
         $answer = $answers[0][1];
         //        $help = $answers[0][2];
@@ -2071,7 +1999,7 @@ EOD;
             $content .= "\n\t</div>\n";
         };
 
-        $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"), array(), $redata) . $dummy_js;
+        $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"), array(), $redata);
         LimeExpressionManager::FinishProcessingGroup();
         $content .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         $content .= '<p>&nbsp;</form>';

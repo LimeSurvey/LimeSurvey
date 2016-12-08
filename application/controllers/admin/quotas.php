@@ -441,8 +441,8 @@ class quotas extends Survey_Common_Action
         if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
             $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
-            foreach ($result as $aQuotaDetails)
-            {
+
+            foreach ($result as $aQuotaDetails){
                 $quota_name = $aQuotaDetails['name'];
             }
 
@@ -461,8 +461,11 @@ class quotas extends Survey_Common_Action
 
         if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
-            $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_qid'));
-            $sQuotaName = $aResults['name'];
+            $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
+
+            foreach ($result as $aQuotaDetails){
+                $sQuotaName = $aQuotaDetails['name'];
+            }
 
             $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));
             $x = 0;

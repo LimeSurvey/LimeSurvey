@@ -160,29 +160,14 @@ function retrieveAnswers($ia)
 
         case 'L': //LIST drop-down/radio-button list
             $values = do_list_radio($ia);
-            if ($aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case '!': //List - dropdown
             $values=do_list_dropdown($ia);
-            if ($aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
             $values=do_listwithcomment($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case 'R': //RANKING STYLE
@@ -195,21 +180,11 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($aQuestionAttributes['max_answers']);
                 $minansw=trim($aQuestionAttributes['min_answers']);
-                if (!($maxansw || $minansw))
-                {
-                    $question_text['help'] = $message = gT('Check any that apply');
-                    $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-                }
             }
             break;
 
         case 'I': //Language Question
             $values=do_language($ia);
-            if (count($values[1]) > 1)
-            {
-                $question_text['help'] = $message = gT('Choose your language');
-                $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case 'P': //Multiple choice with comments checkbox + text
@@ -218,11 +193,6 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($aQuestionAttributes["max_answers"]);
                 $minansw=trim($aQuestionAttributes["min_answers"]);
-                if (!($maxansw || $minansw))
-                {
-                    $question_text['help'] = $message = gT('Check any that apply');
-                    $qtitle .= doRender('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
-                }
             }
             break;
 

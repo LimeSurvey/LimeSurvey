@@ -254,12 +254,11 @@ class Survey_Common_Action extends CAction
         //// This check will be useless when it will be handle directly by each specific controller.
         if (!empty($aData['surveyid']))
         {
-            //// TODO : check what is doing exactly this function. (application/helpers/expressions/em_manager_helper.php)
-            //// If it's about initialiazing global variables, should be removed and parsed in right controllers.
-            //// But it seems that it's just useless.
-            LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl);  // so can click on syntax highlighting to edit questions
-
             $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+
+            // Needed to evaluate EM expressions in question summary
+            // See bug #11845
+            LimeExpressionManager::StartProcessingPage(false,true);
 
             $this->_titlebar($aData);
 
@@ -270,12 +269,6 @@ class Survey_Common_Action extends CAction
             $this->_browsemenubar($aData);
             $this->_tokenbar($aData);
             $this->_organizequestionbar($aData);
-
-            //// TODO : check what it's doing exactly, and why it is here (not after or before)
-            //// It seems that it is not used at all. It's about timing
-            LimeExpressionManager::FinishProcessingPage();
-
-
 
             //// TODO : Move this div inside each correct view ASAP !
             echo '<div class="container-fluid" id="in_survey_common"><div class="row">';

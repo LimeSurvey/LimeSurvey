@@ -153,10 +153,26 @@
                         {
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
                             $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
+                            $colDetails = '';
+
+                            if(isset($fieldmap[$column->name]['subquestion'])){
+                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion'].'</em><br/>';
+                            }
+
+                            if(isset($fieldmap[$column->name]['subquestion1'])){
+                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion1'].'</em><br/>';
+                            }
+
+                            if(isset($fieldmap[$column->name]['subquestion2'])){
+                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion2'].'</em><br/>';
+                            }
+
+
+                            $colDetails .= ellipsize($fieldmap[$column->name]['question'], $model->ellipsize_header_value);
 
                             $aColumns[]=
                                 array(
-                                    'header' => '<span data-toggle="tooltip" data-placement="bottom" title="'.quoteText(strip_tags($fieldmap[$column->name]['question'])).'">'.$colName.' <br/> '.ellipsize($fieldmap[$column->name]['question'], $model->ellipsize_header_value).'</span>',
+                                    'header' => '<span data-toggle="tooltip" data-placement="bottom" title="'.quoteText(strip_tags($fieldmap[$column->name]['question'])).'">'.$colName.' <br/> '.$colDetails.'</span>',
                                     'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
                                     'name' => $column->name,
                                     'type' => 'raw',
