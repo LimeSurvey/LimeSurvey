@@ -1628,7 +1628,7 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
 
             // render token form
             if($scenarios['tokenRequired']){
-                doRender('/survey/frontpage/enterToken', $aEnterTokenData, false);
+                doFRender('/survey/frontpage/enterToken', $aEnterTokenData, false);
             } else {
                 App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
             }
@@ -2486,7 +2486,7 @@ function getSideBodyClass($sideMenustate = false)
  * @param array     $aData      data to be extracted into PHP variables and made available to the view script
  * @param boolean   $bReturn    whether the rendering result should be returned instead of being displayed to end users (should be always true)
  */
- function doRender($sView, $aData, $bReturn=true)
+ function doFRender($sView, $aData, $bReturn=true)
 {
     global $thissurvey;
     if(isset($thissurvey['template']))
