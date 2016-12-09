@@ -1,6 +1,12 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## [1.2.0] - 2016-11-16
+
+### Fix
+- Issue #11996: Possible remote code execution [LouisGac](https://github.com/LouisGac)
+- Possible session fixation on survey entry with token [Carsten Schmitz](https://github.com/c-schmitz)
+
 ## [1.1.2] - 2016-11-16
 
 ### Feature
