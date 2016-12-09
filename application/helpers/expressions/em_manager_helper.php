@@ -1393,7 +1393,7 @@
                             'qtype' => $type,
                             'type' => 'default',
                             'class' => 'default',
-                            'eqn' =>  '',
+                            'eqn' =>  '1',
                             'qid' => $questionNum,
                             );
                         break;
@@ -3522,13 +3522,6 @@
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
 
-                // Finally, we prevent bugs by removing empty equations
-                // @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
-                foreach ($veqns as $key => $eqn){
-                    if ($eqn=='()'){
-                        unset($veqns[$key]);
-                    }
-                }
 
                 $this->qid2validationEqn[$qid] = array(
                 'eqn' => $veqns,
@@ -6594,18 +6587,15 @@
                 // do this even is starts irrelevant, else will never show this information.
                 if (!$qhidden)
                 {
-                    // Prevent to validate equation when empty. Only affect question type with default qtip but no validation equation
-                    // @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
-                    if ($validationEqn!=''){
-                        $validationEqns = $LEM->qid2validationEqn[$qid]['eqn'];
-                        $validationEqn = implode(' and ', $validationEqns);
-                        $qvalid = $LEM->em->ProcessBooleanExpression($validationEqn,$qInfo['gseq'], $qInfo['qseq']);
-                        $hasErrors = $LEM->em->HasErrors();
+                    $validationEqns = $LEM->qid2validationEqn[$qid]['eqn'];
+                    $validationEqn = implode(' and ', $validationEqns);
+                    $qvalid = $LEM->em->ProcessBooleanExpression($validationEqn,$qInfo['gseq'], $qInfo['qseq']);
+                    $hasErrors = $LEM->em->HasErrors();
 
-                        if (!$hasErrors){
-                            $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
-                        }
+                    if (!$hasErrors){
+                        $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
                     }
+
 
                     $prettyPrintValidEqn = $validationEqn;
                     if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX))
