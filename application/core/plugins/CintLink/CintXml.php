@@ -31,14 +31,14 @@ final class CintXml
         $curl = new Curl();
         $this->raw = $curl->get($url);
 
-        if (!is_string($this->raw))
+        if (!is_string($this->raw->body))
         {
             // TODO: Better error message
             // TODO: Ignore silently?
             throw new Exception('Could not get Xml file using Curl - is you server configured properly?');
         }
 
-        $this->xml = new SimpleXmlElement($this->raw);
+        $this->xml = new SimpleXmlElement($this->raw->body);
     }
 
     /**
