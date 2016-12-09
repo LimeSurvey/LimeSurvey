@@ -170,4 +170,13 @@ abstract class LSYii_Controller extends CController
         else
             return parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
     }
+
+    /**
+     * Loads page states from a hidden input.
+     * @return array the loaded page states
+     */
+    protected function loadPageStates()
+    {
+        return array();
+    }
 }
