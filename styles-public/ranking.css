@@ -8,7 +8,7 @@
 .dragDropTable .columns2{width:50%;float:left;margin:0;padding:0;
 *width:49%;/* IE7 round up, all other round down */
 }
-:dir(ltr) .dragDropTable .columns2{float:right}
+:dir(rtl) .dragDropTable .columns2{float:right}
 .dragDropTable .clear{clear:both}
 
 
