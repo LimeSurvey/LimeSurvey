@@ -1391,30 +1391,16 @@
                 // Default validation for question type
                 switch ($type)
                 {
-                    case 'L': //Some test with radio list
-                        $sq_name = ($this->sgqaNaming)?$qinfo['sgqa'].".NAOK":$qinfo['varName'].".NAOK";
-                        if($qinfo['mandatory']=='Y'){
-                            $eqn='!is_empty('.$sq_name.')';
-                        }else{
-                            $eqn='1';
-                        }
-                            $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'default',
-                            'class' => 'default',
-                            'eqn' =>  $eqn,
-                            'qid' => $questionNum,
-                            );
-                        break;
                     case 'I':
                     case '!':
                     case 'O':
-                    case 'M': //NUMERICAL QUESTION TYPE
+                    case 'M':
+                    case 'L':
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'default',
                             'class' => 'default',
-                            'eqn' =>  '',
+                            'eqn' =>  '1',
                             'qid' => $questionNum,
                             );
                         break;
@@ -3543,13 +3529,6 @@
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
 
-                // Finally, we prevent bugs by removing empty equations
-                // @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
-                foreach ($veqns as $key => $eqn){
-                    if ($eqn=='()'){
-                        unset($veqns[$key]);
-                    }
-                }
 
                 $this->qid2validationEqn[$qid] = array(
                 'eqn' => $veqns,
@@ -6622,8 +6601,6 @@
                 // do this even is starts irrelevant, else will never show this information.
                 if (!$qhidden)
                 {
-                    // Prevent to validate equation when empty. Only affect question type with default qtip but no validation equation
-                    // @see: https://bugs.limesurvey.org/view.php?id=11867#c42419
                     $validationEqns = $LEM->qid2validationEqn[$qid]['eqn'];
                     $validationEqn = implode(' and ', $validationEqns);
                     $qvalid = $LEM->em->ProcessBooleanExpression($validationEqn,$qInfo['gseq'], $qInfo['qseq']);
