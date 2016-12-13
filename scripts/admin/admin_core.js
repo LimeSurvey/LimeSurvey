@@ -115,23 +115,6 @@ $(document).ready(function(){
 
     });
 
-    $('#hideadvancedattributes').click(function(){
-        $('#showadvancedattributes').show();
-        $('#hideadvancedattributes').hide();
-        $('#advancedquestionsettingswrapper').animate({
-            "height": "toggle", "opacity": "toggle"
-        });
-
-    });
-    $('#question_type').change(updatequestionattributes);
-
-    $('#question_type_button  li a').click(function(){
-        $(".btn:first-child .buttontext").text($(this).text());
-        $('#question_type').val($(this).data('value'));
-
-        updatequestionattributes();
-       });
-
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
     });
@@ -329,41 +312,6 @@ function getToolTip(type){
 
 //We have form validation and other stuff..
 
-function updatequestionattributes()
-{
-    var type = $('#question_type').val();
-    OtherSelection(type);
-
-    $('.loader').show();
-    $('#advancedquestionsettings').html('');
-    var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
-    if (selected_value==undefined) selected_value = $("#question_type").val();
-    $('#advancedquestionsettings').load(attr_url,{qid:$('#qid').val(),
-        question_type:selected_value,
-        sid:$('#sid').val()
-    }, function(){
-        // Loads the tooltips for the toolbars
-
-        // Loads the tooltips for the toolbars
-        $('.loader').hide();
-        $('label[title]').qtip({
-            style: {name: 'cream',
-                tip: true,
-                color:'#111111',
-                border: {
-                    width: 1,
-                    radius: 5,
-                    color: '#EADF95'}
-            },
-            position: {adjust: {
-                    screen: true, scroll:true},
-                corner: {
-                    target: 'bottomRight'}
-            },
-            show: {effect: {length:50}}
-        });}
-    );
-}
 
 function validatefilename (form, strmessage )
 {
@@ -850,20 +798,20 @@ function onlyUnique(value, index, self) {
 
 /**
  * A method to use the implemented notifier, via ajax or javascript
- * 
+ *
  * @param text string  | The text to be displayed
  * @param classes string | The classes that will be put onto the inner container
  * @param styles object | An object of css-attributes that will be put onto the inner container
- * @param customOptions | possible options are: 
+ * @param customOptions | possible options are:
  *                         useHtml (boolean) -> use the @text as html
- *                         timeout (int) -> the timeout in milliseconds until the notifier will fade/slide out 
+ *                         timeout (int) -> the timeout in milliseconds until the notifier will fade/slide out
  *                         inAnimation (string) -> The jQuery animation to call for the notifier [fadeIn||slideDown]
  *                         outAnimation (string) -> The jQuery animation to remove the notifier [fadeOut||slideUp]
- *                         animationTime (int) -> The time in milliseconds the animation will last             
+ *                         animationTime (int) -> The time in milliseconds the animation will last
  */
 function NotifyFader(){
     var count = 0;
-    
+
     var increment = function(){count = count+1;},
         decrement = function(){count = count-1;},
         getCount = function(){return count;};
@@ -877,8 +825,8 @@ function NotifyFader(){
         var options = {
             useHtml : customOptions.useHtml || true,
             timeout : customOptions.timeout || 3500,
-            inAnimation : customOptions.inAnimation || "slideDown", 
-            outAnimation : customOptions.outAnimation || "slideUp", 
+            inAnimation : customOptions.inAnimation || "slideDown",
+            outAnimation : customOptions.outAnimation || "slideUp",
             animationTime : customOptions.animationTime || 450
         };
         var container = $("<div> </div>");
@@ -898,7 +846,7 @@ function NotifyFader(){
                 position: 'fixed',
                 left : "15%",
                 width : "70%",
-                'z-index':3500 
+                'z-index':3500
             })
             .appendTo($('#notif-container').parent())
             .html(container);

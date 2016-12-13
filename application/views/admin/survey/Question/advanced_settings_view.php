@@ -3,23 +3,37 @@
  * This view generate the advanced question attributes
  */
 $currentfieldset='';
+$categoryNum=0;
 ?>
 <!-- Advanced Settings -->
 <?php foreach ($attributedata as $index=>$aAttribute):?>
 
     <!-- Fieldsets -->
     <?php if ($currentfieldset!=$aAttribute['category']): ?>
+        <?php $categoryNum++; ?>
         <?php if ($currentfieldset!=''): ?>
-            </fieldset>
+            </div></div></div></div>
+        </div>
         <?php endif; ?>
+        <div class="panel panel-default panel-advancedquestionsettings">
+            <div class="panel-heading" role="tab">
+                <h4 class="panel-title">
+                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a id="button-collapse<?php echo $categoryNum ?>" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
+                        <?php echo $aAttribute['category']; ?>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-cat<?php echo $categoryNum ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="button-collapse<?php echo $categoryNum ?>">
+                <div class="panel-body">
+                    <div>
+
         <?php $currentfieldset=$aAttribute['category']; ?>
-        <fieldset>
-        <legend><?php echo $aAttribute['category'];?></legend>
     <?php endif; ?>
-
-    <!-- Form Group -->
     <div class="form-group">
-
+    <!-- Form Group -->
         <!-- Label -->
         <label class="col-sm-4 control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
             <?php
@@ -121,12 +135,13 @@ $currentfieldset='';
                 }?>
             </div>
         </div>
-<?php endforeach;
-foreach (Yii::app()->clientScript->scripts as $index=>$script)
-{
-    echo CHtml::script(implode("\n",$script));
-}
-Yii::app()->clientScript->reset();
+<?php endforeach;?>
+ </div></div></div></div>
+<?php
+//~ foreach (Yii::app()->clientScript->scripts as $index=>$script)
+//~ {
+    //~ echo CHtml::script(implode("\n",$script));
+//~ }
+//~ Yii::app()->clientScript->reset();
 ?>
-</fieldset>
 <!-- end of Advanced Settings -->
