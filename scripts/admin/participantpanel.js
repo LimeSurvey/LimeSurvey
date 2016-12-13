@@ -2,7 +2,6 @@
 LS = LS || {};
 LS.CPDB = (function() {
     var
-
     // Basic modal used by all submethods
     baseModal = '#participantPanel_edit_modal',
 
@@ -273,8 +272,10 @@ LS.CPDB = (function() {
         $('#action_toggleAllParticipantShare').on('click', function() {
             $('.selector_participantShareCheckbox').prop('checked', $('#action_toggleAllParticipantShare').prop('checked'));
         });
-
-        $('.action_changeBlacklistStatus').bootstrapSwitch();
+        
+        if(($('#pageSizeParticipantView').val() <= 100) || ($('#pageSizeAttributes').val() <= 100) || ($('#pageSizeShareParticipantView').val() <= 100) ){
+            $('.action_changeBlacklistStatus').bootstrapSwitch();
+        }
 
         $('.action_changeBlacklistStatus').on('switchChange.bootstrapSwitch', function(event,state){
             var self = this;
@@ -429,10 +430,12 @@ LS.CPDB = (function() {
      */
     bindButtons = function() {
         basics();
-        participantPanel();
-        attributePanel();
-        sharePanel();
-
+        switch($('#locator').data('location')){
+            case 'participants' : participantPanel(); break;
+            case 'attributes' :  attributePanel(); break;
+            case 'sharepanel' :  sharePanel(); break;
+        }
+        
         /**
          * @TODO rewrite export
          */
