@@ -106,7 +106,6 @@
 
     <!-- Edition Mode -->
     <?php if($data['action']=='editsurveysettings'):?>
-
         <!-- Panel integration -->
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingSix">
@@ -127,23 +126,7 @@
         </div>
 
         <!-- PLugin settings -->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingEight">
-                <h4 class="panel-title">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                    </a>
-                    <a class="collapsed" role="button" data-toggle="collapse" href="#pluginsoptions" aria-expanded="false" aria-controls="pluginsoptions">
-                        <?php  eT("Plugins"); ?>
-                    </a>
-                </h4>
-            </div>
-            <div id="pluginsoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="pluginoptions">
-                <div class="panel-body">
-                    <?php $this->renderPartial('/admin/survey/subview/accordion/_plugins_panel', $data); ?>
-                </div>
-            </div>
-        </div>
+        <?php $this->renderPartial('/admin/survey/subview/accordion/_plugins_panel', $data); ?>
 
         <!-- Resources -->
         <div class="panel panel-default">

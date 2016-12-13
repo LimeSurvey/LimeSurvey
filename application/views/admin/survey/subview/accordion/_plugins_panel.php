@@ -1,21 +1,11 @@
 <?php
 /**
- * Plugin options panel
+ * Optionnal plugins options panels
  */
 ?>
-<?php if (isset($pluginSettings)): ?>
-    <div id='plugin' class="tab-pane fade in">
-        <?php
+<?php if (isset($pluginSettings)):
         foreach ($pluginSettings as $id => $plugin)
         {
-            $this->widget('ext.SettingsWidget.SettingsWidget', array(
-                'settings' => $plugin['settings'],
-                'form' => false,
-                'title' => sprintf(gT("Settings for plugin %s"), $plugin['name']),
-                'prefix' => "plugin[{$plugin['name']}]"
-
-            ));
+            $this->renderPartial('/admin/survey/subview/accordion/_plugin_panel', array('id'=>$id,'plugin'=>$plugin));
         }
-        ?>
-    </div>
-<?php endif; ?>
+endif; ?>
