@@ -2922,14 +2922,6 @@ function do_multiplenumeric($ia)
                 break;
         }
 
-        if ($slider_default == '' && $aQuestionAttributes['slider_middlestart']==1)
-        {
-            $slider_middlestart = intval(($slider_max + $slider_min)/2);
-        }
-        else
-        {
-            $slider_middlestart = '';
-        }
 
         $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
         $slider_reset=($aQuestionAttributes['slider_reset'])?1:0;
@@ -3042,7 +3034,6 @@ function do_multiplenumeric($ia)
             // 5. If no value at all, or if middle start, the "user no action" is recorded as null in the database
 
             // For bootstrap slider, the value can't be NULL so we set it by default to the slider minimum value.
-            // The old behaviour of "null" value (corresponding to user no action) is implemented via $slider_user_no_action
             // It could be used to show a temporary "No Answer" checkbox (hidden when user touch the slider)
 
             // Most of this javascript is here to handle the fact that bootstrapSlider need numerical value in the input
@@ -3052,32 +3043,10 @@ function do_multiplenumeric($ia)
 
             $sValue = null;
 
-            if(App()->request->getPost('slider_user_no_action_'.$myfname))
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
             {
-                $slider_user_no_action = App()->request->getPost('slider_user_no_action_'.$myfname);
+                $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
             }
-            else
-            {
-                $slider_user_no_action = 1;
-
-                // value stored in _SESSION
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-                {
-                    $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                    $slider_user_no_action = 0;
-                }
-                elseif( $slider_default != "" )
-                {
-                    $sValue                = $slider_default;
-                    $slider_user_no_action = 0;
-                }
-                elseif( isset($slider_middlestart) && $slider_middlestart!='')
-                {
-                    $sValue = $slider_middlestart;
-                }
-
-            }
-
 
             $sUnformatedValue = $sValue;
 
@@ -3151,10 +3120,10 @@ function do_multiplenumeric($ia)
                     'slider_max'             => $slider_max     ,
                     'slider_maxtext'         => $slider_maxtext ,
                     'slider_default'         => $slider_default ,
+                    'slider_middlestart'     => $aQuestionAttributes['slider_middlestart'] ,
                     'slider_handle'          => (isset($slider_handle ))? $slider_handle:'',
                     'slider_reset'           => $slider_reset,
                     'slider_custom_handle'   => $slider_custom_handle,
-                    'slider_user_no_action'  => $slider_user_no_action,
                     'slider_showminmax'      => $aQuestionAttributes['slider_showminmax'],
                     'sSeparator'             => $sSeparator,
                     'sUnformatedValue'       => $sUnformatedValue,
