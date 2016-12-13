@@ -138,9 +138,9 @@ class RegisterController extends LSYii_Controller {
         // Check the security question's answer
         if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen',$aSurveyInfo['usecaptcha']) )
         {
-            $sLoadsecurity=Yii::app()->request->getPost('loadsecurity','');
+            $sLoadSecurity=Yii::app()->request->getPost('loadsecurity','');
             $captcha=Yii::app()->getController()->createAction("captcha");
-            $captchaCorrect = $captcha->validate( $sLoadsecurity, false);
+            $captchaCorrect = $captcha->validate( $sLoadSecurity, false);
 
             if (!$captchaCorrect)
             {

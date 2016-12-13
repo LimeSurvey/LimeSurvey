@@ -33,6 +33,7 @@ class Load_answers {
 
         echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post')."\n";
         echo templatereplace(file_get_contents($oTemplate->viewPath."load.pstpl"),array(),$redata);
+
         //PRESENT OPTIONS SCREEN (Replace with Template Later)
         //END
         echo "<input type='hidden' name='loadall' value='reload' />\n";

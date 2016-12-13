@@ -333,7 +333,7 @@ class index extends CAction {
             {
                 $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
                 $captcha = Yii::app()->getController()->createAction('captcha');
-                $captchaCorrect = $captcha->validate( $sLoadsecurity, false);
+                $captchaCorrect = $captcha->validate( $sLoadSecurity, false);
 
                 if(empty($sLoadSecurity))
                 {

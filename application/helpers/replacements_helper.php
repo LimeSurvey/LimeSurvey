@@ -517,17 +517,27 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="
-            <div class='form-group load-survey-row load-survey-captcha'>
-                <label class='control-label col-sm-3 load-survey-label label-cell' for='loadsecurity'>" . gT("Security question:") . "</label>
-                <div class='col-sm-2 captcha-image' valign='middle'>
-                    <img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' />
+        $_loadform .='<div class="col-sm-12 form-group">
+                <label class="col-md-4 col-sm-12 control-label">
+                    <p class="col-sm-6 col-md-12 remove-padding">'.gT("Please enter the letters you see below:").'</p>
+                    <span class="col-sm-6 col-md-12">';
+        $_loadform .=Yii::app()->getController()->widget('CCaptcha',array(
+                    'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
+                    'buttonType' => 'button',
+                    'buttonLabel' => gt('Reload image')
+                ),true);
+        $_loadform .='</span>
+                </label>
+                <div class="col-sm-6">
+                    <div>&nbsp;</div>'
+                    . CHtml::textField('loadsecurity', '', array(
+                        'id' => 'captchafield',
+                        'class' => 'text input-sm form-control ',
+                        'required' => 'required'
+                    )).'
                 </div>
-                <div class='col-sm-3 captcha-input' valign='middle'>
-                    <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/>
-                </div>
-            </div>
-        ";
+            </div><br/>';
+
     }
 
     $_loadform .="
