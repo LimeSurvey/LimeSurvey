@@ -22,13 +22,15 @@ var LS = LS || {};
  */
 hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
 
+/* See function */
+fixAccordionPosition();
+
 $(document).ready(function(){
 
     initializeAjaxProgress();
     tableCellAdapters();
     linksInDialog();
     doToolTip();
-
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
@@ -958,4 +960,19 @@ LS.ajax = function(options) {
     $('#ls-loading').show();
 
     return $.ajax(options);
+}
+/* When using accordion : sometimes the start of accordion is uot of range (in question and survey settings)
+ * Then move to id just after opened it
+ * Attach to document due to ajax call in question
+ */
+function fixAccordionPosition(){
+    $(document).on('shown.bs.collapse',"#accordion", function () {
+        var collapsed = $(this).find('.collapse.in').prev('.panel-heading');
+        /* test if is up to surveybarid bottom, if yes : scrollTo */
+        if($(collapsed).offset().top-$(window).scrollTop() < $(".navbar-fixed-top").first().outerHeight(true)){
+            $('html, body').animate({
+                scrollTop: $(collapsed).offset().top-$(".navbar-fixed-top").first().outerHeight(true)
+            }, 500);
+        }
+    });
 }
