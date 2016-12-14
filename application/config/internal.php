@@ -177,6 +177,40 @@ $internalConfig = array(
         'format'=>array(
             'class'=>'application.extensions.CustomFormatter'
         ),
+
+        'twigRenderer' => array(
+            'class' => 'third_party.Twig.ETwigViewRenderer',
+
+            // All parameters below are optional, change them to your needs
+            'fileExtension' => '.twig',
+            'options' => array(
+                'autoescape' => true,
+            ),
+            // Those extensions, include the sendbox, will be done later in the process
+            'extensions' => array(
+                //    'LimeSurvey_Twig_Extension',
+                //    'Twig_Extension_Sandbox',
+            ),
+            'globals' => array(
+                'html' => 'CHtml'
+            ),
+            'functions' => array(
+                'rot13' => 'str_rot13',
+            ),
+            'filters' => array(
+                'jencode' => 'CJSON::encode',
+            ),
+
+            // Change template syntax to Smarty-like (not recommended)
+            // Could be use to manage potential conflict with Expression Manager
+            /*
+            'lexerOptions' => array(
+                'tag_comment'  => array('{*', '*}'),
+                'tag_block'    => array('{', '}'),
+                'tag_variable' => array('{$', '}')
+            ),
+            */
+        ),
     )
 );
 
