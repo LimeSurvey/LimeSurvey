@@ -6569,5 +6569,11 @@ function doRender($sView, $aData, $bReturn=true)
             }
         }
     }
-    return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
+
+    // Twig or not twig? 
+    if( file_exists($requiredView.'.twig') ){
+        return Yii::app()->twigRenderer->renderFile( Yii::app()->getController(), $requiredView.'.twig', $aData, $bReturn);
+    }else{
+        return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
+    }
 }
