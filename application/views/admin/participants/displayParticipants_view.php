@@ -94,3 +94,4 @@
     </div>
   </div>
 </div>
+<span id="locator" data-location="participants">&nbsp;</span>

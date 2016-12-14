@@ -3178,18 +3178,14 @@ function do_multiplenumeric($ia)
             // 2. Else the default Answer   (set by EM and stored in session, so same case than 1)
             // 3. Else the slider_default value : if slider_default_set set the value here
             // 4. Else the middle start or slider_default or nothing : leave the value to "" for the input, show slider pos at this position
-
             $sValue = '';
-            // value stored in _SESSION
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])){
                 $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            }
-            elseif( $slider_layout && $slider_default !== "" && $slider_default_set){
+            }elseif( $slider_layout && $slider_default !== "" && $slider_default_set){
                 $sValue                = $slider_default;
             }else{
                 $sValue                = '';
             }
-
 
             $sUnformatedValue = $sValue;
 

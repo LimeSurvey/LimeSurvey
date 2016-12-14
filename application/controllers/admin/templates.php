@@ -79,6 +79,7 @@ class templates extends Survey_Common_Action
     */
     public function tmp($id)
     {
+        $id = (int) $id;
         $iTime= preg_replace("/[^0-9]$/", '', $id);
         $sFile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."template_temp_{$iTime}.html";
 
