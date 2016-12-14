@@ -188,8 +188,7 @@ $internalConfig = array(
             ),
             // Those extensions, include the sendbox, will be done later in the process
             'extensions' => array(
-                //    'LimeSurvey_Twig_Extension',
-                //    'Twig_Extension_Sandbox',
+                'Twig_Extension_Sandbox',
             ),
             'globals' => array(
                 'html' => 'CHtml'
@@ -200,6 +199,13 @@ $internalConfig = array(
             'filters' => array(
                 'jencode' => 'CJSON::encode',
             ),
+            'sandboxConfig' => array(
+                'tags' => array('if', 'for'),
+                'filters' => array('escape'),
+                'methods' => array(),
+                'properties' => array(),
+                'functions' => array()
+            )
 
             // Change template syntax to Smarty-like (not recommended)
             // Could be use to manage potential conflict with Expression Manager

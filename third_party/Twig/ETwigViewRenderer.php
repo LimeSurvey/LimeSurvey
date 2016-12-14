@@ -14,7 +14,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
     /**
      * @var string Path alias to Twig
      */
-    public $twigPathAlias = 'application.vendor.Twig';
+    public $twigPathAlias = 'application.third_party.Twig';
     /**
      * @var string Twig template files extension
      */
@@ -50,6 +50,12 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
      * Example: array('Twig_Extension_Sandbox', 'Twig_Extension_Text')
      */
     public $extensions = array();
+
+    /**
+     * @var array Twig_Extension_Sandbox configuration
+     */
+     public $sandboxConfig = array();
+
     /**
      * @var array Twig lexer options
      * @see http://twig.sensiolabs.org/doc/recipes.html#customizing-the-syntax
@@ -140,7 +146,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
     {
         // current controller properties will be accessible as {{ this.property }}
         $data['this'] = $context;
-        
+
         $sourceFile = realpath($sourceFile); // to prevent common problems with paths associated with symlinks
 
         foreach($this->_paths as $path) {
@@ -197,7 +203,19 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
     public function addExtensions($extensions)
     {
         foreach ($extensions as $extName) {
-            $this->_twig->addExtension(new $extName());
+            if ($extName=="Twig_Extension_Sandbox"){
+                $tags       = isset($this->sandboxConfig['tags'])?$this->sandboxConfig['tags']:array();
+                $filters    = isset($this->sandboxConfig['filters'])?$this->sandboxConfig['filters']:array();
+                $methods    = isset($this->sandboxConfig['methods'])?$this->sandboxConfig['methods']:array();
+                $properties = isset($this->sandboxConfig['properties'])?$this->sandboxConfig['properties']:array();
+                $functions  = isset($this->sandboxConfig['functions'])?$this->sandboxConfig['functions']:array();
+                $policy     = new Twig_Sandbox_SecurityPolicy($tags, $filters, $methods, $properties, $functions);
+                $sandbox    = new Twig_Extension_Sandbox($policy, true);
+                $this->_twig->addExtension($sandbox);
+            }else{
+                $this->_twig->addExtension(new $extName());
+            }
+
         }
     }
 
