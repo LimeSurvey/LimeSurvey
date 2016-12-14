@@ -6555,6 +6555,7 @@ function getLabelInputWidth($labelAttributeWidth,$inputAttributeWidth){
 function doRender($sView, $aData, $bReturn=true)
 {
     global $thissurvey;
+    $requiredView = Yii::getPathOfAlias('application.views').$sView;
     if(isset($thissurvey['template']))
     {
         $sTemplate = $thissurvey['template'];
@@ -6570,7 +6571,7 @@ function doRender($sView, $aData, $bReturn=true)
         }
     }
 
-    // Twig or not twig? 
+    // Twig or not twig?
     if( file_exists($requiredView.'.twig') ){
         return Yii::app()->twigRenderer->renderFile( Yii::app()->getController(), $requiredView.'.twig', $aData, $bReturn);
     }else{
