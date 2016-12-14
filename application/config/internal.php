@@ -51,6 +51,13 @@ $internalConfig = array(
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
         'vendor.twbs.bootstrap.dist',
+
+        // Twig aliases. We don't want to change the file ETwigViewRenderer, so we can update it without difficulties
+        // However, LimeSurvey directory tree is not a standard Yii Application tree.
+        // we use 'third_party' instead of 'vendor'
+        // This line just point application.vendor.Twig to application/third_party/Twig
+        // @see: ETwigViewRenderer::$twigPathAlias
+        'application.vendor.Twig'=>'application.third_party.Twig',
     ),
 
     'modules'=>array(
