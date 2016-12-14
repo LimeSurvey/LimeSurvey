@@ -85,17 +85,17 @@
                     <!-- Copy options -->
                     <?php if ($copying): ?>
                         <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingZero">
+                            <div class="panel-heading" role="tab" id="heading-copy">
                                 <h4 class="panel-title">
                                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                                         <span class="glyphicon glyphicon-chevron-left"></span>
                                     </a>
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="false" aria-controls="collapseZero">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
                                         <?php eT("Copy options"); ?>
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseZero" class="panel-collapse collapse  in" role="tabpanel" aria-labelledby="headingTwo">
+                            <div id="collapse-copy" class="panel-collapse collapse  in" role="tabpanel" aria-labelledby="heading-copy">
                                 <div class="panel-body">
                                     <div  class="form-group">
                                         <label class="col-sm-4 control-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
@@ -147,16 +147,16 @@
                                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                                     <span class="glyphicon glyphicon-chevron-left"></span>
                                 </a>
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
                                     <?php eT("General options");?>
                                 </a>
                             </h4>
                         </div>
 
-                        <div id="collapseOne" class="panel-collapse collapse <?php if (!$copying){echo ' in '; } ?>" role="tabpanel" aria-labelledby="headingOne">
+                        <div id="collapse-question" class="panel-collapse collapse <?php if (!$copying){echo ' in '; } ?>" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 <div>
-                                    <div  class="form-group">
+                                    <div class="form-group">
                                         <label class="col-sm-4 control-label" for="question_type_button">
                                             <?php
                                             eT("Question type:");
@@ -302,37 +302,11 @@
                         </div>
                     </div>
                     <?php if (!$copying): ?>
+                    <div class="loader-advancedquestionsettings text-center">
+                        <span class="glyphicon glyphicon-refresh" style="font-size:3em;" aria-hidden='true'></span>
+                    </div>
                         <!-- Advanced settings -->
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingTwo">
-                                <h4 class="panel-title">
-                                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                                        <span class="glyphicon glyphicon-chevron-left"></span>
-                                    </a>
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <?php eT("Advanced settings"); ?>
-                                    </a>
-                                </h4>
-                            </div>
-
-                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                <div class="panel-body">
-                                    <div id="advancedquestionsettingswrapper" >
-                                        <div class="loader">
-                                            <?php eT("Loading..."); ?>
-                                        </div>
-
-                                        <div id="advancedquestionsettings">
-                                            <!-- Content append via ajax -->
-                                        </div>
-                                    </div>
-
-                                    <br />
-                                    <br/>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endif; ?>
+                    <?php endif; ?>
 
                 </div>
             </div>
