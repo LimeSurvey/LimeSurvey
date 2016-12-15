@@ -89,6 +89,7 @@ $internalConfig = array(
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
+        'third_party.Twig.*'
 
     ),
     'preload' => array ('log'),
@@ -179,7 +180,7 @@ $internalConfig = array(
         ),
 
         'twigRenderer' => array(
-            'class' => 'third_party.Twig.ETwigViewRenderer',
+            'class' => 'application.core.LSETwigViewRenderer',
 
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
