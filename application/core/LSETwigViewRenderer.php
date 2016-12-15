@@ -65,18 +65,18 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $oTemplate = Template::model()->getInstance($sTemplate);                // we get the template configuration
             if($oTemplate->overwrite_question_views===true && Yii::app()->getConfig('allow_templates_to_overwrite_views'))                         // If it's configured to overwrite the views
             {
-                $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
-                if( file_exists($requiredView.'.php') )                             // If it the case, the function will render this view
+                if( file_exists($requiredView.'.php') || file_exists($requiredView.'.twig') )                             // If it the case, the function will render this view
                 {
                     Yii::setPathOfAlias('survey.template.view', $requiredView);     // to render a view from an absolute path outside of application/, path alias must be used.
                     $sView = 'survey.template.view';                                // See : http://www.yiiframework.com/doc/api/1.1/CController#getViewFile-detail
+                    $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
                 }
             }
         }
 
         // Twig or not twig?
         if( file_exists($requiredView.'.twig') ){
-            return parent::renderFile( Yii::app()->getController(), $requiredView.'.twig', $aData, $bReturn);
+            return parent::renderFile( $context, $requiredView.'.twig', $aData, $bReturn);
         }else{
             return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
         }
