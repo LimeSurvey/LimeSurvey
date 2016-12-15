@@ -45,4 +45,40 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
     }
 
+
+    /**
+     * Renders a view file.
+     * This method is required by {@link IViewRenderer}.
+     * @param CBaseController $context the controller or widget who is rendering the view file.
+     * @param string $sourceFile the view file path
+     * @param mixed $data the data to be passed to the view
+     * @param boolean $return whether the rendering result should be returned
+     * @return mixed the rendering result, or null if the rendering result is not needed.
+     */
+    public function renderFile($context, $sView, $aData, $bReturn=true)
+    {
+        global $thissurvey;
+        $requiredView = Yii::getPathOfAlias('application.views').$sView;
+        if(isset($thissurvey['template']))
+        {
+            $sTemplate = $thissurvey['template'];
+            $oTemplate = Template::model()->getInstance($sTemplate);                // we get the template configuration
+            if($oTemplate->overwrite_question_views===true && Yii::app()->getConfig('allow_templates_to_overwrite_views'))                         // If it's configured to overwrite the views
+            {
+                $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
+                if( file_exists($requiredView.'.php') )                             // If it the case, the function will render this view
+                {
+                    Yii::setPathOfAlias('survey.template.view', $requiredView);     // to render a view from an absolute path outside of application/, path alias must be used.
+                    $sView = 'survey.template.view';                                // See : http://www.yiiframework.com/doc/api/1.1/CController#getViewFile-detail
+                }
+            }
+        }
+
+        // Twig or not twig?
+        if( file_exists($requiredView.'.twig') ){
+            return parent::renderFile( Yii::app()->getController(), $requiredView.'.twig', $aData, $bReturn);
+        }else{
+            return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
+        }
+    }
 }
