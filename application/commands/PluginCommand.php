@@ -17,13 +17,10 @@
 
         public function actionCron($interval)
         {
-
             $pm = \Yii::app()->pluginManager;
             $event = new PluginEvent('cron');
             $event->set('interval', $interval);
             $pm->dispatchEvent($event);
-            
-            
         }
     }
 
