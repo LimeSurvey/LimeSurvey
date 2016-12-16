@@ -31,6 +31,8 @@
 */
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false, $oTemplate='')
 {
+    $line = Yii::app()->twigRenderer->renderTemplateFromString( $line, $redata, false);
+
     $allowedvars = array(
         'assessments',
         'captchapath',
