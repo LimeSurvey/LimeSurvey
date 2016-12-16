@@ -46,7 +46,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <div class="navbar-brand" >{SURVEYNAME}</div>
+            <div class="navbar-brand" >{{ thissurvey.name }}</div>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right navbar-action-link">
