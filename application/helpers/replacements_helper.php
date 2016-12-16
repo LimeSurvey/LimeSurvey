@@ -587,7 +587,7 @@ EOD;
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
     $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : '';  // global
-    $coreReplacements['SURVEYLANGUAGE'] = App()->language;
+    $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
     $coreReplacements['TEMPLATECSS'] = $_templatecss;
@@ -611,7 +611,7 @@ EOD;
     {
         $doTheseReplacements = $coreReplacements;
     }
-    
+
     $redata = compact(array_keys(get_defined_vars()));
     $line = Yii::app()->twigRenderer->renderTemplateFromString( $line, $redata, false);
 
