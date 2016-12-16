@@ -190,6 +190,7 @@ $internalConfig = array(
             // Those extensions, include the sendbox, will be done later in the process
             'extensions' => array(
                 'Twig_Extension_Sandbox',
+                'Twig_Extension_StringLoader',
             ),
             'globals' => array(
                 'html' => 'CHtml'
