@@ -18,7 +18,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @var array Twig_Extension_Sandbox configuration
      */
      public $sandboxConfig = array();
-
      private $_twig;
 
     /**
@@ -69,7 +68,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 {
                     Yii::setPathOfAlias('survey.template.view', $requiredView);     // to render a view from an absolute path outside of application/, path alias must be used.
                     $sView = 'survey.template.view';                                // See : http://www.yiiframework.com/doc/api/1.1/CController#getViewFile-detail
-                    $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
+                    $requiredView = $oTemplate->viewPath.ltrim($sView, '/');        // Then we check if it has its own version of the required view
                 }
             }
         }
@@ -80,5 +79,17 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }else{
             return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
         }
+    }
+
+
+    /**
+     *
+     */
+    public function renderTemplateFromString( $line, $redata, $bReturn)
+    {
+        $this->_twig      = $twig = parent::getTwig();
+        $oTwigTemplate    = $twig->createTemplate($line);
+        $nvLine = $oTwigTemplate->render($redata, false);
+        return $nvLine;
     }
 }
