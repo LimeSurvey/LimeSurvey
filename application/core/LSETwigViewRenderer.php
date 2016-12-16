@@ -97,9 +97,14 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
     public function renderTemplateFromString( $line, $redata, $bReturn)
     {
-        $this->_twig      = $twig = parent::getTwig();
-        $oTwigTemplate    = $twig->createTemplate($line);
-        $nvLine = $oTwigTemplate->render($redata, false);
+        if (is_array($redata)){
+            $this->_twig      = $twig = parent::getTwig();
+            $oTwigTemplate    = $twig->createTemplate($line);
+            $nvLine = $oTwigTemplate->render($redata, false);
+        }else{
+            $nvLine = $line;
+        }
         return $nvLine;
+
     }
 }
