@@ -31,8 +31,6 @@
 */
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false, $oTemplate='')
 {
-    $line = Yii::app()->twigRenderer->renderTemplateFromString( $line, $redata, false);
-
     $allowedvars = array(
         'assessments',
         'captchapath',
@@ -613,6 +611,9 @@ EOD;
     {
         $doTheseReplacements = $coreReplacements;
     }
+    
+    $redata = compact(array_keys(get_defined_vars()));
+    $line = Yii::app()->twigRenderer->renderTemplateFromString( $line, $redata, false);
 
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
     $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
