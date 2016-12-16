@@ -322,7 +322,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         if (trim($thissurvey['surveyls_urldescription']) != '')
         {
-            $_linkreplace = App()->getController()->renderPartial("/survey/system/url",array(
+            $_linkreplace = App()->twigRenderer->render("/survey/system/url",array(
                 'url'=>$thissurvey['surveyls_url'],
                 'description'=>$thissurvey['surveyls_urldescription'],
                 'type'=>"survey-endurl",
@@ -331,7 +331,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }
         else
         {
-            $_linkreplace = App()->getController()->renderPartial("/survey/system/url",array(
+            $_linkreplace = App()->twigRenderer->render("/survey/system/url",array(
                 'url'=>$thissurvey['surveyls_url'],
                 'description'=>$thissurvey['surveyls_url'],
                 'type'=>"survey-endurl",
@@ -394,7 +394,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $restartparam['lang']=$s_lang;
         $restartparam['newtest']="Y";
         $restarturl=Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$restartparam);
-        $_restart = App()->getController()->renderPartial("/survey/system/url",array(
+        $_restart = App()->twigRenderer->render("/survey/system/url",array(
             'url'=>$restarturl,
             'description'=>gT("Restart this Survey"),
             'type'=>"survey-restart",
@@ -421,7 +421,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }else{
             $returndescription = gT("Go to survey");
         }
-        $_return_to_survey = App()->getController()->renderPartial("/survey/system/url",array(
+        $_return_to_survey = App()->twigRenderer->render("/survey/system/url",array(
             'url'=>$returnlink,
             'description'=>$returndescription,
             'type'=>"survey-return",
@@ -545,7 +545,7 @@ EOD;
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
-    $coreReplacements['CHECKJAVASCRIPT'] = App()->getController()->renderPartial("/survey/system/no-javascript",array(),true);
+    $coreReplacements['CHECKJAVASCRIPT'] = App()->twigRenderer->render("/survey/system/no-javascript",array(),true);
     $coreReplacements['CLEARALL'] = $_clearall;
     $coreReplacements['CLEARALL_LINKS'] = $_clearalllinks;
     $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
@@ -568,8 +568,8 @@ EOD;
     $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : '';    // global
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
-    $coreReplacements['PRIVACYHEADING'] = App()->getController()->renderPartial("/survey/system/privacy/heading",array(),true);
-    $coreReplacements['PRIVACYMESSAGE'] = App()->getController()->renderPartial("/survey/system/privacy/message",array(),true);
+    $coreReplacements['PRIVACYHEADING'] = App()->twigRenderer->render("/survey/system/privacy/heading",array(),true);
+    $coreReplacements['PRIVACYMESSAGE'] = App()->twigRenderer->render("/survey/system/privacy/message",array(),true);
     /* Another solution to remove index from global */
     //~ $coreReplacements['QUESTION_INDEX']=isset($questionindex) ? $questionindex: '';
     //~ $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
@@ -701,14 +701,14 @@ function doHtmlSaveLinks($move="")
         $submit=ls_json_encode(array(
                 'loadall'=>'loadall'
             ));
-        $sLoadButton=App()->getController()->renderPartial("/survey/system/actionLink/saveLoad",array(
+        $sLoadButton=App()->twigRenderer->render("/survey/system/actionLink/saveLoad",array(
             'submit'=>$submit,
             'class'=>'ls-link-action ls-link-loadall'
         ),true);
         $submit=ls_json_encode(array(
                 'saveall'=>'saveall'
             ));
-        $sSaveButton=App()->getController()->renderPartial("/survey/system/actionLink/saveSave",array(
+        $sSaveButton=App()->twigRenderer->render("/survey/system/actionLink/saveSave",array(
             'submit'=>$submit,
             'class'=>'ls-link-action ls-link-saveall'
         ),true);
@@ -778,12 +778,12 @@ function doHtmlSaveAll($move="")
 
     if($thissurvey['allowsave'] == "Y")
     {
-        $sLoadButton=App()->getController()->renderPartial("/survey/system/actionButton/saveLoad",array(
+        $sLoadButton=App()->twigRenderer->render("/survey/system/actionButton/saveLoad",array(
             'value'=>'loadall',
             'name'=>'loadall',
             'class'=>'ls-saveaction ls-loadall'
         ),true);
-        $sSaveButton=App()->getController()->renderPartial("/survey/system/actionButton/saveSave",array(
+        $sSaveButton=App()->twigRenderer->render("/survey/system/actionButton/saveSave",array(
             'value'=>'saveall',
             'name'=>'saveall',
             'class'=>'ls-saveaction ls-saveall'
@@ -848,7 +848,7 @@ function doHtmlClearAll(){
     /* one of the reason of seaparation : call each tim we use templatereplace */
     static $aClearAll=array();
     if(empty($aClearAll)){
-        $aClearAll['button']=App()->getController()->renderPartial("/survey/system/actionButton/clearAll",array(
+        $aClearAll['button']=App()->twigRenderer->render("/survey/system/actionButton/clearAll",array(
             'value'=>'clearall',
             'name'=>'move',
             'class'=>'ls-clearaction ls-clearall',
@@ -861,7 +861,7 @@ function doHtmlClearAll(){
         $confirm=ls_json_encode(array(
                 'confirm-clearall'=>'confirm'
             ));
-        $aClearAll['link'] = App()->getController()->renderPartial("/survey/system/actionLink/clearAll",array(
+        $aClearAll['link'] = App()->twigRenderer->render("/survey/system/actionLink/clearAll",array(
             'class'=>'ls-link-action ls-link-clearall',
             'submit'=>$submit,
             'confirm'=>$confirm,
