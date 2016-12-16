@@ -6560,5 +6560,5 @@ function getLabelInputWidth($labelAttributeWidth,$inputAttributeWidth){
  */
 function doRender($sView, $aData, $bReturn=true)
 {
-    return Yii::app()->twigRenderer->render( $sView, $aData, $bReturn);
+    return App()->twigRenderer->render( $sView, $aData, $bReturn);
 }

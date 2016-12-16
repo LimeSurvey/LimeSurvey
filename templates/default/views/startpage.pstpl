@@ -1,17 +1,30 @@
-<!-- startpage.pstl -->
+<!-- startpage.pstl TWIG -->
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
 {#
     !!!!NOTE!!!!
     THIS IS A FIRST TEST TO USE TWIG IN PSTPL FILES
 
     NOW, ANY VARIABLE DISPONIBLE IN $REDATA WILL BE USABLE FROM TEMPLATE FILES
 
+    // This survey:
+    Eg: {{ thissurvey.adminemail }}
+    Eg: {{ thissurvey.template }} ;
+    Eg: {{ thissurvey.admin }} ;
+    Eg: {{ thissurvey.datecreated }} ;
+    Eg: {{ thissurvey.navigationdelay }} ;
+    Eg: {{ thissurvey. surveyls_language}} ;
+    etc. etc.
+
+    IN THE QUESTION PSTPL, QUESTION OBJECT VARIABLES WILL BE AVAILABLE, SAME FOR GROUP, ETC
+
     HERE WE USE THE ARRAY $thissurvey
     SO NOW, IT'S NOT NEEDED TO ADD ANYMORE ANY REPLACEMENT KEYWORD
     MOST OF THE HTML GENERATED IN THE DIFFERENT HELPERS (LIKE SAVE_LINKS)
-    COULD BE PLACED DIRECTLY INSIDE THE PSTPL FILES    
+    COULD BE PLACED DIRECTLY INSIDE THE PSTPL FILES
 #}
+
 <title>{{thissurvey.surveyls_title}}</title>
 <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 
@@ -20,10 +33,10 @@
 
 <!-- The following line includes jquery.js, jquery-ui.js, survey_runtime.js , template.js and needed specific js file for survey -->
 {TEMPLATEJS}
-<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
+<link rel="shortcut icon" href="{{templateurl}}favicon.ico" />
 {GOOGLE_ANALYTICS_JAVASCRIPT}
 </head>
-<body class="default lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
+<body class="default lang-{{surveylanguage}} {{surveyformat}}">
 
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="navbar-header ">

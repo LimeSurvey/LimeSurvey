@@ -17,7 +17,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * @var array Twig_Extension_Sandbox configuration
      */
-     public $sandboxConfig = array();
+     public  $sandboxConfig = array();
      private $_twig;
 
     /**
@@ -43,7 +43,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             }
         }
     }
-
 
     /**
      * Renders a view file.
@@ -88,9 +87,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }else{
             return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
         }
-
     }
-
 
     /**
      *
