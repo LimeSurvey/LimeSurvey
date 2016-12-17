@@ -36,7 +36,12 @@
   }
   unset ($config['defaultController']);
   unset ($config['config']);
-  $config['runtimePath']=$settings['tempdir'].'/runtime';
+  /* fix runtime path, unsure you can lauch function anywhere (if you use php /var/www/limesurvey/... : can be /root/ for config */
+  $runtimePath=$settings['tempdir'].'/runtime';
+  if(!is_dir($runtimePath) || !is_writable($runtimePath)){
+      $runtimePath=str_replace($settings['rootdir'],dirname(dirname(dirname(__FILE__))),$runtimePath);
+  }
+  $config['runtimePath']=$runtimePath;
 
     // fix for fcgi
     defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
