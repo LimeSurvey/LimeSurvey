@@ -79,10 +79,8 @@ class templates extends Survey_Common_Action
     */
     public function tmp($id)
     {
-        $iTime= preg_replace("/[^0-9]$/", '', $id);
+        $iTime = $id = CHtml::encode($id);
         $sFile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."template_temp_{$iTime}.html";
-
-        $id =  CHtml::encode($id);
 
         if(!is_file($sFile) || !file_exists($sFile)) {
             die("Found no file with id " . $id);
@@ -596,7 +594,7 @@ class templates extends Survey_Common_Action
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
-                $savefilename = gettemplatefilename(Yii::app()->getConfig('usertemplaterootdir') . "/" . $sTemplateName, $editfile);
+                $savefilename = gettemplatefilename($sTemplateName, $editfile);
 
                 if (is_writable($savefilename))
                 {
@@ -887,7 +885,8 @@ class templates extends Survey_Common_Action
         $screens['printanswers'] = gT('Print answers page','unescaped');
         $screens['printablesurvey'] = gT('Printable survey page','unescaped');
 
-        // Page display blocks
+        /* pstpl file list */
+        /* used for call AND for pstl editable files list */
         $SurveyList = array('startpage.pstpl',
             'surveylist.pstpl',
             'endpage.pstpl'
@@ -898,6 +897,7 @@ class templates extends Survey_Common_Action
             'navigator.pstpl',
             'endpage.pstpl'
         );
+        /* Not used : data updated during rendering */
         $Question = array('startpage.pstpl',
             'survey.pstpl',
             'startgroup.pstpl',
@@ -913,27 +913,33 @@ class templates extends Survey_Common_Action
             'completed.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $Clearall = array('startpage.pstpl',
             'clearall.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $Register = array('startpage.pstpl',
             'survey.pstpl',
             'register.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $Save = array('startpage.pstpl',
             'save.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $Load = array('startpage.pstpl',
             'load.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $printtemplate = array('startpage.pstpl',
             'printanswers.pstpl',
             'endpage.pstpl'
         );
+        /* Not used */
         $printablesurveytemplate = array('print_survey.pstpl',
             'print_group.pstpl',
             'print_question.pstpl'
@@ -1092,18 +1098,20 @@ class templates extends Survey_Common_Action
         switch ($screenname)
         {
             case 'surveylist':
-                $aSurveyListTexts = array(
-                    "nosid" => gT("You have not provided a survey identification number"),
-                    "contact" => sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
-                    "listheading" => gT("The following surveys are available:"),
-                    "list" => $this->getController()->renderPartial('/admin/templates/templateeditor_surveylist_view', array(), true),
+                $aSurveyList = array(
+                    'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
+                    'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
                 );
-                $aData['surveylist'] = $aSurveyListTexts;
-                $aData['aReplacements'] = $aGlobalReplacements;
+                $aReplacementSurveyList = array(
+                    "SURVEYCONTACT" => sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
+                    "SURVEYLISTHEADING" => gT("The following surveys are available:"),
+                    "SURVEYLIST" => $this->getController()->renderPartial('/admin/templates/templateeditor_surveylist_view', $aSurveyList, true),
+                );
+                //$aData['surveylist'] = $aSurveyListTexts;
+                $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacementSurveyList);
                 $myoutput[] = "";
-                //$myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $files=$SurveyList;
-                foreach ($SurveyList as $qs)
+                foreach ($files as $qs)
                 {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
                 }
@@ -1182,11 +1190,9 @@ class templates extends Survey_Common_Action
                     'NAVIGATOR' => "$sMoveNext",
                 ));
                 $files=$Welcome ;
-                foreach ($Welcome as $qs) {
+                foreach ($files as $qs) {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
                 }
-
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath  . "/endpage.pstpl", $aData, $oEditedTemplate));
                 break;
 
             case 'register':
@@ -1216,7 +1222,15 @@ class templates extends Survey_Common_Action
                 $files=$Save;
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/save.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                $aData['aReplacements']['SAVEHEADING'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/heading",array(),true);
+                $aData['aReplacements']['SAVEMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/message",array(),true);
+                $aData['aReplacements']['SAVEALERT'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/anonymized",array(),true);
+                $aData['aReplacements']['SAVEERROR'] = "";
+                $saveForm  = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-save'));
+                $saveForm .= App()->getController()->renderPartial("/survey/frontpage/saveForm/form",array('captcha'=>false),true);
+                $saveForm .= CHtml::endForm();
+                $aData['aReplacements']['SAVEFORM'] = $saveForm;
+                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/save.pstpl", $aData, $oEditedTemplate));
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = "\n";
                 break;
@@ -1224,9 +1238,17 @@ class templates extends Survey_Common_Action
             case 'load':
                 $files=$Load;
                 $aData['aReplacements'] = $aGlobalReplacements;
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/load.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(),$aData['aReplacements'], 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                $aData['aReplacements']['LOADHEADING'] = App()->getController()->renderPartial("/survey/frontpage/loadForm/heading",array(),true);
+                $aData['aReplacements']['LOADMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/loadForm/message",array(),true);
+                $aData['aReplacements']['LOADERROR'] = "";
+                $loadForm  = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-load'));
+                $loadForm .= App()->getController()->renderPartial("/survey/frontpage/loadForm/form",array('captcha'=>false),true);
+                $loadForm .= CHtml::endForm();
+                $aData['aReplacements']['LOADFORM'] = $loadForm;
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/load.pstpl", $aData, $oEditedTemplate));
+                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), $aData['aReplacements'], $aData['aReplacements'], 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+
                 $myoutput[] = "\n";
                 break;
 
@@ -1243,12 +1265,11 @@ class templates extends Survey_Common_Action
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $files=$CompletedTemplate;
                 $myoutput[] = "";
-                foreach ($CompletedTemplate as $qs)
+                foreach ($files as $qs)
                 {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
                 }
                 break;
-
             case 'printablesurvey':
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $files=$printablesurveytemplate;

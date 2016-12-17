@@ -7,11 +7,12 @@
  * @var $answertext
  * @var $value
  */
+tracevar($answerwidth);
 ?>
 
 <!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? " ls-odd" : " ls-even"; ?><?php echo ($error) ? " ls-error-mandatory has-error" : ""; ?>" role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
-    <th id="answertext<?php echo $myfname;?>" class="answertext control-label">
+    <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php echo ($answerwidth==0)? " sr-only":""; ?>">
         <?php echo $answertext;?>
         <input name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" type="hidden">
     </th>
@@ -20,7 +21,7 @@
         echo $answer_tds;
     ?>
     <?php if ($right_exists): ?>
-        <th class='answertextright information-item'><?php echo $answertextright; ?></th>
+        <th class='answertextright information-item<?php echo ($answerwidth==0)? " sr-only":""; ?>'><?php echo $answertextright; ?></th>
     <?php endif; ?>
 
     <?php

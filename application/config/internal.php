@@ -51,6 +51,13 @@ $internalConfig = array(
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
         'vendor.twbs.bootstrap.dist',
+
+        // Twig aliases. We don't want to change the file ETwigViewRenderer, so we can update it without difficulties
+        // However, LimeSurvey directory tree is not a standard Yii Application tree.
+        // we use 'third_party' instead of 'vendor'
+        // This line just point application.vendor.Twig to application/third_party/Twig
+        // @see: ETwigViewRenderer::$twigPathAlias
+        'application.vendor.Twig'=>'application.third_party.Twig',
     ),
 
     'modules'=>array(
@@ -82,6 +89,7 @@ $internalConfig = array(
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
+        'third_party.Twig.*'
 
     ),
     'preload' => array ('log'),
@@ -169,6 +177,47 @@ $internalConfig = array(
         ),
         'format'=>array(
             'class'=>'application.extensions.CustomFormatter'
+        ),
+
+        'twigRenderer' => array(
+            'class' => 'application.core.LSETwigViewRenderer',
+
+            // All parameters below are optional, change them to your needs
+            'fileExtension' => '.twig',
+            'options' => array(
+                'autoescape' => true,
+            ),
+            // Those extensions, include the sendbox, will be done later in the process
+            'extensions' => array(
+                'Twig_Extension_Sandbox',
+                'Twig_Extension_StringLoader',
+            ),
+            'globals' => array(
+                'html' => 'CHtml'
+            ),
+            'functions' => array(
+                'rot13' => 'str_rot13',
+            ),
+            'filters' => array(
+                'jencode' => 'CJSON::encode',
+            ),
+            'sandboxConfig' => array(
+                'tags' => array('if', 'for'),
+                'filters' => array('escape'),
+                'methods' => array(),
+                'properties' => array(),
+                'functions' => array()
+            )
+
+            // Change template syntax to Smarty-like (not recommended)
+            // Could be use to manage potential conflict with Expression Manager
+            /*
+            'lexerOptions' => array(
+                'tag_comment'  => array('{*', '*}'),
+                'tag_block'    => array('{', '}'),
+                'tag_variable' => array('{$', '}')
+            ),
+            */
         ),
     )
 );

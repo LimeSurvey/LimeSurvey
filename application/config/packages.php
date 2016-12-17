@@ -36,7 +36,6 @@ return array(
         ),
         'depends' => array(
             'limesurvey-public',
-            //'bootstrap', //limesurvey in future must work without boostrap
         )
     ),
     'template-default-ltr'=>array( /* complement for ltr */

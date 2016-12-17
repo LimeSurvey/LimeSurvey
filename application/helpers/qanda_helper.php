@@ -165,29 +165,14 @@ function retrieveAnswers($ia)
 
         case 'L': //LIST drop-down/radio-button list
             $values = do_list_radio($ia);
-            if ($aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case '!': //List - dropdown
             $values=do_list_dropdown($ia);
-            if ($aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
             $values=do_listwithcomment($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $message = gT('Choose one of the following answers');
-                $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case 'R': //RANKING STYLE
@@ -200,21 +185,11 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($aQuestionAttributes['max_answers']);
                 $minansw=trim($aQuestionAttributes['min_answers']);
-                if (!($maxansw || $minansw))
-                {
-                    $question_text['help'] = $message = gT('Check any that apply');
-                    $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
-                }
             }
             break;
 
         case 'I': //Language Question
             $values=do_language($ia);
-            if (count($values[1]) > 1)
-            {
-                $question_text['help'] = $message = gT('Choose your language');
-                $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
-            }
             break;
 
         case 'P': //Multiple choice with comments checkbox + text
@@ -223,11 +198,6 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($aQuestionAttributes["max_answers"]);
                 $minansw=trim($aQuestionAttributes["min_answers"]);
-                if (!($maxansw || $minansw))
-                {
-                    $question_text['help'] = $message = gT('Check any that apply');
-                    $qtitle .= doRender('/survey/questions/question_help/help', array('message'=>$message, 'classes'=>''), true);
-                }
             }
             break;
 
@@ -2856,35 +2826,8 @@ function do_multipleshorttext($ia)
 
     /* Find the col-sm width : if non is set : default, if one is set, set another one to be 12, if two is set : no change*/
     /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
-    $attributeInputContainerWidth=intval(trim($aQuestionAttributes['text_input_columns']));
-    if($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12){
-        $attributeInputContainerWidth=null;
-    }
-    $attributeLabelWidth=intval(trim($aQuestionAttributes['label_input_columns']));
-    if($attributeLabelWidth < 1 || $attributeLabelWidth > 12){/* old system or imported */
-        $attributeLabelWidth=null;
-    }
-    if(!$attributeInputContainerWidth && !$attributeLabelWidth){
-        $sInputContainerWidth=8;
-        $sLabelWidth=4;
-        $defaultWidth=true;
-    }else{
-        if($attributeInputContainerWidth){
-            $sInputContainerWidth=$attributeInputContainerWidth;
-        }elseif($attributeLabelWidth==12){
-            $sInputContainerWidth=12;
-        }else{
-            $sInputContainerWidth=12-$attributeLabelWidth;
-        }
-        if($attributeLabelWidth){
-            $sLabelWidth=$attributeLabelWidth;
-        }elseif($attributeInputContainerWidth==12){
-            $sLabelWidth=12;
-        }else{
-            $sLabelWidth=12-$attributeInputContainerWidth;
-        }
-        $defaultWidth=false;
-    }
+    list($sLabelWidth,$sInputContainerWidth,$defaultWidth)=getLabelInputWidth($aQuestionAttributes['label_input_columns'],$aQuestionAttributes['text_input_columns']);
+
 
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
     {
@@ -3067,35 +3010,7 @@ function do_multiplenumeric($ia)
     $numbersonly_slider = ''; // DEPRECATED
 
     /* Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change*/
-    $attributeInputContainerWidth=intval(trim($aQuestionAttributes['text_input_width']));
-    if($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12){
-        $attributeInputContainerWidth=null;
-    }
-    $attributeLabelWidth=intval(trim($aQuestionAttributes['label_input_columns']));
-    if($attributeLabelWidth < 1 || $attributeLabelWidth > 12){/* old system or imported */
-        $attributeLabelWidth=null;
-    }
-    if(!$attributeInputContainerWidth && !$attributeLabelWidth){
-        $sInputContainerWidth=8;
-        $sLabelWidth=4;
-        $defaultWidth=true;
-    }else{
-        if($attributeInputContainerWidth){
-            $sInputContainerWidth=$attributeInputContainerWidth;
-        }elseif($attributeLabelWidth==12){
-            $sInputContainerWidth=12;
-        }else{
-            $sInputContainerWidth=12-$attributeLabelWidth;
-        }
-        if($attributeLabelWidth){
-            $sLabelWidth=$attributeLabelWidth;
-        }elseif($attributeInputContainerWidth==12){
-            $sLabelWidth=12;
-        }else{
-            $sLabelWidth=12-$attributeInputContainerWidth;
-        }
-        $defaultWidth=false;
-    }
+    list($sLabelWidth,$sInputContainerWidth,$defaultWidth)=getLabelInputWidth($aQuestionAttributes['label_input_columns'],$aQuestionAttributes['text_input_width']);
 
     $prefixclass = "numeric";
 
@@ -3263,18 +3178,14 @@ function do_multiplenumeric($ia)
             // 2. Else the default Answer   (set by EM and stored in session, so same case than 1)
             // 3. Else the slider_default value : if slider_default_set set the value here
             // 4. Else the middle start or slider_default or nothing : leave the value to "" for the input, show slider pos at this position
-
             $sValue = '';
-            // value stored in _SESSION
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])){
                 $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            }
-            elseif( $slider_layout && $slider_default !== "" && $slider_default_set){
+            }elseif( $slider_layout && $slider_default !== "" && $slider_default_set){
                 $sValue                = $slider_default;
             }else{
                 $sValue                = '';
             }
-
 
             $sUnformatedValue = $sValue;
 
@@ -4334,6 +4245,7 @@ function do_array_5point($ia)
                     'answer_tds'    => $answer_tds,
                     'myfname'       => $myfname,
                     'answertext'    => $answertext,
+                    'answerwidth'=>$answerwidth,
                     'value'         => $value,
                     'error'         => $error,
                     'sDisplayStyle' => $sDisplayStyle,
@@ -4594,7 +4506,6 @@ function do_array_yesnouncertain($ia)
             $error = ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))?true:false;
 
             // Get array_filter stuff
-            $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
             $no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false;
             $value     = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
             $Ychecked  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')?'CHECKED':'';
@@ -4604,8 +4515,8 @@ function do_array_yesnouncertain($ia)
 
             $sRows .= doRender('/survey/questions/answer/arrays/yesnouncertain/rows/answer_row', array(
                         'myfname'                => $myfname,
-                        'sDisplayStyle'          => $sDisplayStyle,
                         'answertext'             => $answertext,
+                        'answerwidth'=>$answerwidth,
                         'Ychecked'               => $Ychecked,
                         'Uchecked'               => $Uchecked,
                         'Nchecked'               => $Nchecked,
@@ -4703,7 +4614,6 @@ function do_array_increasesamedecrease($ia)
         $myfname        = $ia[1].$ansrow['title'];
         $answertext     = $ansrow['question'];
         $error          = ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))?true:false; /* Check the sub Q mandatory violation */
-        $sDisplayStyle  = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
         $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]:'';
         $Ichecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I')?'CHECKED':'';
         $Schecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S')?'CHECKED':'';
@@ -4713,8 +4623,8 @@ function do_array_increasesamedecrease($ia)
 
         $sRows .= doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row', array(
                     'myfname'=> $myfname,
-                    'sDisplayStyle'=> $sDisplayStyle,
                     'answertext'=> $answertext,
+                    'answerwidth'=>$answerwidth,
                     'Ichecked'=>$Ichecked,
                     'Schecked'=> $Schecked,
                     'Dchecked'=>$Dchecked,
@@ -4814,7 +4724,7 @@ function do_array($ia)
         {
             $right_exists = false;
         }
-
+        $answerExtraClass=($answerwidth===0) ? 'text-hidden':'';
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1)
         {
@@ -4852,7 +4762,7 @@ function do_array($ia)
         foreach ($labelans as $ld)
         {
             $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
-                'class'   => 'answer-text',
+                'class'   => "answer-text",
                 'content' => $ld,
             ),  true);
         }
@@ -4943,6 +4853,7 @@ function do_array($ia)
                         'no_answer_td' => $no_answer_td,
                         'myfname'    => $myfname,
                         'answertext' => $answertext,
+                        'answerwidth'=>$answerwidth,
                         'answertextright' => $answertextright,
                         'right_exists' => $right_exists,
                         'value'      => $value,
@@ -5101,6 +5012,7 @@ function do_array($ia)
             $sRows .= doRender('/survey/questions/answer/arrays/array/dropdown/rows/answer_row', array(
                 'myfname'                => $myfname,
                 'answertext'             => $answertext,
+                'answerwidth'=>$answerwidth,
                 'value'                  => $value,
                 'error'                  => $error,
                 'checkconditionFunction' => $checkconditionFunction,
@@ -5443,6 +5355,7 @@ function do_array_texts($ia)
                                 'myfname'           =>  $myfname,
                                 'coreRowClass'      => $coreRowClass,
                                 'answertext'        =>  $answertext,
+                                'answerwidth'=>$answerwidth,
                                 'error'             =>  $error,
                                 'value'             =>  $value,
                                 'answer_tds'        =>  $answer_tds,
@@ -6040,7 +5953,7 @@ function do_arraycolumns($ia)
                 {
                     $myfname=$ia[1].$ld;
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code'])
                     {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     }
@@ -6243,7 +6156,6 @@ function do_array_dual($ia)
                 $extraanswerwidth  = $answerwidth/$numColExtraAnswer;/* If there are 2 separator : set to 1/2 else to same */
                 if($defaultWidth){
                     $columnswidth-=$answerwidth;
-
                 }else{
                     $answerwidth  = $answerwidth/2;
                 }
@@ -6581,11 +6493,66 @@ function decide_sm_col($prefix, $suffix)
 }
 
 /**
+ * Find the label / input width
+ * @param string|int labelwidth from attribute
+ * @param string|int inputwidth from attribute
+ * @return array: labelWidth as integer,inputWidth as integer,defaultWidth as boolean
+ */
+function getLabelInputWidth($labelAttributeWidth,$inputAttributeWidth){
+
+    $attributeInputContainerWidth=intval(trim($inputAttributeWidth));
+    if($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12){
+        $attributeInputContainerWidth=null;
+    }
+
+    $attributeLabelWidth=trim($labelAttributeWidth);
+    if($attributeLabelWidth==='hidden'){
+        $attributeLabelWidth=0;
+    }else{
+        $attributeLabelWidth=intval($attributeLabelWidth);
+        if($attributeLabelWidth < 1 || $attributeLabelWidth > 12){/* old system or imported or '' */
+            $attributeLabelWidth=null;
+        }
+    }
+    if(!$attributeInputContainerWidth && is_null($attributeLabelWidth)){
+        $sInputContainerWidth=8;
+        $sLabelWidth=4;
+        $defaultWidth=true;
+    }else{
+        if($attributeInputContainerWidth){
+            $sInputContainerWidth=$attributeInputContainerWidth;
+        }elseif($attributeLabelWidth==12){
+            $sInputContainerWidth=12;
+        }else{
+            $sInputContainerWidth=12-$attributeLabelWidth;
+        }
+        if(!is_null($attributeLabelWidth)){
+            $sLabelWidth=$attributeLabelWidth;
+        }elseif($attributeInputContainerWidth==12){
+            $sLabelWidth=12;
+        }else{
+            $sLabelWidth=12-$attributeInputContainerWidth;
+        }
+        $defaultWidth=false;
+    }
+    return array(
+        $sLabelWidth,
+        $sInputContainerWidth,
+        $defaultWidth,
+    );
+}
+/**
  * Render the question view.
  *
  * By default, it just renders the required core view from application/views/survey/...
  * If the Survey template is configured to overwrite the question views, then the function will check if the required view exist in the template directory
  * and then will use this one to render the question.
+ *
+ * Rem: all the logic has been moved to LSETwigViewRenderer::renderFile()
+ * We keep the function doRender here, to add  the first parameter  Yii::app()->getController()
+ * It can't be done in LSETwigViewRenderer because it implements IViewRenderer which force the signature of renderFile
+ *
+ * TODO: replace the 162 occurences of doRender([sView], $aData, [bReturn]) by App()->twigRenderer->renderFile( Yii::app()->getController(), [sView], $aData, [bReturn]);
  *
  * @param string    $sView      name of the view to be rendered.
  * @param array     $aData      data to be extracted into PHP variables and made available to the view script
@@ -6593,20 +6560,5 @@ function decide_sm_col($prefix, $suffix)
  */
 function doRender($sView, $aData, $bReturn=true)
 {
-    global $thissurvey;
-    if(isset($thissurvey['template']))
-    {
-        $sTemplate = $thissurvey['template'];
-        $oTemplate = Template::model()->getInstance($sTemplate);                // we get the template configuration
-        if($oTemplate->overwrite_question_views===true && Yii::app()->getConfig('allow_templates_to_overwrite_views'))                         // If it's configured to overwrite the views
-        {
-            $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
-            if( file_exists($requiredView.'.php') )                             // If it the case, the function will render this view
-            {
-                Yii::setPathOfAlias('survey.template.view', $requiredView);     // to render a view from an absolute path outside of application/, path alias must be used.
-                $sView = 'survey.template.view';                                // See : http://www.yiiframework.com/doc/api/1.1/CController#getViewFile-detail
-            }
-        }
-    }
-    return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
+    return App()->twigRenderer->render( $sView, $aData, $bReturn);
 }

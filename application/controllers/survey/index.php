@@ -391,7 +391,7 @@ class index extends CAction {
 
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
-            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid')))
+            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid')))// && Yii::app()->request->isPostRequest ?
             {
                 $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
                 $captcha = Yii::app()->getController()->createAction('captcha');

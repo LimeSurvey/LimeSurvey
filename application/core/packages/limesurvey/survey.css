@@ -2,8 +2,7 @@
  * Style for public survey
  * This file is part of LimeSurvey API for template
  *
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the GPLv3
  *
  */
 /**
@@ -33,9 +32,6 @@
   overflow:hidden;
   clip: rect(0, 0, 0, 0);
 }
-
-/* For relanceOnOff ? */
-.ls-irrelevant {display: none !important;}
 
 .form-horizontal .control-label.col-sm-12 {text-align: left;}
 .dir-rtl .form-horizontal .control-label.col-sm-12 {text-align: right;}
@@ -122,7 +118,11 @@
     padding: 0.6rem 1.2rem;
     line-height: 1;
 }
+/* specific for multiple number with dynamic : @todo move this to question class */
+.ls-group-dynamic .control-label,.ls-group-dynamic .form-control-static{display:inline-block}
 
+/* Survey list (home page) : break line in btn for long survey title*/
+.surveytitle.btn{white-space: normal;}
 
 /**
  * Question index : must be move to index.css ?
@@ -148,4 +148,3 @@ float:none;
 box-shadow: 0 0 0 #fff;
 }
 
-.ls-group-dynamic .control-label,.ls-group-dynamic .form-control-static{display:inline-block}

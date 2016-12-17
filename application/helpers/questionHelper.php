@@ -64,7 +64,7 @@ class questionHelper
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',
-            'min'=>'1',
+            'min'=>'0',
             'max'=>'100',
             "help"=>gT('Set the percentage width of the (sub-)question column (1-100)'),
             "caption"=>gT('(Sub-)question width')
@@ -1107,6 +1107,7 @@ class questionHelper
         'default'=>'',
         'options'=>array(
             ''=>gT("Default"),
+            'hidden'=>gT("Hidden"),/* can not use 0, sometimes we don't test with === */
             1=>'8%',
             2=>'17%',
             3=>'25%',

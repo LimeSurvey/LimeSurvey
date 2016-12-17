@@ -28,8 +28,8 @@
  */
 ?>
 
-<li id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item text-item slider-item form-group <?php echo $extraclass;?><?php if($alert):?> ls-error-mandatory has-error<?php endif; ?>" <?php echo $sDisplayStyle;?>>
-    <label id="label-<?php echo $myfname; ?>" class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
+<li id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item text-item slider-item form-group <?php echo $extraclass;?><?php if($alert):?> ls-error-mandatory has-error<?php endif; ?>">
+    <label id="label-<?php echo $myfname; ?>" class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?><?php echo ($sLabelWidth===0) ? " hidden":""; ?>' for="answer<?php echo$myfname;?>">
         <?php echo $labelText; ?>
     </label>
     <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?> container-fluid">

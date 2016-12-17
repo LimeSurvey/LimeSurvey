@@ -108,7 +108,7 @@
             <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" aria-labelledby="answertext<?php echo $ansrow['myfname']; ?>"
                 class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php echo ($ansrow['showmandatoryviolation']) ? " ls-error-mandatory has-error" : ""; ?>"
             >
-            <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label">
+            <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label<?php echo ($answerwidth==0)? " sr-only":""; ?>">
                 <?php echo $ansrow['answertext']; ?>
                 <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>"
                     id="java<?php echo $ansrow['myfid0']; ?>"
@@ -144,7 +144,7 @@
             <?php endforeach; ?>
 
             <?php if (count($labelans1) > 0):  // if second label set is used ?>
-                <td class="dual_scale_separator information-item <?php if($shownoanswer): ?>answer_cell_1_ radio-item noanswer-item <?php endif; ?>">
+                <td class="dual_scale_separator information-item <?php if($shownoanswer): ?>answer_cell_1_ radio-item noanswer-item <?php endif; ?><?php echo ($separatorwidth==0)? " sr-only":""; ?>">
                     <?php if ($shownoanswer): // No answer for accessibility and no javascript (but visible-xs-block visible-xs-block even with no js: need reworking) ?>
                     <div class="ls-js-hidden">
                         <input

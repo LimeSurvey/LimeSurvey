@@ -1391,6 +1391,20 @@
                 // Default validation for question type
                 switch ($type)
                 {
+                    case 'I':
+                    case '!':
+                    case 'O':
+                    case 'M':
+                    case 'L':
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  '1',
+                            'qid' => $questionNum,
+                            );
+                        break;
+
                     case 'N': //NUMERICAL QUESTION TYPE
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
@@ -3136,6 +3150,17 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
+                    case 'I':
+                        $qtips['default']=$this->gT('Choose your language');
+                        break;
+                    case 'O':
+                    case 'L':
+                    case '!':
+                        $qtips['default']=$this->gT('Choose one of the following answers');
+                        break;
+                    case 'M':
+                         $qtips['default']=$this->gT('Check any that apply');
+                         break;
                     case 'N':
                         $qtips['default']=$this->gT("Only numbers may be entered in this field.");
                         break;
@@ -3503,6 +3528,8 @@
                 {
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
+
+
                 $this->qid2validationEqn[$qid] = array(
                 'eqn' => $veqns,
                 'tips' => $tips,
@@ -6570,16 +6597,20 @@
             if (isset($LEM->qid2validationEqn[$qid]))
             {
                 $hasValidationEqn=true;
-                if (!$qhidden)  // do this even is starts irrelevant, else will never show this information.
+
+                // do this even is starts irrelevant, else will never show this information.
+                if (!$qhidden)
                 {
                     $validationEqns = $LEM->qid2validationEqn[$qid]['eqn'];
                     $validationEqn = implode(' and ', $validationEqns);
                     $qvalid = $LEM->em->ProcessBooleanExpression($validationEqn,$qInfo['gseq'], $qInfo['qseq']);
                     $hasErrors = $LEM->em->HasErrors();
-                    if (!$hasErrors)
-                    {
+
+                    if (!$hasErrors){
                         $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
                     }
+
+
                     $prettyPrintValidEqn = $validationEqn;
                     if ((($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX))
                     {
@@ -9622,6 +9653,7 @@ EOD;
 
                     $sgqaInfo = $LEM->knownVars[$sgqa];
                     $subqText = $sgqaInfo['subqtext'];
+
                     $LEM->ProcessString($subqText, $qid,NULL,false,1,1,false,false);
                     $subqText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     if ($LEM->em->HasErrors()) {

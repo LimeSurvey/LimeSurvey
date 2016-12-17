@@ -34,7 +34,7 @@
     <tbody>
         <?php foreach ($labels as $ansrow): ?>
             <tr id="javatbd<?php echo $ansrow['code'];?>" class="answers-list">
-                <th class="answertext" id="label-<?php echo $ansrow['code'];?>">
+                <th id="label-<?php echo $ansrow['code'];?>" class="answertext<?php echo ($answerwidth==0)? " sr-only":""; ?>">
                     <?php echo $ansrow['answer']; ?>
                 </th>
                 <?php

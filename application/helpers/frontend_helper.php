@@ -1006,7 +1006,17 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
 
+    // Scenario => Token required
+    if ($scenarios['tokenRequired'] && !$preview){
+        //Test if token is valid
+        list($renderToken, $FlashError, $aEnterTokenData) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
+    }
+    if(isset($FlashError) && $FlashError !== ""){
+        $aEnterErrors['flash'] = $FlashError;
+    }
+
     $aEnterTokenData['aEnterErrors']=$aEnterErrors;
+
     $renderWay = getRenderWay($renderToken, $renderCaptcha);
     $redata = compact(array_keys(get_defined_vars()));
     /* This funtion end if an form need to be shown */
@@ -1579,7 +1589,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         $aEnterTokenData['token'] =  $clienttoken;
         $renderToken='correct';
     }
-    return array($renderToken, $FlashError);
+    return array($renderToken, $FlashError, $aEnterTokenData);
 }
 
 /**
@@ -2510,4 +2520,36 @@ function getSideBodyClass($sideMenustate = false)
     }
 
     return $class;
+}
+
+
+/**
+ * Render the question view.
+ * @deprecated this function was not used here , we render , not renderPartial
+ * By default, it just renders the required core view from application/views/survey/...
+ * If the Survey template is configured to overwrite the question views, then the function will check if the required view exist in the template directory
+ * and then will use this one to render the question.
+ *
+ * @param string    $sView      name of the view to be rendered.
+ * @param array     $aData      data to be extracted into PHP variables and made available to the view script
+ * @param boolean   $bReturn    whether the rendering result should be returned instead of being displayed to end users (should be always true)
+ */
+ function doFRender($sView, $aData, $bReturn=true)
+{
+    global $thissurvey;
+    if(isset($thissurvey['template']))
+    {
+        $sTemplate = $thissurvey['template'];
+        $oTemplate = Template::model()->getInstance($sTemplate);                // we get the template configuration
+        if($oTemplate->overwrite_question_views===true && Yii::app()->getConfig('allow_templates_to_overwrite_views'))                         // If it's configured to overwrite the views
+        {
+            $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
+            if( file_exists($requiredView.'.php') )                             // If it the case, the function will render this view
+            {
+                Yii::setPathOfAlias('survey.template.view', $requiredView);     // to render a view from an absolute path outside of application/, path alias must be used.
+                $sView = 'survey.template.view';                                // See : http://www.yiiframework.com/doc/api/1.1/CController#getViewFile-detail
+            }
+        }
+    }
+    return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
 }
