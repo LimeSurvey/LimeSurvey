@@ -34,7 +34,7 @@ class TemplateConfiguration extends CFormModel
     public $viewPath;                           // Path of the views files (php files to replace existing core views)
     public $siteLogo;                           // Name of the logo file (like: logo.png)
     public $filesPath;                          // Path of the uploaded files
-    public $cssFramework;                       // What framework css is used (for now, this parameter is used only to deactive bootstrap for retrocompatibility)
+    public $cssFramework;                       // What framework css is used @see getFrameworkPackages()
     public $packages;                           // Array of package dependencies defined in config.xml
     public $depends;                            // List of all dependencies (could be more that just the config.xml packages)
     public $otherFiles;                         // Array of files in the file directory
@@ -317,15 +317,48 @@ class TemplateConfiguration extends CFormModel
      */
     private function getDependsPackages()
     {
-        $packages=array();
+
         /* Start by adding cssFramework package */
+        $packages=$this->getFrameworkPackages();
+        $packages[]='limesurvey-public';
+        if(!empty($this->packages->package)){
+            foreach((array)$this->packages->package as $package){
+                $packages[]=(string)$package;
+            }
+        }
+        /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
+        /* better to use attribute of a xml file, but we broke attribute due to dumb server (5.3 PHP version ....) */
+        /* see https://github.com/LimeSurvey/LimeSurvey/commit/e5268c72ade2eee1ac10f1594815686774f6eb86 */
+        if(!getLanguageRTL(App()->getLanguage())){
+            if(!empty($this->packages->ltr->package)){
+                foreach((array)$this->packages->ltr->package as $package){
+                    $packages[]=(string)$package;
+                }
+            }
+        }else{
+            if(!empty($this->packages->rtl->package)){
+                foreach((array)$this->packages->rtl->package as $package){
+                    $packages[]=(string)$package;
+                }
+            }
+        }
+        return $packages;
+    }
+    /**
+     * Set the framework package
+     * @use $this->cssFramework
+     * @return string[] depends for framework
+     */
+    private function getFrameworkPackages()
+    {
         $framework=isset($this->cssFramework->name)? (string)$this->cssFramework->name : (string)$this->cssFramework;
         if(isset(Yii::app()->clientScript->packages[$framework])){
+            $frameworPackages=array();
             /* Theming */
             $cssFrameworkCsss=isset($this->cssFramework->css) ? $this->cssFramework->css : array();
             $cssFrameworkJss=isset($this->cssFramework->js) ? $this->cssFramework->js : array();
             if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)){
-                $packages[]=$framework;
+                $frameworPackages[]=$framework;
             }else{
                 /* Need to create an adapted core framework */
                 $cssFrameworkPackage=Yii::app()->clientScript->packages[$framework];
@@ -369,35 +402,14 @@ class TemplateConfiguration extends CFormModel
                     'js'          => $packageJs,
                     'depends'     => $aDepends,
                 ));
-                $packages[]=$framework.'-template';
-                if(getLanguageRTL(App()->getLanguage()) && isset(Yii::app()->clientScript->packages[$framework.'-rtl'])){
-                    $packages[]=$framework.'-rtl';
-                }
+                $frameworPackages[]=$framework.'-template';
             }
+            if(getLanguageRTL(App()->getLanguage()) && isset(Yii::app()->clientScript->packages[$framework.'-rtl'])){
+                $frameworPackages[]=$framework.'-rtl';
+            }
+            return $frameworPackages;
         }
-        $packages[]='limesurvey-public';
-        if(!empty($this->packages->package)){
-            foreach((array)$this->packages->package as $package){
-                $packages[]=(string)$package;
-            }
-        }
-        /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
-        /* better to use attribute of a xml file, but we broke attribute due to dumb server (5.3 PHP version ....) */
-        /* see https://github.com/LimeSurvey/LimeSurvey/commit/e5268c72ade2eee1ac10f1594815686774f6eb86 */
-        if(!getLanguageRTL(App()->getLanguage())){
-            if(!empty($this->packages->ltr->package)){
-                foreach((array)$this->packages->ltr->package as $package){
-                    $packages[]=(string)$package;
-                }
-            }
-        }else{
-            if(!empty($this->packages->rtl->package)){
-                foreach((array)$this->packages->rtl->package as $package){
-                    $packages[]=(string)$package;
-                }
-            }
-        }
-        return $packages;
+        return array();
     }
     /**
      * get the template API version
