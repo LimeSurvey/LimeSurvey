@@ -686,7 +686,8 @@ class templates extends Survey_Common_Action
         // The following lines are forcing the browser to refresh the templates on each save
         @$fnew = fopen("$tempdir/template_temp_$time.html", "w+");
         $aData['time'] = $time;
-
+        /* Load this template config, else 'survey-template' package can be outdated */
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         if (!$fnew) {
             $aData['filenotwritten'] = true;
         }
@@ -703,9 +704,6 @@ class templates extends Survey_Common_Action
             $myoutput = implode("\n", $myoutput);
             /* Must remove all exitsing scripts / css and js */
 
-            App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerPackage('limesurvey-public');
             $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
             /* register template package : PS : use asset :) */
             Yii::app()->clientScript->registerPackage( 'survey-template' );
@@ -733,7 +731,7 @@ class templates extends Survey_Common_Action
             default: $sEditorFileType='html';
                 break;
         }
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+
         $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
         $filesdir = $oEditedTemplate->filesPath;
         $aData['screenname'] = $screenname;

@@ -160,7 +160,6 @@ class TemplateConfiguration extends CFormModel
 
         $this->otherFiles               = $this->setOtherFiles();
 
-
         // Package creation
         $this->createTemplatePackage();
 
