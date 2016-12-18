@@ -353,12 +353,12 @@ class TemplateConfiguration extends CFormModel
     {
         $framework=isset($this->cssFramework->name)? (string)$this->cssFramework->name : (string)$this->cssFramework;
         if(isset(Yii::app()->clientScript->packages[$framework])){
-            $frameworPackages=array();
+            $frameworkPackages=array();
             /* Theming */
             $cssFrameworkCsss=isset($this->cssFramework->css) ? $this->cssFramework->css : array();
             $cssFrameworkJss=isset($this->cssFramework->js) ? $this->cssFramework->js : array();
             if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)){
-                $frameworPackages[]=$framework;
+                $frameworkPackages[]=$framework;
             }else{
                 /* Need to create an adapted core framework */
                 $cssFrameworkPackage=Yii::app()->clientScript->packages[$framework];
@@ -402,12 +402,12 @@ class TemplateConfiguration extends CFormModel
                     'js'          => $packageJs,
                     'depends'     => $aDepends,
                 ));
-                $frameworPackages[]=$framework.'-template';
+                $frameworkPackages[]=$framework.'-template';
             }
             if(getLanguageRTL(App()->getLanguage()) && isset(Yii::app()->clientScript->packages[$framework.'-rtl'])){
-                $frameworPackages[]=$framework.'-rtl';
+                $frameworkPackages[]=$framework.'-rtl';
             }
-            return $frameworPackages;
+            return $frameworkPackages;
         }
         return array();
     }
