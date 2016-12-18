@@ -35,6 +35,9 @@ return array(
             'css/bootstrap.css',/* Admin need it, not public */
             'css/yiistrap.css',
         ),
+        'js'=>array(
+            'js/bootstrap'.$minVersion.'.js'
+        ),
         'depends' => array(
             'jquery',
         )

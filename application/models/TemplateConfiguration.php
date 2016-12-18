@@ -146,6 +146,7 @@ class TemplateConfiguration extends CFormModel
         $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                                                 : '';
         $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
+        $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : (string)$this->config->engine->cssframework;
         $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                             : array();
 
         /* Add options/package according to apiVersion */
