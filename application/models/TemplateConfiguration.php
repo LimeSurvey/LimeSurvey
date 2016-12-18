@@ -91,7 +91,6 @@ class TemplateConfiguration extends CFormModel
         // If the template directory doesn't exist, it can be that:
         // - user deleted a custom theme
         // In any case, we just set Default as the template to use
-
         if (!is_dir($this->path))
         {
             $this->sTemplateName = 'default';
@@ -112,6 +111,7 @@ class TemplateConfiguration extends CFormModel
             // If it's an imported template from 2.06, we return default values
             if ( $this->isOldTemplate )
             {
+                /* Must review: maybe some package ?*/
                 $this->xmlFile = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'minimal-config.xml';
             }
             else
@@ -133,9 +133,8 @@ class TemplateConfiguration extends CFormModel
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
         $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
-        // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
-        // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
-        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
+        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+        $this->config  = simplexml_load_string($sXMLConfigFile);
 
         // Template configuration
         // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
@@ -306,7 +305,7 @@ class TemplateConfiguration extends CFormModel
                 $packages->ltr=new stdClass();
                 $packages->ltr->package="template-default-ltr";
                 $packages->rtl=new stdClass();
-                $packages->rtl->package="template-default-ltr";
+                $packages->rtl->package="template-default-rtl";
                 $this->packages=$packages;
             }
         }
@@ -319,32 +318,67 @@ class TemplateConfiguration extends CFormModel
     private function getDependsPackages()
     {
         $packages=array();
-        /* Start by adding boostrap package , adding boostrap.css if exist */
-        if($this->cssFramework=="bootstrap"){
+        /* Start by adding cssFramework package */
+        $framework=isset($this->cssFramework->name)? (string)$this->cssFramework->name : (string)$this->cssFramework;
+        if(isset(Yii::app()->clientScript->packages[$framework])){
+            /* Theming */
+            $cssFrameworkCsss=isset($this->cssFramework->css) ? $this->cssFramework->css : array();
+            $cssFrameworkJss=isset($this->cssFramework->js) ? $this->cssFramework->js : array();
+            if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)){
+                $packages[]=$framework;
+            }else{
+                /* Need to create an adapted core framework */
+                $cssFrameworkPackage=Yii::app()->clientScript->packages[$framework];
+                /* Need to create an adapted template/theme framework */
+                $packageCss=array();
+                $packageJs=array();
+                /* css file to replace from default package */
+                $cssDelete=array();
+                foreach($cssFrameworkCsss as $cssFrameworkCss){
+                    if(isset($cssFrameworkCss['replace'])){
+                        $cssDelete[]=$cssFrameworkCss['replace'];
+                    }
+                    if((string)$cssFrameworkCss){
+                        $packageCss[]=(string)$cssFrameworkCss;
+                    }
+                }
+                if(isset($cssFrameworkPackage['css'])){
+                    $cssFrameworkPackage['css']=array_diff($cssFrameworkPackage['css'],$cssDelete);
+                }
+                $jsDelete=array();
+                foreach($cssFrameworkJss as $cssFrameworkJs){
+                    if(isset($cssFrameworkJs['replace'])){
+                        $jsDelete[]=$cssFrameworkJs['replace'];
+                    }
+                    if((string)$cssFrameworkJs){
+                        $packageJs[]=(string)$cssFrameworkJs;
+                    }
+                }
+                if(isset($cssFrameworkPackage['js'])){
+                    $cssFrameworkPackage['js']=array_diff($cssFrameworkPackage['js'],$cssDelete);
+                }
+                /* And now : we add : core package fixed + template/theme package */
+                Yii::app()->clientScript->packages[$framework]=$cssFrameworkPackage;
+                $aDepends=array(
+                    $framework,
+                );
 
-            /* remove css from boostrap package , adding included boostrap css*/
-            Yii::app()->clientScript->packages['bootstrap']['css']=array();
-            $aBootstrapCss=array(
-                'css/bootstrap.css' /* MUST fix this one : usage of assets or attribute ?*/
-            );
-            $aDepends=array(
-                'bootstrap'
-            );
-            if(getLanguageRTL(App()->getLanguage())){
-                $aDepends[]='bootstrap-rtl';
+                Yii::app()->clientScript->addPackage( $framework.'-template', array(
+                    'basePath'    => 'survey.template.path',
+                    'css'         => $packageCss,
+                    'js'          => $packageJs,
+                    'depends'     => $aDepends,
+                ));
+                $packages[]=$framework.'-template';
+                if(getLanguageRTL(App()->getLanguage()) && isset(Yii::app()->clientScript->packages[$framework.'-rtl'])){
+                    $packages[]=$framework.'-rtl';
+                }
             }
-
-            Yii::app()->clientScript->addPackage( 'bootstrap-template', array(
-                'basePath'    => 'survey.template.path',
-                'css'         => $aBootstrapCss,
-                'depends'     => $aDepends,
-            ));
-            $packages[]='bootstrap-template';
         }
         $packages[]='limesurvey-public';
         if(!empty($this->packages->package)){
             foreach((array)$this->packages->package as $package){
-                $packages[]=$package;
+                $packages[]=(string)$package;
             }
         }
         /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
@@ -353,13 +387,13 @@ class TemplateConfiguration extends CFormModel
         if(!getLanguageRTL(App()->getLanguage())){
             if(!empty($this->packages->ltr->package)){
                 foreach((array)$this->packages->ltr->package as $package){
-                    $packages[]=$package;
+                    $packages[]=(string)$package;
                 }
             }
         }else{
             if(!empty($this->packages->rtl->package)){
                 foreach((array)$this->packages->rtl->package as $package){
-                    $packages[]=$package;
+                    $packages[]=(string)$package;
                 }
             }
         }

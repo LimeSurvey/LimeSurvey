@@ -345,10 +345,12 @@ class templates extends Survey_Common_Action
             Yii::app()->setFlashMessage(sprintf(gT('Template %s does not exist.'),htmlspecialchars($templatename,ENT_QUOTES)),'error');
             $this->getController()->redirect(array('admin/templates/sa/view/','templatename'=>'default'));
         }
-
+        /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
+        $aBootstrapPackage=Yii::app()->clientScript->packages['bootstrap'];
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
+        Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'templates.js');
         App()->getClientScript()->registerPackage('ace');
