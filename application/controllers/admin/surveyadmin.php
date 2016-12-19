@@ -514,6 +514,8 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function deactivate($iSurveyID = null)
     {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die('No permission');
+
         $iSurveyID  = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID  = sanitize_int($iSurveyID);
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -524,6 +526,23 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid']                        = $iSurveyID;
         $aData['title_bar']['title']              = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
+
+        // Fire event beforeSurveyDeactivate
+        $beforeSurveyDeactivate = new PluginEvent('beforeSurveyDeactivate');
+        $beforeSurveyDeactivate->set('surveyId', $iSurveyID);
+        App()->getPluginManager()->dispatchEvent($beforeSurveyDeactivate);
+        $success = $beforeSurveyDeactivate->get('success');
+        $message = $beforeSurveyDeactivate->get('message');
+        if (!empty($message))
+        {
+            Yii::app()->user->setFlash('error', $message);
+        }
+        if ($success === false)  // TODO: What if two plugins change this?
+        {
+            $aData['nostep'] = true;
+            $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
+            return;
+        }
 
         if (Yii::app()->request->getPost('ok')=='')
         {
@@ -676,7 +695,18 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aResult=activateSurvey($iSurveyID);
             $aViewUrls = array();
-            if (isset($aResult['error']))
+            if ((isset($aResult['error']) && $aResult['error'] == 'plugin')
+                || (isset($aResult['blockFeedback']) && $aResult['blockFeedback']))
+            {
+                // Got false from plugin, redirect to survey front-page
+                $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
+            }
+            else if (isset($aResult['pluginFeedback']))
+            {
+                // Special feedback from plugin
+                $aViewUrls['output'] = $aResult['pluginFeedback'];
+            }
+            else if (isset($aResult['error']))
             {
                 $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n";
                 if ($aResult['error']=='surveytablecreation')

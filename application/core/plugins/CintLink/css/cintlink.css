@@ -1,0 +1,93 @@
+.ajaxLoading {
+    display: block;
+    position: absolute;
+    min-height: 99%;  /* TODO: Too long */
+    min-width: 100%;
+    background-color: white;
+    opacity: 0.9;
+    top: 0;
+    z-index: 10;
+}
+
+.ajaxLoading .preloader {
+    position: relative;
+    top: 1%;
+}
+
+/* Don't shrink font in label */
+.label {
+    font-size: 100%;
+}
+
+.cintlink-completed-check-column {
+    width: 20px;
+}
+
+@font-face {
+    font-family: 'CintFont';
+	src:  url('icomoon.eot?gsq6lm');
+	src:  url('icomoon.eot?gsq6lm#iefix') format('embedded-opentype'),
+    url('icomoon.ttf?gsq6lm') format('truetype'),
+    url('icomoon.woff?gsq6lm') format('woff'),
+    url('icomoon.svg?gsq6lm#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.cintlink-icons {
+    font: normal normal normal 14px/1 'CintFont';
+}
+
+.cinticon:before {
+	content: '\e900';
+}
+
+.cintlink-icon-sidemenu {
+    padding-right: 10px;
+}
+
+.cint-price, .cint-age, .cint-buttons {
+    white-space: nowrap;
+}
+
+/* Radio buttons in language wizard is off */
+#cint-lang-wizard .radio input {
+    margin-top: 4px;
+}
+
+#cint-lang-wizard .radio label {
+    padding-left: 6px;
+    font-weight: bold;
+}
+
+#cint-lang-wizard form {
+    padding-left: 20px;
+}
+
+.cintlink-sidemenu-table {
+    margin-bottom: 0;
+}
+
+.cintlink-no-hover {
+    pointer-events: none;
+}
+
+/* Copied from .welcome.panel */
+.cintlink-shadow {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
+}
+
+/* Tour */
+.tour-limesurvey-cintlink-tour .popover-title {
+    background-color: #eee;
+    border: 0;
+}
+
+.tour-limesurvey-cintlink-tour-element {
+    pointer-events: none;
+}
+
+body .tour-backdrop {
+    background-color: #fff;
+    opactiy: .8;
+}

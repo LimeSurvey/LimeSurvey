@@ -237,6 +237,7 @@ CREATE TABLE prefix_plugins (
   "id" serial NOT NULL,
   "name" character varying(50) NOT NULL,
   "active" integer NOT NULL default '0',
+  "version" character varying(32) default NULL,
   CONSTRAINT prefix_plugins_pkey PRIMARY KEY (id)
 );
 
@@ -610,13 +611,27 @@ CREATE TABLE prefix_notifications (
     "status" character varying(15) NOT NULL DEFAULT 'new',
     "importance" integer NOT NULL DEFAULT 1,
     "display_class" character varying(31) DEFAULT 'default',
+    "hash" character varying(64) DEFAULT NULL,
     "created" timestamp NOT NULL,
     "first_read" timestamp DEFAULT NULL,
     CONSTRAINT prefix_notifications_pkey PRIMARY KEY (id)
 );
 CREATE INDEX prefix_index ON prefix_notifications USING btree (entity, entity_id, status);
+CREATE INDEX hash_index ON prefix_notifications USING btree (hash);
+
+--
+-- User settings table
+--
+CREATE TABLE prefix_settings_user (
+    "uid" integer NOT NULL,
+    "entity" character varying(15) DEFAULT NULL,
+    "entity_id" character varying(31) DEFAULT NULL,
+    "stg_name" character varying(63) NOT NULL,
+    "stg_value" text NULL,
+    CONSTRAINT prefix_user_settings_pkey PRIMARY KEY (uid, entity, entity_id, stg_name)
+);
 
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '261');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '264');

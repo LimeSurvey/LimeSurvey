@@ -224,6 +224,12 @@ class index extends CAction {
                 $aMessage = array(
                     gT("We are sorry but you don't have permissions to do this."),
                 );
+
+                $event = new PluginEvent('onSurveyDenied');
+                $event->set('surveyId', $surveyid);
+                $event->set('reason', 'noPreviewPermission');
+                App()->getPluginManager()->dispatchEvent($event);
+
                 App()->getController()->renderExitMessage(
                     $surveyid,
                     'norights-410',
@@ -250,6 +256,7 @@ class index extends CAction {
             $aMessage = array(
                 gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
             );
+
             $aReloadUrlParam=array('lang'=>App()->language,'newtest'=>'Y');
             if($clienttoken){
                 $aReloadUrlParam['token']=$clienttoken;
@@ -259,6 +266,12 @@ class index extends CAction {
                 'type'=>'restart-survey',
                 'description'=>gT("Click here to start the survey.")
             );
+
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'sessionExpired');
+            App()->getPluginManager()->dispatchEvent($event);
+
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'session-timeout',
@@ -282,6 +295,11 @@ class index extends CAction {
         }
         else
         {
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'surveyDoesNotExist');
+            App()->getPluginManager()->dispatchEvent($event);
+
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         }
 
@@ -329,6 +347,11 @@ class index extends CAction {
                 gT("We are sorry but the survey is expired and no longer available."),
                 sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']) /* Maybe better to move this to a global replacement 'surveycontact' */
             );
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'surveyNoLongerAvailable');
+            App()->getPluginManager()->dispatchEvent($event);
+
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'survey-expiry',
@@ -346,6 +369,12 @@ class index extends CAction {
                 gT("This survey is not yet started."),
                 sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
             );
+
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'surveyNotYetStarted');
+            App()->getPluginManager()->dispatchEvent($event);
+
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'survey-notstart',
@@ -365,6 +394,12 @@ class index extends CAction {
                 gT("You have already completed this survey."),
                 sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
             );
+
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'alreadyCompleted');
+            App()->getPluginManager()->dispatchEvent($event);
+
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'survey-notstart',
@@ -487,6 +522,12 @@ class index extends CAction {
                         gT("We are sorry but you are not allowed to enter this survey."),
                         sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
                     );
+
+                    $event = new PluginEvent('onSurveyDenied');
+                    $event->set('surveyId', $surveyid);
+                    $event->set('reason', 'invalidToken');
+                    App()->getPluginManager()->dispatchEvent($event);
+
                     App()->getController()->renderExitMessage(
                         $surveyid,
                         'survey-notstart',

@@ -127,7 +127,14 @@ class LSUserIdentity extends CUserIdentity {
 
         // Check for default password
         if ($this->password === 'password') {
-            Yii::app()->setFlashMessage(gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."),'warning');
+            $not = new UniqueNotification(array(
+                'user_id' => App()->user->id,
+                'importance' => Notification::HIGH_IMPORTANCE,
+                'title' => 'Password warning',
+                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                    gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
+            ));
+            $not->save();
         }
 
         if ((int)App()->request->getPost('width', '1220') < 1220) // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
@@ -163,6 +170,13 @@ class LSUserIdentity extends CUserIdentity {
 
         Yii::app()->session['adminlang'] = $sLanguage;
         App()->setLanguage($sLanguage);
+
+        // Read all plugin config files if superadmin logged in
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            $pm = Yii::app()->getPluginManager();
+            $pm->readConfigFiles();
+        }
     }
 
     public function setPlugin($name) {

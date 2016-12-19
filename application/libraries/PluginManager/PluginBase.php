@@ -34,6 +34,12 @@ abstract class PluginBase implements iPlugin {
     protected $pluginManager;
 
     /**
+     * If plugin has a config.json file, it will be parsed into this variable.
+     * @var StdObject
+     */
+    protected $config = null;
+
+    /**
      * Constructor for the plugin
      * @todo Add proper type hint in 3.0
      * @param PluginManager $manager    The plugin manager instantiating the object
@@ -44,6 +50,34 @@ abstract class PluginBase implements iPlugin {
         $this->pluginManager = $manager;
         $this->id = $id;
         $this->api = $manager->getAPI();
+
+        $this->setLocaleComponent();
+    }
+
+    /**
+     * We need a component for each plugin to load correct
+     * locale file.
+     *
+     * @return void
+     */
+    protected function setLocaleComponent()
+    {
+        $basePath = $this->getDir() . DIRECTORY_SEPARATOR . 'locale';
+
+        // No need to load a component if there is no locale files
+        if (!file_exists($basePath))
+        {
+            return;
+        }
+
+        // Set plugin specific locale file to locale/<lang>/<lang>.mo
+        \Yii::app()->setComponent('pluginMessages' . $this->id, array(
+            'class' => 'LSCGettextMessageSource',
+            'cachingDuration' => 3600,
+            'forceTranslation' => true,
+            'useMoFile' => true,
+            'basePath' => $basePath
+        ));
     }
     
     /**
@@ -251,7 +285,20 @@ abstract class PluginBase implements iPlugin {
     }
 
     /**
-     * Look for views in plugin views/ folder and render it (no echo)
+     * To find the plugin locale file, we need late runtime result of __DIR__.
+     * Solution copied from http://stackoverflow.com/questions/18100689/php-dir-evaluated-runtime-late-binding
+     *
+     * @return string
+     */
+    protected function getDir()
+    {
+        $reflObj = new \ReflectionObject($this);
+        $fileName = $reflObj->getFileName();
+        return dirname($fileName);
+    }
+
+    /**
+     * Look for views in plugin views/ folder and render it
      *
      * @param string $viewfile Filename of view in views/ folder
      * @param array $data
@@ -263,20 +310,197 @@ abstract class PluginBase implements iPlugin {
     {
         $alias = 'plugin_views_folder' . $this->id;
         \Yii::setPathOfAlias($alias, $this->getDir());
-        return \Yii::app()->controller->renderPartial($alias .'.views.' . $viewfile, $data, $return, $processOutput);
+        $fullAlias = $alias . '.views.' . $viewfile;
+
+        if (isset($data['plugin']))
+        {
+            throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
+        }
+
+        // Provide this so we can use $plugin->gT() in plugin views
+        $data['plugin'] = $this;
+
+        return \Yii::app()->controller->renderPartial($fullAlias, $data, $return, $processOutput);
     }
 
     /**
-     * To find the plugin locale file, we need late runtime result of __DIR__.
-     * Solution copied from http://stackoverflow.com/questions/18100689/php-dir-evaluated-runtime-late-binding
+     * Translation for plugin
      *
+     * @param string $sToTranslate The message that are being translated
+     * @param string $sEscapeMode
+     * @param string $sLanguage
      * @return string
      */
-    protected function getDir()
+    public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
     {
-        $reflObj = new \ReflectionObject($this);
-        $fileName = $reflObj->getFileName();
-        return dirname($fileName);
+        $translation = \quoteText(
+            \Yii::t(
+                '',
+                $sToTranslate,
+                array(),
+                'pluginMessages' . $this->id,
+                $sLanguage
+            ),
+            $sEscapeMode
+        );
+
+        // If we don't have a translation from the plugin, check core translations
+        if ($translation == $sToTranslate)
+        {
+            $translationFromCore = \quoteText(
+                \Yii::t(
+                    '',
+                    $sToTranslate,
+                    array(),
+                    null,
+                    $sLanguage
+                ),
+                $sEscapeMode
+            );
+
+            return $translationFromCore;
+        }
+
+        return $translation;
+
+    }
+
+    /**
+     * Call the Yii::log function to log into tmp/runtime/plugin.log
+     * The plugin name is the category.
+     *
+     * @param string $message
+     * @param string $level From CLogger, defaults to CLogger::LEVEL_TRACE
+     * @return void
+     */
+    public function log($message, $level = \CLogger::LEVEL_TRACE)
+    {
+        $category = $this->getName();
+        \Yii::log($message, $level, 'plugin.' . $category);
+    }
+
+    /**
+     * Read JSON config file and store it in $this->config
+     * Assumes config file is config.json and in plugin root folder.
+     * @return void
+     */
+    public function readConfigFile()
+    {
+        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.json';
+        if (file_exists($file))
+        {
+            $json = file_get_contents($file);
+            $this->config = json_decode($json);
+
+            if ($this->config === null)
+            {
+                // Failed. Popup error message.
+                $this->showConfigErrorNotification();
+            }
+            else if ($this->configIsNewVersion())
+            {
+                // Do everything related to reading config fields
+                // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
+                $pluginModel = \Plugin::model()->findByPk($this->id);
+
+                // "Impossible"
+                if (empty($pluginModel))
+                {
+                    throw new \Exception('Internal error: Found no database entry for plugin id ' . $this->id);
+                }
+
+                $this->checkActive($pluginModel);
+                $this->saveNewVersion($pluginModel);
+            }
+        }
+        else
+        {
+            $this->log('Found no config file');
+        }
+    }
+
+    /**
+     * Check if config field active is 1. If yes, activate the plugin.
+     * This is the 'active-by-default' feature.
+     * @return void
+     */
+    protected function checkActive($pluginModel)
+    {
+        if ($this->config->active == 1)
+        {
+            // Activate plugin
+            $result = App()->getPluginManager()->dispatchEvent(
+                new PluginEvent('beforeActivate', App()->getController()),
+                $this->getName()
+            );
+
+            if ($result->get('success') !== false)
+            {
+                $pluginModel->active = 1;
+                $pluginModel->update();
+            }
+            else
+            {
+                // Failed. Popup error message.
+                $not = new \Notification(array(
+                    'user_id' => App()->user->id,
+                    'title' => gT('Plugin error'),
+                    'message' =>
+                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                        gT('Could not activate plugin ' . $this->getName()) . '. ' .
+                        gT('Reason:') . ' ' . $result->get('message'),
+                    'importance' => \Notification::HIGH_IMPORTANCE
+                ));
+                $not->save();
+            }
+        }
+    }
+
+    /**
+     * Show an error message about malformed config.json file.
+     * @return void
+     */
+    protected function showConfigErrorNotification()
+    {
+        $not = new \Notification(array(
+            'user_id' => App()->user->id,
+            'title' => gT('Plugin error'),
+            'message' =>
+                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
+                gT('Config file is malformed or null.'),
+            'importance' => \Notification::HIGH_IMPORTANCE
+        ));
+        $not->save();
+    }
+
+    /**
+     * Returns true if config file has a higher version than database.
+     * Assumes $this->config is set.
+     * @return boolean
+     */
+    protected function configIsNewVersion()
+    {
+        if (empty($this->config))
+        {
+            throw new \InvalidArgumentException('config is not set');
+        }
+
+        $pluginModel = \Plugin::model()->findByPk($this->id);
+
+        return empty($pluginModel->version) ||
+            version_compare($pluginModel->version, $this->config->version) === -1;
+    }
+
+    /**
+     * Saves the new version from config into database
+     * @return void
+     */
+    protected function saveNewVersion()
+    {
+        $pluginModel = \Plugin::model()->findByPk($this->id);
+        $pluginModel->version = $this->config->version;
+        $pluginModel->update();
     }
 
 }

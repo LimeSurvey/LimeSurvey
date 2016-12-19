@@ -232,6 +232,7 @@ CREATE TABLE [prefix_plugins] (
 [id] int NOT NULL identity(1,1),
 [name] varchar(50) NOT NULL,
 [active] int NOT NULL default '0',
+[version] varchar(32) default null,
 PRIMARY KEY  (id)
 );
 
@@ -601,13 +602,27 @@ CREATE TABLE prefix_notifications (
     [status] nvarchar(15) NOT NULL DEFAULT 'new',
     [importance] int NOT NULL DEFAULT 1,
     [display_class] nvarchar(31) DEFAULT 'default',
+    [hash] nvarchar(64) DEFAULT NULL,
     [created] datetime NOT NULL,
     [first_read] datetime DEFAULT NULL,
     PRIMARY KEY ([id])
 );
 CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);
+CREATE INDEX [notif_hash_index] ON [prefix_notifications] ([hash]);
+
+--
+-- User settings table
+--
+CREATE TABLE prefix_settings_user (
+    [uid] int NOT NULL,
+    [entity] varchar(15) DEFAULT NULL,
+    [entity_id] varchar(31) DEFAULT NULL,
+    [stg_name] varchar(63) NOT NULL,
+    [stg_value] nvarchar(max) DEFAULT NULL,
+    PRIMARY KEY ([uid], [entity], [entity_id], [stg_name])
+);
 
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '261');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '264');

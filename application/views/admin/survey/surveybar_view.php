@@ -76,14 +76,14 @@
 
                     <!-- activate -->
                     <?php if($canactivate): ?>
-                        <a class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>" role="button">
+                        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>" role="button">
                             <?php eT("Activate this survey"); ?>
                         </a>
 
                     <!-- can't activate -->
                     <?php elseif (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')): ?>
                         <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-                            <button type="button" class="btn btn-success btntooltip" disabled="disabled">
+                            <button id='ls-activate-survey' type="button" class="btn btn-success btntooltip" disabled="disabled">
                                 <?php eT("Activate this survey"); ?>
                             </button>
                         </span>
@@ -538,6 +538,48 @@
                         </ul>
                     </div>
                 <?php endif;?>
+
+            <!-- Extra menus from plugins -->
+            <?php // TODO: This views should be in same module as ExtraMenu and ExtraMenuItem classes (not plugin) ?>
+            <?php // TODO: Copied from adminmenu.php ?>
+            <?php foreach ($beforeSurveyBarRender as $menu): ?>
+                <div class='btn-group'>
+                    <?php if ($menu->isDropDown()): ?>
+                        <button class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          <?php echo $menu->getLabel(); ?>
+                          &nbsp;
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <?php foreach ($menu->getMenuItems() as $menuItem): ?>
+                                <?php if ($menuItem->isDivider()): ?>
+                                    <li class="divider"></li>
+                                <?php elseif ($menuItem->isSmallText()): ?>
+                                    <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>
+                                <?php else: ?>
+                                    <li>
+                                        <a href="<?php echo $menuItem->getHref(); ?>">
+                                            <!-- Spit out icon if present -->
+                                            <?php if ($menuItem->getIconClass() != ''): ?>
+                                              <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
+                                            <?php endif; ?>
+                                            <?php echo $menuItem->getLabel(); ?>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <a class='btn btn-default' href="<?php echo $menu->getHref(); ?>">
+                            <?php if ($menu->getIconClass()): ?>
+                                <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
+                            <?php endif; ?>
+                            <?php echo $menu->getLabel(); ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+
 
                 <?php if($permission):?>
                     <!-- List Groups -->

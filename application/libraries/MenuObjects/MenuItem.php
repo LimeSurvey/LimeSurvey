@@ -48,4 +48,3 @@ class MenuItem implements MenuItemInterface
     // Used by array_unique
     public function __toString() { return $this->href; }
 }
-

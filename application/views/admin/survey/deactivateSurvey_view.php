@@ -68,8 +68,11 @@
         </div>
     </div>
 
+<?php elseif (isset($nostep)): ?>
+    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    </div>
 
-    <?php else: ?>
+<?php else: ?>
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">

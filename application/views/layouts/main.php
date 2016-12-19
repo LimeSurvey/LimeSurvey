@@ -28,7 +28,7 @@
         <div class="wrapper clearfix">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
-            <?php $this->widget('ext.Menu.MenuWidget', $this->navData); ?>
+            <?php //$this->widget('ext.Menu.MenuWidget', $this->navData); ?>
             <div id="content">
             <?php echo $content; ?>
             </div>

@@ -8,6 +8,7 @@ class Menu implements MenuInterface
   protected $label = "Missing label";
   protected $href = "#";
   protected $menuItems = array();
+  protected $iconClass = "";
 
   /**
    * @param array $options - Options for either dropdown menu or plain link
@@ -34,11 +35,16 @@ class Menu implements MenuInterface
       {
           $this->menuItems = $options['menuItems'];
       }
+
+      if (isset($options['iconClass']))
+      {
+          $this->iconClass = $options['iconClass'];
+      }
   }
 
   public function isDropDown() { return $this->isDropDown; }
   public function getLabel() { return $this->label; }
   public function getHref() { return $this->href; }
   public function getMenuItems() { return $this->menuItems; }
+  public function getIconClass() { return $this->iconClass; }
 }
-

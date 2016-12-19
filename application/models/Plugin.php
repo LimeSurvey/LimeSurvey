@@ -29,4 +29,5 @@ class Plugin extends CActiveRecord {
     public function tableName() {
         return '{{plugins}}';
     }
+
 }

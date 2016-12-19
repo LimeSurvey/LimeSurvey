@@ -32,6 +32,20 @@
 </footer>
 
 <!-- Modal for confirmation -->
+<?php
+/**
+
+    Example of use:
+
+    <button 
+        data-toggle='modal'
+        data-target='#confirmation-modal'
+        data-onclick='(function() { LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>"); })'
+        class='btn btn-warning btn-sm' 
+    >
+
+ */
+?>
 <div id="confirmation-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -80,6 +94,25 @@
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for success -->
+<div id="success-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content panel-success">
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><?php eT("Success"); ?></h4>
+            </div>
+            <div class="modal-body">
+                <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>

@@ -257,10 +257,10 @@ class LSYii_Application extends CWebApplication
         $event = new PluginEvent('beforeControllerAction');
         $event->set('controller',$controller->getId());
         $event->set('action',$action->getId());
+        $event->set('subaction', Yii::app()->request->getParam('sa'));
         App()->getPluginManager()->dispatchEvent($event);
         return $event->get("run",parent::beforeControllerAction($controller,$action));
     }
-
 
     /**
      * Used by PluginHelper to make the controlling plugin

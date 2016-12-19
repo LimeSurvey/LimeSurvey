@@ -103,6 +103,11 @@ class LSHttpRequest extends CHttpRequest
        return $referrer;
     }
 
+    public function getOriginalUrlReferrer()
+    {
+        return parent::getUrlReferrer();
+    }
+
     /**
     * Method to update the LimeSurvey Navigation Stack to prevent looping
     */

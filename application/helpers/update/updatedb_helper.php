@@ -1482,13 +1482,52 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
         }
 
+        /*
+         * The hash value of a notification is used to calculate uniqueness.
+         * @since 2016-08-10
+         * @author Olle Haerstedt
+         */
+        if ($iOldDBVersion < 262) {
+            addColumn('{{notifications}}', 'hash', 'string(64)');
+            $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
+        }
+
+        /**
+         * Plugin JSON config file
+         * @since 2016-08-22
+         */
+        if ($iOldDBVersion < 263)
+        {
+            addColumn('{{plugins}}', 'version', 'string(32)');
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>263),"stg_name='DBVersion'");
+        }
+
+        /**
+         * User settings table
+         * @since 2016-08-29
+         */
+        if ($iOldDBVersion < 264) {
+            $oDB->createCommand()->createTable('{{settings_user}}', array(
+                'uid' => 'integer NOT NULL',
+                'entity' => 'string(15)',
+                'entity_id' => 'string(31)',
+                'stg_name' => 'string(63) not null',
+                'stg_value' => 'text',
+                'PRIMARY KEY (uid, entity, entity_id, stg_name)'
+            ));
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>264),"stg_name='DBVersion'");
+        }
+
         // Inform superadmin about update
+        // TODO: DON'T FORGET TO UPDATE THIS
         $superadmins = User::model()->getSuperAdmins();
         Notification::broadcast(array(
             'title' => gT('Database update'),
-            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '261')
+            'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '263')  // <--- UPDATE THIS
         ), $superadmins);
-
 
         $oTransaction->commit();
         // Activate schema caching

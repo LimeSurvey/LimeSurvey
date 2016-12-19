@@ -451,7 +451,14 @@ class Survey_Common_Action extends CAction
             // Default password notification
             if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug") < 2)
             {
-                Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+                $not = new UniqueNotification(array(
+                    'user_id' => App()->user->id,
+                    'importance' => Notification::HIGH_IMPORTANCE,
+                    'title' => 'Password warning',
+                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                        gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
+                ));
+                $not->save();
             }
 
             // Count active survey
@@ -799,11 +806,19 @@ class Survey_Common_Action extends CAction
                 || $aData['quotas']
                 || $aData['assessments'];
 
+            // Put menu items in tools menu
             $event = new PluginEvent('beforeToolsMenuRender', $this);
             $event->set('surveyId', $iSurveyID);
             App()->getPluginManager()->dispatchEvent($event);
             $extraToolsMenuItems = $event->get('menuItems');
             $aData['extraToolsMenuItems'] = $extraToolsMenuItems;
+
+            // Add new menus in survey bar
+            $event = new PluginEvent('beforeSurveyBarRender', $this);
+            $event->set('surveyId', $iSurveyID);
+            App()->getPluginManager()->dispatchEvent($event);
+            $beforeSurveyBarRender = $event->get('menus');
+            $aData['beforeSurveyBarRender'] = $beforeSurveyBarRender ? $beforeSurveyBarRender : array();
 
             // Only show tools menu if at least one item is permitted
             $aData['showToolsMenu'] =
@@ -943,6 +958,7 @@ class Survey_Common_Action extends CAction
                 }
             }
             $aData['quickmenu'] = $this->renderQuickmenu($aData);
+            $aData['beforeSideMenuRender'] = $this->beforeSideMenuRender($aData);
             $aData['aGroups'] = $aGroups;
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
@@ -985,7 +1001,6 @@ class Survey_Common_Action extends CAction
 
         $aData['quickMenuItems'] = $quickMenuItems;
 
-
         if ($aData['quickMenuItems'] === null)
         {
             $aData['quickMenuItems'] = array();
@@ -993,6 +1008,18 @@ class Survey_Common_Action extends CAction
 
         $html = $this->getController()->renderPartial('/admin/super/quickmenu', $aData, true);
         return $html;
+    }
+
+    /**
+     * Returns content from event beforeSideMenuRender
+     * @return string
+     */
+    protected function beforeSideMenuRender(array $aData)
+    {
+        $event = new PluginEvent('beforeSideMenuRender', $this);
+        $event->set('aData', $aData);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        return $result->get('html');
     }
 
     /**

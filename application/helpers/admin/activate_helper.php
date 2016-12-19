@@ -252,10 +252,32 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 * Function to activate a survey
 * @param int $iSurveyID The Survey ID
 * @param bool $simulate
-* @return string
+* @return array
 */
 function activateSurvey($iSurveyID, $simulate = false)
 {
+    // Event beforeSurveyActivate
+    $event = new PluginEvent('beforeSurveyActivate');
+    $event->set('surveyId', $iSurveyID);
+    $event->set('simulate', $simulate);
+    App()->getPluginManager()->dispatchEvent($event);
+    $success = $event->get('success');
+    $message = $event->get('message');
+    if ($success === false)
+    {
+        Yii::app()->user->setFlash('error', $message);
+        return array('error' => 'plugin');
+    }
+    else if (!empty($message))
+    {
+        Yii::app()->user->setFlash('info', $message);
+    }
+
+    $createsurvey='';
+    $activateoutput='';
+    $createsurveytimings='';
+    $fieldstiming = array();
+    $createsurveydirectory=false;
     $aTableDefinition=array();
     $bCreateSurveyDir=false;
     // Specify case sensitive collations for the token
@@ -486,7 +508,10 @@ function activateSurvey($iSurveyID, $simulate = false)
         }
 
     }
-    $aResult=array('status'=>'OK');
+    $aResult = array(
+        'status' => 'OK',
+        'pluginFeedback' => $event->get('pluginFeedback')
+    );
     // create the survey directory where the uploaded files can be saved
     if ($bCreateSurveyDir)
     {

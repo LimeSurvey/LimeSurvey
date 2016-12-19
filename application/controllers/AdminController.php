@@ -91,6 +91,7 @@ class AdminController extends LSYii_Controller
 
         Yii::app()->end();
     }
+
     /**
     * Load and set session vars
     *
@@ -146,6 +147,7 @@ class AdminController extends LSYii_Controller
 
 
         if ($action != "databaseupdate" && $action != "db")
+        {
             if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
             {
                 if (!empty($action) && $action != 'index')
@@ -171,10 +173,10 @@ class AdminController extends LSYii_Controller
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));
                 }
-
             }
+        }
 
-            return parent::run($action);
+        return parent::run($action);
     }
 
     /**
@@ -400,4 +402,5 @@ class AdminController extends LSYii_Controller
 
         return $this->renderPartial('/admin/endScripts_view', array());
     }
+
 }

@@ -233,6 +233,7 @@ CREATE TABLE `prefix_plugins` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL,
   `active` int(1) NOT NULL default '0',
+  `version` varchar(32) default null,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -607,13 +608,27 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     `status` VARCHAR(15) NOT NULL DEFAULT 'new' COMMENT 'new or read',
     `importance` INT(11) NOT NULL DEFAULT 1,
     `display_class` VARCHAR(31) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success',
+    `hash` VARCHAR(64) DEFAULT NULL COMMENT 'Hash of title, message and entity to avoid duplication',
     `created` DATETIME NOT NULL,
     `first_read` DATETIME DEFAULT NULL,
     PRIMARY KEY (`id`),
-    INDEX(`entity`, `entity_id`, `status`)
+    INDEX(`entity`, `entity_id`, `status`),
+    INDEX(`hash`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+--
+-- User settings table
+--
+CREATE TABLE IF NOT EXISTS `prefix_settings_user` (
+    `uid` int(11) NOT NULL,
+    `entity` VARCHAR(15) DEFAULT NULL,
+    `entity_id` VARCHAR(31) DEFAULT NULL,
+    `stg_name` VARCHAR(63) NOT NULL,
+    `stg_value` TEXT DEFAULT NULL,
+    PRIMARY KEY (`id`, `entity`, `entity_id`, `stg_name`)
+) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '261');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '264');
