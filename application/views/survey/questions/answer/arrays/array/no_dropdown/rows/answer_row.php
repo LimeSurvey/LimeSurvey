@@ -7,7 +7,6 @@
  * @var $answertext
  * @var $value
  */
-tracevar($answerwidth);
 ?>
 
 <!-- answer_row -->
