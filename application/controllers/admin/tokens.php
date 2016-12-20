@@ -596,7 +596,7 @@ class tokens extends Survey_Common_Action
                 'validuntil' => $validuntil,
             );
 
-            // add attributes
+            // Add attributes
             $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
             $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}",true);
             $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
@@ -618,10 +618,14 @@ class tokens extends Survey_Common_Action
                 $token = Token::create($iSurveyId);
                 $token->setAttributes($aData, false);
                 $inresult = $token->save();
-                $aData['success'] = true;
+                $aData['success'] = $inresult;
+                $aData['errors'] = $token->getErrors();
             }
             else {
                 $aData['success'] = false;
+                $aData['errors'] = array(
+                    'token' => array(gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."))
+                );
             }
 
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
