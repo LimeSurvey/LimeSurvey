@@ -82,7 +82,6 @@ class TemplateConfiguration extends CFormModel
                 $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
             }
         }
-
         // We check if  it's a CORE template
         $this->isStandard = $this->setIsStandard();
         // If the template is standard, its root is based on standardtemplaterootdir, else, it's a user template, its root is based on usertemplaterootdir
@@ -320,6 +319,11 @@ class TemplateConfiguration extends CFormModel
 
         /* Start by adding cssFramework package */
         $packages=$this->getFrameworkPackages();
+        if(!getLanguageRTL(App()->getLanguage())){
+            $packages=array_merge ($packages,$this->getFrameworkPackages('ltr'));
+        }else{
+            $packages=array_merge ($packages,$this->getFrameworkPackages('rtl'));
+        }
         $packages[]='limesurvey-public';
         if(!empty($this->packages->package)){
             foreach((array)$this->packages->package as $package){
@@ -346,17 +350,24 @@ class TemplateConfiguration extends CFormModel
     }
     /**
      * Set the framework package
+     * @param string : dir (rtl|ltr|)
      * @use $this->cssFramework
      * @return string[] depends for framework
      */
-    private function getFrameworkPackages()
+    private function getFrameworkPackages($dir="")
     {
         $framework=isset($this->cssFramework->name)? (string)$this->cssFramework->name : (string)$this->cssFramework;
+        $framework=$dir ? $framework."-".$dir : $framework;
         if(isset(Yii::app()->clientScript->packages[$framework])){
             $frameworkPackages=array();
             /* Theming */
-            $cssFrameworkCsss=isset($this->cssFramework->css) ? $this->cssFramework->css : array();
-            $cssFrameworkJss=isset($this->cssFramework->js) ? $this->cssFramework->js : array();
+            if($dir){
+                $cssFrameworkCsss=isset($this->cssFramework->$dir->css) ? $this->cssFramework->$dir->css : array();
+                $cssFrameworkJss=isset($this->cssFramework->$dir->js) ? $this->cssFramework->$dir->js : array();
+            }else{
+                $cssFrameworkCsss=isset($this->cssFramework->css) ? $this->cssFramework->css : array();
+                $cssFrameworkJss=isset($this->cssFramework->js) ? $this->cssFramework->js : array();
+            }
             if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)){
                 $frameworkPackages[]=$framework;
             }else{
@@ -391,7 +402,7 @@ class TemplateConfiguration extends CFormModel
                     $cssFrameworkPackage['js']=array_diff($cssFrameworkPackage['js'],$cssDelete);
                 }
                 /* And now : we add : core package fixed + template/theme package */
-                Yii::app()->clientScript->packages[$framework]=$cssFrameworkPackage;
+                Yii::app()->clientScript->packages[$framework]=$cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
                 $aDepends=array(
                     $framework,
                 );
@@ -403,9 +414,6 @@ class TemplateConfiguration extends CFormModel
                     'depends'     => $aDepends,
                 ));
                 $frameworkPackages[]=$framework.'-template';
-            }
-            if(getLanguageRTL(App()->getLanguage()) && isset(Yii::app()->clientScript->packages[$framework.'-rtl'])){
-                $frameworkPackages[]=$framework.'-rtl';
             }
             return $frameworkPackages;
         }

@@ -347,6 +347,7 @@ class templates extends Survey_Common_Action
         }
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage=Yii::app()->clientScript->packages['bootstrap'];
+
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
