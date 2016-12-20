@@ -354,6 +354,7 @@ class templates extends Survey_Common_Action
         Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'templates.js');
+        AdminTheme::staticRegisterScriptFile('ADMIN_SCRIPT_PATH', 'notifications.js' );
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
         $aData['fullpagebar']['returnbutton']=true;
