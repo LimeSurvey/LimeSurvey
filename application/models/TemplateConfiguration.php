@@ -34,7 +34,7 @@ class TemplateConfiguration extends CFormModel
     public $viewPath;                           // Path of the views files (php files to replace existing core views)
     public $siteLogo;                           // Name of the logo file (like: logo.png)
     public $filesPath;                          // Path of the uploaded files
-    public $cssFramework;                       // What framework css is used (for now, this parameter is used only to deactive bootstrap for retrocompatibility)
+    public $cssFramework;                       // What framework css is used @see getFrameworkPackages()
     public $packages;                           // Array of package dependencies defined in config.xml
     public $depends;                            // List of all dependencies (could be more that just the config.xml packages)
     public $otherFiles;                         // Array of files in the file directory
@@ -82,7 +82,6 @@ class TemplateConfiguration extends CFormModel
                 $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
             }
         }
-
         // We check if  it's a CORE template
         $this->isStandard = $this->setIsStandard();
         // If the template is standard, its root is based on standardtemplaterootdir, else, it's a user template, its root is based on usertemplaterootdir
@@ -91,7 +90,6 @@ class TemplateConfiguration extends CFormModel
         // If the template directory doesn't exist, it can be that:
         // - user deleted a custom theme
         // In any case, we just set Default as the template to use
-
         if (!is_dir($this->path))
         {
             $this->sTemplateName = 'default';
@@ -112,6 +110,7 @@ class TemplateConfiguration extends CFormModel
             // If it's an imported template from 2.06, we return default values
             if ( $this->isOldTemplate )
             {
+                /* Must review: maybe some package ?*/
                 $this->xmlFile = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'minimal-config.xml';
             }
             else
@@ -133,9 +132,8 @@ class TemplateConfiguration extends CFormModel
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
         $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
-        // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
-        // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
-        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
+        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+        $this->config  = simplexml_load_string($sXMLConfigFile);
 
         // Template configuration
         // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
@@ -147,6 +145,7 @@ class TemplateConfiguration extends CFormModel
         $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                                                 : '';
         $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
+        $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : (string)$this->config->engine->cssframework;
         $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                             : array();
 
         /* Add options/package according to apiVersion */
@@ -159,7 +158,6 @@ class TemplateConfiguration extends CFormModel
         $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
 
         $this->otherFiles               = $this->setOtherFiles();
-
 
         // Package creation
         $this->createTemplatePackage();
@@ -205,13 +203,14 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias('survey.template.path', $this->path);                                   // The package creation/publication need an alias
         Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);
 
-        $oCssFiles   = $this->config->files->css->filename;                                 // The CSS files of this template
-        $oJsFiles    = $this->config->files->js->filename;                                  // The JS files of this template
-
-        if (getLanguageRTL(App()->language))
-        {
-            $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
-            $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
+        $aCssFiles   = (array)$this->config->files->css->filename;                                 // The CSS files of this template
+        $aJsFiles    = (array)$this->config->files->js->filename;                                  // The JS files of this template
+        $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+        if (isset($this->config->files->$dir)){
+            $aCssFilesDir = isset($this->config->files->$dir->css->filename) ? (array)$this->config->files->$dir->css->filename : array();
+            $aJsFilesDir  = isset($this->config->files->$dir->js->filename) ? (array)$this->config->files->$dir->js->filename : array();
+            $aCssFiles=array_merge($aCssFiles,$aCssFilesDir);
+            $aJsFiles=array_merge($aJsFiles,$aJsFilesDir);
         }
 
         if (Yii::app()->getConfig('debug') == 0)
@@ -219,27 +218,16 @@ class TemplateConfiguration extends CFormModel
             Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/scripts/deactivatedebug.js', CClientScript::POS_END);
         }
 
-        $aCssFiles = (array) $oCssFiles;
-        $aJsFiles  = (array) $oJsFiles;
-
-
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
         // It will create the asset directory, and publish the css and js files
-        /* @todo : excludeFiles to exlude views and pstpl directory : seem not included in package system */
-        //~ if(trim($this->config->engine->pstpldirectory,".")){/* not needed */
-            //~ Yii::app()->assetManager->excludeFiles[]="/".$this->config->engine->pstpldirectory;
-        //~ }
-        //~ if($this->config->engine->pstpldirectory){/* think asset directory must not get PHP files */
-            //~ Yii::app()->assetManager->excludeFiles[]="/".$this->config->engine->viewdirectory;
-        //~ }
+        /* @todo : using assets directory  ? */
         Yii::app()->clientScript->addPackage( 'survey-template', array(
             'basePath'    => 'survey.template.path',
             'css'         => $aCssFiles,
             'js'          => $aJsFiles,
             'depends'     => $this->depends,
         ) );
-
     }
 
     /**
@@ -299,6 +287,11 @@ class TemplateConfiguration extends CFormModel
                                 . "</div>";
                 file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl",$formTemplate);
             }
+            if(getLanguageRTL(App()->language)){
+                unset($this->config->files->css);
+                unset($this->config->files->js);
+                unset($this->config->files->print_css);
+            }
             $name=(isset($this->config->metadatas->name)) ? (string)$this->config->metadatas->name:null;
             if(in_array($name,array("Default","News Paper","Ubuntu Orange"))){/* LimeSurvey template only updated via GUI */
                 $packages=new stdClass();
@@ -306,7 +299,7 @@ class TemplateConfiguration extends CFormModel
                 $packages->ltr=new stdClass();
                 $packages->ltr->package="template-default-ltr";
                 $packages->rtl=new stdClass();
-                $packages->rtl->package="template-default-ltr";
+                $packages->rtl->package="template-default-rtl";
                 $this->packages=$packages;
             }
         }
@@ -314,33 +307,106 @@ class TemplateConfiguration extends CFormModel
 
     /**
      * Get the depends package
-     * @uses $this->package
+     * @uses self::@package
      */
     private function getDependsPackages()
     {
-        $packages=array('limesurvey-public');
+
+        /* Start by adding cssFramework package */
+        $packages=$this->getFrameworkPackages();
+        if(!getLanguageRTL(App()->getLanguage())){
+            $packages=array_merge ($packages,$this->getFrameworkPackages('ltr'));
+        }else{
+            $packages=array_merge ($packages,$this->getFrameworkPackages('rtl'));
+        }
+
+        /* Core package */
+        $packages[]='limesurvey-public';
+
+        /* template packages */
         if(!empty($this->packages->package)){
-            foreach((array)$this->packages->package as $package){
-                $packages[]=$package;
-            }
+            $packages=array_merge ($packages,(array)$this->packages->package);
         }
         /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
-        /* better to use attribute of a xml file, but we broke attribute due to dumb server (5.3 PHP version ....) */
-        /* see https://github.com/LimeSurvey/LimeSurvey/commit/e5268c72ade2eee1ac10f1594815686774f6eb86 */
-        if(!getLanguageRTL(App()->getLanguage())){
-            if(!empty($this->packages->ltr->package)){
-                foreach((array)$this->packages->ltr->package as $package){
-                    $packages[]=$package;
-                }
-            }
-        }else{
-            if(!empty($this->packages->rtl->package)){
-                foreach((array)$this->packages->rtl->package as $package){
-                    $packages[]=$package;
-                }
-            }
+        $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+        if(!empty($this->packages->$dir->package)){
+            $packages=array_merge ($packages,(array)$this->packages->$dir->package);
         }
+
         return $packages;
+    }
+    /**
+     * Set the framework package
+     * @param string : dir (rtl|ltr|)
+     * @use self::@cssFramework
+     * @return string[] depends for framework
+     */
+    private function getFrameworkPackages($dir="")
+    {
+        $framework=isset($this->cssFramework->name)? (string)$this->cssFramework->name : (string)$this->cssFramework;
+        $framework=$dir ? $framework."-".$dir : $framework;
+        if(isset(Yii::app()->clientScript->packages[$framework])){
+            $frameworkPackages=array();
+            /* Theming */
+            if($dir){
+                $cssFrameworkCsss=isset($this->cssFramework->$dir->css) ? $this->cssFramework->$dir->css : array();
+                $cssFrameworkJss=isset($this->cssFramework->$dir->js) ? $this->cssFramework->$dir->js : array();
+            }else{
+                $cssFrameworkCsss=isset($this->cssFramework->css) ? $this->cssFramework->css : array();
+                $cssFrameworkJss=isset($this->cssFramework->js) ? $this->cssFramework->js : array();
+            }
+            if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)){
+                $frameworkPackages[]=$framework;
+            }else{
+                /* Need to create an adapted core framework */
+                $cssFrameworkPackage=Yii::app()->clientScript->packages[$framework];
+                /* Need to create an adapted template/theme framework */
+                $packageCss=array();
+                $packageJs=array();
+                /* css file to replace from default package */
+                $cssDelete=array();
+                foreach($cssFrameworkCsss as $cssFrameworkCss){
+                    if(isset($cssFrameworkCss['replace'])){
+                        $cssDelete[]=$cssFrameworkCss['replace'];
+                    }
+                    if((string)$cssFrameworkCss){
+                        $packageCss[]=(string)$cssFrameworkCss;
+                    }
+                }
+                if(isset($cssFrameworkPackage['css'])){
+                    $cssFrameworkPackage['css']=array_diff($cssFrameworkPackage['css'],$cssDelete);
+                }
+                $jsDelete=array();
+                foreach($cssFrameworkJss as $cssFrameworkJs){
+                    if(isset($cssFrameworkJs['replace'])){
+                        $jsDelete[]=$cssFrameworkJs['replace'];
+                    }
+                    if((string)$cssFrameworkJs){
+                        $packageJs[]=(string)$cssFrameworkJs;
+                    }
+                }
+                if(isset($cssFrameworkPackage['js'])){
+                    $cssFrameworkPackage['js']=array_diff($cssFrameworkPackage['js'],$cssDelete);
+                }
+                /* And now : we add : core package fixed + template/theme package */
+                Yii::app()->clientScript->packages[$framework]=$cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
+                $aDepends=array(
+                    $framework,
+                );
+
+                Yii::app()->clientScript->addPackage( $framework.'-template', array(
+                    'basePath'    => 'survey.template.path',
+                    'css'         => $packageCss,
+                    'js'          => $packageJs,
+                    'depends'     => $aDepends,
+                ));
+                $frameworkPackages[]=$framework.'-template';
+            }
+            return $frameworkPackages;
+        }/*elseif($framework){
+            throw error ? Only for admin template editor ? disable and reset to default ?
+        }*/
+        return array();
     }
     /**
      * get the template API version

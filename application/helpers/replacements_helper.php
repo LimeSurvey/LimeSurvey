@@ -139,43 +139,36 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $aOtherFiles = $oTemplate->otherFiles;
 
             //var_dump($aCssFiles);var_dump($aJsFiles);die();
+            $aCssFiles = (array) $oTemplate->config->files->css->filename;
+            $aJsFiles  = (array) $oTemplate->config->files->js->filename;
 
-            /* RTL CSS & JS */
-            if (getLanguageRTL(App()->language))
+            foreach($aCssFiles as $sCssFile)
             {
-                $aCssFiles = (array) $oTemplate->config->files->rtl->css->filename;
-                $aJsFiles  = (array) $oTemplate->config->files->rtl->js->filename;
-
-                foreach($aCssFiles as $sCssFile)
+                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                 {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                    {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
-                    }
-                }
-
-                foreach($aJsFiles as $sJsFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                    {
-                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
-                    }
+                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
                 }
             }
-            else
+            foreach($aJsFiles as $sJsFile)
             {
-                $aCssFiles = (array) $oTemplate->config->files->css->filename;
-                $aJsFiles  = (array) $oTemplate->config->files->js->filename;
-
-                foreach($aCssFiles as $sCssFile)
+                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
+                {
+                    Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                }
+            }
+            /* RTL|LTR CSS & JS */
+            $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+            if (isset($oTemplate->config->files->$dir)){
+                $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array)$oTemplate->config->files->$dir->css->filename : array();
+                $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename) ? (array)$oTemplate->config->files->$dir->js->filename : array();
+                foreach($aCssFilesDir as $sCssFile)
                 {
                     if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                     {
                         Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
                     }
                 }
-
-                foreach($aJsFiles as $sJsFile)
+                foreach($aJsFilesDir as $sJsFile)
                 {
                     if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
                     {
@@ -195,15 +188,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $surveyformat = "";
     }
-    if( isset($oTemplate->config->engine->cssframework) && $oTemplate->config->engine->cssframework)
+    if( ! empty($oTemplate->cssFramework->name) )
     {
-        $aCssFramework = (array) $oTemplate->config->engine->cssframework;
-        if( ! empty($aCssFramework) )
-        {
-            $surveyformat .= " ".$oTemplate->config->engine->cssframework."-engine ";
-        }
-
+        $surveyformat .= " ".$oTemplate->cssFramework->name."-engine ";
     }
+
 
     if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat!="allinone")
     {

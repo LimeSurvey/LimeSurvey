@@ -1,8 +1,10 @@
 /*******************************************************************************
- *              bootstrap-rtl (version 3.3.4)
+ *              bootstrap-rtl (version 4.0.0)
  *      Author: Morteza Ansarinia (http://github.com/morteza)
  *  Created on: August 13,2015
- *     Project: bootstrap-rtl
+ * Updated on : December 7,2016
+ *    Project : bootstrap-rtl
+ *    Project : limesurvey
  *   Copyright: Unlicensed Public Domain
  *******************************************************************************/
 
@@ -12,10 +14,10 @@ html {
 body {
   direction: rtl;
 }
-.flip.text-left {
+.dir-rtl .text-left {
   text-align: right;
 }
-.flip.text-right {
+.dir-rtl .text-right {
   text-align: left;
 }
 .list-unstyled {

@@ -56,6 +56,16 @@ return array(
             'template-default',
         )
     ),
+
+    'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
+        'basePath' => 'core.bootstrap-rtl',
+        'css'=> array(
+            'bootstrap-rtl.css',
+        ),
+        'depends' => array(
+            'bootstrap',
+        )
+    ),
     /* Ranking question type */
     'question-ranking'=>array(
         'basePath' => 'core.questions.ranking',
