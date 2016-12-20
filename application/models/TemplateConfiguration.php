@@ -228,7 +228,6 @@ class TemplateConfiguration extends CFormModel
             'js'          => $aJsFiles,
             'depends'     => $this->depends,
         ) );
-        tracevar(Yii::app()->clientScript->packages['survey-template']);
     }
 
     /**
