@@ -645,7 +645,8 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyID
      * @param int $iTokenId
      * @param boolean $ajax
-     * @return boolean|null
+     * @return void
+     * @todo When is this function used without Ajax?
      */
     public function edit($iSurveyId, $iTokenId, $ajax = false)
     {
@@ -674,73 +675,72 @@ class tokens extends Survey_Common_Action
         Yii::app()->loadHelper("surveytranslator");
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
-        if (Yii::app()->request->getPost('subaction')) {
+        $request = Yii::app()->request;
 
+        if ($request->getPost('subaction')) {
+
+            Yii::import('application.helpers.admin.ajax_helper', true);
             Yii::import('application.libraries.Date_Time_Converter', true);
-            if (trim(Yii::app()->request->getPost('validfrom')) == '') {
+            if (trim($request->getPost('validfrom')) == '') {
                 $_POST['validfrom'] = null;
             }
             else {
-                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
-            if (trim(Yii::app()->request->getPost('validuntil')) == '') {
+            if (trim($request->getPost('validuntil')) == '') {
                 $_POST['validuntil'] = null;
             }
             else {
-                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-            $aData['surveyid'] = $iSurveyId;
-
-            $aTokenData['firstname'] = flattenText(Yii::app()->request->getPost('firstname'));
-            $aTokenData['lastname'] = flattenText(Yii::app()->request->getPost('lastname'));
-            $aTokenData['email'] = flattenText(Yii::app()->request->getPost('email'));
-            $aTokenData['emailstatus'] = flattenText(Yii::app()->request->getPost('emailstatus'));
-            $sSanitizedToken = sanitize_token(Yii::app()->request->getPost('token'));
+            $aTokenData['firstname'] = flattenText($request->getPost('firstname'));
+            $aTokenData['lastname'] = flattenText($request->getPost('lastname'));
+            $aTokenData['email'] = flattenText($request->getPost('email'));
+            $aTokenData['emailstatus'] = flattenText($request->getPost('emailstatus'));
+            $sSanitizedToken = sanitize_token($request->getPost('token'));
             $aTokenData['token'] = $sSanitizedToken;
-            $aTokenData['language'] = sanitize_languagecode(Yii::app()->request->getPost('language'));
-            $aTokenData['sent'] = flattenText(Yii::app()->request->getPost('sent'));
-            $aTokenData['completed'] = flattenText(Yii::app()->request->getPost('completed'));
-            $aTokenData['usesleft'] = flattenText(Yii::app()->request->getPost('usesleft'));
-            $aTokenData['validfrom'] = Yii::app()->request->getPost('validfrom');
-            $aTokenData['validuntil'] = Yii::app()->request->getPost('validuntil');
-            $aTokenData['remindersent'] = flattenText(Yii::app()->request->getPost('remindersent'));
-            $aTokenData['remindercount'] = intval(flattenText(Yii::app()->request->getPost('remindercount')));
+            $aTokenData['language'] = sanitize_languagecode($request->getPost('language'));
+            $aTokenData['sent'] = flattenText($request->getPost('sent'));
+            $aTokenData['completed'] = flattenText($request->getPost('completed'));
+            $aTokenData['usesleft'] = flattenText($request->getPost('usesleft'));
+            $aTokenData['validfrom'] = $request->getPost('validfrom');
+            $aTokenData['validuntil'] = $request->getPost('validuntil');
+            $aTokenData['remindersent'] = flattenText($request->getPost('remindersent'));
+            $aTokenData['remindercount'] = intval(flattenText($request->getPost('remindercount')));
             $udresult = Token::model($iSurveyId)->findAll("tid <> '$iTokenId' and token <> '' and token = '$sSanitizedToken'");
 
             if (count($udresult) == 0) {
                 $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
                 foreach ($attrfieldnames as $attr_name => $desc) {
-
-                    $value = Yii::app()->request->getPost($attr_name);
-                    if ($desc['mandatory'] == 'Y' && trim($value) == '') { Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                    $value = $request->getPost($attr_name);
+                    if ($desc['mandatory'] == 'Y' && trim($value) == '') {
+                        Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                         $this->getController()->refresh();
                     }
-                    $aTokenData[$attr_name] = Yii::app()->request->getPost($attr_name);
+                    $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
 
                 $token = Token::model($iSurveyId)->findByPk($iTokenId);
-                foreach ($aTokenData as $k => $v)
+                foreach ($aTokenData as $k => $v) {
                     $token->$k = $v;
-                $token->save();
+                }
 
-                $aData['sidemenu']['state'] = false;
-                $this->_renderWrappedTemplate('token', array( 'message' => array(
-                'title' => gT("Success"),
-                'message' => gT("The survey participant was successfully updated.") . "<br /><br />\n"
-                . "\t\t<input class='btn btn-default btn-lg' type='button' class='btn btn-large btn-default' value='" . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId/") . "', '_top')\" />\n"
-                )), $aData);
+                $result = $token->save();
+
+                if ($result) {
+                    \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
+                }
+                else {
+                    $errors = $token->getErrors();
+                    $firstError = reset($errors);
+                    \ls\ajax\AjaxHelper::outputError($firstError[0]);
+                }
             }
             else {
-                $aData['sidemenu']['state'] = false;
-                $this->_renderWrappedTemplate('token', array( 'message' => array(
-                'title' => gT("Failed"),
-                'message' => gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.") . "<br /><br />\n"
-                . "\t\t<input class='btn btn-default btn-lg' type='button' value='" . gT("Show this token entry") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/edit/surveyid/$iSurveyId/tokenid/$iTokenId") . "', '_top')\" />\n"
-                )));
+                \ls\ajax\AjaxHelper::outputError(gT('There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.'));
             }
         }
         else {
@@ -749,8 +749,9 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Delete tokens
-    */
+     * Delete tokens
+     * @param int $iSurveyID
+     */
     public function delete($iSurveyID)
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');

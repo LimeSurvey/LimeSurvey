@@ -106,44 +106,45 @@ $.fn.textWidth = function(text, font) {
     return $.fn.textWidth.fakeEl.width();
 };
 
-
+/**
+ * Used when user clicks "Save" in token edit modal
+ */
 function submitEditToken(){
     var $form       = $('#edittoken');
     var $datas      = $form.serialize();
     var $actionUrl  = $form.attr('action');
-    var $gridid     = $('.listActions').data('grid-id');
     var $modal      = $('#editTokenModal');
 
-    $ajaxLoader = $('#ajaxContainerLoading2');
-    $('#modal-content').empty();
-    $ajaxLoader.show();                                         // Show the ajax loader
     // Ajax request
-    $.ajax({
+    LS.ajax({
         url  : $actionUrl,
         type : 'POST',
         data : $datas,
 
-        // html contains the buttons
-        success : function(html, statut){
-            $ajaxLoader.hide();
-            //Using Try/Catch here to catch errors if there is no grid
+        success : function(result, stat) {
+            if (result.success) {
+                $modal.modal('hide');
+            }
+            else {
+            }
 
-            try{
+            // Using Try/Catch here to catch errors if there is no grid
+            try {
                 $.fn.yiiGridView.update('token-grid', {
                     complete: function(s){
                         $modal.modal('hide');
                     } // Update the surveys list
                 });
-            } catch(e){
-                if(e){console.log(e); $modal.modal('hide');}
-            }finally{
-                $ajaxLoader.hide();
+            }
+            catch (e){
+                if (e) {
+                    console.log(e);
+                    $modal.modal('hide');
+                }
             }
         },
         error :  function(html, statut){
-            $ajaxLoader.hide();
             $('#modal-content').empty().append(html);
-            console.log(html);
         }
     });
 }
