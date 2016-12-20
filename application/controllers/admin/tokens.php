@@ -524,7 +524,6 @@ class tokens extends Survey_Common_Action
      */
     public function addnew($iSurveyId)
     {
-        \Yii::trace('here', 'debug');
         $aData = array();
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         $iSurveyId = sanitize_int($iSurveyId);
