@@ -287,6 +287,11 @@ class TemplateConfiguration extends CFormModel
                                 . "</div>";
                 file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl",$formTemplate);
             }
+            if(getLanguageRTL(App()->language)){
+                unset($this->config->files->css);
+                unset($this->config->files->js);
+                unset($this->config->files->print_css);
+            }
             $name=(isset($this->config->metadatas->name)) ? (string)$this->config->metadatas->name:null;
             if(in_array($name,array("Default","News Paper","Ubuntu Orange"))){/* LimeSurvey template only updated via GUI */
                 $packages=new stdClass();
