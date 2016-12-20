@@ -293,13 +293,19 @@ class tokens extends Survey_Common_Action
 
     /**
      * Browse Tokens
+     * @param int $iSurveyId
+     * @param int $limit
+     * @param int $start
+     * @param boolean $order
+     * @param boolean $searchstring
+     * @return void
      */
     public function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+
         /* Check permissions */
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read'))
-        {
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/tokens/sa/index/surveyid/{$iSurveyId}"));
         }
@@ -309,8 +315,7 @@ class tokens extends Survey_Common_Action
 
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
-        if (!$bTokenExists) //If no tokens table exists
-        {
+        if (!$bTokenExists) { //If no tokens table exists
             self::_newtokentable($iSurveyId);
         }
 
@@ -335,20 +340,16 @@ class tokens extends Survey_Common_Action
         $last = $start - $limit;
         $end = $tkcount - $limit;
 
-        if ($end < 0)
-        {
+        if ($end < 0) {
             $end = 0;
         }
-        if ($last < 0)
-        {
+        if ($last < 0) {
             $last = 0;
         }
-        if ($next >= $tkcount)
-        {
+        if ($next >= $tkcount) {
             $next = $tkcount - $limit;
         }
-        if ($end < 0)
-        {
+        if ($end < 0) {
             $end = 0;
         }
         $order = Yii::app()->request->getPost('order','tid');
@@ -371,8 +372,7 @@ class tokens extends Survey_Common_Action
         $aLanguageCodes=Survey::model()->findByPk($iSurveyId)->getAllLanguages();
         $aLanguages=array();
 
-        foreach ($aLanguageCodes as $aCode)
-        {
+        foreach ($aLanguageCodes as $aCode) {
             $aLanguages[$aCode]=getLanguageNameFromCode($aCode,false);
         }
 
@@ -386,19 +386,16 @@ class tokens extends Survey_Common_Action
 
         /// FOR GRID View
         $model =  TokenDynamic::model($iSurveyId);
-        if(isset($_GET['TokenDynamic']))
-        {
+        if(isset($_GET['TokenDynamic'])) {
             $model->setAttributes($_GET['TokenDynamic'],false);
         }
 
         $aData['model'] = $model;
+
         // Set number of page
-        if (isset($_GET['pageSize']))
-        {
+        if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
-
-
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', array(), true, false);
 
@@ -406,10 +403,11 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Called by  if a token is saved after editing
-    * @todo Check if method is still in use
-    * @param mixed $iSurveyId The Survey ID
-    */
+     * Called by if a token is saved after editing
+     * @todo Check if method is still in use
+     * @param int $iSurveyId The Survey ID
+     * @return void
+     */
     public function editToken($iSurveyId)
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
@@ -760,6 +758,7 @@ class tokens extends Survey_Common_Action
     /**
      * Delete tokens
      * @param int $iSurveyID
+     * @return void
      */
     public function delete($iSurveyID)
     {
@@ -797,8 +796,11 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Add dummy tokens form
-    */
+     * Add dummy tokens form
+     * @param int $iSurveyId
+     * @param string $subaction
+     * @return void
+     */
     public function addDummies($iSurveyId, $subaction = '')
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -956,8 +958,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Handle managetokenattributes action
-    */
+     * Handle managetokenattributes action
+     * @param int $iSurveyId
+     * @return void
+     */
     public function managetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -1014,8 +1018,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Update token attributes
-    */
+     * Update token attributes
+     * @param int $iSurveyId
+     * @return void
+     */
     public function updatetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -1054,8 +1060,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Delete token attributes
-    */
+     * Delete token attributes
+     * @param int $iSurveyId
+     * @return void
+     */
     public function deletetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -1120,8 +1128,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * updatetokenattributedescriptions action
-    */
+     * updatetokenattributedescriptions action
+     * @param int $iSurveyId
+     * @return void
+     */
     public function updatetokenattributedescriptions($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -1168,8 +1178,11 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Handle email action
-    */
+     * Handle email action
+     * @param int $iSurveyId
+     * @param string $tokenids Int list separated with |?
+     * @return void
+     */
     public function email($iSurveyId, $tokenids = null)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -1569,9 +1582,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Export Dialog
-     *
-    */
+     * Export Dialog
+     * @param int $iSurveyId
+     * @return void
+     */
     public function exportdialog($iSurveyId)
     {
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
@@ -1676,12 +1690,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Performs a ldap import
-    *
-    * @access public
-    * @param int $iSurveyId
-    * @return void
-    */
+     * Performs a ldap import
+     * @param int $iSurveyId
+     * @return void
+     */
     public function importldap($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
@@ -1957,8 +1969,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * import from csv
-    */
+     * import from csv
+     * @param int $iSurveyId
+     * @return void
+     */
     public function import($iSurveyId)
     {
         $aData = array();
@@ -2301,8 +2315,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Generate tokens
-    */
+     * Generate tokens
+     * @param int $iSurveyId
+     * @return void
+     */
     public function tokenify($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -2368,8 +2384,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Remove Token Database
-    */
+     * Remove Token Database
+     * @param int $iSurveyId
+     * @return void
+     */
     public function kill($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -2428,6 +2446,10 @@ class tokens extends Survey_Common_Action
         }
     }
 
+    /**
+     * @param int $iSurveyId
+     * @return void
+     */
     public function bouncesettings($iSurveyId)
     {
         $iSurveyId = $iSurveyID = sanitize_int($iSurveyId);
@@ -2482,13 +2504,13 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Handle token form for addnew/edit actions
-    * @param int $iSurveyId
-    * @param string $subaction
-    * @param int $iTokenId
-    * @param boolean $ajax
-    * @return void
-    */
+     * Handle token form for addnew/edit actions
+     * @param int $iSurveyId
+     * @param string $subaction
+     * @param int $iTokenId
+     * @param boolean $ajax
+     * @return void
+     */
     public function _handletokenform($iSurveyId, $subaction, $iTokenId="", $ajax=false)
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
