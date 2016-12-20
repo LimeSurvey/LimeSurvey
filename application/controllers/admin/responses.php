@@ -369,7 +369,6 @@ class responses extends Survey_Common_Action
      */
     public function set_grid_display()
     {
-        var_dump($_POST['state']);
         if (Yii::app()->request->getPost('state')=='extended')
         {
             Yii::app()->user->setState('responsesGridSwitchDisplayState','extended');
@@ -671,7 +670,6 @@ class responses extends Survey_Common_Action
         );
 
         $fields = createTimingsFieldMap($iSurveyID, 'full',true,false,$aData['language']);
-        //echo '<pre>'; var_dump($fields); echo '</pre>';
         foreach ($fields as $fielddetails)
         {
             // headers for answer id and time data
