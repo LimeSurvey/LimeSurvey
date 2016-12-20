@@ -203,13 +203,14 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias('survey.template.path', $this->path);                                   // The package creation/publication need an alias
         Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);
 
-        $oCssFiles   = $this->config->files->css->filename;                                 // The CSS files of this template
-        $oJsFiles    = $this->config->files->js->filename;                                  // The JS files of this template
-
-        if (getLanguageRTL(App()->language))
-        {
-            $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
-            $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
+        $aCssFiles   = (array)$this->config->files->css->filename;                                 // The CSS files of this template
+        $aJsFiles    = (array)$this->config->files->js->filename;                                  // The JS files of this template
+        $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+        if (isset($this->config->files->$dir)){
+            $aCssFilesDir = isset($this->config->files->$dir->css->filename) ? (array)$this->config->files->$dir->css->filename : array();
+            $aJsFilesDir  = isset($this->config->files->$dir->js->filename) ? (array)$this->config->files->$dir->js->filename : array();
+            $aCssFiles=array_merge($aCssFiles,$aCssFilesDir);
+            $aJsFiles=array_merge($aJsFiles,$aJsFilesDir);
         }
 
         if (Yii::app()->getConfig('debug') == 0)
@@ -217,27 +218,17 @@ class TemplateConfiguration extends CFormModel
             Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/scripts/deactivatedebug.js', CClientScript::POS_END);
         }
 
-        $aCssFiles = (array) $oCssFiles;
-        $aJsFiles  = (array) $oJsFiles;
-
-
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
         // It will create the asset directory, and publish the css and js files
-        /* @todo : excludeFiles to exlude views and pstpl directory : seem not included in package system */
-        //~ if(trim($this->config->engine->pstpldirectory,".")){/* not needed */
-            //~ Yii::app()->assetManager->excludeFiles[]="/".$this->config->engine->pstpldirectory;
-        //~ }
-        //~ if($this->config->engine->pstpldirectory){/* think asset directory must not get PHP files */
-            //~ Yii::app()->assetManager->excludeFiles[]="/".$this->config->engine->viewdirectory;
-        //~ }
+        /* @todo : using assets directory  ? */
         Yii::app()->clientScript->addPackage( 'survey-template', array(
             'basePath'    => 'survey.template.path',
             'css'         => $aCssFiles,
             'js'          => $aJsFiles,
             'depends'     => $this->depends,
         ) );
-
+        tracevar(Yii::app()->clientScript->packages['survey-template']);
     }
 
     /**
@@ -312,7 +303,7 @@ class TemplateConfiguration extends CFormModel
 
     /**
      * Get the depends package
-     * @uses $this->package
+     * @uses self::@package
      */
     private function getDependsPackages()
     {
@@ -324,34 +315,26 @@ class TemplateConfiguration extends CFormModel
         }else{
             $packages=array_merge ($packages,$this->getFrameworkPackages('rtl'));
         }
+
+        /* Core package */
         $packages[]='limesurvey-public';
+
+        /* template packages */
         if(!empty($this->packages->package)){
-            foreach((array)$this->packages->package as $package){
-                $packages[]=(string)$package;
-            }
+            $packages=array_merge ($packages,(array)$this->packages->package);
         }
         /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
-        /* better to use attribute of a xml file, but we broke attribute due to dumb server (5.3 PHP version ....) */
-        /* see https://github.com/LimeSurvey/LimeSurvey/commit/e5268c72ade2eee1ac10f1594815686774f6eb86 */
-        if(!getLanguageRTL(App()->getLanguage())){
-            if(!empty($this->packages->ltr->package)){
-                foreach((array)$this->packages->ltr->package as $package){
-                    $packages[]=(string)$package;
-                }
-            }
-        }else{
-            if(!empty($this->packages->rtl->package)){
-                foreach((array)$this->packages->rtl->package as $package){
-                    $packages[]=(string)$package;
-                }
-            }
+        $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+        if(!empty($this->packages->$dir->package)){
+            $packages=array_merge ($packages,(array)$this->packages->$dir->package);
         }
+
         return $packages;
     }
     /**
      * Set the framework package
      * @param string : dir (rtl|ltr|)
-     * @use $this->cssFramework
+     * @use self::@cssFramework
      * @return string[] depends for framework
      */
     private function getFrameworkPackages($dir="")
@@ -416,7 +399,9 @@ class TemplateConfiguration extends CFormModel
                 $frameworkPackages[]=$framework.'-template';
             }
             return $frameworkPackages;
-        }
+        }/*elseif($framework){
+            throw error ? Only for admin template editor ? disable and reset to default ?
+        }*/
         return array();
     }
     /**
