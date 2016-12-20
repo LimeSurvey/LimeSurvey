@@ -114,8 +114,8 @@
                 <?php else: ?>
                     <?php  eT("Timings will be saved."); ?>
                     <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                    <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ??>
-                <?php endif;?>
+                    <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']);  // Maybe use a readonly dropdown? ?>
+                <?php endif; ?>
             <?php else: ?>
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
