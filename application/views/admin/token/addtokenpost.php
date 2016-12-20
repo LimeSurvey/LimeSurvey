@@ -32,10 +32,10 @@
                     <p><?php eT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."); ?></p>
                     <div class="container">
                         <div class="col-md-12 col-lg-4 col-lg-offset-2">
-                            <input type='button' class="btn btn-large brn-default" value='<?php eT("Browse survey participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
+                            <input type='button' class="btn btn-large btn-default" value='<?php eT("Browse survey participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
                         </div>
                         <div class="col-md-12 col-lg-4 col-lg-offset-2">
-                            <input type='button' class="btn btn-large brn-default" value='<?php eT("Add new survey participant"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>', '_top')" /><br />
+                            <input type='button' class="btn btn-large btn-default" value='<?php eT("Add new survey participant"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>', '_top')" /><br />
                         </div>
                     </div>
                 </div>
