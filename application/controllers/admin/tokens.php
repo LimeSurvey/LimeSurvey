@@ -24,8 +24,10 @@ class tokens extends Survey_Common_Action
 {
 
     /**
-    * Show token index page, handle token database
-    */
+     * Show token index page, handle token database
+     * @param int $iSurveyId
+     * @return void
+     */
     public function index($iSurveyId)
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
@@ -35,7 +37,7 @@ class tokens extends Survey_Common_Action
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')
             && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import')
             && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')
-            )
+        )
         {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -67,10 +69,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * tokens::bounceprocessing()
-    *
-    * @return void
-    */
+     * tokens::bounceprocessing()
+     * @param int $iSurveyId
+     * @return void
+     */
     public function bounceprocessing($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -265,6 +267,9 @@ class tokens extends Survey_Common_Action
         }
     }
 
+    /**
+     * @return boolean
+     */
     public function deleteMultiple()
     {
         // TODO: permission checks
@@ -273,6 +278,10 @@ class tokens extends Survey_Common_Action
         TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
         return true;
     }
+
+    /**
+     * @return boolean
+     */
     public function deleteToken()
     {
         // TODO: permission checks
@@ -283,8 +292,8 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Browse Tokens
-    */
+     * Browse Tokens
+     */
     public function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -808,6 +817,7 @@ class tokens extends Survey_Common_Action
 
 
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
@@ -1062,6 +1072,7 @@ class tokens extends Survey_Common_Action
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
+        $aData = array();
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
         $confirm=Yii::app()->request->getPost('confirm','');
@@ -2306,6 +2317,7 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyId);
         }
+        $aData = array();
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
 
@@ -2372,6 +2384,7 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyId);
         }
+        $aData = array();
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
 
@@ -2551,8 +2564,10 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Show dialogs and create a new tokens table
-    */
+     * Show dialogs and create a new tokens table
+     * @param int $iSurveyId
+     * @return void
+     */
     public function _newtokentable($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
@@ -2572,6 +2587,8 @@ class tokens extends Survey_Common_Action
 
         // The user have rigth to create token, then don't test right after
         Yii::import('application.helpers.admin.token_helper', true);
+
+        $aData = array();
 
         // Update table, must be CRSF controlled
         if (Yii::app()->request->getPost('createtable') == "Y")
@@ -2663,12 +2680,13 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     * @return void
+     */
     protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array())
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
