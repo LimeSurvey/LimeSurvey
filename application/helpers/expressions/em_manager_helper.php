@@ -8326,9 +8326,9 @@ EOD;
 
         /**
         * Deprecate obsolete question attributes.
-        * @param boolean $changeDB - if true, updates parameters and deletes old ones
-        * @param type $iSurveyID - if set, then only for that survey
-        * @param type $onlythisqid - if set, then only for this question ID
+        * @param boolean|null $changeDB - if true, updates parameters and deletes old ones
+        * @param int|null $iSurveyID - if set, then only for that survey
+        * @param int|null $onlythisqid - if set, then only for this question ID
         */
         public static function UpgradeQuestionAttributes($changeDB=false,$iSurveyID=NULL,$onlythisqid=NULL)
         {
@@ -8379,10 +8379,10 @@ EOD;
 
         /**
         * Return array of language-specific answer codes
-        * @param int $surveyid
-        * @param int $qid
-        * @param string $lang
-        * @return <type>
+        * @param int|null $surveyid
+        * @param int|null $qid
+        * @param string|null $lang
+        * @return array
         */
         private function getQuestionAttributesForEM($surveyid=0,$qid=0, $lang='')
         {
@@ -8403,7 +8403,6 @@ EOD;
 #            {
 #                return $aStaticQuestionAttributesForEM[$surveyid][0][$lang][$qid];
 #            }
-            $aQid=array();
             if($qid)
             {
                 $oQids= Question::model()->findAll(array(
@@ -8571,6 +8570,7 @@ EOD;
             $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid and language=:language",'order'=>'group_order','params'=>array(":sid"=>$surveyid,':language'=>$lang)));
             $qinfo = array();
             $_order=0;
+            $gid = array();
             foreach ($oQuestionGroups as $oQuestionGroup)
             {
                 $gid[$oQuestionGroup->gid] = array(
@@ -8613,7 +8613,6 @@ EOD;
             $radixchange = (($LEM->surveyOptions['radix']==',') ? true : false);
             foreach ($LEM->currentQset as $qinfo)
             {
-                $relevant=false;
                 $qid = $qinfo['info']['qid'];
                 $gseq = $qinfo['info']['gseq'];
                 $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
@@ -8872,7 +8871,7 @@ EOD;
                         }
                         return $default;
                     }
-                    break;
+                    // NB: No break needed
                 case 'value':
                 case 'valueNAOK':
                 {
@@ -8934,7 +8933,7 @@ EOD;
                     else {
                         return (isset($var['jsName']) ? $var['jsName'] : $default);
                     }
-                    break;
+                    // NB: No break needed
                 case 'sgqa':
                 case 'mandatory':
                 case 'qid':
@@ -8960,6 +8959,7 @@ EOD;
                     {
                         $type = $var['type'];
                         $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
+                        $shown = $default;  // Default value to satisfy Scrutinizer
                         switch($type)
                         {
                             case '!': //List - dropdown
