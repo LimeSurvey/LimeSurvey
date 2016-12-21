@@ -2260,6 +2260,7 @@ function do_multiplechoice_withcomments($ia)
     }
     else
     {
+        $sSeparator = '.';
         $oth_checkconditionFunction = "checkconditions";
     }
 
@@ -2308,12 +2309,13 @@ function do_multiplechoice_withcomments($ia)
         $longest_question = ( $longest_question > $current_length)?$longest_question:$current_length;
     }
 
-    $nbCol = $longest_question;
     $sRows = "";
+    $sDisplayStyle = '';
+    $inputCOmmentValue = '';
+    $checked = '';
     foreach ($toIterate as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
-        $trbc='';
 
         /* Check for array_filter */
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
@@ -2344,7 +2346,7 @@ function do_multiplechoice_withcomments($ia)
 
         $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);
         $sRows .= doRender('/survey/questions/multiplechoice_with_comments/rows/answer_row', array(
-            'sDisplayStyle'                 => (isset($sDisplayStyle))?$sDisplayStyle:'',
+            'sDisplayStyle'                 => $sDisplayStyle,
             'kpclass'                       => $kpclass,
             'title'                         => '',
             'liclasses'                     => 'responsive-content question-item answer-item checkbox-text-item',
@@ -2358,11 +2360,11 @@ function do_multiplechoice_withcomments($ia)
             'javainput'                     => true,
             'javaname'                      => 'java'.$myfname,
             'javavalue'                     => $javavalue,
-            'checked'                       => (isset( $checked))? $checked:'',
+            'checked'                       => $checked,
             'inputCommentId'                => 'answer'.$myfname2,
             'commentLabelText'              => gT('Make a comment on your choice here:'),
             'inputCommentName'              => $myfname2,
-            'inputCOmmentValue'             => (isset( $inputCOmmentValue))?$inputCOmmentValue :'',
+            'inputCOmmentValue'             => $inputCOmmentValue
         ), true);
 
     }
@@ -2444,7 +2446,6 @@ function do_multiplechoice_withcomments($ia)
 function do_file_upload($ia)
 {
     global $thissurvey;
-    $checkconditionFunction = "checkconditions";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Fetch question attributes
@@ -2602,7 +2603,6 @@ function do_multipleshorttext($ia)
 {
     global $thissurvey;
     $extraclass          = "";
-    $answer              = '';
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['numbers_only']==1)
@@ -2614,6 +2614,7 @@ function do_multipleshorttext($ia)
     }
     else
     {
+        $sSeparator = '';
         $checkconditionFunction = "checkconditions";
     }
 
@@ -2666,9 +2667,8 @@ function do_multipleshorttext($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount      = count($aSubquestions)*2;
     $fn            = 1;
-    $answer_main   = '';
-    $label_width   = 0;
     $sRows         = '';
+    $inputnames   = array();
 
     if ($anscount!=0)
     {
@@ -2782,7 +2782,6 @@ function do_multipleshorttext($ia)
     }
     else
     {
-        $inputnames   = array();
         $answer       = doRender('/survey/questions/multipleshorttext/empty', array(), true);
     }
 
@@ -2797,7 +2796,6 @@ function do_multiplenumeric($ia)
     $extraclass             = "";
     $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $answer                 = '';
     $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator             = $sSeparator['separator'];
     $extraclass            .= " numberonly";                                                //Must turn on the "numbers only javascript"
@@ -2834,7 +2832,6 @@ function do_multiplenumeric($ia)
     }
 
     $kpclass            = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-    $numbersonly_slider = ''; // DEPRECATED
 
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
@@ -2929,8 +2926,6 @@ function do_multiplenumeric($ia)
     $fn            = 1;
     $sRows         = "";
 
-    $answer_main = '';
-
     $inputnames = array();
 
     if ($anscount==0)
@@ -2982,11 +2977,6 @@ function do_multiplenumeric($ia)
 
             //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "div","form-group question-item answer-item text-item numeric-item".$extraclass);
             $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-
-            // TODO : check why it's done here a second time
-            $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-            $sSeparator = $sSeparator['separator'];
-
 
             // The value of the slider depends on many possible different parameters, by order of priority :
             // 1. The value stored in the session
@@ -3134,15 +3124,8 @@ function do_multiplenumeric($ia)
         Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/bootstrap-slider/bootstrap-slider.js");
     }
 
-    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeparator = $sSeparator['separator'];
-
     return array($answer, $inputnames);
 }
-
-
-
-
 
 // ---------------------------------------------------------------
 function do_numerical($ia)
