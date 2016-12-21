@@ -645,10 +645,10 @@ $config['tempdir']                      = $config['rootdir'].DIRECTORY_SEPARATOR
 $config['imagedir']                     = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']                    = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir']      = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
-$config['usertemplaterootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 $config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
 $config['questiontypedir']              = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
-$config['userquestiontemplaterootdir']  = $config['rootdir'].DIRECTORY_SEPARATOR."question_templates";   // The directory containing the user's question templates.
+$config['usertemplaterootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
+$config['userquestiontemplaterootdir']  = $config['uploaddir'].DIRECTORY_SEPARATOR."question_templates";   // The directory containing the user's question templates.
 
 
 // Use alias notation, we should move to this format everywhere.
