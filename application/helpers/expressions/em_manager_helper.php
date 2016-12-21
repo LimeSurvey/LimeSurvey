@@ -4416,7 +4416,7 @@
         * Translate all Expressions, Macros, registered variables, etc. in $string
         * @param string $string - the string to be replaced
         * @param integer $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
-        * @param array $replacementFields - optional replacement values
+        * @param array|null $replacementFields - optional replacement values
         * @param boolean $debug - deprecated
         * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
         * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
@@ -5636,7 +5636,7 @@
                         'invalidSQs'=>$result['invalidSQs'],
                     );
                     return $LEM->lastMoveResult;
-                    break;
+                    // NB: No break needed
                 case 'group':
                     // First validate the current group
                     $LEM->StartProcessingPage();
@@ -6987,19 +6987,19 @@
             {
                 case 'survey':
                     return $LEM->lastMoveResult;
-                    break;
+                    // NB: No break needed
                 case 'group':
                     if (is_null($step)) {
                         return $LEM->indexGseq;
                     }
                     return $LEM->indexGseq[$step];
-                    break;
+                    // NB: No break needed
                 case 'question':
                     if (is_null($step)) {
                         return $LEM->indexQseq;
                     }
                     return $LEM->indexQseq[$step];
-                    break;
+                    // NB: No break needed
             }
         }
 
