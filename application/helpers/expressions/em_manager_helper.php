@@ -145,7 +145,7 @@
         private $pageRelevanceInfo;
         /**
         *
-        * @var type
+        * @var array
         */
         private $pageTailorInfo;
         /**
@@ -283,7 +283,7 @@
         *
         * @example [2] = 0 // means that the third group (gseq==2) is currently irrelevant
         *
-        * @var type
+        * @var array
         */
         private $gseq2relevanceStatus;
         /**
@@ -336,7 +336,7 @@
         * 'sqid' => '791' // the sub-question's qid (only populated for some question types)
         * );
         *
-        * @var type
+        * @var array
         */
         private $questionSeq2relevance;
         /**
@@ -465,7 +465,7 @@
 
         /**
         * the maximum groupSeq reached -  this is needed for Index
-        * @var type
+        * @var int
         */
         private $maxGroupSeq;
         /**
@@ -632,7 +632,7 @@
         private $numQuestions=0;
         /**
         * String identifier for the active session
-        * @var type
+        * @var string
         */
         private $sessid;
         /**
@@ -642,12 +642,12 @@
         private $qrootVarName2arrayFilter = array();
         /**
          * Array, keyed on qid, to JavaScript and list of variables needed to implement exclude_all_others_auto
-         * @var type
+         * @var array
          */
         private $qid2exclusiveAuto = array();
         /**
          * Array of values to be updated
-         * @var type
+         * @var array
          */
         private $updatedValues = array();
 
