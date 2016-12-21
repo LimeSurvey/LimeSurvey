@@ -4221,11 +4221,8 @@ function do_array_yesnouncertain($ia)
     $no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false;
     $sHeaders  = doRender('/survey/questions/arrays/yesnouncertain/rows/cells/thead', array('no_answer'=>$no_answer, 'anscount'=>$anscount), true);
 
-    if ($anscount==0)
-    {
-        $inputnames=array();
-    }
-    else
+    $inputnames = array();
+    if ($anscount > 0)
     {
         $sRows = '';
 
