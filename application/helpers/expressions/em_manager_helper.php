@@ -703,7 +703,7 @@
 
         /**
         * Set the previewmode
-        * @param boolean|null $previewmode
+        * @param boolean|string $previewmode 'question', 'group', false
         * @return void
         */
         public static function SetPreviewMode($previewmode=false)
