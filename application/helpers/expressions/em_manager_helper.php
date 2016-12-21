@@ -45,7 +45,7 @@
         private $em;
         /**
         *
-        * @var type
+        * @var array
         */
         private $groupRelevanceInfo;
         /**
@@ -55,7 +55,7 @@
         private $sid;
         /**
         * sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
-        * @var type
+        * @var int
         */
         private $debugLevel=0;
          /**
@@ -101,14 +101,14 @@
         * 'readWrite' => // 'N' - since these are always read-only variables
         * );
         *
-        * @var type
+        * @var array
         */
         private $knownVars;
         /**
         * maps qcode varname to SGQA code
         *
         * @example ['gender'] = '38612X10X145'
-        * @var type
+        * @var array
         */
         private $qcode2sgqa;
         /**
@@ -122,7 +122,7 @@
         * 'readWrite'  => // 'N'
         * );
         *
-        * @var type
+        * @var array
         */
         private $tempVars;
         /**
@@ -140,7 +140,7 @@
         * 'type' => // the single character type of the question -- e.g. 'S'
         * 'hidden' => // 1 if the question should always be hidden
         * 'hasErrors' => // 1 if there were parsing errors processing that relevance equation
-        * @var type
+        * @var array
         */
         private $pageRelevanceInfo;
         /**
@@ -150,7 +150,7 @@
         private $pageTailorInfo;
         /**
         * internally set to true (1) for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
-        * @var type
+        * @var boolean
         */
         private $allOnOnePage=false;
         /**
@@ -180,21 +180,21 @@
         * 'tempdir' => // the temporary directory for uploading files -- e.g. '/temp/'
         * );
         *
-        * @var type
+        * @var array
         */
         private $surveyOptions=array();
         /**
         * array of mappings of Question # (qid) to pipe-delimited list of SGQA codes used within it
         *
         * @example [150] = "38612X11X150|38612X11X150other"
-        * @var type
+        * @var array
         */
         private $qid2code;
         /**
         * array of mappings of JavaScript Variable names to Question number (qid)
         *
         * @example ['java38612X13X161other'] = '161'
-        * @var type
+        * @var array
         */
         private $jsVar2qid;
         /**
@@ -202,7 +202,7 @@
         *
         * @example ['p1_sex'] = "38612X10X147"
         * @example ['afDS_sq1_1'] = "26626X37X705sq1#1"
-        * @var type
+        * @var array
         */
         private $qcode2sgq;
         /**
@@ -217,7 +217,7 @@
         * 'jsName' => "java26626X37X705sq1#1"
         * 'jsPart' => "'afDS_sq1_1':'java26626X37X705sq1#1'"
         * );
-        * @var type
+        * @var array
         */
         private $alias2varName;
         /**
@@ -227,7 +227,7 @@
         * @example ['java38612X11X147'] = "'java38612X11X147':{ 'jsName':'java38612X11X147','jsName_on':'java38612X11X147','sgqa':'38612X11X147','qid':147,'gid':11,'type':'G','default':'','rowdivid':'','onlynum':'','gseq':1,'answers':{ 'M':'Male','F':'Female'}}"
         * @example ['java26626X37X705sq1#1'] = "'java26626X37X705sq1#1':{ 'jsName':'java26626X37X705sq1#1','jsName_on':'java26626X37X705sq1#1','sgqa':'26626X37X705sq1#1','qid':705,'gid':37,'type':'1','default':'','rowdivid':'26626X37X705sq1','onlynum':'','gseq':1,'answers':{ '0~1':'1|Low','0~2':'2|Medium','0~3':'3|High','1~1':'1|Never','1~2':'2|Sometimes','1~3':'3|Always'}}"
         *
-        * @var type
+        * @var array
         */
         private $varNameAttr;
 
@@ -239,7 +239,7 @@
         * @example (for [705]): ['1~2'] = '2|Sometimes' // this means that the second scale for this question uses the coded value of 2 to represent 'Sometimes'
         * @example // TODO - add example from survey using assessments
         *
-        * @var type
+        * @var array
         */
         private $qans;
         /**
@@ -247,7 +247,7 @@
         *
         * @example [10] = 0 // means that the first group (gseq=0) has gid=10
         *
-        * @var type
+        * @var array
         */
         private $groupId2groupSeq;
         /**
@@ -255,7 +255,7 @@
         *
         * @example [157] = 13 // means that that 14th question in the survey has qid=157
         *
-        * @var type
+        * @var array
         */
         private $questionId2questionSeq;
         /**
@@ -263,7 +263,7 @@
         *
         * @example [157] = 2 // means that qid 157 is in the 3rd page of questions (gseq = 2)
         *
-        * @var type
+        * @var array
         */
         private $questionId2groupSeq;
         /**
@@ -274,7 +274,7 @@
         * 'qend' => 13 //the last qseq within that group
         * );
         *
-        * @var type
+        * @var array
         */
         private $groupSeqInfo;
 
@@ -306,7 +306,7 @@
         * 'sumRemainingEqn' => '' // the equation to how much is left (for the question attribute that lets you specify the exact value of the sum of the answers)
         * );
         *
-        * @var type
+        * @var array
         */
         private $qid2validationEqn;
 
@@ -386,7 +386,7 @@
         * 'sumRemainingEqn' => '' //
         * );
         *
-        * @var type
+        * @var array|null
         */
         private $currentQset=NULL;
         /**
@@ -403,7 +403,7 @@
         * 'invalidSQs' => // pipe-separated list of any sub-questions that failed validation constraints
         * );
         *
-        * @var type
+        * @var array|null
         */
         private $lastMoveResult=NULL;
         /**
@@ -426,7 +426,7 @@
         * 'valid' => 1 // 0 if any part of the question fails validation criteria.
         * );
         *
-        * @var type
+        * @var array
         */
         private $indexQseq;
         /**
@@ -444,7 +444,7 @@
         * 'show' => 1 // 1 if there is at least one relevant, non-hidden question within the group
         * );
         *
-        * @var type
+        * @var array
         */
         private $indexGseq;
         /**
@@ -459,7 +459,7 @@
         * 'grelevance' => '' // the group-level relevance
         * );
         *
-        * @var type
+        * @var array
         */
         private $gseq2info;
 
@@ -498,7 +498,7 @@
         *     'sqsuffix' => '_sq1' // the suffix to use for a qcode variable name
         *  );
         *
-        * @var type
+        * @var array
         */
         private $q2subqInfo;
         /**
@@ -513,7 +513,7 @@
         * 'other_replace_text' => '{afSrcFilter_other}'
         * );
         *
-        * @var type
+        * @var array
         */
         private $qattr;
         /**
@@ -535,7 +535,7 @@
         * 'hasErrors' => 0 // 1 if there are any parse errors in the sub-question validation equations
         * );
         *
-        * @var type
+        * @var array
         */
         private $subQrelInfo=array();
         /**
@@ -552,7 +552,7 @@
         * 'prettyPrint' => '' // a pretty-print version of the group-level relevance equation, only if there are errors
         * );
         *
-        * @var type
+        * @var array
         */
         private $gRelInfo=array();
 
@@ -565,24 +565,24 @@
         *   [1]=1.7079849243164
         * );
         *
-        * @var type
+        * @var array
         */
         private $runtimeTimings=array();
         /**
         * True (1) if calling LimeExpressionManager functions between StartSurvey and FinishProcessingPage
         * Used (mostly deprecated) to detect calls to LEM which happen outside of the normal processing scope
-        * @var Boolean
+        * @var boolean
         */
         private $initialized=false;
         /**
         * True (1) if have already processed the relevance equations (so don't need to do it again)
         *
-        * @var Boolean
+        * @var boolean
         */
         private $processedRelevance=false;
         /**
         * Message generated to show debug timing values, if debugLevel includes LEM_DEBUG_TIMING
-        * @var type
+        * @var string
         */
         private $debugTimingMsg='';
         /**
@@ -595,7 +595,7 @@
         * 'hasErrors' => 0 // 1 if there are any syntax errors
         * );
         *
-        * @var type
+        * @var array
         */
         private $ParseResultCache;
         /**
@@ -608,7 +608,7 @@
         * '1~3' => '3|Always'
         * );
         *
-        * @var type
+        * @var array
         */
         private $multiflexiAnswers;
 
@@ -9396,6 +9396,7 @@ EOD;
                                 if ( $value == '1') {
                                     $value = NULL; // so can skip this one - just using continue here doesn't work.
                                 }
+                                break;
                             case 'relevance':
                                 $value = NULL;  // means an outdate database structure
                                 break;
@@ -9550,7 +9551,6 @@ EOD;
                 $sawThis = array(); // array of rowdivids already seen so only show them once
                 foreach ($sgqas as $sgqa)
                 {
-                    $bSubQhasError=false;
                     if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName)
                     {
                         continue;   // so don't show the main question as a sub-question too
@@ -9643,6 +9643,7 @@ EOD;
                     {
                         $ansInfo = explode('~',$ans);
                         $valParts = explode('|',$value);
+                        $valInfo = array();
                         $valInfo[0] = array_shift($valParts);
                         $valInfo[1] = implode('|',$valParts);
                         if ($_scale != $ansInfo[0]) {
@@ -9736,6 +9737,9 @@ EOD;
                     case 'question':
                         $message = $LEM->gT('This question, by itself, does not contain any syntax errors.');
                         break;
+                    default:
+                        $message = '';
+                        break;
                 }
                 $out = "<p class='LEMheading'>$message</p>\n" . $out."</div>";
             }
@@ -9779,7 +9783,6 @@ EOD;
             $rows = array();
             $primarylang='en';
             $otherlangs='';
-            $langs = array();
 
             // Export survey-level information
             $query = "select * from {{surveys}} where sid = " . $sid;
@@ -9790,6 +9793,7 @@ EOD;
                 {
                     if ($value != '')
                     {
+                        $row = array();
                         $row['class'] = 'S';
                         $row['name'] = $key;
                         $row['text'] = $value;
@@ -10050,6 +10054,7 @@ EOD;
                         {
                             $ansInfo = explode('~',$ans);
                             $valParts = explode('|',$value);
+                            $valInfo = array();
                             $valInfo[0] = array_shift($valParts);
                             $valInfo[1] = implode('|',$valParts);
                             if ($_scale != $ansInfo[0]) {
