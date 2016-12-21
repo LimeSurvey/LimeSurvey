@@ -244,7 +244,7 @@ class ExpressionManager {
      * Add an error to the error log
      *
      * @param string $errMsg
-     * @param string $token
+     * @param array $token
      * @return void
      */
     private function RDP_AddError($errMsg, $token)
@@ -566,7 +566,7 @@ class ExpressionManager {
             case 'SQ_STRING':
                 $this->RDP_StackPush($token);
                 return true;
-                break;
+                // NB: No break needed
             case 'WORD':
             case 'SGQA':
                 if (($this->RDP_pos + 1) < $this->RDP_count and $this->RDP_tokens[($this->RDP_pos + 1)][2] == 'LP')
@@ -604,14 +604,15 @@ class ExpressionManager {
                         return false;
                     }
                 }
-                break;
+                // NB: No break needed
             case 'COMMA':
                 --$this->RDP_pos;
                 $this->RDP_AddError(gT("Should never  get to this line?"),$token);
                 return false;
+                // NB: No break needed
             default:
                 return false;
-                break;
+                // NB: No break needed
         }
     }
 
@@ -953,7 +954,6 @@ class ExpressionManager {
                             return false;
                         }
                         break;
-                        break;
                     default:
                         --$this->RDP_pos;
                         return true;
@@ -1073,6 +1073,7 @@ class ExpressionManager {
                         return false;
                     }
                     return $this->RDP_EvaluateUnary($token);
+                    // NB: No break needed
                     break;
                 default:
                     --$this->RDP_pos;
@@ -2159,7 +2160,7 @@ class ExpressionManager {
      * @param string $op - the operator (=,*=,/=,+=,-=)
      * @param string $name
      * @param string $value
-     * @return boolean
+     * @return int
      */
     private function RDP_SetVariableValue($op,$name,$value)
     {
@@ -2557,7 +2558,9 @@ function exprmgr_countifop($args)
                         ++$j;
                     }
                 }
-                catch (Exception $e) { }
+                catch (Exception $e) {
+                    // Do nothing
+                }
                 break;
         }
     }
@@ -2676,7 +2679,9 @@ function exprmgr_sumifop($args)
                         $result += $arg;
                     }
                 }
-                catch (Exception $e) { }
+                catch (Exception $e) {
+                    // Do nothing
+                }
                 break;
         }
     }

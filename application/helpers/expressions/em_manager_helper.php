@@ -9120,7 +9120,7 @@ EOD;
          * @param string $op
          * @param string $name
          * @param string $value
-         * @return ?
+         * @return int
          */
         public static function SetVariableValue($op,$name,$value)
         {
