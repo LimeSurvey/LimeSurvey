@@ -3831,6 +3831,7 @@
                 // Set $varName (question code / questions.title), $rowdivid, $csuffix, $sqsuffix, and $question
                 $rowdivid=NULL;   // so that blank for types not needing it.
                 $sqsuffix='';
+                $csuffix = '';
                 switch($type)
                 {
                     case '!': //List - dropdown
@@ -3897,6 +3898,10 @@
                         $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                         $rowdivid = substr($sgqa,0,strpos($sgqa,'_'));
+                        break;
+                    default:
+                        // TODO: Internal error if this happens
+                        $question = null;
                         break;
                 }
 
@@ -4679,8 +4684,6 @@
             $suffix = '';
             $sqpatts = array();
             $nosqpatts = array();
-            $sqpatt = '';
-            $nosqpatt = '';
             $comments = '';
 
             if ($parts[0] == 'self')
@@ -4880,8 +4883,9 @@
                     $LEM->allOnOnePage=false;
                     $LEM->surveyMode = 'question';
                     break;
-                default:
                 case 'group':
+                    /* FALLTHRU */
+                default:
                     $LEM->allOnOnePage=false;
                     $LEM->surveyMode = 'group';
                     break;
@@ -4895,7 +4899,6 @@
             $LEM->qrootVarName2arrayFilter=array();
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
             {
-                $startingValues = array();
                 foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k=>$value)
                 {
                     if (isset($LEM->knownVars[$k]))
@@ -4908,7 +4911,7 @@
                     }
                     else if (isset($LEM->tempVars[$k]))
                     {
-                        $knownVar = $LEM->tempVar[$k];
+                        $knownVar = $LEM->tempVars[$k];
                     }
                     else
                     {
@@ -5219,6 +5222,7 @@
                     $LEM->StartProcessingPage();
                     $updatedValues=$LEM->ProcessCurrentResponses();
                     $message = '';
+                    $result = array();
                     if (!$force && $LEM->currentQuestionSeq != -1)
                     {
                         $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5331,7 +5335,6 @@
             {
                 $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 // Create initial insert row for this record
-                $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                 $sdata = array(
                 "startlanguage"=>$this->surveyOptions['startlanguage']
                 );
@@ -5372,9 +5375,9 @@
                 }
                 else
                 {
+                    $srid = null;
                     $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
                     echo submitfailed('');  // TODO - report SQL error?
-
                 }
                 //Insert Row for Timings, if needed
                 if ($this->surveyOptions['savetimings']) {
@@ -5386,7 +5389,7 @@
                     'interviewtime'=>0
                     );
                     switchMSSQLIdentityInsert("survey_{$this->sid}_timings", true);
-                    $iNewID = $oSurveyTimings->insertRecords($tdata);
+                    $oSurveyTimings->insertRecords($tdata);
                     switchMSSQLIdentityInsert("survey_{$this->sid}_timings", false);
                 }
             }
@@ -5404,6 +5407,10 @@
                         break;
                     case 'survey':
                         $thisstep = 1;
+                        break;
+                    default:
+                        // TODO: Internal error if this happens
+                        $thisstep = 0;
                         break;
                 }
                 $setter[] = dbQuoteID('lastpage') . "=" . dbQuoteAll($thisstep);
@@ -5578,7 +5585,6 @@
             {
                 case 'survey':
                     // This only happens if saving data so far, so don't want to submit it, just validate and return
-                    $startingGroup = $LEM->currentGroupSeq;
                     $LEM->StartProcessingPage(true);
                     if ($processPOST) {
                         $updatedValues=$LEM->ProcessCurrentResponses();
@@ -6067,9 +6073,9 @@
             $LEM =& $this;
             $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
             // We try to validate this question, then update the maxQuestionSeq, TODO : validate if we can update the maxGroupSeq too.
-            if($questionSeq > $LEM->maxQuestionSeq) // max() take a little time more (2/3)
+            if($questionSeq > $LEM->maxQuestionSeq) {  // max() take a little time more (2/3)
                 $LEM->maxQuestionSeq=$questionSeq;
-            $qrel=true;   // assume relevant unless discover otherwise
+            }
             $prettyPrintRelEqn='';    //  assume no relevance eqn by default
             $qid=$qInfo['qid'];
             $gid=$qInfo['gid'];
@@ -6163,7 +6169,6 @@
                         $iCountRelevant=isset($iCountRelevant) ? $iCountRelevant : count($sgqas)-count(array_filter($LEM->subQrelInfo[$qid],function($sqRankAnwsers){ return !$sqRankAnwsers['result']; }));
                         if($iCountRank >  $iCountRelevant)
                         {
-                            $foundSQrelevance=true;
                             $irrelevantSQs[] = $sgqa;
                         }
                         else

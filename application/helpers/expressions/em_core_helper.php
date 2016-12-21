@@ -29,7 +29,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
+    public static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
