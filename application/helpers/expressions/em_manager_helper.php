@@ -9115,6 +9115,12 @@ EOD;
             return $default;    // and throw and error?
         }
 
+        /**
+         * @param string $op
+         * @param string $name
+         * @param string $value
+         * @return ?
+         */
         public static function SetVariableValue($op,$name,$value)
         {
             $LEM =& LimeExpressionManager::singleton();
