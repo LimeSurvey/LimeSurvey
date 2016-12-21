@@ -61,7 +61,7 @@
          /**
         * sPreviewMode used for relevance equation force to 1 in preview mode
         * Maybe we can set it public
-        * @var string
+        * @var string|boolean
         */
         private $sPreviewMode=false;
         /**
@@ -3591,8 +3591,8 @@
         * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
         *
         * @param integer $surveyid
-        * @param boolean $forceRefresh
-        * @param boolean $anonymized
+        * @param boolean|null $forceRefresh
+        * @param boolean|null $anonymized
         * @param boolean $allOnOnePage - if true (like for survey_format), uses certain optimizations
         * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
         */
@@ -5160,7 +5160,7 @@
                         'invalidSQs'=>$result['invalidSQs'],
                     );
                     return $LEM->lastMoveResult;
-                    break;
+                    // NB: No break needed
                 case 'group':
                     // First validate the current group
                     $LEM->StartProcessingPage();
@@ -5339,7 +5339,7 @@
 
         /**
         * Write values to database.
-        * @param array $updatedValues
+        * @param array|null $updatedValues
         * @param boolean $finished - true if the survey needs to be finalized
         * @return string
         */
@@ -8853,7 +8853,7 @@ EOD;
             {
                 case 'varName':
                     return $name;
-                    break;
+                    // NB: No break needed
                 case 'code':
                 case 'NAOK':
                     if (isset($var['code'])) {
@@ -8896,7 +8896,6 @@ EOD;
                     // NB: No break needed
                 case 'value':
                 case 'valueNAOK':
-                {
                     $type = $var['type'];
                     $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
                     switch($type)
@@ -8943,8 +8942,7 @@ EOD;
                             break;
                     }
                     return $value;
-                }
-                break;
+                    // NB: No break needed
                 case 'jsName':
                     if ($this->surveyMode=='survey'
                     || ($this->surveyMode=='group' && $gseq != -1 && isset($var['gseq']) && $gseq == $var['gseq'])
@@ -9088,6 +9086,7 @@ EOD;
                         }
                         return $shown;
                     }
+                    // NB: No break needed
                 case 'relevanceStatus':
                     $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;
                     $qid = (isset($var['qid'])) ? $var['qid'] : -1;
@@ -9102,15 +9101,17 @@ EOD;
                     $qrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$qid] : 0);
                     $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                     return ($grel && $qrel && $sqrel);
+                    // NB: No break needed
                 case 'onlynum':
                     if (isset($args[1]) && ($args[1]=='value' || $args[1]=='valueNAOK')) {
                         return 1;
                     }
                     return (isset($var[$attr])) ? $var[$attr] : $default;
-                    break;
+                    // NB: No break needed
                 default:
                     print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br />\n";
                     return $default;
+                    // NB: No break needed
             }
             return $default;    // and throw and error?
         }
