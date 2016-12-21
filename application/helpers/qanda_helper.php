@@ -132,8 +132,6 @@ function retrieveAnswers($ia)
         ,'essentials'         => ''
     );
 
-    $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$lang));
-
     switch ($ia[4])
     {
         case 'X': //BOILERPLATE QUESTION
@@ -176,11 +174,6 @@ function retrieveAnswers($ia)
 
         case 'M': //Multiple choice checkbox
             $values=do_multiplechoice($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $maxansw=trim($aQuestionAttributes['max_answers']);
-                $minansw=trim($aQuestionAttributes['min_answers']);
-            }
             break;
 
         case 'I': //Language Question
@@ -189,11 +182,6 @@ function retrieveAnswers($ia)
 
         case 'P': //Multiple choice with comments checkbox + text
             $values=do_multiplechoice_withcomments($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $maxansw=trim($aQuestionAttributes["max_answers"]);
-                $minansw=trim($aQuestionAttributes["min_answers"]);
-            }
             break;
 
         case '|': //File Upload
@@ -330,9 +318,8 @@ function retrieveAnswers($ia)
     $sTemplate = isset($thissurvey['template']) ? $thissurvey['template'] : NULL;
     if (is_file('templates/'.$sTemplate.'/question_start.pstpl'))
     {
-        $qtitle_custom = '';
-
-        $replace=array();
+        $replace = array();
+        $find    = array();
         foreach ($question_text as $key => $value)
         {
             $find[] = '{QUESTION_'.strtoupper($key).'}'; // Match key words from template
@@ -468,21 +455,19 @@ function validation_popup($ia, $notvalidated=null)
 {
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
-    if ($notvalidated === null) {unset($notvalidated);}
-    $qtitle="";
-    if (isset($notvalidated) && is_array($notvalidated) )  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
-    {
+    if ($notvalidated === null) {
+        unset($notvalidated);
+    }
+    if (isset($notvalidated) && is_array($notvalidated)) {  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
         global $validationpopup, $vpopup;
         //POPUP WARNING
-        if (!isset($validationpopup))
-        {
+        if (!isset($validationpopup)) {
             $vpopup=gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
             $validationpopup="Y";
         }
         return array($validationpopup, $vpopup);
     }
-    else
-    {
+    else {
         return false;
     }
 }
@@ -541,7 +526,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     $disable_next=trim($aQuestionAttributes['time_limit_disable_next']) != '' ? $aQuestionAttributes['time_limit_disable_next'] : 0;
     $disable_prev=trim($aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
     $time_limit_action=trim($aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
-    $time_limit_message_delay=trim($aQuestionAttributes['time_limit_message_delay']) != '' ? $aQuestionAttributes['time_limit_message_delay']*1000 : 1000;
     $time_limit_message=trim($aQuestionAttributes['time_limit_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has expired");
     $time_limit_warning=trim($aQuestionAttributes['time_limit_warning']) != '' ? $aQuestionAttributes['time_limit_warning'] : 0;
     $time_limit_warning_2=trim($aQuestionAttributes['time_limit_warning_2']) != '' ? $aQuestionAttributes['time_limit_warning_2'] : 0;
@@ -795,7 +779,6 @@ function do_equation($ia)
 // ---------------------------------------------------------------
 function do_5pointchoice($ia)
 {
-    $imageurl = Yii::app()->getConfig("imageurl");
     $checkconditionFunction = "checkconditions";
     //$aQuestionAttributes=  getQuestionAttributeValues($ia[0]);
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -880,7 +863,6 @@ function do_date($ia)
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $checkconditionFunction = "checkconditions";
     $dateformatdetails      = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
-    $numberformatdatat      = getRadixPointData($thissurvey['surveyls_numberformat']);
     $inputnames = array();
 
     $sDateLangvarJS         = " translt = {
@@ -1073,7 +1055,7 @@ function do_date($ia)
                     $sRows .= doRender('/survey/questions/date/dropdown/rows/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour, 'datepart'=>$datepart), true);
                     break;
                 case 'i':
-                    $sRows .= doRender('/survey/questions/date/dropdown/rows/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepart ), true);
+                    $sRows .= doRender('/survey/questions/date/dropdown/rows/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currentminute, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepart ), true);
                     break;
                 default:
                 $sRows .= doRender('/survey/questions/date/dropdown/rows/datepart', array('datepart'=>$datepart ), true);
@@ -1112,8 +1094,6 @@ function do_date($ia)
             $dateoutput  = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
-        $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
-        $goodchars = "0123456789".substr($goodchars,0,1);
         // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
         // "+1" makes room for a trailing space in date/time values
         $iLength   = strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
@@ -1325,7 +1305,6 @@ function do_list_dropdown($ia)
                 'sOptGroupOptions'  => $sOptGroupOptions,
             ), true);
         }
-        $opt_select='';
         foreach ($defaultopts as $optionarray)
         {
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code'])
@@ -1477,7 +1456,6 @@ function do_list_radio($ia)
 
         // Then, we calculate how many answer rows in each column
         $iMaxRowsByColumn = ceil($anscount / $iNbCols);
-        $first = true; // The very first item will open a bootstrap row containing the columns
     }
 
     // Get array_filter stuff
@@ -1509,7 +1487,6 @@ function do_list_radio($ia)
         {
             $sRows  .= doRender('/survey/questions/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth), true);
             $isOpen  = true; // If a column is not closed, it will be closed at the end of the process
-            $first   = false; // The row containing the column has been opened at the first call.
         }
 
 
@@ -1615,7 +1592,6 @@ function do_list_radio($ia)
         // We can't be sure it's the last one because of 'no answer' item
         if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
         {
-            $last = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
             $sRows .= doRender('/survey/questions/listradio/columns/column_footer', array(), true);
             $iRowCount = 0;
             $isOpen = false;
@@ -1655,11 +1631,9 @@ function do_list_radio($ia)
         if($iNbCols > 1 )
         {
             $sRows .= doRender('/survey/questions/listradio/columns/column_footer', array('last'=>true), true);
-            $iRowCount = 0;
             $isOpen = false;
         }
     }
-
 
     ////
     // Close column
@@ -1669,7 +1643,6 @@ function do_list_radio($ia)
     if($iNbCols > 1 && $isOpen )
     {
         $sRows .= doRender('/survey/questions/listradio/columns/column_footer', array('last'=>true), true);
-        $iRowCount = 0;
     }
 
     //END OF ITEMS
@@ -1864,8 +1837,6 @@ function do_listwithcomment($ia)
 function do_ranking($ia)
 {
     global $thissurvey;
-    $imageurl               = Yii::app()->getConfig("imageurl");
-    $checkconditionFunction = "checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['random_order']==1)
@@ -1928,6 +1899,7 @@ function do_ranking($ia)
     $sSelects   = '';
     $myfname    = '';
 
+    $thisvalue="";
     for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
@@ -1947,7 +1919,6 @@ function do_ranking($ia)
 
         foreach ($answers as $ansrow)
         {
-            $thisvalue="";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
             {
                 $selected = SELECTED;
@@ -2065,6 +2036,7 @@ function do_multiplechoice($ia)
     }
     else
     {
+        $sSeparator = '.';  // TODO: Correct default?
         $oth_checkconditionFunction = "checkconditions";
     }
 
@@ -2088,8 +2060,7 @@ function do_multiplechoice($ia)
     $isOpen           = false;       // Is a column opened
 
     // TODO: check if still used
-    if($iNbCols > 1)
-    {
+    if($iNbCols > 1) {
         // First we calculate the width of each column
         // Max number of column is 12 http://getbootstrap.com/css/#grid
         $iColumnWidth = round(12 / $iNbCols);
@@ -2099,6 +2070,9 @@ function do_multiplechoice($ia)
         // Then, we calculate how many answer rows in each column
         $iMaxRowsByColumn = ceil($anscount / $iNbCols);
         $first = true; // The very first item will open a bootstrap row containing the columns
+    }
+    else {
+        $iColumnWidth = '';
     }
 
     /// Generate answer rows
@@ -2136,7 +2110,7 @@ function do_multiplechoice($ia)
         if($iNbCols > 1 && $iRowCount == 1 )
         {
             $sRows .= doRender('/survey/questions/multiplechoice/columns/column_header', array(
-                'iColumnWidth' => (isset($iColumnWidth))?$iColumnWidth:'',
+                'iColumnWidth' => $iColumnWidth,
                 'first'        => (isset($first ))?$first:''),
             true);
             $isOpen  = true;  // If a column is not closed, it will be closed at the end of the process
@@ -2245,7 +2219,6 @@ function do_multiplechoice($ia)
         if($iNbCols > 1 )
         {
             $sRows    .= doRender('/survey/questions/multiplechoice/columns/column_footer', array('last'=>true), true);
-            $iRowCount = 0;
             $isOpen    = false;
         }
     }
@@ -2258,7 +2231,6 @@ function do_multiplechoice($ia)
     if($iNbCols > 1 && $isOpen )
     {
         $sRows   .= doRender('/survey/questions/multiplechoice/columns/column_footer', array('last'=>true), true);
-        $iRowCount = 0;
     }
 
     // ==> answer
@@ -2274,17 +2246,8 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
-    $inputnames = array();
     $kpclass    = testKeypad($thissurvey['nokeyboard']);                                                            // Virtual keyboard (probably obsolete today)
     $inputnames = array();
-    $qaquery    = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
-    $qaresult   = Yii::app()->db->createCommand($qaquery)->query();                                                 //Checked
-
-    foreach($qaresult->readAll() as $qarow)
-    {
-        $qquery  = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
-        $qresult = Yii::app()->db->createCommand($qquery)->query();                                                 //Checked
-    }
 
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -2322,7 +2285,6 @@ function do_multiplechoice_withcomments($ia)
 
     $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked
     $anscount  = count($ansresult)*2;
-    $answer    = "";
 
     $fn = 1;
     if (!isset($other)){
