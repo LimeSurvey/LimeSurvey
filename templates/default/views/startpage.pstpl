@@ -266,7 +266,4 @@
     {{ aSurveyInfo.email_register }};
     {{ aSurveyInfo.attributecaptions }};
 
-
-
-
 #}
