@@ -703,6 +703,8 @@
 
         /**
         * Set the previewmode
+        * @param boolean|null $previewmode
+        * @return void
         */
         public static function SetPreviewMode($previewmode=false)
         {
@@ -713,6 +715,7 @@
 
         /**
         * Tells Expression Manager that something has changed enough that needs to eliminate internal caching
+        * @return void
         */
         public static function SetDirtyFlag()
         {
@@ -729,7 +732,7 @@
 
         /**
         * Set the SurveyId - really checks whether the survey you're about to work with is new, and if so, clears the LEM cache
-        * @param <integer> $sid
+        * @param integer|null $sid
         */
         public static function SetSurveyId($sid=NULL)
         {
@@ -744,7 +747,8 @@
 
         /**
         * Sets the language for Expression Manager.  If the language has changed, then EM cache must be invalidated and refreshed
-        * @param <string> $lang
+        * @param string|null $lang
+        * @return void
         */
         public static function SetEMLanguage($lang=NULL)
         {
@@ -763,8 +767,8 @@
 
         /**
         * Do bulk-update/save of Condition to Relevance
-        * @param <integer> $surveyId - if NULL, processes the entire database, otherwise just the specified survey
-        * @param <integer> $qid - if specified, just updates that one question
+        * @param integer|null $surveyId - if NULL, processes the entire database, otherwise just the specified survey
+        * @param integer|null $qid - if specified, just updates that one question
         * @return array of query strings
         */
         public static function UpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
@@ -798,8 +802,9 @@
 
         /**
         * This reverses UpgradeConditionsToRelevance().  It removes Relevance for questions that have Condition
-        * @param <integer> $surveyId
-        * @param <integer> $qid
+        * @param integer|null $surveyId
+        * @param integer|null $qid
+        * @return int
         */
         public static function RevertUpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
@@ -821,6 +826,7 @@
         * Return array database name as key, LEM name as value
         * @example (['gender'] => '38612X10X145')
         * @param integer $iSurveyId
+        * @return array
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
                 $LEM =& LimeExpressionManager::singleton();
@@ -834,8 +840,8 @@
         /**
         * If $qid is set, returns the relevance equation generated from conditions (or NULL if there are no conditions for that $qid)
         * If $qid is NULL, returns an array of relevance equations generated from Condition, keyed on the question ID
-        * @param <integer> $surveyId
-        * @param <integer> $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
+        * @param integer|null $surveyId
+        * @param integer|null $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
         * @return array of generated relevance strings, indexed by $qid
         */
         public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
@@ -1042,8 +1048,8 @@
 
         /**
         * Return list of relevance equations generated from conditions
-        * @param <integer> $surveyId
-        * @param <integer> $qid
+        * @param integer|null $surveyId
+        * @param integer|null $qid
         * @return array of relevance equations, indexed by $qid
         */
         public static function UnitTestConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
@@ -1056,7 +1062,8 @@
         * Process all question attributes that apply to EM
         * (1) Sub-question-level relevance:  e.g. array_filter, array_filter_exclude, relevance equations entered in SQ-mask
         * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
-        * @param <integer> $onlyThisQseq - only process these attributes for the specified question
+        * @param integer|null $onlyThisQseq - only process these attributes for the specified question
+        * @return void
         */
         public function _CreateSubQLevelRelevanceAndValidationEqns($onlyThisQseq=NULL)
         {
@@ -3540,10 +3547,10 @@
          * Note, must support:
          * (a) semicolon-separated list of $qroot codes for either array_filter or array_filter_exclude
          * (b) mixed history of array_filter and array_filter_exclude values
-         * @param type $qroot - the question root variable name
-         * @param type $aflist - the list of array_filter $qroot codes
-         * @param type $afelist - the list of array_filter_exclude $qroot codes
-         * @return type
+         * @param string $qroot - the question root variable name
+         * @param array $aflist - the list of array_filter $qroot codes
+         * @param array $afelist - the list of array_filter_exclude $qroot codes
+         * @return array
          */
         private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
         {
@@ -3583,13 +3590,12 @@
         * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
         * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
         *
-        * @param <integer> $surveyid
-        * @param <Boolean> $forceRefresh
-        * @param <Boolean> $anonymized
-        * @param <Boolean> $allOnOnePage - if true (like for survey_format), uses certain optimizations
+        * @param integer $surveyid
+        * @param boolean $forceRefresh
+        * @param boolean $anonymized
+        * @param boolean $allOnOnePage - if true (like for survey_format), uses certain optimizations
         * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
         */
-
         private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
         {
             if (isset($_SESSION['LEMforceRefresh'])) {
@@ -4293,8 +4299,8 @@
 
         /**
         * Return whether a sub-question is relevant
-        * @param <type> $sgqa
-        * @return <boolean>
+        * @param string $sgqa
+        * @return boolean
         */
         static function SubQuestionIsRelevant($sgqa)
         {
@@ -4318,7 +4324,7 @@
 
         /**
         * Return whether question $qid is relevanct
-        * @param <type> $qid
+        * @param int $qid
         * @return boolean
         */
         static function QuestionIsRelevant($qid)
@@ -4345,7 +4351,7 @@
 
         /**
         * Return whether group $gseq is relevant
-        * @param <type> $gseq
+        * @param string $gseq
         * @return boolean
         */
         static function GroupIsIrrelevantOrHidden($gseq)
@@ -4367,6 +4373,8 @@
         /**
         * Check the relevance status of all questions on or before the current group.
         * This generates needed JavaScript for dynamic relevance, and sets flags about which questions and groups are relevant
+        * @param string $onlyThisQseq
+        * @return void
         */
         function ProcessAllNeededRelevance($onlyThisQseq=NULL)
         {
@@ -4417,7 +4425,6 @@
         * @param boolean $staticReplacement - return HTML string without the system to update by javascript
         * @return string - the original $string with all replacements done.
         */
-
         static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true, $staticReplacement=false)
         {
             $now = microtime(true);
@@ -4461,12 +4468,12 @@
 
         /**
         * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
-        * @param <type> $eqn - the relevance equation
-        * @param <type> $questionNum - needed to align question-level relevance and tailoring
-        * @param <type> $jsResultVar - this variable determines whether irrelevant questions are hidden
-        * @param <type> $type - question type
-        * @param <type> $hidden - whether question should always be hidden
-        * @return <type>
+        * @param string $eqn - the relevance equation
+        * @param string $questionNum - needed to align question-level relevance and tailoring
+        * @param string $jsResultVar - this variable determines whether irrelevant questions are hidden
+        * @param string $type - question type
+        * @param int $hidden - whether question should always be hidden
+        * @return boolean
         */
         static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
         {
@@ -4476,12 +4483,12 @@
 
         /**
         * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
-        * @param <type> $eqn - the relevance equation
-        * @param <type> $questionNum - needed to align question-level relevance and tailoring
-        * @param <type> $jsResultVar - this variable determines whether irrelevant questions are hidden
-        * @param <type> $type - question type
-        * @param <type> $hidden - whether question should always be hidden
-        * @return <type>
+        * @param string $eqn - the relevance equation
+        * @param string $questionNum - needed to align question-level relevance and tailoring
+        * @param string $jsResultVar - this variable determines whether irrelevant questions are hidden
+        * @param string $type - question type
+        * @param int $hidden - whether question should always be hidden
+        * @return boolean
         */
         private function _ProcessRelevance($eqn,$questionNum=NULL,$gseq=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
         {
@@ -4539,10 +4546,14 @@
         /**
         * Create JavaScript needed to process sub-question-level relevance (e.g. for array_filter and  _exclude)
         * @param string $eqn - the equation to parse
-        * @param <type> $questionNum - the question number - needed to align relavance and tailoring blocks
-        * @param <type> $rowdivid - the javascript ID that needs to be shown/hidden in order to control array_filter visibility
-        * @param <type> $type - the type of sub-question relevance (e.g. 'array_filter', 'array_filter_exclude')
-        * @return <type>
+        * @param string $questionNum - the question number - needed to align relavance and tailoring blocks
+        * @param string $rowdivid - the javascript ID that needs to be shown/hidden in order to control array_filter visibility
+        * @param string $type - the type of sub-question relevance (e.g. 'array_filter', 'array_filter_exclude')
+        * @param string $qtype
+        * @param string $sgqa
+        * @param string $isExclusive
+        * @param string $irrelevantAndExclusive
+        * @return boolean
         */
         private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$rowdivid=NULL, $type=NULL, $qtype=NULL, $sgqa=NULL, $isExclusive='', $irrelevantAndExclusive='')
         {
@@ -4616,6 +4627,10 @@
             return $result;
         }
 
+        /**
+         * @param int $groupSeq
+         * @return void
+         */
         private function _ProcessGroupRelevance($groupSeq)
         {
             // These will be called in the order that questions are supposed to be asked
@@ -4662,7 +4677,7 @@
 
         /**
         * Used to show potential syntax errors of processing Relevance or Equations.
-        * @return <type>
+        * @return string
         */
         static function GetLastPrettyPrintExpression()
         {
@@ -4673,7 +4688,8 @@
         /**
          * Expand "self.suffix" and "that.qcode.suffix" into canonical list of variable names
          * @param integer $qseq
-         * @param type $varname
+         * @param string $varname
+         * @return string
          */
         static function GetAllVarNamesForQ($qseq,$varname)
         {
@@ -4799,8 +4815,9 @@
 
         /**
         * Should be first function called on each page - sets/clears internally needed variables
-        * @param <type> $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
-        * @param <boolean> $initializeVars - if true, initializes the replacement variables to enable syntax highlighting on admin pages
+        * @param boolean $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
+        * @param boolean $initializeVars - if true, initializes the replacement variables to enable syntax highlighting on admin pages
+        * @return void
         */
         static function StartProcessingPage($allOnOnePage=false,$initializeVars=false)
         {
@@ -4966,6 +4983,9 @@
             );
         }
 
+        /**
+         * @return void
+         */
         static function NavigateBackwards()
         {
             $now = microtime(true);
@@ -5098,7 +5118,8 @@
 
         /**
         *
-        * @param <type> $force - if true, continue to go forward even if there are violations to the mandatory and/or validity rules
+        * @param boolean $force - if true, continue to go forward even if there are violations to the mandatory and/or validity rules
+        * @return array|null - lastMoveResult
         */
         static function NavigateForwards($force=false) {
             $now = microtime(true);
@@ -5318,8 +5339,9 @@
 
         /**
         * Write values to database.
-        * @param <type> $updatedValues
-        * @param <boolean> $finished - true if the survey needs to be finalized
+        * @param array $updatedValues
+        * @param boolean $finished - true if the survey needs to be finalized
+        * @return string
         */
         private function _UpdateValuesInDatabase($updatedValues, $finished=false)
         {
@@ -5543,8 +5565,8 @@
 
         /**
         * Get last move information, optionally clearing the substitution cache
-        * @param type $clearSubstitutionInfo
-        * @return type
+        * @param boolean $clearSubstitutionInfo
+        * @return array|null
         */
         static function GetLastMoveResult($clearSubstitutionInfo=false)
         {
@@ -5558,10 +5580,12 @@
 
         /**
         * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
-        * @param <type> $seq
-        * @param <type> $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
-        * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
-        * @return <type>
+        * @param int $seq
+        * @param boolean $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
+        * @param boolean $processPOST
+        * @param boolean $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
+        * @param boolean $changeLang
+        * @return array
         */
         static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false) {
             $now = microtime(true);
@@ -6905,7 +6929,8 @@
 
         /**
         * Get array of info needed to display the Group Index
-        * @return <type>
+        * @param string $gseq
+        * @return array
         */
         static function GetGroupIndexInfo($gseq=NULL)
         {
@@ -6920,8 +6945,8 @@
 
         /**
         * Translate GID to 0-index Group Sequence number
-        * @param <type> $gid
-        * @return <type>
+        * @param int $gid
+        * @return int
         */
         static function GetGroupSeq($gid)
         {
@@ -6931,8 +6956,8 @@
 
         /**
         * Get question sequence number from QID
-        * @param <type> $qid
-        * @return <type>
+        * @param int $qid
+        * @return int
         */
         static function GetQuestionSeq($qid)
         {
@@ -6942,7 +6967,7 @@
 
         /**
         * Get array of info needed to display the Question Index
-        * @return <type>
+        * @return array
         */
         static function GetQuestionIndexInfo()
         {
@@ -6952,8 +6977,8 @@
 
         /**
         * Return entries needed to build the navigation index
-        * @param <type> $step - if specified, return a single value, otherwise return entire array
-        * @return <type> - will be either question or group-level, depending upon $surveyMode
+        * @param int|null $step - if specified, return a single value, otherwise return entire array
+        * @return array - will be either question or group-level, depending upon $surveyMode
         */
         static function GetStepIndexInfo($step=NULL)
         {
@@ -6980,10 +7005,11 @@
 
         /**
         * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
-        * @param <type> $gseq - the group sequence
-        * @param <type> $anonymized - whether anonymized
-        * @param <type> $surveyid - the surveyId
-        * @param <type> $forceRefresh - whether to force refresh of setting variable and token mappings (should be done rarely)
+        * @param int|null $gseq - the group sequence
+        * @param boolean|null $anonymized - whether anonymized
+        * @param int|null $surveyid - the surveyId
+        * @param boolean|null $forceRefresh - whether to force refresh of setting variable and token mappings (should be done rarely)
+        * @return void
         */
         static function StartProcessingGroup($gseq=NULL,$anonymized=false,$surveyid=NULL,$forceRefresh=false)
         {
@@ -7016,6 +7042,8 @@
 
         /**
         * Should be called after each group finishes
+        * @param boolean|null $skipReprocessing
+        * @return void
         */
         static function FinishProcessingGroup($skipReprocessing=false)
         {
@@ -7034,8 +7062,8 @@
 
         /**
         * Returns an array of string parts, splitting out expressions
-        * @param type $src
-        * @return type
+        * @param string $src
+        * @return string
         */
         static function SplitStringOnExpressions($src)
         {
@@ -7045,7 +7073,7 @@
 
         /**
         * Return a formatted table showing how much time each part of EM consumed
-        * @return <type>
+        * @return string
         */
         static function GetDebugTimingMessage()
         {
@@ -7055,6 +7083,7 @@
 
         /**
         * Should be called at end of each page
+        * @return void
         */
         static function FinishProcessingPage()
         {
@@ -7084,6 +7113,7 @@
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
         * Also create list of variables that need to be declared
+        * @return string
         */
         static function GetRelevanceAndTailoringJavaScript()
         {
@@ -8199,7 +8229,8 @@ EOD;
 
         /**
         * Set the 'this' variable as an alias for SGQA within the code.
-        * @param <type> $sgqa
+        * @param string $sgqa
+        * @return void
         */
         public static function SetThisAsAliasForSGQA($sgqa)
         {
@@ -8500,12 +8531,11 @@ EOD;
 
         /**
         * Return array of language-specific answer codes
-        * @param int $surveyid
-        * @param int $qid
-        * @param string $lang
-        * @return <type>
+        * @param int|null $surveyid
+        * @param int|null $qid
+        * @param string|null $lang
+        * @return array
         */
-
         function getAnswerSetsForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
         {
             if (!is_null($qid)) {
@@ -8545,11 +8575,10 @@ EOD;
 
         /**
         * Returns group info needed for indexes
-        * @param <type> $surveyid
-        * @param string $lang
-        * @return <type>
+        * @param int $surveyid
+        * @param string|null $lang
+        * @return array
         */
-
         function getGroupInfoForEM($surveyid,$lang=NULL)
         {
             if (is_null($lang) && isset($_SESSION['LEMlang']))
@@ -9171,9 +9200,12 @@ EOD;
 
         /**
         * Create HTML view of the survey, showing everything that uses EM
-        * @param <type> $sid
-        * @param <type> $gid
-        * @param <type> $qid
+        * @param int $sid
+        * @param int|null $gid
+        * @param int|null
+        * @param int|null $LEMdebugLevel
+        * @param boolean|null $assessments
+        * @return array
         */
         static public function ShowSurveyLogicFile($sid, $gid=NULL, $qid=NULL,$LEMdebugLevel=0,$assessments=false)
         {
@@ -9747,8 +9779,8 @@ EOD;
         * TSV survey definition in format readable by TSVSurveyImport
         * one line each per group, question, sub-question, and answer
         * does not use SGQA naming at all.
-        * @param type $sid
-        * @return type
+        * @param int $sid
+        * @return array
         */
         static public function &TSVSurveyExport($sid)
         {
@@ -10093,6 +10125,7 @@ EOD;
 
         /**
         * Returns the survey ID of the EM singleton
+        * @return int
         */
         public static function getLEMsurveyId() {
                 $LEM =& LimeExpressionManager::singleton();
@@ -10105,8 +10138,8 @@ EOD;
          * question previewing and the like.
          *
          * @param int $iSurveyId
-         * @param string $sToken
-         * @param boolean $bAnonymize
+         * @param string|null $sToken
+         * @param boolean|null $bAnonymize
          * @return void
          */
         public function loadTokenInformation($iSurveyId, $sToken = null, $bAnonymize = false)
