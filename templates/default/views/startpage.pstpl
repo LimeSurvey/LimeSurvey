@@ -7,25 +7,15 @@
     THIS IS A FIRST TEST TO USE TWIG IN PSTPL FILES
 
     NOW, ANY VARIABLE DISPONIBLE IN $REDATA WILL BE USABLE FROM TEMPLATE FILES
-
-    // This survey:
-    Eg: {{ thissurvey.adminemail }}
-    Eg: {{ thissurvey.template }} ;
-    Eg: {{ thissurvey.admin }} ;
-    Eg: {{ thissurvey.datecreated }} ;
-    Eg: {{ thissurvey.navigationdelay }} ;
-    Eg: {{ thissurvey. surveyls_language}} ;
-    etc. etc.
-
     IN THE QUESTION PSTPL, QUESTION OBJECT VARIABLES WILL BE AVAILABLE, SAME FOR GROUP, ETC
 
-    HERE WE USE THE ARRAY $thissurvey
+    HERE WE USE THE ARRAY $aSurveyInfo
     SO NOW, IT'S NOT NEEDED TO ADD ANYMORE ANY REPLACEMENT KEYWORD
     MOST OF THE HTML GENERATED IN THE DIFFERENT HELPERS (LIKE SAVE_LINKS)
     COULD BE PLACED DIRECTLY INSIDE THE PSTPL FILES
 #}
 
-<title>{{thissurvey.surveyls_title}}</title>
+<title>{{aSurveyInfo.surveyls_title}}</title>
 <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 
 <!-- The following line includes jquery-ui.css or jquery-ui-custom.css from template dir, template.css and needed specific css file for survey -->
@@ -46,7 +36,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <div class="navbar-brand" >{{ thissurvey.name }}</div>
+            <div class="navbar-brand" >{{ aSurveyInfo.name }}</div>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right navbar-action-link">
@@ -68,3 +58,215 @@
 
         <div class="col-centered" id="main-col">
 <!-- end of startpage.pstl -->
+
+{#
+
+    Available in this pstpl file:
+    TODO: Sandbox the non necessary one
+
+    // aSurveyInfo:
+    {{ aSurveyInfo.template }};
+    {{ aSurveyInfo.language }};
+    {{ aSurveyInfo.sid }};
+    {{ aSurveyInfo.owner_id }};
+    {{ aSurveyInfo.admin }};
+    {{ aSurveyInfo.active }};
+    {{ aSurveyInfo.expires }};
+    {{ aSurveyInfo.startdate }};
+    {{ aSurveyInfo.adminemail }};
+    {{ aSurveyInfo.anonymized }};
+    {{ aSurveyInfo.faxto }};
+    {{ aSurveyInfo.savetimings }};
+    {{ aSurveyInfo.additional_languages }};
+    {{ aSurveyInfo.datestamp }};
+    {{ aSurveyInfo.usecookie }};
+    {{ aSurveyInfo.allowregister }};
+    {{ aSurveyInfo.allowsave }};
+    {{ aSurveyInfo.autonumber_start }};
+    {{ aSurveyInfo.autoredirect }};
+    {{ aSurveyInfo.allowprev }};
+    {{ aSurveyInfo.printanswers }};
+    {{ aSurveyInfo.ipaddr }};
+    {{ aSurveyInfo.refurl }};
+    {{ aSurveyInfo.datecreated }};
+    {{ aSurveyInfo.publicstatistics }};
+    {{ aSurveyInfo.publicgraphs }};
+    {{ aSurveyInfo.listpublic }};
+    {{ aSurveyInfo.sendconfirmation }};
+    {{ aSurveyInfo.tokenanswerspersistence }};
+    {{ aSurveyInfo.assessments }};
+    {{ aSurveyInfo.usecaptcha }};
+    {{ aSurveyInfo.usetokens }};
+    {{ aSurveyInfo.bounce_email }};
+    {{ aSurveyInfo.attributedescriptions }};
+    {{ aSurveyInfo.emailresponseto }};
+    {{ aSurveyInfo.emailnotificationto }};
+    {{ aSurveyInfo.tokenlength }};
+    {{ aSurveyInfo.showxquestions }};
+    {{ aSurveyInfo.showgroupinfo }};
+    {{ aSurveyInfo.shownoanswer }};
+    {{ aSurveyInfo.showqnumcode }};
+    {{ aSurveyInfo.bouncetime }};
+    {{ aSurveyInfo.bounceprocessing }};
+    {{ aSurveyInfo.bounceaccounttype }};
+    {{ aSurveyInfo.bounceaccounthost }};
+    {{ aSurveyInfo.bounceaccountpass }};
+    {{ aSurveyInfo.bounceaccountencryption }};
+    {{ aSurveyInfo.bounceaccountuser }};
+    {{ aSurveyInfo.showwelcome }};
+    {{ aSurveyInfo.showprogress }};
+    {{ aSurveyInfo.questionindex }};
+    {{ aSurveyInfo.navigationdelay }};
+    {{ aSurveyInfo.nokeyboard }};
+    {{ aSurveyInfo.alloweditaftercompletion }};
+    {{ aSurveyInfo.googleanalyticsstyle }};
+    {{ aSurveyInfo.googleanalyticsapikey }};
+    {{ aSurveyInfo.format }};
+    {{ aSurveyInfo.htmlemail }};
+    {{ aSurveyInfo.surveyls_survey_id }};
+    {{ aSurveyInfo.surveyls_language }};
+    {{ aSurveyInfo.surveyls_title }};
+    {{ aSurveyInfo.surveyls_description }};
+    {{ aSurveyInfo.surveyls_welcometext }};
+    {{ aSurveyInfo.surveyls_endtext }};
+    {{ aSurveyInfo.surveyls_url }};
+    {{ aSurveyInfo.surveyls_urldescription }};
+    {{ aSurveyInfo.surveyls_email_invite_subj }};
+    {{ aSurveyInfo.surveyls_email_invite }};
+    {{ aSurveyInfo.surveyls_email_remind_subj }};
+    {{ aSurveyInfo.surveyls_email_remind }};
+    {{ aSurveyInfo.surveyls_email_register_subj }};
+    {{ aSurveyInfo.surveyls_email_register }};
+    {{ aSurveyInfo.surveyls_email_confirm_subj }};
+    {{ aSurveyInfo.surveyls_email_confirm }};
+    {{ aSurveyInfo.surveyls_dateformat }};
+    {{ aSurveyInfo.surveyls_attributecaptions }};
+    {{ aSurveyInfo.email_admin_notification_subj }};
+    {{ aSurveyInfo.email_admin_notification }};
+    {{ aSurveyInfo.email_admin_responses_subj }};
+    {{ aSurveyInfo.email_admin_responses }};
+    {{ aSurveyInfo.surveyls_numberformat }};
+    {{ aSurveyInfo.attachments }};
+    {{ aSurveyInfo.name }};
+    {{ aSurveyInfo.description }};
+    {{ aSurveyInfo.welcome }};
+    {{ aSurveyInfo.templatedir }};
+    {{ aSurveyInfo.adminname }};
+    {{ aSurveyInfo.tablename }};
+    {{ aSurveyInfo.urldescrip }};
+    {{ aSurveyInfo.url }};
+    {{ aSurveyInfo.expiry }};
+    {{ aSurveyInfo.email_invite_subj }};
+    {{ aSurveyInfo.email_invite }};
+    {{ aSurveyInfo.email_remind_subj }};
+    {{ aSurveyInfo.email_remind }};
+    {{ aSurveyInfo.email_confirm_subj }};
+    {{ aSurveyInfo.email_confirm }};
+    {{ aSurveyInfo.email_register_subj }};
+    {{ aSurveyInfo.email_register }};
+    {{ aSurveyInfo.attributecaptions }};
+    {{ aSurveyInfo.template }};
+    {{ aSurveyInfo.language }};
+    {{ aSurveyInfo.sid }};
+    {{ aSurveyInfo.owner_id }};
+    {{ aSurveyInfo.admin }};
+    {{ aSurveyInfo.active }};
+    {{ aSurveyInfo.expires }};
+    {{ aSurveyInfo.startdate }};
+    {{ aSurveyInfo.adminemail }};
+    {{ aSurveyInfo.anonymized }};
+    {{ aSurveyInfo.faxto }};
+    {{ aSurveyInfo.savetimings }};
+    {{ aSurveyInfo.additional_languages }};
+    {{ aSurveyInfo.datestamp }};
+    {{ aSurveyInfo.usecookie }};
+    {{ aSurveyInfo.allowregister }};
+    {{ aSurveyInfo.allowsave }};
+    {{ aSurveyInfo.autonumber_start }};
+    {{ aSurveyInfo.autoredirect }};
+    {{ aSurveyInfo.allowprev }};
+    {{ aSurveyInfo.printanswers }};
+    {{ aSurveyInfo.ipaddr }};
+    {{ aSurveyInfo.refurl }};
+    {{ aSurveyInfo.datecreated }};
+    {{ aSurveyInfo.publicstatistics }};
+    {{ aSurveyInfo.publicgraphs }};
+    {{ aSurveyInfo.listpublic }};
+    {{ aSurveyInfo.sendconfirmation }};
+    {{ aSurveyInfo.tokenanswerspersistence }};
+    {{ aSurveyInfo.assessments }};
+    {{ aSurveyInfo.usecaptcha }};
+    {{ aSurveyInfo.usetokens }};
+    {{ aSurveyInfo.bounce_email }};
+    {{ aSurveyInfo.attributedescriptions }};
+    {{ aSurveyInfo.emailresponseto }};
+    {{ aSurveyInfo.emailnotificationto }};
+    {{ aSurveyInfo.tokenlength }};
+    {{ aSurveyInfo.showxquestions }};
+    {{ aSurveyInfo.showgroupinfo }};
+    {{ aSurveyInfo.shownoanswer }};
+    {{ aSurveyInfo.showqnumcode }};
+    {{ aSurveyInfo.bouncetime }};
+    {{ aSurveyInfo.bounceprocessing }};
+    {{ aSurveyInfo.bounceaccounttype }};
+    {{ aSurveyInfo.bounceaccounthost }};
+    {{ aSurveyInfo.bounceaccountpass }};
+    {{ aSurveyInfo.bounceaccountencryption }};
+    {{ aSurveyInfo.bounceaccountuser }};
+    {{ aSurveyInfo.showwelcome }};
+    {{ aSurveyInfo.showprogress }};
+    {{ aSurveyInfo.questionindex }};
+    {{ aSurveyInfo.navigationdelay }};
+    {{ aSurveyInfo.nokeyboard }};
+    {{ aSurveyInfo.alloweditaftercompletion }};
+    {{ aSurveyInfo.googleanalyticsstyle }};
+    {{ aSurveyInfo.googleanalyticsapikey }};
+    {{ aSurveyInfo.format }};
+    {{ aSurveyInfo.htmlemail }};
+    {{ aSurveyInfo.surveyls_survey_id }};
+    {{ aSurveyInfo.surveyls_language }};
+    {{ aSurveyInfo.surveyls_title }};
+    {{ aSurveyInfo.surveyls_description }};
+    {{ aSurveyInfo.surveyls_welcometext }};
+    {{ aSurveyInfo.surveyls_endtext }};
+    {{ aSurveyInfo.surveyls_url }};
+    {{ aSurveyInfo.surveyls_urldescription }};
+    {{ aSurveyInfo.surveyls_email_invite_subj }};
+    {{ aSurveyInfo.surveyls_email_invite }};
+    {{ aSurveyInfo.surveyls_email_remind_subj }};
+    {{ aSurveyInfo.surveyls_email_remind }};
+    {{ aSurveyInfo.surveyls_email_register_subj }};
+    {{ aSurveyInfo.surveyls_email_register }};
+    {{ aSurveyInfo.surveyls_email_confirm_subj }};
+    {{ aSurveyInfo.surveyls_email_confirm }};
+    {{ aSurveyInfo.surveyls_dateformat }};
+    {{ aSurveyInfo.surveyls_attributecaptions }};
+    {{ aSurveyInfo.email_admin_notification_subj }};
+    {{ aSurveyInfo.email_admin_notification }};
+    {{ aSurveyInfo.email_admin_responses_subj }};
+    {{ aSurveyInfo.email_admin_responses }};
+    {{ aSurveyInfo.surveyls_numberformat }};
+    {{ aSurveyInfo.attachments }};
+    {{ aSurveyInfo.name }};
+    {{ aSurveyInfo.description }};
+    {{ aSurveyInfo.welcome }};
+    {{ aSurveyInfo.templatedir }};
+    {{ aSurveyInfo.adminname }};
+    {{ aSurveyInfo.tablename }};
+    {{ aSurveyInfo.urldescrip }};
+    {{ aSurveyInfo.url }};
+    {{ aSurveyInfo.expiry }};
+    {{ aSurveyInfo.email_invite_subj }};
+    {{ aSurveyInfo.email_invite }};
+    {{ aSurveyInfo.email_remind_subj }};
+    {{ aSurveyInfo.email_remind }};
+    {{ aSurveyInfo.email_confirm_subj }};
+    {{ aSurveyInfo.email_confirm }};
+    {{ aSurveyInfo.email_register_subj }};
+    {{ aSurveyInfo.email_register }};
+    {{ aSurveyInfo.attributecaptions }};
+
+
+
+
+#}
