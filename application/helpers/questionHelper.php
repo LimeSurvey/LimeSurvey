@@ -1549,6 +1549,23 @@ class questionHelper
             "caption"=>gT('Display type')
         );
 
+        //\Yii::import('application.model.QuestionTemplate');
+
+        $aQuestionTemplates = \QuestionTemplate::getQuestionTemplateList();
+        //$aQuestionTemplates = new \QuestionTemplate();
+
+
+        self::$attributes["question_template"]=array(
+            "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
+            'category'=>gT('Display'),
+            'sortorder'=>100,
+            'inputtype'=>'singleselect',
+            'options'=>$aQuestionTemplates,
+            'default' => "core",
+            "help"=>gT('Use a customed question template for this question'),
+            "caption"=>gT('Question template')
+        );
+
         /**
          * New event to allow plugin to add own question attribute (settings)
          * Using $event->append('questionAttributes', $questionAttributes);
