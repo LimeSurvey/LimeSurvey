@@ -9822,6 +9822,7 @@ EOD;
                 {
                     if ($value != '' && $key != 'surveyls_language' && $key != 'surveyls_survey_id')
                     {
+                        $row = array();
                         $row['class'] = 'SL';
                         $row['name'] = $key;
                         $row['text'] = $value;
@@ -10216,9 +10217,9 @@ EOD;
 
     /**
     * Used by usort() to order $this->questionSeq2relevance in proper order
-    * @param <type> $a
-    * @param <type> $b
-    * @return <type>
+    * @param array $a
+    * @param array $b
+    * @return int
     */
     function cmpQuestionSeq($a, $b)
     {
