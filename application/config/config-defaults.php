@@ -639,15 +639,16 @@ $config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'
 $config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
 
 
-$config['publicdir']               = $config['rootdir'];                                   // The directory path of the public scripts
-$config['homedir']                 = $config['rootdir'];       // The directory path of the admin scripts
-$config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
-$config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
-$config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
-$config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
-$config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
-$config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
-$config['questiontypedir']         = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
+$config['publicdir']                    = $config['rootdir'];                                   // The directory path of the public scripts
+$config['homedir']                      = $config['rootdir'];       // The directory path of the admin scripts
+$config['tempdir']                      = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
+$config['imagedir']                     = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
+$config['uploaddir']                    = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
+$config['standardtemplaterootdir']      = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
+$config['usertemplaterootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
+$config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
+$config['questiontypedir']              = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
+$config['userquestiontemplaterootdir']  = $config['rootdir'].DIRECTORY_SEPARATOR."question_templates";   // The directory containing the user's question templates.
 
 
 // Use alias notation, we should move to this format everywhere.
