@@ -445,10 +445,9 @@ class ExpressionManager {
     /**
      * Main entry function
      * @param string $expr
-     * @param <type> $onlyparse - if true, then validate the syntax without computing an answer
+     * @param boolean $onlyparse - if true, then validate the syntax without computing an answer
      * @return boolean - true if success, false if any error occurred
      */
-
     public function RDP_Evaluate($expr, $onlyparse=false)
     {
         $this->RDP_expr = $expr;
@@ -1761,7 +1760,7 @@ class ExpressionManager {
     /**
      * Return true if the variable name is writable
      * @param <type> $name
-     * @return <type>
+     * @return boolean
      */
     private function RDP_isWritableVariable($name)
     {
@@ -1771,9 +1770,9 @@ class ExpressionManager {
     /**
      * Process an expression and return its boolean value
      * @param <type> $expr
-     * @param <type> $groupSeq - needed to determine whether using variables before they are declared
-     * @param <type> $questionSeq - needed to determine whether using variables before they are declared
-     * @return <type>
+     * @param int $groupSeq - needed to determine whether using variables before they are declared
+     * @param int $questionSeq - needed to determine whether using variables before they are declared
+     * @return boolean
      */
     public function ProcessBooleanExpression($expr,$groupSeq=-1,$questionSeq=-1)
     {
