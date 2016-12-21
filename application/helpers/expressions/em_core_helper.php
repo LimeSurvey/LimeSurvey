@@ -244,7 +244,7 @@ class ExpressionManager {
      * Add an error to the error log
      *
      * @param string $errMsg
-     * @param array $token
+     * @param array|null $token
      * @return void
      */
     private function RDP_AddError($errMsg, $token)
