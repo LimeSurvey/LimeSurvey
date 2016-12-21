@@ -113,7 +113,6 @@ function retrieveAnswers($ia)
     $inputnames = array();
     $answer     = "";                            //Create the question/answer html
     $number     = isset($ia[9]) ? $ia[9] : '';   // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted. // this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.
-    $lang       = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     $question_text = array(
@@ -1065,7 +1064,7 @@ function do_date($ia)
 
         // Format the date  for output
         $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
-        if ($dateoutput!='' & $dateoutput!='INVALID')
+        if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
             $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
@@ -1088,7 +1087,7 @@ function do_date($ia)
     {
         // Format the date  for output
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
-        if ($dateoutput!='' & $dateoutput!='INVALID')
+        if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
             $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
             $dateoutput  = $datetimeobj->convert($dateformatdetails['phpdate']);
@@ -4816,6 +4815,7 @@ function do_array_texts($ia)
     $grand_total            = '';
     $q_table_id             = '';
     $q_table_id_HTML        = '';
+    $inputnames             = array();
 
     if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -4984,7 +4984,6 @@ function do_array_texts($ia)
 
         $showGrandTotal = ( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )?true:false;
 
-        $trbc = '';
         $sRows = '';
         foreach ($aQuestions as $j => $ansrow)
         {
@@ -5026,7 +5025,6 @@ function do_array_texts($ia)
                 }
             }
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]:'';
-            $sDisplayStyle  = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
             if (strpos($answertext,'|'))
             {
@@ -5144,7 +5142,6 @@ function do_array_texts($ia)
     else
     {
         $answer    = doRender('/survey/questions/arrays/texts/empty_error', array(), true);
-        $inputnames ='';
     }
     return array($answer, $inputnames);
 }
@@ -5156,7 +5153,7 @@ function do_array_multiflexi($ia)
 {
     global $thissurvey;
 
-    $answer                     = '';
+    $inputnames                 = array();
     $aLastMoveResult            = LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
@@ -5166,8 +5163,6 @@ function do_array_multiflexi($ia)
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
     $checkconditionFunction     = "fixnum_checkconditions";
     $defaultvaluescript         = '';
-    $qquery                     = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $other                      = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
     /*
      * Question Attributes
@@ -5560,8 +5555,6 @@ function do_arraycolumns($ia)
     $caption=gT("A table with subquestions on each column. The subquestions texts are on the column header, the answer options are in row headers.");
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
     $lquery = "SELECT * FROM {{answers}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
     $oAnswers = dbExecuteAssoc($lquery);
@@ -6016,8 +6009,6 @@ function do_array_dual($ia)
             $aData = array();
             $separatorwidth=(100-$answerwidth)/10;
             $cellwidth=(100-$answerwidth-$separatorwidth)/2;
-
-            $answer = "";
 
             // Get attributes for Headers and Prefix/Suffix
             if (trim($aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
