@@ -6129,6 +6129,7 @@
             $prettyPrintSQRelEqn='';
             $prettyPrintValidTip='';
             $anyUnanswered = false;
+            $sgqas = array();
 
             if (!$qrel)
             {
@@ -7360,7 +7361,7 @@
                         if ($_veq['subqValidSelector'] == '') {
                             continue;
                         }
-                        $isValid = $LEM->em->ProcessBooleanExpression($_veq['subqValidEqn'],$arg['gseq'],$LEM->questionId2questionSeq[$arg['qid']]);
+                        $LEM->em->ProcessBooleanExpression($_veq['subqValidEqn'],$arg['gseq'],$LEM->questionId2questionSeq[$arg['qid']]);
                         $_sqValidVars = $LEM->em->GetJSVarsUsed();
                         $allJsVarsUsed = array_merge($allJsVarsUsed,$_sqValidVars);
                         $valJsVarsUsed = array_merge($valJsVarsUsed,$_sqValidVars);
@@ -7377,9 +7378,6 @@
 
                     // Set color-coding for validation equations
                     if (count($validationEqns) > 0) {
-                        $_hasSumRange=false;
-                        $_hasOtherValidation=false;
-                        $_hasOther2Validation=false;
                         $valParts[] = "  isValidSum" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
                         $valParts[] = "  isValidOther" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
                         $valParts[] = "  isValidOtherComment" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
@@ -7388,20 +7386,8 @@
                             if ($validationEqn == '') {
                                 continue;
                             }
-                            if ($vclass == 'sum_range')
-                            {
-                                $_hasSumRange = true;
-                            }
-                            else if ($vclass == 'other_comment_mandatory')
-                                {
-                                    $_hasOther2Validation = true;
-                                }
-                                else
-                                {
-                                    $_hasOtherValidation = true;
-                            }
 
-                            $_isValid = $LEM->em->ProcessBooleanExpression($validationEqn,$arg['gseq'],$LEM->questionId2questionSeq[$arg['qid']]);
+                            $LEM->em->ProcessBooleanExpression($validationEqn,$arg['gseq'],$LEM->questionId2questionSeq[$arg['qid']]);
                             $_vars = $LEM->em->GetJSVarsUsed();
                             $allJsVarsUsed = array_merge($allJsVarsUsed,$_vars);
                             $valJsVarsUsed = array_merge($valJsVarsUsed,$_vars);
@@ -7474,6 +7460,10 @@
                                     break;
                                 case 'P':
                                     $othervar = 'answer' . substr($arg['jsResultVar'],4);
+                                    break;
+                                default:
+                                    // TODO: Internal error if this happens
+                                    $othervar = '';
                                     break;
                             }
                             $valParts[] = "\n  if(isValidOtherComment" . $arg['qid'] . "){\n";
@@ -8063,7 +8053,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 EOT;
 
             $vars = array();
-            $varsNAOK = array();
             $varSeq = array();
             $testArgs = array();
             $argInfo = array();
@@ -8228,7 +8217,6 @@ EOD;
                 if ($count++ == 0){
                     continue;   // skip this call
                 }
-                $LEM->debugStack = array();
 
                 $subargs=array();
                 if (!is_null($args) && $log['function'] == 'templatereplace') {
