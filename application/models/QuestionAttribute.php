@@ -201,6 +201,7 @@ class QuestionAttribute extends LSActiveRecord
 
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
+
             $aAttributeValues=array();
             foreach($oAttributeValues as $oAttributeValue)
             {
@@ -211,6 +212,10 @@ class QuestionAttribute extends LSActiveRecord
                     $aAttributeValues[$oAttributeValue->attribute]['']=$oAttributeValue->value;
                 }
             }
+            
+            // If the question has a custom template, we first check if it provides custom attributes
+            $aAttributeNames    = Question::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion );
+
             // Fill with aQuestionAttributes with default attribute or with aAttributeValues
             // Can not use array_replace due to i18n
             foreach($aAttributeNames as $aAttribute)

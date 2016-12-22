@@ -559,6 +559,12 @@ class database extends Survey_Common_Action
         $criteria = new CDbCriteria;
         $criteria->compare('qid',$this->iQuestionID);
         $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
+
+        // If the question has a custom template, we first check if it provides custom attributes
+        $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
+        $aAttributeValues['question_template'] = ($oAttributeValues->value)?$oAttributeValues->value:'core';
+        $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
+
         foreach ($validAttributes as  $validAttribute)
         {
             $criteria->compare('attribute', '<>'.$validAttribute['name']);
@@ -1290,6 +1296,12 @@ class database extends Survey_Common_Action
                     }
                 } else {
                     $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
+
+                    // If the question has a custom template, we first check if it provides custom attributes
+                    $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
+                    $aAttributeValues['question_template'] = ($oAttributeValues->value)?$oAttributeValues->value:'core';
+                    $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
+
                     $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
 
                     foreach ($validAttributes as $validAttribute)

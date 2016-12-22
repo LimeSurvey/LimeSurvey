@@ -222,6 +222,17 @@ class Question extends LSActiveRecord
         }
         $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID,$sLanguage);
         $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
+
+        // If the question has a custom template, we first check if it provides custom attributes
+        // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
+
+        if (!is_null($sLanguage)){
+            $oQuestion = Question::model()->findByPk(array('qid'=>$iQuestionID, 'language'=>$sLanguage));
+        }else{
+            $oQuestion = Question::model()->find(array('condition'=>'qid=:qid','params'=>array(':qid'=>$iQuestionID)));
+        }
+        $aAttributeNames    = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion );
+
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute)
         {
@@ -255,6 +266,34 @@ class Question extends LSActiveRecord
         return $aAttributeNames;
     }
 
+    public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
+    {
+        if (isset($aAttributeValues['question_template'])){
+            if($aAttributeValues['question_template'] != 'core'){
+
+                $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
+                if ($oQuestionTemplate->bHasCustomAttributes){
+                    // Add the custom attributes to the list
+                    foreach($oQuestionTemplate->oConfig->custom_attributes->attribute as $oCustomAttribute){
+
+                        $sAttributeName = (string) $oCustomAttribute->name;
+                        $aCustomAttribute = json_decode(json_encode( (array) $oCustomAttribute), 1);
+
+                        if (!isset($aCustomAttribute['i18n'])){
+                            $aCustomAttribute['i18n'] = false;
+                        }
+
+                        if (!isset($aCustomAttribute['readonly'])){
+                            $aCustomAttribute['readonly'] = false;
+                        }
+
+                        $aAttributeNames[$sAttributeName] = $aCustomAttribute;
+                    }
+                }
+            }
+        }
+        return $aAttributeNames;
+    }
 
     /**
      * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel

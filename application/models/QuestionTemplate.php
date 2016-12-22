@@ -24,6 +24,9 @@ class QuestionTemplate extends CFormModel
     public  $sTemplateFolderName;                                               // The folder of the template applied to this question (if no template applied, it's false)
     public  $aViews;                                                            // Array of views the template can handle ($aViews['path_to_my_view']==true)
 
+    public  $oConfig;
+    public  $bHasCustomAttributes;                                              // Does the template provides custom attributes?
+
     private $sTemplatePath;                                                     // The path to the template
     private $sTemplateQuestionPath;                                             // The path to the folder corresponding to the current question type
     private $bHasConfigFile;
@@ -49,7 +52,6 @@ class QuestionTemplate extends CFormModel
         self::$instance->aViews    = array();
         self::$instance->getQuestionTemplateFolderName();                       // Will initiate $sTemplateFolderName and $bHasTemplate.
         self::$instance->setConfig();
-        self::$instance->registerAssets();
         return self::$instance;
     }
 
@@ -213,7 +215,7 @@ class QuestionTemplate extends CFormModel
      */
     public function setConfig()
     {
-        if (!isset($this->config)){
+        if (!isset($this->oConfig)){
             $oQuestion                    = $this->oQuestion;
             $sTemplatePath                = $this->getTemplatePath();
             $sFolderName                  = self::getFolderName($oQuestion->type);
@@ -224,11 +226,12 @@ class QuestionTemplate extends CFormModel
             if ($this->bHasConfigFile){
                 $sXMLConfigFile               = file_get_contents( realpath ($xmlFile));  // Entity loader is disabled, so we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
                 $this->xmlFile                = $xmlFile;
-                $this->config                 = simplexml_load_string($sXMLConfigFile);
+                $this->oConfig                 = simplexml_load_string($sXMLConfigFile);
 
-                $this->bLoadCoreJs             = $this->config->engine->load_core_js;
-                $this->bLoadCoreCss            = $this->config->engine->load_core_css;
-                $this->bLoadCorePackage        = $this->config->engine->load_core_package;
+                $this->bLoadCoreJs             = $this->oConfig->engine->load_core_js;
+                $this->bLoadCoreCss            = $this->oConfig->engine->load_core_css;
+                $this->bLoadCorePackage        = $this->oConfig->engine->load_core_package;
+                $this->bHasCustomAttributes    = !empty($this->oConfig->custom_attributes);
             }
         }
     }
@@ -237,8 +240,8 @@ class QuestionTemplate extends CFormModel
     {
         if ($this->bHasConfigFile){
             // Load the custom JS/CSS
-            $aCssFiles   = (array) $this->config->files->css->filename;                                 // The CSS files of this template
-            $aJsFiles    = (array) $this->config->files->js->filename;                                  // The JS files of this template
+            $aCssFiles   = (array) $this->oConfig->files->css->filename;                                 // The CSS files of this template
+            $aJsFiles    = (array) $this->oConfig->files->js->filename;                                  // The JS files of this template
 
             if (!empty($aCssFiles) || !empty($aJsFiles) ){
                 // It will create the asset directory, and publish the css and js files
@@ -285,9 +288,11 @@ class QuestionTemplate extends CFormModel
 
     static public function getFolderName($type)
     {
-        $aTypeToFolder  = self::getTypeToFolder();
-        $sFolderName    = $aTypeToFolder[$type];
-        return $sFolderName;
+        if ($type){
+            $aTypeToFolder  = self::getTypeToFolder();
+            $sFolderName    = $aTypeToFolder[$type];
+            return $sFolderName;
+        }
     }
 
     /**
