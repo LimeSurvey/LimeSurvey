@@ -131,6 +131,22 @@ $categoryNum=0;
                             <?php } ?>
                             <?php
                             break;
+
+                        // Question template selector
+                        case 'question_template':
+                            echo "<select class='form-control' id='{$aAttribute['name']}' name='{$aAttribute['name']}'>";
+                            foreach($aQuestionTemplates as $sOptionvalue=>$sOptiontext)
+                            {
+                                echo "<option value='{$sOptionvalue}' ";
+                                if ($aAttribute['value']==$sOptionvalue)
+                                {
+                                    echo " selected='selected' ";
+                                }
+                                echo ">{$sOptiontext}</option>";
+                            }
+                            echo "</select>";
+                            break;
+
                     }
                 }?>
             </div>

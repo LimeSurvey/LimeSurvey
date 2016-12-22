@@ -1549,18 +1549,12 @@ class questionHelper
             "caption"=>gT('Display type')
         );
 
-        //\Yii::import('application.model.QuestionTemplate');
-
-        $aQuestionTemplates = \QuestionTemplate::getQuestionTemplateList();
-        //$aQuestionTemplates = new \QuestionTemplate();
-
-
         self::$attributes["question_template"]=array(
             "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
             'category'=>gT('Display'),
             'sortorder'=>100,
-            'inputtype'=>'singleselect',
-            'options'=>$aQuestionTemplates,
+            'inputtype'=>'question_template',
+            'options'=>array(),
             'default' => "core",
             "help"=>gT('Use a customed question template for this question'),
             "caption"=>gT('Question template')

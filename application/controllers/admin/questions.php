@@ -1729,27 +1729,24 @@ class questions extends Survey_Common_Action
     public function ajaxquestionattributes()
     {
 
-        $surveyid = (int) Yii::app()->request->getParam('sid',0);
-        $qid = (int) Yii::app()->request->getParam('qid',0);
-        $type = Yii::app()->request->getParam('question_type');
-        $thissurvey = getSurveyInfo($surveyid);
+        $surveyid           = (int) Yii::app()->request->getParam('sid',0);
+        $qid                = (int) Yii::app()->request->getParam('qid',0);
+        $type               = Yii::app()->request->getParam('question_type');
+        $thissurvey         = getSurveyInfo($surveyid);
 
         if(!$thissurvey) die();
 
-        $aLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
+        $aLanguages            = Survey::model()->findByPk($surveyid)->getAllLanguages();
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
         uasort($aAttributesWithValues, 'categorySort');
 
         $aAttributesPrepared = array();
-        foreach ($aAttributesWithValues as $iKey => $aAttribute)
-        {
-            if ($aAttribute['i18n'] == false)
+        foreach ($aAttributesWithValues as $iKey => $aAttribute){
+            if ($aAttribute['i18n'] == false){
                 $aAttributesPrepared[] = $aAttribute;
-            else
-            {
-                foreach ($aLanguages as $sLanguage)
-                {
+            }else{
+                foreach ($aLanguages as $sLanguage){
                     $aAttributeModified = $aAttribute;
                     $aAttributeModified['name'] = $aAttributeModified['name'] . '_' . $sLanguage;
                     $aAttributeModified['language'] = $sLanguage;
@@ -1765,8 +1762,9 @@ class questions extends Survey_Common_Action
                 }
             }
         }
-        $aData['bIsActive'] = ($thissurvey['active']=='Y');
-        $aData['attributedata'] = $aAttributesPrepared;
+        $aData['bIsActive']          = ($thissurvey['active']=='Y');
+        $aData['attributedata']      = $aAttributesPrepared;
+        $aData['aQuestionTemplates'] = \QuestionTemplate::getQuestionTemplateList($type);
 
         $this->getController()->renderPartial('/admin/survey/Question/advanced_settings_view', $aData);
     }
