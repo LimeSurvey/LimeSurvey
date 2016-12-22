@@ -25,6 +25,7 @@ class QuestionTemplate extends CFormModel
     public  $aViews;                                                            // Array of views the template can handle ($aViews['path_to_my_view']==true)
 
     private $sTemplatePath;                                                     // The path to the template
+    private $sTemplateQuestionPath;                                             // The path to the folder corresponding to the current question type
     private $bHasConfigFile;
     private $xmlFile;                                                           // The path to the xml file
     private $bLoadCoreJs;                                                       // Should it render the core javascript of this question (script are registered in qanda)
@@ -47,6 +48,8 @@ class QuestionTemplate extends CFormModel
         self::$instance->oQuestion = $oQuestion;
         self::$instance->aViews    = array();
         self::$instance->getQuestionTemplateFolderName();                       // Will initiate $sTemplateFolderName and $bHasTemplate.
+        self::$instance->setConfig();
+        self::$instance->registerAssets();
         return self::$instance;
     }
 
@@ -71,16 +74,12 @@ class QuestionTemplate extends CFormModel
     public function checkIfTemplateHasView($sView)
     {
         if( !isset( $this->aViews[$sView])){
-            $sTemplateFolderName    = $this->getQuestionTemplateFolderName();
-            $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
             $sTemplatePath          = $this->getTemplatePath();
-
             if (is_file("$sTemplatePath/$sView.twig") ){
                 $this->aViews[$sView] = true;
             }else{
                 $this->aViews[$sView] = false;
             }
-
         }
         return $this->aViews[$sView];
     }
@@ -215,17 +214,42 @@ class QuestionTemplate extends CFormModel
     public function setConfig()
     {
         if (!isset($this->config)){
-            $sTemplatePath        = $this->getTemplatePath();
-            $xmlFile              = $this->sTemplatePath.'/config.xml';
-            $this->bHasConfigFile = is_file($configFilePath);
+            $oQuestion                    = $this->oQuestion;
+            $sTemplatePath                = $this->getTemplatePath();
+            $sFolderName                  = self::getFolderName($oQuestion->type);
+            $this->sTemplateQuestionPath  = $sTemplatePath.'/survey/questions/answer/'.$sFolderName;
+            $xmlFile                      = $this->sTemplateQuestionPath.'/config.xml';
+            $this->bHasConfigFile         = is_file($xmlFile);
 
             if ($this->bHasConfigFile){
-                $this->xmlFile          = $configFilePath;
-                $sXMLConfigFile         = file_get_contents( realpath ($this->xmlFile));  // Entity loader is disabled, so we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-                $this->config           = simplexml_load_string($sXMLConfigFile);
-                $this->loadCoreJs       = $this->config->engine->load_core_js;
-                $this->loadCoreCss      = $this->config->engine->load_core_css;
-                $this->loadCorePackage  = $this->config->engine->load_core_package;
+                $sXMLConfigFile               = file_get_contents( realpath ($xmlFile));  // Entity loader is disabled, so we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                $this->xmlFile                = $xmlFile;
+                $this->config                 = simplexml_load_string($sXMLConfigFile);
+
+                $this->bLoadCoreJs             = $this->config->engine->load_core_js;
+                $this->bLoadCoreCss            = $this->config->engine->load_core_css;
+                $this->bLoadCorePackage        = $this->config->engine->load_core_package;
+            }
+        }
+    }
+
+    public function registerAssets()
+    {
+        if ($this->bHasConfigFile){
+            // Load the custom JS/CSS
+            $aCssFiles   = (array) $this->config->files->css->filename;                                 // The CSS files of this template
+            $aJsFiles    = (array) $this->config->files->js->filename;                                  // The JS files of this template
+
+            if (!empty($aCssFiles) || !empty($aJsFiles) ){
+                // It will create the asset directory, and publish the css and js files
+                Yii::setPathOfAlias('question.template.path', $this->sTemplateQuestionPath.'/assets');   // The package creation/publication need an alias
+                Yii::app()->clientScript->addPackage( 'question-template', array(
+                    'basePath'    => 'question.template.path',
+                    'css'         => $aCssFiles,
+                    'js'          => $aJsFiles,
+                ) );
+
+                Yii::app()->clientScript->registerPackage( 'question-template' );
             }
         }
     }
@@ -240,8 +264,7 @@ class QuestionTemplate extends CFormModel
 
         $aQuestionTemplates['core'] = gT('Default');
 
-        $aTypeToFolder  = self::getTypeToFolder($type);
-        $sFolderName    = $aTypeToFolder[$type];
+        $sFolderName    = self::getFolderName($type);
 
         if ($sUserQTemplateRootDir && is_dir($sUserQTemplateRootDir) ){
 
@@ -258,6 +281,13 @@ class QuestionTemplate extends CFormModel
                 }
         }
         return $aQuestionTemplates;
+    }
+
+    static public function getFolderName($type)
+    {
+        $aTypeToFolder  = self::getTypeToFolder();
+        $sFolderName    = $aTypeToFolder[$type];
+        return $sFolderName;
     }
 
     /**
