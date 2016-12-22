@@ -25,6 +25,11 @@ class QuestionTemplate extends CFormModel
     public  $aViews;                                                            // Array of views the template can handle ($aViews['path_to_my_view']==true)
 
     private $sTemplatePath;                                                     // The path to the template
+    private $bHasConfigFile;
+    private $xmlFile;                                                           // The path to the xml file
+    private $bLoadCoreJs;                                                       // Should it render the core javascript of this question (script are registered in qanda)
+    private $bLoadCoreCss;                                                      // Should it render the core CSS of this question (script are registered in qanda)
+    private $bLoadCorePackage;                                                  // Should it render the core packages of this question (script are registered in qanda)
 
     /** @var Template - The instance of question template object */
     private static $instance;
@@ -106,6 +111,124 @@ class QuestionTemplate extends CFormModel
         return $this->sTemplateFolderName;
     }
 
+    /**
+     * Register a core script file
+     */
+    public function registerScriptFile($sFile, $pos = CClientScript::POS_HEAD)
+    {
+        if ($this->templateLoadsCoreJs){
+            Yii::app()->getClientScript()->registerScriptFile($sFile, $pos);
+        }
+    }
+
+    /**
+     * Register a core script
+     */
+    public function registerScript($sScript, $pos = CClientScript::POS_HEAD)
+    {
+        if ($this->templateLoadsCoreJs){
+            Yii::app()->getClientScript()->registerScript($sScript, $pos);
+        }
+    }
+
+    /**
+     * Register a core css file
+     */
+    public function registerCssFile( $sCssFile, $pos = CClientScript::POS_HEAD)
+    {
+        if ($this->templateLoadsCoreCss){
+            Yii::app()->getClientScript()->registerCssFile($sCssFile, $pos);
+        }
+    }
+
+    /**
+     * Register a core package file
+     */
+    public function registerPackage($sPackage)
+    {
+        if ($this->templateLoadsCorePackage){
+            Yii::app()->getClientScript()->registerPackage($sPackage);
+        }
+    }
+
+    /**
+     * Return true if the core css should be loaded.
+     */
+    public function templateLoadsCoreJs()
+    {
+        if (!isset($this->bLoadCoreJs)){
+            if ($this->bHasTemplate){
+
+                // Init config ($this->bHasConfigFile and $this->bLoadCoreJs )
+                $this->setConfig();
+                if ($this->bHasConfigFile){
+                    return $this->bLoadCoreJs;
+                }
+            }
+            $this->bLoadCoreJs = true;
+        }
+        return $this->bLoadCoreJs;
+    }
+
+    /**
+     * Return true if the core css should be loaded.
+     */
+    public function templateLoadsCoreCss()
+    {
+        if (!isset($this->bLoadCoreCss)){
+            if ($this->bHasTemplate){
+
+                // Init config ($this->bHasConfigFile and $this->bLoadCoreCss )
+                $this->setConfig();
+                if ($this->bHasConfigFile){
+                    return $this->bLoadCoreCss;
+                }
+            }
+            $this->bLoadCoreCss = true;
+        }
+        return $this->bLoadCoreCss;
+    }
+
+    /**
+     * Return true if the core packages should be loaded.
+     */
+    public function templateLoadsCorePackage()
+    {
+        if (!isset($this->bLoadCorePackage)){
+            if ($this->bHasTemplate){
+
+                // Init config ($this->bHasConfigFile and $this->bLoadCorePackage )
+                $this->setConfig();
+                if ($this->bHasConfigFile){
+                    return $this->bLoadCorePackage;
+                }
+            }
+            $this->bLoadCoreCss = true;
+        }
+        return $this->bLoadCoreCss;
+    }
+
+
+    /**
+     * In the future, could retreive datas from DB
+     */
+    public function setConfig()
+    {
+        if (!isset($this->config)){
+            $sTemplatePath        = $this->getTemplatePath();
+            $xmlFile              = $this->sTemplatePath.'/config.xml';
+            $this->bHasConfigFile = is_file($configFilePath);
+
+            if ($this->bHasConfigFile){
+                $this->xmlFile          = $configFilePath;
+                $sXMLConfigFile         = file_get_contents( realpath ($this->xmlFile));  // Entity loader is disabled, so we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                $this->config           = simplexml_load_string($sXMLConfigFile);
+                $this->loadCoreJs       = $this->config->engine->load_core_js;
+                $this->loadCoreCss      = $this->config->engine->load_core_css;
+                $this->loadCorePackage  = $this->config->engine->load_core_package;
+            }
+        }
+    }
 
     /**
      * Called from admin, to generate the template list for a given question type
