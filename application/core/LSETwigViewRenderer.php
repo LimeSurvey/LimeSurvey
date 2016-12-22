@@ -110,7 +110,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         if ($sTemplateFolderName){
             $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView);
             if ($bTemplateHasThisView){
-                $sQTemplatePath  = Yii::app()->getConfig("userquestiontemplaterootdir").'/'.$sTemplateFolderName.'/';   // Question template views path
+                $sQTemplatePath  = $oQuestionTemplate->getTemplatePath();   // Question template views path
                 $loader->setPaths($sQTemplatePath);
                 $requiredView = $sQTemplatePath.ltrim($sView, '/');
             }

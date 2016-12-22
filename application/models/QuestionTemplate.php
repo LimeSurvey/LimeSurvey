@@ -93,8 +93,15 @@ class QuestionTemplate extends CFormModel
     {
         if (!isset($this->sTemplatePath)){
             $sTemplateFolderName    = $this->getQuestionTemplateFolderName();
+            $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestiontemplaterootdir");
             $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
-            $this->sTemplatePath = "$sUserQTemplateRootDir/$sTemplateFolderName/";
+
+            // Core templates come first
+            if(is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")){
+                $this->sTemplatePath = "$sCoreQTemplateRootDir/$sTemplateFolderName/";
+            }elseif(is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")){
+                $this->sTemplatePath = "$sUserQTemplateRootDir/$sTemplateFolderName/";
+            }
         }
         return $this->sTemplatePath;
     }
@@ -262,6 +269,14 @@ class QuestionTemplate extends CFormModel
      */
     static public function getQuestionTemplateList($type)
     {
+        $aUserQuestionTemplates = self::getQuestionTemplateUserList($type);
+        $aCoreQuestionTemplates = self::getQuestionTemplateCoreList($type);
+        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
+        return $aQuestionTemplates;
+    }
+
+    static public function getQuestionTemplateUserList($type)
+    {
         $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
         $aQuestionTemplates     = array();
 
@@ -277,6 +292,30 @@ class QuestionTemplate extends CFormModel
                 if (!is_file("$sUserQTemplateRootDir/$file") && $file != "." && $file != ".." && $file!=".svn"){
 
                         if (is_dir("$sUserQTemplateRootDir/$file/survey/questions/answer/$sFolderName")){
+                            $templateName = $file;
+                            $aQuestionTemplates[$file] = $templateName;
+                        }
+                    }
+                }
+        }
+        return $aQuestionTemplates;
+    }
+
+    static public function getQuestionTemplateCoreList($type)
+    {
+        $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestiontemplaterootdir");
+        $aQuestionTemplates     = array();
+
+        $sFolderName    = self::getFolderName($type);
+
+        if ($sCoreQTemplateRootDir && is_dir($sCoreQTemplateRootDir) ){
+
+            $handle = opendir($sCoreQTemplateRootDir);
+            while (false !== ($file = readdir($handle))){
+                // Maybe $file[0] != "." to hide Linux hidden directory
+                if (!is_file("$sCoreQTemplateRootDir/$file") && $file != "." && $file != ".." && $file!=".svn"){
+
+                        if (is_dir("$sCoreQTemplateRootDir/$file/survey/questions/answer/$sFolderName")){
                             $templateName = $file;
                             $aQuestionTemplates[$file] = $templateName;
                         }
