@@ -89,6 +89,48 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
     }
 
+    public function renderQuestion( $sView, $aData)
+    {
+        $this->_twig  = parent::getTwig();                                      // Twig object
+        $loader       = $this->_twig->getLoader();                              // Twig Template loader
+        $requiredView = Yii::getPathOfAlias('application.views').$sView;        // By default, the required view is the core view
+        $loader->setPaths(App()->getBasePath().'/views/');                      // Core views path
+
+        $oQuestionTemplate = QuestionTemplate::getInstance();                   // Question template instance has been created at top of qanda_helper::retrieveAnswers()
+
+        /*
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
+        $sTemplateFolderName = $aQuestionAttributes['question_template'];
+        $sTemplateFolderName = QuestionTemplate::getQuestionTemplate($oQuestion);
+        */
+
+        $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName();
+
+        // Check if question use a custom teplate provides its own twig view
+        if ($sTemplateFolderName){
+            $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView);
+            if ($bTemplateHasThisView){
+                $sQTemplatePath  = Yii::app()->getConfig("userquestiontemplaterootdir").'/'.$sTemplateFolderName.'/';   // Question template views path
+                $loader->setPaths($sQTemplatePath);
+                $requiredView = $sQTemplatePath.ltrim($sView, '/');
+            }
+        }
+
+        // We check if the file is a twig file or a php file
+        // This allow us to twig the view one by one, from PHP to twig.
+        // The check will be removed when 100% of the views will have been twig
+        if( file_exists($requiredView.'.twig') ){
+
+            // We're not using the Yii Theming system, so we don't use parent::renderFile
+            // current controller properties will be accessible as {{ this.property }}
+            $data['this'] = Yii::app()->getController();
+            $template = $this->_twig->loadTemplate($sView.'.twig')->render($data);
+            return $template;
+        }else{
+            return Yii::app()->getController()->renderPartial($sView, $aData, true);
+        }
+    }
+
     /**
      *
      */

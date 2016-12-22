@@ -137,7 +137,11 @@ function retrieveAnswers($ia)
         ,'essentials'         => ''
     );
 
+
+
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$lang));
+    $oQuestionTemplate = QuestionTemplate::getNewInstance($oQuestion);
+    $thissurvey['oQuestionTemplate'] = $oQuestionTemplate;
 
     switch ($ia[4])
     {
@@ -518,6 +522,7 @@ function file_validation_popup($ia, $filenotvalidated = null)
 function return_timer_script($aQuestionAttributes, $ia, $disable=null)
 {
     global $thissurvey;
+
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js',CClientScript::POS_HEAD);
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'timer.js',CClientScript::POS_HEAD);
 
@@ -6545,20 +6550,17 @@ function getLabelInputWidth($labelAttributeWidth,$inputAttributeWidth){
  * Render the question view.
  *
  * By default, it just renders the required core view from application/views/survey/...
- * If the Survey template is configured to overwrite the question views, then the function will check if the required view exist in the template directory
+ * If user added a question template in the upload dirctory, add applied it to the question in its display settings, then the function will check if the required view exist in this directory
  * and then will use this one to render the question.
  *
- * Rem: all the logic has been moved to LSETwigViewRenderer::renderFile()
- * We keep the function doRender here, to add  the first parameter  Yii::app()->getController()
- * It can't be done in LSETwigViewRenderer because it implements IViewRenderer which force the signature of renderFile
- *
- * TODO: replace the 162 occurences of doRender([sView], $aData, [bReturn]) by App()->twigRenderer->renderFile( Yii::app()->getController(), [sView], $aData, [bReturn]);
- *
+ * Rem: all the logic has been moved to LSETwigViewRenderer::renderQuestion()
+ * We keep the function doRender here for convenience (it will probably be removed in further cycles of dev).
+ **
  * @param string    $sView      name of the view to be rendered.
  * @param array     $aData      data to be extracted into PHP variables and made available to the view script
  * @param boolean   $bReturn    whether the rendering result should be returned instead of being displayed to end users (should be always true)
  */
 function doRender($sView, $aData, $bReturn=true)
 {
-    return App()->twigRenderer->render( $sView, $aData, $bReturn);
+    return App()->twigRenderer->renderQuestion( $sView, $aData);
 }

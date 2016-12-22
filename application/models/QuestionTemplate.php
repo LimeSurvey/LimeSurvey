@@ -18,6 +18,94 @@ if (!defined('BASEPATH'))
 
 class QuestionTemplate extends CFormModel
 {
+    // Main variables
+    public  $oQuestion;                                                         // The current question
+    public  $bHasTemplate;                                                      // Does this question has a template?
+    public  $sTemplateFolderName;                                               // The folder of the template applied to this question (if no template applied, it's false)
+    public  $aViews;                                                            // Array of views the template can handle ($aViews['path_to_my_view']==true)
+
+    private $sTemplatePath;                                                     // The path to the template
+
+    /** @var Template - The instance of question template object */
+    private static $instance;
+
+
+
+    /**
+     * Get a new instance of the template object
+     * Each question on the page could have a different template.
+     * So each question must have a new instance
+     */
+    public static function getNewInstance($oQuestion)
+    {
+        self::$instance = new QuestionTemplate();
+        self::$instance->oQuestion = $oQuestion;
+        self::$instance->aViews    = array();
+        self::$instance->getQuestionTemplateFolderName();                       // Will initiate $sTemplateFolderName and $bHasTemplate.
+        return self::$instance;
+    }
+
+    /**
+     * Get the current instance of template question object.
+     *
+     * @param string $sTemplateName
+     * @param int $iSurveyId
+     * @return TemplateConfiguration
+     */
+    public static function getInstance($oQuestion=null)
+    {
+        if (empty(self::$instance) && $oQuestion!=null){
+            self::getNewInstance($oQuestion);
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Check if the question template offer a specific remplacement for that view file.
+     */
+    public function checkIfTemplateHasView($sView)
+    {
+        if( !isset( $this->aViews[$sView])){
+            $sTemplateFolderName    = $this->getQuestionTemplateFolderName();
+            $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
+            $sTemplatePath          = $this->getTemplatePath();
+
+            if (is_file("$sTemplatePath/$sView.twig") ){
+                $this->aViews[$sView] = true;
+            }else{
+                $this->aViews[$sView] = false;
+            }
+
+        }
+        return $this->aViews[$sView];
+    }
+
+    /**
+     * Retreive the template base path
+     */
+    public function getTemplatePath()
+    {
+        if (!isset($this->sTemplatePath)){
+            $sTemplateFolderName    = $this->getQuestionTemplateFolderName();
+            $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
+            $this->sTemplatePath = "$sUserQTemplateRootDir/$sTemplateFolderName/";
+        }
+        return $this->sTemplatePath;
+    }
+
+    /**
+     * Get the template folder name
+     */
+    public function getQuestionTemplateFolderName()
+    {
+        if ($this->sTemplateFolderName===null){
+            $aQuestionAttributes       = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
+            $this->sTemplateFolderName = ($aQuestionAttributes['question_template'] != 'core')?$aQuestionAttributes['question_template']:false;
+        }
+        $this->bHasTemplate       = ($this->sTemplateFolderName!=false);
+        return $this->sTemplateFolderName;
+    }
+
 
     /**
      * Called from admin, to generate the template list for a given question type
