@@ -141,7 +141,6 @@ function retrieveAnswers($ia)
 
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$lang));
     $oQuestionTemplate = QuestionTemplate::getNewInstance($oQuestion);
-    $thissurvey['oQuestionTemplate'] = $oQuestionTemplate;
     $oQuestionTemplate->registerAssets();                                       // Register the custom assets of the question template, if needed
 
     switch ($ia[4])

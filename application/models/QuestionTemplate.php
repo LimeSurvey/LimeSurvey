@@ -26,6 +26,7 @@ class QuestionTemplate extends CFormModel
 
     public  $oConfig;
     public  $bHasCustomAttributes;                                              // Does the template provides custom attributes?
+    public  $aCustomAttributes;                                                 // array (attribute=>value)
 
     private $sTemplatePath;                                                     // The path to the template
     private $sTemplateQuestionPath;                                             // The path to the folder corresponding to the current question type
@@ -239,6 +240,20 @@ class QuestionTemplate extends CFormModel
                 $this->bLoadCoreCss            = $this->oConfig->engine->load_core_css;
                 $this->bLoadCorePackage        = $this->oConfig->engine->load_core_package;
                 $this->bHasCustomAttributes    = !empty($this->oConfig->custom_attributes);
+
+                // Set the custom attributes
+                if ($this->bHasCustomAttributes){
+                    $this->aCustomAttributes = array();
+                    foreach($this->oConfig->custom_attributes->attribute as $oCustomAttribute){
+                        $attribute_name = (string) $oCustomAttribute->name;
+                        $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute",array('qid'=>$oQuestion->qid, 'custom_attribute'=>$attribute_name));
+                        if(is_object($oAttributeValue)){
+                            $this->aCustomAttributes[$attribute_name] = $oAttributeValue->value;
+                        }else{
+                            $this->aCustomAttributes[$attribute_name] = (string) $oAttributeValue->default;
+                        }
+                    }
+                }
             }
         }
     }
@@ -261,6 +276,13 @@ class QuestionTemplate extends CFormModel
 
                 Yii::app()->clientScript->registerPackage( 'question-template' );
             }
+        }
+    }
+
+    public function getCustomAttributes()
+    {
+        if ($this->bHasCustomAttributes){
+            return $this->aCustomAttributes;
         }
     }
 
@@ -297,7 +319,7 @@ class QuestionTemplate extends CFormModel
                             // Get the config file and check if template is available
                             $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
 
-                            if (is_object($oConfig) && $oConfig->show_as_template){
+                            if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template){
                                 $templateName = $file;
                                 $aQuestionTemplates[$file] = $templateName;
                             }
@@ -329,7 +351,7 @@ class QuestionTemplate extends CFormModel
                             // Get the config file and check if template is available
                             $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
 
-                            if (is_object($oConfig) && $oConfig->show_as_template){
+                            if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template){
                                 $templateName = $file;
                                 $aQuestionTemplates[$file] = $templateName;
                             }

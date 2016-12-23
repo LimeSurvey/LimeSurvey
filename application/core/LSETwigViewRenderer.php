@@ -98,6 +98,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
         $oQuestionTemplate = QuestionTemplate::getInstance();                   // Question template instance has been created at top of qanda_helper::retrieveAnswers()
 
+
         /*
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $sTemplateFolderName = $aQuestionAttributes['question_template'];
@@ -120,11 +121,11 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         // This allow us to twig the view one by one, from PHP to twig.
         // The check will be removed when 100% of the views will have been twig
         if( file_exists($requiredView.'.twig') ){
-
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
-            $data['this'] = Yii::app()->getController();
-            $template = $this->_twig->loadTemplate($sView.'.twig')->render($data);
+            $aData['this'] = Yii::app()->getController();
+            $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+            $template = $this->_twig->loadTemplate($sView.'.twig')->render($aData);
             return $template;
         }else{
             return Yii::app()->getController()->renderPartial($sView, $aData, true);
