@@ -2,7 +2,8 @@
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
 /* bootstrap don't do some reset : do it in answer part*/
-.ls-answers img,.ls-answers video,.ls-answers svg{
+.ls-answers img:not(.unforce-height),.ls-answers video:not(.unforce-height),.ls-answers svg:not(.unforce-height){
+    /* This is very very wrong. We should never use an !important in a core template. Please explain why you did that*/
   max-width: 100%;height: auto !important;/* HTML included add width and height : force it */
 }
 .sr-only {
