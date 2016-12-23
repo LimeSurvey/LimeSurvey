@@ -3067,6 +3067,14 @@ function do_multiplenumeric($ia)
 
         $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
         $slider_reset=($aQuestionAttributes['slider_reset'])?1:0;
+
+        /* Slider reversed value */
+        if($aQuestionAttributes['slider_reversed'] == 1){
+            $slider_reversed = 'true';
+        }else{
+            $slider_reversed = 'false';
+        }
+		
     }
     else
     {
@@ -3083,6 +3091,7 @@ function do_multiplenumeric($ia)
         $slider_custom_handle = '';
         $slider_separator = '';
         $slider_reset = 0;
+        $slider_reversed = 'false';
         $slider_startvalue = '';
         $slider_displaycallout = '';
     }
@@ -3269,6 +3278,7 @@ function do_multiplenumeric($ia)
                     'slider_reset_set'       => $slider_default_set,
                     'slider_handle'          => (isset($slider_handle ))? $slider_handle:'',
                     'slider_reset'           => $slider_reset,
+                    'slider_reversed'        => $slider_reversed,
                     'slider_custom_handle'   => $slider_custom_handle,
                     'slider_showminmax'      => $aQuestionAttributes['slider_showminmax'],
                     'sSeparator'             => $sSeparator,

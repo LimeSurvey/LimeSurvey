@@ -24,6 +24,7 @@
  * @var $slider_orientation
  * @var $slider_handle
  * @var $slider_reset
+ * @var $slider_reversed
  * @var $sSeparator
  */
 ?>
@@ -57,12 +58,13 @@
                     'data-integer'=>$integeronly,
                     'data-position'=>$slider_position,
                     'data-set-position'=>$slider_reset_set,
+                    'data-slider-reversed'=>$slider_reversed,
                     'aria-labelledby'=>"label-{$myfname}"
                 ));
                 ?>
                 <?php if($slider_showminmax): ?>
-                    <div class='pull-left help-block'><?php echo $slider_min; ?></div>
-                    <div class='pull-right help-block'><?php echo $slider_max; ?></div>
+                    <div class='pull-left help-block'><?php echo $slider_reversed == 'false' ? $slider_min : $slider_max; ?></div>
+                    <div class='pull-right help-block'><?php echo $slider_reversed == 'false' ? $slider_max : $slider_min; ?></div>
                 <?php endif; ?>
                 <?php if ($slider_reset): ?>
                     <div class="ls-input-group-extra ls-no-js-hidden ls-input-group-reset">

@@ -1007,6 +1007,17 @@ class questionHelper
             "caption"=>gT('Use slider layout')
         );
 
+        self::$attributes["slider_reversed"]=array(
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>50,
+            'inputtype'=>'switch',
+            'options'=>array(0=>gT('No'),1=>gT('Yes')),
+            'default'=>0,
+            "help"=>gT('Reverses the slider direction and repositions the min/max text accoringly.'),
+            "caption"=>gT('Reverse the slider direction')
+        );
+
         self::$attributes["slider_reset"]=array(
             "types"=>"K",
             'category'=>gT('Slider'),
