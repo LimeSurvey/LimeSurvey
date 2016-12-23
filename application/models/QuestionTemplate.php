@@ -291,9 +291,16 @@ class QuestionTemplate extends CFormModel
                 // Maybe $file[0] != "." to hide Linux hidden directory
                 if (!is_file("$sUserQTemplateRootDir/$file") && $file != "." && $file != ".." && $file!=".svn"){
 
-                        if (is_dir("$sUserQTemplateRootDir/$file/survey/questions/answer/$sFolderName")){
-                            $templateName = $file;
-                            $aQuestionTemplates[$file] = $templateName;
+                        $sFullPathToQuestionTemplate = "$sUserQTemplateRootDir/$file/survey/questions/answer/$sFolderName";
+                        if (is_dir($sFullPathToQuestionTemplate)){
+
+                            // Get the config file and check if template is available
+                            $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
+
+                            if (is_object($oConfig) && $oConfig->show_as_template){
+                                $templateName = $file;
+                                $aQuestionTemplates[$file] = $templateName;
+                            }
                         }
                     }
                 }
@@ -301,6 +308,7 @@ class QuestionTemplate extends CFormModel
         return $aQuestionTemplates;
     }
 
+    // TODO: code duplication
     static public function getQuestionTemplateCoreList($type)
     {
         $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestiontemplaterootdir");
@@ -315,14 +323,35 @@ class QuestionTemplate extends CFormModel
                 // Maybe $file[0] != "." to hide Linux hidden directory
                 if (!is_file("$sCoreQTemplateRootDir/$file") && $file != "." && $file != ".." && $file!=".svn"){
 
-                        if (is_dir("$sCoreQTemplateRootDir/$file/survey/questions/answer/$sFolderName")){
-                            $templateName = $file;
-                            $aQuestionTemplates[$file] = $templateName;
+                        $sFullPathToQuestionTemplate = "$sCoreQTemplateRootDir/$file/survey/questions/answer/$sFolderName";
+
+                        if (is_dir($sFullPathToQuestionTemplate)){
+                            // Get the config file and check if template is available
+                            $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
+
+                            if (is_object($oConfig) && $oConfig->show_as_template){
+                                $templateName = $file;
+                                $aQuestionTemplates[$file] = $templateName;
+                            }
                         }
                     }
                 }
         }
         return $aQuestionTemplates;
+    }
+
+    /**
+     * Retreive the config of the question template
+     */
+    static public function getTemplateConfig($sFullPathToQuestionTemplate)
+    {
+        $xmlFile = $sFullPathToQuestionTemplate.'/config.xml';
+        if(is_file($xmlFile)){
+            $sXMLConfigFile  = file_get_contents( realpath ($xmlFile));  // Entity loader is disabled, so we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $oConfig         = simplexml_load_string($sXMLConfigFile);
+            return $oConfig;
+        }
+        return false;
     }
 
     static public function getFolderName($type)
