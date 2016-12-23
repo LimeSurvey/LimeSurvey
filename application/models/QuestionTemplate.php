@@ -315,7 +315,6 @@ class QuestionTemplate extends CFormModel
                 $this->sTemplateUrl = "$sBaseUrl/upload/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             }
         }
-        var_dump($this->sTemplateUrl);
         return $this->sTemplateUrl;
     }
 
