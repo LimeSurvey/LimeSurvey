@@ -29,6 +29,7 @@ class QuestionTemplate extends CFormModel
     public  $aCustomAttributes;                                                 // array (attribute=>value)
 
     private $sTemplatePath;                                                     // The path to the template
+    private $sTemplateUrl;
     private $sTemplateQuestionPath;                                             // The path to the folder corresponding to the current question type
     private $bHasConfigFile;
     private $xmlFile;                                                           // The path to the xml file
@@ -250,7 +251,7 @@ class QuestionTemplate extends CFormModel
                         if(is_object($oAttributeValue)){
                             $this->aCustomAttributes[$attribute_name] = $oAttributeValue->value;
                         }else{
-                            $this->aCustomAttributes[$attribute_name] = (string) $attribute_name->default;
+                            $this->aCustomAttributes[$attribute_name] = (string) $oCustomAttribute->default;
                         }
                     }
                 }
@@ -267,16 +268,55 @@ class QuestionTemplate extends CFormModel
 
             if (!empty($aCssFiles) || !empty($aJsFiles) ){
                 // It will create the asset directory, and publish the css and js files
-                Yii::setPathOfAlias('question.template.path', $this->sTemplateQuestionPath.'/assets');   // The package creation/publication need an alias
-                Yii::app()->clientScript->addPackage( 'question-template', array(
-                    'basePath'    => 'question.template.path',
+                $questionTemplatePath = 'question.'.$this->oQuestion->qid.'.template.path';
+                $package              = 'question-template_'.$this->oQuestion->qid;
+
+                Yii::setPathOfAlias($questionTemplatePath, $this->sTemplateQuestionPath.'/assets');   // The package creation/publication need an alias
+                Yii::app()->clientScript->addPackage( $package, array(
+                    'basePath'    => $questionTemplatePath,
                     'css'         => $aCssFiles,
                     'js'          => $aJsFiles,
                 ) );
 
-                Yii::app()->clientScript->registerPackage( 'question-template' );
+                if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
+                    Yii::app()->clientScript->registerPackage( $package );
+                }else{
+                    $templateurl = $this->getTemplateUrl();
+                    foreach($aCssFiles as $sCssFile)
+                    {
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                    }
+                    foreach($aJsFiles as $sJsFile)
+                    {
+                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                    }
+                }
+
             }
         }
+    }
+
+    public function getTemplateUrl()
+    {
+        if (!isset($this->sTemplateUrl)){
+            $sBaseUrl               = Yii::app()->getBaseUrl(true);
+            $sFolderName            = self::getFolderName($this->oQuestion->type);
+            $sTemplateFolderName    = $this->getQuestionTemplateFolderName();
+            $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestiontemplaterootdir");
+            $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
+
+            $sCoreQTemplateDir  = Yii::app()->getConfig("corequestiontemplatedir");
+            $sUserQTemplateDir  = Yii::app()->getConfig("userquestiontemplatedir");
+
+            // Core templates come first
+            if(is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")){
+                $this->sTemplateUrl = "$sBaseUrl/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
+            }elseif(is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")){
+                $this->sTemplateUrl = "$sBaseUrl/upload/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
+            }
+        }
+        var_dump($this->sTemplateUrl);
+        return $this->sTemplateUrl;
     }
 
     public function getCustomAttributes()
@@ -320,7 +360,7 @@ class QuestionTemplate extends CFormModel
                             $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
 
                             if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template){
-                                $templateName = $file;
+                                $templateName              = $file;
                                 $aQuestionTemplates[$file] = $templateName;
                             }
                         }
