@@ -250,7 +250,7 @@ class QuestionTemplate extends CFormModel
                         if(is_object($oAttributeValue)){
                             $this->aCustomAttributes[$attribute_name] = $oAttributeValue->value;
                         }else{
-                            $this->aCustomAttributes[$attribute_name] = (string) $oAttributeValue->default;
+                            $this->aCustomAttributes[$attribute_name] = (string) $attribute_name->default;
                         }
                     }
                 }
