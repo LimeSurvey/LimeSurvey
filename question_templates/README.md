@@ -159,7 +159,7 @@ Just take this as a basis and build on top of it.
 
 ## The folder structure
 
-To be able to work the question template needs a dedicatet structure.
+To be able to work the question template needs a dedicated structure.
 
 It is rather important, because otherwise the framework would not be able to get the files from 
 the correct location. This would lead to massive errors and we already have enough of that.
