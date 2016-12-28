@@ -204,7 +204,7 @@ class QuestionAttribute extends LSActiveRecord
 
             foreach($oAttributeValues as $oAttributeValue)
             {
-                if($oAttributeValue->attribute='question_template'){
+                if($oAttributeValue->attribute=='question_template'){
                     $aAttributeValues['question_template'] = $oAttributeValue->value;
                     $aAttributeNames    = Question::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion );
                     break;
