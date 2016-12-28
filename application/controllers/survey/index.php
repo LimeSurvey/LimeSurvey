@@ -51,7 +51,7 @@ class index extends CAction {
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
 
-        if($oTemplate->cssFramework == 'bootstrap')
+        if($oTemplate->cssFramework->name == 'bootstrap')
         {
             // We now use the bootstrap package isntead of the Yiistrap TbApi::register() method
             // Then instead of using the composer dependency system for templates
