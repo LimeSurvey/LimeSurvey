@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## [Unreleased]
+
+### Fix
+- Update [PHPMailer](https://github.com/PHPMailer/PHPMailer/releases/tag/v5.2.21) for security issue
+
 ## [1.2.0] - 2016-11-16
 
 ### Fix
