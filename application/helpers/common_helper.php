@@ -5650,6 +5650,7 @@ function getHeader($meta = false)
     }
     $header.= " class=\"{$class}\">\n";
     $header.= "\t<head>\n";
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
     if ($meta)
         $header .= $meta;
     return $header;

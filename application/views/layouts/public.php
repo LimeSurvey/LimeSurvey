@@ -29,6 +29,7 @@ if (!headers_sent())
 ?><html lang="<?php echo $lang ?>" class="no-js <?php echo $lang ?> dir-<?php  echo $langDir  ?>" <?php echo ($langDir=='rtl' ? 'dir="rtl"':''); ?>>
 <head>
 <?php
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
     $oTemplate = Template::model()->getInstance($this->sTemplate);
     Yii::app()->clientScript->registerPackage('survey-template');
 
