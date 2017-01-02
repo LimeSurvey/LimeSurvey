@@ -36,7 +36,7 @@ return array(
             'css/yiistrap.css',
         ),
         'js'=>array(
-            // 'js/bootstrap'.$minVersion.'.js' /* 20161220 : commented : break admin menu : need registerScript ? */
+            'js/bootstrap'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',

@@ -301,6 +301,7 @@ class TemplateConfiguration extends CFormModel
                 $packages->rtl=new stdClass();
                 $packages->rtl->package="template-default-rtl";
                 $this->packages=$packages;
+                Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
             }
         }
     }
