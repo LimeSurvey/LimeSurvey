@@ -8,15 +8,21 @@ CKEDITOR.editorConfig = function( config )
     config.filebrowserUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=files';
     config.filebrowserImageUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=images';
     config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=flash';
+    /* Remove included upload tabs */
     config.removeDialogTabs = 'link:upload;image:Upload';
+    /* Remove automatic img width/height : better manage "RWD" img */
+    config.image_prefillDimensions = false;
+    config.image2_prefillDimensions = false;
 
     config.allowedContent = true;
     config.skin = 'bootstrapck';
     //config.toolbarCanCollapse = true;
     config.autoParagraph = false;
+    /* For expression manager */
     config.basicEntities = false; // For <, >, & ( and nbsp)
     config.entities = false; // For ' ( and a lot of other but not <>&)
-    config.uiColor = '#F1f1f1';
+
+    config.uiColor = '#f1f1f1';
     if($('html').attr('dir') == 'rtl') {
         config.contentsLangDirection = 'rtl';
     }

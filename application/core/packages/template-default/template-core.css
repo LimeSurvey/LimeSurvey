@@ -1,13 +1,13 @@
 /**
  * All of this part fix already included css (bootstrap + awesome) for this template
  */
-/* bootstrap don't do some reset : do it in answer part*/
-.ls-answers img:not(.unforce-height),.ls-answers video:not(.unforce-height),.ls-answers svg:not(.unforce-height){
-    /* This is very very wrong. We should never use an !important in a core template. Please explain why you did that*/
-  max-width: 100%;height: auto !important;/* HTML included add width and height : force it */
+/* Minimal RWD img/video */
+.ls-answers img:not(.fixed-width),.ls-answers video:not(.fixed-width),.ls-answers svg:not(.fixed-width){
+  max-width: 100%;height: auto;
 }
+/* See https://github.com/h5bp/html5-boilerplate/issues/1874 and https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
 .sr-only {
-  white-space: nowrap; /* See https://github.com/h5bp/html5-boilerplate/issues/1874 and https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
+  white-space: nowrap;
 }
 /* The sub question part must not be more visible than question */
 .ls-answers label,.ls-answers th{font-weight:400}
