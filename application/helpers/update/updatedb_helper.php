@@ -1852,7 +1852,7 @@ function upgradeTokens176()
     {
         $sTokenTableName='tokens_'.$arSurvey->sid;
         if (tableExists($sTokenTableName))
-        {
+        {                                        
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
             $aAttributes = $arSurvey->tokenAttributes;
             foreach($aColumnNamesIterator as $sColumnName)
@@ -2832,10 +2832,11 @@ function upgradeSurveyTables164()
     } else {
         foreach ( $aResult as $sv )
         {
-            $token = SurveyDynamic::model($sv['sid'])->getTableSchema()->getColumn('token');
-            if (is_null($token)) {
+            $sSurveyTableName='survey_'.$sv['sid'];
+            $aColumnNames=$aColumnNamesIterator=Yii::app()->db->schema->getTable('{{'.$sSurveyTableName.'}}')->columnNames;
+            if (!in_array('token',$aColumnNames)) {
                 addColumn('{{survey_'.$sv['sid'].'}}','token','string(36)');
-            } elseif ($token->size < 36) {
+            } else {
                 alterColumn('{{survey_'.$sv['sid'].'}}','token','string(36)');
             }
         }
