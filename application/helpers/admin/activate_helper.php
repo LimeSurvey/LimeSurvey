@@ -260,7 +260,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     $bCreateSurveyDir=false;
     // Specify case sensitive collations for the token
     $sCollation='';
-    if  (Yii::app()->db->driverName=='mysqli' || Yii::app()->db->driverName=='mysqli'){
+    if  (Yii::app()->db->driverName=='mysqli' || Yii::app()->db->driverName=='mysql'){
         $sCollation=" COLLATE 'utf8mb4_bin'";
     }
     if  (Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib' || Yii::app()->db->driverName=='mssql'){
