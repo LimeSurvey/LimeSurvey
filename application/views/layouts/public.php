@@ -29,14 +29,10 @@ if (!headers_sent())
 ?><html lang="<?php echo $lang ?>" class="no-js <?php echo $lang ?> dir-<?php  echo $langDir  ?>" <?php echo ($langDir=='rtl' ? 'dir="rtl"':''); ?>>
 <head>
 <?php
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
     $oTemplate = Template::model()->getInstance($this->sTemplate);
     Yii::app()->clientScript->registerPackage('survey-template');
-    if($oTemplate->cssFramework == 'bootstrap')
-    {
-        /* Why not add it for whole framework ? */
-        Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
-        App()->bootstrap->registerAllScripts();
-    }
+
     // Maybe can add language changer here
     /* Add head by template + start body (if template start body here ....) */
     echo templatereplace(file_get_contents($oTemplate->pstplPath."startpage.pstpl"),$this->aReplacementData,$this->aGlobalData);

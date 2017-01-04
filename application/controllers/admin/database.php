@@ -559,16 +559,14 @@ class database extends Survey_Common_Action
         $criteria = new CDbCriteria;
         $criteria->compare('qid',$this->iQuestionID);
         $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
-
         // If the question has a custom template, we first check if it provides custom attributes
-        $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
-        if (is_object($oAttributeValues && $oAttributeValues->value)){
-            $aAttributeValues['question_template'] = $oAttributeValues->value;
-        }else{
-            $aAttributeValues['question_template'] = 'core';
-        }                
-        $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
-
+        //~ $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
+        //~ if (is_object($oAttributeValues && $oAttributeValues->value)){
+            //~ $aAttributeValues['question_template'] = $oAttributeValues->value;
+        //~ }else{
+            //~ $aAttributeValues['question_template'] = 'core';
+        //~ }
+        //~ $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
         foreach ($validAttributes as  $validAttribute)
         {
             $criteria->compare('attribute', '<>'.$validAttribute['name']);
@@ -588,7 +586,6 @@ class database extends Survey_Common_Action
                 QuestionAttribute::model()->deleteAll($langCriteria);
                 /* delete IS NULL too*/
                 QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL',array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-
                 foreach ($aLanguages as $sLanguage)
                 {// TODO sanitise XSS
                     $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
@@ -613,11 +610,18 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $value=Yii::app()->request->getPost($validAttribute['name'],'');
+                $default=isset($validAttribute['default']) ? $validAttribute['default'] : '';
+                $value=Yii::app()->request->getPost($validAttribute['name'],$default);
+                if($validAttribute['name']=="slider_layout"){
+                    tracevar("delete $value");
+                }
                 /* we must have only one element, and this element must be null, then reset always (see #11980)*/
                 /* We can update, but : this happen only for admin and not a lot, then : delete + add */
                 QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                if($value!=$validAttribute['default'] && trim($value)!==""){
+                if($value!=$default){
+                    if($validAttribute['name']=="slider_layout"){
+                        tracevar("save $value");
+                    }
                     $attribute = new QuestionAttribute;
                     $attribute->qid = $this->iQuestionID;
                     $attribute->value = $value;

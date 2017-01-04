@@ -154,10 +154,11 @@ $categoryNum=0;
 <?php endforeach;?>
  </div></div></div></div>
 <?php
-//~ foreach (Yii::app()->clientScript->scripts as $index=>$script)
-//~ {
-    //~ echo CHtml::script(implode("\n",$script));
-//~ }
-//~ Yii::app()->clientScript->reset();
+/* Launch all needed script (here after load) needed for widget */
+foreach (Yii::app()->clientScript->scripts as $index=>$script)
+{
+    echo CHtml::script(implode("\n",$script));
+}
+Yii::app()->clientScript->reset();
 ?>
 <!-- end of Advanced Settings -->
