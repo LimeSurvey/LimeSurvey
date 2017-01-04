@@ -2,9 +2,9 @@ bootstrap-slider [![Build Status](https://travis-ci.org/seiyria/bootstrap-slider
 ================
 Originally began as a loose "fork" of bootstrap-slider found on http://www.eyecon.ro/ by Stefan Petre.
 
-Over time, this project has diverged sigfinicantly from Stefan Petre's version and is now almost completly different.
+Over time, this project has diverged sigfinicantly from Stefan Petre's version and is now almost completely different.
 
-__Please ensure that you are using this library instead of the Petre version before creating issues in the repository Issue tracker!!__
+__Please ensure that you are using this library instead of the Petre version before creating issues in the repository issue tracker!!__
 
 Installation
 ============
@@ -14,13 +14,9 @@ Want to use npm? `npm install bootstrap-slider`
 
 Want to get it from a CDN? https://cdnjs.com/libraries/bootstrap-slider
 
-__NOTE for NPM users__: In order to keep the version numbers in our dist/ file consistent with our Github tags, we do a patch version bump, generate a new dist, and create a commit/tag on postpublish.
-
-This does mean the Github repo will always be one patch commit off of what is published to NPM. Note that this will not affect functionality, and is only used to keep package management system files and the dist file version numbers in sync.
-
 Basic Setup
 ============
-Load the plugin CSS and JavaScript into your web page, and everything should work!
+Grab the compiled JS/CSS (minified or non-minified versions) from the [/dist](https://github.com/seiyria/bootstrap-slider/tree/master/dist) directory, load them into your web page, and everything should work!
 
 Remember to load the plugin code after loading the Bootstrap CSS and JQuery.
 
@@ -39,6 +35,7 @@ You can see all of our API examples [here](http://seiyria.github.io/bootstrap-sl
 Using bootstrap-slider (with JQuery)
 ======================
 
+### Using `.slider` namespace
 Create an input element and call .slider() on it:
 
 ```js
@@ -52,6 +49,22 @@ var value = mySlider.slider('getValue');
 	mySlider
 		.slider('setValue', 5)
 		.slider('setValue', 7);
+```
+
+### Using `.bootstrapSlider` namespace
+Create an input element and call .bootstrapSlider() on it:
+
+```js
+// Instantiate a slider
+var mySlider = $("input.slider").bootstrapSlider();
+
+// Call a method on the slider
+var value = mySlider.bootstrapSlider('getValue');
+
+// For non-getter methods, you can chain together commands
+	mySlider
+		.bootstrapSlider('setValue', 5)
+		.bootstrapSlider('setValue', 7);
 ```
 
 Using bootstrap-slider (via `data-provide`-API)
@@ -78,7 +91,7 @@ turns it into a slider. Options can be supplied via `data-slider-` attributes.
 What if there is already a _slider_ plugin bound to the JQuery namespace?
 ======================
 
-If there is already a JQuery plugin named _slider_ bound to the JQuery namespace, then this plugin will take on the alternate namespace _bootstrapSlider_.
+If there is already a JQuery plugin named _slider_ bound to the JQuery namespace, then this plugin will emit a console warning telling you this namespace has already been taken and will encourage you to use the alternate namespace _bootstrapSlider_ instead.
 
 ```js
 // Instantiate a slider
@@ -123,13 +136,34 @@ var Slider = require("bootstrap-slider");
 var mySlider = new Slider();
 ```
 
-Note that the JQuery dependency is considered to be optional. For example, to exclude JQuery from being part of your Browserify build, you would call something like the following (assuming main.js is requiring bootstrap-slider as a dependency):
+How do I exclude the optional JQuery dependency from my build?
+=======
+### Browserify
+__Note that the JQuery dependency is considered to be optional.__ For example, to exclude JQuery from being part of your Browserify build, you would call something like the following (assuming `main.js` is requiring bootstrap-slider as a dependency):
 
-```
+```BASH
 browserify -u jquery main.js > bundle.js
 ```
+### Webpack
+To exclude JQuery from your Webpack build, you will have to go into the Webpack config file for your specific project and add something like the following to your `resolve.alias` section:
 
-Please see the documentation for the specific CommonJS loader you are using to find out how to exclude dependencies.
+```js
+resolve: {
+    alias: {
+         "jquery": path.join(__dirname, "./jquery-stub.js");
+    }
+}
+```
+
+Then in your project, you will have to create a stub module for jquery that exports a `null` value. Whenever `require("jquery")` is mentioned in your project, it will load this stubbed module.
+
+```js
+// Path: ./jquery-stub.js
+module.exports = null;
+```
+
+### Other
+Please see the documentation for the specific module loader you are using to find out how to exclude dependencies.
 
 Options
 =======
@@ -152,16 +186,19 @@ Options can be passed either as a data (data-slider-foo) attribute, or as part o
 | tooltip_position |	string |	null |	Position of tooltip, relative to slider. Accepts 'top'/'bottom' for horizontal sliders and 'left'/'right' for vertically orientated sliders. Default positions are 'top' for horizontal and 'right' for vertical slider. |
 | handle |	string |	'round' |	handle shape. Accepts: 'round', 'square', 'triangle' or 'custom' |
 | reversed | bool | false | whether or not the slider should be reversed |
+| rtl | bool|string | 'auto' | whether or not the slider should be shown in rtl mode. Accepts true, false, 'auto'. Default 'auto' : use actual direction of HTML (`dir='rtl'`) |
 | enabled | bool | true | whether or not the slider is initially enabled |
-| formatter |	function |	returns the plain value |	formatter callback. Return the value wanted to be displayed in the tooltip |
+| formatter |	function |	returns the plain value |	formatter callback. Return the value wanted to be displayed in the tooltip, useful for string values. If a string is returned it will be indicated in an `aria-valuetext` attribute.  |
 | natural_arrow_keys | bool | false | The natural order is used for the arrow keys. Arrow up select the upper slider value for vertical sliders, arrow right the righter slider value for a horizontal slider - no matter if the slider was reversed or not. By default the arrow keys are oriented by arrow up/right to the higher slider value, arrow down/left to the lower slider value. |
 | ticks | array | [ ] | Used to define the values of ticks. Tick marks are indicators to denote special values in the range. This option overwrites min and max options. |
 | ticks_positions | array | [ ] | Defines the positions of the tick values in percentages. The first value should always be 0, the last value should always be 100 percent. |
 | ticks_labels | array | [ ] | Defines the labels below the tick marks. Accepts HTML input. |
 | ticks_snap_bounds | float | 0 | Used to define the snap bounds of a tick. Snaps to the tick if value is within these bounds. |
+| ticks_tooltip | bool | false | Used to allow for a user to hover over a given tick to see it's value. Useful if custom formatter passed in |
 | scale | string | 'linear' | Set to 'logarithmic' to use a logarithmic scale. |
 | focus | bool | false | Focus the appropriate slider handle after a value change. |
 | labelledby | string,array | null | ARIA labels for the slider handle's, Use array for multiple values in a range slider. |
+| rangeHighlights | array | [] | Defines a range array that you want to highlight, for example: [{'start':val1, 'end': val2}]. |
 
 Functions
 =========
@@ -170,7 +207,7 @@ __NOTE:__ Optional parameters are italicized.
 | Function | Parameters | Description |
 | -------- | ----------- | ----------- |
 | getValue | --- | Get the current value from the slider |
-| setValue | newValue, _triggerSlideEvent_, _triggerChangeEvent_ | Set a new value for the slider. If optional triggerSlideEvent parameter is _true_, 'slide' events will be triggered. If optional triggerChangeEvent parameter is _true_, 'change' events will be triggered. This function takes `newValue` as either a `Number` or `Array`.|
+| setValue | newValue, _triggerSlideEvent_, _triggerChangeEvent_ | Set a new value for the slider. If optional triggerSlideEvent parameter is _true_, 'slide' events will be triggered. If optional triggerChangeEvent parameter is _true_, 'change' events will be triggered. This function takes `newValue` as either a `Number`, `String`, `Array`. If the value is of type `String` it must be convertable to an integer or it will throw an error.|
 | getElement | --- | Get the div slider element |
 | destroy | --- | Properly clean up and remove the slider instance |
 | disable | ---| Disables the slider and prevents the user from changing the value |
@@ -226,13 +263,18 @@ The following is a list of the commonly-used command line tasks:
 
 Version Bumping and Publishing (Maintainers Only)
 =======
-To bump the version number across all the various packagement systems the plugin is registered with, please use the [grunt bump](https://github.com/vojtajina/grunt-bump) plugin.
+To do the following release tasks:
+* bump the version
+* publish a new version to NPM
+* update the `gh-pages` branch
+* push a new `dist` bundle to the `master` branch on the remote `origin`
+* push new tags to the remote `origin`
 
-* _grunt bump:patch_ - patch version bump, __0.0.0 -> 0.0.1__
-* _grunt bump:minor_ - minor version bump, __0.0.0 -> 0.1.0__
-* _grunt bump:major_ - major version bump, __0.0.0 -> 1.0.0__
+Type the following command:
 
-After bumping, type `npm publish` to update on NPM.
+`npm run release <patch|minor|major>`
+
+If you do not specify a version bump type, the script will automatically defer to a patch bump.
 
 
 Other Platforms & Libraries
@@ -241,7 +283,7 @@ Other Platforms & Libraries
 - [knockout.js](https://github.com/cosminstefanxp/bootstrap-slider-knockout-binding) ([@cosminstefanxp](https://github.com/cosminstefanxp), [#81](https://github.com/seiyria/bootstrap-slider/issues/81))
 - [AngularJS](https://github.com/seiyria/angular-bootstrap-slider)
 - [EmberJS](https://github.com/lifegadget/ui-slider) ([@ksnyde](https://github.com/ksnyde))
-- [ReactJS](https://github.com/brownieboy/react.bootstrap.slidertest)
+- [ReactJS](https://github.com/brownieboy/react-bootstrap-slider)
 - [NuGet](https://www.nuget.org/packages/bootstrap-slider/) ([@ChrisMissal](https://github.com/ChrisMissal))
 - [MeteorJS](https://github.com/kidovate/meteor-bootstrap-slider)
 - [Maven](http://mvnrepository.com/artifact/org.webjars.bower/seiyria-bootstrap-slider)

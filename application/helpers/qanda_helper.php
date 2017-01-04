@@ -3073,7 +3073,7 @@ function do_multiplenumeric($ia)
         }else{
             $slider_reversed = 'false';
         }
-		
+
     }
     else
     {
@@ -3340,7 +3340,7 @@ function do_multiplenumeric($ia)
         App()->getClientScript()->registerScript("sliderTranslation","var sliderTranslation=".json_encode($sliderTranslation).";\n",CClientScript::POS_HEAD);
         App()->getClientScript()->registerPackage("question-numeric-slider");
         if($slider_handle == 'custom'){/* unsure we still need it : in aJsonOptions : must choose the best */
-            App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}}';");
+            App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}'};");
         }
         $aJsonOptions=json_encode(array(
             'slider_custom_handle'=>$slider_custom_handle

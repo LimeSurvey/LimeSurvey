@@ -28,8 +28,6 @@ function doNumericSlider(qID,options) {
               return prefix + displayValue + suffix;
           }
       });
-      /* Put some color taken from default boostrap file : allow user to more easily update it*/
-      $(this).find(".slider-handle").addClass("bg-primary");// bg-info is not dark enough
       /* If dispVal is not set : move to this : but don't set value : event is set to false,false */
       if(dispVal===''){
         $('#javatbd' + myfname).find('div.tooltip').hide();
@@ -47,10 +45,9 @@ function doNumericSlider(qID,options) {
           $(inputEl).val(displayValue); // We parse it to the element
       });
       theSlider.on('change', function(event) {
+        // Don't we need to update too ?
       });
       theSlider.on('slideStop', function(event) {
-          console.log(separator);
-          console.log(event.value.toString().replace('.',separator));
           $(inputEl).val(event.value.toString().replace('.',separator)).trigger('keyup');// We call the EM by the event
       });
 
