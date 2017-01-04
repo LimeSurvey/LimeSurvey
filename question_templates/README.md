@@ -3,17 +3,17 @@
 Coming with the 3.X Verson of LimeSurvey you will be able to create your 
 own set of questiontypes and alternative views for questions.
 
-All you need to know is a little html and xml.
-(And for the more advanced stuff also js and css would help.)
+All you need to know is a little HTML and XML.
+(And for the more advanced stuff also JavaScript and CSS would help.)
 
 ## The config.xml
 
-Config files are very common, a.e. joomla. The config file for the question-template 
+XML config files are very common, a.e. Joomla. The config file for the question-template 
 should contain a few basic things.
 
 ### Metadata - Or, what is this about and who has written it?
 
-Your question view or type should have your name and your email on it, so people can ask questions and congrat you to 
+Your question view or type should have your name and your email on it, so people can ask questions and congratulate you to 
 your awesome question type
 
 Also you should give some informatione about the used licence (remember LimeSurvey is GPL) and a short description.
@@ -39,7 +39,7 @@ The `metadatas` part should therefor look something like this:
 
 ### Files - Or, do we need some other stuff?
 
-You can add peripheral files to the question view. 
+You can add additional files to the question view. 
 
 Please make sure, that you put your own files in an `asset` folder in the base folder of your question view.
 
@@ -108,7 +108,7 @@ The `engine` part should look like this:
 
 Here is a complete example of a config.xml file for your own question view.
 
-Just take this as a basis and build on top of it.
+Just take this as a base and build on top of it.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -162,7 +162,7 @@ Just take this as a basis and build on top of it.
 To be able to work the question template needs a dedicated structure.
 
 It is rather important, because otherwise the framework would not be able to get the files from 
-the correct location. This would lead to massive errors and we already have enough of that.
+the correct location and that would lead to massive errors.
 
 So here is an example structure for working on top of a multiplechoice question:
 
