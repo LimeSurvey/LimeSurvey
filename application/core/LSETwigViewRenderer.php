@@ -19,6 +19,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
      public  $sandboxConfig = array();
      private $_twig;
+     private $forcedPath = null;
 
     /**
      * Adds custom extensions
@@ -89,6 +90,14 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
     }
 
+    /**
+     * Only use for renderTemplateFromString for now, to force the path of included twig files
+     */
+    public function setForcedPath($sPath)
+    {
+        $this->forcedPath=$sPath;
+    }
+
     public function renderQuestion( $sView, $aData)
     {
         $this->_twig  = parent::getTwig();                                      // Twig object
@@ -139,6 +148,12 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         if (is_array($redata)){
             $this->_twig      = $twig = parent::getTwig();
+
+            if (!is_null($this->forcedPath)){
+                $loader       = $this->_twig->getLoader();                              // Twig Template loader
+                $loader->setPaths($this->forcedPath);
+            }
+
             $oTwigTemplate    = $twig->createTemplate($line);
             $nvLine = $oTwigTemplate->render($redata, false);
         }else{
