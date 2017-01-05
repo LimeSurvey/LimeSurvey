@@ -67,11 +67,11 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <input
-                                            min="1"
+                                            min="<?php echo $min_datasets; ?>"
                                             max="<?php echo $max_datasets; ?>"
                                             step="1"
                                             type="number"
-                                            value="1"
+                                            value="<?php echo $min_datasets; ?>"
                                             name="export_from"
                                             id="export_from"
                                             class="form-control"
@@ -84,7 +84,7 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <input
-                                            min="1"
+                                            min="<?php echo $min_datasets; ?>"
                                             max="<?php echo $max_datasets; ?>"
                                             step="1"
                                             type="number"
