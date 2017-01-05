@@ -20,7 +20,7 @@
                 <!-- @todo : control if radiogroup can be used in col : https://www.w3.org/TR/wai-aria/roles -->
         <?php endforeach; ?>
     </colgroup>
-    <thead><!-- The global concept is hard to understand : must control if aria-labelledby for radio-group is OK and if we can add aria-hidden here -->
+    <thead><!-- The global concept is hard to understand : must control if aria-labelledby for radiogroup is OK and if we can add aria-hidden here -->
         <tr class='ls-heading'><!-- unsure for ls-heading class here -->
             <td></td>
             <?php
