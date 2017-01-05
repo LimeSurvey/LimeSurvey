@@ -220,7 +220,7 @@ $internalConfig = array(
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html")
                 ),
-                'functions' => array('dump')
+                'functions' => array('include', 'dump')
             )
 
             // Change template syntax to Smarty-like (not recommended)
