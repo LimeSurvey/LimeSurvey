@@ -117,11 +117,6 @@ class SurveyRuntimeHelper {
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
 
-        //SEE IF $surveyid EXISTS
-        if ($surveyExists < 1){
-            $this->renderNoMatchingSurvey($sTemplateViewPath, $redata);
-        }
-
         // createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
 
         //GET GROUP DETAILS
@@ -655,22 +650,6 @@ class SurveyRuntimeHelper {
     }
 
 
-    /**
-     * Show a message "Sorry. There is no matching survey." and exit
-     * @param string $sTemplateViewPath     path of the views to render
-     * @param array  $redata                hell
-     */
-    private function renderNoMatchingSurvey($sTemplateViewPath, $redata)
-    {
-        //SURVEY DOES NOT EXIST. POLITELY EXIT.
-        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
-        echo "\t<center><br />\n";
-        echo "\t" . gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
-        echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
-        doFooter();
-        exit;
-
-    }
     /**
      * Retreive the survey format (mode?)
      * TODO: move to survey model
