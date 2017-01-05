@@ -194,11 +194,13 @@ $internalConfig = array(
             'fileExtension' => '.twig',
             'options' => array(
                 'autoescape' => true,
+                'debug' => defined('YII_DEBUG') && YII_DEBUG ?true:false,
             ),
             // Those extensions, include the sendbox, will be done later in the process
             'extensions' => array(
                 'Twig_Extension_Sandbox',
                 'Twig_Extension_StringLoader',
+                'Twig_Extension_Debug',
             ),
             'globals' => array(
                 'html' => 'CHtml'
@@ -213,12 +215,12 @@ $internalConfig = array(
                 'tags' => array('if', 'for'),
                 'filters' => array('escape', 'raw'),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy'=>array("textfield", "form")
+                    'ETwigViewRendererStaticClassProxy'=>array("textfield", "form", "link", "emailField", "beginForm", "endForm",  )
                 ),
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html")
                 ),
-                'functions' => array()
+                'functions' => array('dump')
             )
 
             // Change template syntax to Smarty-like (not recommended)
