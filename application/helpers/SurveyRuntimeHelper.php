@@ -22,6 +22,7 @@ class SurveyRuntimeHelper {
      * i.e: all the private variable concerning the survey should be moved to the survey model and replaced by a $oSurvey
      */
 
+    // Preview datas
     private $previewquestion     = false;
     private $previewgrp          = false;
 
