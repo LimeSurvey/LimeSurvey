@@ -211,9 +211,13 @@ $internalConfig = array(
             ),
             'sandboxConfig' => array(
                 'tags' => array('if', 'for'),
-                'filters' => array('escape'),
-                'methods' => array(),
-                'properties' => array(),
+                'filters' => array('escape', 'raw'),
+                'methods' => array(
+                    'ETwigViewRendererStaticClassProxy'=>array("textfield", "form")
+                ),
+                'properties' => array(
+                    'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html")
+                ),
                 'functions' => array()
             )
 
