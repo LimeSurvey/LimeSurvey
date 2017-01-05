@@ -22,6 +22,9 @@ class SurveyRuntimeHelper {
      * i.e: all the private variable concerning the survey should be moved to the survey model and replaced by a $oSurvey
      */
 
+    private $previewquestion     = false;
+    private $previewgrp          = false;
+
     // Template datas
     private $oTemplate;                                                         // Template configuration object (set in model TemplateConfiguration)
     private $sTemplateViewPath;                                                 // Path of the PSTPL files in template
@@ -71,6 +74,7 @@ class SurveyRuntimeHelper {
     // Boolean helpers
     private $okToShowErrors;                                                    // true if we must show error in page : it's a submited ($_POST) page and show the same page again for some reason
 
+
     /**
     * Main function
     *
@@ -96,25 +100,16 @@ class SurveyRuntimeHelper {
         $this->surveyid   = $surveyid;
         $thissurvey       = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
         $this->thissurvey = $thissurvey;
-        $surveyMode       = $this->surveyMode    = $this->getSurveyMode($thissurvey);
-        $surveyOptions    = $this->surveyOptions = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
-        $previewgrp       = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $previewquestion  = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $surveyMode       = $this->surveyMode      = $this->getSurveyMode($thissurvey);
+        $surveyOptions    = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
+        $previewgrp       = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
+        $previewquestion  = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
         $show_empty_group = $this->show_empty_group;
 
         $this->setJavascriptVar($surveyid);
 
-        if ($previewgrp || $previewquestion){
-            $_SESSION[$LEMsessid]['prevstep'] = 2;
-            $_SESSION[$LEMsessid]['maxstep'] = 0;
-        }else{
-
-            $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
-
-            // For redata
-            $aPrivateVariables = $this->getArgs();
-            extract($aPrivateVariables);
-        }
+        $aPrivateVariables = $this->setArgs();
+        extract($aPrivateVariables);                                            // For redata
 
         // We really need to replace redata get_defined_vars by something else.
         $redata = compact(array_keys(get_defined_vars()));
@@ -177,6 +172,7 @@ class SurveyRuntimeHelper {
                 $groupdescription = $stepInfo['gtext'];
             }
         }
+
         if ($previewquestion)
         {
             $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
@@ -606,8 +602,6 @@ class SurveyRuntimeHelper {
         $this->moveSubmitIfNeeded($redata);
     }
 
-
-
     /**
      * Return an array containing all the private variable, for easy extraction.
      * It makes easier to move piece of code to methods dispite the use of $redata = compact(array_keys(get_defined_vars()));
@@ -647,6 +641,17 @@ class SurveyRuntimeHelper {
         return $aPrivateVariables;
     }
 
+    private function setArgs()
+    {
+        if ($this->previewgrp || $this->previewquestion){
+            $_SESSION[$LEMsessid]['prevstep'] = 2;
+            $_SESSION[$LEMsessid]['maxstep'] = 0;
+            return array();
+        }else{
+            $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
+            return $this->getArgs();
+        }
+    }
 
 
     /**
