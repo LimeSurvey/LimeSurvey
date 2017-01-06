@@ -1,7 +1,7 @@
 {# Save/Load buttons #}
 {% if aSurveyInfo.bShowLoadButton == true %}
     <li class="ls-no-js-hidden">
-        <a href="#" data-limesurvey-submit='{ loadall:loadall }' class='ls-link-action ls-link-loadall'>
+        <a href="#" data-limesurvey-submit='{ "loadall":"loadall" }' class='ls-link-action ls-link-loadall'>
             {{ 'Load unfinished survey' | t }}
         </a>
     </li>
@@ -9,7 +9,7 @@
 
 {% if aSurveyInfo.bShowSaveButton == true %}
     <li class="ls-no-js-hidden">
-        <a href="#" data-limesurvey-submit='{ saveall:saveall }' class='ls-link-action ls-link-saveall'>
+        <a href="#" data-limesurvey-submit='{ "saveall":"saveall" }' class='ls-link-action ls-link-saveall'>
             {{ 'Resume later' | t }}
         </a>
     </li>
