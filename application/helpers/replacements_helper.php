@@ -447,68 +447,30 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     else
     {
         $_googleAnalyticsAPIKey = "";
-
     }
+
+    $thissurvey['googleanalyticsapikey'] = $_googleAnalyticsAPIKey;
+
     $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '1');
     $_googleAnalyticsJavaScript = '';
 
-    if ($_googleAnalyticsStyle != '' && $_googleAnalyticsStyle != 0 && $_googleAnalyticsAPIKey != '')
+    if ( $_googleAnalyticsAPIKey != '' && $_googleAnalyticsStyle ==2 )
     {
-        switch ($_googleAnalyticsStyle)
-        {
-            case '1':
-                // Default Google Tracking
-                $_googleAnalyticsJavaScript = <<<EOD
-<script>
-(function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments) },i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', '$_googleAnalyticsAPIKey', 'auto');  // Replace with your property ID.
-ga('send', 'pageview');
-
-</script>
-
-EOD;
-                break;
-            case '2':
-                // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
-                $moveInfo = LimeExpressionManager::GetLastMoveResult();
-                if (is_null($moveInfo)) {
-                    $gseq='welcome';
-                }
-                else if ($moveInfo['finished'])
-                    {
-                        $gseq='finished';
-                    }
-                    else if (isset($moveInfo['at_start']) && $moveInfo['at_start'])
-                        {
-                            $gseq='welcome';
-                        }
-                        else if (is_null($_groupname))
-                            {
-                                $gseq='printanswers';
-                            }
-                            else
-                            {
-                                $gseq=$moveInfo['gseq']+1;
-                }
-                $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
-                $_googleAnalyticsJavaScript = <<<EOD
-<script>
-(function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments) }
-,i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
- })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', '$_googleAnalyticsAPIKey', 'auto');
-ga('send', 'pageview');
-ga('send', 'pageview', '$_trackURL');
-
-</script>
-EOD;
-                break;
+        // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
+        $moveInfo = LimeExpressionManager::GetLastMoveResult();
+        if (is_null($moveInfo)) {
+            $gseq='welcome';
+        }else if ($moveInfo['finished']){
+            $gseq='finished';
+        }else if (isset($moveInfo['at_start']) && $moveInfo['at_start']){
+            $gseq='welcome';
+        }else if (is_null($_groupname)){
+            $gseq='printanswers';
+        }else{
+            $gseq=$moveInfo['gseq']+1;
         }
+
+        $_trackURL = $thissurvey['trackURL'] = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);         
     }
 
     $_endtext = '';
@@ -605,7 +567,7 @@ EOD;
     if(isset($thissurvey)){
         $line = Yii::app()->twigRenderer->renderTemplateFromString( $line, array('aSurveyInfo'=>$thissurvey), false);
     }
-    
+
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
     $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
 
