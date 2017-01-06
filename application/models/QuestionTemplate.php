@@ -115,7 +115,7 @@ class QuestionTemplate extends CFormModel
     {
         if ($this->sTemplateFolderName===null){
             $aQuestionAttributes       = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
-            $this->sTemplateFolderName = ($aQuestionAttributes['question_template'] != 'core')?$aQuestionAttributes['question_template']:false;
+            $this->sTemplateFolderName = (isset($aQuestionAttributes['question_template']) && $aQuestionAttributes['question_template'] != 'core')?$aQuestionAttributes['question_template']:false;
         }
         $this->bHasTemplate       = ($this->sTemplateFolderName!=false);
         return $this->sTemplateFolderName;
