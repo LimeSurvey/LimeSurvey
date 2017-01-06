@@ -2751,6 +2751,7 @@ function do_file_upload($ia)
         </div>
     ';
 
+    $inputnames = array();
     $inputnames[] = $ia[1];
     $inputnames[] = $ia[1]."_filecount";
     return array($answer, $inputnames);
