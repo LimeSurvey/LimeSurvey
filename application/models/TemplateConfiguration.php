@@ -30,6 +30,7 @@ class TemplateConfiguration extends CFormModel
      */
     private $apiVersion;                        // Version of the LS API when created
 
+    public $sTemplateurl;                        // url to the template
     public $pstplPath;                          // Path of the pstpl files
     public $viewPath;                           // Path of the views files (php files to replace existing core views)
     public $siteLogo;                           // Name of the logo file (like: logo.png)
@@ -179,6 +180,63 @@ class TemplateConfiguration extends CFormModel
         touch ( $this->path );                                      // & Suspenders ;-)
     }
 
+    public function registerAssets()
+    {
+        // This package is created in model TemplateConfiguration::createTemplatePackage
+        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager'))
+        {
+            Yii::app()->clientScript->registerPackage( 'survey-template' );
+        }
+        else
+        {
+            // In debug mode, the Asset Manager is not used
+            // So, dev don't need to update the directory date to get the new version of their template.
+            // They must think about refreshing their brower's cache (ctrl + F5)
+            /* @todo : need to regsiter the packages of 'survey-template' */
+            $templateurl = $this->getTemplateURL().'/';
+            $aOtherFiles = $this->otherFiles;
+
+            //var_dump($aCssFiles);var_dump($aJsFiles);die();
+            $aCssFiles = (array) $this->config->files->css->filename;
+            $aJsFiles  = (array) $this->config->files->js->filename;
+
+            foreach($aCssFiles as $sCssFile)
+            {
+                if (file_exists($this->path .DIRECTORY_SEPARATOR. $sCssFile))
+                {
+                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                }
+            }
+            foreach($aJsFiles as $sJsFile)
+            {
+                if (file_exists($this->path .DIRECTORY_SEPARATOR. $sJsFile))
+                {
+                    Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                }
+            }
+            /* RTL|LTR CSS & JS */
+            $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+            if (isset($this->config->files->$dir)){
+                $aCssFilesDir = isset($this->config->files->$dir->css->filename) ? (array)$this->config->files->$dir->css->filename : array();
+                $aJsFilesDir  = isset($this->config->files->$dir->js->filename) ? (array)$this->config->files->$dir->js->filename : array();
+                foreach($aCssFilesDir as $sCssFile)
+                {
+                    if (file_exists($this->path .DIRECTORY_SEPARATOR. $sCssFile))
+                    {
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                    }
+                }
+                foreach($aJsFilesDir as $sJsFile)
+                {
+                    if (file_exists($this->path .DIRECTORY_SEPARATOR. $sJsFile))
+                    {
+                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Create a package for the asset manager.
      * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
@@ -265,6 +323,20 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
+    * This function returns the complete URL path to a given template name
+    *
+    * @param string $sTemplateName
+    * @return string template url
+    */
+    public function getTemplateURL()
+    {
+        if(!isset($this->sTemplateurl)){
+            $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
+        }
+        return $this->sTemplateurl;
+    }
+
+    /**
      * Fix template accorfing to apiVersion
      */
     private function fixTemplateByApi()
@@ -336,6 +408,7 @@ class TemplateConfiguration extends CFormModel
 
         return $packages;
     }
+
     /**
      * Set the framework package
      * @param string : dir (rtl|ltr|)

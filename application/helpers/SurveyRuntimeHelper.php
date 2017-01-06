@@ -96,6 +96,7 @@ class SurveyRuntimeHelper {
         // Template settings
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
         $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
+        $oTemplate->registerAssets();
         Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
         // Survey settings

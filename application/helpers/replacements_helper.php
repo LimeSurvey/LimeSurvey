@@ -104,8 +104,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!$anonymized && isset($thissurvey['anonymized'])) {
         $anonymized=($thissurvey['anonymized']=="Y");
     }
-    // TEMPLATECSS
-    $_templatecss="";
     $_templatejs="";
 
     /**
@@ -120,63 +118,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if ($oTemplate === '')
     {
         $oTemplate = Template::model()->getInstance($templatename);
-    }
-
-    if(stripos ($line,"{TEMPLATECSS}"))
-    {
-        // This package is created in model TemplateConfiguration::createTemplatePackage
-        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager'))
-        {
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
-        }
-        else
-        {
-
-            // In debug mode, the Asset Manager is not used
-            // So, dev don't need to update the directory date to get the new version of their template.
-            // They must think about refreshing their brower's cache (ctrl + F5)
-            /* @todo : need to regsiter the packages of 'survey-template' */
-            $aOtherFiles = $oTemplate->otherFiles;
-
-            //var_dump($aCssFiles);var_dump($aJsFiles);die();
-            $aCssFiles = (array) $oTemplate->config->files->css->filename;
-            $aJsFiles  = (array) $oTemplate->config->files->js->filename;
-
-            foreach($aCssFiles as $sCssFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                {
-                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
-                }
-            }
-            foreach($aJsFiles as $sJsFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                {
-                    Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
-                }
-            }
-            /* RTL|LTR CSS & JS */
-            $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-            if (isset($oTemplate->config->files->$dir)){
-                $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array)$oTemplate->config->files->$dir->css->filename : array();
-                $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename) ? (array)$oTemplate->config->files->$dir->js->filename : array();
-                foreach($aCssFilesDir as $sCssFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                    {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
-                    }
-                }
-                foreach($aJsFilesDir as $sJsFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                    {
-                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
-                    }
-                }
-            }
-        }
     }
 
     // surveyformat
@@ -538,7 +479,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
-    $coreReplacements['TEMPLATECSS'] = $_templatecss;
     $coreReplacements['TEMPLATEJS'] = $_templatejs;
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
