@@ -214,7 +214,7 @@ $internalConfig = array(
             ),
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set'),
-                'filters' => array('escape', 'raw', 't', 'merge'),
+                'filters' => array('escape', 'raw', 't', 'merge', 'length'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy'=>array("textfield", "form", "link", "emailField", "beginForm", "endForm",  ),
                     'Survey'=>array("getAllLanguages"),
