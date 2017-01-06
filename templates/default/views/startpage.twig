@@ -17,13 +17,12 @@
 
 <title>{{aSurveyInfo.surveyls_title}}</title>
 <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
-
-<!-- The following line includes jquery.js, jquery-ui.js, survey_runtime.js , template.js and needed specific js file for survey -->
-{TEMPLATEJS}
-
 <link rel="shortcut icon" href="{{templateurl}}favicon.ico" />
+
+{# See config.xml to add your own CSS and JS files #}
 {{ include('google_analytics.twig') }}
 </head>
+
 <body class="default lang-{{surveylanguage}} {{surveyformat}}">
 
     <div class="navbar navbar-default navbar-fixed-top">
