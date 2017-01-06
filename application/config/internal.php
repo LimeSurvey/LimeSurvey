@@ -216,10 +216,11 @@ $internalConfig = array(
                 'tags' => array('if', 'for', 'set'),
                 'filters' => array('escape', 'raw', 't', 'merge'),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy'=>array("textfield", "form", "link", "emailField", "beginForm", "endForm",  )
+                    'ETwigViewRendererStaticClassProxy'=>array("textfield", "form", "link", "emailField", "beginForm", "endForm",  ),
+                    'Survey'=>array("getAllLanguages"),
                 ),
                 'properties' => array(
-                    'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html")
+                    'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                 ),
                 'functions' => array('include', 'dump', 'flatEllipsizeText')
             )
