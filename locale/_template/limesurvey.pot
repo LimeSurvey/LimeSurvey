@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-01-04 13:14:57+00:00\n"
+"POT-Creation-Date: 2017-01-06 13:47:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2581,6 +2581,7 @@ msgstr ""
 #: application/controllers/admin/participantsaction.php:764
 #: application/controllers/admin/templates.php:172
 #: application/core/Survey_Common_Action.php:1381
+#: application/helpers/frontend_helper.php:2517
 #: application/views/admin/homepagesettings/index.php:9
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/question_subviews/_modals.php:113
@@ -7991,6 +7992,18 @@ msgstr ""
 
 #: application/helpers/frontend_helper.php:1720
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
+msgstr ""
+
+#: application/helpers/frontend_helper.php:2516
+msgid "This website uses cookies. By continuing this survey you approve the data protection policy of the service provider."
+msgstr ""
+
+#: application/helpers/frontend_helper.php:2518
+msgid "View policy"
+msgstr ""
+
+#: application/helpers/frontend_helper.php:2519
+msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
 #: application/helpers/pdfHelper.php:64
