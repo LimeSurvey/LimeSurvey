@@ -2515,6 +2515,7 @@ function cookieConsentLocalization()
     return array(
         gT('This website uses cookies. By continuing this survey you approve the data protection policy of the service provider.'),
         gT('OK'),
-        gT('View policy')
+        gT('View policy'),
+        gT('Please be patient until you are forwarded to the final URL.')
     );
 }
