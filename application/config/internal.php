@@ -206,7 +206,10 @@ $internalConfig = array(
                 'html' => 'CHtml'
             ),
             'functions' => array(
-                'flatEllipsizeText' => 'viewHelper::flatEllipsizeText',
+                'flatEllipsizeText'     => 'viewHelper::flatEllipsizeText',
+                'getLanguageData'       => 'viewHelper::getLanguageData',
+                'array_flip'            => 'array_flip',
+                'array_intersect_key'   => 'array_intersect_key',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -216,13 +219,15 @@ $internalConfig = array(
                 'tags' => array('if', 'for', 'set'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length'),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy'=>array("textfield", "form", "link", "emailField", "beginForm", "endForm",  ),
-                    'Survey'=>array("getAllLanguages"),
+                    'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm",  ),
+                    'Survey'                            =>  array("getAllLanguages"),
+                    'LSHttpRequest'                     =>  array("getParam"),
                 ),
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
+                    'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText')
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key')
             )
 
             // Change template syntax to Smarty-like (not recommended)
