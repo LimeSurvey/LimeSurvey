@@ -20,7 +20,7 @@
 <link rel="shortcut icon" href="{{templateurl}}favicon.ico" />
 
 {# See config.xml to add your own CSS and JS files #}
-{{ include('google_analytics.twig') }}
+{{ include('./subviews/google_analytics.twig') }}
 </head>
 
 <body class="default lang-{{surveylanguage}} {{surveyformat}}">
@@ -37,7 +37,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right navbar-action-link">
-                {SAVE_LINKS}
+                {{ include('./subviews/save_links.twig') }}
                 {CLEARALL_LINKS}
                 {QUESTION_INDEX_MENU}
             </ul>
@@ -55,8 +55,7 @@
 
         <div class="col-centered" id="main-col">
 
-            {{ include('start_form.twig') }}
-
+            {{ include('./subviews/start_form.twig') }}
 <!-- end of startpage.pstl -->
 
 {#
