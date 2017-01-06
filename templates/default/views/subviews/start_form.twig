@@ -21,7 +21,7 @@
     }
 %}
 
-{# If the form containes an upload file question, the enctype of the form must be multipart/form-data #}
+{# If the form contains an upload file question, the enctype of the form must be multipart/form-data #}
 {% if aSurveyInfo.upload_file == true %}
     {% set htmlOptions = htmlOptions|merge({
             'enctype'      : 'multipart/form-data',
