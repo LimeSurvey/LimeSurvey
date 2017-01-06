@@ -531,7 +531,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['SAVE'] = $_saveall;
     $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid']: '';
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
-    $coreReplacements['SITENAME'] = Yii::app()->getConfig('sitename');
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
