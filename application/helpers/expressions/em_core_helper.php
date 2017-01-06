@@ -1074,7 +1074,6 @@ class ExpressionManager {
                     }
                     return $this->RDP_EvaluateUnary($token);
                     // NB: No break needed
-                    break;
                 default:
                     --$this->RDP_pos;
                     return $this->RDP_EvaluatePrimaryExpression();
