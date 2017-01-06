@@ -8,6 +8,7 @@
     {% set indexType = 'incremental'  %}
 {% endif %}
 
+{# Question index in group by group mode #}
 {% if aSurveyInfo.format == 'G' %}
     <!-- Question index, group, {{ indexType }} -->
     <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ indexType }}">
@@ -34,6 +35,45 @@
                     <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'>
                         {{ indexItem.text }}
                     </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endif %}
+
+{# Question index in question by question mode #}
+{% if aSurveyInfo.format == 'S' %}
+    <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ indexType }}">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            {{ "Question index" | t }}
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            {% for group in aSurveyInfo.indexItems %}
+                <li>
+                    <div class="dropdown-header">
+                        {{ flatEllipsizeText(group.text, true, 30, " &hellip; ", 0.6 ) | raw }}
+                        <span class="caret"></span>
+                    </div>
+                    <ul class="dropdown-menu dropdown-sub-menu">
+                        {% for  step, indexItem in group.questions %}
+                            {% set statusClass = ''  %}
+                            {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
+                                {% set statusClass = statusClass ~ ' bg-warning'  %}
+                            {% endif %}
+                            {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
+                                {% set statusClass = statusClass ~ ' bg-danger'  %}
+                            {% endif %}
+                            {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
+                                {% set statusClass = statusClass ~  ' disabled'  %}
+                            {% endif %}
+                            <li class="{{ indexItem.coreClass }} {{statusClass}}">
+                                <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'>
+                                    {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) | raw }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </li>
             {% endfor %}
         </ul>
