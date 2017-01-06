@@ -29,7 +29,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
+    public static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
@@ -54,6 +54,10 @@ class ExpressionManager {
     private $allVarsUsed;   // full list of variables used within the string, even if contains multiple expressions
     private $prettyPrintSource; // HTML formatted output of running sProcessStringContainingExpressions
     private $substitutionNum; // Keeps track of number of substitions performed XXX
+
+    /**
+     * @var array
+     */
     private $substitutionInfo; // array of JavaScripts to managing dynamic substitution
     private $jsExpression;  // caches computation of JavaScript equivalent for an Expression
 
@@ -239,8 +243,9 @@ class ExpressionManager {
     /**
      * Add an error to the error log
      *
-     * @param <type> $errMsg
-     * @param <type> $token
+     * @param string $errMsg
+     * @param array|null $token
+     * @return void
      */
     private function RDP_AddError($errMsg, $token)
     {
@@ -254,7 +259,6 @@ class ExpressionManager {
      * @param array $token
      * @return boolean - false if there is any error, else true
      */
-
      private function RDP_EvaluateBinary(array $token)
     {
         if (count($this->RDP_stack) < 2)
@@ -445,10 +449,9 @@ class ExpressionManager {
     /**
      * Main entry function
      * @param string $expr
-     * @param <type> $onlyparse - if true, then validate the syntax without computing an answer
+     * @param boolean $onlyparse - if true, then validate the syntax without computing an answer
      * @return boolean - true if success, false if any error occurred
      */
-
     public function RDP_Evaluate($expr, $onlyparse=false)
     {
         $this->RDP_expr = $expr;
@@ -563,7 +566,7 @@ class ExpressionManager {
             case 'SQ_STRING':
                 $this->RDP_StackPush($token);
                 return true;
-                break;
+                // NB: No break needed
             case 'WORD':
             case 'SGQA':
                 if (($this->RDP_pos + 1) < $this->RDP_count and $this->RDP_tokens[($this->RDP_pos + 1)][2] == 'LP')
@@ -601,14 +604,15 @@ class ExpressionManager {
                         return false;
                     }
                 }
-                break;
+                // NB: No break needed
             case 'COMMA':
                 --$this->RDP_pos;
                 $this->RDP_AddError(gT("Should never  get to this line?"),$token);
                 return false;
+                // NB: No break needed
             default:
                 return false;
-                break;
+                // NB: No break needed
         }
     }
 
@@ -950,7 +954,6 @@ class ExpressionManager {
                             return false;
                         }
                         break;
-                        break;
                     default:
                         --$this->RDP_pos;
                         return true;
@@ -1070,6 +1073,7 @@ class ExpressionManager {
                         return false;
                     }
                     return $this->RDP_EvaluateUnary($token);
+                    // NB: No break needed
                     break;
                 default:
                     --$this->RDP_pos;
@@ -1085,7 +1089,7 @@ class ExpressionManager {
 
     /**
      * Returns array of all JavaScript-equivalent variable names used when parsing a string via sProcessStringContainingExpressions
-     * @return <type>
+     * @return array
      */
     public function GetAllJsVarsUsed()
     {
@@ -1114,7 +1118,7 @@ class ExpressionManager {
     /**
      * Return the list of all of the JavaScript variables used by the most recent expression - only those that are set on the current page
      * This is used to control static vs dynamic substitution.  If an expression is entirely made up of off-page changes, it can be statically replaced.
-     * @return <type>
+     * @return array
      */
     public function GetOnPageJsVarsUsed()
     {
@@ -1160,7 +1164,7 @@ class ExpressionManager {
 
     /**
      * Return the list of all of the JavaScript variables used by the most recent expression
-     * @return <type>
+     * @return array
      */
     public function GetJsVarsUsed()
     {
@@ -1188,7 +1192,7 @@ class ExpressionManager {
 
     /**
      * Return the JavaScript variable name for a named variable
-     * @param <type> $name
+     * @param string $name
      * @return string
      */
     public function GetJsVarFor($name)
@@ -1198,7 +1202,7 @@ class ExpressionManager {
 
     /**
      * Returns array of all variables used when parsing a string via sProcessStringContainingExpressions
-     * @return <type>
+     * @return array
      */
     public function GetAllVarsUsed()
     {
@@ -1225,7 +1229,7 @@ class ExpressionManager {
 
     /**
      * Converts the most recent expression into a valid JavaScript expression, mapping function and variable names and operators as needed.
-     * @return <type> the JavaScript expresssion
+     * @return string the JavaScript expresssion
      */
     public function GetJavaScriptEquivalentOfExpression()
     {
@@ -1347,8 +1351,9 @@ class ExpressionManager {
 
     /**
      * JavaScript Test function - simply writes the result of the current JavaScriptEquivalentFunction to the output buffer.
+     * @param string $expected
      * @param integer $num
-     * @return <type>
+     * @return string
      */
     public function GetJavascriptTestforExpression($expected,$num)
     {
@@ -1405,7 +1410,7 @@ class ExpressionManager {
 
     /**
      * Color-codes Expressions (using HTML <span> tags), showing variable types and values.
-     * @return <type>
+     * @return string HTML
      */
     public function GetPrettyPrintString()
     {
@@ -1649,8 +1654,9 @@ class ExpressionManager {
 
     /**
      * Get information about the variable, including JavaScript name, read-write status, and whether set on current page.
-     * @param <type> $name
+     * @param string $name
      * @param string|null $attr
+     * @param string default
      * @return string
      */
     private function GetVarAttribute($name,$attr,$default)
@@ -1737,7 +1743,7 @@ class ExpressionManager {
 
     /**
      * Return true if the function name is registered
-     * @param <type> $name
+     * @param string $name
      * @return boolean
      */
 
@@ -1748,7 +1754,7 @@ class ExpressionManager {
 
     /**
      * Return true if the variable name is registered
-     * @param <type> $name
+     * @param string $name
      * @return boolean
      */
     private function RDP_isValidVariable($name)
@@ -1759,8 +1765,8 @@ class ExpressionManager {
 
     /**
      * Return true if the variable name is writable
-     * @param <type> $name
-     * @return <type>
+     * @param string $name
+     * @return boolean
      */
     private function RDP_isWritableVariable($name)
     {
@@ -1769,10 +1775,10 @@ class ExpressionManager {
 
     /**
      * Process an expression and return its boolean value
-     * @param <type> $expr
-     * @param <type> $groupSeq - needed to determine whether using variables before they are declared
-     * @param <type> $questionSeq - needed to determine whether using variables before they are declared
-     * @return <type>
+     * @param string $expr
+     * @param int $groupSeq - needed to determine whether using variables before they are declared
+     * @param int $questionSeq - needed to determine whether using variables before they are declared
+     * @return boolean
      */
     public function ProcessBooleanExpression($expr,$groupSeq=-1,$questionSeq=-1)
     {
@@ -1832,14 +1838,14 @@ class ExpressionManager {
     /**
      * Process multiple substitution iterations of a full string, containing multiple expressions delimited by {}, return a consolidated string
      * @param string $src
-     * @param <type> $questionNum
-     * @param <type> $numRecursionLevels - number of levels of recursive substitution to perform
-     * @param <type> $whichPrettyPrintIteration - if recursing, specify which pretty-print iteration is desired
-     * @param <type> $groupSeq - needed to determine whether using variables before they are declared
-     * @param <type> $questionSeq - needed to determine whether using variables before they are declared
-     * @return <type>
+     * @param int $questionNum
+     * @param int $numRecursionLevels - number of levels of recursive substitution to perform
+     * @param int $whichPrettyPrintIteration - if recursing, specify which pretty-print iteration is desired
+     * @param int $groupSeq - needed to determine whether using variables before they are declared
+     * @param int $questionSeq - needed to determine whether using variables before they are declared
+     * @param boolean $staticReplacement
+     * @return string
      */
-
     public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $groupSeq=-1, $questionSeq=-1, $staticReplacement=false)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
@@ -1870,9 +1876,9 @@ class ExpressionManager {
      * Process one substitution iteration of a full string, containing multiple expressions delimited by {}, return a consolidated string
      * @param string $src
      * @param integer $questionNum - used to generate substitution <span>s that indicate to which question they belong
-     * @return <type>
+     * @param boolean $staticReplacement
+     * @return string
      */
-
     public function sProcessStringContainingExpressionsHelper($src, $questionNum, $staticReplacement=false)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
@@ -1965,7 +1971,7 @@ class ExpressionManager {
 
     /**
      * Get info about all <span> elements needed for dynamic tailoring
-     * @return <type>
+     * @return array
      */
     public function GetCurrentSubstitutionInfo()
     {
@@ -1977,7 +1983,6 @@ class ExpressionManager {
      * @param array $a
      * @return array
      */
-
     private function flatten_array(array $a) {
         $i = 0;
         while ($i < count($a)) {
@@ -1994,8 +1999,8 @@ class ExpressionManager {
     /**
      * Run a registered function
      * Some PHP functions require specific data types - those can be cast here.
-     * @param <type> $funcNameToken
-     * @param <type> $params
+     * @param array $funcNameToken
+     * @param array $params
      * @return boolean|null
      */
     private function RDP_RunFunction($funcNameToken,$params)
@@ -2151,9 +2156,10 @@ class ExpressionManager {
 
     /**
      * Set the value of a registered variable
-     * @param $op - the operator (=,*=,/=,+=,-=)
-     * @param <type> $name
-     * @param <type> $value
+     * @param string $op - the operator (=,*=,/=,+=,-=)
+     * @param string $name
+     * @param string $value
+     * @return int
      */
     private function RDP_SetVariableValue($op,$name,$value)
     {
@@ -2168,7 +2174,7 @@ class ExpressionManager {
      * Split a soure string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
      * This verson properly handles nested curly braces and curly braces within strings within curly braces - both of which are needed to better support JavaScript
      * Users still need to add a space or carriage return after opening braces (and ideally before closing braces too) to avoid  having them treated as expressions.
-     * @param <type> $src
+     * @param string $src
      * @return string
      */
     public function asSplitStringOnExpressions($src)
@@ -2452,7 +2458,6 @@ class ExpressionManager {
      * Show a table of allowable Expression Manager functions
      * @return string
      */
-
     static function ShowAllowableFunctions()
     {
         $em = new ExpressionManager();
@@ -2469,9 +2474,9 @@ class ExpressionManager {
 /**
  * Used by usort() to order Error tokens by their position within the string
  * This must be outside of the class in order to work in PHP 5.2
- * @param <type> $a
- * @param <type> $b
- * @return <type>
+ * @param array $a
+ * @param array $b
+ * @return int
  */
 function cmpErrorTokens($a, $b)
 {
@@ -2492,7 +2497,7 @@ function cmpErrorTokens($a, $b)
 
 /**
  * Count the number of answered questions (non-empty)
- * @param <type> $args
+ * @param array $args
  * @return int
  */
 function exprmgr_count($args)
@@ -2509,7 +2514,7 @@ function exprmgr_count($args)
 
 /**
  * Count the number of answered questions (non-empty) which match the first argument
- * @param <type> $args
+ * @param array $args
  * @return int
  */
 function exprmgr_countif($args)
@@ -2527,7 +2532,7 @@ function exprmgr_countif($args)
 
 /**
  * Count the number of answered questions (non-empty) which meet the criteria (arg op value)
- * @param <type> $args
+ * @param array $args
  * @return int
  */
 function exprmgr_countifop($args)
@@ -2552,7 +2557,9 @@ function exprmgr_countifop($args)
                         ++$j;
                     }
                 }
-                catch (Exception $e) { }
+                catch (Exception $e) {
+                    // Do nothing
+                }
                 break;
         }
     }
@@ -2595,7 +2602,7 @@ function exprmgr_strlen($string)
  * Find position of first occurrence of unicode string in a unicode string
  * @param string $haystack : checked string
  * @param string $needle : string to find
- * @param $offset : offset
+ * @param int $offset : offset
  * @return int|false : position or false if not found
  */
 function exprmgr_strpos($haystack , $needle ,$offset=0)
@@ -2646,7 +2653,7 @@ function exprmgr_substr($string,$start,$end=null)
 }
 /**
  * Sum of values of answered questions which meet the criteria (arg op value)
- * @param <type> $args
+ * @param array $args
  * @return int
  */
 function exprmgr_sumifop($args)
@@ -2671,7 +2678,9 @@ function exprmgr_sumifop($args)
                         $result += $arg;
                     }
                 }
-                catch (Exception $e) { }
+                catch (Exception $e) {
+                    // Do nothing
+                }
                 break;
         }
     }
@@ -2726,10 +2735,10 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
 
 /**
  * If $test is true, return $ok, else return $error
- * @param <type> $test
- * @param <type> $ok
- * @param <type> $error
- * @return <type>
+ * @param mixed $test
+ * @param mixed $ok
+ * @param mixed $error
+ * @return mixed
  */
 function exprmgr_if($test,$ok,$error)
 {
@@ -2760,8 +2769,8 @@ function exprmgr_int($arg)
 }
 /**
  * Join together $args[0-N] with ', '
- * @param <type> $args
- * @return <type>
+ * @param array $args
+ * @return string
  */
 function exprmgr_list($args)
 {
@@ -2784,7 +2793,7 @@ function exprmgr_list($args)
 
 /**
  * return log($arg[0],$arg[1]=e)
- * @param <type> $args
+ * @param array $args
  * @return float
  */
 function exprmgr_log($args)
@@ -2835,8 +2844,8 @@ function exprmgr_mktime($hour=null,$minute=null,$second=null,$month=null,$day=nu
 
 /**
  * Join together $args[N]
- * @param <type> $args
- * @return <type>
+ * @param array $args
+ * @return string
  */
 function exprmgr_join($args)
 {
@@ -2845,8 +2854,8 @@ function exprmgr_join($args)
 
 /**
  * Join together $args[1-N] with $arg[0]
- * @param <type> $args
- * @return <type>
+ * @param array $args
+ * @return string
  */
 function exprmgr_implode($args)
 {
@@ -2860,8 +2869,8 @@ function exprmgr_implode($args)
 
 /**
  * Return true if the variable is NULL or blank.
- * @param <type> $arg
- * @return <type>
+ * @param null|string|boolean $arg
+ * @return boolean
  */
 function exprmgr_empty($arg)
 {
@@ -2873,8 +2882,8 @@ function exprmgr_empty($arg)
 
 /**
  * Compute the Sample Standard Deviation of a set of numbers ($args[0-N])
- * @param <type> $args
- * @return <type>
+ * @param array $args
+ * @return float
  */
 function exprmgr_stddev($args)
 {
@@ -2906,8 +2915,8 @@ function exprmgr_stddev($args)
 
 /**
  * Javascript equivalent does not cope well with ENT_QUOTES and related PHP constants, so set default to ENT_QUOTES
- * @param <type> $string
- * @return <type>
+ * @param string $string
+ * @return string
  */
 function expr_mgr_htmlspecialchars($string)
 {
@@ -2916,8 +2925,8 @@ function expr_mgr_htmlspecialchars($string)
 
 /**
  * Javascript equivalent does not cope well with ENT_QUOTES and related PHP constants, so set default to ENT_QUOTES
- * @param <type> $string
- * @return <type>
+ * @param string $string
+ * @return string
  */
 function expr_mgr_htmlspecialchars_decode($string)
 {
@@ -2957,8 +2966,8 @@ function geterrors_exprmgr_regexMatch($pattern, $input)
 
 /**
  * Display number with comma as radix separator, if needed
- * @param type $value
- * @return type
+ * @param string $value
+ * @return string
  */
 function exprmgr_fixnum($value)
 {
@@ -2971,7 +2980,7 @@ function exprmgr_fixnum($value)
 }
 /**
  * Returns true if all non-empty values are unique
- * @param type $args
+ * @param array $args
  * @return boolean
  */
 function exprmgr_unique($args)

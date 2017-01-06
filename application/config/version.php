@@ -11,11 +11,11 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-$config['versionnumber'] = '3.0.0 alpha (2.57.1 merged)'; /* I don't found actually a better way to have : 'master verion + info it'a develop : ,someone have another idea ? */
+$config['versionnumber'] = '3.0.0-alpha (2.58.0 merged)'; /* I don't found actually a better way to have : 'master verion + info it'a develop : ,someone have another idea ? */
 $config['dbversionnumber'] = 264;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '45';
+$config['assetsversionnumber'] = '46';
 return $config;
 
 ?>

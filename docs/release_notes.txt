@@ -35,7 +35,55 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from  2.57.0 (build 161202) to 2.57.1 (build 161205) Dec 5 2016
+Changes from 2.57.1 (build 161205) to 2.58.0 (build 170104) Jan 4 2017
+-Fixed issue #11533: Sliders with any initial value canot be mandatory (slider_user_no_action_ always 0) (markusfluer)
+-Fixed issue #11867:  In the multiple choice question, tip does not appear even the HIDE_TIP option is OFF in advance settings of the question. (LouisGac)
+-Fixed issue #11867: Tip are not working, LIST drop-down/radio-button list (LouisGac)
+-Fixed issue #11867: Tip are not working (LouisGac)
+-Fixed issue #11867: Tip are not working, question types: !, O (LouisGac)
+-Fixed issue #11894: Regex validation not working as expected when leading zeros are present in short text questions (markusfluer)
+-Fixed issue #11964: token in Survey URL ignored when CAPTCHA is enabled; user must manually enter token (LouisGac)
+-Fixed issue #11965: Numeric question: Data entry fails with 2.04 (markusfluer)
+-Fixed issue #11971: Central Participant Database hangs for many participants (markusfluer)
+-Fixed issue #11975: On Responses Screen - Array Subquestion is not displayed, when you view the results on screen in extended view, the Sub Question text is not shown, so you dont know which column responds to which question. (LouisGac)
+-Fixed issue #11979: Graphs not working on Statistics page (markusfluer)
+-Fixed issue #11980: attribute of question are not found on some surveys (Denis Chenu)
+-Fixed issue #11982:  Security question not working (markusfluer)
+-Fixed issue #11990: Duplicated endpage.pstpl content in template editor (Denis Chenu)
+-Fixed issue #11996: [security] Possible remote code execution (LouisGac)
+-Fixed issue #12000: 'token' column collation is not set in survey tables (Carsten Schmitz)
+-Fixed issue #12008: The Notification-Widget is not available inside the template editor (Olle Haerstedt)
+-Fixed issue #12012: Partcipant with invlaid email are silently deleted (Olle Haerstedt)
+-Fixed issue #12013: Increase first and last name length for participants (Olle Haerstedt)
+-Fixed issue #12020: Critical Vulnerability in PHPMailer (Jan-E)
+-Fixed issue: possible cross-site scripting in template editor (LouisGac)
+-Fixed issue: possible cross-site scripting issue in update view. (LouisGac)
+-Fixed issue : unable to log to file in command (Denis Chenu)
+-Fixed issue: Upgrade from 1.92 fails due to permission errors (Carsten Schmitz)
+-New feature: Allow enterToken view override. (LouisGac)
+-New feature: Configuration to hide update key. (LouisGac)
+-New feature: Manage comfortUpdate key (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Chinese (Simplified) by leadingsoci, yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, tammo
+#Updated translation: English by cedac
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hebrew by aviv
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Persian (Afghanistan) - Dari by toxindoom
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by holch, mauriciofurtado
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+
+Changes from 2.57.0 (build 161202) to 2.57.1 (build 161205) Dec 5 2016
 -Fixed issue #11947: Session.php is a false positive under ASL/clamav (Bert Hankes)
 -Fixed issue #11974: Very slow rendering of first page (Denis Chenu)
 -Fixed issue #11976: Relevance based on array-dual-scale not working properly (Denis Chenu)
