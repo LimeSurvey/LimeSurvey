@@ -321,6 +321,7 @@ class SurveyRuntimeHelper {
         echo "<!-- SurveyRunTimeHelper -->";
 
         $thissurvey['upload_file'] = (isset($upload_file) && $upload_file)?true:false;
+        $thissurvey['surveyUrl']   = App()->createUrl("/survey/index",array("sid"=>$surveyid)); 
         $hiddenfieldnames          = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
 
 
