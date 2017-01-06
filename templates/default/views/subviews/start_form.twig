@@ -1,0 +1,43 @@
+{#
+    This file generate the opening form tag and the CRSF token
+    eg:
+        <form enctype="multipart/form-data" id="limesurvey" name="limesurvey" autocomplete="off" class="survey-form-container" action="index.php/289445" method="post">
+        <input type="hidden" value="393e1f3e91d6fb062b8c67d39771bb674de337ca" name="YII_CSRF_TOKEN">
+
+    It use the Yii fuction CHtml::form
+    @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
+#}
+
+{#
+    array of attributes of the form tag.
+    To add a new attribute, just add an entry:
+    'attribute' : 'value',
+#}
+{% set htmlOptions = {
+        'id'          : 'limesurvey',
+        'name'        : 'limesurvey',
+        'autocomplete': 'off',
+        'class'       : 'survey-form-container',
+    }
+%}
+
+{# If the form containes an upload file question, the enctype of the form must be multipart/form-data #}
+{% if aSurveyInfo.upload_file == true %}
+    {% set htmlOptions = htmlOptions|merge({
+            'enctype'      : 'multipart/form-data',
+        })
+    %}
+{% endif %}
+
+<!-- Start of the main Form-->
+{{
+    C.Html.form(
+        ( aSurveyInfo.surveyUrl ),
+        'post',
+        (htmlOptions)
+    )
+    | raw
+}}
+
+<input type='hidden' name='fieldnames' value='{{ aSurveyInfo.hiddenfieldnames }}' id='fieldnames' />
+<button type="submit" id="defaultbtn" value="default" name="move" class="submit hidden" style="display:none">{{'default'|t}}</button>
