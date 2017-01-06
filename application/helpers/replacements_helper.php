@@ -302,6 +302,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
     {
+        $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
         $aSaveAllButtons = getSaveLinks(isset($move)?$move:NULL);
         $thissurvey['bShowLoadButton']=$aSaveAllButtons['bShowLoadButton'];
         $thissurvey['bShowSaveButton']=$aSaveAllButtons['bShowSaveButton'];
@@ -462,6 +463,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
+    $coreReplacements['SAVE'] = $_saveall;
     $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid']: '';
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
     $coreReplacements['SITELOGO'] = $sitelogo;
@@ -632,6 +634,7 @@ function getSaveLinks($move="")
 * @param string $move :
 * @return string
 **/
+
 function doHtmlSaveAll($move="")
 {
     static $aSaveAllButtons=array();
@@ -639,9 +642,6 @@ function doHtmlSaveAll($move="")
         return $aSaveAllButtons[$move];
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
-    $bShowLoadAllButton = false;
-    $bShowSaveAllButton = false;
-
     if($thissurvey['allowsave'] == "Y")
     {
         $sLoadButton=App()->twigRenderer->render("/survey/system/actionButton/saveLoad",array(
@@ -654,56 +654,55 @@ function doHtmlSaveAll($move="")
             'name'=>'saveall',
             'class'=>'ls-saveaction ls-saveall'
         ),true);
-
         App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
-
-
-        // Fill some test here, more clear ....
-        $bTokenanswerspersistence= $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
-        $bAlreadySaved           = isset($_SESSION['survey_'.$surveyid]['scid']);
-        $iSessionStep            = (isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
-        $iSessionMaxStep         = (isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
-
-            $sSaveAllButtons="";
-            // Find out if the user has any saved data
-
-            if ($thissurvey['format'] == 'A')
-            {
-                if ( !$bTokenanswerspersistence && !$bAlreadySaved )
-                {
-                    $bShowLoadAllButton = true;
-                }
-                $bShowSaveAllButton = true;
-            }
-            elseif (!$iSessionStep) //Welcome page, show load (but not save)
-            {
-                if (!$bTokenanswerspersistence && !$bAlreadySaved )
-                {
-                    $bShowLoadAllButton = true;
-                }
-                if($thissurvey['showwelcome']=="N")
-                {
-                    $bShowSaveAllButton = true;
-                }
-            }
-            elseif ($iSessionMaxStep==1 && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
-            {
-                if (!$bTokenanswerspersistence && !$bAlreadySaved )
-                {
-                    $bShowLoadAllButton = true;
-                }
-                $bShowSaveAllButton = true;
-            }
-            elseif ($move != "movelast") // Not on last page or submited survey
-            {
-                $bShowSaveAllButton = true;
-            }
-
     }
-
+    else
+    {
+        $sLoadButton = '';
+        $sSaveButton = '';
+    }
+    // Fill some test here, more clear ....
+    $bTokenanswerspersistence=$thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
+    $bAlreadySaved=isset($_SESSION['survey_'.$surveyid]['scid']);
+    $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
+    $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
+    $sSaveAllButtons="";
+    // Find out if the user has any saved data
+    if ($thissurvey['format'] == 'A')
+    {
+        if ( !$bTokenanswerspersistence && !$bAlreadySaved )
+        {
+            $sSaveAllButtons .= $sLoadButton;
+        }
+        $sSaveAllButtons .= $sSaveButton;
+    }
+    elseif (!$iSessionStep) //Welcome page, show load (but not save)
+    {
+        if (!$bTokenanswerspersistence && !$bAlreadySaved )
+        {
+            $sSaveAllButtons .= $sLoadButton;
+        }
+        if($thissurvey['showwelcome']=="N")
+        {
+            $sSaveAllButtons .= $sSaveButton;
+        }
+    }
+    elseif ($iSessionMaxStep==1 && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
+    {
+        if (!$bTokenanswerspersistence && !$bAlreadySaved )
+        {
+            $sSaveAllButtons .= $sLoadButton;
+        }
+        $sSaveAllButtons .= $sSaveButton;
+    }
+    elseif ($move != "movelast") // Not on last page or submited survey
+    {
+        $sSaveAllButtons .= $sSaveButton;
+    }
     $aSaveAllButtons[$move]=$sSaveAllButtons;
     return $aSaveAllButtons[$move];
 }
+
 
 /**
  * ClearALl link and button
