@@ -213,8 +213,8 @@ $internalConfig = array(
                 't'     => 'eT',
             ),
             'sandboxConfig' => array(
-                'tags' => array('if', 'for'),
-                'filters' => array('escape', 'raw', 't'),
+                'tags' => array('if', 'for', 'set'),
+                'filters' => array('escape', 'raw', 't', 'merge'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy'=>array("textfield", "form", "link", "emailField", "beginForm", "endForm",  )
                 ),
