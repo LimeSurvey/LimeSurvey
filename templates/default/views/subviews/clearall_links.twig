@@ -1,0 +1,11 @@
+{#
+    Shows the exit button
+#}
+
+{% if aSurveyInfo.iscompleted == false %}
+    <li class="ls-no-js-hidden">
+        <a href="#" data-limesurvey-submit='{ "clearall":"clearall" }'  data-confirmedby='{ "confirm-clearall":"confirm" }' data-confirmlabel='{{"Please confirm you want to clear your response?" | t }}' class='ls-link-action ls-link-clearall'>
+            {{"Exit and clear survey" | t}}
+        </a>
+    </li>
+{% endif %}

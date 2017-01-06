@@ -275,11 +275,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if(isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active']=='Y')
     {
-        $iscompleted=SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
+        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
     }
     else
     {
-        $iscompleted=false;
+        $iscompleted = $thissurvey['iscompleted'] = false;
     }
     if (isset($surveyid) && !$iscompleted)
     {
