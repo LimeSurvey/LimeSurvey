@@ -283,14 +283,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $aClearAll=doHtmlClearAll();
+        $aClearAll=doHtmlClearAll();    // Rem: still needed for JS
         $_clearall = $aClearAll['button'];
-        $_clearalllinks = $aClearAll['link'];
     }
     else
     {
         $_clearall = "";
-        $_clearalllinks = '';
     }
 
     if (isset(Yii::app()->session['datestamp']))
@@ -436,7 +434,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = App()->twigRenderer->render("/survey/system/no-javascript",array(),true);
     $coreReplacements['CLEARALL'] = $_clearall;
-    $coreReplacements['CLEARALL_LINKS'] = $_clearalllinks;
     $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
