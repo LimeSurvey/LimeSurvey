@@ -5376,7 +5376,7 @@ function do_array_texts($ia)
     else
     {
         $inputnames ='';
-        $answer    = doRender('/survey/questions/arrays/texts/empty_error', array(), true);
+        $answer    = doRender('/survey/questions/answer/arrays/texts/empty_error', array(), true);
     }
     return array($answer, $inputnames);
 }
