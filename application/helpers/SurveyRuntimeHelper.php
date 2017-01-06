@@ -96,6 +96,7 @@ class SurveyRuntimeHelper {
         // Template settings
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
         $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
+        Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
         // Survey settings
         $this->surveyid   = $surveyid;
@@ -108,7 +109,6 @@ class SurveyRuntimeHelper {
         $show_empty_group = $this->show_empty_group;
 
         $this->setJavascriptVar($surveyid);
-
         $aPrivateVariables = $this->setArgs();
         extract($aPrivateVariables);                                            // For redata
 
@@ -307,8 +307,8 @@ class SurveyRuntimeHelper {
          *
          */
         if(!$previewquestion && !$previewgrp){
-            $questionindex = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
-            $questionindexmenu = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
+            $questionindex      = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
+            $questionindexmenu  = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
         }
 
         sendCacheHeaders();
@@ -318,8 +318,14 @@ class SurveyRuntimeHelper {
         // First call to templatereplace
 
         echo "<!-- SurveyRunTimeHelper -->";
+
+        $thissurvey['upload_file'] = (isset($upload_file) && $upload_file)?true:false;
+        $hiddenfieldnames          = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
+
+
         $redata = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
+        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
+
         $aPopup=array(); // We can move this part where we want now
         if (isset($backpopup))
         {
@@ -342,20 +348,26 @@ class SurveyRuntimeHelper {
         }
         Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
-        $hiddenfieldnames = implode("|", $inputnames);
 
-        if (isset($upload_file) && $upload_file)
+/*
+        if (isset($upload_file) && $upload_file){
+            $this->thissurvey['upload_file'] = $thissurvey['upload_file'] = true;
+            echo "PWEEEEEEEEEEEEE";
             echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container surveyRunTimeUploadFile'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-        else
+        }else{
+            $this->thissurvey['upload_file'] = $thissurvey['upload_file'] = false;
             echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container  surveyRunTime'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+        }
+
         // <-- END FEATURE - SAVE
         // The default submit button
         echo CHtml::htmlButton("default",array('type'=>'submit','id'=>"defaultbtn",'value'=>"default",'name'=>'move','class'=>"submit hidden",'style'=>'display:none'));
         // <-- START THE SURVEY -->
+*/
         if ($surveyMode == 'survey')
         {
             if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
