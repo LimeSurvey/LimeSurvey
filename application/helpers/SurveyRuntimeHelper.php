@@ -303,6 +303,7 @@ class SurveyRuntimeHelper {
         }
 
         //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
+
         /**
          * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
          *
@@ -310,7 +311,9 @@ class SurveyRuntimeHelper {
         if(!$previewquestion && !$previewgrp){
             $questionindex      = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
             $questionindexmenu  = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
+            $thissurvey['indexItems'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
         }
+
 
         sendCacheHeaders();
         doHeader();
@@ -321,7 +324,7 @@ class SurveyRuntimeHelper {
         echo "<!-- SurveyRunTimeHelper -->";
 
         $thissurvey['upload_file'] = (isset($upload_file) && $upload_file)?true:false;
-        $thissurvey['surveyUrl']   = App()->createUrl("/survey/index",array("sid"=>$surveyid)); 
+        $thissurvey['surveyUrl']   = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $hiddenfieldnames          = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
 
 

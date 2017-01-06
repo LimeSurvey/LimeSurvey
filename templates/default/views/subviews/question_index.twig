@@ -1,0 +1,41 @@
+{#
+    Shows the question index
+#}
+
+{% if aSurveyInfo.oSurvey.questionindex > 1 %}
+    {% set indexType = 'full'  %}
+{% else %}
+    {% set indexType = 'incremental'  %}
+{% endif %}
+
+{% if aSurveyInfo.format == 'G' %}
+    <!-- Question index, group, {{ indexType }} -->
+    <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ indexType }}">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            {{ "Question index" | t }}
+            <span class="caret"></span>
+        </a>
+
+        <ul class="dropdown-menu">
+            {% for step, indexItem in aSurveyInfo.indexItems %}
+                {% set statusClass = ''  %}
+                {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
+                    {% set statusClass = statusClass ~ ' bg-warning'  %}
+                {% endif %}
+                {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
+                    {% set statusClass = statusClass ~ ' bg-danger'  %}
+                {% endif %}
+                {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
+                    {% set statusClass = statusClass ~  ' disabled'  %}
+                {% endif %}
+
+
+                <li class="{{ indexItem.coreClass }} {{ statusClass }}">
+                    <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'>
+                        {{ indexItem.text }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endif %}
