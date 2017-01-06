@@ -463,7 +463,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
-    $coreReplacements['SAVE'] = $_saveall;
+    $coreReplacements['SAVE'] = isset($_saveall)?$_saveall:'';
     $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid']: '';
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
     $coreReplacements['SITELOGO'] = $sitelogo;
