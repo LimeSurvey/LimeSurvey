@@ -2920,7 +2920,7 @@ function do_multipleshorttext($ia)
     else
     {
         $inputnames   = array();
-        $answer       = doRender('/survey/questions/multipleshorttext/empty', array(), true);
+        $answer       = doRender('/survey/questions/answer/multipleshorttext/empty', array(), true);
     }
 
     return array($answer, $inputnames);
