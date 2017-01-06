@@ -206,7 +206,7 @@ $internalConfig = array(
                 'html' => 'CHtml'
             ),
             'functions' => array(
-                'rot13' => 'str_rot13',
+                'flatEllipsizeText' => 'viewHelper::flatEllipsizeText',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -221,7 +221,7 @@ $internalConfig = array(
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html")
                 ),
-                'functions' => array('include', 'dump')
+                'functions' => array('include', 'dump', 'flatEllipsizeText')
             )
 
             // Change template syntax to Smarty-like (not recommended)
