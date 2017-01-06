@@ -21,7 +21,7 @@
 <!-- answer -->
 <div class="<?php echo $coreClass; ?> row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
     <div class="answers-list radio-list col-sm-6 col-xs-12">
-        <ul class="list-unstyled" role="radio-group">
+        <ul class="list-unstyled" role="radiogroup">
             <?php
                 // rows/row.php
                 echo $sRows;
