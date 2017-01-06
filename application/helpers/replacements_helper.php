@@ -470,7 +470,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $gseq=$moveInfo['gseq']+1;
         }
 
-        $_trackURL = $thissurvey['trackURL'] = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);         
+        $_trackURL = $thissurvey['trackURL'] = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
     }
 
     $_endtext = '';
@@ -507,8 +507,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['ADMINNAME'] = isset($thissurvey['admin']) ? $thissurvey['admin'] : '';
     $coreReplacements['ADMINEMAIL'] = isset($thissurvey['adminemail']) ? $thissurvey['adminemail'] : '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid','');// Use the gid of the question, except if we are not in question (Randomization group name)
-    $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
-    $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
     $coreReplacements['LANG'] = App()->language;
