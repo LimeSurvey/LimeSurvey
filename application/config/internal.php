@@ -210,10 +210,11 @@ $internalConfig = array(
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
+                't'     => 'eT',
             ),
             'sandboxConfig' => array(
                 'tags' => array('if', 'for'),
-                'filters' => array('escape', 'raw'),
+                'filters' => array('escape', 'raw', 't'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy'=>array("textfield", "form", "link", "emailField", "beginForm", "endForm",  )
                 ),
