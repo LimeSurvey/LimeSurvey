@@ -1,5 +1,5 @@
 /*! =======================================================
-                      VERSION  9.6.0              
+                      VERSION  9.7.0              
 ========================================================= */
 "use strict";
 
@@ -19,7 +19,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * =========================================================
  *
  * bootstrap-slider is released under the MIT License
- * Copyright (c) 2016 Kyle Kemp, Rohit Kalkur, and contributors
+ * Copyright (c) 2017 Kyle Kemp, Rohit Kalkur, and contributors
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -740,9 +740,21 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 			this.touchmove = this._touchmove.bind(this);
 
 			if (this.touchCapable) {
+				// Test for passive event support
+				var supportsPassive = false;
+				try {
+					var opts = Object.defineProperty({}, 'passive', {
+						get: function get() {
+							supportsPassive = true;
+						}
+					});
+					window.addEventListener("test", null, opts);
+				} catch (e) {}
+				// Use our detect's results. passive applied if supported, capture will be false either way.
+				var eventOptions = supportsPassive ? { passive: true } : false;
 				// Bind touch handlers
-				this.sliderElem.addEventListener("touchstart", this.touchstart, false);
-				this.sliderElem.addEventListener("touchmove", this.touchmove, false);
+				this.sliderElem.addEventListener("touchstart", this.touchstart, eventOptions);
+				this.sliderElem.addEventListener("touchmove", this.touchmove, eventOptions);
 			}
 			this.sliderElem.addEventListener("mousedown", this.mousedown, false);
 

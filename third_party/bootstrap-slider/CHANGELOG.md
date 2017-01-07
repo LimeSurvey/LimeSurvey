@@ -1,3 +1,23 @@
+9.7.0 / 2017-01-05
+==================
+* **Performance Enhancement** Use passive event listeners for touch-enabled devices. [See here for further details](https://github.com/seiyria/bootstrap-slider/pull/680). Thanks to [Chris Hallberg](https://github.com/crhallberg).
+
+Tooling Update / 2017-01-05
+==================
+* Add an explicit `grunt lint` command to run Lint check on all source files and execute it in the NPM `pretest` script.
+
+9.6.2 / 2017-01-04
+==================
+* Updating current year references in license from 2016 -> 2017.
+
+Tooling Update / 2017-01-04
+==================
+* Adds in linting for SASS and LESS files in order to catch common syntax errors at CI step versus compile time.
+
+9.6.1 / 2017-01-04
+==================
+* **Bug Fix:** Resolve issue with SASS file compilation. [See here for further details](https://github.com/seiyria/bootstrap-slider/issues/683). Thanks to [Schepotin](https://github.com/Schepotin) for reporting.
+
 9.6.0 / 2017-01-03
 ==================
 * **New Feature:** Adds ability to set direction (using HTML5 `dir` attribute). [See here for further details](https://github.com/seiyria/bootstrap-slider/pull/679). Thanks to [Denis Chenu](https://github.com/Shnoulle).
