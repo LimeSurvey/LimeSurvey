@@ -270,6 +270,7 @@ class questionHelper
         'category'=>gT('Logic'),
         'sortorder'=>210,
         'inputtype'=>'textarea',
+        'i18n'=>true,
         "help"=>gT('This is a hint text that will be shown to the participant describing the question validation equation.'),
         "caption"=>gT('Question validation tip'));
 
@@ -286,6 +287,7 @@ class questionHelper
         'category'=>gT('Logic'),
         'sortorder'=>230,
         'inputtype'=>'textarea',
+        'i18n'=>true,
         "help"=>gT('This is a tip shown to the participant describing the sub-question validation equation.'),
         "caption"=>gT('Sub-question validation tip'));
 

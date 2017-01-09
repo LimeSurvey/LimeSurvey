@@ -41,7 +41,7 @@ class UserInGroup extends LSActiveRecord {
      * Returns the primary key of this table
      *
      * @access public
-     * @return string
+     * @return string[]
      */
     public function primaryKey()
     {

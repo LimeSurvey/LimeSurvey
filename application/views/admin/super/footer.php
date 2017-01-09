@@ -108,5 +108,14 @@
     </div>
 </div>
 
+<!-- Yet another general purpose modal, this one used by AjaxHelper to display JsonOutputModal messages -->
+<div id="ajax-helper-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

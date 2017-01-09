@@ -234,6 +234,7 @@ abstract class PluginBase implements iPlugin {
      * This function subscribes the plugin to receive an event.
      * 
      * @param string $event
+     * @param string $function
      */
     protected function subscribe($event, $function = null)
     {

@@ -10,7 +10,7 @@
                 <!-- Question Group -->
                 <tr>
                     <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
-                    <td><em><?php echo $oQuestion->groups->group_name;?></em> (ID:<?php echo $oQuestion->groups->gid;?>)</td>
+                    <td><em><?php echo flattenText($oQuestion->groups->group_name);?></em> (ID:<?php echo $oQuestion->groups->gid;?>)</td>
                 </tr>
 
                 <!-- Code -->

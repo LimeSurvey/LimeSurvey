@@ -456,7 +456,7 @@ function addtoarray_single($array1, $array2)
 * If $quotaexit is set to true then the user exited the survey due to a quota
 * restriction and the according token is only marked as 'Q'
 *
-* @param mixed $quotaexit
+* @param boolean $quotaexit
 */
 function submittokens($quotaexit=false)
 {
@@ -478,6 +478,7 @@ function submittokens($quotaexit=false)
 
     // check how many uses the token has left
     $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    $token->scenario = 'FinalSubmit';  // Do not XSS filter token data
 
     if ($quotaexit==true)
     {
@@ -1000,10 +1001,25 @@ function buildsurveysession($surveyid,$preview=false)
     $FlashError = "";
 
     // Scenario => Captcha required
-   if($scenarios['captchaRequired'] && !$preview)
-    {
-        list($renderCaptcha, $FlashError) = testCaptcha($aEnterTokenData, $subscenarios, $surveyid, $loadsecurity);
+    if($scenarios['captchaRequired'] && !$preview) {
+        $FlashError = '';
+
+        //Apply the captchaEnabled flag to the partial
+        $aEnterTokenData['bCaptchaEnabled'] = true;
+        // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
+        if (!$subscenarios['captchaCorrect']) {
+            if ($loadsecurity) {
+                // was a bad answer
+                $FlashError.=gT("Your answer to the security question was not correct - please try again.")."<br/>\n";
+            }
+            $renderCaptcha='main';
+        }
+        else {
+            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
+            $renderCaptcha='correct';
+        }
     }
+
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
         //Test if token is valid
@@ -1161,6 +1177,7 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
 
 /**
  * Prefill startvalues from command line param
+ * @param integer $surveyid
  * @return void
  */
 function prefillFromCommandLine($surveyid)
@@ -1192,6 +1209,7 @@ function prefillFromCommandLine($surveyid)
 
 /**
  * @param array $fieldmap
+ * @param integer $surveyid
  * @return void
  */
 function initFieldArray($surveyid, array $fieldmap)
@@ -1269,7 +1287,8 @@ function initFieldArray($surveyid, array $fieldmap)
  * @param array $subscenarios
  * @param int $surveyid
  * @param boolean $loadsecurity
- * @return array ($renderCaptcha, $FlashError)
+ * @todo This does not work for some reason, copied the code back. See bug #11739.
+ * @return string[] ($renderCaptcha, $FlashError)
  */
 function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $loadsecurity)
 {
@@ -1512,7 +1531,7 @@ function finalizeRandomization($fieldmap)
  * @param array $thissurvey
  * @param array $aEnterTokenData
  * @param string $clienttoken
- * @return array ($renderToken, $FlashError)
+ * @return string[] ($renderToken, $FlashError)
  */
 function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
 {
@@ -1637,6 +1656,7 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
  */
 function resetAllSessionVariables($surveyid)
 {
+    Yii:app()->session->regenerateID(true);
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
     unset($_SESSION['survey_'.$surveyid]['fieldarray']);
     unset($_SESSION['survey_'.$surveyid]['insertarray']);
@@ -1796,7 +1816,7 @@ function surveymover()
 * Caculate assessement scores
 *
 * @param mixed $surveyid
-* @param mixed $returndataonly - only returns an array with data
+* @param boolean $returndataonly - only returns an array with data
 */
 function doAssessment($surveyid, $returndataonly=false)
 {
@@ -1958,6 +1978,7 @@ function doAssessment($surveyid, $returndataonly=false)
 * A list of groups in this survey, ordered by group name.
 * @param int surveyid
 * @param string language
+* @param integer $surveyid
 */
 function UpdateGroupList($surveyid, $language)
 {
@@ -2341,7 +2362,7 @@ function resetTimers()
 * Control if language exist in this survey, else set to survey default language
 * if $surveyid <= 0 : set the language to default site language
 * @param int $surveyid
-* @param string $language
+* @param string $sLanguage
 */
 function SetSurveyLanguage($surveyid, $sLanguage)
 {

@@ -40,7 +40,7 @@
 
         <!-- Question Text -->
         <div class="form-group">
-                <label class="col-sm-3 control-label" for='question_<?php echo $eqrow['language']; ?>' class=""><?php eT("Question:"); ?></label>
+                <label class="col-sm-3 control-label" for='question_<?php echo $eqrow['language']; ?>'><?php eT("Question:"); ?></label>
                 <div class="col-sm-9">
                 <div class="htmleditor input-group">
                     <?php echo CHtml::textArea("question_{$eqrow['language']}",$eqrow['question'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$eqrow['language']}")); ?>

@@ -166,5 +166,4 @@ $(document).ready(function(){
     });
 
     $('.tokenatt .panel-default .tokenAttributeId').disableSelection();
-    tokencurrentarray = $('.tokenatt').sortable('toArray');
 });

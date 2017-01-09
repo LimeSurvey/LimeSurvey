@@ -64,19 +64,14 @@
                                 'selectTime'=> gT('Select time')
                             ),
                     'locale' => convertLStoDateTimePickerLocale($language),
-                    'maxDate' => $maxdate,
-                    'minDate' => $mindate,
+
+                    /**
+                     * $maxdate and $mindate can be expressions from EM. In that case, set them to 1900.
+                     * The expressions will be evaluated dynamically later (see divs at bottom of this page).
+                     */
+                    'maxDate' => $maxdate[0] == '{' ? '1900' : $maxdate,
+                    'minDate' => $mindate[0] == '{' ? '1900' : $mindate,
                     'sideBySide' => true
-                    /*
-                    Min/max Date implementation missing?
-                    'singleDatePicker' => true,
-                    'startDate' => date("Y-m-d H:i", time()),
-                    // Show hour and minute picker if we have HH or MM in date format
-                    'pickTime' => (strpos($dateformatdetails, "HH") !== false || strpos($dateformatdetails, "MM") !== false),
-                    'pickDate' => !$hideCalendar,
-                    'timePicker12Hour' => false,
-                    'timePicker24Hour' => true,
-                    'timePickerIncrement' => 1,*/
                 ),
                 'htmlOptions' => array(
                     'onkeypress' => $goodchars,
@@ -125,3 +120,11 @@
 <input type='hidden' class="namecontainer" data-name="<?php echo $qid; ?>" />
 
 <!-- end of answer -->
+
+<script>
+$(document).ready(function() {
+    $('#answer' + '<?php echo $name; ?>' + '_datetimepicker').on('dp.show', function(ev) {
+        setPickerOptions('<?php echo $name; ?>');
+    });
+});
+</script>

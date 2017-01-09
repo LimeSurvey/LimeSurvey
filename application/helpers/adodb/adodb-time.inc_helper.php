@@ -405,6 +405,10 @@ $ADODB_DATETIME_CLASS = (PHP_VERSION >= 5.2);
 
 if (!defined('ADODB_ALLOW_NEGATIVE_TS')) define('ADODB_NO_NEGATIVE_TS',1);
 
+/**
+ * @param integer $y1
+ * @param integer $m
+ */
 function adodb_date_test_date($y1,$m,$d=13)
 {
     $h = round(rand()% 24);
@@ -419,6 +423,9 @@ function adodb_date_test_date($y1,$m,$d=13)
     return true;
 }
 
+/**
+ * @param string $fmt
+ */
 function adodb_date_test_strftime($fmt)
 {
     $s1 = strftime($fmt);
@@ -693,6 +700,9 @@ function adodb_year_digit_check($y)
     return $y;
 }
 
+/**
+ * @param boolean $ts
+ */
 function adodb_get_gmt_diff_ts($ts)
 {
     if (0 <= $ts && $ts <= 0x7FFFFFFF) { // check if number in 32-bit signed range) {
@@ -998,6 +1008,9 @@ function _adodb_getdate($origd=false,$fast=false,$is_gmt=false)
  else
  $dates .= sprintf('%s%04d',($gmt<0)?'+':'-',abs($gmt)/36);
  break;*/
+/**
+ * @param boolean $isphp5
+ */
 function adodb_tz_offset($gmt,$isphp5)
 {
     $zhrs = abs($gmt)/3600;
@@ -1035,6 +1048,7 @@ function adodb_date2($fmt, $d=false, $is_gmt=false)
 
 /**
  Return formatted date based on timestamp $d
+ * @return string
  */
 function adodb_date($fmt,$d=false,$is_gmt=false)
 {

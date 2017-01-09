@@ -137,6 +137,9 @@
                 echo '}';
         }
 
+        /**
+         * @param string $json
+         */
         protected static function json_echo_string($json)
         {
             echo json_encode($json);
@@ -151,6 +154,9 @@
         }
 
 
+        /**
+         * @param string $name
+         */
         protected static function tag($name, $data)
         {
             echo "<$name>$data</$name>\n";
@@ -234,6 +240,9 @@
             echo '</string>';
         }
 
+        /**
+         * @param string $data
+         */
         protected static function xmlrpc_echo_string($data)
         {
             self::tag('string', "<![CDATA[$data]]>");

@@ -4,31 +4,82 @@
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
+// Module
+LS.resp = (function() {
 
-/**
- * Scroll the pager and the footer when scrolling horizontally
- */
-function setListPagerPosition(){
-    var $elListPager = $(document).find('#ListPager');
-    $elListPager.css({
-        position: 'relative',
-        'left': $(document).find('.scrolling-wrapper').scrollLeft() ,
-    });
+    /**
+     * Needed to calculate correct pager position at RTL language
+     * @var {number}
+     */
+    var initialScrollValue = 0;
 
-}
+    /**
+     * True if admin uses an RTL language
+     * @var {boolean}
+     */
+    var useRtl = false;
 
-function bindScrollWrapper(){
-    setListPagerPosition();
-    $(document).find('.scrolling-wrapper').scroll(function(){
-        setListPagerPosition();
-    });
+    /**
+     * Scroll the pager and the footer when scrolling horizontally
+     * @return
+     */
+    function setListPagerPosition() {
+        var $elListPager = $('#ListPager');
 
-    reinstallResponsesFilterDatePicker();
-}
+        if (useRtl) {
+            var scrollAmount = Math.abs($('.scrolling-wrapper').scrollLeft() - initialScrollValue);
+            $elListPager.css({
+                'position': 'relative',
+                'right': scrollAmount
+            });
+        }
+        else {
+            $elListPager.css({
+                'position': 'relative',
+                'left': $('.scrolling-wrapper').scrollLeft()
+            });
+        }
+    }
+
+    // Return public functions for this module
+    return {
+
+        /**
+         * Bind fixing pager position on scroll event
+         * @return
+         */
+        bindScrollWrapper: function () {
+            setListPagerPosition();
+            $(document).find('.scrolling-wrapper').scroll(function() {
+                setListPagerPosition();
+            });
+
+            reinstallResponsesFilterDatePicker();
+        },
+
+        /**
+         * Set value of module private variable initialScrollValue
+         * @param {number} val
+         */
+        setInitialScrollValue: function(val) {
+            initialScrollValue = val;
+        },
+
+        /**
+         * @param {boolean} val
+         */
+        setUseRtl: function(val) {
+            useRtl = val;
+        }
+    };
+})();
 
 $(document).ready(function(){
 
-    bindScrollWrapper();
+    LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
+    LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
+
+    LS.resp.bindScrollWrapper();
 
     $('#display-mode').click(function(event){
         event.preventDefault();

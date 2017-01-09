@@ -3,17 +3,16 @@
  * Forgot your password
  */
 ?>
+<noscript>If you see this you have probably JavaScript deactivated. LimeSurvey does not work without Javascript being activated in the browser!</noscript>
 <div class="container-fluid welcome">
     <div class="row text-center">
-        <div class="col-lg-3 col-lg-offset-4 col-sm-6 col-sm-offset-3">
+        <div id="login-panel">
             <div class="panel panel-primary login-pannel" id="pannel-1">
 
                 <!-- Header -->
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-12">
-                          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
-                        </div>
+                        <img alt="logo" id="profile-img" class="profile-img-card center-block" src="<?php echo LOGO_URL;?>" />
                     </div>
                 </div>
 
@@ -33,12 +32,12 @@
                             </div>
                             <span>
                                 <label for="user"><?php eT('User name'); ?></label>
-                                <input name="user" id="user" type="text"  size="40" maxlength="40" class="form-control" value="" />
+                                <input name="user" id="user" type="text"  size="40" maxlength="64" class="form-control" value="" />
                             </span>
                             <span>
                                 <label for="email"><?php eT('Email'); ?>
 
-                                </label><input name="email" id="email" type="email"  size="40" maxlength="40" class="form-control" value="" />
+                                </label><input name="email" id="email" type="email"  size="40" maxlength="254" class="form-control" value="" />
                             </span>
 
                         </div>

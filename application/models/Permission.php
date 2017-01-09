@@ -311,9 +311,9 @@ class Permission extends LSActiveRecord
     *
     * @param mixed $iUserID
     * @param mixed $iEntityID
-    * @param mixed $sEntityName
+    * @param string $sEntityName
     * @param mixed $aPermissions
-    * @param mixed $bBypassCheck
+    * @param boolean $bBypassCheck
     */
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck=false)
     {
@@ -412,8 +412,8 @@ class Permission extends LSActiveRecord
      * Set global permissions to the user id
      *
      * @param int $iNewUID
-     * @param string $sAuthType
-     * @param array $aPermissions
+     * @param string[] $aPermissions
+     * @param string $sPermType
      */
     public function setGlobalPermission($iNewUID,$sPermType,array $aPermissions=array('read_p'))
     {
@@ -438,6 +438,9 @@ class Permission extends LSActiveRecord
         $this->insertSomeRecords($aPerm);
     }
 
+    /**
+     * @param integer $iSurveyID
+     */
     public function giveAllSurveyPermissions($iUserID, $iSurveyID)
     {
         if ($iSurveyID == 0)
@@ -508,7 +511,7 @@ class Permission extends LSActiveRecord
     * Checks if a user has a certain permission
     *
     * @param $iEntityID integer The entity ID
-    * @param $sEntityName string The entity name
+    * @param string $sEntityName string The entity name
     * @param $sPermission string Name of the permission
     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
     * @param $iUserID integer User ID - if not given the one of the current user is used
@@ -619,7 +622,7 @@ class Permission extends LSActiveRecord
 
     /**
     * Returns true if a user has global permission for a certain action.
-    * @param $sPermission string Name of the permission - see function getGlobalPermissions
+    * @param string $sPermission string Name of the permission - see function getGlobalPermissions
     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
@@ -671,7 +674,7 @@ class Permission extends LSActiveRecord
     * function used to order Permission by language string
     * @param aApermission array The first permission information
     * @param aBpermission array The second permission information
-    * @return bool
+    * @return integer
     */
     private static function comparePermissionTitle($aApermission,$aBpermission)
     {
@@ -699,7 +702,7 @@ class Permission extends LSActiveRecord
     /**
     * get the owner if of an entity if exist
     * @param iEntityID the entity id
-    * @param sEntityName entity name (model)
+    * @param sEntityName string name (model)
     * @return integer|null user id if exist
     */
     protected function getOwnerId($iEntityID, $sEntityName)

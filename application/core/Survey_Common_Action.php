@@ -201,7 +201,7 @@ class Survey_Common_Action extends CAction
     *
     * @access protected
     * @param string $sa
-    * @param array $get_vars
+    * @param string[] $get_vars
     * @return void
     */
     protected function route($sa, array $get_vars)
@@ -254,12 +254,11 @@ class Survey_Common_Action extends CAction
         //// This check will be useless when it will be handle directly by each specific controller.
         if (!empty($aData['surveyid']))
         {
-            //// TODO : check what is doing exactly this function. (application/helpers/expressions/em_manager_helper.php)
-            //// If it's about initialiazing global variables, should be removed and parsed in right controllers.
-            //// But it seems that it's just useless.
-            LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl);  // so can click on syntax highlighting to edit questions
-
             $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+
+            // Needed to evaluate EM expressions in question summary
+            // See bug #11845
+            LimeExpressionManager::StartProcessingPage(false,true);
 
             $this->_titlebar($aData);
 
@@ -270,12 +269,6 @@ class Survey_Common_Action extends CAction
             $this->_browsemenubar($aData);
             $this->_tokenbar($aData);
             $this->_organizequestionbar($aData);
-
-            //// TODO : check what it's doing exactly, and why it is here (not after or before)
-            //// It seems that it is not used at all. It's about timing
-            LimeExpressionManager::FinishProcessingPage();
-
-
 
             //// TODO : Move this div inside each correct view ASAP !
             echo '<div class="container-fluid" id="in_survey_common"><div class="row">';
@@ -1275,7 +1268,6 @@ class Survey_Common_Action extends CAction
     }
     /**
     * Load menu bar of user group controller.
-    * @param int $ugid
     * @return void
     */
     public function _userGroupBar($aData)
@@ -1347,6 +1339,10 @@ class Survey_Common_Action extends CAction
         $oAdminTheme->registerCssFile( $sPath, $sFile );
     }
 
+    /**
+     * @param string $extractdir
+     * @param string $destdir
+     */
     protected function _filterImportedResources($extractdir, $destdir)
     {
         $aErrorFilesInfo = array();

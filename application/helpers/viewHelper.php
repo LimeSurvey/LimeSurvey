@@ -28,7 +28,7 @@ class viewHelper
      * @param string $linkUrl Url we want to go to, uses CController->createUrl()
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
-     * @param string $linkclass Optional class to add to the link
+     * @param string $linkClass Optional class to add to the link
      * @param array  $attribs Optional array of attirbutes to set on the link
      */
     public static function getImageLink($imgName, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
@@ -65,7 +65,7 @@ class viewHelper
      * @param string $linkUrl Url we want to go to, uses CController->createUrl()
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
-     * @param string $linkclass Optional class to add to the link
+     * @param string $linkClass Optional class to add to the link
      * @param array  $attribs Optional array of attirbutes to set on the link
      */
     public static function getIconLink($icoClasses, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
@@ -249,6 +249,7 @@ class viewHelper
      * @todo : filter inline javascript (onclick etc ..., but don't filter EM javascript)
      * Maybe doing it directly in LEM->GetLastPrettyPrintExpression();
      * @param string : Html to filter
+     * @param string $sHtml
      * @return string
      * @author Denis Chenu
      */
@@ -258,6 +259,7 @@ class viewHelper
     /**
      * Show purified html
      * @param string : Html to purify
+     * @param string $sHtml
      * @return string
      */
      public static function purified($sHtml){

@@ -14,6 +14,10 @@
 
 class SurveyRuntimeHelper {
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createFullQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
@@ -27,6 +31,9 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * @param string $LEMsessid
+     */
     protected function createFullQuestionIndexByGroupMenu($LEMsessid)
     {
         // Button will be shown inside the form. Not handled by replacement.
@@ -71,6 +78,9 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>$htmlButtons );
     }
 
+    /**
+     * @param string $LEMsessid
+     */
     protected function createFullQuestionIndexByQuestionMenu($LEMsessid)
     {
         $html = '';
@@ -86,6 +96,10 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>array() );
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createIncrementalQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         $html = '';
@@ -187,6 +201,10 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>array() );
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createFullQuestionIndex($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
@@ -200,6 +218,9 @@ class SurveyRuntimeHelper {
 
     }
 
+    /**
+     * @param string $LEMsessid
+     */
     protected function createFullQuestionIndexByGroup($LEMsessid)
     {
         echo "\n\n<!-- PRESENT THE INDEX (full) -->\n";
@@ -250,6 +271,9 @@ class SurveyRuntimeHelper {
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
     }
 
+    /**
+     * @param string $LEMsessid
+     */
     protected function createFullQuestionIndexByQuestion($LEMsessid)
     {
         echo CHtml::openTag('div', array('id' => 'index'));
@@ -262,6 +286,10 @@ class SurveyRuntimeHelper {
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
     }
 
+    /**
+     * @param string $LEMsessid
+     * @param string $surveyMode
+     */
     protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
     {
         echo "\n\n<!-- PRESENT THE INDEX (incremental)-->\n";
@@ -1022,6 +1050,10 @@ class SurveyRuntimeHelper {
             // TMSW - could iterate through LEM::currentQset instead
 
             //// To diplay one question, all the questions are processed ?
+            if (!isset($qanda))
+            {
+                $qanda=array();
+            }
             foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia)
             {
                 ++$qnumber;
@@ -1329,11 +1361,14 @@ class SurveyRuntimeHelper {
                 echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
 
             }
-            if ($surveyMode == 'group') {
-                echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
-            }
-            if ($surveyMode == 'question') {
-                echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
+            if (!empty($qanda))
+            {
+                if ($surveyMode == 'group') {
+                    echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+                }
+                if ($surveyMode == 'question') {
+                    echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
+                }
             }
 
             echo "\n\n<!-- END THE GROUP -->\n";
@@ -1489,17 +1524,17 @@ class SurveyRuntimeHelper {
         $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory : it's the real gid or the updated gid ? We need original gid or updated gid ?
         $aReplacement['SGQ']=$aQuestionQanda[7];
         $aReplacement['AID']=isset($aQuestionQanda[0]['aid']) ? $aQuestionQanda[0]['aid'] : "" ;
-        $aReplacement['QUESTION_CODE']=$aReplacement['QUESTION_NUMBER']="";
         $sCode=$aQuestionQanda[5];
         $iNumber=$aQuestionQanda[0]['number'];
 
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
         $aSurveyinfo = getSurveyInfo($iSurveyId);
-        // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
-        if(($aSurveyinfo['showqnumcode'] == $showqnumcode_global_) || ($showqnumcode_global_ == 'choose')){
-            $showqnumcode_ = $aSurveyinfo['showqnumcode'];
-        } else {
-            $showqnumcode_ = $showqnumcode_global_;
+
+        // Check global setting to see if survey level setting should be applied
+        if($showqnumcode_global_ == 'choose') { // Use survey level settings
+            $showqnumcode_ = $aSurveyinfo['showqnumcode']; //B, N, C, or X
+        } else { // Use global setting
+            $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
         }
 
         switch ($showqnumcode_)
@@ -1510,15 +1545,20 @@ class SurveyRuntimeHelper {
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
                 break;
             case 'number':
-            case 'N':
+            case 'N': // Number only
+                $aReplacement['QUESTION_CODE']="";
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
                 break;
-            case 'number':
+            case 'code':
+            case 'C': // Code only
                 $aReplacement['QUESTION_CODE']=$sCode;
+                $aReplacement['QUESTION_NUMBER']="";
                 break;
-            case 'choose':
-            case 'C':
-            default:
+            case 'none':
+            case 'X':
+            default: // Neither
+                $aReplacement['QUESTION_CODE']="";
+                $aReplacement['QUESTION_NUMBER']="";
                 break;
         }
 

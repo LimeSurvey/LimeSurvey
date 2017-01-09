@@ -48,7 +48,7 @@ class Question extends LSActiveRecord
     * Returns the primary key of this table
     *
     * @access public
-    * @return string
+    * @return string[]
     */
     public function primaryKey()
     {
@@ -179,7 +179,6 @@ class Question extends LSActiveRecord
     * @static
     * @access public
     * @param int $gid
-    * @param int $surveyid
     * @return void
     */
     function updateQuestionOrder($gid,$language,$position=0)
@@ -221,20 +220,7 @@ class Question extends LSActiveRecord
         {
             $aLanguages = array($sLanguage);
         }
-
-        if ($iQuestionID)
-        {
-            $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
-            $aAttributeValues=array();
-            foreach($oAttributeValues as $oAttributeValue)
-            {
-                if($oAttributeValue->language){
-                    $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
-                }else{
-                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
-                }
-            }
-        }
+        $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID,$sLanguage);
         $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute)
@@ -265,6 +251,7 @@ class Question extends LSActiveRecord
                 }
             }
         }
+
         return $aAttributeNames;
     }
 
@@ -816,7 +803,7 @@ class Question extends LSActiveRecord
     {
         if ($this->type != "X"  && $this->type != "|")
         {
-            $sIcon = ($this->other=="Y")?'<span class="fa fa-asterisk text-danger"></span>':'<span></span>';
+            $sIcon = ($this->mandatory=="Y")?'<span class="fa fa-asterisk text-danger"></span>':'<span></span>';
         }
         else
         {
@@ -827,7 +814,7 @@ class Question extends LSActiveRecord
 
     public function getOtherIcon()
     {
-        //return $this->mandatory;
+
         if (( $this->type == "L") || ($this->type == "!") || ($this->type == "P") || ($this->type=="M"))
         {
             $sIcon = ($this->other==="Y")?'<span class="fa fa-dot-circle-o"></span>':'<span></span>';
@@ -839,7 +826,39 @@ class Question extends LSActiveRecord
         return $sIcon;
     }
 
-
+    /**
+     * Get an new title/code for a question
+     * @param integer|string $index base for question code (exemple : inde of question when survey import)
+     * @return string|null : new title, null if impossible
+     */
+    public function getNewTitle($index=0)
+    {
+        $sOldTitle=$this->title;
+        if($this->validate(array('title'))){
+            return $sOldTitle;
+        }
+        /* Maybe it's an old invalid title : try to fix it */
+        $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+        if (is_numeric(substr($sNewTitle,0,1)))
+        {
+            $sNewTitle='q' . $sNewTitle;
+        }
+        /* Maybe there are another question with same title try to fix it 10 times */
+        $attempts = 0;
+        while (!$this->validate(array('title')))
+        {
+            $rand = mt_rand(0, 1024);
+            $sNewTitle= 'q' . $index.'r' . $rand ;
+            $this->title = $sNewTitle;
+            $attempts++;
+            if ($attempts > 10)
+            {
+                $this->addError('title', 'Failed to resolve question code problems after 10 attempts.');
+                return null;
+            }
+        }
+        return $sNewTitle;
+    }
 
     public function search()
     {
@@ -969,4 +988,5 @@ class Question extends LSActiveRecord
         ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
         ." AND parent_qid=0")->read();
     }
+
 }

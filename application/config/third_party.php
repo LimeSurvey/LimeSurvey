@@ -67,34 +67,6 @@ return array(
         )
     ),
 
-    // jQgrid
-    'jqgrid' => array(
-        'basePath' => 'third_party.jqgrid',
-        'js' => array(
-            'js/jquery.jqGrid.min.js',
-            'js/i18n/grid.locale-en.js',
-            'plugins/jquery.searchFilter.js'
-        ),
-        'css' => array(
-            //'css/ui.jqgrid.css'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-
-    ),
-
-    'jqgrid.addons' => array(
-        'basePath' => 'third_party.jqgrid.plugins',
-        'js' => array(
-            'grid.addons.js'
-        ),
-        'depends' => array(
-            'jqgrid'
-        )
-
-    ),
-
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
         'basePath' => 'third_party.jquery-bindWithDelay',
@@ -295,6 +267,79 @@ return array(
         'js' => array(
             'Uri.js'
         ),
+    ),
+
+    'bootstrap-datetimepicker' => array(
+        'basePath' => 'third_party.bootstrap-datetimepicker',
+        'css' => array(
+            'css/bootstrap-datetimepicker.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-datetimepicker.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'bootstrap-switch' => array(
+        'basePath' => 'third_party.bootstrap-switch',
+        'css' => array(
+            'css/bootstrap-switch.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-switch.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'jquery-datatable' => array(
+        'basePath' => 'third_party.jquery-datatable',
+        'css' => array(
+            'datatables.min.css'
+        ),
+        'js' => array(
+            'datatables.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
+        )
+    ),
+
+    'es6promise' => array(
+        'basePath' => 'third_party.es6promise',
+        'js' => array(
+            'es6-promise.auto.min.js'
+        )
+    ),
+    
+    'dom2image' => array(
+        'basePath' => 'third_party.dom-to-image',
+        'js' => array(
+            'dist/dom-to-image.min.js',
+        )
+    ),
+
+    'jspdf' => array(
+        'basePath' => 'third_party.jspdf',
+        'js' => array(
+            'jspdf.min.js',
+            'createpdf_worker.js'
+        ),
+        'depends' => array(
+            'dom2image',
+            'es6promise',
+            'jquery',
+            'bootstrap'
+        )
     )
+
 
 );

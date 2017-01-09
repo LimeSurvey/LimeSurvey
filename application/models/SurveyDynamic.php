@@ -458,6 +458,9 @@ class SurveyDynamic extends LSActiveRecord
      * @param string sType
      * @param string dStart
      * @param string dEnd
+     * @param string $sType
+     * @param string $dStart
+     * @param string $dEnd
      *
      * @access public
      * @return array
@@ -571,6 +574,7 @@ class SurveyDynamic extends LSActiveRecord
        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
        $criteria = new CDbCriteria;
        $sort     = new CSort;
+       $sort->defaultOrder = 'id ASC';
 
        // Make all the model's columns sortable (default behaviour)
        $sort->attributes = array(

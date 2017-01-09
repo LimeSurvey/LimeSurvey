@@ -165,10 +165,12 @@ class QuestionAttribute extends LSActiveRecord
     *
     * @access public
     * @param int $iQuestionID
+    * @param string $sLanguage restrict to this language (@todo : add it in qanda)
     * @return array
     */
-    public function getQuestionAttributes($iQuestionID)
+    public function getQuestionAttributes($iQuestionID,$sLanguage=null)
     {
+
         $iQuestionID=(int)$iQuestionID;
         static $aQuestionAttributesStatic=array();// TODO : replace by Yii::app()->cache
         // Limit the size of the attribute cache due to memory usage
@@ -181,8 +183,11 @@ class QuestionAttribute extends LSActiveRecord
         $oQuestion = Question::model()->find("qid=:qid",array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
         if ($oQuestion)
         {
-            $aLanguages = array_merge(array(Survey::model()->findByPk($oQuestion->sid)->language), Survey::model()->findByPk($oQuestion->sid)->additionalLanguages);
-
+            if($sLanguage){
+                $aLanguages = array($sLanguage);
+            }else{
+                $aLanguages = array_merge(array(Survey::model()->findByPk($oQuestion->sid)->language), Survey::model()->findByPk($oQuestion->sid)->additionalLanguages);
+            }
             // Get all atribute set for this question
             $sType=$oQuestion->type;
 
@@ -193,6 +198,8 @@ class QuestionAttribute extends LSActiveRecord
             }
 
             $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sType);
+
+            /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
             $aAttributeValues=array();
             foreach($oAttributeValues as $oAttributeValue)
@@ -200,7 +207,8 @@ class QuestionAttribute extends LSActiveRecord
                 if($oAttributeValue->language){
                     $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
                 }else{
-                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
+                    /* Don't replace existing language, use '' for null key */
+                    $aAttributeValues[$oAttributeValue->attribute]['']=$oAttributeValue->value;
                 }
             }
 
@@ -208,14 +216,12 @@ class QuestionAttribute extends LSActiveRecord
             // Can not use array_replace due to i18n
             foreach($aAttributeNames as $aAttribute)
             {
+
                 if ($aAttribute['i18n'] == false)
                 {
-                    if(isset($aAttributeValues[$aAttribute['name']]))
-                    {
-                        $aQuestionAttributes[$aAttribute['name']]=$aAttributeValues[$aAttribute['name']];
-                    }
-                    else
-                    {
+                    if(isset($aAttributeValues[$aAttribute['name']][''])){
+                        $aQuestionAttributes[$aAttribute['name']]=$aAttributeValues[$aAttribute['name']][''];
+                    }else{
                         $aQuestionAttributes[$aAttribute['name']]=$aAttribute['default'];
                     }
                 }
@@ -223,12 +229,11 @@ class QuestionAttribute extends LSActiveRecord
                 {
                     foreach ($aLanguages as $sLanguage)
                     {
-                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage]))
-                        {
+                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])){
                             $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                        }
-                        else
-                        {
+                        }elseif(isset($aAttributeValues[$aAttribute['name']][''])){
+                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][''];
+                        }else{
                             $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttribute['default'];
                         }
                     }

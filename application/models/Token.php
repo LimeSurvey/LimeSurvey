@@ -108,7 +108,7 @@
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
                 if (!isset($fields[$attrname])) {
-                    $fields[$attrname] = 'string(255)';
+                    $fields[$attrname] = 'text';
                 }
             }
 
@@ -155,7 +155,7 @@
         /**
         * Creates a random token string without special characters
         *
-        * @param mixed $tokenlength
+        * @param mixed $iTokenLength
         */
         public static function generateRandomToken($iTokenLength){
             return str_replace(array('~','_'),array('a','z'),Yii::app()->securityManager->generateRandomString($iTokenLength));
@@ -286,7 +286,7 @@
             );
             foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
             {
-                 $aRules[]=array($key,'LSYii_Validators');
+                 $aRules[]=array($key,'LSYii_Validators','except'=>'FinalSubmit');
             }
             return $aRules;
         }

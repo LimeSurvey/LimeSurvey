@@ -22,7 +22,6 @@ class SurveyTimingDynamic extends LSActiveRecord
 	 *
 	 * @static
 	 * @access public
-	 * @param int $surveyid
 	 * @return CActiveRecord
 	 */
     public static function model($sid = NULL)

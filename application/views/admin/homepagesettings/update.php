@@ -12,7 +12,7 @@
         )
     )); ?>
 
-    <h3><?php eT('Update box');?> <em><?php echo $model->title; ?></em></h3>
+    <h3><?php printf('Update box %s',"<em>".htmlspecialchars($model->title)."</em>");?> </h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
