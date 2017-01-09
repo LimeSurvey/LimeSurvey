@@ -37,13 +37,16 @@
                 {{ include('./subviews/save_links.twig') }}
                 {{ include('./subviews/clearall_links.twig') }}
                 {{ include('./subviews/question_index.twig') }}
+                {{ include('./subviews/language_changer_top_menu.twig') }}
             </ul>
         </div>
     </div>
 
     <!-- Top container -->
     <div class="top-container">
-      <div class="container top-content">{LANGUAGECHANGER}{PERCENTCOMPLETE}</div> <!-- must hide it without javascript -->
+      <div class="container top-content">
+          {PERCENTCOMPLETE}
+      </div> <!-- must hide it without javascript -->
     </div>
 
     <div class="outerframe container" id="outerframeContainer">

@@ -286,20 +286,18 @@ class SurveyRuntimeHelper {
             } //end iteration
         }
 
-        if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
-        {
-            if ($show_empty_group)
-            {
+        if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y'){
+            if ($show_empty_group){
                 $percentcomplete = makegraph($_SESSION[$LEMsessid]['totalsteps'] + 1, $_SESSION[$LEMsessid]['totalsteps']);
-            }
-            else
-            {
+            }else{
                 $percentcomplete = makegraph($_SESSION[$LEMsessid]['step'], $_SESSION[$LEMsessid]['totalsteps']);
             }
         }
-        if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey'))
-        {
-            $languagechanger = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang']);
+
+        if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey')){
+
+            $languagechanger = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang'], false, false);
+            $thissurvey['alanguageChangerDatas'] = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang'], false, true);
         }
 
         //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
