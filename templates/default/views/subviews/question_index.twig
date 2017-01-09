@@ -18,6 +18,7 @@
         </a>
 
         <ul class="dropdown-menu">
+            {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
             {% for step, indexItem in aSurveyInfo.indexItems %}
                 {% set statusClass = ''  %}
                 {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
@@ -43,6 +44,7 @@
 
 {# Question index in question by question mode #}
 {% if aSurveyInfo.format == 'S' %}
+    <!-- Question index, question by question, {{ indexType }} -->
     <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ indexType }}">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             {{ "Question index" | t }}
@@ -50,6 +52,7 @@
         </a>
         <ul class="dropdown-menu">
             {% for group in aSurveyInfo.indexItems %}
+                {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
                 <li>
                     <div class="dropdown-header">
                         {{ flatEllipsizeText(group.text, true, 30, " &hellip; ", 0.6 ) | raw }}
