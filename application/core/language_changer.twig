@@ -1,0 +1,61 @@
+{# Show a language changer inside the form #}
+
+{% if aSurveyInfo.alanguageChangerDatas != false %}
+    {% set aLCD  = aSurveyInfo.alanguageChangerDatas %}
+
+    {#
+        array of attributes of the Drop Down list.
+        To add a new attribute, just add an entry:
+        'attribute' : 'value',
+    #}
+    {% set htmlOptions = {
+            'id'             : false,
+            'class'          : 'form-control',
+            'data-targeturl' : aLCD.targetUrl,
+        }
+    %}
+
+    {% if aSurveyInfo.withForm == true %}
+        <form method="get" class="ls-languagechanger-form">
+    {% endif %}
+
+        {# Must be included only one time (else : multiple id) #}
+        <div class="form-inline form-change-lang <?php echo $sClass ?>" >
+            <label class="form-group">
+                <span class="control-label">{{ "Language:" | t }}</span>
+                {{
+                    C.Html.dropDownList(
+                        'lang',
+                        aLCD.sSelected,
+                        aLCD.aListLang,
+                        htmlOptions
+                    )
+                    | raw
+                }}
+
+            </label>
+
+                {% if aSurveyInfo.withForm == true %}
+                    <!-- for no js functionality (need form) -->
+                    {% set buttonhtmlOptions = {
+                            'type' : 'submit',
+                            'value': 'changelang',
+                            'name' : 'move',
+                            'class': 'btn btn-default ls-js-hidden',
+                            }
+                    %}
+
+                    {{
+                        C.Html.htmlButton(
+                        ("Change the language" | gT ),
+                        htmlOptions
+                        )
+                        | raw
+                    }}
+                {% endif %}
+        </div>
+
+    {% if aSurveyInfo.withForm == true %}
+        </form>
+    {% endif %}
+{% endif %}
