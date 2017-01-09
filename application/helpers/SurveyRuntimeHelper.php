@@ -295,8 +295,6 @@ class SurveyRuntimeHelper {
         }
 
         if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey')){
-
-            $languagechanger = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang'], false, false);
             $thissurvey['alanguageChangerDatas'] = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang'], false, true);
         }
 

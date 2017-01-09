@@ -198,6 +198,7 @@ $internalConfig = array(
             ),
             // Those extensions, include the sendbox, will be done later in the process
             'extensions' => array(
+                'LS_Twig_Extension',
                 'Twig_Extension_Sandbox',
                 'Twig_Extension_StringLoader',
                 'Twig_Extension_Debug',
@@ -210,6 +211,7 @@ $internalConfig = array(
                 'getLanguageData'       => 'viewHelper::getLanguageData',
                 'array_flip'            => 'array_flip',
                 'array_intersect_key'   => 'array_intersect_key',
+                'registerPublicCssFile' => 'LS_Twig_Extension::registerPublicCssFile'
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -228,7 +230,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key')
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile')
             )
 
             // Change template syntax to Smarty-like (not recommended)
