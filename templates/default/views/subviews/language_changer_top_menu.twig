@@ -1,0 +1,67 @@
+{# Show a language changer inside the top menu #}
+
+{% if aSurveyInfo.alanguageChangerDatas != false %}
+    {% set aLCD  = aSurveyInfo.alanguageChangerDatas %}
+
+    <!-- Language Changer, top menu version -->
+    <li class="dropdown ls-no-js-hidden">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            {{ "Language:" | t }} {{ aLCD.aListLang[aLCD.sSelected] }}
+            <span class="caret"></span>
+        </a>
+
+        <ul class="dropdown-menu">
+            {% for value, lang in aLCD.aListLang %}
+                <li class="index-item">
+                    <a href='#' data-limesurvey-lang='{{ value }}' class="ls-language-link">
+                        {{ lang | t }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+
+    {% set buttonhtmlOptions = {
+            'id'   : 'changlangButton',
+            'type' : 'submit',
+            'value': 'changelang',
+            'name' : 'move',
+            'class': 'btn btn-default ls-js-hidden',
+            }
+    %}
+
+    {{
+        C.Html.htmlButton(
+        ("Change the language" | gT ),
+        buttonhtmlOptions
+        )
+        | raw
+    }}
+
+{% endif %}
+
+<script>
+// Method for link
+$(document).ready(function(){
+    $('.ls-language-link').on('click', function(){
+        var lang = $(this).data('limesurvey-lang');
+
+        /* we are not in a forum, can not submit directly */
+        if($('form#limesurvey').length==1){
+            /* The limesurvey form exist in document, move select and button inside and click */
+            $("form#limesurvey [name='lang']").remove();                        // Remove existing lang selector
+            $("<input type='hidden'>").attr('name','lang').val(lang).appendTo($('form#limesurvey'));
+            $('#changlangButton').clone().appendTo($('form#limesurvey')).click();
+        }else{
+            // If there are no form : we can't use it */
+            /* No form, not targeturl : just see what happen */
+            $("<form>", {
+                "class":'ls-js-hidden',
+                "html": '<input type="hidden" name="lang" value="' + lang + '" />',
+                "action": target,
+                "method": 'get'
+            }).appendTo(document.body).submit();
+        }
+    });
+});
+</script>
