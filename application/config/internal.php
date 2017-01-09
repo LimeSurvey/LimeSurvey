@@ -214,12 +214,13 @@ $internalConfig = array(
             'filters' => array(
                 'jencode' => 'CJSON::encode',
                 't'     => 'eT',
+                'gT'    => 'gT',
             ),
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set'),
-                'filters' => array('escape', 'raw', 't', 'merge', 'length'),
+                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT'),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm",  ),
+                    'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton" ),
                     'Survey'                            =>  array("getAllLanguages"),
                     'LSHttpRequest'                     =>  array("getParam"),
                 ),
