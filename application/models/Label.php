@@ -36,7 +36,7 @@ class Label extends LSActiveRecord
 	 * Returns the table's primary key
 	 *
 	 * @access public
-	 * @return string
+	 * @return string[]
 	 */
 	public function primaryKey()
 	{

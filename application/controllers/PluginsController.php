@@ -114,7 +114,7 @@ class PluginsController extends LSYii_Controller
         if (empty($aSettings))
         {
             // And show a message
-            Yii::app()->user->setFlash('pluginmanager', gT('This plugin has no settings'));
+            Yii::app()->user->setFlash('pluginmanager', gT('This plugin has no settings.'));
             $this->redirect('plugins/index', true);
         }
 

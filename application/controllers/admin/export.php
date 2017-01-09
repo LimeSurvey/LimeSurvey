@@ -17,8 +17,8 @@
 *
 * This controller performs export actions
 *
-* @package		LimeSurvey
-* @subpackage	Backend
+* @package        LimeSurvey
+* @subpackage    Backend
 */
 class export extends Survey_Common_Action {
 
@@ -349,7 +349,7 @@ class export extends Survey_Common_Action {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         //for scale 1=nominal, 2=ordinal, 3=scale
 
-        //		$typeMap = $this->_getTypeMap();
+        //        $typeMap = $this->_getTypeMap();
 
         $filterstate = incompleteAnsFilterState();
         $spssver = returnGlobal('spssver');
@@ -358,7 +358,7 @@ class export extends Survey_Common_Action {
         {
             if ( ! Yii::app()->session['spssversion'] )
             {
-                Yii::app()->session['spssversion'] = 2;	//Set default to 2, version 16 or up
+                Yii::app()->session['spssversion'] = 2;    //Set default to 2, version 16 or up
             }
 
             $spssver = Yii::app()->session['spssversion'];
@@ -373,14 +373,14 @@ class export extends Survey_Common_Action {
 
         switch ( $spssver )
         {
-            case 1:	//<16
-                $iLength	 = '255'; // Set the max text length of the Value
+            case 1:    //<16
+                $iLength     = '255'; // Set the max text length of the Value
                 break;
-            case 2:	//>=16
-                $iLength	 = '16384'; // Set the max text length of the Value
+            case 2:    //>=16
+                $iLength     = '16384'; // Set the max text length of the Value
                 break;
             default:
-                $iLength	 = '16384'; // Set the max text length of the Value
+                $iLength     = '16384'; // Set the max text length of the Value
         }
 
         $headerComment = '*$Rev: 121017 $' . " $filterstate $spssver.\n";
@@ -413,12 +413,22 @@ class export extends Survey_Common_Action {
             $data['surveyid'] = $iSurveyID;
             $data['display']['menu_bars']['browse'] = gT('Export results');
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $surveyinfo = $oSurvey->surveyinfo;
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data["surveyinfo"] = $surveyinfo;
             $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+            $data['sBaseLanguage'] = $oSurvey->language;
+
+            $aLanguages=array();
+            $aLanguagesCodes=$oSurvey->getAllLanguages();
+            foreach ($aLanguagesCodes as $sLanguage){
+                $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
+            }
+            $data['aLanguages'] = $aLanguages;    // Pass available exports
 
             $data['sidemenu']['state'] = false;
+
             $data['menu']['edition'] = true;
             $data['menu']['close'] =  true;
 
@@ -427,8 +437,13 @@ class export extends Survey_Common_Action {
         }
 
         // Get Base language:
-        $language = Survey::model()->findByPk($iSurveyID)->language;
-        App()->setLanguage($language);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $sLanguage = Yii::app()->request->getParam('exportlang');
+        $aLanguagesCodes=$oSurvey->getAllLanguages();
+        if (!in_array($sLanguage,$aLanguagesCodes)){
+            $sLanguage = $oSurvey->language;
+        }
+        App()->setLanguage($sLanguage);
 
         Yii::app()->loadHelper("admin/exportresults");
         viewHelper::disableHtmlLogging();
@@ -446,7 +461,7 @@ class export extends Survey_Common_Action {
             }
 
             $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '' )?'\''.$_POST['noanswervalue'].'\'':'';
-            SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue);
+            SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue,'\'',false, $sLanguage);
 
             exit;
         }
@@ -459,7 +474,7 @@ class export extends Survey_Common_Action {
             header("Pragma: public");
 
             // Build array that has to be returned
-            $fields = SPSSFieldMap($iSurveyID);
+            $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
             //Now get the query string with all fields to export
             $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
@@ -903,10 +918,13 @@ class export extends Survey_Common_Action {
     {
         $sSurveys = $_POST['sItems'];
         $exportResult = $this->exportMultipleSurveys($sSurveys, 'archive');
-        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
     }
 
 
+    /**
+     * @param string $sExportType
+     */
     public function exportMultipleSurveys($sSurveys, $sExportType)
     {
         $aSurveys = json_decode($sSurveys);
@@ -920,6 +938,10 @@ class export extends Survey_Common_Action {
 
         foreach($aSurveys as $iSurveyID)
         {
+            $iSurveyID=filter_var($iSurveyID,FILTER_VALIDATE_INT);
+            if ($iSurveyID===false) {
+                continue;
+            }
             if(Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export'))
             {
                 $archiveName                    = "";
@@ -1146,7 +1168,7 @@ class export extends Survey_Common_Action {
      * Return a list of queXML settings
      *
      * @access private
-     * @return array queXML settings
+     * @return string[] queXML settings
      */
     private function _quexmlsettings()
     {

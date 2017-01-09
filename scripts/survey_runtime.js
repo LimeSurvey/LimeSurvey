@@ -78,7 +78,7 @@ function setJsVar(){
     bFixNumAuto=LSvar.bFixNumAuto;
     bNumRealValue=LSvar.bNumRealValue;
     LEMradix=LSvar.sLEMradix;
-    numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
+    numRegex = new RegExp('[^-\.,0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
 }
 // Deactivate all other button on submit
@@ -165,75 +165,68 @@ function checkconditions(value, name, type, evt_type)
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
-    newval = new String(value);
-
+    var newval = new String(value);
+    var cleansedValue = newval.replace(numRegex,'');
     /**
      * If have to use parsed value.
      */
     if(!bNumRealValue)
-    {
-        if (typeof intonly !=='undefined' && intonly==1) {
-            newval = newval.replace(intRegex,'');
+    {                
+        var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
+        if(checkNumericRegex.test(value)) {
+            try{
+                var decimalValue = new Decimal(cleansedValue);
+            } catch(e){
+                var decimalValue = new Decimal(cleansedValue.replace(',','.'));
+            }
+            
+            if (typeof intonly !=='undefined' && intonly==1) {
+                newval = decimalValue.trunc();
+            }
+        } else {
+            newval = "";
         }
-        else {
-            newval = newval.replace(numRegex,'');
-        }
-        aNewval = newval.split(LEMradix);
-        if(aNewval.length>0){
-            newval=aNewval[0];
-        }
-        if(aNewval.length>1){
-            newval=newval+"."+aNewval[1];
-        }
-        if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
-            newval = '';
-        }
+
     }
 
     /**
      * If have to fix numbers automatically.
      */
-    if(bFixNumAuto)
+    if(bFixNumAuto && (newval != ""))
     {
+        var addition = "";
+        if(cleansedValue.split("").pop().match(/(,)|(\.)/)){
+            addition = cleansedValue.split("").pop();
+        }
 
+         try{
+            var decimalValue = new Decimal(cleansedValue);
+        } catch(e){
+            var decimalValue = new Decimal(cleansedValue.replace(',','.'));
+        }
         /**
          * Work on length of the number
          * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator.
          */
-        var midval = newval;
-        var aNewval = midval.split('.');
-        var newval = '';
-
-        // Treat integer part
-        if (aNewval.length > 0) {
-            var intpart = aNewval[0];
-            newval = (intpart.length > 20) ? '99999999999999999999' : intpart;
-        }
-
         // Treat decimal part, if there is one.
         // Trim after 10th decimal if larger than 10 decimals.
-        if (aNewval.length > 1) {
-            var decpart = aNewval[1];
-            if (decpart.length > 10){
-                decpart = decpart.substr(0,10);
-            }
-            else {
-                decpart = aNewval[1];
-            }
-            newval = newval + "." + decpart;
+        if(decimalValue.dp()>10){
+            decimalValue.toDecimalPlaces(10);
         }
 
         /**
          * Set display value
          */
-        displayVal = newval;
-        if (LEMradix === ',') {
-            displayVal = displayVal.split('.').join(',');
-        }
+        displayVal = decimalValue.toString();
+
+        if(LEMradix==",")
+            displayVal = displayVal.replace(/\./,',');
+
         if (name.match(/other$/)) {
-            $('#answer'+name+'text').val(displayVal);
+            $('#answer'+name+'text').val(displayVal+addition);
         }
-        $('#answer'+name).val(displayVal);
+
+        $('#answer'+name).val(displayVal+addition);
     }
 
     /**
@@ -243,7 +236,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     {
         evt_type = 'onchange';
     }
-    checkconditions(newval, name, type, evt_type);
+    checkconditions(cleansedValue, name, type, evt_type);
 }
 
 // Set jquery-ui to LS Button

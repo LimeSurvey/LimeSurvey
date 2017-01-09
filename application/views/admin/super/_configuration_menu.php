@@ -212,12 +212,12 @@
 
                     <?php endif;?>
 
-                <!-- Central participant database/panel -->
+                <!-- Central participant database -->
                 <?php if(Permission::model()->hasGlobalPermission('participantpanel','read')): ?>
 
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
-                            <?php eT("Central participant database/panel"); ?>
+                            <?php eT("Central participant database"); ?>
                         </a>
                     </li>
                     <?php endif;?>

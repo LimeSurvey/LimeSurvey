@@ -82,6 +82,8 @@ class templates extends Survey_Common_Action
         $iTime= preg_replace("/[^0-9]$/", '', $id);
         $sFile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."template_temp_{$iTime}.html";
 
+        $id =  CHtml::encode($id);
+
         if(!is_file($sFile) || !file_exists($sFile)) {
             die("Found no file with id " . $id);
         }
@@ -813,8 +815,8 @@ class templates extends Survey_Common_Action
     * Function that initialises file data.
     *
     * @access protected
-    * @param mixed $templatename
-    * @return void
+    * @param string $templatename
+    * @return string[]
     */
     protected function getValidScreenFiles($templatename)
     {

@@ -93,12 +93,12 @@
                     'type'  => 'separator',
                 ),
 
-                // Central participant database/panel header
+                // Central participant database header
                 array(
 
                     // li element
                     'type' => 'dropdown-header',
-                    'text' => gT("Central participant database/panel"),
+                    'text' => gT("Central participant database"),
                 ),
 
                 // Send email reminder

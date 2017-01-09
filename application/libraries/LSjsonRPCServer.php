@@ -6,7 +6,7 @@
         /**
 	 * This function handle a request binding it to a given object
 	 *
-	 * @param object $object
+	 * @param remotecontrol_handle $object
 	 * @return boolean
 	 */
 	public static function handle($object) {

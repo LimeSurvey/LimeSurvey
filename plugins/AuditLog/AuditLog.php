@@ -197,17 +197,16 @@
             }
 
             $oNewParticipant=$this->getEvent()->get('model');
+            $oCurrentUser = $this->api->getCurrentUser();
+            $currentUID = $oCurrentUser ? $oCurrentUser->uid : null;
             if ($oNewParticipant->isNewRecord)
             {
                 $sAction = 'create';
                 $oldvalues = array();
-                $currentUID = false; 
             }
             else
             {
                 $sAction = 'update';
-                $oCurrentUser = $this->api->getCurrentUser();
-                $currentUID = $oCurrentUser->uid;
                 $oldvalues= $this->api->getTokenById($iSurveyID, $oNewParticipant->tid)->getAttributes();
             }
 

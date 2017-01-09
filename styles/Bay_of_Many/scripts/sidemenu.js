@@ -255,18 +255,6 @@ $(document).ready(function(){
                 $('.handleAccordion').removeClass('disabled');
         });
 
-        // jQgrid is so jQgriding its jQgrid...
-        if($('#panelintegration').length){
-            $('#gbox_urlparams').width('90%');
-            $('#gview_urlparams').width('90%');
-            $('.ui-state-default.ui-jqgrid-hdiv').width('90%');
-            $('.ui-jqgrid-htable.table').width('90%');
-            $('.ui-jqgrid-labels th').width('14%');
-            $('.ui-jqgrid-bdiv').width('100%');
-            $('#urlparams').width('90%');
-            $('.jqgfirstrow').width('14%');
-            $('#pagerurlparams').width('90%');
-        }
     });
 
     /**

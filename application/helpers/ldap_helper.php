@@ -100,6 +100,9 @@ function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope) {
 }
 
 
+/**
+ * @param integer $surveyid
+ */
 function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
     $ldap_queries = Yii::app()->getConfig('ldap_queries');
     $totalrescount=0;

@@ -10,17 +10,17 @@
 
                 <li>
                     <a href="<?php echo App()->createUrl('admin/survey/sa/listquestions/surveyid/'.$oQuestion->sid.'?group_name='.urlencode($oQuestion->groups->group_name).'&yt0=Search' );?>">
-                        <?php echo $oQuestion->groups->group_name;?>
+                        <?php echo flattenText($oQuestion->groups->group_name);?>
                     </a>
                 </li>
                 <?php if(!isset($active)): ?>
                     <li class="active">
-                        <?php echo $oQuestion->title;?>
+                        <?php echo flattenText($oQuestion->title);?>
                     </li>
                 <?php else: ?>
                     <li>
                         <a href="<?php echo App()->createUrl('/admin/questions/sa/view/surveyid/'.$oQuestion->sid.'/gid/'.$oQuestion->gid.'/qid/'.$oQuestion->qid );?>">
-                            <?php echo $oQuestion->title;?>
+                            <?php echo flattenText($oQuestion->title);?>
                         </a>
                     </li>
                     <li class="active">
@@ -40,12 +40,12 @@
 
               <?php if(!isset($active)): ?>
                <li class="active">
-                      <?php echo $oQuestionGroup->group_name;?>
+                      <?php echo flattenText($oQuestionGroup->group_name);?>
                </li>
               <?php else: ?>
                   <li>
                       <a href="<?php echo App()->createUrl('admin/questiongroups/sa/view/surveyid/'.$oQuestionGroup->sid.'/gid/'.$oQuestionGroup->gid  );?>">
-                          <?php echo $oQuestionGroup->group_name;?>
+                          <?php echo flattenText($oQuestionGroup->group_name);?>
                       </a>
                   </li>
                   <li class="active">

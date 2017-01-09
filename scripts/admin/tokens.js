@@ -35,7 +35,7 @@ $.fn.YesNoDate = function(options)
 
         // When user change date
         $(document).on('dp.change', '#'+$elDate.attr('id')+'_datetimepicker', function(e){
-            $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:MM'));
+            $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
         })
     });
 }
@@ -44,7 +44,6 @@ $.fn.YesNo = function(options)
 {
     var that              = $(this);                                            // calling element
     var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
-
 
     $(document).ready(function(){
         var $elSwitch        = that.find('.YesNoSwitch').first();               // switch element (generated with YiiWheels widgets)
@@ -128,13 +127,13 @@ function submitEditToken(){
         success : function(html, statut){
             $ajaxLoader.hide();
             //Using Try/Catch here to catch errors if there is no grid
-            
+
             try{
                 $.fn.yiiGridView.update('token-grid', {
                     complete: function(s){
                         $modal.modal('hide');
                     } // Update the surveys list
-                });                   
+                });
             } catch(e){
                 if(e){console.log(e); $modal.modal('hide');}
             }finally{
@@ -175,11 +174,24 @@ $(document).ready(function(){
         });
     }
 
-    $('.scrolling-wrapper').scroll(function(){
-        $('#tokenListPager').css({
-            'left': $(this).scrollLeft() ,
+    var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
+    var useRtl = $('input[name="rtl"]').val() === '1';
+
+    if (useRtl) {
+        $('.scrolling-wrapper').scroll(function(){
+            var scrollAmount = Math.abs($('.scrolling-wrapper').scrollLeft() - initialScrollValue);
+            $('#tokenListPager').css({
+                'right': scrollAmount
+            });
         });
-    });
+    }
+    else {
+        $('.scrolling-wrapper').scroll(function(){
+            $('#tokenListPager').css({
+                'left': $(this).scrollLeft() ,
+            });
+        });
+    }
 
     /**
      * Token delete Token
@@ -188,10 +200,10 @@ $(document).ready(function(){
         var $that       = $(this),
             actionUrl  = $that.data('url'),
             $modal      = $('#confirmation-modal');
-        
+
         $modal.data('ajax-url', actionUrl);
         $modal.data('href', "#");
-        $modal.modal('show');   
+        $modal.modal('show');
         $modal.find('.modal-footer-yes-no').find('a.btn-ok').on('click', function(click){
             $.ajax({
                 url: actionUrl,
@@ -202,7 +214,7 @@ $(document).ready(function(){
                             complete: function(s){
                                 $modal.modal('hide');
                             } // Update the surveys list
-                        });                   
+                        });
                     } catch(e){
                         if(e){console.log(e); $modal.modal('hide');}
                     }
@@ -307,13 +319,15 @@ $(document).ready(function(){
 
     $('#startbounceprocessing').click(function(){
 
-        $that               = $(this);
-        $url                = $that.data('url');
-        $modal              = $('#tokenBounceModal');
-        $ajaxLoader         = $('#ajaxContainerLoading');
-        $modalBodyText      = $modal.find('.modal-body-text');
+        var $that               = $(this);
+        var $url                = $that.data('url');
+        var $modal              = $('#tokenBounceModal');
+        var $ajaxLoader         = $('#ajaxContainerLoading');
+        var $modalBodyText      = $modal.find('.modal-body-text');
+        var $limebutton         = $modal.find('.modal-footer .limebutton');
 
         $modalBodyText.empty();
+        $limebutton.empty().append('close');
         $ajaxLoader.show();
         $modal.modal();
 
@@ -363,40 +377,6 @@ function addcondition()
     conditionid++;
     $('#searchtable > tbody > tr').eq(conditionid).after(html2);
     //idexternal++;
-}
-
-
-function addSelectedParticipantsToCPDB()
-{
-    var dialog_buttons={};
-    var token = [];
-
-    var token = jQuery('#displaytokens').jqGrid('getGridParam','selarrrow');
-
-    if(token.length==0)
-    {        /* build an array containing the various button functions */
-        /* Needed because it's the only way to label a button with a variable */
-
-        dialog_buttons[okBtn]=function(){
-            $( this ).dialog( "close" );
-        };
-        /* End of building array for button functions */
-        $('#norowselected').dialog({
-            modal: true,
-            buttons: dialog_buttons
-        });
-    }
-    else
-    {
-        $("#addcpdb").load(postUrl, {
-            participantid:token},function(){
-                $(location).attr('href',attMapUrl+'/'+survey_id);
-        });
-    }
-
-    /*$(":checked").each(function() {
-    token.push($(this).attr('name'));
-    });*/
 }
 
 
@@ -458,50 +438,6 @@ function centerInfoDialog() {
     infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
 }
 
-function updatePageAfterGrid(){
-    var oGrid=$("#displaytokens");
-    var iLastPage=parseInt(oGrid.jqGrid('getGridParam', 'lastpage'));
-    var iPage=parseInt(oGrid.jqGrid('getGridParam', 'page'));
-    if(iPage>1)
-    {
-        iPrevPage=iPage-1;
-        $(".databegin").click(function(){
-            oGrid.setGridParam({page:1}).trigger("reloadGrid");
-        });
-        $(".gridcontrol.databegin").removeClass("disabled");
-        $(".databack").click(function(){
-            oGrid.setGridParam({page:iPrevPage}).trigger("reloadGrid");
-        });
-        $(".gridcontrol.databack").removeClass("disabled");
-    }
-    else
-    {
-        $(".databegin").click(function(){});
-        $(".gridcontrol.databegin").addClass("disabled");
-        $(".databack").click(function(){});
-        $(".gridcontrol.databack").addClass("disabled");
-    }
-    if(iPage<iLastPage)
-    {
-        iNextPage=iPage+1;
-        $(".dataend").click(function(){
-            oGrid.setGridParam({page:iLastPage}).trigger("reloadGrid");
-        });
-        $(".gridcontrol.dataend").removeClass("disabled");
-        $(".dataforward").click(function(){
-            oGrid.setGridParam({page:iNextPage}).trigger("reloadGrid");
-        });
-        $(".gridcontrol.dataforward").removeClass("disabled");
-    }
-    else
-    {
-        $(".dataend").click(function(){});
-        $(".gridcontrol.dataend").addClass("disabled");
-        $(".dataforward").click(function(){});
-        $(".gridcontrol.dataforward").addClass("disabled");
-    }
-
-}
 
 /**
  * When date-picker is used in token gridview

@@ -445,7 +445,7 @@ class Services_JSON
     /**
      * reduce a string by removing leading and trailing comments and whitespace
      *
-     * @param    $str    string      string value to strip of comments and whitespace
+     * @param    string $str    string      string value to strip of comments and whitespace
      *
      * @return   string  string value stripped of comments and whitespace
      * @access   private

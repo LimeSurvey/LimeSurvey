@@ -265,7 +265,9 @@
                 choicetitle: '<?php echo gT("Your Choices",'js') ?>',
                 ranktitle: '<?php echo gT("Your Ranking",'js') ?>'
             };
-            function checkconditions(){};
+            function checkconditions(){
+                // Some space so the EM won't kick in
+            };
             $(function() {
                 doDragDropRank(<?php echo $thisqid ?>,0,true,true);
             });

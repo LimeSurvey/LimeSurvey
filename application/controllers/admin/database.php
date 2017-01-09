@@ -229,11 +229,11 @@ class database extends Survey_Common_Action
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
             if (!Yii::app()->request->getPost('bFullPOST'))
             {
-                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."));
+                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."),'error');
             }
             else
             {
-                Yii::app()->session['flashmessage']= gT("Answer options were successfully saved.");
+                Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
             }
             LimeExpressionManager::SetDirtyFlag();
             if ($sDBOutput != '')
@@ -783,11 +783,19 @@ class database extends Survey_Common_Action
             }
             QuestionAttribute::model()->deleteAll($criteria);
             $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
             foreach ($validAttributes as $validAttribute)
             {
                 if ($validAttribute['i18n'])
                 {
+                    /* Delete invalid language : not needed but cleaner */
+                    $langCriteria = new CDbCriteria;
+                    $langCriteria->compare('qid',$iQuestionID);
+                    $langCriteria->compare('attribute',$validAttribute['name']);
+                    $langCriteria->addNotInCondition('language',$aLanguages);
+                    QuestionAttribute::model()->deleteAll($langCriteria);
+                    /* But not in don't work for null value in mysql ? */
+                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL',array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
+
                     foreach ($aLanguages as $sLanguage)
                     {// TODO sanitise XSS
                         $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
@@ -845,7 +853,6 @@ class database extends Survey_Common_Action
                     }
                 }
             }
-
 
             $aQuestionTypeList=getQuestionTypeList('','array');
             // These are the questions types that have no answers and therefore we delete the answer in that case
@@ -1308,13 +1315,17 @@ class database extends Survey_Common_Action
                     {
                         continue;  // this parameter name seems to be invalid - just ignore it
                     }
-                    unset($aURLParam['act']);
+                    $aURLParam['targetqid']  = $aURLParam['qid'];
+                    $aURLParam['targetsqid'] = $aURLParam['sqid'];
+                    unset($aURLParam['actionBtn']);
                     unset($aURLParam['title']);
                     unset($aURLParam['id']);
+                    unset($aURLParam['qid']);
+                    unset($aURLParam['targetQuestionText']);
+                    unset($aURLParam['sqid']);
                     if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
                     if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
                     $aURLParam['sid']=$iSurveyID;
-
                     $param = new SurveyURLParameter;
                     foreach ($aURLParam as $k => $v)
                         $param->$k = $v;

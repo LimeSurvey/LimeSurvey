@@ -9,8 +9,6 @@ $(document).ready(function() {
     {
         jQuery(document).on("change", '#pageSize', function()
         {
-            console.log("page size changed");
-            console.log($(this).val());
             $.fn.yiiGridView.update('survey-grid',{ data:{ pageSize: $(this).val() }});
         });
     });

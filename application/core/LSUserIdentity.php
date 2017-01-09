@@ -65,7 +65,7 @@ class LSUserIdentity extends CUserIdentity {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
                 // Delegate actual authentication to plugin
-                $authEvent = new PluginEvent('newUserSession', $this);
+                $authEvent = new PluginEvent('newUserSession', $this);          // TODO: rename the plugin function authenticate()
                 $authEvent->set('identity', $this);
                 App()->getPluginManager()->dispatchEvent($authEvent);
                 $pluginResult = $authEvent->get('result');
@@ -130,7 +130,7 @@ class LSUserIdentity extends CUserIdentity {
             Yii::app()->setFlashMessage(gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."),'warning');
         }
 
-        if ((int)App()->request->getPost('width', '1280') < 1280)
+        if ((int)App()->request->getPost('width', '1220') < 1220) // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
         {
             Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."),'error');
         }

@@ -45,9 +45,9 @@ class databaseupdate extends Survey_Common_Action
 
         $aData['updatedbaction'] = true;
 
-        // TODO: Add admin theme, WITHOUT call _renderWrappedTemplate. We don't want to
-        // do any database queries when updating the database.
-        $aData = array_merge($aData, $aViewUrls);
-        Yii::app()->getController()->renderPartial('databaseupdate/db', $aData);
+        $this->_renderWrappedTemplate('update', $aViewUrls, $aData);
+
+        //$aData = array_merge($aData, $aViewUrls);
+        //Yii::app()->getController()->renderPartial('databaseupdate/db', $aData);
     }
 }

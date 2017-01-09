@@ -202,27 +202,24 @@ $aReplacementData=array();
     <?php endif;?>
 
 
-<?php if(isset($questionbar['buttons']['conditions'])):?>
-<div class="col-md-7">
-    <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-        <span class="glyphicon glyphicon-info-sign"></span>
-        <?php eT("Show conditions for this question");?>
-    </a>
+    <?php if(isset($questionbar['buttons']['conditions'])):?>
+    <div class="col-sm-12 form form-inline">
+        <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <?php eT("Show conditions for this question");?>
+        </a>
 
-    <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-        <span class="icon-conditions_add"></span>
-        <?php eT("Add and edit conditions");?>
-    </a>
+        <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <span class="icon-conditions_add"></span>
+            <?php eT("Add and edit conditions");?>
+        </a>
 
-    <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-        <span class="icon-copy"></span>
-        <?php eT("Copy conditions");?>
-    </a>
-</div>
-<?php endif;?>
+        <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <span class="icon-copy"></span>
+            <?php eT("Copy conditions");?>
+        </a>
 
-        <?php if(!isset($organizebar)): // TODO: Factor out organizer bar in own view? ?>
-        <div class="col-md-5 text-right form-inline">
+            <?php if(!isset($organizebar)): // TODO: Factor out organizer bar in own view? ?>
                 <?php if(isset($questionbar['savebutton']['form'])):?>
 
 
@@ -239,24 +236,18 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
 
-
-                <?php if(isset($questionbar['buttons']['conditions'])):?>
-
-                    <div class="form-group">
-                        <label for='questionNav'><?php eT("Move to question:");?></label>
-                        <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_top')"><?php echo $questionNavOptions;?></select>
-                    </div>
-
-                <?php endif;?>
-
                 <!-- Close -->
                 <?php if(isset($questionbar['closebutton']['url'])):?>
-                    <a class="btn btn-danger" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
+                    <a class="btn btn-danger pull-right margin-left" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
                         <span class="glyphicon glyphicon-close"></span>
                         <?php eT("Close");?>
                     </a>
                 <?php endif;?>
 
+                <!-- Condition designer navigator -->
+                <?php if(isset($questionbar['buttons']['conditions'])):?>
+                    <?php echo $questionNavOptions; ?> <!-- HTML is in views/admin/conditions/includes/navigator.php -->
+                <?php endif;?>
 
                 <?php if(isset($questionbar['returnbutton']['url'])):?>
                     <a class="btn btn-default" href="<?php echo $questionbar['returnbutton']['url']; ?>" role="button">
@@ -264,8 +255,9 @@ $aReplacementData=array();
                         <?php echo $questionbar['returnbutton']['text'];?>
                     </a>
                 <?php endif;?>
+            <?php endif;?>
         </div>
-        <?php endif; ?>
+    <?php endif; ?>
 
         <?php // TODO: Factor out in own view? ?>
         <?php if(isset($organizebar)): ?>

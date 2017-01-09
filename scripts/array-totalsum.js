@@ -40,9 +40,9 @@ function updatetotals()
     // First get number of columns (only visible and enabled inputs)
     var iColumnNum=$('#'+sTableID+' tbody tr:first-child input:enabled:visible').length;
     //Get An array of jQuery Objects
-    var $iRow = sTable.find('tr'); 
+    var $iRow = sTable.find('tr');
     //Iterate through the columns
-    for (var i = 1; i <= iColumnNum; i++) 
+    for (var i = 1; i <= iColumnNum; i++)
     {
         var sum = new Decimal(0);
         $iRow.each(function(){
@@ -60,7 +60,7 @@ function updatetotals()
 }
 function formatValue(sValue)
 {
-    
+
     sValue=Number(sValue).toString();
     var sRadix=LSvar.sLEMradix;
     sValue=sValue.replace('.',sRadix);
@@ -78,7 +78,7 @@ function normalizeValue(aValue)
     try {
         outNumber = new Decimal(aValue);
     } catch(e){}
-    
+
     if(outNumber == false)
     {
         var numReplaced = aValue.toString().replace(/,/g, ".");
