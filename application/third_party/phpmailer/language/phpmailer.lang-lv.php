@@ -1,8 +1,9 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Latvian version by Eduards M. <e@npd.lv>
-*/
+ * Latvian PHPMailer language file: refer to English translation for definitive list
+ * @package PHPMailer
+ * @author Eduards M. <e@npd.lv>
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'SMTP kļūda: Autorizācija neizdevās.';
 $PHPMAILER_LANG['connect_host']         = 'SMTP Kļūda: Nevar izveidot savienojumu ar SMTP serveri.';
@@ -14,7 +15,7 @@ $PHPMAILER_LANG['file_access']          = 'Fails nav pieejams: ';
 $PHPMAILER_LANG['file_open']            = 'Faila kļūda: Nevar atvērt failu: ';
 $PHPMAILER_LANG['from_failed']          = 'Nepareiza sūtītāja adrese: ';
 $PHPMAILER_LANG['instantiate']          = 'Nevar palaist sūtīšanas funkciju.';
-$PHPMAILER_LANG['invalid_address']      = 'Nepareiza adrese';
+$PHPMAILER_LANG['invalid_address']      = 'Nepareiza adrese: ';
 $PHPMAILER_LANG['mailer_not_supported'] = ' sūtītājs netiek atbalstīts.';
 $PHPMAILER_LANG['provide_address']      = 'Lūdzu, norādiet vismaz vienu adresātu.';
 $PHPMAILER_LANG['recipients_failed']    = 'SMTP kļūda: neizdevās nosūtīt šādiem saņēmējiem: ';
@@ -22,3 +23,4 @@ $PHPMAILER_LANG['signing']              = 'Autorizācijas kļūda: ';
 $PHPMAILER_LANG['smtp_connect_failed']  = 'SMTP savienojuma kļūda';
 $PHPMAILER_LANG['smtp_error']           = 'SMTP servera kļūda: ';
 $PHPMAILER_LANG['variable_set']         = 'Nevar piešķirt mainīgā vērtību: ';
+//$PHPMAILER_LANG['extension_missing']    = 'Extension missing: ';
