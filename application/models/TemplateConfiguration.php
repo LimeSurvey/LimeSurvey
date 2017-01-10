@@ -154,10 +154,6 @@ class TemplateConfiguration extends CFormModel
 
         /* Add depend package according to packages */
         $this->depends                  = $this->getDependsPackages();
-
-        // overwrite_question_views accept different values : "true" or "yes"
-        $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
-
         $this->otherFiles               = $this->setOtherFiles();
 
         // Package creation
