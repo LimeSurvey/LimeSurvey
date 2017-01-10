@@ -1,16 +1,30 @@
-{# Show a language changer inside the top menu #}
+{#
+    Language Changer for Top Menu.
+    Show a language changer inside the top menu
+
+    @var array  aSurveyInfo.alanguageChangerDatas.aListLang :  contains the list of available languages for this survey, 'language_code' => 'language name'
+    @var string aSurveyInfo.alanguageChangerDatas.sSelected :  the language code of the selected language
+
+    The language change is done via javascript
+#}
 
 {% if aSurveyInfo.alanguageChangerDatas != false %}
-    {% set aLCD  = aSurveyInfo.alanguageChangerDatas %}
+    {% set aLCD  = aSurveyInfo.alanguageChangerDatas %}                         {# shortcut for aSurveyInfo.alanguageChangerDatas #}    
+
+    {#
+        It generates a bootstrap dropdown button.
+        @see: http://getbootstrap.com/components/#dropdowns
+    #}
 
     <!-- Language Changer, top menu version -->
     <li class="dropdown ls-no-js-hidden">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            {{ "Language:" | t }} {{ aLCD.aListLang[aLCD.sSelected] }}
+            {{ "Language:" | t }} {{ aLCD.aListLang[aLCD.sSelected] | t }}      {# {{ aLCD.aListLang[aLCD.sSelected] | t }}: retreives the language name of the selected language and translates it#}
             <span class="caret"></span>
         </a>
 
         <ul class="dropdown-menu">
+            {# List of available languages.  #}
             {% for value, lang in aLCD.aListLang %}
                 <li class="index-item">
                     <a href='#' data-limesurvey-lang='{{ value }}' class="ls-language-link">
@@ -21,7 +35,11 @@
         </ul>
     </li>
 
-    {% set buttonhtmlOptions = {
+    {#
+        Generates a simple bootstrap HTML button using the Yii widget. @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh2
+        You can add remove attribute to the button via the array aButtonhtmlOptions
+    #}
+    {% set aButtonhtmlOptions = {
             'id'   : 'changlangButton',
             'type' : 'submit',
             'value': 'changelang',
@@ -33,7 +51,7 @@
     {{
         C.Html.htmlButton(
         ("Change the language" | gT ),
-        buttonhtmlOptions
+        aButtonhtmlOptions
         )
         | raw
     }}
