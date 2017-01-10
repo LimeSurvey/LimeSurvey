@@ -3,7 +3,14 @@
  * Twig view renderer, LimeSurvey overload
  *
  * Allow to run sandbox Configuration
- * Overload renderFile method to check if template's views should be use.
+ * Provide different render methods for different context:
+ *
+ * - render()                   : for general use
+ * - renderQuestion()           : to render a question. It checks if a question template view should be use, else core's view (used from qanda helper).
+ * - renderTemplateFromString() : to render a string without any file (used from replacement helper)
+ *
+ * The only tricky point here is the path problematic (where should be searched the views to render?)
+ * @see: http://twig.sensiolabs.org/doc/2.x/api.html#loaders
  *
  * @author Leonid Svyatov <leonid@svyatov.ru>
  * @author Alexander Makarov <sam@rmcreative.ru>
@@ -30,6 +37,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $this->_twig = parent::getTwig();
         foreach ($extensions as $extName) {
             if ($extName=="Twig_Extension_Sandbox"){
+                // Process to load the sandBox
                 $tags       = isset($this->sandboxConfig['tags'])?$this->sandboxConfig['tags']:array();
                 $filters    = isset($this->sandboxConfig['filters'])?$this->sandboxConfig['filters']:array();
                 $methods    = isset($this->sandboxConfig['methods'])?$this->sandboxConfig['methods']:array();
@@ -46,7 +54,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     }
 
     /**
-     * Renders a view file.
+     * Renders a general view file.
+     *
      * @param string $sourceFile the view file path
      * @param mixed $data the data to be passed to the view
      * @param boolean $return whether the rendering result should be returned
@@ -62,13 +71,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
         $requiredView = Yii::getPathOfAlias('application.views').$sView;        // By default, the required view is the core view
         $loader->setPaths(App()->getBasePath().'/views/');                      // Core views path
-
-        // Check if template provides its own twig view
-        if(file_exists($oTemplate->viewPath.ltrim($sView, '/').'.twig')){
-            $loader->setPaths($oTemplate->viewPath);                            // Template views path
-            $sView        = str_replace('/views/', '', $sView );
-            $requiredView = $oTemplate->viewPath.ltrim($sView, '/');
-        }
 
         // We check if the file is a twig file or a php file
         // This allow us to twig the view one by one, from PHP to twig.
@@ -91,38 +93,31 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     }
 
     /**
-     * Only use for renderTemplateFromString for now, to force the path of included twig files
+     * This method is called from qanda helper to render a question view file.
+     * It first checks if the question use a template (set in display attributes)
+     * If it is the case, it will use the views of that template, else, it will render the core view.
+     *
+     * @param string $sView     Name of the view to render
+     * @param array  $aData     Datas for the view
      */
-    public function setForcedPath($sPath)
-    {
-        $this->forcedPath=$sPath;
-    }
-
     public function renderQuestion( $sView, $aData)
     {
-        $this->_twig  = parent::getTwig();                                      // Twig object
-        $loader       = $this->_twig->getLoader();                              // Twig Template loader
-        $requiredView = Yii::getPathOfAlias('application.views').$sView;        // By default, the required view is the core view
-        $loader->setPaths(App()->getBasePath().'/views/');                      // Core views path
+        $this->_twig  = parent::getTwig();                                                      // Twig object
+        $loader       = $this->_twig->getLoader();                                              // Twig Template loader
+        $requiredView = Yii::getPathOfAlias('application.views').$sView;                        // By default, the required view is the core view
+        $loader->setPaths(App()->getBasePath().'/views/');                                      // Core views path
 
-        $oQuestionTemplate = QuestionTemplate::getInstance();                   // Question template instance has been created at top of qanda_helper::retrieveAnswers()
+        $oQuestionTemplate   = QuestionTemplate::getInstance();                                 // Question template instance has been created at top of qanda_helper::retrieveAnswers()
+        $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName();             // Get the name of the folder for that question type.
 
-
-        /*
-        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
-        $sTemplateFolderName = $aQuestionAttributes['question_template'];
-        $sTemplateFolderName = QuestionTemplate::getQuestionTemplate($oQuestion);
-        */
-
-        $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName();
-
-        // Check if question use a custom teplate provides its own twig view
+        // Check if question use a custom template and that it provides its own twig view
         if ($sTemplateFolderName){
-            $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView);
+            $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView);         // A template can change only one of the view of the question type. So other views should be rendered by core.
+
             if ($bTemplateHasThisView){
-                $sQTemplatePath  = $oQuestionTemplate->getTemplatePath();   // Question template views path
-                $loader->setPaths($sQTemplatePath);
-                $requiredView = $sQTemplatePath.ltrim($sView, '/');
+                $sQTemplatePath  = $oQuestionTemplate->getTemplatePath();                       // Question template views path
+                $loader->setPaths($sQTemplatePath);                                             // Loader path
+                $requiredView = $sQTemplatePath.ltrim($sView, '/');                             // Complete path of the view
             }
         }
 
@@ -142,24 +137,44 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     }
 
     /**
+     * Only use for renderTemplateFromString for now, to force the path of included twig files (in renderTemplateFromString: the template files)
+     * It's necessary for the twig include statments: by default, those views would be looked into application/views instead of the template's views directory.
+     * @param string $sPath  the path that will be used to render the views.
+     */
+    public function setForcedPath($sPath)
+    {
+        $this->forcedPath=$sPath;
+    }
+
+
+    /**
+     * Render a string, not a file. It's used from template replace function.
      *
+     * @param string  $line     The line of HTML/Twig to render
+     * @param array   $redata   Array containing the datas needed to render the view ($thissurvey)
+     * @param boolean $bReturn  Should the function echo the result, or just returns it?
      */
     public function renderTemplateFromString( $line, $redata, $bReturn)
     {
+        // If no redata, there is no need to use twig, so we just return the line.
+        // This happen when calling templatereplace() from admin, to replace some keywords.
+        // NOTE: this check is already done in templatereplace().
         if (is_array($redata)){
             $this->_twig      = $twig = parent::getTwig();
 
+            // At this point, forced path should not be nulled.
+            // It contains the path to the template's view directory for twig include statements
             if (!is_null($this->forcedPath)){
-                $loader       = $this->_twig->getLoader();                              // Twig Template loader
+                $loader       = $this->_twig->getLoader();
                 $loader->setPaths($this->forcedPath);
             }
 
-            $oTwigTemplate    = $twig->createTemplate($line);
-            $nvLine = $oTwigTemplate->render($redata, false);
+            // Twig rendering
+            $oTwigTemplate = $twig->createTemplate($line);
+            $nvLine        = $oTwigTemplate->render($redata, false);
         }else{
             $nvLine = $line;
         }
         return $nvLine;
-
     }
 }
