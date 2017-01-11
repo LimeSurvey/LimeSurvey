@@ -1,10 +1,6 @@
 {#
     Show the welcome page
 #}
-<div class='alert alert-danger ls-js-hidden warningjs' data-type='checkjavascript'>
-    {{ "Caution: JavaScript execution is disabled in your browser or for this website. You may not be able to answer all questions in this survey. Please, verify your browser parameters." | t }}
-</div>
-
 <div id="welcome-container">
     <h1 class="survey-name text-center">{{ aSurveyInfo.name }}</h1>
     <div class="text-info text-center survey-description">{{ aSurveyInfo.description }}</div>
