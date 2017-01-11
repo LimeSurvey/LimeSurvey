@@ -1,0 +1,25 @@
+{#
+    Show the welcome page
+#}
+<div class='alert alert-danger ls-js-hidden warningjs' data-type='checkjavascript'>
+    {{ "Caution: JavaScript execution is disabled in your browser or for this website. You may not be able to answer all questions in this survey. Please, verify your browser parameters." | t }}
+</div>
+
+<div id="welcome-container">
+    <h1 class="survey-name text-center">{{ aSurveyInfo.name }}</h1>
+    <div class="text-info text-center survey-description">{{ aSurveyInfo.description }}</div>
+    <div class="survey-welcome h4 text-primary">{{ aSurveyInfo.welcome }}</div>
+    <div class="number-of-questions text-muted">
+        <div class='question-count-text'>
+            {% if aSurveyInfo.bShowxquestions == true %}
+                {% if aSurveyInfo.iTotalquestions < 1 %}
+                    {{ "There is no question in this survey" | t }}
+                {% elseif aSurveyInfo.iTotalquestions == 1  %}
+                    {{ "There is 1 question in this survey" | t }}
+                {% else %}
+                    {{ "There are " ~ aSurveyInfo.iTotalquestions ~ " questions in this survey." | t}}
+              {% endif %}
+            {% endif %}
+        </div>
+  </div>
+</div>
