@@ -326,13 +326,17 @@ class SurveyRuntimeHelper {
 
         echo "<!-- SurveyRunTimeHelper -->";
 
-        $thissurvey['upload_file'] = (isset($upload_file) && $upload_file)?true:false;
-        $thissurvey['surveyUrl']   = App()->createUrl("/survey/index",array("sid"=>$surveyid));
-        $hiddenfieldnames          = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
-        $thissurvey['totalquestions']            = $this->totalquestions;
+        $thissurvey['upload_file']      = (isset($upload_file) && $upload_file)?true:false;
+        $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
+        $hiddenfieldnames               = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
 
-        
-        $redata = compact(array_keys(get_defined_vars()));
+        // For welcome screen
+        $thissurvey['iTotalquestions']   = $this->totalquestions;
+        $showxquestions                  = Yii::app()->getConfig('showxquestions');
+        $thissurvey['bShowxquestions']   = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) || ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y'));
+
+
+        $redata                         = compact(array_keys(get_defined_vars()));
 
         // START PAGE
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
