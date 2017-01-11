@@ -1,4 +1,8 @@
-{% if aSurveyInfo.format != 'S' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
+{#
+    Show the progress bar
+#}
+
+{% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
     {{ registerPublicCssFile('lime-progress.css') }}
 
     {% set progressValue  = intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 )%}
