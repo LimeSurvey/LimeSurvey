@@ -383,12 +383,6 @@ class SurveyRuntimeHelper {
         echo CHtml::htmlButton("default",array('type'=>'submit','id'=>"defaultbtn",'value'=>"default",'name'=>'move','class'=>"submit hidden",'style'=>'display:none'));
         // <-- START THE SURVEY -->
 */
-        if ($surveyMode == 'survey')
-        {
-        }else{/* survey.pstpl is not included in all in one mode : welcome replace needed functionnality inside form for default template */
-            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"), array(), $redata);
-
-        }
 
         // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
         // We don't need runonce actually (140228): the script was updated and replaced by EM see #08783 (grep show no other runonce)
