@@ -5,7 +5,8 @@
 #}
 
 {#
-    If you want to see what is availabe in aSurveyInfo, turn debug mode on and uncomment the following line: {{ dump(aSurveyInfo) }}
+    If you want to see what is availabe in aSurveyInfo, turn debug mode on and uncomment the following line:
+    {{ dump(aSurveyInfo) }}
 #}
 
 <!-- startpage.twig -->
@@ -51,7 +52,7 @@
 
     <div class="outerframe container" id="outerframeContainer">
       <div id="main-row">
-          {FLASHMESSAGE}
+          {{ include('./subviews/flash_message.twig') }}
 
         <div class="col-centered" id="main-col">
 
