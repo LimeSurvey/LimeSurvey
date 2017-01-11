@@ -1,4 +1,6 @@
 {% if aSurveyInfo.format != 'S' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
+    {{ registerPublicCssFile('lime-progress.css') }}
+
     {% set progressValue  = intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 )%}
     <div class="progress">
         <div class="progress-bar" role="progressbar" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ progressValue }}%;">
