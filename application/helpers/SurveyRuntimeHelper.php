@@ -329,9 +329,12 @@ class SurveyRuntimeHelper {
         $thissurvey['upload_file'] = (isset($upload_file) && $upload_file)?true:false;
         $thissurvey['surveyUrl']   = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $hiddenfieldnames          = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
+        $thissurvey['totalquestions']            = $this->totalquestions;
 
-
+        
         $redata = compact(array_keys(get_defined_vars()));
+
+        // START PAGE
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
 
         $aPopup=array(); // We can move this part where we want now
