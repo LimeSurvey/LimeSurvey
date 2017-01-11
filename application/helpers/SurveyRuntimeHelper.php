@@ -299,6 +299,8 @@ class SurveyRuntimeHelper {
             }
         }
 
+        $thissurvey['yiiflashmessages'] = Yii::app()->user->getFlashes();
+
         if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey')){
             $thissurvey['alanguageChangerDatas'] = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang'], false, true);
         }
@@ -310,8 +312,8 @@ class SurveyRuntimeHelper {
          *
          */
         if(!$previewquestion && !$previewgrp){
-            $questionindex      = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
-            $questionindexmenu  = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
+            $questionindex            = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
+            $questionindexmenu        = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
             $thissurvey['indexItems'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
         }
 
