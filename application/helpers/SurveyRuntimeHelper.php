@@ -385,19 +385,6 @@ class SurveyRuntimeHelper {
 */
         if ($surveyMode == 'survey')
         {
-            if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
-            {
-                //Hide the welcome screen if explicitly set
-            }
-            else
-            {
-                echo templatereplace(file_get_contents($sTemplateViewPath."welcome.pstpl"), array(), $redata) . "\n";
-            }
-
-            if ($thissurvey['anonymized'] == "Y")
-            {
-                echo templatereplace(file_get_contents($sTemplateViewPath."privacy.pstpl"), array(), $redata) . "\n";
-            }
         }else{/* survey.pstpl is not included in all in one mode : welcome replace needed functionnality inside form for default template */
             echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"), array(), $redata);
 
