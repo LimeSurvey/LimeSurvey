@@ -2,7 +2,7 @@
 /**
  * This extension is needed to add complex functions to twig, needing specific process (like accessing config datas).
  * Most of the calls to internal functions don't need to be set here, but can be directly added to the internal config file.
- * For example, the calls to encode, gT and eT don't need any extra parameters or process, so they are added as filter in the congif/internal.php:
+ * For example, the calls to encode, gT and eT don't need any extra parameters or process, so they are added as filters in the congif/internal.php:
  *
  * 'filters' => array(
  *     'jencode' => 'CJSON::encode',
@@ -11,7 +11,7 @@
  * ),
  *
  * So you only add functions here when they need a specific process while called via Twig.
- * To add an advanced function to twig.
+ * To add an advanced function to twig:
  *
  * 1. Add it here as a static public function
  *      eg:
@@ -45,6 +45,7 @@ class LS_Twig_Extension extends Twig_Extension
 
     /**
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
+     * In any twig file, you can register a public css file doing: {{ registerPublicCssFile($sPublicCssFileName) }}
      * @param string $sPublicCssFileName name of the CSS file to publish in public style directory
      */
     static public function registerPublicCssFile($sPublicCssFileName)
