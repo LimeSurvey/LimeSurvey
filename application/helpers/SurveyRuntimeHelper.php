@@ -338,6 +338,7 @@ class SurveyRuntimeHelper {
 
         $redata                         = compact(array_keys(get_defined_vars()));
 
+        /////////////
         // START PAGE
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
 
@@ -364,25 +365,6 @@ class SurveyRuntimeHelper {
         Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
 
-/*
-        if (isset($upload_file) && $upload_file){
-            $this->thissurvey['upload_file'] = $thissurvey['upload_file'] = true;
-            echo "PWEEEEEEEEEEEEE";
-            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container surveyRunTimeUploadFile'))."\n
-            <!-- INPUT NAMES -->
-            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-        }else{
-            $this->thissurvey['upload_file'] = $thissurvey['upload_file'] = false;
-            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container  surveyRunTime'))."\n
-            <!-- INPUT NAMES -->
-            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-        }
-
-        // <-- END FEATURE - SAVE
-        // The default submit button
-        echo CHtml::htmlButton("default",array('type'=>'submit','id'=>"defaultbtn",'value'=>"default",'name'=>'move','class'=>"submit hidden",'style'=>'display:none'));
-        // <-- START THE SURVEY -->
-*/
 
         // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
         // We don't need runonce actually (140228): the script was updated and replaced by EM see #08783 (grep show no other runonce)
@@ -392,6 +374,7 @@ class SurveyRuntimeHelper {
         $showpopups=Yii::app()->getConfig('showpopups');
 
         $_gseq = -1;
+
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
             $gid = $gl['gid'];
@@ -449,9 +432,6 @@ class SurveyRuntimeHelper {
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                 $lastanswer = $qa[7];
 
-
-
-
                 $n_q_display = '';
                 if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
                 {
@@ -470,7 +450,10 @@ class SurveyRuntimeHelper {
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
                 //===================================================================
 
-                $question_template = file_get_contents($sTemplateViewPath.'question.pstpl');
+
+
+                // question.twig
+                $question_template = file_get_contents($sTemplateViewPath.'question.twig');
                 // Fix old template : can we remove it ? Old template are surely already broken by another issue
                 if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
                 {
