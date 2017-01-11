@@ -453,6 +453,7 @@ class SurveyRuntimeHelper {
 
 
                 // question.twig
+                $thissurvey['aQuestion'] = $qa;
                 $question_template = file_get_contents($sTemplateViewPath.'question.twig');
                 // Fix old template : can we remove it ? Old template are surely already broken by another issue
                 if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
