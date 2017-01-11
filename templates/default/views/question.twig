@@ -7,7 +7,9 @@
 
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">
-      {QUESTION_MANDATORY}
+
+      {{ include('./subviews/question_mandatory.twig') }}
+
       <span class='text-muted question-number'>{QUESTION_NUMBER}</span>
       <span class='text-muted question-code'>{QUESTION_CODE}</span>
       <div class="question-text">{QUESTION_TEXT}</div>
