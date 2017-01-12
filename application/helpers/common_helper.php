@@ -1128,6 +1128,17 @@ function getSurveyInfo($surveyid, $languagecode='')
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
 
+    // Plugin event beforeGetSurveyInfo, can return surveyinfo as array
+    $oEvent = new PluginEvent('beforeGetSurveyInfo');
+    $oEvent->set('surveyid', $surveyid);
+    $oEvent->set('languagecode', $languagecode);
+    App()->getPluginManager()->dispatchEvent($oEvent);
+    $aEventSurveyInfo=$oEvent->get('surveyinfo');
+    if(is_array($aEventSurveyInfo))
+    {
+        $staticSurveyInfo[$surveyid][$languagecode]=$aEventSurveyInfo;
+    }
+
     if(isset($staticSurveyInfo[$surveyid][$languagecode]) )
     {
         $thissurvey=$staticSurveyInfo[$surveyid][$languagecode];
