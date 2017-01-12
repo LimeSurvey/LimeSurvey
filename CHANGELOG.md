@@ -3,7 +3,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ## unreleased
 
-### Fix
+### [1.2.2] - 2016-01-12
 - Update [PHPMailer](https://github.com/PHPMailer/PHPMailer/releases/tag/v5.2.22) for security issue
 
 ## [1.2.1] - 2016-12-30
