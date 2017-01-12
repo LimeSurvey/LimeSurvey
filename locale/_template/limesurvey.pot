@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-01-06 13:47:06+00:00\n"
+"POT-Creation-Date: 2017-01-12 08:14:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -407,7 +407,7 @@ msgstr ""
 #: application/controllers/admin/assessments.php:82
 #: application/controllers/admin/conditionsaction.php:108
 #: application/controllers/admin/emailtemplates.php:74
-#: application/controllers/admin/export.php:1230
+#: application/controllers/admin/export.php:1233
 #: application/controllers/admin/expressions.php:49
 #: application/controllers/admin/index.php:35
 #: application/controllers/admin/questiongroups.php:109
@@ -609,7 +609,7 @@ msgid "Sorry, there was an error uploading your file"
 msgstr ""
 
 #: application/controllers/UploaderController.php:262
-#: application/controllers/admin/export.php:973
+#: application/controllers/admin/export.php:976
 msgid "Unknown error"
 msgstr ""
 
@@ -914,7 +914,7 @@ msgstr ""
 #: application/controllers/admin/assessments.php:64
 #: application/controllers/admin/checkintegrity.php:30
 #: application/controllers/admin/dataentry.php:110
-#: application/controllers/admin/export.php:664
+#: application/controllers/admin/export.php:667
 #: application/controllers/admin/expressions.php:31
 #: application/controllers/admin/printablesurvey.php:36
 #: application/controllers/admin/responses.php:329
@@ -2077,12 +2077,12 @@ msgid "Quick statistics"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:325
-#: application/controllers/admin/export.php:255
-#: application/controllers/admin/export.php:257
-#: application/controllers/admin/export.php:418
-#: application/controllers/admin/export.php:420
-#: application/controllers/admin/export.php:688
-#: application/controllers/admin/export.php:690
+#: application/controllers/admin/export.php:258
+#: application/controllers/admin/export.php:260
+#: application/controllers/admin/export.php:421
+#: application/controllers/admin/export.php:423
+#: application/controllers/admin/export.php:691
+#: application/controllers/admin/export.php:693
 #: application/controllers/admin/responses.php:922
 #: application/controllers/admin/responses.php:925
 #: application/controllers/admin/saved.php:72
@@ -2326,39 +2326,39 @@ msgstr ""
 msgid "Email templates successfully saved."
 msgstr ""
 
-#: application/controllers/admin/export.php:217
-#: application/controllers/admin/export.php:414
+#: application/controllers/admin/export.php:220
+#: application/controllers/admin/export.php:417
 #: application/views/admin/export/exportresults_view.php:12
 #: application/views/admin/export/vv_view.php:118
 msgid "Export results"
 msgstr ""
 
-#: application/controllers/admin/export.php:236
+#: application/controllers/admin/export.php:239
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:47
 msgid "Question code"
 msgstr ""
 
-#: application/controllers/admin/export.php:237
+#: application/controllers/admin/export.php:240
 msgid "Abbreviated question text"
 msgstr ""
 
-#: application/controllers/admin/export.php:238
+#: application/controllers/admin/export.php:241
 msgid "Full question text"
 msgstr ""
 
-#: application/controllers/admin/export.php:239
+#: application/controllers/admin/export.php:242
 msgid "Question code and question text"
 msgstr ""
 
-#: application/controllers/admin/export.php:672
+#: application/controllers/admin/export.php:675
 msgid "Export VV file"
 msgstr ""
 
-#: application/controllers/admin/export.php:978
+#: application/controllers/admin/export.php:981
 msgid "Not active."
 msgstr ""
 
-#: application/controllers/admin/export.php:997
+#: application/controllers/admin/export.php:1000
 #: application/controllers/admin/questions.php:165
 #: application/controllers/admin/surveyadmin.php:981
 #: application/controllers/admin/tokens.php:89
@@ -2374,7 +2374,7 @@ msgstr ""
 msgid "We are sorry but you don't have permissions to do this."
 msgstr ""
 
-#: application/controllers/admin/export.php:1302
+#: application/controllers/admin/export.php:1305
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
