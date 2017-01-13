@@ -15,7 +15,7 @@ $config['versionnumber'] = '3.0.0-alpha (2.58.0 merged)'; /* I don't found actua
 $config['dbversionnumber'] = 264;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '46';
+$config['assetsversionnumber'] = '47';
 return $config;
 
 ?>

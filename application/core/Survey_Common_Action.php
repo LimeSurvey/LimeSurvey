@@ -384,10 +384,36 @@ class Survey_Common_Action extends CAction
         {
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
+            $urlUpdate = Yii::app()->createUrl("admin/update");
+            $urlUpdateNotificationState = Yii::app()->createUrl("admin/update/sa/notificationstate");
+            $currentVersion = Yii::app()->getConfig("buildnumber");
+            $superadmins = User::model()->getSuperAdmins();
 
             if($updateNotification->result)
             {
-                return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available'=>$updateNotification->security_update));
+                if($updateNotification->security_update)
+                {
+                    UniqueNotification::broadcast(array(
+                        'title' => gT('Security update!')." (".gT("Current version: ").$currentVersion.")",
+                        'message' => gT('A security update is available.')." <a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
+                    ), $superadmins);
+                }
+                else if(Yii::app()->session['unstable_update'] )
+                {
+                    UniqueNotification::broadcast(array(
+                        'title' => gT('New UNSTABLE update available')." (".gT("Current version: ").$currentVersion.")",
+                        'markAsNew' => false,
+                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
+                    ), $superadmins);
+                }
+                else
+                {
+                    UniqueNotification::broadcast(array(
+                        'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
+                        'markAsNew' => false,
+                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
+                    ), $superadmins);
+                }
             }
         }
     }

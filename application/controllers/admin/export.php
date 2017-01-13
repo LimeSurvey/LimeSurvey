@@ -209,8 +209,11 @@ class export extends Survey_Common_Action {
             $data['aFieldsOptions'] = $aFieldsOptions;
             //get max number of datasets
             $iMaximum = SurveyDynamic::model($iSurveyID)->getMaxId();
+            //get min number of datasets
+            $iMinimum = SurveyDynamic::model($iSurveyID)->getMinId();
 
             $data['max_datasets'] = $iMaximum;
+            $data['min_datasets'] = $iMinimum;
             $data['surveyid'] = $iSurveyID;
             $data['imageurl'] = Yii::app()->getConfig('imageurl');
             $data['thissurvey'] = $thissurvey;

@@ -42,6 +42,11 @@ Thumbs.db
 .settings/org.eclipse.php.core.prefs
 .buildpath
 *.un~
+!index.html
+!readme.txt
+/tmp/runtime/URI/*.ser
+/tmp/runtime/CSS/*.ser
+/tmp/runtime/twig_cache/*
 launch.json
 
 # ignore plugins directory by default except LS plugin

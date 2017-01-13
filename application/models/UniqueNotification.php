@@ -78,4 +78,24 @@ class UniqueNotification extends Notification
         }
 
     }
+    /**
+     * Broadcast a unique message to all users
+     * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
+     * @param array $options
+     * @param array $users
+     */
+    public static function broadcast(array $options, array $users = null)
+    {
+        // Get all users if no $users were given
+        if ($users === null)
+        {
+            $users = User::model()->findAll();
+        }
+
+        foreach ($users as $user) {
+            $options['user_id'] = $user->uid;
+            $not = new UniqueNotification($options);
+            $not->save();
+        }
+    }
 }
