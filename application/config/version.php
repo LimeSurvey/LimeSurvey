@@ -11,7 +11,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-$config['versionnumber'] = '3.0.0-alpha (2.58.0 merged)'; /* I don't found actually a better way to have : 'master verion + info it'a develop : ,someone have another idea ? */
+$config['versionnumber'] = '3.0.0-alpha'; //The current version of this branch
+$config['masterversion'] = '2.58.1'; //The current masters version merged into this branch
 $config['dbversionnumber'] = 264;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
