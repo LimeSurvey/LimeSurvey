@@ -634,7 +634,6 @@ EOD;
  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', '$_googleAnalyticsAPIKey', 'auto');
-ga('send', 'pageview');
 ga('send', 'pageview', '$_trackURL');
 
 </script>
