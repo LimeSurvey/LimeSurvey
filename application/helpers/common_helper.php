@@ -3990,12 +3990,14 @@ function getUpdateInfo()
             'ignore_errors' => true
         )
     );
-    $body = file_get_contents($url, false, stream_context_create($opts));
+    $body = @file_get_contents($url, false, stream_context_create($opts));
     if ($body != false && (null === $updateInfo = json_decode($body, true))) {
         $updateInfo = array(
             'errorhtml' => $body,
             'errorcode' => $http_response_header
         );
+    } else {
+        $updateInfo = null;
     }
     return $updateInfo;
 }
