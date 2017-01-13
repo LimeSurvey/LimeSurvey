@@ -533,6 +533,7 @@ function submittokens($quotaexit=false)
                 $aReplacementVars["FIRSTNAME"]=$token->firstname;
                 $aReplacementVars["LASTNAME"]=$token->lastname;
                 $aReplacementVars["TOKEN"]=$token->token;
+                $aReplacementVars["EMAIL"]=$token->email;
                 // added survey url in replacement vars
                 $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
                 $aReplacementVars['SURVEYURL'] = $surveylink;
