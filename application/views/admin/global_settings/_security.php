@@ -48,23 +48,25 @@
     </div>
 </div>
 
-<div class="form-group">
-    <label class="col-sm-5 control-label"  for="force_ssl">
-    <?php if (Yii::app()->getConfig("demoMode")==true){ ?>
-    <span class="text-danger asterisk"></span>
-    <?php }; ?>
-     <?php eT('IFrame embedding allowed:'); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
-    <div class="col-sm-6">
-        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-            'name' => 'x_frame_options',
-            'value'=> getGlobalSetting('x_frame_options'),
-            'selectOptions'=>array(
-                "allow"=>gT("Allow",'unescaped'),
-                "sameorigin"=>gT("Same origin",'unescaped')
-            )
-        ));?>
+<?php if (Yii::app()->getConfig("filterxsshtml")==false){ ?>
+    <div class="form-group">
+        <label class="col-sm-5 control-label"  for="force_ssl">
+        <?php if (Yii::app()->getConfig("demoMode")==true){ ?>
+        <span class="text-danger asterisk"></span>
+        <?php }; ?>
+         <?php eT('IFrame embedding allowed:'); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
+        <div class="col-sm-6">
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'x_frame_options',
+                'value'=> getGlobalSetting('x_frame_options'),
+                'selectOptions'=>array(
+                    "allow"=>gT("Allow",'unescaped'),
+                    "sameorigin"=>gT("Same origin",'unescaped')
+                )
+            ));?>
+        </div>
     </div>
-</div>
+<?php }; ?>
 
 <div class="form-group">
     <label class="col-sm-5 control-label"  for="force_ssl"><?php eT('Force HTTPS:'); ?></label>
