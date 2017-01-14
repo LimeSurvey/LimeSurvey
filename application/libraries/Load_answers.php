@@ -18,7 +18,7 @@ class Load_answers {
         $redata = compact(array_keys(get_defined_vars()));
         $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
         sendCacheHeaders();
-        doHeader();
+         doHeader();
 
         $oTemplate = Template::model()->getInstance(null, $surveyid);
 
@@ -39,7 +39,7 @@ class Load_answers {
         echo "<input type='hidden' name='loadall' value='reload' />\n";
         if (isset($clienttoken) && $clienttoken != "")
         {
-            echo "<input type='hidden' name='token' value='$clienttoken' />\n";
+            echo CHtml::hiddenField('token',$clienttoken);
         }
         echo "</form>";
 
