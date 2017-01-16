@@ -12,7 +12,13 @@
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">
 
-        {{ include('./subviews/question/question_mandatory.twig') }}
+        {% if aQuestion.mandatory != '' %}
+            <!-- Add a visual information + just Mandatory string for aria : can be improved -->
+            <div class="asterisk pull-left">
+                <small class="text-danger fa fa-asterisk small" aria-hidden='true'></small>
+                <span class="sr-only text-danger"> {{ "(This question is mandatory)" | t }} </span>
+            </div>
+        {% endif %}
 
         {% if (aShow.question_number) %}
             <span class='text-muted question-number'>
