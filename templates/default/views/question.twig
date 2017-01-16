@@ -3,7 +3,7 @@
 #}
 
 
-{% set aShow     = aSurveyInfo.aShow %}
+{% set aShow     = aSurveyInfo.aShow     %}
 {% set aQuestion = aSurveyInfo.aQuestion %}
 
 <!-- Question -->
@@ -36,7 +36,7 @@
     <!-- LimeSurvey valid message and help -->
     <div class="question-valid-container bg-primary text-info col-xs-12">
         {{ aQuestion.valid_message      | raw }}
-        {{ aQuestion.man_message        | raw }}      
+        {{ aQuestion.man_message        | raw }}
         {{ aQuestion.file_valid_message | raw }}
     </div>
 
