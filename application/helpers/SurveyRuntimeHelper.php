@@ -471,19 +471,6 @@ class SurveyRuntimeHelper {
                 $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
                 $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
                 $aGroup['aQuestions'][$qid]['help']['text']         = $lemQuestionInfo['info']['help'];
-
-
-                //  REPLACE QUESTION TWIG
-
-                /*
-                $question_template    = file_get_contents($sTemplateViewPath.'question.twig');
-                $redata               = compact(array_keys(get_defined_vars()));
-                $aQuestionReplacement = array();
-                //$aQuestionReplacement = $this->getQuestionReplacement($qa);
-
-                echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
-                */
-
             }
 
             $aGroup['show_last_group']   = false;
