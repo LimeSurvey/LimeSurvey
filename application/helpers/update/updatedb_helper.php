@@ -1448,7 +1448,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             addColumn('{{notifications}}', 'hash', 'string(64)');
             $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
         }
 
         // Inform superadmin about update
