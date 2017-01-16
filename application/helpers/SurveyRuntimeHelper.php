@@ -417,13 +417,6 @@ class SurveyRuntimeHelper {
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
-/*
-            if (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_)
-            {
-                echo templatereplace(file_get_contents($sTemplateViewPath."groupdescription.pstpl"), array(), $redata);
-            }
-*/
-
             $aGroup['showdescription']  = (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_);
             $aGroup['description']      = $redata['groupdescription'];
 
