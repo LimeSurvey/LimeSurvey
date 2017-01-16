@@ -212,6 +212,7 @@ $internalConfig = array(
                 'array_flip'            => 'array_flip',
                 'array_intersect_key'   => 'array_intersect_key',
                 'registerPublicCssFile' => 'LS_Twig_Extension::registerPublicCssFile',
+                'getAllQuestionClasses' => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                => 'intval',
 
             ),
@@ -232,7 +233,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'intval')
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval')
             )
 
             // Change template syntax to Smarty-like (not recommended)
