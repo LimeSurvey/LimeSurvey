@@ -480,12 +480,10 @@ class SurveyRuntimeHelper {
             if (!empty($qanda))
             {
                 if ($surveyMode == 'group') {
-                    echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
                     $aGroup['show_last_group']   = true;
                     $aGroup['lastgroup']         = $lastgroup;
                 }
                 if ($surveyMode == 'question') {
-                    echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
                     $aGroup['show_last_answer']   = true;
                     $aGroup['lastanswer']         = $lastanswer;
                 }
