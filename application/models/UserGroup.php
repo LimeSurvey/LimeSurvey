@@ -246,7 +246,16 @@ class UserGroup extends LSActiveRecord {
 
         return $button;
     }
-
+    /**
+     * This function search usergroups for a user
+     * If $mine = true then usergroups are those that have been created by the current user
+     * else this function provides usergroups which contain the current user
+     * 
+     * The object \CActiveDataProvider returned is used to generate the view in application/views/admin/usergroup/usergroups_view.php
+     * 
+     * @param bool $mine
+     * @return \CActiveDataProvider
+     */
     function searchMine($mine)
     {
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
