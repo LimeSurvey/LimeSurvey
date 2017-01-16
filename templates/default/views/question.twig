@@ -4,9 +4,10 @@
 #}
 
 
-{% set aShow = aSurveyInfo.aShow %}
+{% set aShow     = aSurveyInfo.aShow %}
+{% set aQuestion = aSurveyInfo.aQuestion %}
 
-<div id="question{{ aSurveyInfo.aQuestion.qid }}" class=" {{ getAllQuestionClasses( aSurveyInfo.aQuestion.qid ) }} {{ aSurveyInfo.aQuestion.0.input_error_class }} question-container row">
+<div id="question{{ aQuestion.qid }}" class=" {{ getAllQuestionClasses( aQuestion.qid ) }} {{ aQuestion.input_error_class }} question-container row">
 
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">
@@ -15,17 +16,21 @@
 
         {% if (aShow.question_number) %}
             <span class='text-muted question-number'>
-                {{ aSurveyInfo.aQuestion.number }}
+                {{ aQuestion.number }}
             </span>
         {% endif %}
 
         {% if (aShow.question_code) %}
             <span class='text-muted question-code'>
-                {{ aSurveyInfo.aQuestion.code }}
+                {{ aQuestion.code }}
             </span>
         {% endif %}
 
-      <div class="question-text">{QUESTION_TEXT}</div>
+        <div class="question-text">
+            <div id="ls-question-text-{{ aQuestion.SGQ }}" class="ls-label-question">
+                {{ aQuestion.text }}
+            </div>            
+        </div>
     </div>
 
     <!-- LimeSurvey valid message and help -->
