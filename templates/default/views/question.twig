@@ -46,5 +46,11 @@
     </div>
 
     <!-- Survey question help -->
-    <div class="question-help-container text-info col-xs-12">{QUESTIONHELP}</div>
+    <div class="question-help-container text-info col-xs-12">
+        {% if aQuestion.help.show %}
+            <div class="ls-questionhelp">
+                {{ aQuestion.help.txt }}
+            </div>
+        {% endif %}
+    </div>
 </div>
