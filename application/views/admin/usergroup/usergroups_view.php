@@ -92,7 +92,7 @@
     <h4><?php
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            eT('Groups to which i belong');
+            eT('Groups to which I belong');
         }
         ?>
     </h4>
