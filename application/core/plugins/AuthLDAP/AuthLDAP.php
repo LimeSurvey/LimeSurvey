@@ -66,7 +66,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 ),
         'usersearchbase' => array(
                 'type' => 'string',
-                'label' => 'Base DN for the user search operation'
+                'label' => 'Base DN for the user search operation. Multiple bases may be separated by a semicolon (;)'
                 ),
         'extrauserfilter' => array(
                 'type' => 'string',
@@ -214,15 +214,21 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $usersearchfilter = "($searchuserattribute=$new_user)";
         }
         // Search for the user
-        $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
-        $rescount=ldap_count_entries($ldapconn,$dnsearchres);
-        if ($rescount == 1)
-        {
-            $userentry=ldap_get_entries($ldapconn, $dnsearchres);
-            $new_email = flattenText($userentry[0][$mailattribute][0]);
-            $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
-        }
-        else
+	$userentry = false;
+	// try each semicolon-separated search base in order
+	foreach(explode(";",$usersearchbase) as $usb)
+	{
+          $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
+          $rescount=ldap_count_entries($ldapconn,$dnsearchres);
+          if ($rescount == 1)
+          {
+              $userentry=ldap_get_entries($ldapconn, $dnsearchres);
+              $new_email = flattenText($userentry[0][$mailattribute][0]);
+              $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
+	      break;
+          }
+	}
+	if(!$userentry)
         {
             $oEvent->set('errorCode',self::ERROR_LDAP_NO_SEARCH_RESULT);
             $oEvent->set('errorMessageTitle',gT('Username not found in LDAP server'));

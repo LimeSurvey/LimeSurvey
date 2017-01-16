@@ -35,6 +35,15 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.58.2 (build 170114) to 2.59.0 (build 170115) Jan 15 2017
+-Fixed issue: [security] Possible XSS in loading screen (Carsten Schmitz)
+-Fixed issue: Notice when allow_url_fopen is set to off (Johannes Weberhofer)
+-Fixed issue #12052: Overlapping messages (markusfluer)
+-New feature: Added token email as replacement field for confirmation emails (Gabriel Jenik)
+-New feature: Make AuthLDAP support multiple Base DNs for "Search and Bind" (ecraven)
+-New feature: RemoteControl - new filter by token ids at invite_participants method (Gabriel Jenik)
+
 Changes from 2.58.1 (build vulnerability) to 2.58.2 (build 170114) Jan 12 2017
 Fixed issue: [security] Directory traversal vulnerability in PHPMailer library - PHPMailer update to 5.2.22
 

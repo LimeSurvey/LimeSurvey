@@ -1440,12 +1440,24 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
         }
 
+        /*
+         * The hash value of a notification is used to calculate uniqueness.
+         * @since 2016-08-10
+         * @author Olle Haerstedt
+         */
+        if ($iOldDBVersion < 261) {
+            addColumn('{{notifications}}', 'hash', 'string(64)');
+            $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
+        }
+
         /**
          * Add seed column in all active survey tables
          * Might take time to execute
          * @since 2016-09-01
          */
-        if ($iOldDBVersion < 261) {
+        if ($iOldDBVersion < 262) {
 
             // Loop all surveys
             $surveys = Survey::model()->findAll();
@@ -1479,18 +1491,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                     }
                 }
             }
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
-        }
-
-        /*
-         * The hash value of a notification is used to calculate uniqueness.
-         * @since 2016-08-10
-         * @author Olle Haerstedt
-         */
-        if ($iOldDBVersion < 262) {
-            addColumn('{{notifications}}', 'hash', 'string(64)');
-            $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
-
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
         }
 
