@@ -393,10 +393,6 @@ class SurveyRuntimeHelper {
 
             $redata = compact(array_keys(get_defined_vars()));
             Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
-            /*
-            echo "\n\n<!-- START THE GROUP (in SurveyRunTime ) -->\n";
-            echo "\n\n<div id='group-$_gseq'";
-            */
 
             $aGroup['class'] = "";
 
@@ -408,8 +404,6 @@ class SurveyRuntimeHelper {
 
             $aGroup['name']             = $gl['group_name'];
             $aGroup['gseq']             = $_gseq;
-            // START GROUP
-            // echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
 
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($surveyid);
