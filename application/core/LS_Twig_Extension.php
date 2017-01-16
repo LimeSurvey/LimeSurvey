@@ -69,6 +69,14 @@ class LS_Twig_Extension extends Twig_Extension
         }
     }
 
+    /**
+     * Retreive the question classes for a given question id
+     * Use in survey template question.twig file.
+     * TODO: we'd rather provide a oQuestion object to the twig view with a method getAllQuestion(). But for now, this public static function respect the old way of doing
+     *
+     * @param  int      $iQid the question id
+     * @return string   the classes
+     */
     public static function getAllQuestionClasses($iQid)
     {
 
