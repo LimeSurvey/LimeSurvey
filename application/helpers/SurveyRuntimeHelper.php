@@ -324,8 +324,6 @@ class SurveyRuntimeHelper {
         /////////////////////////////////
         // First call to templatereplace
 
-        echo "<!-- SurveyRunTimeHelper -->";
-
         $thissurvey['upload_file']      = (isset($upload_file) && $upload_file)?true:false;
         $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $hiddenfieldnames               = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
@@ -455,7 +453,6 @@ class SurveyRuntimeHelper {
 
 
                 // question.twig
-                $aGroup['aQuestions'][$qid]        = $qa;
 
                 // easier to understand for survey maker
                 $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
@@ -473,12 +470,10 @@ class SurveyRuntimeHelper {
                 $aGroup['aQuestions'][$qid]['help']['text']         = $lemQuestionInfo['info']['help'];
             }
 
-            $aGroup['show_last_group']   = false;
-            $aGroup['show_last_answer']  = false;
-            $aGroup['lastgroup']         = '';
-            $aGroup['lastanswer']        = '';
-            if (!empty($qanda))
-            {
+            $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
+            $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
+
+            if (!empty($qanda)){
                 if ($surveyMode == 'group') {
                     $aGroup['show_last_group']   = true;
                     $aGroup['lastgroup']         = $lastgroup;
@@ -506,11 +501,13 @@ class SurveyRuntimeHelper {
         /**
         * Navigator
         */
-        if (!$previewgrp && !$previewquestion)
-        {
-            $aNavigator = surveymover();
-            $moveprevbutton = $aNavigator['sMovePrevButton'];
-            $movenextbutton = $aNavigator['sMoveNextButton'];
+        if (!$previewgrp && !$previewquestion){
+
+            $aNavigator['show'] = true;
+
+            $aNavigatorInfo = surveymover();
+            $moveprevbutton = $aNavigatorInfo['sMovePrevButton'];
+            $movenextbutton = $aNavigatorInfo['sMoveNextButton'];
             $navigator = $moveprevbutton.' '.$movenextbutton;
 
             $redata = compact(array_keys(get_defined_vars()));
