@@ -465,7 +465,7 @@ class SurveyRuntimeHelper {
                 $thissurvey['aQuestion']['number']               = $qa[0]['number'];
                 $thissurvey['aQuestion']['text']                 = $qa[0]['text'];
                 $thissurvey['aQuestion']['SGQ']                  = $qa[7];
-                $thissurvey['aQuestion']['mandatory']            = $qa[0]['mandatory']; 
+                $thissurvey['aQuestion']['mandatory']            = $qa[0]['mandatory'];
                 $thissurvey['aQuestion']['input_error_class']    = $qa[0]['input_error_class'];
                 $thissurvey['aQuestion']['valid_message']        = $qa[0]['valid_message'];
                 $thissurvey['aQuestion']['file_valid_message']   = $qa[0]['file_valid_message'];
@@ -475,16 +475,6 @@ class SurveyRuntimeHelper {
                 $thissurvey['aQuestion']['help']['text']         = $lemQuestionInfo['info']['help'];
 
                 $question_template = file_get_contents($sTemplateViewPath.'question.twig');
-                // Fix old template : can we remove it ? Old template are surely already broken by another issue
-                if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
-                {
-                    // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
-                    $question_template = str_replace('{QUESTION_ESSENTIALS}', '', $question_template);
-                    $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
-                    $question_template ="<div {QUESTION_ESSENTIALS} class='{QUESTION_CLASS} {QUESTION_MAN_CLASS} {QUESTION_INPUT_ERROR_CLASS}'"
-                                        . $question_template
-                                        . "</div>";
-                }
                 $redata = compact(array_keys(get_defined_vars()));
                 $aQuestionReplacement=$this->getQuestionReplacement($qa);
                 echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
