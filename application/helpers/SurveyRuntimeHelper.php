@@ -459,12 +459,13 @@ class SurveyRuntimeHelper {
                 // question.twig
                 $thissurvey['aQuestion']        = $qa;
 
-                // easier to find for survey maker
+                // easier to understand for survey maker
                 $thissurvey['aQuestion']['qid']                  = $qa[4];
                 $thissurvey['aQuestion']['code']                 = $qa[5];
                 $thissurvey['aQuestion']['number']               = $qa[0]['number'];
                 $thissurvey['aQuestion']['text']                 = $qa[0]['text'];
                 $thissurvey['aQuestion']['SGQ']                  = $qa[7];
+                $thissurvey['aQuestion']['mandatory']            = $qa[0]['mandatory']; 
                 $thissurvey['aQuestion']['input_error_class']    = $qa[0]['input_error_class'];
                 $thissurvey['aQuestion']['valid_message']        = $qa[0]['valid_message'];
                 $thissurvey['aQuestion']['file_valid_message']   = $qa[0]['file_valid_message'];
