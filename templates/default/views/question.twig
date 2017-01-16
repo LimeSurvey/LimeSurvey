@@ -3,7 +3,7 @@
 {{ dump(aSurveyInfo.aQuestion) }}
 #}
 
-<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} question-container row">
+<div id="question{{ aSurveyInfo.aQuestion.qid }}" class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} question-container row">
 
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">
