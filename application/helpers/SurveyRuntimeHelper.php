@@ -381,7 +381,9 @@ class SurveyRuntimeHelper {
         {
             $gid = $gl['gid'];
             ++$_gseq;
-            $groupname = $gl['group_name'];
+            $aGroup    = array();
+
+            $groupname        = $gl['group_name'];
             $groupdescription = $gl['description'];
 
             if ($surveyMode != 'survey' && $gid != $onlyThisGID)
@@ -391,19 +393,26 @@ class SurveyRuntimeHelper {
 
             $redata = compact(array_keys(get_defined_vars()));
             Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
+            /*
             echo "\n\n<!-- START THE GROUP (in SurveyRunTime ) -->\n";
             echo "\n\n<div id='group-$_gseq'";
+            */
+
+            $aGroup['class'] = "";
+
             $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
             if  ($gnoshow && !$previewgrp)
             {
-                echo " class='ls-hidden'";/* Unsure for reason : hidden or unrelevant ?*/
+                $aGroup['class'] = ' ls-hidden';
             }
-            echo ">\n";
-            echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
-            echo "\n";
+
+            $aGroup['name']             = $gl['group_name'];
+            $aGroup['gseq']             = $_gseq;
+            // START GROUP
+            // echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
 
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
-            $aSurveyinfo = getSurveyInfo($surveyid);
+            $aSurveyinfo           = getSurveyInfo($surveyid);
 
             // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
             if(($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')){
@@ -414,13 +423,15 @@ class SurveyRuntimeHelper {
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
+/*
             if (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_)
             {
                 echo templatereplace(file_get_contents($sTemplateViewPath."groupdescription.pstpl"), array(), $redata);
             }
-            echo "\n";
+*/
 
-            echo "\n\n<!-- PRESENT THE QUESTIONS (in SurveyRunTime )  -->\n";
+            $aGroup['showdescription']  = (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_);
+            $aGroup['description']      = $redata['groupdescription'];
 
             foreach ($qanda as $qa) // one entry per QID
             {
@@ -449,50 +460,69 @@ class SurveyRuntimeHelper {
                 // The following four variables offer the templating system the
                 // capacity to fully control the HTML output for questions making the
                 // above echo redundant if desired.
-                $question['sgq'] = $qa[7];
-                $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
+                $question['sgq']  = $qa[7];
+                $question['aid']  = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
                 //===================================================================
 
 
 
                 // question.twig
-                $thissurvey['aQuestion']        = $qa;
+                $aGroup['aQuestions'][$qid]        = $qa;
 
                 // easier to understand for survey maker
-                $thissurvey['aQuestion']['qid']                  = $qa[4];
-                $thissurvey['aQuestion']['code']                 = $qa[5];
-                $thissurvey['aQuestion']['number']               = $qa[0]['number'];
-                $thissurvey['aQuestion']['text']                 = $qa[0]['text'];
-                $thissurvey['aQuestion']['SGQ']                  = $qa[7];
-                $thissurvey['aQuestion']['mandatory']            = $qa[0]['mandatory'];
-                $thissurvey['aQuestion']['input_error_class']    = $qa[0]['input_error_class'];
-                $thissurvey['aQuestion']['valid_message']        = $qa[0]['valid_message'];
-                $thissurvey['aQuestion']['file_valid_message']   = $qa[0]['file_valid_message'];
-                $thissurvey['aQuestion']['man_message']          = $qa[0]['man_message'];
-                $thissurvey['aQuestion']['answer']               = $qa[1];
-                $thissurvey['aQuestion']['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
-                $thissurvey['aQuestion']['help']['text']         = $lemQuestionInfo['info']['help'];
+                $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
+                $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
+                $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
+                $aGroup['aQuestions'][$qid]['text']                 = $qa[0]['text'];
+                $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
+                $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
+                $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
+                $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
+                $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
+                $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
+                $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
+                $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
+                $aGroup['aQuestions'][$qid]['help']['text']         = $lemQuestionInfo['info']['help'];
 
-                $question_template = file_get_contents($sTemplateViewPath.'question.twig');
-                $redata = compact(array_keys(get_defined_vars()));
-                $aQuestionReplacement=$this->getQuestionReplacement($qa);
+
+                //  REPLACE QUESTION TWIG
+
+                /*
+                $question_template    = file_get_contents($sTemplateViewPath.'question.twig');
+                $redata               = compact(array_keys(get_defined_vars()));
+                $aQuestionReplacement = array();
+                //$aQuestionReplacement = $this->getQuestionReplacement($qa);
+
                 echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
+                */
 
             }
+
+            $aGroup['show_last_group']   = false;
+            $aGroup['show_last_answer']  = false;
+            $aGroup['lastgroup']         = '';
+            $aGroup['lastanswer']        = '';
             if (!empty($qanda))
             {
                 if ($surveyMode == 'group') {
                     echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+                    $aGroup['show_last_group']   = true;
+                    $aGroup['lastgroup']         = $lastgroup;
                 }
                 if ($surveyMode == 'question') {
                     echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
+                    $aGroup['show_last_answer']   = true;
+                    $aGroup['lastanswer']         = $lastanswer;
                 }
             }
 
-            echo "\n\n<!-- END THE GROUP -->\n";
-            echo templatereplace(file_get_contents($sTemplateViewPath."endgroup.pstpl"), array(), $redata);
-            echo "\n\n</div>\n";
+
+            //echo templatereplace(file_get_contents($sTemplateViewPath."endgroup.pstpl"), array(), $redata);
+            $thissurvey['aGroup'] = $aGroup;
+            $redata  = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents($sTemplateViewPath."group.twig"), array(), $redata, false, false);
+
             Yii::app()->setConfig('gid','');
         }
 

@@ -1,0 +1,31 @@
+{% set aGroup = aSurveyInfo.aGroup %}
+<!-- START THE GROUP: {{ aGroup.name }} {{ aGroup.gid }}  -->
+<div id='group-{{ aGroup.gseq }}' class="{{ aGroup.class }}">
+    <div class="group-container">
+        <div class="group-title text-center h3">
+            {{ aGroup.name }}
+        </div>
+
+        <!-- Group description -->
+        {% if aGroup.description != '' %}
+            <div class="group-description row well">
+                {{ aGroup.description }}
+            </div>
+        {% endif %}
+
+        <!-- PRESENT THE QUESTIONS -->
+        {% for  aQuestion in aGroup.aQuestions %}
+             {{ include('./question.twig') }}
+        {% endfor %}
+
+        <!-- Hidden inputs -->
+        {% if aGroup.show_last_group == true %}
+            <input type='hidden' name='lastgroup' value='{{ aGroup.lastgroup }}' id='lastgroup' />
+        {% endif %}
+
+        {% if aGroup.show_last_answer == true %}
+            <input type='hidden' name='lastanswer' value='{{ aGroup.lastanswer }}' id='lastanswer' />
+        {% endif %}
+    </div>
+</div>
+<!-- endgroup: {{ aGroup.name }} {{ aGroup.gid }}  -->

@@ -1,11 +1,9 @@
 {#
-{{ dump(aSurveyInfo.aQuestion) }}
+{{ dump(aQuestion) }}
 #}
 
 
 {% set aShow     = aSurveyInfo.aShow     %}
-{% set aQuestion = aSurveyInfo.aQuestion %}
-
 <!-- Question -->
 <div id="question{{ aQuestion.qid }}" class=" {{ getAllQuestionClasses( aQuestion.qid ) }} {{ aQuestion.input_error_class }} question-container row">
 
