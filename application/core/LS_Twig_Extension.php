@@ -71,21 +71,23 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function getAllQuestionClasses($iQid)
     {
+
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
-        $sType=$lemQuestionInfo['info']['type'];
+        $sType           = $lemQuestionInfo['info']['type'];
+        $aSGQA           = explode( 'X', $lemQuestionInfo['sgqa'] );
+        $iSurveyId       = $aSGQA[0];
 
-        $aQuestionClass = Question::getQuestionClass($sType);
-
+        $aQuestionClass  = Question::getQuestionClass($sType);
 
         /* Add the relevance class */
         if (!$lemQuestionInfo['relevant']){
-            $aQuestionClass .= 'ls-unrelevant';
-            $aQuestionClass .= 'ls-hidden';
+            $aQuestionClass .= ' ls-unrelevant';
+            $aQuestionClass .= ' ls-hidden';
         }
 
         if ($lemQuestionInfo['hidden']){ /* Can use aQuestionAttributes too */
-            $aQuestionClass .= 'ls-hidden-attribute';/* another string ? */
-            $aQuestionClass .= 'ls-hidden';
+            $aQuestionClass .= ' ls-hidden-attribute';/* another string ? */
+            $aQuestionClass .= ' ls-hidden';
         }
 
         $aQuestionAttributes = getQuestionAttributeValues($iQid);
