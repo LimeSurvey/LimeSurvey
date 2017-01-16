@@ -101,6 +101,14 @@ class LS_Twig_Extension extends Twig_Extension
             }
         }
 
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y'){
+            $aQuestionClass .= ' mandatory';
+        }
+
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_' . $iSurveyId]['maxstep'] != $_SESSION['survey_' . $iSurveyId]['step']){
+            $aQuestionClass .= ' missing';
+        }
+
         return $aQuestionClass;
     }
 
