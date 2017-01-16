@@ -491,8 +491,6 @@ class SurveyRuntimeHelper {
                 }
             }
 
-
-            //echo templatereplace(file_get_contents($sTemplateViewPath."endgroup.pstpl"), array(), $redata);
             $thissurvey['aGroup'] = $aGroup;
             $redata  = compact(array_keys(get_defined_vars()));
             echo templatereplace(file_get_contents($sTemplateViewPath."group.twig"), array(), $redata, false, false);
