@@ -335,6 +335,8 @@ class SurveyRuntimeHelper {
         $showxquestions                  = Yii::app()->getConfig('showxquestions');
         $thissurvey['bShowxquestions']   = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) || ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y'));
 
+        // Show question code/number
+        $thissurvey['aShow']             = $this->getShowNumAndCode($thissurvey);
 
         $redata                         = compact(array_keys(get_defined_vars()));
 
@@ -454,7 +456,12 @@ class SurveyRuntimeHelper {
 
                 // question.twig
                 $thissurvey['aQuestion']        = $qa;
-                $thissurvey['aQuestion']['qid']  = $qa[4]; // easier to find for survey maker
+
+                // easier to find for survey maker
+                $thissurvey['aQuestion']['qid']    = $qa[4];
+                $thissurvey['aQuestion']['code']   = $qa[5];
+                $thissurvey['aQuestion']['number'] = $qa[0]['number'];
+
                 $question_template = file_get_contents($sTemplateViewPath.'question.twig');
                 // Fix old template : can we remove it ? Old template are surely already broken by another issue
                 if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
@@ -546,6 +553,54 @@ class SurveyRuntimeHelper {
 
     }
 
+
+    public function getShowNumAndCode($thissurvey)
+    {
+
+        $showqnumcode_global_ = getGlobalSetting('showqnumcode');
+        $showqnumcode_survey_ = $thissurvey['showqnumcode'];
+
+        // Check global setting to see if survey level setting should be applied
+        if($showqnumcode_global_ == 'choose') { // Use survey level settings
+            $showqnumcode_ = $showqnumcode_survey_; //B, N, C, or X
+        } else {
+            // Use global setting
+            $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
+        }
+
+        switch ($showqnumcode_){
+            // Both
+            case 'both':
+            case 'B':
+                $aShow['question_code']   = true;
+                $aShow['question_number'] = true;
+                break;
+
+            // Number only
+            case 'number':
+            case 'N':
+                $aShow['question_code']   = false;
+                $aShow['question_number'] = true;
+                break;
+
+            // Code only
+            case 'code':
+            case 'C':
+                $aShow['question_code']   = true;
+                $aShow['question_number'] = false;
+                break;
+
+            // Neither
+            case 'none':
+            case 'X':
+            default:
+                $aShow['question_code']   = none;
+                $aShow['question_number'] = none;
+                break;
+        }
+
+        return $aShow;
+    }
 
     /**
      * This method perform different tasks that should be distributed in different functions.
