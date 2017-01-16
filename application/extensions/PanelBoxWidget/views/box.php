@@ -1,5 +1,5 @@
 <div class="col-lg-2 col-sm-3 rtl-no-left-margin <?php echo $offset; ?>"> <!-- TODO: rtl-no-left-margin is a hack to avoid offset on both sides. Real solution: Include RTL converted bootstrap. -->
-    <div class="panel panel-primary panel-clickable" id="pannel-<?php echo $position;?>" data-url="<?php echo $url; ?>"<?php if($external){ echo ' data-target="_blank"';}?> >
+    <div class="panel panel-primary panel-clickable" id="panel-<?php echo $position;?>" data-url="<?php echo $url; ?>"<?php if($external){ echo ' data-target="_blank"';}?> >
     <div class="panel-heading">
         <h3 class="panel-title"><?php eT($title);?></h3>
     </div>
