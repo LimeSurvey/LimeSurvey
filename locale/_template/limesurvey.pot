@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-01-14 23:36:28+00:00\n"
+"POT-Creation-Date: 2017-01-16 16:22:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5122,7 +5122,7 @@ msgid "Not Selected"
 msgstr ""
 
 #: application/core/plugins/QuickMenu/QuickMenu.php:146
-#: application/helpers/update/updatedb_helper.php:1468
+#: application/helpers/update/updatedb_helper.php:1481
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
@@ -10198,23 +10198,23 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1444
+#: application/helpers/update/updatedb_helper.php:1457
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1445
+#: application/helpers/update/updatedb_helper.php:1458
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2798
+#: application/helpers/update/updatedb_helper.php:2811
 msgid "Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2800
+#: application/helpers/update/updatedb_helper.php:2813
 msgid "Template(s) to be verified :"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2806
+#: application/helpers/update/updatedb_helper.php:2819
 msgid "All %s user templates updated."
 msgstr ""
 
