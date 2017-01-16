@@ -1573,7 +1573,7 @@ class SurveyRuntimeHelper {
         $aHtmlOptions= (array) $event->get('aHtmlOptions');
         unset($aHtmlOptions['class']);// Disallowing update/set class
         $aHtmlOptions['id']="question{$iQid}";// Always add id for QUESTION_ESSENTIALS$
-        var_dump($aHtmlOptions);
+
         $aReplacement['QUESTION_ESSENTIALS']=CHtml::renderAttributes($aHtmlOptions);
 
         return $aReplacement;
