@@ -36,8 +36,7 @@
     <!-- LimeSurvey valid message and help -->
     <div class="question-valid-container bg-primary text-info col-xs-12">
         {{ aQuestion.valid_message | raw }}
-      {QUESTION_VALID_MESSAGE}
-      {QUESTION_MAN_MESSAGE}
+        {{ aQuestion.man_message | raw }}      
       {QUESTION_FILE_VALID_MESSAGE}
     </div>
 
