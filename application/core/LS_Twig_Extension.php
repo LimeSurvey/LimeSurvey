@@ -48,7 +48,7 @@ class LS_Twig_Extension extends Twig_Extension
      * In any twig file, you can register a public css file doing: {{ registerPublicCssFile($sPublicCssFileName) }}
      * @param string $sPublicCssFileName name of the CSS file to publish in public style directory
      */
-    static public function registerPublicCssFile($sPublicCssFileName)
+    public static function registerPublicCssFile($sPublicCssFileName)
     {
         if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
 
@@ -68,5 +68,39 @@ class LS_Twig_Extension extends Twig_Extension
             );
         }
     }
+
+    public static function getAllQuestionClasses($iQid)
+    {
+        $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
+        $sType=$lemQuestionInfo['info']['type'];
+
+        $aQuestionClass = Question::getQuestionClass($sType);
+
+
+        /* Add the relevance class */
+        if (!$lemQuestionInfo['relevant']){
+            $aQuestionClass .= 'ls-unrelevant';
+            $aQuestionClass .= 'ls-hidden';
+        }
+
+        if ($lemQuestionInfo['hidden']){ /* Can use aQuestionAttributes too */
+            $aQuestionClass .= 'ls-hidden-attribute';/* another string ? */
+            $aQuestionClass .= 'ls-hidden';
+        }
+
+        $aQuestionAttributes = getQuestionAttributeValues($iQid);
+
+        //add additional classes
+        if(isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass']!=""){
+            /* Got to use static expression */
+            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), false, 1, 1, false, false, true));/* static var is the lmast one ...*/
+            if($emCssClass != ""){
+                $aQuestionClass .= Chtml::encode($emCssClass);
+            }
+        }
+
+        return $aQuestionClass;
+    }
+
 
 }
