@@ -464,6 +464,7 @@ class SurveyRuntimeHelper {
                 $thissurvey['aQuestion']['text']                = $qa[0]['text'];
                 $thissurvey['aQuestion']['SGQ']                 = $qa[7];
                 $thissurvey['aQuestion']['input_error_class']   = $qa[0]['input_error_class'];
+                $thissurvey['aQuestion']['valid_message']       = $qa[0]['valid_message'];
 
                 $question_template = file_get_contents($sTemplateViewPath.'question.twig');
                 // Fix old template : can we remove it ? Old template are surely already broken by another issue
