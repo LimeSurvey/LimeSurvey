@@ -36,6 +36,17 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.59.0 (build 170115) to 2.59.1 (build 170116) Jan 16 2017
+-Fixed issue #12059: Internal Server Error Property 'UniqueNotification.hash' is not defined (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Estonian by t6nnp6nn
+#Updated translation: Finnish by jeskiv
+#Updated translation: Hungarian by kutigeza, kkd
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 2.58.2 (build 170114) to 2.59.0 (build 170115) Jan 15 2017
 -Fixed issue: [security] Possible XSS in loading screen (Carsten Schmitz)
 -Fixed issue: Notice when allow_url_fopen is set to off (Johannes Weberhofer)
