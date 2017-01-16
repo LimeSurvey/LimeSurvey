@@ -1,4 +1,3 @@
-<!-- Question -->
 {#
 {{ dump(aSurveyInfo.aQuestion) }}
 #}
@@ -7,6 +6,7 @@
 {% set aShow     = aSurveyInfo.aShow %}
 {% set aQuestion = aSurveyInfo.aQuestion %}
 
+<!-- Question -->
 <div id="question{{ aQuestion.qid }}" class=" {{ getAllQuestionClasses( aQuestion.qid ) }} {{ aQuestion.input_error_class }} question-container row">
 
     <!-- Question text -->
@@ -29,7 +29,7 @@
         <div class="question-text">
             <div id="ls-question-text-{{ aQuestion.SGQ }}" class="ls-label-question">
                 {{ aQuestion.text }}
-            </div>            
+            </div>
         </div>
     </div>
 
