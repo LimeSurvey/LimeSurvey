@@ -26,7 +26,7 @@
                     <div class="col-sm-12 col-md-6">
 
                         <!-- Format -->
-                        <div class="panel panel-primary" id="pannel-1">
+                        <div class="panel panel-primary" id="panel-1">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <?php eT("Format");?>
@@ -52,7 +52,7 @@
                             </div>
 
                         <!-- Range -->
-                        <div class="panel panel-primary" id="pannel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
+                        <div class="panel panel-primary" id="panel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <?php eT("Range");?>
@@ -99,7 +99,7 @@
                         </div>
 
                         <!-- General -->
-                        <div class="panel panel-primary" id="pannel-3">
+                        <div class="panel panel-primary" id="panel-3">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <?php eT("General"); ?>
@@ -130,7 +130,7 @@
                         </div>
 
                         <!-- Heading -->
-                        <div class="panel panel-primary" id="pannel-4">
+                        <div class="panel panel-primary" id="panel-4">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <?php eT("Headings");?>
@@ -240,7 +240,7 @@
                         </div>
 
 
-                        <div class="panel panel-primary" id="pannel-5">
+                        <div class="panel panel-primary" id="panel-5">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <?php eT("Responses");?>
@@ -290,7 +290,7 @@
                     <div class="col-sm-12 col-md-6">
 
                         <!-- Column control -->
-                        <div class="panel panel-primary" id="pannel-6">
+                        <div class="panel panel-primary" id="panel-6">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <?php eT("Columns");?>
@@ -318,7 +318,7 @@
 
                         <!-- Token control -->
                         <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')): ?>
-                            <div class="panel panel-primary" id="pannel-7">
+                            <div class="panel panel-primary" id="panel-7">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <?php eT("Token control");?>

@@ -1,7 +1,7 @@
 <div class="container-fluid welcome">
     <div class="row text-center">
         <div class="col-lg-3 col-lg-offset-4 col-sm-6 col-sm-offset-3">
-            <div class="panel panel-primary login-pannel" id="pannel-1">
+            <div class="panel panel-primary login-panel" id="panel-1">
 
                 <!-- Header -->
                 <div class="panel-body">

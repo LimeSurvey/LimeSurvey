@@ -5,7 +5,7 @@
 
                 <?php echo CHtml::form(array("admin/export/sa/vvexport/surveyid/{$surveyid}"), 'post', array('id'=>'vvexport', 'class'=>'form-horizontal'));?>
 
-                <div class="panel panel-primary" id="pannel-1" style="opacity: 1; top: 0px;">
+                <div class="panel panel-primary" id="panel-1" style="opacity: 1; top: 0px;">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <?php eT("Export survey");?>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-primary" id="pannel-1" style="opacity: 1; top: 0px;">
+                <div class="panel panel-primary" id="panel-1" style="opacity: 1; top: 0px;">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <?php eT("Format");?>

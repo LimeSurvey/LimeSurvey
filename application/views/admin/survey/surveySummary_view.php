@@ -89,7 +89,7 @@ $surveyid = $surveyinfo['sid'];
 
                                     <!-- Can't add new group to survey  -->
                                     <div class="col-sm-6">
-                                        <div class="panel panel-primary disabled" id="pannel-1">
+                                        <div class="panel panel-primary disabled" id="panel-1">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title"><?php eT('Add group');?></h4>
                                             </div>
@@ -108,7 +108,7 @@ $surveyid = $surveyinfo['sid'];
 
                                     <!-- Can't add a new question -->
                                     <div class="col-sm-6" >
-                                        <div class="panel panel-primary disabled" id="pannel-2">
+                                        <div class="panel panel-primary disabled" id="panel-2">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
                                             </div>
@@ -134,7 +134,7 @@ $surveyid = $surveyinfo['sid'];
 
                                     <!-- Add group -->
                                     <div class="col-sm-6">
-                                        <div class="panel panel-primary panel-clickable" id="pannel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
+                                        <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title"><?php eT('Add group');?></h4>
                                             </div>
@@ -154,7 +154,7 @@ $surveyid = $surveyinfo['sid'];
                                     <!-- Survey has no group, so can't add a question -->
                                     <?php if(!$groups_count > 0): ?>
                                         <div class="col-sm-6" >
-                                            <div class="panel panel-primary disabled" id="pannel-2">
+                                            <div class="panel panel-primary disabled" id="panel-2">
                                                 <div class="panel-heading">
                                                     <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
                                                 </div>
@@ -178,7 +178,7 @@ $surveyid = $surveyinfo['sid'];
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
                                         <div class="col-sm-6">
-                                            <div class="panel panel-primary panel-clickable" id="pannel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
+                                            <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
                                                 <div class="panel-heading">
                                                     <h4 class="panel-title"><?php eT('Add question');?></h4>
                                                 </div>
@@ -204,7 +204,7 @@ $surveyid = $surveyinfo['sid'];
 
                                 <!-- Edit text elements and general settings -->
                                 <?php if($surveylocale && $surveysettings): ?>
-                                    <div class="panel panel-primary panel-clickable" id="pannel-3" data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>">
                                         <div class="panel-heading">
                                             <h4 class="panel-title"><?php eT('Edit text elements and general settings');?></h4>
                                         </div>
@@ -220,7 +220,7 @@ $surveyid = $surveyinfo['sid'];
                                         </div>
                                     </div>
                                 <?php else: ?>
-                                    <div class="panel panel-primary disabled" id="pannel-3" >
+                                    <div class="panel panel-primary disabled" id="panel-3" >
                                         <div class="panel-heading">
                                             <h4 class="panel-title"><?php eT('Edit text elements and general settings');?></h4>
                                         </div>
@@ -242,7 +242,7 @@ $surveyid = $surveyinfo['sid'];
                             <!-- Stats -->
                             <?php if($respstatsread && $activated=="Y"):?>
                                 <div class="col-sm-6">
-                                    <div class="panel panel-primary panel-clickable" id="pannel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>">
                                         <div class="panel-heading">
                                             <h4 class="panel-title"><?php eT("Statistics");?></h4>
                                         </div>
@@ -264,7 +264,7 @@ $surveyid = $surveyinfo['sid'];
                                 </div>
                             <?php else: ?>
                                 <div class="col-sm-6">
-                                    <div class="panel panel-primary disabled" id="pannel-4">
+                                    <div class="panel panel-primary disabled" id="panel-4">
                                         <div class="panel-heading">
                                             <h4 class="panel-title"><?php eT("Responses & statistics");?></h4>
                                         </div>
