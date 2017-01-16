@@ -49,7 +49,7 @@
     <div class="question-help-container text-info col-xs-12">
         {% if aQuestion.help.show %}
             <div class="ls-questionhelp">
-                {{ aQuestion.help.txt }}
+                {{ aQuestion.help.txt | raw }}
             </div>
         {% endif %}
     </div>
