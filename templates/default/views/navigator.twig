@@ -37,8 +37,24 @@
             </button>
         {% endif %}
 
-        {SAVE}
-        {CLEARALL}
+        <div class="form-inline ls-move-form">
+            <label class="form-group hidden">
+
+            </label>
+        </div>
+
+        <div class="form-inline ls-move-form">
+            <label class="form-group hidden">
+                <input value="confirm" type="checkbox" name="confirm-clearall">
+                <span class="control-label">
+                    {{ "Please confirm you want to clear your response?" | t }}
+                </span>
+            </label>
+            <button type="submit" value="clearall" name="move" class="ls-clearaction ls-clearall btn btn-link" data-confirmedby="confirm-clearall" title="This action need confirmation.">
+                {{ "Exit and clear survey" | t }}
+            </button>
+        </div>
+
     </div>
     <div class="col-sm-6 index-wrapper">
         <!-- Can be elsewhere if needed : inside form is better but not necessary -->
