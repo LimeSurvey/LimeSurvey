@@ -621,7 +621,7 @@ class SurveyRuntimeHelper {
             }
         }
 
-        // For clear all
+        // For "clear all" buttons
         App()->getClientScript()->registerScript("activateConfirmLanguage","$.extend(LSvar.lang,".ls_json_encode(array('yes'=>gT("Yes"),'no'=>gT("No"))).")",CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
         App()->getClientScript()->registerScript("activateConfirmButton","activateConfirmButton();\n",CClientScript::POS_END);

@@ -3,6 +3,7 @@
 <div class="navigator row" id="navigator-container">
     <div class="col-xs-6 text-left">
         {% if aNavigator.aMovePrev.show %}
+            <!-- Button previous -->
             <button type="submit" value="moveprev" name="move" class=" {{ aNavigator.disabled }} ls-move-btn ls-move-previous-btn btn btn-lg btn-default" accesskey="p">
                 {{ "Previous" | t }}
             </button>
@@ -11,10 +12,12 @@
     <div class="col-xs-6 text-right">
         {% if aNavigator.aMoveNext.show %}
             {% if aNavigator.aMoveNext.value == "movesubmit" %}
+                <!-- Button submit -->
                 <button type="submit" value="movesubmit" name="move" class=" {{ aNavigator.disabled }} ls-move-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="l">
                     {{ "Submit" | t }}
                 </button>
             {% else %}
+                <!-- Button Next -->
                 <button type="submit" value="movenext" name="move" class=" {{ aNavigator.disabled }} ls-move-next-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="n">
                     {{ "Next" | t }}
                 </button>
@@ -26,23 +29,20 @@
 <div class="navigator row">
     <div class="col-sm-6 save-clearall-wrapper">
         {% if aNavigator.load.show == "Y" %}
+            <!-- Button load unfinished survey -->
             <button type="submit" value="loadall" name="loadall" class="ls-saveaction ls-loadall btn btn-default" accesskey="L">
                 {{ "Load unfinished survey" | t }}
             </button>
         {% endif %}
 
         {% if aNavigator.save.show == "Y" %}
+            <!-- Button resume later -->
             <button type="submit" value="saveall" name="saveall" class="ls-saveaction ls-loadall btn btn-default" accesskey="s">
                 {{ "Resume later" | t }}
             </button>
         {% endif %}
 
-        <div class="form-inline ls-move-form">
-            <label class="form-group hidden">
-
-            </label>
-        </div>
-
+        <!-- Button exit and clear survey -->
         <div class="form-inline ls-move-form">
             <label class="form-group hidden">
                 <input value="confirm" type="checkbox" name="confirm-clearall">
@@ -57,7 +57,7 @@
 
     </div>
     <div class="col-sm-6 index-wrapper">
-        <!-- Can be elsewhere if needed : inside form is better but not necessary -->
+        {# Can be elsewhere if needed : inside form is better but not necessary #}
         {QUESTION_INDEX}
     </div>
 </div>
