@@ -584,6 +584,8 @@ class SurveyRuntimeHelper {
             // SAVE BUTTON
             if($thissurvey['allowsave'] == "Y"){
 
+                App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
+                
                 // Fill some test here, more clear ....
                 $bTokenanswerspersistence   = $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
                 $bAlreadySaved              = isset($_SESSION['survey_'.$surveyid]['scid']);
