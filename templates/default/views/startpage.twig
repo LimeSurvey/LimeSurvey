@@ -56,22 +56,10 @@
             </div> <!-- main row -->
         </div> <!-- outer frame container -->
 
+        {# Bootstrap Navigation Bar #}
+        {{ include('./subviews/bootstrap_alert_modal.twig') }}
 
-        <!-- Bootstrap Modal Alert -->
-        <div id="bootstrap-alert-box-modal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="min-height:40px;">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <div class="modal-title h4">&nbsp;</div>
-                    </div>
-                    <div class="modal-body"><p></p></div>
-                    <div class="modal-footer">
-                        <a href="#" data-dismiss="modal" class="btn btn-default">{{ "close" | t }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- some template.js function launched before ready -->
         <script type="text/javascript">
         /*<![CDATA[*/
