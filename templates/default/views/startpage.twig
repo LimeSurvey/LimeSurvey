@@ -31,31 +31,31 @@
 
 
     <div class="outerframe container" id="outerframeContainer">
-      <div id="main-row">
-          {{ include('./subviews/flash_message.twig') }}
+        <div id="main-row">
+            {{ include('./subviews/flash_message.twig') }}
 
-        <div class="col-centered" id="main-col">
+            <div class="col-centered" id="main-col">
 
-            {# include the form tag  #}
-            {{ include('./subviews/start_form.twig') }}
+                {# include the form tag  #}
+                {{ include('./subviews/start_form.twig') }}
 
-            {{ include('./subviews/no_js_alert.twig') }}
+                    {{ include('./subviews/no_js_alert.twig') }}
 
-                {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
-                {{ include('./subviews/allinone_mode_welcome_privacy.twig') }}
+                    {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
+                    {{ include('./subviews/allinone_mode_welcome_privacy.twig') }}
 
-                {# PRESENT THE QUESTION GROUPS #}
-                {# NOTE: this file will also render the questions via question.twig #}
-                {% for  aGroup in aSurveyInfo.aGroups %}
-                     {{ include('./group.twig') }}
-                {% endfor %}
+                    {# PRESENT THE QUESTION GROUPS #}
+                    {# NOTE: this file will also render the questions via question.twig #}
+                    {% for  aGroup in aSurveyInfo.aGroups %}
+                        {{ include('./group.twig') }}
+                    {% endfor %}
 
-                {# Presents the navigator #}
-                {% if aSurveyInfo.aNavigator.show %}
-                    {{ include('./navigator.twig') }}
-                {% endif %}
+                    {# Presents the navigator #}
+                    {% if aSurveyInfo.aNavigator.show %}
+                        {{ include('./navigator.twig') }}
+                    {% endif %}
 
-                {# Data shown when LEM debug timing mode is ON #}
-                {{ include('./subviews/LEMDebug.twig') }}
+                    {# Data shown when LEM debug timing mode is ON #}
+                    {{ include('./subviews/LEMDebug.twig') }}
 
 <!-- end of startpage.twig -->
