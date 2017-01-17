@@ -585,7 +585,7 @@ class SurveyRuntimeHelper {
             if($thissurvey['allowsave'] == "Y"){
 
                 App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
-                
+
                 // Fill some test here, more clear ....
                 $bTokenanswerspersistence   = $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
                 $bAlreadySaved              = isset($_SESSION['survey_'.$surveyid]['scid']);
@@ -620,6 +620,11 @@ class SurveyRuntimeHelper {
                 }
             }
         }
+
+        // For clear all
+        App()->getClientScript()->registerScript("activateConfirmLanguage","$.extend(LSvar.lang,".ls_json_encode(array('yes'=>gT("Yes"),'no'=>gT("No"))).")",CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
+        App()->getClientScript()->registerScript("activateConfirmButton","activateConfirmButton();\n",CClientScript::POS_END);
 
         $redata  = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
