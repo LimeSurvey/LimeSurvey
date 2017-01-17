@@ -70,15 +70,18 @@
                 {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
                 {{ include('./subviews/allinone_mode_welcome_privacy.twig') }}
 
-                <!-- PRESENT THE QUESTION GROUPS -->
+                {# PRESENT THE QUESTION GROUPS #}
+                {# NOTE: this file will also render the questions via question.twig #}
                 {% for  aGroup in aSurveyInfo.aGroups %}
-                     {# NOTE: this file will also render the questions via question.twig #}
                      {{ include('./group.twig') }}
                 {% endfor %}
 
-
+                {# Presents the navigator #}
                 {% if aSurveyInfo.aNavigator.show %}
                     {{ include('./navigator.twig') }}
                 {% endif %}
+
+                {# Data shown when LEM debug timing mode is ON #}
+                {{ include('./subviews/LEMDebug.twig') }}
 
 <!-- end of startpage.twig -->

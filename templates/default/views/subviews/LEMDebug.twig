@@ -1,0 +1,16 @@
+{# Data shown when LEM debug timing mode is ON #}
+{% if aSurveyInfo.aLEM.debugtimming.show %}
+    {{ aSurveyInfo.aLEM.debugtimming.script | raw }}
+{% endif %}
+
+{# Data shown when LEM debug validation mode is ON #}
+{% if aSurveyInfo.aLEM.debugvalidation.show %}
+    <table>
+        <tr>
+            <td align='left'>
+                <b>Group/Question Validation Results:</b>
+                {{ aSurveyInfo.aLEM.debugvalidation.message | raw }}
+            </td>
+        </tr>
+    </table>
+{% endif %}

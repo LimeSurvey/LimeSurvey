@@ -626,23 +626,21 @@ class SurveyRuntimeHelper {
         App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
         App()->getClientScript()->registerScript("activateConfirmButton","activateConfirmButton();\n",CClientScript::POS_END);
 
+
+        $thissurvey['aLEM']['debugtimming']['show'] = false;
+        if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING){
+            $thissurvey['aLEM']['debugtimming']['show'] = true;
+            $thissurvey['aLEM']['debugtimming']['script'] = LimeExpressionManager::GetDebugTimingMessage();
+        }
+
+        $thissurvey['aLEM']['debugvalidation']['show'] = false;
+        if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
+            $thissurvey['aLEM']['debugvalidation']['show']   = true;
+            $thissurvey['aLEM']['debugvalidation']['message'] = $moveResult['message'];
+        }
+
         $redata  = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
-
-
-        if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)
-        {
-            echo LimeExpressionManager::GetDebugTimingMessage();
-        }
-        if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
-        {
-            echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
-        }
-        echo "</form>\n";
-
-        echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
-
-        echo "\n";
 
         doFooter();
 
