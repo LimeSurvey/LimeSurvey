@@ -248,15 +248,15 @@ class UserGroup extends LSActiveRecord {
     }
     /**
      * This function search usergroups for a user
-     * If $mine = true then usergroups are those that have been created by the current user
+     * If $isMine = true then usergroups are those that have been created by the current user
      * else this function provides usergroups which contain the current user
      * 
      * The object \CActiveDataProvider returned is used to generate the view in application/views/admin/usergroup/usergroups_view.php
      * 
-     * @param bool $mine
+     * @param bool $isMine
      * @return \CActiveDataProvider
      */
-    function searchMine($mine)
+    function searchMine($isMine)
     {
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
@@ -299,7 +299,7 @@ class UserGroup extends LSActiveRecord {
 
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            if ($mine)
+            if ($isMine)
             {
                 $criteria->addCondition("t.owner_id=".App()->user->getId(), "AND");
             }
