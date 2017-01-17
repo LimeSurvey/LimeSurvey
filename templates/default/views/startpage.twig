@@ -9,8 +9,10 @@
     {{ dump(aSurveyInfo) }}
 #}
 
-<!-- startpage.twig -->
-{{ include('./subviews/head.twig') }}
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
+
+    {{ include('./subviews/head.twig') }}
 
 <body class="default lang-{{surveylanguage}} {{surveyformat}}">
 
