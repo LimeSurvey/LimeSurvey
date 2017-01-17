@@ -340,7 +340,8 @@ class SurveyRuntimeHelper {
 
         /////////////
         // START PAGE
-        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
+        // now after group for twig includes
+        //echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
 
         $aPopup=array(); // We can move this part where we want now
         if (isset($backpopup))
@@ -374,7 +375,6 @@ class SurveyRuntimeHelper {
         $showpopups=Yii::app()->getConfig('showpopups');
 
         $_gseq = -1;
-
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
         {
             $gid = $gl['gid'];
@@ -484,12 +484,18 @@ class SurveyRuntimeHelper {
                 }
             }
 
+            /*
             $thissurvey['aGroup'] = $aGroup;
             $redata  = compact(array_keys(get_defined_vars()));
             echo templatereplace(file_get_contents($sTemplateViewPath."group.twig"), array(), $redata, false, false);
-
+            */
             Yii::app()->setConfig('gid','');
+
+            $thissurvey['aGroups'][$gid] = $aGroup;
         }
+
+        $redata  = compact(array_keys(get_defined_vars()));
+        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
