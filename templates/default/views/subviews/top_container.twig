@@ -2,13 +2,18 @@
     Show the progress bar
 #}
 
-{% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
-    {{ registerPublicCssFile('lime-progress.css') }}
+<!-- Top container -->
+<div class="top-container">
+    <div class="container top-content">
+        {% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
+            {{ registerPublicCssFile('lime-progress.css') }}
 
-    {% set progressValue  = intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 )%}
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ progressValue }}%;">
-            {{ progressValue }}%
-        </div>
-    </div>
-{% endif %}
+            {% set progressValue  = intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 )%}
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ progressValue }}%;">
+                    {{ progressValue }}%
+                </div>
+            </div>
+        {% endif %}
+    </div> <!-- must hide it without javascript -->
+</div>
