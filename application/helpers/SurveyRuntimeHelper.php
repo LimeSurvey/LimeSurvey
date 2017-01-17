@@ -654,7 +654,7 @@ class SurveyRuntimeHelper {
         }
 
         $redata  = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
+        echo templatereplace(file_get_contents($sTemplateViewPath."layout.twig"), array(), $redata);
     }
 
 
