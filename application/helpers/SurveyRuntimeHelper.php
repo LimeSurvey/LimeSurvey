@@ -319,7 +319,21 @@ class SurveyRuntimeHelper {
 
 
         sendCacheHeaders();
-        doHeader();
+
+        Yii::app()->loadHelper('surveytranslator');
+
+        // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
+        if (Yii::app()->session['survey_'.$surveyid]['s_lang'] ){
+            $languagecode =  Yii::app()->session['survey_'.$surveyid]['s_lang'];
+        }elseif (isset($surveyid) && $surveyid  && Survey::model()->findByPk($surveyid)){
+            $languagecode = Survey::model()->findByPk($surveyid)->language;
+        }else{
+            $languagecode = Yii::app()->getConfig('defaultlang');
+        }
+        $thissurvey['languagecode'] = $languagecode;
+        $thissurvey['dir']          = (getLanguageRTL($languagecode))?"rtl":"ltr";
+
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
 
         /////////////////////////////////
         // First call to templatereplace
@@ -641,8 +655,6 @@ class SurveyRuntimeHelper {
 
         $redata  = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
-
-
     }
 
 
