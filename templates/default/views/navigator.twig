@@ -25,6 +25,12 @@
 
 <div class="navigator row">
     <div class="col-sm-6 save-clearall-wrapper">
+        {% if aNavigator.load.show == "Y" %}
+            <button type="submit" value="loadall" name="loadall" class=" {{ aNavigator.disabled }} ls-saveaction ls-loadall btn btn-default" accesskey="L">
+                {{ "Load unfinished survey" | t }}
+            </button>
+        {% endif %}
+
         {SAVE}
         {CLEARALL}
     </div>
