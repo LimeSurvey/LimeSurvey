@@ -40,6 +40,7 @@
     If a variable contains HTML {{ myHtml }}  will display the HTML as text on screen (the tag can be read).
     To unescape the HTML, and get it interpreted by the navigator, just do: {{ myHtml | raw }}
 
+    To add a comment (not visible in rendered HTML): {# my comment #}
 
 
     (¯`·._.·(¯`·._.· Twig Engine: advanced  ·._.·´¯)·._.·´¯)
@@ -77,23 +78,32 @@
         {# Top Container: in this template, it contains only  #}
         {{ include('./subviews/top_container.twig') }}
 
-
+        <!-- Outer Frame Container -->
         <div class="outerframe container" id="outerframeContainer">
+
+            <!-- Main Row -->
             <div id="main-row">
                 {{ include('./subviews/flash_message.twig') }}
 
+                <!-- Main Col -->
                 <div class="col-centered" id="main-col">
 
-                    {# include the form tag  #}
+                    {# include the form opening tag #}
                     {{ include('./subviews/start_form.twig') }} <!-- main form -->
 
+                        {# include the alert for no javascrit #}
                         {{ include('./subviews/no_js_alert.twig') }}
 
                         {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
                         {{ include('./subviews/allinone_mode_welcome_privacy.twig') }}
 
-                        {# PRESENT THE QUESTION GROUPS #}
-                        {# NOTE: this file will also render the questions via question.twig #}
+                        {#
+                            PRESENT THE QUESTION GROUPS
+
+                            This is the main part. It will render each question groups for this page (depending of Survey Mode setting )
+                            Each group will then render its own questions
+
+                         #}
                         {% for  aGroup in aSurveyInfo.aGroups %}
                             {{ include('./group.twig') }}
                         {% endfor %}
@@ -111,7 +121,7 @@
             </div> <!-- main row -->
         </div> <!-- outer frame container -->
 
-        {# Bootstrap Navigation Bar #}
+        {# Bootstrap alert modal #}
         {{ include('./subviews/bootstrap_alert_modal.twig') }}
 
         <!-- some template.js function launched before ready -->
