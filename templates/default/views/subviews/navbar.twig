@@ -1,0 +1,22 @@
+{#
+    Bootstrap Navigation Bar
+#}
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header ">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand" >{{ aSurveyInfo.name }}</div>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right navbar-action-link">
+            {{ include('./save_links.twig') }}
+            {{ include('./clearall_links.twig') }}
+            {{ include('./question_index_menu.twig') }}
+            {{ include('./language_changer_top_menu.twig') }}
+        </ul>
+    </div>
+</div>
