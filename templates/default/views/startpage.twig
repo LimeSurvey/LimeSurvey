@@ -23,14 +23,12 @@
 
 <body class="default lang-{{surveylanguage}} {{surveyformat}}">
 
-    {{ include('./subviews/navbar.twig') }}
+    {# Bootstrap Navigation Bar #}
+    {{ include('./subviews/nav_bar.twig') }}
 
-    <!-- Top container -->
-    <div class="top-container">
-      <div class="container top-content">
-          {{ include('./subviews/percent_complete.twig') }}
-      </div> <!-- must hide it without javascript -->
-    </div>
+    {# Top Container #}
+    {{ include('./subviews/top_container.twig') }}
+
 
     <div class="outerframe container" id="outerframeContainer">
       <div id="main-row">
@@ -41,13 +39,7 @@
             {# include the form tag  #}
             {{ include('./subviews/start_form.twig') }}
 
-                <!-- No JavaScript alert -->
-                <div class='alert alert-danger ls-js-hidden warningjs' data-type='checkjavascript'>
-                    {{
-                        "Caution: JavaScript execution is disabled in your browser or for this website. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
-                        | t
-                    }}
-                </div>
+            {{ include('./subviews/no_js_alert.twig') }}
 
                 {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
                 {{ include('./subviews/allinone_mode_welcome_privacy.twig') }}
