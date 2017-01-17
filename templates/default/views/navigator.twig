@@ -1,11 +1,18 @@
+{% set aNavigator = aSurveyInfo.aNavigator %}
+<!-- PRESENT THE NAVIGATOR -->
 <div class="navigator row" id="navigator-container">
     <div class="col-xs-6 text-left">
-        {MOVEPREVBUTTON}
+        {% if aNavigator.aMovePrev.show %}
+            <button type="submit" value="moveprev" name="move" class=" {{ aNavigator.disabled }} ls-move-btn ls-move-previous-btn btn btn-lg btn-default" accesskey="p">
+                {{ "Previous" | t }}
+            </button>
+        {% endif %}
     </div>
     <div class="col-xs-6 text-right">
         {MOVENEXTBUTTON}
-    </div>
+    </div>    
 </div>
+
 <div class="navigator row">
     <div class="col-sm-6 save-clearall-wrapper">
         {SAVE}
