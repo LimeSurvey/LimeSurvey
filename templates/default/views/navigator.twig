@@ -9,8 +9,18 @@
         {% endif %}
     </div>
     <div class="col-xs-6 text-right">
-        {MOVENEXTBUTTON}
-    </div>    
+        {% if aNavigator.aMoveNext.show %}
+            {% if aNavigator.aMoveNext.value == "movesubmit" %}
+                <button type="submit" value="movesubmit" name="move" class=" {{ aNavigator.disabled }} ls-move-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="l">
+                    {{ "Submit" | t }}
+                </button>
+            {% else %}
+                <button type="submit" value="movenext" name="move" class=" {{ aNavigator.disabled }} ls-move-next-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="n">
+                    {{ "Next" | t }}
+                </button>
+            {% endif %}
+        {% endif %}
+    </div>
 </div>
 
 <div class="navigator row">
