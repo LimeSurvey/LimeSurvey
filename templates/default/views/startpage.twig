@@ -10,16 +10,7 @@
 #}
 
 <!-- startpage.twig -->
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>{{aSurveyInfo.surveyls_title}}</title>
-<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
-<link rel="shortcut icon" href="{{templateurl}}favicon.ico" />
-
-{# See config.xml to add your own CSS and JS files #}
-{{ include('./subviews/google_analytics.twig') }}
-</head>
+{{ include('./subviews/head.twig') }}
 
 <body class="default lang-{{surveylanguage}} {{surveyformat}}">
 
@@ -57,5 +48,7 @@
 
                     {# Data shown when LEM debug timing mode is ON #}
                     {{ include('./subviews/LEMDebug.twig') }}
+
+
 
 <!-- end of startpage.twig -->
