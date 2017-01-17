@@ -494,8 +494,6 @@ class SurveyRuntimeHelper {
             $thissurvey['aGroups'][$gid] = $aGroup;
         }
 
-        $redata  = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
@@ -504,23 +502,69 @@ class SurveyRuntimeHelper {
         Yii::app()->clientScript->registerScript('updateMandatoryErrorClass',"updateMandatoryErrorClass();",CClientScript::POS_END);
         LimeExpressionManager::FinishProcessingPage();
 
+        $thissurvey['aNavigator'] = array();
         /**
         * Navigator
         */
         if (!$previewgrp && !$previewquestion){
 
-            $aNavigator['show'] = true;
+            $thissurvey['aNavigator']['show']       = $aNavigator['show'] = true;
+
+            $sMoveNext          = "movenext";
+            $sMovePrev          = "";
+            $iSessionStep       = ( isset( $_SESSION['survey_'.$surveyid]['step']))       ? $_SESSION['survey_'.$surveyid]['step']       : false;
+            $iSessionMaxStep    = ( isset( $_SESSION['survey_'.$surveyid]['maxstep']))    ? $_SESSION['survey_'.$surveyid]['maxstep']    : false;
+            $iSessionTotalSteps = ( isset( $_SESSION['survey_'.$surveyid]['totalsteps'])) ? $_SESSION['survey_'.$surveyid]['totalsteps'] : false;
+            $sClass             = "ls-move-btn";
+            $sSurveyMover       = "";
+
+            // Count down
+            $thissurvey['aNavigator']['disabled']   = '';
+            if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep))
+             {
+                $thissurvey['aNavigator']['disabled'] = " disabled";
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
+                App()->getClientScript()->registerScript('navigator_countdown',"navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n",CClientScript::POS_BEGIN);
+             }
+
+            // Previous ?
+            if ($thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N")
+                && $iSessionStep
+                && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
+                && !Yii::app()->getConfig('previewmode')
+            )
+            {
+                $sMovePrev="moveprev";
+             }
+
+            // Submit ?
+            if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps)
+                || $thissurvey['format'] == 'A'
+                )
+            {
+                $sMoveNext="movesubmit";
+            }
+
+            // todo Remove Next if needed (exemple quota show previous only: maybe other, but actually don't use surveymover)
+            if(Yii::app()->getConfig('previewmode'))
+            {
+                $sMoveNext="";
+            }
+
 
             $aNavigatorInfo = surveymover();
             $moveprevbutton = $aNavigatorInfo['sMovePrevButton'];
             $movenextbutton = $aNavigatorInfo['sMoveNextButton'];
             $navigator = $moveprevbutton.' '.$movenextbutton;
 
+
+            $thissurvey['aNavigator']['aMovePrev']['show']  = ( $sMovePrev != '' );
+            $thissurvey['aNavigator']['aMoveNext']['show']  = ( $sMoveNext != '' );
+            $thissurvey['aNavigator']['aMoveNext']['value'] = $sMoveNext;
+
             $redata = compact(array_keys(get_defined_vars()));
 
-            echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-            echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
-            echo "\n";
+            //echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
 
             if ($thissurvey['active'] != "Y")
             {
@@ -539,6 +583,10 @@ class SurveyRuntimeHelper {
                 echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
             }
         }
+
+        $redata  = compact(array_keys(get_defined_vars()));
+        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
+
 
         if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)
         {
