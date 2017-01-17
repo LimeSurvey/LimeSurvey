@@ -37,7 +37,7 @@
             <ul class="nav navbar-nav navbar-right navbar-action-link">
                 {{ include('./subviews/save_links.twig') }}
                 {{ include('./subviews/clearall_links.twig') }}
-                {{ include('./subviews/question_index.twig') }}
+                {{ include('./subviews/question_index_menu.twig') }}
                 {{ include('./subviews/language_changer_top_menu.twig') }}
             </ul>
         </div>
@@ -76,7 +76,7 @@
                      {{ include('./group.twig') }}
                 {% endfor %}
 
-                
+
                 {% if aSurveyInfo.aNavigator.show %}
                     {{ include('./navigator.twig') }}
                 {% endif %}
