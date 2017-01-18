@@ -610,7 +610,7 @@ $config['uploadurl']               = $config['publicurl'].'upload';
 $config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // Location of the standard templates
 $config['adminscripts']            = $config['publicurl'].'scripts/admin/';
 $config['generalscripts']          = $config['publicurl'].'scripts/';
-$config['third_party']                 = $config['publicurl'].'third_party/';
+$config['third_party']             = $config['publicurl'].'third_party/';
 $config['styleurl']                = $config['publicurl'].'styles/';
 $config['publicstyleurl']          = $config['publicurl'].'styles-public/';
 $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
@@ -631,6 +631,9 @@ $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'sty
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
+// This directory can be out of webroot directory
+// Usage of this config option broke 2.5X compatibility, introduced in 3.0 only
+$config['runtimedir']               = $config['tempdir'].DIRECTORY_SEPARATOR."runtime";
 
 // (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
 $config['bFixNumAuto']             = 1;

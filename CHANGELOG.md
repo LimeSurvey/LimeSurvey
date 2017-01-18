@@ -5,6 +5,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ### Feature
 - Allow to update via cli
+- Allow to update runtime directory in config (LimeSurvey API 3 compatible only)
 
 ### [1.2.2] - 2016-01-12
 - Update [PHPMailer](https://github.com/PHPMailer/PHPMailer/releases/tag/v5.2.22) for security issue

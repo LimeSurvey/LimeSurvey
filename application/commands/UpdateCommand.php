@@ -32,7 +32,7 @@ class UpdateCommand extends CConsoleCommand
                 echo "Database has been successfully upgraded to version $newDbVersion \n";
             } else {
                 //echo gT("Please fix this error in your database and try again")."\n";
-                echo "Please fix this error in your database and try again\n";
+                throw new CException("Please fix this error in your database and try again");
             }
         } else {
             echo "no need update ".$newDbVersion ." ". $currentDbVersion ."\n";
