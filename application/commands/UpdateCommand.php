@@ -22,6 +22,9 @@ class UpdateCommand extends CConsoleCommand
         $this->_setConfigs();
         $newDbVersion = (float)Yii::app()->getConfig('dbversionnumber');
         $currentDbVersion = (float)Yii::app()->getConfig('DBVersion');
+        if(!$currentDbVersion){
+            throw new CException("DB error : LimeSurvey database seems invalid.");
+        }
         if($newDbVersion > $currentDbVersion){
             echo "Update ".Yii::app()->db->connectionString.", prefix :".Yii::app()->db->tablePrefix." from {$currentDbVersion} to {$newDbVersion}\n";
             Yii::import('application.helpers.common_helper', true);
