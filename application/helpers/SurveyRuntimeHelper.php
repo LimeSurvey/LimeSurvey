@@ -918,7 +918,7 @@ class SurveyRuntimeHelper {
                     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
                 }
                 echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata, 'SubmitEndpage', false, NULL, array(), true );
-                doFooter();
+                doFooter($surveyid);
 
                 // The session cannot be killed until the page is completely rendered
                 if ($thissurvey['printanswers'] != 'Y')
@@ -940,7 +940,7 @@ class SurveyRuntimeHelper {
             echo "\t<center><br />\n";
             echo "\t" . gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
             echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
-            doFooter();
+            doFooter($surveyid);
             exit;
         }
         createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
@@ -1442,7 +1442,7 @@ class SurveyRuntimeHelper {
 
         echo "\n";
 
-        doFooter();
+        doFooter($surveyid);
 
     }
 
