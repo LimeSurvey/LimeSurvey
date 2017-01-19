@@ -314,7 +314,7 @@ class SurveyRuntimeHelper {
         if(!$previewquestion && !$previewgrp){
             $questionindex            = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
             $questionindexmenu        = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
-            $thissurvey['indexItems'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
+            $thissurvey['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
         }
 
 

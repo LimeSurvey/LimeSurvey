@@ -45,7 +45,7 @@
 
         <ul class="dropdown-menu">
             {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
-            {% for step, indexItem in aSurveyInfo.indexItems %}
+            {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
                 {% set statusClass = ''  %}
                 {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
                     {% set statusClass = statusClass ~ ' bg-warning'  %}
