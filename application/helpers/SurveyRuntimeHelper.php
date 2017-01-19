@@ -698,8 +698,8 @@ class SurveyRuntimeHelper {
             case 'none':
             case 'X':
             default:
-                $aShow['question_code']   = none;
-                $aShow['question_number'] = none;
+                $aShow['question_code']   = false;
+                $aShow['question_number'] = false;
                 break;
         }
 
