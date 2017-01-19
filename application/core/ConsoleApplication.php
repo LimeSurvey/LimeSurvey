@@ -25,11 +25,29 @@ class ConsoleApplication extends CConsoleApplication
 
         // Set webroot alias.
         Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
-        // Load email settings.
-        $email = require(Yii::app()->basePath. DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
-        $this->config = array_merge($this->config, $email);
+        /* Load all core configs */
+        $lsConfig = require(Yii::getPathOfAlias('application.config.config-defaults') . '.php');
+        $consoleConfig = require(Yii::getPathOfAlias('application.config.console') . '.php');
+        $emailConfig = require(Yii::getPathOfAlias('application.config.email') . '.php');
+        $versionConfig = require(Yii::getPathOfAlias('application.config.version') . '.php');
+        $updaterVersionConfig = require(Yii::getPathOfAlias('application.config.updater_version') . '.php');
+        $this->config = array_merge($this->config, $lsConfig,$consoleConfig,$emailConfig,$versionConfig,$updaterVersionConfig);
 
-        // Now initialize the plugin manager
+        /* Load this installation config part if exist */
+        $userConfigFile=Yii::getPathOfAlias('application.config.config') . '.php';
+        if(file_exists($userConfigFile)) {
+            $appSettings = require($userConfigFile);
+            if(is_array($appSettings['config'])) {
+                $this->config = array_merge($this->config,$appSettings['config']);
+            }
+        }
+
+        /* Load the database settings : if available */
+        $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+        if(is_object($settingsTableExist)){
+            $dbConfig=CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+            $this->config = array_merge($this->config,$dbConfig);
+        }
     }
 
     /**
