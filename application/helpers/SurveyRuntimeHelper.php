@@ -315,6 +315,12 @@ class SurveyRuntimeHelper {
             $questionindex            = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
             $questionindexmenu        = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
             $thissurvey['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
+
+            if($thissurvey['questionindex'] > 1){
+                $thissurvey['aQuestionIndex']['type'] = 'full';
+            }else{
+                $thissurvey['aQuestionIndex']['type'] = 'incremental';
+            }
         }
 
 

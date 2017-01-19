@@ -25,19 +25,10 @@
     NOTE: This file is still too much complex. Before LS3 master release,  a lot of code should be bring back to SurveyRuntime helper, and the result made available to via an array aIndexMenu
 #}
 
-{% if aSurveyInfo.oSurvey.questionindex > 1 %}
-    {% set indexType = 'full'  %}
-{% else %}
-    {% set indexType = 'incremental'  %}
-{% endif %}
-
-
-
-
 {# Question index in group by group mode #}
 {% if aSurveyInfo.format == 'G' %}
-    <!-- Question index, group, {{ indexType }} -->
-    <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ indexType }}">
+    <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
+    <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             {{ "Question index" | t }}
             <span class="caret"></span>
@@ -70,8 +61,8 @@
 
 {# Question index in question by question mode #}
 {% if aSurveyInfo.format == 'S' %}
-    <!-- Question index, question by question, {{ indexType }} -->
-    <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ indexType }}">
+    <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
+    <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             {{ "Question index" | t }}
             <span class="caret"></span>
