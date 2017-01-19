@@ -192,16 +192,15 @@ $internalConfig = array(
 
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
-            'options' => array(
-                'autoescape' => true,
+            'options' => array(        
                 'debug' => defined('YII_DEBUG') && YII_DEBUG ?true:false,
             ),
-            // Those extensions, include the sendbox, will be done later in the process
             'extensions' => array(
                 'LS_Twig_Extension',
                 'Twig_Extension_Sandbox',
                 'Twig_Extension_StringLoader',
                 'Twig_Extension_Debug',
+                'Twig_Extension_Escaper',
             ),
             'globals' => array(
                 'html' => 'CHtml'
@@ -222,7 +221,7 @@ $internalConfig = array(
                 'gT'    => 'gT',
             ),
             'sandboxConfig' => array(
-                'tags' => array('if', 'for', 'set'),
+                'tags' => array('if', 'for', 'set', 'autoescape'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton" ),
@@ -233,8 +232,8 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval')
-            )
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval'),
+            ),
 
             // Change template syntax to Smarty-like (not recommended)
             // Could be use to manage potential conflict with Expression Manager
