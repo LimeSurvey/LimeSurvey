@@ -110,6 +110,17 @@ class index extends CAction {
         {
             $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
         }
+        /* Unsure display language is in available language */
+        if(Survey::model()->findByPk($surveyid)){
+            if(!in_array($sDisplayLanguage,Survey::model()->findByPk($surveyid)->getAllLanguages())){
+                $sDisplayLanguage=Survey::model()->findByPk($surveyid)->language;
+            }
+        } else {
+            $aLanguages=getLanguageDataRestricted();
+            if(!array_key_exists($sDisplayLanguage,$aLanguages)){
+                $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
+            }
+        }
         if ($surveyid && $surveyExists)
         {
             SetSurveyLanguage( $surveyid, $sDisplayLanguage);
@@ -118,7 +129,6 @@ class index extends CAction {
         {
             SetSurveyLanguage( 0, $sDisplayLanguage);
         }
-
         if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) )
         {
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>App()->language,'newtest'=>'Y'));
