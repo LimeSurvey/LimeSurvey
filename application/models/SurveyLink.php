@@ -75,6 +75,10 @@ class SurveyLink extends LSActiveRecord
      *
      *
      * */
+
+    /**
+     * @param integer $iSurveyId
+     */
     function rebuildLinksFromTokenTable($iSurveyId)
     {
         $this->deleteLinksBySurvey($iSurveyId);

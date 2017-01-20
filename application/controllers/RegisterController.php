@@ -443,7 +443,7 @@ class RegisterController extends LSYii_Controller {
     /**
     * Get the date if survey is future
     * @param $iSurveyId
-    * @return localized date
+    * @return null|string date
     */
     public function getStartDate($iSurveyId){
         $aSurveyInfo=getSurveyInfo($iSurveyId,Yii::app()->language);

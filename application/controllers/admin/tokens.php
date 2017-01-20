@@ -649,10 +649,10 @@ class tokens extends Survey_Common_Action
 
     /**
      * Edit Tokens
-     * @param int $iSurveyID
+     * @param int $iSurveyId
      * @param int $iTokenId
      * @param boolean $ajax
-     * @return void
+     * @return false|null
      * @todo When is this function used without Ajax?
      */
     public function edit($iSurveyId, $iTokenId, $ajax = false)
