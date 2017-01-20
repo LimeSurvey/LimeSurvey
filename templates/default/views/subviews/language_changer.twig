@@ -13,14 +13,16 @@
 
     Show a language changer inside the form.
     It uses the Yii helper CHtml::dropDownList().
-    @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh5    
+    @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh5
 
 #}
 
 
 
-{% if aSurveyInfo.alanguageChangerDatas != false %}
-    {% set aLCD  = aSurveyInfo.alanguageChangerDatas %}
+{% if aSurveyInfo.alanguageChanger.show == true %}
+
+    {# set a shortcut for aSurveyInfo.alanguageChanger.datas #}
+    {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
 
     {#
         array of attributes of the Drop Down list.

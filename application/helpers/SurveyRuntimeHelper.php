@@ -301,8 +301,15 @@ class SurveyRuntimeHelper {
 
         $thissurvey['yiiflashmessages'] = Yii::app()->user->getFlashes();
 
+        $thissurvey['alanguageChanger']['show']  = false;
         if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey')){
-            $thissurvey['alanguageChangerDatas'] = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang'], false, true);
+            $alanguageChangerDatas               = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang'], false, true);
+            if ($alanguageChangerDatas){
+                $thissurvey['alanguageChanger']['show']  = true;
+                $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
+            }
+
+
         }
 
         //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
