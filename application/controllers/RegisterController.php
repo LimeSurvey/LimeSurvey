@@ -494,6 +494,6 @@ class RegisterController extends LSYii_Controller {
             // Survey/index need renderPartial
             echo $this->renderPartial('/register/display',$aViewData, true, true);
         }
-        doFooter($iSurveyID);
+        doFooter($iSurveyId);
     }
 }
