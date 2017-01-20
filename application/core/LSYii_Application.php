@@ -46,51 +46,40 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($aApplicationConfig = null)
     {
-        // Load the default and environmental settings from different files into self.
-        $settings = require(__DIR__ . '/../config/config-defaults.php');
-
+        // Load the limesurvey config from different files.
+        // Using some config part for app config, then load it before
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $emailConfig = require(__DIR__ . '/../config/email.php');
+        $versioConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versioConfig, $updaterVersionConfig);
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
-            $ls_config = require(__DIR__ . '/../config/config.php');
-            if(is_array($ls_config['config']))
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
             {
-                $settings = array_merge($settings, $ls_config['config']);
+                $lsConfig = array_merge($lsConfig, $userConfigs['config']);
             }
         }
-        // Runtime path has to be set before  parent constructor is executed
-        // User can set it in own config using Yii
+
+        // Runtime path has to be set before parent constructor is executed
+        // User can set it in own config using Yii, if not take the default
+        // runtimepath can be set in user config, loaded by internal in index.php.
         if(!isset($aApplicationConfig['runtimePath'])){
-            $aApplicationConfig['runtimePath']=$settings['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+            $aApplicationConfig['runtimePath']=$lsConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        }
+        if (!is_dir($aApplicationConfig['runtimePath']) || !is_writable($aApplicationConfig['runtimePath'])) {
+            // @@TODO: present html page styled like the installer
+            die (sprintf('%s should exist and be writable by the webserver.', $aApplicationConfig['runtimePath']));
         }
         parent::__construct($aApplicationConfig);
 
-        $ls_config = require(__DIR__ . '/../config/config-defaults.php');
-        $email_config = require(__DIR__ . '/../config/email.php');
-        $version_config = require(__DIR__ . '/../config/version.php');
-        $updater_version_config = require(__DIR__ . '/../config/updater_version.php');
-        $settings = array_merge($ls_config, $version_config, $email_config, $updater_version_config);
-
-        if(file_exists(__DIR__ . '/../config/config.php'))
-        {
-            $ls_config = require(__DIR__ . '/../config/config.php');
-            if(is_array($ls_config['config']))
-            {
-                $settings = array_merge($settings, $ls_config['config']);
-            }
-        }
-
-
-
-        foreach ($settings as $key => $value)
-        {
-            $this->setConfig($key, $value);
-        }
+        // Load the limesurvey config into self
+        $this->config = array_merge($this->config, $lsConfig);
         /* Don't touch to linkAssets : you can set it in config.php */
         // Asset manager path can only be set after App was constructed because it relies on App()
-        App()->getAssetManager()->setBaseUrl($settings['tempurl']. '/assets');
-        App()->getAssetManager()->setBasePath($settings['tempdir'] . '/assets');
-
-
+        App()->getAssetManager()->setBaseUrl($lsConfig['tempurl']. '/assets');
+        App()->getAssetManager()->setBasePath($lsConfig['tempdir'] . '/assets');
 
     }
 

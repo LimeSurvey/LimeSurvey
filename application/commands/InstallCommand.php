@@ -83,7 +83,8 @@
             else
             {
                 // TODO: a valid error process
-                echo 'You have to set admin/password/full name and email address on the command line like this: php starter.php adminname mypassword fullname emailaddress';
+               echo "You have to set admin/password/full name and email address on the command line like this: php console.php adminname mypassword fullname emailaddress\n";
+               return 0;
             }
         }
 
