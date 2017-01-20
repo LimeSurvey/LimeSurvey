@@ -17,9 +17,6 @@ if (! defined('BASEPATH')) exit('No direct script access allowed');
 /**
 * Update Controller
 *
-* @package        LimeSurvey
-* @subpackage    Backend
-*
 * This controller performs updates, it is highly ajax oriented
 * Methods are only called from JavaScript controller (wich is called from the global_setting view). comfortupdate.js is the first registred script.
 *
@@ -56,6 +53,8 @@ if (! defined('BASEPATH')) exit('No direct script access allowed');
 *   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->_renderError
 * - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->_renderErrorString($error), wich generate the error object, and then render the error view
 *
+* @package       LimeSurvey
+* @subpackage    Backend
 */
 class update extends Survey_Common_Action
 {
