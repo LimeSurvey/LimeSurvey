@@ -480,7 +480,7 @@ class remotecontrol_handle
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
-        if (!hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
         $oSurvey=Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');
@@ -1296,6 +1296,7 @@ class remotecontrol_handle
 
                     libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
                     
+
                     try
                     {
                         $oQuestion->save();
