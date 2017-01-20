@@ -207,11 +207,10 @@ class QuestionAttribute extends LSActiveRecord
                 if($oAttributeValue->language){
                     $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
                 }else{
-                    /* Don't replace existing language, use '' for null key */
+                    /* Don't replace existing language, use '' for null key (and for empty string) */
                     $aAttributeValues[$oAttributeValue->attribute]['']=$oAttributeValue->value;
                 }
             }
-
             // Fill with aQuestionAttributes with default attribute or with aAttributeValues
             // Can not use array_replace due to i18n
             foreach($aAttributeNames as $aAttribute)
@@ -221,6 +220,8 @@ class QuestionAttribute extends LSActiveRecord
                 {
                     if(isset($aAttributeValues[$aAttribute['name']][''])){
                         $aQuestionAttributes[$aAttribute['name']]=$aAttributeValues[$aAttribute['name']][''];
+                    }elseif(isset($aAttributeValues[$aAttribute['name']])){ /* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
+                        $aQuestionAttributes[$aAttribute['name']]=reset($aAttributeValues[$aAttribute['name']]);
                     }else{
                         $aQuestionAttributes[$aAttribute['name']]=$aAttribute['default'];
                     }

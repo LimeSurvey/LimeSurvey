@@ -1,4 +1,4 @@
-    <div class="panel panel-primary" id="pannel-1">
+    <div class="panel panel-primary" id="panel-1">
         <div class="panel-heading">
             <h4 class="panel-title"><?php eT("Output options"); ?></h4>
         </div>

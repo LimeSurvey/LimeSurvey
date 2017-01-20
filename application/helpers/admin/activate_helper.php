@@ -260,10 +260,10 @@ function activateSurvey($iSurveyID, $simulate = false)
     $bCreateSurveyDir=false;
     // Specify case sensitive collations for the token
     $sCollation='';
-    if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
-        $sCollation=" COLLATE 'utf8_bin'";
+    if  (Yii::app()->db->driverName=='mysqli' || Yii::app()->db->driverName=='mysql'){
+        $sCollation=" COLLATE 'utf8mb4_bin'";
     }
-    if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
+    if  (Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib' || Yii::app()->db->driverName=='mssql'){
         $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
     }
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)

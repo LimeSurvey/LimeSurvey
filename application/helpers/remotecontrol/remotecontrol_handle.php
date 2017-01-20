@@ -2155,9 +2155,11 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the survey that participants belong
+    * @param array $aTokenIDs Ids of the participant to invite
+    * @param bool $bEmail Send only pending invites (TRUE) or resend invites only (FALSE)
     * @return array Result of the action
     */
-    public function invite_participants($sSessionKey, $iSurveyID )
+    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = false, $bEmail = true )
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
@@ -2177,7 +2179,7 @@ class remotecontrol_handle
             $SQLemailstatuscondition = "emailstatus = 'OK'";
 
             $oTokens = TokenDynamic::model($iSurveyID);
-            $aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, true, $SQLemailstatuscondition);
+            $aResultTokens = $oTokens->findUninvited( $aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition);
             $aAllTokens = $oTokens->findUninvitedIDs(false, 0, true, $SQLemailstatuscondition);
             $iAllTokensCount=count($aAllTokens);
             unset($aAllTokens);
@@ -2216,9 +2218,10 @@ class remotecontrol_handle
     * @param int $iSurveyID ID of the Survey that participants belong
     * @param int $iMinDaysBetween Optional parameter days from last reminder
     * @param int $iMaxReminders Optional parameter Maximum reminders count
+    * @param array $aTokenIds Ids of the participant to remind (optional filter)
     * @return array Result of the action
     */
-    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null )
+    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null, $aTokenIds = false )
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
@@ -2259,7 +2262,7 @@ class remotecontrol_handle
             $iAllTokensCount=count($aAllTokens);
             unset($aAllTokens); // save some memory before the next query
 
-            $aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
 
             if (empty($aResultTokens))
                 return array('status' => 'Error: No candidate tokens');

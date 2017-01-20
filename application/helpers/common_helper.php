@@ -3990,12 +3990,14 @@ function getUpdateInfo()
             'ignore_errors' => true
         )
     );
-    $body = file_get_contents($url, false, stream_context_create($opts));
+    $body = @file_get_contents($url, false, stream_context_create($opts));
     if ($body != false && (null === $updateInfo = json_decode($body, true))) {
         $updateInfo = array(
             'errorhtml' => $body,
             'errorcode' => $http_response_header
         );
+    } else {
+        $updateInfo = null;
     }
     return $updateInfo;
 }
@@ -5651,7 +5653,6 @@ function getHeader($meta = false)
     if ($meta)
         $header .= $meta;
 
-
     if ( !$embedded )
     {
         return $header;
@@ -5685,6 +5686,7 @@ function getPrintableHeader()
 // If you want to echo the Footer use doFooter() !
 function getFooter()
 {
+
     global $embedded;
     if ( !$embedded )
     {
@@ -5697,8 +5699,16 @@ function getFooter()
         return $embedded_footerfunc();
 }
 
-function doFooter()
+function doFooter($surveyid)
 {
+    $event = new PluginEvent('beforeFooterRender');
+    $event->set('surveyId', $surveyid);
+    App()->getPluginManager()->dispatchEvent($event);
+    if (!is_null($event->get('html')))
+    {
+        echo $event->get('html');
+    }
+
     echo getFooter();
 }
 

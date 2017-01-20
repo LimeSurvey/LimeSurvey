@@ -15,15 +15,12 @@
     {
         public $connection;
 
-        public function actionCron($interval)
+        public function actionCron($interval=null)
         {
-
             $pm = \Yii::app()->pluginManager;
             $event = new PluginEvent('cron');
             $event->set('interval', $interval);
             $pm->dispatchEvent($event);
-            
-            
         }
     }
 

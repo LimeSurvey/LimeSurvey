@@ -162,29 +162,40 @@ function checkconditions(value, name, type, evt_type)
 /**
  * fixnum_checkconditions : javascript function attach to some element
  * Update the answer of the user to be numeric and launch checkconditions
+ * 
+ * Also checks if any of the arrow keys is pressed to avoid unecessary hassle.
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
+    if(window.event){
+    var keyPressed =  window.event.keyCode || 0;
+    if(
+            keyPressed == 37 //left arrow
+        ||  keyPressed == 39 //right arrow
+    ){return false; }
+    }
+
+    var decimalValue;
     var newval = new String(value);
+    var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
     var cleansedValue = newval.replace(numRegex,'');
     /**
      * If have to use parsed value.
      */
     if(!bNumRealValue)
     {                
-        var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
         if(checkNumericRegex.test(value)) {
             try{
-                var decimalValue = new Decimal(cleansedValue);
+                decimalValue = new Decimal(cleansedValue);
             } catch(e){
-                var decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                decimalValue = new Decimal(cleansedValue.replace(',','.'));
             }
             
             if (typeof intonly !=='undefined' && intonly==1) {
                 newval = decimalValue.trunc();
             }
         } else {
-            newval = "";
+            newval = cleansedValue;
         }
 
     }
@@ -198,12 +209,18 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         if(cleansedValue.split("").pop().match(/(,)|(\.)/)){
             addition = cleansedValue.split("").pop();
         }
-
-         try{
-            var decimalValue = new Decimal(cleansedValue);
-        } catch(e){
-            var decimalValue = new Decimal(cleansedValue.replace(',','.'));
+        var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/);
+        if(matchFollowingZeroes){
+            addition = LEMradix+matchFollowingZeroes[3];
         }
+        if(decimalValue == undefined){
+            try{
+                decimalValue = new Decimal(cleansedValue);
+            } catch(e){
+                decimalValue = new Decimal(cleansedValue.replace(',','.'));
+            }
+        }
+
         /**
          * Work on length of the number
          * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator.
@@ -222,11 +239,17 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         if(LEMradix==",")
             displayVal = displayVal.replace(/\./,',');
 
+        newval = displayVal+addition
+
         if (name.match(/other$/)) {
-            $('#answer'+name+'text').val(displayVal+addition);
+            if($('#answer'+name+'text').val() != newval){
+                $('#answer'+name+'text').val(newval);
+            }
         }
 
-        $('#answer'+name).val(displayVal+addition);
+        if($('#answer'+name).val() != newval){
+            $('#answer'+name).val(newval);
+        }
     }
 
     /**
@@ -236,7 +259,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     {
         evt_type = 'onchange';
     }
-    checkconditions(cleansedValue, name, type, evt_type);
+    checkconditions(newval, name, type, evt_type);
 }
 
 // Set jquery-ui to LS Button

@@ -31,9 +31,7 @@
                 rows="<?php echo $rows;?>"
                 <?php echo $maxlength;?>
                 onkeyup="<?php echo $checkconditionFunction; ?>"
-                >
-                <?php echo $dispVal;?>
-            </textarea>
+                ><?php echo $dispVal;?></textarea>
             <?php echo $suffix;?>
         </div>
     </div>

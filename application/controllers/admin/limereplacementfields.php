@@ -289,6 +289,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields[] = array('TOKEN', gT("Token code for this participant"));
                 $replFields[] = array('FIRSTNAME', gT("First name from token"));
                 $replFields[] = array('LASTNAME', gT("Last name from token"));
+                $replFields[] = array('EMAIL', gT("Email from token"));
                 $replFields[] = array('SURVEYNAME', gT("Name of the survey"));
                 $replFields[] = array('SURVEYDESCRIPTION', gT("Description of the survey"));
                 $attributes = getTokenFieldsAndNames($surveyid, true);

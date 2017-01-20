@@ -70,7 +70,7 @@
 
                 <!-- create question in this group -->
                 <div class="col-lg-3">
-                    <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="pannel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+                    <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                         <div class="panel-heading">
                             <h4 class="panel-title"><?php eT("Add new question to group");?></h4>
                         </div>

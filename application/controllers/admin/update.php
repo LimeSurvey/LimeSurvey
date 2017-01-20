@@ -69,12 +69,107 @@ class update extends Survey_Common_Action
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
-
+        $aData['fullpagebar']['update'] = true;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/comfortupdate.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/buildComfortButtons.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/displayComfortStep.js');
 
         $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
+    }
+
+    public function managekey()
+    {
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            $buttons = 1;
+            $updateModel = new UpdateForm();
+            $serverAnswer = $updateModel->getUpdateInfo($buttons);
+            $aData['serverAnswer'] = $serverAnswer;
+            $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
+            $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
+
+            //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
+            if(!$updateKey) {
+                $aData['fullpagebar']['saveandclosebutton']['form'] = true;
+                $this->_renderWrappedTemplate('update/manage/', 'subscribe', $aData);
+            }else{
+                $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
+                $this->_renderWrappedTemplate('update/manage/', 'manage_key', $aData);
+            }
+        }
+    }
+
+    public function manage_submitkey()
+    {
+        $buttons = 1;
+        $updateModel = new UpdateForm();
+        $serverAnswer = $updateModel->getUpdateInfo($buttons);
+        $aData['serverAnswer'] = $serverAnswer;
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
+        $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
+
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            if ( Yii::app()->request->getPost('keyid') )
+            {
+                // We trim it, just in case user added a space...
+                $submittedUpdateKey = trim(Yii::app()->request->getPost('keyid'));
+
+                $updateModel = new UpdateForm();
+                $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
+                if ($check->result )
+                {
+                    // If the key is validated by server, we update the local database with this key
+                    $updateKey = $updateModel->setUpdateKey($submittedUpdateKey);
+                    Yii::app()->session['flashmessage'] = gT("Your key has been updated and validated! You can now use ComfortUpdate.");
+                    // then, we render the what returned the server (views and key infos or error )
+                    App()->getController()->redirect('admin/update/sa/managekey');
+                }
+                else
+                {
+                    switch ($check->error)
+                    {
+                        case 'out_of_updates':
+                            $title = "Your update key is out of update !";
+                            $message = "you should first renew this key before using it, or try to enter a new one !";
+                            $buttons = 1;
+                            break;
+
+                        case 'expired':
+                            $title = "Your update key has expired!";
+                            $message = "you should first renew this key before using it, or try to enter a new one !";
+                            $buttons = 1;
+                            break;
+
+                        case 'not_found':
+                            $title = "Unknown update key !";
+                            $message = "Your key is unknown by the update server.";
+                            $buttons = 3;
+                            break;
+
+                        case 'key_null':
+                            $title = "key can't be null !";
+                            $message = "";
+                            $buttons = 3;
+                            break;
+                    }
+
+                    App()->setFlashMessage('<strong>'.gT($title).'</strong> '.gT($message),'error');
+                    App()->getController()->redirect('managekey');
+                }
+
+            }
+        }
+    }
+
+    public function delete_key()
+    {
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            SettingGlobal::model()->deleteByPk('update_key');
+            App()->setFlashMessage('Your update key has been removed');
+            App()->getController()->redirect('admin/update/sa/managekey');
+        }
     }
 
     /**

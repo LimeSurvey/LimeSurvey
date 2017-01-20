@@ -1,6 +1,6 @@
 <?php
 /**
- * Right accordion, integration pannel
+ * Right accordion, integration panel
  * Use datatables, needs surveysettings.js
  */
     $yii = Yii::app();

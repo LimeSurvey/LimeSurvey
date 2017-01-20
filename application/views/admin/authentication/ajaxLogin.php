@@ -1,6 +1,6 @@
 <!-- Same HTML as login.php, but adapted for Ajax modal login -->
 <div class="row text-center">
-    <div id="pannel-1">
+    <div id="panel-1">
 
         <!-- Header -->
         <div class="col-lg-12">

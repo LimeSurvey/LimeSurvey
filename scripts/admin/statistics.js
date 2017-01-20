@@ -95,6 +95,7 @@ function init_chart_js_graph_with_datasets($type,$qid)
     var $canvas   = document.getElementById(canvasId).getContext("2d");
     var $canva    = $('#'+canvasId);
     var $statistics = statisticsData['quid'+$qid];
+    if($statistics == undefined) return;
     var $labels   = $statistics.labels
     var $grawdata = $statistics.grawdata
     var $color    = $canva.data('color');
@@ -148,6 +149,7 @@ function init_chart_js_graph_with_datas($type,$qid)
     var $canva    = $('#'+canvasId);
     var $color    = $canva.data('color');
     var $statistics = statisticsData['quid'+$qid];
+    if($statistics == undefined) return;
     var $labels   = $statistics.labels
     var $grawdata = $statistics.grawdata
     var $chartDef = new Array();

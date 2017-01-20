@@ -533,6 +533,7 @@ function submittokens($quotaexit=false)
                 $aReplacementVars["FIRSTNAME"]=$token->firstname;
                 $aReplacementVars["LASTNAME"]=$token->lastname;
                 $aReplacementVars["TOKEN"]=$token->token;
+                $aReplacementVars["EMAIL"]=$token->email;
                 // added survey url in replacement vars
                 $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
                 $aReplacementVars['SURVEYURL'] = $surveylink;
@@ -1023,7 +1024,7 @@ function buildsurveysession($surveyid,$preview=false)
     // Scenario => Token required
     if ($scenarios['tokenRequired'] && !$preview){
         //Test if token is valid
-        list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
+        list($renderToken, $FlashError, $aEnterTokenData) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
     }
 
     //If there were errors, display through yii->FlashMessage
@@ -1569,7 +1570,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         $aEnterTokenData['token'] =  $clienttoken;
         $renderToken='correct';
     }
-    return array($renderToken, $FlashError);
+    return array($renderToken, $FlashError, $aEnterTokenData);
 }
 
 /**
@@ -1628,13 +1629,13 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
 
             // render token form
             if($scenarios['tokenRequired']){
-                App()->getController()->renderPartial('/survey/frontpage/enterToken', $aEnterTokenData);
+                doFRender('/survey/frontpage/enterToken', $aEnterTokenData, false);
             } else {
                 App()->getController()->renderPartial('/survey/frontpage/enterCaptcha', $aEnterTokenData);
             }
 
             echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
-            doFooter();
+            doFooter($surveyid);
             Yii::app()->end();
             break;
         case "register": //Register new user
@@ -1727,7 +1728,7 @@ function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $i
     ."\t</div>\n";
 
     echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
-    doFooter();
+    doFooter($thissurvey['sid']);
     Yii::app()->end();
 }
 
@@ -2205,7 +2206,7 @@ function checkCompletedQuota($surveyid,$return=false)
     echo templatereplace(file_get_contents($sTemplateViewPath."/startpage.pstpl"),array(),$aDataReplacement);
     echo templatereplace(file_get_contents($sTemplateViewPath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
     echo templatereplace(file_get_contents($sTemplateViewPath."/endpage.pstpl"),array(),$aDataReplacement);
-    doFooter();
+    doFooter($surveyid);
     if ($sAction == "1")
         killSurveySession($surveyid);
     Yii::app()->end();
@@ -2330,7 +2331,7 @@ function display_first_page() {
 
     echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
     LimeExpressionManager::FinishProcessingPage();
-    doFooter();
+    doFooter($surveyid);
     echo "<!-- end of frontend_helper /  display_first_page -->";
 }
 
@@ -2472,4 +2473,50 @@ function getSideBodyClass($sideMenustate = false)
     }
 
     return $class;
+}
+
+
+/**
+ * Render the question view.
+ *
+ * By default, it just renders the required core view from application/views/survey/...
+ * If the Survey template is configured to overwrite the question views, then the function will check if the required view exist in the template directory
+ * and then will use this one to render the question.
+ *
+ * @param string    $sView      name of the view to be rendered.
+ * @param array     $aData      data to be extracted into PHP variables and made available to the view script
+ * @param boolean   $bReturn    whether the rendering result should be returned instead of being displayed to end users (should be always true)
+ */
+ function doFRender($sView, $aData, $bReturn=true)
+{
+    global $thissurvey;
+    if(isset($thissurvey['template']))
+    {
+        $sTemplate = $thissurvey['template'];
+        $oTemplate = Template::model()->getInstance($sTemplate);                // we get the template configuration
+        if($oTemplate->overwrite_question_views===true && Yii::app()->getConfig('allow_templates_to_overwrite_views'))                         // If it's configured to overwrite the views
+        {
+            $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
+            if( file_exists($requiredView.'.php') )                             // If it the case, the function will render this view
+            {
+                Yii::setPathOfAlias('survey.template.view', $requiredView);     // to render a view from an absolute path outside of application/, path alias must be used.
+                $sView = 'survey.template.view';                                // See : http://www.yiiframework.com/doc/api/1.1/CController#getViewFile-detail
+            }
+        }
+    }
+    return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
+}
+
+/**
+ * For later use, don't remove.
+ * @return array<string>
+ */
+function cookieConsentLocalization()
+{
+    return array(
+        gT('This website uses cookies. By continuing this survey you approve the data protection policy of the service provider.'),
+        gT('OK'),
+        gT('View policy'),
+        gT('Please be patient until you are forwarded to the final URL.')
+    );
 }
