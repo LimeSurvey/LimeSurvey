@@ -36,7 +36,7 @@
         }
     %}
 
-    {% if aSurveyInfo.withForm == true %}
+    {% if aLCD.withForm == true %}
         <form method="get" class="ls-languagechanger-form">
     {% endif %}
 
@@ -55,7 +55,7 @@
 
             </label>
 
-                {% if aSurveyInfo.withForm == true %}
+                {% if aLCD.withForm == true %}
                     <!-- for no js functionality (need form) -->
                     {% set buttonhtmlOptions = {
                             'type' : 'submit',
@@ -74,7 +74,7 @@
                 {% endif %}
         </div>
 
-    {% if aSurveyInfo.withForm == true %}
+    {% if aLCD.withForm == true %}
         </form>
     {% endif %}
 {% endif %}
