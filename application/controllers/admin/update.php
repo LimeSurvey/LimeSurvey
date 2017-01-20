@@ -15,25 +15,27 @@ if (! defined('BASEPATH')) exit('No direct script access allowed');
 */
 
 /**
-* Update Controller
 *
-* @package        LimeSurvey
+* @package       LimeSurvey
 * @subpackage    Backend
+*/
+
+/**
 *
 * This controller performs updates, it is highly ajax oriented
-* Methods are only called from JavaScript controller (wich is called from the global_setting view). comfortupdate.js is the first registred script.
+* Methods are only called from JavaScript controller (wich is called from the global_setting view). comfortupdate.js is the first registered script.
 *
 *
 *
-* Public methods are written in a chronological way :
-*    - First, when the user click on the 'check for updates' button, the plugin buildComfortButtons.js call for getstablebutton() or getbothbuttons() method and inject the HTML inside the li#udapteButtonsContainer in the _checkButtons view
+* Public methods are written in a chronological way:
+*   - First, when the user click on the 'check for updates' button, the plugin buildComfortButtons.js call for getstablebutton() or getbothbuttons() method and inject the HTML inside the li#udapteButtonsContainer in the _checkButtons view
 *   - Then, when the user click on one of those buttons, the comfortUpdateNextStep.js plugin will call for the getWelcome() method and inject the HTML inside div#updaterContainer in the _right_container view (all steps will be then injected here)
-*    - Then, when the user click on the continue button, the comfortUpdateNextStep.js plugin will call for the step1() method and inject the  the HTML inside div#updaterContainer in the _right_container view
+*   - Then, when the user click on the continue button, the comfortUpdateNextStep.js plugin will call for the step1() method and inject the  the HTML inside div#updaterContainer in the _right_container view
 *   - etc. etc.
 *
 *
 *
-*  Some steps must be shown out of the chronological process : getNewKey and submitKey. They are at the end of the controller's interface.
+*  Some steps must be shown out of the chronological process: getNewKey and submitKey. They are at the end of the controller's interface.
 *  Some steps must be 'checked again' after the user fixed some errors (such as file permissions).
 *  Those steps are/can be diplayed by the plugin displayComfortStep.js. They are called from buttons like :
 *
