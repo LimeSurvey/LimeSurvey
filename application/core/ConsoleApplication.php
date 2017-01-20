@@ -46,7 +46,7 @@ class ConsoleApplication extends CConsoleApplication
             $aApplicationConfig['runtimePath']=$lsConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
         }
         if (!is_dir($aApplicationConfig['runtimePath']) || !is_writable($aApplicationConfig['runtimePath'])) {
-            throw new CException("{$aApplicationConfig['runtimePath']} should exist and be writable by the webserver.";
+            throw new CException("{$aApplicationConfig['runtimePath']} should exist and be writable by the webserver.");
         }
         parent::__construct($aApplicationConfig);
 
