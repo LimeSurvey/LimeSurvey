@@ -1129,6 +1129,9 @@ class InstallerController extends CController {
             ."\t"     . ""                                          . "\n"
 
             ."\t"     . "),"                                        . "\n"
+            ."\t"     . "// For security issue : it's better to set runtimePath out of web access". "\n"
+            ."\t"     . "// Directory must be readable and writable by the webuser". "\n"
+            ."\t"     . "// 'runtimePath'=>'/var/limesurvey/runtime/'". "\n"
             ."\t"     . "// Use the following config variable to set modified optional settings copied from config-defaults.php". "\n"
             ."\t"     . "'config'=>array("                          . "\n"
             ."\t"     . "// debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this". "\n"

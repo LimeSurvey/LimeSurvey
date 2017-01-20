@@ -58,8 +58,10 @@ class LSYii_Application extends CWebApplication
             }
         }
         // Runtime path has to be set before  parent constructor is executed
-        $aApplicationConfig['runtimePath']=$settings['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
-
+        // User can set it in own config using Yii
+        if(!isset($aApplicationConfig['runtimePath'])){
+            $aApplicationConfig['runtimePath']=$settings['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        }
         parent::__construct($aApplicationConfig);
 
         $ls_config = require(__DIR__ . '/../config/config-defaults.php');
@@ -67,7 +69,6 @@ class LSYii_Application extends CWebApplication
         $version_config = require(__DIR__ . '/../config/version.php');
         $updater_version_config = require(__DIR__ . '/../config/updater_version.php');
         $settings = array_merge($ls_config, $version_config, $email_config, $updater_version_config);
-
 
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
