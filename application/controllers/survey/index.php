@@ -701,12 +701,11 @@ class index extends CAction {
 
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
         {
-            $thissurvey=getSurveyInfo($redata['surveyid']);
-            $sTemplateDir= $oTemplate->viewPath;
+            $surveyId = $redata['surveyid'];
         }
         else
         {
-            $sTemplateDir= $oTemplate->viewPath;
+            $surveyId = null;
         }
         sendCacheHeaders();
 
@@ -719,7 +718,7 @@ class index extends CAction {
         $this->_printMessage($asMessage);
         $this->_printTemplateContent($oTemplate->viewPath.'/endpage.pstpl', $redata, $iDebugLine);
 
-        doFooter($thissurvey['sid']);
+        doFooter($surveyId);  // It's OK for surveyId to be null here
         exit;
     }
 
