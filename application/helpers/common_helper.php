@@ -5705,7 +5705,7 @@ function getFooter()
  */
 function doFooter($surveyid = null)
 {
-    $event = new PluginEvent('beforeFooterRender');
+    $event = new PluginEvent('beforeCloseHtml');
     if ($surveyid) {
         $event->set('surveyId', $surveyid);
     }
