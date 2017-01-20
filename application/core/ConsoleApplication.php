@@ -25,11 +25,11 @@ class ConsoleApplication extends CConsoleApplication
         // Load the limesurvey config from different files.
         // Using some config part for app config, then load it before
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
-        $consoleConfig = require(__DIR__ . '/../config/console.php');
+        $consoleConfig = require(__DIR__ . '/../config/console.php'); // Only for console : replace some config-defaults
         $emailConfig = require(__DIR__ . '/../config/email.php');
-        $versioConfig = require(__DIR__ . '/../config/version.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
         $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
-        $lsConfig = array_merge($coreConfig, $emailConfig, $versioConfig, $updaterVersionConfig);
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
             $userConfigs = require(__DIR__ . '/../config/config.php');
@@ -60,7 +60,7 @@ class ConsoleApplication extends CConsoleApplication
                 $dbConfig=CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
                 $this->config = array_merge($this->config,$dbConfig);
             }
-        }catch(Exception $excetion) {
+        }catch(Exception $exception) {
             // Allow exception
         }
         // Set webroot alias.

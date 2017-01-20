@@ -50,9 +50,9 @@ class LSYii_Application extends CWebApplication
         // Using some config part for app config, then load it before
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
         $emailConfig = require(__DIR__ . '/../config/email.php');
-        $versioConfig = require(__DIR__ . '/../config/version.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
         $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
-        $lsConfig = array_merge($coreConfig, $emailConfig, $versioConfig, $updaterVersionConfig);
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
             $userConfigs = require(__DIR__ . '/../config/config.php');
