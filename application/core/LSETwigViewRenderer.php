@@ -47,7 +47,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 $sandbox    = new Twig_Extension_Sandbox($policy, true);
 
                 $this->_twig->addExtension($sandbox);
-            }else{
+            }
+            else{
                 $this->_twig->addExtension(new $extName());
             }
         }

@@ -72,7 +72,7 @@
                 {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
                 <li>
                     <div class="dropdown-header">
-                        {{ flatEllipsizeText(group.text, true, 30, " &hellip; ", 0.6 ) | raw }}
+                        {{ flatEllipsizeText(group.text, true, 30, " &hellip; ", 0.6 ) }}
                         <span class="caret"></span>
                     </div>
                     <ul class="dropdown-menu dropdown-sub-menu">
@@ -89,7 +89,7 @@
                             {% endif %}
                             <li class="{{ indexItem.coreClass }} {{statusClass}}">
                                 <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'>
-                                    {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) | raw }}
+                                    {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) }}
                                 </a>
                             </li>
                         {% endfor %}

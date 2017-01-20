@@ -39,22 +39,22 @@
 
     <!-- LimeSurvey valid message and help -->
     <div class="question-valid-container bg-primary text-info col-xs-12">
-        {{ aQuestion.valid_message      | raw }}
-        {{ aQuestion.man_message        | raw }}
-        {{ aQuestion.file_valid_message | raw }}
+        {{ aQuestion.valid_message      }}
+        {{ aQuestion.man_message        }}
+        {{ aQuestion.file_valid_message }}
     </div>
 
     <!-- Answer -->
     <div class="answer-container  col-xs-12">
         {# NOTE: If you want to customize the question rendering, use a question template #}
-        {{ aQuestion.answer |  raw }}
+        {{ aQuestion.answer }}
     </div>
 
     <!-- Survey question help -->
     <div class="question-help-container text-info col-xs-12">
         {% if aQuestion.help.show %}
             <div class="ls-questionhelp">
-                {{ aQuestion.help.txt | raw }}
+                {{ aQuestion.help.txt  }}
             </div>
         {% endif %}
     </div>
