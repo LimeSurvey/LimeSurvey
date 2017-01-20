@@ -53,6 +53,16 @@ class ConsoleApplication extends CConsoleApplication
 
         // Load the limesurvey config into self
         $this->config = array_merge($this->config, $lsConfig);
+        /* Load the database settings : if available */
+        try {
+            $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+            if(is_object($settingsTableExist)){
+                $dbConfig=CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+                $this->config = array_merge($this->config,$dbConfig);
+            }
+        }catch(Exception $excetion) {
+            // Allow exception
+        }
         // Set webroot alias.
         Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
     }
