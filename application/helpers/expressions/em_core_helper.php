@@ -1949,6 +1949,7 @@ class ExpressionManager {
 
     /**
      * If the equation contains refernece to this, expand to comma separated list if needed.
+     * @param string $src
      */
     function ExpandThisVar($src)
     {

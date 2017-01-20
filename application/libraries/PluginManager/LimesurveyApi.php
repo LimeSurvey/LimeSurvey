@@ -318,7 +318,7 @@ use SurveyDynamic;
         /**
          * Get the user object for a given email
          *
-         * @param string $username
+         * @param string|null $email
          * @return User|null Returns the user, or null when not found
          */
         public function getUserByEmail($email)
