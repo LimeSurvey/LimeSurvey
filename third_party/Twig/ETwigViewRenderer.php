@@ -91,6 +91,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
             'cache' => $app->getRuntimePath() . '/twig_cache/',
             'charset' => $app->charset,
         );
+        var_dump( array_merge($defaultOptions, $this->options));
         $this->_twig = new Twig_Environment($loader, array_merge($defaultOptions, $this->options));
 
         // Adding Yii::app() object to globals
@@ -140,7 +141,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
     {
         // current controller properties will be accessible as {{ this.property }}
         $data['this'] = $context;
-        
+
         $sourceFile = realpath($sourceFile); // to prevent common problems with paths associated with symlinks
 
         foreach($this->_paths as $path) {
