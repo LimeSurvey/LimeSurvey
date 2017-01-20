@@ -43,7 +43,7 @@
     {% endif %}
 
         {# Must be included only one time (else : multiple id) #}
-        <div class="form-inline form-change-lang <?php echo $sClass ?>" >
+        <div class="form-inline form-change-lang {{ aSurveyInfo.alanguageChanger.sClass }} " >
             <label class="form-group">
                 <span class="control-label">{{ "Language:" | t }}</span>
                 {{
