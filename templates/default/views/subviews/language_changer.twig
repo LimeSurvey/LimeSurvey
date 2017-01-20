@@ -11,7 +11,8 @@
 
     (¯`·._.·(¯`·._.· Language Changer  ·._.·´¯)·._.·´¯)
 
-    Show a language changer inside the form.
+    Show a language changer inside the main container.
+
     It uses the Yii helper CHtml::dropDownList().
     @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh5
 
@@ -36,6 +37,7 @@
         }
     %}
 
+    {# When the language changer is shown outside of the main form, like in the welcome page, it must have its own form. #}
     {% if aLCD.withForm == true %}
         <form method="get" class="ls-languagechanger-form">
     {% endif %}
