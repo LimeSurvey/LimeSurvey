@@ -37,29 +37,34 @@ class LSYii_Application extends CWebApplication
     * @param array $config
     * @return void
     */
-    public function __construct($config = null)
+    public function __construct($aApplicationConfig = null)
     {
-        parent::__construct($config);
-        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
-        // Load the default and environmental settings from different files into self.
-        $ls_config = require(__DIR__ . '/../config/config-defaults.php');
-        $email_config = require(__DIR__ . '/../config/email.php');
-        $version_config = require(__DIR__ . '/../config/version.php');
-        $updater_version_config = require(__DIR__ . '/../config/updater_version.php');
-        $settings = array_merge($ls_config, $version_config, $email_config, $updater_version_config);
-
-
+        /* Load lsConfig */
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $emaiConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $lsConfig = array_merge($coreConfig, $emaiConfig, $versionConfig, $updaterVersionConfig);
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
-            $ls_config = require(__DIR__ . '/../config/config.php');
-            if(is_array($ls_config['config']))
+            $userConfig = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfig['config']))
             {
-                $settings = array_merge($settings, $ls_config['config']);
+                $lsConfig = array_merge($lsConfig, $userConfig['config']);
             }
         }
+        // Runtime path has to be set before  parent constructor is executed
+        // User can set it in own config using Yii
+        if(!isset($aApplicationConfig['runtimePath'])){
+            $aApplicationConfig['runtimePath']=$lsConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        }
+        parent::__construct($aApplicationConfig);
 
-        foreach ($settings as $key => $value)
+        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
+        // Load the default and environmental settings from different files into self.
+        foreach ($lsConfig as $key => $value){
             $this->setConfig($key, $value);
+        }
 
         App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
     }

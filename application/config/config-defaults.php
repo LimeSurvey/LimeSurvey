@@ -594,7 +594,7 @@ $config['proxy_host_port'] = 80;
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
-if(!isset($argv[0]))
+if(!isset($argv[0]) && Yii::app()!=null)
 {
     $config['publicurl'] = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
 }
@@ -631,9 +631,6 @@ $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'sty
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
-// This directory can be out of webroot directory
-// Usage of this config option broke 2.5X compatibility, introduced in 3.0 only
-$config['runtimedir']               = $config['tempdir'].DIRECTORY_SEPARATOR."runtime";
 
 // (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
 $config['bFixNumAuto']             = 1;
