@@ -117,7 +117,7 @@ class OptinController extends LSYii_Controller {
         $aData['thistpl'] = $thistpl;
         $this->render('/opt_view',$aData);
         echo templatereplace(file_get_contents($thistpl.'endpage.pstpl'),array(), $aSupportData);
-        doFooter();
+        doFooter($iSurveyID);
     }
 
 }

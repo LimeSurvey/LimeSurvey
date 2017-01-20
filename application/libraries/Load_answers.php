@@ -44,7 +44,7 @@ class Load_answers {
         echo "</form>";
 
         echo templatereplace(file_get_contents($oTemplate->viewPath."endpage.pstpl"),array(),$redata);
-        doFooter();
+        doFooter($surveyid);
         exit;
 
 

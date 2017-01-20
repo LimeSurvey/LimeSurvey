@@ -5699,10 +5699,16 @@ function getFooter()
         return $embedded_footerfunc();
 }
 
-function doFooter($surveyid)
+/**
+ * @param int|null $surveyid Null for front-end startpage where there's no survey
+ * @return void
+ */
+function doFooter($surveyid = null)
 {
     $event = new PluginEvent('beforeFooterRender');
-    $event->set('surveyId', $surveyid);
+    if ($surveyid) {
+        $event->set('surveyId', $surveyid);
+    }
     App()->getPluginManager()->dispatchEvent($event);
     if (!is_null($event->get('html')))
     {

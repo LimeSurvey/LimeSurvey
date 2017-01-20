@@ -515,7 +515,7 @@ class index extends CAction {
             $this->_printTemplateContent($thistpl.'/clearall.pstpl', $redata, __LINE__);
 
             $this->_printTemplateContent($thistpl.'/endpage.pstpl', $redata, __LINE__);
-            doFooter();
+            doFooter($surveyid);
             exit;
         }
 
@@ -719,7 +719,7 @@ class index extends CAction {
         $this->_printMessage($asMessage);
         $this->_printTemplateContent($oTemplate->viewPath.'/endpage.pstpl', $redata, $iDebugLine);
 
-        doFooter();
+        doFooter($thissurvey['sid']);
         exit;
     }
 
