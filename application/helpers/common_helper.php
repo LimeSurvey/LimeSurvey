@@ -5682,8 +5682,11 @@ function getPrintableHeader()
     return $headelements;
 }
 
-// This function returns the Footer as result string
-// If you want to echo the Footer use doFooter() !
+/** 
+ * This function returns the Footer as result string
+ * If you want to echo the Footer use doFooter()!
+ * @return string
+ */
 function getFooter()
 {
 
