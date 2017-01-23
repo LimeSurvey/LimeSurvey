@@ -86,7 +86,7 @@
             <!-- view action buttons-->
             <?php if (isset($labelbar['buttons']['view'])):?>
 
-                <!-- return to admin pannel -->
+                <!-- return to admin panel -->
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block">
                     <span class="glyphicon glyphicon-backward"></span>
                     &nbsp;&nbsp;

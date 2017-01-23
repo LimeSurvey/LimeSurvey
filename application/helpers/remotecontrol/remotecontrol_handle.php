@@ -2155,7 +2155,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the survey that participants belong
-    * @param array $aTokenIDs Ids of the participant to invite
+    * @param array $aTokenIds Ids of the participant to invite
     * @param bool $bEmail Send only pending invites (TRUE) or resend invites only (FALSE)
     * @return array Result of the action
     */

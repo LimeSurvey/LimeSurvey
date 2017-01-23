@@ -303,7 +303,7 @@ $(document).ready(function(){
     });
 
 
-    $(document).on('submit','#edittoken',function(){
+    $(document).on('submit.edittoken','#edittoken',function(event){
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();

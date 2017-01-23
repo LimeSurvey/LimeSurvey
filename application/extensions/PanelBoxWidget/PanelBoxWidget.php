@@ -1,6 +1,6 @@
 <?php
 
-    class PannelBoxWidget extends CWidget
+    class PanelBoxWidget extends CWidget
     {
         public $fromDb=FALSE; // If set to 1, the widget will look for the box definition inside the database
         public $dbPosition=1; // Id of the box in the database
@@ -94,6 +94,7 @@
             // We get all the boxes in the database
             $boxes = self::getBoxes();
             $boxcount = 0;
+            $bIsRowOpened = false;
             foreach($boxes as $box)
             {
 
@@ -110,7 +111,7 @@
 
                     $this->render('row_header');
                     $bIsRowOpened = true;
-                    $this->controller->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
+                    $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
                                 'display'=>'singlebox',
                                 'fromDb'=> true,
                                 'dbPosition'=>$box->position,
@@ -119,7 +120,7 @@
                 }
                 elseif($canSeeBox)
                 {
-                    $this->controller->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
+                    $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
                                     'display'=>'singlebox',
                                     'fromDb'=> true,
                                     'dbPosition'=>$box->position,

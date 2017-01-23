@@ -246,8 +246,17 @@ class UserGroup extends LSActiveRecord {
 
         return $button;
     }
-
-    function search()
+    /**
+     * This function search usergroups for a user
+     * If $isMine = true then usergroups are those that have been created by the current user
+     * else this function provides usergroups which contain the current user
+     * 
+     * The object \CActiveDataProvider returned is used to generate the view in application/views/admin/usergroup/usergroups_view.php
+     * 
+     * @param bool $isMine
+     * @return \CActiveDataProvider
+     */
+    function searchMine($isMine)
     {
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
@@ -288,11 +297,20 @@ class UserGroup extends LSActiveRecord {
 
         $criteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
-        if (!Permission::model()->hasGlobalPermission('usergroups','read'))
+        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $criteria->addCondition("t.owner_id=".App()->user->getId(), "AND");
+            if ($isMine)
+            {
+                $criteria->addCondition("t.owner_id=".App()->user->getId(), "AND");
+            }
+            else
+            {
+                $criteria->addCondition("t.owner_id<>".App()->user->getId(), "AND");
+                $criteria->addCondition("t.ugid IN (SELECT ugid FROM $user_in_groups_table WHERE ".$user_in_groups_table.".uid = ".App()->user->getId().")", "AND");
+            }
+            
         }
-
+        
         $dataProvider=new CActiveDataProvider('UserGroup', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
@@ -303,5 +321,5 @@ class UserGroup extends LSActiveRecord {
 
         return $dataProvider;
     }
-
+      
 }

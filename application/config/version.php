@@ -12,11 +12,11 @@
  */
 
 $config['versionnumber'] = '3.0.0-alpha'; //The current version of this branch
-$config['masterversion'] = '2.59.0'; //The current masters version merged into this branch
+$config['masterversion'] = '2.59.1'; //The current masters version merged into this branch
 $config['dbversionnumber'] = 264;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '2590';
+$config['assetsversionnumber'] = '2591';
 return $config;
 
 ?>

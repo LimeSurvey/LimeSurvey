@@ -46,11 +46,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $oDB = Yii::app()->getDb();
     Yii::app()->setConfig('Updating',true);
     $oDB->schemaCachingDuration=0; // Deactivate schema caching
-    $oTransaction = $oDB->beginTransaction();
     try
     {
         if ($iOldDBVersion < 111)
         {
+            $oTransaction = $oDB->beginTransaction();
             // Language upgrades from version 110 to 111 because the language names did change
 
             $aOldNewLanguages=array('german_informal'=>'german-informal',
@@ -67,15 +67,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 alterLanguageCode($sOldLanguageCode,$sNewLanguageCode);
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>111),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 112) {
+            $oTransaction = $oDB->beginTransaction();
             // New size of the username field (it was previously 20 chars wide)
             $oDB->createCommand()->alterColumn('{{users}}','users_name',"string(64) NOT NULL");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>112),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 113) {
+            $oTransaction = $oDB->beginTransaction();
             //Fixes the collation for the complete DB, tables and columns
 
             if (Yii::app()->db->driverName=='mysql')
@@ -83,18 +87,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 fixMySQLCollations('utf8','utf8_unicode_ci');
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 114) {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->alterColumn('{{saved_control}}','email',"string(320) NOT NULL");
             $oDB->createCommand()->alterColumn('{{surveys}}','adminemail',"string(320) NOT NULL");
             $oDB->createCommand()->alterColumn('{{users}}','email',"string(320) NOT NULL");
             $oDB->createCommand()->insert('{{settings_global}}',array('stg_name'=>'SessionName','stg_value'=>randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789')));
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>114),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 126) {
-
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}','printanswers',"string(1) default 'N'");
             addColumn('{{surveys}}','listpublic',"string(1) default 'N'");
 
@@ -157,9 +164,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             dropColumn('{{users}}','move_user');
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>126),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 127) {
+            $oTransaction = $oDB->beginTransaction();
             modifyDatabase("","create index answers_idx2 on {{answers}} (sortorder)"); echo $modifyoutput;
             modifyDatabase("","create index assessments_idx2 on {{assessments}} (sid)"); echo $modifyoutput;
             modifyDatabase("","create index assessments_idx3 on {{assessments}} (gid)"); echo $modifyoutput;
@@ -174,40 +183,52 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             modifyDatabase("","create index saved_control_idx2 on {{saved_control}} (sid)"); echo $modifyoutput;
             modifyDatabase("","create index user_in_groups_idx1 on {{user_in_groups}} (ugid, uid)"); echo $modifyoutput;
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>127),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 128) {
+            $oTransaction = $oDB->beginTransaction();
             upgradeTokens128();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>128),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 129) {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}','startdate',"datetime");
             addColumn('{{surveys}}','usestartdate',"string(1) NOT NULL default 'N'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>129),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 130)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{conditions}}','scenario',"integer NOT NULL default '1'");
             $oDB->createCommand()->update('{{conditions}}',array('scenario'=>'1'),"(scenario is null) or scenario=0");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>130),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 131)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}','publicstatistics',"string(1) NOT NULL default 'N'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>131),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 132)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}','publicgraphs',"string(1) NOT NULL default 'N'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>132),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 133)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{users}}','one_time_pw','binary');
             // Add new assessment setting
             addColumn('{{surveys}}','assessments',"string(1) NOT NULL default 'N'");
@@ -259,10 +280,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             // drop old URL field
             dropColumn('{{surveys}}','url');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>133),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 134)
         {
+            $oTransaction = $oDB->beginTransaction();
             // Add new tokens setting
             addColumn('{{surveys}}','usetokens',"string(1) NOT NULL default 'N'");
             addColumn('{{surveys}}','attributedescriptions','text');
@@ -270,16 +293,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             dropColumn('{{surveys}}','attribute2');
             upgradeTokenTables134();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>134),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 135)
         {
+            $oTransaction = $oDB->beginTransaction();
             alterColumn('{{question_attributes}}','value','text');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>135),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 136) //New Quota Functions
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{quota}}','autoload_url',"integer NOT NULL default 0");
             // Create quota table
             $aFields = array(
@@ -293,10 +320,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             );
             $oDB->createCommand()->createTable('{{quota_languagesettings}}',$aFields);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 137) //New Quota Functions
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys_languagesettings}}','surveyls_dateformat',"integer NOT NULL default 1");
             addColumn('{{users}}','dateformat',"integer NOT NULL default 1");
             $oDB->createCommand()->update('{{surveys}}',array('startdate'=>NULL),"usestartdate='N'");
@@ -304,44 +333,56 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             dropColumn('{{surveys}}','useexpiry');
             dropColumn('{{surveys}}','usestartdate');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>137),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 138) //Modify quota field
         {
+            $oTransaction = $oDB->beginTransaction();
             alterColumn('{{quota_members}}','code',"string(11)");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>138),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 139) //Modify quota field
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables139();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>139),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 140) //Modify surveys table
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}','emailresponseto','text');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>140),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 141) //Modify surveys table
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}','tokenlength','integer NOT NULL default 15');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>141),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 142) //Modify surveys table
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeQuestionAttributes142();
             $oDB->createCommand()->alterColumn('{{surveys}}','expires',"datetime");
             $oDB->createCommand()->alterColumn('{{surveys}}','startdate',"datetime");
             $oDB->createCommand()->update('{{question_attributes}}',array('value'=>0),"value='false'");
             $oDB->createCommand()->update('{{question_attributes}}',array('value'=>1),"value='true'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>142),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 143)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{questions}}','parent_qid','integer NOT NULL default 0');
             addColumn('{{answers}}','scale_id','integer NOT NULL default 0');
             addColumn('{{questions}}','scale_id','integer NOT NULL default 0');
@@ -408,10 +449,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             // close directory
             closedir($hTemplateDirectory);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>143),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 145)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}','savetimings',"string(1) NULL default 'N'");
             addColumn('{{surveys}}','showXquestions',"string(1) NULL default 'Y'");
             addColumn('{{surveys}}','showgroupinfo',"string(1) NULL default 'B'");
@@ -612,25 +655,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             ));
             upgradeTokens145();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>145),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 146) //Modify surveys table
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTimings146();
             // Fix permissions for new feature quick-translation
             try { setTransactionBookmark(); $oDB->createCommand("INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}")->execute(); echo $modifyoutput; flush();@ob_flush();} catch(Exception $e) { rollBackToTransactionBookmark();}
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>146),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 147)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{users}}','templateeditormode',"string(7) NOT NULL default 'default'");
             addColumn('{{users}}','questionselectormode',"string(7) NOT NULL default 'default'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>147),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 148)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
 
             $oDB->createCommand()->createTable('{{participants}}',array(
@@ -691,10 +740,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             upgradeQuestionAttributes148();
             fixSubquestions();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 149)
         {
+            $oTransaction = $oDB->beginTransaction();
             $aFields = array(
                 'id' => 'integer',
                 'sid' => 'integer',
@@ -704,28 +755,36 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             );
             $oDB->createCommand()->createTable('{{survey_url_parameters}}',$aFields);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 150)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{questions}}','relevance','TEXT');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 151)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{groups}}','randomization_group',"string(20) NOT NULL default ''");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>151),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 152)
         {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 153)
         {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable('{{expression_errors}}',array(
                 'id' => 'pk',
                 'errortime' => 'string(50)',
@@ -739,25 +798,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'prettyprint' => 'text'
             ));
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>153),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 154)
         {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{groups}}','grelevance',"text");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>154),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 155)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}','googleanalyticsstyle',"string(1)");
             addColumn('{{surveys}}','googleanalyticsapikey',"string(25)");
             try { setTransactionBookmark(); $oDB->createCommand()->renameColumn('{{surveys}}','showXquestions','showxquestions');} catch(Exception $e) { rollBackToTransactionBookmark();}
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>155),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
 
         if ($iOldDBVersion < 156)
         {
+            $oTransaction = $oDB->beginTransaction();
             try
             {
                 $oDB->createCommand()->dropTable('{{survey_url_parameters}}');
@@ -812,11 +877,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
             $oTransaction->commit();
-            $oTransaction=$oDB->beginTransaction();
         }
 
         if ($iOldDBVersion < 157)
         {
+            $oTransaction = $oDB->beginTransaction();
             // MySQL DB corrections
             try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
 
@@ -1017,61 +1082,76 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{question_attributes}}',array('value'=>'1'),"attribute = 'random_order' and value = '2'");
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>157),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 158)
         {
+            $oTransaction = $oDB->beginTransaction();
             LimeExpressionManager::UpgradeConditionsToRelevance();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 159)
         {
+            $oTransaction = $oDB->beginTransaction();
             alterColumn('{{failed_login_attempts}}', 'ip', "string(40)",false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>159),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 160)
         {
+            $oTransaction = $oDB->beginTransaction();
             alterLanguageCode('it','it-informal');
             alterLanguageCode('it-formal','it');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>160),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 161)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{survey_links}}','date_invited','datetime NULL default NULL');
             addColumn('{{survey_links}}','date_completed','datetime NULL default NULL');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>161),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 162)
         {
-            /* Fix participant db types */
+            $oTransaction = $oDB->beginTransaction();
+            // Fix participant db types
             alterColumn('{{participant_attribute}}', 'value', "text", false);
             alterColumn('{{participant_attribute_names_lang}}', 'attribute_name', "string(255)", false);
             alterColumn('{{participant_attribute_values}}', 'value', "text", false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>162),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 163)
         {
+            $oTransaction = $oDB->beginTransaction();
             //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
 
             $replacedTemplate=replaceTemplateJS();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
-
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 164)
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeTokens148(); // this should have bee done in 148 - that's why it is named this way
             // fix survey tables for missing or incorrect token field
             upgradeSurveyTables164();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>164),"stg_name='DBVersion'");
+            $oTransaction->commit();
 
             // Not updating settings table as upgrade process takes care of that step now
         }
 
         if ($iOldDBVersion < 165)
         {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable('{{plugins}}', array(
                 'id' => 'pk',
                 'name' => 'string NOT NULL',
@@ -1087,10 +1167,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             ));
             alterColumn('{{surveys_languagesettings}}','surveyls_url',"text");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>165),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 166)
         {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
             dropPrimaryKey('permissions');
             alterColumn('{{permissions}}', 'permission', "string(100)", false);
@@ -1112,28 +1194,34 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             dropColumn('{{users}}','participant_panel');
             $oDB->createCommand()->dropTable('{{templates_rights}}');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 167)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys_languagesettings}}', 'attachments', 'text');
             addColumn('{{users}}', 'created', 'datetime');
             addColumn('{{users}}', 'modified', 'datetime');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>167),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 168)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{participants}}', 'created', 'datetime');
             addColumn('{{participants}}', 'modified', 'datetime');
             addColumn('{{participants}}', 'created_by', 'integer');
             $oDB->createCommand('update {{participants}} set created_by=owner_uid')->query();
             alterColumn('{{participants}}', 'created_by', "integer", false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>168),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 169)
         {
+            $oTransaction = $oDB->beginTransaction();
             // Add new column for question index options.
             addColumn('{{surveys}}', 'questionindex', 'integer not null default 0');
             // Set values for existing surveys.
@@ -1143,18 +1231,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             // Remove old column.
             dropColumn('{{surveys}}', 'allowjumps');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>169),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 170)
         {
+            $oTransaction = $oDB->beginTransaction();
             // renamed advanced attributes fields dropdown_dates_year_min/max
             $oDB->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_min'),"attribute='dropdown_dates_year_min'");
             $oDB->createCommand()->update('{{question_attributes}}',array('attribute'=>'date_max'),"attribute='dropdown_dates_year_max'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>170),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 171)
         {
+            $oTransaction = $oDB->beginTransaction();
             try {
                 dropColumn('{{sessions}}','data');
             }
@@ -1176,9 +1268,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                     break;
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>171),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 172)
         {
+            $oTransaction = $oDB->beginTransaction();
             switch (Yii::app()->db->driverName){
                 case 'pgsql':
                     // Special treatment for Postgres as it is too dumb to convert a string to a number without explicit being told to do so ... seriously?
@@ -1196,15 +1290,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>172),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 173)
         {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{participant_attribute_names}}','defaultname',"string(50) NOT NULL default ''");
             upgradeCPDBAttributeDefaultNames173();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>173),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 174)
         {
+            $oTransaction = $oDB->beginTransaction();
             alterColumn('{{participants}}', 'email', "string(254)");
             alterColumn('{{saved_control}}', 'email', "string(254)");
             alterColumn('{{surveys}}', 'adminemail', "string(254)");
@@ -1216,9 +1314,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             }
             alterColumn('{{users}}', 'email', "string(254)");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>174),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 175)
         {
+            $oTransaction = $oDB->beginTransaction();
             switch (Yii::app()->db->driverName){
                 case 'pgsql':
                     // Special treatment for Postgres as it is too dumb to convert a boolean to a number without explicit being told to do so
@@ -1228,14 +1328,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                     alterColumn('{{plugins}}', 'active', "integer",false,'0');
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>175),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 176)
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeTokens176();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>176),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 177)
         {
+            $oTransaction = $oDB->beginTransaction();
             if ( Yii::app()->getConfig('auth_webserver') === true ) {
                 // using auth webserver, now activate the plugin with default settings.
                 if (!class_exists('Authwebserver', false)) {
@@ -1262,26 +1366,32 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             }
             upgradeSurveys177();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>177),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 178)
         {
+            $oTransaction = $oDB->beginTransaction();
             if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli')
             {
                 modifyPrimaryKey('questions', array('qid','language'));
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>178),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 179)
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeSurveys177(); // Needs to be run again to make sure
             upgradeTokenTables179();
             alterColumn('{{participants}}', 'email', "string(254)", false);
             alterColumn('{{participants}}', 'firstname', "string(150)", false);
             alterColumn('{{participants}}', 'lastname', "string(150)", false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>179),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 180)
         {
+            $oTransaction = $oDB->beginTransaction();
             $aUsers = User::model()->findAll();
             $aPerm = array(
                 'entity_id' => 0,
@@ -1310,73 +1420,94 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 }
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>180),"stg_name='DBVersion'");
-
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 181)
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeTokenTables181('utf8_bin');
             upgradeSurveyTables181('utf8_bin');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>181),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 183)
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables183();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>183),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 184)
         {
+            $oTransaction = $oDB->beginTransaction();
             fixKCFinder184();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>184),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         // LS 2.5 table start at 250
         if ($iOldDBVersion < 250)
         {
+            $oTransaction = $oDB->beginTransaction();
             createBoxes250();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ( $iOldDBVersion < 251 )
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeBoxesTable251();
 
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ( $iOldDBVersion < 252 )
         {
+            $oTransaction = $oDB->beginTransaction();
             Yii::app()->db->createCommand()->addColumn('{{questions}}','modulename','string');
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>252),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ( $iOldDBVersion < 253 )
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables253();
 
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>253),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ( $iOldDBVersion < 254 )
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables254();
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>254),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ( $iOldDBVersion < 255 )
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables255();
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>255),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ( $iOldDBVersion < 256 )
         {
+            $oTransaction = $oDB->beginTransaction();
             upgradeTokenTables256();
             alterColumn('{{participants}}', 'email', "text", false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>256),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 257) {
+            $oTransaction = $oDB->beginTransaction();
             switch (Yii::app()->db->driverName){
                 case 'pgsql':
                     $sSubstringCommand='substr';
@@ -1400,16 +1531,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 upgradeTokenTables181('utf8mb4_bin');
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>257),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         /**
          * Remove adminimageurl from global settings
          */
         if ($iOldDBVersion < 258) {
+            $oTransaction = $oDB->beginTransaction();
             Yii::app()->getDb()->createCommand(
                 "DELETE FROM {{settings_global}} WHERE stg_name='adminimageurl'"
             )->execute();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>258),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         /**
@@ -1418,6 +1552,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * @author Olle Haerstedt
          */
         if ($iOldDBVersion < 259) {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable('{{notifications}}', array(
                 'id' => 'pk',
                 'entity' => 'string(15) not null',
@@ -1432,12 +1567,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             ));
             $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 260) {
+            $oTransaction = $oDB->beginTransaction();
             alterColumn('{{participant_attribute_names}}','defaultname',"string(255)",false);
             alterColumn('{{participant_attribute_names_lang}}','attribute_name',"string(255)",false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         /*
@@ -1446,10 +1584,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * @author Olle Haerstedt
          */
         if ($iOldDBVersion < 261) {
+            $oTransaction = $oDB->beginTransaction();
             addColumn('{{notifications}}', 'hash', 'string(64)');
             $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
-
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         /**
@@ -1458,6 +1597,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * @since 2016-09-01
          */
         if ($iOldDBVersion < 262) {
+
+            $oTransaction = $oDB->beginTransaction();
 
             // Loop all surveys
             $surveys = Survey::model()->findAll();
@@ -1492,6 +1633,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 }
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         /**
@@ -1500,9 +1642,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          */
         if ($iOldDBVersion < 263)
         {
+            $oTransaction = $oDB->beginTransaction();
+
             addColumn('{{plugins}}', 'version', 'string(32)');
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>263),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         /**
@@ -1510,6 +1655,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * @since 2016-08-29
          */
         if ($iOldDBVersion < 264) {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable('{{settings_user}}', array(
                 'uid' => 'integer NOT NULL',
                 'entity' => 'string(15)',
@@ -1519,6 +1665,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'PRIMARY KEY (uid, entity, entity_id, stg_name)'
             ));
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>264),"stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         // Inform superadmin about update
@@ -1529,7 +1676,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '264')  // <--- UPDATE THIS
         ), $superadmins);
 
-        $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
         // Load all tables of the application in the schema
