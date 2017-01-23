@@ -87,7 +87,7 @@
                 ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
                 echo templatereplace(file_get_contents($oTemplate->viewPath.'/endpage.pstpl'),array());
-                doFooter($iSurveyID);
+                doFooter();
                 exit;
             }
             //Fin session time out
