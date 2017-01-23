@@ -209,7 +209,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData          = array_merge($aData, $this->_tabPanelIntegration($esrow));
         $aData          = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
 
-        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
+        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = '" . Question::QT_T_LONG_FREE_TEXT . "'  OR  {{questions}}.type = '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "'  OR  {{questions}}.type = '" . Question::QT_T_LONG_FREE_TEXT . "' OR {{questions}}.type = '" . Question::QT_S_SHORT_FREE_TEXT . "')");
 
         $aData['questions']                             = $oResult;
         $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
@@ -846,7 +846,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
             $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
 
-            $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
+            $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = '" . Question::QT_T_LONG_FREE_TEXT . "'  OR  {{questions}}.type = '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "'  OR  {{questions}}.type = '" . Question::QT_T_LONG_FREE_TEXT . "' OR {{questions}}.type = '" . Question::QT_S_SHORT_FREE_TEXT . "')");
 
             $aData['questions'] = $oResult;
             $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
@@ -1476,7 +1476,7 @@ class SurveyAdmin extends Survey_Common_Action
             $row['question'] = $oRow['title'];
             $row['parameter'] = $oRow['parameter'];
             $row['datas'] = $oRow;
-            
+
             $aData['rows'][] = $row;
             $i++;
         }
@@ -1732,7 +1732,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oQuestion= new Question;
         $oQuestion->sid = $iSurveyID;
         $oQuestion->gid = $iGroupID;
-        $oQuestion->type = 'T';
+        $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
         $oQuestion->title = 'Q00';
         $oQuestion->question = gt('A first example question. Please answer this question:','html',$sLanguage);
         $oQuestion->help = gt('This is a question help text.','html',$sLanguage);

@@ -458,7 +458,7 @@ class index extends CAction {
                     $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
                     foreach ($fieldmap as $field)
                     {
-                        if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))
+                        if ($field['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strpos($field['fieldname'], "_filecount"))
                         {
                             if (!isset($qid)) { $qid = array(); }
                             $qid[] = $field['fieldname'];

@@ -1328,7 +1328,7 @@ class SurveyRuntimeHelper {
 
 
                 $n_q_display = '';
-                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
+                if ($qinfo['hidden'] && $qinfo['info']['type'] != Question::QT_ASTERISK_EQUATION)
                 {
                     continue; // skip this one
                 }

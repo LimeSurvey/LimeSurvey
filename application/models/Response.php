@@ -42,7 +42,7 @@
         public function getFiles()
         {
 
-            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|','language'=>getBaseLanguageFromSurveyID($this->dynamicId)));
+            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => Question::QT_VERTICAL_FILE_UPLOAD,'language'=>getBaseLanguageFromSurveyID($this->dynamicId)));
             $files = array();
             foreach ($questions as $question)
             {
@@ -95,7 +95,7 @@
 
         }
         public function search(){
-            
+
         }
     }
 

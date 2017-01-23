@@ -173,7 +173,7 @@ class responses extends Survey_Common_Action
                 //$question = $field['question'];
                 $question = viewHelper::getFieldText($field);
 
-                if ($field['type'] != "|")
+                if ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD)
                 {
                     $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field),'code'=>viewHelper::getFieldCode($field,array('LEMcompat'=>true)));
                 }
@@ -185,13 +185,13 @@ class responses extends Survey_Common_Action
                     {
                         $filenum=sprintf(gT("File %s"),$i + 1);
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Title').")",'code'=>viewHelper::getFieldCode($field).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Title').")",'code'=>viewHelper::getFieldCode($field).'(title)', "type" => Question::QT_VERTICAL_FILE_UPLOAD, "metadata" => "title", "index" => $i);
 
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => Question::QT_VERTICAL_FILE_UPLOAD, "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File size').")",'code'=>viewHelper::getFieldCode($field).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => Question::QT_VERTICAL_FILE_UPLOAD, "metadata" => "name", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File size').")",'code'=>viewHelper::getFieldCode($field).'(size)', "type" => Question::QT_VERTICAL_FILE_UPLOAD, "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
@@ -265,7 +265,7 @@ class responses extends Survey_Common_Action
                         }
                         else
                         {
-                            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
+                            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == Question::QT_VERTICAL_FILE_UPLOAD)
                             {
                                 $index = $fnames[$i]['index'];
                                 $metadata = $fnames[$i]['metadata'];
