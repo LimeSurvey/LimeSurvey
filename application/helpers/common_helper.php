@@ -5653,6 +5653,7 @@ function getHeader($meta = false)
     if ($meta)
         $header .= $meta;
 
+
     if ( !$embedded )
     {
         return $header;
@@ -5689,7 +5690,6 @@ function getPrintableHeader()
  */
 function getFooter()
 {
-
     global $embedded;
     if ( !$embedded )
     {
@@ -5702,16 +5702,8 @@ function getFooter()
         return $embedded_footerfunc();
 }
 
-function doFooter($surveyid)
+function doFooter()
 {
-    $event = new PluginEvent('beforeFooterRender');
-    $event->set('surveyId', $surveyid);
-    App()->getPluginManager()->dispatchEvent($event);
-    if (!is_null($event->get('html')))
-    {
-        echo $event->get('html');
-    }
-
     echo getFooter();
 }
 
