@@ -52,7 +52,7 @@
                         'eqrow'=>$eqrow,
                         'addlanguages'=>$addlanguages,
                         'surveyid'=>$surveyid,
-                        'gid'=>NULL, 'qid'=>NULL,
+                        'gid'=>$groupid, 'qid'=>NULL,
                         'adding'=>$adding,
                         'aqresult'=>$aqresult,
                         'action'=>$action
