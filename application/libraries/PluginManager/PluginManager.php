@@ -423,7 +423,9 @@ class PluginManager extends \PluginManager {
     {
         $this->loadAllPlugins();
         foreach ($this->plugins as $plugin) {
-            $plugin->readConfigFile();
+            if(is_object($plugin)){
+                $plugin->readConfigFile();
+            }
         }
         $this->plugins = array();
         $this->subscriptions = array();
