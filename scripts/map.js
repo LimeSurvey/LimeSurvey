@@ -52,10 +52,10 @@ function isvalidCoord(val,type){
 // OSMap functions
 function OSGeoInitialize(question,latLng){
         var tileServerURL = {
-            OSM : "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}",
-            HUM : "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}",
-            CYC : "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}",
-            TRA : "http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}"
+            OSM : "//{s}.tile.openstreetmap.org/{z}/{x}/{y}",
+            HUM : "//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}",
+            CYC : "//{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}",
+            TRA : "//{s}.tile.thunderforest.com/transport/{z}/{x}/{y}"
         };
         var name = question.substr(0,question.length - 2);
         // tiles layers def
@@ -70,12 +70,12 @@ function OSGeoInitialize(question,latLng){
         var mapOSM = L.tileLayer(tileServerURL.OSM+".png", {
             maxZoom: 19,
             subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
         });
         var mapCYC = L.tileLayer(tileServerURL.CYC+".png", {
             maxZoom: 19,
             subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
         });
         var mapHOT = L.layerGroup([L.tileLayer(tileServerURL.HUM+".png", {
             maxZoom: 20,
@@ -83,7 +83,7 @@ function OSGeoInitialize(question,latLng){
         }), L.tileLayer(tileServerURL+".png", {
             maxZoom: 19,
             subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
         })]);
         var mapTRA = L.layerGroup([L.tileLayer(tileServerURL.TRA+".png", {
             maxZoom: 19,
@@ -91,7 +91,7 @@ function OSGeoInitialize(question,latLng){
         }), L.tileLayer(tileServerURL+".png", {
             maxZoom: 19,
             subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
         })]);
 
         var baseLayers = {
@@ -221,9 +221,13 @@ function OSGeoInitialize(question,latLng){
             }
             $(this).data('prevvalue',$(this).val());
         });
-
+        console.log(window.location.protocol);
+        if(window.location.protocol=='https:'){
+            // Currently api.geonames.org are unsecure (ssl for api.geonames.net)
+            $("#searchbox_"+name).parent().remove();
+        }
         $("#searchbox_"+name).autocomplete({
-            serviceUrl : "http://api.geonames.org/searchJSON",
+            serviceUrl : "//api.geonames.org/searchJSON",
             dataType: "jsonp",
             paramName: 'name_startsWith',
             deferRequestBy: 500,
