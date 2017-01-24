@@ -35,6 +35,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.59.1 (build 170116) to 2.61.0 (build 170124) Jan 24 2017
+-New feature #12011: allow user to set runtimePath (Yii way) (Denis Chenu)
+-New feature: Plugin event beforeFooterRender (Olle Haerstedt)
+-New feature: Usergroups view (papa-mb)
+-Fixed issue #11758: Inserting placeholder not possible when creating a question (Carsten Schmitz)
+-Fixed issue #12050: Token edit / [ENTER] shows json file (markusfluer)
+-Fixed issue #12051: Non-admin users can see all usergroups (papa-mb)
+-Fixed issue #12058: Notice after deleting buttons from home page (Carsten Schmitz)
+-Fixed issue: Replacing `@@SURVEYURL@@` incorrectly in RPC (Frederik Prijck)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Czech by jelen1
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+
 
 Changes from 2.59.0 (build 170115) to 2.59.1 (build 170116) Jan 16 2017
 -Fixed issue #12059: Internal Server Error Property 'UniqueNotification.hash' is not defined (Olle Haerstedt)
