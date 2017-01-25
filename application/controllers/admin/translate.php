@@ -903,7 +903,7 @@ class translate extends Survey_Common_Action {
         $translateoutput .= CHtml::openTag('td', array('valign'=>'middle'));
         $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
         $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
-        if ($iScaleID!='') $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
+        if (is_numeric($iScaleID)) $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
 
         $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
 
