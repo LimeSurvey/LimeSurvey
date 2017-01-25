@@ -425,6 +425,8 @@ class PluginManager extends \PluginManager {
         foreach ($this->plugins as $plugin) {
             if(is_object($plugin)){
                 $plugin->readConfigFile();
+            } else {
+              // Do nothing, plugin is deleted next time plugin manager is visited and loadPlugin validate if class exist
             }
         }
         $this->plugins = array();
