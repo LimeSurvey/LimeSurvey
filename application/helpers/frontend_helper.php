@@ -1906,12 +1906,19 @@ function doAssessment($surveyid, $returndataonly=false)
                     $event = new PluginEvent('afterSurveyQuestionAssessment');
                     $event->set('surveyId', $surveyid);
                     $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
-                    $event->set('gid', $field);
-                    $event->set('qid', $field['gid']);
+                    $event->set('gid', $field['gid']);
+                    $event->set('qid', $field['qid']);
 
                     if (array_key_exists('sqid', $field))
                     {
+
                         $event->set('sqid', $field['sqid']);
+                    }
+
+                    if (array_key_exists('aid', $field))
+                    {
+
+                        $event->set('aid', $field['aid']);
                     }
 
                     $event->set('assessmentValue', $assessmentValue);
