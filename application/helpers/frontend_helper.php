@@ -1897,7 +1897,7 @@ function doAssessment($surveyid, $returndataonly=false)
                 }
 
                 // If this is a question (and not a survey field, like ID), save asessment value
-                if (!empty($field['title']))
+                if ($field['qid'] > 0)
                 {
                     /**
                      * Allow Plugin to update assessment value
@@ -1905,12 +1905,22 @@ function doAssessment($surveyid, $returndataonly=false)
                     // Prepare Event Info
                     $event = new PluginEvent('afterSurveyQuestionAssessment');
                     $event->set('surveyId', $surveyid);
-                    $event->set('question', $field);
+                    $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
+                    $event->set('gid', $field);
+                    $event->set('qid', $field['gid']);
+
+                    if (array_key_exists('sqid', $field))
+                    {
+                        $event->set('sqid', $field['sqid']);
+                    }
+
                     $event->set('assessmentValue', $assessmentValue);
+
                     if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
                     {
                         $event->set('response', $_SESSION['survey_'.$surveyid][$field['fieldname']]);
                     }
+
                     // Dispatch Event and Get new assessment value
                     App()->getPluginManager()->dispatchEvent($event);
                     $updatedAssessmentValue=$event->get('assessmentValue', $assessmentValue);
