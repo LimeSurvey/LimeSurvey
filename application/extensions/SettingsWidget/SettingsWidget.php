@@ -160,24 +160,32 @@ class SettingsWidget extends CWidget
         {
             $name = "{$this->prefix}[$name]";
         }
-        if ($metaData['localized'])
-        {
-            $name = "{$name}[{$metaData['language']}]";
-        }
+
+
         // Find function
-        $function = "render{$metaData['type']}";
 
-        // Construct the content
-        // The labels
-        $content  = $this->renderLabel($name, $metaData);
-        // The control
-        $content .= CHtml::openTag('div',$metaData['controlOptions']);
-        // The input
-        $content .= $this->$function($name, $metaData, $form);
-        // The help
-        $content .= $this->renderHelp($name, $metaData);
-        $content .= CHtml::closeTag('div');
 
+        if (is_array($metaData['language'])){
+            $metaData['language']=$metaData['language'];
+            $content=$this->renderLocalizedSetting($name, $metaData);
+        } else {
+            $function = "render{$metaData['type']}";
+            if ($metaData['localized'])
+            {
+                $name = "{$name}[{$metaData['language']}]";
+            }
+            // Construct the content
+            // The labels
+            $content  = $this->renderLabel($name, $metaData);
+            // The control
+            $content .= CHtml::openTag('div',$metaData['controlOptions']);
+            // The input
+            $content .= $this->$function($name, $metaData, $form);
+            // The help
+            $content .= $this->renderHelp($name, $metaData);
+            $content .= CHtml::closeTag('div');
+
+        }
         $result=CHtml::tag($wrapper,array('class'=>"form-group setting setting-{$metaData['type']}", 'data-name' => $name),$content);
 
         if($return)
@@ -190,6 +198,63 @@ class SettingsWidget extends CWidget
         }
     }
 
+    /**
+     * render an localized settings : fieldset legend label + input for each language with tab https://getbootstrap.com/javascript/#tabs
+     * @param $name string
+     * @param $metaData
+     * @return string
+     */
+    protected function renderLocalizedSetting($name,$metaData,$form=null){
+        //return "BROKEN";
+        $function = "render{$metaData['type']}";
+        $content  = CHtml::openTag('fieldset');
+        if(!empty($metaData['label'])){
+            $content .= CHtml::tag('legend',array(),$metaData['label']);
+        }
+        $content .= CHtml::openTag('ul',array('class'=>"nav nav-tabs",'role'=>"tablist"));
+        $first=true;
+        foreach($metaData['language'] as $lang){
+            $langId=CHtml::getIdByName("{$name}[{$lang}]");
+            $content .= CHtml::tag('li',array('role'=>"presentation",'class'=>$first ? "active":""),
+                CHtml::link(getLanguageNameFromCode($lang, false),"#{$langId}",array('aria-controls'=>"{$langId}",'role'=>"tab",'data-toggle'=>"tab"))
+            );
+            $first=false;
+        }
+        $content .= CHtml::closeTag('ul');
+        $content .= CHtml::openTag('div',array('class'=>"tab-content row"));
+        $first=true;
+        foreach($metaData['language'] as $lang){
+            $langMetaData=$metaData;
+            $content .= CHtml::openTag('div',array('id'=>CHtml::getIdByName("{$name}[{$lang}]"),'role'=>"tabpanel",'class'=>"tab-pane".($first ? " active":"")));
+            $first=false;
+            $langName="{$name}[{$lang}]";
+            if (isset($metaData['current']) && is_array($metaData['current']) && isset($metaData['current'][$lang]))
+            {
+                $langMetaData['current'] = $metaData['current'][$lang];
+            }
+            else
+            {
+                unset($langMetaData['current']);
+            }
+            //~ $langMetaData['label']=$metaData['label']." - ".$lang
+            $content .= $this->renderLabel($langName, $langMetaData);
+            // The control
+            $content .= CHtml::openTag('div',$langMetaData['controlOptions']);
+            // The input
+            $content .= $this->$function($langName, $langMetaData, $form);
+            // The help
+            $content .= CHtml::closeTag('div');
+            $content .= CHtml::closeTag('div');
+        }
+        $content .= CHtml::closeTag('div');
+        if(!empty($metaData['help'])){
+            $content .= CHtml::tag('div',array('class'=>'row'),
+                CHtml::tag('div', array('class' =>"help-block col-sm-offset-{$this->labelWidth}"),$metaData['help'])
+            );
+        }
+        $content .= CHtml::closeTag('fieldset');
+        return $content;
+    }
     protected function renderSettings()
     {
         foreach($this->settings as $name => $metaData)
@@ -242,6 +307,7 @@ class SettingsWidget extends CWidget
                 'class' => "default"
             ),
             'localized'=>false,
+            'language'=>null,
         );
         $metaData = array_merge($defaults, $metaData);
 
@@ -263,14 +329,16 @@ class SettingsWidget extends CWidget
         // Handle localization.
         if ($metaData['localized'])
         {
-            $name = "{$name}[{$metaData['language']}]";
-            if (isset($metaData['current']) && is_array($metaData['current']) && isset($metaData['current'][$metaData['language']]))
-            {
-                $metaData['current'] = $metaData['current'][$metaData['language']];
-            }
-            else
-            {
-                unset($metaData['current']);
+            if(!is_array($metaData['language'])){
+                $name = "{$name}[{$metaData['language']}]";
+                if (isset($metaData['current']) && is_array($metaData['current']) && isset($metaData['current'][$metaData['language']]))
+                {
+                    $metaData['current'] = $metaData['current'][$metaData['language']];
+                }
+                else
+                {
+                    unset($metaData['current']);
+                }
             }
         }
 
@@ -296,7 +364,7 @@ class SettingsWidget extends CWidget
         }
         else if(!in_array($metaData['type'], array('list','logo','link','info')))
         {
-            return CHtml::label($metaData['label'], $name, $metaData['labelOptions']);
+            return CHtml::label($metaData['label'], CHtml::getIdByName($name), $metaData['labelOptions']);
         }
         else
         {
