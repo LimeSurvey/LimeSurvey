@@ -376,6 +376,12 @@ class dataentry extends Survey_Common_Action
                {
                    $targetResponse[$targetField] = $sourceResponse[$sourceField];
                }
+
+               $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+               $beforeDataEntryImport->set('iSurveyID',$iSurveyId);
+               $beforeDataEntryImport->set('oModel',$targetResponse);
+               App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
                $imported++;
                $targetResponse->save();
                $aSRIDConversions[$iOldID]=$targetResponse->id;
@@ -1410,6 +1416,12 @@ class dataentry extends Survey_Common_Action
 
             $delquery = "DELETE FROM $surveytable WHERE id=$id";
             Yii::app()->loadHelper('database');
+
+            $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
+            $beforeDataEntryDelete->set('iSurveyID',$surveyid);
+            $beforeDataEntryDelete->set('iResponseID',$id);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
+
             $delresult = dbExecuteAssoc($delquery) or safeDie ("Couldn't delete record $id<br />\n");
 
             $aData['sidemenu']['state'] = false;
@@ -1526,6 +1538,11 @@ class dataentry extends Survey_Common_Action
             }
             $updateqr = substr($updateqr, 0, -3);
             $updateqr .= " WHERE id=$id";
+
+            $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
+            $beforeDataEntryUpdate->set('iSurveyID',$surveyid);
+            $beforeDataEntryUpdate->set('iResponseID',$id);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
@@ -1765,6 +1782,12 @@ class dataentry extends Survey_Common_Action
                 {
                     $new_response->$column = $value;
                 }
+
+                $beforeDataEntryCreate = new PluginEvent('beforeDataEntryCreate');
+                $beforeDataEntryCreate->set('iSurveyID',$surveyid);
+                $beforeDataEntryCreate->set('oModel',$new_response);
+                App()->getPluginManager()->dispatchEvent($beforeDataEntryCreate);
+
                 $new_response->save();
                 $last_db_id = $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken

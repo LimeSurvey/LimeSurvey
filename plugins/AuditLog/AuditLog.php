@@ -31,6 +31,26 @@
                 'label' => 'Log if a user was deleted',
                 'default' => '1',
             ),
+            'AuditLog_Log_DataEntryCreate' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a survey admin creates a response',
+                'default' => '1',
+            ),
+            'AuditLog_Log_DataEntryUpdate' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a survey admin modifies a response',
+                'default' => '1',
+            ),
+            'AuditLog_Log_DataEntryDelete' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a survey admin delete a response',
+                'default' => '1',
+            ),
+            'AuditLog_Log_DataEntryImport' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a survey admin imports responses',
+                'default' => '1',
+            ),
             'AuditLog_Log_TokenSave' => array(
                 'type' => 'checkbox',
                 'label' => 'Log if a survey participant was modified or created',
@@ -72,6 +92,10 @@
             $this->subscribe('beforeUserSave');
             $this->subscribe('beforeUserDelete');
             $this->subscribe('beforePermissionSetSave');
+            $this->subscribe('beforeDataEntryCreate');
+            $this->subscribe('beforeDataEntryUpdate');
+            $this->subscribe('beforeDataEntryDelete');
+            $this->subscribe('beforeDataEntryImport');
             $this->subscribe('beforeTokenSave');
             $this->subscribe('beforeTokenDelete');
             $this->subscribe('beforeParticipantSave');
@@ -180,6 +204,128 @@
                 $oAutoLog->oldvalues=json_encode(array_diff_assoc_recursive($oOldPermission,$aNewPermissions));
                 $oAutoLog->newvalues=json_encode(array_diff_assoc_recursive($aNewPermissions,$oOldPermission));
                 $oAutoLog->fields=implode(',',array_keys(array_diff_assoc_recursive($aNewPermissions,$oOldPermission)));
+                $oAutoLog->save();
+            }
+        }
+
+        /**
+        * Function catches if a response was created
+        * @return unknown_type
+        */
+        public function beforeDataEntryCreate()
+        {
+            $event = $this->getEvent();
+            $iSurveyID=$event->get('iSurveyID');
+            if (!$this->checkSetting('AuditLog_Log_DataEntryCreate') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+                return;
+            }
+
+            $oCurrentUser = $this->api->getCurrentUser();
+            $currentUID = $oCurrentUser ? $oCurrentUser->uid : null;
+
+            $aValues = $event->get('oModel')->getAttributes();
+            if (count($aValues)){
+                $oAutoLog = $this->api->newModel($this, 'log');
+                $oAutoLog->uid=$currentUID;
+                $oAutoLog->entity='survey_' . $iSurveyID;
+                $oAutoLog->action="create";
+                $oAutoLog->newvalues=json_encode($aValues);
+                $oAutoLog->save();
+            }
+        }
+
+        /**
+        * Function catches if a response was modified
+        * @return unknown_type
+        */
+        public function beforeDataEntryUpdate()
+        {
+            $event = $this->getEvent();
+            $iSurveyID=$event->get('iSurveyID');
+            if (!$this->checkSetting('AuditLog_Log_DataEntryUpdate') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+                return;
+            }
+
+            $oCurrentUser = $this->api->getCurrentUser();
+            $currentUID = $oCurrentUser ? $oCurrentUser->uid : null;
+            $oldvalues= $this->api->getResponse($iSurveyID, $event->get('iResponseID'), false);
+
+            $aDiffOld = array();
+            $aDiffNew = array();
+            foreach ($oldvalues->attributes as $aFieldName => $sValue) {
+                if (App()->request->getPost($aFieldName) !== null) {
+                    $oldValue = $sValue;
+                    $newValue = App()->request->getPost($aFieldName);
+                    if ($oldValue != $newValue) {
+                        $aDiffOld[$aFieldName] = $oldValue;
+                        $aDiffNew[$aFieldName] = $newValue;
+                    }
+                }
+            }
+
+            if (count($aDiffOld)){
+                $oAutoLog = $this->api->newModel($this, 'log');
+                $oAutoLog->uid=$currentUID;
+                $oAutoLog->entity='survey_' . $iSurveyID;
+                $oAutoLog->action="update";
+                $oAutoLog->entityid=$event->get('iResponseID');
+                $oAutoLog->oldvalues=json_encode($aDiffOld);
+                $oAutoLog->newvalues=json_encode($aDiffNew);
+                $oAutoLog->fields=implode(',',array_keys($aDiffOld));
+                $oAutoLog->save();
+            }
+        }
+
+        /**
+        * Function catches if a response was deleted
+        * @return unknown_type
+        */
+        public function beforeDataEntryDelete()
+        {
+            $event = $this->getEvent();
+            $iSurveyID=$event->get('iSurveyID');
+            if (!$this->checkSetting('AuditLog_Log_DataEntryDelete') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+                return;
+            }
+
+            $oCurrentUser = $this->api->getCurrentUser();
+            $currentUID = $oCurrentUser ? $oCurrentUser->uid : null;
+            $oldvalues = $this->api->getResponse($iSurveyID, $event->get('iResponseID'), true);
+
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid=$currentUID;
+            $oAutoLog->entity='survey_' . $iSurveyID;
+            $oAutoLog->action="delete";
+            $oAutoLog->entityid=$event->get('iResponseID');
+            $oAutoLog->oldvalues=json_encode($oldvalues);
+            $oAutoLog->save();
+        }
+
+        /**
+        * Log import responses
+        * @return unknown_type
+        */
+        public function beforeDataEntryImport()
+        {
+            $event = $this->getEvent();
+            $iSurveyID=$event->get('iSurveyID');
+            if (!$this->checkSetting('AuditLog_Log_DataEntryImport') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
+                return;
+            }
+
+            $oCurrentUser = $this->api->getCurrentUser();
+            $currentUID = $oCurrentUser ? $oCurrentUser->uid : null;
+
+            $oModel = $this->getEvent()->get('oModel');
+            $aValues = $oModel->getAttributes();
+            if (count($aValues)){
+                $oAutoLog = $this->api->newModel($this, 'log');
+                $oAutoLog->uid=$currentUID;
+                $oAutoLog->entity='survey_' . $iSurveyID;
+                $oAutoLog->action="import";
+                $oAutoLog->newvalues=json_encode($aValues);
+                $oAutoLog->fields=implode(',',array_keys($aValues));
+                $oAutoLog->reason=App()->request->getPost("reason");
                 $oAutoLog->save();
             }
         }
