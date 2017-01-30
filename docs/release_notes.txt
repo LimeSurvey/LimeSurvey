@@ -35,7 +35,29 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.59.1 (build 170116) to 2.61.0 (build 170124) Jan 24 2017
+
+Changes from 2.62.0 (build 170124) to 2.62.1 (build 170130) Jan 30 2017
+-Fixed issue #11744: Fixed issue #11744: When adding new answer the assessment column isn't displayed
+-Fixed issue #11887: Stars of 5 Point Choice question are not set to given value after using "back" button (markusfluer)
+-Fixed issue: Error on save in Quick-Translate function when using Postgres (Carsten Schmitz)
+-Fixed issue: Replacing `@@SURVEYURL@@` incorrectly in RPC (#630) (Frederik Prijck)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by popcorner, leadingsoci, mapleshadow, yanglaw
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by panrex, nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Russian by winterheart
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by aesteban
+
+
+Changes from 2.59.1 (build 170116) to 2.62.0 (build 170124) Jan 24 2017
 -New feature #12011: allow user to set runtimePath (Yii way) (Denis Chenu)
 -New feature: Plugin event beforeFooterRender (Olle Haerstedt)
 -New feature: Usergroups view (papa-mb)
