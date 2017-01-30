@@ -713,7 +713,7 @@ Changes from 2.50+ (build 160728) to 2.50+ (build 160731) Aug 1, 2016
 Changes from 2.50+ (build 160727) to 2.50+ (build 160728) July 26, 2016
 -Fixed issue #11484: PHP error when adding participants to CPDB (markusfluer)
 -Fixed issue: Manually adding subquestions did not work correctly (markusfluer)
-      
+
 Changes from 2.50+ (build 160726) to 2.50+ (build 160727) July 26, 2016
 -Fixed issue #11496: Numbers not adding correctly (markusfluer)
 -Fixed issue: Z-index problems in survey editing (markusfluer)
@@ -728,7 +728,7 @@ Changes from 2.50+ (build 160725) to 2.50+ (build 160726) July 26, 2016
 #Updated translation: Polish (Informal) by elisa
 
 Changes from 2.50+ (build 160718) to 2.50+ (build 160725) July 25, 2016
--Fixed issue: [security] Better check on XML uploads 
+-Fixed issue: [security] Better check on XML uploads
 -Fixed issue #11416: Google Analytics Global Configuration is not being used by survey (Markus Flür)
 -Fixed issue #11405: .css and .js not loading on public pages (LouisGac)
 -Fixed issue #11412: When Using token conditions across scenarios the final condition becomes ORed (Carsten Schmitz)
