@@ -192,7 +192,7 @@ $internalConfig = array(
 
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
-            'options' => array(        
+            'options' => array(
                 'debug' => defined('YII_DEBUG') && YII_DEBUG ?true:false,
             ),
             'extensions' => array(
@@ -200,7 +200,7 @@ $internalConfig = array(
                 'Twig_Extension_Sandbox',
                 'Twig_Extension_StringLoader',
                 'Twig_Extension_Debug',
-                'Twig_Extension_Escaper',
+                // 'Twig_Extension_Escaper' // In the future, this extenstion could be use to build a powerfull XSS filter
             ),
             'globals' => array(
                 'html' => 'CHtml'
