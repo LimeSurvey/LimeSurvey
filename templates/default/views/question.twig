@@ -25,13 +25,17 @@
 
 #}
 
+
+{# Showing question code/number is a survey level setting, so it's inside the array aSurveyInfo #}
 {% set aShow     = aSurveyInfo.aShow     %}
+
 <!-- Question -->
 <div id="question{{ aQuestion.qid }}" class=" {{ getAllQuestionClasses( aQuestion.qid ) }} {{ aQuestion.input_error_class }} question-container row">
 
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">
 
+        {# If the question is mandatory, that asterisk will be shown  #}
         {% if aQuestion.mandatory != '' %}
             <!-- Add a visual information + just Mandatory string for aria : can be improved -->
             <div class="asterisk pull-left">
@@ -40,18 +44,21 @@
             </div>
         {% endif %}
 
+        {# If the question number must be shown (set in survey settings) #}
         {% if (aShow.question_number) %}
             <span class='text-muted question-number'>
                 {{ aQuestion.number }}
             </span>
         {% endif %}
 
+        {# If the question code must be shown (set in survey settings) #}
         {% if (aShow.question_code) %}
             <span class='text-muted question-code'>
                 {{ aQuestion.code }}
             </span>
         {% endif %}
 
+        {# Here the question text, has entered by the survey creator #}
         <div class="question-text">
             <div id="ls-question-text-{{ aQuestion.SGQ }}" class="ls-label-question">
                 {{ aQuestion.text }}
@@ -61,17 +68,19 @@
 
     <!-- LimeSurvey valid message and help -->
     <div class="question-valid-container bg-primary text-info col-xs-12">
-        {{ aQuestion.valid_message      }}
-        {{ aQuestion.man_message        }}
-        {{ aQuestion.file_valid_message }}
+        {{ aQuestion.valid_message      }} {# The validation message, eg: "Only numbers may be entered in this field.". This text is inside EM Helper, and can be changed by creating a translation file #}
+        {{ aQuestion.man_message        }} {# The question mandatory error message: "This question is mandatory!". This text is inside EM Helper, and can be changed by creating a translation file #}
+        {{ aQuestion.file_valid_message }} {# Used only for file upload question type... TODO: check if we can remove it and use valid_message for file upload question type too #}
     </div>
 
+    {# Here the rendering of the answers: the input the survey taker interact with. #}
     <!-- Answer -->
     <div class="answer-container  col-xs-12">
         {# NOTE: If you want to customize the question rendering, use a question template #}
         {{ aQuestion.answer }}
     </div>
 
+    {# The additional question help: it can be added by survey creator in the question editing #}
     <!-- Survey question help -->
     <div class="question-help-container text-info col-xs-12">
         {% if aQuestion.help.show %}
