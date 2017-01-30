@@ -517,6 +517,11 @@ class responses extends Survey_Common_Action
 
             foreach($aResponseId as $iResponseId)
             {
+                $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
+                $beforeDataEntryDelete->set('iSurveyID',$iSurveyId);
+                $beforeDataEntryDelete->set('iResponseID',$iResponseId);
+                App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
+
                 Response::model($iSurveyId)->findByPk($iResponseId)->delete(true);
                 $oSurvey=Survey::model()->findByPk($iSurveyId);
                 if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)

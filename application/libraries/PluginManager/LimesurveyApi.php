@@ -180,10 +180,15 @@ use SurveyDynamic;
         *
         * @param int $surveyId
         * @param int $responseId
+        * @param bool $bMapQuestionCodes
         */
-        public function getResponse($surveyId, $responseId)
+        public function getResponse($surveyId, $responseId, $bMapQuestionCodes=true)
         {
             $response = \SurveyDynamic::model($surveyId)->findByPk($responseId);
+            if (!$bMapQuestionCodes) {
+                return $response;
+            }
+
             if (isset($response))
             {
                 // Now map the response to the question codes if possible, duplicate question codes will result in the

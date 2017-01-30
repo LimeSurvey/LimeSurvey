@@ -1937,6 +1937,11 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
                 }
                 if($oSurvey->save())
                 {
+                    $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+                    $beforeDataEntryImport->set('iSurveyID',$iSurveyId);
+                    $beforeDataEntryImport->set('oModel',$oSurvey);
+                    App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
                     $oTransaction->commit();
                     if($bExistingsId && $aOptions['sExistingId']!='renumber')
                     {
