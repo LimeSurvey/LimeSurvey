@@ -180,18 +180,6 @@ class SurveyRuntimeHelper {
             $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
         }
 
-        // If the survey uses answer persistence and a srid is registered in SESSION
-        // then loadanswers from this srid
-        /* Only survey mode used this - should all?
-        if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
-        $thissurvey['anonymized'] == "N" &&
-        isset($_SESSION[$LEMsessid]['srid']) &&
-        $thissurvey['active'] == "Y")
-        {
-        loadanswers();
-        }
-        */
-
         //******************************************************************************************************
         //PRESENT SURVEY
         //******************************************************************************************************
@@ -805,8 +793,8 @@ class SurveyRuntimeHelper {
     private function setArgs()
     {
         if ($this->previewgrp || $this->previewquestion){
-            $_SESSION[$LEMsessid]['prevstep'] = 2;
-            $_SESSION[$LEMsessid]['maxstep'] = 0;
+            $_SESSION[$this->LEMsessid]['prevstep'] = 2;
+            $_SESSION[$this->LEMsessid]['maxstep'] = 0;
             return array();
         }else{
             $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
