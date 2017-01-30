@@ -1745,11 +1745,11 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
     $sMessage = '';
 
     if ($totalquestions == 0){
-        $aError['message']  = "There are no questions in this survey.";
+        $aError['message']  = gT("There are no questions in this survey.");
     }
 
     if ($iTotalGroupsWithoutQuestions > 0){
-        $aError['message']  = "There are empty question groups in this survey - please create at least one question within a question group.";
+        $aError['message']  = gT("There are empty question groups in this survey - please create at least one question within a question group.");
     }
 
     renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath);
@@ -1765,10 +1765,11 @@ function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath )
     Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
     $aError = array();
-    $aError['title']     = $sTitle;
-    $aError['message']   = $sMessage;
-
+    $aError['title']      = $sTitle;
+    $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
+
+    $redata = array();
     $redata['thissurvey'] = $thissurvey;
 
     echo templatereplace(file_get_contents($sTemplateViewPath."layout_errors.twig"), array(), $redata);
