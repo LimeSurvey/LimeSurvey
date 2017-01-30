@@ -127,8 +127,8 @@ class SurveyRuntimeHelper {
             LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $LEMdebugLevel);
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
             if ($gseq == -1){
-                echo gT('Invalid group number for this survey: ') . $_gid;
-                exit;
+                $sMessage = gT('Invalid group number for this survey: ') . $_gid;
+                renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
             }
 
             $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
