@@ -91,7 +91,6 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
             'cache' => $app->getRuntimePath() . '/twig_cache/',
             'charset' => $app->charset,
         );
-        var_dump( array_merge($defaultOptions, $this->options));
         $this->_twig = new Twig_Environment($loader, array_merge($defaultOptions, $this->options));
 
         // Adding Yii::app() object to globals
