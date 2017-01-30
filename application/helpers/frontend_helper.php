@@ -1068,8 +1068,7 @@ function buildsurveysession($surveyid,$preview=false)
     // Break out and crash if there are no questions!
     if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0)
     {
-        $redata = compact(array_keys(get_defined_vars()));
-        breakOutAndCrash($redata, $sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
+        breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
@@ -1739,7 +1738,7 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
  * @param array $thissurvey
  * @return void
  */
-function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, array $thissurvey)
+function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, array $thissurvey)
 {
 
     $sTitle  = "This survey cannot be tested or completed for the following reason(s):";
@@ -1753,10 +1752,10 @@ function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $i
         $aError['message']  = "There are empty question groups in this survey - please create at least one question within a question group.";
     }
 
-    renderError($sTitle, $sMessage, $redata, $thissurvey, $sTemplateViewPath);
+    renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath);
 }
 
-function renderError($sTitle, $sMessage, $redata, $thissurvey, $sTemplateViewPath )
+function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath )
 {
     // Template settings
     $surveyid          = $thissurvey['sid'];
