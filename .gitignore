@@ -15,12 +15,19 @@
 
 # tmp directory : whole except the index.html for directory create
 /tmp/*
-/tmp/index.html
-/tmp/assets/index.html
-/tmp/runtime/index.html
-/tmp/upload/index.html
+!/tmp/index.html
+!/tmp/assets/index.html
+!/tmp/runtime/index.html
+!/tmp/upload/index.html
 
-# Some global "temporary files" (see
+# ignore plugins directory by default except LS plugin
+# if you want to add a new distributed plugin : add the directory here
+/plugins/*
+!/plugins/index.html
+!/plugins/Demo/
+!/plugins/AuditLog/
+
+# Some global "temporary files"
 *~
 .DS_Store
 .DS_Store?
