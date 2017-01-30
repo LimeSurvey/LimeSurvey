@@ -15,10 +15,17 @@
 
 # tmp directory : whole except the index.html for directory create
 /tmp/*
-/tmp/index.html
-/tmp/assets/index.html
-/tmp/runtime/index.html
-/tmp/upload/index.html
+!/tmp/index.html
+!/tmp/assets/index.html
+!/tmp/runtime/index.html
+!/tmp/upload/index.html
+
+# ignore plugins directory by default except LS plugin
+# if you want to add a new distributed plugin : add the directory here
+/plugins/*
+!/plugins/index.html
+!/plugins/Demo/
+!/plugins/AuditLog/
 
 # Some global "temporary files" (see
 *~
@@ -38,20 +45,9 @@ Thumbs.db
 /application/controllers/admin/updater.php
 /nbproject
 .svn
-/third_party/jqgrid/src
 .settings/org.eclipse.php.core.prefs
 .buildpath
 *.un~
-!index.html
-!readme.txt
-/tmp/runtime/URI/*.ser
-/tmp/runtime/CSS/*.ser
-/tmp/runtime/twig_cache/*
 launch.json
 
-# ignore plugins directory by default except LS plugin
-# if you want to add a new distributed plugin : add the directory here
-/plugins/*
-!/plugins/index.html
-!/plugins/Demo/
-!/plugins/AuditLog/
+
