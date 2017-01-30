@@ -1741,7 +1741,7 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
 function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, array $thissurvey)
 {
 
-    $sTitle  = "This survey cannot be tested or completed for the following reason(s):";
+    $sTitle  = gT("This survey cannot be tested or completed for the following reason(s):");
     $sMessage = '';
 
     if ($totalquestions == 0){
