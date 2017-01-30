@@ -1741,30 +1741,30 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
  */
 function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, array $thissurvey)
 {
-    sendCacheHeaders();
-    doHeader();
 
-    echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
-    echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
-    echo "\t<div id='wrapper'>\n"
-    ."\t<p id='tokenmessage'>\n"
-    ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
-    echo "<ul>";
+    // Template settings
+    $surveyid          = $thissurvey['sid'];
+    $oTemplate         = Template::model()->getInstance('', $surveyid);
+    $sTemplateViewPath = $oTemplate->pstplPath;
+    $oTemplate->registerAssets();
+    Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
+
+    $aError = array();
+
+    $aError['title']  = "This survey cannot be tested or completed for the following reason(s):";
+    $aError['message']  = "";
+
     if ($totalquestions == 0){
-        echo '<li>'.gT("There are no questions in this survey.").'</li>';
+        $aError['message']  = "There are no questions in this survey.";
     }
     if ($iTotalGroupsWithoutQuestions > 0){
-        echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
+        $aError['message']  = "There are empty question groups in this survey - please create at least one question within a question group.";
     }
-    echo "</ul>"
-    ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
-    ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-    ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-    ."\t</p>\n"
-    ."\t</div>\n";
 
-    echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
-    doFooter();
+    $thissurvey['aError'] = $aError;
+    $redata['thissurvey'] = $thissurvey;
+
+    echo templatereplace(file_get_contents($sTemplateViewPath."layout_errors.twig"), array(), $redata);
     Yii::app()->end();
 }
 
