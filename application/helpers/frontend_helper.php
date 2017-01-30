@@ -1755,7 +1755,7 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
     renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath);
 }
 
-function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath )
+function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
 {
     // Template settings
     $surveyid          = $thissurvey['sid'];
@@ -1765,7 +1765,7 @@ function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath )
     Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
     $aError = array();
-    $aError['title']      = $sTitle;
+    $aError['title']      = ($sTitle != '')?$sTitle:gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
