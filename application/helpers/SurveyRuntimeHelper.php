@@ -336,9 +336,6 @@ class SurveyRuntimeHelper {
 
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
 
-        /////////////////////////////////
-        // First call to templatereplace
-
         $thissurvey['upload_file']      = (isset($upload_file) && $upload_file)?true:false;
         $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $hiddenfieldnames               = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
@@ -353,10 +350,6 @@ class SurveyRuntimeHelper {
 
         $redata                         = compact(array_keys(get_defined_vars()));
 
-        /////////////
-        // START PAGE
-        // now after group for twig includes
-        //echo templatereplace(file_get_contents($sTemplateViewPath."startpage.twig"), array(), $redata);
 
         $aPopup=array(); // We can move this part where we want now
         if (isset($backpopup))
@@ -579,9 +572,6 @@ class SurveyRuntimeHelper {
 
             //echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
 
-            if ($thissurvey['active'] != "Y"){
-                echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
-            }
 
             echo "<!-- generated in SurveyRuntimeHelper -->";
             echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
