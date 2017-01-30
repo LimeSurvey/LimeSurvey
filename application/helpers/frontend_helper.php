@@ -1742,6 +1742,22 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
 function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, array $thissurvey)
 {
 
+    $sTitle  = "This survey cannot be tested or completed for the following reason(s):";
+    $sMessage = '';
+
+    if ($totalquestions == 0){
+        $aError['message']  = "There are no questions in this survey.";
+    }
+
+    if ($iTotalGroupsWithoutQuestions > 0){
+        $aError['message']  = "There are empty question groups in this survey - please create at least one question within a question group.";
+    }
+
+    renderError($sTitle, $sMessage, $redata, $thissurvey, $sTemplateViewPath);
+}
+
+function renderError($sTitle, $sMessage, $redata, $thissurvey, $sTemplateViewPath )
+{
     // Template settings
     $surveyid          = $thissurvey['sid'];
     $oTemplate         = Template::model()->getInstance('', $surveyid);
@@ -1750,16 +1766,8 @@ function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $i
     Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
     $aError = array();
-
-    $aError['title']  = "This survey cannot be tested or completed for the following reason(s):";
-    $aError['message']  = "";
-
-    if ($totalquestions == 0){
-        $aError['message']  = "There are no questions in this survey.";
-    }
-    if ($iTotalGroupsWithoutQuestions > 0){
-        $aError['message']  = "There are empty question groups in this survey - please create at least one question within a question group.";
-    }
+    $aError['title']     = $sTitle;
+    $aError['message']   = $sMessage;
 
     $thissurvey['aError'] = $aError;
     $redata['thissurvey'] = $thissurvey;
@@ -1767,6 +1775,7 @@ function breakOutAndCrash(array $redata, $sTemplateViewPath, $totalquestions, $i
     echo templatereplace(file_get_contents($sTemplateViewPath."layout_errors.twig"), array(), $redata);
     Yii::app()->end();
 }
+
 
 /**
 * This function creates the form elements in the survey navigation bar
