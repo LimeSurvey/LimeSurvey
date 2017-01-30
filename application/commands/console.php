@@ -1,5 +1,5 @@
 #!/usr/bin/php
-<?php   
+<?php
     /*
     * LimeSurvey (tm)
     * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,7 +11,7 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    * 
+    *
     * File edited by Sam Mousa for Marcel Minke.
     * This loader bypasses the default Yii loader and loads a custom console class instead.
     */
@@ -26,21 +26,19 @@
     $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../libraries/PluginManager');
     $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../libraries/PluginManager/Storage');
     require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
-  // Load configuration.
-  $sCurrentDir=dirname(__FILE__);
-  $config=require (dirname($sCurrentDir).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'internal.php');
-  $core = dirname($sCurrentDir) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR;
-  unset ($config['defaultController']);
-  unset ($config['config']);
-  
-  
+    // Load configuration.
+    $sCurrentDir=dirname(__FILE__);
+    $config=require (dirname($sCurrentDir).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'internal.php');
+    $core = dirname($sCurrentDir) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR;
+    unset ($config['defaultController']);
+    unset ($config['config']);
 
     // fix for fcgi
     defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
 
     defined('YII_DEBUG') or define('YII_DEBUG',true);
 
-    
+
 
     if(isset($config))
     {

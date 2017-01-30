@@ -171,19 +171,18 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug','0')));
         setGlobalSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));
         setGlobalSetting('filterxsshtml', strip_tags($_POST['filterxsshtml']));
-        $warning = '';
         // make sure emails are valid before saving them
         if (Yii::app()->request->getPost('siteadminbounce', '') == ''
             || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))) {
             setGlobalSetting('siteadminbounce', strip_tags(Yii::app()->request->getPost('siteadminbounce')));
         } else {
-            $warning .= gT("Warning! Admin bounce email was not saved because it was not valid.").'<br/>';
+            Yii::app()->setFlashMessage(gT("Warning! Admin bounce email was not saved because it was not valid."),'error');
         }
         if (Yii::app()->request->getPost('siteadminemail', '') == ''
             || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))) {
             setGlobalSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail')));
         } else {
-            $warning .= gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
+            Yii::app()->setFlashMessage(gT("Warning! Admin email was not saved because it was not valid."),'error');
         }
         setGlobalSetting('siteadminname', strip_tags($_POST['siteadminname']));
         setGlobalSetting('shownoanswer', sanitize_int($_POST['shownoanswer']));
@@ -217,11 +216,7 @@ class GlobalSettings extends Survey_Common_Action
         }
         setGlobalSetting('timeadjust', $savetime);
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
-
-        Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
-
-        $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-        if($url){Yii::app()->getController()->redirect($url);}
+        Yii::app()->setFlashMessage(gT("Global settings were saved."));
     }
 
     private function _checkSettings()

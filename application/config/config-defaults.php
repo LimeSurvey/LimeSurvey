@@ -594,7 +594,7 @@ $config['proxy_host_port'] = 80;
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
-if(!isset($argv[0]))
+if(!isset($argv[0]) && Yii::app()!=null)
 {
     $config['publicurl'] = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
 }
@@ -610,7 +610,7 @@ $config['uploadurl']               = $config['publicurl'].'upload';
 $config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // Location of the standard templates
 $config['adminscripts']            = $config['publicurl'].'scripts/admin/';
 $config['generalscripts']          = $config['publicurl'].'scripts/';
-$config['third_party']                 = $config['publicurl'].'third_party/';
+$config['third_party']             = $config['publicurl'].'third_party/';
 $config['styleurl']                = $config['publicurl'].'styles/';
 $config['publicstyleurl']          = $config['publicurl'].'styles-public/';
 $config['sCKEditorURL']            = $config['third_party'].'ckeditor';

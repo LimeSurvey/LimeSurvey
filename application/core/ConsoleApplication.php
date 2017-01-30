@@ -20,16 +20,33 @@ class ConsoleApplication extends CConsoleApplication
         return $this->getComponent('session');
     }
 
-    public function __construct($config = null) {
-        parent::__construct($config);
+    public function __construct($aApplicationConfig = null) {
+
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $consoleConfig = require(__DIR__ . '/../config/console.php');
+        $emaiConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $lsConfig = array_merge($coreConfig, $consoleConfig, $emaiConfig, $versionConfig, $updaterVersionConfig);
+        if(file_exists(__DIR__ . '/../config/config.php'))
+        {
+            $userConfig = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfig['config']))
+            {
+                $lsConfig = array_merge($lsConfig, $userConfig['config']);
+            }
+        }
+        // Runtime path has to be set before  parent constructor is executed
+        // User can set it in own config using Yii
+        if(!isset($aApplicationConfig['runtimePath'])){
+            $aApplicationConfig['runtimePath']=$lsConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        }
+        parent::__construct($aApplicationConfig);
 
         // Set webroot alias.
         Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
-        // Load email settings.
-        $email = require(Yii::app()->basePath. DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
-        $this->config = array_merge($this->config, $email);
 
-        // Now initialize the plugin manager
+        $this->config = array_merge($this->config, $lsConfig);
     }
 
     /**
