@@ -100,6 +100,14 @@
                         </div>
                     {% endif %}
 
+                    {% if aSurveyInfo.errorHtml.show %}
+                        {% for aMessage in aSurveyInfo.errorHtml.messages  %}
+                            <p class=' {# Uncomeent to hide when popup is on { aSurveyInfo.errorHtml.hiddenClass } #} ls-questions-have-errors alert alert-danger' role='alert'>
+                                {{ aMessage }}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+
                     {# include the form opening tag #}
                     {{ include('./subviews/start_form.twig') }} <!-- main form -->
 

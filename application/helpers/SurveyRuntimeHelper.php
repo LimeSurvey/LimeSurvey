@@ -374,13 +374,13 @@ class SurveyRuntimeHelper {
         Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
 
+        $bShowpopups                             = Yii::app()->getConfig('showpopups');
+        $aErrorHtmlMessage                      = $this->getErrorHtmlMessage();
+        $thissurvey['errorHtml']['show']        = !empty($aErrorHtmlMessage);
+        $thissurvey['errorHtml']['hiddenClass'] = $bShowpopups ? "ls-js-hidden ":"";
+        $thissurvey['errorHtml']['messages']    = $aErrorHtmlMessage;
 
-        // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
-        // We don't need runonce actually (140228): the script was updated and replaced by EM see #08783 (grep show no other runonce)
-        // echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
 
-        echo $this->getErrorHtmlMessage();
-        $showpopups=Yii::app()->getConfig('showpopups');
 
         $_gseq = -1;
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
@@ -1749,6 +1749,10 @@ class SurveyRuntimeHelper {
         {
             $aErrorsMandatory[]=gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.");
         }
+
+        return $aErrorsMandatory;
+
+        /*
         if(count($aErrorsMandatory)){
             $hiddenClass= Yii::app()->getConfig('showpopups') ? "ls-js-hidden ":"";
             return Yii::app()->getController()->renderPartial('/survey/system/errorAlert', array(
@@ -1757,7 +1761,7 @@ class SurveyRuntimeHelper {
             ), true);;
         }else{
             return "";
-        }
+        }*/
     }
 
     /**
