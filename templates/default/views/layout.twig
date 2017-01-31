@@ -92,21 +92,8 @@
                 <!-- Main Col -->
                 <div class="col-centered" id="main-col">
 
-                    {# Preview mode warning #}
-                    {% if aSurveyInfo.active != 'Y' %}
-                        <div class="alert alert-warning alert-dismissible fade in" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            {{ "This survey is currently not active. You will not be able to save your responses." | t }}
-                        </div>
-                    {% endif %}
-
-                    {% if aSurveyInfo.errorHtml.show %}
-                        {% for aMessage in aSurveyInfo.errorHtml.messages  %}
-                            <p class=' {# Uncomeent to hide when popup is on { aSurveyInfo.errorHtml.hiddenClass } #} ls-questions-have-errors alert alert-danger' role='alert'>
-                                {{ aMessage }}
-                            </p>
-                        {% endfor %}
-                    {% endif %}
+                    {# include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
+                    {{ include('./subviews/warnings.twig') }}
 
                     {# include the form opening tag #}
                     {{ include('./subviews/start_form.twig') }} <!-- main form -->
