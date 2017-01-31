@@ -656,8 +656,6 @@ $config['userquestiontemplaterootdir']  = $config['uploaddir'].DIRECTORY_SEPARAT
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
-// This directory can be out of webroot directory
-$config['runtimedir']               = $config['tempdir'].DIRECTORY_SEPARATOR."runtime";
 
 // (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
 $config['bFixNumAuto']             = 1;

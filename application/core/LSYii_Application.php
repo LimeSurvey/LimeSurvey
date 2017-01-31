@@ -46,55 +46,47 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($aApplicationConfig = null)
     {
-        // Load the default and environmental settings from different files into self.
-        $settings = require(__DIR__ . '/../config/config-defaults.php');
-
+        /* Using some config part for app config, then load it before*/
+        $baseConfig = require(__DIR__ . '/../config/config-defaults.php');
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
-            $ls_config = require(__DIR__ . '/../config/config.php');
-            if(is_array($ls_config['config']))
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
             {
-                $settings = array_merge($settings, $ls_config['config']);
+                $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
         }
-        // Runtime path has to be set before  parent constructor is executed
-        $aApplicationConfig['runtimePath']=$settings['runtimedir'];
 
-        // User can set it in own config using Yii
+        /* Set the runtime path according to tempdir if needed */
         if(!isset($aApplicationConfig['runtimePath'])){
-            $aApplicationConfig['runtimePath']=$settings['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+            $aApplicationConfig['runtimePath']=$baseConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        } /* No need to test runtimePath validity : Yii return an exception without issue */
+
+        /* Construct CWebApplication */
+        parent::__construct($aApplicationConfig);
+        /* Update asset manager path and url only if not directly set in aApplicationConfig */
+        if(!isset($aApplicationConfig['components']['assetManager']['baseUrl'])){
+            App()->getAssetManager()->setBaseUrl($settings['tempurl']. '/assets');
+        }
+        if(!isset($aApplicationConfig['components']['assetManager']['basePath'])){
+            App()->getAssetManager()->setBasePath($settings['tempdir'] . '/assets');
         }
 
-        parent::__construct($aApplicationConfig);
-
-        $ls_config = require(__DIR__ . '/../config/config-defaults.php');
-        $email_config = require(__DIR__ . '/../config/email.php');
-        $version_config = require(__DIR__ . '/../config/version.php');
-        $updater_version_config = require(__DIR__ . '/../config/updater_version.php');
-        $settings = array_merge($ls_config, $version_config, $email_config, $updater_version_config);
-
+        /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl */
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $emailConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
-            $ls_config = require(__DIR__ . '/../config/config.php');
-            if(is_array($ls_config['config']))
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
             {
-                $settings = array_merge($settings, $ls_config['config']);
+                $lsConfig = array_merge($lsConfig, $userConfigs['config']);
             }
         }
-
-
-
-        foreach ($settings as $key => $value)
-        {
-            $this->setConfig($key, $value);
-        }
-        /* Don't touch to linkAssets : you can set it in config.php */
-        // Asset manager path can only be set after App was constructed because it relies on App()
-        App()->getAssetManager()->setBaseUrl($settings['tempurl']. '/assets');
-        App()->getAssetManager()->setBasePath($settings['tempdir'] . '/assets');
-
-
-
+        $this->config = array_merge($this->config, $lsConfig);
     }
 
     public function init() {
