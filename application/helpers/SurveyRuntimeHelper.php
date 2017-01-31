@@ -111,6 +111,8 @@ class SurveyRuntimeHelper {
 
         $this->setJavascriptVar($surveyid);
         $aPrivateVariables = $this->setArgs();
+
+        $this->moveSubmitIfNeeded();
         extract($aPrivateVariables);                                            // For redata
 
         // We really need to replace redata get_defined_vars by something else.
@@ -735,8 +737,6 @@ class SurveyRuntimeHelper {
         $moveResult     = $this->moveResult;
         $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->surveyid]['totalquestions']; // Proabably for redata
         $redata         = compact(array_keys(get_defined_vars()));                                        // must replace this by something better
-
-        $this->moveSubmitIfNeeded($redata);
     }
 
     /**
@@ -1253,7 +1253,7 @@ class SurveyRuntimeHelper {
     /**
      * Perform submit if asked by user
      */
-    private function moveSubmitIfNeeded($redata)
+    private function moveSubmitIfNeeded()
     {
         // retrieve datas from local variable
         $surveyid          = $this->surveyid;
