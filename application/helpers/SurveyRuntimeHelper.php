@@ -780,6 +780,34 @@ class SurveyRuntimeHelper {
 
     private function setArgs()
     {
+
+        $move              = $this->move;
+        $moveResult        = $this->moveResult;
+        $LEMsessid         = $this->LEMsessid;
+        $LEMdebugLevel     = $this->LEMdebugLevel;
+        $thissurvey        = $this->thissurvey;
+        $sTemplateViewPath = $this->sTemplateViewPath;
+
+        if ($move == "movesubmit"){
+
+            if ($thissurvey['refurl'] == "Y"){
+                //Only add this if it doesn't already exist
+                if (!in_array("refurl", $_SESSION[$LEMsessid]['insertarray'])){
+                    $_SESSION[$LEMsessid]['insertarray'][] = "refurl";
+                }
+            }
+
+            resetTimers();
+
+            //Before doing the "templatereplace()" function, check the $thissurvey['url']
+            //field for limereplace stuff, and do transformations!
+            $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+            $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata, 'URLReplace', false, NULL, array(), true );   // to do INSERTANS substitutions
+
+            $this->thissurvey = $thissurvey;
+            
+        }
+
         if ($this->previewgrp || $this->previewquestion){
             $_SESSION[$this->LEMsessid]['prevstep'] = 2;
             $_SESSION[$this->LEMsessid]['maxstep'] = 0;
@@ -1267,24 +1295,7 @@ class SurveyRuntimeHelper {
         $sTemplateViewPath = $this->sTemplateViewPath;
 
         if ($move == "movesubmit"){
-            //                setcookie("limesurvey_timers", "", time() - 3600); // remove the timers cookies   //@todo fix - sometimes results in headers already sent error
-            if ($thissurvey['refurl'] == "Y"){
-                //Only add this if it doesn't already exist
-                if (!in_array("refurl", $_SESSION[$LEMsessid]['insertarray'])){
-                    $_SESSION[$LEMsessid]['insertarray'][] = "refurl";
-                }
-            }
-            resetTimers();
 
-            //Before doing the "templatereplace()" function, check the $thissurvey['url']
-            //field for limereplace stuff, and do transformations!
-            $thissurvey['surveyls_url'] = passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-            $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata, 'URLReplace', false, NULL, array(), true );   // to do INSERTANS substitutions
-
-            $this->thissurvey = $thissurvey;
-
-            //END PAGE - COMMIT CHANGES TO DATABASE
-             //If survey is not active, don't really commit
             if ($thissurvey['active'] != "Y"){
 
                 if ($thissurvey['assessments'] == "Y"){
