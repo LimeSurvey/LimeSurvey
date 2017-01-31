@@ -812,7 +812,14 @@ class SurveyRuntimeHelper {
                 if ($thissurvey['assessments'] == "Y"){
                     $assessments = $this->assessments = doAssessment($surveyid);
                 }
-                
+
+            }else{
+                //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
+                //don't use cookies if tokens are being used
+                if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) {
+                    setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
+                }
+
             }
 
         }
@@ -1307,11 +1314,6 @@ class SurveyRuntimeHelper {
 
             if ($thissurvey['active'] != "Y"){
 
-                // TODO: TWIG ASSESSMENTS !!!!!
-                if ($thissurvey['assessments'] == "Y"){
-                    $assessments = $this->assessments = doAssessment($surveyid);
-                }
-
                 sendCacheHeaders();
                 doHeader();
 
@@ -1322,14 +1324,6 @@ class SurveyRuntimeHelper {
                     echo templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
                 }
 
-                // fetch all filenames from $_SESSIONS['files'] and delete them all
-                // from the /upload/tmp/ directory
-                /* echo "<pre>";print_r($_SESSION);echo "</pre>";
-                for($i = 1; isset($_SESSION[$LEMsessid]['files'][$i]); $i++)
-                {
-                unlink('upload/tmp/'.$_SESSION[$LEMsessid]['files'][$i]['filename']);
-                }
-                */
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
                 $completed  = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
                 $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
@@ -1345,11 +1339,6 @@ class SurveyRuntimeHelper {
 
             }else{
 
-                //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
-                //don't use cookies if tokens are being used
-                if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) {
-                    setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
-                }
 
                 $content  = '';
                 $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
