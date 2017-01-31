@@ -997,7 +997,7 @@ class questions extends Survey_Common_Action
         {
             $view ='_answer_option';
             $aData = array(
-                'assessmentvisible' => $assessmentvisible ? 1 : 0,
+                'assessmentvisible' => $assessmentvisible ? true : false,
                 'assessment_value'  => '',
                 'answer'            => '',
                 'sortorder'         => $newPosition,
