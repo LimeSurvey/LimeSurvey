@@ -6,7 +6,7 @@
     </li>
     <li>
         <label for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
-        <?php echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->}$details['field']['subject']},array('size'=>80)); ?>
+        <?php echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->{$details['field']['subject']},array('size'=>80)); ?>
         <?php echo CHtml::button(gT("Reset"),array('class'=>'fillin','data-target'=>"email_{$tab}_subj_{$grouplang}",'data-value'=>$details['default']['subject'])); ?>
     </li>
     <li><label for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
