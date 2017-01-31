@@ -114,16 +114,20 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
     $codes = JSON.stringify(codes);
 
     //We build the datas for the request
-    datas                  = 'surveyid='+$elDatas.data('surveyid'),
-    datas                 += '&gid='+$elDatas.data('gid'),
-    datas                 += '&qid='+$elDatas.data('qid');
-    datas                 += '&codes='+$codes,
-    datas                 += '&scale_id='+scale_id,
-    datas                 += '&type=answer',
-    datas                 += '&position=',
-    datas                 += '&first='+first,
-    datas                 += '&language='+language+'';
+    datas  = {
+      'surveyid' : $elDatas.data('surveyid'),
+      'gid': $elDatas.data('gid'),
+      'qid': $elDatas.data('qid'),
+      'codes': $codes,
+      'scale_id': scale_id,
+      'type' : 'answer',
+      'position': '',
+      'first': first,
+      'language': language+'',
+      'assessmentvisible' : ( $elDatas.data('assessmentvisible') == 1 )
+    };
 
+    console.log(datas);
     // We get the HTML of the new row to insert
      $.ajax({
         type: "GET",
@@ -174,8 +178,11 @@ function addinput()
     datas                 += '&scale_id='+$(this).data('scale-id');
     datas                 += '&type=answer';
     datas                 += '&position='+$(this).data('position');
-    datas                 += '&assessmentvisible'+$(this).data('assessmentvisible');
     datas                 += '&languages='+$languages;
+    console.log($elDatas.data('assessmentvisible'));
+    if( $elDatas.data('assessmentvisible') == 1 ){
+      datas += '&assessmentvisible=true';
+    }
 
     $scaleId  = $(this).data('scale-id')
     $position = $(this).data('position')
@@ -286,7 +293,7 @@ function updaterowproperties()
             $(this).find('.btneditanswerena').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
             $(this).find('.btneditanswerdis').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
             $(this).find('.btneditanswerdis').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
-            
+
             rownumber++;
         });
 
@@ -735,9 +742,9 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         separatorchar="\t";
     }
 
-        var numericSuffix = '', 
-        n = 1, 
-        numeric = true, 
+        var numericSuffix = '',
+        n = 1,
+        numeric = true,
         codeAlphaPart = "",
         currentCharacter,
         codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("A01").split(""));
@@ -809,10 +816,10 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     }
 
 for (var x in languages)
-{        
+{
     var lang_active = languages[x];
     promises.push(
-        addinputQuickEdit(closestTable, lang_active, (x==0), scale_id, codes)
+        addinputQuickEdit(closestTable, lang_active,true, scale_id, codes)
     )
 }
 
@@ -826,14 +833,14 @@ for (var x in languages)
                         if(htmlRowObject.find('input.code').length > 0)
                         {
                             htmlRowObject.find('input.code').val(mapObject.code);
-                        } 
-                        else 
+                        }
+                        else
                         {
                             htmlRowObject.find('td.code-title').text(mapObject.text);
                         }
 
                         htmlRowObject.find('td.subquestion-text').find('input').val(mapObject.text);
-
+                        console.log(htmlRowObject);
                         $table.find('tbody').append(htmlRowObject);
                     });
                 });

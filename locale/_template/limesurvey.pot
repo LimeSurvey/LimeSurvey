@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-01-16 16:22:16+00:00\n"
+"POT-Creation-Date: 2017-01-24 11:54:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -34,7 +34,7 @@ msgstr ""
 #: application/controllers/survey/index.php:280
 #: application/controllers/survey/index.php:293
 #: application/controllers/survey/index.php:307
-#: application/extensions/PannelBoxWidget/PannelBoxWidget.php:63
+#: application/extensions/PanelBoxWidget/PanelBoxWidget.php:63
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_delete_results.php:29
 #: application/helpers/admin/import_helper.php:941
@@ -259,19 +259,19 @@ msgstr ""
 msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1154
+#: application/controllers/InstallerController.php:1157
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1155
+#: application/controllers/InstallerController.php:1158
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1346
+#: application/controllers/InstallerController.php:1349
 msgid "Try again! Connection with database failed."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1347
+#: application/controllers/InstallerController.php:1350
 #: application/views/admin/checkintegrity/check_view.php:18
 #: application/views/admin/checkintegrity/check_view.php:80
 #: application/views/admin/checkintegrity/check_view.php:98
@@ -282,7 +282,7 @@ msgstr ""
 msgid "Reason:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1364
+#: application/controllers/InstallerController.php:1367
 msgid "The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s)."
 msgstr ""
 
@@ -2145,8 +2145,8 @@ msgstr ""
 #: application/helpers/common_helper.php:361
 #: application/helpers/common_helper.php:941
 #: application/helpers/common_helper.php:1011
-#: application/helpers/common_helper.php:5885
-#: application/helpers/common_helper.php:5925
+#: application/helpers/common_helper.php:5907
+#: application/helpers/common_helper.php:5959
 #: application/helpers/questionHelper.php:1042
 #: application/views/admin/dataentry/content_view.php:239
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:170
@@ -2271,7 +2271,8 @@ msgstr ""
 #: application/libraries/Save.php:214
 #: application/models/ParticipantAttributeName.php:203
 #: application/views/admin/labels/labelsets_view.php:39
-#: application/views/admin/usergroup/usergroups_view.php:38
+#: application/views/admin/usergroup/usergroups_view.php:46
+#: application/views/admin/usergroup/usergroups_view.php:127
 msgid "Name"
 msgstr ""
 
@@ -3145,7 +3146,7 @@ msgid "Sorry, this response was not found."
 msgstr ""
 
 #: application/controllers/admin/responses.php:154
-#: application/models/SurveyLink.php:239 application/models/Token.php:35
+#: application/models/SurveyLink.php:243 application/models/Token.php:35
 msgid "Token ID"
 msgstr ""
 
@@ -4424,8 +4425,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1010
 #: application/helpers/common_helper.php:5457
 #: application/helpers/common_helper.php:5494
-#: application/helpers/common_helper.php:5884
-#: application/helpers/common_helper.php:5924
+#: application/helpers/common_helper.php:5904
+#: application/helpers/common_helper.php:5956
 #: application/helpers/qanda_helper.php:1234
 #: application/helpers/qanda_helper.php:1915
 #: application/helpers/qanda_helper.php:4703
@@ -4532,7 +4533,7 @@ msgstr ""
 msgid "Question code / ID"
 msgstr ""
 
-#: application/controllers/admin/update.php:124
+#: application/controllers/admin/update.php:126
 #: application/views/admin/update/updater/welcome/_key_updated.php:12
 msgid "Your key has been updated and validated! You can now use ComfortUpdate."
 msgstr ""
@@ -5122,7 +5123,7 @@ msgid "Not Selected"
 msgstr ""
 
 #: application/core/plugins/QuickMenu/QuickMenu.php:146
-#: application/helpers/update/updatedb_helper.php:1481
+#: application/helpers/update/updatedb_helper.php:1617
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
@@ -5283,7 +5284,7 @@ msgstr ""
 msgid "Visit our website!"
 msgstr ""
 
-#: application/extensions/PannelBoxWidget/PannelBoxWidget.php:64
+#: application/extensions/PanelBoxWidget/PanelBoxWidget.php:64
 msgid "Unknown box ID!"
 msgstr ""
 
@@ -5719,7 +5720,8 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:51
 #: application/views/admin/token/browse.php:169
 #: application/views/admin/user/editusers.php:18
-#: application/views/admin/usergroup/usergroups_view.php:21
+#: application/views/admin/usergroup/usergroups_view.php:29
+#: application/views/admin/usergroup/usergroups_view.php:110
 msgid "Displaying {start}-{end} of {count} result(s)."
 msgstr ""
 
@@ -5735,14 +5737,15 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:51
 #: application/views/admin/token/browse.php:169
 #: application/views/admin/user/editusers.php:18
-#: application/views/admin/usergroup/usergroups_view.php:21
+#: application/views/admin/usergroup/usergroups_view.php:29
+#: application/views/admin/usergroup/usergroups_view.php:110
 msgid "%s rows per page"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:42
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_delete_results.php:10
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:12
-#: application/models/SurveyLink.php:238
+#: application/models/SurveyLink.php:242
 #: application/views/admin/token/massive_actions/_delete_results.php:10
 #: application/views/admin/token/massive_actions/_export_archive_results.php:12
 msgid "Survey ID"
@@ -5765,7 +5768,8 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:79
 #: application/models/Participant.php:366
-#: application/views/admin/usergroup/usergroups_view.php:53
+#: application/views/admin/usergroup/usergroups_view.php:61
+#: application/views/admin/usergroup/usergroups_view.php:142
 msgid "Owner"
 msgstr ""
 
@@ -7046,151 +7050,151 @@ msgstr ""
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:6014
+#: application/helpers/common_helper.php:6049
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:6015
+#: application/helpers/common_helper.php:6050
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:6016
+#: application/helpers/common_helper.php:6051
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:6017
+#: application/helpers/common_helper.php:6052
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:6018
+#: application/helpers/common_helper.php:6053
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6019
+#: application/helpers/common_helper.php:6054
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6020
+#: application/helpers/common_helper.php:6055
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6021
+#: application/helpers/common_helper.php:6056
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6022
+#: application/helpers/common_helper.php:6057
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6023
+#: application/helpers/common_helper.php:6058
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6024
+#: application/helpers/common_helper.php:6059
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6025
+#: application/helpers/common_helper.php:6060
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6026
+#: application/helpers/common_helper.php:6061
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:6027
+#: application/helpers/common_helper.php:6062
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:6028
+#: application/helpers/common_helper.php:6063
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:6029
+#: application/helpers/common_helper.php:6064
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:6030
+#: application/helpers/common_helper.php:6065
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:6031
+#: application/helpers/common_helper.php:6066
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:6032
+#: application/helpers/common_helper.php:6067
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:6033
+#: application/helpers/common_helper.php:6068
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:6034
+#: application/helpers/common_helper.php:6069
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:6035
+#: application/helpers/common_helper.php:6070
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6036
+#: application/helpers/common_helper.php:6071
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:6037
+#: application/helpers/common_helper.php:6072
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:6038
+#: application/helpers/common_helper.php:6073
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6039
+#: application/helpers/common_helper.php:6074
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6040
+#: application/helpers/common_helper.php:6075
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6041
+#: application/helpers/common_helper.php:6076
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:6042
+#: application/helpers/common_helper.php:6077
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:6043
+#: application/helpers/common_helper.php:6078
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:6044
+#: application/helpers/common_helper.php:6079
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:6045
+#: application/helpers/common_helper.php:6080
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:6046
+#: application/helpers/common_helper.php:6081
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:6047
+#: application/helpers/common_helper.php:6082
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:6048
+#: application/helpers/common_helper.php:6083
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:6049
+#: application/helpers/common_helper.php:6084
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:6053
+#: application/helpers/common_helper.php:6088
 msgid "(Automatic)"
 msgstr ""
 
@@ -7599,23 +7603,23 @@ msgstr ""
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2118
+#: application/helpers/expressions/em_core_helper.php:2119
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2123
+#: application/helpers/expressions/em_core_helper.php:2124
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2124
+#: application/helpers/expressions/em_core_helper.php:2125
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2370
+#: application/helpers/expressions/em_core_helper.php:2371
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2964
+#: application/helpers/expressions/em_core_helper.php:2965
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -10194,27 +10198,27 @@ msgstr ""
 msgid "Please fix this error in your database and try again"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:386
+#: application/helpers/update/updatedb_helper.php:427
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1457
+#: application/helpers/update/updatedb_helper.php:1596
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1458
+#: application/helpers/update/updatedb_helper.php:1597
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2811
+#: application/helpers/update/updatedb_helper.php:2947
 msgid "Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2813
+#: application/helpers/update/updatedb_helper.php:2949
 msgid "Template(s) to be verified :"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2819
+#: application/helpers/update/updatedb_helper.php:2955
 msgid "All %s user templates updated."
 msgstr ""
 
@@ -10398,7 +10402,7 @@ msgstr ""
 msgid "Add participant to survey"
 msgstr ""
 
-#: application/models/Participant.php:221 application/models/SurveyLink.php:240
+#: application/models/Participant.php:221 application/models/SurveyLink.php:244
 msgid "Participant"
 msgstr ""
 
@@ -10470,7 +10474,7 @@ msgid "Shared by"
 msgstr ""
 
 #: application/models/ParticipantShare.php:250
-#: application/models/SurveyLink.php:241
+#: application/models/SurveyLink.php:245
 msgid "Date added"
 msgstr ""
 
@@ -10932,15 +10936,15 @@ msgstr ""
 msgid "Edit this survey participant"
 msgstr ""
 
-#: application/models/SurveyLink.php:262
+#: application/models/SurveyLink.php:266
 msgid "Survey name"
 msgstr ""
 
-#: application/models/SurveyLink.php:285
+#: application/models/SurveyLink.php:289
 msgid "Last invited"
 msgstr ""
 
-#: application/models/SurveyLink.php:291
+#: application/models/SurveyLink.php:295
 msgid "Submitted"
 msgstr ""
 
@@ -12994,7 +12998,8 @@ msgstr ""
 #: application/views/admin/homepagesettings/index.php:108
 #: application/views/admin/pluginmanager/index.php:75
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:85
-#: application/views/admin/usergroup/usergroups_view.php:45
+#: application/views/admin/usergroup/usergroups_view.php:53
+#: application/views/admin/usergroup/usergroups_view.php:134
 msgid "Description"
 msgstr ""
 
@@ -18248,16 +18253,27 @@ msgstr ""
 msgid "User groups list"
 msgstr ""
 
-#: application/views/admin/usergroup/usergroups_view.php:19
+#: application/views/admin/usergroup/usergroups_view.php:16
+msgid "My user groups"
+msgstr ""
+
+#: application/views/admin/usergroup/usergroups_view.php:27
+#: application/views/admin/usergroup/usergroups_view.php:108
 msgid "No user groups found."
 msgstr ""
 
-#: application/views/admin/usergroup/usergroups_view.php:31
+#: application/views/admin/usergroup/usergroups_view.php:39
+#: application/views/admin/usergroup/usergroups_view.php:120
 msgid "User group ID"
 msgstr ""
 
-#: application/views/admin/usergroup/usergroups_view.php:60
+#: application/views/admin/usergroup/usergroups_view.php:68
+#: application/views/admin/usergroup/usergroups_view.php:149
 msgid "Members"
+msgstr ""
+
+#: application/views/admin/usergroup/usergroups_view.php:95
+msgid "Groups to which I belong"
 msgstr ""
 
 #: application/views/admin/usergroup/viewUserGroup_view.php:6

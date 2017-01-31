@@ -33,12 +33,23 @@ function doRatingStar(qID) {
   //Define stars-element container
   var starsHtmlElement=$("<div class='stars-list answers-list noread' ></div>");
 
-  //Check if there is a given answer : set itto 0 if '' or null
-  var openValue=(answersList.find("input:radio:checked").val()  || 0)*1;
+  //Check if there is a given answer
+  var openValue = null;
+  answersList.find("input[type=radio]").each(function(i,item){
+    if($(item).prop('checked')){
+      openValue = $(item).val();
+    }
+  });
+
+  //Reset openValue to null, when no Answer is chosen
+  if(openValue == numberOfPossibleAnswers){
+    openValue = null;
+  }
+
   //Add no-answer-option to stars List
   if(itemNoAnswer){
     starsHtmlElement
-      .append("<div class='star-rating star-cancel' data-star='' title='"+$('#question'+qID+' .noanswer-item label').html()+"'><i class='fa fa-ban'></i></div>");
+      .append("<div class='star-rating star-cancel' data-star='"+(numberOfPossibleAnswers)+"' title='"+$('#question'+qID+' .noanswer-item label').html()+"'><i class='fa fa-ban'></i></div>");
   } else {
     numberOfPossibleAnswers++;
   }
@@ -46,14 +57,14 @@ function doRatingStar(qID) {
   //Add stars to the container
   for (i=1; i<numberOfPossibleAnswers; i++) {
     //if there is a selected answer, add the fitting classes
-    var classes = openValue!="" ?  "star-rated-on star-rating star " : "star-rating star ";
+    var classes = openValue!=null ?  "star-rated star-rating star " : "star-rating star ";
     //light all stars lower thgan the selected
-    if(i<=openValue){
-      classes+=" star-rated";
+    if(i<openValue){
+      classes+=" star-rated-on";
     }
     //Add this-rated class to selected star
     if(i==openValue){
-      classes+=" star-thisrated";
+      classes+=" star-rated-on star-thisrated";
     }
     //append the element
     starsHtmlElement.append("<div class='star-"+i+" "+classes+"' data-star='"+i+"' title='"+i+"'><i class='fa fa-star'></i></div>");
