@@ -55,5 +55,8 @@
 <!-- Field Names -->
 <input type='hidden' name='fieldnames' value='{{ aSurveyInfo.hiddenfieldnames }}' id='fieldnames' />
 
+{# Hidden inputs needed for logic: thisstep, sid, start_time, LEMpostKey, token #}
+{{ aSurveyInfo.hiddenInputs }}
+
 <!-- Submit button -->
 <button type="submit" id="defaultbtn" value="default" name="move" class="submit hidden" style="display:none">{{'default'|t}}</button>

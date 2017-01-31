@@ -504,7 +504,7 @@ class SurveyRuntimeHelper {
 
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
-        echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        $thissurvey['EM']['ScriptsAndHiddenInputs'] = LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         Yii::app()->clientScript->registerScript('triggerEmRelevance',"triggerEmRelevance();",CClientScript::POS_END);
         /* Maybe only if we have mandatory error ?*/
         Yii::app()->clientScript->registerScript('updateMandatoryErrorClass',"updateMandatoryErrorClass();",CClientScript::POS_END);
@@ -572,17 +572,15 @@ class SurveyRuntimeHelper {
 
             //echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
 
-
-            echo "<!-- generated in SurveyRuntimeHelper -->";
-            echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
-            echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-            echo "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
+            $thissurvey['hiddenInputs']  =  "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
+            $thissurvey['hiddenInputs'] .=  "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+            $thissurvey['hiddenInputs'] .= "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
             $_SESSION[$LEMsessid]['LEMpostKey'] = mt_rand();
-            echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
+            $thissurvey['hiddenInputs'] .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
 
             if (isset($token) && !empty($token))
             {
-                echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+                $thissurvey['hiddenInputs'] .=  "\n<input type='hidden' name='token' value='$token' id='token' />\n";
             }
 
 
