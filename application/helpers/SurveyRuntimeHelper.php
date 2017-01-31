@@ -805,7 +805,16 @@ class SurveyRuntimeHelper {
             $thissurvey['surveyls_url'] = templatereplace($thissurvey['surveyls_url'], array(), $redata, 'URLReplace', false, NULL, array(), true );   // to do INSERTANS substitutions
 
             $this->thissurvey = $thissurvey;
-            
+
+            if ($thissurvey['active'] != "Y"){
+
+                // TODO: TWIG ASSESSMENTS !!!!!
+                if ($thissurvey['assessments'] == "Y"){
+                    $assessments = $this->assessments = doAssessment($surveyid);
+                }
+                
+            }
+
         }
 
         if ($this->previewgrp || $this->previewquestion){
@@ -1298,6 +1307,7 @@ class SurveyRuntimeHelper {
 
             if ($thissurvey['active'] != "Y"){
 
+                // TODO: TWIG ASSESSMENTS !!!!!
                 if ($thissurvey['assessments'] == "Y"){
                     $assessments = $this->assessments = doAssessment($surveyid);
                 }
