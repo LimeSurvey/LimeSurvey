@@ -20,16 +20,58 @@ class ConsoleApplication extends CConsoleApplication
         return $this->getComponent('session');
     }
 
-    public function __construct($config = null) {
-        parent::__construct($config);
+    public function __construct($aApplicationConfig = null) {
+
+        /* Using some config part for app config, then load it before*/
+        $baseConfig = require(__DIR__ . '/../config/config-defaults.php');
+        if(file_exists(__DIR__ . '/../config/config.php'))
+        {
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
+            {
+                $baseConfig = array_merge($baseConfig, $userConfigs['config']);
+            }
+        }
+
+        /* Set the runtime path according to tempdir if needed */
+        if(!isset($aApplicationConfig['runtimePath'])){
+            $aApplicationConfig['runtimePath']=$baseConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        } /* No need to test runtimePath validity : Yii return an exception without issue */
+
+        /* Construct CWebApplication */
+        parent::__construct($aApplicationConfig);
 
         // Set webroot alias.
         Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
-        // Load email settings.
-        $email = require(Yii::app()->basePath. DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
-        $this->config = array_merge($this->config, $email);
 
-        // Now initialize the plugin manager
+        /* Because we have app now : we have to call again the config : can be done before : no real usage of url in console, but usage of getPathOfAlias */
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $consoleConfig = require(__DIR__ . '/../config/console.php'); // Only for console : replace some config-defaults
+        $emailConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+        if(file_exists(__DIR__ . '/../config/config.php'))
+        {
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
+            {
+                $lsConfig = array_merge($lsConfig, $userConfigs['config']);
+            }
+        }
+        $this->config = array_merge($this->config, $lsConfig);
+
+        /* Load the database settings : if available */
+        try {
+            $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+            if(is_object($settingsTableExist)){
+                $dbConfig=CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+                $this->config = array_merge($this->config,$dbConfig);
+            }
+        }catch(Exception $exception) {
+            // Allow exception (install for example)
+        }
+
     }
 
     /**
