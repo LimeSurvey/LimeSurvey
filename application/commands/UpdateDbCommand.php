@@ -1,4 +1,5 @@
 <?php
+
  /*
  * @author Denis Chenu <denis@sondages.pro>
  * @license GPL v3
@@ -18,18 +19,25 @@
  */
 class UpdateDBCommand extends CConsoleCommand
 {
-    public function run(){
-        $newDbVersion = (float)Yii::app()->getConfig('dbversionnumber');
-        $currentDbVersion = (float)Yii::app()->getConfig('DBVersion');
+    /**
+     * Update database
+     * @return void
+     */
+    public function run()
+    {
+        $newDbVersion = (float) Yii::app()->getConfig('dbversionnumber');
+        $currentDbVersion = (float) Yii::app()->getConfig('DBVersion');
 
-        if(!$currentDbVersion){
+        if (!$currentDbVersion) {
             throw new CException("DataBase version are not found, seems LimeSurvey are not installed.");
         }
-        if($newDbVersion > $currentDbVersion){
-            echo "Update ".Yii::app()->db->connectionString." with prefix :".Yii::app()->db->tablePrefix." from {$currentDbVersion} to {$newDbVersion}\n";
+
+        if ($newDbVersion > $currentDbVersion) {
+            echo "Update ".Yii::app()->db->connectionString." with prefix :";
+            echo Yii::app()->db->tablePrefix." from {$currentDbVersion} to {$newDbVersion}\n";
             Yii::import('application.helpers.common_helper', true);
             Yii::import('application.helpers.update.updatedb_helper', true);
-            $result=db_upgrade_all($currentDbVersion);
+            $result = db_upgrade_all($currentDbVersion);
             if ($result) {
                 //printf(gT("Database has been successfully upgraded to version %s"),$dbversionnumber)."\n";
                 echo "Database has been successfully upgraded to version $newDbVersion \n";
@@ -41,4 +49,3 @@ class UpdateDBCommand extends CConsoleCommand
         }
     }
 }
-?>
