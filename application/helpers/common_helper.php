@@ -2458,27 +2458,6 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 }
 
 /**
-* set the rights of a user and his children
-*
-* @param int $uid the user id
-* @param mixed $rights rights array
-*/
-function setuserpermissions($uid, $rights)
-{
-    $uid=sanitize_int($uid);
-    $updates = "create_survey=".$rights['create_survey']
-    . ", create_user=".$rights['create_user']
-    . ", participant_panel=".$rights['participant_panel']
-    . ", delete_user=".$rights['delete_user']
-    . ", superadmin=".$rights['superadmin']
-    . ", configurator=".$rights['configurator']
-    . ", manage_template=".$rights['manage_template']
-    . ", manage_label=".$rights['manage_label'];
-    $uquery = "UPDATE {{users}} SET ".$updates." WHERE uid = ".$uid;
-    return dbSelectLimitAssoc($uquery);     //Checked
-}
-
-/**
 * This function returns a count of the number of saved responses to a survey
 *
 * @param mixed $surveyid Survey ID
