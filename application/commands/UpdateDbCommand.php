@@ -39,7 +39,6 @@ class UpdateDBCommand extends CConsoleCommand
             Yii::import('application.helpers.update.updatedb_helper', true);
             $result = db_upgrade_all($currentDbVersion);
             if ($result) {
-                //printf(gT("Database has been successfully upgraded to version %s"),$dbversionnumber)."\n";
                 echo "Database has been successfully upgraded to version $newDbVersion \n";
             } else {
                 throw new CException("Please fix this error in your database and try again");
