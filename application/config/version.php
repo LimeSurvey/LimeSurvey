@@ -11,13 +11,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-
 $config['versionnumber'] = '3.0.0-alpha'; //The current version of this branch
 $config['masterversion'] = '2.62.1'; //The current masters version merged into this branch
 $config['dbversionnumber'] = 264;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '2620';
+$config['assetsversionnumber'] = '2621';
 return $config;
-
-?>

@@ -217,15 +217,16 @@
                 WHERE c.cqid=q.qid "
                         ."AND q.gid=g.gid "
                         ."AND q.parent_qid=0 "
-                        ."AND q.language=:lang "
-                        ."AND g.language=:lang "
+                        ."AND q.language=:lang1 "
+                        ."AND g.language=:lang2 "
                         ."AND c.qid=:qid "
                         ."AND c.scenario=:scenario "
                         ."AND c.cfieldname NOT LIKE '{%' "; // avoid catching SRCtokenAttr conditions
             $result=Yii::app()->db->createCommand($query)
                 ->bindValue(":scenario", $scenarionr['scenario'])
                 ->bindValue(":qid", $qid, PDO::PARAM_INT)
-                ->bindValue(":lang", $language, PDO::PARAM_STR)
+                ->bindValue(":lang1", $language, PDO::PARAM_STR)
+                ->bindValue(":lang2", $language, PDO::PARAM_STR)
                 ->queryRow();
             return (int) $result['recordcount'];
         }
@@ -242,8 +243,8 @@
                 WHERE c.cqid=q.qid "
                         ."AND q.gid=g.gid "
                         ."AND q.parent_qid=0 "
-                        ."AND q.language=:lang "
-                        ."AND g.language=:lang "
+                        ."AND q.language=:lang1 "
+                        ."AND g.language=:lang2 "
                         ."AND c.qid=:qid "
                         ."AND c.scenario=:scenario "
                         ."AND c.cfieldname NOT LIKE '{%' " // avoid catching SRCtokenAttr conditions
@@ -251,7 +252,8 @@
             $result = Yii::app()->db->createCommand($query)
                 ->bindValue(":scenario", $scenarionr['scenario'])
                 ->bindValue(":qid", $qid, PDO::PARAM_INT)
-                ->bindValue(":lang", $language, PDO::PARAM_STR)
+                ->bindValue(":lang1", $language, PDO::PARAM_STR)
+                ->bindValue(":lang2", $language, PDO::PARAM_STR)
                 ->query();
             return $result->readAll();
         }

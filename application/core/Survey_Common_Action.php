@@ -380,6 +380,11 @@ class Survey_Common_Action extends CAction
      */
     function _updatenotification()
     {
+        // Lower dbversionnumbers will not have the notifications table.
+        if (Yii::app()->getConfig('dbversionnumber') < 259) {
+            return;
+        }
+
         if( !Yii::app()->user->isGuest && Yii::app()->getConfig('updatable'))
         {
             $updateModel = new UpdateForm();
