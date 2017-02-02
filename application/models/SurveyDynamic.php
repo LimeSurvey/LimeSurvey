@@ -571,6 +571,7 @@ class SurveyDynamic extends LSActiveRecord
 
     public function search()
     {
+
        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
        $criteria = new CDbCriteria;
        $sort     = new CSort;
@@ -604,7 +605,15 @@ class SurveyDynamic extends LSActiveRecord
            $criteria->addCondition('t.submitdate IS NULL');
        }
 
+       // When selection of responses come from statistics
+       // TODO: This provide a first step to enable the old jQgrid selector system, and could be use for users and tokens
+       if (Yii::app()->request->getPost('sql') != null ){
+           $criteria->condition .= Yii::app()->request->getPost('sql');
+
+       }
+
        $this->filterColumns($criteria);
+
 
        $dataProvider=new CActiveDataProvider('SurveyDynamic', array(
            'sort'=>$sort,
