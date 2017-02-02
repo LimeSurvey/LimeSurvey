@@ -607,9 +607,8 @@ class SurveyDynamic extends LSActiveRecord
 
        // When selection of responses come from statistics
        // TODO: This provide a first step to enable the old jQgrid selector system, and could be use for users and tokens
-       if (Yii::app()->request->getPost('sql') != null ){
-           $criteria->condition .= Yii::app()->request->getPost('sql');
-
+       if (Yii::app()->user->getState('sql_'.self::$sid) != null ){
+           $criteria->condition .= Yii::app()->user->getState('sql_'.self::$sid);
        }
 
        $this->filterColumns($criteria);
