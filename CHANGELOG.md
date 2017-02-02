@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## unreleased
+## [1.3.0] - 2017-02-02
 
 ### Fix
 - Import lsa don't import all token
@@ -11,7 +11,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 - Allow to update via cli
 - Allow to update runtime directory in config (LimeSurvey API 3 compatible only)
 
-### [1.2.2] - 2016-01-12
+### [1.2.2] - 2017-01-12
 - Update [PHPMailer](https://github.com/PHPMailer/PHPMailer/releases/tag/v5.2.22) for security issue
 
 ## [1.2.1] - 2016-12-30
