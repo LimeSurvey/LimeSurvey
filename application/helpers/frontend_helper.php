@@ -1954,8 +1954,10 @@ function doAssessment($surveyid, $returndataonly=false)
             }
         }
         $assessments = "";
+        $assessment['subtotalshow'] = false;
         if (isset($subtotal) && is_array($subtotal))
         {
+            $assessment['subtotal']['show'] = true;
             foreach($subtotal as $key=>$val)
             {
                 if (isset($assessment['group'][$key]))
@@ -1981,8 +1983,10 @@ function doAssessment($surveyid, $returndataonly=false)
             }
         }
 
+        $assessment['totalshow'] = false;
         if (isset($assessment['total']))
         {
+            $assessment['total']['show'] = true;
             foreach($assessment['total'] as $assessed)
             {
                 if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false)
@@ -2003,7 +2007,7 @@ function doAssessment($surveyid, $returndataonly=false)
         }
         if ($returndataonly==true)
         {
-            return array('total'=>$total);
+            return array('total'=>$total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
         }
         else
         {

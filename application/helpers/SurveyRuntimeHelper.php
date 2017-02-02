@@ -1354,6 +1354,8 @@ class SurveyRuntimeHelper {
 
                 $this->content = $content;
 
+                /// TODO: TWIG TOKENS !!!!!
+
                 //Update the token if needed and send a confirmation email
                 if (isset($_SESSION['survey_'.$surveyid]['token'])){
                     submittokens();
