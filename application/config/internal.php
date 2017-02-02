@@ -39,11 +39,6 @@ $internalConfig = array(
             'rules' => require('routes.php'),
             'showScriptName' => true,
         ),
-        'assetManager' => array(
-            'baseUrl' => '/tmp/assets',
-            'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'
-
-        ),
         'request' => array(
             'class'=>'LSHttpRequest',
             'enableCsrfValidation'=>true,    // CSRF protection

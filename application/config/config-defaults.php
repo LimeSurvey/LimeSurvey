@@ -602,7 +602,6 @@ else
 {
     $config['publicurl'] =  '/';
 }
-
 $config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
 $config['tempurl']                 = $config['publicurl'].'tmp';
 $config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script

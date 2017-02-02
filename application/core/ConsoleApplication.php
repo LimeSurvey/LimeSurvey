@@ -22,31 +22,55 @@ class ConsoleApplication extends CConsoleApplication
 
     public function __construct($aApplicationConfig = null) {
 
-        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
-        $consoleConfig = require(__DIR__ . '/../config/console.php');
-        $emaiConfig = require(__DIR__ . '/../config/email.php');
-        $versionConfig = require(__DIR__ . '/../config/version.php');
-        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
-        $lsConfig = array_merge($coreConfig, $consoleConfig, $emaiConfig, $versionConfig, $updaterVersionConfig);
+        /* Using some config part for app config, then load it before*/
+        $baseConfig = require(__DIR__ . '/../config/config-defaults.php');
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
-            $userConfig = require(__DIR__ . '/../config/config.php');
-            if(is_array($userConfig['config']))
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
             {
-                $lsConfig = array_merge($lsConfig, $userConfig['config']);
+                $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
         }
-        // Runtime path has to be set before  parent constructor is executed
-        // User can set it in own config using Yii
+
+        /* Set the runtime path according to tempdir if needed */
         if(!isset($aApplicationConfig['runtimePath'])){
-            $aApplicationConfig['runtimePath']=$lsConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
-        }
+            $aApplicationConfig['runtimePath']=$baseConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        } /* No need to test runtimePath validity : Yii return an exception without issue */
+
         parent::__construct($aApplicationConfig);
+
+        /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl */
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $consoleConfig = require(__DIR__ . '/../config/console.php'); // Only for console : replace some config-defaults
+        $emailConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+        if(file_exists(__DIR__ . '/../config/config.php'))
+        {
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
+            {
+                $lsConfig = array_merge($lsConfig, $userConfigs['config']);
+            }
+        }
 
         // Set webroot alias.
         Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
 
         $this->config = array_merge($this->config, $lsConfig);
+
+        /* Load the database settings : if available */
+        try {
+            $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+            if(is_object($settingsTableExist)){
+                $dbConfig=CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+                $this->config = array_merge($this->config,$dbConfig);
+            }
+        }catch(Exception $exception) {
+            // Allow exception (install for example)
+        }
     }
 
     /**

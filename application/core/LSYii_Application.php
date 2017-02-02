@@ -39,34 +39,48 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($aApplicationConfig = null)
     {
-        /* Load lsConfig */
-        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
-        $emaiConfig = require(__DIR__ . '/../config/email.php');
-        $versionConfig = require(__DIR__ . '/../config/version.php');
-        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
-        $lsConfig = array_merge($coreConfig, $emaiConfig, $versionConfig, $updaterVersionConfig);
+        /* Using some config part for app config, then load it before*/
+        $baseConfig = require(__DIR__ . '/../config/config-defaults.php');
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
-            $userConfig = require(__DIR__ . '/../config/config.php');
-            if(is_array($userConfig['config']))
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
             {
-                $lsConfig = array_merge($lsConfig, $userConfig['config']);
+                $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
         }
-        // Runtime path has to be set before  parent constructor is executed
-        // User can set it in own config using Yii
+
+        /* Set the runtime path according to tempdir if needed */
         if(!isset($aApplicationConfig['runtimePath'])){
-            $aApplicationConfig['runtimePath']=$lsConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
-        }
+            $aApplicationConfig['runtimePath']=$baseConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        } /* No need to test runtimePath validity : Yii return an exception without issue */
+
         parent::__construct($aApplicationConfig);
 
-        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
-        // Load the default and environmental settings from different files into self.
-        foreach ($lsConfig as $key => $value){
-            $this->setConfig($key, $value);
+        /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl */
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $emailConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+        if(file_exists(__DIR__ . '/../config/config.php'))
+        {
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
+            {
+                $lsConfig = array_merge($lsConfig, $userConfigs['config']);
+            }
+        }
+        if(!isset($aApplicationConfig['components']['assetManager']['baseUrl'])){
+            App()->getAssetManager()->setBaseUrl($lsConfig['tempurl']. '/assets');
+        }
+        if(!isset($aApplicationConfig['components']['assetManager']['basePath'])){
+            App()->getAssetManager()->setBasePath($lsConfig['tempdir'] . '/assets');
         }
 
-        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
+
+        $this->config = array_merge($this->config, $lsConfig);
+
     }
 
 
