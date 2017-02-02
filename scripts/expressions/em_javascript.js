@@ -166,7 +166,7 @@ function LEMsum()
     for (i=0;i<arguments.length;++i) {
         var arg = arguments[i] || 0;
         if (LEMis_numeric(arg)){
-            try{ 
+            try{
                 arg = new Decimal(arg);
             } catch(e){
                 arg = new Decimal(arg.toString().replace(/,/,'.'));
@@ -545,6 +545,7 @@ function LEMval(alias)
         }
         case 'shown': {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
+            var shown="test";
             switch(attr.type)
             {
                 case 'G': //GENDER drop-down list
@@ -560,10 +561,10 @@ function LEMval(alias)
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     if (attr.type == 'O' && varName.match(/comment$/)) {
-                        answer = value;
+                        answer = htmlentities(value);
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
-                        answer = value;
+                        answer = htmlentities(value);
                     }
                     else {
                         which_ans = '0~' + value;
@@ -607,7 +608,8 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                        shown = value;
+                        shown = htmlentities(value);
+                    break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
                     if (typeof attr.question === 'undefined' || value == '') {
@@ -620,7 +622,7 @@ function LEMval(alias)
                                 shown = parseFloat(numtest.valueOf());
                             }
                             catch(e) {
-                                shown = value;
+                                shown = htmlentities(value);
                             }
                         }
                         else {
@@ -629,8 +631,8 @@ function LEMval(alias)
                     }
                     break;
             }
+            return shown;
         }
-            return htmlspecialchars_decode(shown);
         case 'gid':
             return attr.gid;
         case 'grelevance':
@@ -705,7 +707,7 @@ function LEMval(alias)
                         break;
                     case 'N': //NUMERICAL QUESTION TYPE
                     case 'K': //MULTIPLE NUMERICAL QUESTION
-                    
+
                 }
             }
 
@@ -724,7 +726,7 @@ function LEMval(alias)
                     } catch(e){
                         var numtest = new Decimal(value.toString().replace(/,/,'.'));
                     }
-                
+
                     // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
                     // if (LEMradix === ',' && onSamePage )
                     // {
