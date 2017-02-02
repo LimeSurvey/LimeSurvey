@@ -1639,7 +1639,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
     }
 
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,true);
-	foreach ($xml->tokens->rows->row as $row)
+    foreach ($xml->tokens->rows->row as $row)
     {
         $insertdata=array();
 
@@ -1648,13 +1648,13 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-		$token = Token::create($iSurveyID);
-		$token->setAttributes($insertdata, false);
-        if (!$token->save())
-        {
-            $results['warnings'][]=gT("Skipped tokens entry:").' '. implode('. ',$token->errors['token']);
-        };
-        $results['tokens']++;
+        $token = Token::create($iSurveyID,'allowinvalidemail');
+        $token->setAttributes($insertdata, false);
+        if (!$token->save()){
+            $results['warnings'][]=gT("Skipped tokens entry:").' '.CHtml::errorSummary($token);
+        }else{
+            $results['tokens']++;
+        }
     }
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,false);
     if (Yii::app()->db->getDriverName() == 'pgsql')
