@@ -3,6 +3,10 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ## unreleased
 
+### Fix
+- Import lsa don't import all token
+- Hidden Welcome page can be shown with token (Thank to [@Ben_V](https://framagit.org/ben_v))
+
 ### Feature
 - Allow to update via cli
 - Allow to update runtime directory in config (LimeSurvey API 3 compatible only)
