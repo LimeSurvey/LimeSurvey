@@ -38,7 +38,10 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <div class="content-right scrolling-wrapper"    >
+            <div id='top-scroller' class="content-right scrolling-wrapper"    >
+            <div id='fake-content'>&nbsp;</div>
+            </div>
+            <div id='bottom-scroller' class="content-right scrolling-wrapper"    >
                 <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
                 <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
 
