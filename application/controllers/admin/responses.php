@@ -1089,10 +1089,6 @@ class responses extends Survey_Common_Action
                 $limit = $dtcount;
             }
 
-            //NOW LETS SHOW THE DATA
-            if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
-                $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
-
             if (!is_null($tokenRequest)) {
                 $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
             }
