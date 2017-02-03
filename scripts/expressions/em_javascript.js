@@ -130,9 +130,19 @@ function LEMsumifop()
         var reg = new RegExp(value.substr(1,value.length-2));
     }
     for (i=2;i<arguments.length;++i) {
-        var arg = arguments[i];
-        switch(op)
-        {
+        var arg = arguments[i] || 0;
+        if (LEMis_numeric(arg)){
+            try{
+                arg = new Decimal(arg);
+            } catch(e){
+                arg = new Decimal(arg.toString().replace(/,/,'.'));
+            }
+        }        
+        else if(arg === true){
+            arg=1;
+        }
+
+        switch(op) {
             case '==': case 'eq': if (arg == value) { result += arg; } break;
             case '>=': case 'ge': if (arg >= value) { result += arg; } break;
             case '>':  case 'gt': if (arg > value) { result += arg; } break;
