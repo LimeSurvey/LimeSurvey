@@ -41,6 +41,18 @@
             <div class="content-right scrolling-wrapper"    >
                 <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
                 <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
+
+                <?php if (Yii::app()->user->getState('sql_'.$surveyid) != null ):?>
+                    <!-- Filter is on -->
+                    <?php eT("Showing Filtered Results"); ?>
+
+                    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl('admin/responses', array("sa"=>'browse','surveyid'=>$surveyid, 'filters'=>'reset')); ?>" role="button">
+                        <?php eT("View without the filter."); ?>
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+
+                <?php endif;?>
+
                 <?php
                     // the massive actions dropup button
                     $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
