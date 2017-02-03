@@ -35,6 +35,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.62.1 (build 170124) to 2.62.2 (build 170203) Feb 3 2017
+-Fixed issue #11696: "Return to survey" link misaligned in load screen (Carsten Schmitz)
+-Fixed issue #12029: EM for {Qcode.shown} not working after Update (Denis Chenu)
+-Fixed issue #12055: Error when setting conditions on questions (Carsten Schmitz)
+-Fixed issue #12084: HTML body tags missing in login (Carsten Schmitz)
+-Fixed issue #12096: PHP notice when editing Array number (markusfluer)
+-Fixed issue #12107: Sumifop concatenating values instead of sum them up. (Carsten Schmitz)
+-Fixed issue: Login panel stuck to the top (Carsten Schmitz)
+-Fixed issue: Survey archive import doesn't import all tokens (Denis Chenu)
+-Fixed issue: Various bugs in update procedure when updating from 1.92 or older (Carsten Schmitz)
+-Fixed issue: when user select responses on statistics, and then click on browser buttons, filters does not apply to Yii Grid. (LouisGac)
+-Fixed issue: [security] SQL injection vulnerability in response browse screen (LouisGac)
 
 Changes from 2.62.0 (build 170124) to 2.62.1 (build 170130) Jan 30 2017
 -Fixed issue #11744: Fixed issue #11744: When adding new answer the assessment column isn't displayed
