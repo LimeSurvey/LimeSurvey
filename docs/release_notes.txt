@@ -59,6 +59,12 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.6.3LTS (build 170112) to 2.6.4LTS (build 170202) Feb 3, 2017
+-Fixed issue #12078: Email sending problems with unvalidated SSL certificates (Carsten Schmitz)
+-Fixed issue #12093: Error when editing email templates und using PHP7 (Carsten Schmitz)
+-Fixed issue: Replacing `@@SURVEYURL@@` incorrectly in RemoteControl2 (Frederik Prijck)
+-Fixed issue: [security] SQL injection vulnerability in response browse screen (LouisGac)
+
 Changes from 2.6.2LTS (build 161206) to 2.6.3LTS (build 170112) Jan 12, 2017
 -Fixed issue #11897: Ranking question opposite side to instructions (Denis Chenu)
 -Fixed issue #11996: possible remote code execution (LouisGac)
