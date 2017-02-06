@@ -137,7 +137,7 @@ function LEMsumifop()
             } catch(e){
                 arg = new Decimal(arg.toString().replace(/,/,'.'));
             }
-        }        
+        }
         else if(arg === true){
             arg=1;
         }
@@ -555,7 +555,7 @@ function LEMval(alias)
         }
         case 'shown': {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
-            var shown="test";
+            var shown="";
             switch(attr.type)
             {
                 case 'G': //GENDER drop-down list
