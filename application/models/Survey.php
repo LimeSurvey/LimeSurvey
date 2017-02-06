@@ -444,12 +444,12 @@ class Survey extends LSActiveRecord
         if($this->googleanalyticsapikey === "9999useGlobal9999")
         {
             return "G";
-        } 
+        }
         else if($this->googleanalyticsapikey == "")
         {
             return "N";
         }
-        else 
+        else
         {
             return "Y";
         }
@@ -458,7 +458,7 @@ class Survey extends LSActiveRecord
         if($value == "G")
         {
             $this->googleanalyticsapikey = "9999useGlobal9999";
-        } 
+        }
         else if($value == "N")
         {
            $this->googleanalyticsapikey = "";
@@ -473,8 +473,8 @@ class Survey extends LSActiveRecord
         if($this->googleanalyticsapikey === "9999useGlobal9999")
         {
             return getGlobalSetting(googleanalyticsapikey);
-        } 
-        else 
+        }
+        else
         {
             return $this->googleanalyticsapikey;
         }
@@ -1160,5 +1160,35 @@ class Survey extends LSActiveRecord
         $surveys = self::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $surveys = array_filter($surveys, function($s) { return tableExists('{{tokens_' . $s->sid); });
         return $surveys;
+    }
+
+    /**
+     * Fix invalid question in this survey
+     */
+    public function fixInvalidQuestions()
+    {
+        /* Delete invalid questions (don't exist in primary language) using qid like column name*/
+        $validQuestion = Question::model()->findAll(array(
+            'select'=>'qid',
+            'condition'=>'sid=:sid AND language=:language AND parent_qid = 0',
+            'params'=>array('sid' => $this->sid,'language' => $this->language)
+        ));
+        $criteria = new CDbCriteria;
+        $criteria->compare('sid',$this->sid);
+        $criteria->addCondition('parent_qid = 0');
+        $criteria->addNotInCondition('qid', CHtml::listData($validQuestion,'qid','qid'));
+        Question::model()->deleteAll($criteria);// Must log count of deleted ?
+
+        /* Delete invalid Sub questions (don't exist in primary language) using title like column name*/
+        $validSubQuestion = Question::model()->findAll(array(
+            'select'=>'title',
+            'condition'=>'sid=:sid AND language=:language AND parent_qid != 0',
+            'params'=>array('sid' => $this->sid,'language' => $this->language)
+        ));
+        $criteria = new CDbCriteria;
+        $criteria->compare('sid',$this->sid);
+        $criteria->addCondition('parent_qid != 0');
+        $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
+        Question::model()->deleteAll($criteria);// Must log count of deleted ?
     }
 }
