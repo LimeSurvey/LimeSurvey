@@ -764,7 +764,6 @@ class questions extends Survey_Common_Action
                     if (empty($qrow))
                     {
                         switchMSSQLIdentityInsert('questions', true);
-
                         $question = new Question;
                         $question->qid = $row->qid;
                         $question->sid = $surveyid;
@@ -784,12 +783,8 @@ class questions extends Survey_Common_Action
         }
 
         array_unshift($anslangs, $baselang);
-
-        // Delete the subquestions in languages not supported by the survey
-        $criteria = new CDbCriteria;
-        $criteria->addColumnCondition(array('parent_qid' => $qid));
-        $criteria->addNotInCondition('language', $anslangs);
-        Question::model()->deleteAll($criteria);
+        /* Fix subquestions */
+        $oQuestion->fixSubQuestions();
 
         // Check sort order for subquestions
         $qresult = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
