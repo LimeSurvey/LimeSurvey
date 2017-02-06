@@ -27,6 +27,11 @@
 !/plugins/Demo/
 !/plugins/AuditLog/
 
+# RFC and commons directory and files
+/.well-known/
+/sitemap.xml
+/robots.txt
+
 # Some global "temporary files" (see
 *~
 .DS_Store
