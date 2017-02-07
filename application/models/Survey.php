@@ -248,6 +248,19 @@ class Survey extends LSActiveRecord
     public function fixSurveyAttribute($event)
     {
         $this->template=Template::templateNameFilter($this->template);
+
+        $event = new PluginEvent('afterFindSurvey');
+        App()->getPluginManager()->dispatchEvent($event);
+        $allowedAttributes = array( 'template','usecookie', 'allowprev',
+            'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
+            'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay');
+        // set the attributes we won't allow to fix
+        foreach ($allowedAttributes as $attribute){
+            if (!is_null($event->get($attribute)))
+            {
+                $this->{$attribute} = $event->get($attribute);
+            }
+        }
     }
 
     /**
