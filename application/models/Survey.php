@@ -251,10 +251,10 @@ class Survey extends LSActiveRecord
 
         $event = new PluginEvent('afterFindSurvey');
         App()->getPluginManager()->dispatchEvent($event);
+        // set the attributes we allow to be fixed
         $allowedAttributes = array( 'template','usecookie', 'allowprev',
             'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
             'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay');
-        // set the attributes we won't allow to fix
         foreach ($allowedAttributes as $attribute){
             if (!is_null($event->get($attribute)))
             {
