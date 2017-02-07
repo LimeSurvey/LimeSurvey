@@ -1008,13 +1008,13 @@ class Question extends LSActiveRecord
 
         /* Delete invalid subquestions (not in primary language */
         $validSubQuestion = Question::model()->findAll(array(
-            'select'=>'qid',
+            'select'=>'title',
             'condition'=>'parent_qid=:parent_qid AND language=:language',
             'params'=>array('parent_qid' => $this->qid,'language' => $oSurvey->language)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('parent_qid',$this->qid);
-        $criteria->addNotInCondition('qid', CHtml::listData($validSubQuestion,'qid','qid'));
+        $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
     }
 
