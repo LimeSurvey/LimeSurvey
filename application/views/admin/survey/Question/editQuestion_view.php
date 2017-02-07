@@ -273,10 +273,14 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label" for='relevance'><?php eT("Relevance equation:"); ?></label>
                                         <div class="col-sm-8">
-                                            <textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?> ><?php echo $eqrow['relevance']; ?></textarea>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">{</div>
+                                                <textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?> ><?php echo $eqrow['relevance']; ?></textarea>
+                                                <div class="input-group-addon">}</div>
+                                            </div>
                                             <?php if ($eqrow['conditions_number']) :?>
-                                                <span class='annotation'> <?php eT("Note: You can't edit the relevance equation because there are currently conditions set for this question."); ?></span>
-                                                <?php endif; ?>
+                                                <div class='help-block text-warning'> <?php eT("Note: You can't edit the relevance equation because there are currently conditions set for this question."); ?></div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
 
