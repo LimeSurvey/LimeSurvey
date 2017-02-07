@@ -992,7 +992,7 @@ class questions extends Survey_Common_Action
         {
             $view ='_answer_option';
             $aData = array(
-                'assessmentvisible' => $assessmentvisible ? true : false,
+                'assessmentvisible' => $assessmentvisible == "false" ? false : true,
                 'assessment_value'  => '',
                 'answer'            => '',
                 'sortorder'         => $newPosition,
