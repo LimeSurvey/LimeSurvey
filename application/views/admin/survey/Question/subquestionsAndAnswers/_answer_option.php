@@ -46,7 +46,7 @@
 
             <input
                 type='text'
-                class="code form-control input-lg"
+                class="code form-control input"
                 id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 class='code code-title'
                 name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
@@ -76,7 +76,7 @@
         <td class="assessment-value">
             <input
                 type='text'
-                class='assessment form-control input-lg'
+                class='assessment form-control input'
                 id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $assessment_value; ?>"
@@ -110,7 +110,7 @@
         <input
             type='text'
             size='20'
-            class='answer form-control input-lg'
+            class='answer form-control input'
             id='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
             name='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
             placeholder='<?php eT("Some example answer option","js") ?>'
