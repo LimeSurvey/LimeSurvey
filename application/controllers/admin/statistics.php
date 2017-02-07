@@ -472,7 +472,7 @@ class statistics extends Survey_Common_Action {
         //Show Summary results
         if (isset($summary) && $summary)
         {
-            $usegraph=isset($_POST['usegraph']) ? 1 : 0;
+            $usegraph=isset($_POST['usegraph']) && $_POST['usegraph'] ? 1 : 0;
             $aData['usegraph'] = $usegraph;
             $outputType = $_POST['outputtype'];
 
@@ -495,7 +495,7 @@ class statistics extends Survey_Common_Action {
 
         }    //end if -> show summary results
 
-        $usegraph=isset($_POST['usegraph']) ? 1 : 0;
+        $usegraph=isset($_POST['usegraph']) && $_POST['usegraph'] ? 1 : 0;
         $aData['usegraph'] = $usegraph;
 
         $aData['sStatisticsLanguage']=$statlang;
