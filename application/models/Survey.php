@@ -247,9 +247,8 @@ class Survey extends LSActiveRecord
     */
     public function fixSurveyAttribute($event)
     {
-        $this->template=Template::templateNameFilter($this->template);
-
         $event = new PluginEvent('afterFindSurvey');
+        $event->set('surveyid',$this->sid) ;
         App()->getPluginManager()->dispatchEvent($event);
         // set the attributes we allow to be fixed
         $allowedAttributes = array( 'template','usecookie', 'allowprev',
@@ -261,6 +260,7 @@ class Survey extends LSActiveRecord
                 $this->{$attribute} = $event->get($attribute);
             }
         }
+        $this->template=Template::templateNameFilter($this->template);
     }
 
     /**
