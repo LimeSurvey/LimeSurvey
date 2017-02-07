@@ -122,12 +122,6 @@ class UserAction extends Survey_Common_Action
                 // add new user to userlist
                 $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
                 $srow = count($sresult);
-                $userlist = getUserList();
-                array_push($userlist, array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'],
-                "password" => $srow["password"], "parent_id" => $srow['parent_id'], // "level"=>$level,
-                "create_survey" => $srow['create_survey'], "participant_panel" => $srow['participant_panel'], "configurator" => $srow['configurator'], "create_user" => $srow['create_user'],
-                "delete_user" => $srow['delete_user'], "superadmin" => $srow['superadmin'], "manage_template" => $srow['manage_template'],
-                "manage_label" => $srow['manage_label']));
 
                 // send Mail
                 $body = sprintf(gT("Hello %s,"), $new_full_name) . "<br /><br />\n";

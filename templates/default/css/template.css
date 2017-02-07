@@ -709,3 +709,7 @@ div.yes-no .btn-group label {
     font-size:90%;
   }
 }
+
+p.return-to-survey{
+    clear:left;
+}

@@ -365,8 +365,11 @@ class Survey_Common_Action extends CAction
 
         if( !Yii::app()->user->isGuest )
         {
-        if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
-            Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+            if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
+                Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        }
+        else{
+            echo '</body></html>';
         }
 
         $out = ob_get_contents();

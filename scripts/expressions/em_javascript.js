@@ -142,9 +142,19 @@ function LEMsumifop()
         var reg = new RegExp(value.substr(1,value.length-2));
     }
     for (i=2;i<arguments.length;++i) {
-        var arg = arguments[i];
-        switch(op)
-        {
+        var arg = arguments[i] || 0;
+        if (LEMis_numeric(arg)){
+            try{
+                arg = new Decimal(arg);
+            } catch(e){
+                arg = new Decimal(arg.toString().replace(/,/,'.'));
+            }
+        }
+        else if(arg === true){
+            arg=1;
+        }
+
+        switch(op) {
             case '==': case 'eq': if (arg == value) { result += arg; } break;
             case '>=': case 'ge': if (arg >= value) { result += arg; } break;
             case '>':  case 'gt': if (arg > value) { result += arg; } break;
@@ -557,6 +567,7 @@ function LEMval(alias)
         }
         case 'shown': {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
+            var shown="";
             switch(attr.type)
             {
                 case 'G': //GENDER drop-down list
@@ -572,10 +583,10 @@ function LEMval(alias)
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     if (attr.type == 'O' && varName.match(/comment$/)) {
-                        answer = value;
+                        answer = htmlentities(value);
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
-                        answer = value;
+                        answer = htmlentities(value);
                     }
                     else {
                         which_ans = '0~' + value;
@@ -619,7 +630,8 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                        shown = value;
+                        shown = htmlentities(value);
+                    break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
                     if (typeof attr.question === 'undefined' || value == '') {
@@ -632,7 +644,7 @@ function LEMval(alias)
                                 shown = parseFloat(numtest.valueOf());
                             }
                             catch(e) {
-                                shown = value;
+                                shown = htmlentities(value);
                             }
                         }
                         else {
@@ -641,8 +653,8 @@ function LEMval(alias)
                     }
                     break;
             }
+            return shown;
         }
-            return htmlspecialchars_decode(shown);
         case 'gid':
             return attr.gid;
         case 'grelevance':

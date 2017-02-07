@@ -382,6 +382,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         if ($iOldDBVersion < 143)
         {
+
             $oTransaction = $oDB->beginTransaction();
             addColumn('{{questions}}','parent_qid','integer NOT NULL default 0');
             addColumn('{{answers}}','scale_id','integer NOT NULL default 0');
@@ -1181,8 +1182,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             addColumn('{{permissions}}','entity',"string(50)");
             $oDB->createCommand("update {{permissions}} set entity='survey'")->query();
             addColumn('{{permissions}}','id','pk');
-            $oDB->createCommand()->createIndex('idxPermissions','{{permissions}}','entity_id,entity,permission,uid',true);
-
+            try { setTransactionBookmark(); $oDB->createCommand()->createIndex('idxPermissions','{{permissions}}','entity_id,entity,permission,uid',true); } catch(Exception $e) { rollBackToTransactionBookmark();}
             upgradePermissions166();
             dropColumn('{{users}}','create_survey');
             dropColumn('{{users}}','create_user');
@@ -1590,7 +1590,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
         /**
          * Add seed column in all active survey tables
          * Might take time to execute
@@ -1697,6 +1696,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         Yii::app()->user->setFlash('error', gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />');
         return false;
     }
+    // Load all tables of the application in the schema
+    $oDB->schema->getTables();
+    // clear the cache of all loaded tables
+    $oDB->schema->refresh();
+    $oDB->active=false;
+    $oDB->active=true;
+    // Force User model to refresh meta data (for updates from very old versions)
+    User::model()->refreshMetaData();
+    // Inform  superadmin about update
+    $superadmins = User::model()->getSuperAdmins();
+    Notification::broadcast(array(
+        'title' => gT('Database update'),
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '261')
+    ), $superadmins);
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
     return true;
@@ -2081,7 +2094,7 @@ function upgradeTokens176()
     {
         $sTokenTableName='tokens_'.$arSurvey->sid;
         if (tableExists($sTokenTableName))
-        {                                        
+        {
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
             $aAttributes = $arSurvey->tokenAttributes;
             foreach($aColumnNamesIterator as $sColumnName)
@@ -2287,7 +2300,7 @@ function upgradeQuestionAttributes148()
 {
     $sSurveyQuery = "SELECT sid FROM {{surveys}}";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
-    $aAllAttributes=questionAttributes(true);
+    $aAllAttributes=\ls\helpers\questionHelper::getAttributesDefinitions();
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $iSurveyID=$aSurveyRow['sid'];

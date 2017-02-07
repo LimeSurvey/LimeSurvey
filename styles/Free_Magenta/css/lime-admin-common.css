@@ -424,7 +424,7 @@ html {
   .welcome .panel-body img {
     height: 4em;
     margin-bottom: 1em; }
-.welcome .login-pannel .panel-body img {
+.welcome .login-panel .panel-body img {
   margin-bottom: 0; }
 
 .alert {
@@ -455,7 +455,7 @@ html {
 @media screen and (min-width: 1280px) and (max-width: 1680px) {
   #profile-img {
     min-height: 0; } }
-.login-pannel {
+.login-panel {
   margin-top: 40px; }
 
 .login-content {
