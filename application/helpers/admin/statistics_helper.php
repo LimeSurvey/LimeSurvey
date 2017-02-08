@@ -38,9 +38,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     }
     $rootdir = Yii::app()->getConfig("rootdir");
     $homedir = Yii::app()->getConfig("homedir");
-    $homeurl = Yii::app()->getConfig("homeurl");
     $admintheme = Yii::app()->getConfig("admintheme");
-    $scriptname = Yii::app()->getConfig("scriptname");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
@@ -109,7 +107,6 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     if (array_sum($gdata ) > 0) //Make sure that the percentages add up to more than 0
     {
         $graph = "";
-        $p1 = "";
         $i = 0;
         foreach ($gdata as $data)
         {
@@ -639,7 +636,6 @@ class statistics_helper {
         $qtitle="";
         $qquestion="";
         $qtype="";
-        $statlang = $oLanguage;
         $firstletter = substr($rt, 0, 1);
         $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
@@ -734,9 +730,6 @@ class statistics_helper {
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
             $qquestion=flattenText($nresult->question);
-
-            //more substrings
-            $count = substr($qqid, strlen($qqid)-1);
 
             //get answers / subquestion text
             $nresult = Question::model()->find(array('order'=>'question_order',
@@ -1071,7 +1064,6 @@ class statistics_helper {
 
                     //Display the maximum and minimum figures after the quartiles for neatness
                     $maximum=$row['maximum'];
-                    $minimum=$row['minimum'];
                 }
 
 
@@ -1271,7 +1263,6 @@ class statistics_helper {
                 $qtype=$nrow[1];
                 $qquestion=flattenText($nrow[2]);
                 $qiqid=$nrow[3];
-                $qparentqid=$nrow[4];
                 $qother=$nrow[5];
             }
 
@@ -1612,9 +1603,6 @@ class statistics_helper {
         $TotalCompleted = 0; //Count of actually completed answers
         $statisticsoutput="";
         $sDatabaseType = Yii::app()->db->getDriverName();
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $tempurl = Yii::app()->getConfig("tempurl");
-        $firstletter = substr($rt, 0, 1);
         $astatdata=array();
 
         //loop though the array which contains all answer data
@@ -1836,9 +1824,6 @@ class statistics_helper {
 
                 //put question title and code into array
                 $label[]=$fname;
-
-                //put only the code into the array
-                $justcode[]=$al[0];
 
                 //edit labels and put them into antoher array
 
@@ -2399,8 +2384,6 @@ class statistics_helper {
         $statisticsoutput   = "";
         $sDatabaseType      = Yii::app()->db->getDriverName();
         $tempdir            = Yii::app()->getConfig("tempdir");
-        $tempurl            = Yii::app()->getConfig("tempurl");
-        $firstletter        = substr($rt, 0, 1);
         $astatdata          = array();
 
         if ($usegraph==1 && $outputType != 'html')
@@ -3811,8 +3794,6 @@ class statistics_helper {
              Yii::import('application.helpers.surveytranslator_helper', true);
              Yii::import('application.third_party.ar-php.Arabic', true);
 
-             $sTempDir = Yii::app()->getConfig("tempdir");
-
              //pick the best font file if font setting is 'auto'
              if (is_null($sLanguageCode))
              {
@@ -3820,17 +3801,9 @@ class statistics_helper {
              }
              //Yii::app()->setLanguage($sLanguageCode);
 
-             /*
-             * this variable is used in the function shortencode() which cuts off a question/answer title
-             * after $maxchars and shows the rest as tooltip (in html mode)
-             */
-             $maxchars = 13;
-
              //Get an array of codes of all available languages in this survey
              $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
              $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
-
-             $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
 
              // Set language for questions and answers to base language of this survey
              $language=$sLanguageCode;
@@ -3944,20 +3917,11 @@ class statistics_helper {
         Yii::import('application.helpers.surveytranslator_helper', true);
         Yii::import('application.third_party.ar-php.Arabic', true);
 
-        $sTempDir = Yii::app()->getConfig("tempdir");
-
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode))
         {
             $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
         }
-        //Yii::app()->setLanguage($sLanguageCode);
-
-        /*
-        * this variable is used in the function shortencode() which cuts off a question/answer title
-        * after $maxchars and shows the rest as tooltip (in html mode)
-        */
-        $maxchars = 13;
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
@@ -3965,8 +3929,6 @@ class statistics_helper {
         //Get an array of codes of all available languages in this survey
         $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
-
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
 
         // Set language for questions and answers to base language of this survey
         $language=$sLanguageCode;
@@ -3999,7 +3961,6 @@ class statistics_helper {
                     //Get answers. We always use the answer code because the label might be too long elsewise
                     $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
                     $result = Yii::app()->db->createCommand($query)->query();
-                    $counter2=0;
 
                     //check all the answers
                     foreach ($result->readAll() as $row)
@@ -4190,13 +4151,7 @@ class statistics_helper {
         {
             $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
         }
-        //Yii::app()->setLanguage($sLanguageCode);
 
-        /*
-        * this variable is used in the function shortencode() which cuts off a question/answer title
-        * after $maxchars and shows the rest as tooltip (in html mode)
-        */
-        $maxchars = 13;
         //we collect all the html-output within this variable
         $sOutputHTML ='';
         /**
@@ -4208,8 +4163,6 @@ class statistics_helper {
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
-
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
 
         // Set language for questions and answers to base language of this survey
         $language=$sLanguageCode;
@@ -4242,7 +4195,6 @@ class statistics_helper {
                     //Get answers. We always use the answer code because the label might be too long elsewise
                     $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
                     $result = Yii::app()->db->createCommand($query)->query();
-                    $counter2=0;
 
                     //check all the answers
                     foreach ($result->readAll() as $row)
@@ -4348,8 +4300,6 @@ class statistics_helper {
             $this->formatBold = &$this->workbook->addFormat(array('Bold'=>1));
             $this->sheet->setInputEncoding('utf-8');
             $this->sheet->setColumn(0,20,20);
-            $separator="~|";
-            /**XXX*/
         }
         /**
         * Start generating
@@ -4700,7 +4650,6 @@ class statistics_helper {
             if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
             $search['order']=$sortby.' '.$sortmethod;
         }
-        Yii::log(print_r($search, true), CLogger::LEVEL_TRACE, 'debug');
         $results=SurveyDynamic::model($surveyid)->findAll($search);
         $output=array();
         foreach($results as $row) {

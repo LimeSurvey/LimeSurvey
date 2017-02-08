@@ -11,7 +11,7 @@
     ?>
     <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>'form-horizontal'));?>
 
-    <div class="panel panel-primary" id="panel-1" style="opacity: 1; top: 0px;">
+    <div class="panel panel-primary" id="panel-1">
         <div class="panel-heading">
             <h4 class="panel-title">
                 <?php eT("General");?>
@@ -24,7 +24,7 @@
                     <?php eT("File:");?>
                 </label>
                 <div class="col-sm-6">
-                    <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control">
+                    <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control"  accept='.csv,.vv,.txt' required>
                 </div>
             </div>
 
@@ -101,7 +101,7 @@
                 <label for="forceimport" class="col-sm-2 control-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-toggle="tooltip" data-placement="right">
                     <?php eT("Force import:"); ?>
                 </label>
-                <div class="col-sm-4">                    
+                <div class="col-sm-4">
                     <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'forceimport',
                         'value'=> false,

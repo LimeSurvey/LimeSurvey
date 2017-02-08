@@ -1865,6 +1865,10 @@ function doAssessment($surveyid, $returndataonly=false)
             $groups=array();
             foreach($fieldmap as $field)
             {
+                // Init Assessment Value
+                $assessmentValue = NULL;
+
+                // Default Assessment Value Calculation
                 if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
                 {
                     $fieldmap[$field['fieldname']]['assessment_value']=0;
@@ -1875,8 +1879,7 @@ function doAssessment($surveyid, $returndataonly=false)
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                             {
                                 $aAttributes=getQuestionAttributeValues($field['qid']);
-                                $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
-                                $total=$total+(int)$aAttributes['assessment_value'];
+                                $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         }
                         else  // Single choice question
@@ -1886,13 +1889,56 @@ function doAssessment($surveyid, $returndataonly=false)
                             if ($usresult)
                             {
                                 $usrow = $usresult->read();
-                                $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
-                                $total=$total+$usrow['assessment_value'];
+                                $assessmentValue = $usrow['assessment_value'];
                             }
                         }
                     }
                     $groups[]=$field['gid'];
                 }
+
+                // If this is a question (and not a survey field, like ID), save asessment value
+                if ($field['qid'] > 0)
+                {
+                    /**
+                     * Allow Plugin to update assessment value
+                     */
+                    // Prepare Event Info
+                    $event = new PluginEvent('afterSurveyQuestionAssessment');
+                    $event->set('surveyId', $surveyid);
+                    $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
+                    $event->set('gid', $field['gid']);
+                    $event->set('qid', $field['qid']);
+
+                    if (array_key_exists('sqid', $field))
+                    {
+
+                        $event->set('sqid', $field['sqid']);
+                    }
+
+                    if (array_key_exists('aid', $field))
+                    {
+
+                        $event->set('aid', $field['aid']);
+                    }
+
+                    $event->set('assessmentValue', $assessmentValue);
+
+                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
+                    {
+                        $event->set('response', $_SESSION['survey_'.$surveyid][$field['fieldname']]);
+                    }
+
+                    // Dispatch Event and Get new assessment value
+                    App()->getPluginManager()->dispatchEvent($event);
+                    $updatedAssessmentValue=$event->get('assessmentValue', $assessmentValue);
+
+                    /**
+                     * Save assessment value on the response
+                     */
+                    $fieldmap[$field['fieldname']]['assessment_value']=$updatedAssessmentValue;
+                    $total=$total+$updatedAssessmentValue;
+                }
+
                 $i++;
             }
 

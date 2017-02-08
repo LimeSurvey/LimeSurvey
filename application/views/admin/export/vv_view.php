@@ -87,24 +87,24 @@
                             </label>
                             <div class="col-sm-4">
                                 <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default <?php echo ($vvversionseleted==2 ? "active" : "");?>">
                                         <input
                                             name="vvversion"
                                             value="2"
                                             type="radio"
                                             id="vvversion-last"
-                                            checked='checked'
-                                            autofocus="true"
+                                            <?php echo ($vvversionseleted==2 ? "checked='checked'" : ""); ?>
                                         />
                                         <?php eT("Last VV version");?>
                                     </label>
 
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default <?php echo ($vvversionseleted==1 ? "active" : "");?>">
                                         <input
                                             name="vvversion"
                                             value="1"
                                             type="radio"
                                             id="vvversion-old"
+                                            <?php echo ($vvversionseleted==1 ? "checked='checked'" : ""); ?>
                                         />
                                         <?php eT("Old VV version");?>
                                     </label>
