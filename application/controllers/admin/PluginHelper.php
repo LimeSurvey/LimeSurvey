@@ -23,7 +23,7 @@ class PluginHelper extends Survey_Common_Action
         $aData['surveyid'] = $surveyId;
 
         $aData['surveybar']['buttons']['view']= true;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyId.")";
 
         $content = $this->getContent($surveyId, $plugin, $method);
 

@@ -46,7 +46,7 @@ class Expressions extends Survey_Common_Action {
             {
                 $aData['sidemenu']['state'] = false;
                 $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-                $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+                $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
                 if(Yii::app()->request->getQuery('gid')!='')
                 {
                     $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$aData['surveyid'].'/gid/'.sanitize_int(Yii::app()->request->getQuery('gid'));
