@@ -4,6 +4,8 @@ use Yii;
 use User;
 use PluginDynamic;
 use SurveyDynamic;
+use Template;
+
     /**
     * Class exposing a Limesurvey API to plugins.
     * This class is instantiated by the plugin manager,
@@ -168,11 +170,19 @@ use SurveyDynamic;
         /**
          * Get the current request object
          *
-         * @return LSHttpRequest
+         * @return \LSHttpRequest
          */
         public function getRequest()
         {
             return App()->getRequest();
+        }
+
+        /**
+         * Returns an array of all available template names - does a basic check if the template might be valid
+         * @return array
+         */
+        public function getTemplateList(){
+            return Template::getTemplateList();
         }
 
         /**

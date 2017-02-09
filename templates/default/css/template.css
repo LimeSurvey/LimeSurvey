@@ -1093,3 +1093,7 @@ div.yes-no .btn-group label {
 .label-danger {
     white-space: normal;
 }
+
+p.return-to-survey{
+    clear:left;
+}

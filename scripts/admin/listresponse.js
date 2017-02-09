@@ -23,11 +23,11 @@ LS.resp = (function() {
      * Scroll the pager and the footer when scrolling horizontally
      * @return
      */
-    function setListPagerPosition() {
+    function setListPagerPosition(pager) {
         var $elListPager = $('#ListPager');
 
         if (useRtl) {
-            var scrollAmount = Math.abs($('.scrolling-wrapper').scrollLeft() - initialScrollValue);
+            var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);
             $elListPager.css({
                 'position': 'relative',
                 'right': scrollAmount
@@ -36,7 +36,7 @@ LS.resp = (function() {
         else {
             $elListPager.css({
                 'position': 'relative',
-                'left': $('.scrolling-wrapper').scrollLeft()
+                'left': $(pager).scrollLeft()
             });
         }
     }
@@ -50,8 +50,13 @@ LS.resp = (function() {
          */
         bindScrollWrapper: function () {
             setListPagerPosition();
-            $(document).find('.scrolling-wrapper').scroll(function() {
-                setListPagerPosition();
+            $('#bottom-scroller').scroll(function() {
+                setListPagerPosition(this);
+                $("#top-scroller").scrollLeft($("#bottom-scroller").scrollLeft());
+            });
+            $('#top-scroller').scroll(function() {
+                setListPagerPosition(this);
+                $("#bottom-scroller").scrollLeft($("#top-scroller").scrollLeft());
             });
 
             reinstallResponsesFilterDatePicker();
@@ -76,6 +81,9 @@ LS.resp = (function() {
 
 $(document).ready(function(){
 
+    $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
+    $('#top-scroller').height('18px');
+    
     LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
     LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
 

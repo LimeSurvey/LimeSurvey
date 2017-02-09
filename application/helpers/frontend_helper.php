@@ -1865,6 +1865,10 @@ function doAssessment($surveyid, $returndataonly=false)
             $groups=array();
             foreach($fieldmap as $field)
             {
+                // Init Assessment Value
+                $assessmentValue = NULL;
+
+                // Default Assessment Value Calculation
                 if (in_array($field['type'],array(Question::QT_1_ARRAY_MULTISCALE,Question::QT_F_ARRAY_FLEXIBLE_ROW,Question::QT_H_ARRAY_FLEXIBLE_COLUMN,Question::QT_W,Question::QT_Z_LIST_RADIO_FLEXIBLE,Question::QT_L_LIST_DROPDOWN,Question::QT_EXCLAMATION_LIST_DROPDOWN,Question::QT_M_MULTIPLE_CHOICE,Question::QT_O_LIST_WITH_COMMENT,Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)))
                 {
                     $fieldmap[$field['fieldname']]['assessment_value']=0;
@@ -1875,8 +1879,7 @@ function doAssessment($surveyid, $returndataonly=false)
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                             {
                                 $aAttributes=getQuestionAttributeValues($field['qid']);
-                                $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
-                                $total=$total+(int)$aAttributes['assessment_value'];
+                                $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         }
                         else  // Single choice question
@@ -1886,13 +1889,56 @@ function doAssessment($surveyid, $returndataonly=false)
                             if ($usresult)
                             {
                                 $usrow = $usresult->read();
-                                $fieldmap[$field['fieldname']]['assessment_value']=$usrow['assessment_value'];
-                                $total=$total+$usrow['assessment_value'];
+                                $assessmentValue = $usrow['assessment_value'];
                             }
                         }
                     }
                     $groups[]=$field['gid'];
                 }
+
+                // If this is a question (and not a survey field, like ID), save asessment value
+                if ($field['qid'] > 0)
+                {
+                    /**
+                     * Allow Plugin to update assessment value
+                     */
+                    // Prepare Event Info
+                    $event = new PluginEvent('afterSurveyQuestionAssessment');
+                    $event->set('surveyId', $surveyid);
+                    $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
+                    $event->set('gid', $field['gid']);
+                    $event->set('qid', $field['qid']);
+
+                    if (array_key_exists('sqid', $field))
+                    {
+
+                        $event->set('sqid', $field['sqid']);
+                    }
+
+                    if (array_key_exists('aid', $field))
+                    {
+
+                        $event->set('aid', $field['aid']);
+                    }
+
+                    $event->set('assessmentValue', $assessmentValue);
+
+                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']]))
+                    {
+                        $event->set('response', $_SESSION['survey_'.$surveyid][$field['fieldname']]);
+                    }
+
+                    // Dispatch Event and Get new assessment value
+                    App()->getPluginManager()->dispatchEvent($event);
+                    $updatedAssessmentValue=$event->get('assessmentValue', $assessmentValue);
+
+                    /**
+                     * Save assessment value on the response
+                     */
+                    $fieldmap[$field['fieldname']]['assessment_value']=$updatedAssessmentValue;
+                    $total=$total+$updatedAssessmentValue;
+                }
+
                 $i++;
             }
 

@@ -365,8 +365,11 @@ class Survey_Common_Action extends CAction
 
         if( !Yii::app()->user->isGuest )
         {
-        if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
-            Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+            if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
+                Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        }
+        else{
+            echo '</body></html>';
         }
 
         $out = ob_get_contents();
@@ -380,6 +383,11 @@ class Survey_Common_Action extends CAction
      */
     function _updatenotification()
     {
+        // Lower dbversionnumbers will not have the notifications table.
+        if (Yii::app()->getConfig('dbversionnumber') < 259) {
+            return;
+        }
+
         if( !Yii::app()->user->isGuest && Yii::app()->getConfig('updatable'))
         {
             $updateModel = new UpdateForm();

@@ -25,9 +25,8 @@
     <?php if($browse): ?>
         <?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post')."\n" ;?>
             <p>
+                <?php Yii::app()->user->setState('sql_'.$surveyid,$sql); ?>
                 <input type='submit' class='btn btn-default' value='<?php eT("Browse");?>' />
-                <input type='hidden' name='sid' value='<?php echo $surveyid; ?>'/>
-                <input type='hidden' name='sql' value="<?php echo $sql; ?>"/>
                 <input type='hidden' name='subaction' value='all'/>
             </p>
         </form>
