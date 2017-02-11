@@ -1,3 +1,10 @@
+
+<script>
+    function addStaticRaw(){
+        alert("kjdf");
+        $('#party-ledger-grid tbody tr:first').before("<tr><td>Your static raw blah blah</td></tr>");
+    }
+</script>
 <?php
 
 /* @var $this AdminController */
@@ -79,7 +86,7 @@
                                 'header'=>gT("Action"),
                                 'value'=>function($oQuota)use($oSurvey,$editUrl,$deleteUrl){
                                     /** @var Quota $oQuota */
-                                    $this->renderPartial('/admin/quotas/viewquotase_quota_actions',
+                                    $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
                                         array(
                                             'oSurvey'=>$oSurvey,
                                             'oQuota'=>$oQuota,
@@ -95,10 +102,20 @@
                                     'align'=>'right',
                                 ),
                             ),
+                            array(
+                                'type'=>'raw',
+                                'value'=>function($oQuota)use($oSurvey){
+                                    /** @var Quota $oQuota */
+                                    $this->renderPartial('/admin/quotas/viewquotas_quota_items',
+                                        array(
+                                            'oSurvey'=>$oSurvey,
+                                            'oQuota'=>$oQuota,
+                                        ));
+                                },
+                            ),
 
                         ),
                         'itemsCssClass' =>'table-striped',
-                        'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
                     ));
                     ?>
                 </div>
