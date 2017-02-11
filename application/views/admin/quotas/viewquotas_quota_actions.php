@@ -31,5 +31,20 @@
         'target'=>'dialog',
         'data-tooltip' => 'true'
     ));
-} ?>
-    
+}
+// the items will be placed into the LAST column to insert an additional row for items
+?>
+</tr>
+<tr>
+    <td></td>
+    <td colspan="6">
+        <?php
+        $this->renderPartial('/admin/quotas/viewquotas_quota_items',
+            array(
+                'oSurvey'=>$oSurvey,
+                'oQuota'=>$oQuota,
+            ));
+        ?>
+    </td>
+
+<?php // and now let gridView to finish the row <tr>

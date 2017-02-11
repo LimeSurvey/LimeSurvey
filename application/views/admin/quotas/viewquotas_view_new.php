@@ -1,10 +1,3 @@
-
-<script>
-    function addStaticRaw(){
-        alert("kjdf");
-        $('#party-ledger-grid tbody tr:first').before("<tr><td>Your static raw blah blah</td></tr>");
-    }
-</script>
 <?php
 
 /* @var $this AdminController */
@@ -37,9 +30,7 @@
                     <?php
                     $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $oDataProvider,
-
-                        // Number of row per page selection
-                        'id' => 'survey-grid',
+                        'id' => 'quota-grid',
                         'emptyText'=>gT('No quotas'),
 
                         'columns' => array(
@@ -58,9 +49,9 @@
                                 'type'=>'raw',
                                 'value'=>function($oQuota){
                                     if($oQuota->active==1){
-                                        return '<font color="#48B150">'.gT("Active").'</font>';
+                                        return CHtml::tag('span',array('class'=>'text-success'),gT("Active"));
                                     }else{
-                                        return '<font color="#B73838">'.gT("Not active").'</font>';
+                                        return CHtml::tag('span',array('class'=>'text-danger'),gT("Not active"));
                                     }
                                 },
                             ),
@@ -77,9 +68,10 @@
                                 'value'=>function($oQuota){
                                     if($oQuota->action==1){
                                         return gT("Terminate survey");
-                                    }elseif ($oQuota->action==1){
+                                    }elseif ($oQuota->action==2){
                                         return gT("Terminate survey with warning");
                                     }
+                                    return null;
                                 },
                             ),
                             array(
@@ -101,17 +93,6 @@
                                 'htmlOptions'=>array(
                                     'align'=>'right',
                                 ),
-                            ),
-                            array(
-                                'type'=>'raw',
-                                'value'=>function($oQuota)use($oSurvey){
-                                    /** @var Quota $oQuota */
-                                    $this->renderPartial('/admin/quotas/viewquotas_quota_items',
-                                        array(
-                                            'oSurvey'=>$oSurvey,
-                                            'oQuota'=>$oQuota,
-                                        ));
-                                },
                             ),
 
                         ),
