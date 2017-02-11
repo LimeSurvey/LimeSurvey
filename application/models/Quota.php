@@ -83,7 +83,16 @@ class Quota extends LSActiveRecord
             array('autoload_url', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
-
+    public function attributeLabels()
+    {
+        return array(
+            'name'=> gT("Quota name"),
+            'active'=> gT("Status"),
+            'qlimit'=> gT("Limit"),
+            'autoload_url'=> gT("Autoload URL"),
+            'action'=> gT("Quota action"),
+        );
+    }
 
     function insertRecords($data)
     {
