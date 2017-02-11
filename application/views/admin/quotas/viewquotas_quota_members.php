@@ -21,11 +21,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'name'=>'answer_title',
         ),
         array(
-            'header'=>$this->renderPartial('/admin/quotas/viewquotas_quota_members_addbutton',
-                                array(
-                                    'oSurvey'=>$oSurvey,
-                                    'oQuota'=>$oQuota,
-                                )),
+            'header'=>getAddAnswerButton($oSurvey,$oQuota),
             'type'=>'raw',
             'value'=>function($data)use($oQuota,$oSurvey){
                 $this->renderPartial('/admin/quotas/viewquotas_quota_members_actions',
