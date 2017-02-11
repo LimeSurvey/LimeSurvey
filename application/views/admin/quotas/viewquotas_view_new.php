@@ -43,6 +43,27 @@
                                 'name'=>'name',
                                 'value'=>'$data->name',
                             ),
+                            array(
+                                'name'=>'active',
+                                'type'=>'raw',
+                                'value'=>function($model){
+                                    if($model->active==1){
+                                        return '<font color="#48B150">'.gT("Active").'</font>';
+                                    }else{
+                                        echo '<font color="#B73838">'.gT("Not active").'</font>';
+                                    }
+                                },
+                            ),
+                            array(
+                                'name'=>'action',
+                                'value'=>function($model){
+                                    if($model->action==1){
+                                        return eT("Terminate survey");
+                                    }elseif ($model->action==1){
+                                        return eT("Terminate survey with warning");
+                                    }
+                                },
+                            ),
 
                         ),
                         'itemsCssClass' =>'table-striped',
