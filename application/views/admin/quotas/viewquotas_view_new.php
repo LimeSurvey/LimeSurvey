@@ -49,28 +49,28 @@
                             array(
                                 'name'=>'active',
                                 'type'=>'raw',
-                                'value'=>function($model){
-                                    if($model->active==1){
+                                'value'=>function($oQuota){
+                                    if($oQuota->active==1){
                                         return '<font color="#48B150">'.gT("Active").'</font>';
                                     }else{
-                                        echo '<font color="#B73838">'.gT("Not active").'</font>';
+                                        return '<font color="#B73838">'.gT("Not active").'</font>';
                                     }
                                 },
                             ),
                             array(
                                 'name'=>'completed',
                                 'type'=>'raw',
-                                'value'=>function($model)use($oSurvey){
-                                    return getQuotaCompletedCount($oSurvey->sid, $model->id);
+                                'value'=>function($oQuota)use($oSurvey){
+                                    return getQuotaCompletedCount($oSurvey->sid, $oQuota->id);
                                 },
                             ),
                             'qlimit',
                             array(
                                 'name'=>'action',
-                                'value'=>function($model){
-                                    if($model->action==1){
+                                'value'=>function($oQuota){
+                                    if($oQuota->action==1){
                                         return gT("Terminate survey");
-                                    }elseif ($model->action==1){
+                                    }elseif ($oQuota->action==1){
                                         return gT("Terminate survey with warning");
                                     }
                                 },
