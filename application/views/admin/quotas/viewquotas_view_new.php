@@ -27,7 +27,6 @@ function getAddAnswerButton($oSurvey,$oQuota){
     return $out;
 }
 
-
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
@@ -52,6 +51,8 @@ function getAddAnswerButton($oSurvey,$oQuota){
                         'dataProvider' => $oDataProvider,
                         'id' => 'quota-grid',
                         'emptyText'=>gT('No quotas'),
+                        'enablePagination'=>false,
+                        'template' => '{items}',
 
                         'columns' => array(
 

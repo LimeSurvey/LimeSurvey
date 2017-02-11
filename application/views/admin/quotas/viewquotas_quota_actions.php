@@ -38,7 +38,7 @@
 </tr>
 <tr>
     <td></td>
-    <td colspan="6">
+    <td colspan="6" style="padding:0;">
         <?php
         $this->renderPartial('/admin/quotas/viewquotas_quota_members',
             array(

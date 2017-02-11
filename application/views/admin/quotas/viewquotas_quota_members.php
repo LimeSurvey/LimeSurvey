@@ -10,6 +10,9 @@ $oDataProvider=new CArrayDataProvider($aQuotaItems[$oQuota->id]);
 $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $oDataProvider,
     'id' => 'quota-members-grid',
+    'enablePagination'=>false,
+    'template' => '{items}',
+
     'columns' => array(
 
         array(
@@ -32,16 +35,17 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                     ));
             },
             'headerHtmlOptions'=>array(
-                'style'=>'text-align:right;',
+                'style'=>'text-align:right;padding:3px;',
             ),
             'htmlOptions'=>array(
                 'align'=>'right',
+                'style'=>'text-align:right;padding:3px;',
             ),
 
         ),
 
     ),
-    'itemsCssClass' =>'table-striped',
+    'itemsCssClass' =>'table-striped table-condensed ',
 ));
 
 ?>
