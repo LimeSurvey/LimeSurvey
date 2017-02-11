@@ -128,6 +128,7 @@ class quotas extends Survey_Common_Action
         if (count($aResult) > 0)
         {
             $aData['output'] = '';
+            $aQuotaItems = array();
 
             //loop through all quotas
             foreach ($aResult as $aQuotaListing)
@@ -172,17 +173,29 @@ class quotas extends Survey_Common_Action
                 //check how many sub-elements exist for a certain quota
                 $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
 
+
                 //loop through all sub-parts
-                foreach ($aResults2 as $aQuotaQuestions)
+                foreach ($aResults2 as $oQuotaMember)
                 {
-                    $aQuestionAnswers = self::getQuotaAnswers($aQuotaQuestions['qid'], $iSurveyId, $aQuotaListing['id']);
+                    $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $aQuotaListing['id']);
+                    $aQuotaItems[$aQuotaListing['id']][] = array(
+                        'question_title' => $aQuestionAnswers[$oQuotaMember->code]['Title'],
+                        'answer_title' => flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']),
+                        'oQuotaMember'=>$oQuotaMember,
+                    );
+
                     $aData['question_answers'] = $aQuestionAnswers;
-                    $aData['quota_questions'] = $aQuotaQuestions;
+                    $aData['quota_questions'] = $oQuotaMember;
+
                     //$aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
                     //$aData['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
                 }
 
+                //print_r($aQuotaItems);
+                //die;
+
             }
+            $aData['aQuotaItems'] = $aQuotaItems;
         }
         else
         {

@@ -5,6 +5,7 @@
 /* @var CActiveDataProvider $oDataProvider Containing Quota objects*/
 /* @var string $editUrl */
 /* @var string $deleteUrl */
+/* @var array $aQuotaItems */
 
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
@@ -26,8 +27,7 @@
             <!-- Grid -->
             <div class="row">
                 <div class="col-sm-12 content-right">
-                    <?php
-                    $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
+                    <?php $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $oDataProvider,
                         'id' => 'quota-grid',
                         'emptyText'=>gT('No quotas'),
@@ -75,7 +75,7 @@
                             ),
                             array(
                                 'header'=>gT("Action"),
-                                'value'=>function($oQuota)use($oSurvey,$editUrl,$deleteUrl,$oDataProvider){
+                                'value'=>function($oQuota)use($oSurvey,$editUrl,$deleteUrl,$aQuotaItems){
                                     /** @var Quota $oQuota */
                                     $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
                                         array(
@@ -83,8 +83,7 @@
                                             'oQuota'=>$oQuota,
                                             'editUrl'=>$editUrl,
                                             'deleteUrl'=>$deleteUrl,
-                                            'oDataProvider'=>$oDataProvider,
-
+                                            'aQuotaItems'=>$aQuotaItems,
                                         ));
                                 },
                                 'headerHtmlOptions'=>array(

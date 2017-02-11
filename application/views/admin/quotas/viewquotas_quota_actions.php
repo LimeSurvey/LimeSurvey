@@ -4,7 +4,7 @@
 /* @var Quota $oQuota */
 /* @var string $editUrl */
 /* @var string $deleteUrl */
-/* @var CActiveDataProvider $oDataProvider Containing Quota item objects*/
+/* @var array $aQuotaItems */
 
 ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','update')) { ?>
@@ -40,11 +40,11 @@
     <td></td>
     <td colspan="6">
         <?php
-        $this->renderPartial('/admin/quotas/viewquotas_quota_items',
+        $this->renderPartial('/admin/quotas/viewquotas_quota_members',
             array(
                 'oSurvey'=>$oSurvey,
                 'oQuota'=>$oQuota,
-                'oDataProvider'=>$oDataProvider,
+                'aQuotaItems'=>$aQuotaItems,
             ));
         ?>
     </td>
