@@ -4,6 +4,9 @@
 /* @var Survey $oSurvey */
 /* @var Quota[] $aQuotas */
 /* @var CActiveDataProvider $oDataProvider */
+/* @var string $editUrl */
+/* @var string $deleteUrl */
+
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
@@ -30,7 +33,7 @@
 
                         // Number of row per page selection
                         'id' => 'survey-grid',
-                        'emptyText'=>gT('No quotas.'),
+                        'emptyText'=>gT('No quotas'),
 
                         'columns' => array(
 
@@ -55,23 +58,47 @@
                                 },
                             ),
                             array(
+                                'name'=>'completed',
+                                'type'=>'raw',
+                                'value'=>function($model)use($oSurvey){
+                                    return getQuotaCompletedCount($oSurvey->sid, $model->id);
+                                },
+                            ),
+                            'qlimit',
+                            array(
                                 'name'=>'action',
                                 'value'=>function($model){
                                     if($model->action==1){
-                                        return eT("Terminate survey");
+                                        return gT("Terminate survey");
                                     }elseif ($model->action==1){
-                                        return eT("Terminate survey with warning");
+                                        return gT("Terminate survey with warning");
                                     }
                                 },
+                            ),
+                            array(
+                                'header'=>gT("Action"),
+                                'value'=>function($oQuota)use($oSurvey,$editUrl,$deleteUrl){
+                                    /** @var Quota $oQuota */
+                                    $this->renderPartial('/admin/quotas/viewquotase_quota_actions',
+                                        array(
+                                            'oSurvey'=>$oSurvey,
+                                            'oQuota'=>$oQuota,
+                                            'editUrl'=>$editUrl,
+                                            'deleteUrl'=>$deleteUrl,
+
+                                        ));
+                                },
+                                'headerHtmlOptions'=>array(
+                                    'style'=>'text-align:right;',
+                                ),
+                                'htmlOptions'=>array(
+                                    'align'=>'right',
+                                ),
                             ),
 
                         ),
                         'itemsCssClass' =>'table-striped',
-                        //'htmlOptions'=>array('style'=>'cursor: pointer;'),
                         'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
-                        //'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-                        'ajaxUpdate' => true,
-                        'afterAjaxUpdate' => 'doToolTip',
                     ));
                     ?>
                 </div>
