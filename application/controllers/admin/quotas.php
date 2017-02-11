@@ -91,7 +91,7 @@ class quotas extends Survey_Common_Action
 
         if ($quickreport == false)
         {
-            $aViewUrls[] = 'viewquotas_view';
+            $aViewUrls[] = 'viewquotas_view_new';
         }
 
         $aData['surveyid'] = $iSurveyID = $surveyid =  sanitize_int($iSurveyId);
@@ -118,6 +118,10 @@ class quotas extends Survey_Common_Action
         $criteria->params = array(':survey' => $iSurveyId, ':lang' => $aData['sBaseLang']);
         $criteria->order = 'name';
         $aResult = Quota::model()->findAll($criteria);
+        $aData['aQuotas'] = $aResult;
+        $aData['oDataProvider'] = new CActiveDataProvider(Quota::class, array(
+            'criteria' => $criteria,
+        ));
 
         //if there are quotas let's proceed
         $aViewUrls['output'] = '';
@@ -162,8 +166,8 @@ class quotas extends Survey_Common_Action
                     'subaction' => 'quota_delquota'
                 ));
 
-                $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
-                $aData['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
+                //$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
+                //$aData['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
 
                 //check how many sub-elements exist for a certain quota
                 $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
@@ -174,7 +178,7 @@ class quotas extends Survey_Common_Action
                     $aQuestionAnswers = self::getQuotaAnswers($aQuotaQuestions['qid'], $iSurveyId, $aQuotaListing['id']);
                     $aData['question_answers'] = $aQuestionAnswers;
                     $aData['quota_questions'] = $aQuotaQuestions;
-                    $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
+                    //$aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
                     //$aData['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
                 }
 
@@ -193,7 +197,8 @@ class quotas extends Survey_Common_Action
         if ($quickreport == false)
         {
             //$aViewUrls[] = 'viewquotasfooter_view';
-            $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasfooter_view', $aData, true);
+            //$aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasfooter_view', $aData, true);
+            //$aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotas_view_new', $aData, true);
             $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
         }
         else

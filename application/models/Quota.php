@@ -84,6 +84,7 @@ class Quota extends LSActiveRecord
         );
     }
 
+
     function insertRecords($data)
     {
         $quota = new self;
