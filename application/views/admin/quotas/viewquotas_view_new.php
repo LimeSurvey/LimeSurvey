@@ -2,8 +2,7 @@
 
 /* @var $this AdminController */
 /* @var Survey $oSurvey */
-/* @var Quota[] $aQuotas */
-/* @var CActiveDataProvider $oDataProvider */
+/* @var CActiveDataProvider $oDataProvider Containing Quota objects*/
 /* @var string $editUrl */
 /* @var string $deleteUrl */
 
@@ -76,7 +75,7 @@
                             ),
                             array(
                                 'header'=>gT("Action"),
-                                'value'=>function($oQuota)use($oSurvey,$editUrl,$deleteUrl){
+                                'value'=>function($oQuota)use($oSurvey,$editUrl,$deleteUrl,$oDataProvider){
                                     /** @var Quota $oQuota */
                                     $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
                                         array(
@@ -84,6 +83,7 @@
                                             'oQuota'=>$oQuota,
                                             'editUrl'=>$editUrl,
                                             'deleteUrl'=>$deleteUrl,
+                                            'oDataProvider'=>$oDataProvider,
 
                                         ));
                                 },

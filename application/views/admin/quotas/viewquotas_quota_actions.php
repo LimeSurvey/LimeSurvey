@@ -4,6 +4,7 @@
 /* @var Quota $oQuota */
 /* @var string $editUrl */
 /* @var string $deleteUrl */
+/* @var CActiveDataProvider $oDataProvider Containing Quota item objects*/
 
 ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','update')) { ?>
@@ -43,6 +44,7 @@
             array(
                 'oSurvey'=>$oSurvey,
                 'oQuota'=>$oQuota,
+                'oDataProvider'=>$oDataProvider,
             ));
         ?>
     </td>
