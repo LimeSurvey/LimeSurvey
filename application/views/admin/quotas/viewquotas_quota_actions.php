@@ -34,6 +34,7 @@
     ));
 }
 // the items will be placed into the LAST column to insert an additional row for items
+if (!empty($aQuotaItems) ):
 ?>
 </tr>
 <tr>
@@ -70,4 +71,4 @@
         </div>
     </td>
 
-<?php // and now let gridView to finish the row <tr>
+<?php endif;// and now let gridView to finish the row <tr>

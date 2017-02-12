@@ -5,45 +5,46 @@
 /* @var CActiveDataProvider $oDataProvider Containing Quota item objects*/
 /* @var array $aQuotaItems */
 
-$oDataProvider=new CArrayDataProvider($aQuotaItems[$oQuota->id]);
-$this->widget('bootstrap.widgets.TbGridView', array(
-    'dataProvider' => $oDataProvider,
-    'id' => 'quota-members-grid',
-    'enablePagination'=>false,
-    'template' => '{items}',
+if (!empty($aQuotaItems) && isset($aQuotaItems[$oQuota->id]) ){
 
-    'columns' => array(
+    $oDataProvider=new CArrayDataProvider($aQuotaItems[$oQuota->id]);
+    $this->widget('bootstrap.widgets.TbGridView', array(
+        'dataProvider' => $oDataProvider,
+        'id' => 'quota-members-grid',
+        'enablePagination'=>false,
+        'template' => '{items}',
 
-        array(
-            'header'=>gT("Questions"),
-            'name'=>'question_title',
-        ),
-        array(
-            'header'=>gT("Answers"),
-            'name'=>'answer_title',
-        ),
-        array(
-            'type'=>'raw',
-            'value'=>function($data)use($oQuota,$oSurvey){
-                $this->renderPartial('/admin/quotas/viewquotas_quota_members_actions',
-                    array(
-                        'oSurvey'=>$oSurvey,
-                        'oQuota'=>$oQuota,
-                        'oQuotaMember' =>$data['oQuotaMember'],
-                    ));
-            },
-            'headerHtmlOptions'=>array(
-                'style'=>'text-align:right;padding:3px;',
+        'columns' => array(
+
+            array(
+                'header'=>gT("Questions"),
+                'name'=>'question_title',
             ),
-            'htmlOptions'=>array(
-                'align'=>'right',
-                'style'=>'text-align:right;padding:3px;margin:0;',
+            array(
+                'header'=>gT("Answers"),
+                'name'=>'answer_title',
+            ),
+            array(
+                'type'=>'raw',
+                'value'=>function($data)use($oQuota,$oSurvey){
+                    $this->renderPartial('/admin/quotas/viewquotas_quota_members_actions',
+                        array(
+                            'oSurvey'=>$oSurvey,
+                            'oQuota'=>$oQuota,
+                            'oQuotaMember' =>$data['oQuotaMember'],
+                        ));
+                },
+                'headerHtmlOptions'=>array(
+                    'style'=>'text-align:right;padding:3px;',
+                ),
+                'htmlOptions'=>array(
+                    'align'=>'right',
+                    'style'=>'text-align:right;padding:3px;margin:0;',
+                ),
+
             ),
 
         ),
-
-    ),
-    'itemsCssClass' =>'table-striped table-condensed',
-));
-
-?>
+        'itemsCssClass' =>'table-striped table-condensed',
+    ));
+}
