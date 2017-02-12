@@ -3,8 +3,8 @@
 /* @var $this AdminController */
 /* @var Survey $oSurvey */
 /* @var CActiveDataProvider $oDataProvider Containing Quota objects*/
-/* @var string $editUrl */
-/* @var string $deleteUrl */
+/* @var array $aEditUrls */
+/* @var array $aDeleteUrls */
 /* @var array $aQuotaItems */
 /* @var integer $totalquotas */
 /* @var integer $totalcompleted */
@@ -88,14 +88,14 @@
                             ),
                             array(
                                 'header'=>gT("Action"),
-                                'value'=>function($oQuota)use($oSurvey,$editUrl,$deleteUrl,$aQuotaItems){
+                                'value'=>function($oQuota)use($oSurvey,$aEditUrls,$aDeleteUrls,$aQuotaItems){
                                     /** @var Quota $oQuota */
                                     $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
                                         array(
                                             'oSurvey'=>$oSurvey,
                                             'oQuota'=>$oQuota,
-                                            'editUrl'=>$editUrl,
-                                            'deleteUrl'=>$deleteUrl,
+                                            'editUrl'=>$aEditUrls[$oQuota->getPrimaryKey()],
+                                            'deleteUrl'=>$aDeleteUrls[$oQuota->getPrimaryKey()],
                                             'aQuotaItems'=>$aQuotaItems,
                                         ));
                                 },

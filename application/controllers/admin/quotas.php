@@ -118,7 +118,7 @@ class quotas extends Survey_Common_Action
         $criteria->params = array(':survey' => $iSurveyId, ':lang' => $aData['sBaseLang']);
         $criteria->order = 'name';
         $aResult = Quota::model()->findAll($criteria);
-        $aData['aQuotas'] = $aResult;
+
         $aData['oDataProvider'] = new CActiveDataProvider(Quota::class, array(
             'criteria' => $criteria,
         ));
@@ -149,7 +149,7 @@ class quotas extends Survey_Common_Action
                 $aData['totalcompleted'] = $totalcompleted;
 
                 // Edit URL
-                $aData['editUrl'] = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $iSurveyId, array(
+                $aData['aEditUrls'][$aQuotaListing['id']] = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $iSurveyId, array(
                     'sid' => $iSurveyId,
                     'action' => 'quotas',
                     'quota_id' => $aQuotaListing['id'],
@@ -158,7 +158,7 @@ class quotas extends Survey_Common_Action
                 ));
 
                 // Delete URL
-                $aData['deleteUrl'] = App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $iSurveyId, array(
+                $aData['aDeleteUrls'][$aQuotaListing['id']] = App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $iSurveyId, array(
                     'sid' => $iSurveyId,
                     'action' => 'quotas',
                     'quota_id' => $aQuotaListing['id'],

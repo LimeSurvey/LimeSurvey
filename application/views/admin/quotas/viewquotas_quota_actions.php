@@ -6,6 +6,7 @@
 /* @var string $deleteUrl */
 /* @var array $aQuotaItems */
 
+
 ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','update')) { ?>
     <a href="<?php echo $editUrl; ?>" class="btn btn-default" data-toggle='tooltip' title='<?php eT("Edit"); ?>'>
