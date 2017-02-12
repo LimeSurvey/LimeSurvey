@@ -6,7 +6,6 @@
 /* @var array $aQuotaItems */
 
 $oDataProvider=new CArrayDataProvider($aQuotaItems[$oQuota->id]);
-
 $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $oDataProvider,
     'id' => 'quota-members-grid',
@@ -24,7 +23,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'name'=>'answer_title',
         ),
         array(
-            'header'=>getAddAnswerButton($oSurvey,$oQuota),
             'type'=>'raw',
             'value'=>function($data)use($oQuota,$oSurvey){
                 $this->renderPartial('/admin/quotas/viewquotas_quota_members_actions',
@@ -39,13 +37,13 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             ),
             'htmlOptions'=>array(
                 'align'=>'right',
-                'style'=>'text-align:right;padding:3px;',
+                'style'=>'text-align:right;padding:3px;margin:0;',
             ),
 
         ),
 
     ),
-    'itemsCssClass' =>'table-striped table-condensed ',
+    'itemsCssClass' =>'table-striped table-condensed',
 ));
 
 ?>

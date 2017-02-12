@@ -5,7 +5,7 @@
 /* @var QuotaMember $oQuotaMember */
 ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','update')) { ?>
-    <?php echo CHtml::form(array("admin/quotas/sa/delans/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
+    <?php echo CHtml::beginForm(array("admin/quotas/sa/delans/surveyid/{$oSurvey->getPrimaryKey()}"), 'post',array('style'=>'display:inline-block')); ?>
     <input name="submit" type="submit" class="btn btn-default" value="<?php eT("Remove");?>" />
     <input type="hidden" name="sid" value="<?php echo $oSurvey->getPrimaryKey();?>" />
     <input type="hidden" name="action" value="quotas" />

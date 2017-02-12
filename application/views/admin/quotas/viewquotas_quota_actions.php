@@ -38,15 +38,36 @@
 </tr>
 <tr>
     <td></td>
-    <td colspan="6" style="padding:0;">
-        <?php
-        $this->renderPartial('/admin/quotas/viewquotas_quota_members',
-            array(
-                'oSurvey'=>$oSurvey,
-                'oQuota'=>$oQuota,
-                'aQuotaItems'=>$aQuotaItems,
-            ));
-        ?>
+    <td colspan="6" style="padding:6px;">
+        <div class="panel panel-<?php echo ($oQuota->active==1 ? 'primary' : 'default') ?>">
+            <div class="panel-heading">
+                <?php eT("Quota members");?>
+                <span class="pull-right">
+                <?php echo CHtml::beginForm(array("admin/quotas/sa/new_answer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post');?>
+                <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());?>
+                <?php echo CHtml::hiddenField('action','quotas');?>
+                <?php echo CHtml::hiddenField('quota_id',$oQuota->getPrimaryKey());?>
+                <?php echo CHtml::hiddenField('subaction','new_answer');?>
+                <?php echo CHtml::submitButton(gT("Add answer"),array(
+                    'name'=>'submit',
+                    'class'=>'quota_new btn btn-default btn-xs',
+                ));?>
+                <?php echo CHtml::endForm();?>
+
+                </span>
+            </div>
+            <div class="panel-body" style="margin: 3px;padding: 3px;">
+                <?php
+                $this->renderPartial('/admin/quotas/viewquotas_quota_members',
+                    array(
+                        'oSurvey'=>$oSurvey,
+                        'oQuota'=>$oQuota,
+                        'aQuotaItems'=>$aQuotaItems,
+                    ));
+                ?>
+
+            </div>
+        </div>
     </td>
 
 <?php // and now let gridView to finish the row <tr>

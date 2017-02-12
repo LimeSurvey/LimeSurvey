@@ -8,24 +8,6 @@
 /* @var array $aQuotaItems */
 
 
-/**
- * @param Survey $oSurvey
- * @param Quota $oQuota
- * @return string
- */
-function getAddAnswerButton($oSurvey,$oQuota){
-    $out  = CHtml::beginForm(array("admin/quotas/sa/new_answer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post');
-    $out .= CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());
-    $out .= CHtml::hiddenField('action','quotas');
-    $out .= CHtml::hiddenField('quota_id',$oQuota->getPrimaryKey());
-    $out .= CHtml::hiddenField('subaction','new_answer');
-    $out .= CHtml::submitButton(gT("Add answer"),array(
-        'name'=>'submit',
-        'class'=>'quota_new btn btn-default',
-    ));
-    $out .= CHtml::endForm();
-    return $out;
-}
 
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
@@ -117,7 +99,7 @@ function getAddAnswerButton($oSurvey,$oQuota){
                             ),
 
                         ),
-                        'itemsCssClass' =>'table-striped',
+                        'itemsCssClass' =>'table-striped table-condensed',
                     ));
                     ?>
                 </div>
