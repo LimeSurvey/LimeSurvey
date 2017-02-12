@@ -135,7 +135,6 @@ class quotas extends Survey_Common_Action
             {
                 $totalquotas += $aQuotaListing['qlimit'];
                 $completed = getQuotaCompletedCount($iSurveyId, $aQuotaListing['id']);
-                $highlight = ($completed >= $aQuotaListing['qlimit']) ? '' : "style='color: orange'"; //Incomplete quotas displayed in red
                 $totalcompleted = $totalcompleted + $completed;
                 $csvoutput[] = $aQuotaListing['name'] . "," . $aQuotaListing['qlimit'] . "," . $completed . "," . ($aQuotaListing['qlimit'] - $completed) . "\r\n";
 
@@ -145,7 +144,6 @@ class quotas extends Survey_Common_Action
                 }
 
                 $aData['quotalisting'] = $aQuotaListing;
-                $aData['highlight'] = $highlight;
                 $aData['completed'] = $completed;
                 $aData['totalquotas'] = $totalquotas;
                 $aData['totalcompleted'] = $totalcompleted;

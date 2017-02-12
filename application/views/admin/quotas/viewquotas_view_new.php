@@ -75,7 +75,10 @@
                                 'name'=>'completed',
                                 'type'=>'raw',
                                 'value'=>function($oQuota)use($oSurvey){
-                                    return getQuotaCompletedCount($oSurvey->sid, $oQuota->id);
+                                    $completerCount =getQuotaCompletedCount($oSurvey->sid, $oQuota->id);
+                                    $class = ($completerCount <= $oQuota->qlimit ? 'text-warning':null);
+                                    $span = CHtml::tag('span',array('class'=>$class),$completerCount);
+                                    return $span;
                                 },
                                 'footer'=>$totalcompleted,
                             ),
