@@ -38,7 +38,8 @@
 </tr>
 <tr>
     <td></td>
-    <td colspan="6" style="padding:6px;">
+    <td></td>
+    <td colspan="5" style="padding:6px;">
         <div class="panel panel-<?php echo ($oQuota->active==1 ? 'primary' : 'default') ?>">
             <div class="panel-heading">
                 <?php eT("Quota members");?>
@@ -65,7 +66,6 @@
                         'aQuotaItems'=>$aQuotaItems,
                     ));
                 ?>
-
             </div>
         </div>
     </td>

@@ -6,6 +6,8 @@
 /* @var string $editUrl */
 /* @var string $deleteUrl */
 /* @var array $aQuotaItems */
+/* @var integer $totalquotas */
+/* @var integer $totalcompleted */
 
 
 
@@ -59,14 +61,6 @@
                                 },
                             ),
                             array(
-                                'name'=>'completed',
-                                'type'=>'raw',
-                                'value'=>function($oQuota)use($oSurvey){
-                                    return getQuotaCompletedCount($oSurvey->sid, $oQuota->id);
-                                },
-                            ),
-                            'qlimit',
-                            array(
                                 'name'=>'action',
                                 'value'=>function($oQuota){
                                     if($oQuota->action==1){
@@ -76,6 +70,18 @@
                                     }
                                     return null;
                                 },
+                            ),
+                            array(
+                                'name'=>'completed',
+                                'type'=>'raw',
+                                'value'=>function($oQuota)use($oSurvey){
+                                    return getQuotaCompletedCount($oSurvey->sid, $oQuota->id);
+                                },
+                                'footer'=>$totalcompleted,
+                            ),
+                            array(
+                                'name'=>'qlimit',
+                                'footer'=>$totalquotas,
                             ),
                             array(
                                 'header'=>gT("Action"),
@@ -103,9 +109,20 @@
                     ));
                     ?>
                 </div>
+                <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','create')):?>
+                    <div class="pull-right">
+                        <?php echo CHtml::beginForm(array("admin/quotas/sa/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
+                        <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());?>
+                        <?php echo CHtml::hiddenField('action','quotas');?>
+                        <?php echo CHtml::hiddenField('subaction','new_quota');?>
+                        <?php echo CHtml::submitButton(gT("Add new quota"),array(
+                            'name'=>'submit',
+                            'class'=>'quota_new btn btn-default',
+                        ));?>
+                        <?php echo CHtml::endForm();?>
+                    </div>
+                <?php endif; ?>
             </div>
-
-
         </div>
     </div>
 </div>

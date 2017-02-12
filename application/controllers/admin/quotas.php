@@ -167,13 +167,9 @@ class quotas extends Survey_Common_Action
                     'subaction' => 'quota_delquota'
                 ));
 
-                //$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
-                //$aData['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
 
                 //check how many sub-elements exist for a certain quota
                 $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
-
-
                 //loop through all sub-parts
                 foreach ($aResults2 as $oQuotaMember)
                 {
@@ -184,15 +180,7 @@ class quotas extends Survey_Common_Action
                         'oQuotaMember'=>$oQuotaMember,
                     );
 
-                    $aData['question_answers'] = $aQuestionAnswers;
-                    $aData['quota_questions'] = $oQuotaMember;
-
-                    //$aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
-                    //$aData['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
                 }
-
-                //print_r($aQuotaItems);
-                //die;
 
             }
             $aData['aQuotaItems'] = $aQuotaItems;
@@ -209,9 +197,6 @@ class quotas extends Survey_Common_Action
 
         if ($quickreport == false)
         {
-            //$aViewUrls[] = 'viewquotasfooter_view';
-            //$aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasfooter_view', $aData, true);
-            //$aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotas_view_new', $aData, true);
             $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
         }
         else
