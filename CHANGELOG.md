@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## Unreleased
+
+### Translation
+- Update catalan translation (Thanks to [ben_v](http://www.pmidcalc.org/)
+
 ## [1.3.0] - 2017-02-02
 
 ### Fix
