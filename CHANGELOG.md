@@ -1,16 +1,18 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## Unreleased
+## [1.3.1] - 2017-02-02
+
+### Fix
+- Hidden Welcome page can be shown with token (Thank to [@Ben_V](http://www.pmidcalc.org/)) (re-fix)
 
 ### Translation
-- Update catalan translation (Thanks to [ben_v](http://www.pmidcalc.org/)
+- Update catalan translation (Thanks to [@Ben_V](http://www.pmidcalc.org/)
 
 ## [1.3.0] - 2017-02-02
 
 ### Fix
 - Import lsa don't import all token
-- Hidden Welcome page can be shown with token (Thank to [@Ben_V](https://framagit.org/ben_v))
 
 ### Feature
 - Allow to update via cli
