@@ -17,7 +17,7 @@
 
         /**
          * Call for cron action
-         * @interval int minityes for interval if needed
+         * @interval int $interval Minutes for interval
          * @return void
          */
         public function actionCron($interval=null)
@@ -29,10 +29,10 @@
         }
 
         /**
-         * Call direct by command (it's default)
-         * @plugin string : the plugin name, target of action
-         * @function mixed : extra param for plugin if needed
-         * @options mixed : extra param for plugin if needed
+         * Call directly an event by command (it's default)
+         * @param string $target Target of action, plugin name for example
+         * @param mixed $function Extra parameters for plugin
+         * @param mixed $option Extra parameters for plugin
          * @return void
          */
         public function actionIndex($target, $function=null,$option=null)
