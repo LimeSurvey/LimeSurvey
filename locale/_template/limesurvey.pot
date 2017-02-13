@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-02-10 14:18:27+00:00\n"
+"POT-Creation-Date: 2017-02-13 11:55:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14201,6 +14201,7 @@ msgid "RemoteControl is available using %s for transport and exposes the followi
 msgstr ""
 
 #: application/views/admin/responses/browseallfiltered_view.php:11
+#: application/views/admin/responses/listResponses_view.php:50
 msgid "Showing filtered results"
 msgstr ""
 
@@ -14397,10 +14398,6 @@ msgstr ""
 
 #: application/views/admin/responses/listResponses_view.php:24
 msgid "Compact"
-msgstr ""
-
-#: application/views/admin/responses/listResponses_view.php:50
-msgid "Showing Filtered Results"
 msgstr ""
 
 #: application/views/admin/responses/listResponses_view.php:53
