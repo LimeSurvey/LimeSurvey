@@ -263,6 +263,10 @@ abstract class PluginBase implements iPlugin {
     {
         $alias = 'plugin_views_folder' . $this->id;
         \Yii::setPathOfAlias($alias, $this->getDir());
+        if (isset($data['plugin'])) {
+            throw new \InvalidArgumentException('$data cannot contain plugin');
+        }
+        $data['plugin'] = $this;
         return \Yii::app()->controller->renderPartial($alias .'.views.' . $viewfile, $data, $return, $processOutput);
     }
 
