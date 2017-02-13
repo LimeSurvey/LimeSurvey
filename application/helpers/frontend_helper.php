@@ -683,26 +683,22 @@ function sendSubmitNotifications($surveyid)
         $oldqid = 0;
         foreach ($aFullResponseTable as $sFieldname=>$fname)
         {
-            $fname[0]=viewHelper::flatEllipsizeText($fname[0],true,0);
-            $fname[1]=viewHelper::flatEllipsizeText($fname[1],true,0);
-            if (substr($sFieldname,0,4)=='gid_')
-            {
-                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
-                $ResultTableText .="\n** {$fname[0]} ** \n";
-            }
-            elseif (substr($sFieldname,0,4)=='qid_')
-            {
-                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
-                $ResultTableText .="* {$fname[0]} \n";
-            }
-            elseif(empty($fname[1]))
-            {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion printanswersquestionhead'><td>{$fname[0]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
-                $ResultTableText .="* {$fname[0]} \t\t\t : {$fname[2]}\n";
-            }else
-            {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[1]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
-                $ResultTableText .="- \t {$fname[1]} \t\t : {$fname[2]}\n";
+            $questionHtml=viewHelper::purified($fname[0]);
+            $questionText=viewHelper::flatEllipsizeText($fname[0],true,0);
+            $subQuestionHtml=viewHelper::purified($fname[1]);
+            $subQuestionText=viewHelper::flatEllipsizeText($fname[1],true,0);
+            if (substr($sFieldname,0,4)=='gid_') {
+                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$questionHtml}</td></tr>\n";
+                $ResultTableText .="\n** {$questionText} ** \n";
+            } elseif (substr($sFieldname,0,4)=='qid_') {
+                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$questionHtml}</td></tr>\n";
+                $ResultTableText .="* {$questionText} \n";
+            } elseif(empty($fname[1])) {
+                $ResultTableHTML .= "\t<tr class='printanswersquestion printanswersquestionhead'><td>{$questionHtml}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
+                $ResultTableText .="* {$questionText} \t\t\t : {$fname[2]}\n";
+            } else {
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$subQuestionHtml}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
+                $ResultTableText .="- \t {$subQuestionText} \t\t : {$fname[2]}\n";
             }
         }
         $ResultTableHTML .= "</table>\n";
@@ -1171,7 +1167,7 @@ function buildsurveysession($surveyid,$preview=false)
         }
     }
 
-    
+
     //RESET ALL THE SESSION VARIABLES AND START AGAIN
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
     unset($_SESSION['survey_'.$surveyid]['fieldarray']);
@@ -1182,7 +1178,7 @@ function buildsurveysession($surveyid,$preview=false)
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
     // Generate Session ID
     Yii:app()->session->regenerateID(true);
-    
+
     // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
     if (returnGlobal('lang',true))
     {

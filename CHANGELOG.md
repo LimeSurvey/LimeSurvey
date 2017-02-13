@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## Not released
+
+### Feature
+- Leave partial HTML in admin email
+
 ## [1.3.1] - 2017-02-02
 
 ### Fix
