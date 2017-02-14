@@ -1335,9 +1335,8 @@ class export extends Survey_Common_Action {
     private function _exportPrintableHtmls($iSurveyID){
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $oTemplate = Template::model()->getInstance($oSurvey->template);
-        $cssDir = Template::getTemplateURL($oSurvey->template).'/css';
-        $fullCssDir = Template::getTemplatePath($oSurvey->template).'/css';
-        $cssFile = Template::getTemplatePath($oSurvey->template).'/css/print_template.css';
+        $assetsDir = Template::getTemplateURL($oSurvey->template);
+        $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
         if(!empty($aLanguages)){
             $tempdir = Yii::app()->getConfig("tempdir");
@@ -1348,7 +1347,7 @@ class export extends Survey_Common_Action {
             Yii::app()->loadLibrary('admin.pclzip');
             $z = new PclZip($zipfile);
             $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
-            $z->add($cssFile,PCLZIP_OPT_REMOVE_PATH,$fullCssDir,PCLZIP_OPT_ADD_PATH,$cssDir);
+            $z->add($fullAssetsDir,PCLZIP_OPT_REMOVE_PATH,$fullAssetsDir,PCLZIP_OPT_ADD_PATH,$assetsDir);
 
 
             foreach ($aLanguages as $language){
