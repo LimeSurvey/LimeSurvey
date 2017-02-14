@@ -95,8 +95,8 @@ class printablesurvey extends Survey_Common_Action
             }
             $sFullTemplatePath = $oTemplate->path . DIRECTORY_SEPARATOR;
             $sFullTemplateUrl = Template::model()->getTemplateURL($templatename)."/";
-            define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
-            define('PRINT_TEMPLATE_URL' , $sFullTemplateUrl , true);
+            if (!defined('PRINT_TEMPLATE_DIR')) define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
+            if (!defined('PRINT_TEMPLATE_URL')) define('PRINT_TEMPLATE_URL' , $sFullTemplateUrl , true);
 
             LimeExpressionManager::StartSurvey($surveyid, 'survey',NULL,false,LEM_PRETTY_PRINT_ALL_SYNTAX);
             $moveResult = LimeExpressionManager::NavigateForwards();

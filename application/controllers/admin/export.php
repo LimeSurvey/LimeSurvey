@@ -27,6 +27,10 @@ class export extends Survey_Common_Action {
         parent::__construct($controller, $id);
 
         Yii::app()->loadHelper('export');
+
+        Yii::import('application.controllers.admin.*');
+        require_once('printablesurvey.php');
+
     }
 
     public function survey()
@@ -1385,9 +1389,8 @@ class export extends Survey_Common_Action {
      * @return string File name where the data is stored
      */
     private function _exportPrintableHtml($oSurvey, $language, $tempdir){
-
-        require_once __DIR__.'/printablesurvey.php';
         $printableSurvey = new printablesurvey();
+
         ob_start(); //Start output buffer
         $printableSurvey->index($oSurvey->primaryKey,$language);
         $response = ob_get_contents(); //Grab output
