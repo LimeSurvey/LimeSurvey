@@ -1116,16 +1116,8 @@ class export extends Survey_Common_Action {
 
     private function _surveyexport($action, $iSurveyID)
     {
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $aLanguages = $oSurvey->getAllLanguages();
-        if(!empty($aLanguages)){
-            foreach ($aLanguages as $language){
 
-            }
-
-            //$this->getController()->redirect();
-        }
-        $this->_exportPrintableHtml($iSurveyID,$language);
+        $this->_exportPrintableHtmls($iSurveyID);
         exit;
 
         viewHelper::disableHtmlLogging();
@@ -1339,31 +1331,48 @@ class export extends Survey_Common_Action {
         }
     }
 
-    private function _exportPrintableHtml($iSurveyID,$language){
 
-        require __DIR__.'/printablesurvey.php';
+    private function _exportPrintableHtmls($iSurveyID){
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $aLanguages = $oSurvey->getAllLanguages();
+        if(!empty($aLanguages)){
+            $tempdir = Yii::app()->getConfig("tempdir");
+            $zipdir = $this->_tempdir($tempdir);
+
+            $fn = "html_questionnaires_{$iSurveyID}.zip";
+            $zipfile = "$tempdir/".$fn;
+            Yii::app()->loadLibrary('admin.pclzip');
+            $z = new PclZip($zipfile);
+            $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
+
+
+            foreach ($aLanguages as $language){
+                $file = $this->_exportPrintableHtml($iSurveyID,$language,$tempdir);
+                $z->add($file,PCLZIP_OPT_REMOVE_PATH,$tempdir);
+                unlink($file);
+
+            }
+            $this->_addHeaders($fn,"application/zip",0);
+            header('Content-Transfer-Encoding: binary');
+            readfile($zipfile);
+            unlink($zipfile);
+
+        }
+    }
+
+    private function _exportPrintableHtml($iSurveyID,$language,$tempdir){
+
+        require_once __DIR__.'/printablesurvey.php';
         $printableSurvey = new printablesurvey();
         ob_start(); //Start output buffer
         $printableSurvey->index($iSurveyID,$language);
         $response = ob_get_contents(); //Grab output
         ob_end_clean(); //Discard output buffer
 
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $zipdir = $this->_tempdir($tempdir);
-        $f1 = "$zipdir/survey_{$iSurveyID}_{$language}.html";
+        $f1 = "$tempdir/survey_{$iSurveyID}_{$language}.html";
 
         file_put_contents($f1,$response);
-
-        Yii::app()->loadLibrary('admin.pclzip');
-        $zipfile = "html_questionnaire_{$iSurveyID}_{$language}.zip";
-        $this->_addHeaders($zipfile,"application/zip",0);
-        $z = new PclZip($zipfile);
-
-
-        $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
-        // load the file to send:
-        readfile($zipfile);
-        unlink($zipfile);
+        return $f1;
 
     }
 
