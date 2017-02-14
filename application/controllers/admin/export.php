@@ -1376,15 +1376,13 @@ class export extends Survey_Common_Action {
      * @param Survey $oSurvey
      * @param string $language
      * @param string $tempdir the directory the file will be stored in
-     * @return string
+     * @return string File name where the data is stored
      */
     private function _exportPrintableHtml($oSurvey, $language, $tempdir){
 
         require_once __DIR__.'/printablesurvey.php';
         $printableSurvey = new printablesurvey();
         ob_start(); //Start output buffer
-        $templateDir = Template::getTemplateURL($oSurvey->template);
-
         $printableSurvey->index($oSurvey->getPrimaryKey(),$language);
         $response = ob_get_contents(); //Grab output
         ob_end_clean(); //Discard output buffer
@@ -1392,6 +1390,7 @@ class export extends Survey_Common_Action {
         $f1 = "$tempdir/survey_{$oSurvey->getPrimaryKey()}_{$language}.html";
 
         // remove first slash to get local path for local storage for template assets
+        $templateDir = Template::getTemplateURL($oSurvey->template);
         $response = str_replace($templateDir,substr($templateDir,1),$response);
 
         file_put_contents($f1,$response);
