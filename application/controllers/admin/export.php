@@ -1332,6 +1332,12 @@ class export extends Survey_Common_Action {
     }
 
 
+    /**
+     * Get a Zipped version of survey printable questionnaires in all languages
+     * (including the template html assets)
+     *
+     * @param integer $iSurveyID
+     */
     private function _exportPrintableHtmls($iSurveyID){
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $oTemplate = Template::model()->getInstance($oSurvey->template);
@@ -1349,7 +1355,6 @@ class export extends Survey_Common_Action {
             $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
             $z->add($fullAssetsDir,PCLZIP_OPT_REMOVE_PATH,$fullAssetsDir,PCLZIP_OPT_ADD_PATH,$assetsDir);
 
-
             foreach ($aLanguages as $language){
                 $file = $this->_exportPrintableHtml($oSurvey,$language,$tempdir);
                 $z->add($file,PCLZIP_OPT_REMOVE_PATH,$tempdir);
@@ -1365,9 +1370,12 @@ class export extends Survey_Common_Action {
     }
 
     /**
+     * Get a the printable html questionnaire in specified language and store
+     * the file in the specified directory
+     *
      * @param Survey $oSurvey
      * @param string $language
-     * @param string $tempdir
+     * @param string $tempdir the directory the file will be stored in
      * @return string
      */
     private function _exportPrintableHtml($oSurvey, $language, $tempdir){
