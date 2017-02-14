@@ -113,6 +113,9 @@
                     ?>
                 </div>
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','create')):?>
+                    <div class="pull-left">
+                        <?php $this->renderPartial('/admin/quotas/viewquotas_massive_selector', array('oSurvey'=>$oSurvey));?>
+                    </div>
                     <div class="pull-right">
                         <?php echo CHtml::beginForm(array("admin/quotas/sa/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
                         <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());?>
@@ -123,7 +126,7 @@
                             'class'=>'quota_new btn btn-default',
                         ));?>
                         <?php echo CHtml::endForm();?>
-                    </div>
+                </div>
                 <?php endif; ?>
             </div>
         </div>

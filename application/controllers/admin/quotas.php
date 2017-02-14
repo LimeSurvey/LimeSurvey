@@ -81,9 +81,28 @@ class quotas extends Survey_Common_Action
             $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyId"));
         }
     }
+    function massiveAction(){
+        $action = Yii::app()->request->getQuery('action');
+        $allowedActions = array('activate','deactivate','delete');
+        if (isset($_POST) && in_array($action,$allowedActions)) {
+            $sItems = Yii::app()->request->getPost('sItems');
+            $aQuotaIds = json_decode($sItems);
+            foreach ($aQuotaIds as $iQuotaId){
+                $oQuota = Quota::model()->findByPk($iQuotaId);
+                if($action == 'activate'){
+                    $oQuota->active = 1;
+                }
+                elseif($action == 'deactivate'){
+                    $oQuota->active = 1;
+                }
+                $oQuota->save();
+            }
+        }
+    }
 
     function index($iSurveyId, $quickreport = false)
     {
+
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'read');
         $aData = $this->_getData($iSurveyId);
@@ -143,10 +162,6 @@ class quotas extends Survey_Common_Action
                     continue;
                 }
 
-                $aData['quotalisting'] = $aQuotaListing;
-                $aData['completed'] = $completed;
-                $aData['totalquotas'] = $totalquotas;
-                $aData['totalcompleted'] = $totalcompleted;
 
                 // Edit URL
                 $aData['aEditUrls'][$aQuotaListing['id']] = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $iSurveyId, array(
@@ -181,6 +196,8 @@ class quotas extends Survey_Common_Action
                 }
 
             }
+            $aData['totalquotas'] = $totalquotas;
+            $aData['totalcompleted'] = $totalcompleted;
             $aData['aQuotaItems'] = $aQuotaItems;
         }
         else
