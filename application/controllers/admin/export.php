@@ -1116,10 +1116,6 @@ class export extends Survey_Common_Action {
 
     private function _surveyexport($action, $iSurveyID)
     {
-
-        $this->_exportPrintableHtmls($iSurveyID);
-        exit;
-
         viewHelper::disableHtmlLogging();
         if ( $action == "exportstructurexml" )
         {
@@ -1168,6 +1164,10 @@ class export extends Survey_Common_Action {
         elseif ( $action == "exportarchive" )
         {
             $this->_exportarchive($iSurveyID);
+        }
+        elseif ( $action == "exportprintables" )
+        {
+            $this->_exportPrintableHtmls($iSurveyID);
         }
     }
 
