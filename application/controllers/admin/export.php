@@ -1334,6 +1334,10 @@ class export extends Survey_Common_Action {
 
     private function _exportPrintableHtmls($iSurveyID){
         $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $oTemplate = Template::model()->getInstance($oSurvey->template);
+        $cssDir = Template::getTemplateURL($oSurvey->template).'/css';
+        $fullCssDir = Template::getTemplatePath($oSurvey->template).'/css';
+        $cssFile = Template::getTemplatePath($oSurvey->template).'/css/print_template.css';
         $aLanguages = $oSurvey->getAllLanguages();
         if(!empty($aLanguages)){
             $tempdir = Yii::app()->getConfig("tempdir");
@@ -1344,10 +1348,11 @@ class export extends Survey_Common_Action {
             Yii::app()->loadLibrary('admin.pclzip');
             $z = new PclZip($zipfile);
             $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
+            $z->add($cssFile,PCLZIP_OPT_REMOVE_PATH,$fullCssDir,PCLZIP_OPT_ADD_PATH,$cssDir);
 
 
             foreach ($aLanguages as $language){
-                $file = $this->_exportPrintableHtml($iSurveyID,$language,$tempdir);
+                $file = $this->_exportPrintableHtml($oSurvey,$language,$tempdir);
                 $z->add($file,PCLZIP_OPT_REMOVE_PATH,$tempdir);
                 unlink($file);
 
@@ -1360,16 +1365,27 @@ class export extends Survey_Common_Action {
         }
     }
 
-    private function _exportPrintableHtml($iSurveyID,$language,$tempdir){
+    /**
+     * @param Survey $oSurvey
+     * @param string $language
+     * @param string $tempdir
+     * @return string
+     */
+    private function _exportPrintableHtml($oSurvey, $language, $tempdir){
 
         require_once __DIR__.'/printablesurvey.php';
         $printableSurvey = new printablesurvey();
         ob_start(); //Start output buffer
-        $printableSurvey->index($iSurveyID,$language);
+        $templateDir = Template::getTemplateURL($oSurvey->template);
+
+        $printableSurvey->index($oSurvey->getPrimaryKey(),$language);
         $response = ob_get_contents(); //Grab output
         ob_end_clean(); //Discard output buffer
 
-        $f1 = "$tempdir/survey_{$iSurveyID}_{$language}.html";
+        $f1 = "$tempdir/survey_{$oSurvey->getPrimaryKey()}_{$language}.html";
+
+        // remove first slash to get local path for local storage for template assets
+        $response = str_replace($templateDir,substr($templateDir,1),$response);
 
         file_put_contents($f1,$response);
         return $f1;
