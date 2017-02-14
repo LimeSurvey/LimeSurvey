@@ -1116,6 +1116,18 @@ class export extends Survey_Common_Action {
 
     private function _surveyexport($action, $iSurveyID)
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $aLanguages = $oSurvey->getAllLanguages();
+        if(!empty($aLanguages)){
+            foreach ($aLanguages as $language){
+
+            }
+
+            //$this->getController()->redirect();
+        }
+        $this->_exportPrintableHtml($iSurveyID,$language);
+        exit;
+
         viewHelper::disableHtmlLogging();
         if ( $action == "exportstructurexml" )
         {
@@ -1325,6 +1337,34 @@ class export extends Survey_Common_Action {
             readfile($zipfile);
             unlink($zipfile);
         }
+    }
+
+    private function _exportPrintableHtml($iSurveyID,$language){
+
+        require __DIR__.'/printablesurvey.php';
+        $printableSurvey = new printablesurvey();
+        ob_start(); //Start output buffer
+        $printableSurvey->index($iSurveyID,$language);
+        $response = ob_get_contents(); //Grab output
+        ob_end_clean(); //Discard output buffer
+
+        $tempdir = Yii::app()->getConfig("tempdir");
+        $zipdir = $this->_tempdir($tempdir);
+        $f1 = "$zipdir/survey_{$iSurveyID}_{$language}.html";
+
+        file_put_contents($f1,$response);
+
+        Yii::app()->loadLibrary('admin.pclzip');
+        $zipfile = "html_questionnaire_{$iSurveyID}_{$language}.zip";
+        $this->_addHeaders($zipfile,"application/zip",0);
+        $z = new PclZip($zipfile);
+
+
+        $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
+        // load the file to send:
+        readfile($zipfile);
+        unlink($zipfile);
+
     }
 
     /**
