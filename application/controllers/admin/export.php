@@ -1345,11 +1345,12 @@ class export extends Survey_Common_Action {
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
         if(!empty($aLanguages)){
+
             $tempdir = Yii::app()->getConfig("tempdir");
             $zipdir = $this->_tempdir($tempdir);
-
             $fn = "html_questionnaires_{$iSurveyID}.zip";
             $zipfile = "$tempdir/".$fn;
+
             Yii::app()->loadLibrary('admin.pclzip');
             $z = new PclZip($zipfile);
             $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
@@ -1359,8 +1360,8 @@ class export extends Survey_Common_Action {
                 $file = $this->_exportPrintableHtml($oSurvey,$language,$tempdir);
                 $z->add($file,PCLZIP_OPT_REMOVE_PATH,$tempdir);
                 unlink($file);
-
             }
+
             $this->_addHeaders($fn,"application/zip",0);
             header('Content-Transfer-Encoding: binary');
             readfile($zipfile);
