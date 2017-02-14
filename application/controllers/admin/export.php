@@ -1346,9 +1346,12 @@ class export extends Survey_Common_Action {
         $aLanguages = $oSurvey->getAllLanguages();
         if(!empty($aLanguages)){
 
+            $aSurveyInfo = $oSurvey->getSurveyinfo();
+
             $tempdir = Yii::app()->getConfig("tempdir");
             $zipdir = $this->_tempdir($tempdir);
-            $fn = "html_questionnaires_{$iSurveyID}.zip";
+
+            $fn = "printable_questionnaires_".$aSurveyInfo['surveyls_title']."_{$oSurvey->primaryKey}.zip";
             $zipfile = "$tempdir/".$fn;
 
             Yii::app()->loadLibrary('admin.pclzip');
@@ -1363,7 +1366,9 @@ class export extends Survey_Common_Action {
             }
 
             $this->_addHeaders($fn,"application/zip",0);
+
             header('Content-Transfer-Encoding: binary');
+            header("Content-disposition: attachment; filename=\"".$fn."\"");
             readfile($zipfile);
             unlink($zipfile);
 
@@ -1384,18 +1389,19 @@ class export extends Survey_Common_Action {
         require_once __DIR__.'/printablesurvey.php';
         $printableSurvey = new printablesurvey();
         ob_start(); //Start output buffer
-        $printableSurvey->index($oSurvey->getPrimaryKey(),$language);
+        $printableSurvey->index($oSurvey->primaryKey,$language);
         $response = ob_get_contents(); //Grab output
         ob_end_clean(); //Discard output buffer
+        $aSurveyInfo = $oSurvey->getSurveyinfo();
 
-        $f1 = "$tempdir/survey_{$oSurvey->getPrimaryKey()}_{$language}.html";
+        $file = "$tempdir/questionnaire_".$aSurveyInfo['surveyls_title']."_{$oSurvey->getPrimaryKey()}_{$language}.html";
 
         // remove first slash to get local path for local storage for template assets
         $templateDir = Template::getTemplateURL($oSurvey->template);
         $response = str_replace($templateDir,substr($templateDir,1),$response);
 
-        file_put_contents($f1,$response);
-        return $f1;
+        file_put_contents($file,$response);
+        return $file;
 
     }
 

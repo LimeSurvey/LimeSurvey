@@ -663,6 +663,9 @@ class Survey extends LSActiveRecord
         }
     }
 
+    /**
+     * @return array
+     */
     public function getSurveyinfo()
     {
         $iSurveyID = $this->sid;
