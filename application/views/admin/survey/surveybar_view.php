@@ -398,13 +398,6 @@
                                             <?php eT("Survey structure (.lss)");?>
                                           </a>
                                       </li>
-                                      <!-- Survey printable questionnaires  -->
-                                      <li>
-                                          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/$surveyid");?>' >
-                                              <span class="icon-export" ></span>
-                                              <?php eT("Survey printable questionnaires (all languages)");?>
-                                          </a>
-                                      </li>
                                   <?php endif; ?>
 
                                   <?php if($respstatsread && $surveyexport): ?>
@@ -453,6 +446,14 @@
                                           <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/$surveyid");?>' >
                                               <span class="icon-export" ></span>
                                               <?php eT("Tab-separated-values format (*.txt)");?>
+                                          </a>
+                                      </li>
+
+                                      <!-- Survey printable questionnaires  -->
+                                      <li>
+                                          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/$surveyid");?>' >
+                                              <span class="icon-export" ></span>
+                                              <?php eT("Printable questionnaires (*.html)");?>
                                           </a>
                                       </li>
                                   <?php endif; ?>
