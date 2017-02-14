@@ -398,6 +398,13 @@
                                             <?php eT("Survey structure (.lss)");?>
                                           </a>
                                       </li>
+                                      <!-- Survey printable questionnaires  -->
+                                      <li>
+                                          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/$surveyid");?>' >
+                                              <span class="icon-export" ></span>
+                                              <?php eT("Survey printable questionnaires (all languages)");?>
+                                          </a>
+                                      </li>
                                   <?php endif; ?>
 
                                   <?php if($respstatsread && $surveyexport): ?>
