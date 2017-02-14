@@ -20,16 +20,50 @@ class ConsoleApplication extends CConsoleApplication
         return $this->getComponent('session');
     }
 
-    public function __construct($config = null) {
-        parent::__construct($config);
+    public function __construct($aApplicationConfig = null) {
 
+        // Load the limesurvey config from different files.
+        // Using some config part for app config, then load it before
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $consoleConfig = require(__DIR__ . '/../config/console.php'); // Only for console : replace some config-defaults
+        $emailConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+        if(file_exists(__DIR__ . '/../config/config.php'))
+        {
+            $userConfigs = require(__DIR__ . '/../config/config.php');
+            if(is_array($userConfigs['config']))
+            {
+                $lsConfig = array_merge($lsConfig, $userConfigs['config']);
+            }
+        }
+
+        // Runtime path has to be set before parent constructor is executed
+        // User can set it in own config using Yii, if not take the default
+        // runtimepath can be set in user config, loaded by internal in index.php.
+        if(!isset($aApplicationConfig['runtimePath'])){
+            $aApplicationConfig['runtimePath']=$lsConfig['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        }
+        if (!is_dir($aApplicationConfig['runtimePath']) || !is_writable($aApplicationConfig['runtimePath'])) {
+            throw new CException("{$aApplicationConfig['runtimePath']} should exist and be writable by the webserver.");
+        }
+        parent::__construct($aApplicationConfig);
+
+        // Load the limesurvey config into self
+        $this->config = array_merge($this->config, $lsConfig);
+        /* Load the database settings : if available */
+        try {
+            $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+            if(is_object($settingsTableExist)){
+                $dbConfig=CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+                $this->config = array_merge($this->config,$dbConfig);
+            }
+        }catch(Exception $exception) {
+            // Allow exception
+        }
         // Set webroot alias.
         Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
-        // Load email settings.
-        $email = require(Yii::app()->basePath. DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
-        $this->config = array_merge($this->config, $email);
-
-        // Now initialize the plugin manager
     }
 
     /**
