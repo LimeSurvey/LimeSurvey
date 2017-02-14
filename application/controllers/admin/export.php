@@ -1355,7 +1355,7 @@ class export extends Survey_Common_Action {
             $tempdir = Yii::app()->getConfig("tempdir");
             $zipdir = $this->_tempdir($tempdir);
 
-            $fn = "printable_questionnaires_".$aSurveyInfo['surveyls_title']."_{$oSurvey->primaryKey}.zip";
+            $fn = "printable_questionnaires_{$oSurvey->primaryKey}.zip";
             $zipfile = "$tempdir/".$fn;
 
             Yii::app()->loadLibrary('admin.pclzip');
@@ -1397,7 +1397,7 @@ class export extends Survey_Common_Action {
         ob_end_clean(); //Discard output buffer
         $aSurveyInfo = $oSurvey->getSurveyinfo();
 
-        $file = "$tempdir/questionnaire_".$aSurveyInfo['surveyls_title']."_{$oSurvey->getPrimaryKey()}_{$language}.html";
+        $file = "$tempdir/questionnaire_".urlencode($aSurveyInfo['surveyls_title'])."_{$oSurvey->getPrimaryKey()}_{$language}.html";
 
         // remove first slash to get local path for local storage for template assets
         $templateDir = Template::getTemplateURL($oSurvey->template);
