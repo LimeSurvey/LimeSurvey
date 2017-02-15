@@ -916,6 +916,15 @@ class export extends Survey_Common_Action {
     }
 
     /**
+     * Export multiple surveys structure. Called via ajax from surveys list massive action
+     */
+    public function exportMultiplePrintableSurveys()
+    {
+        $sSurveys = $_POST['sItems'];
+        $exportResult = $this->exportMultipleSurveys($sSurveys, 'printable');
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
+    }
+    /**
      * Export multiple surveys archives. Called via ajax from surveys list massive action
      */
     public function exportMultipleArchiveSurveys()
@@ -982,6 +991,24 @@ class export extends Survey_Common_Action {
                             $aResults[$iSurveyID]['error'] = gT("Not active.");
                         }
                     break;
+                    // Export printable archives for all selected surveys
+                    case 'printable':
+                        $archiveName = $this->_exportPrintableHtmls($iSurveyID,false);
+                        if (is_file($archiveName))
+                        {
+                            $aResults[$iSurveyID]['result'] = true;
+                            $aResults[$iSurveyID]['file']   = $archiveName;
+                            $bArchiveIsEmpty                = false;
+                            $archiveFile                    = $archiveName;
+                            $newArchiveFileFullName         = 'survey_printables_'.$iSurveyID.'.zip';
+                            $this->_addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                            unlink($archiveFile);
+                        }
+                        else
+                        {
+                            $aResults[$iSurveyID]['error'] = gT("Unknown error");
+                        }
+                        break;
 
                     // Export structure for survey
                     default:
@@ -1170,10 +1197,6 @@ class export extends Survey_Common_Action {
         {
             $this->_exportPrintableHtmls($iSurveyID);
         }
-        elseif ( $action == "exportMultiplePrintableSurveys" )
-        {
-            $this->_exportMultiplePrintableSurveys($sSurveyIDs);
-        }
     }
 
     /**
@@ -1337,24 +1360,15 @@ class export extends Survey_Common_Action {
     }
 
 
-
     /**
-     * Get a Zipped version of survey printable questionnaires in all languages
-     * for an array of surveys
-     *
-     * @param string $sSurveyIDs Selected ids from MassiveActionsWidget
-     */
-    private function _exportMultiplePrintableSurveys($sSurveyIDs)
-    {
-    }
-
-        /**
      * Get a Zipped version of survey printable questionnaires in all languages
      * (including the template html assets)
      *
-     * @param integer $iSurveyID
+     * @param integer $iSurveyID Survey ID
+     * @param bool $readFile Whether we read the file for direct download (or not as in massive actions)
+     * @return string
      */
-    private function _exportPrintableHtmls($iSurveyID){
+    private function _exportPrintableHtmls($iSurveyID,$readFile = true){
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $oTemplate = Template::model()->getInstance($oSurvey->template);
         $assetsDir = Template::getTemplateURL($oSurvey->template);
@@ -1367,7 +1381,7 @@ class export extends Survey_Common_Action {
             $tempdir = Yii::app()->getConfig("tempdir");
             $zipdir = $this->_tempdir($tempdir);
 
-            $fn = "printable_questionnaires_{$oSurvey->primaryKey}.zip";
+            $fn = "printable_questionnaires_".CHtml::encode($aSurveyInfo['surveyls_title'])."_{$oSurvey->primaryKey}.zip";
             $zipfile = "$tempdir/".$fn;
 
             Yii::app()->loadLibrary('admin.pclzip');
@@ -1382,11 +1396,13 @@ class export extends Survey_Common_Action {
             }
 
             $this->_addHeaders($fn,"application/zip",0);
-
-            header('Content-Transfer-Encoding: binary');
-            header("Content-disposition: attachment; filename=\"".$fn."\"");
-            readfile($zipfile);
-            unlink($zipfile);
+            if($readFile){
+                header('Content-Transfer-Encoding: binary');
+                header("Content-disposition: attachment; filename=\"".$fn."\"");
+                readfile($zipfile);
+                unlink($zipfile);
+            }
+            return $zipfile;
 
         }
     }
@@ -1409,7 +1425,7 @@ class export extends Survey_Common_Action {
         ob_end_clean(); //Discard output buffer
         $aSurveyInfo = $oSurvey->getSurveyinfo();
 
-        $file = "$tempdir/questionnaire_".urlencode($aSurveyInfo['surveyls_title'])."_{$oSurvey->getPrimaryKey()}_{$language}.html";
+        $file = "$tempdir/questionnaire_{$oSurvey->getPrimaryKey()}_{$language}.html";
 
         // remove first slash to get local path for local storage for template assets
         $templateDir = Template::getTemplateURL($oSurvey->template);

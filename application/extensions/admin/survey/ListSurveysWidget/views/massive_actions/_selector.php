@@ -82,7 +82,21 @@
                     'htmlModalBody' => gT('This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive.').' '.gT('Continue?'),
 
                 ),
-
+                // Export multiple printable
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'export',
+                    'url'         =>  App()->createUrl('/admin/export/sa/exportMultiplePrintableSurveys/'),
+                    'iconClasses' => 'icon-export',
+                    'text'        =>  gT("Printable survey (.html)"),
+                    // modal
+                    'actionType'  => 'modal',
+                    'modalType'   => 'yes-no',
+                    'keepopen'    => 'yes',
+                    'sModalTitle'   => gT('Export printable survey'),
+                    'htmlModalBody' => gT('This will export printable survey.').' '.gT('Continue?'),
+                ),
             ),
 
     ));
