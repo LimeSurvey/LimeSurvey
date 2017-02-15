@@ -1374,37 +1374,35 @@ class export extends Survey_Common_Action {
         $assetsDir = Template::getTemplateURL($oSurvey->template);
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
-        if(!empty($aLanguages)){
 
-            $aSurveyInfo = $oSurvey->getSurveyinfo();
+        $aSurveyInfo = $oSurvey->getSurveyinfo();
 
-            $tempdir = Yii::app()->getConfig("tempdir");
-            $zipdir = $this->_tempdir($tempdir);
+        $tempdir = Yii::app()->getConfig("tempdir");
+        $zipdir = $this->_tempdir($tempdir);
 
-            $fn = "printable_questionnaires_".CHtml::encode($aSurveyInfo['surveyls_title'])."_{$oSurvey->primaryKey}.zip";
-            $zipfile = "$tempdir/".$fn;
+        $fn = "printable_questionnaires_".CHtml::encode($aSurveyInfo['surveyls_title'])."_{$oSurvey->primaryKey}.zip";
+        $zipfile = "$tempdir/".$fn;
 
-            Yii::app()->loadLibrary('admin.pclzip');
-            $z = new PclZip($zipfile);
-            $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
-            $z->add($fullAssetsDir,PCLZIP_OPT_REMOVE_PATH,$fullAssetsDir,PCLZIP_OPT_ADD_PATH,$assetsDir);
+        Yii::app()->loadLibrary('admin.pclzip');
+        $z = new PclZip($zipfile);
+        $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
+        $z->add($fullAssetsDir,PCLZIP_OPT_REMOVE_PATH,$fullAssetsDir,PCLZIP_OPT_ADD_PATH,$assetsDir);
 
-            foreach ($aLanguages as $language){
-                $file = $this->_exportPrintableHtml($oSurvey,$language,$tempdir);
-                $z->add($file,PCLZIP_OPT_REMOVE_PATH,$tempdir);
-                unlink($file);
-            }
-
-            $this->_addHeaders($fn,"application/zip",0);
-            if($readFile){
-                header('Content-Transfer-Encoding: binary');
-                header("Content-disposition: attachment; filename=\"".$fn."\"");
-                readfile($zipfile);
-                unlink($zipfile);
-            }
-            return $zipfile;
-
+        foreach ($aLanguages as $language){
+            $file = $this->_exportPrintableHtml($oSurvey,$language,$tempdir);
+            $z->add($file,PCLZIP_OPT_REMOVE_PATH,$tempdir);
+            unlink($file);
         }
+
+        $this->_addHeaders($fn,"application/zip",0);
+        if($readFile){
+            header('Content-Transfer-Encoding: binary');
+            header("Content-disposition: attachment; filename=\"".$fn."\"");
+            readfile($zipfile);
+            unlink($zipfile);
+        }
+        return $zipfile;
+
     }
 
     /**
