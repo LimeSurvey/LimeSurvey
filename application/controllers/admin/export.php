@@ -27,10 +27,7 @@ class export extends Survey_Common_Action {
         parent::__construct($controller, $id);
 
         Yii::app()->loadHelper('export');
-
-        Yii::import('application.controllers.admin.*');
-        require_once('printablesurvey.php');
-
+        Yii::import('application.controllers.admin.printablesurvey',1);
     }
 
     public function survey()
