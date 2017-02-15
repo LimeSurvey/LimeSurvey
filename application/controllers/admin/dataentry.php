@@ -1915,7 +1915,8 @@ class dataentry extends Survey_Common_Action
                                 $aParams=array('lang'=>$saver['language'],'loadname'=>$saver['identifier'],'loadpass'=>$saver['password']);
                                 if (isset($tokendata['token'])) { $aParams['token']= $tokendata['token']; }
                                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/",$aParams);
-                                $from = $thissurvey['adminemail'];
+                                $from     = $thissurvey['adminemail'];
+                                $sitename = Yii::app()->getConfig('sitename');
                                 if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
                                 {
                                     $emailsent="Y";
