@@ -1170,6 +1170,10 @@ class export extends Survey_Common_Action {
         {
             $this->_exportPrintableHtmls($iSurveyID);
         }
+        elseif ( $action == "exportMultiplePrintableSurveys" )
+        {
+            $this->_exportMultiplePrintableSurveys($sSurveyIDs);
+        }
     }
 
     /**
@@ -1333,7 +1337,18 @@ class export extends Survey_Common_Action {
     }
 
 
+
     /**
+     * Get a Zipped version of survey printable questionnaires in all languages
+     * for an array of surveys
+     *
+     * @param string $sSurveyIDs Selected ids from MassiveActionsWidget
+     */
+    private function _exportMultiplePrintableSurveys($sSurveyIDs)
+    {
+    }
+
+        /**
      * Get a Zipped version of survey printable questionnaires in all languages
      * (including the template html assets)
      *
