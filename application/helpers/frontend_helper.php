@@ -880,15 +880,12 @@ function buildsurveysession($surveyid,$preview=false)
     global $tokensexist;
     global $move, $rooturl;
 
-    $preview                                       = ($preview)?$preview:Yii::app()->getConfig('previewmode');
-    $thissurvey                                    = getSurveyInfo($surveyid,$sLangCode);
-
-    $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
-
-    $oTemplate = Template::model()->getInstance('', $surveyid);
-    App()->getController()->sTemplate=$oTemplate->name;
-    $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->pstplPath;
+    $preview                          = ($preview)?$preview:Yii::app()->getConfig('previewmode');
+    $thissurvey                       = getSurveyInfo($surveyid,$sLangCode);
+    $oTemplate                        = Template::model()->getInstance('', $surveyid);
+    App()->getController()->sTemplate = $oTemplate->name;
+    $sTemplatePath                    = $oTemplate->path;
+    $sTemplateViewPath                = $oTemplate->pstplPath;
 
     /**
     * This method has multiple outcomes that virtually do the same thing
