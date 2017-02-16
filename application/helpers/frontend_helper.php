@@ -875,17 +875,12 @@ function submitfailed($errormsg = '', $query = null)
  */
 function buildsurveysession($surveyid,$preview=false)
 {
-    Yii::trace('start', 'survey.buildsurveysession');
+    /// Yii::trace('start', 'survey.buildsurveysession');
     global $clienttoken;
     global $tokensexist;
     global $move, $rooturl;
 
-    $sLangCode=App()->language;
-    $languagechanger=makeLanguageChangerSurvey($sLangCode);
-
-    if(!$preview){
-        $preview=Yii::app()->getConfig('previewmode');
-    }
+    $preview = ($preview)?$preview:Yii::app()->getConfig('previewmode');
 
     $thissurvey = getSurveyInfo($surveyid,$sLangCode);
 
