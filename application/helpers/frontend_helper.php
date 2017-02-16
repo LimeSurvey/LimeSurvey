@@ -961,7 +961,6 @@ function buildsurveysession($surveyid,$preview=false)
     $aEnterTokenData['bNewTest'] =  false;
     $aEnterTokenData['bDirectReload'] =  false;
     $aEnterTokenData['iSurveyId'] = $surveyid;
-    $aEnterTokenData['sKpClass'] = $kpclass; // ???
     $aEnterTokenData['sLangCode'] = $sLangCode;
     if (isset($_GET['bNewTest']) && $_GET['newtest'] == "Y"){
         $aEnterTokenData['bNewTest'] =  true;
