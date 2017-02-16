@@ -810,7 +810,7 @@ class SurveyRuntimeHelper {
 
                 // TODO: TWIG ASSESSMENTS !!!!!
                 if ($thissurvey['assessments'] == "Y"){
-                    $assessments = $this->assessments = doAssessment($surveyid);
+                    $assessments = $this->assessments = doAssessment($thissurvey['sid']);
                 }
 
             }else{
@@ -1320,7 +1320,8 @@ class SurveyRuntimeHelper {
                 echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
 
                 //Check for assessments
-                if ($thissurvey['assessments'] == "Y" && $assessments){
+
+                if ($thissurvey['assessments'] == "Y" && $this->assessments ){
                     echo templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
                 }
 
