@@ -881,9 +881,10 @@ function buildsurveysession($surveyid,$preview=false)
     global $move, $rooturl;
 
     $preview                          = ($preview)?$preview:Yii::app()->getConfig('previewmode');
+    $sLangCode                        = App()->language;
     $thissurvey                       = getSurveyInfo($surveyid,$sLangCode);
     $oTemplate                        = Template::model()->getInstance('', $surveyid);
-    App()->getController()->sTemplate = $oTemplate->name;
+    App()->getController()->sTemplate = $oTemplate->name;                                   // It's going to be hard to be sure this is used ....
     $sTemplatePath                    = $oTemplate->path;
     $sTemplateViewPath                = $oTemplate->pstplPath;
 
