@@ -113,6 +113,33 @@ class SurveyRuntimeHelper {
         $this->setArgs();
 
         $aPrivateVariables = array();
+
+
+
+        // SOME RENDERING THAT WAS IN THE WRONG PLACE INSIDE RUN PAGE
+        // WE'RE MOVING THEM HERE AS A FIRST CYCLE OF DEV
+
+
+
+        $LEMsessid     = $this->LEMsessid;
+
+        // First time the survey is loaded
+        if (!isset($_SESSION[$LEMsessid]['step']))
+        {
+            // WAS INSIDE buildsurveysession($surveyid);
+            $sLangCode=App()->language;
+            $languagechanger=makeLanguageChangerSurvey($sLangCode);            
+        }
+
+
+
+
+
+
+
+
+
+
         if ( !$this->previewgrp && !$this->previewquestion){
             $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
             $aPrivateVariables = $this->getArgs();
