@@ -900,7 +900,7 @@ function buildsurveysession($surveyid,$preview=false)
     */
 
     $scenarios = array(
-        "tokenRequired" => ($tokensexist == 1),
+        "tokenRequired"   => ($tokensexist == 1),
         "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !isset($_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']))
     );
 
@@ -911,9 +911,10 @@ function buildsurveysession($surveyid,$preview=false)
         "captchaCorrect" => false,
         "tokenValid" => false
     );
+
     //Check the scenario for token required
-    if($scenarios['tokenRequired'])
-    {
+    if ($scenarios['tokenRequired']){
+
         //Check for the token-validity
         if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
             $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken));
@@ -921,42 +922,40 @@ function buildsurveysession($surveyid,$preview=false)
             $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
         $subscenarios['tokenValid'] = ((!empty($oTokenEntry) && ($clienttoken != "")));
-    }
-    else
-    {
+    }else{
         $subscenarios['tokenValid'] = true;
     }
 
     //Check the scenario for captcha required
-    if($scenarios['captchaRequired'])
-    {
+    if ($scenarios['captchaRequired']){
         //Check if the Captcha was correct
-        $captcha = Yii::app()->getController()->createAction('captcha');
+        $captcha                        = Yii::app()->getController()->createAction('captcha');
         $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity'), false);
-    }
-    else
-    {
+    }else{
         $subscenarios['captchaCorrect'] = true;
-        $loadsecurity = false;
+        $loadsecurity                   = false;
     }
 
 
     //RenderWay defines which html gets rendered to the user_error
     // Possibilities are main,register,correct
     $renderCaptcha = "";
-    $renderToken = "";
+    $renderToken   = "";
+
     /**
      * @todo : create 2 new function to create and call form
      */
     //Define array to render the partials
-    $aEnterTokenData = array();
-    $aEnterTokenData['bNewTest'] =  false;
-    $aEnterTokenData['bDirectReload'] =  false;
-    $aEnterTokenData['iSurveyId'] = $surveyid;
-    $aEnterTokenData['sLangCode'] = $sLangCode;
+    $aEnterTokenData                    = array();
+    $aEnterTokenData['bNewTest']        =  false;
+    $aEnterTokenData['bDirectReload']   =  false;
+    $aEnterTokenData['iSurveyId']       = $surveyid;
+    $aEnterTokenData['sLangCode']       = $sLangCode;
+
     if (isset($_GET['bNewTest']) && $_GET['newtest'] == "Y"){
         $aEnterTokenData['bNewTest'] =  true;
     }
+
     // If this is a direct Reload previous answers URL, then add hidden fields
     if (isset($loadall) && isset($scid) && isset($loadname) && isset($loadpass)) {
         $aEnterTokenData['bDirectReload'] =  true;
@@ -976,22 +975,24 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
     // Scenario => Captcha required
-    if($scenarios['captchaRequired'] && !$preview) {
+    if ($scenarios['captchaRequired'] && !$preview) {
 
         //Apply the captcYii::app()->getRequest()->getPost($id);haEnabled flag to the partial
         $aEnterTokenData['bCaptchaEnabled'] = true;
         // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
         if (!$subscenarios['captchaCorrect']) {
-            if(App()->getRequest()->getPost('loadsecurity')){
-                $aEnterErrors['captcha']=gT("Your answer to the security question was not correct - please try again.");
-            }elseif(null!==App()->getRequest()->getPost('loadsecurity')){
-                $aEnterErrors['captcha']=gT("Your must answer to the security question - please try again.");
+
+            if (App()->getRequest()->getPost('loadsecurity')){
+                $aEnterErrors['captcha'] = gT("Your answer to the security question was not correct - please try again.");
+
+            } elseif (null!==App()->getRequest()->getPost('loadsecurity')) {
+                $aEnterErrors['captcha'] = gT("Your must answer to the security question - please try again.");
             }
-            $renderCaptcha='main';
+            $renderCaptcha = 'main';
         }
         else {
-            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
-            $renderCaptcha='correct';
+            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen'] = true;
+            $renderCaptcha = 'correct';
         }
     }
 
@@ -1000,43 +1001,42 @@ function buildsurveysession($surveyid,$preview=false)
         //Test if token is valid
         list($renderToken, $FlashError, $aEnterTokenData) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
     }
-    if(isset($FlashError) && $FlashError !== ""){
+
+    if (isset($FlashError) && $FlashError !== ""){
         $aEnterErrors['flash'] = $FlashError;
     }
 
-    $aEnterTokenData['aEnterErrors']=$aEnterErrors;
-
-    $renderWay = getRenderWay($renderToken, $renderCaptcha);
-    $redata = compact(array_keys(get_defined_vars()));
-
+    $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
+    $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
+    $redata                             = compact(array_keys(get_defined_vars()));
 
     // TODO MOVE renderRenderWayForm OUTSIDE OF THIS FUNCTION TO SURVEY RUNTIME HELPER
 
     /* This funtion end if an form need to be shown */
     renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
+
+
+
+
     // Reset all the session variables and start again
     resetAllSessionVariables($surveyid);
 
     // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
-    if (returnGlobal('lang',true))
-    {
+    if (returnGlobal('lang',true)){
         $language_to_set=returnGlobal('lang',true);
-    }
-    elseif (isset($oTokenEntry) && $oTokenEntry)
-    {
+    }elseif (isset($oTokenEntry) && $oTokenEntry){
         // If survey have token : we have a $oTokenEntry
         // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
         $language_to_set=$oTokenEntry->language;
-    }
-    else
-    {
+    }else{
         $language_to_set = $thissurvey['language'];
     }
-    // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
-    SetSurveyLanguage($surveyid, $language_to_set);
 
-    UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
+    SetSurveyLanguage ($surveyid, $language_to_set);
+
+    UpdateGroupList ($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
     $totalquestions = Question::model()->getTotalQuestions($surveyid);
 
@@ -1051,8 +1051,7 @@ function buildsurveysession($surveyid,$preview=false)
     setTotalSteps($surveyid, $thissurvey, $totalquestions);
 
     // Break out and crash if there are no questions!
-    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0)
-    {
+    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0){
         breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
     }
 
@@ -1064,18 +1063,16 @@ function buildsurveysession($surveyid,$preview=false)
     //4. SESSION VARIABLE - fieldarray
     //See rem at end..
 
-    if ($tokensexist == 1 && $clienttoken)
-    {
+    if ($tokensexist == 1 && $clienttoken){
         $_SESSION['survey_'.$surveyid]['token'] = $clienttoken;
     }
 
-    if ($thissurvey['anonymized'] == "N")
-    {
+    if ($thissurvey['anonymized'] == "N"){
         $_SESSION['survey_'.$surveyid]['insertarray'][]= "token";
     }
 
-    $qtypes=getQuestionTypeList('','array');
-    $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+    $qtypes   = getQuestionTypeList('','array');
+    $fieldmap = createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
     $_SESSION['survey_'.$surveyid]['fieldmap'] = $fieldmap;
 
@@ -1553,36 +1550,27 @@ function finalizeRandomization($fieldmap)
 function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
 {
     $FlashError = '';
-    if(!$subscenarios['tokenValid'])
-    {
+    if(!$subscenarios['tokenValid']){
+
         //Check if there is a clienttoken set
-        if((!isset($clienttoken) || $clienttoken==""))
-        {
-            if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
-            {
+        if((!isset($clienttoken) || $clienttoken=="")){
+            if (isset($thissurvey) && $thissurvey['allowregister'] == "Y"){
                 $renderToken='register';
-            }
-            else
-            {
+            }else{
                 $renderToken='main';
             }
-        }
-        else
-        {
+        }else{
             //token was wrong
-            // TODO: should be twigged
-            $errorMsg= gT("The token you have provided is either not valid, or has already been used.");
+            $errorMsg    = gT("The token you have provided is either not valid, or has already been used.");
             $FlashError .= $errorMsg;
-
-            $renderToken='main';
+            $renderToken ='main';
         }
-    }
-    else
-    {
+    }else{
         $aEnterTokenData['visibleToken'] =  $clienttoken;
         $aEnterTokenData['token'] =  $clienttoken;
         $renderToken='correct';
     }
+
     return array($renderToken, $FlashError, $aEnterTokenData);
 }
 
