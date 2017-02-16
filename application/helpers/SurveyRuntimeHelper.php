@@ -110,7 +110,18 @@ class SurveyRuntimeHelper {
         $show_empty_group = $this->show_empty_group;
 
         $this->setJavascriptVar($surveyid);
-        $aPrivateVariables = $this->setArgs();
+        $this->setArgs();
+
+        $aPrivateVariables = array();
+        if ( !$this->previewgrp && !$this->previewquestion){
+            $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
+            $aPrivateVariables = $this->getArgs();
+        }else{
+            $_SESSION[$this->LEMsessid]['prevstep'] = 2;
+            $_SESSION[$this->LEMsessid]['maxstep'] = 0;
+        }
+
+
 
         $this->moveSubmitIfNeeded();
         extract($aPrivateVariables);                                            // For redata
@@ -778,6 +789,9 @@ class SurveyRuntimeHelper {
         return $aPrivateVariables;
     }
 
+    /**
+     * This function is still doing much more things than just setting args....
+     */
     private function setArgs()
     {
 
@@ -824,14 +838,6 @@ class SurveyRuntimeHelper {
 
         }
 
-        if ($this->previewgrp || $this->previewquestion){
-            $_SESSION[$this->LEMsessid]['prevstep'] = 2;
-            $_SESSION[$this->LEMsessid]['maxstep'] = 0;
-            return array();
-        }else{
-            $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
-            return $this->getArgs();
-        }
     }
 
 
