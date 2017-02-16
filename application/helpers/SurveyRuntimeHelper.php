@@ -107,6 +107,7 @@ class SurveyRuntimeHelper {
         $surveyOptions    = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
         $previewgrp       = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $previewquestion  = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $preview          = $this->preview         = ($previewquestion || $previewgrp);
         $show_empty_group = $this->show_empty_group;
 
         $this->setJavascriptVar($surveyid);
@@ -124,11 +125,14 @@ class SurveyRuntimeHelper {
         $LEMsessid     = $this->LEMsessid;
 
         // First time the survey is loaded
-        if (!isset($_SESSION[$LEMsessid]['step']))
-        {
+        if (!isset($_SESSION[$LEMsessid]['step'])){
             // WAS INSIDE buildsurveysession($surveyid);
-            $sLangCode=App()->language;
-            $languagechanger=makeLanguageChangerSurvey($sLangCode);            
+            $sLangCode       = App()->language;
+            $languagechanger = makeLanguageChangerSurvey($sLangCode);
+
+
+            // TOKEN/CAPTCHA  FORMS
+            $this->showTokenOrCaptchaFormsIfNeeded();
         }
 
 
@@ -1859,5 +1863,151 @@ class SurveyRuntimeHelper {
             ));
             Yii::app()->end();
         }
+    }
+
+    private function showTokenOrCaptchaFormsIfNeeded()
+    {
+
+        $thissurvey = $this->thissurvey;
+        $surveyid   = $thissurvey['sid'];
+        $sLangCode  = App()->language;
+        $preview    = $this->preview;
+
+        $oTemplate                        = Template::model()->getInstance('', $surveyid);
+        $sTemplatePath                    = $oTemplate->path;
+        $sTemplateViewPath                = $oTemplate->pstplPath;
+
+
+        // TODO: find where they are defined before this call
+        global $clienttoken;
+        global $tokensexist;
+
+        /**
+        * This method has multiple outcomes that virtually do the same thing
+        * Possible scenarios/subscenarios are =>
+        *   - No token required & no captcha required
+        *   - No token required & captcha required
+        *       > captcha may be wrong
+        *   - token required & captcha required
+        *       > token may be wrong/used
+        *       > captcha may be wrong
+        */
+
+        $scenarios = array(
+            "tokenRequired"   => ($tokensexist == 1),
+            "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !isset($_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']))
+        );
+
+        /**
+        *   Set subscenarios depending on scenario outcome
+        */
+        $subscenarios = array(
+            "captchaCorrect" => false,
+            "tokenValid"     => false
+        );
+
+        //Check the scenario for token required
+        if ($scenarios['tokenRequired']){
+
+            //Check for the token-validity
+            if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+                $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken));
+            } else {
+                $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
+            }
+            $subscenarios['tokenValid'] = ((!empty($oTokenEntry) && ($clienttoken != "")));
+        }else{
+            $subscenarios['tokenValid'] = true;
+        }
+
+        //Check the scenario for captcha required
+        if ($scenarios['captchaRequired']){
+            //Check if the Captcha was correct
+            $captcha                        = Yii::app()->getController()->createAction('captcha');
+            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity'), false);
+        }else{
+            $subscenarios['captchaCorrect'] = true;
+            $loadsecurity                   = false;
+        }
+
+
+        //RenderWay defines which html gets rendered to the user_error
+        // Possibilities are main,register,correct
+        $renderCaptcha = "";
+        $renderToken   = "";
+
+        /**
+         * @todo : create 2 new function to create and call form
+         */
+        //Define array to render the partials
+        $aEnterTokenData                    = array();
+        $aEnterTokenData['bNewTest']        =  false;
+        $aEnterTokenData['bDirectReload']   =  false;
+        $aEnterTokenData['iSurveyId']       = $surveyid;
+        $aEnterTokenData['sLangCode']       = $sLangCode;
+
+        if (isset($_GET['bNewTest']) && $_GET['newtest'] == "Y"){
+            $aEnterTokenData['bNewTest'] =  true;
+        }
+
+        // If this is a direct Reload previous answers URL, then add hidden fields
+        if (isset($loadall) && isset($scid) && isset($loadname) && isset($loadpass)) {
+            $aEnterTokenData['bDirectReload'] =  true;
+            $aEnterTokenData['sCid'] =  $scid;
+            $aEnterTokenData['sLoadname'] =  htmlspecialchars($loadname);
+            $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
+        }
+
+        $aEnterErrors=array();
+        // Scenario => Token required
+        if ($scenarios['tokenRequired'] && !$preview){
+            //Test if token is valid
+            list($renderToken, $FlashError) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
+            if(!empty($FlashError)){
+                $aEnterErrors['token']=$FlashError;
+            }
+        }
+
+        // Scenario => Captcha required
+        if ($scenarios['captchaRequired'] && !$preview) {
+
+            //Apply the captcYii::app()->getRequest()->getPost($id);haEnabled flag to the partial
+            $aEnterTokenData['bCaptchaEnabled'] = true;
+            // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
+            if (!$subscenarios['captchaCorrect']) {
+
+                if (App()->getRequest()->getPost('loadsecurity')){
+                    $aEnterErrors['captcha'] = gT("Your answer to the security question was not correct - please try again.");
+
+                } elseif (null!==App()->getRequest()->getPost('loadsecurity')) {
+                    $aEnterErrors['captcha'] = gT("Your must answer to the security question - please try again.");
+                }
+                $renderCaptcha = 'main';
+            }
+            else {
+                $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen'] = true;
+                $renderCaptcha = 'correct';
+            }
+        }
+
+        // Scenario => Token required
+        if ($scenarios['tokenRequired'] && !$preview){
+            //Test if token is valid
+            list($renderToken, $FlashError, $aEnterTokenData) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
+        }
+
+        if (isset($FlashError) && $FlashError !== ""){
+            $aEnterErrors['flash'] = $FlashError;
+        }
+
+        $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
+        $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
+        $redata                             = compact(array_keys(get_defined_vars()));
+
+        // TODO MOVE renderRenderWayForm OUTSIDE OF THIS FUNCTION TO SURVEY RUNTIME HELPER
+
+        /* This funtion end if an form need to be shown */
+        renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
+
     }
 }
