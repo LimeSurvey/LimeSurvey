@@ -878,22 +878,12 @@ function buildsurveysession($surveyid,$preview=false)
 
     $sLangCode=App()->language;
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
-    if(!$preview)
-    {
+
+    if(!$preview){
         $preview=Yii::app()->getConfig('previewmode');
     }
 
     $thissurvey = getSurveyInfo($surveyid,$sLangCode);
-
-    if ($thissurvey['nokeyboard']=='Y')
-    {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    }
-    else
-    {
-        $kpclass = '';
-    }
 
     // $thissurvey['template'] already fixed by model : but why put this in session ?
     $_SESSION['survey_'.$surveyid]['templatename'] = $thissurvey['template'];
