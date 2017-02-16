@@ -865,6 +865,10 @@ function submitfailed($errormsg = '', $query = null)
  * it loads any answer defaults from command line or from the table defaultvalues
  * It is called from the related format script (group.php, question.php, survey.php)
  * if the survey has just started.
+ *
+ * NOTE: THIS FUNCTION IS DOING MUCH MORE THAN BUILD SESSION. IT ALSO RENDER THE TOKEN FORM !!!!
+ *
+ *
  * @param int $surveyid
  * @param boolean $preview Defaults to false
  * @return void
@@ -1572,7 +1576,9 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
             }
         }
         else
-        { //token was wrong
+        {
+            //token was wrong
+            // TODO: should be twigged
             $errorMsg= gT("The token you have provided is either not valid, or has already been used.");
             $FlashError .= $errorMsg;
 
