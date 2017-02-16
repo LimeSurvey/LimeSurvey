@@ -121,6 +121,13 @@ class SurveyRuntimeHelper {
             $_SESSION[$this->LEMsessid]['maxstep'] = 0;
         }
 
+        // TODO: remove those line, why a special condition when survey is not active VS when it's active and why HERE????
+        if ($this->thissurvey['active'] != "Y"){
+            // TODO: TWIG ASSESSMENTS !!!!!
+            if ($thissurvey['assessments'] == "Y"){
+                $assessments = $this->assessments = doAssessment($thissurvey['sid']);
+            }
+        }
 
 
         $this->moveSubmitIfNeeded();
@@ -790,7 +797,7 @@ class SurveyRuntimeHelper {
     }
 
     /**
-     * This function is still doing much more things than just setting args....
+     * Now it's ok ^^
      */
     private function setArgs()
     {
@@ -820,24 +827,14 @@ class SurveyRuntimeHelper {
 
             $this->thissurvey = $thissurvey;
 
-            if ($thissurvey['active'] != "Y"){
-
-                // TODO: TWIG ASSESSMENTS !!!!!
-                if ($thissurvey['assessments'] == "Y"){
-                    $assessments = $this->assessments = doAssessment($thissurvey['sid']);
-                }
-
-            }else{
-                //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
-                //don't use cookies if tokens are being used
+            //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
+            //don't use cookies if tokens are being used
+            if ($thissurvey['active'] == "Y"){
                 if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) {
                     setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
                 }
-
             }
-
         }
-
     }
 
 
