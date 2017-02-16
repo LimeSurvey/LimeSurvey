@@ -880,13 +880,8 @@ function buildsurveysession($surveyid,$preview=false)
     global $tokensexist;
     global $move, $rooturl;
 
-    $preview = ($preview)?$preview:Yii::app()->getConfig('previewmode');
-
-    $thissurvey = getSurveyInfo($surveyid,$sLangCode);
-
-    // $thissurvey['template'] already fixed by model : but why put this in session ?
-    $_SESSION['survey_'.$surveyid]['templatename'] = $thissurvey['template'];
-    $_SESSION['survey_'.$surveyid]['templatepath'] = getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
+    $preview                                       = ($preview)?$preview:Yii::app()->getConfig('previewmode');
+    $thissurvey                                    = getSurveyInfo($surveyid,$sLangCode);
 
     $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
 
