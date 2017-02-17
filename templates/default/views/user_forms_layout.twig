@@ -50,19 +50,13 @@
 
                             {# OLD FORMERROR #}
                             {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
-                                {% if not count(aSurveyInfo.aForm.aEnterErrors) > 1  %}
-                                    {# TODO: check how is defined $class #}
-                                    <ul class='{{aSurveyInfo.aForm.alert.class }} alert alert-danger list-unstyled' role='alert'>
-                                        {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
-                                            <li>{{ error }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                {% else %}
-                                    <p class='{{aSurveyInfo.aForm.alert.class }} alert alert-danger' role='alert'>
-                                        {{ reset(aSurveyInfo.aForm.aEnterErrors) }}
-                                    </p>
-                                {% endif %}
-                              {% endif %}
+                                {# TODO: check how is defined $class #}
+                                <ul class='alert alert-danger list-unstyled' role='alert'>
+                                    {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
 
                               <div class="form-{{ aSurveyInfo.aForm.sType }}">
                                   {# old FORM
@@ -166,21 +160,6 @@
 
                                         {{ aSurveyInfo.aForm.hiddenFields }}
 
-                                        {#
-
-                                                    <!-- hidden fields : move this to controller -->
-                                                    <?php echo CHtml::hiddenField('lang', $sLangCode, array('id' => 'lang')); ?>
-                                                    <?php if ($bNewTest): ?>
-                                                        <?php echo CHtml::hiddenField('newtest', "Y", array('id' => 'lang')); ?>
-                                                    <?php endif; ?>
-                                                    <?php
-                                                    if ($bDirectReload) : ?>
-                                                    <?php echo CHtml::hiddenField('loadall', $iSurveyId, array('id' => 'loadall')); ?>
-                                                    <?php echo CHtml::hiddenField('scid', $sCid, array('id' => 'scid')); ?>
-                                                    <?php echo CHtml::hiddenField('loadname', $Loadname, array('id' => 'loadname')); ?>
-                                                    <?php echo CHtml::hiddenField('loadpass', $sLoadpass, array('id' => 'loadpass')); ?>
-                                                <?php endif; ?>
-                                            #}
                                                 <div class='form-group load-survey-row load-survey-submit'>
                                                     <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
                                                         <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'>
