@@ -2010,8 +2010,6 @@ class SurveyRuntimeHelper {
         $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
         $redata                             = compact(array_keys(get_defined_vars()));
 
-        // TODO MOVE renderRenderWayForm OUTSIDE OF THIS FUNCTION TO SURVEY RUNTIME HELPER
-
         /* This funtion end if an form need to be shown */
         renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
