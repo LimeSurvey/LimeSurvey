@@ -1,5 +1,7 @@
 <?php
 
+use \ls\pluginmanager\PluginEvent;
+
 /**
  * @todo Not used, copied to admin/pluginmanager.php. Delete this file?
  * @todo Actually, it's used for action direct.

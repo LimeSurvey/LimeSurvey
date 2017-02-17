@@ -6,7 +6,7 @@ use Plugin;
 /**
  * Factory for limesurvey plugin objects.
  */
-class PluginManager extends \PluginManager {
+class PluginManager extends \CApplicationComponent {
    /**
      * Object containing any API that the plugins can use.
      * @var mixed $api The class name of the API class to load, or

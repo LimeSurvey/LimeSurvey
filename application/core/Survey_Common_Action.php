@@ -13,6 +13,8 @@
 *
 */
 
+use \ls\pluginmanager\PluginEvent;
+
 /**
 * Survey Common Action
 *

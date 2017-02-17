@@ -14,6 +14,8 @@
 // TODO: Why needed?
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
+use \ls\pluginmanager\PluginEvent;
+
 function loadanswers()
 {
     Yii::trace('start', 'survey.loadanswers');

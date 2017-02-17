@@ -45,6 +45,8 @@ Y - Yes/No
 
 */
 
+use \ls\pluginmanager\PluginEvent;
+
 /**
 * dataentry
 *
