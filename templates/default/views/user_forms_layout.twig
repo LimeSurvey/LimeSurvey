@@ -1,4 +1,9 @@
 
+{#
+
+    TODO: alignement, some unclosed div (for token + captcha)
+#}
+
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
@@ -16,12 +21,11 @@
 
             <!-- Main Row -->
             <div id="main-row">
-                {{ include('./subviews/flash_message.twig') }}
 
                     <!-- Main Col -->
                     <div class="col-centered" id="main-col">
 
-                        <div class='{FORMID}-page'>
+                        <div class='{{aSurveyInfo.aForm.sType}}-page'>
                             <div class="h3">
                                 {# OLD FORMHEADING #}
                                 {% if aSurveyInfo.aForm.sType == 'token'  %}
@@ -35,36 +39,31 @@
 
                             <div class="well">
 
-                            {# TOKEN #}
-                            {% if aSurveyInfo.aForm.sType == 'token'  %}
-                                {# OLD FORMMESSAGE #}
-                                <p class='text-info'>
-                                    {# TODO: convert !isset to null #}
-                                    {% if aSurveyInfo.aForm.token == null  %}
-                                        {{ "If you have been issued a token, please enter it in the box below and click continue." | t }}
-                                    {% else %}
-                                        {{ "Please confirm the token by answering the security question below and click continue." | t }}
-                                    {% endif %}
-                                </p>
-                            {% endif %}
+                                {# TOKEN #}
+                                {% if aSurveyInfo.aForm.sType == 'token'  %}
+                                    {# OLD FORMMESSAGE #}
+                                    <p class='text-info'>
+                                        {# TODO: convert !isset to null #}
+                                        {% if aSurveyInfo.aForm.token == null  %}
+                                            {{ "If you have been issued a token, please enter it in the box below and click continue." | t }}
+                                            {% else %}
+                                            {{ "Please confirm the token by answering the security question below and click continue." | t }}
+                                        {% endif %}
+                                    </p>
+                                {% endif %}
 
-                            {# OLD FORMERROR #}
-                            {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
-                                {# TODO: check how is defined $class #}
-                                <ul class='alert alert-danger list-unstyled' role='alert'>
-                                    {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                                {# OLD FORMERROR #}
+                                {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
+                                    {# TODO: check how is defined $class #}
+                                    <ul class='alert alert-danger list-unstyled' role='alert'>
+                                        {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
 
-                              <div class="form-{{ aSurveyInfo.aForm.sType }}">
-                                  {# old FORM
-
-                                   TODO: check if surveyUrl is ok
-                                   CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
-                                   #}
-
+                                <div class="form-{{ aSurveyInfo.aForm.sType }}">
+                                    {# old FORM#}
 
                                    {#
                                        array of attributes of the form tag.
@@ -87,9 +86,6 @@
                                            (htmlOptions)
                                        )
                                    }}
-
-
-
                                     {#  TOKEN FORM #}
 
 
@@ -185,14 +181,6 @@
                                                     <div class='ls-input-group'>
                                                         <div class='ls-input-group-extra captcha-widget' >
                                                             {{ renderCaptcha() }}
-
-                                                            {#
-                                                              <?php $this->widget('CCaptcha',array(
-                                                                  'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
-                                                                  'buttonType' => 'button',
-                                                                  'buttonLabel' => gt('Reload image','unescaped')
-                                                              )); ?>
-                                                             #}
                                                         </div>
                                                         <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
                                                     </div>
