@@ -1494,11 +1494,32 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
     switch($renderWay){
 
         case "main": //Token required, maybe Captcha required
+
+            // Using the normal Yii rendering way is a good idea: but, or we do it everywhere or we do it nowhere.
+            // Mixing different render logic is a bad idea, it makes it harder to understand.
+            // But: once everything is twiged, we could use this method everywhere
+
+            // QUESTION: maybe it's needed by Captcha system?
             App()->getController()->layout           = "survey";
             App()->getController()->aReplacementData = $aEnterTokenData;
             App()->getController()->bStartSurvey     = true;
 
+            $aForm = array();
+            $aForm['sType']           = ($scenarios['tokenRequired'])?'token':'captcha';
+            $aForm['token']           = array_key_exists('token', $aEnterTokenData)?$aEnterTokenData['token']:null;
+            $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
+
+            if ($aEnterTokenData['bCaptchaEnabled']){
+                $aForm['bCaptchaEnabled'] = $aEnterTokenData['bCaptchaEnabled'];
+            }
+
+
+
+
+
+            $thissurvey["aForm"] = $aForm;
             // render token form
+            /*
             $aReplacements['FORMID']      = ($scenarios['tokenRequired'])?'token':'captcha';
             $aReplacements['FORMHEADING'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/heading",$aEnterTokenData,true);
             $aReplacements['FORMMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/message",$aEnterTokenData,true);
@@ -1506,13 +1527,18 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
             $aReplacements['FORM']        = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
             $aReplacements['FORM']       .= App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/form",$aEnterTokenData,true);
             $aReplacements['FORM']       .= CHtml::endForm();
+            */
             /* @ todo : some hidden field must be moved here : in controller */
 
-            $content = templatereplace(file_get_contents($sTemplateViewPath."form.pstpl"),$aReplacements,$aData);
+    //        $content = templatereplace(file_get_contents($sTemplateViewPath."form.pstpl"),$aReplacements,$aData);
 
-            App()->getController()->render("/survey/system/display",array(
+    /*        App()->getController()->render("/survey/system/display",array(
                 'content'=>$content,
             ));
+*/
+
+$redata  = compact(array_keys(get_defined_vars()));
+echo templatereplace(file_get_contents($sTemplateViewPath."user_forms_layout.twig"), array(), $redata);
 
             Yii::app()->end();
             break;
@@ -1524,7 +1550,7 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
             /* We never get here */
             echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
             break;
-            
+
         case "correct": //Nothing to hold back, render survey
         default:
             break;
