@@ -27,7 +27,7 @@ class oldUrlCompat extends \ls\pluginmanager\PluginBase
     //~ {
         //~ $this->subscribe('afterPluginLoad','oldUrlCompat');
     //~ }
-    public function __construct(PluginManager $manager, $id)
+    public function __construct(\ls\pluginmanager\PluginManager $manager, $id)
     {
         parent::__construct($manager, $id);
         $this->subscribe('afterPluginLoad','oldUrlCompat');
