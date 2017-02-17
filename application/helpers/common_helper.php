@@ -4978,7 +4978,8 @@ function fixLanguageConsistency($sid, $availlangs='')
             reset($langs);
         }
     }
-
+    /* Remove invalid question : can break survey */
+    Survey::model()->findByPk($sid)->fixInvalidQuestions();
 
     $query = "SELECT * FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
@@ -5655,7 +5656,7 @@ function getPrintableHeader()
     return $headelements;
 }
 
-/** 
+/**
  * This function returns the Footer as result string
  * If you want to echo the Footer use doFooter()!
  * @return string
