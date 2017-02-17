@@ -1877,9 +1877,10 @@ class SurveyRuntimeHelper {
         $sLangCode  = App()->language;
         $preview    = $this->preview;
 
-        $oTemplate                        = Template::model()->getInstance('', $surveyid);
-        $sTemplatePath                    = $oTemplate->path;
-        $sTemplateViewPath                = $oTemplate->pstplPath;
+        // Template settings
+        $oTemplate         = $this->template;
+        $sTemplatePath     = $oTemplate->path;
+        $sTemplateViewPath = $oTemplate->pstplPath;
 
 
         // TODO: find where they are defined before this call
