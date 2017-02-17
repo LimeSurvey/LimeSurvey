@@ -1492,31 +1492,31 @@ function getRenderWay($renderToken, $renderCaptcha)
 function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid)
 {
     switch($renderWay){
-        case "main": //Token required, maybe Captcha required
-            App()->getController()->layout="survey";
-            App()->getController()->aReplacementData=$aEnterTokenData;
-            App()->getController()->bStartSurvey=true;
-            // render token form
 
-            if($scenarios['tokenRequired']){
-                $aReplacements['FORMID'] = 'token';
-            } else {
-                $aReplacements['FORMID'] = 'captcha';
-            }
+        case "main": //Token required, maybe Captcha required
+            App()->getController()->layout           = "survey";
+            App()->getController()->aReplacementData = $aEnterTokenData;
+            App()->getController()->bStartSurvey     = true;
+
+            // render token form
+            $aReplacements['FORMID']      = ($scenarios['tokenRequired'])?'token':'captcha';
             $aReplacements['FORMHEADING'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/heading",$aEnterTokenData,true);
             $aReplacements['FORMMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/message",$aEnterTokenData,true);
-            $aReplacements['FORMERROR'] = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/error",$aEnterTokenData,true);
-
-            $aReplacements['FORM'] = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
-            $aReplacements['FORM'].= App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/form",$aEnterTokenData,true);
+            $aReplacements['FORMERROR']   = App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/error",$aEnterTokenData,true);
+            $aReplacements['FORM']        = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
+            $aReplacements['FORM']       .= App()->getController()->renderPartial("/survey/frontpage/{$aReplacements['FORMID']}Form/form",$aEnterTokenData,true);
+            $aReplacements['FORM']       .= CHtml::endForm();
             /* @ todo : some hidden field must be moved here : in controller */
-            $aReplacements['FORM'].= CHtml::endForm();
+
             $content = templatereplace(file_get_contents($sTemplateViewPath."form.pstpl"),$aReplacements,$aData);
+
             App()->getController()->render("/survey/system/display",array(
                 'content'=>$content,
             ));
+
             Yii::app()->end();
             break;
+
         case "register": //Register new user
             // Add the event and test if done
             Yii::app()->runController("register/index/sid/{$surveyid}");
@@ -1524,6 +1524,7 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
             /* We never get here */
             echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
             break;
+            
         case "correct": //Nothing to hold back, render survey
         default:
             break;
