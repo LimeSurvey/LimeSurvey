@@ -8,7 +8,7 @@ interface iPlugin {
      * @param PluginManager $manager    The plugin manager instantiating the object
      * @param int           $id         The id for storage
      */
-    public function __construct(\PluginManager $manager, $id);
+    public function __construct(\ls\pluginmanager\PluginManager $manager, $id);
 
     /**
      * Return the description for this plugin

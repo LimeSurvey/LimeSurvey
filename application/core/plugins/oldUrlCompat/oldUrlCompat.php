@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-class oldUrlCompat extends PluginBase
+class oldUrlCompat extends \ls\pluginmanager\PluginBase
 {
     static protected $name = 'oldUrlCompat';
     static protected $description = 'Old url (pre-2.0) compatible system';

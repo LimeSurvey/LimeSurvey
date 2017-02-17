@@ -15,6 +15,8 @@ if (!defined('BASEPATH'))
 *
 */
 
+use \ls\pluginmanager\PluginEvent;
+
 class Survey extends LSActiveRecord
 {
     /**
