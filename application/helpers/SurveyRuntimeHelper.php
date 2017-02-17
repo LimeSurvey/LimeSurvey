@@ -1868,6 +1868,7 @@ class SurveyRuntimeHelper {
     /**
      * NOTE: right now, captcha works ONLY if reloaded... need to be debug.
      * NOTE: I bet we have the same problem on 2.6x.x
+     * NOTE: when token + captcha: works fine
      */
     private function showTokenOrCaptchaFormsIfNeeded()
     {
