@@ -213,6 +213,10 @@ $internalConfig = array(
                 'registerPublicCssFile' => 'LS_Twig_Extension::registerPublicCssFile',
                 'getAllQuestionClasses' => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                => 'intval',
+                'empty'                 => 'empty',
+                'count'                 => 'count',
+                'reset'                 => 'reset',
+                'renderCaptcha'         => 'LS_Twig_Extension::renderCaptcha',
 
             ),
             'filters' => array(
@@ -220,11 +224,12 @@ $internalConfig = array(
                 't'     => 'eT',
                 'gT'    => 'gT',
             ),
+
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT'),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton" ),
+                    'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
                     'Survey'                            =>  array("getAllLanguages"),
                     'LSHttpRequest'                     =>  array("getParam"),
                 ),
@@ -232,7 +237,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval'),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha'),
             ),
 
             // Change template syntax to Smarty-like (not recommended)
