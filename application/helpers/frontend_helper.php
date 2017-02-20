@@ -866,9 +866,6 @@ function submitfailed($errormsg = '', $query = null)
  * It is called from the related format script (group.php, question.php, survey.php)
  * if the survey has just started.
  *
- * NOTE: THIS FUNCTION IS DOING MUCH MORE THAN BUILD SESSION. IT ALSO RENDER THE TOKEN FORM !!!!
- *
- *
  * @param int $surveyid
  * @param boolean $preview Defaults to false
  * @return void
@@ -905,15 +902,11 @@ function buildsurveysession($surveyid,$preview=false)
 
     // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
     SetSurveyLanguage ($surveyid, $language_to_set);
-
     UpdateGroupList ($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $totalquestions = Question::model()->getTotalQuestions($surveyid);
-
+    $totalquestions               = Question::model()->getTotalQuestions($surveyid);
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
-
-    // Fix totalquestions by substracting Test Display questions
-    $iNumberofQuestions = Question::model()->getNumberOfQuestions($surveyid);
+    $iNumberofQuestions           = Question::model()->getNumberOfQuestions($surveyid);                     // Fix totalquestions by substracting Test Display questions
 
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
 
@@ -946,6 +939,7 @@ function buildsurveysession($surveyid,$preview=false)
 
     $_SESSION['survey_'.$surveyid]['fieldmap'] = $fieldmap;
 
+    // first call to initFieldArray
     initFieldArray($surveyid, $fieldmap);
 
     // Prefill questions/answers from command line params
@@ -1061,12 +1055,11 @@ function initFieldArray($surveyid, array $fieldmap)
     // Reset field array if called more than once (should not happen)
     $_SESSION['survey_' . $surveyid]['fieldarray'] = array();
 
-    foreach ($fieldmap as $key => $field)
-    {
-        if (isset($field['qid']) && $field['qid']!='')
-        {
-            $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
-            $_SESSION['survey_'.$surveyid]['insertarray'][]=$field['fieldname'];
+    foreach ($fieldmap as $key => $field){
+
+        if (isset($field['qid']) && $field['qid']!=''){
+            $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$field['fieldname']]   = $field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+            $_SESSION['survey_'.$surveyid]['insertarray'][]                         = $field['fieldname'];
             //fieldarray ARRAY CONTENTS -
             //            [0]=questions.qid,
             //            [1]=fieldname,
@@ -1081,8 +1074,7 @@ function initFieldArray($surveyid, array $fieldmap)
             //            [9]=used in group.php for question count
             //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
 
-            if (!isset($_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
-            {
+            if (!isset($_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']])){
                 //JUST IN CASE : PRECAUTION!
                 //following variables are set only if $style=="full" in createFieldMap() in common_helper.
                 //so, if $style = "short", set some default values here!
@@ -1111,7 +1103,7 @@ function initFieldArray($surveyid, array $fieldmap)
                 else
                     $usedinconditions = 'N';
 
-                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
+                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']] = array($field['qid'],
                 $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
                 $title,
                 $question,
@@ -1121,8 +1113,8 @@ function initFieldArray($surveyid, array $fieldmap)
                 $hasconditions,
                 $usedinconditions);
             }
-            if (isset($field['random_gid']))
-            {
+
+            if (isset($field['random_gid'])){
                 $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid'];
             }
         }
@@ -1169,27 +1161,21 @@ function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $lo
 function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap = array())
 {
     // Initialize the randomizer. Seed will be stored in response.
+    // TODO: rewrite this THE YII WAY !!!! (application/third_party + internal config for namespace + aliases; etc)
     ls\mersenne\setSeed($surveyid);
 
-    if (empty($fieldmap))
-    {
-        $fieldmap = $_SESSION['survey_' . $surveyid]['fieldmap'];
-    }
+    $fieldmap = (empty($fieldmap))?$_SESSION['survey_' . $surveyid]['fieldmap']:$fieldmap;
 
-    // Randomization groups for groups
-    list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview);
-
-    // Randomization groups for questions
-    list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview);
+    list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview);    // Randomization groups for groups
+    list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview); // Randomization groups for questions
 
     $randomized = $randomized1 || $randomized2;;
 
-    if ($randomized === true)
-    {
+    if ($randomized === true){
         $fieldmap = finalizeRandomization($fieldmap);
 
         $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
+        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']                            = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
     }
 
     $_SESSION['survey_' . $surveyid]['fieldmap'] = $fieldmap;
@@ -1207,67 +1193,65 @@ function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap 
 function randomizationGroup($surveyid, array $fieldmap, $preview)
 {
     // Randomization groups for groups
-    $aRandomGroups=array();
-    $aGIDCompleteMap=array();
+    $aRandomGroups   = array();
+    $aGIDCompleteMap = array();
 
     // First find all groups and their groups IDS
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
     $criteria->addCondition("randomization_group != ''");
+
     $oData = QuestionGroup::model()->findAll($criteria);
 
-    foreach($oData as $aGroup)
-    {
+    foreach($oData as $aGroup){
         $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
     }
 
     // Shuffle each group and create a map for old GID => new GID
-    foreach ($aRandomGroups as $sGroupName=>$aGIDs)
-    {
-        $aShuffledIDs=$aGIDs;
-        $aShuffledIDs = ls\mersenne\shuffle($aShuffledIDs);
-        $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
+    foreach ($aRandomGroups as $sGroupName=>$aGIDs){
+        $aShuffledIDs    = $aGIDs;
+        $aShuffledIDs    = ls\mersenne\shuffle($aShuffledIDs);
+        $aGIDCompleteMap = $aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
     }
+
     $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
 
     $randomized = false;    // So we can trigger reorder once for group and question randomization
+
     // Now adjust the grouplist
-    if (count($aRandomGroups)>0 && !$preview)
-    {
+    if (count($aRandomGroups)>0 && !$preview){
+
         $randomized = true;    // So we can trigger reorder once for group and question randomization
+
         // Now adjust the grouplist
-        Yii::import('application.helpers.frontend_helper', true);   // make sure frontend helper is loaded
+        Yii::import('application.helpers.frontend_helper', true);   // make sure frontend helper is loaded ???? We are inside frontend_helper..... TODO: check if it can be removed
         UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
         // ... and the fieldmap
 
         // First create a fieldmap with GID as key
-        foreach ($fieldmap as $aField)
-        {
-            if (isset($aField['gid']))
-            {
+        foreach ($fieldmap as $aField){
+            if (isset($aField['gid'])){
                 $GroupFieldMap[$aField['gid']][]=$aField;
-            }
-            else{
+            }else{
                 $GroupFieldMap['other'][]=$aField;
             }
         }
+
         // swap it
-        foreach ($GroupFieldMap as $iOldGid => $fields)
-        {
+        foreach ($GroupFieldMap as $iOldGid => $fields){
             $iNewGid = $iOldGid;
-            if (isset($aGIDCompleteMap[$iOldGid]))
-            {
+            if (isset($aGIDCompleteMap[$iOldGid])){
                 $iNewGid = $aGIDCompleteMap[$iOldGid];
             }
             $newGroupFieldMap[$iNewGid] = $GroupFieldMap[$iNewGid];
         }
+
         $GroupFieldMap = $newGroupFieldMap;
         // and convert it back to a fieldmap
         unset($fieldmap);
-        foreach($GroupFieldMap as $aGroupFields)
-        {
-            foreach ($aGroupFields as $aField)
-            {
+
+        foreach($GroupFieldMap as $aGroupFields){
+            foreach ($aGroupFields as $aField){
                 if (isset($aField['fieldname'])) {
                     $fieldmap[$aField['fieldname']] = $aField;  // isset() because of the shuffled flag above
                 }
@@ -1287,36 +1271,33 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
  */
 function randomizationQuestion($surveyid, array $fieldmap, $preview)
 {
-    $randomized = false;
+    $randomized   = false;
+    $randomGroups = array();
+
     // Find all defined randomization groups through question attribute values
-    $randomGroups=array();
-    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
-    {
+    // TODO: move the sql queries to a model
+    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))){
         $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
-    }
-    else
-    {
+    }else{
         $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
     }
+
     $rgresult = dbExecuteAssoc($rgquery);
 
-    foreach($rgresult->readAll() as $rgrow)
-    {
-        // Get the question IDs for each randomization group
-        $randomGroups[$rgrow['value']][] = $rgrow['qid'];
+    foreach($rgresult->readAll() as $rgrow){
+        $randomGroups[$rgrow['value']][] = $rgrow['qid'];   // Get the question IDs for each randomization group
     }
 
     // If we have randomization groups set, then lets cycle through each group and
     // replace questions in the group with a randomly chosen one from the same group
-    if (count($randomGroups) > 0 && !$preview)
-    {
-        $randomized   = true;    // So we can trigger reorder once for group and question randomization
-        $copyFieldMap = array();
+    if (count($randomGroups) > 0 && !$preview){
+        $randomized    = true;    // So we can trigger reorder once for group and question randomization
+        $copyFieldMap  = array();
         $oldQuestOrder = array();
         $newQuestOrder = array();
         $randGroupNames = array();
-        foreach ($randomGroups as $key=>$value)
-        {
+
+        foreach ($randomGroups as $key=>$value){
             $oldQuestOrder[$key] = $randomGroups[$key];
             $newQuestOrder[$key] = $oldQuestOrder[$key];
             // We shuffle the question list to get a random key->qid which will be used to swap from the old key
@@ -1325,33 +1306,31 @@ function randomizationQuestion($surveyid, array $fieldmap, $preview)
         }
 
         // Loop through the fieldmap and swap each question as they come up
-        foreach ($fieldmap as $fieldkey => $fieldval)
-        {
+        foreach ($fieldmap as $fieldkey => $fieldval){
             $found = 0;
-            foreach ($randomGroups as $gkey => $gval)
-            {
+
+            foreach ($randomGroups as $gkey => $gval){
+
                 // We found a qid that is in the randomization group
-                if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
-                {
+                if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey])){
                     // Get the swapped question
                     $idx = array_search($fieldval['qid'],$oldQuestOrder[$gkey]);
-                    foreach ($fieldmap as $key => $field)
-                    {
-                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$idx])
-                        {
+
+                    foreach ($fieldmap as $key => $field){
+
+                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$idx]){
                             $field['random_gid'] = $fieldval['gid'];   // It is possible to swap to another group
                             $copyFieldMap[$key]  = $field;
                         }
                     }
                     $found = 1;
                     break;
-                } else
-                {
+                }else{
                     $found = 2;
                 }
             }
-            if ($found == 2)
-            {
+
+            if ($found == 2){
                 $copyFieldMap[$fieldkey]=$fieldval;
             }
             reset($randomGroups);
@@ -1375,31 +1354,29 @@ function finalizeRandomization($fieldmap)
     $qseq = -1;
     $_qid = -1;
     $copyFieldMap = array();
-    foreach ($fieldmap as $key => $val)
-    {
-        if ($val['gid'] != '')
-        {
-            if (isset($val['random_gid']))
-            {
+
+    foreach ($fieldmap as $key => $val){
+
+        if ($val['gid'] != ''){
+
+            if (isset($val['random_gid'])){
                 $gid = $val['random_gid'];
-            } else {
+            }else{
                 $gid = $val['gid'];
             }
-            if ($gid != $_gid)
-            {
+
+            if ($gid != $_gid){
                 $_gid = $gid;
                 ++$gseq;
             }
         }
 
-        if ($val['qid'] != '' && $val['qid'] != $_qid)
-        {
+        if ($val['qid'] != '' && $val['qid'] != $_qid){
             $_qid = $val['qid'];
             ++$qseq;
         }
 
-        if ($val['gid'] != '' && $val['qid'] != '')
-        {
+        if ($val['gid'] != '' && $val['qid'] != ''){
             $val['groupSeq']    = $gseq;
             $val['questionSeq'] = $qseq;
         }
