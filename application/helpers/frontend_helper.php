@@ -2174,7 +2174,7 @@ function display_first_page() {
     $movenextbutton  = $aNavigator['sMoveNextButton'];
     $navigator       = $moveprevbutton.' '.$movenextbutton;
     $sitename        = Yii::app()->getConfig('sitename');
-    $languagechanger = makeLanguageChangerSurvey(App()->language);
+    $languagechanger = makeLanguageChangerSurvey(App()->language, true, true);
 
     // Template init
     $oTemplate         = Template::model()->getInstance('', $surveyid);
