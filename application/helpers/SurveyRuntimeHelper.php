@@ -135,7 +135,7 @@ class SurveyRuntimeHelper {
                 $thissurvey['alanguageChanger']['show']  = true;
                 $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
             }
-            
+
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
 
@@ -397,10 +397,6 @@ class SurveyRuntimeHelper {
         $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $hiddenfieldnames               = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
 
-        // For welcome screen
-        $thissurvey['iTotalquestions']   = $this->totalquestions;
-        $showxquestions                  = Yii::app()->getConfig('showxquestions');
-        $thissurvey['bShowxquestions']   = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) || ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y'));
 
         // Show question code/number
         $thissurvey['aShow']             = $this->getShowNumAndCode($thissurvey);
@@ -783,8 +779,14 @@ class SurveyRuntimeHelper {
 
         $move           = $this->move;
         $moveResult     = $this->moveResult;
-        $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->surveyid]['totalquestions']; // Proabably for redata
-        $redata         = compact(array_keys(get_defined_vars()));                                        // must replace this by something better
+        $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->surveyid]['totalquestions'];
+
+
+        // For welcome screen
+        $this->thissurvey['iTotalquestions']   = $totalquestions;
+        $showxquestions                        = Yii::app()->getConfig('showxquestions');
+        $this->thissurvey['bShowxquestions']   = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) || ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y'));
+
     }
 
     /**
