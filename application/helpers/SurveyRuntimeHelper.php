@@ -566,6 +566,28 @@ class SurveyRuntimeHelper {
         /**
         * Navigator
         */
+
+        /**
+         TODO:
+         $aNavigator['show'] = $aNavigator['show'] = $aNavigator['save']['show'] = $aNavigator['load']['show'] = false;
+         if (!$previewgrp && !$previewquestion){
+         $thissurvey['aNavigator'] = getNavigatorDatasForTwig;
+
+        }
+
+        $thissurvey['hiddenInputs']  =  "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
+        $thissurvey['hiddenInputs'] .=  "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+        $thissurvey['hiddenInputs'] .= "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
+        $_SESSION[$LEMsessid]['LEMpostKey'] = mt_rand();
+        $thissurvey['hiddenInputs'] .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
+
+        if (isset($token) && !empty($token))
+        {
+            $thissurvey['hiddenInputs'] .=  "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+        }
+
+
+         */
         $thissurvey['aNavigator'] = array();
         $thissurvey['aNavigator']['show'] = $aNavigator['show'] = $thissurvey['aNavigator']['save']['show'] = $thissurvey['aNavigator']['load']['show'] = false;
 
