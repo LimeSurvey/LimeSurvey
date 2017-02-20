@@ -136,8 +136,6 @@ class SurveyRuntimeHelper {
         }
 
 
-
-
         if ( !$this->previewgrp && !$this->previewquestion){
             $this->initMove();                                                   // main methods to init session, LEM, moves, errors, etc
             $aPrivateVariables = $this->getArgs();
@@ -166,6 +164,9 @@ class SurveyRuntimeHelper {
 
 
         $this->moveSubmitIfNeeded();
+
+
+
         extract($aPrivateVariables);                                            // For redata
 
         // We really need to replace redata get_defined_vars by something else.

@@ -1598,24 +1598,25 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
 * This function creates the form elements in the survey navigation bar
 * Adding a hidden input for default behaviour without javascript
 * Use button name="move" for real browser (with or without javascript) and IE6/7/8 with javascript
+*
+* TODO: TWIG IT !
 */
 function surveymover()
 {
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getSurveyInfo($surveyid);
 
-    $sMoveNext="movenext";
-    $sMovePrev="";
-    $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
-    $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep']))?$_SESSION['survey_'.$surveyid]['maxstep']:false;
-    $iSessionTotalSteps=(isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
-    $sClass="ls-move-btn";
-    $sSurveyMover = "";
+    $sMoveNext          = "movenext";
+    $sMovePrev          = "";
+    $iSessionStep       = (isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
+    $iSessionMaxStep    = (isset($_SESSION['survey_'.$surveyid]['maxstep']))?$_SESSION['survey_'.$surveyid]['maxstep']:false;
+    $iSessionTotalSteps = (isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
+    $sClass             = "ls-move-btn";
+    $sSurveyMover       = "";
 
     // Count down
-    if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep))
-     {
-        $sClass.=" disabled";
+    if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep)){
+        $sClass .= " disabled";
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
         App()->getClientScript()->registerScript('navigator_countdown',"navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n",CClientScript::POS_BEGIN);
      }
@@ -1625,9 +1626,8 @@ function surveymover()
         && $iSessionStep
         && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
         && !Yii::app()->getConfig('previewmode')
-    )
-    {
-        $sMovePrev="moveprev";
+    ){
+        $sMovePrev = "moveprev";
      }
 
     // Submit ?
@@ -1635,19 +1635,18 @@ function surveymover()
         || $thissurvey['format'] == 'A'
         )
     {
-        $sMoveNext="movesubmit";
+        $sMoveNext = "movesubmit";
     }
 
     // todo Remove Next if needed (exemple quota show previous only: maybe other, but actually don't use surveymover)
-    if(Yii::app()->getConfig('previewmode'))
-    {
+    if (Yii::app()->getConfig('previewmode')){
         $sMoveNext="";
     }
 
 
     // Construction of mover
-
-    if($sMovePrev){
+    if ($sMovePrev){
+        // TODO: Twig it !
         $sMovePrevButton = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>$sMovePrev,'class'=>"$sClass ls-move-previous-btn"),true);
         //$sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
         //~ $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass." btn-default"));
@@ -1655,16 +1654,19 @@ function surveymover()
         $sMovePrevButton = '';
     }
 
-    if($sMoveNext){
-        if($sMoveNext=="movesubmit"){
+    if ($sMoveNext){
+        if($sMoveNext == "movesubmit"){
+            // TODO: Twig it !
             $sMoveNextButton = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"movesubmit",'class'=>"$sClass ls-move-submit-btn"),true);
         }else{
+            // TODO: Twig it !
             $sMoveNextButton = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"$sClass ls-move-next-btn"),true);
         }
         //~ $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass." btn-primary"));
     }else{
         $sMoveNextButton = '';
     }
+
     return array('sMovePrevButton' => $sMovePrevButton, 'sMoveNextButton'=>$sMoveNextButton);
 }
 
@@ -2179,13 +2181,15 @@ function display_first_page() {
     $sTemplatePath     = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->pstplPath;
 
-    sendCacheHeaders();
-    doHeader();
-
     LimeExpressionManager::StartProcessingPage();
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
 
     $redata = compact(array_keys(get_defined_vars()));
+
+
+        sendCacheHeaders();
+        doHeader();
+
 
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
     echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off', 'class'=>'frontend_helper'));
