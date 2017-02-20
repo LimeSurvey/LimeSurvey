@@ -151,9 +151,6 @@ class SurveyRuntimeHelper {
         }
 
 
-
-
-
         // TODO: remove those line, why a special condition when survey is not active VS when it's active and why HERE????
         if ($this->thissurvey['active'] != "Y"){
             // TODO: TWIG ASSESSMENTS !!!!!
