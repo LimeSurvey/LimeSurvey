@@ -2176,12 +2176,12 @@ function display_first_page() {
     $sitename        = Yii::app()->getConfig('sitename');
 
     // language changer
-    $alanguageChangerDatas               = makeLanguageChangerSurvey(App()->language, true, true);
+    $alanguageChangerDatas               = makeLanguageChangerSurvey(App()->language, false, true);
     if ($alanguageChangerDatas){
         $thissurvey['alanguageChanger']['show']  = true;
         $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
     }
-    
+
     // Template init
     $oTemplate         = Template::model()->getInstance('', $surveyid);
     $sTemplatePath     = $oTemplate->path;
@@ -2190,47 +2190,30 @@ function display_first_page() {
     LimeExpressionManager::StartProcessingPage();
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
 
-    $redata = compact(array_keys(get_defined_vars()));
-
-
-        sendCacheHeaders();
-        doHeader();
-
-
-    echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
-    echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off', 'class'=>'frontend_helper'));
-
-    echo templatereplace(file_get_contents($sTemplateViewPath."welcome.pstpl"),array(),$redata,'frontend_helper[2762]')."\n";
-
-    if ($thissurvey['anonymized'] == "Y")
-    {
-        echo templatereplace(file_get_contents($sTemplateViewPath."/privacy.pstpl"),array(),$redata,'frontend_helper[2765]')."\n";
-    }
-
-    echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"),array(),$redata,'frontend_helper[2767]');
-
-
-    echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-    if (isset($token) && !empty($token)) {
-        echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-    }
-    echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
-    $loadsecurity = returnGlobal('loadsecurity',true);
-    if (isset($loadsecurity)) {
-        echo "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
-    }
+    // WHY HERE ?????
     $_SESSION['survey_'.$surveyid]['LEMpostKey'] = mt_rand();
-    echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['survey_'.$surveyid]['LEMpostKey']}' id='LEMpostKey' />\n";
-    echo "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
 
-    echo "<!--frontendhelper --></form>";
-    echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[2782]');
+    $loadsecurity = returnGlobal('loadsecurity',true);
 
+    $thissurvey['EM']['ScriptsAndHiddenInputs']  = "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
+    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION['survey_'.$surveyid]['LEMpostKey']}' id='LEMpostKey' />\n";
+    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
 
-    echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+    if (isset($token) && !empty($token)) {
+        $thissurvey['EM']['ScriptsAndHiddenInputs'] .=  "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+    }
+
+    if (isset($loadsecurity)) {
+        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
+    }
+
+    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+
     LimeExpressionManager::FinishProcessingPage();
-    doFooter();
-    echo "<!-- end of frontend_helper /  display_first_page -->";
+
+    $redata = compact(array_keys(get_defined_vars()));
+    echo templatereplace(file_get_contents($sTemplateViewPath."layout_first_page.twig"), array(), $redata);
 }
 
 /**
