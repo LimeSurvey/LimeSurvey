@@ -2265,7 +2265,7 @@ function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
 
     $totalquestions             = $_SESSION['survey_'.$surveyid]['totalquestions'];
-    $thisurvey['aNavigator']    = getNavigatorDatas();
+    $thissurvey['aNavigator']    = getNavigatorDatas();
     $sitename                   = Yii::app()->getConfig('sitename');
     $alanguageChangerDatas      = makeLanguageChangerSurvey(App()->language, false, true);
 
@@ -2302,8 +2302,10 @@ function display_first_page() {
 
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
     LimeExpressionManager::FinishProcessingPage();
 
+    $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
     $redata = compact(array_keys(get_defined_vars()));
     echo templatereplace(file_get_contents($sTemplateViewPath."layout_first_page.twig"), array(), $redata);
 }
