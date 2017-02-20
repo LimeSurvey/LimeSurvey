@@ -125,7 +125,6 @@ class SurveyRuntimeHelper {
         $LEMsessid     = $this->LEMsessid;
 
         // First time the survey is loaded
-
         if (!isset($_SESSION[$LEMsessid]['step'])){
             // WAS INSIDE buildsurveysession($surveyid);
             $sLangCode       = App()->language;
@@ -134,7 +133,6 @@ class SurveyRuntimeHelper {
             //  TODO: cehck if languagechanger shown in token/captcha form
             // TOKEN/CAPTCHA  FORMS
             $this->showTokenOrCaptchaFormsIfNeeded();
-            $this->displayFirstPageIfNeeded();
         }
 
 
@@ -144,6 +142,7 @@ class SurveyRuntimeHelper {
             $this->initMove();                                                   // main methods to init session, LEM, moves, errors, etc
             $aPrivateVariables = $this->getArgs();
 
+            $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
             $this->setNotAnsweredAndNotValidated();
