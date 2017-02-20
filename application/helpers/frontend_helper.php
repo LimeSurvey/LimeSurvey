@@ -1674,16 +1674,12 @@ function surveymover()
  * TODO: call this function from surveyRuntimeHelper
  * TODO: remove surveymover()
  */
-function getNavigatorDatasForTwig()
+function getNavigatorDatas()
 {
-
-    /**
-    * Navigator
-    */
     global $surveyid, $thissurvey;
-    $aNavigator = array();
 
-    $aNavigator['show'] = $aNavigator['show'] = true;
+    $aNavigator = array();
+    $aNavigator['show'] = true;
 
     $sMoveNext          = "movenext";
     $sMovePrev          = "";
@@ -1695,8 +1691,7 @@ function getNavigatorDatasForTwig()
 
     // Count down
     $aNavigator['disabled']   = '';
-    if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep))
-    {
+    if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep)){
         $aNavigator['disabled'] = " disabled";
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
         App()->getClientScript()->registerScript('navigator_countdown',"navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n",CClientScript::POS_BEGIN);
@@ -1723,19 +1718,10 @@ function getNavigatorDatasForTwig()
         $sMoveNext="";
     }
 
-    $aNavigatorInfo = surveymover();
-    $moveprevbutton = $aNavigatorInfo['sMovePrevButton'];
-    $movenextbutton = $aNavigatorInfo['sMoveNextButton'];
-    $navigator      = $moveprevbutton.' '.$movenextbutton;
-
 
     $aNavigator['aMovePrev']['show']  = ( $sMovePrev != '' );
     $aNavigator['aMoveNext']['show']  = ( $sMoveNext != '' );
     $aNavigator['aMoveNext']['value'] = $sMoveNext;
-
-    $redata = compact(array_keys(get_defined_vars()));
-
-    //echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
 
 
     // SAVE BUTTON
@@ -2277,15 +2263,12 @@ function GetReferringUrl()
 */
 function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
-    $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
-    // Fill some necessary var for template
-    $thisurvey['aNavigator']       = getNavigatorDatasForTwig();
+    $totalquestions             = $_SESSION['survey_'.$surveyid]['totalquestions'];
+    $thisurvey['aNavigator']    = getNavigatorDatas();
+    $sitename                   = Yii::app()->getConfig('sitename');
+    $alanguageChangerDatas      = makeLanguageChangerSurvey(App()->language, false, true);
 
-    $sitename        = Yii::app()->getConfig('sitename');
-
-    // language changer
-    $alanguageChangerDatas               = makeLanguageChangerSurvey(App()->language, false, true);
     if ($alanguageChangerDatas){
         $thissurvey['alanguageChanger']['show']  = true;
         $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;

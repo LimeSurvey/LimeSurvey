@@ -633,12 +633,6 @@ class SurveyRuntimeHelper {
                 $sMoveNext="";
             }
 
-            $aNavigatorInfo = surveymover();
-            $moveprevbutton = $aNavigatorInfo['sMovePrevButton'];
-            $movenextbutton = $aNavigatorInfo['sMoveNextButton'];
-            $navigator      = $moveprevbutton.' '.$movenextbutton;
-
-
             $thissurvey['aNavigator']['aMovePrev']['show']  = ( $sMovePrev != '' );
             $thissurvey['aNavigator']['aMoveNext']['show']  = ( $sMoveNext != '' );
             $thissurvey['aNavigator']['aMoveNext']['value'] = $sMoveNext;
