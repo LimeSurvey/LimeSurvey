@@ -134,6 +134,7 @@ class SurveyRuntimeHelper {
             //  TODO: cehck if languagechanger shown in token/captcha form
             // TOKEN/CAPTCHA  FORMS
             $this->showTokenOrCaptchaFormsIfNeeded();
+            $this->displayFirstPageIfNeeded();
         }
 
 
@@ -142,8 +143,7 @@ class SurveyRuntimeHelper {
         if ( !$this->previewgrp && !$this->previewquestion){
             $this->initMove();                                                   // main methods to init session, LEM, moves, errors, etc
             $aPrivateVariables = $this->getArgs();
-                    
-            $this->displayFirstPageIfNeeded();
+
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
             $this->setNotAnsweredAndNotValidated();
