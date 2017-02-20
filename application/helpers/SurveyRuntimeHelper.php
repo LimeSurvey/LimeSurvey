@@ -128,10 +128,14 @@ class SurveyRuntimeHelper {
         if (!isset($_SESSION[$LEMsessid]['step'])){
             // WAS INSIDE buildsurveysession($surveyid);
             $sLangCode       = App()->language;
-            $languagechanger = makeLanguageChangerSurvey($sLangCode);
 
-            //  TODO: cehck if languagechanger shown in token/captcha form
-            // TOKEN/CAPTCHA  FORMS
+            // language changer
+            $alanguageChangerDatas               = makeLanguageChangerSurvey($sLangCode, true, true);
+            if ($alanguageChangerDatas){
+                $thissurvey['alanguageChanger']['show']  = true;
+                $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
+            }
+            
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
 
