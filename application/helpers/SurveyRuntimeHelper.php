@@ -140,7 +140,7 @@ class SurveyRuntimeHelper {
 
 
         if ( !$this->previewgrp && !$this->previewquestion){
-            $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
+            $this->initMove();                                                   // main methods to init session, LEM, moves, errors, etc
             $aPrivateVariables = $this->getArgs();
                     
             $this->displayFirstPageIfNeeded();
@@ -752,8 +752,7 @@ class SurveyRuntimeHelper {
     }
 
     /**
-     * This method perform different tasks that should be distributed in different functions.
-     * The execution order could probably be improved.
+     * Init session/params values depending of user moves
      *
      * - It init the needed variables for navigation: initFirstStep, initTotalAndMaxSteps, setMoveResult
      * - Then perform all the needed checks before moving:
@@ -761,11 +760,9 @@ class SurveyRuntimeHelper {
      *   + did he pressed clear cancel, is he a confirmed quota?
      *   + Is the previous step set?
      *   + Is the survey finished?
-     *   + Should the first page be displayed?
      *   + Are all the answer validated? (like: participant didn't answered to a mandatory question)
-     * - Then it will save the survey or submit it if needed. ?
      */
-    private function runPage()
+    private function initMove()
     {
         $this->initFirstStep();                                                 // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
