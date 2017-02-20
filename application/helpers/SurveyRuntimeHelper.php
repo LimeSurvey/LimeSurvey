@@ -125,12 +125,13 @@ class SurveyRuntimeHelper {
         $LEMsessid     = $this->LEMsessid;
 
         // First time the survey is loaded
+
         if (!isset($_SESSION[$LEMsessid]['step'])){
             // WAS INSIDE buildsurveysession($surveyid);
             $sLangCode       = App()->language;
             $languagechanger = makeLanguageChangerSurvey($sLangCode);
 
-
+            //  TODO: cehck if languagechanger shown in token/captcha form
             // TOKEN/CAPTCHA  FORMS
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
@@ -141,10 +142,20 @@ class SurveyRuntimeHelper {
         if ( !$this->previewgrp && !$this->previewquestion){
             $this->runPage();                                                   // main methods to init session, LEM, moves, errors, etc
             $aPrivateVariables = $this->getArgs();
+                    
+            $this->displayFirstPageIfNeeded();
+            $this->saveAllIfNeeded();
+            $this->saveSubmitIfNeeded();
+            $this->setNotAnsweredAndNotValidated();
+
         }else{
             $_SESSION[$this->LEMsessid]['prevstep'] = 2;
             $_SESSION[$this->LEMsessid]['maxstep'] = 0;
         }
+
+
+
+
 
         // TODO: remove those line, why a special condition when survey is not active VS when it's active and why HERE????
         if ($this->thissurvey['active'] != "Y"){
@@ -763,10 +774,6 @@ class SurveyRuntimeHelper {
         $this->checkPrevStep();                                                 // Check if prev step is set, else set it
         $this->setMoveResult();
         $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set
-        $this->displayFirstPageIfNeeded();
-        $this->saveAllIfNeeded();
-        $this->saveSubmitIfNeeded();
-        $this->setNotAnsweredAndNotValidated();
 
         // CHECK UPLOADED FILES
         // TMSW - Move this into LEM::NavigateForwards?

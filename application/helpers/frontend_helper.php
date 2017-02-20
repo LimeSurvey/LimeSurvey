@@ -2159,19 +2159,25 @@ function GetReferringUrl()
 
 /**
 * Shows the welcome page, used in group by group and question by question mode
+* TODO: TWIG IT !
+*
 */
 function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
     $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
     // Fill some necessary var for template
-    $aNavigator = surveymover();
-    $moveprevbutton = $aNavigator['sMovePrevButton'];
-    $movenextbutton = $aNavigator['sMoveNextButton'];
-    $navigator = $moveprevbutton.' '.$movenextbutton;
+    $aNavigator      = surveymover();
+    $moveprevbutton  = $aNavigator['sMovePrevButton'];
+    $movenextbutton  = $aNavigator['sMoveNextButton'];
+    $navigator       = $moveprevbutton.' '.$movenextbutton;
+    $sitename        = Yii::app()->getConfig('sitename');
+    $languagechanger = makeLanguageChangerSurvey(App()->language);
 
-    $sitename = Yii::app()->getConfig('sitename');
-    $languagechanger=makeLanguageChangerSurvey(App()->language);
+    // Template init
+    $oTemplate         = Template::model()->getInstance('', $surveyid);
+    $sTemplatePath     = $oTemplate->path;
+    $sTemplateViewPath = $oTemplate->pstplPath;
 
     sendCacheHeaders();
     doHeader();
@@ -2181,9 +2187,6 @@ function display_first_page() {
 
     $redata = compact(array_keys(get_defined_vars()));
 
-    $oTemplate = Template::model()->getInstance('', $surveyid);
-    $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->pstplPath;
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
     echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off', 'class'=>'frontend_helper'));
 
