@@ -70,47 +70,56 @@ class Save
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
         //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
-        $thisstep = isset($_SESSION['survey_'.$iSurveyId]['step']) ? $_SESSION['survey_'.$iSurveyId]['step'] : 0;
+        $thisstep    = isset($_SESSION['survey_'.$iSurveyId]['step']) ? $_SESSION['survey_'.$iSurveyId]['step'] : 0;
         $clienttoken = isset($_SESSION['survey_'.$iSurveyId]['token']) ? $_SESSION['survey_'.$iSurveyId]['token'] : '';
-        $aData=array(
+
+        $aData = array(
             'surveyid'=>$iSurveyId,
             'clienttoken'=>$clienttoken, // send in caller, call only one time
         );
-        $oSurvey=Survey::model()->findByPk($iSurveyId);
-        $sTemplate=$oSurvey->template;
+
+        $oSurvey   = Survey::model()->findByPk($iSurveyId);
+        $sTemplate = $oSurvey->template;
         $oTemplate = Template::model()->getInstance($sTemplate);
 
         $aReplacements['SAVEHEADING'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/heading",array(),true);
         $aReplacements['SAVEMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/message",array(),true);
-        if($oSurvey->anonymized=="Y"){
+
+        if ($oSurvey->anonymized=="Y"){
             $aReplacements['SAVEALERT'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/anonymized",array(),true);
         }
-        if(!empty($this->aSaveErrors)){
-                $aReplacements['SAVEERROR'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/error",array('aSaveErrors'=>$this->aSaveErrors),true);
+
+        if (!empty($this->aSaveErrors)){
+            $aReplacements['SAVEERROR'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/error",array('aSaveErrors'=>$this->aSaveErrors),true);
         }else{
                 $aReplacements['SAVEERROR'] = "";
         }
+
         /* Construction of the form */
         if(function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)){
-                $captcha=Yii::app()->getController()->createUrl('/verification/image',array('sid'=>$iSurveyId));
+            $captcha = Yii::app()->getController()->createUrl('/verification/image',array('sid'=>$iSurveyId));
         }else{
-                $captcha=null;
+            $captcha = null;
         }
+
         $saveForm  = CHtml::beginForm(array("/survey/index","sid"=>$iSurveyId), 'post',array('id'=>'form-save','class'=>'ls-form'));
         $saveForm .= CHtml::hiddenField('savesubmit','save');
         $saveForm .= App()->getController()->renderPartial("/survey/frontpage/saveForm/form",array('captcha'=>$captcha),true);
-        if ($clienttoken)
-        {
+
+        if ($clienttoken){
             $saveForm .= CHtml::hiddenField('token',$clienttoken);
         }
-        $saveForm .= CHtml::endForm();
-        $aReplacements['SAVEFORM'] = $saveForm;
 
-        $content = templatereplace(file_get_contents($oTemplate->pstplPath."save.pstpl"),$aReplacements,$aData);
-        App()->getController()->layout="survey";
-        App()->getController()->sTemplate=$sTemplate;
-        App()->getController()->aGlobalData=$aData;
-        App()->getController()->aReplacementData=$aReplacements;
+        $saveForm .= CHtml::endForm();
+
+        $aReplacements['SAVEFORM'] = $saveForm;
+        $content                   = templatereplace(file_get_contents($oTemplate->pstplPath."save.pstpl"),$aReplacements,$aData);
+
+        App()->getController()->layout           = "survey";
+        App()->getController()->sTemplate        = $sTemplate;
+        App()->getController()->aGlobalData      = $aData;
+        App()->getController()->aReplacementData = $aReplacements;
+        
         App()->getController()->render("/survey/system/display",array(
             'content'=>$content,
         ));

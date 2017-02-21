@@ -119,7 +119,6 @@ class SurveyRuntimeHelper {
         $aPrivateVariables = array();
 
         // language changer
-
         $thissurvey['alanguageChanger']['show']  = false;
         $alanguageChangerDatas                   = getLanguageChangerDatas($sLangCode);
         if ($alanguageChangerDatas){
@@ -128,11 +127,11 @@ class SurveyRuntimeHelper {
         }
         $this->thissurvey = $thissurvey;
 
-        // First time the survey is loaded
+        ///////////////////////////////////////////////////////////
+        // 1: We check if token and/or captcha form shouls be shown
         if (!isset($_SESSION[$LEMsessid]['step'])){
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
-
 
         if ( !$this->previewgrp && !$this->previewquestion){
             $this->initMove();                                                   // main methods to init session, LEM, moves, errors, etc
@@ -148,7 +147,6 @@ class SurveyRuntimeHelper {
             $_SESSION[$this->LEMsessid]['prevstep'] = 2;
             $_SESSION[$this->LEMsessid]['maxstep'] = 0;
         }
-
 
         // TODO: remove those line, why a special condition when survey is not active VS when it's active and why HERE????
         if ($this->thissurvey['active'] != "Y"){
@@ -1144,6 +1142,7 @@ class SurveyRuntimeHelper {
 
             // must do this here to process the POSTed values
             $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
+
             if (!isset($_SESSION[$LEMsessid]['scid']) && !$bTokenAnswerPersitance ){
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
