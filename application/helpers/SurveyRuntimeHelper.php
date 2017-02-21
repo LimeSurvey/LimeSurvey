@@ -127,7 +127,7 @@ class SurveyRuntimeHelper {
         // language changer
         $sLangCode                               = App()->language;
         $thissurvey['alanguageChanger']['show']  = false;
-        $alanguageChangerDatas                   = getLanguageChangerDatas($sLangCode, true, true);
+        $alanguageChangerDatas                   = getLanguageChangerDatas($sLangCode);
         if ($alanguageChangerDatas){
             $thissurvey['alanguageChanger']['show']  = true;
             $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
