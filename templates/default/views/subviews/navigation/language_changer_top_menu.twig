@@ -23,10 +23,10 @@
 #}
 
 {# There is many condition where the language changer should not be shown. Eg: there is only one language available #}
-{% if aSurveyInfo.alanguageChangerDatas != false %}
+{% if  aSurveyInfo.alanguageChanger.show == true %}
 
     {#  we set a shortcut for aSurveyInfo.alanguageChangerDatas #}
-    {% set aLCD  = aSurveyInfo.alanguageChangerDatas %}
+    {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
 
     <!-- Language Changer, top menu version -->
     <li class="dropdown ls-no-js-hidden">
