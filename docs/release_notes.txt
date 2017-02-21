@@ -35,8 +35,13 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.62.2 (build 170203) to 2.63.0 (build 170304) Feb 20 2017
+Changes from 2.63.0 (build 170304) to 2.63.1 (build 170305) Feb 21 2017
+Fixed issue: Survey list & legacy plugins not working
+Updated translation: Catalan by qualitatuvic
+Updated translation: Polish by elissa
+Updated translation: Polish (Informal) by elissa
 
+Changes from 2.62.2 (build 170203) to 2.63.0 (build 170304) Feb 20 2017
 -Fixed issue #12003: TOKEN field is blank if user performs a GET during survey (Denis Chenu)
 -Fixed issue #12113: Fix invalid subquestions on activation (Denis Chenu)
 -Fixed issue #12113: Unable to fix Invalid Sub questions in multilingual survey (Denis Chenu)
