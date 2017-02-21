@@ -18,8 +18,6 @@
 
 #}
 
-
-
 {% if aSurveyInfo.alanguageChanger.show == true %}
 
     {# set a shortcut for aSurveyInfo.alanguageChanger.datas #}
@@ -41,8 +39,8 @@
     {% if aLCD.withForm == true %}
         <form method="get" class="ls-languagechanger-form">
     {% endif %}
-
-        {# Must be included only one time (else : multiple id) #}
+        
+        <!-- Language Changer -->
         <div class="form-inline form-change-lang {{ aSurveyInfo.alanguageChanger.sClass }} " >
             <label class="form-group">
                 <span class="control-label">{{ "Language:" | t }}</span>
@@ -80,3 +78,30 @@
         </form>
     {% endif %}
 {% endif %}
+
+
+{# TODO: add a javascript file, and register it here #}
+<script>
+// Method for link
+$(document).ready(function(){
+    $('.form-change-lang').on('change','select',function() {
+        var lang = $(this).val();
+        /* we are not in a forum, can not submit directly */
+        if($('form#limesurvey').length==1){
+            /* The limesurvey form exist in document, move select and button inside and click */
+            $("form#limesurvey [name='lang']").remove();                        // Remove existing lang selector
+            $("<input type='hidden'>").attr('name','lang').val(lang).appendTo($('form#limesurvey'));
+            $('#changlangButton').clone().appendTo($('form#limesurvey')).click();
+        }else{
+            // If there are no form : we can't use it */
+            /* No form, not targeturl : just see what happen */
+            $("<form>", {
+                "class":'ls-js-hidden',
+                "html": '<input type="hidden" name="lang" value="' + lang + '" />',
+                "action": target,
+                "method": 'get'
+            }).appendTo(document.body).submit();
+        }
+    });
+});
+</script>
