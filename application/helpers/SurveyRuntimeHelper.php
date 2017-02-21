@@ -124,18 +124,19 @@ class SurveyRuntimeHelper {
 
         $LEMsessid     = $this->LEMsessid;
 
+        // language changer
+        $sLangCode                               = App()->language;
+        $thissurvey['alanguageChanger']['show']  = false;
+        $alanguageChangerDatas                   = makeLanguageChangerSurvey($sLangCode, true, true);
+        if ($alanguageChangerDatas){
+            $thissurvey['alanguageChanger']['show']  = true;
+            $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
+        }
+        $this->thissurvey = $thissurvey;
+
         // First time the survey is loaded
         if (!isset($_SESSION[$LEMsessid]['step'])){
             // WAS INSIDE buildsurveysession($surveyid);
-            $sLangCode       = App()->language;
-
-            // language changer
-            $alanguageChangerDatas               = makeLanguageChangerSurvey($sLangCode, true, true);
-            if ($alanguageChangerDatas){
-                $thissurvey['alanguageChanger']['show']  = true;
-                $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
-            }
-
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
 
@@ -144,6 +145,7 @@ class SurveyRuntimeHelper {
             $this->initMove();                                                   // main methods to init session, LEM, moves, errors, etc
             $aPrivateVariables = $this->getArgs();
 
+            $this->thissurvey = $thissurvey;
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
@@ -345,17 +347,6 @@ class SurveyRuntimeHelper {
         }
 
         $thissurvey['yiiflashmessages'] = Yii::app()->user->getFlashes();
-
-        $thissurvey['alanguageChanger']['show']  = false;
-        if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey')){
-            $alanguageChangerDatas               = makeLanguageChangerSurvey($_SESSION[$LEMsessid]['s_lang'], false, true);
-            if ($alanguageChangerDatas){
-                $thissurvey['alanguageChanger']['show']  = true;
-                $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
-            }
-
-
-        }
 
         //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 
@@ -1138,7 +1129,7 @@ class SurveyRuntimeHelper {
         // submit page.
         if ($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0){
             $_SESSION[$LEMsessid]['test']=time();
-            display_first_page();
+            display_first_page($this->thissurvey);
             Yii::app()->end(); // So we can still see debug messages
         }
     }

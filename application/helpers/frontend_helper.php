@@ -2261,18 +2261,12 @@ function GetReferringUrl()
 * TODO: TWIG IT !
 *
 */
-function display_first_page() {
-    global $token, $surveyid, $thissurvey, $navigator;
+function display_first_page($thissurvey) {
+    global $token, $surveyid, $navigator;
 
     $totalquestions             = $_SESSION['survey_'.$surveyid]['totalquestions'];
-    $thissurvey['aNavigator']    = getNavigatorDatas();
+    $thissurvey['aNavigator']   = getNavigatorDatas();
     $sitename                   = Yii::app()->getConfig('sitename');
-    $alanguageChangerDatas      = makeLanguageChangerSurvey(App()->language, false, true);
-
-    if ($alanguageChangerDatas){
-        $thissurvey['alanguageChanger']['show']  = true;
-        $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
-    }
 
     // Template init
     $oTemplate         = Template::model()->getInstance('', $surveyid);
