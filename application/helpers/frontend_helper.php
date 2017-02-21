@@ -1758,7 +1758,7 @@ function getNavigatorDatas()
             }
 
             $aNavigator['save']['show'] = true;
-        }elseif ($move != "movelast"){
+        }elseif (getMove() != "movelast"){
             // Not on last page or submited survey
             $aNavigator['save']['show'] = true;
         }

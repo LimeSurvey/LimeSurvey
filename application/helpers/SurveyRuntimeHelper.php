@@ -566,130 +566,19 @@ class SurveyRuntimeHelper {
         /**
         * Navigator
         */
-
-        /**
-         TODO:
-         $aNavigator['show'] = $aNavigator['show'] = $aNavigator['save']['show'] = $aNavigator['load']['show'] = false;
-         if (!$previewgrp && !$previewquestion){
-         $thissurvey['aNavigator'] = getNavigatorDatasForTwig;
-
-        }
-
-        $thissurvey['hiddenInputs']  =  "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
-        $thissurvey['hiddenInputs'] .=  "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-        $thissurvey['hiddenInputs'] .= "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
-        $_SESSION[$LEMsessid]['LEMpostKey'] = mt_rand();
-        $thissurvey['hiddenInputs'] .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
-
-        if (isset($token) && !empty($token))
-        {
-            $thissurvey['hiddenInputs'] .=  "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-        }
-
-
-         */
         $thissurvey['aNavigator'] = array();
         $thissurvey['aNavigator']['show'] = $aNavigator['show'] = $thissurvey['aNavigator']['save']['show'] = $thissurvey['aNavigator']['load']['show'] = false;
 
         if (!$previewgrp && !$previewquestion){
-
-            $thissurvey['aNavigator']['show'] = $aNavigator['show'] = true;
-
-            $sMoveNext          = "movenext";
-            $sMovePrev          = "";
-            $iSessionStep       = ( isset( $_SESSION['survey_'.$surveyid]['step']))       ? $_SESSION['survey_'.$surveyid]['step']       : false;
-            $iSessionMaxStep    = ( isset( $_SESSION['survey_'.$surveyid]['maxstep']))    ? $_SESSION['survey_'.$surveyid]['maxstep']    : false;
-            $iSessionTotalSteps = ( isset( $_SESSION['survey_'.$surveyid]['totalsteps'])) ? $_SESSION['survey_'.$surveyid]['totalsteps'] : false;
-            $sClass             = "ls-move-btn";
-            $sSurveyMover       = "";
-
-            // Count down
-            $thissurvey['aNavigator']['disabled']   = '';
-            if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep))
-             {
-                $thissurvey['aNavigator']['disabled'] = " disabled";
-                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
-                App()->getClientScript()->registerScript('navigator_countdown',"navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n",CClientScript::POS_BEGIN);
-             }
-
-            // Previous ?
-            if ($thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N")
-                && $iSessionStep
-                && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
-                && !Yii::app()->getConfig('previewmode')
-            ){
-                $sMovePrev="moveprev";
-            }
-
-            // Submit ?
-            if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps)
-                || $thissurvey['format'] == 'A'
-                ){
-                $sMoveNext="movesubmit";
-            }
-
-            // todo Remove Next if needed (exemple quota show previous only: maybe other, but actually don't use surveymover)
-            if(Yii::app()->getConfig('previewmode')){
-                $sMoveNext="";
-            }
-
-            $thissurvey['aNavigator']['aMovePrev']['show']  = ( $sMovePrev != '' );
-            $thissurvey['aNavigator']['aMoveNext']['show']  = ( $sMoveNext != '' );
-            $thissurvey['aNavigator']['aMoveNext']['value'] = $sMoveNext;
-
-            $redata = compact(array_keys(get_defined_vars()));
-
-            //echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
-
+            $thissurvey['aNavigator']    = getNavigatorDatas();
             $thissurvey['hiddenInputs']  =  "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
             $thissurvey['hiddenInputs'] .=  "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
             $thissurvey['hiddenInputs'] .= "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
             $_SESSION[$LEMsessid]['LEMpostKey'] = mt_rand();
             $thissurvey['hiddenInputs'] .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
-
             if (isset($token) && !empty($token))
             {
                 $thissurvey['hiddenInputs'] .=  "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-            }
-
-
-            // SAVE BUTTON
-            if($thissurvey['allowsave'] == "Y"){
-
-                App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
-
-                // Fill some test here, more clear ....
-                $bTokenanswerspersistence   = $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
-                $bAlreadySaved              = isset($_SESSION['survey_'.$surveyid]['scid']);
-                $iSessionStep               = (isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
-                $iSessionMaxStep            = (isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
-
-                // Find out if the user has any saved data
-                if ($thissurvey['format'] == 'A'){
-                    if ( !$bTokenanswerspersistence && !$bAlreadySaved ){
-                        $thissurvey['aNavigator']['load']['show'] = true;
-                    }
-                    $thissurvey['aNavigator']['save']['show'] = true;
-                }elseif (!$iSessionStep) {
-
-                    //Welcome page, show load (but not save)
-                    if (!$bTokenanswerspersistence && !$bAlreadySaved ){
-                        $thissurvey['aNavigator']['load']['show'] = true;
-                    }
-
-                    if($thissurvey['showwelcome']=="N"){
-                        $thissurvey['aNavigator']['save']['show'] = true;
-                    }
-                }elseif ($iSessionMaxStep==1 && $thissurvey['showwelcome']=="N"){
-                    //First page, show LOAD and SAVE
-                    if (!$bTokenanswerspersistence && !$bAlreadySaved ){
-                        $thissurvey['aNavigator']['load']['show'] = true;
-                    }
-                    $thissurvey['aNavigator']['save']['show'] = true;
-                }elseif ($move != "movelast"){
-                    // Not on last page or submited survey
-                    $thissurvey['aNavigator']['save']['show'] = true;
-                }
             }
         }
 
