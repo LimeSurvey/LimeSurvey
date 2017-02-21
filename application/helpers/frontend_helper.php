@@ -179,7 +179,7 @@ function makegraph($currentstep, $total)
 * @param string $sSelectedLanguage : lang to be selected (forced)
 * @param boolean $withForm : add a form (method="get") around the select
 */
-function makeLanguageChangerSurvey($sSelectedLanguage="",$withForm=false, $returnDatas=false)
+function getLanguageChangerDatas($sSelectedLanguage="",$withForm=false, $returnDatas=false)
 {
     $surveyid = Yii::app()->getConfig('surveyID');
     Yii::app()->loadHelper("surveytranslator");
