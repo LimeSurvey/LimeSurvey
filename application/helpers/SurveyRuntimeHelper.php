@@ -46,6 +46,7 @@ class SurveyRuntimeHelper {
     private $totalquestions;                                                    // Number of question in the survey. Same, should be moved to survey model.
     private $bTokenAnswerPersitance;                                            // Are token used? Same...
     private $assessments;                                                       // Is assement used? Same...
+    private $sLangCode;                                                         // Current language code
 
     // moves
     private $moveResult             = null;                                     // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
@@ -108,24 +109,17 @@ class SurveyRuntimeHelper {
         $previewgrp       = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $previewquestion  = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
         $preview          = $this->preview         = ($previewquestion || $previewgrp);
+        $sLangCode        = $this->sLangCode       = App()->language;
         $show_empty_group = $this->show_empty_group;
+
 
         $this->setJavascriptVar($surveyid);
         $this->setArgs();
 
         $aPrivateVariables = array();
 
-
-
-        // SOME RENDERING THAT WAS IN THE WRONG PLACE INSIDE RUN PAGE
-        // WE'RE MOVING THEM HERE AS A FIRST CYCLE OF DEV
-
-
-
-        $LEMsessid     = $this->LEMsessid;
-
         // language changer
-        $sLangCode                               = App()->language;
+
         $thissurvey['alanguageChanger']['show']  = false;
         $alanguageChangerDatas                   = getLanguageChangerDatas($sLangCode);
         if ($alanguageChangerDatas){
@@ -136,7 +130,6 @@ class SurveyRuntimeHelper {
 
         // First time the survey is loaded
         if (!isset($_SESSION[$LEMsessid]['step'])){
-            // WAS INSIDE buildsurveysession($surveyid);
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
 
