@@ -13,8 +13,6 @@
 */
 namespace ls\helpers;
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
  * General helper class for generating views.
  */

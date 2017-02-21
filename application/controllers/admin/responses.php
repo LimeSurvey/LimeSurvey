@@ -13,8 +13,6 @@
  *
  */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
  * Responses Controller
  *

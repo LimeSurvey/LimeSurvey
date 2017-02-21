@@ -11,8 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * This function imports a LimeSurvey .lsg question group XML file
 *

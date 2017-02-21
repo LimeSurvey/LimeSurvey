@@ -12,8 +12,6 @@
 *
 */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * register
 *

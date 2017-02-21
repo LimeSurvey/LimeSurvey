@@ -1,7 +1,4 @@
 <?php
-
-use \ls\pluginmanager\PluginEvent;
-
 class AuthLDAP extends ls\pluginmanager\AuthPluginBase
 {
     protected $storage = 'DbStorage';

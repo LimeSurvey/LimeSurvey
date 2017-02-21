@@ -12,8 +12,6 @@
 */
 Yii::import('application.helpers.sanitize_helper', true);
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * Simple function to sort the permissions by title
 *

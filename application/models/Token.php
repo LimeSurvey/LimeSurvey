@@ -27,8 +27,6 @@
      * @method Token usable() usable() Select usable tokens: valid daterange and userleft > 0
      *
      */
-
-    use \ls\pluginmanager\PluginEvent;
     abstract class Token extends Dynamic
     {
 

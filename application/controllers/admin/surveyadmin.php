@@ -14,8 +14,6 @@ if (!defined('BASEPATH'))
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * survey
 *

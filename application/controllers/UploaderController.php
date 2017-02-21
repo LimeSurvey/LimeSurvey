@@ -12,7 +12,6 @@
  *
  */
 
-use \ls\pluginmanager\PluginEvent;
 class UploaderController extends SurveyController {
     function run($actionID)
     {
