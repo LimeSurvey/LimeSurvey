@@ -22,7 +22,7 @@
             // modal
             'actionType'  => 'modal',
             'modalType'   => 'yes-no',
-            'keepopen'    => 'yes',
+            'keepopen'    => 'no',
             'sModalTitle'   => gT('Activate quotas'),
             'htmlModalBody' => gT('Go?').' '.gT('Continue?'),
         ),
@@ -38,7 +38,7 @@
             // modal
             'actionType'  => 'modal',
             'modalType'   => 'yes-no',
-            'keepopen'    => 'yes',
+            'keepopen'    => 'no',
             'sModalTitle'   => gT('Dectivate quotas'),
             'htmlModalBody' => gT('Deactivate?').' '.gT('Continue?'),
         ),
@@ -49,12 +49,12 @@
             'url'         => App()->createUrl('/admin/quotas/massiveAction/action/delete'),
             'iconClasses' => 'fa fa-trash text-danger',
             'text'        =>  gT("Delete"),
-            //'grid-reload' => 'yes',
+            'grid-reload' => 'yes',
 
             // modal
             'actionType'  => 'modal',
             'modalType'   => 'yes-no',
-            'keepopen'    => 'yes',
+            'keepopen'    => 'no',
             'sModalTitle'   => gT('Delete quotas'),
             'htmlModalBody' => gT('Delete?').' '.gT('Continue?'),
         ),

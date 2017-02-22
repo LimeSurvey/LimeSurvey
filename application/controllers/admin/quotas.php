@@ -91,9 +91,8 @@ class quotas extends Survey_Common_Action
             $aQuotaIds = json_decode($sItems);
             foreach ($aQuotaIds as $iQuotaId){
                 $oQuota = Quota::model()->findByPk($iQuotaId);
-                echo $iQuotaId .' <br>';
                 if(in_array($action,array('activate','deactivate'))){
-                    $oQuota->active = ($action = 'activate'? 1 : 0);
+                    $oQuota->active = ($action == 'activate' ? 1 : 0);
                     $oQuota->save();
                 }
                 elseif($action == 'delete'){
@@ -119,7 +118,8 @@ class quotas extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = $surveyid =  sanitize_int($iSurveyId);
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $oSurvey =Survey::model()->findByPk($iSurveyID);
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
@@ -191,6 +191,7 @@ class quotas extends Survey_Common_Action
                 {
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $aQuotaListing['id']);
                     $aQuotaItems[$aQuotaListing['id']][] = array(
+                        'oQuestion' => Question::model()->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
                         'question_title' => $aQuestionAnswers[$oQuotaMember->code]['Title'],
                         'answer_title' => flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']),
                         'oQuotaMember'=>$oQuotaMember,
@@ -534,9 +535,9 @@ class quotas extends Survey_Common_Action
 
     /**
      *
-     * @param type $iQuestionId
-     * @param type $iSurveyId
-     * @param type $iQuotaId
+     * @param integer $iQuestionId
+     * @param integer $iSurveyId
+     * @param integer $iQuotaId
      * @return array
      */
     function getQuotaAnswers($iQuestionId, $iSurveyId, $iQuotaId)

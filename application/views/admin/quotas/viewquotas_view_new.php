@@ -64,18 +64,6 @@
                                 },
                             ),
                             array(
-                                'name'=>'action',
-                                'htmlOptions'=>array('style'=>'vertical-align:top'),
-                                'value'=>function($oQuota){
-                                    if($oQuota->action==1){
-                                        return gT("Terminate survey");
-                                    }elseif ($oQuota->action==2){
-                                        return gT("Terminate survey with warning");
-                                    }
-                                    return null;
-                                },
-                            ),
-                            array(
                                 'name'=>'completed',
                                 'type'=>'raw',
                                 'htmlOptions'=>array('style'=>'vertical-align:top'),
