@@ -45,7 +45,7 @@ abstract class PluginBase implements iPlugin {
      * @param PluginManager $manager    The plugin manager instantiating the object
      * @param int           $id         The id for storage
      */
-    public function __construct(\PluginManager $manager, $id)
+    public function __construct(\ls\pluginmanager\PluginManager $manager, $id)
     {
         $this->pluginManager = $manager;
         $this->id = $id;
@@ -312,8 +312,7 @@ abstract class PluginBase implements iPlugin {
         \Yii::setPathOfAlias($alias, $this->getDir());
         $fullAlias = $alias . '.views.' . $viewfile;
 
-        if (isset($data['plugin']))
-        {
+        if (isset($data['plugin'])) {
             throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
         }
 

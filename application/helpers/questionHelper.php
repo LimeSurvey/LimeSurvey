@@ -13,6 +13,8 @@
 */
 namespace ls\helpers;
 
+use \ls\pluginmanager\PluginEvent;
+
 /**
  * General helper class for question + question setting system
  */

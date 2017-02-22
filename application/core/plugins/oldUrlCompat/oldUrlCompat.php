@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-class oldUrlCompat extends PluginBase
+class oldUrlCompat extends \ls\pluginmanager\PluginBase
 {
     static protected $name = 'oldUrlCompat';
     static protected $description = 'Old url (pre-2.0) compatible system';
@@ -27,7 +27,7 @@ class oldUrlCompat extends PluginBase
     //~ {
         //~ $this->subscribe('afterPluginLoad','oldUrlCompat');
     //~ }
-    public function __construct(PluginManager $manager, $id)
+    public function __construct(\ls\pluginmanager\PluginManager $manager, $id)
     {
         parent::__construct($manager, $id);
         $this->subscribe('afterPluginLoad','oldUrlCompat');

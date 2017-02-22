@@ -39,7 +39,11 @@
 *
 * - elameno
 */
+
 Yii::import('application.helpers.admin.export.*');
+
+use \ls\pluginmanager\PluginEvent;
+
 class ExportSurveyResultsService
 {
     /**

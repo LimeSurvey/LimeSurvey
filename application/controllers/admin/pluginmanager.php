@@ -1,5 +1,7 @@
 <?php
 
+use \ls\pluginmanager\PluginEvent;
+
 /**
  */
 class PluginManager extends Survey_Common_Action

@@ -47,7 +47,7 @@
 
                 <?php if (Yii::app()->user->getState('sql_'.$surveyid) != null ):?>
                     <!-- Filter is on -->
-                    <?php eT("Showing Filtered Results"); ?>
+                    <?php eT("Showing filtered results"); ?>
 
                     <a class="btn btn-default" href="<?php echo Yii::app()->createUrl('admin/responses', array("sa"=>'browse','surveyid'=>$surveyid, 'filters'=>'reset')); ?>" role="button">
                         <?php eT("View without the filter."); ?>
