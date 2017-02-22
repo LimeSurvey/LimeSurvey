@@ -346,6 +346,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }else{
             $returndescription = gT("Go to survey");
         }
+
+        // TODO: change that 
         $_return_to_survey = App()->twigRenderer->render("/survey/system/url",array(
             'url'=>$returnlink,
             'description'=>$returndescription,
