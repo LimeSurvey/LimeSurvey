@@ -217,6 +217,9 @@ $internalConfig = array(
                 'count'                 => 'count',
                 'reset'                 => 'reset',
                 'renderCaptcha'         => 'LS_Twig_Extension::renderCaptcha',
+                'getPost'               => 'LS_Twig_Extension::getPost',
+                'getParam'               => 'LS_Twig_Extension::getParam',
+                'getQuery'               => 'LS_Twig_Extension::getQuery',
 
             ),
             'filters' => array(
@@ -237,7 +240,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha'),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery' ),
             ),
 
             // Change template syntax to Smarty-like (not recommended)

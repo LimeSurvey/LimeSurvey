@@ -129,5 +129,19 @@ class LS_Twig_Extension extends Twig_Extension
         ));
     }
 
+    public static function getPost($sName, $sDefaultValue=null)
+    {
+        return Yii::app()->request->getPost($sName, $sDefaultValue);
+    }
+
+    public static function getParam($sName, $sDefaultValue=null)
+    {
+        return Yii::app()->request->getParam($sName, $sDefaultValue);
+    }
+
+    public static function getQuery($sName, $sDefaultValue=null)
+    {
+        return Yii::app()->request->getQuery($sName, $sDefaultValue);
+    }
 
 }
