@@ -119,7 +119,7 @@ class Save
         App()->getController()->sTemplate        = $sTemplate;
         App()->getController()->aGlobalData      = $aData;
         App()->getController()->aReplacementData = $aReplacements;
-        
+
         App()->getController()->render("/survey/system/display",array(
             'content'=>$content,
         ));
@@ -148,10 +148,10 @@ class Save
             $aSaveForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image',array('sid'=>$iSurveyId));
         }
 
-        $aSaveForm['hiddenField'] = CHtml::hiddenField('savesubmit','save');
+        $aSaveForm['sHiddenField'] = CHtml::hiddenField('savesubmit','save');
 
         if ($clienttoken){
-            $aSaveForm['hiddenField'] .= CHtml::hiddenField('token',$clienttoken);
+            $aSaveForm['sHiddenField'] .= CHtml::hiddenField('token',$clienttoken);
         }
 
         return $aSaveForm;
