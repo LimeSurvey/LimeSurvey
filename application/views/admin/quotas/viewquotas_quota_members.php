@@ -22,7 +22,7 @@ if ($oQuota->action == 1){
         <span class="h4" >
             <span class="fa <?php echo $icon?>" data-toggle="tooltip" title="<?php echo $tooltip;?>"></span>
             <?php if($oQuota->autoload_url == 1):?>
-                &nbsp;<span class="fa fa-external-link" data-toggle="tooltip" title="url here"></span>
+                &nbsp;<span class="fa fa-external-link" data-toggle="tooltip" data-html="true" title="<?php echo $oQuota->mainLanguagesetting->quotals_url;?>"></span>
             <?php endif;?>
             &nbsp;<?php echo $oQuota->name;?>
         </span>

@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,6 +14,20 @@
    *    Files Purpose: lots of common functions
 */
 
+/**
+ * Class Quota
+ *
+ * @property integer $id
+ * @property integer $sid
+ * @property string $name
+ * @property integer $qlimit
+ * @property integer $active
+ * @property integer $autoload_url
+ *
+ * @property QuotaLanguageSetting[] $languagesettings
+ * @property QuotaLanguageSetting $mainLanguagesetting
+ * @property Survey $survey
+ */
 class Quota extends LSActiveRecord
 {
 
@@ -64,8 +79,8 @@ class Quota extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', '',
-                'on' => "$alias.id = languagesettings.quotals_quota_id"),
+            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id'),
+            'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
         );
     }
 
@@ -125,5 +140,12 @@ class Quota extends LSActiveRecord
 
         Quota::model()->deleteAllByAttributes($condition);
     }
+
+    /**
+     * @return QuotaLanguageSetting
+     */
+    public function getMainLanguagesetting(){
+        // FIXME this should come from survey->baselanguage
+        return $this->languagesettings[0];
+    }
 }
-?>
