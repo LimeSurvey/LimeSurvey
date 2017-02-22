@@ -126,6 +126,37 @@ class Save
         Yii::app()->end();
     }
 
+
+    function getSaveFormDatas($iSurveyId)
+    {
+        //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
+        //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
+        $thisstep    = isset($_SESSION['survey_'.$iSurveyId]['step']) ? $_SESSION['survey_'.$iSurveyId]['step'] : 0;
+        $clienttoken = isset($_SESSION['survey_'.$iSurveyId]['token']) ? $_SESSION['survey_'.$iSurveyId]['token'] : '';
+
+        $oSurvey   = Survey::model()->findByPk($iSurveyId);
+        $sTemplate = $oSurvey->template;
+        $oTemplate = Template::model()->getInstance($sTemplate);
+
+
+        $aSaveForm['aErrors'] =$this->aSaveErrors;
+
+        /* Construction of the form */
+        $aSaveForm['aCaptcha']['show'] = false;
+        if(function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)){
+            $aSaveForm['aCaptcha']['show'] = true;
+            $aSaveForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image',array('sid'=>$iSurveyId));
+        }
+
+        $aSaveForm['hiddenField'] = CHtml::hiddenField('savesubmit','save');
+
+        if ($clienttoken){
+            $aSaveForm['hiddenField'] .= CHtml::hiddenField('token',$clienttoken);
+        }
+
+        return $aSaveForm;
+    }
+
     function savedcontrol()
     {
         //This data will be saved to the "saved_control" table with one row per response.
