@@ -13,10 +13,11 @@
         array(
             // li element
             'type'        => 'action',
-            'action'      => 'export',
+            'action'      => 'activate',
             'url'         => App()->createUrl('/admin/quotas/massiveAction/action/activate'),
             'iconClasses' => 'icon-active',
             'text'        =>  gT("Activate"),
+            'grid-reload' => 'yes',
 
             // modal
             'actionType'  => 'modal',
@@ -28,15 +29,16 @@
         array(
             // li element
             'type'        => 'action',
-            'action'      => 'export',
+            'action'      => 'deactivate',
             'url'         => App()->createUrl('/admin/quotas/massiveAction/action/deactivate'),
             'iconClasses' => 'icon-inactive',
             'text'        =>  gT("Deactivate"),
+            'grid-reload' => 'yes',
 
             // modal
             'actionType'  => 'modal',
             'modalType'   => 'yes-no',
-            'keepopen'    => 'no',
+            'keepopen'    => 'yes',
             'sModalTitle'   => gT('Dectivate quotas'),
             'htmlModalBody' => gT('Deactivate?').' '.gT('Continue?'),
         ),

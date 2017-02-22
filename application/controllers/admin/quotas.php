@@ -81,7 +81,9 @@ class quotas extends Survey_Common_Action
             $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyId"));
         }
     }
+
     function massiveAction(){
+
         $action = Yii::app()->request->getQuery('action');
         $allowedActions = array('activate','deactivate','delete');
         if (isset($_POST) && in_array($action,$allowedActions)) {
@@ -93,8 +95,10 @@ class quotas extends Survey_Common_Action
                     $oQuota->active = 1;
                 }
                 elseif($action == 'deactivate'){
-                    $oQuota->active = 1;
+                    $oQuota->active = 0;
                 }
+                // for debugging ids
+                echo $action.' : id:'.$oQuota->primaryKey.'<br>';
                 $oQuota->save();
             }
         }
