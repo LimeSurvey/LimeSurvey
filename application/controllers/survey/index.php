@@ -140,8 +140,7 @@ class index extends CAction {
             SetSurveyLanguage( $surveyid, $sDisplayLanguage);
         }
 
-        if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) )
-        {
+        if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) ) {
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>App()->language,'newtest'=>'Y'));
             $asMessage = array(
             gT('Token mismatch'),
@@ -149,6 +148,8 @@ class index extends CAction {
             "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
             );
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
+        } elseif(!$clienttoken) {
+            $clienttoken= isset($_SESSION['survey_'.$surveyid]['token']) ? $_SESSION['survey_'.$surveyid]['token'] : ""; // Fix for #12003
         }
 
         if ( $this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) // No test for response update
@@ -241,7 +242,6 @@ class index extends CAction {
         {
             $token=$clienttoken;
         }
-
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 

@@ -38,32 +38,59 @@ if ($thissurvey['active'] == "Y")
                             <label for='save'><?php eT("Save for further completion by survey user"); ?></label>
                         </div>
                     </td></tr></table>
-                    <div name='saveoptions' id='saveoptions' style='display: none'>
-                    <table align='center' class='outlinetable'>
-                          <tr><td align='right'><?php eT("Identifier:"); ?></td>
-                          <td><input type='text' name='save_identifier' /></td></tr>
-                          <tr><td align='right'><?php eT("Password:"); ?></td>
-                          <td><input type='password' name='save_password' /></td></tr>
-                          <tr><td align='right'><?php eT("Confirm password:"); ?></td>
-                          <td><input type='password' name='save_confirmpassword' /></td></tr>
-                          <tr><td align='right'><?php eT("Email:"); ?></td>
-                          <td><input type='email' name='save_email' /></td></tr>
-                          <tr><td align='right'><?php eT("Start language:"); ?></td>
-                          <td>
-                    <select name='save_language' class="form-control">
-                    <?php foreach ($slangs as $lang)
-                    {
-                        if ($lang == $baselang) { ?>
-                            <option value='<?php echo $lang; ?>' selected='selected'><?php echo getLanguageNameFromCode($lang,false); ?></option>
-                            <?php }
-                        else { ?>
-                            <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang,false); ?></option>
-                            <?php }
-                    } ?>
-                    </select>
+                    <div name='saveoptions' id='saveoptions' style='display: none' class="col-sm-6 col-md-offset-3">
 
+                        <!-- Save identifier -->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="save_identifier"><?php eT("Identifier:"); ?></label>
+                            <div class="col-sm-6">
+                                <input class="form-control" type="text" size="50" id="save_identifier" name="save_identifier" value="">
+                            </div>
+                        </div>
 
-                    </td></tr></table></div>
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="save_password"><?php eT("Password:"); ?></label>
+                            <div class="col-sm-6">
+                                <input class="form-control" type="password" size="50" id="save_password" name="save_password" value="">
+                            </div>
+                        </div>
+
+                        <!-- Confirm password -->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="save_confirmpassword"><?php eT("Confirm password:"); ?></label>
+                            <div class="col-sm-6">
+                                <input class="form-control" type="password" size="50" id="save_confirmpassword" name="save_confirmpassword" value="">
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="save_email"><?php eT("Email:"); ?></label>
+                            <div class="col-sm-6">
+                                <input class="form-control" type="email" size="50" id="save_email" name="save_email" value="">
+                            </div>
+                        </div>
+
+                        <!-- Start language -->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="save_language"><?php eT("Start language:"); ?></label>
+                            <div class="col-sm-6">
+
+                                <select name='save_language' id="save_language" class="form-control">
+                                <?php foreach ($slangs as $lang)
+                                {
+                                if ($lang == $baselang) { ?>
+                                  <option value='<?php echo $lang; ?>' selected='selected'><?php echo getLanguageNameFromCode($lang,false); ?></option>
+                                  <?php }
+                                else { ?>
+                                  <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang,false); ?></option>
+                                  <?php }
+                                } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     </td>
                     </tr>
                 <?php } ?>
