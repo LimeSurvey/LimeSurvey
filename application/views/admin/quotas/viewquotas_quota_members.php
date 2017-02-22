@@ -4,6 +4,7 @@
 /* @var Quota $oQuota */
 /* @var CActiveDataProvider $oDataProvider Containing Quota item objects*/
 /* @var array $aQuotaItems */
+
 $tooltip = null;
 $icon = null;
 if ($oQuota->action == 1){

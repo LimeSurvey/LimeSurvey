@@ -13,6 +13,15 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * @property integer $quotals_id
+ * @property integer $quotals_quota_id
+ * @property string $quotals_language
+ * @property string $quotals_name
+ * @property string $quotals_message
+ * @property string $quotals_url
+ * @property string $quotals_urldescrip
+ */
 class QuotaLanguageSetting extends LSActiveRecord
 {
 	/**
