@@ -37,31 +37,35 @@
                         'emptyText'=>gT('No quotas'),
                         'enablePagination'=>false,
                         'template' => '{items}',
-
                         'columns' => array(
 
                             array(
                                 'id'=>'id',
                                 'class'=>'CCheckBoxColumn',
                                 'selectableRows' => '100',
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
                             ),
                             array(
-                                'name'=>'name',
-                                'value'=>'$data->name',
-                            ),
-                            array(
-                                'name'=>'active',
+                                'name'=>gT('Quota members'),
                                 'type'=>'raw',
-                                'value'=>function($oQuota){
-                                    if($oQuota->active==1){
-                                        return CHtml::tag('span',array('class'=>'text-success'),gT("Active"));
-                                    }else{
-                                        return CHtml::tag('span',array('class'=>'text-danger'),gT("Not active"));
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
+                                'value'=>function($oQuota) use($oSurvey,$aQuotaItems){
+                                    /** @var Quota $oQuota */
+                                    $out = null;
+                                    if (!empty($aQuotaItems) ){
+                                        $out = '<p>'.$this->renderPartial('/admin/quotas/viewquotas_quota_members',
+                                            array(
+                                                'oSurvey'=>$oSurvey,
+                                                'oQuota'=>$oQuota,
+                                                'aQuotaItems'=>$aQuotaItems,
+                                            )).'<p>';
                                     }
+                                    return $out;
                                 },
                             ),
                             array(
                                 'name'=>'action',
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
                                 'value'=>function($oQuota){
                                     if($oQuota->action==1){
                                         return gT("Terminate survey");
@@ -74,6 +78,7 @@
                             array(
                                 'name'=>'completed',
                                 'type'=>'raw',
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
                                 'value'=>function($oQuota)use($oSurvey){
                                     $completerCount =getQuotaCompletedCount($oSurvey->sid, $oQuota->id);
                                     $class = ($completerCount <= $oQuota->qlimit ? 'text-warning':null);
@@ -84,6 +89,7 @@
                             ),
                             array(
                                 'name'=>'qlimit',
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
                                 'footer'=>$totalquotas,
                             ),
                             array(
@@ -104,6 +110,7 @@
                                 ),
                                 'htmlOptions'=>array(
                                     'align'=>'right',
+                                    'style'=>'vertical-align:top',
                                 ),
                             ),
 

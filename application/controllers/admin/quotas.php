@@ -91,15 +91,14 @@ class quotas extends Survey_Common_Action
             $aQuotaIds = json_decode($sItems);
             foreach ($aQuotaIds as $iQuotaId){
                 $oQuota = Quota::model()->findByPk($iQuotaId);
-                if($action == 'activate'){
-                    $oQuota->active = 1;
+                echo $iQuotaId .' <br>';
+                if(in_array($action,array('activate','deactivate'))){
+                    $oQuota->active = ($action = 'activate'? 1 : 0);
+                    $oQuota->save();
                 }
-                elseif($action == 'deactivate'){
-                    $oQuota->active = 0;
+                elseif($action == 'delete'){
+                    $oQuota->delete();
                 }
-                // for debugging ids
-                echo $action.' : id:'.$oQuota->primaryKey.'<br>';
-                $oQuota->save();
             }
         }
     }

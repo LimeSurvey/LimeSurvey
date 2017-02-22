@@ -15,7 +15,7 @@
             'type'        => 'action',
             'action'      => 'activate',
             'url'         => App()->createUrl('/admin/quotas/massiveAction/action/activate'),
-            'iconClasses' => 'icon-active',
+            'iconClasses' => 'fa fa-play text-success',
             'text'        =>  gT("Activate"),
             'grid-reload' => 'yes',
 
@@ -31,7 +31,7 @@
             'type'        => 'action',
             'action'      => 'deactivate',
             'url'         => App()->createUrl('/admin/quotas/massiveAction/action/deactivate'),
-            'iconClasses' => 'icon-inactive',
+            'iconClasses' => 'fa fa-pause text-warning',
             'text'        =>  gT("Deactivate"),
             'grid-reload' => 'yes',
 
@@ -41,6 +41,22 @@
             'keepopen'    => 'yes',
             'sModalTitle'   => gT('Dectivate quotas'),
             'htmlModalBody' => gT('Deactivate?').' '.gT('Continue?'),
+        ),
+        array(
+            // li element
+            'type'        => 'action',
+            'action'      => 'delete',
+            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/delete'),
+            'iconClasses' => 'fa fa-trash text-danger',
+            'text'        =>  gT("Delete"),
+            //'grid-reload' => 'yes',
+
+            // modal
+            'actionType'  => 'modal',
+            'modalType'   => 'yes-no',
+            'keepopen'    => 'yes',
+            'sModalTitle'   => gT('Delete quotas'),
+            'htmlModalBody' => gT('Delete?').' '.gT('Continue?'),
         ),
 
     ),
