@@ -61,11 +61,20 @@
                             <!--  Link to Print Answer Preview -->
                             <div class="url-wrapper url-wrapper-survey-print">
                                 <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" class="ls-print">
-                                    {{ aSurveyInfo.aCompleted.aPrintAnswers.sText }}
+                                    {{ "Print your answers." | t }}
                                 </a>
                             </div>
                         {% endif %}
 
+                        {# Link to Public statistics #}
+                        {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
+                            <!-- Link to Public statistics -->
+                            <div class="url-wrapper url-wrapper-survey-print">
+                                <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" class="ls-print">
+                                    {{ "View the statistics for this survey." | t }}
+                                </a>
+                            </div>
+                        {% endif %}
 
                     </form> <!-- main form -->
                 </div> <!-- main col -->

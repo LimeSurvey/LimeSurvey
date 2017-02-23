@@ -1311,20 +1311,17 @@ class SurveyRuntimeHelper {
                 // Link to Print Answer Preview  **********
                 $thissurvey['aCompleted']['aPrintAnswers']['show'] = false;
                 if ($thissurvey['printanswers'] == 'Y'){
-                    $thissurvey['aCompleted']['aPrintAnswers']['show'] = true;
-                    $thissurvey['aCompleted']['aPrintAnswers']['sUrl'] = Yii::app()->getController()->createUrl("/printanswers/view",array('surveyid'=>$surveyid));
+                    $thissurvey['aCompleted']['aPrintAnswers']['show']  = true;
+                    $thissurvey['aCompleted']['aPrintAnswers']['sUrl']  = Yii::app()->getController()->createUrl("/printanswers/view",array('surveyid'=>$surveyid));
                     $thissurvey['aCompleted']['aPrintAnswers']['sText'] = "Print your answers.";
                 }
 
                 // Link to Public statistics  **********
                 $thissurvey['aCompleted']['aPublicStatistics']['show'] = false;
                 if ($thissurvey['publicstatistics'] == 'Y'){
-                    $completed .= App()->getController()->renderPartial("/survey/system/url",array(
-                        'url'         => Yii::app()->getController()->createUrl("/statistics_user/action/",array('surveyid'=>$surveyid,'language'=>App()->getLanguage())),
-                        'description' => gT("View the statistics for this survey."),
-                        'type'        => "survey-statistics",
-                        'coreClass'   => "ls-statistics",
-                    ),true);
+                    $thissurvey['aCompleted']['aPublicStatistics']['show']  = true;
+                    $thissurvey['aCompleted']['aPublicStatistics']['sUrl']  = Yii::app()->getController()->createUrl("/statistics_user/action/",array('surveyid'=>$surveyid,'language'=>App()->getLanguage()));
+
                 }
 
                 $this->completed = $completed;
