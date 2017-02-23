@@ -1271,10 +1271,6 @@ class SurveyRuntimeHelper {
 
             }else{
 
-
-                $content  = '';
-                $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
-
                 //Update the token if needed and send a confirmation email
                 if (isset($_SESSION['survey_'.$surveyid]['token'])){
                     submittokens();
@@ -1294,8 +1290,6 @@ class SurveyRuntimeHelper {
                         $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                     }
                 }
-
-                $this->content = $content;
 
                 // End text
                 if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == ''){
@@ -1326,14 +1320,11 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['finished'] = true;
                 $_SESSION[$LEMsessid]['sid']      = $surveyid;
 
-                sendCacheHeaders();
                 if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url']){
                     //Automatically redirect the page to the "url" setting for the survey
                     header("Location: {$thissurvey['surveyls_url']}");
                 }
 
-                doHeader();
-                echo $content;
             }
 
             $redata['completed'] = $completed;
@@ -1356,27 +1347,33 @@ class SurveyRuntimeHelper {
 
 
             $this->blocks = $blocks;
+            $thissurvey['aCompleted']['sPluginHTML'] = implode("\n", $blocks) ."\n";
+            $thissurvey['aCompleted']['sSurveylsUrl'] = $thissurvey['surveyls_url'];
 
-            $redata['completed']                  = implode("\n", $blocks) ."\n". $redata['completed'];
-            $redata['thissurvey']['surveyls_url'] = $thissurvey['surveyls_url'];
 
-            echo templatereplace(file_get_contents($sTemplateViewPath."completed.pstpl"), array('completed' => $completed), $redata, 'SubmitCompleted', false, NULL, array(), true );
-            echo "\n";
+            $thissurvey['aLEM']['debugvalidation']['show'] = false;
+            if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
+                $thissurvey['aLEM']['debugvalidation']['show']   = true;
+                $thissurvey['aLEM']['debugvalidation']['message'] = $moveResult['message'];
+            }
 
+            $thissurvey['aLEM']['debugvalidation']['show'] = false; $thissurvey['aLEM']['debugvalidation']['message'] = '';
             if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)){
-                echo LimeExpressionManager::GetDebugTimingMessage();
+                $thissurvey['aLEM']['debugvalidation']['show']     = true;
+                $thissurvey['aLEM']['debugvalidation']['message'] .= LimeExpressionManager::GetDebugTimingMessage();;
             }
 
             if ((($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)){
-                echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
+                $thissurvey['aLEM']['debugvalidation']['message'] .= "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
             }
-            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata, 'SubmitEndpage', false, NULL, array(), true );
-            doFooter();
 
             // The session cannot be killed until the page is completely rendered
             if ($thissurvey['printanswers'] != 'Y'){
                 killSurveySession($surveyid);
             }
+
+            $redata  = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents($sTemplateViewPath."layout-submit.twig"), array(), $redata);
             exit;
         }
     }
