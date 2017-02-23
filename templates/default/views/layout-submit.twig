@@ -38,12 +38,18 @@
                     {{ include('./subviews/warnings.twig') }}
 
                     {# include the form opening tag #}
-                    {{ include('./subviews/start_form.twig') }} <!-- main form -->
+                    <!-- main form -->
+                    {{ include('./subviews/start_form.twig') }}
 
                         {# This will display the script and the hidden inputs needed for Expression Manager #}
                         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
+                        {# Assessments #}
+                        {% if (aSurveyInfo.aAssesments.show == true) %}
+                            {{ include('./subviews/assessment.twig') }}
+                        {% endif %}
 
+                        
                     </form> <!-- main form -->
                 </div> <!-- main col -->
             </div> <!-- main row -->
