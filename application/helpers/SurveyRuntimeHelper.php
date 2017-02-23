@@ -113,7 +113,7 @@ class SurveyRuntimeHelper {
         $show_empty_group = $this->show_empty_group;
 
 
-        $this->setJavascriptVar($surveyid);
+        $this->setJavascriptVar();
         $this->setArgs();
 
         $aPrivateVariables = array();
@@ -1455,32 +1455,28 @@ class SurveyRuntimeHelper {
     * @return @void
     * @param integer $iSurveyId : the survey id for the script
     */
-    public function setJavascriptVar($iSurveyId)
+    public function setJavascriptVar($iSurveyId='')
     {
-        $aSurveyinfo=getSurveyInfo($iSurveyId, App()->getLanguage());
-        if(isset($aSurveyinfo['surveyls_numberformat']))
-        {
-            $aLSJavascriptVar=array();
-            $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
-            $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
-            $aRadix=getRadixPointData($aSurveyinfo['surveyls_numberformat']);
-            $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
-            $aLSJavascriptVar['lang']=new stdClass; // To add more easily some lang string here
-            $aLSJavascriptVar['showpopup']=(int)Yii::app()->getConfig('showpopups');
-            $aLSJavascriptVar['startPopups']=new stdClass;
-            $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
-            /*
-            $aCfieldnameWithDependences = Condition::model()->getAllCfieldnameWithDependenciesForOneSurvey($iSurveyId);
-            foreach($aCfieldnameWithDependences as $sCfieldname)
-            {
-                $aLSJavascriptVar['aFieldWithDependencies'][] = $sCfieldname;
-            }
-            */
+        $aSurveyinfo  = ($iSurveyId!='')?getSurveyInfo($iSurveyId, App()->getLanguage()):$this->thissurvey;
+
+        if(isset($aSurveyinfo['surveyls_numberformat'])){
+            $aLSJavascriptVar                  = array();
+
+            $aLSJavascriptVar['bFixNumAuto']   = (int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
+            $aLSJavascriptVar['bNumRealValue'] = (int)(bool)Yii::app()->getConfig('bNumRealValue',0);
+
+            $aRadix                            = getRadixPointData($aSurveyinfo['surveyls_numberformat']);
+            $aLSJavascriptVar['sLEMradix']     = $aRadix['separator'];
+
+            $aLSJavascriptVar['lang']          = new stdClass; // To add more easily some lang string here
+            $aLSJavascriptVar['showpopup']     = (int)Yii::app()->getConfig('showpopups');
+
+            $aLSJavascriptVar['startPopups']   = new stdClass;
+            $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
 
             $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         }
-        // Maybe remove one from index and allow empty $surveyid here.
     }
 
     /**
