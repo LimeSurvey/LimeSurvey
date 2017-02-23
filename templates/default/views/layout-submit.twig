@@ -56,6 +56,15 @@
                             {{ include('./subviews/assessment.twig') }}
                         {% endif %}
 
+                        {#  Link to Print Answer Preview #}
+                        {% if (aSurveyInfo.aCompleted.aPrintanswers.show == true) %}
+                            <!--  Link to Print Answer Preview -->
+                            <div class="url-wrapper url-wrapper-survey-print">
+                                <a href="{{ aSurveyInfo.aCompleted.aPrintanswers.sUrl }}" class="ls-print">
+                                    {{ aSurveyInfo.aCompleted.aPrintanswers.sText }}
+                                </a>
+                            </div>
+                        {% endif %}
 
 
                     </form> <!-- main form -->

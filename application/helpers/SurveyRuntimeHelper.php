@@ -1299,7 +1299,7 @@ class SurveyRuntimeHelper {
 
                 $this->content = $content;
 
-
+                // End text
                 if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == ''){
                     $thissurvey['aCompleted']['showDefault']=true;
                 }else{
@@ -1309,13 +1309,11 @@ class SurveyRuntimeHelper {
                 }
 
                 // Link to Print Answer Preview  **********
+                $thissurvey['aCompleted']['aPrintanswers']['show'] = false;
                 if ($thissurvey['printanswers'] == 'Y'){
-                    $completed .= App()->getController()->renderPartial("/survey/system/url",array(
-                        'url'         => Yii::app()->getController()->createUrl("/printanswers/view",array('surveyid'=>$surveyid)),
-                        'description' => gT("Print your answers."),
-                        'type'        => "survey-print",
-                        'coreClass'   => "ls-print",
-                    ),true);
+                    $thissurvey['aCompleted']['aPrintanswers']['show'] = true;
+                    $thissurvey['aCompleted']['aPrintanswers']['sUrl'] = Yii::app()->getController()->createUrl("/printanswers/view",array('surveyid'=>$surveyid));
+                    $thissurvey['aCompleted']['aPrintanswers']['sText'] = "Print your answers.";
                 }
 
                 // Link to Public statistics  **********
