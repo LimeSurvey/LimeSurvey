@@ -1276,7 +1276,7 @@ class SurveyRuntimeHelper {
 
                 $content  = '';
                 $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
-                
+
                 //Update the token if needed and send a confirmation email
                 if (isset($_SESSION['survey_'.$surveyid]['token'])){
                     submittokens();
@@ -1299,12 +1299,13 @@ class SurveyRuntimeHelper {
 
                 $this->content = $content;
 
+
                 if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == ''){
-                    $completed  = "<p>".gT("Thank you!")."</p>";
-                    $completed .= "<p>".gT("Your survey responses have been recorded.")."</p>";
+                    $thissurvey['aCompleted']['showDefault']=true;
                 }else{
+                    $thissurvey['aCompleted']['showDefault']=false;
                     // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                    $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
+                    $thissurvey['aCompleted']['sEndText'] = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                 }
 
                 // Link to Print Answer Preview  **********

@@ -44,12 +44,20 @@
                         {# This will display the script and the hidden inputs needed for Expression Manager #}
                         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
+                        {% if (aSurveyInfo.aCompleted.showDefault == true) %}
+                            <p>{{ "Thank you!" | t }}</p>
+                            <p>{{ "Your survey responses have been recorded." | t }}</p>
+                        {% else %}
+                            {{ aSurveyInfo.aCompleted.sEndText }}
+                        {% endif %}
+
                         {# Assessments #}
                         {% if (aSurveyInfo.aAssesments.show == true) %}
                             {{ include('./subviews/assessment.twig') }}
                         {% endif %}
 
-                        
+
+
                     </form> <!-- main form -->
                 </div> <!-- main col -->
             </div> <!-- main row -->
