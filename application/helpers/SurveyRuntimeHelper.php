@@ -1253,11 +1253,9 @@ class SurveyRuntimeHelper {
                 // TODO: TWIG ASSESSMENTS !!!!!
                 if ($thissurvey['assessments'] == "Y"){
                     $assessments = $this->assessments = doAssessment($thissurvey['sid']);
-                }
-
-
-                if ($thissurvey['assessments'] == "Y" && $assessments ){
-                    echo templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
+                    if ($assessments ) {
+                        echo templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
+                    }
                 }
 
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
