@@ -150,17 +150,7 @@ class SurveyRuntimeHelper {
             $_SESSION[$this->LEMsessid]['maxstep'] = 0;
         }
 
-        // TODO: remove those line, why a special condition when survey is not active VS when it's active and why HERE????
-        if ($this->thissurvey['active'] != "Y"){
-            // TODO: TWIG ASSESSMENTS !!!!!
-            if ($thissurvey['assessments'] == "Y"){                
-                $assessments = $this->assessments = doAssessment($thissurvey['sid']);
-            }
-        }
-
-
         $this->moveSubmitIfNeeded();
-
 
 
         extract($aPrivateVariables);                                            // For redata
@@ -1260,7 +1250,13 @@ class SurveyRuntimeHelper {
 
                 //Check for assessments
 
-                if ($thissurvey['assessments'] == "Y" && $this->assessments ){
+                // TODO: TWIG ASSESSMENTS !!!!!
+                if ($thissurvey['assessments'] == "Y"){
+                    $assessments = $this->assessments = doAssessment($thissurvey['sid']);
+                }
+
+
+                if ($thissurvey['assessments'] == "Y" && $assessments ){
                     echo templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
                 }
 
