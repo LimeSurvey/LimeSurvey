@@ -141,6 +141,8 @@ class SurveyRuntimeHelper {
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
+
+            // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
 
         }else{
@@ -151,7 +153,7 @@ class SurveyRuntimeHelper {
         // TODO: remove those line, why a special condition when survey is not active VS when it's active and why HERE????
         if ($this->thissurvey['active'] != "Y"){
             // TODO: TWIG ASSESSMENTS !!!!!
-            if ($thissurvey['assessments'] == "Y"){
+            if ($thissurvey['assessments'] == "Y"){                
                 $assessments = $this->assessments = doAssessment($thissurvey['sid']);
             }
         }
@@ -1178,7 +1180,7 @@ class SurveyRuntimeHelper {
             Yii::import("application.libraries.Save");
             $cSave = new Save();
 
-            // Try to save survey 
+            // Try to save survey
             $aResult = $cSave->saveSurvey();
             if (!$aResult['success']){
                 $aPopup  = $this->popup = $aResult['aSaveErrors'];
