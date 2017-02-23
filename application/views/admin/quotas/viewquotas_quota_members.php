@@ -23,7 +23,7 @@ if ($oQuota->action == 1){
         <span class="h4" >
             <span class="fa <?php echo $icon?>" data-toggle="tooltip" title="<?php echo $tooltip;?>"></span>
             <?php if($oQuota->autoload_url == 1):?>
-                &nbsp;<span class="fa fa-external-link" data-toggle="tooltip" data-html="true" title="<?php echo $oQuota->mainLanguagesetting->quotals_url;?>"></span>
+                &nbsp;<span class="fa fa-external-link" data-toggle="tooltip" data-html="true" title="<?php echo eT('Autoload URL:').' '.$oQuota->mainLanguagesetting->quotals_url;?>"></span>
             <?php endif;?>
             &nbsp;<?php echo $oQuota->name;?>
         </span>
@@ -41,21 +41,20 @@ if ($oQuota->action == 1){
 
         </span>
     </div>
+
     <div class="panel-body" style="margin: 3px;padding: 3px;">
-    <?php
-    if (!empty($aQuotaItems) && isset($aQuotaItems[$oQuota->id]) ){
-
-        $oDataProvider=new CArrayDataProvider($aQuotaItems[$oQuota->id]);
-        $this->widget('zii.widgets.CListView', array(
-            'dataProvider'=>$oDataProvider,
-            'itemView'=>'/admin/quotas/viewquotas_quota_members_item',
-            'viewData'=>array('oSurvey'=>$oSurvey,'oQuota'=>$oQuota),
-            'sortableAttributes'=>array('question_title'),
-            'itemsCssClass' =>'fake-table',
-            'template' =>'{items}',
-        ));
-
-    }    ?>
+        <div style="display: table; width: 100%;" >
+            <div style="display: table-row;"  >
+                <div style="display: table-cell" class="h5"><?php eT('Question');?></div>
+                <div style="display: table-cell" class="h5"><?php eT('Answer');?></div>
+                <div style="display: table-cell"></div>
+            </div>
+        <?php if (!empty($aQuotaItems) && isset($aQuotaItems[$oQuota->id]) && !empty($aQuotaItems[$oQuota->id])){
+            foreach($aQuotaItems[$oQuota->id] as $aQuotaItem){
+                $this->renderPartial('/admin/quotas/viewquotas_quota_members_item',array('oSurvey'=>$oSurvey,'oQuota'=>$oQuota,'data'=>$aQuotaItem));
+            }
+        }?>
+        </div>
     </div>
 </div>
 

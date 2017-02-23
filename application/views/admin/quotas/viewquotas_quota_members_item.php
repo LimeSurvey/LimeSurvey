@@ -8,14 +8,14 @@
 /* @var Question $oQuestion */
 $oQuestion = $data['oQuestion'];
 ?>
-<div class="row" style="display: table-row;">
-    <span data-container="body" data-toggle="tooltip" title="<?php echo $oQuestion->question;?>" style="display: table-cell">
+<div style="display: table-row;">
+    <div data-container="body" data-toggle="tooltip" title="<?php echo $oQuestion->question;?>" style="display: table-cell">
         <?php echo $oQuestion->title?>
-    </span>
-        <span style="display: table-cell">
+    </div>
+    <div style="display: table-cell">
         <?php echo $data['answer_title']?>
-    </span>
-    <span style="display: table-cell;text-align: right;">
+    </div>
+    <div style="display: table-cell" align="right">
         <?php $this->renderPartial('/admin/quotas/viewquotas_quota_members_actions',
             array(
                 'oSurvey'=>$oSurvey,
@@ -23,9 +23,5 @@ $oQuestion = $data['oQuestion'];
                 'oQuotaMember' =>$data['oQuotaMember'],
             ));
         ?>
-    </span>
-
-
+    </div>
 </div>
-
-

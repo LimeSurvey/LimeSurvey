@@ -2373,10 +2373,3 @@ input[type="file"].form-control {
     margin: 0;
   }
 }
-.fake-table{
-  display: table;
-  width:100%;
-}
-.fake-table-row{
-  display: table-row;
-}
