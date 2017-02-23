@@ -409,7 +409,7 @@ class SurveyRuntimeHelper {
         Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
 
-        $bShowpopups                             = Yii::app()->getConfig('showpopups');
+        $bShowpopups                            = Yii::app()->getConfig('showpopups');
         $aErrorHtmlMessage                      = $this->getErrorHtmlMessage();
         $thissurvey['errorHtml']['show']        = !empty($aErrorHtmlMessage);
         $thissurvey['errorHtml']['hiddenClass'] = $bShowpopups ? "ls-js-hidden ":"";
@@ -1679,34 +1679,23 @@ class SurveyRuntimeHelper {
     private function getErrorHtmlMessage()
     {
         $aErrorsMandatory=array();
+
         //Mandatory question(s) with unanswered answer
-        if ($this->stepInfo['mandViolation'] && $this->okToShowErrors)
-        {
+        if ($this->stepInfo['mandViolation'] && $this->okToShowErrors){
             $aErrorsMandatory[]=gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
         }
+
         // Question(s) with not valid answer(s)
-        if ($this->stepInfo['valid'] && $this->okToShowErrors)
-        {
+        if ($this->stepInfo['valid'] && $this->okToShowErrors){
             $aErrorsMandatory[]=gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
         }
+
         // Upload question(s) with invalid file(s)
-        if ($this->filenotvalidated && $this->okToShowErrors)
-        {
+        if ($this->filenotvalidated && $this->okToShowErrors){
             $aErrorsMandatory[]=gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.");
         }
 
         return $aErrorsMandatory;
-
-        /*
-        if(count($aErrorsMandatory)){
-            $hiddenClass= Yii::app()->getConfig('showpopups') ? "ls-js-hidden ":"";
-            return Yii::app()->getController()->renderPartial('/survey/system/errorAlert', array(
-                'aErrors'=>$aErrorsMandatory,
-                'class'=>"{$hiddenClass} ls-questions-have-errors"
-            ), true);;
-        }else{
-            return "";
-        }*/
     }
 
     /**
