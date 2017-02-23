@@ -1167,6 +1167,7 @@ class SurveyRuntimeHelper {
 
     /**
      * perform save submit if asked by user
+     * called from save survey
      */
     private function saveSubmitIfNeeded()
     {
@@ -1179,16 +1180,24 @@ class SurveyRuntimeHelper {
             Yii::import("application.libraries.Save");
             $cSave = new Save();
 
-            $popup = $this->popup = $cSave->savedcontrol();
+            $aResult = $cSave->savedcontrol();
 
-            if (!empty($cSave->aSaveErrors)){
-                $cSave->showsaveform($thissurvey['sid']); // reshow the form if there is an error
+            if (!$aResult['success']){
+                $popup  = $this->popup = $aResult['aSaveErrors'];
+            }else{
+                $popup  = $this->popup = $aResult['message'];
+            }
+
+            // reshow the form if there is an error
+            if (!empty($aResult['aSaveErrors'])){
+                $thissurvey['aSaveForm'] = $cSave->getSaveFormDatas($thissurvey['sid']);
+                $redata                  = compact(array_keys(get_defined_vars()));
+                echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_save.twig"), array(), $redata);
+                Yii::app()->end();
             }
 
             $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
             $LEMskipReprocessing = $this->LEMskipReprocessing = true;
-
-            // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
         }
     }
 

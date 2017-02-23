@@ -339,8 +339,7 @@ class Save
         if (!Yii::app()->request->getPost('savepass')){
             $this->aSaveErrors[] = gT("You must supply a password for this saved session.");
         }
-        if (Yii::app()->request->getPost('savepass') != Yii::app()->request->getPost('savepass2'))
-        {
+        if (Yii::app()->request->getPost('savepass') != Yii::app()->request->getPost('savepass2')){
             $this->aSaveErrors[] = gT("Your passwords do not match.");
         }
 
@@ -362,29 +361,29 @@ class Save
         if (strpos($saveName,'/')!==false || strpos($saveName,'/')!==false || strpos($saveName,'&')!==false || strpos($saveName,'&')!==false
             || strpos($saveName,'\\')!==false || strpos($saveName,'\\')!==false){
 
-            $this->aSaveErrors[]=gT("You may not use slashes or ampersands in your name or password.");
+            $this->aSaveErrors[] = gT("You may not use slashes or ampersands in your name or password.");
 
         } elseif (!empty($duplicate) && $duplicate->count() > 0){
 
-            $this->aSaveErrors[]=gT("This name has already been used for this survey. You must use a unique save name.");
+            $this->aSaveErrors[] = gT("This name has already been used for this survey. You must use a unique save name.");
         }else{
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
 
             if (!isset($_SESSION['survey_'.$surveyid]['srid'])){
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 $sdata = array(
-                    "datestamp" => $today,
-                    "ipaddr" => getIPAddress(),
+                    "datestamp"     => $today,
+                    "ipaddr"        => getIPAddress(),
                     "startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
-                    "refurl" => ((isset($_SESSION['survey_'.$surveyid]['refurl'])) ? $_SESSION['survey_'.$surveyid]['refurl'] : getenv('HTTP_REFERER'))
+                    "refurl"        => ((isset($_SESSION['survey_'.$surveyid]['refurl'])) ? $_SESSION['survey_'.$surveyid]['refurl'] : getenv('HTTP_REFERER'))
                 );
 
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)){
-                    $srid = getLastInsertID('{{survey_' . $surveyid . '}}');
+                    $srid                                  = getLastInsertID('{{survey_' . $surveyid . '}}');
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }else{
                     // TODO: $this->aSaveErrors
-                    safeDie("Unable to insert record into survey table.<br /><br />");
+                    $this->aSaveErrors[] = gT("Unable to insert record into survey table.");
                 }
             }
 
@@ -411,7 +410,7 @@ class Save
                 $_SESSION['survey_'.$surveyid]['scid'] = $scid;
             }else{
                 // TODO: $this->aSaveErrors
-                safeDie("Unable to insert record into saved_control table.<br /><br />");
+                $this->aSaveErrors[] = gT("Unable to insert record into saved_control table.");
             }
 
             $_SESSION['survey_'.$surveyid]['holdname'] = $_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
@@ -426,7 +425,7 @@ class Save
                 $message .= gT("Name").": ".$_POST['savename']."\n";
                 $message .= gT("Password").": ".$_POST['savepass']."\n\n";
                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $aParams=array('scid'=>$scid,'lang'=>App()->language,'loadname'=>$_POST['savename'],'loadpass'=>$_POST['savepass']);
+                $aParams  = array('scid'=>$scid,'lang'=>App()->language,'loadname'=>$_POST['savename'],'loadpass'=>$_POST['savepass']);
 
                 if (!empty($clienttoken)){
                     $aParams['token'] = $clienttoken;
@@ -446,7 +445,7 @@ class Save
                 }
             }
 
-            return gT('Your survey was successfully saved.');
+            return array('success' => true, 'message' => gT('Your survey was successfully saved.'));
         }
 
         if (!empty($this->aSaveErrors)){
