@@ -112,7 +112,7 @@ class quotas extends Survey_Common_Action
 
         if ($quickreport == false)
         {
-            $aViewUrls[] = 'viewquotas_view_new';
+            $aViewUrls[] = 'viewquotas_view';
         }
 
         $aData['surveyid'] = $iSurveyID = $surveyid =  sanitize_int($iSurveyId);
@@ -192,7 +192,6 @@ class quotas extends Survey_Common_Action
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $aQuotaListing['id']);
                     $aQuotaItems[$aQuotaListing['id']][] = array(
                         'oQuestion' => Question::model()->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
-                        'question_title' => $aQuestionAnswers[$oQuotaMember->code]['Title'],
                         'answer_title' => flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']),
                         'oQuotaMember'=>$oQuotaMember,
                     );

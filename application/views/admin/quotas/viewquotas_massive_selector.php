@@ -24,7 +24,7 @@
             'modalType'   => 'yes-no',
             'keepopen'    => 'no',
             'sModalTitle'   => gT('Activate quotas'),
-            'htmlModalBody' => gT('Go?').' '.gT('Continue?'),
+            'htmlModalBody' => gT('Are you sure you want to activate all selected quotas?'),
         ),
         array(
             // li element
@@ -39,8 +39,8 @@
             'actionType'  => 'modal',
             'modalType'   => 'yes-no',
             'keepopen'    => 'no',
-            'sModalTitle'   => gT('Dectivate quotas'),
-            'htmlModalBody' => gT('Deactivate?').' '.gT('Continue?'),
+            'sModalTitle'   => gT('Deactivate quotas'),
+            'htmlModalBody' => gT('Are you sure you want to deactivate all selected quotas?'),
         ),
         array(
             // li element
@@ -56,7 +56,7 @@
             'modalType'   => 'yes-no',
             'keepopen'    => 'no',
             'sModalTitle'   => gT('Delete quotas'),
-            'htmlModalBody' => gT('Delete?').' '.gT('Continue?'),
+            'htmlModalBody' => gT('Are you sure you want to delete all selected quotas?'),
         ),
 
     ),
