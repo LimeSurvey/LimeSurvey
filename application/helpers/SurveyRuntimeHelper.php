@@ -385,7 +385,7 @@ class SurveyRuntimeHelper {
 
         $redata                         = compact(array_keys(get_defined_vars()));
 
-
+        $popup = $this->popup;
         $aPopup=array(); // We can move this part where we want now
         if (isset($backpopup))
         {
@@ -415,11 +415,9 @@ class SurveyRuntimeHelper {
         $thissurvey['errorHtml']['hiddenClass'] = $bShowpopups ? "ls-js-hidden ":"";
         $thissurvey['errorHtml']['messages']    = $aErrorHtmlMessage;
 
-
-
         $_gseq = -1;
-        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
-        {
+        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl){
+
             $gid = $gl['gid'];
             ++$_gseq;
             $aGroup    = array();
@@ -1180,13 +1178,16 @@ class SurveyRuntimeHelper {
             Yii::import("application.libraries.Save");
             $cSave = new Save();
 
-            $aResult = $cSave->savedcontrol();
-
+            // Try to save survey 
+            $aResult = $cSave->saveSurvey();
             if (!$aResult['success']){
-                $popup  = $this->popup = $aResult['aSaveErrors'];
+                $aPopup  = $this->popup = $aResult['aSaveErrors'];
             }else{
-                $popup  = $this->popup = $aResult['message'];
+                $aPopup  = $this->popup = array($aResult['message']);
             }
+
+            Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
+            Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
 
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])){
