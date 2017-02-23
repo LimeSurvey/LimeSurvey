@@ -525,6 +525,8 @@ function submittokens($quotaexit=false)
                 $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                 $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $redata=array('thissurvey'=>$thissurvey);
+
+                // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
                 $subject=templatereplace($subject,$aReplacementVars,$redata,'email_confirm_subj', false, NULL, array(), true );
 
                 $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
@@ -540,6 +542,7 @@ function submittokens($quotaexit=false)
 
                 $message=$thissurvey['email_confirm'];
                 //$message=ReplaceFields($message, $fieldsarray, true);
+                // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
                 $message=templatereplace($message,$aReplacementVars,$redata,'email_confirm', false, NULL, array(), true );
                 if (!$ishtml)
                 {
@@ -746,6 +749,7 @@ function sendSubmitNotifications($surveyid)
     $redata=compact(array_keys(get_defined_vars()));
     if (count($aEmailNotificationTo)>0)
     {
+        // NOTE: those occurences of template replace should stay here. User from backend could use old replacement keyword
         $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,$redata,'admin_notification',$thissurvey['anonymized'] == "Y",NULL, array(), true);
         $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'admin_notification_subj',($thissurvey['anonymized'] == "Y"),NULL, array(), true);
         foreach ($aEmailNotificationTo as $sRecipient)
@@ -778,6 +782,7 @@ function sendSubmitNotifications($surveyid)
     }
     if (count($aEmailResponseTo)>0)
     {
+        // NOTE: those occurences of template replace should stay here. User from backend could use old replacement keyword
         $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars,$redata,'detailed_admin_notification',$thissurvey['anonymized'] == "Y",NULL, array(), true);
         $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,'detailed_admin_notification_subj',$thissurvey['anonymized'] == "Y",NULL, array(), true);
         foreach ($aEmailResponseTo as $sRecipient)

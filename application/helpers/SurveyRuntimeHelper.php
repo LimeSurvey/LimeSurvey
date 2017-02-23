@@ -1276,8 +1276,7 @@ class SurveyRuntimeHelper {
 
                 $content  = '';
                 $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
-
-                /// TODO: TWIG TOKENS !!!!!
+                
                 //Update the token if needed and send a confirmation email
                 if (isset($_SESSION['survey_'.$surveyid]['token'])){
                     submittokens();
@@ -1304,6 +1303,7 @@ class SurveyRuntimeHelper {
                     $completed  = "<p>".gT("Thank you!")."</p>";
                     $completed .= "<p>".gT("Your survey responses have been recorded.")."</p>";
                 }else{
+                    // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
                     $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                 }
 
