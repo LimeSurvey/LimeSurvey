@@ -1922,6 +1922,7 @@ function doAssessment($surveyid, $returndataonly=false)
         }
         if ($returndataonly==true)
         {
+            $subtotal = (isset($subtotal))?$subtotal:'';
             return array('total'=>$total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
         }
         else
