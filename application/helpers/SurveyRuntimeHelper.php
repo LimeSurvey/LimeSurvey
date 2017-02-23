@@ -1277,38 +1277,22 @@ class SurveyRuntimeHelper {
                 $content  = '';
                 $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
 
-                //Check for assessments
-                if ($thissurvey['assessments'] == "Y"){
-
-                    $assessments = $this->assessments = doAssessment($surveyid);
-                    if ($assessments){
-                        $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
-                    }
-                }
-
-                $this->content = $content;
-
                 /// TODO: TWIG TOKENS !!!!!
-
                 //Update the token if needed and send a confirmation email
                 if (isset($_SESSION['survey_'.$surveyid]['token'])){
                     submittokens();
                 }
 
                 //Send notifications
-
                 sendSubmitNotifications($surveyid);
 
-
-                $content = '';
-                $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
-
-                //echo $thissurvey['url'];
                 //Check for assessments
+                $thissurvey['aAssessments']['show'] = false;
                 if ($thissurvey['assessments'] == "Y"){
+                    $thissurvey['aAssessments']['show'] = true;
 
+                    // TODO : TWIG
                     $assessments = $this->assessments = doAssessment($surveyid);
-
                     if ($assessments){
                         $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                     }
