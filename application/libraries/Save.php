@@ -309,7 +309,7 @@ class Save
     }
 
     /**
-     * Clone of savesubmit() but return 
+     * Clone of savesubmit() but returns datas for twig
      */
     function saveSurvey()
     {
@@ -328,6 +328,7 @@ class Save
 
         global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
 
+        $aSaveForm = array();
         $timeadjust = getGlobalSetting('timeadjust');
 
         //Check that the required fields have been completed.
@@ -355,22 +356,16 @@ class Save
             }
         }
 
-        if (!empty($this->aSaveErrors))
-        {
-            return;
-        }
         $saveName=Yii::app()->request->getPost('savename');
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $saveName));
         if (strpos($saveName,'/')!==false || strpos($saveName,'/')!==false || strpos($saveName,'&')!==false || strpos($saveName,'&')!==false
             || strpos($saveName,'\\')!==false || strpos($saveName,'\\')!==false)
         {
             $this->aSaveErrors[]=gT("You may not use slashes or ampersands in your name or password.");
-            return;
         }
         elseif (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
         {
             $this->aSaveErrors[]=gT("This name has already been used for this survey. You must use a unique save name.");
-            return;
         }
         else
         {
@@ -460,6 +455,14 @@ class Save
             }
             return gT('Your survey was successfully saved.');
         }
+
+        if (!empty($this->aSaveErrors))
+        {
+            $aSaveForm['success']     = false;
+            $aSaveForm['aSaveErrors'] = $this->aSaveErrors;
+        }
+
+        return $aSaveForm;
     }
 
     /**
