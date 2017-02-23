@@ -44,37 +44,43 @@
                         {# This will display the script and the hidden inputs needed for Expression Manager #}
                         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-                        {% if (aSurveyInfo.aCompleted.showDefault == true) %}
-                            <p>{{ "Thank you!" | t }}</p>
-                            <p>{{ "Your survey responses have been recorded." | t }}</p>
-                        {% else %}
-                            {{ aSurveyInfo.aCompleted.sEndText }}
-                        {% endif %}
+                        <div class="completed-wrapper">
+                            <div class='completed-text'>
+                                {% if (aSurveyInfo.aCompleted.showDefault == true) %}
+                                    <p>{{ "Thank you!" | t }}</p>
+                                    <p>{{ "Your survey responses have been recorded." | t }}</p>
+                                {% else %}
+                                    {{ aSurveyInfo.aCompleted.sEndText }}
+                                {% endif %}
 
-                        {# Assessments #}
-                        {% if (aSurveyInfo.aAssesments.show == true) %}
-                            {{ include('./subviews/assessment.twig') }}
-                        {% endif %}
+                                {# Assessments #}
+                                {% if (aSurveyInfo.aAssesments.show == true) %}
+                                    {{ include('./subviews/assessment.twig') }}
+                                {% endif %}
 
-                        {#  Link to Print Answer Preview #}
-                        {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
-                            <!--  Link to Print Answer Preview -->
-                            <div class="url-wrapper url-wrapper-survey-print">
-                                <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" class="ls-print">
-                                    {{ "Print your answers." | t }}
-                                </a>
+                                {#  Link to Print Answer Preview #}
+                                {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
+                                    <!--  Link to Print Answer Preview -->
+                                    <div class="url-wrapper url-wrapper-survey-print">
+                                        <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" class="ls-print">
+                                            {{ "Print your answers." | t }}
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                                {# Link to Public statistics #}
+                                {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
+                                    <!-- Link to Public statistics -->
+                                    <div class="url-wrapper url-wrapper-survey-print">
+                                        <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" class="ls-print">
+                                            {{ "View the statistics for this survey." | t }}
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                {URL}
                             </div>
-                        {% endif %}
+                        </div>
 
-                        {# Link to Public statistics #}
-                        {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
-                            <!-- Link to Public statistics -->
-                            <div class="url-wrapper url-wrapper-survey-print">
-                                <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" class="ls-print">
-                                    {{ "View the statistics for this survey." | t }}
-                                </a>
-                            </div>
-                        {% endif %}
 
                     </form> <!-- main form -->
                 </div> <!-- main col -->
