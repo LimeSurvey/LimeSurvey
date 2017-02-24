@@ -45,6 +45,29 @@
         array(
             // li element
             'type'        => 'action',
+            'action'      => 'changeUrls',
+            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/changeUrls'),
+            'iconClasses' => 'fa fa-external-link text-success',
+            'text'        =>  gT("Change URLs"),
+            'grid-reload' => 'yes',
+
+            // modal
+            'actionType'  => 'modal',
+            'modalType'   => 'yes-no',
+            'keepopen'    => 'no',
+            'sModalTitle'   => gT('Change settings'),
+            'htmlModalBody' => $this->renderPartial('/admin/quotas/viewquotas_quota_urlsform',array('oSurvey'=>$oSurvey),true),
+        ),
+
+        // Separator
+        array(
+
+            // li element
+            'type'  => 'separator',
+        ),
+        array(
+            // li element
+            'type'        => 'action',
             'action'      => 'delete',
             'url'         => App()->createUrl('/admin/quotas/massiveAction/action/delete'),
             'iconClasses' => 'fa fa-trash text-danger',

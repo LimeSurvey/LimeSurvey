@@ -1,3 +1,11 @@
+<?php
+/* @var $this AdminController */
+/* @var Survey $oSurvey */
+/* @var string $lang */
+/* @var Quota $oQuota */
+/* @var CActiveForm $form */
+?>
+
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -5,53 +13,71 @@
                 <?php eT("Edit quota");?>
             </h3>
 
+            <?php $form = $this->beginWidget('CActiveForm', array(
+                'id'=>'editquota',
+                'action'=>array("admin/quotas/sa/modifyquota/surveyid/{$oSurvey->primaryKey}"),
+                'enableAjaxValidation'=>true,
+                'enableClientValidation'=>true,
+                'focus'=>array($oQuota,'firstName'),
+            )); ?>
+            <?php echo $form->errorSummary($oQuota); ?>
 
-            <?php echo CHtml::form(array("admin/quotas/sa/modifyquota/surveyid/{$iSurveyId}"), 'post', array('id'=>'editquota','class'=>'form-horizontal')); ?>
-                <div class='form-group'>
-                    <label class='control-label col-sm-3' for='quota_name'><?php eT("Quota name:");?></label>
-                    <div class='col-sm-9'>
-                        <input class='form-control' id="quota_name" name="quota_name" type="text" size="30" maxlength="255" value="<?php echo $quotainfo['name'];?>" />
-                    </div>
+            <?php echo $form->hiddenField($oQuota,'id'); ?>
+            <div class="form-group">
+                <?php echo $form->labelEx($oQuota,'name',array('class'=>'control-label col-sm-3')); ?>
+                <div class='col-sm-9'>
+                    <?php echo $form->textField($oQuota,'name',array('class'=>'form-control')); ?>
+                    <?php echo $form->error($oQuota,'name'); ?>
                 </div>
-                <div class='form-group'>
-                    <label class='control-label col-sm-3' for='quota_limit'><?php eT("Quota limit:");?></label>
-                    <div class='col-sm-9'>
-                        <input class='form-control' id="quota_limit" name="quota_limit" type="number" size="12" maxlength="8" value="<?php echo $quotainfo['qlimit'];?>" />
-                    </div>
+            </div>
+
+            <div class="form-group">
+                <?php echo $form->labelEx($oQuota,'qlimit',array('class'=>'control-label col-sm-3')); ?>
+                <div class='col-sm-9'>
+                    <?php echo $form->textField($oQuota,'qlimit',array('class'=>'form-control')); ?>
+                    <?php echo $form->error($oQuota,'qlmit'); ?>
                 </div>
-                <div class='form-group'>
-                    <label class='control-label col-sm-3' for='quota_action'><?php eT("Quota action:");?></label>
-                    <div class='col-sm-9'>
-                        <select name="quota_action" id="quota_action" class="form-control">
-                            <option value ="1" <?php if($quotainfo['action'] == 1) echo "selected='selected'"; ?>><?php eT("Terminate survey");?></option>
-                            <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Terminate survey with warning");?></option>
-                        </select>
-                    </div>
+            </div>
+
+            <div class="form-group">
+                <?php echo $form->labelEx($oQuota,'action',array('class'=>'control-label col-sm-3')); ?>
+                <div class='col-sm-9'>
+                    <?php echo $form->dropDownList($oQuota,'action',
+                        array(
+                            1 =>gT("Terminate survey"),
+                            2 =>gT("Terminate survey with warning"),
+                        ),
+                        array('class'=>'form-control')); ?>
+                    <?php echo $form->error($oQuota,'action'); ?>
                 </div>
-                <div class='form-group'>
-                    <label class='control-label col-sm-3' for='autoload_url'><?php eT("Autoload URL:");?></label>
-                    <div class='col-sm-9'>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'autoload_url',
-                            'id'=>'autoload_url',
-                            'value' => $quotainfo['autoload_url'],
-                            'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
-                        ?>
-                    </div>
+            </div>
+
+            <div class="form-group">
+                <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'control-label col-sm-3')); ?>
+                <div class='col-sm-9'>
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'model' => $oQuota,
+                        'attribute' => 'autoload_url',
+                        'onLabel'=>gT('Yes'),
+                        'offLabel' => gT('No')));
+                    ?>
+                    <?php echo $form->error($oQuota,'autoload_url'); ?>
                 </div>
-                <div class='form-group'>
-                    <label class='control-label col-sm-3' for='active'><?php eT("Active:");?></label>
-                    <div class='col-sm-9'>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'active',
-                            'id'=>'active',
-                            'value' => $quotainfo['active'],
-                            'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
-                        ?>
-                    </div>
+            </div>
+
+            <div class="form-group">
+                <?php echo $form->labelEx($oQuota,'active',array('class'=>'control-label col-sm-3')); ?>
+                <div class='col-sm-9'>
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'model' => $oQuota,
+                        'attribute' => 'active',
+                        'onLabel'=>gT('Yes'),
+                        'offLabel' => gT('No')));
+                    ?>
+                    <?php echo $form->error($oQuota,'active'); ?>
                 </div>
+            </div>
+
                 <!-- Language tabs -->
                 <ul class="nav nav-tabs">
                     <?php foreach ($langs as $lang): ?>
@@ -81,9 +107,9 @@
                 <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
                 <input type="hidden" name="action" value="quotas" />
                 <input type="hidden" name="subaction" value="modifyquota" />
-                <input type="hidden" name="quota_id" value="<?php echo $quotainfo['id'];?>" />
-            </form>
+                <input type="hidden" name="quota_id" value="<?php echo $oQuota['id'];?>" />
 
+            <?php $this->endWidget(); ?>
         </div>
     </div>
 </div>

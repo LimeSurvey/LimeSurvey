@@ -295,52 +295,52 @@ class quotas extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
-        $aData = $this->_getData($iSurveyId);
-        $aLangs = $aData['aLangs'];
+        if(isset($_POST['Quota'])) {
+            $iQuotaId = sanitize_int($_POST['Quota']['id']);
+            /* @var Quota $oQuota */
+            $oQuota = Quota::model()->findByPk($iQuotaId);
+            $oQuota->attributes = $_POST['Quota'];
+            $oQuota->save();
+            $aLangs = $oQuota->survey->getAllLanguages();
 
-        $oQuota = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
-        $oQuota->name = Yii::app()->request->getPost('quota_name');
-        $oQuota->qlimit = Yii::app()->request->getPost('quota_limit');
-        $oQuota->action = Yii::app()->request->getPost('quota_action');
-        $oQuota->autoload_url = Yii::app()->request->getPost('autoload_url');
-        $oQuota->active = Yii::app()->request->getPost('active');
-        $oQuota->save();
 
-        //Iterate through each language posted, and make sure there is a quota message for it
-        $sError = '';
-        foreach ($aLangs as $sLang)
-        {
-            if (!$_POST['quotals_message_' . $sLang])
+            //Iterate through each language posted, and make sure there is a quota message for it
+            $sError = '';
+            foreach ($aLangs as $sLang)
             {
-                $sError.= getLanguageNameFromCode($sLang, false) . "\\n";
+                if (!$_POST['quotals_message_' . $sLang])
+                {
+                    $sError.= getLanguageNameFromCode($sLang, false) . "\\n";
+                }
             }
-        }
-        if ($sError != '')
-        {
-            $aData['sShowError'] = $sError;
-        }
-        else
-        //All the required quota messages exist, now we can insert this info into the database
-        {
-
-            foreach ($aLangs as $sLang) //Iterate through each language
+            if ($sError != '')
             {
-                //Clean XSS - Automatically provided by CI
-                $_POST['quotals_message_' . $sLang] = html_entity_decode($_POST['quotals_message_' . $sLang], ENT_QUOTES, "UTF-8");
-
-                // Fix bug with FCKEditor saving strange BR types
-                $_POST['quotals_message_' . $sLang] = fixCKeditorText($_POST['quotals_message_' . $sLang]);
-
-                $oQuotaLanguageSettings = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLang));
-                $oQuotaLanguageSettings->quotals_name = Yii::app()->request->getPost('quota_name');
-                $oQuotaLanguageSettings->quotals_message = $_POST['quotals_message_' . $sLang];
-                $oQuotaLanguageSettings->quotals_url = $_POST['quotals_url_' . $sLang];
-                $oQuotaLanguageSettings->quotals_urldescrip = $_POST['quotals_urldescrip_' . $sLang];
-                $oQuotaLanguageSettings->save();
+                $aData['sShowError'] = $sError;
             }
-        } //End insert language based components
+            else
+                //All the required quota messages exist, now we can insert this info into the database
+            {
 
-        self::_redirectToIndex($iSurveyId);
+                foreach ($aLangs as $sLang) //Iterate through each language
+                {
+                    //Clean XSS - Automatically provided by CI
+                    $_POST['quotals_message_' . $sLang] = html_entity_decode($_POST['quotals_message_' . $sLang], ENT_QUOTES, "UTF-8");
+
+                    // Fix bug with FCKEditor saving strange BR types
+                    $_POST['quotals_message_' . $sLang] = fixCKeditorText($_POST['quotals_message_' . $sLang]);
+
+                    $oQuotaLanguageSettings = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLang));
+                    $oQuotaLanguageSettings->quotals_name = Yii::app()->request->getPost('quota_name');
+                    $oQuotaLanguageSettings->quotals_message = $_POST['quotals_message_' . $sLang];
+                    $oQuotaLanguageSettings->quotals_url = $_POST['quotals_url_' . $sLang];
+                    $oQuotaLanguageSettings->quotals_urldescrip = $_POST['quotals_urldescrip_' . $sLang];
+                    $oQuotaLanguageSettings->save();
+                }
+            } //End insert language based components
+
+            self::_redirectToIndex($iSurveyId);
+        }
+
     }
 
     function insertquotaanswer($iSurveyId)
@@ -413,8 +413,8 @@ class quotas extends Survey_Common_Action
         $aViewUrls = array();
         $quotaId = Yii::app()->request->getQuery('quota_id');
 
-        $aQuotaInfo = Quota::model()->findByPk($quotaId);
-        $aData['quotainfo'] = $aQuotaInfo;
+        $oQuota = Quota::model()->findByPk($quotaId);
+        $aData['oQuota'] = $oQuota;
 
         $first=true;
         foreach ($aLangs as $sLanguage)
@@ -425,7 +425,7 @@ class quotas extends Survey_Common_Action
                 $aTabTitles[$sLanguage].= ' (' . gT("Base language") . ')';
                 $first = false;
             }
-            $aData['langquotainfo'] = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => $quotaId, 'quotals_language' => $sLanguage));
+            $aData['oQuotaLanguageSetting'] = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => $quotaId, 'quotals_language' => $sLanguage));
             $aData['lang'] = $sLanguage;
             $aTabContents[$sLanguage] = $this->getController()->renderPartial('/admin/quotas/editquotalang_view', $aData, true);
         }
