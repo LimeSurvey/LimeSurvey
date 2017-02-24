@@ -696,6 +696,7 @@ class SurveyRuntimeHelper {
             'notanswered'            => $this->notanswered            ,
             'invalidSQList'          => $this->invalidSQList          ,
             'filenotvalidated'       => $this->filenotvalidated       ,
+            'completed'              => $this->completed              ,
             'content'                => $this->content                ,
             'blocks'                 => $this->blocks                 ,
             'notvalidated'           => $this->notvalidated           ,
@@ -1268,6 +1269,7 @@ class SurveyRuntimeHelper {
                     $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . gT("Clear Responses") . "</a><br /><br />\n";
                 }
 
+                $this->completed = $completed;
 
             }else{
 
@@ -1313,7 +1315,10 @@ class SurveyRuntimeHelper {
                 if ($thissurvey['publicstatistics'] == 'Y'){
                     $thissurvey['aCompleted']['aPublicStatistics']['show']  = true;
                     $thissurvey['aCompleted']['aPublicStatistics']['sUrl']  = Yii::app()->getController()->createUrl("/statistics_user/action/",array('surveyid'=>$surveyid,'language'=>App()->getLanguage()));
+
                 }
+
+                $this->completed = $completed;
 
                 //*****************************************
 
@@ -1413,6 +1418,7 @@ class SurveyRuntimeHelper {
         $this->notanswered            = isset( $notanswered            )?$notanswered            :null ;
         $this->invalidSQList          = isset( $invalidSQList          )?$invalidSQList          :null ;
         $this->filenotvalidated       = isset( $filenotvalidated       )?$filenotvalidated       :null ;
+        $this->completed              = isset( $completed              )?$completed              :null ;
         $this->content                = isset( $content                )?$content                :null ;
         $this->blocks                 = isset( $blocks                 )?$blocks                 :null ;
         $this->notvalidated           = isset( $notvalidated           )?$notvalidated           :null;
