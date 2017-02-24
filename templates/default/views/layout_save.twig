@@ -89,7 +89,9 @@
 
                                         <!-- Saved name  -->
                                         <label class='control-label col-sm-3 save-survey-label' for='savename'>
-                                            {{ "Saved name:" | t }}
+                                            {{ "Name:" | t }}
+                                            <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
+                                            <span class="sr-only text-danger asterisk">{{ "Mandatory" | t }}<span>
                                         </label>
                                         <div class='col-sm-7 save-survey-input input-cell'>
 
@@ -108,12 +110,15 @@
                                                     (htmlOptions)
                                             )  }}
                                         </div>
+
                                     </div>
 
                                     <!-- Password -->
                                     <div class='form-group save-survey-row save-survey-password'>
                                         <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass'>
                                             {{ "Password:" | t }}
+                                            <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
+                                            <span class="sr-only text-danger asterisk">{{ "Mandatory" | t }}<span>
                                         </label>
 
                                         <div class='col-sm-7 save-survey-input input-cell'>
@@ -138,6 +143,8 @@
                                     <div class='form-group save-survey-row save-survey-password'>
                                         <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass2'>
                                             {{ "Repeat password:" | t }}
+                                            <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
+                                            <span class="sr-only text-danger asterisk">{{ "Mandatory" | t }}<span>
                                         </label>
 
                                         <div class='col-sm-7 save-survey-input input-cell'>
