@@ -112,7 +112,6 @@ class SurveyRuntimeHelper {
         $sLangCode        = $this->sLangCode       = App()->language;
         $show_empty_group = $this->show_empty_group;
 
-
         $this->setJavascriptVar();
         $this->setArgs();
 
@@ -121,10 +120,12 @@ class SurveyRuntimeHelper {
         // language changer
         $thissurvey['alanguageChanger']['show']  = false;
         $alanguageChangerDatas                   = getLanguageChangerDatas($sLangCode);
+
         if ($alanguageChangerDatas){
             $thissurvey['alanguageChanger']['show']  = true;
             $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
         }
+
         $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $this->thissurvey = $thissurvey;
 
@@ -1287,7 +1288,8 @@ class SurveyRuntimeHelper {
                     $thissurvey['aAssessments']['show'] = true;
 
                     // TODO : TWIG
-                    $assessments = $this->assessments = doAssessment($surveyid);
+                    //$assessments = $this->assessments = doAssessment($surveyid);
+                    $aAssessmentsDatas = $this->assessments = doAssessment($surveyid, true);
                     if ($assessments){
                         $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                     }
