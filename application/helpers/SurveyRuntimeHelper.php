@@ -125,6 +125,7 @@ class SurveyRuntimeHelper {
             $thissurvey['alanguageChanger']['show']  = true;
             $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
         }
+        $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $this->thissurvey = $thissurvey;
 
         ///////////////////////////////////////////////////////////
@@ -368,7 +369,6 @@ class SurveyRuntimeHelper {
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
 
         $thissurvey['upload_file']      = (isset($upload_file) && $upload_file)?true:false;
-        $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $hiddenfieldnames               = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
 
 
@@ -1318,7 +1318,7 @@ class SurveyRuntimeHelper {
 
                 }
 
-                $this->completed = $completed;
+                $this->completed = true;
 
                 //*****************************************
 

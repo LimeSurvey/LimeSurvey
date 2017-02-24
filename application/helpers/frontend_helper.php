@@ -1479,7 +1479,9 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
             $aForm['bCaptchaEnabled'] = $aEnterTokenData['bCaptchaEnabled'];
 
             // Rendering user_forms_layout.twig
-            $thissurvey["aForm"]      = $aForm;
+            $thissurvey["aForm"]            = $aForm;
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
+
             $redata  = compact(array_keys(get_defined_vars()));
             echo templatereplace(file_get_contents($sTemplateViewPath."user_forms_layout.twig"), array(), $redata);
 
