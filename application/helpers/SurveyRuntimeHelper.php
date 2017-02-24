@@ -1327,7 +1327,7 @@ class SurveyRuntimeHelper {
 
             }
 
-            $redata['completed'] = $completed;
+            $redata['completed'] = $this->completed;
 
             // @todo Remove direct session access.
             $event = new PluginEvent('afterSurveyComplete');
