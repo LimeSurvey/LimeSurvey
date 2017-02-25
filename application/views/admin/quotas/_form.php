@@ -96,16 +96,11 @@
                 'form'=>$form,
                 'oQuota'=>$oQuota,
                 'oQuotaLanguageSetting' =>$oQuota->getLanguagesetting($language),
+                'language' =>$language,
             ),true)
         );
     }?>
 </div>
-
-
 <input type="submit" name="submit" class="hidden" />
-<input type="hidden" name="sid" value="<?php echo $oSurvey->primaryKey;?>" />
-<input type="hidden" name="action" value="quotas" />
-<input type="hidden" name="subaction" value="modifyquota" />
-<input type="hidden" name="quota_id" value="<?php echo $oQuota['id'];?>" />
 
 <?php $this->endWidget(); ?>

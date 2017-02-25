@@ -418,7 +418,16 @@ class quotas extends Survey_Common_Action
         if(isset($_POST['Quota'])) {
             $oQuota->attributes = $_POST['Quota'];
             if($oQuota->save()){
-                self::_redirectToIndex($iSurveyId);
+                foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes){
+                    $oQuotaLanguageSetting = $oQuota->getLanguagesetting($language);
+                    $oQuotaLanguageSetting->attributes = $settingAttributes;
+                    if(!$oQuotaLanguageSetting->save()){
+                        $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
+                    }
+                }
+                if(!$oQuota->getErrors()){
+                    self::_redirectToIndex($iSurveyId);
+                }
             }
         }
 
