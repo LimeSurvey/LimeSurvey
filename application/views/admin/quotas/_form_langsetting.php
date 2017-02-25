@@ -9,6 +9,7 @@
 
 <?php echo $form->hiddenField($oQuotaLanguageSetting,'['.$language.']quotals_name'); ?>
 
+<!-- Quota message -->
 <div class="form-group">
     <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_message',array('class'=>'control-label col-sm-3')); ?>
     <div class='col-sm-9'>
@@ -17,6 +18,7 @@
     </div>
 </div>
 
+<!-- URL -->
 <div class="form-group">
     <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_url',array('class'=>'control-label col-sm-3')); ?>
     <div class='col-sm-9'>
@@ -25,6 +27,7 @@
     </div>
 </div>
 
+<!-- URL Description -->
 <div class="form-group">
     <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_urldescrip',array('class'=>'control-label col-sm-3')); ?>
     <div class='col-sm-9'>

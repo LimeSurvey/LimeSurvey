@@ -90,6 +90,16 @@ class QuotaLanguageSetting extends LSActiveRecord
         );
     }
 
+    public function attributeLabels()
+    {
+        return array(
+            'quotals_message'=> gT("Quota message:"),
+            'quotals_url'=> gT("URL:"),
+            'quotals_urldescrip'=> gT("URL Description:"),
+        );
+    }
+
+
 	function insertRecords($data)
     {
         $settings = new self;
@@ -98,4 +108,3 @@ class QuotaLanguageSetting extends LSActiveRecord
 		return $settings->save();
     }
 }
-?>
