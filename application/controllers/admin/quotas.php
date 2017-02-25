@@ -505,7 +505,12 @@ class quotas extends Survey_Common_Action
         // create QuotaLanguageSettings
         foreach ($oSurvey->getAllLanguages() as $language){
             $oQuotaLanguageSetting = new QuotaLanguageSetting();
+            $oQuotaLanguageSetting->quotals_name = $oQuota->name;
             $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
+            $siteLanguage =Yii::app()->language;
+            Yii::app()->language = $language;
+            $oQuotaLanguageSetting->quotals_message = gT("Sorry your responses have exceeded a quota on this survey.");
+            Yii::app()->language = $siteLanguage;
             $aData['aQuotaLanguageSettings'][$language] = $oQuotaLanguageSetting;
         }
 
