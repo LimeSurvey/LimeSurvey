@@ -7,13 +7,7 @@
 
 <?php echo $form->errorSummary($oQuotaLanguageSetting); ?>
 
-<div class="form-group">
-    <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_name',array('class'=>'control-label col-sm-3')); ?>
-    <div class='col-sm-9'>
-        <?php echo $form->textField($oQuotaLanguageSetting,'['.$language.']quotals_name',array('class'=>'form-control')); ?>
-        <?php echo $form->error($oQuotaLanguageSetting,'['.$language.']quotals_name'); ?>
-    </div>
-</div>
+<?php echo $form->hiddenField($oQuotaLanguageSetting,'['.$language.']quotals_name'); ?>
 
 <div class="form-group">
     <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_message',array('class'=>'control-label col-sm-3')); ?>

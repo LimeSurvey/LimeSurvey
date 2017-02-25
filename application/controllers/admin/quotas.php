@@ -408,7 +408,6 @@ class quotas extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
-        $aLangs = $aData['aLangs'];
         $aViewUrls = array();
         $quotaId = Yii::app()->request->getQuery('quota_id');
 
@@ -421,6 +420,12 @@ class quotas extends Survey_Common_Action
                 foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes){
                     $oQuotaLanguageSetting = $oQuota->getLanguagesetting($language);
                     $oQuotaLanguageSetting->attributes = $settingAttributes;
+
+                    //Clean XSS - Automatically provided by CI
+                    $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
+                    // Fix bug with FCKEditor saving strange BR types
+                    $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
+
                     if(!$oQuotaLanguageSetting->save()){
                         $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
                     }
