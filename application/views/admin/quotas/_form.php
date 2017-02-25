@@ -7,7 +7,6 @@
 ?>
 <?php $form = $this->beginWidget('CActiveForm', array(
     'id'=>'editquota',
-    //'action'=>array("admin/quotas/sa/modifyquota/surveyid/{$oSurvey->primaryKey}"),
     'enableClientValidation'=>true,
     'clientOptions'=>array(
         'validateOnSubmit'=>true,
