@@ -1,7 +1,7 @@
 <?php
 /* @var $this AdminController */
 /* @var Quota $oQuota */
-
+/* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
@@ -13,6 +13,7 @@
             <?php $this->renderPartial('/admin/quotas/_form',
                 array(
                     'oQuota'=>$oQuota,
+                    'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
                 ))?>
         </div>
     </div>

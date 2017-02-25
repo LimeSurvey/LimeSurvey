@@ -4,6 +4,7 @@
 /* @var Quota $oQuota */
 /* @var CActiveForm $form */
 /* @var array $aTabContents*/
+/* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 ?>
 <?php $form = $this->beginWidget('CActiveForm', array(
     'id'=>'editquota',
@@ -94,7 +95,7 @@
             array(
                 'form'=>$form,
                 'oQuota'=>$oQuota,
-                'oQuotaLanguageSetting' =>$oQuota->getLanguagesetting($language),
+                'oQuotaLanguageSetting' =>$aQuotaLanguageSettings[$language],
                 'language' =>$language,
             ),true)
         );
