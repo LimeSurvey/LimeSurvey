@@ -478,6 +478,8 @@ class quotas extends Survey_Common_Action
         $aData['baselang'] = $aData['sBaseLang'];
 
         $aData['sidemenu']['state'] = false;
+
+        /** @var Survey $oSurvey */
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
@@ -492,7 +494,13 @@ class quotas extends Survey_Common_Action
 
         $aData['oQuota'] = $oQuota;
         $aData['oSurvey'] = $oSurvey;
+        // create QuotaLanguageSettings
+        foreach ($oSurvey->getAllLanguages() as $language){
+            $oQuotaLanguageSetting = new QuotaLanguageSetting();
+            $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
+            $oQuota->languagesettings[] = $oQuotaLanguageSetting;
 
+        }
 
         $this->_renderWrappedTemplate('quotas', 'newquota_view', $aData);
     }
