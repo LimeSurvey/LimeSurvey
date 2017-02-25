@@ -22,9 +22,10 @@
  * @property string $name
  * @property integer $qlimit
  * @property integer $active
+ * @property integer $action
  * @property integer $autoload_url
  *
- * @property QuotaLanguageSetting[] $languagesettings
+ * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
  * @property QuotaLanguageSetting $mainLanguagesetting
  * @property Survey $survey
  */
@@ -79,7 +80,6 @@ class Quota extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id'),
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
         );
     }
@@ -99,6 +99,7 @@ class Quota extends LSActiveRecord
             array('autoload_url', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
+
     public function attributeLabels()
     {
         return array(
@@ -146,7 +147,27 @@ class Quota extends LSActiveRecord
      * @return QuotaLanguageSetting
      */
     public function getMainLanguagesetting(){
-        // FIXME this should come from survey->baselanguage
-        return $this->languagesettings[0];
+        foreach ($this->languagesettings as $lang=>$languagesetting){
+            if($lang == $this->survey->language){
+                return $languagesetting;
+            }
+        }
+    }
+
+    /**
+     * use separate method instead of relations() to index the settings by language code
+     * @return QuotaLanguageSetting[]
+     */
+    public function getLanguagesettings(){
+        /** @var QuotaLanguageSetting[] $settings */
+        $settings = QuotaLanguageSetting::model()
+            ->findAllByAttributes(array('quotals_quota_id' => $this->primaryKey));
+        $out = array();
+        if(!empty($settings)){
+            foreach ($settings as $setting){
+                $out[$setting->quotals_language] = $setting;
+            }
+        }
+        return $out;
     }
 }

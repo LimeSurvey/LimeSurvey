@@ -437,6 +437,7 @@ class quotas extends Survey_Common_Action
             $aData['lang'] = $sLanguage;
             $aTabContents[$sLanguage] = $this->getController()->renderPartial('/admin/quotas/editquotalang_view', $aData, true);
         }
+
         $aData['aTabTitles']=$aTabTitles;
         $aData['aTabContents']=$aTabContents;
 
@@ -532,10 +533,21 @@ class quotas extends Survey_Common_Action
         $aData['baselang'] = $aData['sBaseLang'];
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
+
+        $oQuota = new Quota();
+        $oQuota->sid = $oSurvey->primaryKey;
+        $oQuota->active = 1;
+        $oQuota->autoload_url = 1;
+        $oQuota->action = 1;
+
+        $aData['oQuota'] = $oQuota;
+        $aData['oSurvey'] = $oSurvey;
+
 
         $this->_renderWrappedTemplate('quotas', 'newquota_view', $aData);
     }
