@@ -424,23 +424,6 @@ class quotas extends Survey_Common_Action
 
         $aData['oQuota'] = $oQuota;
 
-        $first=true;
-        foreach ($aLangs as $sLanguage)
-        {
-            $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
-            if ($first)
-            {
-                $aTabTitles[$sLanguage].= ' (' . gT("Base language") . ')';
-                $first = false;
-            }
-            $aData['oQuotaLanguageSetting'] = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => $quotaId, 'quotals_language' => $sLanguage));
-            $aData['lang'] = $sLanguage;
-            $aTabContents[$sLanguage] = $this->getController()->renderPartial('/admin/quotas/editquotalang_view', $aData, true);
-        }
-
-        $aData['aTabTitles']=$aTabTitles;
-        $aData['aTabContents']=$aTabContents;
-
         $aViewUrls[] = 'editquota_view';
 
         $aData['sidemenu']['state'] = false;
@@ -451,8 +434,6 @@ class quotas extends Survey_Common_Action
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
 
-        $aData['langs'] = $aData['aLangs'];
-        $aData['baselang'] = $aData['sBaseLang'];
 
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }

@@ -156,19 +156,15 @@ class Quota extends LSActiveRecord
     }
 
     /**
-     * use separate method instead of relations() to index the settings by language code
-     * @return QuotaLanguageSetting[]
+     * @return QuotaLanguageSetting
      */
-    public function getLanguagesettings(){
-        /** @var QuotaLanguageSetting[] $settings */
-        $settings = QuotaLanguageSetting::model()
-            ->findAllByAttributes(array('quotals_quota_id' => $this->primaryKey));
-        $out = array();
-        if(!empty($settings)){
-            foreach ($settings as $setting){
-                $out[$setting->quotals_language] = $setting;
-            }
-        }
-        return $out;
+    public function getLanguagesetting($language){
+        /** @var QuotaLanguageSetting $setting */
+        $setting = QuotaLanguageSetting::model()
+            ->findByAttributes(array(
+                'quotals_quota_id' => $this->primaryKey,
+                'quotals_language' => $language,
+            ));
+        return $setting;
     }
 }

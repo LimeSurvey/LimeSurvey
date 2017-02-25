@@ -1,6 +1,4 @@
 <?php
-/* @var Survey $oSurvey */
-/* @var string $lang */
 /* @var Quota $oQuota */
 /* @var QuotaLanguageSetting $oQuotaLanguageSetting */
 /* @var CActiveForm $form */
