@@ -81,6 +81,7 @@ class Quota extends LSActiveRecord
         $alias = $this->getTableAlias();
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
+            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id'),
         );
     }
 
