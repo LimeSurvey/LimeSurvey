@@ -91,6 +91,7 @@ class Quota extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('name,qlimit,action','required'),
             array('name','LSYii_Validators'),// Maybe more restrictive
             array('qlimit', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'allowEmpty'=>true),
             array('action', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'2', 'allowEmpty'=>true), // Default is null ?

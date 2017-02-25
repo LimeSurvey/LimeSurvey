@@ -303,7 +303,6 @@ class quotas extends Survey_Common_Action
             $oQuota->save();
             $aLangs = $oQuota->survey->getAllLanguages();
 
-
             //Iterate through each language posted, and make sure there is a quota message for it
             $sError = '';
             foreach ($aLangs as $sLang)
@@ -413,7 +412,16 @@ class quotas extends Survey_Common_Action
         $aViewUrls = array();
         $quotaId = Yii::app()->request->getQuery('quota_id');
 
+        /* @var Quota $oQuota */
         $oQuota = Quota::model()->findByPk($quotaId);
+
+        if(isset($_POST['Quota'])) {
+            $oQuota->attributes = $_POST['Quota'];
+            if($oQuota->save()){
+                self::_redirectToIndex($iSurveyId);
+            }
+        }
+
         $aData['oQuota'] = $oQuota;
 
         $first=true;

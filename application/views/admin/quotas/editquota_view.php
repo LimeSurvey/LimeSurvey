@@ -15,10 +15,12 @@
 
             <?php $form = $this->beginWidget('CActiveForm', array(
                 'id'=>'editquota',
-                'action'=>array("admin/quotas/sa/modifyquota/surveyid/{$oSurvey->primaryKey}"),
-                'enableAjaxValidation'=>true,
+                //'action'=>array("admin/quotas/sa/modifyquota/surveyid/{$oSurvey->primaryKey}"),
                 'enableClientValidation'=>true,
-                'focus'=>array($oQuota,'firstName'),
+                'clientOptions'=>array(
+                    'validateOnSubmit'=>true,
+                    'afterValidate'=>'js:yiiFix.ajaxSubmit.afterValidate'
+                ),
             )); ?>
             <?php echo $form->errorSummary($oQuota); ?>
 
