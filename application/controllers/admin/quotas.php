@@ -331,7 +331,7 @@ class quotas extends Survey_Common_Action
             $oQuota->attributes = $_POST['Quota'];
             if($oQuota->save()){
                 foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes){
-                    $oQuotaLanguageSetting = $oQuota->getLanguagesetting($language);
+                    $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
                     $oQuotaLanguageSetting->attributes = $settingAttributes;
 
                     //Clean XSS - Automatically provided by CI
