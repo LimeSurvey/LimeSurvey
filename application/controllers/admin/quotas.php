@@ -441,6 +441,7 @@ class quotas extends Survey_Common_Action
                     $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
                     $oQuotaLanguageSetting->quotals_language = $language;
 
+
                     //Clean XSS - Automatically provided by CI
                     $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
                     // Fix bug with FCKEditor saving strange BR types
@@ -468,6 +469,8 @@ class quotas extends Survey_Common_Action
             $oQuotaLanguageSetting = new QuotaLanguageSetting();
             $oQuotaLanguageSetting->quotals_name = $oQuota->name;
             $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
+            $oQuotaLanguageSetting->quotals_language = $language;
+            $oQuotaLanguageSetting->quotals_url = $oSurvey->languagesettings[$language]->surveyls_url;
             $siteLanguage =Yii::app()->language;
             // Switch language temporarily to get the default text in right language
             Yii::app()->language = $language;

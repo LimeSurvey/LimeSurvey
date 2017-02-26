@@ -82,7 +82,7 @@ class Quota extends LSActiveRecord
         $alias = $this->getTableAlias();
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id'),
+            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id','index' => 'quotals_language',),
             'quotaMembers' => array(self::HAS_MANY, 'QuotaMember', 'quota_id'),
         );
     }
@@ -157,16 +157,4 @@ class Quota extends LSActiveRecord
         }
     }
 
-    /**
-     * @return QuotaLanguageSetting
-     */
-    public function getLanguagesetting($language){
-        /** @var QuotaLanguageSetting $setting */
-        $setting = QuotaLanguageSetting::model()
-            ->findByAttributes(array(
-                'quotals_quota_id' => $this->primaryKey,
-                'quotals_language' => $language,
-            ));
-        return $setting;
-    }
 }
