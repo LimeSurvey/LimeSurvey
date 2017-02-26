@@ -58,11 +58,8 @@ class QuestionAttribute extends LSActiveRecord
     */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
-        'qid' => array(self::HAS_ONE, 'Questions', '',
-            'on' => "$alias.qid = questions.qid",
-            ),
+            'qid' => array(self::BELONGS_TO, 'Question', 'qid', 'together' => true),
         );
     }
 
