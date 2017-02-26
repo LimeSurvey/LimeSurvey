@@ -79,6 +79,7 @@ if (!defined('BASEPATH'))
  * @property SurveyLanguageSetting[] $languagesettings
  * @property User $owner
  * @property QuestionGroup[] $groups
+ * @property Quota[] $quotas
  */
 class Survey extends LSActiveRecord
 {
@@ -137,9 +138,11 @@ class Survey extends LSActiveRecord
             return $this->languagesettings[$this->language]->surveyls_title;
         }
     }
+
     /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
      * @param int $surveyId
+     * @return bool
      */
     public function expire($surveyId = null)
     {
@@ -213,6 +216,7 @@ class Survey extends LSActiveRecord
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
+            'quotas' => array(self::HAS_MANY, 'Quota', 'sid'),
         );
     }
 

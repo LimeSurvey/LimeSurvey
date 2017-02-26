@@ -118,6 +118,8 @@ class quotas extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = $surveyid =  sanitize_int($iSurveyId);
 
         $aData['sidemenu']['state'] = false;
+
+        /** @var Survey $oSurvey */
         $oSurvey =Survey::model()->findByPk($iSurveyID);
         $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
@@ -133,32 +135,22 @@ class quotas extends Survey_Common_Action
         $totalcompleted = 0;
         $csvoutput = array();
 
-        $criteria = new CDbCriteria;
-        $criteria->select = '*';
-        $criteria->join = 'LEFT JOIN {{quota_languagesettings}} as qls ON (t.id = qls.quotals_quota_id)';
-        $criteria->condition = 'sid=:survey AND quotals_language=:lang';
-        $criteria->params = array(':survey' => $iSurveyId, ':lang' => $aData['sBaseLang']);
-        $criteria->order = 'name';
-        $aResult = Quota::model()->findAll($criteria);
-
-        $aData['oDataProvider'] = new CActiveDataProvider(Quota::class, array(
-            'criteria' => $criteria,
-        ));
+        $aData['oDataProvider'] = new CArrayDataProvider($oSurvey->quotas);
 
         //if there are quotas let's proceed
         $aViewUrls['output'] = '';
-        if (count($aResult) > 0)
+        if (!empty($oSurvey->quotas))
         {
             $aData['output'] = '';
             $aQuotaItems = array();
 
             //loop through all quotas
-            foreach ($aResult as $aQuotaListing)
+            foreach ($oSurvey->quotas as $oQuota)
             {
-                $totalquotas += $aQuotaListing['qlimit'];
-                $completed = getQuotaCompletedCount($iSurveyId, $aQuotaListing['id']);
+                $totalquotas += $oQuota->qlimit;
+                $completed = getQuotaCompletedCount($iSurveyId, $oQuota->primaryKey);
                 $totalcompleted = $totalcompleted + $completed;
-                $csvoutput[] = $aQuotaListing['name'] . "," . $aQuotaListing['qlimit'] . "," . $completed . "," . ($aQuotaListing['qlimit'] - $completed) . "\r\n";
+                $csvoutput[] = $oQuota->name . "," . $oQuota->qlimit . "," . $completed . "," . ($oQuota->qlimit - $completed) . "\r\n";
 
                 if ($quickreport != false)
                 {
@@ -167,35 +159,31 @@ class quotas extends Survey_Common_Action
 
 
                 // Edit URL
-                $aData['aEditUrls'][$aQuotaListing['id']] = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $iSurveyId, array(
+                $aData['aEditUrls'][$oQuota->primaryKey] = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $iSurveyId, array(
                     'sid' => $iSurveyId,
                     'action' => 'quotas',
-                    'quota_id' => $aQuotaListing['id'],
+                    'quota_id' => $oQuota->primaryKey,
                     'subaction' => 'quota_editquota'
 
                 ));
 
                 // Delete URL
-                $aData['aDeleteUrls'][$aQuotaListing['id']] = App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $iSurveyId, array(
+                $aData['aDeleteUrls'][$oQuota->primaryKey] = App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $iSurveyId, array(
                     'sid' => $iSurveyId,
                     'action' => 'quotas',
-                    'quota_id' => $aQuotaListing['id'],
+                    'quota_id' => $oQuota->primaryKey,
                     'subaction' => 'quota_delquota'
                 ));
 
-
-                //check how many sub-elements exist for a certain quota
-                $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
                 //loop through all sub-parts
-                foreach ($aResults2 as $oQuotaMember)
+                foreach ($oQuota->quotaMembers as $oQuotaMember)
                 {
-                    $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $aQuotaListing['id']);
-                    $aQuotaItems[$aQuotaListing['id']][] = array(
+                    $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $oQuota['id']);
+                    $aQuotaItems[$oQuota['id']][] = array(
                         'oQuestion' => Question::model()->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
                         'answer_title' => flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']),
                         'oQuotaMember'=>$oQuotaMember,
                     );
-
                 }
 
             }

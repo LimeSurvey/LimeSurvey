@@ -28,6 +28,7 @@
  * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
  * @property QuotaLanguageSetting $mainLanguagesetting
  * @property Survey $survey
+ * @property QuotaMember[] $quotaMembers
  */
 class Quota extends LSActiveRecord
 {
@@ -82,6 +83,7 @@ class Quota extends LSActiveRecord
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
             'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id'),
+            'quotaMembers' => array(self::HAS_MANY, 'QuotaMember', 'quota_id'),
         );
     }
 

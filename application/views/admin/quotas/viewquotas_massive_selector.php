@@ -56,7 +56,7 @@
             'modalType'   => 'yes-no',
             'keepopen'    => 'no',
             'sModalTitle'   => gT('Change settings'),
-            'htmlModalBody' => $this->renderPartial('/admin/quotas/viewquotas_quota_langsettings_form',
+            'htmlModalBody' => $this->renderPartial('/admin/quotas/viewquotas_massive_langsettings_form',
                 array('oSurvey'=>$oSurvey),true),
         ),
 
