@@ -216,7 +216,7 @@ class Survey extends LSActiveRecord
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
-            'quotas' => array(self::HAS_MANY, 'Quota', 'sid'),
+            'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
         );
     }
 

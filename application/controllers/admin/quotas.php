@@ -157,7 +157,6 @@ class quotas extends Survey_Common_Action
                     continue;
                 }
 
-
                 // Edit URL
                 $aData['aEditUrls'][$oQuota->primaryKey] = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $iSurveyId, array(
                     'sid' => $iSurveyId,
@@ -446,14 +445,18 @@ class quotas extends Survey_Common_Action
                     $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
                     // Fix bug with FCKEditor saving strange BR types
                     $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
+                    $oQuotaLanguageSetting->save(false);
 
-                    if(!$oQuotaLanguageSetting->save()){
+                    if(!$oQuotaLanguageSetting->validate()){
                         $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
                     }
                 }
                 if(!$oQuota->getErrors()){
                     Yii::app()->user->setFlash('success', gT("New quota saved"));
                     self::_redirectToIndex($iSurveyId);
+                }else{
+                    // if any of the parts fail to save we delete the quota and and try again
+                    $oQuota->delete();
                 }
             }
         }
