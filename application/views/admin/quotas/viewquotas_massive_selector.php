@@ -56,11 +56,10 @@
             // modal
             'actionType'  => 'modal',
             'modalType'   => 'yes-no',
-            'keepopen'    => 'no',
+            'keepopen'    => 'yes',
             'sModalTitle'   => gT('Change settings'),
             'htmlModalBody' => $this->renderPartial('/admin/quotas/viewquotas_massive_langsettings_form',
                 array(
-                    'oSurvey'=>$oSurvey,
                     'oQuota'=>$oQuota,
                     'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
                     ),true),

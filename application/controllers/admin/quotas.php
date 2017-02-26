@@ -89,6 +89,7 @@ class quotas extends Survey_Common_Action
         if (isset($_POST) && in_array($action,$allowedActions)) {
             $sItems = Yii::app()->request->getPost('sItems');
             $aQuotaIds = json_decode($sItems);
+            $errors = array();
             foreach ($aQuotaIds as $iQuotaId){
                 /** @var Quota $oQuota */
                 $oQuota = Quota::model()->findByPk($iQuotaId);
@@ -99,13 +100,30 @@ class quotas extends Survey_Common_Action
                 elseif($action == 'delete'){
                     $oQuota->delete();
                 }
-                elseif ($action == 'changeLanguageSettings'){
+                elseif ($action == 'changeLanguageSettings' && !empty($_POST['QuotaLanguageSetting'])){
+                    $oQuotaLanguageSettings = $oQuota->languagesettings;
                     foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes){
                         $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
                         $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
-                        $oQuotaLanguageSetting->save();
+                        if(!$oQuotaLanguageSetting->save()){
+                            // save errors
+                            $oQuotaLanguageSettings[$language] = $oQuotaLanguageSetting;
+                            $errors[] = $oQuotaLanguageSetting->errors;
+                        }
+                    }
+                    // render form again to display errorSummary
+                    if(!empty($errors)){
+                        $this->getController()->renderPartial('/admin/quotas/viewquotas_massive_langsettings_form',
+                            array(
+                                'oQuota'=>$oQuota,
+                                'aQuotaLanguageSettings'=>$oQuotaLanguageSettings,
+                            ));
+                        return;
                     }
                 }
+            }
+            if(empty($errors)){
+                eT("OK!");
             }
         }
     }
