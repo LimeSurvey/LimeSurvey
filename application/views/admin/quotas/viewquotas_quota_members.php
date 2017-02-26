@@ -14,6 +14,8 @@ if ($oQuota->action == 1){
     $tooltip = gT("Terminate survey with warning");
     $icon = 'fa-exclamation-triangle';
 }
+
+
 ?>
 <?php if (!empty($aQuotaItems) ):?>
 

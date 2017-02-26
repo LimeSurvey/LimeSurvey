@@ -11,6 +11,40 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
+/**
+ * Class SurveyLanguageSetting
+ *
+ * @property integer $surveyls_survey_id
+ * @property string $surveyls_language
+ * @property string $surveyls_title
+ * @property string $surveyls_description
+ * @property string $surveyls_welcometext
+ * @property string $surveyls_endtext
+ * @property string $surveyls_url
+ * @property string $surveyls_urldescription
+ *
+ * @property string $surveyls_email_invite_subj
+ * @property string $surveyls_email_invite
+ * @property string $surveyls_email_remind_subj
+ * @property string $surveyls_email_remind
+ * @property string $surveyls_email_register
+ * @property string $surveyls_email_register_subj
+ * @property string $surveyls_email_confirm_subj
+ * @property string $surveyls_email_confirm
+ *
+ * @property integer $surveyls_dateformat
+ * @property string $surveyls_attributecaptions
+ *
+ * @property string $email_admin_notification_subj
+ * @property string $email_admin_notification
+ * @property string $email_admin_responses_subj
+ * @property string $email_admin_responses
+ *
+ * @property integer $surveyls_numberformat
+ * @property string $attatchments
+ *
+ */
 class SurveyLanguageSetting extends LSActiveRecord
 {
     /**

@@ -1,6 +1,8 @@
 <?php
 /* @var $this AdminController */
 /* @var Survey $oSurvey */
+/* @var Quota $oQuota The last Quota as base for Massive edits */
+/* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
 ?>
 
 <?php $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
@@ -41,6 +43,33 @@
             'keepopen'    => 'no',
             'sModalTitle'   => gT('Deactivate quotas'),
             'htmlModalBody' => gT('Are you sure you want to deactivate all selected quotas?'),
+        ),
+        array(
+            // li element
+            'type'        => 'action',
+            'action'      => 'changeLanguageSettings',
+            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/changeLanguageSettings'),
+            'iconClasses' => 'fa fa-external-link text-success',
+            'text'        =>  gT("Change texts"),
+            'grid-reload' => 'yes',
+
+            // modal
+            'actionType'  => 'modal',
+            'modalType'   => 'yes-no',
+            'keepopen'    => 'yes',
+            'sModalTitle'   => gT('Change settings'),
+            'htmlModalBody' => $this->renderPartial('/admin/quotas/viewquotas_massive_langsettings_form',
+                array(
+                    'oQuota'=>$oQuota,
+                    'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
+                    ),true),
+        ),
+
+        // Separator
+        array(
+
+            // li element
+            'type'  => 'separator',
         ),
         array(
             // li element
