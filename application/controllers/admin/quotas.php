@@ -85,11 +85,12 @@ class quotas extends Survey_Common_Action
     function massiveAction(){
 
         $action = Yii::app()->request->getQuery('action');
-        $allowedActions = array('activate','deactivate','delete');
+        $allowedActions = array('activate','deactivate','delete','changeLanguageSettings');
         if (isset($_POST) && in_array($action,$allowedActions)) {
             $sItems = Yii::app()->request->getPost('sItems');
             $aQuotaIds = json_decode($sItems);
             foreach ($aQuotaIds as $iQuotaId){
+                /** @var Quota $oQuota */
                 $oQuota = Quota::model()->findByPk($iQuotaId);
                 if(in_array($action,array('activate','deactivate'))){
                     $oQuota->active = ($action == 'activate' ? 1 : 0);
@@ -97,6 +98,13 @@ class quotas extends Survey_Common_Action
                 }
                 elseif($action == 'delete'){
                     $oQuota->delete();
+                }
+                elseif ($action == 'changeLanguageSettings'){
+                    foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes){
+                        $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
+                        $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
+                        $oQuotaLanguageSetting->save();
+                    }
                 }
             }
         }

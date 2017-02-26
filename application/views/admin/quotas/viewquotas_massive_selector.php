@@ -47,10 +47,10 @@
         array(
             // li element
             'type'        => 'action',
-            'action'      => 'changeUrls',
-            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/changeUrls'),
+            'action'      => 'changeLanguageSettings',
+            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/changeLanguageSettings'),
             'iconClasses' => 'fa fa-external-link text-success',
-            'text'        =>  gT("Change URLs"),
+            'text'        =>  gT("Change texts"),
             'grid-reload' => 'yes',
 
             // modal

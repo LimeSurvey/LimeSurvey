@@ -7,14 +7,12 @@
 ?>
 
 <?php $form = $this->beginWidget('CActiveForm', array('id'=>'edit-quota-ls',)); ?>
-<?php echo $form->errorSummary($oQuota); ?>
-
+<?php echo $form->errorSummary($aQuotaLanguageSettings); ?>
 <?php $this->renderPartial('/admin/quotas/_form_langsettings',
     array(
         'form'=>$form,
         'oQuota'=>$oQuota,
         'aQuotaLanguageSettings' =>$aQuotaLanguageSettings,
     ));?>
-<input type="submit" name="submit" class="hidden" />
-
+&nbsp;
 <?php $this->endWidget(); ?>
