@@ -1,6 +1,8 @@
 <?php
 /* @var $this AdminController */
 /* @var Survey $oSurvey */
+/* @var Quota $oQuota The last Quota as base for Massive edits */
+/* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
 ?>
 
 <?php $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
@@ -57,7 +59,11 @@
             'keepopen'    => 'no',
             'sModalTitle'   => gT('Change settings'),
             'htmlModalBody' => $this->renderPartial('/admin/quotas/viewquotas_massive_langsettings_form',
-                array('oSurvey'=>$oSurvey),true),
+                array(
+                    'oSurvey'=>$oSurvey,
+                    'oQuota'=>$oQuota,
+                    'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
+                    ),true),
         ),
 
         // Separator

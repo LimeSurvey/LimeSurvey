@@ -189,6 +189,13 @@ class quotas extends Survey_Common_Action
             $aData['totalquotas'] = $totalquotas;
             $aData['totalcompleted'] = $totalcompleted;
             $aData['aQuotaItems'] = $aQuotaItems;
+
+            // take the last quota as base for bulk edits
+            $aData['oQuota'] = $oQuota;
+            $aData['aQuotaLanguageSettings'] = array();
+            foreach ($oQuota->languagesettings as $languagesetting){
+                $aData['aQuotaLanguageSettings'][$languagesetting->quotals_language] = $languagesetting;
+            }
         }
         else
         {

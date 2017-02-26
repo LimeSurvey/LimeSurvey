@@ -8,6 +8,8 @@
 /* @var array $aQuotaItems */
 /* @var integer $totalquotas */
 /* @var integer $totalcompleted */
+/* @var Quota $oQuota The last Quota as base for Massive edits */
+/* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
 
 
 
@@ -109,7 +111,12 @@
                 </div>
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','create')):?>
                     <div class="pull-left">
-                        <?php $this->renderPartial('/admin/quotas/viewquotas_massive_selector', array('oSurvey'=>$oSurvey));?>
+                        <?php $this->renderPartial('/admin/quotas/viewquotas_massive_selector',
+                            array(
+                                'oSurvey'=>$oSurvey,
+                                'oQuota'=>$oQuota,
+                                'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
+                            ));?>
                     </div>
                     <div class="pull-right">
                         <?php echo CHtml::beginForm(array("admin/quotas/sa/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
