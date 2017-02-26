@@ -21,7 +21,7 @@
     <?php echo $form->labelEx($oQuota,'qlimit',array('class'=>'control-label col-sm-3')); ?>
     <div class='col-sm-9'>
         <?php echo $form->textField($oQuota,'qlimit',array('class'=>'form-control')); ?>
-        <?php echo $form->error($oQuota,'qlmit'); ?>
+        <?php echo $form->error($oQuota,'qlimit'); ?>
     </div>
 </div>
 
