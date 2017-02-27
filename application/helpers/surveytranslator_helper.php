@@ -407,6 +407,13 @@
         $supportedLanguages['ky']['dateformat'] = 1;
         $supportedLanguages['ky']['radixpoint'] = 1;
 
+        // Luxembourgish 
+        $supportedLanguages['lb']['description'] = gT('Luxembourgish');
+        $supportedLanguages['lb']['nativedescription'] = 'L&#235;tzebuergesch';
+        $supportedLanguages['lb']['rtl'] = false;
+        $supportedLanguages['lb']['dateformat'] = 1;
+        $supportedLanguages['lb']['radixpoint'] = 1;
+
         // Lithuanian
         $supportedLanguages['lt']['description'] = gT('Lithuanian');
         $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';

@@ -480,7 +480,7 @@ class remotecontrol_handle
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
-        if (!hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
         $oSurvey=Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');
@@ -1296,6 +1296,7 @@ class remotecontrol_handle
 
                     libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
                     
+
                     try
                     {
                         $oQuestion->save();
@@ -2528,6 +2529,48 @@ class remotecontrol_handle
 
     }
 
+
+    /**
+    * RPC to obtain all uploaded files for a single response
+    *
+    * @access public
+    *
+    * @param string  $sSessionKey  Auth credentials
+    * @param int     $iSurveyID    ID of the Survey
+    * @param int     $sToken       Response token
+    *
+    * @return array On success: array containing all uploads of the specified response
+    *               On failure: array with error information
+    */
+    public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
+
+        if(!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
+
+        $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $sToken));
+
+        if (!($oResponse instanceof Response)) {
+            return array('status' => 'Could not find response for given token');
+        }
+
+        $uploaded_files = array();
+        foreach ($oResponse->getFiles() as $aFile)
+        {
+            $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
+            
+            if (!file_exists($sFileRealName)) return array('status' => 'Could not find uploaded files');
+
+            $uploaded_files[$aFile['filename']] = array(
+                'meta'    => $aFile,
+                'content' => base64_encode(file_get_contents($sFileRealName))
+            );
+        }
+
+        return $uploaded_files;
+    }
 
 
     /**
