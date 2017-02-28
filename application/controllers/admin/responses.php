@@ -270,7 +270,7 @@ class responses extends Survey_Common_Action
                                 $index = $fnames[$i]['index'];
                                 $metadata = $fnames[$i]['metadata'];
                                 $phparray = json_decode_ls($iIdrow[$fnames[$i][0]]);
-                                              
+
                                 if (isset($phparray[$index]))
                                 {
                                     switch ($metadata)
@@ -551,7 +551,7 @@ class responses extends Survey_Common_Action
         $iIndex=(int)$iIndex;
         $iResponseId=(int)$iResponseId;
         $iQID=(int)$iQID;
-        
+
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
             $oResponse = Response::model($iSurveyId)->findByPk($iResponseId);
@@ -562,9 +562,13 @@ class responses extends Survey_Common_Action
                 $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
                 if (file_exists($sFileRealName))
                 {
+                    $mimeType=CFileHelper::getMimeType($sFileRealName, null, false);
+                    if(is_null($mimeType)){
+                        $mimeType="application/octet-stream";
+                    }
                     @ob_clean();
                     header('Content-Description: File Transfer');
-                    header('Content-Type: application/octet-stream');// Find the real type ?
+                    header('Content-Type: '.$mimeType);
                     header('Content-Disposition: attachment; filename="' . rawurldecode($aFile['name']) . '"');
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');

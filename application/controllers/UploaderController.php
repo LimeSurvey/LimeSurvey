@@ -61,7 +61,11 @@ class UploaderController extends SurveyController {
             }
             if(is_file($sFileDir.$sFileGetContent))// Validate file before else 500 error by getMimeType
             {
-                header('Content-Type: '. CFileHelper::getMimeType($sFileDir.$sFileGetContent));
+                $mimeType=CFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
+                if(is_null($mimeType)){
+                    $mimeType="application/octet-stream"; // Can not really get content if not image
+                }
+                header('Content-Type: '. $mimeType);
                 readfile($sFileDir.$sFileGetContent);
                 Yii::app()->end();
             }
