@@ -58,7 +58,7 @@
                         <li role="presentation" <?php if ($lang==$baselang){echo 'class="active"';}?>>
                             <a data-toggle="tab" href="#edittxtele<?php echo $lang ?>">
                                 <?php echo getLanguageNameFromCode($lang,false); ?>
-                                <?php if ($lang==$baselang) {echo '('.gT("Base language").')';} ;?>
+                                <?php if ($lang==$baselang) {echo ' ('.gT("Base language").')';} ;?>
                             </a>
                         </li>
                     <?php endforeach?>
