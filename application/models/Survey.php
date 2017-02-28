@@ -1108,6 +1108,7 @@ class Survey extends LSActiveRecord
                     $criteria->compare("t.active",'Y');
                     $criteria->addCondition("t.startdate >'$sNow'");
                 }
+
                 if($this->active == "R")
                 {
                     $now = new CDbExpression("NOW()");
