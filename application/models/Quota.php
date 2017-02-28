@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,6 +14,22 @@
    *    Files Purpose: lots of common functions
 */
 
+/**
+ * Class Quota
+ *
+ * @property integer $id
+ * @property integer $sid
+ * @property string $name
+ * @property integer $qlimit
+ * @property integer $active
+ * @property integer $action
+ * @property integer $autoload_url
+ *
+ * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
+ * @property QuotaLanguageSetting $mainLanguagesetting
+ * @property Survey $survey
+ * @property QuotaMember[] $quotaMembers
+ */
 class Quota extends LSActiveRecord
 {
 
@@ -64,8 +81,9 @@ class Quota extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', '',
-                'on' => "$alias.id = languagesettings.quotals_quota_id"),
+            'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
+            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id','index' => 'quotals_language',),
+            'quotaMembers' => array(self::HAS_MANY, 'QuotaMember', 'quota_id'),
         );
     }
 
@@ -76,11 +94,23 @@ class Quota extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('name,qlimit,action','required'),
             array('name','LSYii_Validators'),// Maybe more restrictive
             array('qlimit', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'allowEmpty'=>true),
             array('action', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'2', 'allowEmpty'=>true), // Default is null ?
             array('active', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
             array('autoload_url', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
+        );
+    }
+
+    public function attributeLabels()
+    {
+        return array(
+            'name'=> gT("Quota name"),
+            'active'=> gT("Status"),
+            'qlimit'=> gT("Limit"),
+            'autoload_url'=> gT("Autoload URL"),
+            'action'=> gT("Quota action"),
         );
     }
 
@@ -115,5 +145,16 @@ class Quota extends LSActiveRecord
 
         Quota::model()->deleteAllByAttributes($condition);
     }
+
+    /**
+     * @return QuotaLanguageSetting
+     */
+    public function getMainLanguagesetting(){
+        foreach ($this->languagesettings as $lang=>$languagesetting){
+            if($lang == $this->survey->language){
+                return $languagesetting;
+            }
+        }
+    }
+
 }
-?>

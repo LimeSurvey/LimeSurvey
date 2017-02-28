@@ -1,3 +1,19 @@
+<?php
+
+/* @var $this AdminController */
+/* @var Survey $oSurvey */
+/* @var CActiveDataProvider $oDataProvider Containing Quota objects*/
+/* @var array $aEditUrls */
+/* @var array $aDeleteUrls */
+/* @var array $aQuotaItems */
+/* @var integer $totalquotas */
+/* @var integer $totalcompleted */
+/* @var Quota $oQuota The last Quota as base for Massive edits */
+/* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
+
+
+
+?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -8,31 +24,113 @@
 
             <?php if( isset($sShowError) ):?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <strong><?php eT("Quota could not be added!", 'js'); ?></strong><br/> <?php eT("It is missing a quota message for the following languages:", 'js'); ?><br/><?php echo $sShowError; ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong><?php eT("Quota could not be added!", 'js'); ?></strong><br/> <?php eT("It is missing a quota message for the following languages:", 'js'); ?><br/><?php echo $sShowError; ?>
                 </div>
             <?php endif; ?>
 
-            <table id="quotalist" class="quotalist table-striped">
-            <thead>
-                <tr>
-                    <th style="width:20%"><?php eT("Quota name");?></th>
-                    <th style="width:20%"><?php eT("Status");?></th>
-                    <th style="width:30%"><?php eT("Quota action");?></th>
-                    <th style="width:5%; padding-right: 1em;"><?php eT("Completed");?></th>
-                    <th style="width:5%"><?php eT("Limit");?></th>
-                    <th style="width:20%"><?php eT("Action");?></th>
-                </tr>
-            </thead>
 
-            <tfoot>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td style="padding: 3px;"><input type="button" class="btn btn-default" value="<?php eT("Quick CSV report");?>" onClick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_top')" /></td>
-                </tr>
-                </tfoot>
-                <tbody>
+            <!-- Grid -->
+            <div class="row">
+                <div class="col-sm-12 content-right">
+                    <?php $this->widget('bootstrap.widgets.TbGridView', array(
+                        'dataProvider' => $oDataProvider,
+                        'id' => 'quota-grid',
+                        'emptyText'=>gT('No quotas'),
+                        'enablePagination'=>false,
+                        'template' => '{items}',
+                        'columns' => array(
+
+                            array(
+                                'id'=>'id',
+                                'class'=>'CCheckBoxColumn',
+                                'selectableRows' => '100',
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
+                            ),
+                            array(
+                                'name'=>gT('Quota members'),
+                                'type'=>'raw',
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
+                                'value'=>function($oQuota) use($oSurvey,$aQuotaItems){
+                                    /** @var Quota $oQuota */
+                                    $out = null;
+                                    if (!empty($aQuotaItems) ){
+                                        $out = '<p>'.$this->renderPartial('/admin/quotas/viewquotas_quota_members',
+                                            array(
+                                                'oSurvey'=>$oSurvey,
+                                                'oQuota'=>$oQuota,
+                                                'aQuotaItems'=>$aQuotaItems,
+                                            )).'<p>';
+                                    }
+                                    return $out;
+                                },
+                            ),
+                            array(
+                                'name'=>'completed',
+                                'type'=>'raw',
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
+                                'value'=>function($oQuota)use($oSurvey){
+                                    $completerCount =getQuotaCompletedCount($oSurvey->sid, $oQuota->id);
+                                    $class = ($completerCount <= $oQuota->qlimit ? 'text-warning':null);
+                                    $span = CHtml::tag('span',array('class'=>$class),$completerCount);
+                                    return $span;
+                                },
+                                'footer'=>$totalcompleted,
+                            ),
+                            array(
+                                'name'=>'qlimit',
+                                'htmlOptions'=>array('style'=>'vertical-align:top'),
+                                'footer'=>$totalquotas,
+                            ),
+                            array(
+                                'header'=>gT("Action"),
+                                'value'=>function($oQuota)use($oSurvey,$aEditUrls,$aDeleteUrls,$aQuotaItems){
+                                    /** @var Quota $oQuota */
+                                    $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
+                                        array(
+                                            'oSurvey'=>$oSurvey,
+                                            'oQuota'=>$oQuota,
+                                            'editUrl'=>$aEditUrls[$oQuota->getPrimaryKey()],
+                                            'deleteUrl'=>$aDeleteUrls[$oQuota->getPrimaryKey()],
+                                            'aQuotaItems'=>$aQuotaItems,
+                                        ));
+                                },
+                                'headerHtmlOptions'=>array(
+                                    'style'=>'text-align:right;',
+                                ),
+                                'htmlOptions'=>array(
+                                    'align'=>'right',
+                                    'style'=>'vertical-align:top',
+                                ),
+                            ),
+
+                        ),
+                        'itemsCssClass' =>'table-striped table-condensed',
+                    ));
+                    ?>
+                </div>
+                <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','create')):?>
+                    <div class="pull-left">
+                        <?php $this->renderPartial('/admin/quotas/viewquotas_massive_selector',
+                            array(
+                                'oSurvey'=>$oSurvey,
+                                'oQuota'=>$oQuota,
+                                'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
+                            ));?>
+                    </div>
+                    <div class="pull-right">
+                        <?php echo CHtml::beginForm(array("admin/quotas/sa/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
+                        <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());?>
+                        <?php echo CHtml::hiddenField('action','quotas');?>
+                        <?php echo CHtml::hiddenField('subaction','new_quota');?>
+                        <?php echo CHtml::submitButton(gT("Add new quota"),array(
+                            'name'=>'submit',
+                            'class'=>'quota_new btn btn-default',
+                        ));?>
+                        <?php echo CHtml::endForm();?>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
