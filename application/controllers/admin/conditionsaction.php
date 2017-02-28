@@ -1449,12 +1449,12 @@ class conditionsaction extends Survey_Common_Action {
         {
             $shortquestion=$rows['title'].": ".strip_tags($rows['question']);
 
-            if ($rows['type'] == "A" ||
-                $rows['type'] == "B" ||
-                $rows['type'] == "C" ||
-                $rows['type'] == "E" ||
-                $rows['type'] == "F" ||
-                $rows['type'] == "H"
+            if ($rows['type'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS ||
+                $rows['type'] == Question::QT_B_ARRAY_10_CHOICE_QUESTIONS ||
+                $rows['type'] == Question::QT_C_ARRAY_YES_UNCERTAIN_NO ||
+                $rows['type'] == Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS ||
+                $rows['type'] == Question::QT_F_ARRAY_FLEXIBLE_ROW ||
+                $rows['type'] == Question::QT_H_ARRAY_FLEXIBLE_COLUMN
             )
             {
                 $aresult = Question::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => $this->language), array('order' => 'question_order ASC'));
@@ -1469,30 +1469,30 @@ class conditionsaction extends Survey_Common_Action {
 
                     switch ($rows['type'])
                     {
-                    case "A": //Array 5 buttons
+                    case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //Array 5 buttons
                         for ($i=1; $i<=5; $i++)
                         {
                             $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
                         }
                         break;
-                    case "B": //Array 10 buttons
+                    case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //Array 10 buttons
                         for ($i=1; $i<=10; $i++)
                         {
                             $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
                         }
                         break;
-                    case "C": //Array Y/N/NA
+                    case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //Array Y/N/NA
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "Y", gT("Yes"));
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "U", gT("Uncertain"));
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "N", gT("No"));
                         break;
-                    case "E": //Array >/=/<
+                    case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //Array >/=/<
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "I", gT("Increase"));
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "S", gT("Same"));
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "D", gT("Decrease"));
                         break;
-                    case "F": //Array Flexible Row
-                    case "H": //Array Flexible Column
+                    case Question::QT_F_ARRAY_FLEXIBLE_ROW: //Array Flexible Row
+                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //Array Flexible Column
 
                         $fresult = Answer::model()->findAllByAttributes(array(
                             'qid' => $rows['qid'],
@@ -1514,7 +1514,7 @@ class conditionsaction extends Survey_Common_Action {
 
                 } //while
             }
-            elseif ($rows['type'] == ":" || $rows['type'] == ";")
+            elseif ($rows['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT)
             { // Multiflexi
 
                 // Get the Y-Axis
@@ -1570,7 +1570,7 @@ class conditionsaction extends Survey_Common_Action {
                     }
                     unset($x_axis);
             } //if A,B,C,E,F,H
-            elseif ($rows['type'] == "1") //Multi Scale
+            elseif ($rows['type'] == Question::QT_1_ARRAY_MULTISCALE) //Multi Scale
             {
                 $aresult = Question::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => $this->language),
                 array('order' => 'question_order desc'));
@@ -1617,7 +1617,7 @@ class conditionsaction extends Survey_Common_Action {
                     }
                 } //while
             }
-            elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
+            elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||$rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) //Multi shorttext/numerical
             {
                 $aresult = Question::model()->findAllByAttributes(array(
                     "parent_qid" => $rows['qid'],
@@ -1638,7 +1638,7 @@ class conditionsaction extends Survey_Common_Action {
 
                 } //while
             }
-            elseif ($rows['type'] == "R") //Answer Ranking
+            elseif ($rows['type'] == Question::QT_R_RANKING_STYLE) //Answer Ranking
             {
                 $aresult = Answer::model()->findAllByAttributes(array(
                     "qid" => $rows['qid'],
@@ -1667,7 +1667,7 @@ class conditionsaction extends Survey_Common_Action {
                 }
                 unset($quicky);
             } // End if type R
-            elseif($rows['type'] == "M" || $rows['type'] == "P")
+            elseif($rows['type'] == Question::QT_M_MULTIPLE_CHOICE || $rows['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
             {
                 $shortanswer = " [".gT("Group of checkboxes")."]";
                 $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
@@ -1691,7 +1691,7 @@ class conditionsaction extends Survey_Common_Action {
                     $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', gT("not checked"));
                 }
             }
-            elseif($rows['type'] == "X") //Boilerplate question
+            elseif($rows['type'] == Question::QT_X_BOILERPLATE_QUESTION) //Boilerplate question
             {
                 //Just ignore this questiontype
             }
@@ -1700,7 +1700,7 @@ class conditionsaction extends Survey_Common_Action {
                 $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
                 switch ($rows['type'])
                 {
-                case "Y": // Y/N/NA
+                case Question::QT_Y_YES_NO_RADIO: // Y/N/NA
                     $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes"));
                     $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No"));
                     // Only Show No-Answer if question is not mandatory
@@ -1709,7 +1709,7 @@ class conditionsaction extends Survey_Common_Action {
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                     break;
-                case "G": //Gender
+                case Question::QT_G_GENDER_DROPDOWN: //Gender
                     $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female"));
                     $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male"));
                     // Only Show No-Answer if question is not mandatory
@@ -1718,7 +1718,7 @@ class conditionsaction extends Survey_Common_Action {
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                     break;
-                case "5": // 5 choice
+                case Question::QT_5_POINT_CHOICE: // 5 choice
                     for ($i=1; $i<=5; $i++)
                     {
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
@@ -1730,7 +1730,7 @@ class conditionsaction extends Survey_Common_Action {
                     }
                     break;
 
-                case "N": // Simple Numerical questions
+                case Question::QT_N_NUMERICAL: // Simple Numerical questions
 
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y')
@@ -1752,7 +1752,7 @@ class conditionsaction extends Survey_Common_Action {
                         $theanswer = $arows['answer'];
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
                     }
-                    if ($rows['type'] == "D")
+                    if ($rows['type'] == Question::QT_D_DATE)
                     {
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y')
@@ -1760,15 +1760,15 @@ class conditionsaction extends Survey_Common_Action {
                             $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
                     }
-                    elseif ($rows['type'] != "M" &&
-                        $rows['type'] != "P" &&
-                        $rows['type'] != "J" &&
-                        $rows['type'] != "I" )
+                    elseif ($rows['type'] != Question::QT_M_MULTIPLE_CHOICE &&
+                        $rows['type'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS &&
+                        $rows['type'] != QT_J &&
+                        $rows['type'] != Question::QT_I_LANGUAGE )
                     {
                         // For dropdown questions
                         // optinnaly add the 'Other' answer
-                        if ( (    $rows['type'] == "L" ||
-                            $rows['type'] == "!") &&
+                        if ( (    $rows['type'] == Question::QT_L_LIST_DROPDOWN ||
+                            $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
                             $rows['other'] == "Y" )
                         {
                             $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));

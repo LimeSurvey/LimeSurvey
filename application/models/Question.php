@@ -17,6 +17,40 @@ if (!defined('BASEPATH'))
 class Question extends LSActiveRecord
 {
 
+    // TODO - /home/fanatic/smb4k/UBUNTU/wwwroot/limesurvey/web2/scripts/expressions/em_javascript.js
+
+    const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
+    const QT_5_POINT_CHOICE = '5';
+    const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // ARRAY OF 5 POINT CHOICE QUESTIONS
+    const QT_B_ARRAY_10_CHOICE_QUESTIONS = 'B'; // ARRAY OF 10 POINT CHOICE QUESTIONS
+    const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+    const QT_D_DATE = 'D';
+    const QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS = 'E';
+    const QT_F_ARRAY_FLEXIBLE_ROW = 'F';
+    const QT_G_GENDER_DROPDOWN = 'G';
+    const QT_H_ARRAY_FLEXIBLE_COLUMN = 'H';
+    const QT_I_LANGUAGE = 'I';
+    const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
+    const QT_L_LIST_DROPDOWN = 'L';
+    const QT_M_MULTIPLE_CHOICE = 'M';
+    const QT_N_NUMERICAL = 'N';
+    const QT_O_LIST_WITH_COMMENT = 'O';
+    const QT_P_MULTIPLE_CHOICE_WITH_COMMENTS = 'P';
+    const QT_Q_MULTIPLE_SHORT_TEXT = 'Q';
+    const QT_R_RANKING_STYLE = 'R';
+    const QT_S_SHORT_FREE_TEXT = 'S';
+    const QT_T_LONG_FREE_TEXT = 'T';
+    const QT_U_HUGE_FREE_TEXT = 'U';
+    const QT_W = 'W';
+    const QT_X_BOILERPLATE_QUESTION = 'X';
+    const QT_Y_YES_NO_RADIO = 'Y';
+    const QT_Z_LIST_RADIO_FLEXIBLE = 'Z';
+    const QT_EXCLAMATION_LIST_DROPDOWN = '!';
+    const QT_VERTICAL_FILE_UPLOAD = '|';
+    const QT_ASTERISK_EQUATION = '*';
+    const QT_COLON_ARRAY_MULTI_FLEX_NUMBERS = ':';
+    const QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT = ';';
+
     // Stock the active group_name for questions list filtering
     public $group_name;
 
@@ -431,203 +465,203 @@ class Question extends LSActiveRecord
     public static function typeList()
     {
         $questionTypes = array(
-            "1" => array(
+            Question::QT_1_ARRAY_MULTISCALE => array(
                 'description' => gT("Array dual scale"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'assessable' => 1,
                 'hasdefaultvalues' => 0,
                 'answerscales' => 2),
-            "5" => array(
+            Question::QT_5_POINT_CHOICE => array(
                 'description' => gT("5 Point Choice"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "A" => array(
+            Question::QT_A_ARRAY_5_CHOICE_QUESTIONS => array(
                 'description' => gT("Array (5 Point Choice)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0),
-            "B" => array(
+            Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array(
                 'description' => gT("Array (10 Point Choice)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0),
-            "C" => array(
+            Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array(
                 'description' => gT("Array (Yes/No/Uncertain)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0),
-            "D" => array(
+            Question::QT_D_DATE => array(
                 'description' => gT("Date/Time"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "E" => array(
+            Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS => array(
                 'description' => gT("Array (Increase/Same/Decrease)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0),
-            "F" => array(
+            Question::QT_F_ARRAY_FLEXIBLE_ROW => array(
                 'description' => gT("Array"),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 1),
-            "G" => array(
+            Question::QT_G_GENDER_DROPDOWN => array(
                 'description' => gT("Gender"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "H" => array(
+            Question::QT_H_ARRAY_FLEXIBLE_COLUMN => array(
                 'description' => gT("Array by column"),
                 'group' => gT('Arrays'),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 1,
                 'assessable' => 1,
                 'answerscales' => 1),
-            "I" => array(
+            Question::QT_I_LANGUAGE => array(
                 'description' => gT("Language Switch"),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 0,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "K" => array(
+            Question::QT_K_MULTIPLE_NUMERICAL_QUESTION => array(
                 'description' => gT("Multiple Numerical Input"),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 1,
                 'subquestions' => 1,
                 'assessable' => 1,
                 'answerscales' => 0),
-            "L" => array(
+            Question::QT_L_LIST_DROPDOWN => array(
                 'description' => gT("List (Radio)"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 1),
-            "M" => array(
+            Question::QT_M_MULTIPLE_CHOICE => array(
                 'description' => gT("Multiple choice"),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 0),
-            "N" => array(
+            Question::QT_N_NUMERICAL => array(
                 'description' => gT("Numerical Input"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "O" => array(
+            Question::QT_O_LIST_WITH_COMMENT => array(
                 'description' => gT("List with comment"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 1),
-            "P" => array(
+            Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => array(
                 'description' => gT("Multiple choice with comments"),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 0),
-            "Q" => array(
+            Question::QT_Q_MULTIPLE_SHORT_TEXT => array(
                 'description' => gT("Multiple Short Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "R" => array(
+            Question::QT_R_RANKING_STYLE => array(
                 'description' => gT("Ranking"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 1),
-            "S" => array(
+            Question::QT_S_SHORT_FREE_TEXT => array(
                 'description' => gT("Short Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "T" => array(
+            Question::QT_T_LONG_FREE_TEXT => array(
                 'description' => gT("Long Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "U" => array(
+            Question::QT_U_HUGE_FREE_TEXT => array(
                 'description' => gT("Huge Free Text"),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "X" => array(
+            Question::QT_X_BOILERPLATE_QUESTION => array(
                 'description' => gT("Text display"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "Y" => array(
+            Question::QT_Y_YES_NO_RADIO => array(
                 'description' => gT("Yes/No"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "!" => array(
+            Question::QT_EXCLAMATION_LIST_DROPDOWN => array(
                 'description' => gT("List (Dropdown)"),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 1),
-            ":" => array(
+            Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS => array(
                 'description' => gT("Array (Numbers)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0),
-            ";" => array(
+            Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT => array(
                 'description' => gT("Array (Texts)"),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "|" => array(
+            Question::QT_VERTICAL_FILE_UPLOAD => array(
                 'description' => gT("File upload"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0),
-            "*" => array(
+            Question::QT_ASTERISK_EQUATION => array(
                 'description' => gT("Equation"),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
@@ -654,38 +688,38 @@ class Question extends LSActiveRecord
     {
         switch($sType)
         {
-            case "1": return 'array-flexible-duel-scale';
-            case '5': return 'choice-5-pt-radio';
-            case 'A': return 'array-5-pt';
-            case 'B': return 'array-10-pt';
-            case 'C': return 'array-yes-uncertain-no';
-            case 'D': return 'date';
-            case 'E': return 'array-increase-same-decrease';
-            case 'F': return 'array-flexible-row';
-            case 'G': return 'gender';
-            case 'H': return 'array-flexible-column';
-            case 'I': return 'language';
-            case 'K': return 'numeric-multi';
-            case 'L': return 'list-radio';
-            case 'M': return 'multiple-opt';
-            case 'N': return 'numeric';
-            case 'O': return 'list-with-comment';
-            case 'P': return 'multiple-opt-comments';
-            case 'Q': return 'multiple-short-txt';
-            case 'R': return 'ranking';
-            case 'S': return 'text-short';
-            case 'T': return 'text-long';
-            case 'U': return 'text-huge';
-            //case 'W': return 'list-dropdown-flexible'; //   LIST drop-down (flexible label)
-            case 'X': return 'boilerplate';
-            case 'Y': return 'yes-no';
-            case 'Z': return 'list-radio-flexible';
-            case '!': return 'list-dropdown';
+            case Question::QT_1_ARRAY_MULTISCALE: return 'array-flexible-duel-scale';
+            case Question::QT_5_POINT_CHOICE: return 'choice-5-pt-radio';
+            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'array-5-pt';
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'array-10-pt';
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'array-yes-uncertain-no';
+            case Question::QT_D_DATE: return 'date';
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: return 'array-increase-same-decrease';
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW: return 'array-flexible-row';
+            case Question::QT_G_GENDER_DROPDOWN: return 'gender';
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return 'array-flexible-column';
+            case Question::QT_I_LANGUAGE: return 'language';
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return 'numeric-multi';
+            case Question::QT_L_LIST_DROPDOWN: return 'list-radio';
+            case Question::QT_M_MULTIPLE_CHOICE: return 'multiple-opt';
+            case Question::QT_N_NUMERICAL: return 'numeric';
+            case Question::QT_O_LIST_WITH_COMMENT: return 'list-with-comment';
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: return 'multiple-opt-comments';
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT: return 'multiple-short-txt';
+            case Question::QT_R_RANKING_STYLE: return 'ranking';
+            case Question::QT_S_SHORT_FREE_TEXT: return 'text-short';
+            case Question::QT_T_LONG_FREE_TEXT: return 'text-long';
+            case Question::QT_U_HUGE_FREE_TEXT: return 'text-huge';
+            //case Question::QT_W: return 'list-dropdown-flexible'; //   LIST drop-down (flexible label)
+            case Question::QT_X_BOILERPLATE_QUESTION: return 'boilerplate';
+            case Question::QT_Y_YES_NO_RADIO: return 'yes-no';
+            case Question::QT_Z_LIST_RADIO_FLEXIBLE: return 'list-radio-flexible';
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN: return 'list-dropdown';
             //case '^': return 'slider';          //  SLIDER CONTROL
-            case ':': return 'array-multi-flexi';
-            case ";": return 'array-multi-flexi-text';
-            case "|": return 'upload-files';
-            case "*": return 'equation';
+            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: return 'array-multi-flexi';
+            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: return 'array-multi-flexi-text';
+            case Question::QT_VERTICAL_FILE_UPLOAD: return 'upload-files';
+            case Question::QT_ASTERISK_EQUATION: return 'equation';
             default:  return 'generic_question'; // fallback
         };
     }
@@ -801,7 +835,7 @@ class Question extends LSActiveRecord
 
     public function getMandatoryIcon()
     {
-        if ($this->type != "X"  && $this->type != "|")
+        if ($this->type != Question::QT_X_BOILERPLATE_QUESTION  && $this->type != Question::QT_VERTICAL_FILE_UPLOAD)
         {
             $sIcon = ($this->mandatory=="Y")?'<span class="fa fa-asterisk text-danger"></span>':'<span></span>';
         }
@@ -815,7 +849,7 @@ class Question extends LSActiveRecord
     public function getOtherIcon()
     {
 
-        if (( $this->type == "L") || ($this->type == "!") || ($this->type == "P") || ($this->type=="M"))
+        if (( $this->type == Question::QT_L_LIST_DROPDOWN) || ($this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($this->type==Question::QT_M_MULTIPLE_CHOICE))
         {
             $sIcon = ($this->other==="Y")?'<span class="fa fa-dot-circle-o"></span>':'<span></span>';
         }
@@ -982,7 +1016,7 @@ class Question extends LSActiveRecord
     {
         return dbExecuteAssoc("SELECT count(*)\n"
         ." FROM {{questions}}"
-        ." WHERE type in ('X','*')\n"
+        ." WHERE type in ('" . Question::QT_X_BOILERPLATE_QUESTION . "','" . Question::QT_ASTERISK_EQUATION . "')\n"
         ." AND sid={$surveyid}"
         ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
         ." AND parent_qid=0")->read();

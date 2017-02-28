@@ -524,7 +524,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{groups}}',array('group_name'=>''),"group_name is NULL");
             $oDB->createCommand()->update('{{labels}}',array('code'=>''),"code is NULL");
             $oDB->createCommand()->update('{{labelsets}}',array('label_name'=>''),"label_name is NULL");
-            $oDB->createCommand()->update('{{questions}}',array('type'=>'T'),"type is NULL");
+            $oDB->createCommand()->update('{{questions}}',array('type'=>Question::QT_T_LONG_FREE_TEXT),"type is NULL");
             $oDB->createCommand()->update('{{questions}}',array('title'=>''),"title is NULL");
             $oDB->createCommand()->update('{{questions}}',array('question'=>''),"question is NULL");
             $oDB->createCommand()->update('{{questions}}',array('other'=>'N'),"other is NULL");
@@ -564,7 +564,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             alterColumn('{{questions}}','question',"text",false);
             try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
 
-            alterColumn('{{questions}}','type',"string(1)",false , 'T');
+            alterColumn('{{questions}}','type',"string(1)",false , Question::QT_T_LONG_FREE_TEXT);
             try{ $oDB->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
             alterColumn('{{questions}}','other',"string(1)",false , 'N');
             alterColumn('{{questions}}','mandatory',"string(1)");
@@ -893,7 +893,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             alterColumn('{{conditions}}','method',"string(5)",false , '');
             alterColumn('{{participants}}','owner_uid','integer',false);
             alterColumn('{{participant_attribute_names}}','visible','string(5)',false);
-            alterColumn('{{questions}}','type',"string(1)",false , 'T');
+            alterColumn('{{questions}}','type',"string(1)",false , Question::QT_T_LONG_FREE_TEXT);
             alterColumn('{{questions}}','other',"string(1)",false , 'N');
             alterColumn('{{questions}}','mandatory',"string(1)");
             alterColumn('{{questions}}','scale_id','integer',false , '0');
@@ -2002,7 +2002,7 @@ function upgradeTokens176()
     {
         $sTokenTableName='tokens_'.$arSurvey->sid;
         if (tableExists($sTokenTableName))
-        {                                        
+        {
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
             $aAttributes = $arSurvey->tokenAttributes;
             foreach($aColumnNamesIterator as $sColumnName)
@@ -2398,7 +2398,7 @@ function upgradeTables143()
     global $modifyoutput;
 
     $aQIDReplacements=array();
-    $answerquery = "select a.*, q.sid, q.gid from {{answers}} a,{{questions}} q where a.qid=q.qid and q.type in ('L','O','!') and a.default_value='Y'";
+    $answerquery = "select a.*, q.sid, q.gid from {{answers}} a,{{questions}} q where a.qid=q.qid and q.type in ('" . Question::QT_L_LIST_DROPDOWN . "','" . Question::QT_O_LIST_WITH_COMMENT . "','" . Question::QT_EXCLAMATION_LIST_DROPDOWN . "') and a.default_value='Y'";
     $answerresult = Yii::app()->getDb()->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
@@ -2407,7 +2407,7 @@ function upgradeTables143()
 
     // Convert answers to subquestions
 
-    $answerquery = "select a.*, q.sid, q.gid, q.type from {{answers}} a,{{questions}} q where a.qid=q.qid and a.language=q.language and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
+    $answerquery = "select a.*, q.sid, q.gid, q.type from {{answers}} a,{{questions}} q where a.qid=q.qid and a.language=q.language and q.type in ('" . Question::QT_1_ARRAY_MULTISCALE . "','" . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . "','" . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . "','" . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . "','" . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . "','" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "','" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "','" . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . "','" . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . "','" . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . "','" . Question::QT_M_MULTIPLE_CHOICE . "','" . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . "','" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "')";
     $answerresult = Yii::app()->getDb()->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
@@ -2436,7 +2436,7 @@ function upgradeTables143()
         {
             $iSaveSQID=$aInsert['qid'];
         }
-        if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
+        if (($row['type']==Question::QT_M_MULTIPLE_CHOICE || $row['type']==Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) && $row['default_value']=='Y')
         {
             modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".dbQuoteAll($row['language']).",'','Y')"); echo $modifyoutput; flush();@ob_flush();
         }
@@ -2444,15 +2444,15 @@ function upgradeTables143()
     // Sanitize data
     if (Yii::app()->db->driverName=='pgsql')
     {
-        modifyDatabase("","delete from {{answers}} USING {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{questions}}.type in ('1','F','H','M','P','W','Z')"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("","delete from {{answers}} USING {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{questions}}.type in ('" . Question::QT_1_ARRAY_MULTISCALE . "','" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "','" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "','" . Question::QT_M_MULTIPLE_CHOICE . "','" . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . "','" . Question::QT_W . "','" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "')"); echo $modifyoutput; flush();@ob_flush();
     }
     else
     {
-        modifyDatabase("","delete {{answers}} from {{answers}} LEFT join {{questions}} ON {{answers}}.qid={{questions}}.qid where {{questions}}.type in ('1','F','H','M','P','W','Z')"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("","delete {{answers}} from {{answers}} LEFT join {{questions}} ON {{answers}}.qid={{questions}}.qid where {{questions}}.type in ('" . Question::QT_1_ARRAY_MULTISCALE . "','" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "','" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "','" . Question::QT_M_MULTIPLE_CHOICE . "','" . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . "','" . Question::QT_W . "','" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "')"); echo $modifyoutput; flush();@ob_flush();
     }
 
     // Convert labels to answers
-    $answerquery = "select qid ,type ,lid ,lid1, language from {{questions}} where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
+    $answerquery = "select qid ,type ,lid ,lid1, language from {{questions}} where parent_qid=0 and type in ('" . Question::QT_1_ARRAY_MULTISCALE . "','" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "','" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "','" . Question::QT_M_MULTIPLE_CHOICE . "','" . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . "','" . Question::QT_W . "','" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "')";
     $answerresult = Yii::app()->getDb()->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
@@ -2463,7 +2463,7 @@ function upgradeTables143()
             modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
             //$labelids[]
         }
-        if ($row['type']=='1')
+        if ($row['type']==Question::QT_1_ARRAY_MULTISCALE)
         {
             $labelquery="Select * from {{labels}} where lid={$row['lid1']} and language=".dbQuoteAll($row['language']);
             $labelresult = Yii::app()->getDb()->createCommand($labelquery)->queryAll();
@@ -2475,7 +2475,7 @@ function upgradeTables143()
     }
 
     // Convert labels to subquestions
-    $answerquery = "select * from {{questions}} where parent_qid=0 and type in (';',':')";
+    $answerquery = "select * from {{questions}} where parent_qid=0 and type in ('" . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . "','" . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . "')";
     $answerresult = Yii::app()->getDb()->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
@@ -2508,9 +2508,9 @@ function upgradeTables143()
 
 
 
-    $updatequery = "update {{questions}} set type='!' where type='W'";
+    $updatequery = "update {{questions}} set type='" . Question::QT_EXCLAMATION_LIST_DROPDOWN . "' where type='" . Question::QT_W . "'";
     modifyDatabase("",$updatequery); echo $modifyoutput; flush();@ob_flush();
-    $updatequery = "update {{questions}} set type='L' where type='Z'";
+    $updatequery = "update {{questions}} set type='" . Question::QT_L_LIST_DROPDOWN . "' where type='" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "'";
     modifyDatabase("",$updatequery); echo $modifyoutput; flush();@ob_flush();
 
     // Now move all non-standard templates to the /upload dir

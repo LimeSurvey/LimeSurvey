@@ -910,7 +910,7 @@
                     $subqid = $fieldname;
                     $value = $row['value'];
                 }
-                else if ($row['type'] == 'M' || $row['type'] == 'P') {
+                else if ($row['type'] == Question::QT_M_MULTIPLE_CHOICE || $row['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     if (substr($row['cfieldname'],0,1) == '+') {
                         // if prefixed with +, then a fully resolved name
                         $fieldname = substr($row['cfieldname'],1) . '.NAOK';
@@ -1137,7 +1137,7 @@
                         $cascadedAFE = array_reverse($cascadedAFE);
 
                         $subqs = $qinfo['subqs'];
-                        if ($type == 'R') {
+                        if ($type == Question::QT_R_RANKING_STYLE) {
                             $subqs = array();
                             foreach ($this->qans[$qinfo['qid']] as $k=>$v)
                             {
@@ -1159,20 +1159,20 @@
                             $afe_names = array();
                             switch ($type)
                             {
-                                case '1':   //Array (Flexible Labels) dual scale
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                case 'F': //ARRAY (Flexible) - Row Format
-                                case 'L': //LIST drop-down/radio-button list
-                                case 'M': //Multiple choice checkbox
-                                case 'P': //Multiple choice with comments checkbox + text
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case 'R': //Ranking
+                                case Question::QT_1_ARRAY_MULTISCALE:   //Array (Flexible Labels) dual scale
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                                case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_R_RANKING_STYLE: //Ranking
 //                                    if ($this->sgqaNaming)
 //                                    {
                                         foreach ($cascadedAF as $_caf)
@@ -1184,7 +1184,7 @@
                                                 continue;
                                             }
                                             $fqid = $fqid[2];
-                                            if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                            if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING_STYLE)
                                             {
                                                 $rankables = array();
                                                 foreach ($this->qans[$fqid] as $k=>$v)
@@ -1201,12 +1201,12 @@
                                             foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
                                             {
                                                 if (!isset($fsq['csuffix'])) $fsq['csuffix']='';
-                                                if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                                if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING_STYLE)
                                                 {
                                                     // we know the suffix exists
                                                     $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK == '" . substr($sq['sqsuffix'],1) . "')";
                                                 }
-                                                else if ($this->q2subqInfo[$fqid]['type'] == ':' && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
+                                                else if ($this->q2subqInfo[$fqid]['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
                                                 {
                                                     if ($fsq['sqsuffix'] == $sq['sqsuffix'])
                                                     {
@@ -1235,7 +1235,7 @@
                                                 continue;
                                             }
                                             $fqid = $fqid[2];
-                                            if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                            if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING_STYLE)
                                             {
                                                 $rankables = array();
                                                 foreach ($this->qans[$fqid] as $k=>$v)
@@ -1251,12 +1251,12 @@
                                             $fsqs = array();
                                             foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq)
                                             {
-                                                if ($this->q2subqInfo[$fqid]['type'] == 'R')
+                                                if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING_STYLE)
                                                 {
                                                     // we know the suffix exists
                                                     $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK != '" . substr($sq['sqsuffix'],1) . "')";
                                                 }
-                                                else if ($this->q2subqInfo[$fqid]['type'] == ':' && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
+                                                else if ($this->q2subqInfo[$fqid]['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox']=='1')
                                                 {
                                                     if ($fsq['sqsuffix'] == $sq['sqsuffix'])
                                                     {
@@ -1333,7 +1333,7 @@
 
                 // individual subquestion relevance
                 if ($hasSubqs &&
-                    $type!='|' && $type!='!' && $type !='L' && $type !='O'
+                    $type!=Question::QT_VERTICAL_FILE_UPLOAD && $type!=Question::QT_EXCLAMATION_LIST_DROPDOWN && $type !=Question::QT_L_LIST_DROPDOWN && $type !=Question::QT_O_LIST_WITH_COMMENT
                 )
                 {
                     $subqs = $qinfo['subqs'];
@@ -1349,23 +1349,23 @@
                         $rowdivid=$sq['rowdivid'];
                         switch($type)
                         {
-                            case '1': //Array (Flexible Labels) dual scale
+                            case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
                                 $rowdivid = $rowdivid . '#0';
                                 break;
-                            case ':': //ARRAY Numbers
-                            case ';': //ARRAY Text
+                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY Numbers
+                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY Text
                                 $aCsuffix=(explode('_',$sq['csuffix']));
                                 $rowdivid = $rowdivid . '_'.$aCsuffix[1];
                                 break;
-                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                            case 'F': //ARRAY (Flexible) - Row Format
-                            case 'M': //Multiple choice checkbox
-                            case 'P': //Multiple choice with comments checkbox + text
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                            case 'Q': //MULTIPLE SHORT TEXT
+                            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                                 break;
                             default:
                                 break;
@@ -1391,11 +1391,11 @@
                 // Default validation for question type
                 switch ($type)
                 {
-                    case 'I':
-                    case '!':
-                    case 'O':
-                    case 'M': //NUMERICAL QUESTION TYPE
-                    case 'L': //LIST drop-down/radio-button list
+                    case Question::QT_I_LANGUAGE:
+                    case Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                    case Question::QT_O_LIST_WITH_COMMENT:
+                    case Question::QT_M_MULTIPLE_CHOICE: //NUMERICAL QUESTION TYPE
+                    case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'default',
@@ -1405,7 +1405,7 @@
                             );
                         break;
 
-                    case 'N': //NUMERICAL QUESTION TYPE
+                    case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs=array();
@@ -1413,7 +1413,7 @@
                             {
                                 $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                 $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute
-                                if($type=="K")
+                                if($type==Question::QT_K_MULTIPLE_NUMERICAL_QUESTION)
                                     $subqValidSelector = $sq['jsVarName_on'];
                                 else
                                     $subqValidSelector = "";
@@ -1431,7 +1431,7 @@
                             );
                         }
                         break;
-                    case 'K': //MULTI NUMERICAL QUESTION TYPE
+                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTI NUMERICAL QUESTION TYPE
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs=array();
@@ -1463,7 +1463,7 @@
                             );
                         }
                         break;
-                    case 'R':
+                    case Question::QT_R_RANKING_STYLE:
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_names=array();
@@ -1486,7 +1486,7 @@
                             );
                         }
                         break;
-                    case 'D':
+                    case Question::QT_D_DATE:
                         // TODO: generic validation as to dateformat[SGQA].value : BUT not same in PHP and JS
                         break;
                     default:
@@ -1499,7 +1499,7 @@
                 {
                     switch ($type)
                     {
-                        case 'P':
+                        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                             if ($hasSubqs) {
                                 $commented_checkbox=$qattr['commented_checkbox'];
                                 $subqs = $qinfo['subqs'];
@@ -1559,7 +1559,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'D': //DATE QUESTION TYPE
+                                case Question::QT_D_DATE: //DATE QUESTION TYPE
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                     $sq_name = '('.$sq_name.'!="INVALID")';
                                     $subqValidSelector = '';
@@ -1608,7 +1608,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'D': //DATE QUESTION TYPE
+                                case Question::QT_D_DATE: //DATE QUESTION TYPE
                                     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                     if (trim($qattr['date_min'])!='')
                                     {
@@ -1677,7 +1677,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'D': //DATE QUESTION TYPE
+                                case Question::QT_D_DATE: //DATE QUESTION TYPE
                                     // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
                                     if (trim($qattr['date_max'])!='')
                                     {
@@ -1745,7 +1745,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = $sq['rowdivid'] . '.NAOK';
@@ -1838,16 +1838,16 @@
                                 }
                                 switch ($type)
                                 {
-                                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                    case 'F': //ARRAY (Flexible) - Row Format
-                                    case 'M': //Multiple choice checkbox
-                                    case 'P': //Multiple choice with comments checkbox + text
-                                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                                    case 'Q': //MULTIPLE SHORT TEXT
+                                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                                    case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                                    case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                                    case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                    case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                                    case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                                    case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                    case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                                         if ($this->sgqaNaming)
                                         {
                                             $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
@@ -1893,8 +1893,8 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'M': //Multiple choice checkbox
-                                case 'P': //Multiple choice with comments checkbox + text
+                                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4);
@@ -1955,7 +1955,7 @@
                     $input_boxes=1;
                     switch($type)
                     {
-                        case ':': //Array Numbers
+                        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //Array Numbers
                             if ($hasSubqs) {
                                 $subqs = $qinfo['subqs'];
                                 $sq_equs=array();
@@ -2006,7 +2006,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case '1':   //Array (Flexible Labels) dual scale
+                                case Question::QT_1_ARRAY_MULTISCALE:   //Array (Flexible Labels) dual scale
                                     if (substr($sq['varName'],-1,1) == '0')
                                     {
                                         if ($this->sgqaNaming)
@@ -2021,17 +2021,17 @@
                                         }
                                     }
                                     break;
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                case 'F': //ARRAY (Flexible) - Row Format
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case 'M': //Multiple choice checkbox
-                                case 'R': //RANKING STYLE
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                                case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                                case Question::QT_R_RANKING_STYLE: //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -2041,7 +2041,7 @@
                                         $sq_name = $sq['varName'] . '.NAOK';
                                     }
                                     break;
-                                case 'P': //Multiple choice with comments checkbox + text
+                                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                     if (!preg_match('/comment$/',$sq['varName'])) {
                                         if ($this->sgqaNaming)
                                         {
@@ -2092,7 +2092,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case '1':   //Array (Flexible Labels) dual scale
+                                case Question::QT_1_ARRAY_MULTISCALE:   //Array (Flexible Labels) dual scale
                                     if (substr($sq['varName'],-1,1) == '0')
                                     {
                                         if ($this->sgqaNaming)
@@ -2107,17 +2107,17 @@
                                         }
                                     }
                                     break;
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                case 'F': //ARRAY (Flexible) - Row Format
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case 'M': //Multiple choice checkbox
-                                case 'R': //RANKING STYLE
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                                case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                                case Question::QT_R_RANKING_STYLE: //RANKING STYLE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
@@ -2127,7 +2127,7 @@
                                         $sq_name = $sq['varName'] . '.NAOK';
                                     }
                                     break;
-                                case 'P': //Multiple choice with comments checkbox + text
+                                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                     if (!preg_match('/comment$/',$sq['varName'])) {
                                         if ($this->sgqaNaming)
                                         {
@@ -2167,7 +2167,7 @@
                     $max_answers='';
                 }
                 /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(answers) )*/
-                if($type=='R' && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions'])>0))
+                if($type==Question::QT_R_RANKING_STYLE && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions'])>0))
                 {
                     $max_subquestions=intval($qattr['max_subquestions']);
                     // We don't have another answer count in EM ?
@@ -2185,7 +2185,7 @@
                     }
                 }
                 // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
-                if($type=="K" && isset($qattr['slider_min']) && ( !isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n'])==''))
+                if($type==Question::QT_K_MULTIPLE_NUMERICAL_QUESTION && isset($qattr['slider_min']) && ( !isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n'])==''))
                     $qattr['min_num_value_n']=$qattr['slider_min'];
                 // min_num_value_n
                 // Validation:= N >= value (which could be an expression).
@@ -2200,7 +2200,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
@@ -2211,7 +2211,7 @@
                                     }
                                     $subqValidSelector = $sq['jsVarName_on'];
                                     break;
-                                case 'N': //NUMERICAL QUESTION TYPE
+                                case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
@@ -2255,7 +2255,7 @@
                 }
 
                 // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
-                if($type=="K" && isset($qattr['slider_max']) && ( !isset($qattr['max_num_value_n']) || trim($qattr['max_num_value_n'])==''))
+                if($type==Question::QT_K_MULTIPLE_NUMERICAL_QUESTION && isset($qattr['slider_max']) && ( !isset($qattr['max_num_value_n']) || trim($qattr['max_num_value_n'])==''))
                     $qattr['max_num_value_n']=$qattr['slider_max'];
                 // max_num_value_n
                 // Validation:= N <= value (which could be an expression).
@@ -2270,7 +2270,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK <= (' . $max_num_value_n . '))';
@@ -2281,7 +2281,7 @@
                                     }
                                     $subqValidSelector = $sq['jsVarName_on'];
                                     break;
-                                case 'N': //NUMERICAL QUESTION TYPE
+                                case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK <= (' . $max_num_value_n . '))';
@@ -2336,7 +2336,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = $sq['rowdivid'] . '.NAOK';
@@ -2400,7 +2400,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = $sq['rowdivid'] . '.NAOK';
@@ -2465,7 +2465,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case ':': //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //MULTIPLE NUMERICAL QUESTION
                                     if ($this->sgqaNaming)
                                     {
                                         $sgqa = substr($sq['jsVarName'],4);
@@ -2522,7 +2522,7 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case ':': //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //MULTIPLE NUMERICAL QUESTION
                                     if ($this->sgqaNaming)
                                     {
                                         $sgqa = substr($sq['jsVarName'],4);
@@ -2576,7 +2576,7 @@
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
                     {
-                        case '|': //List - dropdown
+                        case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
                             $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
                             break;
                         default:
@@ -2610,7 +2610,7 @@
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
                     {
-                        case '|': //List - dropdown
+                        case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
                             $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
                             break;
                         default:
@@ -2650,9 +2650,9 @@
                             $subqValidSelector = '';
                             switch ($type)
                             {
-                                case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
                                     $subqValidSelector = $sq['jsVarName_on'];
-                                case 'N': //NUMERICAL QUESTION TYPE
+                                case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                     $sq_eqn = '( is_int('.$sq_name.') || is_empty('.$sq_name.') )';
                                     break;
@@ -2695,7 +2695,7 @@
                     $numbers_only=1;
                     switch ($type)
                     {
-                        case 'S': // Short text
+                        case Question::QT_S_SHORT_FREE_TEXT: // Short text
                             if ($hasSubqs) {
                                 $subqs = $qinfo['subqs'];
                                 $sq_equs=array();
@@ -2717,7 +2717,7 @@
                                 );
                             }
                             break;
-                        case 'Q': // multi text
+                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: // multi text
                             if ($hasSubqs) {
                                 $subqs = $qinfo['subqs'];
                                 $sq_equs=array();
@@ -2749,7 +2749,7 @@
                                 );
                             }
                             break;
-                        case ';': // Array of text
+                        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: // Array of text
                             if ($hasSubqs) {
                                 $subqs = $qinfo['subqs'];
                                 $sq_equs=array();
@@ -2781,7 +2781,7 @@
                                 );
                             }
                             break;
-                        case '*': // Don't think we need equation ?
+                        case Question::QT_ASTERISK_EQUATION: // Don't think we need equation ?
                         default:
                             break;
                     }
@@ -2802,11 +2802,11 @@
                         $sgqa = $qinfo['sgqa'];
                         switch ($type)
                         {
-                            case '!': //List - dropdown
-                            case 'L': //LIST drop-down/radio-button list
+                            case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                            case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                                 $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && !is_empty(trim(" . $sgqa . "other.NAOK))))";
                                 break;
-                            case 'P': //Multiple choice with comments
+                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments
                                 $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && !is_empty(trim(" . $sgqa . "othercomment.NAOK))))";
                                 break;
                             default:
@@ -2845,9 +2845,9 @@
                         switch ($type)
                         {
                             //case '!': //List - dropdown
-                            case 'L': //LIST drop-down/radio-button list
-                            case 'M': //Multiple choice
-                            case 'P': //Multiple choice with
+                            case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice
+                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with
                                 $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) ||is_numeric(" . $sgqa . "other.NAOK))";
                                 break;
                             default:
@@ -2897,14 +2897,14 @@
                             $sgqa = substr($sq['jsVarName'],4);
                             switch ($type)
                             {
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
+                                case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                                case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                                case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '(if(is_empty('.$sgqa.'.NAOK),0,!regexMatch("' . $preg . '", ' . $sgqa . '.NAOK)))';
@@ -2919,10 +2919,10 @@
                             }
                             switch ($type)
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
                                     if ($this->sgqaNaming)
                                     {
                                         $subqValidEqn = '(is_empty('.$sgqa.'.NAOK) || regexMatch("' . $preg . '", ' . $sgqa . '.NAOK))';
@@ -2989,24 +2989,24 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                case 'F': //ARRAY (Flexible) - Row Format
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case 'M': //Multiple choice checkbox
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'O':
-                                case 'P': //Multiple choice with comments checkbox + text
-                                case 'R': //RANKING STYLE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
-                                case 'D': //DATE
+                                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                                case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                                case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                                case Question::QT_O_LIST_WITH_COMMENT:
+                                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                                case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                                case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                                case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                                case Question::QT_D_DATE: //DATE
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_q) . ')';
@@ -3066,14 +3066,14 @@
                             $sq_name = NULL;
                             switch ($type)
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                                case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                                case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                                case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
                                     if ($this->sgqaNaming)
                                     {
                                         $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
@@ -3088,14 +3088,14 @@
                             }
                             switch ($type)
                             {
-                                case 'K': //MULTIPLE NUMERICAL QUESTION
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case ':': //ARRAY (Multi Flexi) 1 to 10
-                                case 'N': //NUMERICAL QUESTION TYPE
-                                case 'S': //SHORT FREE TEXT
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
+                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                                case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                                case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                                case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
                                     if ($this->sgqaNaming)
                                     {
                                         $subqValidEqn = '(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
@@ -3150,24 +3150,24 @@
                 // Default validation qtip without attribute
                 switch ($type)
                 {
-                    case 'I':
+                    case Question::QT_I_LANGUAGE:
                         $qtips['default']=$this->gT('Choose your language');
                         break;
-                    case 'O':
-                    case 'L':
-                    case '!':
+                    case Question::QT_O_LIST_WITH_COMMENT:
+                    case Question::QT_L_LIST_DROPDOWN:
+                    case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                         $qtips['default']=$this->gT('Choose one of the following answers');
                         break;
-                    case 'M':
+                    case Question::QT_M_MULTIPLE_CHOICE:
                          $qtips['default']=$this->gT('Check any that apply');
                          break;
-                    case 'N':
+                    case Question::QT_N_NUMERICAL:
                         $qtips['default']=$this->gT("Only numbers may be entered in this field.");
                         break;
-                    case 'K':
+                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
                         $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
                         break;
-                    case 'R':
+                    case Question::QT_R_RANKING_STYLE:
                         $qtips['default']=$this->gT("All your answers must be different and you must rank in order.");
                         break;
                     default:
@@ -3204,7 +3204,7 @@
                 {
                     switch ($type)
                     {
-                        case ':':
+                        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                             $qtips['input_boxes']=$this->gT("Only numbers may be entered in these fields.");
                             break;
                         default:
@@ -3218,7 +3218,7 @@
                     $_minA = (($min_answers == '') ? "''" : $min_answers);
                     $_maxA = (($max_answers == '') ? "''" : $max_answers    );
                     /* different messages for text and checkbox questions */
-                    if($type == 'Q' || $type == 'K' || $type == ';' || $type == ':')
+                    if($type == Question::QT_Q_MULTIPLE_SHORT_TEXT || $type == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION || $type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT || $type == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS)
                     {
                         $_msgs = array(
                             'atleast_m' => $this->gT("Please fill in at least %s answers"),
@@ -3257,7 +3257,7 @@
                 {
                     $_minV = (($min_num_value_n == '') ? "''" : $min_num_value_n);
                     $_maxV = (($max_num_value_n == '') ? "''" : $max_num_value_n);
-                    if ($type!='N')
+                    if ($type!=Question::QT_N_NUMERICAL)
                     {
                         $qtips['value_range']=
                             "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('".$this->gT("Each answer must be at least %s")."',fixnum($_minV)), '')}" .
@@ -3337,11 +3337,11 @@
                 {
                     switch ($type)
                     {
-                        case 'N':
+                        case Question::QT_N_NUMERICAL:
                             unset($qtips['default']);
                             $qtips['value_integer']=$this->gT("Only an integer value may be entered in this field.");
                             break;
-                        case 'K':
+                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
                             unset($qtips['default']);
                             $qtips['value_integer']=$this->gT("Only integer values may be entered in these fields.");
                             break;
@@ -3355,11 +3355,11 @@
                 {
                     switch ($type)
                     {
-                        case 'S':
+                        case Question::QT_S_SHORT_FREE_TEXT:
                             $qtips['numbers_only']=$this->gT("Only numbers may be entered in this field.");
                             break;
-                        case 'Q':
-                        case ';':
+                        case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
                             $qtips['numbers_only']=$this->gT("Only numbers may be entered in these fields.");
                             break;
                         default:
@@ -3756,15 +3756,15 @@
                 // Set $ansArray
                 switch($type)
                 {
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case '1': //Array (Flexible Labels) dual scale  // need scale
-                    case 'H': //ARRAY (Flexible) - Column Format
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'R': //RANKING STYLE
+                    case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                    case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                    case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
+                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
+                    case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                    case Question::QT_R_RANKING_STYLE: //RANKING STYLE
                         $ansArray = (isset($this->qans[$questionNum]) ? $this->qans[$questionNum] : NULL);
-                        if ($other == 'Y' && ($type == 'L' || $type == '!'))
+                        if ($other == 'Y' && ($type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN))
                         {
                             if (preg_match('/other$/',$sgqa))
                             {
@@ -3783,32 +3783,32 @@
                             }
                         }
                         break;
-                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case '5': //5 POINT CHOICE radio-buttons
+                    case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                    case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                    case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                         $ansArray=NULL;
                         break;
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                    case 'Q': //MULTIPLE SHORT TEXT
-                    case ';': //ARRAY (Multi Flexi) Text
-                    case 'S': //SHORT FREE TEXT
-                    case 'T': //LONG FREE TEXT
-                    case 'U': //HUGE FREE TEXT
-                    case 'M': //Multiple choice checkbox
-                    case 'P': //Multiple choice with comments checkbox + text
-                    case 'D': //DATE
-                    case '*': //Equation
-                    case 'I': //Language Question
-                    case '|': //File Upload
-                    case 'X': //BOILERPLATE QUESTION
+                    case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                    case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                    case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                    case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                    case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                    case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                    case Question::QT_D_DATE: //DATE
+                    case Question::QT_ASTERISK_EQUATION: //Equation
+                    case Question::QT_I_LANGUAGE: //Language Question
+                    case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
+                    case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
                         $ansArray = NULL;
                         break;
-                    case 'G': //GENDER drop-down list
-                    case 'Y': //YES/NO radio-buttons
-                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                    case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                    case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
+                    case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                    case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                         $ansArray = $presets[$type];
                         break;
                 }
@@ -3820,8 +3820,8 @@
                     default:
                         $subqtext = (isset($fielddata['subquestion']) ? $fielddata['subquestion'] : '');
                         break;
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case ';': //ARRAY (Multi Flexi) Text
+                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
                         $subqtext = (isset($fielddata['subquestion1']) ? $fielddata['subquestion1'] : '');
                         $ansList = array();
                         if (isset($fielddata['answerList']))
@@ -3840,21 +3840,21 @@
                 $csuffix = '';
                 switch($type)
                 {
-                    case '!': //List - dropdown
-                    case '5': //5 POINT CHOICE radio-buttons
-                    case 'D': //DATE
-                    case 'G': //GENDER drop-down list
-                    case 'I': //Language Question
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case 'S': //SHORT FREE TEXT
-                    case 'T': //LONG FREE TEXT
-                    case 'U': //HUGE FREE TEXT
-                    case 'X': //BOILERPLATE QUESTION
-                    case 'Y': //YES/NO radio-buttons
-                    case '|': //File Upload
-                    case '*': //Equation
+                    case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                    case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
+                    case Question::QT_D_DATE: //DATE
+                    case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                    case Question::QT_I_LANGUAGE: //Language Question
+                    case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                    case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                    case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                    case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                    case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                    case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
+                    case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
+                    case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
+                    case Question::QT_ASTERISK_EQUATION: //Equation
                         $csuffix = '';
                         $sqsuffix = '';
                         $varName = $fielddata['title'];
@@ -3863,7 +3863,7 @@
                         }
                         $question = $fielddata['question'];
                         break;
-                    case '1': //Array (Flexible Labels) dual scale
+                    case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
                         $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
                         $sqsuffix = '_' . $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
@@ -3871,23 +3871,23 @@
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                         $rowdivid = substr($sgqa,0,-2);
                         break;
-                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'H': //ARRAY (Flexible) - Column Format    // note does not have javatbd equivalent - so array filters don't work on it
-                    case 'K': //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
-                    case 'M': //Multiple choice checkbox
-                    case 'P': //Multiple choice with comments checkbox + text
-                    case 'Q': //MULTIPLE SHORT TEXT                 // note does not have javatbd equivalent - so array filters don't work on it
-                    case 'R': //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
+                    case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                    case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                    case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                    case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                    case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format    // note does not have javatbd equivalent - so array filters don't work on it
+                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
+                    case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                    case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT                 // note does not have javatbd equivalent - so array filters don't work on it
+                    case Question::QT_R_RANKING_STYLE: //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                         $csuffix = $fielddata['aid'];
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                         $question = $fielddata['subquestion'];
                         //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        if ($type != 'H') {
-                            if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
+                        if ($type != Question::QT_H_ARRAY_FLEXIBLE_COLUMN) {
+                            if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", $sgqa)) {
                                 //                            $rowdivid = substr($sgqa,0,-7);
                             }
                             else {
@@ -3896,8 +3896,8 @@
                             }
                         }
                         break;
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case ';': //ARRAY (Multi Flexi) Text
+                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
                         $csuffix = $fielddata['aid'];
                         $sqsuffix = '_' . substr($fielddata['aid'],0,strpos($fielddata['aid'],'_'));
                         $varName = $fielddata['title'] . '_' . $fielddata['aid'];
@@ -3915,23 +3915,23 @@
                 $onlynum=false; // the default
                 switch($type)
                 {
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
+                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                    case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
                         $onlynum=true;
                         break;
-                    case '*': // Equation
-                    case ';': //ARRAY (Multi Flexi) Text
-                    case 'Q': //MULTIPLE SHORT TEXT
-                    case 'S': //SHORT FREE TEXT
+                    case Question::QT_ASTERISK_EQUATION: // Equation
+                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                    case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                    case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
                         if (isset($qattr[$questionNum]['numbers_only']) && $qattr[$questionNum]['numbers_only']=='1')
                         {
                             $onlynum=true;
                         }
                         break;
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'M': //Multiple choice checkbox
-                    case 'P': //Multiple choice with comments checkbox + text
+                    case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                    case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                         if (isset($qattr[$questionNum]['other_numbers_only']) && $qattr[$questionNum]['other_numbers_only']=='1' && preg_match('/other$/',$sgqa))
                         {
                             $onlynum=true;
@@ -3944,22 +3944,22 @@
                 // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
                 switch($type)
                 {
-                    case 'R': //RANKING STYLE
+                    case Question::QT_R_RANKING_STYLE: //RANKING STYLE
                         $jsVarName_on = 'answer' . $sgqa;
                         $jsVarName = 'java' . $sgqa;
                         break;
-                    case 'D': //DATE
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'S': //SHORT FREE TEXT
-                    case 'T': //LONG FREE TEXT
-                    case 'U': //HUGE FREE TEXT
-                    case 'Q': //MULTIPLE SHORT TEXT
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                    case 'X': //BOILERPLATE QUESTION
+                    case Question::QT_D_DATE: //DATE
+                    case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                    case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                    case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                    case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                    case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                    case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
                         $jsVarName_on = 'answer' . $sgqa;
                         $jsVarName = 'java' . $sgqa;
                         break;
-                    case '!': //List - dropdown
+                    case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                         if (preg_match("/other$/",$sgqa))
                         {
                             $jsVarName = 'java' . $sgqa;
@@ -3971,7 +3971,7 @@
                             $jsVarName_on = $jsVarName;
                         }
                         break;
-                    case 'L': //LIST drop-down/radio-button list
+                    case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                         if (preg_match("/other$/",$sgqa))
                         {
                             $jsVarName = 'java' . $sgqa;
@@ -3983,20 +3983,20 @@
                             $jsVarName_on = $jsVarName;
                         }
                         break;
-                    case '5': //5 POINT CHOICE radio-buttons
-                    case 'G': //GENDER drop-down list
-                    case 'I': //Language Question
-                    case 'Y': //YES/NO radio-buttons
-                    case '*': //Equation
-                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'H': //ARRAY (Flexible) - Column Format
-                    case 'M': //Multiple choice checkbox
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        if ($type == 'O' && preg_match('/_comment$/', $varName))
+                    case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
+                    case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                    case Question::QT_I_LANGUAGE: //Language Question
+                    case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
+                    case Question::QT_ASTERISK_EQUATION: //Equation
+                    case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                    case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                    case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                    case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                    case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
+                    case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                    case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                        if ($type == Question::QT_O_LIST_WITH_COMMENT && preg_match('/_comment$/', $varName))
                         {
                             $jsVarName_on = 'answer' . $sgqa;
                         }
@@ -4006,20 +4006,20 @@
                         }
                         $jsVarName = 'java' . $sgqa;
                         break;
-                    case '1': //Array (Flexible Labels) dual scale
+                    case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
                         $jsVarName = 'java' . str_replace('#','_',$sgqa);
                         $jsVarName_on = $jsVarName;
                         break;
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case ';': //ARRAY (Multi Flexi) Text
+                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
                         $jsVarName = 'java' . $sgqa;
                         $jsVarName_on = 'answer' . $sgqa;;
                         break;
-                    case '|': //File Upload
+                    case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                         $jsVarName = $sgqa;
                         $jsVarName_on = $jsVarName;
                         break;
-                    case 'P': //Multiple choice with comments checkbox + text
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                         if (preg_match("/(other|comment)$/",$sgqa))
                         {
                             $jsVarName_on = 'answer' . $sgqa;  // is this true for survey.php and not for group.php?
@@ -4033,12 +4033,12 @@
                         break;
                 }
                 // Hidden question are never on same page (except for equation)
-                if($hidden && $type!="*"){
+                if($hidden && $type!=Question::QT_ASTERISK_EQUATION){
                     $jsVarName_on = '';
                 }
 
-                if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || $type == 'O'  || !is_null($preg)
-                || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U' || $type == '|') {
+                if (!is_null($rowdivid) || $type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_N_NUMERICAL || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN || $type == Question::QT_O_LIST_WITH_COMMENT  || !is_null($preg)
+                || $type == Question::QT_S_SHORT_FREE_TEXT || $type == Question::QT_D_DATE || $type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_U_HUGE_FREE_TEXT || $type == Question::QT_VERTICAL_FILE_UPLOAD) {
                     if (!isset($q2subqInfo[$questionNum])) {
                         $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -4058,8 +4058,8 @@
                     }
                     switch ($type)
                     {
-                        case 'L':// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
-                        case '!':
+                        case Question::QT_L_LIST_DROPDOWN:// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
+                        case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                             if (!is_null($ansArray))
                             {
                                 foreach (array_keys($ansArray) as $key)
@@ -4076,7 +4076,7 @@
                                 }
                             }
                             break;
-                        case 'O':
+                        case Question::QT_O_LIST_WITH_COMMENT:
                             if(strlen($varName) > 8 && substr_compare($varName,'_comment',-8)===0)// The comment subquestion More speediest than regexp
                             {
                                 $q2subqInfo[$questionNum]['subqs'][] = array(
@@ -4097,11 +4097,11 @@
                                 );
                             }
                             break;
-                        case 'N':
-                        case 'S':
-                        case 'D':
-                        case 'T':
-                        case 'U':
+                        case Question::QT_N_NUMERICAL:
+                        case Question::QT_S_SHORT_FREE_TEXT:
+                        case Question::QT_D_DATE:
+                        case Question::QT_T_LONG_FREE_TEXT:
+                        case Question::QT_U_HUGE_FREE_TEXT:
                             $q2subqInfo[$questionNum]['subqs'][] = array(
                                 'varName' => $varName,
                                 'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
@@ -4211,7 +4211,7 @@
                 //                . ",'qseq':" . $questionSeq
                 .$ansList;
 
-                if ($type == 'M' || $type == 'P')
+                if ($type == Question::QT_M_MULTIPLE_CHOICE || $type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
                 {
                     $this->varNameAttr[$jsVarName] .= ",'question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES) . "'";
                 }
@@ -4940,7 +4940,7 @@
                     }
                     switch ($knownVar['type'])
                     {
-                        case 'D': //DATE
+                        case Question::QT_D_DATE: //DATE
                             if (trim($value)=="")
                             {
                                 $value = NULL;
@@ -4953,8 +4953,8 @@
                                 $value=$datetimeobj->convert("Y-m-d H:i");
                             }
                             break;
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                        case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                             if (trim($value)=="")
                             {
                                 $value = NULL;
@@ -4964,7 +4964,7 @@
                                 $value = sanitize_float($value);
                             }
                             break;
-                        case '|': //File Upload
+                        case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                             $value=NULL;  // can't upload a file via GET
                             break;
                     }
@@ -5453,20 +5453,20 @@
                     // @todo fix whole type according to DB : use Yii for this ?
                     switch($type)
                     {
-                        case 'D': //DATE
+                        case Question::QT_D_DATE: //DATE
                             if (trim($val)=='' || $val=="INVALID")// otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses() (not for default value, GET value, Expression set value etc ... cf todo
                             {
                                 $val=NULL;  // since some databases can't store blanks in date fields
                             }
                             break;
-                        case '|': //File upload
+                        case Question::QT_VERTICAL_FILE_UPLOAD: //File upload
                             // This block can be removed once we require 5.3 or later
                             if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
                                 $val=addslashes($val);
                             }
                             break;
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                        case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                             if (trim($val)=='' || !is_numeric($val)) // is_numeric error is done by EM : then show an error and same page again
                             {
                                 $val=NULL;  // since some databases can't store blanks in numerical inputs
@@ -6169,7 +6169,7 @@
             else
             {
                 // Check filter status to determine which subquestions are relevant
-                if ($qInfo['type'] == 'X') {
+                if ($qInfo['type'] == Question::QT_X_BOILERPLATE_QUESTION) {
                     $sgqas = array();   // Boilerplate questions can be ignored
                 }
                 else
@@ -6185,7 +6185,7 @@
                         continue;
                     }
                     $foundSQrelevance=false;
-                    if($qInfo['type']=='R')
+                    if($qInfo['type']==Question::QT_R_RANKING_STYLE)
                     {
                         // Relevance of subquestion for ranking question depend of the count of relevance of answers.
                         $iCountRank=(isset($iCountRank) ? $iCountRank+1 : 1);
@@ -6207,7 +6207,7 @@
                     {
                         switch ($sq['qtype'])
                         {
-                            case '1':   //Array (Flexible Labels) dual scale
+                            case Question::QT_1_ARRAY_MULTISCALE:   //Array (Flexible Labels) dual scale
                                 if ($sgqa == ($sq['rowdivid'] . '#0') || $sgqa == ($sq['rowdivid'] . '#1')) {
                                     $foundSQrelevance=true;
                                     if (isset($LEM->ParseResultCache[$sq['eqn']]))
@@ -6251,8 +6251,8 @@
                                     }
                                 }
                                 break;
-                            case ':': //ARRAY (Multi Flexi) 1 to 10
-                            case ';': //ARRAY (Multi Flexi) Text
+                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
                                 if (preg_match('/^' . $sq['rowdivid'] . '_/', $sgqa))
                                 {
                                     $foundSQrelevance=true;
@@ -6296,16 +6296,16 @@
                                         $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
                                     }
                                 }
-                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                            case 'F': //ARRAY (Flexible) - Row Format
-                            case 'M': //Multiple choice checkbox
-                            case 'P': //Multiple choice with comments checkbox + text
+                            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                 // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                            case 'Q': //MULTIPLE SHORT TEXT
+                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                                 if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment'))     // to catch case 'P'
                                 {
                                     $foundSQrelevance=true;
@@ -6350,7 +6350,7 @@
                                     }
                                 }
                                 break;
-                            case 'L': //LIST drop-down/radio-button list
+                            case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                                 if ($sgqa == ($sq['sgqa'] . 'other') && $sgqa == $sq['rowdivid'])   // don't do sub-q level validition to main question, just to other option
                                 {
                                     $foundSQrelevance=true;
@@ -6420,7 +6420,7 @@
             $unansweredSQs = array();   // list of sub-questions that weren't answered
             foreach ($relevantSQs as $sgqa)
             {
-                if (($qInfo['type'] != '*') && (!isset($_SESSION[$LEM->sessid][$sgqa]) || ($_SESSION[$LEM->sessid][$sgqa] === '' || is_null($_SESSION[$LEM->sessid][$sgqa]))))
+                if (($qInfo['type'] != Question::QT_ASTERISK_EQUATION) && (!isset($_SESSION[$LEM->sessid][$sgqa]) || ($_SESSION[$LEM->sessid][$sgqa] === '' || is_null($_SESSION[$LEM->sessid][$sgqa]))))
                 {
                     // then a relevant, visible, mandatory question hasn't been answered
                     // Equations are ignored, since set automatically
@@ -6441,16 +6441,16 @@
                 ), true);
                 switch ($qInfo['type'])
                 {
-                    case 'M':
-                    case 'P':
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
+                    case Question::QT_M_MULTIPLE_CHOICE:
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                    case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                    case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                         // If at least one checkbox is checked, we're OK
                         if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs)))
                         {
                             $qmandViolation = true;
                         }
-                        if (!($qInfo['type'] == '!' || $qInfo['type'] == 'L'))
+                        if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST_DROPDOWN))
                         {
                             $sMandatoryText = $LEM->gT('Please check at least one item.');
                             $mandatoryTip .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
@@ -6474,20 +6474,20 @@
 
                         }
                         break;
-                    case 'X':   // Boilerplate can never be mandatory
-                    case '*':   // Equation is auto-computed, so can't violate mandatory rules
+                    case Question::QT_X_BOILERPLATE_QUESTION:   // Boilerplate can never be mandatory
+                    case Question::QT_ASTERISK_EQUATION:   // Equation is auto-computed, so can't violate mandatory rules
                         break;
-                    case 'A':
-                    case 'B':
-                    case 'C':
-                    case 'Q':
-                    case 'K':
-                    case 'E':
-                    case 'F':
-                    case 'J':
-                    case 'H':
-                    case ';':
-                    case '1':
+                    case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+                    case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+                    case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                    case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                    case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+                    case Question::QT_F_ARRAY_FLEXIBLE_ROW:
+                    case QT_J:
+                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
+                    case Question::QT_1_ARRAY_MULTISCALE:
                         // In general, if any relevant questions aren't answered, then it violates the mandatory rule
                         if (count($unansweredSQs) > 0)
                         {
@@ -6498,7 +6498,7 @@
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
                         break;
-                    case ':':
+                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                         $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
                         if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1)
                         {
@@ -6543,7 +6543,7 @@
                             ), true);
                         }
                         break;
-                    case 'R':
+                    case Question::QT_R_RANKING_STYLE:
                         if (count($unansweredSQs) > 0)
                         {
                             $qmandViolation = true; // TODO - what about 'other'?
@@ -6553,7 +6553,7 @@
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
                         break;
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                         $_count=0;
                         for ($i=0;$i<count($unansweredSQs);++$i)
                         {
@@ -6584,10 +6584,10 @@
             {
                 switch ($qInfo['type'])
                 {
-                    case 'M':
-                    case 'P':
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
+                    case Question::QT_M_MULTIPLE_CHOICE:
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                    case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                    case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                         // If at least one checkbox is checked, we're OK
                         if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs)))
                         {
@@ -6778,7 +6778,7 @@
                     $LEM->updatedValues[$sgqa] = NULL;
                 }
             }
-            elseif ($qInfo['type'] == '*')
+            elseif ($qInfo['type'] == Question::QT_ASTERISK_EQUATION)
             {
                 // Process relevant equations, even if hidden, and write the result to the database
                 $textToParse=(isset($LEM->qattr[$qid]['equation']) && trim($LEM->qattr[$qid]['equation'])!="") ? $LEM->qattr[$qid]['equation'] : $qInfo['qtext'];
@@ -6803,7 +6803,7 @@
                     // Store the result of the Equation in the SESSION
                     $_SESSION[$LEM->sessid][$sgqa] = $result;
                     $_update = array(
-                    'type'=>'*',
+                    'type'=>Question::QT_ASTERISK_EQUATION,
                     'value'=>$result,
                     );
                     $updatedValues[$sgqa] = $_update;
@@ -7270,7 +7270,7 @@
                      * $afHide - if true, then use jQuery.show().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
-                    $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
+                    $inputSelector = (($arg['type'] == Question::QT_R_RANKING_STYLE) ? '' :  ' :input:not(:hidden)');
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
@@ -7311,7 +7311,7 @@
                             $relParts[] = "    }\n";
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
-                        if($arg['type']!='R') // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                        if($arg['type']!=Question::QT_R_RANKING_STYLE) // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
                             $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
                         $relParts[] = "  }\n  else {\n";
                         if ($sq['isExclusiveJS'] != '')
@@ -7352,11 +7352,11 @@
                             }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
-                        if($arg['type']!='R') // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                        if($arg['type']!=Question::QT_R_RANKING_STYLE) // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
                             $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
                         switch ($sq['qtype'])
                         {
-                            case 'L': //LIST drop-down/radio-button list
+                            case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                                 $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
                                 $relParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
                                 if ($listItem == 'other') {
@@ -7366,7 +7366,7 @@
                                 $relParts[] = "      $('#answer" . $sq['sgqa'] . "').click();\n"; // trigger click : no need other think, and whole event happen
                                 $relParts[] = "    }\n";
                                 break;
-                            case 'R':
+                            case Question::QT_R_RANKING_STYLE:
                                 $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));
                                 $relParts[] = " $('#question{$arg['qid']} .select-list select').each(function(){ \n";
                                 $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
@@ -7464,11 +7464,11 @@
                         // color-code single-entry fields as needed
                         switch ($arg['type'])
                         {
-                            case 'N':
-                            case 'S':
-                            case 'D':
-                            case 'T':
-                            case 'U':
+                            case Question::QT_N_NUMERICAL:
+                            case Question::QT_S_SHORT_FREE_TEXT:
+                            case Question::QT_D_DATE:
+                            case Question::QT_T_LONG_FREE_TEXT:
+                            case Question::QT_U_HUGE_FREE_TEXT:
                                 $valParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
                                 $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');\n";
                                 $valParts[] = "  }\n  else {\n";
@@ -7482,18 +7482,18 @@
                         // color-code mandatory other comment fields
                         switch ($arg['type'])
                         {
-                            case '!':
-                            case 'L':
-                            case 'P':
+                            case Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                            case Question::QT_L_LIST_DROPDOWN:
+                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                             switch ($arg['type'])
                             {
-                                case '!':
+                                case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                     $othervar = 'othertext' . substr($arg['jsResultVar'],4,-5);
                                     break;
-                                case 'L':
+                                case Question::QT_L_LIST_DROPDOWN:
                                     $othervar = 'answer' . substr($arg['jsResultVar'],4) . 'text';
                                     break;
-                                case 'P':
+                                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                                     $othervar = 'answer' . substr($arg['jsResultVar'],4);
                                     break;
                                 default:
@@ -7534,7 +7534,7 @@
                         {
                             // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
                             $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                            if ($arg['type'] == 'S')
+                            if ($arg['type'] == Question::QT_S_SHORT_FREE_TEXT)
                             {
                                 $relParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
                                 $relParts[] = "  {\n";
@@ -7544,7 +7544,7 @@
                         }
                     }
                     // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
-                    if ($arg['type'] == '*')
+                    if ($arg['type'] == Question::QT_ASTERISK_EQUATION)
                     {
                         $relParts[] = "  // Write value from the question into the answer field\n";
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
@@ -7562,7 +7562,7 @@
                         {
                             $dynamicQinG[$arg['gseq']] = array();
                         }
-                        if( !($arg['hidden'] && $arg['type']=="*"))// Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                        if( !($arg['hidden'] && $arg['type']==Question::QT_ASTERISK_EQUATION))// Equation question type don't update visibility of group if hidden ( child of bug #08315).
                             $dynamicQinG[$arg['gseq']][$arg['qid']]=true;
                         $relParts[] = "else {\n";
                         $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
@@ -7574,7 +7574,7 @@
                     {
                         // Second time : now if relevance is true: Group is allways visible (see bug #08315).
                         $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
-                        if( !($arg['hidden'] && $arg['type']=="*"))// Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                        if( !($arg['hidden'] && $arg['type']==Question::QT_ASTERISK_EQUATION))// Equation question type don't update visibility of group if hidden ( child of bug #08315).
                             $GalwaysRelevant[$arg['gseq']] = true;
                     }
 
@@ -7842,7 +7842,7 @@
                         if ($jsVar == $knownVar['jsName'])
                         {
                             if ($LEM->surveyMode=='group' && $knownVar['gseq'] == $LEM->currentGroupSeq) {
-                                if ($knownVar['hidden'] && $knownVar['type'] != '*') {
+                                if ($knownVar['hidden'] && $knownVar['type'] != Question::QT_ASTERISK_EQUATION) {
                                     ;   // need to  declare a hidden variable for non-equation hidden variables so can do dynamic lookup.
                                 }
                                 else {
@@ -8104,7 +8104,7 @@ EOT;
             foreach(explode("\n",$tests) as $test)
             {
                 $args = explode("~",$test);
-                $type = (($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S');
+                $type = (($args[1]=='expr') ? Question::QT_ASTERISK_EQUATION : ($args[1]=='message') ? Question::QT_X_BOILERPLATE_QUESTION : Question::QT_S_SHORT_FREE_TEXT);
                 $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>$type, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
                 $varSeq[] = $args[0];
                 $testArgs[] = $args;
@@ -8682,7 +8682,7 @@ EOD;
 
                         switch($type) // fix value before set it in $_SESSION : the data is reset when show it again to user.trying to save in DB : date only, but think it must be leave like it and filter oinly when save in DB
                         {
-                            case 'D': //DATE
+                            case Question::QT_D_DATE: //DATE
 
                                 // Handle Arabic numerals
                                 // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
@@ -8711,7 +8711,7 @@ EOD;
                                     }
                                 }
                                 break;
-                            case '|': //File Upload
+                            case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                                 if (!preg_match('/_filecount$/', $sq))
                                 {
                                     $json = $value;
@@ -8864,18 +8864,18 @@ EOD;
                             $type = $var['type'];
                             switch($type)
                             {
-                                case 'Q': //MULTIPLE SHORT TEXT
-                                case ';': //ARRAY (Multi Flexi) Text
-                                case 'S': //SHORT FREE TEXT
-                                case 'D': //DATE
-                                case 'T': //LONG FREE TEXT
-                                case 'U': //HUGE FREE TEXT
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                                case Question::QT_D_DATE: //DATE
+                                case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                                case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
                                     return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
-                                case '!': //List - dropdown
-                                case 'L': //LIST drop-down/radio-button list
-                                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                                case 'M': //Multiple choice checkbox
-                                case 'P': //Multiple choice with comments checkbox + text
+                                case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                                case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                                case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                     if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name))
                                     {
                                         return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
@@ -8900,18 +8900,18 @@ EOD;
                     $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
                     switch($type)
                     {
-                        case '!': //List - dropdown
-                        case 'L': //LIST drop-down/radio-button list
-                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        case '1': //Array (Flexible Labels) dual scale  // need scale
-                        case 'H': //ARRAY (Flexible) - Column Format
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'R': //RANKING STYLE
-                            if ($type == 'O' && preg_match('/comment\.value/',$name))
+                        case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                        case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                        case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
+                        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
+                        case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                        case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                            if ($type == Question::QT_O_LIST_WITH_COMMENT && preg_match('/comment\.value/',$name))
                             {
                                 $value = $code;
                             }
-                            else if (($type == 'L' || $type == '!') && preg_match('/_other\.value/',$name))
+                            else if (($type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other\.value/',$name))
                             {
                                 $value = $code;
                             }
@@ -8982,18 +8982,18 @@ EOD;
                         $shown = $default;  // Default value to satisfy Scrutinizer
                         switch($type)
                         {
-                            case '!': //List - dropdown
-                            case 'L': //LIST drop-down/radio-button list
-                            case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                            case '1': //Array (Flexible Labels) dual scale  // need scale
-                            case 'H': //ARRAY (Flexible) - Column Format
-                            case 'F': //ARRAY (Flexible) - Row Format
-                            case 'R': //RANKING STYLE
-                                if ($type == 'O' && preg_match('/comment$/',$name))
+                            case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                            case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                            case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                            case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
+                            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
+                            case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                            case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                                if ($type == Question::QT_O_LIST_WITH_COMMENT && preg_match('/comment$/',$name))
                                 {
                                     $shown = $code;
                                 }
-                                else if (($type == 'L' || $type == '!') && preg_match('/_other$/',$name))
+                                else if (($type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other$/',$name))
                                 {
                                     $shown = $code;
                                 }
@@ -9020,13 +9020,13 @@ EOD;
                                     }
                                 }
                                 break;
-                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                            case ':': //ARRAY (Multi Flexi) 1 to 10
-                            case '5': //5 POINT CHOICE radio-buttons
+                            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
+                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                            case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                                 $shown = $code;
                                 break;
-                            case 'D': //DATE
+                            case Question::QT_D_DATE: //DATE
                                 $LEM =& LimeExpressionManager::singleton();
                                 $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'],$_SESSION['LEMlang']);
                                 $aDateFormatData=getDateFormatDataForQID($aAttributes[$var['qid']],$LEM->surveyOptions);
@@ -9036,21 +9036,21 @@ EOD;
                                     $shown=date($aDateFormatData['phpdate'], strtotime($code));
                                 }
                                 break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                            case 'Q': //MULTIPLE SHORT TEXT
-                            case ';': //ARRAY (Multi Flexi) Text
-                            case 'S': //SHORT FREE TEXT
-                            case 'T': //LONG FREE TEXT
-                            case 'U': //HUGE FREE TEXT
-                            case '*': //Equation
-                            case 'I': //Language Question
-                            case '|': //File Upload
-                            case 'X': //BOILERPLATE QUESTION
+                            case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                            case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                            case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                            case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                            case Question::QT_ASTERISK_EQUATION: //Equation
+                            case Question::QT_I_LANGUAGE: //Language Question
+                            case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
+                            case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
                                 $shown = $code;
                                 break;
-                            case 'M': //Multiple choice checkbox
-                            case 'P': //Multiple choice with comments checkbox + text
+                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                 if ($code == 'Y' && isset($var['question']) && !preg_match('/comment$/',$sgqa))
                                 {
                                     $shown = $var['question'];
@@ -9063,10 +9063,10 @@ EOD;
                                     $shown = $default;
                                 }
                                 break;
-                            case 'G': //GENDER drop-down list
-                            case 'Y': //YES/NO radio-buttons
-                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                            case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
+                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                                 $ansArray = $var['ansArray'];
                                 if (is_null($ansArray))
                                 {
@@ -9149,7 +9149,7 @@ EOD;
                 $_result = $LEM->tempVars[$name]['code'];
                 $_SESSION[$LEM->sessid][$name] = $_result;
                 $LEM->updatedValues[$name] = array(
-                    'type'=>'*',
+                    'type'=>Question::QT_ASTERISK_EQUATION,
                     'value'=>$_result,
                 );
                 return $_result;
@@ -9591,7 +9591,7 @@ EOD;
                     $varName=$LEM->knownVars[$sgqa]['qcode'];
                     switch  ($q['info']['type'])
                     {
-                        case '1':
+                        case Question::QT_1_ARRAY_MULTISCALE:
                             if (preg_match('/#1$/',$sgqa)) {
                                 $rowdivid = NULL;   // so that doesn't show same message for second scale
                             }
@@ -9600,13 +9600,13 @@ EOD;
                                 $varName = substr($LEM->knownVars[$sgqa]['qcode'],0,-2);
                             }
                             break;
-                        case 'P':
+                        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                             if (preg_match('/comment$/',$sgqa)) {
                                 $rowdivid = NULL;
                             }
                             break;
-                        case ':':
-                        case ';':
+                        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
                             $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
                             if (isset($sawThis[$qid . '~' . $_rowdivid])) {
                                 $rowdivid = NULL;   // so don't show again
@@ -9685,7 +9685,7 @@ EOD;
 
                         $subQeqn = '';
                         $rowdivid = $sgqas[0] . $ansInfo[1];
-                        if ($q['info']['type'] == 'R')
+                        if ($q['info']['type'] == Question::QT_R_RANKING_STYLE)
                         {
                             $rowdivid = $LEM->sid . 'X' . $gid . 'X' . $qid . $ansInfo[1];
                         }
@@ -10016,7 +10016,7 @@ EOD;
 
                         switch  ($q['info']['type'])
                         {
-                            case '1':
+                            case Question::QT_1_ARRAY_MULTISCALE:
                                 if (preg_match('/#1$/',$sgqa)) {
                                     $rowdivid = NULL;   // so that doesn't show same message for second scale
                                 }
@@ -10025,13 +10025,13 @@ EOD;
                                     $varName = substr($LEM->knownVars[$sgqa]['qcode'],0,-2);
                                 }
                                 break;
-                            case 'P':
+                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                                 if (preg_match('/comment$/',$sgqa)) {
                                     $rowdivid = NULL;
                                 }
                                 break;
-                            case ':':
-                            case ';':
+                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
                                 $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
                                 if (isset($sawThis[$qid . '~' . $_rowdivid])) {
                                     $rowdivid = NULL;   // so don't show again
@@ -10095,7 +10095,7 @@ EOD;
                             }
 
                             $row = array();
-                            if ($type == ':' || $type == ';')
+                            if ($type == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT)
                             {
                                 $row['class'] = 'SQ';
                             }

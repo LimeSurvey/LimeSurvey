@@ -35,7 +35,7 @@
 
 
             //5 POINT CHOICE radio-buttons
-            case "5": ?>
+            case Question::QT_5_POINT_CHOICE: ?>
             <div class="col-sm-10">
                 <select name='<?php echo $fieldname; ?>' class='form-control'>
                     <option value=''><?php eT("No answer",'html',$sDataEntryLanguage); ?></option>
@@ -49,7 +49,7 @@
 
 
             //DATE
-            case "D":
+            case Question::QT_D_DATE:
                 //                            $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                 ?>
@@ -87,7 +87,7 @@
 
 
             //GENDER drop-down list
-            case "G": ?>
+            case Question::QT_G_GENDER_DROPDOWN: ?>
             <div class="col-sm-10">
                 <select name='<?php echo $fieldname; ?>'  class='form-control'>
                     <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
@@ -99,8 +99,8 @@
 
 
             //MULTIPLE SHORT TEXT
-            case "Q":
-            case "K": ?>
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: ?>
             <div class="col-sm-10">
                 <table>
                     <?php foreach ($dearesult as $dearow):?>
@@ -119,7 +119,7 @@
 
 
             // multi scale
-            case "1": ?>
+            case Question::QT_1_ARRAY_MULTISCALE: ?>
             <div class="col-sm-10">
                 <table>
                     <tr>
@@ -179,8 +179,8 @@
 
 
         //LIST drop-down/radio-button list
-        case "L":
-        case "!": ?>
+        case Question::QT_L_LIST_DROPDOWN:
+        case Question::QT_EXCLAMATION_LIST_DROPDOWN: ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>
                 <?php if ($defexists=="") { ?>
@@ -204,7 +204,7 @@
 
 
         //LIST WITH COMMENT drop-down/radio-button list + textarea
-        case "O":  ?>
+        case Question::QT_O_LIST_WITH_COMMENT:  ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>
                 <?php if ($defexists=="") { ?>
@@ -220,7 +220,7 @@
 
 
         //RANKING TYPE QUESTION
-        case "R": ?>
+        case Question::QT_R_RANKING_STYLE: ?>
         <div class="col-sm-10">
         <div id="question<?php echo $thisqid ?>" class="ranking-answers">
             <ul class="answers-list list-unstyled">
@@ -279,7 +279,7 @@
 
 
         //Multiple choice checkbox (Quite tricky really!)
-        case "M": ?>
+        case Question::QT_M_MULTIPLE_CHOICE: ?>
         <div class="col-sm-10">
             <?php
             if ($deqrow['other'] == "Y") {$meacount++;}
@@ -339,7 +339,7 @@
 
 
         //Language Switch
-        case "I":  ?>
+        case Question::QT_I_LANGUAGE:  ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>
                 <option value='' selected='selected'><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
@@ -354,7 +354,7 @@
 
 
         //Multiple choice with comments checkbox + text
-        case "P":  ?>
+        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  ?>
         <div class="col-lg-10">
             <table border='0'>
                 <?php foreach ($mearesult as $mearow)
@@ -384,7 +384,7 @@
             </table>
         </div>
         <?php break;
-        case "|": ?>
+        case Question::QT_VERTICAL_FILE_UPLOAD: ?>
 
         <div class="col-sm-10">
         <script type='text/javascript'>
@@ -457,7 +457,7 @@
 
 
         //NUMERICAL TEXT
-        case "N": ?>
+        case Question::QT_N_NUMERICAL: ?>
             <div class="col-sm-10">
             <?php
             if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
@@ -497,7 +497,7 @@
             echo '</div>';
             break;
 
-        case "S": //SHORT FREE TEXT
+        case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
             ?>
             <div class="col-sm-10">
             <?php
@@ -558,7 +558,7 @@
 
 
         //LONG FREE TEXT
-        case "T":
+        case Question::QT_T_LONG_FREE_TEXT:
         ?>
         <div class="col-sm-10">
         <?php
@@ -592,7 +592,7 @@
             <?php
             break;
 
-        case "U": //HUGE FREE TEXT
+        case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
             if (trim($qidattributes['display_rows'])!='')
             {
                 $drows=$qidattributes['display_rows'];
@@ -620,7 +620,7 @@
             echo $prefix; ?><textarea name='<?php echo $fieldname; ?>' cols='<?php echo $tiwidth; ?>' rows='<?php echo $drows; ?>'></textarea><?php echo $suffix;
             break;
 
-        case "Y": //YES/NO radio-buttons
+        case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
         ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>
@@ -633,7 +633,7 @@
 
 
         //ARRAY (5 POINT CHOICE) radio-buttons
-        case "A": ?>
+        case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: ?>
 
         <div class="col-sm-10">
             <table>
@@ -658,7 +658,7 @@
 
 
         //ARRAY (10 POINT CHOICE) radio-buttons
-        case "B":  ?>
+        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:  ?>
         <div class="col-sm-10">
         <table>
             <?php foreach ($mearesult as $mearow)
@@ -682,7 +682,7 @@
 
 
         //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-        case "C":
+        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
         ?>
         <div class="col-sm-10">
         <table>
@@ -707,7 +707,7 @@
         <?php
         //ARRAY (YES/UNCERTAIN/NO) radio-buttons
         break;
-        case "E":
+        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
         ?>
         <div class="col-sm-10">
             <table>
@@ -731,7 +731,7 @@
 
 
         //ARRAY (Multi Flexi)
-        case ":":
+        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
             $labelcodes=array();
         ?>
         <div class="col-sm-10">
@@ -787,7 +787,7 @@
 
 
         //ARRAY (Multi Flexi)
-        case ";": ?>
+        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: ?>
         <div class="col-sm-10">
         <table>
             <tr><td></td>
@@ -832,8 +832,8 @@
 
 
         //ARRAY (Flexible Labels)
-        case "F":
-        case "H": ?>
+        case Question::QT_F_ARRAY_FLEXIBLE_ROW:
+        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: ?>
         <div class="col-sm-10">
         <table>
             <?php  foreach ( $mearesult as $mearow)

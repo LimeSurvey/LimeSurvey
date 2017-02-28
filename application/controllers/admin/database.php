@@ -99,7 +99,7 @@ class database extends Survey_Common_Action
                 {
                     // Qick and dirty insert for yes/no defaul value
                     // write the the selectbox option, or if "EM" is slected, this value to table
-                    if ($sQuestionType == 'Y'){
+                    if ($sQuestionType == Question::QT_Y_YES_NO_RADIO){
                         /// value for all langs
                         if (Yii::app()->request->getPost('samedefault') == 1){
                             $sLanguage = $aSurveyLanguages[0];   // turn
@@ -150,7 +150,7 @@ class database extends Survey_Common_Action
             $iScaleCount=$aQuestionTypeList[$sQuestionType]['answerscales'];
             /* for already activated survey and rank question type : fix the maxDbAnswer before deleting answers */
             /* @todo : add it to upgrage DB system, and see for the lsa */
-            if($sQuestionType=="R" && Survey::model()->findByPk($iSurveyID)->active=="Y")
+            if($sQuestionType==Question::QT_R_RANKING_STYLE && Survey::model()->findByPk($iSurveyID)->active=="Y")
             {
                 QuestionAttribute::model()->find(
                     "qid = :qid AND attribute = 'max_subquestions'",
@@ -848,16 +848,16 @@ class database extends Survey_Common_Action
             $iSubquestionScales = $aQuestionTypeList[$sQuestionType]['subquestions'];
 
             // These are the questions types that have the other option therefore we set everything else to 'No Other'
-            if (($sQuestionType!= "L") && ($sQuestionType!= "!") && ($sQuestionType!= "P") && ($sQuestionType!="M"))
+            if (($sQuestionType!= Question::QT_L_LIST_DROPDOWN) && ($sQuestionType!= Question::QT_EXCLAMATION_LIST_DROPDOWN) && ($sQuestionType!= Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) && ($sQuestionType!=Question::QT_M_MULTIPLE_CHOICE))
             {
                 $_POST['other']='N';
             }
 
             // These are the questions types that have no validation - so zap it accordingly
 
-            if ($sQuestionType== "!" || $sQuestionType== "L" || $sQuestionType== "M" || $sQuestionType== "P" ||
-            $sQuestionType== "F" || $sQuestionType== "H" ||
-            $sQuestionType== "X" || $sQuestionType== "")
+            if ($sQuestionType== Question::QT_EXCLAMATION_LIST_DROPDOWN || $sQuestionType== Question::QT_L_LIST_DROPDOWN || $sQuestionType== Question::QT_M_MULTIPLE_CHOICE || $sQuestionType== Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS ||
+            $sQuestionType== Question::QT_F_ARRAY_FLEXIBLE_ROW || $sQuestionType== Question::QT_H_ARRAY_FLEXIBLE_COLUMN ||
+            $sQuestionType== Question::QT_X_BOILERPLATE_QUESTION || $sQuestionType== "")
             {
                 $_POST['preg']='';
             }
@@ -868,7 +868,7 @@ class database extends Survey_Common_Action
             $_POST['other'] = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
 
             // These are the questions types that have no mandatory property - so zap it accordingly
-            if ($sQuestionType== "X" || $sQuestionType== "|")
+            if ($sQuestionType== Question::QT_X_BOILERPLATE_QUESTION || $sQuestionType== Question::QT_VERTICAL_FILE_UPLOAD)
             {
                 $_POST['mandatory']='N';
             }

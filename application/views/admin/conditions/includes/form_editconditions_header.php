@@ -154,7 +154,7 @@
                         <div class='col-sm-5'>
                             <select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
                                 <?php foreach ($cquestions as $cqn): ?>
-                                    <?php if ($cqn[2] != 'M' && $cqn[2] != 'P'): ?>
+                                    <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS): ?>
                                         <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
                                         <option
                                             value='<?php echo '@' . $cqn[3] . '@'; ?>'
