@@ -891,11 +891,14 @@ body div.row .question-container {
     margin-bottom: 2em;
 }
 
-.answer-container, .question-help-container
+.answer-container, .question-help-container, .question-valid-message
 {
     border-style: solid;
 }
-
+.question-valid-message
+{
+    border-width:0px 1px 0px 1px;
+}
 .answer-container
 {
     border-width: 0px 1px 0px 1px;
