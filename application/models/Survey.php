@@ -1123,6 +1123,7 @@ class Survey extends LSActiveRecord
                     $criteria->mergeWith($subCriteria1);
                     $criteria->mergeWith($subCriteria2);
 
+
                 }
             }
         }
