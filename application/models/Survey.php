@@ -1053,6 +1053,7 @@ class Survey extends LSActiveRecord
                     $subCriteria2->addCondition('t.startdate IS NULL', "OR");
                     $criteria->mergeWith($subCriteria1);
                     $criteria->mergeWith($subCriteria2);
+
                 }
             }
         }
