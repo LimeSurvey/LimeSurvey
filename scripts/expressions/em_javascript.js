@@ -380,10 +380,12 @@ function LEMimplode()
 /*
  * Returns true if within matches the pattern.  Pattern must start and end with the '/' character
  */
-function LEMregexMatch(pattern,within)
+function LEMregexMatch(sRegExp,within)
 {
     try {
-        var reg = new RegExp(pattern.substring(1,pattern.length-2));
+        var flags = sRegExp.replace(/.*\/([gimy]*)$/, '$1');
+        var pattern = sRegExp.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1');
+        var reg = new RegExp(pattern, flags+'u');        
         return reg.test(within);
     }
     catch (err) {

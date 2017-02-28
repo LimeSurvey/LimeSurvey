@@ -190,7 +190,7 @@ class responses extends Survey_Common_Action
                         if ($qidattributes['show_comment'] == 1)
                             $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i, 'qid'=>$field['qid']);
                         $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File size').")",'code'=>viewHelper::getFieldCode($field).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
@@ -270,7 +270,7 @@ class responses extends Survey_Common_Action
                                 $index = $fnames[$i]['index'];
                                 $metadata = $fnames[$i]['metadata'];
                                 $phparray = json_decode_ls($iIdrow[$fnames[$i][0]]);
-
+                                              
                                 if (isset($phparray[$index]))
                                 {
                                     switch ($metadata)
@@ -281,7 +281,7 @@ class responses extends Survey_Common_Action
                                         case "name":
                                             $answervalue = CHtml::link(
                                                 $oPurifier->purify(rawurldecode($phparray[$index][$metadata])),
-                                                $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$iId,"sFileName"=>$phparray[$index][$metadata]))
+                                                $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$iId,"iQID"=>$fnames[$i]['qid'],"iIndex"=>$index))
                                             );
                                             break;
                                         default:
@@ -543,35 +543,38 @@ class responses extends Survey_Common_Action
     * @access public
     * @param $iSurveyId : survey id
     * @param $iResponseId : response if
-    * @param $sFileName : The filename
+    * @param $iQID : The question ID
     * @return application/octet-stream
     */
-    public function actionDownloadfile($iSurveyId,$iResponseId,$sFileName)
+    public function actionDownloadfile($iSurveyId, $iResponseId, $iQID, $iIndex)
     {
+        $iIndex=(int)$iIndex;
+        $iResponseId=(int)$iResponseId;
+        $iQID=(int)$iQID;
+        
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
             $oResponse = Response::model($iSurveyId)->findByPk($iResponseId);
-            foreach ($oResponse->getFiles() as $aFile)
+            $aQuestionFiles=$oResponse->getFiles($iQID);
+            if (isset($aQuestionFiles[$iIndex]))
             {
-                if (rawurldecode($aFile['name']) == rawurldecode($sFileName))
+               $aFile=$aQuestionFiles[$iIndex];
+                $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
+                if (file_exists($sFileRealName))
                 {
-                    $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
-                    if (file_exists($sFileRealName))
-                    {
-                        @ob_clean();
-                        header('Content-Description: File Transfer');
-                        header('Content-Type: application/octet-stream');// Find the real type ?
-                        header('Content-Disposition: attachment; filename="' . rawurldecode($aFile['name']) . '"');
-                        header('Content-Transfer-Encoding: binary');
-                        header('Expires: 0');
-                        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                        header('Pragma: public');
-                        header('Content-Length: ' . filesize($sFileRealName));
-                        readfile($sFileRealName);
-                        exit;
-                    }
-                    break;
+                    @ob_clean();
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: application/octet-stream');// Find the real type ?
+                    header('Content-Disposition: attachment; filename="' . rawurldecode($aFile['name']) . '"');
+                    header('Content-Transfer-Encoding: binary');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($sFileRealName));
+                    readfile($sFileRealName);
+                    exit;
                 }
+                break;
             }
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
             $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$iSurveyId));
