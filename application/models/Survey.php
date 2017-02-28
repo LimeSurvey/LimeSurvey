@@ -15,6 +15,72 @@ if (!defined('BASEPATH'))
 *
 */
 
+/**
+ * Class Survey
+ *
+ * @property integer $sid primary key
+ * @property integer $owner_id
+ * @property string $admin
+ * @property string $active
+ * @property string $expires Expiry date
+ * @property string $startdate
+ * @property string $adminemail
+ * @property string $anonymized
+ * @property string $faxto
+ * @property string $format
+ * @property string $savetimings
+ * @property string $template Template name
+ * @property string $language
+ * @property string $additional_languages
+ * @property string $datestamp
+ * @property string $usecookie
+ * @property string $allowsave
+ * @property integer $autonumber_start
+ * @property string $autoredirect
+ * @property string $allowprev
+ * @property string $printanswers
+ * @property string $ipaddr
+ * @property string $refurl
+ * @property string $datecreated
+ * @property string $publicstatistics
+ * @property string $publicgraphs
+ * @property string $listpublic
+ * @property string $htmlemail
+ * @property string $sendconfirmation
+ * @property string $tokenanswerspersistence
+ * @property string $assessments
+ * @property string $usecaptcha
+ * @property string $usetokens
+ * @property string $bounce_email
+ * @property string $attributedescriptions
+ * @property string $emailresponseto
+ * @property integer $emailnotificationto
+ * @property string $showxquestions
+ * @property string $showgroupinfo
+ * @property string $shownoanswer
+ * @property string $showqnumcode
+ * @property integer $bouncetime
+ * @property string $bounceprocessing
+ * @property string $bounceaccounttype
+ * @property string $bounceaccounthost
+ * @property string $bounceaccountpass
+ * @property string $bounceaccountencryption
+ * @property string $bounceaccountuser
+ * @property string $showwelcome
+ * @property string $showprogress
+ * @property integer $questionindex
+ * @property integer $navigationdelay
+ * @property string $nokeyboard
+ * @property string $alloweditaftercompletion
+ * @property string $googleanalyticsstyle
+ * @property string $googleanalyticsapikey
+ *
+ * @property Permission[] $permissions
+ * @property SurveyLanguageSetting[] $languagesettings
+ * @property User $owner
+ * @property QuestionGroup[] $groups
+ * @property Quota[] $quotas
+ */
 class Survey extends LSActiveRecord
 {
     /**
@@ -72,9 +138,11 @@ class Survey extends LSActiveRecord
             return $this->languagesettings[$this->language]->surveyls_title;
         }
     }
+
     /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
      * @param int $surveyId
+     * @return bool
      */
     public function expire($surveyId = null)
     {
@@ -148,6 +216,7 @@ class Survey extends LSActiveRecord
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
+            'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
         );
     }
 
