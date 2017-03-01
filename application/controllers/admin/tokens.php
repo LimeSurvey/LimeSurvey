@@ -11,6 +11,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+     
+use \ls\pluginmanager\PluginEvent;
 
 /**
 * Tokens Controller
@@ -48,7 +50,7 @@ class tokens extends Survey_Common_Action
         $aData['surveyprivate'] = $thissurvey['anonymized'];
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['buttons']['view']=TRUE;
 
@@ -379,7 +381,7 @@ class tokens extends Survey_Common_Action
         $aData['aLanguages']                    = $aLanguages;
         $surveyinfo                             = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"]                    = $surveyinfo;
-        $aData['title_bar']['title']            = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title']            = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]        = true;
         $aData['sidemenu']['state'] = false;
         $aData['token_bar']['buttons']['view']  = true;
@@ -553,7 +555,7 @@ class tokens extends Survey_Common_Action
 
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['buttons']['view']=TRUE;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
@@ -649,10 +651,10 @@ class tokens extends Survey_Common_Action
 
     /**
      * Edit Tokens
-     * @param int $iSurveyID
+     * @param int $iSurveyId
      * @param int $iTokenId
      * @param boolean $ajax
-     * @return void
+     * @return false|null
      * @todo When is this function used without Ajax?
      */
     public function edit($iSurveyId, $iTokenId, $ajax = false)
@@ -822,7 +824,7 @@ class tokens extends Survey_Common_Action
         $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['savebutton']['form'] = TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;  // Close button
@@ -982,7 +984,7 @@ class tokens extends Survey_Common_Action
         $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;  // Close button
 
@@ -1204,7 +1206,7 @@ class tokens extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;  // Close button
 
@@ -1592,7 +1594,7 @@ class tokens extends Survey_Common_Action
         $aData = array();
 
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=true;
         $aData['sidemenu']['state'] = false;
         $aData['token_bar']['exportbutton']['form']=true;
@@ -1714,7 +1716,7 @@ class tokens extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;  // Close button
 
@@ -1993,7 +1995,7 @@ class tokens extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokensimport.js');
@@ -2340,7 +2342,7 @@ class tokens extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
 
 
@@ -2498,7 +2500,7 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
 
         $this->_renderWrappedTemplate('token', array( 'bounce'), $aData);
     }
@@ -2568,7 +2570,7 @@ class tokens extends Survey_Common_Action
         $surveyinfo = $oSurvey->surveyinfo;
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['savebutton']['form'] = TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
@@ -2694,7 +2696,7 @@ class tokens extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }

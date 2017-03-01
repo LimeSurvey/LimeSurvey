@@ -14,6 +14,8 @@ if (!defined('BASEPATH'))
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+use \ls\pluginmanager\PluginEvent;
+
 /**
 * survey
 *
@@ -628,6 +630,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $iSurveyID = (int) $iSurveyID;
 
+        Yii::app()->user->setState('sql_'.$iSurveyID,''); // If user has set some filters for responses from statistics on a previous activation, it must be wiped out
         $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
@@ -1476,7 +1479,7 @@ class SurveyAdmin extends Survey_Common_Action
             $row['question'] = $oRow['title'];
             $row['parameter'] = $oRow['parameter'];
             $row['datas'] = $oRow;
-            
+
             $aData['rows'][] = $row;
             $i++;
         }

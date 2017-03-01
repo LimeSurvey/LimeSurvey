@@ -12,6 +12,8 @@
 *
 */
 
+use \ls\pluginmanager\PluginEvent;
+
 class SurveyRuntimeHelper {
 
     /**

@@ -83,7 +83,7 @@ class translate extends Survey_Common_Action {
 
             $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
@@ -903,7 +903,7 @@ class translate extends Survey_Common_Action {
         $translateoutput .= CHtml::openTag('td', array('valign'=>'middle'));
         $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
         $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
-        if ($iScaleID!='') $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
+        if (is_numeric($iScaleID)) $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
 
         $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
 

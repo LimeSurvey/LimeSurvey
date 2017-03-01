@@ -39,7 +39,7 @@ abstract class PluginBase implements iPlugin {
      * @param PluginManager $manager    The plugin manager instantiating the object
      * @param int           $id         The id for storage
      */
-    public function __construct(\PluginManager $manager, $id)
+    public function __construct(\ls\pluginmanager\PluginManager $manager, $id)
     {
         $this->pluginManager = $manager;
         $this->id = $id;
@@ -263,6 +263,10 @@ abstract class PluginBase implements iPlugin {
     {
         $alias = 'plugin_views_folder' . $this->id;
         \Yii::setPathOfAlias($alias, $this->getDir());
+        if (isset($data['plugin'])) {
+            throw new \InvalidArgumentException('$data cannot contain plugin');
+        }
+        $data['plugin'] = $this;
         return \Yii::app()->controller->renderPartial($alias .'.views.' . $viewfile, $data, $return, $processOutput);
     }
 

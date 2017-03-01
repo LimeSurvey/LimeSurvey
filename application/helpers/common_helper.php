@@ -12,6 +12,8 @@
 */
 Yii::import('application.helpers.sanitize_helper', true);
 
+use \ls\pluginmanager\PluginEvent;
+
 /**
 * Simple function to sort the permissions by title
 *
@@ -2455,27 +2457,6 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
         }
     }
     return $output;
-}
-
-/**
-* set the rights of a user and his children
-*
-* @param int $uid the user id
-* @param mixed $rights rights array
-*/
-function setuserpermissions($uid, $rights)
-{
-    $uid=sanitize_int($uid);
-    $updates = "create_survey=".$rights['create_survey']
-    . ", create_user=".$rights['create_user']
-    . ", participant_panel=".$rights['participant_panel']
-    . ", delete_user=".$rights['delete_user']
-    . ", superadmin=".$rights['superadmin']
-    . ", configurator=".$rights['configurator']
-    . ", manage_template=".$rights['manage_template']
-    . ", manage_label=".$rights['manage_label'];
-    $uquery = "UPDATE {{users}} SET ".$updates." WHERE uid = ".$uid;
-    return dbSelectLimitAssoc($uquery);     //Checked
 }
 
 /**
@@ -5002,7 +4983,8 @@ function fixLanguageConsistency($sid, $availlangs='')
             reset($langs);
         }
     }
-
+    /* Remove invalid question : can break survey */
+    Survey::model()->findByPk($sid)->fixInvalidQuestions();
 
     $query = "SELECT * FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
@@ -5682,8 +5664,11 @@ function getPrintableHeader()
     return $headelements;
 }
 
-// This function returns the Footer as result string
-// If you want to echo the Footer use doFooter() !
+/**
+ * This function returns the Footer as result string
+ * If you want to echo the Footer use doFooter()!
+ * @return string
+ */
 function getFooter()
 {
 
@@ -5699,10 +5684,16 @@ function getFooter()
         return $embedded_footerfunc();
 }
 
-function doFooter($surveyid)
+/**
+ * @param int|null $surveyid Null for front-end startpage where there's no survey
+ * @return void
+ */
+function doFooter($surveyid = null)
 {
-    $event = new PluginEvent('beforeFooterRender');
-    $event->set('surveyId', $surveyid);
+    $event = new PluginEvent('beforeCloseHtml');
+    if ($surveyid) {
+        $event->set('surveyId', $surveyid);
+    }
     App()->getPluginManager()->dispatchEvent($event);
     if (!is_null($event->get('html')))
     {
@@ -5852,7 +5843,7 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 *
 * @param boolean $bIncludeOwner If the survey owner should be included
 * @param boolean $bIncludeSuperAdmins If Super admins should be included
-* @param int surveyid
+* @param int $surveyid
 * @return string
 */
 function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surveyid)
@@ -5876,25 +5867,37 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
-
         $authorizedUsersList = getUserList('onlyuidarray');
     }
 
-        foreach($aSurveyIDResult as $sv)
-        {
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
+    $svexist = false;
+    foreach($aSurveyIDResult as $sv)
+    {
+        if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
             in_array($sv['uid'],$authorizedUsersList))
-            {
-                $surveyselecter .= "<option";
-                $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
-            }
+        {
+            $surveyselecter .= "<option";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
+            $svexist = true;
         }
-    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "<option value='-1'>".gT("None")."</option>\n".$surveyselecter;}
+    }
+
+    if ($svexist) {
+        $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
+    }
+    else {
+        $surveyselecter = "<option value='-1'>".gT("None")."</option>\n".$surveyselecter;
+    }
 
     return $surveyselecter;
 }
 
+/**
+ * Return HTML <option> list of user groups
+ * @param string $outputformat
+ * @param int $surveyid
+ * @return string
+ */
 function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 {
 
@@ -5918,6 +5921,7 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
         $authorizedGroupsList=getUserGroupList(NULL, 'simplegidarray');
     }
 
+    $svexist = false;
     foreach($aResult as $sv)
     {
         if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
@@ -5926,11 +5930,16 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
             $surveyselecter .= "<option";
             $surveyselecter .=" value='{$sv['ugid']}'>{$sv['name']}</option>\n";
             $simpleugidarray[] = $sv['ugid'];
+            $svexist = true;
         }
     }
 
-    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "<option value='-1'>".gT("None")."</option>\n".$surveyselecter;}
+    if ($svexist) {
+        $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
+    }
+    else {
+        $surveyselecter = "<option value='-1'>".gT("None")."</option>\n".$surveyselecter;
+    }
 
     if ($outputformat == 'simpleugidarray')
     {

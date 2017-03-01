@@ -828,7 +828,7 @@ class Question extends LSActiveRecord
 
     /**
      * Get an new title/code for a question
-     * @param integer|string $index base for question code (exemple : inde of question when survey import)
+     * @param integer $index base for question code (exemple : inde of question when survey import)
      * @return string|null : new title, null if impossible
      */
     public function getNewTitle($index=0)
@@ -944,7 +944,6 @@ class Question extends LSActiveRecord
         if (parent::beforeSave())
         {
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-
             if ($surveyIsActive && $this->getIsNewRecord())
             {
                 return false;
@@ -987,6 +986,36 @@ class Question extends LSActiveRecord
         ." AND sid={$surveyid}"
         ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
         ." AND parent_qid=0")->read();
+    }
+
+    /**
+     * Fix sub question of a parent question
+     * Must be call after base language subquestion is set
+     * @todo : move other fix here ?
+     * @return void
+     */
+    public function fixSubQuestions(){
+        if($this->parent_qid){
+            return;
+        }
+        $oSurvey=Survey::model()->findByPk($this->sid);
+
+        /* Delete sub question in all other language */
+        $criteria = new CDbCriteria;
+        $criteria->compare('parent_qid',$this->qid);
+        $criteria->addNotInCondition('language', $oSurvey->getAllLanguages());
+        Question::model()->deleteAll($criteria);// Must log count of deleted ?
+
+        /* Delete invalid subquestions (not in primary language */
+        $validSubQuestion = Question::model()->findAll(array(
+            'select'=>'title',
+            'condition'=>'parent_qid=:parent_qid AND language=:language',
+            'params'=>array('parent_qid' => $this->qid,'language' => $oSurvey->language)
+        ));
+        $criteria = new CDbCriteria;
+        $criteria->compare('parent_qid',$this->qid);
+        $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
+        Question::model()->deleteAll($criteria);// Must log count of deleted ?
     }
 
 }

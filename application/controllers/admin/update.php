@@ -15,38 +15,40 @@ if (! defined('BASEPATH')) exit('No direct script access allowed');
 */
 
 /**
-* Update Controller
 *
-* @package        LimeSurvey
+* @package       LimeSurvey
 * @subpackage    Backend
+*/
+
+/**
 *
 * This controller performs updates, it is highly ajax oriented
-* Methods are only called from JavaScript controller (wich is called from the global_setting view). comfortupdate.js is the first registred script.
+* Methods are only called from JavaScript controller (wich is called from the global_setting view). comfortupdate.js is the first registered script.
 *
 *
 *
-* Public methods are written in a chronological way :
-*    - First, when the user click on the "check for updates" button, the plugin buildComfortButtons.js call for getstablebutton() or getbothbuttons() method and inject the HTML inside the li#udapteButtonsContainer in the _checkButtons view
+* Public methods are written in a chronological way:
+*   - First, when the user click on the 'check for updates' button, the plugin buildComfortButtons.js call for getstablebutton() or getbothbuttons() method and inject the HTML inside the li#udapteButtonsContainer in the _checkButtons view
 *   - Then, when the user click on one of those buttons, the comfortUpdateNextStep.js plugin will call for the getWelcome() method and inject the HTML inside div#updaterContainer in the _right_container view (all steps will be then injected here)
-*    - Then, when the user click on the continue button, the comfortUpdateNextStep.js plugin will call for the step1() method and inject the  the HTML inside div#updaterContainer in the _right_container view
+*   - Then, when the user click on the continue button, the comfortUpdateNextStep.js plugin will call for the step1() method and inject the  the HTML inside div#updaterContainer in the _right_container view
 *   - etc. etc.
 *
 *
 *
-*  Some steps must be shown out of the chronological process : getNewKey and submitKey. They are at the end of the controller's interface.
-*  Some steps must be "checked again" after the user fixed some errors (such as file permissions).
+*  Some steps must be shown out of the chronological process: getNewKey and submitKey. They are at the end of the controller's interface.
+*  Some steps must be 'checked again' after the user fixed some errors (such as file permissions).
 *  Those steps are/can be diplayed by the plugin displayComfortStep.js. They are called from buttons like :
 *
-*  <a class="button" href="<?php Yii::app()->createUrl("admin/globalsettings", array("update"=>'methodToCall', 'neededVariable'=>$value));?>">
-*    <span class="ui-button-text">button text</span>
+*  <a class='button' href='<?php Yii::app()->createUrl('admin/globalsettings', array('update'=>'methodToCall', 'neededVariable'=>$value));?>'>
+*    <span class='ui-button-text'>button text</span>
 *  </a>
 *
 * so they will call an url such as : globalsettings?update=methodToCall&neededVariable=value.
 * So the globalsetting controller will render the view as usual, but : the _ajaxVariables view will parse those url datas to some hidden field.
-* The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js wich will display the right step instead of the "check update" buttons.
+* The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js wich will display the right step instead of the 'check update' buttons.
 *
 * Most steps are retrieving datas from the comfort update server thanks to the model UpdateForm's methods.
-* The server return an answer object, with a property "result" to tell if the process was succesfull or if it failed. This object contains in general all the necessary datas for the views.
+* The server return an answer object, with a property 'result' to tell if the process was succesfull or if it failed. This object contains in general all the necessary datas for the views.
 *
 *
 * Handling errors :

@@ -13,6 +13,8 @@
  *
  */
 
+use \ls\pluginmanager\PluginEvent;
+
 /**
  * Responses Controller
  *
@@ -414,9 +416,14 @@ class responses extends Survey_Common_Action
             $aViewUrls                  = array('listResponses_view');
             $model                      =  SurveyDynamic::model($iSurveyId);
 
+            // Reset filters from stats
+            if (Yii::app()->request->getParam('filters') == "reset"){
+                Yii::app()->user->setState('sql_'.$iSurveyId,'');
+            }
+
+
             // Page size
-            if (Yii::app()->request->getParam('pageSize'))
-            {
+            if (Yii::app()->request->getParam('pageSize')){
                 Yii::app()->user->setState('pageSize',(int)Yii::app()->request->getParam('pageSize'));
             }
 
@@ -425,8 +432,7 @@ class responses extends Survey_Common_Action
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
             // see: http://www.yiiframework.com/wiki/161/understanding-safe-validation-rules/
             // see: http://www.yiiframework.com/doc/api/1.1/CModel#setAttributes-detail
-            if(Yii::app()->request->getParam('SurveyDynamic'))
-            {
+            if(Yii::app()->request->getParam('SurveyDynamic')){
                 $model->setAttributes(Yii::app()->request->getParam('SurveyDynamic'),false);
             }
 
@@ -517,6 +523,11 @@ class responses extends Survey_Common_Action
 
             foreach($aResponseId as $iResponseId)
             {
+                $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
+                $beforeDataEntryDelete->set('iSurveyID',$iSurveyId);
+                $beforeDataEntryDelete->set('iResponseID',$iResponseId);
+                App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
+
                 Response::model($iSurveyId)->findByPk($iResponseId)->delete(true);
                 $oSurvey=Survey::model()->findByPk($iSurveyId);
                 if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)

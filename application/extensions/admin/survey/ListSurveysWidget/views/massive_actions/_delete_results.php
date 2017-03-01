@@ -18,7 +18,7 @@
                     <?php echo $iSid;?>
                 </td>
                 <td>
-                    <?php echo $result['title'];?>
+                    <?php echo CHtml::encode($result['title']);?>
                 </td>
                 <?php if ($result['result']):?>
                     <td class="text-success">

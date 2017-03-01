@@ -134,17 +134,14 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 				throw new Exception('Invalid template name');
 		}
 
-		$modsubject = Replacefields($sSubject, $fieldsarray);
-		$modmessage = Replacefields($sMessage, $fieldsarray);
-
 		if (isset($barebone_link))
 		{
-			$modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
-			$modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
+			$modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $sSubject);
+			$modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $sMessage);
 		}
 
-
-
+		$modsubject = Replacefields($modsubject, $fieldsarray);
+		$modmessage = Replacefields($modmessage, $fieldsarray);
 
 		if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
 		{

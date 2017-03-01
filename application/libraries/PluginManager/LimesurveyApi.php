@@ -4,6 +4,8 @@ use Yii;
 use User;
 use PluginDynamic;
 use SurveyDynamic;
+use Template;
+
     /**
     * Class exposing a Limesurvey API to plugins.
     * This class is instantiated by the plugin manager,
@@ -168,7 +170,7 @@ use SurveyDynamic;
         /**
          * Get the current request object
          *
-         * @return LSHttpRequest
+         * @return \LSHttpRequest
          */
         public function getRequest()
         {
@@ -176,14 +178,27 @@ use SurveyDynamic;
         }
 
         /**
+         * Returns an array of all available template names - does a basic check if the template might be valid
+         * @return array
+         */
+        public function getTemplateList(){
+            return Template::getTemplateList();
+        }
+
+        /**
         * Gets a survey response from the database.
         *
         * @param int $surveyId
         * @param int $responseId
+        * @param bool $bMapQuestionCodes
         */
-        public function getResponse($surveyId, $responseId)
+        public function getResponse($surveyId, $responseId, $bMapQuestionCodes=true)
         {
             $response = \SurveyDynamic::model($surveyId)->findByPk($responseId);
+            if (!$bMapQuestionCodes) {
+                return $response;
+            }
+
             if (isset($response))
             {
                 // Now map the response to the question codes if possible, duplicate question codes will result in the
@@ -318,7 +333,7 @@ use SurveyDynamic;
         /**
          * Get the user object for a given email
          *
-         * @param string $username
+         * @param string|null $email
          * @return User|null Returns the user, or null when not found
          */
         public function getUserByEmail($email)

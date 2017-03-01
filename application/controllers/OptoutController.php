@@ -197,7 +197,7 @@ class OptoutController extends LSYii_Controller {
         $aData['thistpl'] = $thistpl;
         $this->renderPartial('/opt_view',$aData);
         echo templatereplace(file_get_contents($thistpl.'endpage.pstpl'),array(), $aSupportData);
-        doFooter();
+        doFooter($iSurveyID);
         ob_flush();
     }
 

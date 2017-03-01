@@ -35,6 +35,102 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.62.2 (build 170203) to 2.63.0 (build 170304) Feb 20 2017
+
+-Fixed issue #12003: TOKEN field is blank if user performs a GET during survey (Denis Chenu)
+-Fixed issue #12113: Fix invalid subquestions on activation (Denis Chenu)
+-Fixed issue #12113: Unable to fix Invalid Sub questions in multilingual survey (Denis Chenu)
+-Fixed issue #12122: Possible XSS when deleting a survey (Carsten Schmitz)
+-Fixed issue: Asessmentcolumn showing even if assessment is not active on quick-edit (markusfluer)
+-Fixed issue: can't save for further completion from data entry (LouisGac)
+-Fixed issue: Make it possible to disable graphs in statistics (Olle Haerstedt)
+-Fixed issue: Missing spaces in title_bar between survey title and brackets (Tõnis Ormisson)
+-Fixed issue: Some options are being ignored in statistics (Carsten Schmitz)
+-Fixed issue: Timeline remote control not working (Stefan Verweij)
+-New feature #12120: direct action by php-cli (#638) (Denis Chenu)
+-New feature: add Plugin event afterFindSurvey (Tõnis Ormisson)
+-New feature: New plugin event afterSurveyQuestionAssessment (Gabriel Jenik)
+-New translation: Luxembourgish (Carsten Schmitz)
+#Updated translation: Catalan by Ben_V, jmontane, qualitatuvic
+#Updated translation: Chinese (Simplified) by yanglaw, Bobo001
+#Updated translation: Croatian by kmilojev, rovinj
+#Updated translation: Czech by VBraun
+#Updated translation: Danish by statman13
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by rogeriff
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by holch, actxcellence
+#Updated translation: German (Informal) by c_schmitz, manselmo, actxcellence
+#Updated translation: Hungarian by kkd
+#Updated translation: Luxembourgish by sim0nx
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by holch, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by devUSIT, jlaranjo
+#Updated translation: Russian by ddrmoscow, winterheart, vipgroup
+#Updated translation: Slovak by dusanm
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Mexican) by fernandoestrada
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.62.1 (build 170124) to 2.62.2 (build 170203) Feb 3 2017
+-Fixed issue #11696: "Return to survey" link misaligned in load screen (Carsten Schmitz)
+-Fixed issue #12029: EM for {Qcode.shown} not working after Update (Denis Chenu)
+-Fixed issue #12055: Error when setting conditions on questions (Carsten Schmitz)
+-Fixed issue #12084: HTML body tags missing in login (Carsten Schmitz)
+-Fixed issue #12096: PHP notice when editing Array number (markusfluer)
+-Fixed issue #12107: Sumifop concatenating values instead of sum them up. (Carsten Schmitz)
+-Fixed issue: Login panel stuck to the top (Carsten Schmitz)
+-Fixed issue: Survey archive import doesn't import all tokens (Denis Chenu)
+-Fixed issue: Various bugs in update procedure when updating from 1.92 or older (Carsten Schmitz)
+-Fixed issue: when user select responses on statistics, and then click on browser buttons, filters does not apply to Yii Grid. (LouisGac)
+-Fixed issue: [security] SQL injection vulnerability in response browse screen (LouisGac)
+
+Changes from 2.62.0 (build 170124) to 2.62.1 (build 170130) Jan 30 2017
+-Fixed issue #11744: Fixed issue #11744: When adding new answer the assessment column isn't displayed
+-Fixed issue #11887: Stars of 5 Point Choice question are not set to given value after using "back" button (markusfluer)
+-Fixed issue: Error on save in Quick-Translate function when using Postgres (Carsten Schmitz)
+-Fixed issue: Replacing `@@SURVEYURL@@` incorrectly in RPC (#630) (Frederik Prijck)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by popcorner, leadingsoci, mapleshadow, yanglaw
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by panrex, nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Russian by winterheart
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by aesteban
+
+
+Changes from 2.59.1 (build 170116) to 2.62.0 (build 170124) Jan 24 2017
+-New feature #12011: allow user to set runtimePath (Yii way) (Denis Chenu)
+-New feature: Plugin event beforeFooterRender (Olle Haerstedt)
+-New feature: Usergroups view (papa-mb)
+-Fixed issue #11758: Inserting placeholder not possible when creating a question (Carsten Schmitz)
+-Fixed issue #12050: Token edit / [ENTER] shows json file (markusfluer)
+-Fixed issue #12051: Non-admin users can see all usergroups (papa-mb)
+-Fixed issue #12058: Notice after deleting buttons from home page (Carsten Schmitz)
+-Fixed issue: Replacing `@@SURVEYURL@@` incorrectly in RPC (Frederik Prijck)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Czech by jelen1
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+
 
 Changes from 2.59.0 (build 170115) to 2.59.1 (build 170116) Jan 16 2017
 -Fixed issue #12059: Internal Server Error Property 'UniqueNotification.hash' is not defined (Olle Haerstedt)
