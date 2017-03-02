@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## Not released
+## [1.4.0] - 2017-03-02
 
 ### Fix
 - Language can be updated during survey
