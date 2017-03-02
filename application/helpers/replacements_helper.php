@@ -298,6 +298,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_therearexquestions = '';
     };
 
+    if(!isset($totalgroups)) $totalgroups = 0;
+
 
     if (isset($token))
     {
