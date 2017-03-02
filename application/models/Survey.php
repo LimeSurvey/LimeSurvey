@@ -732,6 +732,9 @@ class Survey extends LSActiveRecord
         }
     }
 
+    /**
+     * @return array
+     */
     public function getSurveyinfo()
     {
         $iSurveyID = $this->sid;
@@ -1105,6 +1108,7 @@ class Survey extends LSActiveRecord
                     $criteria->compare("t.active",'Y');
                     $criteria->addCondition("t.startdate >'$sNow'");
                 }
+
                 if($this->active == "R")
                 {
                     $now = new CDbExpression("NOW()");
@@ -1118,6 +1122,8 @@ class Survey extends LSActiveRecord
                     $subCriteria2->addCondition('t.startdate IS NULL', "OR");
                     $criteria->mergeWith($subCriteria1);
                     $criteria->mergeWith($subCriteria2);
+
+
                 }
             }
         }

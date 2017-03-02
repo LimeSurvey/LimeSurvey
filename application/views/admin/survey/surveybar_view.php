@@ -448,6 +448,14 @@
                                               <?php eT("Tab-separated-values format (*.txt)");?>
                                           </a>
                                       </li>
+
+                                      <!-- Survey printable questionnaires  -->
+                                      <li>
+                                          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/$surveyid");?>' >
+                                              <span class="icon-export" ></span>
+                                              <?php eT("Printable questionnaires (*.html)");?>
+                                          </a>
+                                      </li>
                                   <?php endif; ?>
 
                               <?php endif;?>
