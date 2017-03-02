@@ -819,7 +819,7 @@ class SurveyAdmin extends Survey_Common_Action
 
                 if ($esrow['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
                 {
-                    $aTabTitles[$sLang] .= '(' . gT("Base language") . ')';
+                    $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
                 }
 
                 $aData['esrow'] = $esrow;
