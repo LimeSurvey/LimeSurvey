@@ -1067,6 +1067,7 @@ function buildsurveysession($surveyid,$preview=false)
     $iNumberofQuestions = Question::model()->getNumberOfQuestions($surveyid);
 
     $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
+    $_SESSION['survey_'.$surveyid]['totalgroups'] = QuestionGroup::model()->getTotalGroupsWithQuestions($surveyid);
 
     // 2. SESSION VARIABLE: totalsteps
     setTotalSteps($surveyid, $thissurvey, $totalquestions);
@@ -2324,6 +2325,7 @@ function GetReferringUrl()
 function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
     $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+    $totalgroups = $_SESSION['survey_'.$surveyid]['totalgroups'];
 
     // Fill some necessary var for template
     $aNavigator = surveymover();

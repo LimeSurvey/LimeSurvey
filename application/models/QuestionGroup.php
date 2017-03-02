@@ -374,4 +374,17 @@ class QuestionGroup extends LSActiveRecord
         return Yii::app()->db->createCommand($sQuery)->queryScalar();
     }
 
+    /**
+     * Used in frontend helper, buildsurveysession.
+     * @param int $surveyid
+     * @return int
+     */
+    public static function getTotalGroupsWithQuestions($surveyid)
+    {
+        $sQuery= "select count(DISTINCT {{groups}}.gid) from {{groups}}
+            left join {{questions}} on  {{groups}}.gid={{questions}}.gid
+            where {{groups}}.sid={$surveyid} and qid is not null";
+        return Yii::app()->db->createCommand($sQuery)->queryScalar();
+    }
+
 }
