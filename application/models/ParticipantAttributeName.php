@@ -421,6 +421,7 @@ class ParticipantAttributeName extends LSActiveRecord
                 ->select('*')
                 ->from('{{participant_attribute_values}}')
                 ->where('attribute_id = :attribute_id')
+                ->order('value_id ASC')
                 ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
                 ->queryAll();
         }
