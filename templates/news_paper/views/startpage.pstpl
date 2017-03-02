@@ -35,18 +35,6 @@
             </ul>
         </div><!--/.nav-collapse -->
     </nav>
-        <div id="navbar" class="navbar-collapse collapse col-xs-12">
-          <ul class="nav navbar-nav">
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            {SAVE_LINKS}
-            {CLEARALL_LINKS}
-            {QUESTION_INDEX_MENU}
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
 
     <!-- Top container -->
     <div id="topContainer" class="jumbotron">
