@@ -3,6 +3,9 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ## Not released
 
+### Fix
+- Language can be updated during survey
+
 ### Feature
 - Leave partial HTML in admin email
 
