@@ -625,7 +625,7 @@ CREATE TABLE IF NOT EXISTS `prefix_settings_user` (
     `entity_id` VARCHAR(31) DEFAULT NULL,
     `stg_name` VARCHAR(63) NOT NULL,
     `stg_value` TEXT DEFAULT NULL,
-    PRIMARY KEY (`id`, `entity`, `entity_id`, `stg_name`)
+    PRIMARY KEY (`uid`, `entity`, `entity_id`, `stg_name`)
 ) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
