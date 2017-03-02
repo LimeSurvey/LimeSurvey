@@ -4028,9 +4028,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         $sender=$bouncemail;
     }
 
-
     require_once(APPPATH.'/third_party/phpmailer/PHPMailerAutoload.php');
     $mail = new PHPMailer;
+
     if (!$mail->SetLanguage($defaultlang,APPPATH.'/third_party/phpmailer/language/'))
     {
         $mail->SetLanguage('en',APPPATH.'/third_party/phpmailer/language/');

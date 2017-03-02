@@ -5,6 +5,7 @@ Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurve
 
 ### Fix
 - Language can be updated during survey
+- Update to 2.6.4_lts
 
 ### Feature
 - Leave partial HTML in admin email

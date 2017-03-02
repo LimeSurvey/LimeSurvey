@@ -487,7 +487,7 @@ class remotecontrol_handle
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
-        if (!hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
         $oSurvey=Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');

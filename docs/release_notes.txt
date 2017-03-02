@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.06+!
+Welcome to LimeSurvey v2.6.x+!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -59,7 +59,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.06LTS (build 161024) to 2.6.2LTS (build 161206) Dez 6, 2016
+Changes from 2.6.3LTS (build 170112) to 2.6.4LTS (build 170202) Feb 3, 2017
+-Fixed issue #12078: Email sending problems with unvalidated SSL certificates (Carsten Schmitz)
+-Fixed issue #12093: Error when editing email templates und using PHP7 (Carsten Schmitz)
+-Fixed issue: Replacing `@@SURVEYURL@@` incorrectly in RemoteControl2 (Frederik Prijck)
+-Fixed issue: [security] SQL injection vulnerability in response browse screen (LouisGac)
+
+Changes from 2.6.2LTS (build 161206) to 2.6.3LTS (build 170112) Jan 12, 2017
+-Fixed issue #11897: Ranking question opposite side to instructions (Denis Chenu)
+-Fixed issue #11996: possible remote code execution (LouisGac)
+-Fixed issue: [security] Undisclosed security issue in PHPMailer library - updated PHPMailer to 5.2.21 (Carsten Schmitz)
+
+Changes from 2.6.1LTS (build 161024) to 2.6.2LTS (build 161206) Dez 6, 2016
 -Fixed issue #11606: Date/Time filled does not record the answer (Olle Haerstedt)
 -Fixed issue: [security] Possible session fixation on survey entry with token (Carsten Schmitz)
 
