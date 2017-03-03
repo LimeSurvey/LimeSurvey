@@ -1117,8 +1117,7 @@ class Survey extends LSActiveRecord
                     $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'OR');
                     $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
                     $subCriteria1->addCondition('t.expires IS NULL', "OR");
-                    $subCriteria1->addCondition($now.' < t.expires', 'OR');
-                    $subCriteria2->addCondition($now.' < t.expires', 'OR');
+                    $subCriteria1->addCondition("'{$sNow}' < t.expires", 'OR');
                     $subCriteria2->addCondition('t.startdate IS NULL', "OR");
                     $criteria->mergeWith($subCriteria1);
                     $criteria->mergeWith($subCriteria2);
