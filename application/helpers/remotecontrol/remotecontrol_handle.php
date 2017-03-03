@@ -2115,12 +2115,13 @@ class remotecontrol_handle
             }
             else
             {
+                $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );
                 $command->addCondition('usesleft > 0');
                 $command->addCondition("sent = 'N'");
                 $command->addCondition("remindersent = 'N'");
                 $command->addCondition("(completed ='N') or (completed='')");
-                $command->addCondition('ISNULL(validfrom) OR validfrom < NOW()');
-                $command->addCondition('ISNULL(validuntil) OR validuntil > NOW()');
+                $command->addCondition("validfrom is null OR validfrom < '{$sNow}'");
+                $command->addCondition("validuntil is null OR validuntil > '{$sNow}'");
                 $command->addCondition('emailstatus = "OK"');
             }
             $command->order = 'tid';
