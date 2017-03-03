@@ -1427,6 +1427,7 @@ class remotecontrol_handle
                                 $aData[$oAttribute['code']]['answer']=$oAttribute['answer'];
                                 $aData[$oAttribute['code']]['assessment_value']=$oAttribute['assessment_value'];
                                 $aData[$oAttribute['code']]['scale_id']=$oAttribute['scale_id'];
+                                $aData[$oAttribute['code']]['order']=$oAttribute['sortorder'];
                             }
                             $aResult['answeroptions']=$aData;
                         }
