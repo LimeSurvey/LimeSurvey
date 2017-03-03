@@ -218,9 +218,10 @@ $internalConfig = array(
                 'reset'                 => 'reset',
                 'renderCaptcha'         => 'LS_Twig_Extension::renderCaptcha',
                 'getPost'               => 'LS_Twig_Extension::getPost',
-                'getParam'               => 'LS_Twig_Extension::getParam',
-                'getQuery'               => 'LS_Twig_Extension::getQuery',
-
+                'getParam'              => 'LS_Twig_Extension::getParam',
+                'getQuery'              => 'LS_Twig_Extension::getQuery',
+                'isset'                 => 'isset',
+                'str_replace'           => 'str_replace',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -230,7 +231,7 @@ $internalConfig = array(
 
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape'),
-                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT'),
+                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
                     'Survey'                            =>  array("getAllLanguages"),
@@ -240,7 +241,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery' ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace' ),
             ),
 
             // Change template syntax to Smarty-like (not recommended)
