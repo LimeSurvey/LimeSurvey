@@ -347,7 +347,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $returndescription = gT("Go to survey");
         }
 
-        // TODO: change that 
+        // TODO: change that
         $_return_to_survey = App()->twigRenderer->render("/survey/system/url",array(
             'url'=>$returnlink,
             'description'=>$returndescription,
@@ -358,21 +358,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     else
     {
         $_return_to_survey = "";
-    }
-
-    // Assessments
-    $assessmenthtml="";
-    if (isset($surveyid) && !is_null($surveyid) && function_exists('doAssessment'))
-    {
-        $assessmentdata = doAssessment($surveyid, true);
-        $_assessment_current_total = $assessmentdata['total'];
-        if(stripos ($line,"{ASSESSMENTS}")){
-            $assessmenthtml=doAssessment($surveyid, false);
-        }
-    }
-    else
-    {
-        $_assessment_current_total = '';
     }
 
     if(isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
@@ -432,8 +417,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements = array();
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['ANSWERSCLEARED'] = gT("Answers cleared");
-    $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
-    $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = App()->twigRenderer->render("/survey/system/no-javascript",array(),true);
     $coreReplacements['CLEARALL'] = $_clearall;
