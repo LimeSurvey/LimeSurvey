@@ -1289,10 +1289,7 @@ class SurveyRuntimeHelper {
 
                     // TODO : TWIG
                     //$assessments = $this->assessments = doAssessment($surveyid);
-                    $aAssessmentsDatas = $this->assessments = doAssessment($surveyid, true);
-                    if ($assessments){
-                        $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
-                    }
+                    $thissurvey['aAssessments'] = $this->assessments = doAssessment($surveyid, true);
                 }
 
                 // End text
