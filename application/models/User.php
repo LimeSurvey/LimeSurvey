@@ -418,7 +418,7 @@ class User extends LSActiveRecord
                     }
                 if (Yii::app()->session['loginID'] == "1" && $this->parent_id !=1 ) {
                 //'admin/user/sa/setasadminchild'
-                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".htmlspecialchars($oUser['full_name'])."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-sm action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
+                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".htmlspecialchars($oUser['full_name'])."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
                 }
         }
         return "<div>"

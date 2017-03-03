@@ -214,7 +214,6 @@ class Permission extends LSActiveRecord
                 'img' => 'global'
             ),
             'participantpanel' => array(
-                'import' => false,
                 'title' => gT("Central participant database"),
                 'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
                 'img' => 'cpdb'
