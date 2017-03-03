@@ -54,8 +54,8 @@
                                 {% endif %}
 
                                 {# Assessments #}
-                                {% if (aSurveyInfo.aAssesments.show == true) %}
-                                    {{ include('./subviews/assessment.twig') }}
+                                {% if (aSurveyInfo.aAssessments.show) %}
+                                    {{ include('./subviews/assessments.twig') }}
                                 {% endif %}
 
                                 {#  Link to Print Answer Preview #}
@@ -85,7 +85,7 @@
                                 {{ aSurveyInfo.aCompleted.sSurveylsUrl }}
 
                                 {# Data shown when LEM debug timing mode is ON #}
-                                {{ include('./subviews/LEMDebug.twig') }}                                
+                                {{ include('./subviews/LEMDebug.twig') }}
                             </div>
                         </div>
 
