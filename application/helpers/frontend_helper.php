@@ -1869,10 +1869,11 @@ function doAssessment($surveyid, $returndataonly=false)
             }
         }
         $assessments                = "";
-        $assessment['subtotalshow'] = false;
+        $assessment['subtotal']['show'] = false;
 
         if (isset($subtotal) && is_array($subtotal)){
-            $assessment['subtotal']['show'] = true;
+            $assessment['subtotal']['show']  = true;
+            $assessment['subtotal']['datas'] = $subtotal;
 
             foreach($subtotal as $key=>$val){
                 if (isset($assessment['group'][$key])){
@@ -1897,7 +1898,7 @@ function doAssessment($surveyid, $returndataonly=false)
             }
         }
 
-        $assessment['totalshow'] = false;
+        $assessment['total']['show'] = false;
 
         if (isset($assessment['total'])){
 
@@ -1922,8 +1923,10 @@ function doAssessment($surveyid, $returndataonly=false)
         }
 
         if ($returndataonly==true) {
-            $subtotal = (isset($subtotal))?$subtotal:'';
-            return array('total'=>$total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
+            $assessment['subtotal_score'] = (isset($subtotal))?$subtotal:'';
+            $assessment['total_score']    = (isset($total))?$total:'';
+            //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
+            return array('show'=>true, 'datas' => $assessment);
         }else {
             return $assessments;
         }
