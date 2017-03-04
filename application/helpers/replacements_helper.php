@@ -76,6 +76,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
+
+    if($_surveyid) {
+        $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
+    }
+    else {
+        $totalgroups = "";
+    }
+
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if($_surveyid && !isset($thissurvey))
@@ -297,7 +305,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_therearexquestions = '';
     };
-
 
     if (isset($token))
     {
