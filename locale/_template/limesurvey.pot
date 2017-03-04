@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-03-04 08:56:37+00:00\n"
+"POT-Creation-Date: 2017-03-04 09:03:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5853,9 +5853,7 @@ msgid "Export as..."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:57
-#: application/views/admin/survey/surveybar_view.php:410
-#: application/views/admin/survey/surveybar_view.php:419
-msgid "Survey archive (.lsa)"
+msgid "Survey archive (*.lsa)"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:63
@@ -5867,8 +5865,7 @@ msgid "This will export the survey archive (.lsa) for all selected active survey
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:75
-#: application/views/admin/survey/surveybar_view.php:398
-msgid "Survey structure (.lss)"
+msgid "Survey structure (*.lss)"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:81
@@ -5880,7 +5877,8 @@ msgid "This will export the survey structure (.lss) for all selected active surv
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:92
-msgid "Printable survey (.html)"
+#: application/views/admin/survey/surveybar_view.php:456
+msgid "Printable survey (*.html)"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:97
@@ -16586,6 +16584,15 @@ msgstr ""
 msgid "Export..."
 msgstr ""
 
+#: application/views/admin/survey/surveybar_view.php:398
+msgid "Survey structure (.lss)"
+msgstr ""
+
+#: application/views/admin/survey/surveybar_view.php:410
+#: application/views/admin/survey/surveybar_view.php:419
+msgid "Survey archive (.lsa)"
+msgstr ""
+
 #: application/views/admin/survey/surveybar_view.php:417
 msgid "You can only archive active surveys."
 msgstr ""
@@ -16598,11 +16605,10 @@ msgstr ""
 msgid "Tab-separated-values format (*.txt)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_view.php:456
-msgid "Printable version (*.html)"
+#: application/views/admin/survey/surveybar_view.php:470
+msgid "Printable survey"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_view.php:470
 #: application/views/admin/survey/surveybar_view.php:477
 msgid "Printable version"
 msgstr ""
