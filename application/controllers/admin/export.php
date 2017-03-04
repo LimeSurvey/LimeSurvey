@@ -1361,7 +1361,7 @@ class export extends Survey_Common_Action {
 
 
     /**
-     * Get a Zipped version of survey printable questionnaires in all languages
+     * Get a Zipped version of  survey print version in all languages
      * (including the template html assets)
      *
      * @param integer $iSurveyID Survey ID
@@ -1379,7 +1379,7 @@ class export extends Survey_Common_Action {
         $tempdir = Yii::app()->getConfig("tempdir");
         $zipdir = $this->_tempdir($tempdir);
 
-        $fn = "printable_questionnaires_".CHtml::encode($aSurveyInfo['surveyls_title'])."_{$oSurvey->primaryKey}.zip";
+        $fn = "printable_survey_".CHtml::encode($aSurveyInfo['surveyls_title'])."_{$oSurvey->primaryKey}.zip";
         $zipfile = "$tempdir/".$fn;
 
         Yii::app()->loadLibrary('admin.pclzip');

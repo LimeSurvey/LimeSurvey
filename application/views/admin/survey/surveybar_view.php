@@ -449,11 +449,11 @@
                                           </a>
                                       </li>
 
-                                      <!-- Survey printable questionnaires  -->
+                                      <!-- Survey printable version  -->
                                       <li>
                                           <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/$surveyid");?>' >
                                               <span class="icon-export" ></span>
-                                              <?php eT("Printable questionnaires (*.html)");?>
+                                              <?php eT("Printable version (*.html)");?>
                                           </a>
                                       </li>
                                   <?php endif; ?>
