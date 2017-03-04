@@ -56,7 +56,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         'token',
         'totalBoilerplatequestions',
         'totalquestions',
-        'totalgroups',
         'questionindex',
         'questionindexmenu',
         'flashmessage'
