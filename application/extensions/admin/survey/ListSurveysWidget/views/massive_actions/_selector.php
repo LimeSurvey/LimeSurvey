@@ -95,7 +95,7 @@
                     'modalType'   => 'yes-no',
                     'keepopen'    => 'yes',
                     'sModalTitle'   => gT('Export printable survey'),
-                    'htmlModalBody' => gT('This will export printable survey.').' '.gT('Continue?'),
+                    'htmlModalBody' => gT('This will export a printable version of your survey.').' '.gT('Continue?'),
                 ),
             ),
 
