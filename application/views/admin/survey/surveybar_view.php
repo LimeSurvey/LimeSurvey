@@ -453,7 +453,7 @@
                                       <li>
                                           <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/$surveyid");?>' >
                                               <span class="icon-export" ></span>
-                                              <?php eT("Printable version (*.html)");?>
+                                              <?php eT("Printable survey (*.html)");?>
                                           </a>
                                       </li>
                                   <?php endif; ?>
@@ -467,7 +467,7 @@
                                   <li>
                                       <a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
                                           <span class="glyphicon glyphicon-print"></span>
-                                          <?php eT("Printable version");?>
+                                          <?php eT("Printable survey");?>
                                       </a>
                                   </li>
                               <?php else: ?>

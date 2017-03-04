@@ -54,7 +54,7 @@
                     'action'      => 'export',
                     'url'         => App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/'),
                     'iconClasses' => 'icon-export',
-                    'text'        =>  gT("Survey archive (.lsa)"),
+                    'text'        =>  gT("Survey archive (*.lsa)"),
 
                     // modal
                     'actionType'  => 'modal',
@@ -72,7 +72,7 @@
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultipleStructureSurveys/'),
                     'iconClasses' => 'icon-export',
-                    'text'        =>  gT("Survey structure (.lss)"),
+                    'text'        =>  gT("Survey structure (*.lss)"),
 
                     // modal
                     'actionType'  => 'modal',
@@ -89,7 +89,7 @@
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultiplePrintableSurveys/'),
                     'iconClasses' => 'icon-export',
-                    'text'        =>  gT("Printable survey (.html)"),
+                    'text'        =>  gT("Printable survey (*.html)"),
                     // modal
                     'actionType'  => 'modal',
                     'modalType'   => 'yes-no',
