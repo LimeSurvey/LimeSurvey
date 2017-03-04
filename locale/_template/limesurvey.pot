@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-03-04 08:39:35+00:00\n"
+"POT-Creation-Date: 2017-03-04 08:56:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6704,7 +6704,7 @@ msgstr ""
 msgid "One or more surveys seem to be broken - please use the data integrity check tool to fix this."
 msgstr ""
 
-#: application/helpers/common_helper.php:289 application/models/Survey.php:863
+#: application/helpers/common_helper.php:289
 msgid "Expired"
 msgstr ""
 
@@ -10936,11 +10936,15 @@ msgid "running"
 msgstr ""
 
 #: application/models/Survey.php:862
-msgid "Expires"
+msgid "End: %s"
+msgstr ""
+
+#: application/models/Survey.php:863
+msgid "Expired: %s"
 msgstr ""
 
 #: application/models/Survey.php:864
-msgid "Start"
+msgid "Start: %s"
 msgstr ""
 
 #: application/models/Survey.php:1021
@@ -16595,7 +16599,7 @@ msgid "Tab-separated-values format (*.txt)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:456
-msgid "Printable questionnaires (*.html)"
+msgid "Printable version (*.html)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:470
