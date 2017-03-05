@@ -548,16 +548,16 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     $_loadform .="
-            <div class='load-survey-row load-survey-submit'>
+           <div class='form-group load-survey-row load-survey-submit'>
                 <!-- Needed?
                     <td class='load-survey-label label-cell'>
                         <label class='hide jshide' for='loadbutton'>" . gT("Load now") . "</label>
                     </td>
                 -->
-                <div class='form-group col-sm-12 load-survey-input input-cell'>
+                <div class='col-sm-10 load-survey-input input-cell'>
                     <input type='submit' id='loadbutton' class='btn btn-default' value='" . gT("Load now") . "' />
                 </div>
-            </div>
+           </div>
         </div>
     ";
 
