@@ -14,27 +14,34 @@
  * @var $suffix
  */
 ?>
-<!-- Numerical -->
-
-<!-- answer -->
-<p class='question answer-item text-item numeric-item <?php echo $extraclass;?>'>
-    <label for='answer<?php echo $id;?>' class='hide label'>
+<div class="question answer-item numeric-item form-horizontal <?php echo $extraclass; ?>">
+    <div class='form-group'>
+        <!-- Label -->
+        <label class='control-label col-xs-12 col-sm-2 hide label' for='answer<?php echo $id; ?>' >
             <?php eT('Your answer'); ?>
-    </label>
+        </label>
 
-    <?php echo $prefix; ?>
+        <!-- Prefix -->
+        <?php if ($prefix !== ''): ?>
+            <span class='col-xs-12 col-sm-2 prefix-text-right prefix'><?php echo $prefix; ?></span>
+        <?php endif; ?>
 
-    <input
-        class='form-control text <?php echo $answertypeclass; ?>'
-        type="text"  <?php // Want to use HTML5 number type? Think again: Doesn't work as we want with locale: http://stackoverflow.com/questions/13412204/localization-of-input-type-number ?>
-        size="<?php echo $tiwidth;?>"
-        name="<?php echo $id;?>"
-        title="<?php echo eT('Only numbers may be entered in this field.');?>"
-        id="answer<?php echo $id;?>"
-        value="<?php echo $fValue;?>"
-        onkeyup="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type,'onchange', <?php echo $integeronly; ?>);"
-        <?php echo $maxlength; ?>
-        />
-        <?php echo $suffix;?>
-</p>
-<!-- end of answer -->
+        <!-- Input -->
+        <div class='col-xs-12 col-sm-<?php echo max($sm_col - 5, 6); ?>'>
+            <input
+                class="form-control text <?php echo $kpclass;?>"
+                type="text"
+                size="<?php echo $tiwidth; ?>"
+                name="<?php echo $name; ?>"
+                id="answer<?php echo $name;?>"
+                value="<?php echo $dispVal; ?>"
+                <?php echo $maxlength; ?>
+                onkeyup="<?php echo $checkconditionFunction; ?>"
+            />
+        </div>
+        <!-- Suffix -->
+        <?php if ($suffix !== ''): ?>
+            <span class='col-xs-12 col-sm-2 text-left suffix'><?php echo $suffix; ?></span>
+        <?php endif; ?>
+    </div>
+</div>

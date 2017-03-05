@@ -3223,6 +3223,10 @@ function do_numerical($ia)
         'integeronly'            => $integeronly,
         'maxlength'              => $maxlength,
         'suffix'                 => $suffix,
+        'sm_col'                 => decide_sm_col($prefix, $suffix),
+        'kpclass'                => $kpclass,
+        'name'                   => $ia[1],
+        'dispVal'                => $dispVal = '',
     ), true);
 
     $inputnames = array();
