@@ -384,8 +384,8 @@ function LEMregexMatch(sRegExp,within)
 {
     try {
         var flags = sRegExp.replace(/.*\/([gimy]*)$/, '$1');
-        var pattern = sRegExp.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1');
-        var reg = new RegExp(pattern, flags+'u');        
+        var pattern = sRegExp.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1').trim();
+        var reg = new RegExp(pattern, flags); // Note that the /u flag crashes IE11       
         return reg.test(within);
     }
     catch (err) {
