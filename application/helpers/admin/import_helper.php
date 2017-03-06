@@ -2125,6 +2125,8 @@ function TSVImportSurvey($sFullFilePath)
 
     // fix Excel non-breaking space
     $file = str_replace("0xC20xA0",' ',$file);
+    // Replace all different newlines styles with \n
+    $file = preg_replace('~\R~u', "\n", $file);    
     $filelines = explode("\n",$file);
     $row = array_shift($filelines);
     $headers = explode("\t",$row);
@@ -2175,7 +2177,7 @@ function TSVImportSurvey($sFullFilePath)
 
     // collect information about survey and its language settings
     $surveyinfo = array();
-    $surveyls = array();
+    $surveyls = array();   
     foreach ($adata as $row)
     {
         switch($row['class'])
@@ -2228,7 +2230,7 @@ function TSVImportSurvey($sFullFilePath)
     $aseq=0;    // answer sortorder
 
     // set the language for the survey
-    $_title='Missing Title';
+    $_title='Missing Title';         
     foreach ($surveyls as $_lang => $insertdata)
     {
         $insertdata['surveyls_survey_id'] = $iNewSID;
