@@ -1,6 +1,11 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
+## Not released
+
+### Feature
+- Export as xlsx (not as xls)
+
 ## [1.4.0] - 2017-03-02
 
 ### Fix

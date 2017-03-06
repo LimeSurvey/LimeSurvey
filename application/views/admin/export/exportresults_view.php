@@ -1,24 +1,22 @@
 <script type="text/javascript">
-    var sMsgMaximumExcelColumns = '<?php eT("You can only choose 255 colums at a maximum for Excel export.",'js'); ?>';
-    var sMsgExcelColumnsReduced = '<?php eT("The number of selected columns was reduced automatically.",'js'); ?>';
     var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
 </script>
 <div class='header ui-widget-header'><?php eT("Export results");?>
-    <?php     
+    <?php
         if (App()->request->getQuery('statfilter'))
             echo" - ".gT("Filtered from statistics script");
         elseif ($SingleResponse) {
-            echo " - ".sprintf(gT("Single response: ID %s"),$SingleResponse);} 
+            echo " - ".sprintf(gT("Single response: ID %s"),$SingleResponse);}
     ?>
 </div>
 <div class='wrap2columns'>
     <?php echo CHtml::form(array("admin/export","sa"=>'exportresults','surveyid'=>$surveyid,'statfilter'=>App()->request->getQuery('statfilter')), 'post', array('id'=>'resultexport'));
-    
-    
+
+
     ?>
         <div class='left'>
 <fieldset><legend><?php eT("Format");?></legend>
-                <ul>  
+                <ul>
 <?php
     $hasTips = false;
     foreach ($exports as $key => $info)
@@ -51,13 +49,13 @@
     }
     if ($hasTips) {
         // We have tooltips, now register javascript
-        App()->clientScript->registerScript('tooltip-export', 
+        App()->clientScript->registerScript('tooltip-export',
                 "jQuery('div.tooltip-export').popover({
                     html: true,
                     content: function() {
                         return $(this).find('div.exporttip').clone();
                     },
-                    title: function() { 
+                    title: function() {
                         return $(this).parent().find('label').text();
                     },
                     trigger: 'hover'
@@ -65,7 +63,7 @@
                 ");
     }
 ?>
-            </ul></fieldset>            
+            </ul></fieldset>
             <fieldset <?php  if ($SingleResponse) {?>
                 style='display:none';
             <?php } ?>
@@ -144,15 +142,15 @@
                 <legend><?php eT("Column control");?></legend>
 
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
-                <?php 
+                <?php
                     if ($SingleResponse) { ?>
                     <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />
                     <?php }
                     eT("Choose columns");?>:
                 <br />
-                <?php 
+                <?php
                 echo CHtml::listBox('colselect[]',array_keys($aFields),$aFields,array('multiple'=>'multiple','size'=>'20','style'=>'width:370px;','options'=>$aFieldsOptions));
-                echo "\t<img src='$imageurl/help.gif' alt='".gT("Help")."' onclick='javascript:alert(\"".gT("Please note: The export to Excel is currently limited to loading no more than 255 columns.","js")."\")'>";?>
+                ?>
                 <span id='columncount'>&nbsp;</span>
                 </fieldset>
             <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')) { ?>
