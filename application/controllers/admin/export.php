@@ -1387,11 +1387,15 @@ class export extends Survey_Common_Action {
         $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
         $z->add($fullAssetsDir,PCLZIP_OPT_REMOVE_PATH,$fullAssetsDir,PCLZIP_OPT_ADD_PATH,$assetsDir);
 
+        // Store current language
+        $siteLanguage =Yii::app()->language;
         foreach ($aLanguages as $language){
             $file = $this->_exportPrintableHtml($oSurvey,$language,$tempdir);
             $z->add($file,PCLZIP_OPT_REMOVE_PATH,$tempdir);
             unlink($file);
         }
+        // set language back (get's changed in loop above)
+        Yii::app()->language = $siteLanguage;
 
         $this->_addHeaders($fn,"application/zip",0);
         if($readFile){
