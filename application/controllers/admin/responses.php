@@ -578,7 +578,6 @@ class responses extends Survey_Common_Action
                     readfile($sFileRealName);
                     exit;
                 }
-                break;
             }
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
             $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$iSurveyId));
