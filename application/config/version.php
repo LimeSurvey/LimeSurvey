@@ -13,7 +13,7 @@
 
 $config['versionnumber'] = "2.6.4";
 $config['dbversionnumber'] = 184;
-$config['buildnumber'] = 'SondagesPro 1.4.0';
+$config['buildnumber'] = 'SondagesPro 1.5.0';
 $config['updatable'] = false;
 
 return $config;
