@@ -126,7 +126,7 @@ class Survey_Common_Action extends CAction
             'qid' => 'iQuestionId',
             'sid' => array('iSurveyId', 'iSurveyID'),
             'surveyid' => array('iSurveyId', 'iSurveyID'),
-            'surveyId' => array('iSurveyId', 'iSurveyID'),// PluginHelper->sidebody : if disable isurveyId usage : broke API
+            'surveyId' => array('iSurveyId', 'iSurveyID'),// PluginHelper->sidebody : if disable surveyId usage : broke API
             'srid' => 'iSurveyResponseId',
             'scid' => 'iSavedControlId',
             'uid' => 'iUserId',
