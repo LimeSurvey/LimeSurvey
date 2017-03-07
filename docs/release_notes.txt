@@ -35,6 +35,55 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.63.1 (build 170305) to 2.64.0 (build 170307) Mar 7 2017
+-Fixed issue #12118: Expiry date not referenced correctly at survey list overview (Tõnis Ormisson)
+-Fixed issue #12132: Survey List Status Filter 'Active and running' does not list expiring surveys (Tõnis Ormisson)
+-Fixed issue #12134: Activation button for active but expired should link to expiry options (Tõnis Ormisson)
+-Fixed issue #12146: Edit answer options: New answer option UI error (Matthew)
+-Fixed issue #12147: Template news_paper has phantom buttons (Matthew)
+-Fixed issue #12150: Download link in responses may download wrong file if same file name was uploaded twice (Carsten Schmitz)
+-Fixed issue #12156: RemoteControl get_question_properties does not convey answer options order (Matthew)
+-Fixed issue #12159: On-page Regex validation shows incorrect behaviour (Carsten Schmitz)
+-Fixed issue #12164: Bad header when download file in Response browsing (Denis Chenu)
+-Fixed issue #12165: Unable to add more than drop-down field to an attribute at a time (Matthew)
+-Fixed issue #12169: Import permission for Central Participant Database not available (Carsten Schmitz)
+-Fixed issue: Cannot import survey structure text format edited on Mac OS (Carsten Schmitz)
+-Fixed issue: $deleteAfterUse parameter in BigData constructor wasn't used. (brammeleman)
+-Fixed issue: Missing space before (Base language) (Tõnis Ormisson)
+-Fixed issue: RemoteControl API mail_registered_participants not working on MSSQL (Carsten Schmitz)
+-Fixed issue: Settings filter in survey list not working in MSSQL (Carsten Schmitz)
+-New feature #12117: Massive actions for quotas (Tõnis Ormisson)
+-New feature: Export printable questionnaires (Tõnis Ormisson)
+-New feature: Extend LDAP authentication plugin with optional group-membership restriction (Fred Yankowski)
+-New feature: Method to get all uploaded files for a given token (brammeleman)
+-New feature: NUMBEROFGROUPS replacement field on welcome template (Matthew Favetti)
+-New feature: Regular expression flags can now be used in validation (Carsten Schmitz)
+-New feature: Remote Control: list_users accepts user_id filter (Gabriel Jenik)
+#Updated translation: Basque by santises
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by Bobo001, yanglaw
+#Updated translation: Czech by VBraun
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by devUSIT, mauriciofurtado, holch, samarta
+#Updated translation: Russian by winterheart
+#Updated translation: Slovak by dusanm
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+
 Changes from 2.63.0 (build 170304) to 2.63.1 (build 170305) Feb 21 2017
 Fixed issue: Survey list & legacy plugins not working
 Updated translation: Catalan by qualitatuvic
@@ -52,7 +101,7 @@ Changes from 2.62.2 (build 170203) to 2.63.0 (build 170304) Feb 20 2017
 -Fixed issue: Missing spaces in title_bar between survey title and brackets (Tõnis Ormisson)
 -Fixed issue: Some options are being ignored in statistics (Carsten Schmitz)
 -Fixed issue: Timeline remote control not working (Stefan Verweij)
--New feature #12120: direct action by php-cli (#638) (Denis Chenu)
+-New feature #12120: direct action by php-cli (Denis Chenu)
 -New feature: add Plugin event afterFindSurvey (Tõnis Ormisson)
 -New feature: New plugin event afterSurveyQuestionAssessment (Gabriel Jenik)
 -New translation: Luxembourgish (Carsten Schmitz)
