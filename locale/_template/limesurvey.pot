@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-03-04 09:10:33+00:00\n"
+"POT-Creation-Date: 2017-03-07 07:57:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -53,11 +53,11 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:1537
 #: application/helpers/admin/import_helper.php:1711
 #: application/helpers/admin/import_helper.php:2059
-#: application/helpers/admin/import_helper.php:2248
-#: application/helpers/admin/import_helper.php:2305
-#: application/helpers/admin/import_helper.php:2353
-#: application/helpers/admin/import_helper.php:2487
-#: application/helpers/admin/import_helper.php:2527
+#: application/helpers/admin/import_helper.php:2250
+#: application/helpers/admin/import_helper.php:2307
+#: application/helpers/admin/import_helper.php:2355
+#: application/helpers/admin/import_helper.php:2489
+#: application/helpers/admin/import_helper.php:2529
 #: application/views/admin/dataentry/active_html_view.php:116
 #: application/views/admin/dataentry/vvimport_result.php:16
 #: application/views/admin/error_view.php:3
@@ -1344,10 +1344,10 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:711
 #: application/controllers/admin/tokens.php:1572
 #: application/controllers/admin/useraction.php:163
-#: application/helpers/admin/import_helper.php:2403
-#: application/helpers/admin/import_helper.php:2421
-#: application/helpers/admin/import_helper.php:2448
-#: application/helpers/admin/import_helper.php:2509
+#: application/helpers/admin/import_helper.php:2405
+#: application/helpers/admin/import_helper.php:2423
+#: application/helpers/admin/import_helper.php:2450
+#: application/helpers/admin/import_helper.php:2511
 #: application/views/admin/dataentry/import.php:27
 #: application/views/admin/dataentry/vvimport_result.php:22
 #: application/views/admin/survey/Question/question_view.php:103
@@ -6223,44 +6223,44 @@ msgstr ""
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2248
+#: application/helpers/admin/import_helper.php:2250
 msgid "Failed to insert survey language"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2305
+#: application/helpers/admin/import_helper.php:2307
 msgid "Failed to insert group"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2305
-#: application/helpers/admin/import_helper.php:2353
-#: application/helpers/admin/import_helper.php:2403
-#: application/helpers/admin/import_helper.php:2421
-#: application/helpers/admin/import_helper.php:2448
-#: application/helpers/admin/import_helper.php:2487
-#: application/helpers/admin/import_helper.php:2509
-#: application/helpers/admin/import_helper.php:2527
+#: application/helpers/admin/import_helper.php:2307
+#: application/helpers/admin/import_helper.php:2355
+#: application/helpers/admin/import_helper.php:2405
+#: application/helpers/admin/import_helper.php:2423
+#: application/helpers/admin/import_helper.php:2450
+#: application/helpers/admin/import_helper.php:2489
+#: application/helpers/admin/import_helper.php:2511
+#: application/helpers/admin/import_helper.php:2529
 msgid "Text file row number "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2353
+#: application/helpers/admin/import_helper.php:2355
 msgid "Could not insert question"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2403
+#: application/helpers/admin/import_helper.php:2405
 msgid "Failed to insert question attribute"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2421
-#: application/helpers/admin/import_helper.php:2448
-#: application/helpers/admin/import_helper.php:2509
+#: application/helpers/admin/import_helper.php:2423
+#: application/helpers/admin/import_helper.php:2450
+#: application/helpers/admin/import_helper.php:2511
 msgid "Failed to insert default value"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2487
+#: application/helpers/admin/import_helper.php:2489
 msgid "Could not insert subquestion"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2527
+#: application/helpers/admin/import_helper.php:2529
 msgid "Could not insert answer"
 msgstr ""
 
@@ -6703,6 +6703,7 @@ msgid "One or more surveys seem to be broken - please use the data integrity che
 msgstr ""
 
 #: application/helpers/common_helper.php:289
+#: application/views/admin/survey/surveybar_view.php:98
 msgid "Expired"
 msgstr ""
 
@@ -9638,7 +9639,7 @@ msgid "Display type"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1415
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:137
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:146
 #: application/views/admin/survey/subview/tab_survey_view.php:69
 msgid "Plugins"
 msgstr ""
@@ -10572,7 +10573,7 @@ msgid "Permission to view/update the survey settings including token table creat
 msgstr ""
 
 #: application/models/Permission.php:138
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:96
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:105
 msgid "Tokens"
 msgstr ""
 
@@ -14860,7 +14861,7 @@ msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:151
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:10
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:19
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:28
 msgid "General options"
 msgstr ""
 
@@ -15922,24 +15923,24 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:39
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:48
 msgid "Presentation & navigation"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:58
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:67
 msgid "Publication & access control"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:77
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:86
 msgid "Notification & data management"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:118
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:127
 #: application/views/admin/survey/subview/tab_survey_view.php:54
 msgid "Panel integration"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:156
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:165
 #: application/views/admin/survey/subview/tab_survey_view.php:61
 msgid "Resources"
 msgstr ""
@@ -16521,13 +16522,16 @@ msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:80
 #: application/views/admin/survey/surveybar_view.php:87
-#: application/views/admin/survey/surveybar_view.php:98
 #: application/views/admin/survey/surveybar_view.php:105
 msgid "Activate this survey"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:95
 msgid "This survey is active but expired."
+msgstr ""
+
+#: application/views/admin/survey/surveybar_view.php:95
+msgid "Click to adjust."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:102
