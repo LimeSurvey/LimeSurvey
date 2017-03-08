@@ -51,13 +51,12 @@
                                 'htmlOptions'=>array('style'=>'vertical-align:top'),
                                 'value'=>function($oQuota) use($oSurvey,$aQuotaItems){
                                     /** @var Quota $oQuota */
-                                    $out = null;
-                                        $out = '<p>'.$this->renderPartial('/admin/quotas/viewquotas_quota_members',
-                                                array(
-                                                    'oSurvey'=>$oSurvey,
-                                                    'oQuota'=>$oQuota,
-                                                    'aQuotaItems'=>$aQuotaItems,
-                                                )).'<p>';
+                                    $out = '<p>'.$this->renderPartial('/admin/quotas/viewquotas_quota_members',
+                                        array(
+                                            'oSurvey'=>$oSurvey,
+                                            'oQuota'=>$oQuota,
+                                            'aQuotaItems'=>$aQuotaItems,
+                                    )).'<p>';
                                     return $out;
                                 },
                             ),
