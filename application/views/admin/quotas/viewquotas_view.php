@@ -11,8 +11,6 @@
 /* @var Quota $oQuota The last Quota as base for Massive edits */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
 
-
-
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
@@ -54,14 +52,12 @@
                                 'value'=>function($oQuota) use($oSurvey,$aQuotaItems){
                                     /** @var Quota $oQuota */
                                     $out = null;
-                                    if (!empty($aQuotaItems) ){
                                         $out = '<p>'.$this->renderPartial('/admin/quotas/viewquotas_quota_members',
                                                 array(
                                                     'oSurvey'=>$oSurvey,
                                                     'oQuota'=>$oQuota,
                                                     'aQuotaItems'=>$aQuotaItems,
                                                 )).'<p>';
-                                    }
                                     return $out;
                                 },
                             ),

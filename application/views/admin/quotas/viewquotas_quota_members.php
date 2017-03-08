@@ -17,8 +17,6 @@ if ($oQuota->action == 1){
 
 
 ?>
-<?php if (!empty($aQuotaItems) ):?>
-
 
 <div class="panel panel-<?php echo ($oQuota->active==1 ? 'primary' : 'default') ?>">
     <div class="panel-heading">
@@ -59,5 +57,3 @@ if ($oQuota->action == 1){
         </div>
     </div>
 </div>
-
-<?php endif;
