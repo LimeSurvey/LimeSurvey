@@ -33,8 +33,12 @@
 class Quota extends LSActiveRecord
 {
 
+    const ACTION_TERMINATE = 1;
+    const ACTION_CONFIRM_TERMINATE = 2;
+
     /* Default attributes */
     public $active=1;
+    public $action = self::ACTION_TERMINATE;
 
     /**
      * Returns the static model of Settings table
@@ -107,7 +111,7 @@ class Quota extends LSActiveRecord
     {
         return array(
             'name'=> gT("Quota name"),
-            'active'=> gT("Status"),
+            'active'=> gT("Active"),
             'qlimit'=> gT("Limit"),
             'autoload_url'=> gT("Autoload URL"),
             'action'=> gT("Quota action"),

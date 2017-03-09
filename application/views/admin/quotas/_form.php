@@ -30,8 +30,8 @@
     <div class='col-sm-9'>
         <?php echo $form->dropDownList($oQuota,'action',
             array(
-                1 =>gT("Terminate survey"),
-                2 =>gT("Terminate survey with warning"),
+                Quota::ACTION_TERMINATE =>gT("Terminate survey"),
+                Quota::ACTION_CONFIRM_TERMINATE =>gT("Allow user to modify his last answers before terminate survey."),
             ),
             array('class'=>'form-control')); ?>
         <?php echo $form->error($oQuota,'action'); ?>

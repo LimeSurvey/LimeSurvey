@@ -460,9 +460,6 @@ class quotas extends Survey_Common_Action
 
         $oQuota = new Quota();
         $oQuota->sid = $oSurvey->primaryKey;
-        $oQuota->active = 1;
-        $oQuota->autoload_url = 1;
-        $oQuota->action = 1;
 
 
         if(isset($_POST['Quota'])) {

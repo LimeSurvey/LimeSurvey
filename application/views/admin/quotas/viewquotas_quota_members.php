@@ -7,11 +7,11 @@
 
 $tooltip = null;
 $icon = null;
-if ($oQuota->action == 1){
+if ($oQuota->action == Quota::ACTION_TERMINATE){
     $tooltip = gT("Terminate survey");
     $icon = 'fa-exclamation-circle';
-} elseif ($oQuota->action == 2){
-    $tooltip = gT("Terminate survey with warning");
+} elseif ($oQuota->action == Quota::ACTION_CONFIRM_TERMINATE){
+    $tooltip = gT("Allow user to modify his last answers before terminate survey.");
     $icon = 'fa-exclamation-triangle';
 }
 
