@@ -133,11 +133,14 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 			default:
 				throw new Exception('Invalid template name');
 		}
-
+		
+		$modsubject = $sSubject;
+		$modmessage = $sMessage;
+		
 		if (isset($barebone_link))
 		{
-			$modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $sSubject);
-			$modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $sMessage);
+			$modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
+			$modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
 		}
 
 		$modsubject = Replacefields($modsubject, $fieldsarray);
