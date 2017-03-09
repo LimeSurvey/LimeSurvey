@@ -33,9 +33,12 @@
 class Quota extends LSActiveRecord
 {
 
+    const ACTION_TERMINATE = 1;
+    const ACTION_CONFIRM_TERMINATE = 2;
+
     /* Default attributes */
     public $active=1;
-    public $action=1;
+    public $action = self::ACTION_TERMINATE;
 
     /**
      * Returns the static model of Settings table
