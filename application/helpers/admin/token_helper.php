@@ -143,8 +143,8 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 			$modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
 		}
 
-		$modsubject = Replacefields($modsubject, $fieldsarray);
-		$modmessage = Replacefields($modmessage, $fieldsarray);
+		$modsubject = ReplaceFields($modsubject, $fieldsarray);
+		$modmessage = ReplaceFields($modmessage, $fieldsarray);
 
 		if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
 		{
