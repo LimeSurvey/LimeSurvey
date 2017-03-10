@@ -351,7 +351,7 @@
 
                                               <!-- Straight -->
                                               <li>
-                                                  <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
+                                                  <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
                                                     <span class="icon-resetsurveylogic" ></span>
                                                     <?php eT("Straight");?>
                                                   </a>
@@ -359,7 +359,7 @@
 
                                               <!-- By question group -->
                                               <li>
-                                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
+                                                <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
                                                     <span class="icon-resetsurveylogic" ></span>
                                                     <?php eT("By question group");?>
                                                 </a>
