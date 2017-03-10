@@ -26,7 +26,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
         </div>
         <?php echo viewHelper::flatEllipsizeText($oQuota->name) ;?>
     </div>
-    <table class="table table-striped table-condensed" >
+    <table class="table table-quota-items table-striped table-condensed" >
         <thead>
             <tr>
                 <th><?php eT('Question');?></th>

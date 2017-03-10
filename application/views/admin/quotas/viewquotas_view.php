@@ -99,7 +99,7 @@
                             ),
 
                         ),
-                        'itemsCssClass' =>'table-striped table-condensed',
+                        'itemsCssClass' =>'table-quotas table-striped table-condensed',
                     ));
                     ?>
                 </div>
