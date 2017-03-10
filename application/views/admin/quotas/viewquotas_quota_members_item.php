@@ -9,11 +9,11 @@
 $oQuestion = $data['oQuestion'];
 ?>
 <tr>
-    <td data-toggle="tooltip"  data-container="body" title="<?php echo viewHelper::flatEllipsizeText($oQuestion->question,1,60,'...',0.6); ?>">
+    <td data-toggle="tooltip"  data-container="body" title="<?php echo viewHelper::flatEllipsizeText($oQuestion->question,true,60,'...',0.6); ?>">
         <?php echo $oQuestion->title?>
     </td>
     <td>
-        <?php echo viewHelper::flatEllipsizeText($data['answer_title'],1,80,'...',0.6); ?>
+        <?php echo viewHelper::flatEllipsizeText($data['answer_title'],true,80,'...',0.6); ?>
     </td>
     <td class="text-right">
         <?php $this->renderPartial('/admin/quotas/viewquotas_quota_members_actions',
