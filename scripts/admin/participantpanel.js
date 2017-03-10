@@ -117,7 +117,7 @@ LS.CPDB = (function() {
                                     .attr('value', value)
                                     .appendTo(dlForm);
                             });
-                            dlForm.appendTo('body').submit();
+                            dlForm.css('display', 'none').appendTo('body').submit();
                             $(self).modal("hide");
                         });
                         $('#attributes')
