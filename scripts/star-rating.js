@@ -36,10 +36,10 @@ function doRatingStar(qID) {
   //Check if there is a given answer
   var openValue = null;
   answersList.find("input[type=radio]").each(function(i,item){
-    console.log(item);
+    //console.log(item);
     if($(item).prop('checked')){
       openValue = $(item).val();
-      console.log(openValue);
+      //console.log(openValue);
     }
   });
 
