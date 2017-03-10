@@ -38,7 +38,6 @@
                         'enablePagination'=>false,
                         'template' => '{items}',
                         'columns' => array(
-
                             array(
                                 'id'=>'id',
                                 'class'=>'CCheckBoxColumn',
