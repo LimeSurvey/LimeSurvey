@@ -8,14 +8,14 @@
 /* @var Question $oQuestion */
 $oQuestion = $data['oQuestion'];
 ?>
-<div style="display: table-row;">
-    <div data-container="body" data-toggle="tooltip" title="<?php echo $oQuestion->question;?>" style="display: table-cell">
+<tr>
+    <td data-toggle="tooltip"  data-container="body" title="<?php echo viewHelper::flatEllipsizeText($oQuestion->question,true,60,'...',0.6); ?>">
         <?php echo $oQuestion->title?>
-    </div>
-    <div style="display: table-cell">
-        <?php echo $data['answer_title']?>
-    </div>
-    <div style="display: table-cell" align="right">
+    </td>
+    <td>
+        <?php echo viewHelper::flatEllipsizeText($data['answer_title'],true,80,'...',0.6); ?>
+    </td>
+    <td class="text-right">
         <?php $this->renderPartial('/admin/quotas/viewquotas_quota_members_actions',
             array(
                 'oSurvey'=>$oSurvey,
@@ -23,5 +23,5 @@ $oQuestion = $data['oQuestion'];
                 'oQuotaMember' =>$data['oQuotaMember'],
             ));
         ?>
-    </div>
+    </td>
 </div>

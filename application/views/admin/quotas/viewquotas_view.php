@@ -38,7 +38,6 @@
                         'enablePagination'=>false,
                         'template' => '{items}',
                         'columns' => array(
-
                             array(
                                 'id'=>'id',
                                 'class'=>'CCheckBoxColumn',
@@ -100,7 +99,7 @@
                             ),
 
                         ),
-                        'itemsCssClass' =>'table-striped table-condensed',
+                        'itemsCssClass' =>'table-quotas table-striped table-condensed',
                     ));
                     ?>
                 </div>
