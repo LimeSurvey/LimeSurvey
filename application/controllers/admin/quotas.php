@@ -161,7 +161,12 @@ class quotas extends Survey_Common_Action
         $totalcompleted = 0;
         $csvoutput = array();
 
-        $aData['oDataProvider'] = new CArrayDataProvider($oSurvey->quotas);
+        $aData['oDataProvider'] = new CArrayDataProvider($oSurvey->quotas,array(
+            'pagination' => array(
+                'pageSize' => 20,
+                'pageVar' => 'page'
+            ),
+        ));
 
         //if there are quotas let's proceed
         $aViewUrls['output'] = '';
