@@ -35,6 +35,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.64.0 (build 170307) to 2.64.1 (build 170310) Mar 10 2017
+-Fixed issue #12136: The central participant database does not export (Olle Haerstedt)
+-Fixed issue #12173: Error with pluginhelper?sa=sidebody direct link (Denis Chenu)
+-Fixed issue #12176: Fatal error in admin response controller (#654) (Matthew)
+-Fixed issue #12177: Modal language changed to last survey language if massive exporting htmls (#656) (Tõnis Ormisson)
+-FIxed issue #12178: fix quota-grid errors if no quotas (#655) (Tõnis Ormisson)
+-Fixed issue #12183: New quota : autoload_url to Yes by default (#657) (Tõnis Ormisson)
+-Fixed issue: Captcha text was not unescaped at all places (Olle Haerstedt)
+-Fixed issue: Certain invalid numbers don't raise warning during entry (Carsten Schmitz)
+-Fixed issue: Good header for zip files download (Denis Chenu)
+-Fixed issue: Missing subaction in URL for generate question codes (Olle Haerstedt)
+
 Changes from 2.63.1 (build 170305) to 2.64.0 (build 170307) Mar 7 2017
 -Fixed issue #12118: Expiry date not referenced correctly at survey list overview (Tõnis Ormisson)
 -Fixed issue #12132: Survey List Status Filter 'Active and running' does not list expiring surveys (Tõnis Ormisson)
