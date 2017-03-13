@@ -737,7 +737,7 @@ class Survey_Common_Action extends CAction
             $baselang = $surveyinfo['language'];
 
             $activated = ($surveyinfo['active'] == 'Y');
-            App()->getClientScript()->registerPackage('jquery-cookie');
+            App()->getClientScript()->registerPackage('js-cookie');
 
             //Parse data to send to view
             $aData['surveyinfo'] = $surveyinfo;

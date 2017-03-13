@@ -79,13 +79,10 @@ return array(
     ),
 
     // jQuery Cookie
-    'jquery-cookie' => array(
-        'basePath' => 'third_party.jquery-cookie',
+    'js-cookie' => array(
+        'basePath' => 'third_party.js-cookie',
         'js' => array(
-            'jquery.cookie.js'
-        ),
-        'depends' => array(
-            'jquery'
+            'js.cookie.js'
         )
     ),
 
