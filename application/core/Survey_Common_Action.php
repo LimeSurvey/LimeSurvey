@@ -498,33 +498,6 @@ class Survey_Common_Action extends CAction
             // Count user
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
-            // Count tokens and deactivated surveys
-            $tablelist = Yii::app()->db->schema->getTableNames();
-            foreach ($tablelist as $table)
-            {
-                if (strpos($table, Yii::app()->db->tablePrefix . "old_tokens_") !== false)
-                {
-                    $oldtokenlist[] = $table;
-                }
-                elseif (strpos($table, Yii::app()->db->tablePrefix . "tokens_") !== false)
-                {
-                    $tokenlist[] = $table;
-                }
-                elseif (strpos($table, Yii::app()->db->tablePrefix . "old_survey_") !== false)
-                {
-                    $oldresultslist[] = $table;
-                }
-            }
-
-            if (isset($tokenlist) && is_array($tokenlist))
-            {
-                $activetokens = count($tokenlist);
-            }
-            else
-            {
-                $activetokens = 0;
-            }
-
             //Check if have a comfortUpdate key
             if(getGlobalSetting('emailsmtpdebug')!=null)
             {
@@ -535,7 +508,6 @@ class Survey_Common_Action extends CAction
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
             }
 
-            $aData['dataForConfigMenu']['activetokens'] = $activetokens;
             $aData['sitename'] = Yii::app()->getConfig("sitename");
 
             $updateModel = new UpdateForm();
