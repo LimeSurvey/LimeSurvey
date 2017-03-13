@@ -8,7 +8,7 @@ class PluginHelper extends Survey_Common_Action
     /**
      * Helper function to let a plugin put content
      * into the side-body easily.
-     * 
+     *
      * @param int $surveyId
      * @param string $plugin Name of the plugin class
      * @param string $method Name of the plugin method
@@ -23,7 +23,7 @@ class PluginHelper extends Survey_Common_Action
         $aData['surveyid'] = $surveyId;
 
         $aData['surveybar']['buttons']['view']= true;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyId.")";
+        $aData['title_bar']['title'] = viewHelper::flatEllipsizeText($surveyinfo['surveyls_title'])." (".gT("ID").":".$surveyId.")";
 
         $content = $this->getContent($surveyId, $plugin, $method);
 
@@ -34,7 +34,7 @@ class PluginHelper extends Survey_Common_Action
         $aData['activated'] = $surveyinfo['active'];
         $aData['sideMenuOpen'] = false;  // TODO: Assume this for all plugins?
         $this->_renderWrappedTemplate(null, array('super/sidebody'), $aData);
-        
+
     }
 
     /**
@@ -67,7 +67,7 @@ class PluginHelper extends Survey_Common_Action
     }
 
     /**
-     * 
+     *
      * @param string $pluginName
      * @param string $methodName
      * @return array
