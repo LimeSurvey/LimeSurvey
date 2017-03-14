@@ -4352,9 +4352,6 @@ function getQuotaInformation($surveyid,$language,$iQuotaID=null)
     }
 
     $aSurveyQuotasInfo = array();
-    $x=0;
-
-    $surveyinfo=getSurveyInfo($surveyid,$language);
 
     // Check all quotas for the current survey
     if (count($oSurvey->quotas) > 0)

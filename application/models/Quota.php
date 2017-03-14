@@ -45,7 +45,7 @@ class Quota extends LSActiveRecord
      *
      * @static
      * @access public
-    * @param string $class
+     * @param string $class
      * @return CActiveRecord
      */
     public static function model($class = __CLASS__)
@@ -83,7 +83,6 @@ class Quota extends LSActiveRecord
      */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
             'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', 'quotals_quota_id','index' => 'quotals_language'),
