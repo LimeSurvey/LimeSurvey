@@ -8,10 +8,25 @@
 /* @var array $aQuotaItems */
 /* @var integer $totalquotas */
 /* @var integer $totalcompleted */
+/* @var integer $iGridPageSize */
 /* @var Quota $oQuota The last Quota as base for Massive edits */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
 
+
 ?>
+<!-- To update grid when pageSize is changed -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        jQuery(function($)
+        {
+            jQuery(document).on("change", '#pageSize', function()
+            {
+                $.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }});
+            });
+        });
+    });
+</script>
+
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -35,6 +50,13 @@
                         'dataProvider' => $oDataProvider,
                         'id' => 'quota-grid',
                         'emptyText'=>gT('No quotas'),
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                                CHtml::dropDownList(
+                                    'pageSize',
+                                    $iGridPageSize,
+                                    Yii::app()->params['pageSizeOptions'],
+                                    array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+
                         'columns' => array(
                             array(
                                 'id'=>'id',
@@ -98,6 +120,7 @@
 
                         ),
                         'itemsCssClass' =>'table-quotas table-striped table-condensed',
+                        'ajaxUpdate' => true,
                     ));
                     ?>
                 </div>
