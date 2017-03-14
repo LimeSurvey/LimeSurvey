@@ -35,8 +35,6 @@
                         'dataProvider' => $oDataProvider,
                         'id' => 'quota-grid',
                         'emptyText'=>gT('No quotas'),
-                        'enablePagination'=>false,
-                        'template' => '{items}',
                         'columns' => array(
                             array(
                                 'id'=>'id',
