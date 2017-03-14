@@ -154,11 +154,11 @@ class Quota extends LSActiveRecord
      * @return QuotaLanguageSetting
      */
     public function getMainLanguagesetting(){
-        foreach ($this->languagesettings as $lang=>$languagesetting){
-            if($lang == $this->survey->language){
-                return $languagesetting;
-            }
-        }
+        return QuotaLanguageSetting::model()
+            ->with(array('quota' => array('condition' => 'sid="'.$this->survey->primaryKey.'"')))
+            ->findByAttributes(array(
+                'quotals_language'=>$this->survey->language,
+            ));
     }
 
 }
