@@ -4335,7 +4335,6 @@ function includeKeypad()
 * getQuotaInformation() returns quota information for the current survey
 * @param string $surveyid - Survey identification number
 * @param string $language - Language of the quota
-* @param string $quotaid - Optional quotaid that restricts the result to a given quota
 * @param integer $iQuotaID
 * @return array - nested array, Quotas->Members
 */
@@ -4352,17 +4351,15 @@ function getQuotaInformation($surveyid,$language,$iQuotaID=null)
         $aAttributes['id'] = $iQuotaID;
     }
 
-    $aQuotas = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
-
     $aSurveyQuotasInfo = array();
     $x=0;
 
     $surveyinfo=getSurveyInfo($surveyid,$language);
 
     // Check all quotas for the current survey
-    if (count($aQuotas) > 0)
+    if (count($oSurvey->quotas) > 0)
     {
-        foreach ($aQuotas as $oQuota)
+        foreach ($oSurvey->quotas as $oQuota)
         {
             // Array for each quota
             $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->languagesettings[$oSurvey->language]->attributes);// We have only one language, then we can use first only
