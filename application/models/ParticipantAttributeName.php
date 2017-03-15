@@ -11,13 +11,19 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
 /**
  * This is the model class for table "{{{{participant_attribute_names}}}}".
  *
  * The followings are the available columns in table '{{{{participant_attribute_names}}}}':
  * @property integer $attribute_id
  * @property string $attribute_type
+ * @property string $defaultname
  * @property string $visible
+ *
+ * @property ParticipantAttributeNameLang[] $participant_attribute_names_lang
+ * @property ParticipantAttribute $participant_attribute
+ *
  */
 class ParticipantAttributeName extends LSActiveRecord
 {
@@ -216,6 +222,7 @@ class ParticipantAttributeName extends LSActiveRecord
        );
        return $cols;
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -257,10 +264,11 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-    * Get an array of CPDB attributes
-    *
-    * @param mixed $sLanguageFilter
-    */
+     * Get an array of CPDB attributes
+     *
+     * @param mixed $sLanguageFilter
+     * @return array
+     */
     function getVisibleAttributes($sLanguageFilter=null)
     {
         if ($sLanguageFilter==null) $sLanguageFilter=Yii::app()->session['adminlang'];
@@ -313,10 +321,11 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-    * Returns a list of attributes, with name and value. Currently not working for alternate languages
-    *
-    * @param string $participant_id the id of the participant to return values/names for (if empty, returns all)
-    */
+     * Returns a list of attributes, with name and value. Currently not working for alternate languages
+     *
+     * @param string $participant_id the id of the participant to return values/names for (if empty, returns all)
+     * @return array
+     */
     function getParticipantVisibleAttribute($participant_id)
     {
         $output=array();
@@ -426,13 +435,17 @@ class ParticipantAttributeName extends LSActiveRecord
         }
     }
 
-    // this is a very specific function used to get the attributes that are not present for the participant
-    function getnotaddedAttributes($attributeid)
+    /**
+     * this is a very specific function used to get the attributes that are
+     * not present for the participant
+     * @param integer $attributeid
+     * @return array
+     */
+    function getNotAddedAttributes($attributeid)
     {
         $output = array();
         $notin=array();
-        foreach($attributeid as $row)
-        {
+        foreach($attributeid as $row) {
             $notin[] = $row;
         }
 
@@ -458,10 +471,11 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-    * Adds the data for a new attribute
-    *
-    * @param mixed $data
-    */
+     * Adds the data for a new attribute
+     *
+     * @param mixed $data
+     * @return bool|int
+     */
     function storeAttribute($data)
     {
         // Do not allow more than 60 attributes because queries will break because of too many joins
@@ -489,13 +503,11 @@ class ParticipantAttributeName extends LSActiveRecord
                                                       array(':participant_id'=>$data['participant_id'],
                                                             ':attribute_id'=>$data['attribute_id'])
                                                       );
-        if(count($query) == 0)
-        {
+        if(count($query) == 0) {
             Yii::app()->db->createCommand()
                       ->insert('{{participant_attribute}}',$data);
         }
-        else
-        {
+        else {
             Yii::app()->db->createCommand()
                       ->update('{{participant_attribute}}',
                                $data,
@@ -523,22 +535,49 @@ class ParticipantAttributeName extends LSActiveRecord
             ->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid);
     }
 
-    function getAttributeNames($attributeid)
+    /**
+     * @param integer $attributeid
+     * @return ParticipantAttributeName[]
+     */
+    public function getAttributeNames($attributeid)
     {
-        return Yii::app()->db->createCommand()->where("attribute_id = :attribute_id")->from('{{participant_attribute_names_lang}}')->select('*')->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)->queryAll();
+        return Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('{{participant_attribute_names_lang}}')
+            ->where("attribute_id = :attribute_id")
+            ->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)
+            ->queryAll();
     }
 
     /**
      * @param string $attributeid
+     * @param string $lang
+     * @return ParticipantAttributeNameLang
      */
     function getAttributeName($attributeid, $lang='en')
     {
-        return Yii::app()->db->createCommand()->where("attribute_id = :attribute_id AND lang = :lang")->from('{{participant_attribute_names_lang}}')->select('*')->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)->bindParam(":lang", $lang, PDO::PARAM_STR)->queryRow();
+        return Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('{{participant_attribute_names_lang}}')
+            ->where("attribute_id = :attribute_id AND lang = :lang")
+            ->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)
+            ->bindParam(":lang", $lang, PDO::PARAM_STR)
+            ->queryRow();
     }
 
+
+    /**
+     * @param string $attribute_id
+     * @return mixed
+     * @return ParticipantAttributeName
+     */
     function getAttribute($attribute_id)
     {
-        $data = Yii::app()->db->createCommand()->from('{{participant_attribute_names}}')->where('{{participant_attribute_names}}.attribute_id = '.$attribute_id)->select('*')->queryRow();
+        $data = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('{{participant_attribute_names}}')
+            ->where('{{participant_attribute_names}}.attribute_id = '.$attribute_id)
+            ->queryRow();
         return $data;
     }
 
@@ -592,8 +631,7 @@ class ParticipantAttributeName extends LSActiveRecord
             ->bindParam(":lang", $data['lang'], PDO::PARAM_STR)
             ->queryAll();
 
-        if (count($query) == 0)
-        {
+        if (count($query) == 0) {
             // A record does not exist, insert one.
             $oParticipantAttributeNameLang=new ParticipantAttributeNameLang;
             $oParticipantAttributeNameLang->attribute_id=$data['attribute_id'];
@@ -601,8 +639,7 @@ class ParticipantAttributeName extends LSActiveRecord
             $oParticipantAttributeNameLang->lang=$data['lang'];
             $oParticipantAttributeNameLang->save();
         }
-        else
-        {
+        else {
             $oParticipantAttributeNameLang = ParticipantAttributeNameLang::model()->findByPk(array(
                 'attribute_id' => $data['attribute_id'], 
                 'lang' => $data['lang']
@@ -618,10 +655,12 @@ class ParticipantAttributeName extends LSActiveRecord
             Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$record);
         }
     }
+
     function storeAttributeValue($data)
     {
         Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$data);
     }
+
     function clearAttributeValues()
     {
         $deleteCommand = Yii::app()->db->createCommand();
@@ -663,12 +702,17 @@ class ParticipantAttributeName extends LSActiveRecord
         {
             $data=array('visible'=>'FALSE');
         }
-        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = :attribute_id')->bindParam(":attribute_id", $attribute_id[1], PDO::PARAM_INT);
+        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = :attribute_id')
+            ->bindParam(":attribute_id", $attribute_id[1], PDO::PARAM_INT);
     }
 
     function getAttributeID()
     {
-        $query = Yii::app()->db->createCommand()->select('attribute_id')->from('{{participant_attribute_names}}')->order('attribute_id','desc')->queryAll();
+        $query = Yii::app()->db->createCommand()
+            ->select('attribute_id')
+            ->from('{{participant_attribute_names}}')
+            ->order('attribute_id','desc')
+            ->queryAll();
         return $query;
     }
 
