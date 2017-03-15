@@ -207,15 +207,14 @@ class Survey extends LSActiveRecord
     */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
-
             'permissions'     => array(self::HAS_MANY, 'Permission', array( 'entity_id'=> 'sid'  ), 'together' => true ), //
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language', 'together' => true),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
+            'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
         );
     }
 
