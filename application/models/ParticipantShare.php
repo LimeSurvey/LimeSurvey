@@ -19,6 +19,11 @@
  * @property integer $share_uid
  * @property string $date_added
  * @property string $can_edit
+ *
+ * @property Participant $participant
+ * @property User $shared_by
+ * @property SurveyLink $survey_links //TODO should be singular
+ * @property ParticipantAttribute[] $participantAttributes
  */
 class ParticipantShare extends LSActiveRecord
 {
@@ -31,7 +36,7 @@ class ParticipantShare extends LSActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return ParticipantShare
      */
     public static function model($class = __CLASS__)
     {
@@ -136,15 +141,13 @@ class ParticipantShare extends LSActiveRecord
      */
     public function getCanEditHtml(){
         $loggedInUser = yii::app()->user->getId();
-        if($this->participant->owner_uid == $loggedInUser)
-        {
+        if($this->participant->owner_uid == $loggedInUser) {
             $inputHtml = "<input type='checkbox' data-size='small' data-off-color='warning' data-on-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeEditableStatus' "
             . ($this->can_edit ? "checked" : "")
             . "/>";
             return  $inputHtml;
         }
-        else 
-        {
+        else {
             return ($this->can_edit ? gT("Yes") : gT('No'));
         }
     }
