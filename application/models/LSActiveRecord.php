@@ -29,12 +29,10 @@ class LSActiveRecord extends CActiveRecord
         $sCreateFieldName=($this->hasAttribute('created')?'created':null);
         $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
         $sDriverName = Yii::app()->db->getDriverName();
-        if ($sDriverName=='sqlsrv' || $sDriverName=='dblib')
-        {
+        if ($sDriverName=='sqlsrv' || $sDriverName=='dblib') {
             $sTimestampExpression=new CDbExpression('GETDATE()');
         }
-        else
-        {
+        else {
             $sTimestampExpression=new CDbExpression('NOW()');
         }
         $aBehaviors['CTimestampBehavior'] = array(
@@ -44,8 +42,7 @@ class LSActiveRecord extends CActiveRecord
             'timestampExpression' =>  $sTimestampExpression
         );
         // Some tables might not exist/not be up to date during a database upgrade so in that case disconnect plugin events
-        if (!Yii::app()->getConfig('Updating'))
-        {
+        if (!Yii::app()->getConfig('Updating')) {
             $aBehaviors['PluginEventBehavior']= array(
                 'class' => 'application.models.behaviors.PluginEventBehavior'
             );
@@ -67,15 +64,12 @@ class LSActiveRecord extends CActiveRecord
      */
     protected function query($criteria, $all = false, $asAR = true)
     {
-        if ($asAR === true)
-        {
+        if ($asAR === true) {
             return parent::query($criteria, $all);
-        } else
-        {
+        } else {
             $this->beforeFind();
             $this->applyScopes($criteria);
-            if (!$all)
-            {
+            if (!$all) {
                 $criteria->limit = 1;
             }
 
@@ -109,9 +103,10 @@ class LSActiveRecord extends CActiveRecord
      * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
      *
-     * @param string  $field        The field that contains the Id, when null primary key is used if it is a single field
+     * @param string $field The field that contains the Id, when null primary key is used if it is a single field
      * @param boolean $forceRefresh Don't use value from static cache but always requery the database
      * @return false|int
+     * @throws Exception
      */
     public function getMaxId($field = null, $forceRefresh = false)
     {
@@ -139,16 +134,17 @@ class LSActiveRecord extends CActiveRecord
 
         return $maxIds[$field];
     }
-    
+
     /**
      * Return the min value for a field
      *
      * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
      *
-     * @param string  $field        The field that contains the Id, when null primary key is used if it is a single field
+     * @param string $field The field that contains the Id, when null primary key is used if it is a single field
      * @param boolean $forceRefresh Don't use value from static cache but always requery the database
      * @return false|int
+     * @throws Exception
      */
     public function getMinId($field = null, $forceRefresh = false)
     {
