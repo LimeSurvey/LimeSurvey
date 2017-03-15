@@ -25,6 +25,8 @@ if (!defined('BASEPATH'))
  * @property string $method
  * @property string $value
  * @property integer $scenario
+ *
+ * @property Question $questions
  */
 class Condition extends LSActiveRecord
 {
@@ -73,9 +75,10 @@ class Condition extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-        'questions' => array(self::HAS_ONE, 'Question', '',
-        'on' => "$alias.cqid = questions.qid",
-        ),
+            // TODO should be singular, not plural
+            'questions' => array(self::HAS_ONE, 'Question', '',
+                'on' => "$alias.cqid = questions.qid",
+            ),
         );
     }
 

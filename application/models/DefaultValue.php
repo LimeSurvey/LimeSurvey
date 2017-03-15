@@ -10,9 +10,19 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-     *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class DefaultValue
+ *
+ * @property integer $qid Question id
+ * @property integer $scale_id
+ * @property string $language
+ * @property string $specialtype
+ * @property string $defaultvalue
+ *
+ * @property Question $question
+ */
 class DefaultValue extends LSActiveRecord
 {
     /* Default value when create (from DB) , leave some because add rules */
@@ -67,7 +77,7 @@ class DefaultValue extends LSActiveRecord
         $alias = $this->getTableAlias();
         return array(
             'question' => array(self::HAS_ONE, 'Question', '',
-            'on' => "$alias.qid = question.qid",
+               'on' => "$alias.qid = question.qid",
             ),
         );
     }
@@ -102,4 +112,3 @@ class DefaultValue extends LSActiveRecord
         tracevar($oRecord->getErrors());
     }
 }
-?>
