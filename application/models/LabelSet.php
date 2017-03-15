@@ -13,6 +13,13 @@
  *
  */
 
+/**
+ * Class LabelSet
+ *
+ * @property integer $lid ID
+ * @property string $label_name
+ * @property string $languages
+ */
 class LabelSet extends LSActiveRecord
 {
 	/**
@@ -70,6 +77,7 @@ class LabelSet extends LSActiveRecord
         {
 		    foreach ($condition as $item => $value)
 			{
+			    // FIXME this is broken
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
