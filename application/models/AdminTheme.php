@@ -263,6 +263,7 @@ class AdminTheme extends CFormModel
         }
         else
         {
+            // FIXME $this not available in static context
             $path = $this->path.'/scripts/';
             $url  = $this->sTemplateUrl.'/scripts/';
         }
