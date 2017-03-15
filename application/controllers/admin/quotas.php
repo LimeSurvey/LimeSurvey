@@ -161,12 +161,19 @@ class quotas extends Survey_Common_Action
         $totalcompleted = 0;
         $csvoutput = array();
 
+        // Set number of page
+        if (Yii::app()->getRequest()->getQuery('pageSize'))
+        {
+            Yii::app()->user->setState('pageSize',(int)Yii::app()->getRequest()->getQuery('pageSize'));
+        }
+        $aData['iGridPageSize'] = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
         $aData['oDataProvider'] = new CArrayDataProvider($oSurvey->quotas,array(
             'pagination' => array(
-                'pageSize' => 20,
+                'pageSize' => $aData['iGridPageSize'],
                 'pageVar' => 'page'
             ),
         ));
+
 
         //if there are quotas let's proceed
         $aViewUrls['output'] = '';
