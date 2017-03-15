@@ -162,6 +162,7 @@ class Quota extends LSActiveRecord
     }
 
     /**
+     * Get the QuotaLanguageSetting for current language
      * @return QuotaLanguageSetting
      */
     public function getCurrentLanguageSetting(){

@@ -4334,11 +4334,11 @@ function includeKeypad()
 /**
 * getQuotaInformation() returns quota information for the current survey
 * @param string $surveyid - Survey identification number
-* @deprecated string $language use only actual language
+* @param null : $deprecated not used
 * @param integer $iQuotaID
 * @return array - nested array, Quotas->Members
 */
-function getQuotaInformation($surveyid,$language=null,$iQuotaID=null)
+function getQuotaInformation($surveyid,$deprecated=null,$iQuotaID=null)
 {
     /** @var Survey $oSurvey */
     $oSurvey = Survey::model()->findByPk($surveyid);
