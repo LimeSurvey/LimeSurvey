@@ -4334,11 +4334,11 @@ function includeKeypad()
 /**
 * getQuotaInformation() returns quota information for the current survey
 * @param string $surveyid - Survey identification number
-* @param string $language - Language of the quota
+* @deprecated string $language use only actual language
 * @param integer $iQuotaID
 * @return array - nested array, Quotas->Members
 */
-function getQuotaInformation($surveyid,$language,$iQuotaID=null)
+function getQuotaInformation($surveyid,$language=null,$iQuotaID=null)
 {
     /** @var Survey $oSurvey */
     $oSurvey = Survey::model()->findByPk($surveyid);
@@ -4359,7 +4359,7 @@ function getQuotaInformation($surveyid,$language,$iQuotaID=null)
         foreach ($oSurvey->quotas as $oQuota)
         {
             // Array for each quota
-            $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->curentlanguagesetting->attributes);
+            $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->currentlanguagesetting->attributes);
             $aQuotaMembers = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$oQuota->id));
             $aQuotaInfo['members'] = array();
             if (count($aQuotaMembers) > 0)
