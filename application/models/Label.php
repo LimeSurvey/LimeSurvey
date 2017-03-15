@@ -13,6 +13,16 @@
  *
  */
 
+/**
+ * Class Label
+ *
+ * @property integer $lid ID
+ * @property string $code
+ * @property string $title
+ * @property integer $sortorder
+ * @property string $language
+ * @property integer $assessment_value
+ */
 class Label extends LSActiveRecord
 {
     /**
@@ -82,6 +92,7 @@ class Label extends LSActiveRecord
         {
 		    foreach ($condition as $item => $value)
 			{
+			    //FIXME this is broken: $criteria is not initiated
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
