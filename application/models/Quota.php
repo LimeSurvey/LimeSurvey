@@ -27,6 +27,7 @@
  *
  * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
  * @property QuotaLanguageSetting $mainLanguagesetting
+ * @property QuotaLanguageSetting $currentLanguageSetting
  * @property Survey $survey
  * @property QuotaMember[] $quotaMembers
  */
@@ -162,10 +163,8 @@ class Quota extends LSActiveRecord
 
     /**
      * @return QuotaLanguageSetting
-     * @param string $language
-     * @retrun array
      */
-    public function getCurrentLanguagesetting(){
+    public function getCurrentLanguageSetting(){
         $oQuotaLanguageSettings=QuotaLanguageSetting::model()
             ->with(array('quota' => array('condition' => 'sid="'.$this->survey->primaryKey.'"')))
             ->findByAttributes(array(

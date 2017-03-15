@@ -4359,7 +4359,7 @@ function getQuotaInformation($surveyid,$language=null,$iQuotaID=null)
         foreach ($oSurvey->quotas as $oQuota)
         {
             // Array for each quota
-            $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->currentlanguagesetting->attributes);
+            $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->currentLanguageSetting->attributes);
             $aQuotaMembers = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$oQuota->id));
             $aQuotaInfo['members'] = array();
             if (count($aQuotaMembers) > 0)
