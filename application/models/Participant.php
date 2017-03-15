@@ -30,6 +30,19 @@ class CPDBException extends Exception {}
  * @property string $language
  * @property string $blacklisted
  * @property integer $owner_uid
+ *
+ * @property User $owner
+ * @property SurveyLink[] $surveylinks
+ * @property ParticipantAttribute[] $participantAttributes
+ * @property ParticipantShare[] $shares
+ *
+ * @property string $buttons
+ * @property string $checkbox
+ * @property array $allExtraAttributes
+ * @property integer|string $countActiveSurveys
+ * @property string $blacklistSwitchButton
+ * @property array $columns
+ * @property string $ownersList
  */
 class Participant extends LSActiveRecord
 {
@@ -299,6 +312,9 @@ class Participant extends LSActiveRecord
         return "";
     }
 
+    /**
+     * @return int|string
+     */
     public function getCountActiveSurveys(){
         $activeSurveys = $this->surveylinks;
         return count($activeSurveys)>0 ? count($activeSurveys) : "";
@@ -621,7 +637,7 @@ class Participant extends LSActiveRecord
     /**
      * This function updates the data edited in the view
      *
-     * @param aray $data
+     * @param array $data
      * @return void
      */
     public function updateRow($data)
@@ -634,13 +650,13 @@ class Participant extends LSActiveRecord
         $record->save();
     }
 
-    /*
+    /**
      * This function returns a list of participants who are either owned or shared
      * with a specific user
      *
-     * @params int $userid The ID of the user that we are listing participants for
+     * @param int $userid The ID of the user that we are listing participants for
      *
-     * @return object containing all the users
+     * @return Participant[] objects containing all the users
      */
     public function getParticipantsOwner($userid)
     {
@@ -1420,7 +1436,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * This funciton is responsible for showing all the participant's shared to the superadmin
+     * This function is responsible for showing all the participant's shared to the superadmin
      */
     public function getParticipantSharedAll()
     {
@@ -1462,7 +1478,7 @@ class Participant extends LSActiveRecord
      * If automapping is enabled then update the token field properties with the mapped CPDB field ID
      * TODO: What is this?
      *
-     * @param int surveyId
+     * @param int $surveyId
      * @param array $mappedAttributes
      * @param integer $surveyId
      * @return void
@@ -1473,7 +1489,7 @@ class Participant extends LSActiveRecord
         {
             if(is_numeric($iIDAttributeCPDB))
             {
-                /* Update the attributedescriptions info */
+                /* Update the attribute descriptions info */
                 $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
                 $tokenAttributes[$key]['cpdbmap'] = $iIDAttributeCPDB;
                 Yii::app()->db
@@ -1617,7 +1633,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Write participtants as tokens or something
+     * Write participants as tokens or something
      *
      * @param int $surveyId
      * @param array $participantIds
@@ -1627,6 +1643,7 @@ class Participant extends LSActiveRecord
      * @param array $addedAttributeIds ?? Result from createColumnsInTokenTable
      * @param array $options As in calling function
      * @return integer[] (success, duplicate, blacklistSkipped)
+     * @throws Exception
      */
     private function writeParticipantsToTokenTable(
         $surveyId,
@@ -1789,6 +1806,7 @@ class Participant extends LSActiveRecord
      *                overwriteman - If true, overwrite manually mapped data
      *                overwritest - If true, overwrite standard fields (ie: names, email, participant_id, token)
      *                createautomap - If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
+     * @return array
      */
     public function copyCPDBAttributesToTokens($surveyId, array $participantIds, array $mappedAttributes, array $newAttributes, array $options)
     {
