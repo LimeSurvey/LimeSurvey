@@ -17,6 +17,72 @@ if (!defined('BASEPATH'))
 
 use \ls\pluginmanager\PluginEvent;
 
+/**
+ * Class Survey
+ *
+ * @property integer $sid primary key
+ * @property integer $owner_id
+ * @property string $admin
+ * @property string $active
+ * @property string $expires Expiry date
+ * @property string $startdate
+ * @property string $adminemail
+ * @property string $anonymized
+ * @property string $faxto
+ * @property string $format
+ * @property string $savetimings
+ * @property string $template Template name
+ * @property string $language
+ * @property string $additional_languages
+ * @property string $datestamp
+ * @property string $usecookie
+ * @property string $allowsave
+ * @property integer $autonumber_start
+ * @property string $autoredirect
+ * @property string $allowprev
+ * @property string $printanswers
+ * @property string $ipaddr
+ * @property string $refurl
+ * @property string $datecreated
+ * @property string $publicstatistics
+ * @property string $publicgraphs
+ * @property string $listpublic
+ * @property string $htmlemail
+ * @property string $sendconfirmation
+ * @property string $tokenanswerspersistence
+ * @property string $assessments
+ * @property string $usecaptcha
+ * @property string $usetokens
+ * @property string $bounce_email
+ * @property string $attributedescriptions
+ * @property string $emailresponseto
+ * @property integer $emailnotificationto
+ * @property string $showxquestions
+ * @property string $showgroupinfo
+ * @property string $shownoanswer
+ * @property string $showqnumcode
+ * @property integer $bouncetime
+ * @property string $bounceprocessing
+ * @property string $bounceaccounttype
+ * @property string $bounceaccounthost
+ * @property string $bounceaccountpass
+ * @property string $bounceaccountencryption
+ * @property string $bounceaccountuser
+ * @property string $showwelcome
+ * @property string $showprogress
+ * @property integer $questionindex
+ * @property integer $navigationdelay
+ * @property string $nokeyboard
+ * @property string $alloweditaftercompletion
+ * @property string $googleanalyticsstyle
+ * @property string $googleanalyticsapikey
+ *
+ * @property Permission[] $permissions
+ * @property SurveyLanguageSetting[] $languagesettings
+ * @property User $owner
+ * @property QuestionGroup[] $groups
+ * @property Quota[] $quotas
+ */
 class Survey extends LSActiveRecord
 {
     /**
