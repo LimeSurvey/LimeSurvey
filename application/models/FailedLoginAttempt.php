@@ -11,6 +11,15 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
+/**
+ * Class FailedLoginAttempt
+ *
+ * @property integer $id
+ * @property string $ip Ip address
+ * @property string $last_attempt
+ * @property integer $number_attempts
+ */
 class FailedLoginAttempt extends LSActiveRecord
 {
 	/**
