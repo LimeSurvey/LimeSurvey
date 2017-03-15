@@ -14,6 +14,7 @@
  * @property string $status new, read
  * @property DateTime $created When the notification was created
  * @property DateTime $first_read When the notification was read
+ * @property string $hash
  */
 class Notification extends LSActiveRecord
 {
@@ -29,13 +30,11 @@ class Notification extends LSActiveRecord
     public function __construct($options = null)
     {
         // Don't do anything if this is called from self::model()
-        if (is_string($options) || is_null($options))
-        {
+        if (is_string($options) || is_null($options)) {
             parent::__construct($options);  // $options = scenario in this case
             return;
         }
-        else
-        {
+        else {
             // Why not Zoidberg? (\/) (°,,,°) (\/)
             parent::__construct();
         }
@@ -50,26 +49,22 @@ class Notification extends LSActiveRecord
         ));
 
         // Only allow 'survey' or 'user' as entity
-        if ($options['entity'] != 'survey' && $options['entity'] != 'user')
-        {
+        if ($options['entity'] != 'survey' && $options['entity'] != 'user') {
             throw new InvalidArgumentException('Invalid entity: ' . $options['entity']);
         }
 
         // Default to 'default' display class
-        if (!isset($options['display_class']))
-        {
+        if (!isset($options['display_class'])) {
             $options['display_class'] = 'default';
         }
 
         // Default to 'log' notification importance
-        if (!isset($options['importance']))
-        {
+        if (!isset($options['importance'])) {
             $options['importance'] = self::NORMAL_IMPORTANCE;
         }
 
         // importance must be between 1 and 3
-        if ($options['importance'] < 1 && $options['importance'] > 3)
-        {
+        if ($options['importance'] < 1 && $options['importance'] > 3) {
             throw new InvalidArgumentException('Invalid importance: ' . $options['importance']);
         }
 
@@ -92,13 +87,11 @@ class Notification extends LSActiveRecord
     protected function checkShortcuts($options)
     {
         // Shortcuts for entity id
-        if (isset($options['survey_id']))
-        {
+        if (isset($options['survey_id'])) {
             $options['entity'] = 'survey';
             $options['entity_id'] = $options['survey_id'];
         }
-        elseif (isset($options['user_id']))
-        {
+        elseif (isset($options['user_id'])) {
             $options['entity'] = 'user';
             $options['entity_id'] = $options['user_id'];
         }
@@ -116,10 +109,8 @@ class Notification extends LSActiveRecord
      */
     protected function checkMandatoryFields(array $options, array $mandatory)
     {
-        foreach ($mandatory as $mand)
-        {
-            if (!isset($options[$mand]) || $options[$mand] == '')
-            {
+        foreach ($mandatory as $mand) {
+            if (!isset($options[$mand]) || $options[$mand] == '') {
                 throw new InvalidArgumentException('Field ' . $mand . ' is mandatory for notification');
             }
         }
@@ -172,15 +163,15 @@ class Notification extends LSActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'entity' => 'Entity',
-			'entity_id' => 'Entity',
-			'message' => 'Message',
-			'importance' => 'Importance',
-			'created' => 'Created',
-			'first_read' => 'Read',
-			'status' => 'Status',
-			'title' => 'Title',
+			'id' => gT('ID'),
+			'entity' => gT('Entity'),
+			'entity_id' => gT('Entity'),
+			'message' => gT('Message'),
+			'importance' => gT('Importance'),
+			'created' => gT('Created'),
+			'first_read' => gT('Read'),
+			'status' => gT('Status'),
+			'title' => gT('Title'),
 		);
 	}
 
@@ -364,8 +355,7 @@ class Notification extends LSActiveRecord
         $criteria = new CDbCriteria();
 
         // Only fetch survey specific notifications if user is viewing a survey
-        if (!empty($surveyId))
-        {
+        if (!empty($surveyId)) {
             $criteria->addCondition('entity = \'survey\'');
             $criteria->addCondition('entity_id = ' . $surveyId);  // TODO: Escape survey id
         }
@@ -398,8 +388,7 @@ class Notification extends LSActiveRecord
     public static function broadcast(array $options, array $users = null)
     {
         // Get all users if no $users were given
-        if ($users === null)
-        {
+        if ($users === null) {
             $users = User::model()->findAll();
         }
 
