@@ -10,6 +10,7 @@
  * @property string $title
  * @property string $desc
  * @property string $page
+ * @property integer $usergroup UserGroup ID
  */
 class Boxes extends CActiveRecord
 {
