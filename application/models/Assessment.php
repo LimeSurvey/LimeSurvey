@@ -13,6 +13,19 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class Assessment
+ *
+ * @property integer $id
+ * @property integer $sid Survey id
+ * @property integer $gid Group id
+ * @property string $scope
+ * @property string $name
+ * @property string $minimum
+ * @property string $maximum
+ * @property string $message
+ * @property string $language
+ */
 class Assessment extends LSActiveRecord
 {
 	/**
