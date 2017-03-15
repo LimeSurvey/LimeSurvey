@@ -989,7 +989,7 @@ class Participant extends LSActiveRecord
                     $surveytable='{{survey_'.intval($value['survey_id']).'}}';
                     if ($datas=Yii::app()->db->schema->getTable($surveytable))
                     {
-                        if (!empty($token['token']) && isset($datas->columns['token']) && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')) //Make sure we have a token value, and that tokens are used to link to the survey
+                        if (!empty($token['token']) && isset($datas->columns['token']) && Permission::model()->hasSurveyPermission($value['survey_id'], 'responses', 'delete')) //Make sure we have a token value, and that tokens are used to link to the survey
                         {
                             $gettoken = Yii::app()->db->createCommand()
                                                       ->select('*')
