@@ -15,11 +15,18 @@
 
 /**
  * This is the model class for table "{{plugin_settings}}".
+ *
+ * @property integer $id
+ * @property integer $plugin_id
+ * @property string $model
+ * @property integer $model_id
+ * @property string $key
+ * @property string $value
  */
 class PluginSetting extends CActiveRecord {
 
     /**
-     * @param type $className
+     * @param string $className
      * @return PluginSetting
      */
     public static function model($className = __CLASS__) {
