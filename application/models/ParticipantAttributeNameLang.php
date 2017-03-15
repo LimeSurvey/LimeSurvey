@@ -12,23 +12,17 @@
  *
  */
 /**
- * This is the model class for table "{{{{participant_attribute_names}}}}".
+ * This is the model class for table "{{{{participant_attribute_names_lang}}}}".
  *
- * The followings are the available columns in table '{{{{participant_attribute_names}}}}':
+ * The followings are the available columns in table '{{{{participant_attribute_names_lang}}}}':
  * @property integer $attribute_id
- * @property string $attribute_type
- * @property string $visible
+ * @property string $attribute_name
+ * @property string $lang
+ *
+ * @property ParticipantAttributeName $participant_attribute_names //TODO should be singular
  */
 class ParticipantAttributeNameLang extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Participant Attribute Names Lang table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
 
     /**
     * Returns the primary key of this table
@@ -41,6 +35,14 @@ class ParticipantAttributeNameLang extends LSActiveRecord
         return array('attribute_id', 'lang');
     }
 
+    /**
+     * Returns the static model of Participant Attribute Names Lang table
+     *
+     * @static
+     * @access public
+     * @param string $class
+     * @return ParticipantAttributeNameLang
+     */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
