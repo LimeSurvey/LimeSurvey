@@ -14,6 +14,16 @@
  * 	Files Purpose: lots of common functions
  */
 
+/**
+ * Class ParticipantAttribute
+ *
+ * @property integer $participant_id
+ * @property integer $attribute_id
+ * @property string $value
+ *
+ * @property Participant $participant
+ * @property ParticipantAttributeName $participant_attribute_names //todo this should be singular not plural
+ */
 class ParticipantAttribute extends LSActiveRecord
 {
 
@@ -23,7 +33,7 @@ class ParticipantAttribute extends LSActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return CActiveRecord
+	 * @return ParticipantAttribute
 	 */
 	public static function model($class = __CLASS__)
 	{
