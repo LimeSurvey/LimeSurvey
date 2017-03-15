@@ -13,6 +13,21 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class ExpressionError
+ *
+ * @property integer $id
+ * @property string $errortime
+ * @property integer $sid
+ * @property integer $gid
+ * @property integer $qid
+ * @property integer $gseq
+ * @property integer $qseq
+ * @property string $type
+ * @property string $eqn
+ * @property string $prettyprint
+ *
+ */
 class ExpressionError extends LSActiveRecord
 {
 	/**
