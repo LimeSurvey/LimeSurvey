@@ -12,6 +12,19 @@
  *
  */
 
+/**
+ * Class Answer
+ * @property integer $qid Question id
+ * @property string $code Answer code
+ * @property string $answer Answer text
+ * @property integer $sortorder
+ * @property integer $assessment_value
+ * @property string $language Language code
+ * @property integer $scale_id
+ *
+ * @property Question $questions
+ * @property Question $groups
+ */
 class Answer extends LSActiveRecord
 {
     /**
@@ -59,6 +72,7 @@ class Answer extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
+            // TODO HAS_ONE relation should be in singular, not plural $answer->group, $answer->question
             'questions' => array(self::HAS_ONE, 'Question', '',
                 'on' => "$alias.qid = questions.qid",
             ),
