@@ -41,8 +41,11 @@
          */
         public function getFiles()
         {
+            //TODO wn we not use $this->survey here?
+            /** @var Survey $oSurvey */
+            $oSurvey = Survey::model()->findByPk($this->dynamicId);
 
-            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|','language'=>getBaseLanguageFromSurveyID($this->dynamicId)));
+            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|','language'=>$oSurvey->language));
             $files = array();
             foreach ($questions as $question)
             {

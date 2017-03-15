@@ -111,6 +111,8 @@ function checkGroup($postsid)
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {
+    /** @var Survey $oSurvey */
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
 
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
@@ -233,7 +235,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID),$aDuplicateQIDs);
+    $fieldmap = createFieldMap($iSurveyID,'full',true,false,$oSurvey->language,$aDuplicateQIDs);
     if (count($aDuplicateQIDs))
     {
         foreach ($aDuplicateQIDs as $iQID=>$aDuplicate)
@@ -289,6 +291,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
     }
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
+    /** @var Survey $oSurvey */
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $oSurvey->fixInvalidQuestions();
     //Get list of questions for the base language
@@ -385,7 +388,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                  */
 
                 $nrOfAnswers = Answer::model()->countByAttributes(
-                    array('qid' => $aRow['qid'],'language'=>Survey::model()->findByPk($iSurveyID)->language)
+                    array('qid' => $aRow['qid'],'language'=>$oSurvey->language)
                 );
                 $oQuestionAttribute = QuestionAttribute::model()->find(
                     "qid = :qid AND attribute = 'max_subquestions'",
@@ -426,6 +429,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
 
     if ($simulate){
+        //FIXME missing parameter $CI ?
         return array('dbengine'=>$CI->db->databasetabletype, 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$arrSim);
     }
 
@@ -488,7 +492,7 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     if ($oSurvey->savetimings == "Y")
     {
-        $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,getBaseLanguageFromSurveyID($iSurveyID));
+        $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,$oSurvey->language);
 
         $aTimingTableDefinition = array();
         $aTimingTableDefinition['id'] = $aTableDefinition['id'];

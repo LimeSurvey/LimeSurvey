@@ -128,6 +128,8 @@ class export extends Survey_Common_Action {
     public function exportresults()
     {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
@@ -158,7 +160,7 @@ class export extends Survey_Common_Action {
         $sYValue = Yii::app()->request->getPost('convertyto');
         $sNValue = Yii::app()->request->getPost('convertnto');
 
-        $surveybaselang = Survey::model()->findByPk($iSurveyID)->language;
+        $surveybaselang = $oSurvey->language;
         $exportoutput = "";
 
         // Get info about the survey
@@ -171,10 +173,10 @@ class export extends Survey_Common_Action {
         if ( ! $sExportType )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$oSurvey->language);
             if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
             }
             $iFieldCount = count($aFieldMap);
 
@@ -244,13 +246,13 @@ class export extends Survey_Common_Action {
                 'codetext'=>array('label'=>gT("Question code and question text"),'help'=>null,'checked'=>false),
             );
             // Add a plugin for adding headexports : a public function getRegistereddPlugins($event) can help here.
-            $aLanguagesCode=Survey::model()->findByPk($iSurveyID)->getAllLanguages();
+            $aLanguagesCode=$oSurvey->getAllLanguages();
             $aLanguages=array();
             foreach ($aLanguagesCode as $sLanguage){
                 $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
             }
             $data['aLanguages'] = $aLanguages;    // Pass available exports
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $surveyinfo = $oSurvey->surveyinfo;
 
             $data['sidemenu']['state'] = false;
             $data['menu']['edition'] = true;
@@ -661,6 +663,8 @@ class export extends Survey_Common_Action {
     public function vvexport()
     {
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         $subaction = Yii::app()->request->getParam('subaction');
 
         //Exports all responses to a survey in special "Verified Voting" format.
@@ -675,9 +679,8 @@ class export extends Survey_Common_Action {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oSurvey->language);
 
-            Survey::model()->findByPk($iSurveyId)->language;
             $surveytable = "{{survey_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
@@ -689,7 +692,7 @@ class export extends Survey_Common_Action {
             $aData['uniquefieldcode']=(count(array_unique ($fieldcode))==count($fieldcode)); // Did we need more control ?
             $aData['vvversionseleted']=($aData['uniquefieldcode'])?2:1;
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $surveyinfo = $oSurvey->surveyinfo;
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData["surveyinfo"] = $surveyinfo;
             $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
@@ -713,10 +716,8 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oSurvey->language);
             $surveytable = "{{survey_$iSurveyId}}";
-
-            Survey::model()->findByPk($iSurveyId)->language;
 
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
 

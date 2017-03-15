@@ -3790,6 +3790,8 @@ class statistics_helper {
      public function generate_simple_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
      {
              $aStatisticsData=array();
+             /** @var Survey $oSurvey */
+             $oSurvey = Survey::model()->findByPk($surveyid);
 
              Yii::import('application.helpers.surveytranslator_helper', true);
              Yii::import('application.third_party.ar-php.Arabic', true);
@@ -3797,13 +3799,13 @@ class statistics_helper {
              //pick the best font file if font setting is 'auto'
              if (is_null($sLanguageCode))
              {
-                 $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+                 $sLanguageCode =  $oSurvey->language;
              }
              //Yii::app()->setLanguage($sLanguageCode);
 
              //Get an array of codes of all available languages in this survey
-             $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
-             $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
+             $surveylanguagecodes = $oSurvey->additionalLanguages;
+             $surveylanguagecodes[] = $oSurvey->language;
 
              // Set language for questions and answers to base language of this survey
              $language=$sLanguageCode;
@@ -3910,6 +3912,8 @@ class statistics_helper {
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
         $aStatisticsData=array();
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
 
         //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
@@ -3920,15 +3924,15 @@ class statistics_helper {
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode))
         {
-            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+            $sLanguageCode =  $oSurvey->language;
         }
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
 
         //Get an array of codes of all available languages in this survey
-        $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
-        $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
+        $surveylanguagecodes = $oSurvey->additionalLanguages;
+        $surveylanguagecodes[] = $oSurvey->language;
 
         // Set language for questions and answers to base language of this survey
         $language=$sLanguageCode;
@@ -4135,6 +4139,8 @@ class statistics_helper {
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $outputTarget='I',$sLanguageCode=null, $browse = true)
     {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
 
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
@@ -4149,7 +4155,7 @@ class statistics_helper {
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode))
         {
-            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+            $sLanguageCode =  $oSurvey->language;
         }
 
         //we collect all the html-output within this variable
