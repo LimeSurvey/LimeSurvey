@@ -27,6 +27,7 @@
  *
  * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
  * @property QuotaLanguageSetting $mainLanguagesetting
+ * @property QuotaLanguageSetting $currentLanguageSetting
  * @property Survey $survey
  * @property QuotaMember[] $quotaMembers
  */
@@ -159,5 +160,23 @@ class Quota extends LSActiveRecord
                 'quotals_language'=>$this->survey->language,
             ));
     }
+
+    /**
+     * Get the QuotaLanguageSetting for current language
+     * @return QuotaLanguageSetting
+     */
+    public function getCurrentLanguageSetting(){
+        $oQuotaLanguageSettings=QuotaLanguageSetting::model()
+            ->with(array('quota' => array('condition' => 'sid="'.$this->survey->primaryKey.'"')))
+            ->findByAttributes(array(
+                'quotals_language'=>Yii::app()->getLanguage(),
+            ));
+        if($oQuotaLanguageSettings){
+            return $oQuotaLanguageSettings;
+        }
+        /* If not exist or found, return the one from survey base languague */
+        return $this->getMainLanguagesetting();
+    }
+
 
 }
