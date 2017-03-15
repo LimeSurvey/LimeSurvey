@@ -20,7 +20,7 @@
 
 		/**
 		 *
-		 * @param type $className
+		 * @param string $className
 		 * @return Dynamic
 		 */
 
@@ -36,9 +36,10 @@
 			return parent::model($className);
 		}
 
-		/**
-		 * @param integer $id
-		 */
+        /**
+         * @param integer $id
+         * @return mixed
+         */
 		public static function create($id, $scenario = 'insert')
 		{
 			$className = get_called_class() . '_' . $id;

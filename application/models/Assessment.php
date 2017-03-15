@@ -34,7 +34,7 @@ class Assessment extends LSActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return CActiveRecord
+	 * @return Assessment
 	 */
 	public static function model($class = __CLASS__)
 	{

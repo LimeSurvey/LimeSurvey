@@ -88,7 +88,7 @@ class FailedLoginAttempt extends LSActiveRecord
 		{
 			$lastattempt = strtotime($row->last_attempt);
 			if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime'))
-				$this->deleteAttempts($ip);
+				$this->deleteAttempts();
 			else
 				$isLockedOut = true;
 		}

@@ -267,7 +267,7 @@ class Notification extends LSActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Notifications the static model class
+	 * @return Notification the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

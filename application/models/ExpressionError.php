@@ -30,12 +30,10 @@
 class ExpressionError extends LSActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
-	 *
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return CActiveRecord
+	 * @return ExpressionError
 	 */
 	public static function model($class = __CLASS__)
 	{

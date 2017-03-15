@@ -50,7 +50,7 @@ class LabelSet extends LSActiveRecord
 	 * @static
 	 * @access public
      * @param string $class
-	 * @return CActiveRecord
+	 * @return LabelSet
 	 */
 	public static function model($class = __CLASS__)
 	{

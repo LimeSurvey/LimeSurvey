@@ -43,7 +43,7 @@ class Participant extends LSActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return Participants
+     * @return Participant
      */
     public static function model($class = __CLASS__)
     {

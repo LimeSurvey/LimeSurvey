@@ -36,7 +36,7 @@ class Condition extends LSActiveRecord
     * @static
     * @access public
     * @param string $class
-    * @return CActiveRecord
+    * @return Condition
     */
     public static function model($class = __CLASS__)
     {

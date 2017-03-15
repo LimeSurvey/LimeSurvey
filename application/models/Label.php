@@ -58,7 +58,7 @@ class Label extends LSActiveRecord
     * @static
     * @access public
     * @param string $class
-    * @return CActiveRecord
+    * @return Label
     */
     public static function model($class = __CLASS__)
     {

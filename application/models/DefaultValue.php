@@ -37,7 +37,7 @@ class DefaultValue extends LSActiveRecord
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return DefaultValue
      */
     public static function model($class = __CLASS__)
     {
