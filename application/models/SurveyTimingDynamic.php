@@ -10,11 +10,15 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
-  * 	Files Purpose: lots of common functions
  */
 
+/**
+ * Class SurveyTimingDynamic
+ *
+ */
 class SurveyTimingDynamic extends LSActiveRecord
 {
+    /** @var int $sid Survey id */
     protected static $sid = 0;
     
 	/**
@@ -22,7 +26,7 @@ class SurveyTimingDynamic extends LSActiveRecord
 	 *
 	 * @static
 	 * @access public
-	 * @return CActiveRecord
+	 * @return SurveyTimingDynamic
 	 */
     public static function model($sid = NULL)
     {         
@@ -116,30 +120,30 @@ class SurveyTimingDynamic extends LSActiveRecord
                     ->queryAll();
                 $middleval = intval($statistics['count'] / 2);
                 $statistics['middleval'] = $middleval;
-                if ($statistics['count'] % 2 && $statistics['count']>1)
-                {
+                if ($statistics['count'] % 2 && $statistics['count']>1) {
                     $median=($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval-1]['interviewtime']) / 2;
                 }
-                else
-                {
+                else {
                     $median=$queryAll[$middleval]['interviewtime'];
                 }
                 $statistics['median'] = $median;
                 $statistics['allmin'] = (int) ($median / 60);
                 $statistics['allsec'] = $median % 60;
             }
-            else
-            {
+            else {
                 $statistics['count'] = 0;
             }
         }
-        else
-        {
+        else {
             $statistics['count'] = 0;
         }
         return $statistics;
     }
 
+    /**
+     * @param array $data
+     * @return bool|mixed|null
+     */
     public function insertRecords($data)
     {
         $record = new self;
@@ -155,10 +159,12 @@ class SurveyTimingDynamic extends LSActiveRecord
         }
     }
 
+
     /**
      * Search function, used by TbGridView
-     *
-     * @return DataProvider
+     * @param integer $iSurveyID
+     * @param string $language
+     * @return CActiveDataProvider
      */
     public function search($iSurveyID, $language)
     {
@@ -194,15 +200,13 @@ class SurveyTimingDynamic extends LSActiveRecord
         $buttons = '<a class="btn btn-xs btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="'.gT('View response details').'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
 
         // Edit
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update'))
-        {
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
             $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
             $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="'.gT('Edit this response').'"><span class="glyphicon glyphicon-pencil" ></span></a>';
         }
 
         // Delete
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete'))
-        {
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
             $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="' . $deleteUrl . '" role="button" data-toggle="modal" data-tooltip="true" title="'.gT('Delete this response').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
         }
