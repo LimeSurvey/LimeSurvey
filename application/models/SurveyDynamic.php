@@ -24,10 +24,7 @@ class SurveyDynamic extends LSActiveRecord
     protected $bHaveToken;
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
+     * @inheritdoc
      * @return SurveyDynamic
      */
     public static function model($sid = NULL)
@@ -60,23 +57,13 @@ class SurveyDynamic extends LSActiveRecord
         self::$sid = (int) $sid;
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{survey_' . self::$sid . '}}';
     }
 
-    /**
-    * Returns this model's relations
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function relations()
     {
         if($this->getbHaveToken())
@@ -93,12 +80,7 @@ class SurveyDynamic extends LSActiveRecord
         }
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'id';
@@ -140,7 +122,7 @@ class SurveyDynamic extends LSActiveRecord
      *
      * @static
      * @access public
-     * @param array $condition
+     * @param array|bool $condition
      * @return int
      */
     public static function deleteSomeRecords($condition = FALSE)

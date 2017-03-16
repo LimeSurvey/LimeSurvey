@@ -14,17 +14,13 @@
  */
 class Boxes extends CActiveRecord
 {
-    /**
-     * @return string the associated database table name
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{boxes}}';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
+    /** @inheritdoc */
     public function rules()
     {
         // NOTE: you should only define rules for those attributes that
@@ -39,9 +35,7 @@ class Boxes extends CActiveRecord
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -50,9 +44,7 @@ class Boxes extends CActiveRecord
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
+    /** @inheritdoc */
     public function attributeLabels()
     {
         return array(
@@ -219,9 +211,7 @@ class Boxes extends CActiveRecord
     }
 
     /**
-     * Returns the static model of the specified AR class.
-     * Please note that you should have this exact method in all your CActiveRecord descendants!
-     * @param string $className active record class name.
+     * @inheritdoc
      * @return Boxes the static model class
      */
     public static function model($className=__CLASS__)

@@ -26,13 +26,14 @@
 class PluginSetting extends CActiveRecord {
 
     /**
-     * @param string $className
+     * @inheritdoc
      * @return PluginSetting
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
+
+    /** @inheritdoc */
     public function tableName() {
         return '{{plugin_settings}}';
     }

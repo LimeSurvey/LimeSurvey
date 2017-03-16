@@ -51,11 +51,7 @@ class Participant extends LSActiveRecord
     public $id;
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return Participant
      */
     public static function model($class = __CLASS__)
@@ -63,17 +59,13 @@ class Participant extends LSActiveRecord
         return parent::model($class);
     }
 
-    /**
-     * @return string the associated database table name
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{participants}}';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
+    /** @inheritdoc */
     public function rules()
     {
         // NOTE: you should only define rules for those attributes that
@@ -92,9 +84,7 @@ class Participant extends LSActiveRecord
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -106,6 +96,7 @@ class Participant extends LSActiveRecord
             'shares' => array(self::HAS_MANY, 'ParticipantShare', 'participant_id')
         );
     }
+
     // public function getCountActiveSurveys(){
 
     //     $count =  count($this->surveylinks);

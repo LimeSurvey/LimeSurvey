@@ -22,44 +22,28 @@
  */
 class LabelSet extends LSActiveRecord
 {
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{labelsets}}';
 	}
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'lid';
 	}
 
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return LabelSet
 	 */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
-    /**
-    * Returns this model's validation rules
-    *
-    */
+
+    /** @inheritdoc */
     public function rules()
     {
         return array(

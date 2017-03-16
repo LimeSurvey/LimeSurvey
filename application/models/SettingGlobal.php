@@ -16,11 +16,7 @@
 class SettingGlobal extends LSActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return CActiveRecord
 	 */
 	public static function model($class = __CLASS__)
@@ -28,27 +24,18 @@ class SettingGlobal extends LSActiveRecord
 		return parent::model($class);
 	}
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{settings_global}}';
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'stg_name';
 	}
+
 	function updateSetting($settingname, $settingvalue)
     {
 
@@ -72,4 +59,3 @@ class SettingGlobal extends LSActiveRecord
 
     }
 }
-?>

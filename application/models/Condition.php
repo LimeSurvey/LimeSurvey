@@ -31,13 +31,9 @@ if (!defined('BASEPATH'))
 class Condition extends LSActiveRecord
 {
     /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return Condition
-    */
+     * @inheritdoc
+     * @return Condition
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);

@@ -28,11 +28,7 @@ class ParticipantAttribute extends LSActiveRecord
 {
 
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return ParticipantAttribute
 	 */
 	public static function model($class = __CLASS__)
@@ -40,28 +36,19 @@ class ParticipantAttribute extends LSActiveRecord
 		return parent::model($class);
 	}
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{participant_attribute}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('participant_id', 'attribute_id');
     }
 
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related

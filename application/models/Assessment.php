@@ -29,18 +29,15 @@
 class Assessment extends LSActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return Assessment
+     * @inheritdoc
+     * @return Assessment
 	 */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
 
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -48,23 +45,13 @@ class Assessment extends LSActiveRecord
         );
     }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{assessments}}';
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string[]
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return array('id', 'language');

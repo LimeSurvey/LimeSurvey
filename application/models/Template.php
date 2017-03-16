@@ -34,11 +34,7 @@ class Template extends LSActiveRecord
     private static $standardTemplates = array();
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return Template
      */
     public static function model($class = __CLASS__)
@@ -46,23 +42,13 @@ class Template extends LSActiveRecord
         return parent::model($class);
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{templates}}';
     }
 
-    /**
-     * Returns this table's primary key
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'folder';

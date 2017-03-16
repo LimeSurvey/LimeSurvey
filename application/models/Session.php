@@ -16,40 +16,27 @@
 class Session extends CActiveRecord
 {
 	/**
-	 * Returns the static model of Session table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
+     * @inheritdoc
+	 * @return Session
 	 */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{sessions}}';
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'id';
 	}
-    
+
+    /** @inheritdoc */
     public function afterFind()
     {
         $sDatabasetype = Yii::app()->db->getDriverName();
@@ -75,4 +62,3 @@ class Session extends CActiveRecord
     }
 
 }
-?>

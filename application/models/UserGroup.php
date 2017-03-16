@@ -30,11 +30,7 @@ class UserGroup extends LSActiveRecord {
     public $member_count=null;
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return UserGroup
      */
     public static function model($class = __CLASS__)

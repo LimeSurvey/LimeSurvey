@@ -80,9 +80,10 @@ class QuestionTemplate extends CFormModel
     /**
      * Get the current instance of template question object.
      *
-     * @param string $sTemplateName
-     * @param int $iSurveyId
-     * @return TemplateConfiguration
+     * @param null $oQuestion
+     * @return QuestionTemplate
+     * @internal param string $sTemplateName
+     * @internal param int $iSurveyId
      */
     public static function getInstance($oQuestion=null)
     {

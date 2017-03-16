@@ -24,13 +24,14 @@
 class Plugin extends CActiveRecord {
 
     /**
-     * @param string $className
+     * @inheritdoc
      * @return Plugin
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
+
+    /** @inheritdoc */
     public function tableName() {
         return '{{plugins}}';
     }

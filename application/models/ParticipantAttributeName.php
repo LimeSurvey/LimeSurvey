@@ -27,38 +27,25 @@
  */
 class ParticipantAttributeName extends LSActiveRecord
 {
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey() {
         return 'attribute_id';
     }
 
     /**
-     * Returns the static model of ParticipantAttributeName table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return ParticipantAttributeName
      */
     public static function model($class = __CLASS__) {
         return parent::model($class);
     }
 
-    /**
-     * @return string the associated database table name
-     */
+    /** @inheritdoc */
     public function tableName() {
         return '{{participant_attribute_names}}';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
+    /** @inheritdoc */
     public function rules()
     {
         // NOTE: you should only define rules for those attributes that will receive user inputs.
@@ -73,9 +60,7 @@ class ParticipantAttributeName extends LSActiveRecord
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -570,6 +555,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @param string $attribute_id
      * @return mixed
      * @return ParticipantAttributeName
+     * TODO: Tonis: this is a bad name for this method - it overrides parent method doing totally different thing
      */
     function getAttribute($attribute_id)
     {

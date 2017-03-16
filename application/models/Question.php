@@ -48,46 +48,27 @@ class Question extends LSActiveRecord
     public $group_name;
 
     /**
-    * Returns the static model of Question table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return Question
-    */
+     * @inheritdoc
+     * @return Question
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-    * Returns the setting's table name to be used by the model
-    *
-    * @access public
-    * @return string
-    */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{questions}}';
     }
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string[]
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('qid', 'language');
     }
 
-    /**
-    * Defines the relations for this model
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
@@ -100,9 +81,9 @@ class Question extends LSActiveRecord
     }
 
     /**
-    * Returns this model's validation rules
-    * TODO: make it easy to read (if possible)
-    */
+     * @inheritdoc
+     * TODO: make it easy to read (if possible)
+     */
     public function rules()
     {
         $aRules= array(

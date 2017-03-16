@@ -72,12 +72,7 @@ class UniqueNotification extends Notification
 
     }
 
-    /**
-     * Broadcast a unique message to all users
-     * See example usage at manual page: https://manual.limesurvey.org/Notifications#Examples
-     * @param array $options
-     * @param array $users
-     */
+    /** @inheritdoc */
     public static function broadcast(array $options, array $users = null)
     {
         // Get all users if no $users were given

@@ -37,6 +37,7 @@
 		}
 
         /**
+		 * @param string $scenario
          * @param integer $id
          * @return mixed
          */
@@ -47,5 +48,3 @@
 		}
 
 	}
-
-?>

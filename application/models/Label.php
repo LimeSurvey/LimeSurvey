@@ -31,44 +31,27 @@ class Label extends LSActiveRecord
      */
     public $maxsortorder;
 
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{labels}}';
 	}
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string[]
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return array('lid', 'language');
 	}
     /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return Label
-    */
+     * @inheritdoc
+     * @return Label
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(

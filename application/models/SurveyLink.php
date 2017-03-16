@@ -29,11 +29,7 @@ class SurveyLink extends LSActiveRecord
 {
 
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return SurveyLink
 	 */
 	public static function model($class = __CLASS__)
@@ -41,23 +37,13 @@ class SurveyLink extends LSActiveRecord
 		return parent::model($class);
 	}
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{survey_links}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string[]
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('participant_id', 'token_id', 'survey_id');
@@ -238,9 +224,7 @@ class SurveyLink extends LSActiveRecord
         return "<input type='checkbox' class='selector_toggleAllParticipantSurveys' value='[".$this->token_id.",".$this->survey_id.",\"".$this->participant_id."\"]' />";
     }
 
-    /**
-     * @return array
-     */
+    /** @inheritdoc */
     public function attributeLabels()
     {
         return array(

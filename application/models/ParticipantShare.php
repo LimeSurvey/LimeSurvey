@@ -31,11 +31,7 @@ class ParticipantShare extends LSActiveRecord
     public $ownerName;
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return ParticipantShare
      */
     public static function model($class = __CLASS__)
@@ -43,17 +39,13 @@ class ParticipantShare extends LSActiveRecord
         return parent::model($class);
     }
 
-    /**
-     * @return string the associated database table name
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{participant_shares}}';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
+    /** @inheritdoc */
     public function rules()
     {
         // NOTE: you should only define rules for those attributes that
@@ -69,9 +61,7 @@ class ParticipantShare extends LSActiveRecord
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -84,9 +74,7 @@ class ParticipantShare extends LSActiveRecord
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
+    /** @inheritdoc */
     public function attributeLabels()
     {
         return array(

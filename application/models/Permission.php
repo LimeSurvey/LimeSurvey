@@ -30,25 +30,13 @@
  */
 class Permission extends LSActiveRecord
 {
-    /**
-     * Returns the table's name
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{permissions}}';
     }
 
-    /**
-     * Returns the static model of Permissions table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return Permission
-     */
+    /** @inheritdoc */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);

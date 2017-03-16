@@ -116,21 +116,18 @@ class Notification extends LSActiveRecord
         }
     }
 
-	/**
-	 * @return string the associated database table name
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{notifications}}';
 	}
 
+    /** @inheritdoc */
     public function primaryKey() {
         return 'id';
     }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
+    /** @inheritdoc */
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
@@ -146,9 +143,7 @@ class Notification extends LSActiveRecord
 		);
 	}
 
-	/**
-	 * @return array relational rules.
-	 */
+    /** @inheritdoc */
 	public function relations()
 	{
 		// NOTE: you may need to adjust the relation name and the related
@@ -157,9 +152,7 @@ class Notification extends LSActiveRecord
 		);
 	}
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
+    /** @inheritdoc */
 	public function attributeLabels()
 	{
 		return array(
@@ -175,18 +168,7 @@ class Notification extends LSActiveRecord
 		);
 	}
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
+    /** @inheritdoc */
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
@@ -264,9 +246,7 @@ class Notification extends LSActiveRecord
     }
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
+	 * @inheritdoc
 	 * @return Notification the static model class
 	 */
 	public static function model($className=__CLASS__)
@@ -281,6 +261,7 @@ class Notification extends LSActiveRecord
      */
     public static function getNotifications($surveyId)
     {
+        // TODO : via survey relations
         $criteria = self::getCriteria($surveyId);
         $nots = self::model()->findAll($criteria);
         return $nots;
@@ -293,6 +274,7 @@ class Notification extends LSActiveRecord
      */
     public static function getImportantNotifications($surveyId)
     {
+        // TODO this should be in Survey model (relations?)
         $criteria = self::getCriteria($surveyId);
         $criteria2 = new CDbCriteria();
         $criteria2->addCondition('importance = ' . self::HIGH_IMPORTANCE);
@@ -308,6 +290,7 @@ class Notification extends LSActiveRecord
      */
     public static function countNotifications($surveyId)
     {
+        // TODO this should be in Survey model
         $criteria = self::getCriteria($surveyId);
         $nr = self::model()->count($criteria);
         return $nr;

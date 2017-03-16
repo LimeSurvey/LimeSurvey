@@ -23,35 +23,21 @@
  */
 class SurveyURLParameter extends LSActiveRecord {
     /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return SurveyURLParameter
-    */
+     * @inheritdoc
+     * @return SurveyURLParameter
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'id';
     }
 
-    /**
-    * Returns the setting's table name to be used by the model
-    *
-    * @access public
-    * @return string
-    */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{survey_url_parameters}}';

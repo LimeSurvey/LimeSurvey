@@ -22,10 +22,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     protected static $sid = 0;
     
 	/**
-	 * Returns the static model
-	 *
-	 * @static
-	 * @access public
+	 * @inheritdoc
 	 * @return SurveyTimingDynamic
 	 */
     public static function model($sid = NULL)
@@ -56,23 +53,13 @@ class SurveyTimingDynamic extends LSActiveRecord
 		self::$sid = (int) $sid;
 	}
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'id';
     }
 
-    /**
-    * Defines the relations for this model
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function relations()
     {
         return array(
@@ -80,12 +67,7 @@ class SurveyTimingDynamic extends LSActiveRecord
         );
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{survey_' . intval(self::$sid) . '_timings}}';

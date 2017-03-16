@@ -107,21 +107,21 @@ class Survey extends LSActiveRecord
     private $pac;
 
     /**
-     * init to set default
-     *
+     * Set defaults
+     * @inheritdoc
      */
     public function init()
     {
+        /** @inheritdoc */
         $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
         $validator= new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
         $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
     }
 
-    /* Add virtual survey attribute labels for gridView*/
+    /** @inheritdoc */
     public function attributeLabels() {
         return array(
-            /* Your other attribute labels */
             'running' => gT('running')
         );
     }
@@ -141,9 +141,11 @@ class Survey extends LSActiveRecord
             return $this->languagesettings[$this->language]->surveyls_title;
         }
     }
+
     /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
      * @param int $surveyId
+     * @return bool
      */
     public function expire($surveyId = null)
     {
@@ -165,34 +167,20 @@ class Survey extends LSActiveRecord
 
     }
 
-    /**
-    * Returns the table's name
-    *
-    * @access public
-    * @return string
-    */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{surveys}}';
     }
 
-    /**
-    * Returns the table's primary key
-    *
-    * @access public
-    * @return string
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'sid';
     }
 
     /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
+    * @inheritdoc
     * @return Survey
     */
     public static function model($class = __CLASS__)
@@ -200,12 +188,7 @@ class Survey extends LSActiveRecord
         return parent::model($class);
     }
 
-    /**
-    * Returns this model's relations
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function relations()
     {
         return array(
@@ -219,12 +202,7 @@ class Survey extends LSActiveRecord
         );
     }
 
-    /**
-    * Returns this model's scopes
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function scopes()
     {
         return array(
@@ -242,10 +220,7 @@ class Survey extends LSActiveRecord
         );
     }
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -693,6 +668,7 @@ class Survey extends LSActiveRecord
         return false;
     }
 
+    /** @inheritdoc */
     public function findByPk($pk, $condition = '', $params = array()) {
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
@@ -702,7 +678,6 @@ class Survey extends LSActiveRecord
                 if (!is_null($result)) {
                     $this->findByPkCache[$pk] = $result;
                 }
-
                 return $result;
             }
         }

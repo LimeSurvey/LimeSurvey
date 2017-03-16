@@ -32,45 +32,28 @@ class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
     /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return QuestionGroup
-    */
+     * @inheritdoc
+     * @return QuestionGroup
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-    * Returns the setting's table name to be used by the model
-    *
-    * @access public
-    * @return string
-    */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{groups}}';
     }
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string[]
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('gid', 'language');
     }
 
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -86,6 +69,7 @@ class QuestionGroup extends LSActiveRecord
     }
 
 
+    /** @inheritdoc */
     public function attributeLabels()
     {
         return array(
@@ -94,12 +78,7 @@ class QuestionGroup extends LSActiveRecord
         );
     }
 
-    /**
-    * Defines the relations for this model
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function relations()
     {
         return array(
@@ -368,11 +347,11 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-    * Make sure we don't save a new question group
-    * while the survey is active.
-    *
-    * @return bool
-    */
+     * Make sure we don't save a new question group
+     * while the survey is active.
+     *
+     * @inheritdoc
+     */
     protected function beforeSave()
     {
         if (parent::beforeSave()) {

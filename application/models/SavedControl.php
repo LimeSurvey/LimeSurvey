@@ -12,40 +12,28 @@
  *
  */
 class SavedControl extends LSActiveRecord {
-		/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
+
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{saved_control}}';
 	}
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'scid';
 	}
 
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return CActiveRecord
 	 */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
+
 
 	function getAllRecords($condition=FALSE)
 	{

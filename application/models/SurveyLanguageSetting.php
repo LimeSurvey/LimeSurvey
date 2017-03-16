@@ -45,34 +45,21 @@
  */
 class SurveyLanguageSetting extends LSActiveRecord
 {
-    /**
-     * Returns the table's name
-     *
-     * @access public
-     * @return string
-     */
+
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{surveys_languagesettings}}';
     }
 
-    /**
-     * Returns the table's primary key
-     *
-     * @access public
-     * @return string[]
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('surveyls_survey_id', 'surveyls_language');
     }
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return SurveyLanguageSetting
      */
     public static function model($class = __CLASS__)
@@ -80,12 +67,7 @@ class SurveyLanguageSetting extends LSActiveRecord
         return parent::model($class);
     }
 
-    /**
-     * Returns the relations of this model
-     *
-     * @access public
-     * @return array
-     */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
@@ -96,10 +78,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(

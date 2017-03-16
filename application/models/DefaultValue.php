@@ -32,11 +32,7 @@ class DefaultValue extends LSActiveRecord
     public $language='';// required ?
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return DefaultValue
      */
     public static function model($class = __CLASS__)
@@ -44,34 +40,19 @@ class DefaultValue extends LSActiveRecord
         return parent::model($class);
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{defaultvalues}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string[]
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
     }
 
-    /**
-    * Relations with questions
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
@@ -81,10 +62,8 @@ class DefaultValue extends LSActiveRecord
             ),
         );
     }
-    /**
-    * Returns this model's validation rules
-    *
-    */
+
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -102,6 +81,7 @@ class DefaultValue extends LSActiveRecord
                 'message'=>'{attribute} "{value}" is already in use.'),
         );
     }
+    
     function insertRecords($data)
     {
         $oRecord = new self;

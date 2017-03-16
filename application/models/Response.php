@@ -18,7 +18,7 @@ abstract class Response extends Dynamic
     }
 
     /**
-     *
+     * @inheritdoc
      * @param string|integer $className Either the classname or the survey id.
      * @return Response
      */

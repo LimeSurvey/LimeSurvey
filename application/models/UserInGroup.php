@@ -22,11 +22,7 @@
 class UserInGroup extends LSActiveRecord {
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return CActiveRecord
      */
     public static function model($class = __CLASS__)

@@ -44,11 +44,7 @@ class TokenDynamic extends LSActiveRecord
     public $emailstatus;
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @param int $sid
-     * @access public
+     * @inheritdoc
      * @return TokenDynamic
      */
     public static function model($sid = NULL)
@@ -79,23 +75,13 @@ class TokenDynamic extends LSActiveRecord
         self::$sid = (int) $sid;
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{tokens_' . self::$sid . '}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'tid';
@@ -425,13 +411,6 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * This method is invoked before saving a record (after validation, if any).
-     * The default implementation raises the {@link onBeforeSave} event.
-     * You may override this method to do any preparation work for record saving.
-     * Use {@link isNewRecord} to determine whether the saving is
-     * for inserting or updating record.
-     * Make sure you call the parent implementation so that the event is raised properly.
-     * @return boolean whether the saving should be executed. Defaults to true.
      * @inheritdoc
      */
     public function beforeSave()

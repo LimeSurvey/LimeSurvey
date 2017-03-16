@@ -52,9 +52,7 @@ class PluginDynamic extends LSActiveRecord
         }
     }
 
-    /**
-     * Gets the tablename for the current model.
-     */
+    /** @inheritdoc */
     public function tableName() {
         return $this->tableName;
     }

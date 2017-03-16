@@ -268,7 +268,7 @@ abstract class Token extends Dynamic
 
     }
     /**
-     * @param mixed $className Either the classname or the survey id.
+     * @inheritdoc
      * @return Token
      */
     public static function model($className = null) {
@@ -276,7 +276,6 @@ abstract class Token extends Dynamic
     }
 
     /**
-     *
      * @param int $surveyId
      * @param string $scenario
      * @return Token Description

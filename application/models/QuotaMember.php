@@ -25,11 +25,7 @@
 class QuotaMember extends LSActiveRecord
 {
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return QuotaMember
      */
     public static function model($class = __CLASS__)
@@ -45,23 +41,13 @@ class QuotaMember extends LSActiveRecord
         );
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{quota_members}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'id';

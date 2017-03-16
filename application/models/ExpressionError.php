@@ -30,9 +30,7 @@
 class ExpressionError extends LSActiveRecord
 {
 	/**
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return ExpressionError
 	 */
 	public static function model($class = __CLASS__)
@@ -40,23 +38,13 @@ class ExpressionError extends LSActiveRecord
 		return parent::model($class);
 	}
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{expression_errors}}';
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'scid';

@@ -28,11 +28,7 @@
 class Answer extends LSActiveRecord
 {
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return Answer
      */
     public static function model($class = __CLASS__)
@@ -40,34 +36,19 @@ class Answer extends LSActiveRecord
         return parent::model($class);
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{answers}}';
     }
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string[]
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('qid', 'code','language','scale_id');
     }
 
-    /**
-     * Defines the relations for this model
-     *
-     * @access public
-     * @return array
-     */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
@@ -82,10 +63,7 @@ class Answer extends LSActiveRecord
         );
     }
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -181,8 +159,7 @@ class Answer extends LSActiveRecord
         $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang), array('order' => 'sortorder asc'));
         $position = 0;
 
-        foreach ($data as $row)
-        {
+        foreach ($data as $row) {
             $row->sortorder = $position++;
             $row->save();
         }
@@ -213,14 +190,16 @@ class Answer extends LSActiveRecord
     /**
      * @param string $fields
      * @param string $orderby
+     * @param mixed $condition
+     * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
         return Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from(self::tableName())
-        ->where($condition)
-        ->order($orderby)
-        ->queryAll();
+            ->select($fields)
+            ->from(self::tableName())
+            ->where($condition)
+            ->order($orderby)
+            ->queryAll();
     }
 }

@@ -30,6 +30,7 @@ class Timing extends LSActiveRecord
         parent::__construct($scenario);
     }
 
+    /** @inheritdoc */
     protected function instantiate($attributes)
     {
         $class=get_class($this);
@@ -58,23 +59,21 @@ class Timing extends LSActiveRecord
     }
 
 
+    /** @inheritdoc */
     public function relations() {
         return array(
             'response' => array(self::BELONGS_TO, 'Response', 'id')
         );
     }
 
-    /**
-     * Gets the tablename for the current model.
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName() {
         return "{{survey_{$this->surveyId}_timings}}";
     }
 
     /**
      * Override
-     * @return CActiveRecordMetaData the meta for this AR class.
+     * @inheritdoc
      */
     public function getMetaData()
     {
