@@ -38,6 +38,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $usecookie
  * @property string $allowsave
  * @property integer $autonumber_start
+ * @property integer $tokenlength
  * @property string $autoredirect
  * @property string $allowprev
  * @property string $printanswers
