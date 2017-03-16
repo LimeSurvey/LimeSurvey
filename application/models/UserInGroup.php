@@ -11,6 +11,14 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
+/**
+ * Class UserInGroup
+ * @property integer $ugid UserGroup ID
+ * @property int $uid User ID
+ *
+ *
+ */
 class UserInGroup extends LSActiveRecord {
 
     /**
@@ -26,80 +34,70 @@ class UserInGroup extends LSActiveRecord {
         return parent::model($class);
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{user_in_groups}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string[]
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('ugid', 'uid');
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            // TODO should be singular
             'users' => array(self::BELONGS_TO, 'User', '', 'on' => 't.uid = users.uid')
         );
     }
 
+    /**
+     * @param mixed $condition
+     * @return static[]
+     */
     public function getAllRecords($condition=FALSE)
     {
         $criteria = new CDbCriteria;
 
-        if ($condition != FALSE)
-        {
-            foreach ($condition as $item => $value)
-            {
+        if ($condition != FALSE) {
+            foreach ($condition as $item => $value) {
                 $criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
             }
         }
-
         $data = $this->findAll($criteria);
-
         return $data;
     }
 
-    function insertRecords($data)
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function insertRecords($data)
     {
-        $user = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
-        return (bool) $user;
+        $changedRows = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
+        return (bool) $changedRows;
     }
 
-    function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
+    public function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
     {
         $user = Yii::app()->db->createCommand();
-        foreach ($fields as $field)
-        {
+        foreach ($fields as $field) {
             $user->select($field);
         }
 
         $user->from($from);
 
-        if ($condition != FALSE)
-        {
+        if ($condition != FALSE) {
             $user->where($condition);
         }
 
-        if ($order != FALSE)
-        {
+        if ($order != FALSE) {
             $user->order($order);
         }
 
@@ -107,8 +105,7 @@ class UserInGroup extends LSActiveRecord {
         {
             if (isset($join['left'])) {
                 $user->leftjoin($join['where'], $join['on']);
-            }else
-            {
+            } else {
                 $user->join($join['where'], $join['on']);
             }
         }
