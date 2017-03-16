@@ -13,6 +13,19 @@
    *    Files Purpose: lots of common functions
 */
 
+/**
+ * Class Quota
+ *
+ * @property integer $id
+ * @property integer $sid
+ * @property string $name
+ * @property integer $qlimit
+ * @property integer $active
+ * @property integer $action
+ * @property integer $autoload_url
+ *
+ * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
+ */
 class Quota extends LSActiveRecord
 {
 
@@ -24,8 +37,8 @@ class Quota extends LSActiveRecord
      *
      * @static
      * @access public
-    * @param string $class
-     * @return CActiveRecord
+     * @param string $class
+     * @return Quota
      */
     public static function model($class = __CLASS__)
     {
@@ -84,30 +97,34 @@ class Quota extends LSActiveRecord
         );
     }
 
+    /**
+     * @param array $data
+     * @return bool|int
+     */
     function insertRecords($data)
     {
         $quota = new self;
-        foreach ($data as $k => $v){
+        foreach ($data as $k => $v) {
             $quota->$k = $v;
-            }
-        try
-        {
+        }
+        try {
             $quota->save();
             return $quota->id;
         }
-        catch(Exception $e)
-        {
+        catch(Exception $e) {
             return false;
         }
     }
 
+    /**
+     * @param mixed|bool $condition
+     * @param bool $recursive
+     */
     function deleteQuota($condition = false, $recursive = true)
     {
-        if ($recursive == true)
-        {
+        if ($recursive == true) {
             $oResult = Quota::model()->findAllByAttributes($condition);
-            foreach ($oResult as $aRow)
-            {
+            foreach ($oResult as $aRow) {
                 QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $aRow['id']));
                 QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $aRow['id']));
             }
@@ -116,4 +133,4 @@ class Quota extends LSActiveRecord
         Quota::model()->deleteAllByAttributes($condition);
     }
 }
-?>
+
