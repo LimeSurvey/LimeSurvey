@@ -13,6 +13,15 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class QuotaMember
+ *
+ * @property integer $id
+ * @property integer $sid Survey ID
+ * @property integer $qid Question ID
+ * @property integer $quota_id
+ * @property string $code Answer code
+ */
 class QuotaMember extends LSActiveRecord
 {
     /**
@@ -27,12 +36,13 @@ class QuotaMember extends LSActiveRecord
     {
         return parent::model($class);
     }
-    
+
+    /** @inheritdoc */
     public function rules()
     {
         return array(
             array('code', 'required', 'on'=>array('create'))
-            );
+        );
     }
 
     /**
