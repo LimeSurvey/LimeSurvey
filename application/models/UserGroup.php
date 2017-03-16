@@ -11,8 +11,22 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
+/**
+ * Class UserGroup
+ *
+ * @property integer $ugid
+ * @property string $name
+ * @property string $description
+ * @property integer $owner_id
+ *
+ * @property User[] $users Users of this group
+ * @property User $owner
+ * @property integer $countUsers
+ */
 class UserGroup extends LSActiveRecord {
 
+    /** @var integer $member_count  */
     public $member_count=null;
 
     /**
@@ -21,58 +35,51 @@ class UserGroup extends LSActiveRecord {
      * @static
      * @access public
      * @param string $class
-     * @return CActiveRecord
+     * @return UserGroup
      */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{user_groups}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'ugid';
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            // TODO remove Users... see Louis' comment
             'Users' => array(self::HAS_MANY, 'User','uid'), // Louis: This one is just wrong. Don't know if it used anywhere so I let it for now. See below for the correct relation. Just for information, this wrong relation return the user having a uid equal to the currect gid. (eg: if the current group object has gid=2, this wrong relation will return the user having uid=2). So if it used anywhere, it's probably buggy.
             'users' => array(self::MANY_MANY, 'User','{{user_in_groups}}(ugid, uid)'), // Louis: this is the correct relation
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
         );
     }
 
-    function getAllRecords($condition=FALSE)
+
+    /**
+     * @param mixed|bool $condition
+     * @return mixed
+     * TODO should be removed and replaced by yii's options
+     */
+    public function getAllRecords($condition=false)
     {
         $this->connection = Yii::app()->db;
-        if ($condition != FALSE)
-        {
+        if ($condition != false) {
             $where_clause = array("WHERE");
 
-            foreach($condition as $key=>$val)
-            {
+            foreach($condition as $key=>$val) {
                 $where_clause[] = $key.'=\''.$val.'\'';
             }
 
@@ -86,13 +93,13 @@ class UserGroup extends LSActiveRecord {
         return $data;
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
-
         return $this->db->insert('user_groups',$data);
     }
 
-    function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
+    // TODO seems to be unused, probably shouldn't be done like that
+    public function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
     {
         $user = Yii::app()->db->createCommand();
         foreach ($fields as $field)
@@ -126,7 +133,13 @@ class UserGroup extends LSActiveRecord {
         return $data;
     }
 
-     function addGroup($group_name, $group_description) {
+
+    /**
+     * @param string $group_name
+     * @param string $group_description
+     * @return int|mixed|string
+     */
+    public function addGroup($group_name, $group_description) {
         $iLoginID=intval(Yii::app()->session['loginID']);
         $iquery = "INSERT INTO {{user_groups}} (name, description, owner_id) VALUES(:group_name, :group_desc, :loginID)";
         $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)
@@ -145,8 +158,8 @@ class UserGroup extends LSActiveRecord {
             return -1;
 
         }
-
-    function updateGroup($name, $description, $ugid)
+    // TODO should be in controller
+    public function updateGroup($name, $description, $ugid)
     {
         $group = UserGroup::model()->findByPk($ugid);
         $group->name=$name;
@@ -158,14 +171,18 @@ class UserGroup extends LSActiveRecord {
             return true;
     }
 
-    function requestEditGroup($ugid, $ownerid)
+    /**
+     * @param integer $ugid
+     * @param integer $ownerid
+     * @return static
+     */
+    public function requestEditGroup($ugid, $ownerid)
     {
         $criteria=new CDbCriteria;
         $criteria->select='*';
         $criteria->condition="ugid=:ugid";
         $aParams=array();
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
             $criteria->condition.=" AND owner_id=:ownerid";
             $aParams[':ownerid']=$ownerid;
         }
@@ -176,33 +193,39 @@ class UserGroup extends LSActiveRecord {
         return $result;
     }
 
-    function requestViewGroup($ugid, $userid)
+    /**
+     * @param integer $ugid
+     * @param integer $userid
+     * @return array
+     */
+    public function requestViewGroup($ugid, $userid)
     {
         $sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
             $sQuery.="  AND uid = :userid ";
         }
         $sQuery.=" ORDER BY name";
         $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugid, PDO::PARAM_INT);
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
             $command->bindParam(":userid", $userid, PDO::PARAM_INT);
         }
         return $command->query()->readAll();
     }
 
-    function deleteGroup($ugid, $ownerid)
+    /**
+     * @param integer $ugid
+     * @param integer $ownerid
+     * @return bool
+     */
+    public function deleteGroup($ugid, $ownerid)
     {
         $aParams=array();
         $aParams[':ugid']=$ugid;
         $sCondition="ugid = :ugid";
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
             $sCondition.=" AND owner_id=:ownerid";
             $aParams[':ownerid']=$ownerid;
         }
-
 
         $group = UserGroup::model()->find($sCondition, $aParams);
         $group->delete();
@@ -213,11 +236,18 @@ class UserGroup extends LSActiveRecord {
             return true;
     }
 
+    /**
+     * @return int
+     */
     public function getCountUsers()
     {
+        // TODO get count without getting all user rows?
         return count($this->users);
     }
 
+    /**
+     * @return string
+     */
     public function getbuttons()
     {
 
@@ -226,8 +256,7 @@ class UserGroup extends LSActiveRecord {
         $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View users').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
 
         // Edit user group
-        if(Permission::model()->hasGlobalPermission('usergroups','update'))
-        {
+        if(Permission::model()->hasGlobalPermission('usergroups','update')) {
             $url = Yii::app()->createUrl("admin/usergroups/sa/edit/ugid/$this->ugid");
             $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit user group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
         }
@@ -238,14 +267,15 @@ class UserGroup extends LSActiveRecord {
         $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Email user group').'" href="'.$url.'" role="button"><span class="icon-invite" ></span></a>';
 
         // Delete user group
-        if(Permission::model()->hasGlobalPermission('usergroups','delete'))
-        {
+        if(Permission::model()->hasGlobalPermission('usergroups','delete')) {
             $url = Yii::app()->createUrl("admin/usergroups/sa/delete/ugid/$this->ugid");
             $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete user group').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this user group?').'"><span class="glyphicon glyphicon-trash text-warning"></span></a>';
         }
 
         return $button;
     }
+
+
     /**
      * This function search usergroups for a user
      * If $isMine = true then usergroups are those that have been created by the current user
@@ -256,7 +286,7 @@ class UserGroup extends LSActiveRecord {
      * @param bool $isMine
      * @return \CActiveDataProvider
      */
-    function searchMine($isMine)
+    public function searchMine($isMine)
     {
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
@@ -297,18 +327,13 @@ class UserGroup extends LSActiveRecord {
 
         $criteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
-            if ($isMine)
-            {
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+            if ($isMine) {
                 $criteria->addCondition("t.owner_id=".App()->user->getId(), "AND");
-            }
-            else
-            {
+            } else {
                 $criteria->addCondition("t.owner_id<>".App()->user->getId(), "AND");
                 $criteria->addCondition("t.ugid IN (SELECT ugid FROM $user_in_groups_table WHERE ".$user_in_groups_table.".uid = ".App()->user->getId().")", "AND");
             }
-            
         }
         
         $dataProvider=new CActiveDataProvider('UserGroup', array(
