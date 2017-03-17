@@ -1651,7 +1651,8 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
         $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $event->get('file_valid_message');
         $aReplacement['QUESTION_MANDATORY'] = $event->get('mandatory',$aReplacement['QUESTION_MANDATORY']);
-        // Always add id for QUESTION_ESSENTIALS
+        // Always add id for QUESTION_ESSENTIALS afer take aHtmlOptions from event
+        $aHtmlOptions=$event->get('aHtmlOptions');
         $aHtmlOptions['id']="question{$iQid}";
         $aReplacement['QUESTION_ESSENTIALS']=CHtml::renderAttributes($aHtmlOptions);
 
