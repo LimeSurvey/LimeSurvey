@@ -2699,6 +2699,7 @@ class remotecontrol_handle
                 'lastname' => $aParticipantData['lastname'],
                 'email' => $aParticipantData['email'],
                 'owner_uid' => Yii::app()->session['loginID'], // ToDo is this working?
+                'language' => $aParticipantData['language'], 
             );
 
             //Check for duplicate participants
