@@ -32,7 +32,20 @@
                                 );
         } else {
             try {
-                $result = @call_user_func_array(array($object,$request['method']),$request['params']);
+                $oMethod = new ReflectionMethod($object, $request['method']);
+                $aArguments = array();
+                foreach($oMethod->getParameters() as $oParam){
+                    $sParamName = $oParam->getName();
+                    $iParamPos = $oParam->getPosition();
+                    if(array_key_exists($sParamName, $request['params'])) {
+                        $aArguments[$iParamPos] = $request['params'][$sParamName];
+                    } elseif ($oParam->isOptional()) {
+                        $aArguments[$iParamPos] = $oParam->getDefaultValue();
+                    } else {
+                        throw new Exception('missing non-optional parameter '.$sParamName);
+                    }
+                }
+                $result = @call_user_func_array(array($object,$request['method']),$aArguments);
                 if ($result!==false) {
                     $response = array (
                                         'id' => $request['id'],
