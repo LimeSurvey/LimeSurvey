@@ -72,9 +72,11 @@ class ExpressionManager {
 
     function __construct()
     {
-        /* EM core string must be in adminlang : keep the actual for resetting at end */
-        $baseLang=Yii::app()->getLanguage();
-        Yii::app()->setLanguage(Yii::app()->session['adminlang']);
+        /* EM core string must be in adminlang : keep the actual for resetting at end. See bug #12208 */
+        if(Yii::app()->session['adminlang']){
+            $baseLang=Yii::app()->getLanguage();
+            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
+        }
         // List of token-matching regular expressions
         // Note, this is effectively a Lexer using Regular Expressions.  Don't change this unless you understand compiler design.
         $RDP_regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
@@ -239,9 +241,10 @@ class ExpressionManager {
 'ucwords' => array('ucwords', 'ucwords', gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://php.net/ucwords', 1),
 'unique' => array('exprmgr_unique', 'LEMunique', gT('Returns true if all non-empty responses are unique'), 'boolean unique(arg1, ..., argN)', '', -1),
         );
-
         /* Reset the language */
-        Yii::app()->setLanguage($baseLang);
+        if(Yii::app()->session['adminlang']){
+            Yii::app()->setLanguage($baseLang);
+        }
     }
 
     /**
@@ -501,8 +504,6 @@ class ExpressionManager {
             $this->RDP_AddError(self::gT("Not a valid expression"),NULL);
             return false;
         }
-        /* Reset the language */
-        Yii::app()->setLanguage($baseLang);
     }
 
 
@@ -2486,10 +2487,14 @@ class ExpressionManager {
      */
     private static function gT($string)
     {
-        $baseLang=Yii::app()->getLanguage();
-        Yii::app()->setLanguage(Yii::app()->session['adminlang']);
+        if(Yii::app()->session['adminlang']){
+            $baseLang=Yii::app()->getLanguage();
+            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
+        }
         return gT($string);
-        Yii::app()->setLanguage($baseLang);
+        if(Yii::app()->session['adminlang']){
+            Yii::app()->setLanguage($baseLang);
+        }
     }
 }
 
