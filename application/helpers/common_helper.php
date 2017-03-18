@@ -1771,19 +1771,23 @@ return $allfields;
 *
 * @param string $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
-* @param boolean|null $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param int $questionid Limit to a certain qid only (for question preview) - default is false
-* @param string $sQuestionLanguage The language to use
+* @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
+* @param false|int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param string $sLanguage The language to use
+* @param array $aDuplicateQIDs
 * @return array
 */
-function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage, &$aDuplicateQIDs=array()) {
+function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage='', &$aDuplicateQIDs=array()) {
 
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
-
     //checks to see if fieldmap has already been built for this page.
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
+    }
+    /* Check if $sLanguage is a survey valid language (else $fieldmap is empty) */
+    if($sLanguage=='' || !in_array($sLanguage,Survey::model()->findByPk($surveyid)->getAllLanguages())){
+        $sLanguage=Survey::model()->findByPk($surveyid)->language;
     }
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")

@@ -63,20 +63,15 @@ class Survey_Common_Action extends CAction
         // Populate the params. eg. surveyid -> iSurveyId
         $params = $this->_addPseudoParams($params);
 
-        if (!empty($params['iSurveyId']))
-        {
-            if(!Survey::model()->findByPk($params['iSurveyId']))
-            {
+        if (!empty($params['iSurveyId'])) {
+            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
+            if(!$oSurvey) {
                 Yii::app()->setFlashMessage(gT("Invalid survey ID"),'error');
                 $this->getController()->redirect(array("admin/index"));
-            }
-            elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
-            {
+            } elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
                 Yii::app()->setFlashMessage(gT("No permission"), 'error');
                 $this->getController()->redirect(array("admin/index"));
-            }
-            else
-            {
+            } else {
                 LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
             }
         }
@@ -124,9 +119,11 @@ class Survey_Common_Action extends CAction
             'id' => 'iId',
             'gid' => 'iGroupId',
             'qid' => 'iQuestionId',
-            'sid' => array('iSurveyId', 'iSurveyID'),
-            'surveyid' => array('iSurveyId', 'iSurveyID'),
-            'surveyId' => array('iSurveyId', 'iSurveyID'),// PluginHelper->sidebody : if disable surveyId usage : broke API
+            /* Unsure we set 'iSurveyId', 'iSurveyID','surveyid' to same final survey id */
+            /* priority is surveyid,surveyId,sid : surveyId=1&sid=2 set sid surveyid to 1 */
+            'sid' => array('iSurveyId', 'iSurveyID','surveyid'), // Old link use sid
+            'surveyId' => array('iSurveyId', 'iSurveyID','surveyid'),// PluginHelper->sidebody : if disable surveyId usage : broke API
+            'surveyid' => array('iSurveyId', 'iSurveyID','surveyid'),
             'srid' => 'iSurveyResponseId',
             'scid' => 'iSavedControlId',
             'uid' => 'iUserId',
@@ -145,16 +142,11 @@ class Survey_Common_Action extends CAction
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
         // (only if that place is empty)
-        foreach ($pseudos as $key => $pseudo)
-        {
-            if (!empty($params[$key]))
-            {
+        foreach ($pseudos as $key => $pseudo) {
+            if (!empty($params[$key])) {
                 $pseudo = (array) $pseudo;
-
-                foreach ($pseudo as $pseud)
-                {
-                    if (empty($params[$pseud]))
-                    {
+                foreach ($pseudo as $pseud) {
+                    if (empty($params[$pseud])) {
                         $params[$pseud] = $params[$key];
                     }
                 }

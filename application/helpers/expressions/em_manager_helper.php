@@ -9437,8 +9437,16 @@ EOD;
                             case 'code_filter':
                             case 'date_max':
                             case 'date_min':
+                                break;
                             case 'em_validation_q_tip':
                             case 'em_validation_sq_tip':
+                            case 'equation':
+                                $LEM->ProcessString($value, $qid,NULL,false,1,1,false,false);
+                                $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
+                                if ($LEM->em->HasErrors())
+                                {
+                                    ++$errorCount;
+                                }
                                 break;
                             case 'equals_num_value':
                             case 'em_validation_q':
