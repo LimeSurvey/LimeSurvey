@@ -340,8 +340,7 @@ class ParticipantShare extends LSActiveRecord
      */
     public function updateShare($data)
     {
-        if (strpos( $data['participant_id'],'--' )!==false)
-        {
+        if (strpos( $data['participant_id'],'--' )!==false) {
             list($participantId, $shareuid)=explode("--", $data['participant_id']);
             $data=array("participant_id"=>$participantId, "share_uid"=>$shareuid, "can_edit"=>$data['can_edit']);
         }
@@ -359,8 +358,7 @@ class ParticipantShare extends LSActiveRecord
     {
         // Converting the comma separated id's to an array to delete multiple rows
         $rowid=explode(",",$rows);
-        foreach($rowid as $row)
-        {
+        foreach($rowid as $row) {
             list($participantId, $uId)=explode("--", $row);
             Yii::app()->db
                 ->createCommand()

@@ -363,11 +363,11 @@ class ParticipantAttributeName extends LSActiveRecord
     function getAttributeValue($participantid,$attributeid)
     {
         $data = Yii::app()->db->createCommand()
-                              ->select('*')
-                              ->from('{{participant_attribute}}')
-                              ->where('participant_id = :participant_id AND attribute_id = :attribute_id')
-                              ->bindValues(array(':participant_id'=>$participantid, ':attribute_id'=>$attributeid))
-                              ->queryRow();
+            ->select('*')
+            ->from('{{participant_attribute}}')
+            ->where('participant_id = :participant_id AND attribute_id = :attribute_id')
+            ->bindValues(array(':participant_id'=>$participantid, ':attribute_id'=>$attributeid))
+            ->queryRow();
         return $data;
     }
 
@@ -405,12 +405,9 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     function getAttributesValues($attribute_id = null)
     {
-        if (empty($attribute_id))
-        {
+        if (empty($attribute_id)) {
             return array();
-        }
-        else
-        {
+        } else {
             return Yii::app()->db->createCommand()
                 ->select('*')
                 ->from('{{participant_attribute_values}}')
@@ -446,10 +443,10 @@ class ParticipantAttributeName extends LSActiveRecord
                 if($names->lang == Yii::app()->session['adminlang']) {$thisname=$names->attribute_name; $thislang=$names->lang;} //Override the default with the admin language version if found
             }
             $output[]=array('attribute_id'=>$row->attribute_id,
-                            'attribute_type'=>$row->attribute_type,
-                            'attribute_display'=>$row->visible,
-                            'attribute_name'=>$thisname,
-                            'lang'=>$thislang);
+                'attribute_type'=>$row->attribute_type,
+                'attribute_display'=>$row->visible,
+                'attribute_name'=>$thisname,
+                'lang'=>$thislang);
         }
         return $output;
 
@@ -464,8 +461,7 @@ class ParticipantAttributeName extends LSActiveRecord
     function storeAttribute($data)
     {
         // Do not allow more than 60 attributes because queries will break because of too many joins
-        if (ParticipantAttributeName::model()->count()>59)
-        {
+        if (ParticipantAttributeName::model()->count()>59) {
             return false;
         };
         $oParticipantAttributeName=new ParticipantAttributeName;
@@ -484,28 +480,30 @@ class ParticipantAttributeName extends LSActiveRecord
 
     function editParticipantAttributeValue($data)
     {
-        $query = ParticipantAttribute::model()->find('participant_id = :participant_id AND attribute_id=:attribute_id',
-                                                      array(':participant_id'=>$data['participant_id'],
-                                                            ':attribute_id'=>$data['attribute_id'])
-                                                      );
+        $query = ParticipantAttribute::model()
+            ->find('participant_id = :participant_id AND attribute_id=:attribute_id',
+                array(':participant_id'=>$data['participant_id'],
+                    ':attribute_id'=>$data['attribute_id'])
+                );
+
         if(count($query) == 0) {
             Yii::app()->db->createCommand()
                       ->insert('{{participant_attribute}}',$data);
-        }
-        else {
+        } else {
             Yii::app()->db->createCommand()
-                      ->update('{{participant_attribute}}',
-                               $data,
-                               'participant_id = :participant_id2 AND attribute_id = :attribute_id2',
-                               array(':participant_id2' => $data['participant_id'], ':attribute_id2'=>$data['attribute_id']));
+              ->update('{{participant_attribute}}',
+                   $data,
+                   'participant_id = :participant_id2 AND attribute_id = :attribute_id2',
+                   array(':participant_id2' => $data['participant_id'], ':attribute_id2'=>$data['attribute_id']));
         }
 
     }
 
     /**
+     * @param integer $attid
      * @return void
      */
-    function delAttribute($attid)
+    public function delAttribute($attid)
     {
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = '.$attid);
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = '.$attid);
@@ -513,7 +511,11 @@ class ParticipantAttributeName extends LSActiveRecord
         Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'attribute_id = '.$attid);
     }
 
-    function delAttributeValues($attid,$valid)
+    /**
+     * @param int $attid
+     * @param int $valid
+     */
+    public function delAttributeValues($attid, $valid)
     {
         Yii::app()->db
             ->createCommand()
@@ -569,34 +571,27 @@ class ParticipantAttributeName extends LSActiveRecord
 
     function saveAttribute($data)
     {
-        if (empty($data['attribute_id']))
-        {
+        if (empty($data['attribute_id'])) {
             return;
         }
         $insertnames = array();
-        if (!empty($data['attribute_type']))
-        {
+        if (!empty($data['attribute_type'])) {
             $insertnames['attribute_type'] = $data['attribute_type'];
         }
-        if (!empty($data['visible']))
-        {
+        if (!empty($data['visible'])) {
             $insertnames['visible'] = $data['visible'];
         }
-        if (!empty($data['defaultname']))
-        {
+        if (!empty($data['defaultname'])) {
             $insertnames['defaultname'] = $data['defaultname'];
         }
-        if (!empty($insertnames))
-        {
+        if (!empty($insertnames)) {
             $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk($data['attribute_id']);
-            foreach ($insertnames as $sFieldname=>$sValue)
-            {
+            foreach ($insertnames as $sFieldname=>$sValue) {
                $oParticipantAttributeName->$sFieldname=$sValue;
             }
             $oParticipantAttributeName->save();
         }
-        if (!empty($data['attribute_name']))
-        {
+        if (!empty($data['attribute_name'])) {
             $oParticipantAttributeNameLang=ParticipantAttributeNameLang::model()->findByPk(array('attribute_id'=>$data['attribute_id'],'lang'=>Yii::app()->session['adminlang']));
             $oParticipantAttributeNameLang->attribute_name=$data['attribute_name'];
             $oParticipantAttributeNameLang->save();
@@ -635,25 +630,35 @@ class ParticipantAttributeName extends LSActiveRecord
         }
     }
 
-    function storeAttributeValues($data)
+    /**
+     * @param array $data
+     */
+    public function storeAttributeValues($data)
     {
         foreach ($data as $record) {
             Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$record);
         }
     }
 
-    function storeAttributeValue($data)
+    /**
+     * @param array $data
+     */
+    public function storeAttributeValue($data)
     {
         Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$data);
     }
 
-    function clearAttributeValues()
+    public function clearAttributeValues()
     {
         $deleteCommand = Yii::app()->db->createCommand();
         $deleteCommand->delete('{{participant_attribute_values}}', 'attribute_id=:attribute_id', array('attribute_id'=>$this->attribute_id));
     }
 
-    function storeAttributeCSV($data)
+    /**
+     * @param array $data
+     * @return int
+     */
+    public function storeAttributeCSV($data)
     {
         $oParticipantAttributeName=new ParticipantAttributeName;
         $oParticipantAttributeName->attribute_type=$data['attribute_type'];
@@ -671,28 +676,38 @@ class ParticipantAttributeName extends LSActiveRecord
         return $iAttributeID;
     }
 
-    //updates the attribute values in participant_attribute_values
-    function saveAttributeValue($data)
+    /**
+     * updates the attribute values in participant_attribute_values
+     * @param array $data
+     */
+    public function saveAttributeValue($data)
     {
         Yii::app()->db->createCommand()
                   ->update('{{participant_attribute_values}}', $data, "attribute_id = :attribute_id AND value_id = :value_id", array(":attribute_id" => $data['attribute_id'], ":value_id" => $data['value_id']));
                   //->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":value_id", $data['value_id'], PDO::PARAM_INT);
     }
 
-    function saveAttributeVisible($attid,$visiblecondition)
+    /**
+     * @param integer $attid
+     * @param string $visiblecondition
+     */
+    public function saveAttributeVisible($attid,$visiblecondition)
     {
 
         $attribute_id = explode("_", $attid);
         $data=array('visible'=>$visiblecondition);
-        if($visiblecondition == "")
-        {
+        if($visiblecondition == "") {
             $data=array('visible'=>'FALSE');
         }
         Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = :attribute_id')
             ->bindParam(":attribute_id", $attribute_id[1], PDO::PARAM_INT);
     }
 
-    function getAttributeID()
+
+    /**
+     * @return array
+     */
+    public function getAttributeID()
     {
         $query = Yii::app()->db->createCommand()
             ->select('attribute_id')
@@ -703,7 +718,10 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
 
-    function saveParticipantAttributeValue($data)
+    /**
+     * @param array $data
+     */
+    public function saveParticipantAttributeValue($data)
     {
         Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
     }
