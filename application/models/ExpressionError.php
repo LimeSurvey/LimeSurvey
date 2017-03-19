@@ -50,10 +50,13 @@ class ExpressionError extends LSActiveRecord
 		return 'scid';
 	}
 
-	function getAllRecords($condition=FALSE)
+    /**
+     * @param bool|mixed $condition
+     * @return mixed
+     */
+	public function getAllRecords($condition=FALSE)
 	{
-		if ($condition != FALSE)
-		{
+		if ($condition != FALSE) {
 			$this->db->where($condition);
 		}
 
@@ -62,9 +65,12 @@ class ExpressionError extends LSActiveRecord
 		return $data;
 	}
 
-    function insertRecords($data)
+    /**
+     * @param array $data
+     * @return mixed
+     */
+	public function insertRecords($data)
     {
-
         return $this->db->insert('expression_errors',$data);
     }
 
