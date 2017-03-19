@@ -79,21 +79,20 @@ class Condition extends LSActiveRecord
     }
 
 
+    /**
+     * @param bool|mixed $condition
+     * @return int
+     */
     public function deleteRecords($condition=FALSE)
     {
         $criteria = new CDbCriteria;
 
-        if( $condition != FALSE )
-        {
-            if( is_array($condition) )
-            {
-                foreach($condition as $column=>$value)
-                {
+        if( $condition != FALSE ) {
+            if( is_array($condition) ) {
+                foreach($condition as $column=>$value) {
                     $criteria->addCondition("$column='$value'");
                 }
-            }
-            else
-            {
+            } else {
                 $criteria->addCondition($condition);
             }
         }
@@ -113,11 +112,9 @@ class Condition extends LSActiveRecord
     public function updateCFieldName($iSurveyID, $iQuestionID, $iOldGroupID, $iNewGroupID)
     {
         $oResults=$this->findAllByAttributes(array('cqid'=>$iQuestionID));
-        foreach ($oResults as $oRow)
-        {
+        foreach ($oResults as $oRow) {
             $cfnregs='';
-            if (preg_match('/(\S*?)'.$iSurveyID."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0)
-            {
+            if (preg_match('/(\S*?)'.$iSurveyID."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
                 $sNewCfn=$cfnregs[1].$iSurveyID."X".$iNewGroupID."X".$iQuestionID.$cfnregs[2];
                 Yii::app()->db->createCommand()
                     ->update($this->tableName(), array('cfieldname' => $sNewCfn),
@@ -132,33 +129,31 @@ class Condition extends LSActiveRecord
     public function insertRecords($data, $update=FALSE, $condition=FALSE)
     {
         $record = new self;
-        foreach ($data as $k => $v)
-        {
+        foreach ($data as $k => $v) {
             $v = str_replace(array("'", '"'), '', $v);
             $record->$k = $v;
         }
 
-        if( $update )
-        {
+        if( $update ) {
             $criteria = new CdbCriteria;
-            if( is_array($condition) )
-            {
-                foreach($condition as $column=>$value)
-                {
+            if( is_array($condition) ) {
+                foreach($condition as $column=>$value) {
                     $criteria->addCondition("$column='$value'");
                 }
-            }
-            else
-            {
+            } else {
                 $criteria->where = $condition;
             }
 
             return $record->updateAll($data,$criteria);
-        }
-        else
+        } else{
             return $record->save();
+        }
     }
 
+    /**
+     * @param integer $qid
+     * @return CDbDataReader
+     */
     public function getScenarios($qid)
     {
 
@@ -167,18 +162,23 @@ class Condition extends LSActiveRecord
         return Yii::app()->db->createCommand($scenarioquery)->query();
     }
 
+    /**
+     * @param array $fields
+     * @param mixed $condition
+     * @param string $order
+     * @param array $group
+     * @return CDbDataReader
+     */
     public function getSomeConditions($fields, $condition, $order, $group){
         $record = Yii::app()->db->createCommand()
         ->select($fields)
         ->from($this->tableName())
         ->where($condition);
 
-        if( $order != NULL )
-        {
+        if( $order != NULL ) {
             $record->order($order);
         }
-        if( $group != NULL )
-        {
+        if( $group != NULL ) {
             $record->group($group);
         }
 
@@ -195,13 +195,17 @@ class Condition extends LSActiveRecord
         ."AND c.scenario=:scenariorow "
         ."AND language=:surveyprintlang ";
         return Yii::app()->db->createCommand($conquery)
-        ->bindParam(":distinctrow", $distinctrow, PDO::PARAM_INT)
-        ->bindParam(":deqrow", $deqrow, PDO::PARAM_INT)
-        ->bindParam(":scenariorow", $scenariorow, PDO::PARAM_INT)
-        ->bindParam(":surveyprintlang", $surveyprintlang, PDO::PARAM_STR)
-        ->query();
+            ->bindParam(":distinctrow", $distinctrow, PDO::PARAM_INT)
+            ->bindParam(":deqrow", $deqrow, PDO::PARAM_INT)
+            ->bindParam(":scenariorow", $scenariorow, PDO::PARAM_INT)
+            ->bindParam(":surveyprintlang", $surveyprintlang, PDO::PARAM_STR)
+            ->query();
     }
 
+    /**
+     * @param integer $sid
+     * @return mixed
+     */
     public function getAllCfieldnameWithDependenciesForOneSurvey($sid)
     {
         $Qids = Yii::app()->db->createCommand()
