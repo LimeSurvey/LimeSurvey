@@ -10,6 +10,7 @@ class PluginDynamic extends LSActiveRecord
     /** @var CActiveRecordMetaData $_md meta data*/
     private $_md;
 
+    /** @var null|string $tableName */
     protected $tableName;
 
     /**
@@ -19,8 +20,7 @@ class PluginDynamic extends LSActiveRecord
      */
     public function __construct($sTableName = null, $scenario = 'insert')
     {
-        if (!isset($sTableName))
-        {
+        if (!isset($sTableName)) {
             //Yii::trace('sTableName missing.');
             throw new Exception('sTableName missing.');
         }
@@ -28,7 +28,7 @@ class PluginDynamic extends LSActiveRecord
         parent::__construct($scenario);
     }
 
-
+    /** @inheritdoc */
     protected function instantiate($attributes = null)
     {
         $class=get_class($this);

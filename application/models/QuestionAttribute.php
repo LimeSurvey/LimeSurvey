@@ -67,16 +67,20 @@ class QuestionAttribute extends LSActiveRecord
         );
     }
 
-    public function setQuestionAttribute($iQuestionID,$sAttributeName, $sValue)
+
+    /**
+     * @param integer $iQuestionID
+     * @param string $sAttributeName
+     * @param string $sValue
+     * @return CDbDataReader
+     */
+    public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue)
     {
         $oModel = new self;
         $aResult=$oModel->findAll('attribute=:attributeName and qid=:questionID',array(':attributeName'=>$sAttributeName,':questionID'=>$iQuestionID));
-        if (!empty($aResult))
-        {
+        if (!empty($aResult)) {
             $oModel->updateAll(array('value'=>$sValue),'attribute=:attributeName and qid=:questionID',array(':attributeName'=>$sAttributeName,':questionID'=>$iQuestionID));
-        }
-        else
-        {
+        } else {
             $oModel = new self;
             $oModel->attribute=$sAttributeName;
             $oModel->value=$sValue;
@@ -98,10 +102,10 @@ class QuestionAttribute extends LSActiveRecord
      * TODO: the question type check should be done via rules, or via a call to a question method
      * TODO: use an array for POST values, like for a form submit So we could parse it from the controller instead of using $_POST directly here
      *
-     * @var $iSid                   the sid to update  (only to check permission)
-     * @var $aQidsAndLang           an array containing the list of primary keys for questions ( {qid, lang} )
-     * @var $aAttributesToUpdate    array continaing the list of attributes to update
-     * @var $aValidQuestionTypes    the question types we can update for those attributes
+     * @var integer $iSid                   the sid to update  (only to check permission)
+     * @var array $aQidsAndLang           an array containing the list of primary keys for questions ( {qid, lang} )
+     * @var array $aAttributesToUpdate    array continaing the list of attributes to update
+     * @var array $aValidQuestionTypes    the question types we can update for those attributes
      */
     public function setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes)
     {
@@ -126,15 +130,11 @@ class QuestionAttribute extends LSActiveRecord
 
                     // We check if we can update this attribute for this question type
                     // TODO: if (in_array($oQuestion->attributes, $sAttribute))
-                    if (in_array($oQuestion->type, $aValidQuestionTypes))
-                    {
-                        if (count($iInsertCount)>0)
-                        {
+                    if (in_array($oQuestion->type, $aValidQuestionTypes)) {
+                        if (count($iInsertCount)>0) {
                             // Update
                              QuestionAttribute::model()->updateAll(array('value'=>$sValue),'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
-                        }
-                        else
-                        {
+                        } else {
                             // Create
                             $oAttribute            = new QuestionAttribute;
                             $oAttribute->qid       = $iQid;
@@ -249,6 +249,12 @@ class QuestionAttribute extends LSActiveRecord
         return $attrib->save();
     }
 
+    /**
+     * @param array $fields
+     * @param mixed $condition
+     * @param string|boolean|array $orderby
+     * @return array
+     */
     public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
     {
         $command = Yii::app()->db->createCommand()

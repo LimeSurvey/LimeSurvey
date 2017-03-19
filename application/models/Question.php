@@ -182,15 +182,14 @@ class Question extends LSActiveRecord
         }
     }
 
+
     /**
-    * Fix sort order for questions in a group
-    *
-    * @static
-    * @access public
-    * @param int $gid
-    * @return void
-    */
-    function updateQuestionOrder($gid,$language,$position=0)
+     * Fix sort order for questions in a group
+     * @param int $gid
+     * @param string $language
+     * @param int $position
+     */
+    public function updateQuestionOrder($gid, $language, $position=0)
     {
         $data=Yii::app()->db->createCommand()->select('qid')
             ->where(array('and','gid=:gid','language=:language', 'parent_qid=0'))
@@ -265,6 +264,12 @@ class Question extends LSActiveRecord
         return $aAttributeNames;
     }
 
+    /**
+     * @param array $aAttributeNames
+     * @param array $aAttributeValues
+     * @param Question $oQuestion
+     * @return mixed
+     */
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
         if (isset($aAttributeValues['question_template'])){
@@ -296,9 +301,12 @@ class Question extends LSActiveRecord
 
     /**
      * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
-     * @return Question[]
+     * @param integer $sid
+     * @param integer $gid
+     * @param string $language
+     * @return CDbDataReader
      */
-    function getQuestions($sid, $gid, $language)
+    public function getQuestions($sid, $gid, $language)
     {
         return Yii::app()->db->createCommand()
             ->select()
@@ -313,7 +321,8 @@ class Question extends LSActiveRecord
 
     /**
      * @deprecated use relation $question->subquestions
-     * @return Question[]
+     * @param integer $parent_qid
+     * @return CDbDataReader
      */
     function getSubQuestions($parent_qid)
     {
@@ -326,11 +335,15 @@ class Question extends LSActiveRecord
             ->query();
     }
 
+
     /**
      * This function is only called from surveyadmin.php
-     * @return Question[]
+     * @param integer $iSurveyID
+     * @param string $sLanguage
+     * @param string|boolean $sCondition
+     * @return array
      */
-    function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
+    public function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
     {
         $command = Yii::app()->db->createCommand()
             ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, ' . '{{groups}}.*')
@@ -408,8 +421,13 @@ class Question extends LSActiveRecord
     }
 
 
+
     /**
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
+     * @param array $fields
+     * @param mixed $condition
+     * @param string|boolean|array $orderby
+     * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
     {
@@ -417,13 +435,17 @@ class Question extends LSActiveRecord
         ->select($fields)
         ->from(self::tableName())
         ->where($condition);
-        if ($orderby != FALSE)
-        {
+        if ($orderby != FALSE) {
             $command->order($orderby);
         }
         return $command->queryAll();
     }
 
+    /**
+     * @param integer $surveyid
+     * @param string $language
+     * @return array
+     */
     public function getQuestionList($surveyid, $language)
     {
         $query = "SELECT questions.*, groups.group_name, groups.group_order"

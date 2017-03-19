@@ -266,35 +266,33 @@ class Permission extends LSActiveRecord
             'img' => 'usergroup'
         );
 
-        foreach ($aPermissions as &$permission)
-        {
+        foreach ($aPermissions as &$permission) {
             $permission = array_merge($defaults, $permission);
         }
         return $aPermissions;
     }
 
+    /**
+     * @param integer $iUserID
+     * @param integer $iEntityID
+     * @param string $sEntityName
+     * @return array
+     */
     public static function getPermissions($iUserID, $iEntityID=null, $sEntityName=null)
     {
-        if ($sEntityName=='survey')
-        {
+        if ($sEntityName=='survey') {
             $aBasePermissions=Permission::model()->getSurveyBasePermissions();
-        }
-        elseif ($sEntityName=='global')
-        {
+        } elseif ($sEntityName=='global') {
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
         }
 
-        if (is_null($sEntityName))
-        {
+        if (is_null($sEntityName)) {
             $oPermissions=Permission::model()->findAllByAttributes(array('uid'=>$iUserID));
             $aBasePermissions = array();
-            foreach($oPermissions as $oPermission)
-            {
+            foreach($oPermissions as $oPermission) {
                 $aBasePermissions[$oPermission->id] = $oPermission->attributes;
             }
-        }
-        else
-        {
+        } else {
             foreach ($aBasePermissions as $sPermission=>&$aPermissionDetail){
                 $oCurrentPermissions=Permission::model()->findByAttributes(array('uid'=>$iUserID,'entity_id'=>$iEntityID, 'permission'=>$sPermission));
                 if ($aPermissionDetail['create']) $aPermissionDetail['create']=($oCurrentPermissions?(boolean)$oCurrentPermissions->create_p:false);
@@ -453,12 +451,19 @@ class Permission extends LSActiveRecord
         $this->setPermissions($iUserID, $iSurveyID, 'survey', $aPermissionsToSet);
     }
 
+    /**
+     * @param array $data
+     */
     public function insertRecords($data)
     {
         foreach ($data as $item)
             $this->insertSomeRecords($item);
     }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
     public function insertSomeRecords($data)
     {
         $permission = new self;
@@ -467,6 +472,10 @@ class Permission extends LSActiveRecord
         return $permission->save();
     }
 
+    /**
+     * @param integer $surveyid
+     * @return array
+     */
     public function getUserDetails($surveyid)
     {
         $sQuery = "SELECT p.entity_id, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
@@ -477,7 +486,12 @@ class Permission extends LSActiveRecord
         return Yii::app()->db->createCommand($sQuery)->bindParam(":userid", $iUserID, PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query()->readAll(); //Checked
     }
 
-    public function copySurveyPermissions($iSurveyIDSource,$iSurveyIDTarget)
+
+    /**
+     * @param integer $iSurveyIDSource
+     * @param integer $iSurveyIDTarget
+     */
+    public function copySurveyPermissions($iSurveyIDSource, $iSurveyIDTarget)
     {
         $aRows=self::model()->findAll("entity_id=:sid AND entity='survey'", array(':sid'=>$iSurveyIDSource));
         foreach ($aRows as $aRow) {
