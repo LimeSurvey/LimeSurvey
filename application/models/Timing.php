@@ -79,8 +79,7 @@ class Timing extends LSActiveRecord
     {
         if(isset($this->_md)){
             return $this->_md;
-        }
-        else{
+        } else{
             /** @var CActiveRecordMetaData $md */
             $md = self::model($this->surveyId)->_md;
             return $this->_md=$md;

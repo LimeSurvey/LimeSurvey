@@ -251,13 +251,12 @@ abstract class Token extends Dynamic
                     $existingtokens[$newtoken] = true;
                     $bIsValidToken = true;
                     $invalidtokencount=0;
-                }
-                else {
+                } else {
                     $invalidtokencount ++;
                 }
             }
             if ($bIsValidToken) {
-                $itresult = $this->updateByPk($tkrow['tid'], array('token' => $newtoken));
+                $this->updateByPk($tkrow['tid'], array('token' => $newtoken));
                 $newtokencount++;
             } else {
                 break;

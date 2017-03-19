@@ -35,11 +35,15 @@
  *
  * @property Survey $survey
  * @property SurveyDynamic[] $responses
+ *
+ * @property array $standardCols
+ * @property array $standardColsForGrid
  */
 class TokenDynamic extends LSActiveRecord
 {
     /** @var int $sid */
     protected static $sid = 0;
+
     /** @var  string $emailstatus Default value for email status */
     public $emailstatus;
 
@@ -256,12 +260,10 @@ class TokenDynamic extends LSActiveRecord
         foreach ($data as $k => $v){
             $token->$k = $v;
 
-        }
-        try {
+        } try {
             $token->save();
             return $token->tid;
-        }
-        catch(Exception $e) {
+        } catch(Exception $e) {
             return false;
         }
     }
@@ -280,13 +282,13 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * @param integer $tid
-     * @param string $newtoken
+     * @param string $newToken
      * @return mixed
      */
-    public function updateToken($tid, $newtoken)
+    public function updateToken($tid, $newToken)
     {
         return Yii::app()->db->createCommand("UPDATE {$this->tableName()} SET token = :newtoken WHERE tid = :tid")
-            ->bindParam(":newtoken", $newtoken, PDO::PARAM_STR)
+            ->bindParam(":newtoken", $newToken, PDO::PARAM_STR)
             ->bindParam(":tid", $tid, PDO::PARAM_INT)
             ->execute();
     }
@@ -325,7 +327,7 @@ class TokenDynamic extends LSActiveRecord
      * @param int $iTokenID
      * @return string  token string
      */
-    function createToken($iTokenID)
+    public function createToken($iTokenID)
     {
         //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>self::$sid));
@@ -359,7 +361,7 @@ class TokenDynamic extends LSActiveRecord
      * @param int $iSurveyID
      * @return integer[] ( int number of created tokens, int number to be created tokens)
      */
-    function createTokens($iSurveyID)
+    public function createTokens($iSurveyID)
     {
         $tkresult = $this->selectEmptyTokens($iSurveyID);
         //Exit early if there are not empty tokens
@@ -393,8 +395,7 @@ class TokenDynamic extends LSActiveRecord
                     $existingtokens[$newtoken] = true;
                     $bIsValidToken = true;
                     $invalidtokencount=0;
-                }
-                else {
+                } else {
                     $invalidtokencount ++;
                 }
             }
@@ -568,12 +569,10 @@ class TokenDynamic extends LSActiveRecord
             if ($field != 'Y') {
                 $fieldDate = convertToGlobalSettingFormat($field);
                 $field     = '<span class="text-success">'.$fieldDate.'</span>';
-            }
-            else {
+            } else {
                 $field     = '<span class="text-success fa fa-check"></span>';
             }
-        }
-        elseif( $field != '') {
+        } elseif( $field != '') {
             $field = '<i class="fa fa-minus text-warning"></i>';
         }
         return $field;
@@ -586,8 +585,7 @@ class TokenDynamic extends LSActiveRecord
     {
         if ($this->emailstatus=="bounced") {
             return '<span class="text-warning"><strong> '.$this->email.'</strong></span>';
-        }
-        else {
+        } else {
             return $this->email;
         }
     }
@@ -599,8 +597,7 @@ class TokenDynamic extends LSActiveRecord
     {
         if ($this->emailstatus=="bounced") {
             return '<span class="text-warning"><strong> '.$this->emailstatus.'</strong></span>';
-        }
-        else {
+        } else {
             return $this->emailstatus;
         }
     }
