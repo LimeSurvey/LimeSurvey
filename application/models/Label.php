@@ -71,10 +71,8 @@ class Label extends LSActiveRecord
 
 	function getAllRecords($condition=FALSE)
 	{
-		if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
+		if ($condition != FALSE) {
+		    foreach ($condition as $item => $value) {
 			    //FIXME this is broken: $criteria is not initiated
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
@@ -85,7 +83,11 @@ class Label extends LSActiveRecord
         return $data;
 	}
 
-    function getLabelCodeInfo($lid)
+    /**
+     * @param integer $lid
+     * @return array
+     */
+	public function getLabelCodeInfo($lid)
     {
 		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from(tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
     }
