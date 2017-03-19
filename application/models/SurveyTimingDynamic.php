@@ -104,19 +104,16 @@ class SurveyTimingDynamic extends LSActiveRecord
                 $statistics['middleval'] = $middleval;
                 if ($statistics['count'] % 2 && $statistics['count']>1) {
                     $median=($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval-1]['interviewtime']) / 2;
-                }
-                else {
+                } else {
                     $median=$queryAll[$middleval]['interviewtime'];
                 }
                 $statistics['median'] = $median;
                 $statistics['allmin'] = (int) ($median / 60);
                 $statistics['allsec'] = $median % 60;
-            }
-            else {
+            } else {
                 $statistics['count'] = 0;
             }
-        }
-        else {
+        } else {
             $statistics['count'] = 0;
         }
         return $statistics;

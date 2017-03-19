@@ -47,7 +47,7 @@ class SurveyURLParameter extends LSActiveRecord {
      * @param integer $iSurveyID
      * @return mixed
      */
-    function getParametersForSurvey($iSurveyID)
+    public function getParametersForSurvey($iSurveyID)
     {
         return Yii::app()->db->createCommand("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
             left join {{questions}} q on q.qid=up.targetqid
@@ -68,7 +68,7 @@ class SurveyURLParameter extends LSActiveRecord {
      * @param array $aConditions
      * @return mixed
      */
-    function deleteRecords($aConditions)
+    public function deleteRecords($aConditions)
     {
         foreach ($aConditions as $sFieldname=>$sFieldvalue) {
             Yii::app()->db->createCommand()->where($sFieldname,$sFieldvalue);
@@ -80,7 +80,7 @@ class SurveyURLParameter extends LSActiveRecord {
      * @param array $aData
      * @return mixed
      */
-    function insertRecord($aData)
+    public function insertRecord($aData)
     {
         return Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}',$aData);
     }
