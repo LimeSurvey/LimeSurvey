@@ -90,31 +90,30 @@ class Boxes extends CActiveRecord
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getSpanIcon()
     {
         $spanicon = '<span class="icon-'.$this->ico.' text-success"></span>';
         return $spanicon;
     }
 
+    /**
+     * @return mixed|string
+     */
     public function getUsergroupname()
     {
         $usergroupid = $this->usergroup;
 
         // Can't use switch because of empty case
-        if ( empty($usergroupid) || $usergroupid=='-2'  )
-        {
+        if ( empty($usergroupid) || $usergroupid=='-2'  ) {
             return gT('Only Superadmin');
-        }
-        elseif ( $usergroupid=='-1' )
-        {
+        } elseif ( $usergroupid=='-1' ) {
             return gT('Everybody');
-        }
-        elseif ( $usergroupid=='-3' )
-        {
+        } elseif ( $usergroupid=='-3' ) {
             return gT('Nobody');
-        }
-        else
-        {
+        } else {
             $oUsergroup = UserGroup::model()->findByPk($usergroupid);
 
             // The group doesn't exist anymore
@@ -125,6 +124,9 @@ class Boxes extends CActiveRecord
         }
     }
 
+    /**
+     * @return string
+     */
     public function getbuttons()
     {
 
@@ -205,6 +207,9 @@ class Boxes extends CActiveRecord
         );
     }
 
+    /**
+     * @return int
+     */
     public function getIcons_length()
     {
         return count($this->icons);
