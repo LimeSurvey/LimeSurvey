@@ -77,8 +77,13 @@ class Answer extends LSActiveRecord
         );
     }
 
-    function getAnswers($qid)
+    /**
+     * @param integer $qid
+     * @return CDbDataReader
+     */
+    public function getAnswers($qid)
     {
+        // TODO get via Question relations
         return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
@@ -91,13 +96,13 @@ class Answer extends LSActiveRecord
      * Return the key=>value answer for a given $qid
      *
      * @staticvar array $answerCache
-     * @param type $qid
+     * @param integer $qid
      * @param string $code
      * @param string $sLanguage
      * @param integer $iScaleID
      * @return array
      */
-    function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
+    public function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
     {
         static $answerCache = array();
 
@@ -122,20 +127,34 @@ class Answer extends LSActiveRecord
         }
     }
 
+    /**
+     * @param integer $newsid
+     * @param integer $oldsid
+     * @return static[]
+     */
     public function oldNewInsertansTags($newsid,$oldsid)
     {
-            $criteria = new CDbCriteria;
-            $criteria->compare('questions.sid',$newsid);
-            $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
-            return $this->with('questions')->findAll($criteria);
+        $criteria = new CDbCriteria;
+        $criteria->compare('questions.sid',$newsid);
+        $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
+        return $this->with('questions')->findAll($criteria);
     }
 
+    /**
+     * @param array $data
+     * @param bool|mixed $condition
+     * @return int
+     */
     public function updateRecord($data, $condition=FALSE)
     {
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }
 
-    function insertRecords($data)
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function insertRecords($data)
     {    
         $oRecord = new self;
         foreach ($data as $k => $v)
@@ -165,6 +184,12 @@ class Answer extends LSActiveRecord
         }
     }
 
+    /**
+     * @param integer $surveyid
+     * @param string $lang
+     * @param bool $return_query
+     * @return array|CDbCommand
+     */
     public function getAnswerQuery($surveyid, $lang, $return_query = TRUE)
     {
         $query = Yii::app()->db->createCommand();
@@ -180,8 +205,7 @@ class Answer extends LSActiveRecord
     function getAllRecords($condition, $order=FALSE)
     {
         $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != FALSE)
-        {
+        if ($order != FALSE) {
             $command->order($order);
         }
         return $command->query();
