@@ -89,6 +89,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countFullAnswers
  * @property integer $countPartialAnswers
  * @property integer $countTotalAnswers
+ * @property array $surveyinfo
  */
 class Survey extends LSActiveRecord
 {

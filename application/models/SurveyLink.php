@@ -24,6 +24,14 @@
  *
  * @property Participant $participant
  * @property Survey $survey
+ * @property array $surveyInfo
+ * @property string $dateFormat
+ * @property string|boolean $isSubmitted
+ * @property string $checkbox
+ * @property array $columns
+ * @property string $surveyIdLink
+ * @property string $lastInvited
+ * @property string $lastReminded
  */
 class SurveyLink extends LSActiveRecord
 {
@@ -61,12 +69,12 @@ class SurveyLink extends LSActiveRecord
     }
 
     /**
-     * @param integer $participantid
+     * @param integer $participantId
      * @return array|mixed|null
      */
-    public function getLinkInfo($participantid)
+    public function getLinkInfo($participantId)
     {
-        return self::model()->findAllByAttributes(array('participant_id' => $participantid));
+        return self::model()->findAllByAttributes(array('participant_id' => $participantId));
     }
 
 
@@ -94,7 +102,7 @@ class SurveyLink extends LSActiveRecord
      * @param int[] $aTokenIds the unique ids of the entry in the token table being deleted
      * @param int $surveyId the id of the survey for the link being deleted
      *
-     * @return boolean
+     * @return bool|CDbDataReader
      */
     function deleteTokenLink($aTokenIds, $surveyId)
     {
@@ -111,9 +119,9 @@ class SurveyLink extends LSActiveRecord
      * links must be removed
      *
      * @param int $surveyId the SID of the survey whose tokens table is being dropped
-     * @return boolean
+     * @return bool|CDbDataReader
      */
-    function deleteLinksBySurvey($surveyId)
+    public function deleteLinksBySurvey($surveyId)
     {
         $query = "DELETE FROM ".SurveyLink::tableName(). " WHERE survey_id = :survey_id";
         return Yii::app()->db->createCommand($query)
@@ -126,7 +134,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getDateFormat()
     {
-        $dateFormat = $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        $dateFormat = getDateFormatData(Yii::app()->session['dateformat']);
         return $dateFormat['phpdate'];
     }
 
@@ -135,9 +143,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getSurveyInfo()
     {
-        $Survey = Survey::model()->findByPk($this->survey_id);
-        return $Survey->surveyinfo;
-
+        return $this->survey->surveyinfo;
     }
 
     /**
@@ -151,6 +157,7 @@ class SurveyLink extends LSActiveRecord
 
     /**
      * @return string
+     * // TODO this should be in survey model
      */
     public function getSurveyName()
     {
@@ -162,9 +169,9 @@ class SurveyLink extends LSActiveRecord
      */
     public function getLastInvited()
     {
-        $invitedate = $this->tokenDynamicModel['sent'];
-        if($invitedate != "N") {
-            $date = new DateTime($invitedate);
+        $inviteDate = $this->tokenDynamicModel['sent'];
+        if($inviteDate != "N") {
+            $date = new DateTime($inviteDate);
             return $date->format($this->dateFormat);
         }
     }
@@ -187,7 +194,6 @@ class SurveyLink extends LSActiveRecord
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->date_created;
-        
         $date = new DateTime($dateCreated);
         return $date->format($this->dateFormat);
     }
@@ -212,8 +218,8 @@ class SurveyLink extends LSActiveRecord
      */
     public function getIsSubmitted()
     {
-        $submitdate = $this->tokenDynamicModel['completed'];
-        return (($submitdate == "N") ? false : $submitdate);
+        $submitDate = $this->tokenDynamicModel['completed'];
+        return (($submitDate == "N") ? false : $submitDate);
     }
 
     /**
