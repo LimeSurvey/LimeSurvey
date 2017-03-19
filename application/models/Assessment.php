@@ -57,6 +57,10 @@ class Assessment extends LSActiveRecord
 		return array('id', 'language');
 	}
 
+    /**
+     * @param array $data
+     * @return Assessment
+     */
 	public static function insertRecords($data)
     {
         $assessment = new self;
@@ -68,6 +72,12 @@ class Assessment extends LSActiveRecord
         return $assessment;
     }
 
+    /**
+     * @param integer $id
+     * @param integer $iSurveyID
+     * @param string $language
+     * @param array $data
+     */
     public static function updateAssessment($id, $iSurveyID, $language, array $data)
     {
         $assessment = self::model()->findByAttributes(array('id' => $id, 'sid'=> $iSurveyID, 'language' => $language));
