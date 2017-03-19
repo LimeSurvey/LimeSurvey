@@ -62,8 +62,8 @@ class Template extends LSActiveRecord
     */
     public static function templateNameFilter($sTemplateName)
     {
-        $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
-        $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
+        $sDefaultTemplate=Yii::app()->getConfig('defaulttemplate','default');
+        $sTemplateName=empty($sTemplateName) ? $sDefaultTemplate : $sTemplateName;
 
         /* Standard Template return it without testing */
         if(self::isStandardTemplate($sTemplateName)) {
@@ -78,8 +78,8 @@ class Template extends LSActiveRecord
             return $sTemplateName;
         }
         /* Then try with the global default template */
-        if($sTemplateName!=$sDefaulttemplate) {
-            return self::templateNameFilter($sDefaulttemplate);
+        if($sTemplateName!=$sDefaultTemplate) {
+            return self::templateNameFilter($sDefaultTemplate);
         }
         /* Last solution : default */
         return 'default';
@@ -131,7 +131,7 @@ class Template extends LSActiveRecord
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
      * @param integer|string $iSurveyId        the id of the survey. If
-     * @return StdClass
+     * @return TemplateConfiguration
      */
     public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
@@ -144,30 +144,30 @@ class Template extends LSActiveRecord
     /**
      * Return the list of ALL files present in the file directory
      *
-     * @param string $filesdir
+     * @param string $filesDir
      * @return array
      */
-    static public function getOtherFiles($filesdir)
+    static public function getOtherFiles($filesDir)
     {
-        $otherfiles = array();
-        if ( file_exists($filesdir) && $handle = opendir($filesdir)) {
+        $otherFiles = array();
+        if ( file_exists($filesDir) && $handle = opendir($filesDir)) {
             while (false !== ($file = readdir($handle))) {
                 if (!is_dir($file)) {
-                    $otherfiles[] = array("name" => $file);
+                    $otherFiles[] = array("name" => $file);
                 }
             }
             closedir($handle);
         }
-        return $otherfiles;
+        return $otherFiles;
     }
 
 
     /**
-    * This function returns the complete URL path to a given template name
-    *
-    * @param string $sTemplateName
-    * @return string template url
-    */
+     * This function returns the complete URL path to a given template name
+     *
+     * @param string $sTemplateName
+     * @return string template url
+     */
     public static function getTemplateURL($sTemplateName="")
     {
         static $aTemplateUrl=array();
@@ -192,13 +192,13 @@ class Template extends LSActiveRecord
     public static function getTemplateList()
     {
         $sUserTemplateRootDir=Yii::app()->getConfig("usertemplaterootdir");
-        $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
+        $standardTemplateRootDir=Yii::app()->getConfig("standardtemplaterootdir");
 
         $aTemplateList=array();
 
         $aStandardTemplates=self::getStandardTemplateList();
         foreach($aStandardTemplates as $templateName){
-            $aTemplateList[$templateName] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$templateName;
+            $aTemplateList[$templateName] = $standardTemplateRootDir.DIRECTORY_SEPARATOR.$templateName;
         }
         if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
             while (false !== ($sFileName = readdir($handle))) {
@@ -218,6 +218,9 @@ class Template extends LSActiveRecord
         return $aTemplateList;
     }
 
+    /**
+     * @return array
+     */
     public static function getTemplateListWithPreviews()
     {
         $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
@@ -247,12 +250,12 @@ class Template extends LSActiveRecord
     }
 
     /**
-    * isStandardTemplate returns true if a template is a standard template
-    * This function does not check if a template actually exists
-    *
-    * @param mixed $sTemplateName template name to look for
-    * @return bool True if standard template, otherwise false
-    */
+     * isStandardTemplate returns true if a template is a standard template
+     * This function does not check if a template actually exists
+     *
+     * @param mixed $sTemplateName template name to look for
+     * @return bool True if standard template, otherwise false
+     */
     public static function isStandardTemplate($sTemplateName)
     {
         $standardTemplates=self::getStandardTemplateList();
