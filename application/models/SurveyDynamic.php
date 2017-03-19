@@ -14,13 +14,20 @@
  */
 class SurveyDynamic extends LSActiveRecord
 {
+    /** @var string $completed_filter */
     public  $completed_filter;
+    /** @var string $firstname_filter */
     public $firstname_filter;
+    /** @var string $lastname_filter */
     public $lastname_filter;
+    /** @var string $email_filter */
     public $email_filter;
+    /** @var integer $lastpage */
     public $lastpage;
 
+    /** @var int $sid */
     protected static $sid = 0;
+    /** @var  boolean $bHaveToken */
     protected $bHaveToken;
 
     /**
@@ -30,8 +37,7 @@ class SurveyDynamic extends LSActiveRecord
     public static function model($sid = NULL)
     {
         $refresh = false;
-        if (!is_null($sid))
-        {
+        if (!is_null($sid)) {
             self::sid($sid);
             $refresh = true;
         }
@@ -66,16 +72,13 @@ class SurveyDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function relations()
     {
-        if($this->getbHaveToken())
-        {
+        if($this->getbHaveToken()) {
             TokenDynamic::sid(self::$sid);
             return array(
                 'survey'   => array(self::HAS_ONE, 'Survey', array(), 'condition'=>('sid = '.self::$sid)),
                 'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token'))
             );
-        }
-        else
-        {
+        } else {
             return array();
         }
     }
@@ -96,21 +99,17 @@ class SurveyDynamic extends LSActiveRecord
     public function insertRecords($data)
     {
         $record = new self;
-        foreach ($data as $k => $v)
-        {
+        foreach ($data as $k => $v) {
             $search = array('`', "'");
             $k = str_replace($search, '', $k);
             $v = str_replace($search, '', $v);
             $record->$k = $v;
         }
 
-        try
-        {
+        try {
             $record->save();
             return $record->id;
-        }
-        catch(Exception $e)
-        {
+        } catch(Exception $e) {
             return false;
         }
 
@@ -123,17 +122,15 @@ class SurveyDynamic extends LSActiveRecord
      * @static
      * @access public
      * @param array|bool $condition
-     * @return int
+     * @return int|CDbCriteria
      */
-    public static function deleteSomeRecords($condition = FALSE)
+    public static function deleteSomeRecords($condition = false)
     {
         $survey = new SurveyDynamic;
         $criteria = new CDbCriteria;
 
-        if ($condition != FALSE)
-        {
-            foreach ($condition as $column => $value)
-            {
+        if ($condition) {
+            foreach ($condition as $column => $value) {
                 return $criteria->addCondition($column . "=`" . $value . "`");
             }
         }
@@ -144,7 +141,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return criteria updated with the ones needed for including results from the timings table
      *
-     *
+     * @param array $condition
      * @return CDbCriteria
      */
     public function addTimingCriteria($condition)
@@ -152,8 +149,7 @@ class SurveyDynamic extends LSActiveRecord
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
 
-        if ($criteria->select == '*')
-        {
+        if ($criteria->select == '*') {
             $criteria->select = 't.*';
         }
         $alias = $this->getTableAlias();
@@ -168,7 +164,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return criteria updated with the ones needed for including results from the token table
      *
-     *
+     * @param string $condition
      * @return CDbCriteria
      */
     public function addTokenCriteria($condition)
@@ -179,13 +175,13 @@ class SurveyDynamic extends LSActiveRecord
         $aSelectFields=array_diff($aSelectFields, array('token'));
         $aSelect=array();
         $alias = $this->getTableAlias();
-        foreach($aSelectFields as $sField)
+        foreach($aSelectFields as $sField){
             $aSelect[]="$alias.".Yii::app()->db->schema->quoteColumnName($sField);
+        }
         $aSelectFields=$aSelect;
         $aSelectFields[]="$alias.token";
 
-        if ($criteria->select == '*')
-        {
+        if ($criteria->select == '*') {
             $criteria->select = $aSelectFields;
         }
 
@@ -200,6 +196,10 @@ class SurveyDynamic extends LSActiveRecord
         return $newCriteria;
     }
 
+    /**
+     * @param integer $sid
+     * @return array
+     */
     public static function countAllAndPartial($sid)
     {
         $select = array(
@@ -216,7 +216,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return true if actual survey is completed
      *
-     * @param $srid : actual save survey id
+     * @param integer $srid : actual save survey id
      *
      * @return boolean
      */
@@ -236,8 +236,7 @@ class SurveyDynamic extends LSActiveRecord
                 ->from($this->tableName())
                 ->where('id=:id', array(':id'=>$srid))
                 ->queryRow();
-            if($data && $data['submitdate'])
-            {
+            if($data && $data['submitdate']) {
                 $completed=true;
             }
         }
@@ -245,14 +244,19 @@ class SurveyDynamic extends LSActiveRecord
         return $completed;
     }
 
+
     /**
      * For grid list
+     * @return string
      */
     public function getCompleted()
     {
         return ($this->submitdate != '')?'<span class="text-success fa fa-check"></span>':'<span class="text-warning fa fa-times"></span>';
     }
 
+    /**
+     * @return string
+     */
     public function getButtons()
     {
         $sViewUrl     = App()->createUrl("/admin/responses/sa/view/surveyid/".self::$sid."/id/".$this->id);
@@ -266,23 +270,19 @@ class SurveyDynamic extends LSActiveRecord
         $button .= '<a class="btn btn-default btn-xs" href="'.$sViewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
 
         // Edit icon
-        if (Permission::model()->hasSurveyPermission(self::$sid,'responses','update'))
-        {
+        if (Permission::model()->hasSurveyPermission(self::$sid,'responses','update')) {
             $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Edit this response").'"><span class="glyphicon glyphicon-pencil text-success" ></span></a>';
         }
 
         // Download icon
-        if (hasFileUploadQuestion(self::$sid))
-        {
-            if (Response::model(self::$sid)->findByPk($this->id)->getFiles())
-            {
+        if (hasFileUploadQuestion(self::$sid)) {
+            if (Response::model(self::$sid)->findByPk($this->id)->getFiles()) {
                 $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
             }
         }
 
         // Delete icon
-        if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete'))
-        {
+        if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete')) {
             $aPostDatas = json_encode(array('sResponseId'=>$this->id));
             //$button .= '<a class="deleteresponse btn btn-default btn-xs" href="'.$sDeleteUrl.'" role="button" data-toggle="modal" data-ajax="true" data-post="'.$aPostDatas.'" data-target="#confirmation-modal" data-tooltip="true" title="'. sprintf(gT('Delete response %s'),$this->id).'"><span class="glyphicon glyphicon-trash text-danger" ></span></a>';
             $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='glyphicon glyphicon-trash text-danger' ></span></a>";
@@ -292,49 +292,47 @@ class SurveyDynamic extends LSActiveRecord
     }
 
 
+    /**
+     * @param string $colName
+     * @param string $sLanguage
+     * @param string $base64jsonFieldMap
+     * @return string
+     */
     public function getExtendedData($colName, $sLanguage, $base64jsonFieldMap)
     {
         $oFieldMap = json_decode( base64_decode($base64jsonFieldMap) );
         $value     = $this->$colName;
 
         $sFullValue      = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
-        if (strlen($sFullValue) > 50)
-        {
+        if (strlen($sFullValue) > 50) {
             $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value );
             $sValue          = '<span data-toggle="tooltip" data-placement="left" title="'.quoteText($sFullValue).'">'.$sElipsizedValue.'</span>';
-        }
-        else
-        {
+        } else {
             $sValue          = $sFullValue;
         }
 
         // Upload question
-        if($oFieldMap->type =='|' && strpos($oFieldMap->fieldname,'filecount')===false)
-        {
+        if($oFieldMap->type =='|' && strpos($oFieldMap->fieldname,'filecount')===false) {
 
             $sSurveyEntry="<table class='table table-condensed upload-question'><tr>";
             $aQuestionAttributes = getQuestionAttributeValues($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
-            for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++)
-            {
+            for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
                 $sSurveyEntry .='<tr>';
-                if (isset($aFilesInfo[$iFileIndex]))
-                {
+                if (isset($aFilesInfo[$iFileIndex])) {
                     $sSurveyEntry.= '<td>'.CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), App()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>self::$sid,"iResponseId"=>$this->id,"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) ).'</td>';
                     $sSurveyEntry.= '<td>'.sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2)).'</td>';
 
-                    if ($aQuestionAttributes['show_title'])
-                    {
+                    if ($aQuestionAttributes['show_title']) {
                         if (!isset($aFilesInfo[$iFileIndex]['title'])) $aFilesInfo[$iFileIndex]['title']='';
                         $sSurveyEntry.= '<td>'.htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8').'</td>';
                     }
-                    if ($aQuestionAttributes['show_comment'])
-                    {
+                    if ($aQuestionAttributes['show_comment']) {
                         if (!isset($aFilesInfo[$iFileIndex]['comment'])) $aFilesInfo[$iFileIndex]['comment']='';
                         $sSurveyEntry.= '<td>'.htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8').'</td>';
                     }
                 }
-                    $sSurveyEntry .='</tr>';
+                $sSurveyEntry .='</tr>';
             }
             $sSurveyEntry.='</table>';
             $sValue = $sSurveyEntry;
@@ -344,9 +342,9 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
-     * Return true if actual respnse exist in database
+     * Return true if actual response exist in database
      *
-     * @param $srid : actual save survey id
+     * @param integer $srid : actual save survey id
      *
      * @return boolean
      */
@@ -360,8 +358,7 @@ class SurveyDynamic extends LSActiveRecord
                 ->from($this->tableName())
                 ->where('id=:id', array(':id'=>$srid))
                 ->queryRow();
-            if($data)
-            {
+            if($data) {
                 $exist=true;
             }
         }
@@ -371,30 +368,31 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return next id if next response exist in database
      *
-     * @param integer $srid : actual save survey id
-     * @param boolean $usefilterstate
+     * @param integer $srId : actual save survey id
+     * @param boolean $useFilterState
      *
      * @return integer
      */
-    public function next($srid,$usefilterstate=false)
+    public function next($srId, $useFilterState=false)
     {
         $next=false;
-        if ($usefilterstate && incompleteAnsFilterState() == 'incomplete')
-            $wherefilterstate='submitdate IS NULL';
-        elseif ($usefilterstate && incompleteAnsFilterState() == 'complete')
-            $wherefilterstate='submitdate IS NOT NULL';
-        else
-            $wherefilterstate='1=1';
+        if ($useFilterState && incompleteAnsFilterState() == 'incomplete'){
+            $whereFilterState='submitdate IS NULL';
+        }
+        elseif ($useFilterState && incompleteAnsFilterState() == 'complete'){
+            $whereFilterState='submitdate IS NOT NULL';
+        } else{
+            $whereFilterState='1=1';
+        }
 
         if(Yii::app()->db->schema->getTable($this->tableName())){
             $data=Yii::app()->db->createCommand()
                 ->select("id")
                 ->from($this->tableName())
-                ->where(array('and',$wherefilterstate,'id > :id'), array(':id'=>$srid))
+                ->where(array('and',$whereFilterState,'id > :id'), array(':id'=>$srId))
                 ->order('id ASC')
                 ->queryRow();
-            if($data)
-            {
+            if($data) {
                 $next=$data['id'];
             }
         }
@@ -404,30 +402,32 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return previous id if previous response exist in database
      *
-     * @param integer $srid : actual save survey id
-     * @param boolean $usefilterstate
+     * @param integer $srId : actual save survey id
+     * @param boolean $useFilterState
      *
      * @return integer
      */
-    public function previous($srid,$usefilterstate=false)
+    public function previous($srId, $useFilterState=false)
     {
         $previous=false;
-        if ($usefilterstate && incompleteAnsFilterState() == 'incomplete')
-            $wherefilterstate='submitdate IS NULL';
-        elseif ($usefilterstate && incompleteAnsFilterState() == 'complete')
-            $wherefilterstate='submitdate IS NOT NULL';
-        else
-            $wherefilterstate='1=1';
+        if ($useFilterState && incompleteAnsFilterState() == 'incomplete') {
+            $whereFilterState='submitdate IS NULL';
+        }
+        elseif ($useFilterState && incompleteAnsFilterState() == 'complete') {
+            $whereFilterState='submitdate IS NOT NULL';
+        }
+        else{
+            $whereFilterState='1=1';
+        }
 
         if(Yii::app()->db->schema->getTable($this->tableName())){
             $data=Yii::app()->db->createCommand()
                 ->select("id")
                 ->from($this->tableName())
-                ->where(array('and',$wherefilterstate,'id < :id'), array(':id'=>$srid))
+                ->where(array('and',$whereFilterState,'id < :id'), array(':id'=>$srId))
                 ->order('id DESC')
                 ->queryRow();
-            if($data)
-            {
+            if($data) {
                 $previous=$data['id'];
             }
         }
@@ -435,17 +435,14 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
-     * Function that returns a timeline of the surveys submissions
+     * Function that returns a time-line of the surveys submissions
      *
-     * @param string sType
-     * @param string dStart
-     * @param string dEnd
      * @param string $sType
      * @param string $dStart
      * @param string $dEnd
      *
      * @access public
-     * @return array
+     * @return array|boolean
      */
     public function timeline($sType, $dStart, $dEnd)
     {
@@ -453,10 +450,8 @@ class SurveyDynamic extends LSActiveRecord
         $sid = self::$sid;
         $oSurvey=Survey::model()->findByPk($sid);
         if ($oSurvey['datestamp']!='Y') {
-               return false;
-        }
-        else
-        {
+            return false;
+        } else {
             $criteria=new CDbCriteria;
             $criteria->select = 'submitdate';
             $criteria->addCondition('submitdate >= :dstart');
@@ -467,13 +462,14 @@ class SurveyDynamic extends LSActiveRecord
             $criteria->params[':dend'] = $dEnd;
             $oResult = $this->findAll($criteria);
 
-            if($sType=="hour")
+            if($sType=="hour") {
                 $dFormat = "Y-m-d_G";
-            else
+            } else{
                 $dFormat = "Y-m-d";
+            }
 
-            foreach($oResult as $sResult)
-            {
+            $aRes = array();
+            foreach($oResult as $sResult) {
                 $aRes[] = date($dFormat,strtotime($sResult['submitdate']));
             }
 
@@ -481,49 +477,58 @@ class SurveyDynamic extends LSActiveRecord
         }
     }
 
+    /**
+     * @return bool
+     */
     private function getbHaveToken()
     {
-        if (!isset($this->bHaveToken))
-        {
+        if (!isset($this->bHaveToken)) {
             $this->bHaveToken = tableExists('tokens_' . self::$sid) && Permission::model()->hasSurveyPermission(self::$sid,'tokens','read');// Boolean : show (or not) the token;
         }
         return $this->bHaveToken;
     }
 
 
+    /**
+     * @return string
+     */
     public function getFirstNameForGrid()
     {
-        if(is_object($this->tokens))
-        {
+        if(is_object($this->tokens)) {
             return '<strong>'.$this->tokens->firstname.'</strong>';
         }
 
     }
 
+    /**
+     * @return string
+     */
     public function getLastNameForGrid()
     {
-        if(is_object($this->tokens))
-        {
+        if(is_object($this->tokens)) {
             return '<strong>'.$this->tokens->lastname.'</strong>';
         }
     }
 
+    /**
+     * @return string
+     */
     public function getTokenForGrid()
     {
         $sToken = '';
-        if(is_object($this->tokens) && ! is_null($this->tokens->tid) )
-        {
+        if(is_object($this->tokens) && ! is_null($this->tokens->tid) ) {
             $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens",array("sa"=>"edit","iSurveyId"=>self::$sid,"iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
-        }
-        else
-        {
+        } else {
             $sToken = '<span class="badge badge-success">'.strip_tags($this->token).'</span>';
         }
 
         return $sToken;
     }
 
-    // Get the list of default columns for surveys
+    /**
+     * Get the list of default columns for surveys
+     * @return array
+     */
     public function getDefaultColumns()
     {
         return array('id', 'token', 'submitdate', 'lastpage','startlanguage', 'completed', 'seed');
@@ -551,6 +556,9 @@ class SurveyDynamic extends LSActiveRecord
         return Yii::app()->user->getState('defaultEllipsizeQuestionValue',Yii::app()->params['defaultEllipsizeQuestionValue']);
     }
 
+    /**
+     * @return CActiveDataProvider
+     */
     public function search()
     {
 
@@ -577,13 +585,11 @@ class SurveyDynamic extends LSActiveRecord
        $criteria->compare('t.startlanguage',$this->startlanguage, true);
 
        // Completed filters
-       if($this->completed_filter == "Y")
-       {
+       if($this->completed_filter == "Y") {
            $criteria->addCondition('t.submitdate IS NOT NULL');
        }
 
-       if($this->completed_filter == "N")
-       {
+       if($this->completed_filter == "N") {
            $criteria->addCondition('t.submitdate IS NULL');
        }
 
@@ -647,37 +653,28 @@ class SurveyDynamic extends LSActiveRecord
      */
     protected function filterColumns(CDbCriteria $criteria)
     {
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        $dateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
 
         // Filters for responses
-        foreach($this->metaData->columns as $column)
-        {
+        foreach($this->metaData->columns as $column) {
             $isNotDefaultColumn = !in_array($column->name, $this->defaultColumns);
-            if ($isNotDefaultColumn)
-            {
+            if ($isNotDefaultColumn) {
                 $c1 = (string) $column->name;
                 $columnHasValue = !empty($this->$c1);
-                if ($columnHasValue)
-                {
+                if ($columnHasValue) {
                     $isDatetime = strpos($column->dbType, 'timestamp') !== false || strpos($column->dbType, 'datetime') !== false;
-                    if ($column->dbType == 'decimal')
-                    {
+                    if ($column->dbType == 'decimal') {
                         $this->$c1 = (float)$this->$c1;
                         $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
-                    }
-                    else if ($isDatetime)
-                    {
-                        $s = DateTime::createFromFormat($dateformatdetails['phpdate'], $this->$c1);
-                        if ($s === false)
-                        {
+                    } else if ($isDatetime) {
+                        $s = DateTime::createFromFormat($dateFormatDetails['phpdate'], $this->$c1);
+                        if ($s === false) {
                             // This happens when date is in wrong format
                             continue;
                         }
                         $s2 = $s->format('Y-m-d');
                         $criteria->addCondition('cast(' . Yii::app()->db->quoteColumnName($c1) . ' as date) = \'' . $s2 . '\'');
-                    }
-                    else
-                    {
+                    } else {
                         $criteria->compare( Yii::app()->db->quoteColumnName($c1), $this->$c1, true);
                     }
                 }
