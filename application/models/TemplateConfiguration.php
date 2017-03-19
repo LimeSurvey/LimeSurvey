@@ -13,13 +13,13 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 
 /**
-* Template Configuration Model
-*
-* This model retrieves all the data of template configuration from the configuration file
-*
-* @package       LimeSurvey
-* @subpackage    Backend
-*/
+ * Template Configuration Model
+ *
+ * This model retrieves all the data of template configuration from the configuration file
+ *
+ * @package       LimeSurvey
+ * @subpackage    Backend
+ */
 class TemplateConfiguration extends CFormModel
 {
     /** @var string $sTemplateName The template name */
@@ -139,13 +139,11 @@ class TemplateConfiguration extends CFormModel
             if ( $this->isOldTemplate ) {
                 /* Must review: maybe some package ?*/
                 $this->xmlFile = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'minimal-config.xml';
-            }
-            else {
+            } else {
                 $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
                 $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
             }
-        }
-        else {
+        } else {
             $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
         }
 
@@ -259,18 +257,18 @@ class TemplateConfiguration extends CFormModel
      */
     private function setOtherFiles()
     {
-        $otherfiles = array();
+        $otherFiles = array();
         if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath)) {
             while (false !== ($file = readdir($handle))) {
                 if($file!='.' && $file!='..') {
                     if (!is_dir($file)) {
-                        $otherfiles[] = array("name" => $file);
+                        $otherFiles[] = array("name" => $file);
                     }
                 }
             }
             closedir($handle);
         }
-        return $otherfiles;
+        return $otherFiles;
     }
 
     public function getName()
