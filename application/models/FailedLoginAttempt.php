@@ -70,13 +70,13 @@ class FailedLoginAttempt extends LSActiveRecord
 
 		$row = $this->find($criteria);
 
-		if ($row != null)
-		{
+		if ($row != null) {
 			$lastattempt = strtotime($row->last_attempt);
-			if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime'))
-				$this->deleteAttempts();
-			else
-				$isLockedOut = true;
+			if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime')){
+                $this->deleteAttempts();
+            } else {
+                $isLockedOut = true;
+            }
 		}
 		return $isLockedOut;
 	}
@@ -104,14 +104,11 @@ class FailedLoginAttempt extends LSActiveRecord
 		$ip = substr(getIPAddress(),0,40);
 		$row = $this->findByAttributes(array('ip' => $ip));
 
-		if ($row !== null)
-		{
+		if ($row !== null) {
 			$row->number_attempts = $row->number_attempts + 1;
 			$row->last_attempt = $timestamp;
 			$row->save();
-		}
-		else
-		{
+		} else {
 			$record = new FailedLoginAttempt;
 			$record->ip = $ip;
 			$record->number_attempts = 1;
