@@ -344,7 +344,9 @@ class Date_Time_Converter
             }
         }
 
-        if (strtolower($this->ampm) == "pm") {$this->hours = $this->hours + 12;}			//if its pm, add 12 hours
+        if (strtolower($this->ampm) == "pm" && $this->hours < 12) { //if its pm, add 12 hours
+            $this->hours = $this->hours + 12;
+        }
 
         $make_stamp = adodb_mktime( (int)ltrim($this->hours, "0"), (int)ltrim($this->minutes, "0"),
         (int)ltrim($this->seconds, "0"), (int)ltrim($this->months, "0"),
