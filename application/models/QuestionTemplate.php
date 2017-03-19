@@ -66,6 +66,8 @@ class QuestionTemplate extends CFormModel
      * Get a new instance of the template object
      * Each question on the page could have a different template.
      * So each question must have a new instance
+     * @param Question $oQuestion
+     * @return QuestionTemplate
      */
     public static function getNewInstance($oQuestion)
     {
@@ -93,8 +95,11 @@ class QuestionTemplate extends CFormModel
         return self::$instance;
     }
 
+
     /**
-     * Check if the question template offer a specific remplacement for that view file.
+     * Check if the question template offer a specific replacement for that view file.
+     * @param string $sView
+     * @return mixed
      */
     public function checkIfTemplateHasView($sView)
     {

@@ -87,7 +87,8 @@ class QuestionGroup extends LSActiveRecord
         );
     }
 
-    function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
+
+    public function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
     {
         $query = Yii::app()->db->createCommand()->select('*')->from('{{groups}}');
 
@@ -102,7 +103,12 @@ class QuestionGroup extends LSActiveRecord
         return ( $return_query ) ? $query->queryAll() : $query;
     }
 
-    function updateGroupOrder($sid,$lang,$position=0)
+    /**
+     * @param integer $sid
+     * @param string $lang
+     * @param int $position
+     */
+    public function updateGroupOrder($sid, $lang, $position=0)
     {
         $data=Yii::app()->db->createCommand()->select('gid')
             ->where(array('and','sid=:sid','language=:language'))
@@ -160,8 +166,7 @@ class QuestionGroup extends LSActiveRecord
             if ($bFirst) {
                 $iGroupID=$this->insertRecords($aQuestionGroupData[$sLanguage]);
                 $bFirst = false;
-            }
-            else {
+            } else {
                 $aQuestionGroupData[$sLanguage]['gid']=$iGroupID;
                 switchMSSQLIdentityInsert('groups',true);
                 $this->insertRecords($aQuestionGroupData[$sLanguage]);
@@ -171,7 +176,12 @@ class QuestionGroup extends LSActiveRecord
         return $iGroupID;
     }
 
-    function getGroups($surveyid) {
+
+    /**
+     * @param int $surveyid
+     * @return array
+     */
+    public function getGroups($surveyid) {
         $language = Survey::model()->findByPk($surveyid)->language;
         return Yii::app()->db->createCommand()
             ->select(array('gid', 'group_name'))
@@ -204,14 +214,14 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-    * Get group description
-    *
-    * @param int $iGroupId
-    * @param string $sLanguage
-    */
+     * Get group description
+     *
+     * @param int $iGroupId
+     * @param string $sLanguage
+     * @return string
+     */
     public function getGroupDescription($iGroupId, $sLanguage)
     {
-        $solover = $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
         return $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
     }
 

@@ -35,9 +35,9 @@ class SavedControl extends LSActiveRecord {
 	}
 
 
-	function getAllRecords($condition=FALSE)
+	function getAllRecords($condition=false)
 	{
-		if ($condition != FALSE)
+		if ($condition != false)
 		{
 			$this->db->where($condition);
 		}
@@ -47,6 +47,10 @@ class SavedControl extends LSActiveRecord {
 		return $data;
 	}
 
+    /**
+     * @param int $sid
+     * @return mixed
+     */
     public function getCountOfAll($sid)
     {
         $data = Yii::app()->db->createCommand("SELECT COUNT(*) AS countall FROM {{saved_control}} WHERE sid=:sid")->bindParam(":sid", $sid, PDO::PARAM_INT)->query();
@@ -56,7 +60,7 @@ class SavedControl extends LSActiveRecord {
     }
 
     /**
-    * Deletes some records meeting speicifed condition
+    * Deletes some records meeting specified condition
     *
     * @access public
     * @param array $condition
@@ -67,10 +71,8 @@ class SavedControl extends LSActiveRecord {
     	$record = new self;
     	$criteria = new CDbCriteria;
 
-    	if($condition != FALSE)
-    	{
-    		foreach($condition as $column=>$value)
-    		{
+    	if($condition != false) {
+    		foreach($condition as $column=>$value) {
     			$criteria->addCondition("$column='$value'");
     		}
     	}

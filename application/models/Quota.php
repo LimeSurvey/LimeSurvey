@@ -79,7 +79,7 @@ class Quota extends LSActiveRecord
      * @param array $data
      * @return bool|int
      */
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $quota = new self;
         foreach ($data as $k => $v) {
@@ -111,4 +111,3 @@ class Quota extends LSActiveRecord
         Quota::model()->deleteAllByAttributes($condition);
     }
 }
-
