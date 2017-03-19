@@ -121,11 +121,12 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
     /**
-    * Defines the customs validation rule lsdefault
-    *
-    * @param mixed $attribute
-    * @param mixed $params
-    */
+     * Defines the customs validation rule lsdefault
+     *
+     * @param mixed $attribute
+     * TODO $params is unused in method
+     * @param mixed $params
+     */
     public function lsdefault($attribute,$params)
     {
         $oSurvey=Survey::model()->findByPk($this->surveyls_survey_id);
@@ -205,8 +206,7 @@ class SurveyLanguageSetting extends LSActiveRecord
         $this->db->from('surveys AS a');
         $this->db->join('surveys_languagesettings','surveyls_survey_id=a.sid AND surveyls_language=a.language');
 
-        if ($hasPermission)
-        {
+        if ($hasPermission) {
             $this->db->where('a.sid IN (SELECT sid FROM {{permissions}} WHERE uid=:uid AND permission=\'survey\' and read_p=1) ')->bindParam(":uid", $this->session->userdata("loginID"), PDO::PARAM_INT);
         }
         $this->db->order_by('active DESC, surveyls_title');
@@ -221,6 +221,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     public function getAllData($sid, $lcode)
     {
         $query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
+        // FIXME there is no $this->db, is this unused?
         return $this->db->query($query, array($sid, $sid, $lcode));
     }
 
