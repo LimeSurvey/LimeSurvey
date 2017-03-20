@@ -297,9 +297,8 @@ class Survey extends LSActiveRecord
     /**
     * fixSurveyAttribute to fix and/or add some survey attribute
     * - Fix template name to be sure template exist
-     * //FIXME $event input parameter is overridden always remove from implementations
     */
-    public function fixSurveyAttribute($event)
+    public function fixSurveyAttribute()
     {
         $event = new PluginEvent('afterFindSurvey');
         $event->set('surveyid',$this->sid);
@@ -328,8 +327,10 @@ class Survey extends LSActiveRecord
             // Reset to default only if different from actual value
             if(!$this->isNewRecord){
                 $oSurvey=self::model()->findByPk($this->sid);
-                if($oSurvey->template != $sTemplateName)// No need to test !is_null($oSurvey)
+                // No need to test !is_null($oSurvey)
+                if($oSurvey->template != $sTemplateName){
                     $sTemplateName = Yii::app()->getConfig('defaulttemplate');
+                }
             } else {
                 $sTemplateName = Yii::app()->getConfig('defaulttemplate');
             }
