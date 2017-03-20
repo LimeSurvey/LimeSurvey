@@ -95,32 +95,27 @@ class UserGroup extends LSActiveRecord {
     }
 
     // TODO seems to be unused, probably shouldn't be done like that
-    public function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
+    public function join($fields, $from, $condition=false, $join=false, $order=false)
     {
         $user = Yii::app()->db->createCommand();
-        foreach ($fields as $field)
-        {
+        foreach ($fields as $field) {
             $user->select($field);
         }
 
         $user->from($from);
 
-        if ($condition != FALSE)
-        {
+        if ($condition != false) {
             $user->where($condition);
         }
 
-        if ($order != FALSE)
-        {
+        if ($order != false) {
             $user->order($order);
         }
 
-        if (isset($join['where'], $join['on']))
-        {
+        if (isset($join['where'], $join['on'])) {
             if (isset($join['left'])) {
                 $user->leftjoin($join['where'], $join['on']);
-            }else
-            {
+            } else {
                 $user->join($join['where'], $join['on']);
             }
         }
@@ -154,10 +149,17 @@ class UserGroup extends LSActiveRecord {
             return -1;
 
         }
-    // TODO should be in controller
-    public function updateGroup($name, $description, $ugid)
+
+    /**
+     * TODO should be in controller
+     * @param string $name
+     * @param string $description
+     * @param integer $ugId
+     * @return bool
+     */
+    public function updateGroup($name, $description, $ugId)
     {
-        $group = UserGroup::model()->findByPk($ugid);
+        $group = UserGroup::model()->findByPk($ugId);
         $group->name=$name;
         $group->description=$description;
         $group->save();
@@ -168,11 +170,11 @@ class UserGroup extends LSActiveRecord {
     }
 
     /**
-     * @param integer $ugid
-     * @param integer $ownerid
+     * @param integer $ugId
+     * @param integer $ownerId
      * @return static
      */
-    public function requestEditGroup($ugid, $ownerid)
+    public function requestEditGroup($ugId, $ownerId)
     {
         $criteria=new CDbCriteria;
         $criteria->select='*';
@@ -180,47 +182,47 @@ class UserGroup extends LSActiveRecord {
         $aParams=array();
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
             $criteria->condition.=" AND owner_id=:ownerid";
-            $aParams[':ownerid']=$ownerid;
+            $aParams[':ownerid']=$ownerId;
         }
 
-        $aParams[':ugid']=$ugid;
+        $aParams[':ugid']=$ugId;
         $criteria->params=$aParams;
         $result=UserGroup::model()->find($criteria);
         return $result;
     }
 
     /**
-     * @param integer $ugid
-     * @param integer $userid
+     * @param integer $ugId
+     * @param integer $userId
      * @return array
      */
-    public function requestViewGroup($ugid, $userid)
+    public function requestViewGroup($ugId, $userId)
     {
         $sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
             $sQuery.="  AND uid = :userid ";
         }
         $sQuery.=" ORDER BY name";
-        $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugid, PDO::PARAM_INT);
+        $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugId, PDO::PARAM_INT);
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
-            $command->bindParam(":userid", $userid, PDO::PARAM_INT);
+            $command->bindParam(":userid", $userId, PDO::PARAM_INT);
         }
         return $command->query()->readAll();
     }
 
     /**
-     * @param integer $ugid
-     * @param integer $ownerid
+     * @param integer $ugId
+     * @param integer $ownerId
      * @return bool
      */
-    public function deleteGroup($ugid, $ownerid)
+    public function deleteGroup($ugId, $ownerId)
     {
         $aParams=array();
-        $aParams[':ugid']=$ugid;
+        $aParams[':ugid']=$ugId;
         $sCondition="ugid = :ugid";
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
             $sCondition.=" AND owner_id=:ownerid";
-            $aParams[':ownerid']=$ownerid;
+            $aParams[':ownerid']=$ownerId;
         }
 
         $group = UserGroup::model()->find($sCondition, $aParams);

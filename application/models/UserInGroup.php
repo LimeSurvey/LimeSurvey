@@ -57,7 +57,7 @@ class UserInGroup extends LSActiveRecord {
      * @param mixed $condition
      * @return static[]
      */
-    public function getAllRecords($condition=FALSE)
+    public function getAllRecords($condition=false)
     {
         $criteria = new CDbCriteria;
 
@@ -80,7 +80,7 @@ class UserInGroup extends LSActiveRecord {
         return (bool) $changedRows;
     }
 
-    public function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
+    public function join($fields, $from, $condition=false, $join=false, $order=false)
     {
         $user = Yii::app()->db->createCommand();
         foreach ($fields as $field) {
@@ -97,8 +97,7 @@ class UserInGroup extends LSActiveRecord {
             $user->order($order);
         }
 
-        if (isset($join['where'], $join['on']))
-        {
+        if (isset($join['where'], $join['on'])) {
             if (isset($join['left'])) {
                 $user->leftjoin($join['where'], $join['on']);
             } else {
