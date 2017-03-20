@@ -13,6 +13,19 @@
    *    Files Purpose: lots of common functions
 */
 
+/**
+ * Class Quota
+ *
+ * @property integer $id
+ * @property integer $sid
+ * @property string $name
+ * @property integer $qlimit
+ * @property integer $active
+ * @property integer $action
+ * @property integer $autoload_url
+ *
+ * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
+ */
 class Quota extends LSActiveRecord
 {
 
@@ -20,46 +33,27 @@ class Quota extends LSActiveRecord
     public $active=1;
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-    * @param string $class
-     * @return CActiveRecord
+     * @inheritdoc
+     * @return Quota
      */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{quota}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'id';
     }
 
-    /**
-     * Returns the relations
-     *
-     * @access public
-     * @return array
-     */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
@@ -69,10 +63,7 @@ class Quota extends LSActiveRecord
         );
     }
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -84,30 +75,34 @@ class Quota extends LSActiveRecord
         );
     }
 
-    function insertRecords($data)
+    /**
+     * @param array $data
+     * @return bool|int
+     */
+    public function insertRecords($data)
     {
         $quota = new self;
-        foreach ($data as $k => $v){
+        foreach ($data as $k => $v) {
             $quota->$k = $v;
-            }
-        try
-        {
+        }
+        try {
             $quota->save();
             return $quota->id;
         }
-        catch(Exception $e)
-        {
+        catch(Exception $e) {
             return false;
         }
     }
 
+    /**
+     * @param mixed|bool $condition
+     * @param bool $recursive
+     */
     function deleteQuota($condition = false, $recursive = true)
     {
-        if ($recursive == true)
-        {
+        if ($recursive == true) {
             $oResult = Quota::model()->findAllByAttributes($condition);
-            foreach ($oResult as $aRow)
-            {
+            foreach ($oResult as $aRow) {
                 QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $aRow['id']));
                 QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $aRow['id']));
             }
@@ -116,4 +111,3 @@ class Quota extends LSActiveRecord
         Quota::model()->deleteAllByAttributes($condition);
     }
 }
-?>

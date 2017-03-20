@@ -13,41 +13,72 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 
 /**
-* Template Configuration Model
-*
-* This model retrieves all the data of template configuration from the configuration file
-*
-* @package       LimeSurvey
-* @subpackage    Backend
-*/
+ * Template Configuration Model
+ *
+ * This model retrieves all the data of template configuration from the configuration file
+ *
+ * @package       LimeSurvey
+ * @subpackage    Backend
+ */
 class TemplateConfiguration extends CFormModel
 {
-    public $sTemplateName='';                   // The template name
-    public $iSurveyId='';                       // The current Survey Id. It can be void. It's use only to retreive the current template of a given survey
-    public $config;                             // Will contain the config.xml
+    /** @var string $sTemplateName The template name */
+    public $sTemplateName='';
+    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
+    public $iSurveyId='';
+    /** @var SimpleXMLElement $config Will contain the config.xml*/
+    public $config;
     /**
-     * @var integer : the actual api version. Must be private : disallow update
+     * @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update
      */
-    private $apiVersion;                        // Version of the LS API when created
+    private $apiVersion;
 
-    public $pstplPath;                          // Path of the pstpl files
-    public $viewPath;                           // Path of the views files (php files to replace existing core views)
-    public $siteLogo;                           // Name of the logo file (like: logo.png)
-    public $filesPath;                          // Path of the uploaded files
-    public $cssFramework;                       // What framework css is used @see getFrameworkPackages()
-    public $packages;                           // Array of package dependencies defined in config.xml
-    public $depends;                            // List of all dependencies (could be more that just the config.xml packages)
-    public $otherFiles;                         // Array of files in the file directory
+    /** @var  string $pstplPath Path of the pstpl files */
+    public $pstplPath;
+    /** @var  string $viewPath Path of the views files (php files to replace existing core views) */
+    public $viewPath;
+    /** @var  string $siteLogo Name of the logo file (like: logo.png) */
+    public $siteLogo;
+    /** @var  string $filesPath Path of the uploaded files */
+    public $filesPath;
+    /**
+     * @var string[] $cssFramework What framework css is used
+     * @see getFrameworkPackages()
+     */
+    public $cssFramework;
+    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
+    public $packages;
+    /**
+     * @var string[] $depends List of all dependencies (could be more that just the config.xml packages)
+     * @see getDependsPackages()
+     */
+    public $depends;
+    /**
+     * @var array $otherFiles Array of files in the file directory
+     * @see setOtherFiles()
+     */
+    public $otherFiles;
 
-    public $oSurvey;                            // The survey object
-    public $isStandard;                         // Is this template a core one?
-    public $path;                               // Path of this template
-    public $hasConfigFile='';                   // Does it has a config.xml file?
-    public $isOldTemplate;                      // Is it a 2.06 template?
 
-    public $overwrite_question_views=false;     // Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too.
+    /** @var  Survey $oSurvey The survey object */
+    public $oSurvey;
+    /** @var boolean $isStandard Is this template a core one? */
+    public $isStandard;
+    /** @var  string $path Path of this template */
+    public $path;
+    /**
+     * @var string $hasConfigFile Does it has a config.xml file?
+     * //TODO why string not boolean ??
+     */
+    public $hasConfigFile='';//
+    /** @var  boolean $isOldTemplate Is it a 2.06 template? */
+    public $isOldTemplate;
 
-    public $xmlFile;                            // What xml config file does it use? (config/minimal)
+
+    /** @var bool $overwrite_question_views Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too. */
+    public $overwrite_question_views=false;
+    /** @var string $xmlFile What xml config file does it use? (config/minimal) */
+    public $xmlFile;
 
     /**
      * This method construct a template object, having all the needed configuration datas.
@@ -57,15 +88,15 @@ class TemplateConfiguration extends CFormModel
      * If it's not the case (template probably doesn't exist), it will load the default template configuration
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed pstpl files, if the files refered in css exist, etc.
      *
-     * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param string $iSurveyId        the id of the survey. If
+     * @param string $sTemplateName the name of the template to load. The string come from the template selector in survey settings
+     * @param string $iSurveyId the id of the survey. If
+     * @return $this
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
         // If it's called from template editor, a template name will be provided.
         // If it's called for survey taking, a survey id will be provided
-        if ($sTemplateName == '' && $iSurveyId == '')
-        {
+        if ($sTemplateName == '' && $iSurveyId == '') {
             /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
             $sTemplateName=Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
             //throw new TemplateException("Template needs either template name or survey id");
@@ -73,12 +104,11 @@ class TemplateConfiguration extends CFormModel
         $this->sTemplateName = $sTemplateName;
         $this->iSurveyId     = (int) $iSurveyId;
 
-        if ($sTemplateName=='')
-        {
+        if ($sTemplateName=='') {
             $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
-            if($this->oSurvey){
+            if($this->oSurvey) {
                 $this->sTemplateName = $this->oSurvey->template;
-            }else{
+            } else {
                 $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
             }
         }
@@ -90,8 +120,7 @@ class TemplateConfiguration extends CFormModel
         // If the template directory doesn't exist, it can be that:
         // - user deleted a custom theme
         // In any case, we just set Default as the template to use
-        if (!is_dir($this->path))
-        {
+        if (!is_dir($this->path)) {
             $this->sTemplateName = 'default';
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
@@ -105,26 +134,18 @@ class TemplateConfiguration extends CFormModel
         $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
         $this->isOldTemplate = ( !$this->hasConfigFile && is_file($this->path.DIRECTORY_SEPARATOR.'startpage.pstpl')); // TODO: more complex checks
 
-        if (!$this->hasConfigFile)
-        {
+        if (!$this->hasConfigFile) {
             // If it's an imported template from 2.06, we return default values
-            if ( $this->isOldTemplate )
-            {
+            if ( $this->isOldTemplate ) {
                 /* Must review: maybe some package ?*/
                 $this->xmlFile = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'minimal-config.xml';
-            }
-            else
-            {
+            } else {
                 $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
                 $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
             }
-        }
-        else
-        {
+        } else {
             $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
         }
-
-
 
         //////////////////////
         // Config file loading
@@ -206,15 +227,14 @@ class TemplateConfiguration extends CFormModel
         $aCssFiles   = (array)$this->config->files->css->filename;                                 // The CSS files of this template
         $aJsFiles    = (array)$this->config->files->js->filename;                                  // The JS files of this template
         $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-        if (isset($this->config->files->$dir)){
+        if (isset($this->config->files->$dir)) {
             $aCssFilesDir = isset($this->config->files->$dir->css->filename) ? (array)$this->config->files->$dir->css->filename : array();
             $aJsFilesDir  = isset($this->config->files->$dir->js->filename) ? (array)$this->config->files->$dir->js->filename : array();
             $aCssFiles=array_merge($aCssFiles,$aCssFilesDir);
             $aJsFiles=array_merge($aJsFiles,$aJsFilesDir);
         }
 
-        if (Yii::app()->getConfig('debug') == 0)
-        {
+        if (Yii::app()->getConfig('debug') == 0) {
             Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/scripts/deactivatedebug.js', CClientScript::POS_END);
         }
 
@@ -230,27 +250,25 @@ class TemplateConfiguration extends CFormModel
         ) );
     }
 
+
     /**
      * Return the list of ALL files present in the file directory
+     * @return array
      */
     private function setOtherFiles()
     {
-        $otherfiles = array();
-        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
-                if($file!='.' && $file!='..')
-                {
-                    if (!is_dir($file))
-                    {
-                        $otherfiles[] = array("name" => $file);
+        $otherFiles = array();
+        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath)) {
+            while (false !== ($file = readdir($handle))) {
+                if($file!='.' && $file!='..') {
+                    if (!is_dir($file)) {
+                        $otherFiles[] = array("name" => $file);
                     }
                 }
             }
             closedir($handle);
         }
-        return $otherfiles;
+        return $otherFiles;
     }
 
     public function getName()
@@ -259,6 +277,9 @@ class TemplateConfiguration extends CFormModel
     }
 
 
+    /**
+     * @return bool
+     */
     private function setIsStandard()
     {
         return Template::isStandardTemplate($this->sTemplateName);
@@ -269,8 +290,8 @@ class TemplateConfiguration extends CFormModel
      */
     private function fixTemplateByApi()
     {
-        if($this->apiVersion<3){
-            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl")){
+        if($this->apiVersion<3) {
+            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl")) {
                 $messagePstpl  =  "<div id='{MESSAGEID}-wrapper'>\n"
                                 . "    {ERROR}\n"
                                 . "    <div class='{MESSAGEID}-text'>{MESSAGE}</div>\n"
@@ -278,7 +299,7 @@ class TemplateConfiguration extends CFormModel
                                 . "</div>";
                 file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl",$messagePstpl);
             }
-            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl")){
+            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl")) {
                 $formTemplate  =  "<div class='{FORMID}-page'>\n"
                                 . "    <div class='form-heading'>{FORMHEADING}</div>\n"
                                 . "    {FORMMESSAGE}\n"
@@ -287,13 +308,14 @@ class TemplateConfiguration extends CFormModel
                                 . "</div>";
                 file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl",$formTemplate);
             }
-            if(getLanguageRTL(App()->language)){
+            if(getLanguageRTL(App()->language)) {
                 unset($this->config->files->css);
                 unset($this->config->files->js);
                 unset($this->config->files->print_css);
             }
             $name=(isset($this->config->metadatas->name)) ? (string)$this->config->metadatas->name:null;
-            if(in_array($name,array("Default","News Paper","Ubuntu Orange"))){/* LimeSurvey template only updated via GUI */
+            /* LimeSurvey template only updated via GUI */
+            if(in_array($name,array("Default","News Paper","Ubuntu Orange"))) {
                 $packages=new stdClass();
                 $packages->package="template-default";
                 $packages->ltr=new stdClass();
@@ -309,15 +331,16 @@ class TemplateConfiguration extends CFormModel
     /**
      * Get the depends package
      * @uses self::@package
+     * @return string[]
      */
     private function getDependsPackages()
     {
 
         /* Start by adding cssFramework package */
         $packages=$this->getFrameworkPackages();
-        if(!getLanguageRTL(App()->getLanguage())){
+        if(!getLanguageRTL(App()->getLanguage())) {
             $packages=array_merge ($packages,$this->getFrameworkPackages('ltr'));
-        }else{
+        } else {
             $packages=array_merge ($packages,$this->getFrameworkPackages('rtl'));
         }
 
@@ -325,12 +348,12 @@ class TemplateConfiguration extends CFormModel
         $packages[]='limesurvey-public';
 
         /* template packages */
-        if(!empty($this->packages->package)){
+        if(!empty($this->packages->package)) {
             $packages=array_merge ($packages,(array)$this->packages->package);
         }
         /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
         $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-        if(!empty($this->packages->$dir->package)){
+        if(!empty($this->packages->$dir->package)) {
             $packages=array_merge ($packages,(array)$this->packages->$dir->package);
         }
 
@@ -338,7 +361,7 @@ class TemplateConfiguration extends CFormModel
     }
     /**
      * Set the framework package
-     * @param string : dir (rtl|ltr|)
+     * @param string $dir (rtl|ltr|)
      * @use self::@cssFramework
      * @return string[] depends for framework
      */
@@ -346,19 +369,19 @@ class TemplateConfiguration extends CFormModel
     {
         $framework=isset($this->cssFramework->name)? (string)$this->cssFramework->name : (string)$this->cssFramework;
         $framework=$dir ? $framework."-".$dir : $framework;
-        if(isset(Yii::app()->clientScript->packages[$framework])){
+        if(isset(Yii::app()->clientScript->packages[$framework])) {
             $frameworkPackages=array();
             /* Theming */
-            if($dir){
+            if($dir) {
                 $cssFrameworkCsss=isset($this->cssFramework->$dir->css) ? $this->cssFramework->$dir->css : array();
                 $cssFrameworkJss=isset($this->cssFramework->$dir->js) ? $this->cssFramework->$dir->js : array();
-            }else{
+            } else {
                 $cssFrameworkCsss=isset($this->cssFramework->css) ? $this->cssFramework->css : array();
                 $cssFrameworkJss=isset($this->cssFramework->js) ? $this->cssFramework->js : array();
             }
-            if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)){
+            if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
                 $frameworkPackages[]=$framework;
-            }else{
+            } else {
                 /* Need to create an adapted core framework */
                 $cssFrameworkPackage=Yii::app()->clientScript->packages[$framework];
                 /* Need to create an adapted template/theme framework */
@@ -366,27 +389,27 @@ class TemplateConfiguration extends CFormModel
                 $packageJs=array();
                 /* css file to replace from default package */
                 $cssDelete=array();
-                foreach($cssFrameworkCsss as $cssFrameworkCss){
-                    if(isset($cssFrameworkCss['replace'])){
+                foreach($cssFrameworkCsss as $cssFrameworkCss) {
+                    if(isset($cssFrameworkCss['replace'])) {
                         $cssDelete[]=$cssFrameworkCss['replace'];
                     }
-                    if((string)$cssFrameworkCss){
+                    if((string)$cssFrameworkCss) {
                         $packageCss[]=(string)$cssFrameworkCss;
                     }
                 }
-                if(isset($cssFrameworkPackage['css'])){
+                if(isset($cssFrameworkPackage['css'])) {
                     $cssFrameworkPackage['css']=array_diff($cssFrameworkPackage['css'],$cssDelete);
                 }
                 $jsDelete=array();
-                foreach($cssFrameworkJss as $cssFrameworkJs){
-                    if(isset($cssFrameworkJs['replace'])){
+                foreach($cssFrameworkJss as $cssFrameworkJs) {
+                    if(isset($cssFrameworkJs['replace'])) {
                         $jsDelete[]=$cssFrameworkJs['replace'];
                     }
-                    if((string)$cssFrameworkJs){
+                    if((string)$cssFrameworkJs) {
                         $packageJs[]=(string)$cssFrameworkJs;
                     }
                 }
-                if(isset($cssFrameworkPackage['js'])){
+                if(isset($cssFrameworkPackage['js'])) {
                     $cssFrameworkPackage['js']=array_diff($cssFrameworkPackage['js'],$cssDelete);
                 }
                 /* And now : we add : core package fixed + template/theme package */
@@ -409,8 +432,10 @@ class TemplateConfiguration extends CFormModel
         }*/
         return array();
     }
+
     /**
      * get the template API version
+     * @return integer
      */
     public function getApiVersion()
     {

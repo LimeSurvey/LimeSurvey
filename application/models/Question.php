@@ -12,55 +12,63 @@ if (!defined('BASEPATH'))
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-    * 	Files Purpose: lots of common functions
 */
+
+
+/**
+ * Class Question
+ *
+ * @property integer $qid
+ * @property integer $parent_qid
+ * @property integer $sid Survey ID
+ * @property integer $gid QuestionGroup ID
+ * @property string $type
+ * @property string $title
+ * @property string $question
+ * @property string $preg
+ * @property string $help
+ * @property string $other
+ * @property string $mandatory
+ * @property integer $question_order
+ * @property string $language
+ * @property integer $scale_qid
+ * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog
+ * @property string $relevance
+ * @property string $modulename
+ *
+ * @property Survey $survey
+ * @property QuestionGroup $groups  //TODO should be singular
+ * @property Question $parents      //TODO should be singular
+ * @property Question[] $subquestions
+ */
 class Question extends LSActiveRecord
 {
 
-    // Stock the active group_name for questions list filtering
+    /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
 
     /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return CActiveRecord
-    */
+     * @inheritdoc
+     * @return Question
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-    * Returns the setting's table name to be used by the model
-    *
-    * @access public
-    * @return string
-    */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{questions}}';
     }
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string[]
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('qid', 'language');
     }
 
-    /**
-    * Defines the relations for this model
-    *
-    * @access public
-    * @return array
-    */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
@@ -73,9 +81,9 @@ class Question extends LSActiveRecord
     }
 
     /**
-    * Returns this model's validation rules
-    * TODO: make it easy to read (if possible)
-    */
+     * @inheritdoc
+     * TODO: make it easy to read (if possible)
+     */
     public function rules()
     {
         $aRules= array(
@@ -95,9 +103,8 @@ class Question extends LSActiveRecord
                     array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                     array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                 );
-
-        if($this->parent_qid)// Allways enforce unicity on Sub question code (DB issue).
-        {
+        // Always enforce unicity on Sub question code (DB issue).
+        if($this->parent_qid) {
             $aRules[]=array('title', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
                                 'condition' => 'language=:language AND sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
                                 'params' => array(
@@ -110,44 +117,47 @@ class Question extends LSActiveRecord
                             'message' => gT('Subquestion codes must be unique.'));
             // Disallow other title if question allow other
             $oParentQuestion=Question::model()->findByPk(array("qid"=>$this->parent_qid,'language'=>$this->language));
-            if($oParentQuestion->other=="Y")
-            {
+            if($oParentQuestion->other=="Y") {
                 $aRules[]= array('title', 'LSYii_CompareInsensitiveValidator','compareValue'=>'other','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),"other"), 'except' => 'archiveimport');
             }
         }
-        else
-        {
+        else {
             // Disallow other if sub question have 'other' for title
             $oSubquestionOther=Question::model()->find("parent_qid=:parent_qid and LOWER(title)='other'",array("parent_qid"=>$this->qid));
-            if($oSubquestionOther)
-            {
+            if($oSubquestionOther) {
                 $aRules[]= array('other', 'compare','compareValue'=>'Y','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),'other'), 'except' => 'archiveimport' );
             }
         }
-        if(!$this->isNewRecord)
-        {
+        if(!$this->isNewRecord) {
             $oActualValue=Question::model()->findByPk(array("qid"=>$this->qid,'language'=>$this->language));
-            if($oActualValue && $oActualValue->title==$this->title)
-            {
+            if($oActualValue && $oActualValue->title==$this->title) {
                 return $aRules; // We don't change title, then don't put rules on title
             }
         }
-        if(!$this->parent_qid)// 0 or empty
-        {
-            $aRules[]=array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                                'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
-                                'params' => array(
-                                    ':language' => $this->language,
-                                    ':sid' => $this->sid
-                                    )
-                                ),
-                            'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport');
-            $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
+        // 0 or empty
+        if(!$this->parent_qid) {
+            $aRules[]=array('title', 'unique', 'caseSensitive'=>true,
+                'criteria'=>array(
+                    'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
+                    'params' => array(
+                        ':language' => $this->language,
+                        ':sid' => $this->sid
+                        )
+                    ),
+                'message' => gT('Question codes must be unique.'),
+                'except' => 'archiveimport'
+            );
+            $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/',
+                'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'),
+                'except' => 'archiveimport');
         }
-        else
-        {
-            $aRules[]= array('title', 'compare','compareValue'=>'time','operator'=>'!=', 'message'=> gT("'time' is a reserved word and can not be used for a subquestion."), 'except' => 'archiveimport' );
-            $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
+        else {
+            $aRules[]= array('title', 'compare','compareValue'=>'time','operator'=>'!=',
+                'message'=> gT("'time' is a reserved word and can not be used for a subquestion."),
+                'except' => 'archiveimport' );
+            $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/',
+                'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
+                'except' => 'archiveimport');
         }
         return $aRules;
     }
@@ -165,36 +175,34 @@ class Question extends LSActiveRecord
     {
         $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language), array('order'=>'question_order') );
         $p = 0;
-        foreach ($questions as $question)
-        {
+        foreach ($questions as $question) {
             $question->question_order = $p;
             $question->save();
             $p++;
         }
     }
 
+
     /**
-    * Fixe sort order for questions in a group
-    *
-    * @static
-    * @access public
-    * @param int $gid
-    * @return void
-    */
-    function updateQuestionOrder($gid,$language,$position=0)
+     * Fix sort order for questions in a group
+     * @param int $gid
+     * @param string $language
+     * @param int $position
+     */
+    public function updateQuestionOrder($gid, $language, $position=0)
     {
         $data=Yii::app()->db->createCommand()->select('qid')
-        ->where(array('and','gid=:gid','language=:language', 'parent_qid=0'))
-        ->order('question_order, title ASC')
-        ->from('{{questions}}')
-        ->bindParam(':gid', $gid, PDO::PARAM_INT)
-        ->bindParam(':language', $language, PDO::PARAM_STR)
-        ->query();
+            ->where(array('and','gid=:gid','language=:language', 'parent_qid=0'))
+            ->order('question_order, title ASC')
+            ->from('{{questions}}')
+            ->bindParam(':gid', $gid, PDO::PARAM_INT)
+            ->bindParam(':language', $language, PDO::PARAM_STR)
+            ->query();
 
         $position = intval($position);
-        foreach($data->readAll() as $row)
-        {
-            Yii::app()->db->createCommand()->update($this->tableName(),array('question_order' => $position),'qid='.$row['qid']);
+        foreach($data->readAll() as $row) {
+            Yii::app()->db->createCommand()->update($this->tableName(),
+                array('question_order' => $position),'qid='.$row['qid']);
             $position++;
         }
     }
@@ -212,19 +220,17 @@ class Question extends LSActiveRecord
     */
     public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage=null)
     {
-        if (is_null($sLanguage))
-        {
+        if (is_null($sLanguage)) {
             $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
         }
-        else
-        {
+        else {
             $aLanguages = array($sLanguage);
         }
         $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID,$sLanguage);
+        // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
         $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
 
         // If the question has a custom template, we first check if it provides custom attributes
-        // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
 
         if (!is_null($sLanguage)){
             $oQuestion = Question::model()->findByPk(array('qid'=>$iQuestionID, 'language'=>$sLanguage));
@@ -234,29 +240,21 @@ class Question extends LSActiveRecord
         $aAttributeNames    = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion );
 
         uasort($aAttributeNames, 'categorySort');
-        foreach ($aAttributeNames as $iKey => $aAttribute)
-        {
-            if ($aAttribute['i18n'] == false)
-            {
-                if (isset($aAttributeValues[$aAttribute['name']]))
-                {
+        foreach ($aAttributeNames as $iKey => $aAttribute) {
+            if ($aAttribute['i18n'] == false) {
+                if (isset($aAttributeValues[$aAttribute['name']])) {
                     $aAttributeNames[$iKey]['value'] = $aAttributeValues[$aAttribute['name']];
                 }
-                else
-                {
+                else {
                     $aAttributeNames[$iKey]['value'] = $aAttribute['default'];
                 }
             }
-            else
-            {
-                foreach ($aLanguages as $sLanguage)
-                {
-                    if (isset($aAttributeValues[$aAttribute['name']][$sLanguage]))
-                    {
+            else {
+                foreach ($aLanguages as $sLanguage) {
+                    if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
                         $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
                     }
-                    else
-                    {
+                    else {
                         $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttribute['default'];
                     }
                 }
@@ -266,6 +264,12 @@ class Question extends LSActiveRecord
         return $aAttributeNames;
     }
 
+    /**
+     * @param array $aAttributeNames
+     * @param array $aAttributeValues
+     * @param Question $oQuestion
+     * @return mixed
+     */
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
         if (isset($aAttributeValues['question_template'])){
@@ -297,50 +301,58 @@ class Question extends LSActiveRecord
 
     /**
      * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
+     * @param integer $sid
+     * @param integer $gid
+     * @param string $language
+     * @return CDbDataReader
      */
-    function getQuestions($sid, $gid, $language)
+    public function getQuestions($sid, $gid, $language)
     {
         return Yii::app()->db->createCommand()
-        ->select()
-        ->from(self::tableName())
-        ->where(array('and', 'sid=:sid', 'gid=:gid', 'language=:language', 'parent_qid=0'))
-        ->order('question_order asc')
-        ->bindParam(":sid", $sid, PDO::PARAM_INT)
-        ->bindParam(":gid", $gid, PDO::PARAM_INT)
-        ->bindParam(":language", $language, PDO::PARAM_STR)
-        ->query();
+            ->select()
+            ->from(self::tableName())
+            ->where(array('and', 'sid=:sid', 'gid=:gid', 'language=:language', 'parent_qid=0'))
+            ->order('question_order asc')
+            ->bindParam(":sid", $sid, PDO::PARAM_INT)
+            ->bindParam(":gid", $gid, PDO::PARAM_INT)
+            ->bindParam(":language", $language, PDO::PARAM_STR)
+            ->query();
     }
 
     /**
-     * This function is only called from database.php
-     * TODO : create a relation to self called subquestion
+     * @deprecated use relation $question->subquestions
+     * @param integer $parent_qid
+     * @return CDbDataReader
      */
     function getSubQuestions($parent_qid)
     {
         return Yii::app()->db->createCommand()
-        ->select()
-        ->from(self::tableName())
-        ->where('parent_qid=:parent_qid')
-        ->bindParam(":parent_qid", $parent_qid, PDO::PARAM_INT)
-        ->order('question_order asc')
-        ->query();
+            ->select()
+            ->from(self::tableName())
+            ->where('parent_qid=:parent_qid')
+            ->bindParam(":parent_qid", $parent_qid, PDO::PARAM_INT)
+            ->order('question_order asc')
+            ->query();
     }
+
 
     /**
      * This function is only called from surveyadmin.php
-     * TODO : create a relation to self called subquestion
+     * @param integer $iSurveyID
+     * @param string $sLanguage
+     * @param string|boolean $sCondition
+     * @return array
      */
-    function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
+    public function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
     {
         $command = Yii::app()->db->createCommand()
-        ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, ' . '{{groups}}.*')
-        ->from($this->tableName())
-        ->leftJoin('{{questions}} q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
-        ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
+            ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, ' . '{{groups}}.*')
+            ->from($this->tableName())
+            ->leftJoin('{{questions}} q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
+            ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
         $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
 
-        if ($sCondition != FALSE)
-        {
+        if ($sCondition != FALSE) {
             $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
             ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
             ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
@@ -351,23 +363,23 @@ class Question extends LSActiveRecord
     }
 
     /**
-    * Insert an array into the questions table
-    * Returns null if insertion fails, otherwise the new QID
-    *
-    * This function is called from database.php and import_helper.php
-    * TODO: as said by Shnoulle, it must be replace by using validate and save from controller.
-    *
-    * @param array $data
-    */
+     * Insert an array into the questions table
+     * Returns null if insertion fails, otherwise the new QID
+     *
+     * This function is called from database.php and import_helper.php
+     * TODO: as said by Shnoulle, it must be replace by using validate and save from controller.
+     *
+     * @param array $data
+     * @return int
+     */
     function insertRecords($data)
     {
         // This function must be deprecated : don't find a way to have getErrors after (Shnoulle on 131206)
         $oRecord = new self;
         foreach ($data as $k => $v){
             $oRecord->$k = $v;
-            }
-        if($oRecord->validate())
-        {
+        }
+        if($oRecord->validate()) {
             $oRecord->save();
             return $oRecord->qid;
         }
@@ -382,8 +394,7 @@ class Question extends LSActiveRecord
      */
     public static function deleteAllById($questionsIds)
     {
-        if ( !is_array($questionsIds) )
-        {
+        if ( !is_array($questionsIds) ) {
             $questionsIds = array($questionsIds);
         }
 
@@ -398,21 +409,25 @@ class Question extends LSActiveRecord
 
     /**
      * This function is called from everywhere, which is quiet weird...
-     * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
+     * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object]) (thumbs up)
      */
     function getAllRecords($condition, $order=FALSE)
     {
         $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != FALSE)
-        {
+        if ($order != FALSE) {
             $command->order($order);
         }
         return $command->query();
     }
 
 
+
     /**
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
+     * @param array $fields
+     * @param mixed $condition
+     * @param string|boolean|array $orderby
+     * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
     {
@@ -420,35 +435,41 @@ class Question extends LSActiveRecord
         ->select($fields)
         ->from(self::tableName())
         ->where($condition);
-        if ($orderby != FALSE)
-        {
+        if ($orderby != FALSE) {
             $command->order($orderby);
         }
         return $command->queryAll();
     }
 
+    /**
+     * @param integer $surveyid
+     * @param string $language
+     * @return array
+     */
     public function getQuestionList($surveyid, $language)
     {
         $query = "SELECT questions.*, groups.group_name, groups.group_order"
-        ." FROM {{questions}} as questions, {{groups}} as groups"
-        ." WHERE groups.gid=questions.gid"
-        ." AND groups.language=:language1"
-        ." AND questions.language=:language2"
-        ." AND questions.parent_qid=0"
-        ." AND questions.sid=:sid";
-        return Yii::app()->db->createCommand($query)->bindParam(":language1", $language, PDO::PARAM_STR)
-                                                    ->bindParam(":language2", $language, PDO::PARAM_STR)
-                                                    ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
+            ." FROM {{questions}} as questions, {{groups}} as groups"
+            ." WHERE groups.gid=questions.gid"
+            ." AND groups.language=:language1"
+            ." AND questions.language=:language2"
+            ." AND questions.parent_qid=0"
+            ." AND questions.sid=:sid";
+        return Yii::app()->db->createCommand($query)
+            ->bindParam(":language1", $language, PDO::PARAM_STR)
+            ->bindParam(":language2", $language, PDO::PARAM_STR)
+            ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
     }
 
-
+    /**
+     * @return string
+     */
     public function getTypedesc()
     {
         $types = self::typeList();
         $typeDesc = $types[$this->type]["description"];
 
-        if(YII_DEBUG)
-        {
+        if(YII_DEBUG) {
             $typeDesc .= ' <em>'.$this->type.'</em>';
         }
 
@@ -465,7 +486,6 @@ class Question extends LSActiveRecord
      * subquestions : 0= Does not support subquestions x=Number of subquestion scales
      * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
      * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-
      */
     public static function typeList()
     {
@@ -691,8 +711,7 @@ class Question extends LSActiveRecord
      */
     public static function getQuestionClass($sType)
     {
-        switch($sType)
-        {
+        switch($sType) {
             case "1": return 'array-flexible-duel-scale';
             case '5': return 'choice-5-pt-radio';
             case 'A': return 'array-5-pt';
@@ -735,8 +754,9 @@ class Question extends LSActiveRecord
     */
     public function getAllGroups()
     {
-        $language = Survey::model()->findByPk($this->sid)->language;
-        return QuestionGroup::model()->findAll("sid=:sid and language=:lang",array(':sid'=>$this->sid, ':lang'=>$language));
+        return QuestionGroup::model()->findAll("sid=:sid and language=:lang",
+            array(':sid'=>$this->sid,
+                ':lang'=>$this->survey->language));
         //return QuestionGroup::model()->getGroups($this->sid);
     }
 
@@ -763,12 +783,11 @@ class Question extends LSActiveRecord
 
         $oSurvey = Survey::model()->findByPk($this->sid);
 
-        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ))
-        {
-                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                            onclick="if (confirm(\' '.gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js").' \' )){ '.convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/surveyid/$this->sid/gid/$this->gid/qid/$this->qid")).'} ">
-                                <span class="text-danger glyphicon glyphicon-trash"></span>
-                                </a>';
+        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' )) {
+            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
+                        onclick="if (confirm(\' '.gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js").' \' )){ '.convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/surveyid/$this->sid/gid/$this->gid/qid/$this->qid")).'} ">
+                            <span class="text-danger glyphicon glyphicon-trash"></span>
+                            </a>';
         }
 
         return $button;
@@ -777,20 +796,17 @@ class Question extends LSActiveRecord
     public function getOrderedAnswers($random=0, $alpha=0)
     {
         //question attribute random order set?
-        if ($random==1)
-        {
+        if ($random==1) {
             $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY ".dbRandom();
         }
 
         //question attribute alphasort set?
-        elseif ($alpha==1)
-        {
+        elseif ($alpha==1) {
             $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY answer";
         }
 
         //no question attributes -> order by sortorder
-        else
-        {
+        else {
             $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY sortorder, answer";
         }
 
@@ -804,13 +820,11 @@ class Question extends LSActiveRecord
     */
     public function getOrderedSubQuestions($random=0, $exclude_all_others='')
     {
-        if ($random==1)
-        {
+        if ($random==1) {
             // TODO : USE AR PATTERN
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY ".dbRandom();
         }
-        else
-        {
+        else {
             // TODO : USE AR PATTERN
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY question_order";
         }
@@ -819,13 +833,10 @@ class Question extends LSActiveRecord
 
         //if  exclude_all_others is set then the related answer should keep its position at all times
         //thats why we have to re-position it if it has been randomized
-        if (trim($exclude_all_others)!='' && $random==1)
-        {
+        if (trim($exclude_all_others)!='' && $random==1) {
             $position=0;
-            foreach ($ansresult as $answer)
-            {
-                if (  ($answer['title']==trim($exclude_all_others)))
-                {
+            foreach ($ansresult as $answer) {
+                if (($answer['title']==trim($exclude_all_others))) {
                     if ($position==$answer['question_order']-1) break; //already in the right position
                     $tmp  = array_splice($ansresult, $position, 1);
                     array_splice($ansresult, $answer['question_order']-1, 0, $tmp);
@@ -840,12 +851,10 @@ class Question extends LSActiveRecord
 
     public function getMandatoryIcon()
     {
-        if ($this->type != "X"  && $this->type != "|")
-        {
+        if ($this->type != "X"  && $this->type != "|") {
             $sIcon = ($this->mandatory=="Y")?'<span class="fa fa-asterisk text-danger"></span>':'<span></span>';
         }
-        else
-        {
+        else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
         }
         return $sIcon;
@@ -854,12 +863,10 @@ class Question extends LSActiveRecord
     public function getOtherIcon()
     {
 
-        if (( $this->type == "L") || ($this->type == "!") || ($this->type == "P") || ($this->type=="M"))
-        {
+        if (( $this->type == "L") || ($this->type == "!") || ($this->type == "P") || ($this->type=="M")) {
             $sIcon = ($this->other==="Y")?'<span class="fa fa-dot-circle-o"></span>':'<span></span>';
         }
-        else
-        {
+        else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
         }
         return $sIcon;
@@ -878,20 +885,17 @@ class Question extends LSActiveRecord
         }
         /* Maybe it's an old invalid title : try to fix it */
         $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
-        if (is_numeric(substr($sNewTitle,0,1)))
-        {
+        if (is_numeric(substr($sNewTitle,0,1))) {
             $sNewTitle='q' . $sNewTitle;
         }
         /* Maybe there are another question with same title try to fix it 10 times */
         $attempts = 0;
-        while (!$this->validate(array('title')))
-        {
+        while (!$this->validate(array('title'))) {
             $rand = mt_rand(0, 1024);
             $sNewTitle= 'q' . $index.'r' . $rand ;
             $this->title = $sNewTitle;
             $attempts++;
-            if ($attempts > 10)
-            {
+            if ($attempts > 10) {
                 $this->addError('title', 'Failed to resolve question code problems after 10 attempts.');
                 return null;
             }
@@ -955,8 +959,7 @@ class Question extends LSActiveRecord
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
 
-        if($this->group_name != '')
-        {
+        if($this->group_name != '') {
             $criteria->compare('groups.group_name', $this->group_name, true, 'AND');
         }
 
@@ -980,17 +983,14 @@ class Question extends LSActiveRecord
     */
     protected function beforeSave()
     {
-        if (parent::beforeSave())
-        {
+        if (parent::beforeSave()) {
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-            if ($surveyIsActive && $this->getIsNewRecord())
-            {
+            if ($surveyIsActive && $this->getIsNewRecord()) {
                 return false;
             }
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }
@@ -1003,11 +1003,11 @@ class Question extends LSActiveRecord
     public static function getTotalQuestions($surveyid)
     {
         $sQuery = "SELECT count(*)\n"
-        ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
-        ." WHERE {{questions}}.sid=".$surveyid."\n"
-        ." AND {{groups}}.language='".App()->getLanguage()."'\n"
-        ." AND {{questions}}.language='".App()->getLanguage()."'\n"
-        ." AND {{questions}}.parent_qid=0\n";
+            ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
+            ." WHERE {{questions}}.sid=".$surveyid."\n"
+            ." AND {{groups}}.language='".App()->getLanguage()."'\n"
+            ." AND {{questions}}.language='".App()->getLanguage()."'\n"
+            ." AND {{questions}}.parent_qid=0\n";
         return Yii::app()->db->createCommand($sQuery)->queryScalar();
     }
 
@@ -1020,11 +1020,12 @@ class Question extends LSActiveRecord
     public static function getNumberOfQuestions($surveyid)
     {
         return dbExecuteAssoc("SELECT count(*)\n"
-        ." FROM {{questions}}"
-        ." WHERE type in ('X','*')\n"
-        ." AND sid={$surveyid}"
-        ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
-        ." AND parent_qid=0")->read();
+            ." FROM {{questions}}"
+            ." WHERE type in ('X','*')\n"
+            ." AND sid={$surveyid}"
+            ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
+            ." AND parent_qid=0")
+            ->read();
     }
 
     /**
@@ -1037,7 +1038,7 @@ class Question extends LSActiveRecord
         if($this->parent_qid){
             return;
         }
-        $oSurvey=Survey::model()->findByPk($this->sid);
+        $oSurvey=$this->survey;
 
         /* Delete sub question in all other language */
         $criteria = new CDbCriteria;

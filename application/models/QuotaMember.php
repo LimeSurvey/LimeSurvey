@@ -13,45 +13,41 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class QuotaMember
+ *
+ * @property integer $id
+ * @property integer $sid Survey ID
+ * @property integer $qid Question ID
+ * @property integer $quota_id
+ * @property string $code Answer code
+ */
 class QuotaMember extends LSActiveRecord
 {
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return QuotaMember
      */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
-    
+
+    /** @inheritdoc */
     public function rules()
     {
         return array(
             array('code', 'required', 'on'=>array('create'))
-            );
+        );
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{quota_members}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return 'id';

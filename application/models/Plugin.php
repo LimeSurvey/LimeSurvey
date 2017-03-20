@@ -15,17 +15,23 @@
 
 /**
  * This is the model class for table "{{plugins}}".
+ *
+ * @property integer $id
+ * @property string $name
+ * @property integer $active
+ *
  */
 class Plugin extends CActiveRecord {
 
     /**
-     * @param type $className
+     * @inheritdoc
      * @return Plugin
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
+
+    /** @inheritdoc */
     public function tableName() {
         return '{{plugins}}';
     }

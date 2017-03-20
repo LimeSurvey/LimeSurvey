@@ -10,20 +10,17 @@
  * @property string $title
  * @property string $desc
  * @property string $page
+ * @property integer $usergroup UserGroup ID
  */
 class Boxes extends CActiveRecord
 {
-    /**
-     * @return string the associated database table name
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{boxes}}';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
+    /** @inheritdoc */
     public function rules()
     {
         // NOTE: you should only define rules for those attributes that
@@ -38,9 +35,7 @@ class Boxes extends CActiveRecord
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -49,9 +44,7 @@ class Boxes extends CActiveRecord
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
+    /** @inheritdoc */
     public function attributeLabels()
     {
         return array(
@@ -97,31 +90,30 @@ class Boxes extends CActiveRecord
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getSpanIcon()
     {
         $spanicon = '<span class="icon-'.$this->ico.' text-success"></span>';
         return $spanicon;
     }
 
+    /**
+     * @return mixed|string
+     */
     public function getUsergroupname()
     {
         $usergroupid = $this->usergroup;
 
         // Can't use switch because of empty case
-        if ( empty($usergroupid) || $usergroupid=='-2'  )
-        {
+        if ( empty($usergroupid) || $usergroupid=='-2'  ) {
             return gT('Only Superadmin');
-        }
-        elseif ( $usergroupid=='-1' )
-        {
+        } elseif ( $usergroupid=='-1' ) {
             return gT('Everybody');
-        }
-        elseif ( $usergroupid=='-3' )
-        {
+        } elseif ( $usergroupid=='-3' ) {
             return gT('Nobody');
-        }
-        else
-        {
+        } else {
             $oUsergroup = UserGroup::model()->findByPk($usergroupid);
 
             // The group doesn't exist anymore
@@ -132,6 +124,9 @@ class Boxes extends CActiveRecord
         }
     }
 
+    /**
+     * @return string
+     */
     public function getbuttons()
     {
 
@@ -212,15 +207,16 @@ class Boxes extends CActiveRecord
         );
     }
 
+    /**
+     * @return int
+     */
     public function getIcons_length()
     {
         return count($this->icons);
     }
 
     /**
-     * Returns the static model of the specified AR class.
-     * Please note that you should have this exact method in all your CActiveRecord descendants!
-     * @param string $className active record class name.
+     * @inheritdoc
      * @return Boxes the static model class
      */
     public static function model($className=__CLASS__)

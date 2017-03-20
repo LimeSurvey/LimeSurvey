@@ -14,44 +14,41 @@
  * 	Files Purpose: lots of common functions
  */
 
+/**
+ * Class ParticipantAttribute
+ *
+ * @property integer $participant_id
+ * @property integer $attribute_id
+ * @property string $value
+ *
+ * @property Participant $participant
+ * @property ParticipantAttributeName $participant_attribute_names //todo this should be singular not plural
+ */
 class ParticipantAttribute extends LSActiveRecord
 {
 
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
+     * @inheritdoc
+	 * @return ParticipantAttribute
 	 */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{participant_attribute}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('participant_id', 'attribute_id');
     }
 
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -82,8 +79,7 @@ class ParticipantAttribute extends LSActiveRecord
             ->where("participant_id='".$data['participant_id']."' AND attribute_id = ".$data['attribute_id'])
             ->from('{{participant_attribute}}')
             ->queryAll();
-        if (count($query) > 0)
-        {
+        if (count($query) > 0) {
             Yii::app()->db->createCommand()
                   ->update('{{participant_attribute}}', $data, "participant_id = '".$data['participant_id']."' AND attribute_id = ".$data['attribute_id']);
         } else {

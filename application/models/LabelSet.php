@@ -13,46 +13,37 @@
  *
  */
 
+/**
+ * Class LabelSet
+ *
+ * @property integer $lid ID
+ * @property string $label_name
+ * @property string $languages
+ */
 class LabelSet extends LSActiveRecord
 {
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{labelsets}}';
 	}
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'lid';
 	}
 
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
+     * @inheritdoc
+	 * @return LabelSet
 	 */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
-    /**
-    * Returns this model's validation rules
-    *
-    */
+
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -70,6 +61,7 @@ class LabelSet extends LSActiveRecord
         {
 		    foreach ($condition as $item => $value)
 			{
+			    // FIXME this is broken
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
@@ -79,7 +71,10 @@ class LabelSet extends LSActiveRecord
         return $data;
 	}
 
-    function getLID()
+    /**
+     * @return array
+     */
+	public function getLID()
     {
 		return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
     }
@@ -96,30 +91,30 @@ class LabelSet extends LSActiveRecord
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function getbuttons()
-        {
+    {
 
             // View labelset
             $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
             $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
 
             // Edit labelset
-            if(Permission::model()->hasGlobalPermission('labelsets','update'))
-            {
+            if(Permission::model()->hasGlobalPermission('labelsets','update')) {
                 $url = Yii::app()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid");
                 $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
             }
 
             // Export labelset
-            if(Permission::model()->hasGlobalPermission('labelsets','export'))
-            {
+            if(Permission::model()->hasGlobalPermission('labelsets','export')) {
                 $url = Yii::app()->createUrl("admin/export/sa/dumplabel/lid/$this->lid");
                 $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Export label set').'" href="'.$url.'" role="button"><span class="icon-export" ></span></a>';
             }
 
             // Delete labelset
-            if(Permission::model()->hasGlobalPermission('labelsets','delete'))
-            {
+            if(Permission::model()->hasGlobalPermission('labelsets','delete')) {
                 $url = Yii::app()->createUrl("admin/labels/sa/delete/lid/$this->lid");
                 $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete label set').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this label set?').'"><span class="glyphicon glyphicon-trash text-warning"></span></a>';
             }

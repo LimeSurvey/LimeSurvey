@@ -14,6 +14,7 @@
  * @property string $status new, read
  * @property DateTime $created When the notification was created
  * @property DateTime $first_read When the notification was read
+ * @property string $hash
  */
 class Notification extends LSActiveRecord
 {
@@ -29,13 +30,11 @@ class Notification extends LSActiveRecord
     public function __construct($options = null)
     {
         // Don't do anything if this is called from self::model()
-        if (is_string($options) || is_null($options))
-        {
+        if (is_string($options) || is_null($options)) {
             parent::__construct($options);  // $options = scenario in this case
             return;
         }
-        else
-        {
+        else {
             // Why not Zoidberg? (\/) (°,,,°) (\/)
             parent::__construct();
         }
@@ -50,26 +49,22 @@ class Notification extends LSActiveRecord
         ));
 
         // Only allow 'survey' or 'user' as entity
-        if ($options['entity'] != 'survey' && $options['entity'] != 'user')
-        {
+        if ($options['entity'] != 'survey' && $options['entity'] != 'user') {
             throw new InvalidArgumentException('Invalid entity: ' . $options['entity']);
         }
 
         // Default to 'default' display class
-        if (!isset($options['display_class']))
-        {
+        if (!isset($options['display_class'])) {
             $options['display_class'] = 'default';
         }
 
         // Default to 'log' notification importance
-        if (!isset($options['importance']))
-        {
+        if (!isset($options['importance'])) {
             $options['importance'] = self::NORMAL_IMPORTANCE;
         }
 
         // importance must be between 1 and 3
-        if ($options['importance'] < 1 && $options['importance'] > 3)
-        {
+        if ($options['importance'] < 1 && $options['importance'] > 3) {
             throw new InvalidArgumentException('Invalid importance: ' . $options['importance']);
         }
 
@@ -92,13 +87,11 @@ class Notification extends LSActiveRecord
     protected function checkShortcuts($options)
     {
         // Shortcuts for entity id
-        if (isset($options['survey_id']))
-        {
+        if (isset($options['survey_id'])) {
             $options['entity'] = 'survey';
             $options['entity_id'] = $options['survey_id'];
         }
-        elseif (isset($options['user_id']))
-        {
+        elseif (isset($options['user_id'])) {
             $options['entity'] = 'user';
             $options['entity_id'] = $options['user_id'];
         }
@@ -116,30 +109,25 @@ class Notification extends LSActiveRecord
      */
     protected function checkMandatoryFields(array $options, array $mandatory)
     {
-        foreach ($mandatory as $mand)
-        {
-            if (!isset($options[$mand]) || $options[$mand] == '')
-            {
+        foreach ($mandatory as $mand) {
+            if (!isset($options[$mand]) || $options[$mand] == '') {
                 throw new InvalidArgumentException('Field ' . $mand . ' is mandatory for notification');
             }
         }
     }
 
-	/**
-	 * @return string the associated database table name
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{notifications}}';
 	}
 
+    /** @inheritdoc */
     public function primaryKey() {
         return 'id';
     }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
+    /** @inheritdoc */
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
@@ -155,9 +143,7 @@ class Notification extends LSActiveRecord
 		);
 	}
 
-	/**
-	 * @return array relational rules.
-	 */
+    /** @inheritdoc */
 	public function relations()
 	{
 		// NOTE: you may need to adjust the relation name and the related
@@ -166,36 +152,23 @@ class Notification extends LSActiveRecord
 		);
 	}
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
+    /** @inheritdoc */
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'entity' => 'Entity',
-			'entity_id' => 'Entity',
-			'message' => 'Message',
-			'importance' => 'Importance',
-			'created' => 'Created',
-			'first_read' => 'Read',
-			'status' => 'Status',
-			'title' => 'Title',
+			'id' => gT('ID'),
+			'entity' => gT('Entity'),
+			'entity_id' => gT('Entity'),
+			'message' => gT('Message'),
+			'importance' => gT('Importance'),
+			'created' => gT('Created'),
+			'first_read' => gT('Read'),
+			'status' => gT('Status'),
+			'title' => gT('Title'),
 		);
 	}
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
+    /** @inheritdoc */
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
@@ -273,10 +246,8 @@ class Notification extends LSActiveRecord
     }
 
 	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return Notifications the static model class
+	 * @inheritdoc
+	 * @return Notification the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -290,6 +261,7 @@ class Notification extends LSActiveRecord
      */
     public static function getNotifications($surveyId)
     {
+        // TODO : via survey relations
         $criteria = self::getCriteria($surveyId);
         $nots = self::model()->findAll($criteria);
         return $nots;
@@ -302,6 +274,7 @@ class Notification extends LSActiveRecord
      */
     public static function getImportantNotifications($surveyId)
     {
+        // TODO this should be in Survey model (relations?)
         $criteria = self::getCriteria($surveyId);
         $criteria2 = new CDbCriteria();
         $criteria2->addCondition('importance = ' . self::HIGH_IMPORTANCE);
@@ -317,6 +290,7 @@ class Notification extends LSActiveRecord
      */
     public static function countNotifications($surveyId)
     {
+        // TODO this should be in Survey model
         $criteria = self::getCriteria($surveyId);
         $nr = self::model()->count($criteria);
         return $nr;
@@ -364,8 +338,7 @@ class Notification extends LSActiveRecord
         $criteria = new CDbCriteria();
 
         // Only fetch survey specific notifications if user is viewing a survey
-        if (!empty($surveyId))
-        {
+        if (!empty($surveyId)) {
             $criteria->addCondition('entity = \'survey\'');
             $criteria->addCondition('entity_id = ' . $surveyId);  // TODO: Escape survey id
         }
@@ -398,8 +371,7 @@ class Notification extends LSActiveRecord
     public static function broadcast(array $options, array $users = null)
     {
         // Get all users if no $users were given
-        if ($users === null)
-        {
+        if ($users === null) {
             $users = User::model()->findAll();
         }
 

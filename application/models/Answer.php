@@ -12,14 +12,23 @@
  *
  */
 
+/**
+ * Class Answer
+ * @property integer $qid Question id
+ * @property string $code Answer code
+ * @property string $answer Answer text
+ * @property integer $sortorder
+ * @property integer $assessment_value
+ * @property string $language Language code
+ * @property integer $scale_id
+ *
+ * @property Question $questions
+ * @property Question $groups
+ */
 class Answer extends LSActiveRecord
 {
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
+     * @inheritdoc
      * @return Answer
      */
     public static function model($class = __CLASS__)
@@ -27,38 +36,24 @@ class Answer extends LSActiveRecord
         return parent::model($class);
     }
 
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{answers}}';
     }
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string[]
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('qid', 'code','language','scale_id');
     }
 
-    /**
-     * Defines the relations for this model
-     *
-     * @access public
-     * @return array
-     */
+    /** @inheritdoc */
     public function relations()
     {
         $alias = $this->getTableAlias();
         return array(
+            // TODO HAS_ONE relation should be in singular, not plural $answer->group, $answer->question
             'questions' => array(self::HAS_ONE, 'Question', '',
                 'on' => "$alias.qid = questions.qid",
             ),
@@ -68,10 +63,7 @@ class Answer extends LSActiveRecord
         );
     }
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -85,8 +77,13 @@ class Answer extends LSActiveRecord
         );
     }
 
-    function getAnswers($qid)
+    /**
+     * @param integer $qid
+     * @return CDbDataReader
+     */
+    public function getAnswers($qid)
     {
+        // TODO get via Question relations
         return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
@@ -99,13 +96,13 @@ class Answer extends LSActiveRecord
      * Return the key=>value answer for a given $qid
      *
      * @staticvar array $answerCache
-     * @param type $qid
+     * @param integer $qid
      * @param string $code
      * @param string $sLanguage
      * @param integer $iScaleID
      * @return array
      */
-    function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
+    public function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
     {
         static $answerCache = array();
 
@@ -130,20 +127,34 @@ class Answer extends LSActiveRecord
         }
     }
 
+    /**
+     * @param integer $newsid
+     * @param integer $oldsid
+     * @return static[]
+     */
     public function oldNewInsertansTags($newsid,$oldsid)
     {
-            $criteria = new CDbCriteria;
-            $criteria->compare('questions.sid',$newsid);
-            $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
-            return $this->with('questions')->findAll($criteria);
+        $criteria = new CDbCriteria;
+        $criteria->compare('questions.sid',$newsid);
+        $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
+        return $this->with('questions')->findAll($criteria);
     }
 
+    /**
+     * @param array $data
+     * @param bool|mixed $condition
+     * @return int
+     */
     public function updateRecord($data, $condition=FALSE)
     {
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }
 
-    function insertRecords($data)
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function insertRecords($data)
     {    
         $oRecord = new self;
         foreach ($data as $k => $v)
@@ -167,13 +178,18 @@ class Answer extends LSActiveRecord
         $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang), array('order' => 'sortorder asc'));
         $position = 0;
 
-        foreach ($data as $row)
-        {
+        foreach ($data as $row) {
             $row->sortorder = $position++;
             $row->save();
         }
     }
 
+    /**
+     * @param integer $surveyid
+     * @param string $lang
+     * @param bool $return_query
+     * @return array|CDbCommand
+     */
     public function getAnswerQuery($surveyid, $lang, $return_query = TRUE)
     {
         $query = Yii::app()->db->createCommand();
@@ -189,8 +205,7 @@ class Answer extends LSActiveRecord
     function getAllRecords($condition, $order=FALSE)
     {
         $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != FALSE)
-        {
+        if ($order != FALSE) {
             $command->order($order);
         }
         return $command->query();
@@ -199,15 +214,16 @@ class Answer extends LSActiveRecord
     /**
      * @param string $fields
      * @param string $orderby
+     * @param mixed $condition
+     * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
         return Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from(self::tableName())
-        ->where($condition)
-        ->order($orderby)
-        ->queryAll();
+            ->select($fields)
+            ->from(self::tableName())
+            ->where($condition)
+            ->order($orderby)
+            ->queryAll();
     }
 }
-?>

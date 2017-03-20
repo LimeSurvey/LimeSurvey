@@ -13,6 +13,16 @@
  *
  */
 
+/**
+ * Class Label
+ *
+ * @property integer $lid ID
+ * @property string $code
+ * @property string $title
+ * @property integer $sortorder
+ * @property string $language
+ * @property integer $assessment_value
+ */
 class Label extends LSActiveRecord
 {
     /**
@@ -21,44 +31,27 @@ class Label extends LSActiveRecord
      */
     public $maxsortorder;
 
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{labels}}';
 	}
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string[]
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return array('lid', 'language');
 	}
     /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return CActiveRecord
-    */
+     * @inheritdoc
+     * @return Label
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -78,10 +71,9 @@ class Label extends LSActiveRecord
 
 	function getAllRecords($condition=FALSE)
 	{
-		if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
+		if ($condition != FALSE) {
+		    foreach ($condition as $item => $value) {
+			    //FIXME this is broken: $criteria is not initiated
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
@@ -91,7 +83,11 @@ class Label extends LSActiveRecord
         return $data;
 	}
 
-    function getLabelCodeInfo($lid)
+    /**
+     * @param integer $lid
+     * @return array
+     */
+	public function getLabelCodeInfo($lid)
     {
 		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from(tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
     }

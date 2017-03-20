@@ -12,34 +12,21 @@
  *
  */
 class SavedControl extends LSActiveRecord {
-		/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
+
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{saved_control}}';
 	}
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'scid';
 	}
 
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return CActiveRecord
 	 */
 	public static function model($class = __CLASS__)
@@ -47,9 +34,10 @@ class SavedControl extends LSActiveRecord {
 		return parent::model($class);
 	}
 
-	function getAllRecords($condition=FALSE)
+
+	function getAllRecords($condition=false)
 	{
-		if ($condition != FALSE)
+		if ($condition != false)
 		{
 			$this->db->where($condition);
 		}
@@ -59,6 +47,10 @@ class SavedControl extends LSActiveRecord {
 		return $data;
 	}
 
+    /**
+     * @param int $sid
+     * @return mixed
+     */
     public function getCountOfAll($sid)
     {
         $data = Yii::app()->db->createCommand("SELECT COUNT(*) AS countall FROM {{saved_control}} WHERE sid=:sid")->bindParam(":sid", $sid, PDO::PARAM_INT)->query();
@@ -68,7 +60,7 @@ class SavedControl extends LSActiveRecord {
     }
 
     /**
-    * Deletes some records meeting speicifed condition
+    * Deletes some records meeting specified condition
     *
     * @access public
     * @param array $condition
@@ -79,10 +71,8 @@ class SavedControl extends LSActiveRecord {
     	$record = new self;
     	$criteria = new CDbCriteria;
 
-    	if($condition != FALSE)
-    	{
-    		foreach($condition as $column=>$value)
-    		{
+    	if($condition != false) {
+    		foreach($condition as $column=>$value) {
     			$criteria->addCondition("$column='$value'");
     		}
     	}

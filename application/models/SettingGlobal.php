@@ -16,11 +16,7 @@
 class SettingGlobal extends LSActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return CActiveRecord
 	 */
 	public static function model($class = __CLASS__)
@@ -28,28 +24,25 @@ class SettingGlobal extends LSActiveRecord
 		return parent::model($class);
 	}
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{settings_global}}';
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'stg_name';
 	}
-	function updateSetting($settingname, $settingvalue)
+
+
+    /**
+     * @param string $settingname
+     * @param string $settingvalue
+     * @return int
+     */
+    public function updateSetting($settingname, $settingvalue)
     {
 
         $data = array(
@@ -60,16 +53,12 @@ class SettingGlobal extends LSActiveRecord
         $user = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
         $query = $user->queryRow('settings_global');
         $user1 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-        if(count($query) == 0)
-        {
+        if(count($query) == 0) {
             return $user1->insert('{{settings_global}}', $data);
-        }
-        else
-        {
+        } else {
             $user2 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where('stg_name = :setting_name')->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
             return $user2->update('{{settings_global}}', array('stg_value' => $settingvalue));
         }
 
     }
 }
-?>

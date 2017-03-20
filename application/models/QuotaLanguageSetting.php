@@ -12,50 +12,41 @@
    *
      *	Files Purpose: lots of common functions
 */
-
+/**
+ * @property integer $quotals_id
+ * @property integer $quotals_quota_id
+ * @property string $quotals_language
+ * @property string $quotals_name
+ * @property string $quotals_message
+ * @property string $quotals_url
+ * @property string $quotals_urldescrip
+ *
+ * @property Quota $quota
+ */
 class QuotaLanguageSetting extends LSActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
+     * @inheritdoc
+	 * @return QuotaLanguageSetting
 	 */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{quota_languagesettings}}';
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'quotals_id';
 	}
 
-	/**
-	 * Returns the relations
-	 *
-	 * @access public
-	 * @return array
-	 */
+    /** @inheritdoc */
 	public function relations()
 	{
 		$alias = $this->getTableAlias();
@@ -65,10 +56,7 @@ class QuotaLanguageSetting extends LSActiveRecord
 		);
 	}
 
-    /**
-    * Returns this model's validation rules
-    *
-    */
+	/** @inheritdoc */
     public function rules()
     {
         return array(
@@ -87,4 +75,3 @@ class QuotaLanguageSetting extends LSActiveRecord
 		return $settings->save();
     }
 }
-?>

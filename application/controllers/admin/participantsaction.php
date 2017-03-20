@@ -1610,7 +1610,7 @@ class participantsaction extends Survey_Common_Action
         /* The user has SOME values stored against attributes */
         else
         {
-            $attributenotdone = ParticipantAttributeName::model()->getnotaddedAttributes($doneattributes);
+            $attributenotdone = ParticipantAttributeName::model()->getNotAddedAttributes($doneattributes);
         }
 
         /* Go through the empty attributes and build an entry in the output for them */
