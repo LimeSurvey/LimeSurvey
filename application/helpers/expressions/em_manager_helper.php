@@ -9227,7 +9227,8 @@ EOD;
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
-
+            /* All final survey string must be shown in survey language #12208 */
+            Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
             $allErrors = array();
             $warnings = 0;
 
@@ -9258,7 +9259,9 @@ EOD;
                 LimeExpressionManager::StartSurvey($sid, 'survey', $surveyOptions, false,$LEMdebugLevel);
                 $moveResult = LimeExpressionManager::NavigateForwards();
             }
-
+            $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
+            /* We now get all survey string, then reset to admin language */
+            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
             $qtypes=getQuestionTypeList('','array');
 
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
@@ -9268,7 +9271,6 @@ EOD;
                 );
             }
 
-            $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
 
             $out = '<div id="showlogicfilediv" class="table-responsive"><h3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</h3>\n";
             $out .= "<table id='logicfiletable' class='table table-bordered'>";
@@ -9783,10 +9785,9 @@ EOD;
                 }
                 $out = "<p class='LEMheading'>$message</p>\n" . $out."</div>";
             }
-
             return array(
-            'errors'=>$allErrors,
-            'html'=>$out
+                'errors'=>$allErrors,
+                'html'=>$out
             );
         }
 
