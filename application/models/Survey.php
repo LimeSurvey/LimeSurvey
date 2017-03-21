@@ -343,7 +343,7 @@ class Survey extends LSActiveRecord
     * Actually only test if user have minimal access to survey (read)
     * @access public
     * @param int $loginID
-    * @return CActiveRecord
+    * @return Survey
     *
     * TODO: replace this by a correct relation
     */
@@ -375,31 +375,32 @@ class Survey extends LSActiveRecord
     public function getAdditionalLanguages()
     {
         $sLanguages = trim($this->additional_languages);
-        if ($sLanguages != '')
+        if ($sLanguages != ''){
             return explode(' ', $sLanguages);
-        else
+        } else {
             return array();
+        }
     }
 
     /**
-    * Returns all languages array
-    *
-    * @access public
-    * @return array
-    */
+     * Returns all languages array
+     *
+     * @access public
+     * @return array
+     */
     public function getAllLanguages()
     {
-        $sLanguages = self::getAdditionalLanguages();
-        array_unshift($sLanguages,$this->language);
-        return $sLanguages;
+        $aLanguages = $this->getAdditionalLanguages();
+        array_unshift($aLanguages,$this->language);
+        return $aLanguages;
     }
 
     /**
-    * Returns the additional token attributes
-    *
-    * @access public
-    * @return array
-    */
+     * Returns the additional token attributes
+     *
+     * @access public
+     * @return array
+     */
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);

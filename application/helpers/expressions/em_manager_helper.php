@@ -3605,6 +3605,9 @@
         */
         private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
         {
+            /** @var Survey $oSurvey */
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+
             if (isset($_SESSION['LEMforceRefresh'])) {
                 unset($_SESSION['LEMforceRefresh']);
                 $forceRefresh=true;
@@ -3616,7 +3619,7 @@
             $this->em->SetSurveyMode($this->surveyMode);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
-            $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
+            $fieldmap=createFieldMap($oSurvey,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
 
             $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));

@@ -129,6 +129,9 @@ class export extends Survey_Common_Action {
     {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
 
@@ -158,7 +161,7 @@ class export extends Survey_Common_Action {
         $sYValue = Yii::app()->request->getPost('convertyto');
         $sNValue = Yii::app()->request->getPost('convertnto');
 
-        $surveybaselang = Survey::model()->findByPk($iSurveyID)->language;
+        $surveybaselang = $oSurvey->language;
         $exportoutput = "";
 
         // Get info about the survey
@@ -168,10 +171,9 @@ class export extends Survey_Common_Action {
         $resultsService = new ExportSurveyResultsService();
         $exports = $resultsService->getExports();
 
-        if ( ! $sExportType )
-        {
+        if ( ! $sExportType ) {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            $aFieldMap = createFieldMap($oSurvey,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
             if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
                 $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
@@ -181,8 +183,7 @@ class export extends Survey_Common_Action {
             $selecthide = "";
             $selectshow = "";
             $selectinc = "";
-            if ( incompleteAnsFilterState() == "complete" )
-            {
+            if ( incompleteAnsFilterState() == "complete" ) {
                 $selecthide = "selected='selected'";
             }
             elseif ( incompleteAnsFilterState() == "incomplete" )
@@ -661,35 +662,34 @@ class export extends Survey_Common_Action {
     public function vvexport()
     {
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
         $subaction = Yii::app()->request->getParam('subaction');
 
         //Exports all responses to a survey in special "Verified Voting" format.
-        if ( ! Permission::model()->hasSurveyPermission($iSurveyId, 'responses','export') )
-        {
+        if ( ! Permission::model()->hasSurveyPermission($iSurveyId, 'responses','export') ) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
-        if ( $subaction != "export" )
-        {
+        if ( $subaction != "export" ) {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($oSurvey,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
 
-            Survey::model()->findByPk($iSurveyId)->language;
             $surveytable = "{{survey_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
-            foreach ( $fieldnames as $field )
-            {
+            foreach ( $fieldnames as $field ) {
                 $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
                 $fieldcode[]=viewHelper::getFieldCode($fielddata,array("LEMcompat"=>true));
             }
             $aData['uniquefieldcode']=(count(array_unique ($fieldcode))==count($fieldcode)); // Did we need more control ?
             $aData['vvversionseleted']=($aData['uniquefieldcode'])?2:1;
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $surveyinfo = $oSurvey->surveyinfo;
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData["surveyinfo"] = $surveyinfo;
             $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
@@ -701,8 +701,7 @@ class export extends Survey_Common_Action {
 
             $this->_renderWrappedTemplate('export', 'vv_view', $aData);
         }
-        elseif ( isset($iSurveyId) && $iSurveyId )
-        {
+        elseif ( isset($iSurveyId) && $iSurveyId ) {
             //Export is happening
             $extension = sanitize_paranoid_string(returnGlobal('extension'));
             $vvVersion = (int) Yii::app()->request->getPost('vvversion');
@@ -713,30 +712,24 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($oSurvey,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
             $surveytable = "{{survey_$iSurveyId}}";
-
-            Survey::model()->findByPk($iSurveyId)->language;
 
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
 
             //Create the human friendly first line
             $firstline = "";
             $secondline = "";
-            foreach ( $fieldnames as $field )
-            {
+            foreach ( $fieldnames as $field ) {
                 $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
 
-                if ( count($fielddata) < 1 )
-                {
+                if ( count($fielddata) < 1 ) {
                     $firstline .= $field;
-                }
-                else
-                {
+                } else {
                     $firstline.=preg_replace('/\s+/', ' ', strip_tags($fielddata['question']));
                 }
                 $firstline .= $s;
-                if($vvVersion==2){
+                if($vvVersion==2) {
                     $fieldcode=viewHelper::getFieldCode($fielddata,array("LEMcompat"=>true));
                     $fieldcode=($fieldcode)?$fieldcode:$field;// $fieldcode is empty for token if there are no token table
                 }else{

@@ -136,6 +136,9 @@ class responses extends Survey_Common_Action
     {
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
+            /** @var Survey $oSurvey */
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
             $sBrowseLanguage = $aData['language'];
 
@@ -143,7 +146,7 @@ class responses extends Survey_Common_Action
 
             $aViewUrls = array();
 
-            $fieldmap = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
+            $fieldmap = createFieldMap($oSurvey, 'full', false, false, $aData['language']);
             $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID);// Boolean : show (or not) the token
             if(!Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) // If not allowed to read: remove it
             {
@@ -151,8 +154,7 @@ class responses extends Survey_Common_Action
                 $bHaveToken=false;
             }
             //add token to top of list if survey is not private
-            if ($bHaveToken)
-            {
+            if ($bHaveToken) {
                 $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
                 $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname');// or token:firstname ?
                 $fnames[] = array("lastname", gT("Last name"), 'code'=>'lastname');
@@ -393,8 +395,9 @@ class responses extends Survey_Common_Action
      */
     public function browse($iSurveyId)
     {
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
-        {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read')) {
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
 
@@ -405,7 +408,7 @@ class responses extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
             $aData['hasUpload']         = hasFileUploadQuestion($iSurveyId);
-            $aData['fieldmap']          = createFieldMap($iSurveyId, 'full', true, false, $aData['language']);
+            $aData['fieldmap']          = createFieldMap($oSurvey, 'full', true, false, $aData['language']);
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
             ////////////////////

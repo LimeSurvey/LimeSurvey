@@ -567,7 +567,9 @@ class statistics extends Survey_Common_Action {
                 $sQCode=substr($sQCode,1);
             }
             list($qsid, $qgid, $qqid) = explode("X", substr($sQCode, 0), 3);
-            $aFieldmap=createFieldMap($qsid,'full',false,false,$sStatisticsLanguage);
+            /** @var Survey $oSurvey */
+            $oSurvey = Survey::model()->findByPk($qsid);
+            $aFieldmap=createFieldMap($oSurvey,'full',false,false,$sStatisticsLanguage);
             $qtype=$aFieldmap[$sQCode]['type'];
             $qqid=$aFieldmap[$sQCode]['qid'];
             $aattr = getQuestionAttributeValues($qqid);

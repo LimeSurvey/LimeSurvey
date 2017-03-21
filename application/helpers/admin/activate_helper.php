@@ -127,32 +127,28 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
 
+    /** @var Survey $oSurvey */
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+
     $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$iSurveyID} and parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
-    foreach ($chkresult as $chkrow)
-    {
-        if ($qtypes[$chkrow['type']]['subquestions']>0)
-        {
-            for ($i=0; $i<$qtypes[$chkrow['type']]['subquestions']; $i++)
-            {
+    foreach ($chkresult as $chkrow) {
+        if ($qtypes[$chkrow['type']]['subquestions']>0) {
+            for ($i=0; $i<$qtypes[$chkrow['type']]['subquestions']; $i++) {
                 $chaquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$chkrow['qid']} and scale_id={$i} ORDER BY question_order";
                 $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
                 $chacount=count($charesult);
-                if ($chacount == 0)
-                {
+                if ($chacount == 0) {
                     $failedcheck[]=array($chkrow['qid'], flattenText($chkrow['question'],true,true,'utf-8',true),": ".gT("This question has missing subquestions."), $chkrow['gid']);
                 }
             }
         }
-        if ($qtypes[$chkrow['type']]['answerscales']>0)
-        {
-            for ($i=0; $i<$qtypes[$chkrow['type']]['answerscales']; $i++)
-            {
+        if ($qtypes[$chkrow['type']]['answerscales']>0) {
+            for ($i=0; $i<$qtypes[$chkrow['type']]['answerscales']; $i++) {
                 $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i} ORDER BY sortorder, answer";
                 $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
                 $chacount=count($charesult);
-                if ($chacount == 0)
-                {
+                if ($chacount == 0) {
                     $failedcheck[]=array($chkrow['qid'], flattenText($chkrow['question'],true,true,'utf-8',true),": ".gT("This question has missing answer options."), $chkrow['gid']);
                 }
             }
@@ -162,8 +158,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
     $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$iSurveyID} AND type = ''";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
-    foreach ($chkresult as $chkrow)
-    {
+    foreach ($chkresult as $chkrow) {
         $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
     }
 
@@ -191,8 +186,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     foreach ($qorderresult as $qrow) {$qrows[] = $qrow;} // Get table output into array
     usort($qrows, 'groupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
     $c=0;
-    foreach ($qrows as $qr)
-    {
+    foreach ($qrows as $qr) {
         $qidorder[]=array($c, $qrow['qid']);
         $c++;
     }
@@ -207,25 +201,20 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
     $conresult=Yii::app()->db->createCommand($conquery)->query()->readAll();
     //2: Check each conditions cqid that it occurs later than the cqid
-    foreach ($conresult as $conrow)
-    {
+    foreach ($conresult as $conrow) {
         $cqidfound=0;
         $qidfound=0;
         $b=0;
-        while ($b<$qordercount)
-        {
-            if ($conrow['cqid'] == $qidorder[$b][1])
-            {
+        while ($b<$qordercount) {
+            if ($conrow['cqid'] == $qidorder[$b][1]) {
                 $cqidfound = 1;
                 $b=$qordercount;
             }
-            if ($conrow['qid'] == $qidorder[$b][1])
-            {
+            if ($conrow['qid'] == $qidorder[$b][1]) {
                 $qidfound = 1;
                 $b=$qordercount;
             }
-            if ($qidfound == 1)
-            {
+            if ($qidfound == 1) {
                 $failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
             }
             $b++;
@@ -233,11 +222,9 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID),$aDuplicateQIDs);
-    if (count($aDuplicateQIDs))
-    {
-        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate)
-        {
+    $fieldmap = createFieldMap($oSurvey,'full',true,false,$oSurvey->language,$aDuplicateQIDs);
+    if (count($aDuplicateQIDs)) {
+        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
             $sFixLink = "[<a href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
             $failedcheck[]=array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
@@ -292,12 +279,10 @@ function activateSurvey($iSurveyID, $simulate = false)
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $oSurvey->fixInvalidQuestions();
     //Get list of questions for the base language
-    $sFieldMap = createFieldMap($iSurveyID,'full',true,false,$oSurvey->language);
+    $sFieldMap = createFieldMap($oSurvey,'full',true,false,$oSurvey->language);
     //For each question, create the appropriate field(s)
-    foreach ($sFieldMap as $j=>$aRow)
-    {
-        switch($aRow['type'])
-        {
+    foreach ($sFieldMap as $j=>$aRow) {
+        switch($aRow['type']) {
             case 'seed':
                 $aTableDefinition[$aRow['fieldname']] = "string(31)";
                 break;

@@ -315,20 +315,17 @@ function makeFlashMessage() {
 function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
+    /** @var Survey $oSurvey */
+    $oSurvey = Survey::model()->findByPk($surveyid);
 
+    if (!isset($backok) || $backok != "Y") {
+        $fieldmap = createFieldMap($oSurvey,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
-    if (!isset($backok) || $backok != "Y")
-    {
-        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
-
-        if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
-        {
+        if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="") {
             $fields = explode("|", $_POST['fieldnames']);
 
-            foreach ($fields as $field)
-            {
-                if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount"))
-                {
+            foreach ($fields as $field) {
+                if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
                     $validation= getQuestionAttributeValues($fieldmap[$field]['qid']);
 
                     $filecount = 0;
@@ -337,8 +334,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     // if name is blank, its basic, hence check
                     // else, its ajax, don't check, bypass it.
 
-                    if ($json != "" && $json != "[]")
-                    {
+                    if ($json != "" && $json != "[]") {
                         $phparray = json_decode(stripslashes($json));
                         if ($phparray[0]->size != "")
                         { // ajax
@@ -346,8 +342,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                         }
                         else
                         { // basic
-                            for ($i = 1; $i <= $validation['max_num_of_files']; $i++)
-                            {
+                            for ($i = 1; $i <= $validation['max_num_of_files']; $i++) {
                                 if (!isset($_FILES[$field."_file_".$i]) || $_FILES[$field."_file_".$i]['name'] == '')
                                     continue;
 
@@ -871,6 +866,9 @@ function buildsurveysession($surveyid,$preview=false)
     global $tokensexist;
     global $move, $rooturl;
 
+    /** @var Survey $oSurvey */
+    $oSurvey = Survey::model()->findByPk($surveyid);
+
     $sLangCode=App()->language;
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
     if(!$preview)
@@ -1086,7 +1084,7 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
     $qtypes=getQuestionTypeList('','array');
-    $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+    $fieldmap=createFieldMap($oSurvey,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
     $_SESSION['survey_'.$surveyid]['fieldmap'] = $fieldmap;
 
@@ -1846,15 +1844,15 @@ function surveymover()
 function doAssessment($surveyid, $returndataonly=false)
 {
 
+    /** @var Survey $oSurvey */
+    $oSurvey = Survey::model()->findByPk($surveyid);
 
-    $baselang=Survey::model()->findByPk($surveyid)->language;
-    if(Survey::model()->findByPk($surveyid)->assessments!="Y")
-    {
+    $baselang=$oSurvey->language;
+    if($oSurvey->assessments!="Y") {
         return false;
     }
     $total=0;
-    if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
-    {
+    if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
         $_SESSION['survey_'.$surveyid]['s_lang']=$baselang;
     }
     $query = "SELECT * FROM {{assessments}}
@@ -1864,26 +1862,21 @@ function doAssessment($surveyid, $returndataonly=false)
     if ($result = dbExecuteAssoc($query))   //Checked
     {
         $aResultSet=$result->readAll();
-        if (count($aResultSet) > 0)
-        {
-            foreach($aResultSet as $row)
-            {
-                if ($row['scope'] == "G")
-                {
+        if (count($aResultSet) > 0) {
+            foreach($aResultSet as $row) {
+                if ($row['scope'] == "G") {
                     $assessment['group'][$row['gid']][]=array("name"=>$row['name'],
                     "min"=>$row['minimum'],
                     "max"=>$row['maximum'],
                     "message"=>$row['message']);
-                }
-                else
-                {
+                } else {
                     $assessment['total'][]=array( "name"=>$row['name'],
                     "min"=>$row['minimum'],
                     "max"=>$row['maximum'],
                     "message"=>$row['message']);
                 }
             }
-            $fieldmap=createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+            $fieldmap=createFieldMap($oSurvey, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
             $i=0;
             $total=0;
             $groups=array();

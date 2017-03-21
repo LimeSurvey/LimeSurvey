@@ -17,20 +17,21 @@ class limereplacementfields extends Survey_Common_Action
     public function index()
     {
         $surveyid = intval(App()->request->getQuery('surveyid'));
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
         $gid = intval(App()->request->getQuery('gid'));
         $qid = intval(App()->request->getQuery('qid'));
         $fieldtype = sanitize_xss_string(App()->request->getQuery('fieldtype'));
         $action = sanitize_xss_string(App()->request->getQuery('action'));
-        if (!Yii::app()->session['loginID'])
-        {
+        if (!Yii::app()->session['loginID']) {
             throw new CHttpException(401);
         }
         list($replacementFields, $isInsertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
 
-        if ($isInsertAnswerEnabled === true)
-        {
+        if ($isInsertAnswerEnabled === true) {
             //2: Get all other questions that occur before this question that are pre-determined answer types
-            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+            $fieldmap = createFieldMap($oSurvey,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
 
             $surveyInfo = getSurveyInfo($surveyid);
             $surveyformat = $surveyInfo['format']; // S, G, A
