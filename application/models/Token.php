@@ -103,6 +103,8 @@ abstract class Token extends Dynamic
     public static function createTable($surveyId, array $extraFields  = array())
     {
         $surveyId=intval($surveyId);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyId);
         // Specify case sensitive collations for the token
         $sCollation='';
         if  (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli') {
@@ -139,7 +141,7 @@ abstract class Token extends Dynamic
         }
 
         // create fields for the custom token attributes associated with this survey
-        $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
+        $tokenattributefieldnames = $oSurvey->tokenAttributes;
         foreach($tokenattributefieldnames as $attrname=>$attrdetails) {
             if (!isset($fields[$attrname])) {
                 $fields[$attrname] = 'text';

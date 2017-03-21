@@ -30,8 +30,7 @@ class printablesurvey extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         /** @var Survey $oSurvey */
         $oSurvey = Survey::model()->findByPk($surveyid);
-        if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
-        {
+        if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) {
             $aData['surveyid'] = $surveyid;
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have permission to access this page.');

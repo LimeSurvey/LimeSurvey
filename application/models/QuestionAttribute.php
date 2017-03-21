@@ -173,7 +173,7 @@ class QuestionAttribute extends LSActiveRecord
             if($sLanguage){
                 $aLanguages = array($sLanguage);
             }else{
-                $aLanguages = array_merge(array(Survey::model()->findByPk($oQuestion->sid)->language), Survey::model()->findByPk($oQuestion->sid)->additionalLanguages);
+                $aLanguages = $oQuestion->survey->allLanguages;
             }
             // Get all atribute set for this question
             $sType=$oQuestion->type;

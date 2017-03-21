@@ -220,8 +220,11 @@ class Question extends LSActiveRecord
     */
     public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage=null)
     {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
         if (is_null($sLanguage)) {
-            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+            $aLanguages = $oSurvey->allLanguages;
         }
         else {
             $aLanguages = array($sLanguage);
@@ -984,13 +987,11 @@ class Question extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-            if ($surveyIsActive && $this->getIsNewRecord()) {
+            if ($this->survey->isActive && $this->getIsNewRecord()) {
                 return false;
             }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

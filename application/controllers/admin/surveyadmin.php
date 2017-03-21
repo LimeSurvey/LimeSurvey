@@ -1141,11 +1141,14 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _showReorderForm($iSurveyID)
     {
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
         // Prepare data for the view
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $sBaseLanguage = $oSurvey->language;
         LimeExpressionManager::StartSurvey($iSurveyID, 'survey');
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 

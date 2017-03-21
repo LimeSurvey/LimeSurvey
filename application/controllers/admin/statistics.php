@@ -35,6 +35,9 @@ class statistics extends Survey_Common_Action {
     public function run($surveyid = 0, $subaction = null)
     {
         $surveyid = sanitize_int($surveyid);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
         $imageurl = Yii::app()->getConfig("imageurl");
         $aData = array('imageurl' => $imageurl);
 
@@ -106,7 +109,7 @@ class statistics extends Survey_Common_Action {
 
 
         // Set language for questions and answers to base language of this survey
-        $language = Survey::model()->findByPk($surveyid)->language;
+        $language = $oSurvey->language;
         $aData['language'] = $language;
 
 
@@ -234,9 +237,7 @@ class statistics extends Survey_Common_Action {
         $aData['selectinc'] = $selectinc;
         $aData['error'] = $error;
 
-        $survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-        $survlangs[] = Survey::model()->findByPk($surveyid)->language;
-        $aData['survlangs'] = $survlangs;
+        $aData['survlangs'] = $oSurvey->allLanguages;
         $aData['datestamp'] = $datestamp;
 
         //if the survey contains timestamps you can filter by timestamp, too
@@ -662,6 +663,9 @@ class statistics extends Survey_Common_Action {
      */
      public function simpleStatistics($surveyid)
      {
+         /** @var Survey $oSurvey */
+         $oSurvey = Survey::model()->findByPk($surveyid);
+
          $usegraph=1;
          $iSurveyId =  sanitize_int($surveyid);
          $aData['surveyid'] = $iSurveyId;
@@ -671,7 +675,7 @@ class statistics extends Survey_Common_Action {
          $cr_statisticsoutput = '';
 
          // Set language for questions and answers to base language of this survey
-         $language = Survey::model()->findByPk($surveyid)->language;
+         $language = $oSurvey->language;
          $summary = array();
          $summary[0] = "datestampE";
          $summary[1] = "datestampG";

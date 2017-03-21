@@ -239,7 +239,7 @@ class surveypermission extends Survey_Common_Action {
 
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
@@ -258,6 +258,8 @@ class surveypermission extends Survey_Common_Action {
      */
     function addusergroup($surveyid)
     {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
 
@@ -281,17 +283,14 @@ class surveypermission extends Survey_Common_Action {
                 if($postusergroupid > 0){
                     $result2 = User::model()->getCommonUID($surveyid, $postusergroupid); //Checked
                     $result2 = $result2->readAll();
-                    if(count($result2) > 0)
-                    {
-                        foreach ($result2 as $row2 )
-                        {
+                    if(count($result2) > 0) {
+                        foreach ($result2 as $row2 ) {
                             $uid_arr[] = $row2['uid'];
                             $isrresult = Permission::model()->insertSomeRecords(array('entity_id' => $surveyid, 'entity'=>'survey', 'uid' => $row2['uid'], 'permission' => 'survey', 'read_p' => 1));
                             if (!$isrresult) break;
                         }
 
-                        if($isrresult)
-                        {
+                        if($isrresult) {
 
                             $addsummary .= "<div class=\"jumbotron message-box\">\n";
                             $addsummary .= "<h2>".gT("Add user group")."</h2>\n";
@@ -305,9 +304,7 @@ class surveypermission extends Survey_Common_Action {
                             ."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
                             ."<input type='hidden' name='ugid' value='{$postusergroupid}' />"
                             ."</form></p>\n";
-                        }
-                        else
-                        {
+                        } else {
                             // Error while adding user to the database
 
                             $addsummary .= "<div class=\"jumbotron message-box message-box\">\n";
@@ -318,9 +315,7 @@ class surveypermission extends Survey_Common_Action {
                             $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
                             $addsummary .= "</p>";
                         }
-                    }
-                    else
-                    {
+                    } else {
                         // no user to add
                         $addsummary .= "<div class=\"jumbotron message-box message-box\">\n";
                         $addsummary .= "<h2>".gT("Add user group")."</h2>\n";
@@ -340,9 +335,7 @@ class surveypermission extends Survey_Common_Action {
                     $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
                     $addsummary .= "</p>";
                 }
-            }
-            else
-            {
+            } else {
                 $this->getController()->error('Access denied');
             }
             $addsummary .= "</div>\n";
@@ -352,7 +345,7 @@ class surveypermission extends Survey_Common_Action {
         }
 
             $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
+            $surveyinfo = $oSurvey->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyid.")";
 
 

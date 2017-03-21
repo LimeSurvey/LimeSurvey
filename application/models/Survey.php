@@ -79,7 +79,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $googleanalyticsapikey
  *
  * @property Permission[] $permissions
- * @property SurveyLanguageSetting[] $languagesettings
+ * @property SurveyLanguageSetting[] $languagesettings indexed by languagecode
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
@@ -90,6 +90,10 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countPartialAnswers
  * @property integer $countTotalAnswers
  * @property array $surveyinfo
+ * @property string[] $additionalLanguages Additional languages to base language
+ * @property string[] $allLanguages All languages (additional and base)
+ * @property boolean $isActive Whether survey is active or not
+ * @property array $tokenAttributes
  */
 class Survey extends LSActiveRecord
 {
