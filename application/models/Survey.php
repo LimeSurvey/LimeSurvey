@@ -460,12 +460,11 @@ class Survey extends LSActiveRecord
      * Returns true in a token table exists for the given $surveyId
      *
      * @staticvar array $tokens
-     * @param int $iSurveyID
      * @return boolean
      */
-    public function hasTokens($iSurveyID) {
+    public function hasTokens() {
         static $tokens = array();
-        $iSurveyID = (int) $iSurveyID;
+        $iSurveyID = $this->primaryKey;
 
         if (!isset($tokens[$iSurveyID])) {
             // Make sure common_helper is loaded
@@ -487,7 +486,7 @@ class Survey extends LSActiveRecord
      */
     public function getHasTokens()
     {
-        $hasTokens = $this->hasTokens($this->sid) ;
+        $hasTokens = $this->hasTokens() ;
         if($hasTokens) {
             return gT('Yes');
         } else {
