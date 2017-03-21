@@ -184,7 +184,7 @@ class ExpressionManager {
 'intval' => array('intval', 'LEMintval', gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://php.net/intval', 1,2),
 'is_empty' => array('exprmgr_empty', 'LEMempty', gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://php.net/empty', 1),
 'is_float' => array('is_float', 'LEMis_float', gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://php.net/is-float', 1),
-'is_int' => array('exprmgr_int', 'LEMis_int', gT('Find whether the type of a variable is integer'), 'bool is_int(var)', 'http://php.net/is-int', 1),
+'is_int' => array('exprmgr_int', 'LEMis_int', gT('Check if the content of a variable is a valid integer value'), 'bool is_int(var)', 'http://php.net/is-int', 1),
 'is_nan' => array('is_nan', 'isNaN', gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://php.net/is-nan', 1),
 'is_null' => array('is_null', 'LEMis_null', gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://php.net/is-null', 1),
 'is_numeric' => array('is_numeric', 'LEMis_numeric', gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://php.net/is-numeric', 1),

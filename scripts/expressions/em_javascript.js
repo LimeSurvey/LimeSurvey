@@ -215,12 +215,17 @@ function LEMis_float(a)
 }
 
 /**
- * Test if mixed_var is_int same way than PHP
- * From: http://phpjs.org/functions/is_int/
+ * Test if mixed_var is in integer value (no matter the real type)
  */
 function LEMis_int(mixed_var)
 {
-  return mixed_var === +mixed_var && isFinite(mixed_var) && !(mixed_var % 1);
+    try {
+        var iCheckValue = new Decimal(mixed_var)  
+    }  
+    catch (err) {
+        return false;
+    }
+    return iCheckValue.isInteger();
 }
 /**
  * Test if mixed_var is a PHP numeric value
