@@ -73,6 +73,10 @@ class ExpressionManager {
     function __construct()
     {
         /* EM core string must be in adminlang : keep the actual for resetting at end. See bug #12208 */
+        /**
+         * @var string|null $baseLang set the previous language if need to be set
+         */
+        $baseLang=null;
         if(Yii::app()->session['adminlang']){
             $baseLang=Yii::app()->getLanguage();
             Yii::app()->setLanguage(Yii::app()->session['adminlang']);
@@ -242,7 +246,7 @@ class ExpressionManager {
 'unique' => array('exprmgr_unique', 'LEMunique', gT('Returns true if all non-empty responses are unique'), 'boolean unique(arg1, ..., argN)', '', -1),
         );
         /* Reset the language */
-        if(Yii::app()->session['adminlang']){
+        if($baseLang){
             Yii::app()->setLanguage($baseLang);
         }
     }
@@ -2124,7 +2128,7 @@ class ExpressionManager {
                         }
                         break;
                     default:
-                        $this->RDP_AddError(sprintf(self::gT("Unsupported number of arguments: %s", $argsPassed)), $funcNameToken);
+                        $this->RDP_AddError(sprintf(self::gT("Unsupported number of arguments: %s"), $argsPassed), $funcNameToken);
                         return false;
                     }
 
@@ -2482,17 +2486,22 @@ class ExpressionManager {
 
     /**
      * Show a translated string for admin user, always in admin language #12208
+     * public for geterrors_exprmgr_regexMatch function only
      * @param string $string to translate
      * @return string : translated string
      */
-    private static function gT($string)
+    public static function gT($string)
     {
+        /**
+         * @var string|null $baseLang set the previous language if need to be set
+         */
+        $baseLang=null;
         if(Yii::app()->session['adminlang']){
             $baseLang=Yii::app()->getLanguage();
             Yii::app()->setLanguage(Yii::app()->session['adminlang']);
         }
         return gT($string);
-        if(Yii::app()->session['adminlang']){
+        if($baseLang){
             Yii::app()->setLanguage($baseLang);
         }
     }
@@ -2987,7 +2996,7 @@ function geterrors_exprmgr_regexMatch($pattern, $input)
     // @todo : use set_error_handler to get the preg_last_error
     if(@preg_match($pattern.'u', null) === false)
     {
-        return sprintf(self::gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
+        return sprintf(ExpressionManager::gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
     }
 }
 
