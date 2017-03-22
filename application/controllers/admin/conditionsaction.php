@@ -95,6 +95,9 @@ class conditionsaction extends Survey_Common_Action {
     {
         $request = Yii::app()->request;
         $iSurveyID = sanitize_int($iSurveyID);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
         $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
@@ -104,7 +107,7 @@ class conditionsaction extends Survey_Common_Action {
         Yii::app()->loadHelper("database");
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
         $aData['questionbar']['buttons']['conditions'] = TRUE;
@@ -231,8 +234,7 @@ class conditionsaction extends Survey_Common_Action {
         $canswers   = array();
         $pquestions = array();
 
-        $language = Survey::model()->findByPk($iSurveyID)->language;
-        $this->language = $language;
+        $this->language = $oSurvey->language;
 
         //BEGIN: GATHER INFORMATION
         // 1: Get information for this question

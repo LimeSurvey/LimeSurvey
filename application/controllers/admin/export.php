@@ -245,13 +245,12 @@ class export extends Survey_Common_Action {
                 'codetext'=>array('label'=>gT("Question code and question text"),'help'=>null,'checked'=>false),
             );
             // Add a plugin for adding headexports : a public function getRegistereddPlugins($event) can help here.
-            $aLanguagesCode=Survey::model()->findByPk($iSurveyID)->getAllLanguages();
             $aLanguages=array();
-            foreach ($aLanguagesCode as $sLanguage){
+            foreach ($oSurvey->allLanguages as $sLanguage){
                 $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
             }
             $data['aLanguages'] = $aLanguages;    // Pass available exports
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $surveyinfo = $oSurvey->surveyinfo;
 
             $data['sidemenu']['state'] = false;
             $data['menu']['edition'] = true;
@@ -1216,18 +1215,19 @@ class export extends Survey_Common_Action {
     public function quexml($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         $queXMLSettings = $this->_quexmlsettings();
         $aData = array();
         $aData['surveyid'] = $iSurveyID;
-        $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
+        $aData['slangs'] = $oSurvey->allLanguages;
+        $aData['baselang'] = $oSurvey->language;
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
-        array_unshift($aData['slangs'],$aData['baselang']);
 
         Yii::import("application.libraries.admin.quexmlpdf",TRUE);
         $defaultquexmlpdf = new quexmlpdf($this->getController());

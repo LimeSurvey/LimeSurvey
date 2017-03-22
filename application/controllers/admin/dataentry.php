@@ -1000,17 +1000,13 @@ class dataentry extends Survey_Common_Action
                             $lresult = dbExecuteAssoc($lquery);
 
 
-                            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                            $baselang = Survey::model()->findByPk($surveyid)->language;
-                            array_unshift($slangs,$baselang);
 
                             $aDataentryoutput.= "<select name='{$fname['fieldname']}' class='form-control'>\n";
                             $aDataentryoutput .= "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
                             $aDataentryoutput .= ">".gT("Please choose")."..</option>\n";
 
-                            foreach ($slangs as $lang)
-                            {
+                            foreach ($oSurvey->allLanguages as $lang) {
                                 $aDataentryoutput.="<option value='{$lang}'";
                                 if ($lang == $idrow[$fname['fieldname']]) {$aDataentryoutput .= " selected='selected'";}
                                 $aDataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
@@ -1788,6 +1784,7 @@ class dataentry extends Survey_Common_Action
                         $submitdate = $_POST['closedate'];
                     }
                     else {
+                        // FIXME $timeadjust missing
                         $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust);
                     }
 
@@ -1883,8 +1880,7 @@ class dataentry extends Survey_Common_Action
                                 "language", "sent", "completed");
                             $values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
                                 "'".randomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
-
-                            $SQL = "INSERT INTO $token_table
+                            $SQL = "INSERT INTO $tokens_table
                                 (".implode(',',$columns).")
                                 VALUES
                                 (".implode(',',$values).")";
@@ -1947,22 +1943,21 @@ class dataentry extends Survey_Common_Action
     public function view($surveyid, $lang=NULL)
     {
         $surveyid = sanitize_int($surveyid);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
         $lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
-        {
-            $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
+        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')) {
+            $sDataEntryLanguage = $oSurvey->language;
             $surveyinfo=getSurveyInfo($surveyid);
 
-            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-            array_unshift($slangs,$baselang);
+            $baselang = $oSurvey->language;
 
-            if(is_null($lang) || !in_array($lang,$slangs))
-            {
-                $sDataEntryLanguage = $baselang;
+            if(is_null($lang) || !in_array($lang,$oSurvey->allLanguages)) {
+                $sDataEntryLanguage = $oSurvey->language;
             } else {
                 $sDataEntryLanguage = $lang;
             }
@@ -2226,10 +2221,8 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case "I": //Language Switch
-                            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                            $sbaselang = Survey::model()->findByPk($surveyid)->language;
-                            array_unshift($slangs,$sbaselang);
-                            $cdata['slangs'] = $slangs;
+
+                            $cdata['slangs'] = $oSurvey->allLanguages;
 
                             break;
                         case "P": //Multiple choice with comments checkbox + text
@@ -2375,13 +2368,10 @@ class dataentry extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
 
-            if ($thissurvey['active'] == "Y" && $thissurvey['allowsave'] == "Y")
-            {
-                $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                $sbaselang = Survey::model()->findByPk($surveyid)->language;
-                array_unshift($slangs,$sbaselang);
-                $aData['slangs'] = $slangs;
-                $aData['baselang'] = $baselang;
+            if ($oSurvey->isActive && $thissurvey['allowsave'] == "Y") {
+
+                $aData['slangs'] = $oSurvey->allLanguages;
+                $aData['baselang'] = $oSurvey->language;
             }
 
             $aViewUrls[] = 'active_html_view';
