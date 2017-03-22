@@ -2500,10 +2500,11 @@ class ExpressionManager {
             $baseLang=Yii::app()->getLanguage();
             Yii::app()->setLanguage(Yii::app()->session['adminlang']);
         }
-        return gT($string);
+        $string=gT($string);
         if($baseLang){
             Yii::app()->setLanguage($baseLang);
         }
+        return $string;
     }
 }
 
