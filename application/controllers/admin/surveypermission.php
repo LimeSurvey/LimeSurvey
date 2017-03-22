@@ -57,8 +57,7 @@ class surveypermission extends Survey_Common_Action {
         $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
         $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
         $result2 = Permission::model()->getUserDetails($iSurveyID);
-        if(count($result2) > 0)
-        {
+        if(count($result2) > 0) {
                 $surveysecurity .= ""
                 . "<table class='surveysecurity table table-striped'><thead>"
                 . "<tr>\n"
@@ -258,7 +257,6 @@ class surveypermission extends Survey_Common_Action {
      */
     function addusergroup($surveyid)
     {
-        /** @var Survey $oSurvey */
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
@@ -269,8 +267,7 @@ class surveypermission extends Survey_Common_Action {
         $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : false;
 
 
-        if($action == "addusergroupsurveysecurity")
-        {
+        if($action == "addusergroupsurveysecurity") {
             //////////////////
             $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';

@@ -24,6 +24,7 @@ class translate extends Survey_Common_Action {
     public function index()
     {
         $iSurveyID = sanitize_int($_REQUEST['surveyid']);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $tolang = Yii::app()->getRequest()->getParam('lang');
         $action = Yii::app()->getRequest()->getParam('action');
         $actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
@@ -35,14 +36,13 @@ class translate extends Survey_Common_Action {
         }
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'translation.js');
 
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $baselang = $oSurvey->language;
+        $langs = $oSurvey->additionalLanguages;
 
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("admin/htmleditor");
 
-        if ( empty($tolang) && count($langs) > 0 )
-        {
+        if ( empty($tolang) && count($langs) > 0 ) {
             $tolang = $langs[0];
         }
 
@@ -66,8 +66,7 @@ class translate extends Survey_Common_Action {
         $tab_names = array("title", "welcome", "group", "question", "subquestion", "answer",
                         "emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
 
-        if ( ! empty($tolang) )
-        {
+        if ( ! empty($tolang) ) {
             // Only save if the administration user has the correct permission
             if ( $actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update') )
             {
@@ -81,12 +80,12 @@ class translate extends Survey_Common_Action {
             //var_dump(array_keys($aViewUrls));die();
         }
 
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = $oSurvey->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
-            $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
+        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
         $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
@@ -106,8 +105,7 @@ class translate extends Survey_Common_Action {
             if ( ! empty($type2) ) $tab_names_full[] = $type2;
         }
 
-        foreach( $tab_names_full as $type )
-        {
+        foreach( $tab_names_full as $type ) {
             $size = (int) Yii::app()->getRequest()->getPost("{$type}_size");
             // start a loop in order to update each record
             $i = 0;
@@ -278,12 +276,13 @@ class translate extends Survey_Common_Action {
     private function _getSurveyButton($iSurveyID, $menuitem_url)
     {
         $survey_button = "";
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         $imageurl = Yii::app()->getConfig("adminimageurl");
 
 
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $baselang = $oSurvey->language;
+        $langs = $oSurvey->additionalLanguages;
 
         $surveyinfo = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID);
         $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->defaultlanguage->attributes);
@@ -291,17 +290,14 @@ class translate extends Survey_Common_Action {
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $menutext = ( $surveyinfo['active'] == "N" ) ? gT("Preview survey") : gT("Execute survey");
 
-        if ( count($langs) == 0 )
-        {
+        if ( count($langs) == 0 ) {
             $survey_button .= $this->menuItem(
                                 $menutext,
                                 '',
                                 "icon-do text-success",
                                 $menuitem_url . $baselang
                             );
-        }
-        else
-        {
+        } else {
             $icontext = gT($menutext);
 
             $survey_button .= CHtml::link('<span class="icon-do text-success"></span>', '#', array(
@@ -325,8 +321,7 @@ class translate extends Survey_Common_Action {
 
             $survey_button .= gT("Please select a language:") . CHtml::openTag('ul');
 
-            foreach ( $tmp_survlangs as $tmp_lang )
-            {
+            foreach ( $tmp_survlangs as $tmp_lang ) {
                 $survey_button .= CHtml::tag('li', array(),
                     CHtml::link(getLanguageNameFromCode($tmp_lang, FALSE), $menuitem_url . $tmp_lang, array(
                         'target' 	=> 	'_blank',
@@ -350,10 +345,11 @@ class translate extends Survey_Common_Action {
     private function _getLanguageList($iSurveyID, $tolang)
     {
         $language_list = "";
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
 
 
-        $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $langs = $oSurvey->additionalLanguages;
         $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
 
         $language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
@@ -377,8 +373,7 @@ class translate extends Survey_Common_Action {
         $language_list .= CHtml::closeTag('div');
         $language_list .= CHtml::closeTag('div');
         $language_list .= '';
-        if ( count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) > 1 )
-        {
+        if ( count($oSurvey->additionalLanguages) > 1 ) {
             $selected = ( ! isset($tolang) ) ? "selected" : "";
 
             $language_list .= CHtml::tag(
@@ -391,8 +386,7 @@ class translate extends Survey_Common_Action {
                             );
         }
 
-        foreach( $langs as $lang )
-        {
+        foreach( $langs as $lang ) {
             $selected = ( $tolang == $lang ) ? "selected" : "";
 
             $tolangtext = $supportedLanguages[$lang]['description'];

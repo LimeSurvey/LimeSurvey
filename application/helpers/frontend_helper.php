@@ -2457,12 +2457,13 @@ function resetTimers()
 function SetSurveyLanguage($surveyid, $sLanguage)
 {
     $surveyid=sanitize_int($surveyid);
+    $oSurvey = Survey::model()->findByPk($surveyid);
     $default_language = Yii::app()->getConfig('defaultlang');
 
     if (isset($surveyid) && $surveyid>0)
     {
-        $default_survey_language= Survey::model()->findByPk($surveyid)->language;
-        $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
+        $default_survey_language= $oSurvey->language;
+        $additional_survey_languages = $oSurvey->additionalLanguages;
         if (
             empty($sLanguage)                                       //check if there
             || (!in_array($sLanguage, $additional_survey_languages))  //Is the language in the survey-language array
