@@ -189,13 +189,15 @@ class participantsaction extends Survey_Common_Action
 
         foreach ($aAttributeIDs as $value)
         {
-            if ($value == 0)
-            {
+            $oAttributeName = ParticipantAttributeName::model()->findByPk($value);
+
+            if(!$oAttributeName) {
                 continue;
             }
+
             $fields[] = 'a'.$value;
-            $attributename = ParticipantAttributeName::model()->getAttributeNames($value);
-            $outputarray[0][] = $attributename[0]['attribute_name'];
+            $attributeNames = $oAttributeName->participant_attribute_names_lang;
+            $outputarray[0][] = (sizeof($attributeNames) > 0) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
         }
 
         $fieldNeededKeys=array_fill_keys($fields, '');
