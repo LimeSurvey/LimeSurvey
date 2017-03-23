@@ -64,15 +64,8 @@ class LSYii_Application extends CWebApplication
 
         /* Construct CWebApplication */
         parent::__construct($aApplicationConfig);
-        /* Update asset manager path and url only if not directly set in aApplicationConfig */
-        if(!isset($aApplicationConfig['components']['assetManager']['baseUrl'])){
-            App()->getAssetManager()->setBaseUrl($settings['tempurl']. '/assets');
-        }
-        if(!isset($aApplicationConfig['components']['assetManager']['basePath'])){
-            App()->getAssetManager()->setBasePath($settings['tempdir'] . '/assets');
-        }
 
-        /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl */
+        /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl) */
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
         $emailConfig = require(__DIR__ . '/../config/email.php');
         $versionConfig = require(__DIR__ . '/../config/version.php');
@@ -86,6 +79,15 @@ class LSYii_Application extends CWebApplication
                 $lsConfig = array_merge($lsConfig, $userConfigs['config']);
             }
         }
+        /* Update asset manager path and url only if not directly set in aApplicationConfig (from config.php),
+         *  must do after reloading to have valid publicurl (the tempurl) */
+        if(!isset($aApplicationConfig['components']['assetManager']['baseUrl'])){
+            App()->getAssetManager()->setBaseUrl($lsConfig['tempurl']. '/assets');
+        }
+        if(!isset($aApplicationConfig['components']['assetManager']['basePath'])){
+            App()->getAssetManager()->setBasePath($lsConfig['tempdir'] . '/assets');
+        }
+
         $this->config = array_merge($this->config, $lsConfig);
     }
 
