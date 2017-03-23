@@ -118,7 +118,7 @@ $internalConfig = array(
         // These are defaults and are later overwritten in LSYii_Application by a path based on config tempdir/tempurl
         'assetManager' => array(
             'excludeFiles' => array("config.xml", "assessment.pstpl", "clearall.pstpl",  "completed.pstpl",  "endgroup.pstpl",  "endpage.pstpl",  "groupdescription.pstpl",  "load.pstpl",  "navigator.pstpl",  "printanswers.pstpl",  "print_group.pstpl",  "print_question.pstpl",  "print_survey.pstpl",  "privacy.pstpl",  "question.pstpl",  "register.pstpl",  "save.pstpl",  "startgroup.pstpl",  "startpage.pstpl",  "surveylist.pstpl",  "survey.pstpl",  "welcome.pstpl" ),
-            'baseUrl' => '/lime-dev/tmp/assets',
+            'baseUrl' => '/tmp/assets',
             'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets',
         ),
 
