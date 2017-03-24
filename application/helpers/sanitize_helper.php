@@ -131,7 +131,7 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         (function_exists('mb_strtolower')) ?
             mb_strtolower($filename, 'UTF-8') :
             strtolower($filename) :
-        $clean;
+        $filename;
 }
 
 function beautify_filename($filename) {
