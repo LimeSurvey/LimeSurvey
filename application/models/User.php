@@ -342,7 +342,7 @@ class User extends LSActiveRecord
                 title='".gT("Edit this user")."'
                 data-url='".$editUrl."'
                 data-uid='".$this->uid."'
-                data-user='".$oUser['full_name']."'
+                data-user='".htmlspecialchars($oUser['full_name'])."'
                 data-action='modifyuser'
                 class='btn btn-default btn-xs action_usercontrol_button'>
                     <span class='fa fa-pencil text-success'></span>

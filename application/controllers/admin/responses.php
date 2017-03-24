@@ -280,7 +280,7 @@ class responses extends Survey_Common_Action
                                             break;
                                         case "name":
                                             $answervalue = CHtml::link(
-                                                $oPurifier->purify(rawurldecode($phparray[$index][$metadata])),
+                                                htmlspecialchars($oPurifier->purify(rawurldecode($phparray[$index][$metadata]))),
                                                 $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$iId,"iQID"=>$fnames[$i]['qid'],"iIndex"=>$index))
                                             );
                                             break;
@@ -569,7 +569,7 @@ class responses extends Survey_Common_Action
                     @ob_clean();
                     header('Content-Description: File Transfer');
                     header('Content-Type: '.$mimeType);
-                    header('Content-Disposition: attachment; filename="' . rawurldecode($aFile['name']) . '"');
+                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode($aFile['name'])) . '"');
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -887,7 +887,7 @@ class responses extends Survey_Common_Action
                 if (file_exists($tmpdir . basename($file['filename'])))
                 {
                     $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir . basename($file['filename']),
-                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, rawurldecode($file['name'])));
+                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, sanitize_filename(rawurldecode($file['name']))));
                 }
             }
         }
