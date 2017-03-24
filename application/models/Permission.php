@@ -356,12 +356,12 @@ class Permission extends LSActiveRecord
         $aFilteredPermissions=array();
         foreach ($aBasePermissions as $sPermissionname=>$aPermission)
         {
-            $aFilteredPermissions[$sPermissionname]['create']= (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
-            $aFilteredPermissions[$sPermissionname]['read']  = (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
-            $aFilteredPermissions[$sPermissionname]['update']= (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
-            $aFilteredPermissions[$sPermissionname]['delete']= (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
-            $aFilteredPermissions[$sPermissionname]['import']= (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
-            $aFilteredPermissions[$sPermissionname]['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
+            $aFilteredPermissions[$sPermissionname]['create']= ($aPermission['create'] && isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
+            $aFilteredPermissions[$sPermissionname]['read']  = ($aPermission['read'] && isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
+            $aFilteredPermissions[$sPermissionname]['update']= ($aPermission['update'] && isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
+            $aFilteredPermissions[$sPermissionname]['delete']= ($aPermission['delete'] && isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
+            $aFilteredPermissions[$sPermissionname]['import']= ($aPermission['import'] && isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
+            $aFilteredPermissions[$sPermissionname]['export']= ($aPermission['export'] && isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
         }
 
         $condition = array('entity_id' => $iEntityID, 'uid' => $iUserID);
