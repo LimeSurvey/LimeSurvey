@@ -36,13 +36,44 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.64.1 (build 170310) to 2.64.2 (build 170324) Mar 24, 2017
+-Fixed issue #12072: Conditions dialog very slow when creating/editing surveys (Carsten Schmitz)
+-Fixed issue #12189: Group import count are false (Denis Chenu)
+-Fixed issue #12192: Quotas page missing pagination - only 10 quotas visible (Tõnis Ormisson)
+-Fixed issue #12198: Date/Time question timeformat A seems invalid (Denis Chenu)
+-Fixed issue #12201: Quotas not triggered for secondary languages (Tõnis Ormisson)
+-Fixed issue #12207: Valid variable can be seen as invalid (Denis Chenu)
+-Fixed issue #12208: Bad language used for EM in survey logic file (Denis Chenu)
+-Fixed issue #12214: Check for integer on numerical questions not working correctly (Carsten Schmitz)
+-Fixed issue #12224: [security] Cross-Site Request Forgery issue (lacrioque) - reported by Dr. Erlijn van Genuchten & Manuel Stotz (SySS GmbH)
+-Fixed issue #12225: [security] CSS issues in file upload question type and administration user edition (Denis Chenu & Carsten Schmitz) - reported by Dr. Erlijn van Genuchten & Manuel Stotz (SySS GmbH)
+-Fixed issue: [security] XSS in plugin using sidebody function (Denis Chenu)
+-Fixed issue: Quota end message use base language only (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by Ramiky, jeskiv
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Slovak by dusanm
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.64.0 (build 170307) to 2.64.1 (build 170310) Mar 10 2017
 -Fixed issue #12136: The central participant database does not export (Olle Haerstedt)
 -Fixed issue #12173: Error with pluginhelper?sa=sidebody direct link (Denis Chenu)
--Fixed issue #12176: Fatal error in admin response controller (#654) (Matthew)
--Fixed issue #12177: Modal language changed to last survey language if massive exporting htmls (#656) (Tõnis Ormisson)
--FIxed issue #12178: fix quota-grid errors if no quotas (#655) (Tõnis Ormisson)
--Fixed issue #12183: New quota : autoload_url to Yes by default (#657) (Tõnis Ormisson)
+-Fixed issue #12176: Fatal error in admin response controller (Matthew)
+-Fixed issue #12177: Modal language changed to last survey language if massive exporting htmls (Tõnis Ormisson)
+-FIxed issue #12178: fix quota-grid errors if no quotas (Tõnis Ormisson)
+-Fixed issue #12183: New quota : autoload_url to Yes by default (Tõnis Ormisson)
 -Fixed issue: Captcha text was not unescaped at all places (Olle Haerstedt)
 -Fixed issue: Certain invalid numbers don't raise warning during entry (Carsten Schmitz)
 -Fixed issue: Good header for zip files download (Denis Chenu)
