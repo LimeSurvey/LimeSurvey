@@ -350,17 +350,21 @@ class User extends LSActiveRecord
             if ($this->parent_id != 0 && Permission::model()->hasGlobalPermission('users','delete') )
             {
                 $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
-                        "action"=> "deluser",
-                        "uid"=>$this->uid,
-                        "user" => htmlspecialchars(Yii::app()->user->getId())
+                        "action"=> "deluser"
                     ));
+
+                $csrfTokenName = Yii::app()->request->csrfTokenName;
+                $csrfToken = Yii::app()->request->csrfToken;
+
                 $deleteUser = "<button
                 data-toggle='modal'
                 data-href='#'
-                data-onclick='$.post(".$deleteUrl.",
-                        {action: \"deluser\", uid:\"".$this->uid."\", user: \"".htmlspecialchars($oUser['full_name'])."\"});'
+                data-onclick='$.post(".$deleteUrl.",{
+                  action: \"deluser\",
+                  uid:\"".$this->uid."\",
+                  user: \"".htmlspecialchars($oUser['full_name'])."\",
+                  ".$csrfTokenName.": \"".$csrfToken."\"});'
                 data-target='#confirmation-modal'
-
                 data-uid='".$this->uid."'
                 data-action='deluser'
                 data-message='".gT("Delete this user")."'

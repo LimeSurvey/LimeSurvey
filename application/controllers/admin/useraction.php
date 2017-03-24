@@ -178,6 +178,13 @@ class UserAction extends Survey_Common_Action
     public function deluser()
     {
 
+      $csrfToken = Yii::app()->request->csrfToken;
+      $transferredToken = $this->_getPostOrParam(Yii::app()->request->csrfTokenName);
+      var_dump(array($csrfToken, $transferredToken));
+      if( $csrfToken != $transferredToken){
+        Yii::app()->setFlashMessage(gT("Security token mismatch."),'error');
+        $this->getController()->redirect(array("admin/user/sa/index"));
+      }
         if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
