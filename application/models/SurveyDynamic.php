@@ -338,7 +338,7 @@ class SurveyDynamic extends LSActiveRecord
                 $sSurveyEntry .='<tr>';
                 if (isset($aFilesInfo[$iFileIndex]))
                 {
-                    $sSurveyEntry.= '<td>'.CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), App()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>self::$sid,"iResponseId"=>$this->id,"iQID"=>$oFieldMap->qid,"iIndex"=>$iFileIndex)) ).'</td>';
+                    $sSurveyEntry.= '<td>'.CHtml::link(CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name'])), App()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>self::$sid,"iResponseId"=>$this->id,"iQID"=>$oFieldMap->qid,"iIndex"=>$iFileIndex)) ).'</td>';
                     $sSurveyEntry.= '<td>'.sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2)).'</td>';
 
                     if ($aQuestionAttributes['show_title'])
