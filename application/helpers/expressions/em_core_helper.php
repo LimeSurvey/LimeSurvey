@@ -77,7 +77,7 @@ class ExpressionManager {
          * @var string|null $baseLang set the previous language if need to be set
          */
         $baseLang=null;
-        if(Yii::app()->session['adminlang']){
+        if(Yii::app() instanceof CWebApplication && Yii::app()->session['adminlang']){
             $baseLang=Yii::app()->getLanguage();
             Yii::app()->setLanguage(Yii::app()->session['adminlang']);
         }
@@ -2496,7 +2496,7 @@ class ExpressionManager {
          * @var string|null $baseLang set the previous language if need to be set
          */
         $baseLang=null;
-        if(Yii::app()->session['adminlang']){
+        if(Yii::app() instanceof CWebApplication && Yii::app()->session['adminlang']){
             $baseLang=Yii::app()->getLanguage();
             Yii::app()->setLanguage(Yii::app()->session['adminlang']);
         }
