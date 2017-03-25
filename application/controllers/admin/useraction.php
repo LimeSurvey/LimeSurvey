@@ -453,6 +453,10 @@ class UserAction extends Survey_Common_Action
 
     public function savepermissions()
     {
+        if (!Permission::model()->hasGlobalPermission('users','update')) {
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
 
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
