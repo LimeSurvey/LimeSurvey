@@ -171,7 +171,7 @@ function beautify_filename($filename) {
 
 function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false) {
     $string = str_replace(".", "", $string);
-    return sanitize_filename($string, $force_lowercase, $alphanumeric);
+    return sanitize_filename($string, $force_lowercase, $alphanumeric,false);
 }
 
 
