@@ -27,14 +27,27 @@ class QuotaMember extends LSActiveRecord
     {
         return parent::model($class);
     }
-    
+
     public function rules()
     {
         return array(
             array('code', 'required', 'on'=>array('create'))
             );
     }
-
+    /**
+     * Returns the relations
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array(
+            'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
+            'question' => array(self::BELONGS_TO, 'Question', 'qid'),
+            'quota' => array(self::BELONGS_TO, 'Quota', 'quota_id'),
+        );
+    }
     /**
      * Returns the setting's table name to be used by the model
      *
@@ -55,6 +68,44 @@ class QuotaMember extends LSActiveRecord
     public function primaryKey()
     {
         return 'id';
+    }
+
+    public function getMemberInfo()
+    {
+      $sFieldName = "0";
+      if ($this->question->type == "I" || $this->question->type == "G" || $this->question->type == "Y")
+      {
+          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+          $sValue = $this->code;
+      }
+
+      if($this->question->type == "L" || $this->question->type == "O" || $this->question->type =="!")
+      {
+          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+          $sValue = $this->code;
+      }
+
+      if($this->question->type == "M")
+      {
+          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
+          $sValue = "Y";
+      }
+
+      if($this->question->type == "A" || $this->question->type == "B")
+      {
+          $temp = explode('-',$this->code);
+          $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
+          $sValue = $temp[1];
+      }
+
+      return array(
+          'title' => $this->question->title,
+          'type' => $this->question->type,
+          'code' => $this->code,
+          'value' => $sValue,
+          'qid' => $this->qid,
+          'fieldname' => $sFieldName,
+      );
     }
 
     function insertRecords($data)
