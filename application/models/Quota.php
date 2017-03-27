@@ -154,11 +154,51 @@ class Quota extends LSActiveRecord
      * @return QuotaLanguageSetting
      */
     public function getMainLanguagesetting(){
-        return QuotaLanguageSetting::model()
-            ->with(array('quota' => array('condition' => 'sid="'.$this->survey->primaryKey.'"')))
-            ->findByAttributes(array(
-                'quotals_language'=>$this->survey->language,
-            ));
+      return $this->languagesettings[ $this->survey->language ];
+
+    }
+
+    public function getCompleteCount(){
+        // if(!tableExists("survey_{$this->survey->id}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
+        //     return;
+
+        if (count($this->quotaMembers) > 0)
+        {
+            // Keep a list of fields for easy reference
+            $aQuotaColumns = array();
+            foreach ($this->quotaMembers as $member)
+            {
+              $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
+            }
+
+            $oCriteria = new CDbCriteria;
+            $oCriteria->condition="submitdate IS NOT NULL";
+            foreach ($aQuotaColumns as $sColumn=>$aValue)
+            {
+                if(count($aValue)==1)
+                {
+                    $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
+                }
+                else
+                {
+                    $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
+                }
+            }
+            return SurveyDynamic::model($this->survey->sid)->count($oCriteria);
+        } else {
+          return 0;
+        }
+    }
+
+    public function getViewArray(){
+      $languageSettings = $this->currentLanguageSetting;
+      $members = array();
+      foreach($this->quotaMembers as $quotaMember){
+        $members[] = $quotaMember->memberInfo;
+      }
+      $attributes = $this->attributes;
+
+      return array_merge(array(), $languageSettings->attributes, array('members' => $members), $attributes);
     }
 
     /**
@@ -167,8 +207,8 @@ class Quota extends LSActiveRecord
      */
     public function getCurrentLanguageSetting(){
         $oQuotaLanguageSettings=QuotaLanguageSetting::model()
-            ->with(array('quota' => array('condition' => 'sid="'.$this->survey->primaryKey.'"')))
             ->findByAttributes(array(
+                'quotals_quota_id' => $this->id,
                 'quotals_language'=>Yii::app()->getLanguage(),
             ));
         if($oQuotaLanguageSettings){

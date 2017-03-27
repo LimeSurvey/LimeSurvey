@@ -16,6 +16,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
 }
 ?>
 
+<?php /*echo "<pre>".print_r($oQuota->mainLanguagesetting->attributes,true)."</pre>";*/ ?>
 <div class="panel panel-<?php echo ($oQuota->active==1 ? 'primary' : 'default') ?>">
     <div class="panel-heading">
         <div class="pull-right small">

@@ -4118,48 +4118,19 @@ function enforceSSLMode()
 };
 
 /**
+* @deprecated
 * Returns the number of answers matching the quota
+* THIS METHOD IS DEPRECATED AND IS LEFT ONLY FOR COMPATIBILITY REASONS
+* USE THE METHOD ON THE QUOTA CLASS INSTEAD
 *
-* @param int $iSurveyId - Survey identification number
+* @param int $iSurveyId - Survey identification number //deprecated
 * @param int $quotaid - quota id for which you want to compute the completed field
 * @return mixed - value of matching entries in the result DB or null
 */
 function getQuotaCompletedCount($iSurveyId, $quotaid)
 {
-    if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
-        return;
-    $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
-    $aQuotas = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
-    $aQuota = $aQuotas[0];
-    if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
-    count($aQuota['members']) > 0)
-    {
-        // Keep a list of fields for easy reference
-        $aQuotaColumns = array();
-
-        foreach ($aQuota['members'] as $member)
-        {
-            if(in_array($member['fieldname'],$aColumnName))
-                $aQuotaColumns[$member['fieldname']][] = $member['value'];
-            else
-                return;
-        }
-
-        $oCriteria = new CDbCriteria;
-        $oCriteria->condition="submitdate IS NOT NULL";
-        foreach ($aQuotaColumns as $sColumn=>$aValue)
-        {
-            if(count($aValue)==1)
-            {
-                $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
-            }
-            else
-            {
-                $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
-            }
-        }
-        return SurveyDynamic::model($iSurveyId)->count($oCriteria);
-    }
+  $oQuota = Quota::model()->findByPk($quotaid);
+  return $oQuota->completeCount;
 }
 
 /**
@@ -4365,50 +4336,11 @@ function getQuotaInformation($surveyid,$deprecated=null,$iQuotaID=null)
             // Array for each quota
             $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->currentLanguageSetting->attributes);
             $aQuotaMembers = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$oQuota->id));
-            $aQuotaInfo['members'] = array();
-            if (count($aQuotaMembers) > 0)
+            //$aQuotaInfo['members'] = $aQuotaMembers->memberInfo;
             {
                 foreach ($aQuotaMembers as $oQuotaMember)
                 {
-                    $oMemberQuestion=Question::model()->findByAttributes(array('qid'=>$oQuotaMember->qid, 'language'=>$baselang));
-                    if($oMemberQuestion)
-                    {
-                        $sFieldName = "0";
-
-                        if ($oMemberQuestion->type == "I" || $oMemberQuestion->type == "G" || $oMemberQuestion->type == "Y")
-                        {
-                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid;
-                            $sValue = $oQuotaMember->code;
-                        }
-
-                        if($oMemberQuestion->type == "L" || $oMemberQuestion->type == "O" || $oMemberQuestion->type =="!")
-                        {
-                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid;
-                            $sValue = $oQuotaMember->code;
-                        }
-
-                        if($oMemberQuestion->type == "M")
-                        {
-                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid.$oQuotaMember->code;
-                            $sValue = "Y";
-                        }
-
-                        if($oMemberQuestion->type == "A" || $oMemberQuestion->type == "B")
-                        {
-                            $temp = explode('-',$oQuotaMember->code);
-                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid.$temp[0];
-                            $sValue = $temp[1];
-                        }
-
-                        $aQuotaInfo['members'][]=array(
-                            'title' => $oMemberQuestion->title,
-                            'type' => $oMemberQuestion->type,
-                            'code' => $oQuotaMember->code,
-                            'value' => $sValue,
-                            'qid' => $oQuotaMember->qid,
-                            'fieldname' => $sFieldName,
-                        );
-                    }
+                    $aQuotaInfo['members'][]=$oQuotaMember->memberInfo;
                 }
             }
             // Push this quota Information to all survey quota
@@ -6273,6 +6205,17 @@ function array_diff_assoc_recursive($array1, $array2) {
     */
     function isMd5($sMD5 ='') {
         return strlen($sMD5) == 32 && ctype_xdigit($sMD5);
+    }
+
+    /**
+    * Force Yii to create a new CSRF token by removing the old one
+    * 
+    */
+    function regenerateCSRFToken(){
+        // Expire the CSRF cookie
+        $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
+        $cookie->expire = time()-3600;
+        Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

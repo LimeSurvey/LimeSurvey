@@ -35,6 +35,25 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.64.2 (build 170324) to 2.64.3 (build 170327) Mar 27, 2017
+-Fixed issue #12226: [security] Improper handling of insufficient privileges (Matthew)
+-Fixed issue: Error on upload in template editor (Carsten Schmitz)
+-Fixed issue: Not possible to change template in template editor (Carsten Schmitz)
+-Fixed issue: Quota methods not correct on frontend (markusfluer)
+-Fixed issue: Quotas were wrongly set in the backend. (markusfluer)
+-Fixed issue: [security] CSRF token not regenerated on log in (Carsten Schmitz)
+-Fixed issue: Unable to use EM in cron (Denis Chenu)
+-Fixed issue: XSS filter for participant firstname/lastname is applied when the participant is marked as completed or quota out (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by c_schmitz, kmilojev, rovinj
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Mongolian by erka, samsharav, baatar
+#Updated translation: Norwegian (Bokmål) by peterhol, pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Spanish (Spain) by atavei, aesteban
+#Updated translation: Turkish by bulent, kayazeren
 
 Changes from 2.64.1 (build 170310) to 2.64.2 (build 170324) Mar 24, 2017
 -Fixed issue #12072: Conditions dialog very slow when creating/editing surveys (Carsten Schmitz)
