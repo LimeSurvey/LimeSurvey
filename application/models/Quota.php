@@ -190,14 +190,25 @@ class Quota extends LSActiveRecord
         }
     }
 
+    public function getViewArray(){
+      $languageSettings = $this->currentLanguageSetting;
+      $members = array();
+      foreach($this->quotaMembers as $quotaMember){
+        $members[] = $quotaMember->memberInfo;
+      }
+      $attributes = $this->attributes;
+
+      return array_merge(array(), $languageSettings->attributes, array('members' => $members), $attributes);
+    }
+
     /**
      * Get the QuotaLanguageSetting for current language
      * @return QuotaLanguageSetting
      */
     public function getCurrentLanguageSetting(){
         $oQuotaLanguageSettings=QuotaLanguageSetting::model()
-            ->with(array('quota' => array('condition' => 'sid="'.$this->survey->primaryKey.'"')))
             ->findByAttributes(array(
+                'quotals_quota_id' => $this->id,
                 'quotals_language'=>Yii::app()->getLanguage(),
             ));
         if($oQuotaLanguageSettings){
