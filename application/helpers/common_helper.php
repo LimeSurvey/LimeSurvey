@@ -6207,4 +6207,15 @@ function array_diff_assoc_recursive($array1, $array2) {
         return strlen($sMD5) == 32 && ctype_xdigit($sMD5);
     }
 
+    /**
+    * Force Yii to create a new CSRF token by removing the old one
+    * 
+    */
+    function regenerateCSRFToken(){
+        // Expire the CSRF cookie
+        $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
+        $cookie->expire = time()-3600;
+        Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
+    }
+
 // Closing PHP tag intentionally omitted - yes, it is okay
