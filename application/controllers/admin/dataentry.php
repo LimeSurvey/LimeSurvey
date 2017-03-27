@@ -143,14 +143,14 @@ class dataentry extends Survey_Common_Action
         Yii::app()->loadHelper('admin/import');
         // Fill option
         $aOptions=array();
-        $aOptions['bDeleteFistLine']=(Yii::app()->request->getPost('dontdeletefirstline') == "dontdeletefirstline")?false:true;// Force, maybe function change ;)
-        if(Yii::app()->request->getPost('noid')==="noid"){
+        $aOptions['bDeleteFistLine']=! (bool) Yii::app()->request->getPost('dontdeletefirstline');
+        if(Yii::app()->request->getPost('noid')){
             $aOptions['sExistingId']='ignore';
         }else{
             $aOptions['sExistingId']=Yii::app()->request->getPost('insertmethod');
         }
-        $aOptions['bNotFinalized']=(Yii::app()->request->getPost('notfinalized') == "notfinalized");
-        $aOptions['bForceImport']=(Yii::app()->request->getPost('forceimport') == "forceimport");
+        $aOptions['bNotFinalized']=(bool) Yii::app()->request->getPost('notfinalized');
+        $aOptions['bForceImport']=(bool) Yii::app()->request->getPost('forceimport');
         $aOptions['sCharset']=Yii::app()->request->getPost('vvcharset');
         $aOptions['sSeparator']="\t";
         $aResult=CSVImportResponses($filePath,$iSurveyId,$aOptions);
