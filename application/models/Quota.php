@@ -118,30 +118,33 @@ class Quota extends LSActiveRecord
         );
     }
 
-    function insertRecords($data)
+    /**
+     * @param array $data
+     * @return bool|int
+     */
+    public function insertRecords($data)
     {
         $quota = new self;
         foreach ($data as $k => $v){
             $quota->$k = $v;
-            }
-        try
-        {
+        }
+        try {
             $quota->save();
             return $quota->id;
-        }
-        catch(Exception $e)
-        {
+        } catch(Exception $e) {
             return false;
         }
     }
 
-    function deleteQuota($condition = false, $recursive = true)
+    /**
+     * @param bool $condition
+     * @param bool $recursive
+     */
+    public function deleteQuota($condition = false, $recursive = true)
     {
-        if ($recursive == true)
-        {
+        if ($recursive == true) {
             $oResult = Quota::model()->findAllByAttributes($condition);
-            foreach ($oResult as $aRow)
-            {
+            foreach ($oResult as $aRow) {
                 QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $aRow['id']));
                 QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $aRow['id']));
             }
@@ -158,29 +161,28 @@ class Quota extends LSActiveRecord
 
     }
 
+    /**
+     * @return integer
+     */
     public function getCompleteCount(){
-         if(!tableExists("survey_{$this->survey->id}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
-             return;
+        // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
+        if(!tableExists("survey_{$this->survey->primaryKey}")){
+            return;
+        }
 
-        if (count($this->quotaMembers) > 0)
-        {
+        if (count($this->quotaMembers) > 0) {
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
-            foreach ($this->quotaMembers as $member)
-            {
+            foreach ($this->quotaMembers as $member) {
               $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
             }
 
             $oCriteria = new CDbCriteria;
             $oCriteria->condition="submitdate IS NOT NULL";
-            foreach ($aQuotaColumns as $sColumn=>$aValue)
-            {
-                if(count($aValue)==1)
-                {
+            foreach ($aQuotaColumns as $sColumn=>$aValue) {
+                if(count($aValue)==1) {
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
-                }
-                else
-                {
+                } else {
                     $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
                 }
             }
@@ -193,7 +195,7 @@ class Quota extends LSActiveRecord
     public function getViewArray(){
       $languageSettings = $this->currentLanguageSetting;
       $members = array();
-      foreach($this->quotaMembers as $quotaMember){
+      foreach($this->quotaMembers as $quotaMember) {
         $members[] = $quotaMember->memberInfo;
       }
       $attributes = $this->attributes;
