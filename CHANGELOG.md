@@ -1,7 +1,10 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## Not released
+## [1.5.2] - 2017-03-17
+
+### Fix
+- [security] XSS in upload file
 
 ### Feature
 - Export as xlsx (not as xls)
