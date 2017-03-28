@@ -800,7 +800,7 @@ class responses extends Survey_Common_Action
                         {
                             $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8');
                             $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8');
-                            $aSurveyEntry[] = CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$row['id'],"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) );
+                            $aSurveyEntry[] = CHtml::link(htmlspecialchars(rawurldecode($aFilesInfo[$iFileIndex]['name'])), $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$row['id'],"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) );
                             $aSurveyEntry[] = sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2));
                         }
                         else
@@ -915,9 +915,13 @@ class responses extends Survey_Common_Action
                     $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
                     if (file_exists($sFileRealName))
                     {
+                        $mimeType=CFileHelper::getMimeType($sFileRealName, null, false);
+                        if(is_null($mimeType)){
+                            $mimeType="application/octet-stream";
+                        }
                         @ob_clean();
                         header('Content-Description: File Transfer');
-                        header('Content-Type: application/octet-stream');// Find the real type ?
+                        header('Content-Type: '.$mimeType);
                         header('Content-Disposition: attachment; filename="' . rawurldecode($aFile['name']) . '"');
                         header('Content-Transfer-Encoding: binary');
                         header('Expires: 0');
