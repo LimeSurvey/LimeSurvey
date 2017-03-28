@@ -111,11 +111,13 @@ class Condition extends LSActiveRecord
     */
     public function updateCFieldName($iSurveyID, $iQuestionID, $iOldGroupID, $iNewGroupID)
     {
+        /** @var Condition[] $oResults */
         $oResults=$this->findAllByAttributes(array('cqid'=>$iQuestionID));
         foreach ($oResults as $oRow) {
             $cfnregs='';
-            if (preg_match('/(\S*?)'.$iSurveyID."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
-                $sNewCfn=$cfnregs[1].$iSurveyID."X".$iNewGroupID."X".$iQuestionID.$cfnregs[2];
+            $sgqa = $oRow->questions->SGQA;
+            if (preg_match('/(\S*?)'.$sgqa."(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
+                $sNewCfn=$cfnregs[1].$sgqa.$cfnregs[2];
                 Yii::app()->db->createCommand()
                     ->update($this->tableName(), array('cfieldname' => $sNewCfn),
                     'cid=:cid',array(':cid'=>$oRow->cid));
