@@ -56,7 +56,7 @@ function openUploadModalDialog(){
             });
     });
 }
-$(window).resize(function() { 
+$(window).resize(function() {
     setWidthUploader();
     if(typeof $("iframe#uploader")[0]!=="undefined" && jQuery.isFunction($("iframe#uploader")[0].contentWindow.fixParentHeigth))
         $("iframe#uploader")[0].contentWindow.fixParentHeigth();
@@ -64,7 +64,7 @@ $(window).resize(function() {
 /* Reset the position of the dialog (recenter) */
 function resetUploaderPosition(){
      $( "#uploader" ).dialog( "option", "position", $( "#uploader" ).dialog( "option", "position" ) );
-     
+
 }
 /* Set the with of upload madal and uploader frame according to windows width */
 function setWidthUploader(){
@@ -133,10 +133,10 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
                 display += '<tr><td class="upload placeholder"><div class="upload-placeholder" /></td>';
 
             if (show_title != 0)
-                display += '<td class="upload title">'+jsonobj[i].title+'</td>';
-            if (show_comment != 0)                                                                                                  
-                display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="upload-edit" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();">'+uploadLang.editFile+'</a></td></tr>';
+                display += '<td class="upload title">'+htmlspecialchars(jsonobj[i].title)+'</td>';
+            if (show_comment != 0)
+                display += '<td class="upload comment">'+htmlspecialchars(jsonobj[i].comment)+'</td>';
+            display +='<td class="upload edit">'+htmlspecialchars(decodeURIComponent(jsonobj[i].name))+'</td><td>'+'<a class="upload-edit" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();">'+uploadLang.editFile+'</a></td></tr>';
         }
         display += '</tbody></table>';
 
