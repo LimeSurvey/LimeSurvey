@@ -73,30 +73,32 @@ class QuotaMember extends LSActiveRecord
     public function getMemberInfo()
     {
       $sFieldName = "0";
-      if ($this->question->type == "I" || $this->question->type == "G" || $this->question->type == "Y")
-      {
-          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
-          $sValue = $this->code;
+      $sValue = "";
+
+      switch($this->question->type) {
+        case "I":
+        case "G":
+        case "H":
+            $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+            $sValue = $this->code;
+          break;
+        case "L":
+        case "O":
+        case "!":
+            $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+            $sValue = $this->code;
+          break;
+        case "M":
+            $this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code; $sValue = "Y";
+          break;
+        case "A":
+        case "B":
+            $temp = explode('-',$this->code);
+            $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
+            $sValue = $temp[1];
+          break;
       }
 
-      if($this->question->type == "L" || $this->question->type == "O" || $this->question->type =="!")
-      {
-          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
-          $sValue = $this->code;
-      }
-
-      if($this->question->type == "M")
-      {
-          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
-          $sValue = "Y";
-      }
-
-      if($this->question->type == "A" || $this->question->type == "B")
-      {
-          $temp = explode('-',$this->code);
-          $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
-          $sValue = $temp[1];
-      }
 
       return array(
           'title' => $this->question->title,
