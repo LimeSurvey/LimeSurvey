@@ -40,9 +40,9 @@ function doFileUpload(){
                 previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' onload='fixParentHeigth()' class='uploaded' />";
             else
                 previewblock += "<div class='upload-placeholder' />";
-            previewblock += "<span class='file-name'>"+decodeURIComponent(json[i-1].name)+"</span>";
+            previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(json[i-1].name))+"</span>";
             previewblock += "</div>";
-            
+
             if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
             {
                 previewblock +="<div class='file-info'><fieldset>";
@@ -166,7 +166,7 @@ function doFileUpload(){
                     previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' onload='fixParentHeigth()' class='uploaded' />";
                 else
                     previewblock += "<div class='upload-placeholder' />";
-                previewblock += "<span class='file-name'>"+decodeURIComponent(metadata.name)+"<span>";
+                previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(metadata.name))+"<span>";
                 previewblock += "</div>";
 
                 if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
@@ -215,7 +215,7 @@ function doFileUpload(){
                 $('#notice').html('<p class="error">'+metadata.msg+'</p>');
                 fixParentHeigth();
             }
-            
+
         }
     });
 
@@ -293,13 +293,13 @@ function deletefile(fieldname, count) {
 
     var filecount = parseInt($('#'+fieldname+'_filecount').val());
     var licount   = parseInt($('#'+fieldname+'_licount').val());
-    
+
     $.ajax(
     {
         method: "POST",
         url: uploadurl,
-        data: { 
-            'delete': 1, 
+        data: {
+            'delete': 1,
             'fieldname': fieldname,
             'filename' : filename,
             'name' : name,
