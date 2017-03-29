@@ -89,7 +89,8 @@ class QuotaMember extends LSActiveRecord
             $sValue = $this->code;
           break;
         case "M":
-            $this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code; $sValue = "Y";
+            $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code; 
+            $sValue = "Y";
           break;
         case "A":
         case "B":
