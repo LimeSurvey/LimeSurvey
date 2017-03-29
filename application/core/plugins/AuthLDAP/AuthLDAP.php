@@ -108,7 +108,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         'groupsearchfilter' => array(
                 'type' => 'string',
                 'label' => 'Optional filter for group restriction',
-                'help' => 'Required if group search base set. E.g. (&(cn=limesurvey)(memberUid=$username))'
+                'help' => 'Required if group search base set. E.g. (&(cn=limesurvey)(memberUid=$username)) or (&(cn=limesurvey)(member=$userdn))'
                 )
     );
 
@@ -515,7 +515,9 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             // If specifed, check group membership
             if ($groupsearchbase != '' && $groupsearchfilter != '')
             {
-                $filter = str_replace('$username', $username, $groupsearchfilter);
+                $keywords = array('$username','$userdn');
+                $substitutions = array($username,$userdn);
+                $filter = str_replace($keywords, $substitutions, $groupsearchfilter);
                 $groupsearchres = ldap_search($ldapconn, $groupsearchbase, $filter);
                 $grouprescount = ldap_count_entries($ldapconn, $groupsearchres);
                 if ($grouprescount < 1)
