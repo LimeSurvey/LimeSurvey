@@ -87,35 +87,16 @@ class SurveyRuntimeHelper {
     {
         global $errormsg;
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
-        extract($args);
-
         $LEMsessid  = $this->LEMsessid = 'survey_' . $surveyid;
 
-        // Template settings
-        $this->initTemplate();
-
         // Survey settings
-        $thissurvey                 = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
-        $thissurvey['surveyUrl']    = App()->createUrl("/survey/index",array("sid"=>$surveyid));
-        $this->thissurvey           = $thissurvey;
-        $surveyMode                 = $this->surveyMode      = $this->getSurveyMode($thissurvey);
-        $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
-        $previewgrp                 = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $previewquestion            = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
-        $preview                    = $this->preview         = ($previewquestion || $previewgrp);
-        $sLangCode                  = $this->sLangCode       = App()->language;
-        $show_empty_group           = $this->show_empty_group;
-
-        $this->setJavascriptVar();
-        $this->setArgs();
-
-        $aPrivateVariables = array();
-
-        $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
-        $thissurvey = $this->thissurvey;
-
+        $this->setSurveySettings( $surveyid, $args);                            // All the results of those settings will be available in this function later with $this->getArgs();
 
         // Start rendering
+        $this->makeLanguageChanger();                                           //  language changer can be used on any entry screen, so it must be set first
+        $thissurvey = $this->thissurvey;
+
+        extract($args);                                                         // TODO: Check if still needed at this level 
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
@@ -1884,5 +1865,26 @@ class SurveyRuntimeHelper {
 
         $this->thissurvey = $thissurvey;
     }
+
+    function setSurveySettings( $surveyid, $args  ){
+
+        // Template settings
+        $this->initTemplate();
+        $this->setJavascriptVar();
+        $this->setArgs();
+
+        extract($args);
+        $thissurvey                 = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
+        $thissurvey['surveyUrl']    = App()->createUrl("/survey/index",array("sid"=>$surveyid));
+        $this->thissurvey           = $thissurvey;
+        $surveyMode                 = $this->surveyMode      = $this->getSurveyMode($thissurvey);
+        $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
+        $previewgrp                 = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
+        $previewquestion            = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $preview                    = $this->preview         = ($previewquestion || $previewgrp);
+        $sLangCode                  = $this->sLangCode       = App()->language;
+        $show_empty_group           = $this->show_empty_group;
+    }
+
 
 }
