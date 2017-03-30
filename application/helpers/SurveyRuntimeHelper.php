@@ -89,7 +89,6 @@ class SurveyRuntimeHelper {
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
         extract($args);
 
-        $LEMskipReprocessing = $this->LEMskipReprocessing;
         $LEMsessid           = $this->LEMsessid = 'survey_' . $surveyid;
 
         // Template settings
@@ -530,7 +529,7 @@ class SurveyRuntimeHelper {
         }
 
 
-        LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
+        LimeExpressionManager::FinishProcessingGroup($this->LEMskipReprocessing);
         $thissurvey['EM']['ScriptsAndHiddenInputs'] = LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         Yii::app()->clientScript->registerScript('triggerEmRelevance',"triggerEmRelevance();",CClientScript::POS_END);
         /* Maybe only if we have mandatory error ?*/
