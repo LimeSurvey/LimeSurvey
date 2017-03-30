@@ -92,10 +92,7 @@ class SurveyRuntimeHelper {
         $LEMsessid  = $this->LEMsessid = 'survey_' . $surveyid;
 
         // Template settings
-        $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
-        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
-        $oTemplate->registerAssets();
-        Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
+        $this->initTemplate();
 
         // Survey settings
         $thissurvey                 = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
@@ -1867,6 +1864,14 @@ class SurveyRuntimeHelper {
         /* This funtion end if an form need to be shown */
         renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
+    }
+
+
+    private function initTemplate(){
+        $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
+        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
+        $oTemplate->registerAssets();
+        Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
     }
 
     private function makeLanguageChanger(){
