@@ -916,9 +916,7 @@ class Question extends LSActiveRecord
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.qid::varchar' : 't.qid');
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
-var_dump($this->gid);
-        if($this->gid != '')
-        {
+        if($this->gid != ''){
             $criteria->compare('groups.gid', $this->gid, true, 'AND');
         }
 
