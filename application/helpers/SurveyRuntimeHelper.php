@@ -126,8 +126,7 @@ class SurveyRuntimeHelper {
         extract($aPrivateVariables);
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
-
-        if ( !$previewgrp && !$surveyMode)
+        if ( !$previewgrp && !$previewquestion)
         {
             if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
                 $gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
