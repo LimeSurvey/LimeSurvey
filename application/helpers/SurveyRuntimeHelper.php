@@ -86,7 +86,6 @@ class SurveyRuntimeHelper {
     public function run($surveyid,$args)
     {
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
-        $LEMsessid  = $this->LEMsessid = 'survey_' . $surveyid;
 
         // Survey settings
         $this->setSurveySettings( $surveyid, $args);                            // All the results of those settings will be available in this function later with $this->getArgs();
@@ -99,7 +98,7 @@ class SurveyRuntimeHelper {
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
-        if (!isset($_SESSION[$LEMsessid]['step'])){
+        if (!isset($_SESSION[$this->LEMsessid]['step'])){
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
 
@@ -118,11 +117,10 @@ class SurveyRuntimeHelper {
             $_SESSION[$this->LEMsessid]['maxstep'] = 0;
         }
 
-        $aPrivateVariables = $this->getArgs();
         $this->moveSubmitIfNeeded();
 
-
-        extract($aPrivateVariables);                                            // For redata
+        $aPrivateVariables = $this->getArgs();
+        extract($aPrivateVariables);
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
 
@@ -1865,6 +1863,13 @@ class SurveyRuntimeHelper {
         $this->thissurvey = $thissurvey;
     }
 
+    /**
+     * This method will set survey value in public property of the class
+     * So, any value here set as $this->xxx will be available as $xxx after :
+     * $aPrivateVariables = $this->getArgs(); extract($aPrivateVariables);
+     * eg: $LEMsessid
+     *
+     */
     function setSurveySettings( $surveyid, $args  ){
 
         // Template settings
@@ -1873,6 +1878,8 @@ class SurveyRuntimeHelper {
         $this->setArgs();
 
         extract($args);
+
+        $LEMsessid                  = $this->LEMsessid = 'survey_' . $surveyid;
         $thissurvey                 = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
         $thissurvey['surveyUrl']    = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $this->thissurvey           = $thissurvey;
