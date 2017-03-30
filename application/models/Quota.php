@@ -159,7 +159,7 @@ class Quota extends LSActiveRecord
     }
 
     public function getCompleteCount(){
-         if(!tableExists("survey_{$this->survey->id}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
+         if(!isset($this->survey->id) || !tableExists("survey_{$this->survey->id}")) 
              return;
 
         if (count($this->quotaMembers) > 0)
