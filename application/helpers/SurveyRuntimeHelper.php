@@ -137,7 +137,8 @@ class SurveyRuntimeHelper {
 
         if ( !$this->previewgrp && !$this->previewquestion){
             $this->initMove();                                                  // main methods to init session, LEM, moves, errors, etc
-            $this->checkQuotasAndClearCancel();                                 // If the move is clearcancel, or confirmquota, then the process will stop here
+            $this->checkQuotas();                                               // check quotas (then the process will stop here)
+            $this->checkClearCancel();                                          
 
             $aPrivateVariables = $this->getArgs();
 
@@ -942,21 +943,29 @@ class SurveyRuntimeHelper {
     }
 
     /**
-     * Check if the move is clearcancel or confirmquota
+     * Check quotas
      */
-    private function checkQuotasAndClearCancel()
+    private function checkQuotas()
     {
         $move          = $this->move;
         $surveyid      = $this->surveyid;
-        $LEMsessid     = $this->LEMsessid;
-
-        if ( $move=="clearcancel"){
-            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
-        }
 
         /* quota submitted */
         if ( $move=='confirmquota'){
             checkCompletedQuota($surveyid);
+        }
+    }
+
+    /**
+     * Check if the move is clearcancel or confirmquota
+     */
+    private function checkClearCancel()
+    {
+        $move          = $this->move;
+        $LEMsessid     = $this->LEMsessid;
+
+        if ( $move=="clearcancel"){
+            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
         }
 
         $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
