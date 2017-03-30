@@ -42,7 +42,7 @@
                                     <select name="group_name" class="form-control">
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
-                                            <option value="<?php echo $group->gid;?>" <?php if( $group->group_name == $model->group_name){echo 'selected';} ?>>
+                                            <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->group_name){echo 'selected';} ?>>
                                                 <?php echo flattenText($group->group_name);?>
                                             </option>
                                         <?php endforeach?>
