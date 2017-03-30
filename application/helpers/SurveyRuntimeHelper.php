@@ -77,6 +77,9 @@ class SurveyRuntimeHelper {
     private $okToShowErrors;                                                    // true if we must show error in page : it's a submited ($_POST) page and show the same page again for some reason
 
 
+    // Group
+    private $gid;
+
     /**
     * Main function
     *
@@ -630,6 +633,7 @@ class SurveyRuntimeHelper {
             'blocks'                 => $this->blocks                 ,
             'notvalidated'           => $this->notvalidated           ,
             'LEMsessid'              => $this->LEMsessid              ,
+            'gid'                    => $this->gid                    ,
         );
         return $aPrivateVariables;
     }
