@@ -1883,7 +1883,7 @@ class SurveyRuntimeHelper {
                 renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
             }
 
-            $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
+            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
             if (is_null($moveResult)){
                 $sMessage = gT('This group contains no questions.  You must add questions to this group before you can preview it');
                 renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
