@@ -113,14 +113,9 @@ class SurveyRuntimeHelper {
 
         $aPrivateVariables = array();
 
-        // language changer
-        $thissurvey['alanguageChanger']['show']  = false;
-        $alanguageChangerDatas                   = getLanguageChangerDatas($sLangCode);
 
-        if ($alanguageChangerDatas){
-            $thissurvey['alanguageChanger']['show']  = true;
-            $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
-        }
+        $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
+        $thissurvey = $this->thissurvey;
 
         $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $this->thissurvey = $thissurvey;
@@ -1876,4 +1871,20 @@ class SurveyRuntimeHelper {
         renderRenderWayForm($renderWay, $redata, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
 
     }
+
+    private function makeLanguageChanger(){
+
+        $thissurvey = $this->thissurvey;
+
+        $thissurvey['alanguageChanger']['show']  = false;
+        $alanguageChangerDatas                   = getLanguageChangerDatas($sLangCode);
+
+        if ($alanguageChangerDatas){
+            $thissurvey['alanguageChanger']['show']  = true;
+            $thissurvey['alanguageChanger']['datas'] = $alanguageChangerDatas;
+        }
+
+        $this->thissurvey = $thissurvey;
+    }
+    
 }
