@@ -1858,7 +1858,7 @@ class SurveyRuntimeHelper {
         $sLangCode                  = $this->sLangCode       = App()->language;
         $show_empty_group           = $this->show_empty_group;
     }
-    
+
     private function setPreview()
     {
         $aPrivateVariables = $this->getArgs();
@@ -1866,7 +1866,7 @@ class SurveyRuntimeHelper {
 
 
         $_SESSION[$this->LEMsessid]['prevstep'] = 2;
-        $_SESSION[$this->LEMsessid]['maxstep'] = 0;
+        $_SESSION[$this->LEMsessid]['maxstep']  = 0;
 
         if ($this->previewquestion){
             $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
@@ -1877,6 +1877,7 @@ class SurveyRuntimeHelper {
 
             LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $this->LEMdebugLevel);
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
+
             if ($gseq == -1){
                 $sMessage = gT('Invalid group number for this survey: ') . $_gid;
                 renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
