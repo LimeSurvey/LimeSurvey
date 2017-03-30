@@ -1864,7 +1864,7 @@ class SurveyRuntimeHelper {
     }
 
     /**
-     * This method will set survey value in public property of the class
+     * This method will set survey values in public property of the class
      * So, any value here set as $this->xxx will be available as $xxx after :
      * $aPrivateVariables = $this->getArgs(); extract($aPrivateVariables);
      * eg: $LEMsessid
@@ -1873,12 +1873,9 @@ class SurveyRuntimeHelper {
     function setSurveySettings( $surveyid, $args  )
     {
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
-
-        // Template settings
-        $this->initTemplate();
-
+        $this->initTemplate();                                                  // Template settings
         $this->setJavascriptVar();
-        $this->setArgs();
+        $this->setArgs();   
 
         extract($args);
 
