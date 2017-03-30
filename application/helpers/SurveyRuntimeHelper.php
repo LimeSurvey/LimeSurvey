@@ -110,9 +110,15 @@ class SurveyRuntimeHelper {
 
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
+
         }else{
             $_SESSION[$this->LEMsessid]['prevstep'] = 2;
             $_SESSION[$this->LEMsessid]['maxstep'] = 0;
+
+            if ($this->previewquestion){
+                $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
+            }
+                        
         }
 
         $this->moveSubmitIfNeeded();
@@ -174,10 +180,7 @@ class SurveyRuntimeHelper {
 
 
 
-        if ($previewquestion)
-        {
-            $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
-        }
+
 
         if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
         {
