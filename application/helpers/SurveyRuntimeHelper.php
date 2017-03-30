@@ -114,6 +114,9 @@ class SurveyRuntimeHelper {
         $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
         $thissurvey = $this->thissurvey;
 
+
+        // Start rendering
+
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
         if (!isset($_SESSION[$LEMsessid]['step'])){
@@ -124,22 +127,18 @@ class SurveyRuntimeHelper {
             $this->initMove();                                                  // main methods to init session, LEM, moves, errors, etc
             $this->checkQuotas();                                               // check quotas (then the process will stop here)
             $this->checkClearCancel();
-
-            $aPrivateVariables = $this->getArgs();
-
-            $this->thissurvey = $thissurvey;
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
 
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
-
         }else{
             $_SESSION[$this->LEMsessid]['prevstep'] = 2;
             $_SESSION[$this->LEMsessid]['maxstep'] = 0;
         }
 
+        $aPrivateVariables = $this->getArgs();
         $this->moveSubmitIfNeeded();
 
 
