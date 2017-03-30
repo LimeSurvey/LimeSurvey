@@ -19,6 +19,7 @@ class Question extends LSActiveRecord
 
     // Stock the active group_name for questions list filtering
     public $group_name;
+    public $gid;
 
     /**
     * Returns the static model of Settings table
@@ -915,9 +916,10 @@ class Question extends LSActiveRecord
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.qid::varchar' : 't.qid');
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
-        if($this->group_name != '')
+var_dump($this->gid);
+        if($this->gid != '')
         {
-            $criteria->compare('groups.gid', $this->group_name, true, 'AND');
+            $criteria->compare('groups.gid', $this->gid, true, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');

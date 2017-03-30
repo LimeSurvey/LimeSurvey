@@ -1021,8 +1021,8 @@ class Survey_Common_Action extends CAction
                 $model->attributes = $_GET['Question'];
 
             // Filter group
-            if (isset($_GET['group_name']))
-                $model->group_name = $_GET['group_name'];
+            if (isset($_GET['gid']))
+                $model->gid = $_GET['gid'];
 
             // Set number of page
             if (isset($_GET['pageSize']))
