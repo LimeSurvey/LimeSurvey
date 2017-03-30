@@ -35,6 +35,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.64.3 (build 170327) to 2.64.4 (build 170330) Mar 30, 2017
+-Fixed issue #12076: Array of texts set to "numbers only" doesn't allow negative values (markusfluer)
+-Fixed issue: Active group not selected when filtering question list by group (LouisGac)
+-Fixed issue: Can't filter question list by group (LouisGac)
+-Fixed issue: PHP notice in browse token after tested another survey (Denis Chenu)
+-Fixed issue: Problems with a missing surveytable (Markus Flür)
+-Fixed issue: Switch option when import VV not used (Denis Chenu)
+-Fixed issue: Unable to use month in date (Denis Chenu)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by Calidonia
+#Updated translation: Portuguese (Portugal) by thiagosmartins, mauriciofurtado, holch, , samarta
+
 Changes from 2.64.2 (build 170324) to 2.64.3 (build 170327) Mar 27, 2017
 -Fixed issue #12226: [security] Improper handling of insufficient privileges (Matthew)
 -Fixed issue: Error on upload in template editor (Carsten Schmitz)
@@ -45,7 +58,7 @@ Changes from 2.64.2 (build 170324) to 2.64.3 (build 170327) Mar 27, 2017
 -Fixed issue: Unable to use EM in cron (Denis Chenu)
 -Fixed issue: XSS filter for participant firstname/lastname is applied when the participant is marked as completed or quota out (Carsten Schmitz)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Croatian by c_schmitz, kmilojev, rovinj
+#Updated translation: Croatian by kmilojev, rovinj
 #Updated translation: Indonesian by radhwaw
 #Updated translation: Mongolian by erka, samsharav, baatar
 #Updated translation: Norwegian (Bokmål) by peterhol, pmonstad
@@ -82,7 +95,7 @@ Changes from 2.64.1 (build 170310) to 2.64.2 (build 170324) Mar 24, 2017
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elissa
 #Updated translation: Polish (Informal) by elissa
-#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Portuguese (Portugal) by samarta
 #Updated translation: Slovak by dusanm
 #Updated translation: Turkish by kayazeren
 
