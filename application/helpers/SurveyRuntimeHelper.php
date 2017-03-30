@@ -79,6 +79,8 @@ class SurveyRuntimeHelper {
 
     // Group
     private $gid;
+    private $groupname;
+    private $groupdescription;
 
     /**
     * Main function
@@ -634,6 +636,8 @@ class SurveyRuntimeHelper {
             'notvalidated'           => $this->notvalidated           ,
             'LEMsessid'              => $this->LEMsessid              ,
             'gid'                    => $this->gid                    ,
+            'groupname'              => $this->groupname              ,
+            'groupdescription'       => $this->groupdescription       ,
         );
         return $aPrivateVariables;
     }
