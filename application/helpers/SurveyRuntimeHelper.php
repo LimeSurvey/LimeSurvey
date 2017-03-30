@@ -112,13 +112,7 @@ class SurveyRuntimeHelper {
             $this->setNotAnsweredAndNotValidated();
 
         }else{
-            $_SESSION[$this->LEMsessid]['prevstep'] = 2;
-            $_SESSION[$this->LEMsessid]['maxstep'] = 0;
-
-            if ($this->previewquestion){
-                $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
-            }
-                        
+            $this->setPreview();
         }
 
         $this->moveSubmitIfNeeded();
@@ -127,41 +121,6 @@ class SurveyRuntimeHelper {
         extract($aPrivateVariables);
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
-
-
-        //GET GROUP DETAILS
-        if ($surveyMode == 'group' && $previewgrp){
-            $_gid = sanitize_int($param['gid']);
-
-            LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $this->LEMdebugLevel);
-            $gseq = LimeExpressionManager::GetGroupSeq($_gid);
-            if ($gseq == -1){
-                $sMessage = gT('Invalid group number for this survey: ') . $_gid;
-                renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
-            }
-
-            $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
-            if (is_null($moveResult)){
-                $sMessage = gT('This group contains no questions.  You must add questions to this group before you can preview it');
-                renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
-            }
-
-            if (isset($moveResult)){
-                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
-            }
-
-            $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-            $gid              = $stepInfo['gid'];
-            $groupname        = $stepInfo['gname'];
-            $groupdescription = $stepInfo['gtext'];
-
-        }elseif($surveyMode == 'question' && $previewquestion){
-                $_qid       = sanitize_int($param['qid']);
-                LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
-                $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
-                $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                $stepInfo   =  $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-        }
 
         if ( !$previewgrp && !$surveyMode)
         {
@@ -1878,7 +1837,7 @@ class SurveyRuntimeHelper {
      * eg: $LEMsessid
      *
      */
-    function setSurveySettings( $surveyid, $args  )
+    private function setSurveySettings( $surveyid, $args  )
     {
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
         $this->initTemplate();                                                  // Template settings
@@ -1899,6 +1858,52 @@ class SurveyRuntimeHelper {
         $sLangCode                  = $this->sLangCode       = App()->language;
         $show_empty_group           = $this->show_empty_group;
     }
+    
+    private function setPreview()
+    {
+        $aPrivateVariables = $this->getArgs();
+        extract($aPrivateVariables);
 
+
+        $_SESSION[$this->LEMsessid]['prevstep'] = 2;
+        $_SESSION[$this->LEMsessid]['maxstep'] = 0;
+
+        if ($this->previewquestion){
+            $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
+        }
+
+        if ($surveyMode == 'group' && $previewgrp){
+            $_gid = sanitize_int($param['gid']);
+
+            LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $this->LEMdebugLevel);
+            $gseq = LimeExpressionManager::GetGroupSeq($_gid);
+            if ($gseq == -1){
+                $sMessage = gT('Invalid group number for this survey: ') . $_gid;
+                renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
+            }
+
+            $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
+            if (is_null($moveResult)){
+                $sMessage = gT('This group contains no questions.  You must add questions to this group before you can preview it');
+                renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
+            }
+
+            if (isset($moveResult)){
+                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
+            }
+
+            $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+            $gid              = $stepInfo['gid'];
+            $groupname        = $stepInfo['gname'];
+            $groupdescription = $stepInfo['gtext'];
+
+        }elseif($surveyMode == 'question' && $previewquestion){
+                $_qid       = sanitize_int($param['qid']);
+                LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
+                $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
+                $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
+                $stepInfo   =  $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+        }
+    }
 
 }
