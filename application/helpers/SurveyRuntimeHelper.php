@@ -122,7 +122,6 @@ class SurveyRuntimeHelper {
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
 
-        //GET GROUP DETAILS
         if ($surveyMode == 'group' && $previewgrp){
             $_gid = sanitize_int($param['gid']);
 
@@ -148,6 +147,19 @@ class SurveyRuntimeHelper {
             $groupname        = $stepInfo['gname'];
             $groupdescription = $stepInfo['gtext'];
 
+        }elseif($surveyMode == 'question' && $previewquestion){            
+                $_qid = sanitize_int($param['qid']);
+                LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
+                $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
+                $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
+                $stepInfo   =  $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+        }else{
+
+        }
+
+        //GET GROUP DETAILS
+        if ($surveyMode == 'group' && $previewgrp){
+
         }else{
             if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
                 $gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
@@ -157,11 +169,6 @@ class SurveyRuntimeHelper {
             else if ($surveyMode != 'survey')
             {
                 if ($previewquestion) {
-                    $_qid = sanitize_int($param['qid']);
-                    LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
-                    $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
-                    $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                    $stepInfo   =  $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                 } else {
                     $stepInfo = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                 }
@@ -171,6 +178,8 @@ class SurveyRuntimeHelper {
                 $groupdescription = $stepInfo['gtext'];
             }
         }
+
+
 
         if ($previewquestion)
         {
@@ -1875,7 +1884,7 @@ class SurveyRuntimeHelper {
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
         $this->initTemplate();                                                  // Template settings
         $this->setJavascriptVar();
-        $this->setArgs();   
+        $this->setArgs();
 
         extract($args);
 
