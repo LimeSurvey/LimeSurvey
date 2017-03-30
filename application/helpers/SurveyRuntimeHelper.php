@@ -136,7 +136,9 @@ class SurveyRuntimeHelper {
         }
 
         if ( !$this->previewgrp && !$this->previewquestion){
-            $this->initMove();                                                   // main methods to init session, LEM, moves, errors, etc
+            $this->initMove();                                                  // main methods to init session, LEM, moves, errors, etc
+            $this->checkQuotasAndClearCancel();                                 // If the move is clearcancel, or confirmquota, then the process will stop here
+
             $aPrivateVariables = $this->getArgs();
 
             $this->thissurvey = $thissurvey;
@@ -642,28 +644,31 @@ class SurveyRuntimeHelper {
         $this->initFirstStep();                                                 // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav();                                          // Check if user used browser navigation, or relaoded page
-        $this->moveFirstChecks();                                               // If the move is clearcancel, or confirmquota, then the process will stop here
-        $this->checkPrevStep();                                                 // Check if prev step is set, else set it
-        $this->setMoveResult();
-        $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set
+    //    $this->moveFirstChecks();                                               // If the move is clearcancel, or confirmquota, then the process will stop here
 
-        // CHECK UPLOADED FILES
-        // TMSW - Move this into LEM::NavigateForwards?
-        $filenotvalidated = $this->filenotvalidated = checkUploadedFileValidity($this->surveyid, $this->move);
+        if ($this->move != 'clearcancel' && $this->move != 'confirmquota'){
+            $this->checkPrevStep();                                                 // Check if prev step is set, else set it
+            $this->setMoveResult();
+            $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set
 
-        //SEE IF THIS GROUP SHOULD DISPLAY
-        if ($_SESSION[$this->LEMsessid]['step'] == 0)
-            $show_empty_group = $this->show_empty_group = true;
+            // CHECK UPLOADED FILES
+            // TMSW - Move this into LEM::NavigateForwards?
+            $filenotvalidated = $this->filenotvalidated = checkUploadedFileValidity($this->surveyid, $this->move);
 
-        $move           = $this->move;
-        $moveResult     = $this->moveResult;
-        $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->surveyid]['totalquestions'];
+            //SEE IF THIS GROUP SHOULD DISPLAY
+            if ($_SESSION[$this->LEMsessid]['step'] == 0)
+                $show_empty_group = $this->show_empty_group = true;
+
+            $move           = $this->move;
+            $moveResult     = $this->moveResult;
+            $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->surveyid]['totalquestions'];
 
 
-        // For welcome screen
-        $this->thissurvey['iTotalquestions']   = $totalquestions;
-        $showxquestions                        = Yii::app()->getConfig('showxquestions');
-        $this->thissurvey['bShowxquestions']   = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) || ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y'));
+            // For welcome screen
+            $this->thissurvey['iTotalquestions']   = $totalquestions;
+            $showxquestions                        = Yii::app()->getConfig('showxquestions');
+            $this->thissurvey['bShowxquestions']   = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) || ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y'));
+        }
 
     }
 
@@ -939,7 +944,7 @@ class SurveyRuntimeHelper {
     /**
      * Check if the move is clearcancel or confirmquota
      */
-    private function moveFirstChecks()
+    private function checkQuotasAndClearCancel()
     {
         $move          = $this->move;
         $surveyid      = $this->surveyid;
