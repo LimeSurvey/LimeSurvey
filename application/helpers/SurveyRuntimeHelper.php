@@ -907,8 +907,6 @@ class SurveyRuntimeHelper {
     {
         // retrieve datas from local variable
         $surveyid      = $this->surveyid;
-        $surveyMode    = $this->surveyMode;
-        $surveyOptions = $this->surveyOptions;
         $LEMsessid     = $this->LEMsessid;
 
         if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey']){
@@ -920,14 +918,14 @@ class SurveyRuntimeHelper {
                 /* then pressing F5 or otherwise refreshing the current page, which is OK
                  * Seems OK only when movenext but not with move by index : same with $moveResult = LimeExpressionManager::GetLastMoveResult(true);
                  */
-                $LEMskipReprocessing = $this->LEMskipReprocessing =  true;
-                $move                = $this->move                = "movenext"; // so will re-display the survey
+                $this->LEMskipReprocessing =  true;
+                $this->move                = "movenext"; // so will re-display the survey
             }else{
                 // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
-                $LEMskipReprocessing = $this->LEMskipReprocessing = true;
-                $move                = $this->move                = "movenext"; // so will re-display the survey
-                $invalidLastPage     = $this->invalidLastPage     = true;
-                $backpopup           = $this->backpopup           =  gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
+                $this->LEMskipReprocessing = true;
+                $this->move                = "movenext"; // so will re-display the survey
+                $this->invalidLastPage     = true;
+                $this->backpopup           =  gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");    // TODO: twig
             }
         }
     }
