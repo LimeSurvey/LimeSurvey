@@ -124,19 +124,11 @@ class SurveyRuntimeHelper {
 
         $this->moveSubmitIfNeeded();
 
-        // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
+        $this->fixMaxStep();
 
+        // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
         $aPrivateVariables = $this->getArgs();
         extract($aPrivateVariables);
-
-
-
-
-        // NOTE: must stay after setPreview  because of ()$surveyMode == 'group' && $previewgrp) condition touching step
-        if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
-        {
-            $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
-        }
 
         //******************************************************************************************************
         //PRESENT SURVEY
@@ -1920,7 +1912,15 @@ class SurveyRuntimeHelper {
                 $this->groupdescription = $stepInfo['gtext'];
             }
         }
+    }
 
+    private function fixMaxStep()
+    {
+        // NOTE: must stay after setPreview  because of ()$surveyMode == 'group' && $previewgrp) condition touching step
+        if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
+        {
+            $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
+        }
     }
 
 }
