@@ -85,8 +85,6 @@ class SurveyRuntimeHelper {
     */
     public function run($surveyid,$args)
     {
-        $this->setVarFromArgs($args);                                           // Set the private variable from $args
-
         // Survey settings
         $this->setSurveySettings( $surveyid, $args);                            // All the results of those settings will be available in this function later with $this->getArgs();
 
@@ -1841,14 +1839,16 @@ class SurveyRuntimeHelper {
     }
 
 
-    private function initTemplate(){
+    private function initTemplate()
+    {
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
         $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
         $oTemplate->registerAssets();
         Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
     }
 
-    private function makeLanguageChanger(){
+    private function makeLanguageChanger()
+    {
 
         $thissurvey = $this->thissurvey;
 
@@ -1870,10 +1870,13 @@ class SurveyRuntimeHelper {
      * eg: $LEMsessid
      *
      */
-    function setSurveySettings( $surveyid, $args  ){
+    function setSurveySettings( $surveyid, $args  )
+    {
+        $this->setVarFromArgs($args);                                           // Set the private variable from $args
 
         // Template settings
         $this->initTemplate();
+
         $this->setJavascriptVar();
         $this->setArgs();
 
