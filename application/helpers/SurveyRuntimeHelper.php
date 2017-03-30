@@ -89,8 +89,6 @@ class SurveyRuntimeHelper {
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
         extract($args);
 
-        // $LEMdebugLevel - customizable debugging for Lime Expression Manager
-        $LEMdebugLevel       = $this->LEMdebugLevel;
         $LEMskipReprocessing = $this->LEMskipReprocessing;
         $LEMsessid           = $this->LEMsessid = 'survey_' . $surveyid;
 
@@ -105,7 +103,7 @@ class SurveyRuntimeHelper {
         $thissurvey       = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
         $this->thissurvey = $thissurvey;
         $surveyMode       = $this->surveyMode      = $this->getSurveyMode($thissurvey);
-        $surveyOptions    = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
+        $surveyOptions    = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
         $previewgrp       = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $previewquestion  = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
         $preview          = $this->preview         = ($previewquestion || $previewgrp);
@@ -138,7 +136,7 @@ class SurveyRuntimeHelper {
         if ( !$this->previewgrp && !$this->previewquestion){
             $this->initMove();                                                  // main methods to init session, LEM, moves, errors, etc
             $this->checkQuotas();                                               // check quotas (then the process will stop here)
-            $this->checkClearCancel();                                          
+            $this->checkClearCancel();
 
             $aPrivateVariables = $this->getArgs();
 
@@ -171,7 +169,7 @@ class SurveyRuntimeHelper {
         if ($surveyMode == 'group' && $previewgrp){
             $_gid = sanitize_int($param['gid']);
 
-            LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $LEMdebugLevel);
+            LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $this->LEMdebugLevel);
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
             if ($gseq == -1){
                 $sMessage = gT('Invalid group number for this survey: ') . $_gid;
@@ -203,7 +201,7 @@ class SurveyRuntimeHelper {
             {
                 if ($previewquestion) {
                     $_qid = sanitize_int($param['qid']);
-                    LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
+                    LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
                     $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                     $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
                     $stepInfo   =  $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
@@ -565,13 +563,13 @@ class SurveyRuntimeHelper {
 
 
         $thissurvey['aLEM']['debugtimming']['show'] = false;
-        if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING){
+        if (($this->LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING){
             $thissurvey['aLEM']['debugtimming']['show'] = true;
             $thissurvey['aLEM']['debugtimming']['script'] = LimeExpressionManager::GetDebugTimingMessage();
         }
 
         $thissurvey['aLEM']['debugvalidation']['show'] = false;
-        if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
+        if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
             $thissurvey['aLEM']['debugvalidation']['show']   = true;
             $thissurvey['aLEM']['debugvalidation']['message'] = $moveResult['message'];
         }
@@ -721,7 +719,6 @@ class SurveyRuntimeHelper {
         $move              = $this->move;
         $moveResult        = $this->moveResult;
         $LEMsessid         = $this->LEMsessid;
-        $LEMdebugLevel     = $this->LEMdebugLevel;
         $thissurvey        = $this->thissurvey;
         $sTemplateViewPath = $this->sTemplateViewPath;
 
@@ -839,7 +836,6 @@ class SurveyRuntimeHelper {
         $surveyid      = $this->surveyid;
         $surveyMode    = $this->surveyMode;
         $surveyOptions = $this->surveyOptions;
-        $LEMdebugLevel = $this->LEMdebugLevel;
         $LEMsessid     = $this->LEMsessid;
 
         // First time the survey is loaded
@@ -855,7 +851,7 @@ class SurveyRuntimeHelper {
                 LimeExpressionManager::SetDirtyFlag();
 
             // Init $LEM states.
-            LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+            LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
             $_SESSION[$LEMsessid]['step'] = 0;
 
             // Welcome page.
@@ -881,12 +877,11 @@ class SurveyRuntimeHelper {
         $surveyid      = $this->surveyid;
         $surveyMode    = $this->surveyMode;
         $surveyOptions = $this->surveyOptions;
-        $LEMdebugLevel = $this->LEMdebugLevel;
         $LEMsessid     = $this->LEMsessid;
 
         //$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
         $_SESSION[$LEMsessid]['step']   = $_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];
-        LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+        LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
         LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
     }
 
@@ -918,7 +913,6 @@ class SurveyRuntimeHelper {
         $surveyid      = $this->surveyid;
         $surveyMode    = $this->surveyMode;
         $surveyOptions = $this->surveyOptions;
-        $LEMdebugLevel = $this->LEMdebugLevel;
         $LEMsessid     = $this->LEMsessid;
 
         if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$LEMsessid]['LEMpostKey']) != $_SESSION[$LEMsessid]['LEMpostKey']){
@@ -994,14 +988,13 @@ class SurveyRuntimeHelper {
         $surveyid               = $this->surveyid;
         $surveyMode             = $this->surveyMode;
         $surveyOptions          = $this->surveyOptions;
-        $LEMdebugLevel          = $this->LEMdebugLevel;
         $LEMsessid              = $this->LEMsessid;
         $move                   = $this->move;
         $LEMskipReprocessing    = $this->LEMskipReprocessing;
 
         if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
 
-            LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
+            LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
 
             // Do it only if needed : we don't need it if we don't have index
             if(isset($_SESSION[$LEMsessid]['maxstep']) && $_SESSION[$LEMsessid]['maxstep']>$_SESSION[$LEMsessid]['step'] && $thissurvey['questionindex'] ){
