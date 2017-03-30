@@ -85,7 +85,6 @@ class SurveyRuntimeHelper {
     */
     public function run($surveyid,$args)
     {
-        global $errormsg;
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
         $LEMsessid  = $this->LEMsessid = 'survey_' . $surveyid;
 
@@ -96,7 +95,7 @@ class SurveyRuntimeHelper {
         $this->makeLanguageChanger();                                           //  language changer can be used on any entry screen, so it must be set first
         $thissurvey = $this->thissurvey;
 
-        extract($args);                                                         // TODO: Check if still needed at this level 
+        extract($args);                                                         // TODO: Check if still needed at this level
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
