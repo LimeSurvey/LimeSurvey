@@ -614,6 +614,9 @@ class SurveyRuntimeHelper {
             'gid'                    => $this->gid                    ,
             'groupname'              => $this->groupname              ,
             'groupdescription'       => $this->groupdescription       ,
+            'previewgrp'             => $this->previewgrp             ,
+            'previewquestion'        => $this->previewquestion        ,
+            'sTemplateViewPath'      => $this->sTemplateViewPath      ,
         );
         return $aPrivateVariables;
     }
@@ -1792,7 +1795,7 @@ class SurveyRuntimeHelper {
 
     private function initTemplate()
     {
-        $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
+        $oTemplate         = $this->template          = Template::model()->getInstance('', $this->surveyid);
         $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
         $oTemplate->registerAssets();
         Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
@@ -1804,7 +1807,7 @@ class SurveyRuntimeHelper {
         $thissurvey = $this->thissurvey;
 
         $thissurvey['alanguageChanger']['show']  = false;
-        $alanguageChangerDatas                   = getLanguageChangerDatas($sLangCode);
+        $alanguageChangerDatas                   = getLanguageChangerDatas($this->sLangCode);
 
         if ($alanguageChangerDatas){
             $thissurvey['alanguageChanger']['show']  = true;
@@ -1897,7 +1900,7 @@ class SurveyRuntimeHelper {
         $aPrivateVariables = $this->getArgs();
         extract($aPrivateVariables);
 
-        if ( !$previewgrp && !$previewquestion)
+        if ( !$this->previewgrp && !$this->previewquestion)
         {
             if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
                 $this->gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
@@ -1917,9 +1920,9 @@ class SurveyRuntimeHelper {
     private function fixMaxStep()
     {
         // NOTE: must stay after setPreview  because of ()$surveyMode == 'group' && $previewgrp) condition touching step
-        if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
+        if ($_SESSION[$this->LEMsessid]['step'] > $_SESSION[$this->LEMsessid]['maxstep'])
         {
-            $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
+            $_SESSION[$this->LEMsessid]['maxstep'] = $_SESSION[$this->LEMsessid]['step'];
         }
     }
 
