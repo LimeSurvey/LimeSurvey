@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-03-27 11:02:53+00:00\n"
+"POT-Creation-Date: 2017-03-30 12:50:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -283,7 +283,7 @@ msgid "Reason:"
 msgstr ""
 
 #: application/controllers/InstallerController.php:1367
-msgid "The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s)."
+msgid "The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s). Found version: %s"
 msgstr ""
 
 #: application/controllers/OptinController.php:70
@@ -680,7 +680,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:514
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:24
 #: application/helpers/qanda_helper.php:2486
-#: application/models/Question.php:729 application/models/QuestionGroup.php:282
+#: application/models/Question.php:730 application/models/QuestionGroup.php:282
 #: application/models/QuestionGroup.php:290
 #: application/views/admin/participants/massive_actions/_selector.php:18
 #: application/views/admin/participants/massive_actions/_selector.php:37
@@ -2895,7 +2895,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3377
 #: application/helpers/expressions/em_manager_helper.php:3389
 #: application/helpers/expressions/em_manager_helper.php:3780
-#: application/helpers/expressions/em_manager_helper.php:6467
+#: application/helpers/expressions/em_manager_helper.php:6468
 #: application/helpers/qanda_helper.php:1168
 #: application/helpers/qanda_helper.php:1424
 #: application/helpers/qanda_helper.php:2027
@@ -4457,7 +4457,7 @@ msgid "Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:452
-#: application/helpers/expressions/em_manager_helper.php:9285
+#: application/helpers/expressions/em_manager_helper.php:9286
 #: application/models/Boxes.php:63
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:52
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:55
@@ -4479,7 +4479,7 @@ msgid "Welcome and end text"
 msgstr ""
 
 #: application/controllers/admin/translate.php:482
-#: application/helpers/expressions/em_manager_helper.php:9299
+#: application/helpers/expressions/em_manager_helper.php:9300
 #: application/views/admin/survey/editLocalSettings_view.php:44
 #: application/views/admin/survey/editLocalSettings_view.php:48
 #: application/views/admin/survey/subview/tabCreate_view.php:87
@@ -6348,7 +6348,7 @@ msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:771
 #: application/helpers/userstatistics_helper.php:767
-#: application/models/Question.php:561
+#: application/models/Question.php:562
 msgid "Ranking"
 msgstr ""
 
@@ -7869,7 +7869,7 @@ msgid "Only integer values may be entered in these fields."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3379
-#: application/helpers/expressions/em_manager_helper.php:6470
+#: application/helpers/expressions/em_manager_helper.php:6471
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
@@ -7881,74 +7881,74 @@ msgstr ""
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5401
+#: application/helpers/expressions/em_manager_helper.php:5402
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5506
+#: application/helpers/expressions/em_manager_helper.php:5507
 msgid "Error in SQL update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6440
+#: application/helpers/expressions/em_manager_helper.php:6441
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6455
+#: application/helpers/expressions/em_manager_helper.php:6456
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6496
-#: application/helpers/expressions/em_manager_helper.php:6540
+#: application/helpers/expressions/em_manager_helper.php:6497
+#: application/helpers/expressions/em_manager_helper.php:6541
 msgid "Please complete all parts"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6528
+#: application/helpers/expressions/em_manager_helper.php:6529
 msgid "Please check at least one box per row"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6551
+#: application/helpers/expressions/em_manager_helper.php:6552
 msgid "Please rank all items"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9270
+#: application/helpers/expressions/em_manager_helper.php:9271
 msgid "Invalid question - probably missing sub-questions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9275
+#: application/helpers/expressions/em_manager_helper.php:9276
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9292
+#: application/helpers/expressions/em_manager_helper.php:9293
 #: application/views/admin/survey/editLocalSettings_view.php:37
 #: application/views/admin/survey/surveySummary_view.php:419
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9306
+#: application/helpers/expressions/em_manager_helper.php:9307
 #: application/views/admin/survey/editLocalSettings_view.php:55
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:142
 #: application/views/admin/survey/surveySummary_view.php:387
 msgid "End URL:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9310
+#: application/helpers/expressions/em_manager_helper.php:9311
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9310
+#: application/helpers/expressions/em_manager_helper.php:9311
 msgid "Relevance [Validation] (Default value)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9310
+#: application/helpers/expressions/em_manager_helper.php:9311
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9368
-#: application/helpers/expressions/em_manager_helper.php:9660
+#: application/helpers/expressions/em_manager_helper.php:9369
+#: application/helpers/expressions/em_manager_helper.php:9661
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9392
+#: application/helpers/expressions/em_manager_helper.php:9393
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:53
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:57
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:79
@@ -7959,43 +7959,43 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9394
+#: application/helpers/expressions/em_manager_helper.php:9395
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9412
+#: application/helpers/expressions/em_manager_helper.php:9413
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9412
+#: application/helpers/expressions/em_manager_helper.php:9413
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9556
+#: application/helpers/expressions/em_manager_helper.php:9557
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9568
+#: application/helpers/expressions/em_manager_helper.php:9569
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9730
+#: application/helpers/expressions/em_manager_helper.php:9731
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9768
+#: application/helpers/expressions/em_manager_helper.php:9769
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9774
+#: application/helpers/expressions/em_manager_helper.php:9775
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9777
+#: application/helpers/expressions/em_manager_helper.php:9778
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9780
+#: application/helpers/expressions/em_manager_helper.php:9781
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
@@ -8608,7 +8608,7 @@ msgid "Final equation to set in database, defaults to question text."
 msgstr ""
 
 #: application/helpers/questionHelper.php:249
-#: application/models/Question.php:631
+#: application/models/Question.php:632
 msgid "Equation"
 msgstr ""
 
@@ -10690,193 +10690,193 @@ msgstr ""
 msgid "Use web server authentication"
 msgstr ""
 
-#: application/models/Question.php:82
+#: application/models/Question.php:83
 msgid "Question code may not be empty."
 msgstr ""
 
-#: application/models/Question.php:110
+#: application/models/Question.php:111
 msgid "Subquestion codes must be unique."
 msgstr ""
 
-#: application/models/Question.php:115 application/models/Question.php:124
+#: application/models/Question.php:116 application/models/Question.php:125
 msgid "'%s' can not be used if the 'Other' option for this question is activated."
 msgstr ""
 
-#: application/models/Question.php:144
+#: application/models/Question.php:145
 msgid "Question codes must be unique."
 msgstr ""
 
-#: application/models/Question.php:145
+#: application/models/Question.php:146
 msgid "Question codes must start with a letter and may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:149
+#: application/models/Question.php:150
 msgid "'time' is a reserved word and can not be used for a subquestion."
 msgstr ""
 
-#: application/models/Question.php:150
+#: application/models/Question.php:151
 msgid "Subquestion codes may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:435
+#: application/models/Question.php:436
 msgid "Array dual scale"
 msgstr ""
 
-#: application/models/Question.php:436 application/models/Question.php:450
-#: application/models/Question.php:457 application/models/Question.php:464
-#: application/models/Question.php:478 application/models/Question.php:485
-#: application/models/Question.php:499 application/models/Question.php:611
-#: application/models/Question.php:618
+#: application/models/Question.php:437 application/models/Question.php:451
+#: application/models/Question.php:458 application/models/Question.php:465
+#: application/models/Question.php:479 application/models/Question.php:486
+#: application/models/Question.php:500 application/models/Question.php:612
+#: application/models/Question.php:619
 msgid "Arrays"
 msgstr ""
 
-#: application/models/Question.php:442
+#: application/models/Question.php:443
 msgid "5 Point Choice"
 msgstr ""
 
-#: application/models/Question.php:443 application/models/Question.php:520
-#: application/models/Question.php:541 application/models/Question.php:604
+#: application/models/Question.php:444 application/models/Question.php:521
+#: application/models/Question.php:542 application/models/Question.php:605
 msgid "Single choice questions"
 msgstr ""
 
-#: application/models/Question.php:449
+#: application/models/Question.php:450
 msgid "Array (5 Point Choice)"
 msgstr ""
 
-#: application/models/Question.php:456
+#: application/models/Question.php:457
 msgid "Array (10 Point Choice)"
 msgstr ""
 
-#: application/models/Question.php:463
+#: application/models/Question.php:464
 msgid "Array (Yes/No/Uncertain)"
 msgstr ""
 
-#: application/models/Question.php:470
+#: application/models/Question.php:471
 msgid "Date/Time"
 msgstr ""
 
-#: application/models/Question.php:471 application/models/Question.php:492
-#: application/models/Question.php:506 application/models/Question.php:513
-#: application/models/Question.php:534 application/models/Question.php:562
-#: application/models/Question.php:590 application/models/Question.php:597
-#: application/models/Question.php:625 application/models/Question.php:632
+#: application/models/Question.php:472 application/models/Question.php:493
+#: application/models/Question.php:507 application/models/Question.php:514
+#: application/models/Question.php:535 application/models/Question.php:563
+#: application/models/Question.php:591 application/models/Question.php:598
+#: application/models/Question.php:626 application/models/Question.php:633
 msgid "Mask questions"
 msgstr ""
 
-#: application/models/Question.php:477
+#: application/models/Question.php:478
 msgid "Array (Increase/Same/Decrease)"
 msgstr ""
 
-#: application/models/Question.php:484
+#: application/models/Question.php:485
 msgid "Array"
 msgstr ""
 
-#: application/models/Question.php:491
+#: application/models/Question.php:492
 msgid "Gender"
 msgstr ""
 
-#: application/models/Question.php:498
+#: application/models/Question.php:499
 msgid "Array by column"
 msgstr ""
 
-#: application/models/Question.php:505
+#: application/models/Question.php:506
 msgid "Language Switch"
 msgstr ""
 
-#: application/models/Question.php:512
+#: application/models/Question.php:513
 msgid "Multiple Numerical Input"
 msgstr ""
 
-#: application/models/Question.php:519
+#: application/models/Question.php:520
 msgid "List (Radio)"
 msgstr ""
 
-#: application/models/Question.php:526
+#: application/models/Question.php:527
 msgid "Multiple choice"
 msgstr ""
 
-#: application/models/Question.php:527 application/models/Question.php:548
+#: application/models/Question.php:528 application/models/Question.php:549
 msgid "Multiple choice questions"
 msgstr ""
 
-#: application/models/Question.php:533
+#: application/models/Question.php:534
 msgid "Numerical Input"
 msgstr ""
 
-#: application/models/Question.php:540
+#: application/models/Question.php:541
 msgid "List with comment"
 msgstr ""
 
-#: application/models/Question.php:547
+#: application/models/Question.php:548
 msgid "Multiple choice with comments"
 msgstr ""
 
-#: application/models/Question.php:554
+#: application/models/Question.php:555
 msgid "Multiple Short Text"
 msgstr ""
 
-#: application/models/Question.php:555 application/models/Question.php:569
-#: application/models/Question.php:576 application/models/Question.php:583
+#: application/models/Question.php:556 application/models/Question.php:570
+#: application/models/Question.php:577 application/models/Question.php:584
 msgid "Text questions"
 msgstr ""
 
-#: application/models/Question.php:568
+#: application/models/Question.php:569
 msgid "Short Free Text"
 msgstr ""
 
-#: application/models/Question.php:575
+#: application/models/Question.php:576
 msgid "Long Free Text"
 msgstr ""
 
-#: application/models/Question.php:582
+#: application/models/Question.php:583
 msgid "Huge Free Text"
 msgstr ""
 
-#: application/models/Question.php:589
+#: application/models/Question.php:590
 msgid "Text display"
 msgstr ""
 
-#: application/models/Question.php:596
+#: application/models/Question.php:597
 msgid "Yes/No"
 msgstr ""
 
-#: application/models/Question.php:603
+#: application/models/Question.php:604
 msgid "List (Dropdown)"
 msgstr ""
 
-#: application/models/Question.php:610
+#: application/models/Question.php:611
 msgid "Array (Numbers)"
 msgstr ""
 
-#: application/models/Question.php:617
+#: application/models/Question.php:618
 msgid "Array (Texts)"
 msgstr ""
 
-#: application/models/Question.php:624
+#: application/models/Question.php:625
 msgid "File upload"
 msgstr ""
 
-#: application/models/Question.php:713
+#: application/models/Question.php:714
 #: application/views/admin/survey/Question/listquestions.php:176
 msgid "Question preview"
 msgstr ""
 
-#: application/models/Question.php:717
+#: application/models/Question.php:718
 #: application/views/admin/survey/Question/editQuestion_view.php:17
 #: application/views/admin/survey/Question/editQuestion_view.php:33
 msgid "Edit question"
 msgstr ""
 
-#: application/models/Question.php:722
+#: application/models/Question.php:723
 #: application/views/admin/survey/Question/question_view.php:3
 msgid "Question summary"
 msgstr ""
 
-#: application/models/Question.php:730
+#: application/models/Question.php:731
 msgid "Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
-#: application/models/Question.php:810 application/models/Question.php:824
+#: application/models/Question.php:811 application/models/Question.php:825
 msgid "Not relevant for this question type"
 msgstr ""
 
