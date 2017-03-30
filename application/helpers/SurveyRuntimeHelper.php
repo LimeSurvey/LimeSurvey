@@ -89,7 +89,7 @@ class SurveyRuntimeHelper {
         $this->setVarFromArgs($args);                                           // Set the private variable from $args
         extract($args);
 
-        $LEMsessid           = $this->LEMsessid = 'survey_' . $surveyid;
+        $LEMsessid  = $this->LEMsessid = 'survey_' . $surveyid;
 
         // Template settings
         $oTemplate         = $this->template          = Template::model()->getInstance('', $surveyid);
@@ -98,7 +98,6 @@ class SurveyRuntimeHelper {
         Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
         // Survey settings
-        $this->surveyid   = $surveyid;
         $thissurvey       = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
         $this->thissurvey = $thissurvey;
         $surveyMode       = $this->surveyMode      = $this->getSurveyMode($thissurvey);
@@ -161,8 +160,6 @@ class SurveyRuntimeHelper {
         $redata = compact(array_keys(get_defined_vars()));
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
-
-        // createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
 
         //GET GROUP DETAILS
         if ($surveyMode == 'group' && $previewgrp){
