@@ -161,7 +161,10 @@ class SurveyRuntimeHelper {
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                 $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
                 $stepInfo   =  $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-        }else{
+        }
+
+        if ( !$previewgrp && !$surveyMode)
+        {
             if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
                 $gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
                 $groupname        = gT("Submit your answers");
@@ -181,7 +184,7 @@ class SurveyRuntimeHelper {
 
 
 
-
+        // NOTE: must stay after GET GROUP DETAIL because of ()$surveyMode == 'group' && $previewgrp) condition touching step
         if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
         {
             $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
