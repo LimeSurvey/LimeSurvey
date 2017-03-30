@@ -144,9 +144,6 @@ class SurveyRuntimeHelper {
 
         extract($aPrivateVariables);                                            // For redata
 
-        // We really need to replace redata get_defined_vars by something else.
-        $redata = compact(array_keys(get_defined_vars()));
-
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
 
         //GET GROUP DETAILS
