@@ -116,38 +116,23 @@ class SurveyRuntimeHelper {
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
 
+            $this->setGroup();
+
         }else{
             $this->setPreview();
         }
 
         $this->moveSubmitIfNeeded();
 
+        // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
+
         $aPrivateVariables = $this->getArgs();
         extract($aPrivateVariables);
 
-        // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
-        if ( !$previewgrp && !$previewquestion)
-        {
-            if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
-                $gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
-                $groupname        = gT("Submit your answers");
-                $groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
-            }
-            else if ($surveyMode != 'survey')
-            {
-                $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-                $gid              = $stepInfo['gid'];
-                $groupname        = $stepInfo['gname'];
-                $groupdescription = $stepInfo['gtext'];
-            }
-        }
 
 
 
-
-
-
-        // NOTE: must stay after GET GROUP DETAIL because of ()$surveyMode == 'group' && $previewgrp) condition touching step
+        // NOTE: must stay after setPreview  because of ()$surveyMode == 'group' && $previewgrp) condition touching step
         if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
         {
             $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
@@ -1912,6 +1897,30 @@ class SurveyRuntimeHelper {
                 $moveResult = $this->moveResult= LimeExpressionManager::JumpTo($qSec+1,true,false,true);
                 $stepInfo   = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
         }
+    }
+
+
+    private function setGroup()
+    {
+        $aPrivateVariables = $this->getArgs();
+        extract($aPrivateVariables);
+
+        if ( !$previewgrp && !$previewquestion)
+        {
+            if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
+                $this->gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
+                $this->groupname        = gT("Submit your answers");
+                $this->groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
+            }
+            else if ($surveyMode != 'survey')
+            {
+                $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                $this->gid              = $stepInfo['gid'];
+                $this->groupname        = $stepInfo['gname'];
+                $this->groupdescription = $stepInfo['gtext'];
+            }
+        }
+
     }
 
 }
