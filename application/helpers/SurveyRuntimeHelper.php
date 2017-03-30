@@ -1898,7 +1898,7 @@ class SurveyRuntimeHelper {
             }
 
             $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-            $gid              = $stepInfo['gid'];
+            $gid              = $this->gid      = $stepInfo['gid'];
             $groupname        = $stepInfo['gname'];
             $groupdescription = $stepInfo['gtext'];
 
