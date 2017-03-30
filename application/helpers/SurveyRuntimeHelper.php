@@ -98,27 +98,24 @@ class SurveyRuntimeHelper {
         Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
         // Survey settings
-        $thissurvey       = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
-        $this->thissurvey = $thissurvey;
-        $surveyMode       = $this->surveyMode      = $this->getSurveyMode($thissurvey);
-        $surveyOptions    = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
-        $previewgrp       = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $previewquestion  = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
-        $preview          = $this->preview         = ($previewquestion || $previewgrp);
-        $sLangCode        = $this->sLangCode       = App()->language;
-        $show_empty_group = $this->show_empty_group;
+        $thissurvey                 = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
+        $thissurvey['surveyUrl']    = App()->createUrl("/survey/index",array("sid"=>$surveyid));
+        $this->thissurvey           = $thissurvey;
+        $surveyMode                 = $this->surveyMode      = $this->getSurveyMode($thissurvey);
+        $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
+        $previewgrp                 = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
+        $previewquestion            = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $preview                    = $this->preview         = ($previewquestion || $previewgrp);
+        $sLangCode                  = $this->sLangCode       = App()->language;
+        $show_empty_group           = $this->show_empty_group;
 
         $this->setJavascriptVar();
         $this->setArgs();
 
         $aPrivateVariables = array();
 
-
         $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
         $thissurvey = $this->thissurvey;
-
-        $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
-        $this->thissurvey = $thissurvey;
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
@@ -1886,5 +1883,5 @@ class SurveyRuntimeHelper {
 
         $this->thissurvey = $thissurvey;
     }
-    
+
 }
