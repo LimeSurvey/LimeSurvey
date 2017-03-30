@@ -1901,17 +1901,17 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
             }
 
-            $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-            $gid              = $this->gid      = $stepInfo['gid'];
-            $groupname        = $stepInfo['gname'];
-            $groupdescription = $stepInfo['gtext'];
+            $stepInfo         = $this->stepInfo         = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+            $gid              = $this->gid              = $stepInfo['gid'];
+            $groupname        = $this->groupname        = $stepInfo['gname'];
+            $groupdescription = $this->groupdescription = $stepInfo['gtext'];
 
         }elseif($surveyMode == 'question' && $previewquestion){
                 $_qid       = sanitize_int($param['qid']);
                 LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
-                $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                $stepInfo   =  $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                $moveResult = $this->moveResult= LimeExpressionManager::JumpTo($qSec+1,true,false,true);
+                $stepInfo   = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
         }
     }
 
