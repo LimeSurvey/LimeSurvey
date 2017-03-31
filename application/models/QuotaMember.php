@@ -76,12 +76,6 @@ class QuotaMember extends LSActiveRecord
       $sValue = "";
 
       switch($this->question->type) {
-        case "I":
-        case "G":
-        case "H":
-            $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
-            $sValue = $this->code;
-          break;
         case "L":
         case "O":
         case "!":
@@ -89,7 +83,7 @@ class QuotaMember extends LSActiveRecord
             $sValue = $this->code;
           break;
         case "M":
-            $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code; 
+            $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
             $sValue = "Y";
           break;
         case "A":
@@ -97,6 +91,12 @@ class QuotaMember extends LSActiveRecord
             $temp = explode('-',$this->code);
             $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
             $sValue = $temp[1];
+          break;
+        case "I":
+        case "G":
+        case "Y":
+            $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+            $sValue = $this->code;
           break;
       }
 

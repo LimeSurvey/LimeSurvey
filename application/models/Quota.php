@@ -159,7 +159,7 @@ class Quota extends LSActiveRecord
     }
 
     public function getCompleteCount(){
-         if(!isset($this->sid) || !tableExists("survey_{$this->sid}")) 
+         if(!tableExists("survey_{$this->sid}"))
              return;
 
         if (count($this->quotaMembers) > 0)
@@ -175,6 +175,11 @@ class Quota extends LSActiveRecord
             $oCriteria->condition="submitdate IS NOT NULL";
             foreach ($aQuotaColumns as $sColumn=>$aValue)
             {
+              if($sColumn==0) {
+                trigger_error("This questiontype '{$member->memberInfo['type']}' is not supported for quotas and should not have been possible to set!");
+                return 0;
+              }
+
                 if(count($aValue)==1)
                 {
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
@@ -184,7 +189,8 @@ class Quota extends LSActiveRecord
                     $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
                 }
             }
-            return SurveyDynamic::model($this->survey->sid)->count($oCriteria);
+            $return = SurveyDynamic::model($this->sid)->count($oCriteria);
+            return $return;
         } else {
           return 0;
         }
