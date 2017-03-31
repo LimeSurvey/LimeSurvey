@@ -159,7 +159,7 @@ class Quota extends LSActiveRecord
     }
 
     public function getCompleteCount(){
-         if(!isset($this->survey->id) || !tableExists("survey_{$this->survey->id}")) 
+         if(!isset($this->sid) || !tableExists("survey_{$this->sid}")) 
              return;
 
         if (count($this->quotaMembers) > 0)
