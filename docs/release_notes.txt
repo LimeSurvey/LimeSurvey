@@ -35,6 +35,14 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.64.5 (build 170331) to 2.64.6 (build 170332) Mar 31, 2017
+-Fixed error: Still not working quotas created more problems (markusfluer)
+-Fixed issue: Not displaying quotas (markusfluer)
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by samarta
+
 Changes from 2.64.4 (build 170330) to 2.64.5 (build 170331) Mar 31, 2017
 -Fixed issue: Quotas are not accessible on a non activated survey. (markusfluer)
 #Updated translation: Catalan by qualitatuvic
