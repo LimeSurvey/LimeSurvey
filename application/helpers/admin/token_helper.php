@@ -107,12 +107,6 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 			}
 		}
 
-		//mail headers
-		$customheaders = array(
-			"X-surveyid"=>$iSurveyID,
-			"X-tokenid"=>$fieldsarray["{TOKEN}"]
-		);
-
 		global $maildebug;
 
 		//choose appriopriate email message
@@ -164,7 +158,47 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		}
 		else
 		{
-			if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyID), null, $customheaders))
+			/* type to model */
+			$sTemplate=str_replace(array("invite","remind"),array("invitation","reminder"),$sType);
+			$event = new PluginEvent('beforeTokenEmail');
+			$event->set('survey', $iSurveyID);
+			$event->set('type', $sTemplate);
+			$event->set('model', $sType);
+			$event->set('subject', $modsubject);
+			$event->set('to', $to);
+			$event->set('body', $modmessage);
+			$event->set('from', $from);
+			$event->set('bounce', getBounceEmail($iSurveyID));
+			$event->set('token', $aTokenRow);
+			$event->set('attachements', array());
+			App()->getPluginManager()->dispatchEvent($event);
+			/* Get the event updatable part */
+			$modsubject = $event->get('subject');
+			$modmessage = $event->get('body');
+			$to = $event->get('to');
+			$from = $event->get('from');
+			$bounce = $event->get('bounce');
+			/* get custom headers from event , and force LS core custom header */
+			$aCustomHeaders=array_merge(
+					(array) $event->get('customheaders'),
+					array(
+							"X-surveyid"=>$iSurveyID,
+							"X-tokenid"=>$aTokenRow["token"]
+					)
+			);
+			/* attachements */
+			$aRelevantAttachments=(array) $event->get('attachements');
+			if ($event->get('send', true) == false)
+			{
+					// This is some ancient global used for error reporting instead of a return value from the actual mail function..
+					$maildebug = $event->get('error', $maildebug);
+					$success = $event->get('error') == null;
+			}
+			else
+			{
+					$success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, $bounce, $aRelevantAttachments, $aCustomHeaders);
+			}
+			if ($success)
 			{
 			   $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
 													'email'=>$fieldsarray["{EMAIL}"],
