@@ -22,217 +22,215 @@
 */
 function emailTokens($iSurveyID,$aResultTokens,$sType)
 {
-	Yii::app()->loadHelper('common');
-	$oSurvey = Survey::model()->findByPk($iSurveyID);
-	if (getEmailFormat($iSurveyID) == 'html')
-		$bHtml = true;
-	else
-		$bHtml = false;
+    Yii::app()->loadHelper('common');
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $bHtml = (getEmailFormat($iSurveyID) == 'html');
 
-	$attributes = array_keys(getTokenFieldsAndNames($iSurveyID));
-	$oSurveyLocale=SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-	$oTokens = Token::model($iSurveyID);
-	$aSurveyLangs = $oSurvey->additionalLanguages;
-	array_unshift($aSurveyLangs, $oSurvey->language);
+    $attributes = array_keys(getTokenFieldsAndNames($iSurveyID));
+    $oSurveyLocale=SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+    $oTokens = Token::model($iSurveyID);
+    $aSurveyLangs = $oSurvey->additionalLanguages;
+    array_unshift($aSurveyLangs, $oSurvey->language);
 
-	//Convert result to associative array to minimize SurveyLocale access attempts
-	foreach($oSurveyLocale as $rows)
-	{
-		$oTempObject=array();
-		foreach($rows as $k=>$v)
-		{
-			$oTempObject[$k] = $v;
-		}
-		$aSurveyLocaleData[$rows['surveyls_language']]=$oTempObject;
-	}
+    //Convert result to associative array to minimize SurveyLocale access attempts
+    foreach($oSurveyLocale as $rows)
+    {
+        $oTempObject=array();
+        foreach($rows as $k=>$v)
+        {
+            $oTempObject[$k] = $v;
+        }
+        $aSurveyLocaleData[$rows['surveyls_language']]=$oTempObject;
+    }
 
-	foreach ($aResultTokens as $aTokenRow)
-	{
-		//Select language
-		$aTokenRow['language'] = trim($aTokenRow['language']);
-		$found = array_search($aTokenRow['language'], $aSurveyLangs);
-		if ($aTokenRow['language'] == '' || $found == false)
-		{
-			$aTokenRow['language'] = $oSurvey->language;
-		}
-		$sTokenLanguage = $aTokenRow['language'];
+    foreach ($aResultTokens as $aTokenRow)
+    {
+        //Select language
+        $aTokenRow['language'] = trim($aTokenRow['language']);
+        $found = array_search($aTokenRow['language'], $aSurveyLangs);
+        if ($aTokenRow['language'] == '' || $found == false)
+        {
+            $aTokenRow['language'] = $oSurvey->language;
+        }
+        $sTokenLanguage = $aTokenRow['language'];
 
 
-		//Build recipient
-		$to = array();
-		$aEmailaddresses = explode(';', $aTokenRow['email']);
-		foreach ($aEmailaddresses as $sEmailaddress)
-		{
-			$to[] = ($aTokenRow['firstname'] . " " . $aTokenRow['lastname'] . " <{$sEmailaddress}>");
-		}
+        //Build recipient
+        $to = array();
+        $aEmailaddresses = explode(';', $aTokenRow['email']);
+        foreach ($aEmailaddresses as $sEmailaddress)
+        {
+            $to[] = ($aTokenRow['firstname'] . " " . $aTokenRow['lastname'] . " <{$sEmailaddress}>");
+        }
 
 
-		//Populate attributes
-		$fieldsarray["{SURVEYNAME}"] = $aSurveyLocaleData[$sTokenLanguage]['surveyls_title'];
-		if ($fieldsarray["{SURVEYNAME}"] == '')
-			$fieldsarray["{SURVEYNAME}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_title'];
+        /* Different behaviour in GUI : we just fix token language if it false */
+        $fieldsarray["{SURVEYNAME}"] = $aSurveyLocaleData[$sTokenLanguage]['surveyls_title'];
+        if ($fieldsarray["{SURVEYNAME}"] == '') {
+            $fieldsarray["{SURVEYNAME}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_title'];
+        }
+        $fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$sTokenLanguage]['surveyls_description'];
+        if ($fieldsarray["{SURVEYDESCRIPTION}"] == '') {
+            $fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_description'];
+        }
+        $fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
+        $fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
+        $fieldsarray["{EXPIRY}"]=$oSurvey->expires;
+        if(empty($fieldsarray["{ADMINEMAIL}"] )) {
+            $fieldsarray["{ADMINEMAIL}"] = Yii::app()->getConfig('siteadminemail');
+        }
+        $from = $fieldsarray["{ADMINNAME}"] . ' <' . $fieldsarray["{ADMINEMAIL}"] . '>';
 
-		$fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$sTokenLanguage]['surveyls_description'];
-		if ($fieldsarray["{SURVEYDESCRIPTION}"] == '')
-			$fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_description'];
+        foreach ($attributes as $attributefield)
+        {
+            $fieldsarray['{' . strtoupper($attributefield) . '}'] = $aTokenRow[$attributefield];
+            $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$aTokenRow[$attributefield];
+        }
 
-		$fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
-		$fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
-		$fieldsarray["{EXPIRY}"]=$oSurvey->expires;
-		if(empty($fieldsarray["{ADMINEMAIL}"] ))
-			$fieldsarray["{ADMINEMAIL}"] = Yii::app()->getConfig('siteadminemail');
-		$from = $fieldsarray["{ADMINNAME}"] . ' <' . $fieldsarray["{ADMINEMAIL}"] . '>';
+        //create urls
+        $fieldsarray["{OPTOUTURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optout/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
+        $fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
+        $fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/" . trim($aTokenRow['language']) . "/");
 
-		foreach ($attributes as $attributefield)
-		{
-			$fieldsarray['{' . strtoupper($attributefield) . '}'] = $aTokenRow[$attributefield];
-			$fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$aTokenRow[$attributefield];
-		}
+        if($bHtml)
+        {
+            foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
+            {
+                $url = $fieldsarray["{{$key}URL}"];
+                $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
+                if ($key == 'SURVEY')
+                {
+                    $barebone_link = $url;
+                }
+            }
+        }
 
-		//create urls
-		$fieldsarray["{OPTOUTURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optout/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
-		$fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
-		$fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/" . trim($aTokenRow['language']) . "/");
+        global $maildebug;
 
-		if($bHtml)
-		{
-			foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
-			{
-				$url = $fieldsarray["{{$key}URL}"];
-				$fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
-				if ($key == 'SURVEY')
-				{
-					$barebone_link = $url;
-				}
-			}
-		}
+        //choose appriopriate email message
+        switch ($sType) {
+            case 'invite':
+                $sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite_subj'];
+                $sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite'];
+                break;
+            case 'remind':
+                $sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind_subj'];
+                $sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind'];
+                break;
+            case 'register':
+                $sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register_subj'];
+                $sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register'];
+                break;
+            case 'confirm':
+                $sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm_subj'];
+                $sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm'];
+                break;
+            default:
+                throw new Exception('Invalid template name');
+        }
 
-		global $maildebug;
+        $modsubject = $sSubject;
+        $modmessage = $sMessage;
 
-		//choose appriopriate email message
-		switch ($sType) {
-			case 'invite':
-				$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite_subj'];
-				$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite'];
-				break;
-			case 'remind':
-				$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind_subj'];
-				$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind'];
-				break;
-			case 'register':
-				$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register_subj'];
-				$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register'];
-				break;
-			case 'confirm':
-				$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm_subj'];
-				$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_confirm'];
-				break;
-			default:
-				throw new Exception('Invalid template name');
-		}
-		
-		$modsubject = $sSubject;
-		$modmessage = $sMessage;
-		
-		if (isset($barebone_link))
-		{
-			$modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
-			$modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
-		}
+        if (isset($barebone_link))
+        {
+            $modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
+            $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
+        }
 
-		$modsubject = ReplaceFields($modsubject, $fieldsarray);
-		$modmessage = ReplaceFields($modmessage, $fieldsarray);
+        $modsubject = ReplaceFields($modsubject, $fieldsarray);
+        $modmessage = ReplaceFields($modmessage, $fieldsarray);
 
-		if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
-		{
-		   $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
-												'email'=>$fieldsarray["{EMAIL}"],
-												'status'=>'fail',
-												'error'=>'Token not valid yet');
+        if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
+        {
+           $aResult[$aTokenRow['tid']] =  array(
+            'name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
+            'email'=>$fieldsarray["{EMAIL}"],
+            'status'=>'fail',
+            'error'=>'Token not valid yet'
+        );
+        }
+        elseif (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
+        {
+            $aResult[$aTokenRow['tid']] =  array(
+                'name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
+                'email'=>$fieldsarray["{EMAIL}"],
+                'status'=>'fail',
+                'error'=>'Token not valid anymore'
+            );
+        }
+        else
+        {
+            /* type to model */
+            $sTemplate=str_replace(array("invite","remind"),array("invitation","reminder"),$sType);
+            $event = new PluginEvent('beforeTokenEmail');
+            $event->set('survey', $iSurveyID);
+            $event->set('type', $sTemplate);
+            $event->set('model', $sType);
+            $event->set('subject', $modsubject);
+            $event->set('to', $to);
+            $event->set('body', $modmessage);
+            $event->set('from', $from);
+            $event->set('bounce', getBounceEmail($iSurveyID));
+            $event->set('token', $aTokenRow);
+            $event->set('attachements', array());
+            App()->getPluginManager()->dispatchEvent($event);
+            /* Get the event updatable part */
+            $modsubject = $event->get('subject');
+            $modmessage = $event->get('body');
+            $to = $event->get('to');
+            $from = $event->get('from');
+            $bounce = $event->get('bounce');
+            /* get custom headers from event , and force LS core custom header */
+            $aCustomHeaders=array_merge(
+                (array) $event->get('customheaders'),
+                array(
+                    "X-surveyid"=>$iSurveyID,
+                    "X-tokenid"=>$aTokenRow["token"]
+                )
+            );
+            /* attachements */
+            $aRelevantAttachments=(array) $event->get('attachements');
+            if ($event->get('send', true) == false)
+            {
+                // This is some ancient global used for error reporting instead of a return value from the actual mail function..
+                $maildebug = $event->get('error', $maildebug);
+                $success = $event->get('error') == null;
+            }
+            else
+            {
+                $success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, $bounce, $aRelevantAttachments, $aCustomHeaders);
+            }
+            if ($success)
+            {
+                $aResult[$aTokenRow['tid']] =  array(
+                    'name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
+                    'email'=>$fieldsarray["{EMAIL}"],
+                    'status'=>'OK'
+                );
 
-		}
-		elseif (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
-		{
-		   $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
-												'email'=>$fieldsarray["{EMAIL}"],
-												'status'=>'fail',
-												'error'=>'Token not valid anymore');
-
-		}
-		else
-		{
-			/* type to model */
-			$sTemplate=str_replace(array("invite","remind"),array("invitation","reminder"),$sType);
-			$event = new PluginEvent('beforeTokenEmail');
-			$event->set('survey', $iSurveyID);
-			$event->set('type', $sTemplate);
-			$event->set('model', $sType);
-			$event->set('subject', $modsubject);
-			$event->set('to', $to);
-			$event->set('body', $modmessage);
-			$event->set('from', $from);
-			$event->set('bounce', getBounceEmail($iSurveyID));
-			$event->set('token', $aTokenRow);
-			$event->set('attachements', array());
-			App()->getPluginManager()->dispatchEvent($event);
-			/* Get the event updatable part */
-			$modsubject = $event->get('subject');
-			$modmessage = $event->get('body');
-			$to = $event->get('to');
-			$from = $event->get('from');
-			$bounce = $event->get('bounce');
-			/* get custom headers from event , and force LS core custom header */
-			$aCustomHeaders=array_merge(
-					(array) $event->get('customheaders'),
-					array(
-							"X-surveyid"=>$iSurveyID,
-							"X-tokenid"=>$aTokenRow["token"]
-					)
-			);
-			/* attachements */
-			$aRelevantAttachments=(array) $event->get('attachements');
-			if ($event->get('send', true) == false)
-			{
-					// This is some ancient global used for error reporting instead of a return value from the actual mail function..
-					$maildebug = $event->get('error', $maildebug);
-					$success = $event->get('error') == null;
-			}
-			else
-			{
-					$success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, $bounce, $aRelevantAttachments, $aCustomHeaders);
-			}
-			if ($success)
-			{
-			   $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
-													'email'=>$fieldsarray["{EMAIL}"],
-													'status'=>'OK');
-
-				if($sType == 'invite' || $sType == 'register')
-					$oTokens->updateByPk($aTokenRow['tid'], array('sent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
-
-				if($sType == 'remind')
-				{
-					$iRCount = $oTokens->findByPk($aTokenRow['tid'])->remindercount +1;
-					$oTokens->updateByPk($aTokenRow['tid'], array('remindersent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
-					$oTokens->updateByPk($aTokenRow['tid'],array('remindercount' => $iRCount));
-				 }
-
-			}
-			else
-			{
-
-			   $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
-													'email'=>$fieldsarray["{EMAIL}"],
-													'status'=>'fail',
-													'error'=>$maildebug);
-			}
-		}
-
-		unset($fieldsarray);
-	}
-
-
-	return $aResult;
+                if($sType == 'invite' || $sType == 'register') {
+                    $oTokens->updateByPk($aTokenRow['tid'], array('sent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
+                }
+                if($sType == 'remind') {
+                    $iRCount = $oTokens->findByPk($aTokenRow['tid'])->remindercount +1;
+                    $oTokens->updateByPk($aTokenRow['tid'], array('remindersent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
+                    $oTokens->updateByPk($aTokenRow['tid'],array('remindercount' => $iRCount));
+                }
+            }
+            else
+            {
+                $aResult[$aTokenRow['tid']] =  array(
+                    'name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
+                    'email'=>$fieldsarray["{EMAIL}"],
+                    'status'=>'fail',
+                    'error'=>$maildebug
+                );
+            }
+        }
+        unset($fieldsarray);
+    }
+    return $aResult;
 }
 
 
