@@ -263,24 +263,7 @@ class RegisterController extends LSYii_Controller {
         $sBounce=getBounceEmail($iSurveyId);
         $sTo=$oToken->email;
         $sitename =  Yii::app()->getConfig('sitename');
-        // Plugin event for email handling (Same than admin token but with register type)
-        $event = new PluginEvent('beforeTokenEmail');
-        $event->set('survey', $iSurveyId);
-        $event->set('type', 'register');
-        $event->set('model', 'register');
-        $event->set('subject', $aMail['subject']);
-        $event->set('to', $sTo);
-        $event->set('body', $aMail['message']);
-        $event->set('from', $sFrom);
-        $event->set('bounce',$sBounce );
-        $event->set('token', $oToken->attributes);
-        App()->getPluginManager()->dispatchEvent($event);
-        $aMail['subject'] = $event->get('subject');
-        $aMail['message'] = $event->get('body');
-        $sTo = $event->get('to');
-        $sFrom = $event->get('from');
-        $sBounce = $event->get('bounce');
-
+        /* Get attachments */
         $aRelevantAttachments = array();
         if (isset($aSurveyInfo['attachments']))
         {
@@ -301,7 +284,33 @@ class RegisterController extends LSYii_Controller {
                 }
             }
         }
-
+        // Plugin event for email handling (Same than admin token but with register type)
+        $event = new PluginEvent('beforeTokenEmail');
+        $event->set('survey', $iSurveyId);
+        $event->set('type', 'register');
+        $event->set('model', 'register');
+        $event->set('subject', $aMail['subject']);
+        $event->set('to', $sTo);
+        $event->set('body', $aMail['message']);
+        $event->set('from', $sFrom);
+        $event->set('bounce',$sBounce );
+        $event->set('token', $oToken->attributes);
+        $event->set('attachements', $aRelevantAttachments);
+        App()->getPluginManager()->dispatchEvent($event);
+        $aMail['subject'] = $event->get('subject');
+        $aMail['message'] = $event->get('body');
+        $sTo = $event->get('to');
+        $sFrom = $event->get('from');
+        $sBounce = $event->get('bounce');
+        /* get custom headers from event , and force LS core custom header */
+        $aCustomHeaders=array_merge(
+            (array) $event->get('customheaders'),
+            array(
+                "X-surveyid"=>$iSurveyId,
+                "X-tokenid"=>$oToken->token,
+            )
+        );
+        $aRelevantAttachments=(array) $event->get('attachements');
         if ($event->get('send', true) == false)
         {
             $this->sMessage=$event->get('message', $this->sMailMessage); // event can send is own message
@@ -312,7 +321,7 @@ class RegisterController extends LSYii_Controller {
                 $oToken->save();
             }
         }
-        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename,$useHtmlEmail,$sBounce,$aRelevantAttachments))
+        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename,$useHtmlEmail,$sBounce,$aRelevantAttachments,$aCustomHeaders))
         {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));

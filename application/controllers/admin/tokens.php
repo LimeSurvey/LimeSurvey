@@ -1384,8 +1384,7 @@ class tokens extends Survey_Common_Action
                                                        ->createAbsoluteUrl("/survey/index",array("sid"=>$iSurveyId,"token"=>$emrow['token'],"lang"=>trim($emrow['language'])));
                     // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
                     $fieldsarray["{EXPIRY}"]=$aData['thissurvey']["expires"];
-                    $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
-                    '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
+
                     global $maildebug;
                     $modsubject = $sSubject[$emrow['language']];
                     $modmessage = $sMessage[$emrow['language']];
@@ -1442,17 +1441,18 @@ class tokens extends Survey_Common_Action
                                 }
                             }
                         }
-
                         /**
                          * Event for email handling.
-                         * Parameter    type    description:
-                         * subject      rw      Body of the email
-                         * to           rw      Recipient(s)
-                         * from         rw      Sender(s)
-                         * type         r       "invitation" or "reminder"
-                         * send         w       If true limesurvey will send the email. Setting this to false will cause limesurvey to assume the mail has been sent by the plugin.
-                         * error        w       If set and "send" is true, log the error as failed email attempt.
-                         * token        r       Raw token data.
+                         * Parameter     type    description:
+                         * subject       rw      Body of the email
+                         * to            rw      Recipient(s)
+                         * from          rw      Sender(s)
+                         * type          r       "invitation" or "reminder"
+                         * send          w       If true limesurvey will send the email. Setting this to false will cause limesurvey to assume the mail has been sent by the plugin.
+                         * error         w       If set and "send" is true, log the error as failed email attempt.
+                         * token         r       Raw token data.
+                         * customheaders w      array of custom headers
+                         * attachements  rw      array of attachements
                          */
                         $event = new PluginEvent('beforeTokenEmail');
                         $event->set('survey', $iSurveyId);
@@ -1464,12 +1464,25 @@ class tokens extends Survey_Common_Action
                         $event->set('from', $from);
                         $event->set('bounce', getBounceEmail($iSurveyId));
                         $event->set('token', $emrow);
+                        $event->set('attachements', $aRelevantAttachments);
                         App()->getPluginManager()->dispatchEvent($event);
+                        /* Get the event updatable part */
                         $modsubject = $event->get('subject');
                         $modmessage = $event->get('body');
                         $to = $event->get('to');
                         $from = $event->get('from');
                         $bounce = $event->get('bounce');
+                        /* get custom headers from event , and force LS core custom header */
+                        $aCustomHeaders=array_merge(
+                            (array) $event->get('customheaders'),
+                            array(
+                                "X-surveyid"=>$iSurveyId,
+                                "X-tokenid"=>$fieldsarray["{TOKEN}"]
+                            )
+                        );
+                        /* attachements */
+                        $aRelevantAttachments=(array) $event->get('attachements');
+                        /* send if plugin allow it */
                         if ($event->get('send', true) == false)
                         {
                             // This is some ancient global used for error reporting instead of a return value from the actual mail function..
@@ -1478,7 +1491,7 @@ class tokens extends Survey_Common_Action
                         }
                         else
                         {
-                            $success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, $bounce, $aRelevantAttachments, $customheaders);
+                            $success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, $bounce, $aRelevantAttachments, $aCustomHeaders);
                         }
 
                         if ($success)
