@@ -175,11 +175,6 @@ class Quota extends LSActiveRecord
             $oCriteria->condition="submitdate IS NOT NULL";
             foreach ($aQuotaColumns as $sColumn=>$aValue)
             {
-              if($sColumn==0) {
-                trigger_error("This questiontype '{$member->memberInfo['type']}' is not supported for quotas and should not have been possible to set!");
-                return 0;
-              }
-
                 if(count($aValue)==1)
                 {
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
