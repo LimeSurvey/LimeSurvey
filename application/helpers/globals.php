@@ -31,7 +31,5 @@
         {
             $msg = $trace['file'].' ('.$trace['line']."):\n" . $msg;
         }
-        Yii::trace($msg, 'vardump');
+        Yii::log($msg, 'trace','vardump');
     }
-    
-?>

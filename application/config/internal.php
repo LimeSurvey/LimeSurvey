@@ -11,7 +11,8 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 } else {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
-
+/* Some old config file don't have debug part */
+$debug=isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 if (! date_default_timezone_set(@date_default_timezone_get()))
 {
 
@@ -130,10 +131,15 @@ $internalConfig = array(
             'routes' => array(
                 'vardump' => array(
                     'class' => 'CWebLogRoute',
-                    'categories' => 'vardump', // tracevar function
+                    'categories' => 'vardump',
+                    'enabled'=>$debug>1,
                 ),
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
+                ),
+                'limesurveyErrorAndWarning'=>array(
+                    'class' => $debug ? 'CWebLogRoute' : 'CFileLogRoute',
+                    'levels' => 'warning, error',
                 ),
             )
         ),
