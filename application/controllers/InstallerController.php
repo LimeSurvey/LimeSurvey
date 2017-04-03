@@ -331,7 +331,7 @@ class InstallerController extends CController {
                         $sMySQLVersion = $this->connection->getServerVersion();
                         if (version_compare($sMySQLVersion,'4.1','<'))
                         {
-                            die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version:".$sMySQLVersion);
+                            die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
                         }
                         @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute();  //Checked
                         @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();  //Checked
