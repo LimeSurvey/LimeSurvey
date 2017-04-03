@@ -72,8 +72,8 @@ class QuotaMember extends LSActiveRecord
 
     public function getMemberInfo()
     {
-        $sFieldName = "0";
-        $sValue = "";
+        $sFieldName = null;
+        $sValue = null;
 
         switch($this->question->type) {
             case "L":

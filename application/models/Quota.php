@@ -159,16 +159,28 @@ class Quota extends LSActiveRecord
     }
 
     public function getCompleteCount(){
-         if(!tableExists("survey_{$this->sid}"))
-             return;
-
-        if (count($this->quotaMembers) > 0)
-        {
+        if(!tableExists("survey_{$this->sid}")) {
+            return;
+        }
+        /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
+        $aExistingColumnName=SurveyDynamic::model($this->sid)->getTableSchema()->getColumnNames();
+        if (count($this->quotaMembers) > 0) {
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
             foreach ($this->quotaMembers as $member)
             {
-              $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
+                if(!in_array($member->memberInfo['fieldname'],$aExistingColumnName)) {
+                    \Yii::log(
+                        sprintf(
+                            "Invalid quota member %s",
+                            $member->memberInfo['fieldname']
+                        ),
+                        'warning',
+                        'application.model.Quota'
+                    );
+                    return;
+                }
+                $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
             }
 
             $oCriteria = new CDbCriteria;
