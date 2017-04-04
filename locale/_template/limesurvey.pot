@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-03-30 12:50:15+00:00\n"
+"POT-Creation-Date: 2017-04-04 09:32:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -428,9 +428,9 @@ msgstr ""
 #: application/controllers/admin/questions.php:1038
 #: application/controllers/admin/questions.php:1176
 #: application/controllers/admin/quotas.php:151
-#: application/controllers/admin/quotas.php:380
-#: application/controllers/admin/quotas.php:448
-#: application/controllers/admin/quotas.php:470
+#: application/controllers/admin/quotas.php:382
+#: application/controllers/admin/quotas.php:450
+#: application/controllers/admin/quotas.php:472
 #: application/controllers/admin/responses.php:674
 #: application/controllers/admin/surveyadmin.php:221
 #: application/controllers/admin/surveyadmin.php:376
@@ -568,7 +568,7 @@ msgstr ""
 
 #: application/controllers/Statistics_userController.php:331
 #: application/controllers/admin/dataentry.php:538
-#: application/controllers/admin/quotas.php:261
+#: application/controllers/admin/quotas.php:263
 #: application/controllers/admin/responses.php:159
 #: application/controllers/admin/responses.php:160
 #: application/controllers/admin/tokens.php:1634
@@ -1434,7 +1434,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:936
 #: application/controllers/admin/printablesurvey.php:1041
 #: application/controllers/admin/printablesurvey.php:1057
-#: application/controllers/admin/quotas.php:606
+#: application/controllers/admin/quotas.php:608
 #: application/controllers/admin/tokens.php:2354
 #: application/core/Survey_Common_Action.php:1193
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
@@ -1586,7 +1586,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:937
 #: application/controllers/admin/printablesurvey.php:1043
 #: application/controllers/admin/printablesurvey.php:1059
-#: application/controllers/admin/quotas.php:607
+#: application/controllers/admin/quotas.php:609
 #: application/controllers/admin/tokens.php:2356
 #: application/core/Survey_Common_Action.php:1189
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:265
@@ -1787,7 +1787,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:769
 #: application/controllers/admin/printablesurvey.php:344
 #: application/controllers/admin/printablesurvey.php:659
-#: application/controllers/admin/quotas.php:562
+#: application/controllers/admin/quotas.php:564
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:250
 #: application/helpers/admin/statistics_helper.php:1457
 #: application/helpers/common_helper.php:1510
@@ -1807,7 +1807,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:770
 #: application/controllers/admin/printablesurvey.php:343
 #: application/controllers/admin/printablesurvey.php:660
-#: application/controllers/admin/quotas.php:561
+#: application/controllers/admin/quotas.php:563
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:254
 #: application/helpers/admin/statistics_helper.php:1458
 #: application/helpers/common_helper.php:1509
@@ -2589,7 +2589,7 @@ msgstr ""
 #: application/controllers/admin/participantsaction.php:764
 #: application/controllers/admin/templates.php:172
 #: application/core/Survey_Common_Action.php:1380
-#: application/helpers/frontend_helper.php:2586
+#: application/helpers/frontend_helper.php:2585
 #: application/views/admin/homepagesettings/index.php:9
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/question_subviews/_modals.php:113
@@ -3121,33 +3121,33 @@ msgstr ""
 msgid "Quotas"
 msgstr ""
 
-#: application/controllers/admin/quotas.php:261
+#: application/controllers/admin/quotas.php:263
 #: application/models/Quota.php:113
 msgid "Quota name"
 msgstr ""
 
-#: application/controllers/admin/quotas.php:261
+#: application/controllers/admin/quotas.php:263
 #: application/models/Quota.php:115
 msgid "Limit"
 msgstr ""
 
-#: application/controllers/admin/quotas.php:261
+#: application/controllers/admin/quotas.php:263
 msgid "Remaining"
 msgstr ""
 
-#: application/controllers/admin/quotas.php:327
+#: application/controllers/admin/quotas.php:329
 msgid "Quota with ID %s was deleted"
 msgstr ""
 
-#: application/controllers/admin/quotas.php:360
+#: application/controllers/admin/quotas.php:362
 msgid "Quota saved"
 msgstr ""
 
-#: application/controllers/admin/quotas.php:499
+#: application/controllers/admin/quotas.php:501
 msgid "New quota saved"
 msgstr ""
 
-#: application/controllers/admin/quotas.php:520
+#: application/controllers/admin/quotas.php:522
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
 
@@ -3925,8 +3925,8 @@ msgid "Hint when response is not valid"
 msgstr ""
 
 #: application/controllers/admin/templates.php:1211
-#: application/helpers/frontend_helper.php:1791
-#: application/helpers/frontend_helper.php:2250
+#: application/helpers/frontend_helper.php:1790
+#: application/helpers/frontend_helper.php:2249
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:62
 #: application/views/installer/dbsettings_view.php:12
@@ -3938,7 +3938,7 @@ msgstr ""
 
 #: application/controllers/admin/templates.php:1212
 #: application/controllers/admin/templates.php:1220
-#: application/helpers/frontend_helper.php:1806
+#: application/helpers/frontend_helper.php:1805
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:47
 #: application/views/admin/quotas/newanswer_view.php:29
 #: application/views/admin/quotas/newanswertwo_view.php:35
@@ -4863,7 +4863,7 @@ msgstr ""
 
 #: application/controllers/survey/index.php:434
 #: application/helpers/frontend_helper.php:1558
-#: application/helpers/frontend_helper.php:1725
+#: application/helpers/frontend_helper.php:1724
 msgid "For further information please contact %s"
 msgstr ""
 
@@ -6005,7 +6005,7 @@ msgstr ""
 #: application/helpers/SurveyRuntimeHelper.php:192
 #: application/helpers/SurveyRuntimeHelper.php:193
 #: application/helpers/SurveyRuntimeHelper.php:370
-#: application/helpers/frontend_helper.php:1803
+#: application/helpers/frontend_helper.php:1802
 #: application/helpers/replacements_helper.php:334
 #: application/views/admin/dataentry/active_html_view.php:99
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
@@ -8060,27 +8060,27 @@ msgstr ""
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1716
+#: application/helpers/frontend_helper.php:1715
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1719
+#: application/helpers/frontend_helper.php:1718
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1722
+#: application/helpers/frontend_helper.php:1721
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2585
+#: application/helpers/frontend_helper.php:2584
 msgid "This website uses cookies. By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2587
+#: application/helpers/frontend_helper.php:2586
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2588
+#: application/helpers/frontend_helper.php:2587
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
