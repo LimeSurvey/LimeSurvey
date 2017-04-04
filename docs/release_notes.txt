@@ -35,6 +35,21 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.64.6 (build 170332) to 2.64.7 (build 170404) Apr 4, 2017
+-Fixed issue #12187: invitation mails are not being sent using json-rpc (brammeleman)
+-Fixed issue #12249: This survey does not work with quota (Denis Chenu)
+-Fixed issue #12254: CSRF issue in admin after testing a survey (Carsten Schmitz)
+-Fixed issue: Collation error in token import when the file charset is not properly detected (Carsten Schmitz)
+#Updated translation: Czech by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Hungarian by kkd
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+
+
 Changes from 2.64.5 (build 170331) to 2.64.6 (build 170332) Mar 31, 2017
 -Fixed error: Still not working quotas created more problems (markusfluer)
 -Fixed issue: Not displaying quotas (markusfluer)
