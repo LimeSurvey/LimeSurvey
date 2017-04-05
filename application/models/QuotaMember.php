@@ -72,40 +72,53 @@ class QuotaMember extends LSActiveRecord
 
     public function getMemberInfo()
     {
-      $sFieldName = "0";
-      if ($this->question->type == "I" || $this->question->type == "G" || $this->question->type == "Y")
-      {
-          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
-          $sValue = $this->code;
-      }
+        $sFieldName = null;
+        $sValue = null;
 
-      if($this->question->type == "L" || $this->question->type == "O" || $this->question->type =="!")
-      {
-          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
-          $sValue = $this->code;
-      }
+        switch($this->question->type) {
+            case "L":
+            case "O":
+            case "!":
+                $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+                $sValue = $this->code;
+                break;
+            case "M":
+                $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
+                $sValue = "Y";
+                break;
+            case "A":
+            case "B":
+                $temp = explode('-',$this->code);
+                $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
+                $sValue = $temp[1];
+                break;
+            case "I":
+            case "G":
+            case "Y":
+                $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+                $sValue = $this->code;
+                break;
+            default:
+                // "Impossible" situation.
+                \Yii::log(
+                    sprintf(
+                        "This question type %s is not supported for quotas and should not have been possible to set!",
+                        $this->question->type
+                    ),
+                    'warning',
+                    'application.model.QuotaMember'
+                );
+                break;
+        }
 
-      if($this->question->type == "M")
-      {
-          $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
-          $sValue = "Y";
-      }
-
-      if($this->question->type == "A" || $this->question->type == "B")
-      {
-          $temp = explode('-',$this->code);
-          $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
-          $sValue = $temp[1];
-      }
-
-      return array(
-          'title' => $this->question->title,
-          'type' => $this->question->type,
-          'code' => $this->code,
-          'value' => $sValue,
-          'qid' => $this->qid,
-          'fieldname' => $sFieldName,
-      );
+        return array(
+            'title' => $this->question->title,
+            'type' => $this->question->type,
+            'code' => $this->code,
+            'value' => $sValue,
+            'qid' => $this->qid,
+            'fieldname' => $sFieldName,
+        );
     }
 
     function insertRecords($data)

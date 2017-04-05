@@ -801,7 +801,7 @@ function getPHPDateFromDateFormat($sDateformat)
     /**
      * Convert a 'dateformat' format string to a 'jsdate' format.
      * For Bootstrap, that means using capital letters, e.g.
-     * MM/DD/YYYY instead of mm/dd/yyyy.
+     * MM/DD/YYYY instead of mm/dd/yyyy and mm instead of MM for minutes.
      *
      * @param $sDateformat string
      * @returns string
@@ -809,22 +809,7 @@ function getPHPDateFromDateFormat($sDateformat)
      */
 function getJSDateFromDateFormat($sDateformat)
 {
-    $newDateFormat = str_replace(
-        array(
-            "d",   // day
-            "m",   // month
-            "y",   // year
-            "M",   // minutes
-        ),
-        array(
-            "D",   // day
-            "M",   // month
-            "Y",   // year
-            "m",   // minutes
-        ),
-        $sDateformat
-    );
-    return $newDateFormat;
+    return strtr($sDateformat,"dmyM","DMYm");
 }
 
 
