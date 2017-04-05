@@ -1836,6 +1836,7 @@ class SurveyRuntimeHelper {
         $LEMsessid                  = $this->LEMsessid = 'survey_' . $surveyid;
         $thissurvey                 = (!$thissurvey)?getSurveyInfo($surveyid):$thissurvey;
         $thissurvey['surveyUrl']    = App()->createUrl("/survey/index",array("sid"=>$surveyid));
+        $thissurvey['oTemplate']    = (array) $this->template;
         $this->thissurvey           = $thissurvey;
         $surveyMode                 = $this->surveyMode      = $this->getSurveyMode($thissurvey);
         $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel, (isset($timeadjust)? $timeadjust : 0), (isset($clienttoken)?$clienttoken : NULL) );
