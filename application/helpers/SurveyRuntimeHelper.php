@@ -547,7 +547,6 @@ class SurveyRuntimeHelper {
         $this->initFirstStep();                                                 // If it's the first time user load this survey, will init session and LEM
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav();                                          // Check if user used browser navigation, or relaoded page
-    //    $this->moveFirstChecks();                                               // If the move is clearcancel, or confirmquota, then the process will stop here
 
         if ($this->move != 'clearcancel' && $this->move != 'confirmquota'){
             $this->checkPrevStep();                                                 // Check if prev step is set, else set it
@@ -563,12 +562,9 @@ class SurveyRuntimeHelper {
 
             //SEE IF THIS GROUP SHOULD DISPLAY
             if ($_SESSION[$this->LEMsessid]['step'] == 0)
-                $show_empty_group = $this->show_empty_group = true;
+                $this->show_empty_group = true;
 
-            $move           = $this->move;
-            $moveResult     = $this->moveResult;
             $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->surveyid]['totalquestions'];
-
 
             // For welcome screen
             $this->thissurvey['iTotalquestions']   = $totalquestions;
