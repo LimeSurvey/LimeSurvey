@@ -1493,8 +1493,6 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
             // Add the event and test if done
             Yii::app()->runController("register/index/sid/{$surveyid}");
             Yii::app()->end();
-            /* We never get here */
-            echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
             break;
 
         case "correct": //Nothing to hold back, render survey
