@@ -755,7 +755,6 @@ class SurveyRuntimeHelper {
             // Init session, randomization and filed array
             buildsurveysession($surveyid);
             randomizationGroupsAndQuestions($surveyid);
-            initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);        // NOTE: allready called in buildsurveysession !!!! TODO: check if can be removed
 
             // Check surveyid coherence
             if($surveyid != LimeExpressionManager::getLEMsurveyId())
