@@ -2355,9 +2355,7 @@ function SetSurveyLanguage($surveyid, $sLanguage)
             $_SESSION['survey_'.$surveyid]['s_lang'] =  $sLanguage;
         }
 
-        App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
-
-        $thissurvey = getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
+        App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);        
         Yii::app()->loadHelper('surveytranslator');
         LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
