@@ -1910,7 +1910,10 @@ class SurveyRuntimeHelper {
             }
             else if ($surveyMode != 'survey')
             {
-                $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                if ($surveyMode != 'group'){
+                    $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                }
+
                 $this->gid              = $stepInfo['gid'];
                 $this->groupname        = $stepInfo['gname'];
                 $this->groupdescription = $stepInfo['gtext'];
