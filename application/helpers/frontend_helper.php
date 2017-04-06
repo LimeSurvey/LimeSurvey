@@ -2131,6 +2131,9 @@ function checkCompletedQuota($surveyid,$return=false)
     $sUrl = templatereplace($sUrl,array(),$aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
     $sUrlDescription = templatereplace($sUrlDescription,array(),$aDataReplacement, 'QuotaUrldescription', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
 
+
+    // TODO: TWIG IT
+
     // Construction of default message inside quotamessage class
     $sHtmlQuotaMessage = "<div class='quotamessage limesurveycore'>\n";
     $sHtmlQuotaMessage.= "\t".$sMessage."\n";
