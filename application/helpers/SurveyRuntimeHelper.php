@@ -108,7 +108,6 @@ class SurveyRuntimeHelper {
         if ( !$this->previewgrp && !$this->previewquestion){
             $this->initMove();                                                  // main methods to init session, LEM, moves, errors, etc
             $this->checkQuotas();                                               // check quotas (then the process will stop here)
-            $this->checkClearCancel();
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
@@ -553,7 +552,8 @@ class SurveyRuntimeHelper {
         if ($this->move != 'clearcancel' && $this->move != 'confirmquota'){
             $this->checkPrevStep();                                                 // Check if prev step is set, else set it
             $this->setMoveResult();
-            $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set
+            $this->checkClearCancel();                                              // Also set up prev step.... on the base of current step
+            $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set, also step up current step...
 
             // CHECK UPLOADED FILES
             // TMSW - Move this into LEM::NavigateForwards?
