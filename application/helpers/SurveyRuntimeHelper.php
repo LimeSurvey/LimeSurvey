@@ -552,7 +552,8 @@ class SurveyRuntimeHelper {
         if ($this->move != 'clearcancel' && $this->move != 'confirmquota'){
             $this->checkPrevStep();                                                 // Check if prev step is set, else set it
             $this->setMoveResult();
-            $this->checkClearCancel();                                              // Also set up prev step.... on the base of current step
+            $this->checkClearCancel();
+            $this->setPrevStep();
             $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set, also step up current step...
 
             // CHECK UPLOADED FILES
@@ -869,7 +870,13 @@ class SurveyRuntimeHelper {
         if ( $move=="clearcancel"){
             $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
         }
+    }
 
+    /**
+     * Set prev step in session depending on move type
+     */
+    private function setPrevStep()
+    {
         $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
     }
 
