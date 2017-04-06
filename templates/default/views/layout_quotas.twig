@@ -1,0 +1,68 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+#}
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
+
+    {# Headers, metadatas, etc #}
+    {{ include('./subviews/head.twig') }}
+
+    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+
+        {# Bootstrap Navigation Bar: the top menu #}
+        {{ include('./subviews/nav_bar.twig') }}
+
+        {# Top Container: in this template, it contains only  #}
+        {{ include('./subviews/top_container.twig') }}
+
+        <!-- Outer Frame Container -->
+        <div class="outerframe container" id="outerframeContainer">
+
+            <!-- Main Row -->
+            <div id="main-row">
+                <!-- Main Col -->
+                <div class="col-centered" id="main-col">
+
+                    {# include the form opening tag #}
+                    {{ include('./subviews/start_form.twig') }} <!-- main form -->
+
+                        {# This will display the script and the hidden inputs needed for Expression Manager #}
+                        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+                        {# include the alert for no javascrit #}
+                        {{ include('./subviews/no_js_alert.twig') }}
+
+                        {# include the language changer selector #}
+                        {{ include('./subviews/language_changer.twig') }}
+
+
+                        {# Presents the navigator #}
+                        {{ include('./navigator.twig') }}
+                    </form> <!-- main form -->
+                </div> <!-- main col -->
+            </div> <!-- main row -->
+        </div> <!-- outer frame container -->
+
+        {# Bootstrap alert modal #}
+        {{ include('./subviews/bootstrap_alert_modal.twig') }}
+
+        <!-- some template.js function launched before ready -->
+        <script type="text/javascript">
+        /*<![CDATA[*/
+            sliderSuffixClone();
+            fixBodyPadding();
+            hideQuestionWithRelevanceSubQuestion();
+            hideEmptyPart();
+        /*]]>*/
+        </script>
+    </body>
+</html>
+<!-- end of startpage.twig -->
