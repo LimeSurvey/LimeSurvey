@@ -933,7 +933,6 @@ function buildsurveysession($surveyid,$preview=false)
         $_SESSION['survey_'.$surveyid]['insertarray'][]= "token";
     }
 
-    $qtypes   = getQuestionTypeList('','array');
     $fieldmap = createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
     $_SESSION['survey_'.$surveyid]['fieldmap'] = $fieldmap;
@@ -1539,7 +1538,7 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
                 $_SESSION['survey_'.$surveyid]['totalsteps']=count($_SESSION['survey_'.$surveyid]['grouplist']);
             }
             break;
-            
+
         case "S":
             $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
     }
