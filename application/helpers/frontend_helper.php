@@ -1533,12 +1533,13 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
         case "A":
             $_SESSION['survey_'.$surveyid]['totalsteps']=1;
             break;
+
         case "G":
-            if (isset($_SESSION['survey_'.$surveyid]['grouplist']))
-            {
+            if (isset($_SESSION['survey_'.$surveyid]['grouplist'])){
                 $_SESSION['survey_'.$surveyid]['totalsteps']=count($_SESSION['survey_'.$surveyid]['grouplist']);
             }
             break;
+            
         case "S":
             $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
     }
@@ -1943,11 +1944,13 @@ function UpdateGroupList($surveyid, $language)
 {
 
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
+
+    // TODO: replace by group model method
+    $query     = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
+    $result    = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
     $groupList = array();
-    foreach ($result->readAll() as $row)
-    {
+
+    foreach ($result->readAll() as $row){
         $group = array(
             'gid'         => $row['gid'],
             'group_name'  => $row['group_name'],
@@ -1956,11 +1959,11 @@ function UpdateGroupList($surveyid, $language)
         $gidList[$row['gid']] = $group;
     }
 
-    if (!Yii::app()->getConfig('previewmode') && isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
-    {
+    if (!Yii::app()->getConfig('previewmode') && isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0){
         // Now adjust the grouplist
-        $groupRemap = $_SESSION['survey_'.$surveyid]['groupReMap'];
+        $groupRemap    = $_SESSION['survey_'.$surveyid]['groupReMap'];
         $groupListCopy = $groupList;
+
         foreach ($groupList as $gseq => $info) {
             $gid = $info['gid'];
             if (isset($groupRemap[$gid])) {
@@ -2355,16 +2358,15 @@ function SetSurveyLanguage($surveyid, $sLanguage)
             $_SESSION['survey_'.$surveyid]['s_lang'] =  $sLanguage;
         }
 
-        App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);        
+        App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
         LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
-    }
-    else
-    {
-        if(!$sLanguage)
-        {
-            $sLanguage=$default_language;
+    }else{
+
+        if(!$sLanguage){
+            $sLanguage = $default_language;
         }
+
         $_SESSION['survey_'.$surveyid]['s_lang'] = $sLanguage;
         App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
