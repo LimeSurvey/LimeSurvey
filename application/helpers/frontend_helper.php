@@ -890,11 +890,11 @@ function buildsurveysession($surveyid,$preview=false)
 
     // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
     if (returnGlobal('lang',true)){
-        $language_to_set=returnGlobal('lang',true);
+        $language_to_set = returnGlobal('lang',true);
     }elseif (isset($oTokenEntry) && $oTokenEntry){
         // If survey have token : we have a $oTokenEntry
         // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
-        $language_to_set=$oTokenEntry->language;
+        $language_to_set = $oTokenEntry->language;
     }else{
         $language_to_set = $thissurvey['language'];
     }
@@ -2336,26 +2336,28 @@ function resetTimers()
 */
 function SetSurveyLanguage($surveyid, $sLanguage)
 {
-    $surveyid=sanitize_int($surveyid);
+    $surveyid         = sanitize_int($surveyid);
     $default_language = Yii::app()->getConfig('defaultlang');
 
-    if (isset($surveyid) && $surveyid>0)
-    {
-        $default_survey_language= Survey::model()->findByPk($surveyid)->language;
+    if (isset($surveyid) && $surveyid>0){
+
+        $default_survey_language     = Survey::model()->findByPk($surveyid)->language;
         $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
+
         if (
-            empty($sLanguage)                                       //check if there
-            || (!in_array($sLanguage, $additional_survey_languages))  //Is the language in the survey-language array
-            || ($default_survey_language == $sLanguage)              //Is the $default_language the chosen language?
-         )
-        {
+            empty($sLanguage)                                                   //check if there
+            || (!in_array($sLanguage, $additional_survey_languages))            //Is the language in the survey-language array
+            || ($default_survey_language == $sLanguage)                         //Is the $default_language the chosen language?
+         ){
             // Language not supported, fall back to survey's default language
             $_SESSION['survey_'.$surveyid]['s_lang'] = $default_survey_language;
         } else {
             $_SESSION['survey_'.$surveyid]['s_lang'] =  $sLanguage;
         }
+
         App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
-        $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
+
+        $thissurvey = getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
         LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
