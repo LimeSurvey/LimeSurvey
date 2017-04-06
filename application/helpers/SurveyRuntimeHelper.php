@@ -554,7 +554,8 @@ class SurveyRuntimeHelper {
             $this->setMoveResult();
             $this->checkClearCancel();
             $this->setPrevStep();
-            $this->checkIfFinished();                                               // If $moveResult == finished, or not, various things to set, also step up current step...
+            $this->checkIfFinished();
+            $this->setStep();
 
             // CHECK UPLOADED FILES
             // TMSW - Move this into LEM::NavigateForwards?
@@ -1005,9 +1006,6 @@ class SurveyRuntimeHelper {
 
             if ($moveResult['finished'] == true){
                 $move = $this->move = 'movesubmit';
-            }else{
-                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1
-                $stepInfo                     = $this->stepInfo =  LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
             }
 
             if ($move == "movesubmit" && $moveResult['finished'] == false){
@@ -1016,7 +1014,22 @@ class SurveyRuntimeHelper {
                 $invalidLastPage = $this->invalidLastPage = true;
             }
         }
+    }
 
+    /**
+     * Increase step in session
+     */
+    private function setStep()
+    {
+        $moveResult    = $this->moveResult;
+        $LEMsessid     = $this->LEMsessid;
+
+        if (isset($moveResult) && isset($moveResult['seq']) ){
+            if ($moveResult['finished'] != true){
+                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1
+                $stepInfo                     = $this->stepInfo =  LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+            }
+        }
     }
 
     /**
