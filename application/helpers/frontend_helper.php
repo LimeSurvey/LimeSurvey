@@ -933,9 +933,7 @@ function buildsurveysession($surveyid,$preview=false)
         $_SESSION['survey_'.$surveyid]['insertarray'][]= "token";
     }
 
-    $fieldmap = createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
-
-    $_SESSION['survey_'.$surveyid]['fieldmap'] = $fieldmap;
+    $fieldmap = $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
     // first call to initFieldArray
     initFieldArray($surveyid, $fieldmap);
@@ -943,7 +941,9 @@ function buildsurveysession($surveyid,$preview=false)
     // Prefill questions/answers from command line params
     prefillFromCommandLine($surveyid);
 
-    if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
+    if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])){
+        $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
+    }
 
     //Check if a passthru label and value have been included in the query url
     checkPassthruLabel($surveyid, $preview, $fieldmap);
@@ -1012,28 +1012,22 @@ function prefillFromCommandLine($surveyid)
         'seed'
     );
 
-    if (!isset($_SESSION['survey_' . $surveyid]['startingValues']))
-    {
-        $startingValues=array();
+    if (!isset($_SESSION['survey_' . $surveyid]['startingValues'])){
+        $startingValues =array();
+    }else{
+        $startingValues = $_SESSION['survey_' . $surveyid]['startingValues'];
     }
-    else
-    {
-        $startingValues= $_SESSION['survey_' . $surveyid]['startingValues'];
-    }
-    if (isset($_GET))
-    {
-        foreach ($_GET as $k=>$v)
-        {
-            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
-            {
+
+    if (isset($_GET)){
+
+        foreach ($_GET as $k=>$v){
+
+            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k])){
                 $startingValues[$k] = $v;
-            }
-            else
-            {   // Search question codes to use those for prefilling.
-                foreach($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details)
-                {
-                    if ($details['title'] == $k)
-                    {
+            }else{
+                // Search question codes to use those for prefilling.
+                foreach($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details){
+                    if ($details['title'] == $k){
                         $startingValues[$sgqa] = $v;
                     }
                 }
