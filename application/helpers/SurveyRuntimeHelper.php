@@ -874,7 +874,7 @@ class SurveyRuntimeHelper {
      */
     private function setPrevStep()
     {
-        $_SESSION[$LEMsessid]['prevstep'] = (!in_array($move,array("clearall","changelang","saveall","reload")))?$_SESSION[$LEMsessid]['step']:$move; // Accepted $move without error
+        $_SESSION[$this->LEMsessid]['prevstep'] = (!in_array($this->move,array("clearall","changelang","saveall","reload")))?$_SESSION[$this->LEMsessid]['step']:$this->move; // Accepted $move without error
     }
 
     /**
