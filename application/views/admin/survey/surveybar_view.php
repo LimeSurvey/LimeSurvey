@@ -47,7 +47,8 @@
                 <?php } ?>
             </li>
             <?php } else { ?>
-            <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
+
+            <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$baselang)); ?>" >
                     <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
                 </a>
             </li>
