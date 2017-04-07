@@ -2108,8 +2108,8 @@ function checkCompletedQuota($surveyid,$return=false)
     $event->set('aMatchedQuotas', $aMatchedQuotas);// Give all the matched quota : the first is the active
     App()->getPluginManager()->dispatchEvent($event);
     $blocks = array();
-    foreach ($event->getAllContent() as $blockData)
-    {
+
+    foreach ($event->getAllContent() as $blockData){
         /* @var $blockData PluginEventContent */
         $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
     }
@@ -2119,79 +2119,42 @@ function checkCompletedQuota($surveyid,$return=false)
     $sUrlDescription=$event->get('urldescrip',$aMatchedQuota['quotals_urldescrip']);
     $sAction=$event->get('action',$aMatchedQuota['action']);
     /* Tag if we close or not the survey */
-    $closeSurvey=($sAction=="1" || App()->getRequest()->getPost('move')=='confirmquota');
+    $closeSurvey = ($sAction=="1" || App()->getRequest()->getPost('move')=='confirmquota');
     $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
     // Doing the action and show the page
     if ($closeSurvey && $sClientToken){
         submittokens(true);
     }
+
     // Construct the default message
-    $sMessage = templatereplace($sMessage,array(),$aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
-    $sUrl = passthruReplace($sUrl, $aSurveyInfo);
-    $sUrl = templatereplace($sUrl,array(),$aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
+    $sMessage        = templatereplace($sMessage,array(),$aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
+    $sUrl            = passthruReplace($sUrl, $aSurveyInfo);
+    $sUrl            = templatereplace($sUrl,array(),$aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
     $sUrlDescription = templatereplace($sUrlDescription,array(),$aDataReplacement, 'QuotaUrldescription', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
 
 
-    // TODO: TWIG IT
+    // Datas for twig view
+    $thissurvey['aQuotas']                       = array();
+    $thissurvey['aQuotas']['sMessage']           = $sMessage;
+    $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
+    $thissurvey['aQuotas']['sQuotaStep']         = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
+    $thissurvey['aQuotas']['sClientToken']       = $sClientToken;
+    $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields;
+    $thissurvey['aQuotas']['sPluginBlocks']      = implode("\n", $blocks);
+    $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
+    $thissurvey['aQuotas']['sUrl']               = $sUrl;
 
-    // Construction of default message inside quotamessage class
-    $sHtmlQuotaMessage = "<div class='quotamessage limesurveycore'>\n";
-    $sHtmlQuotaMessage.= "\t".$sMessage."\n";
-    if($sUrl && $closeSurvey)
-    {
-        $sHtmlQuotaUrl = App()->getController()->renderPartial("/survey/system/url",array(
-            'url'=>$sUrl,
-            '$description'=>$sUrlDescription,
-            'type'=>"survey-quotaurl",
-            'coreClass'=>"ls-endurl ls-quotaurl",
-        ),true);
-    }else{
-        $sHtmlQuotaUrl="";
-    }
-
-    // Add the navigator with Previous button if quota allow modification.
-    if (!$closeSurvey )
-    {
-        $sQuotaStep = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
-        $sMovePrev = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>$sQuotaStep,'class'=>"ls-move-btn ls-move-previous-btn"),true);
-        $sMoveSubmit = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"confirmquota",'class'=>"ls-move-btn ls-move-submit-btn"),true);
-        $sNavigator = "$sMovePrev $sMoveSubmit";
-
-        $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','class'=>'survey-form-container QuotaMessage'));
-        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array(
-            'MOVEPREVBUTTON' => $sMovePrev,
-            'MOVENEXTBUTTON' => $sMoveSubmit,
-            'NAVIGATOR' => $sNavigator,
-            'SAVE'=>''
-        ),$aDataReplacement);
-        $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$surveyid);
-        $sHtmlQuotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
-        foreach($aPostedQuotaFields as $field=>$post){
-            $sHtmlQuotaMessage.= CHtml::hiddenField($field,$post);
-        }
-        $sHtmlQuotaMessage.= CHtml::hiddenField('thisstep',$sQuotaStep);
-        $sHtmlQuotaMessage.= CHtml::endForm();
-    }
-
-    $sHtmlQuotaMessage.= "</div>\n";
-    // Add the plugin message before default message
-    $sHtmlQuotaMessage = implode("\n", $blocks) ."\n". $sHtmlQuotaMessage;
-
-    // Send page to user and end.
-    sendCacheHeaders();
-    if($closeSurvey && $sAutoloadUrl == 1 && $sUrl != "")
-    {
-        killSurveySession($surveyid);
-        header("Location: ".$sUrl);
-    }
-    doHeader();
-    echo templatereplace(file_get_contents($sTemplateViewPath."/startpage.pstpl"),array(),$aDataReplacement);
-    echo templatereplace(file_get_contents($sTemplateViewPath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
-    echo templatereplace(file_get_contents($sTemplateViewPath."/endpage.pstpl"),array(),$aDataReplacement);
-    doFooter();
     if ($closeSurvey){
         killSurveySession($surveyid);
+
+        if ($sAutoloadUrl == 1 && $sUrl != ""){
+            header("Location: ".$sUrl);
+        }
     }
+
+    $redata = compact(array_keys(get_defined_vars()));
+    echo templatereplace(file_get_contents($sTemplateViewPath."layout_quotas.twig"), array(), $redata);
+
     Yii::app()->end();
 }
 
