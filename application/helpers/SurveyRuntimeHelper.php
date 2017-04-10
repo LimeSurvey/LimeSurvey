@@ -1611,48 +1611,62 @@ class SurveyRuntimeHelper {
      */
     private function manageClearAll()
     {
-        /* Maybe nest is ro move this in SurveyController */
-        $sessionSurvey=Yii::app()->session["survey_{$this->surveyid}"];
-        if(App()->request->getPost('confirm-clearall')=='confirm'){ // Previous behaviour (and javascript behaviour)
+        $sessionSurvey = Yii::app()->session["survey_{$this->surveyid}"];
+
+        if (App()->request->getPost('confirm-clearall') == 'confirm'){
+
+            // Previous behaviour (and javascript behaviour)
             // delete the existing response but only if not already completed
             if (
                 isset($sessionSurvey['srid'])
                 && !SurveyDynamic::model($this->surveyid)->isCompleted($sessionSurvey['srid']) // see bug https://bugs.limesurvey.org/view.php?id=11978
             ){
-                $oResponse=Response::model($this->surveyid)->find("id=:srid",array(":srid"=>$sessionSurvey['srid']));
+                $oResponse = Response::model($this->surveyid)->find("id = :srid",array(":srid"=>$sessionSurvey['srid']));
+
                 if($oResponse){
                     $oResponse->delete(true);/* delete response line + files uploaded , warninbg : beforeDelete don't happen with deleteAll */
                 }
-                if(Survey::model()->findByPk($this->surveyid)->savetimings=="Y"){
+
+                if(Survey::model()->findByPk($this->surveyid)->savetimings == "Y"){
                     SurveyTimingDynamic::model($this->surveyid)->deleteAll("id=:srid",array(":srid"=>$sessionSurvey['srid'])); /* delete timings ( @todo must move it to Response )*/
                 }
+
                 SavedControl::model()->deleteAll("sid=:sid and srid=:srid",array(":sid"=>$this->surveyid,":srid"=>$sessionSurvey['srid']));/* saved controls (think we can have only one , but maybe ....)( @todo must move it to Response )*/
             }
+
             killSurveySession($this->surveyid);
-            $content=templatereplace(file_get_contents($this->sTemplateViewPath."clearall.pstpl"),array());
-            App()->getController()->layout='survey';
+
+            //TODO TWIG
+            $content = templatereplace(file_get_contents($this->sTemplateViewPath."clearall.pstpl"),array());
+
+            App()->getController()->layout = 'survey';
             App()->getController()->render("/survey/system/display",array('content'=>$content));
             App()->end();
-        }elseif(App()->request->getPost('confirm-clearall')!='cancel'){
-            LimeExpressionManager::JumpTo($sessionSurvey['step'], false, true, true, false);  // do process the POST data
-            App()->getController()->layout="survey";
-            App()->getController()->bStartSurvey=true;
 
-            $aReplacements=array();
-            $aReplacements['FORMID'] = 'clearall';
-            $aReplacements['FORMHEADING'] = App()->getController()->renderPartial("/survey/frontpage/clearallForm/heading",array(),true);
-            $aReplacements['FORMMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/clearallForm/message",array(),true);
-            $aReplacements['FORMERROR'] = "";
-            $aReplacements['FORM'] = CHtml::beginForm(array("/survey/index","sid"=>$this->surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
-            $aReplacements['FORM'].= CHtml::hiddenField('move','clearall',array());
-            $aReplacements['FORM'].= App()->getController()->renderPartial("/survey/frontpage/clearallForm/form",array(),true);
-            $aReplacements['FORM'].= CHtml::hiddenField('thisstep',$sessionSurvey['step']);
-            $aReplacements['FORM'].= CHtml::hiddenField('sid',$this->surveyid);
-            $aReplacements['FORM'].= CHtml::endForm();
-            $content = templatereplace(file_get_contents($this->sTemplateViewPath."form.pstpl"),$aReplacements);
+        }elseif(App()->request->getPost('confirm-clearall') != 'cancel'){
+
+            LimeExpressionManager::JumpTo($sessionSurvey['step'], false, true, true, false);  // do process the POST data
+            App()->getController()->layout       = "survey";
+            App()->getController()->bStartSurvey = true;
+
+            $aReplacements                 = array();
+            $aReplacements['FORMID']       = 'clearall';
+            $aReplacements['FORMHEADING']  = App()->getController()->renderPartial("/survey/frontpage/clearallForm/heading",array(),true);
+            $aReplacements['FORMMESSAGE']  = App()->getController()->renderPartial("/survey/frontpage/clearallForm/message",array(),true);
+            $aReplacements['FORMERROR']    = "";
+            $aReplacements['FORM']         = CHtml::beginForm(array("/survey/index","sid"=>$this->surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
+            $aReplacements['FORM']        .= CHtml::hiddenField('move','clearall',array());
+            $aReplacements['FORM']        .= App()->getController()->renderPartial("/survey/frontpage/clearallForm/form",array(),true);
+            $aReplacements['FORM']        .= CHtml::hiddenField('thisstep',$sessionSurvey['step']);
+            $aReplacements['FORM']        .= CHtml::hiddenField('sid',$this->surveyid);
+            $aReplacements['FORM']        .= CHtml::endForm();
+
+            $content                       = templatereplace(file_get_contents($this->sTemplateViewPath."form.pstpl"),$aReplacements);
+
             App()->getController()->render("/survey/system/display",array(
                 'content'=>$content,
             ));
+
             Yii::app()->end();
         }
     }
