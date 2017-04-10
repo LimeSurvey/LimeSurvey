@@ -56,7 +56,6 @@ class SettingsWidget extends CWidget
     }
     public function init() {
         parent::init();
-        Yii::import("application.libraries.PluginManager.PluginSettingData");
 
         // Register assets.
         Yii::app()->getClientScript()->registerPackage('jquery');
