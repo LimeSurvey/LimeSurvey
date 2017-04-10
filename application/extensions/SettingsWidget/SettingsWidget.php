@@ -591,9 +591,9 @@ class SettingsWidget extends CWidget
      */
     public function renderFiles($name, array $metaData, $form = null){
         $metaData['class'] = 'form-control';
-        $htmlOptions = $this->htmlOptions($metaData,$form);
+        $defaults['multiple'] = 'multiple';
+        $htmlOptions = $this->htmlOptions($metaData,$form,$defaults);
         $value = isset($metaData['content']) ? $metaData['content'] : '';
-        $htmlOptions['multiple'] = 'multiple';
         return $this->widget('CMultiFileUpload', array(
             'name' => $name,
             'duplicate' => gT('Duplicate file!'),
