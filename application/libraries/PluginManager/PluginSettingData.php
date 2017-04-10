@@ -10,7 +10,7 @@
  * @property string[] $options
  * Class PluginSetting
  */
-class PluginSetting extends CModel
+class PluginSettingData extends CModel
 {
 
     /**
@@ -21,7 +21,7 @@ class PluginSetting extends CModel
         return array(
             'type'=> gT('Type'),
             'label'=> gT('Label'),
-            'label'=> gT('Help'),
+            'help'=> gT('Help'),
             'default'=> gT('Default'),
             'content'=> gT('Content'),
             'options'=> gT('Options'),
