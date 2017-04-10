@@ -592,8 +592,8 @@ class SettingsWidget extends CWidget
     public function renderFiles($name, array $metaData, $form = null){
         $metaData['class'] = 'form-control';
 
-        if(isset($metaData['fileTypes'])){
-            $fileTypes = $metaData['fileTypes'];
+        if(isset($metaData['options']['fileTypes'])){
+            $fileTypes = $metaData['options']['fileTypes'];
         }else{
             $fileTypes = array('jpeg','jpg','gif','png');
         }
