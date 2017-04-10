@@ -8,7 +8,7 @@
 /* @var Question $oQuestion */
 $oQuestion = $data['oQuestion'];
 ?>
-<tr>
+<tr class="<?php echo !$data['valid'] ? "bg-warning text-danger":""; ?>"><!-- because lime-admin-colors.css force tr:nth-child(2n+1) td color, must add text-danger -->
     <td data-toggle="tooltip"  data-container="body" title="<?php echo viewHelper::flatEllipsizeText($oQuestion->question,true,60,'...',0.6); ?>">
         <?php echo $oQuestion->title?>
     </td>
@@ -24,4 +24,4 @@ $oQuestion = $data['oQuestion'];
             ));
         ?>
     </td>
-</div>
+</tr>

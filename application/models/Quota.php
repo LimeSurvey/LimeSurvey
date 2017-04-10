@@ -165,16 +165,28 @@ class Quota extends LSActiveRecord
      * @return integer
      */
     public function getCompleteCount(){
-        // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
-        if(!tableExists("survey_{$this->survey->primaryKey}")){
+        if(!tableExists("survey_{$this->sid}")) {
             return;
         }
-
+        /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
+        $aExistingColumnName=SurveyDynamic::model($this->sid)->getTableSchema()->getColumnNames();
         if (count($this->quotaMembers) > 0) {
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
-            foreach ($this->quotaMembers as $member) {
-              $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
+            foreach ($this->quotaMembers as $member)
+            {
+                if(!in_array($member->memberInfo['fieldname'],$aExistingColumnName)) {
+                    \Yii::log(
+                        sprintf(
+                            "Invalid quota member %s",
+                            $member->memberInfo['fieldname']
+                        ),
+                        'warning',
+                        'application.model.Quota'
+                    );
+                    return;
+                }
+                $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
             }
 
             $oCriteria = new CDbCriteria;
@@ -186,7 +198,8 @@ class Quota extends LSActiveRecord
                     $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
                 }
             }
-            return SurveyDynamic::model($this->survey->sid)->count($oCriteria);
+            $return = SurveyDynamic::model($this->sid)->count($oCriteria);
+            return $return;
         } else {
           return 0;
         }

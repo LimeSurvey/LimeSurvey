@@ -3611,7 +3611,7 @@
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
-
+            $this->sessid = 'survey_' . $this->sid;
             $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
             //      LimeExpressionManager::ShowStackTrace();
 
@@ -4218,7 +4218,6 @@
                 $this->varNameAttr[$jsVarName] .= "}";
             }
             $this->q2subqInfo = $q2subqInfo;
-
             // Now set tokens
             if (Survey::model()->hasTokens($surveyid) && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
             {
@@ -4231,14 +4230,16 @@
                 );
 
                 $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
-                foreach ($token as $key => $val)
-                {
-                    $this->knownVars["TOKEN:" . strtoupper($key)] = array(
-                        'code' => $anonymized ? '' : $val,
-                        'jsName_on' => '',
-                        'jsName' => '',
-                        'readWrite' => 'N',
-                    );
+                if($token) {
+                    foreach ($token as $key => $val)
+                    {
+                        $this->knownVars["TOKEN:" . strtoupper($key)] = array(
+                            'code' => $anonymized ? '' : $val,
+                            'jsName_on' => '',
+                            'jsName' => '',
+                            'readWrite' => 'N',
+                        );
+                    }
                 }
             }
             else

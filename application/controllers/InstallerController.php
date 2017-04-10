@@ -331,7 +331,7 @@ class InstallerController extends CController {
                         $sMySQLVersion = $this->connection->getServerVersion();
                         if (version_compare($sMySQLVersion,'4.1','<'))
                         {
-                            die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version:".$sMySQLVersion);
+                            die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
                         }
                         @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute();  //Checked
                         @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();  //Checked
@@ -1364,7 +1364,7 @@ class InstallerController extends CController {
         if ($sDatabaseType=='mysql' && version_compare($testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION")),$sMinimumMySQLVersion)==-1)
         {
             if (!empty($aData['model'])) {
-                $aData['model']->addError('dblocation', sprintf(gT('The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s).'),$sMinimumMySQLVersion));
+                $aData['model']->addError('dblocation', sprintf(gT('The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s). Found version: %s'),$sMinimumMySQLVersion, $testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION"))));
                 $this->render('/installer/dbconfig_view', $aData);
                 Yii::app()->end();
             }
