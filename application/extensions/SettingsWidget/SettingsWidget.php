@@ -56,6 +56,7 @@ class SettingsWidget extends CWidget
     }
     public function init() {
         parent::init();
+        Yii::import("application.libraries.PluginManager.PluginSettingData");
 
         // Register assets.
         Yii::app()->getClientScript()->registerPackage('jquery');
@@ -580,6 +581,27 @@ class SettingsWidget extends CWidget
             ), true
         );
         return $html;
+    }
+
+
+    /**
+     * @param $name string
+     * @param array $metaData
+     * @param string $form form name ??
+     * @return mixed
+     */
+    public function renderFiles($name, array $metaData, $form = null){
+        $metaData['class'] = 'form-control';
+        $htmlOptions = $this->htmlOptions($metaData,$form);
+        $value = isset($metaData['content']) ? $metaData['content'] : '';
+        $htmlOptions['multiple'] = 'multiple';
+        return $this->widget('CMultiFileUpload', array(
+            'name' => $name,
+            'duplicate' => gT('Duplicate file!'),
+            'htmlOptions' => $htmlOptions,
+            'value'=>$value
+        ),true);
+
     }
 
     /* Return htmlOptions for an input od seting
