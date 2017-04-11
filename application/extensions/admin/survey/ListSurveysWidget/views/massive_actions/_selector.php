@@ -103,7 +103,7 @@
                     // li element
                     'type'        => 'action',
                     'action'      => 'expire',
-                    'url'         =>  App()->createUrl('/admin/export/sa/expireMultiplePrintableSurveys/'),
+                    'url'         =>  App()->createUrl('/admin/survey/sa/expireMultipleSurveys/'),
                     'iconClasses' => 'icon-expired',
                     'text'        =>  gT("Set expiry date"),
                     // modal

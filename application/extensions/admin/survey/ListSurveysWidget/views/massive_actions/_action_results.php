@@ -1,4 +1,6 @@
 <?php
+/** @var string $successLabel */
+
 /**
  * This view display the result of delete multiple action. It's rendered via ajax for the confirmation modal in survey list
  *
@@ -22,7 +24,7 @@
                 </td>
                 <?php if ($result['result']):?>
                     <td class="text-success">
-                        <?php eT('Deleted'); ?>
+                        <?php echo $successLabel ?>
                     </td>
                 <?php else: ?>
                     <td class="text-warning">

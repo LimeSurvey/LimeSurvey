@@ -62,7 +62,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aResults[$iSurveyID]['result'] = $oSurvey->deleteSurvey($iSurveyID, $recursive=true);
         }
 
-        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._delete_results', array('aResults'=>$aResults));
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('Deleted')));
     }
 
     public function listsurveys()
@@ -1443,6 +1443,19 @@ class SurveyAdmin extends Survey_Common_Action
         Yii::app()->session['flashmessage'] = gT("The survey was successfully expired by setting an expiration date in the survey settings.");
         Survey::model()->expire($iSurveyID);
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
+    }
+
+    public function expireMultipleSurveys(){
+        $sSurveys = $_POST['sItems'];
+        $aSIDs = json_decode($sSurveys);
+        $aResults = array();
+        foreach ($aSIDs as $sid){
+            $survey = Survey::model()->findByPk($sid);
+            $aResults[$survey->primaryKey]['result'] = true;
+            $aResults[$survey->primaryKey]['title']  = ellipsize($survey->correct_relation_defaultlanguage->surveyls_title,30);
+        }
+
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('OK')));
     }
 
     function getUrlParamsJSON($iSurveyID)
