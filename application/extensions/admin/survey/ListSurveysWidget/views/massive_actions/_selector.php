@@ -106,6 +106,7 @@
                     'url'         =>  App()->createUrl('/admin/survey/sa/expireMultipleSurveys/'),
                     'iconClasses' => 'icon-expired',
                     'text'        =>  gT("Set expiry date"),
+                    'grid-reload' => 'yes',
                     // modal
                     'actionType'  => 'modal',
                     'modalType'   => 'yes-no',

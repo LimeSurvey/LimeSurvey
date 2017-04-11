@@ -1450,14 +1450,28 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function expireMultipleSurveys(){
         $sSurveys = $_POST['sItems'];
-        var_dump($_POST);
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
+        $expires = App()->request->getPost('expires');
+        $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        if (trim($expires)=="") {
+            $expires=null;
+        }
+        else {
+            $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+            $expires=$datetimeobj->convert("Y-m-d H:i:s");
+        }
+
         foreach ($aSIDs as $sid){
             $survey = Survey::model()->findByPk($sid);
-            //$survey->expires =
-            $aResults[$survey->primaryKey]['result'] = true;
+            $survey->expires =$expires;
             $aResults[$survey->primaryKey]['title']  = ellipsize($survey->correct_relation_defaultlanguage->surveyls_title,30);
+            if($survey->save()){
+                $aResults[$survey->primaryKey]['result'] = true;
+            }else{
+                $aResults[$survey->primaryKey]['result'] = false;
+            }
         }
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('OK')));
     }
