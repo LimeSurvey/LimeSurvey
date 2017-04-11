@@ -1177,33 +1177,22 @@ class SurveyRuntimeHelper {
             if ($thissurvey['active'] != "Y"){
 
                 sendCacheHeaders();
-                doHeader();
-
-                echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
-
                 //Check for assessments
 
                 // TODO: TWIG ASSESSMENTS !!!!!
                 if ($thissurvey['assessments'] == "Y"){
-                    $assessments = $this->assessments = doAssessment($thissurvey['sid']);
-                    if ($assessments ) {
-                        echo templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
-                    }
+                    $thissurvey['aAssessments']['show'] = true;
+                    $thissurvey['aAssessments'] = $this->assessments = doAssessment($surveyid, true);
                 }
 
+                $redata = compact(array_keys(get_defined_vars()));
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
                 $completed  = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
-                $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
-                $completed .= gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
-
-                if ($thissurvey['printanswers'] == 'Y'){
-                    // 'Clear all' link is only relevant for survey with printanswers enabled
-                    // in other cases the session is cleared at submit time
-                    $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . gT("Clear Responses") . "</a><br /><br />\n";
-                }
-
                 $this->completed = $completed;
 
+                $redata  = compact(array_keys(get_defined_vars()));
+                echo templatereplace(file_get_contents($sTemplateViewPath."layout-submit.twig"), array(), $redata);
+                App()->end();
             }else{
 
                 //Update the token if needed and send a confirmation email
@@ -1219,7 +1208,6 @@ class SurveyRuntimeHelper {
                 if ($thissurvey['assessments'] == "Y"){
                     $thissurvey['aAssessments']['show'] = true;
 
-                    // TODO : TWIG
                     //$assessments = $this->assessments = doAssessment($surveyid);
                     $thissurvey['aAssessments'] = $this->assessments = doAssessment($surveyid, true);
                 }
