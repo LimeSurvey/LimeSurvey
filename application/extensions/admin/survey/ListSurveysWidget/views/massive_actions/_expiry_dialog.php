@@ -1,4 +1,8 @@
 <?php
+/** @var AdminController $this */
+/** @var array $dateformatdata */
+$dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
+
 ?>
 <div id='publication' class="tab-pane fade in">
     <!-- Expiry date/time -->
@@ -8,7 +12,7 @@
             <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                 'name' => "expires",
                 'id' => 'expires',
-                'value' => $expires,
+                'value' => null,
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' =>true,

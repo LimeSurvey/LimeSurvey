@@ -111,7 +111,7 @@
                     'modalType'   => 'yes-no',
                     'keepopen'    => 'yes',
                     'sModalTitle'   => gT('Set expiry date'),
-                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php'),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php',array(),true),
 
 
                 ),
