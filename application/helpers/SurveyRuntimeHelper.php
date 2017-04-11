@@ -45,6 +45,7 @@ class SurveyRuntimeHelper {
     private $surveyOptions;                                                     // Few options comming from thissurvey, App->getConfig, LEM. Could be replaced by $oSurvey + relations ; the one coming from LEM and getConfig should be public variable on the surveyModel, set via public methods (active, allowsave, anonymized, assessments, datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings, surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
     private $totalquestions;                                                    // Number of question in the survey. Same, should be moved to survey model.
     private $bTokenAnswerPersitance;                                            // Are token used? Same...
+    private $bTokensexist;
     private $assessments;                                                       // Is assement used? Same...
     private $sLangCode;                                                         // Current language code
 
@@ -652,7 +653,7 @@ class SurveyRuntimeHelper {
             //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
             //don't use cookies if tokens are being used
             if ($thissurvey['active'] == "Y"){
-                if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) {
+                if ($thissurvey['usecookie'] == "Y" && $this->bTokensexist != 1) {
                     setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
                 }
             }
@@ -1611,7 +1612,8 @@ class SurveyRuntimeHelper {
      */
     private function manageClearAll()
     {
-        $sessionSurvey = Yii::app()->session["survey_{$this->surveyid}"];
+        $thissurvey     = $this->thissurvey;
+        $sessionSurvey  = Yii::app()->session["survey_{$this->surveyid}"];
 
         if (App()->request->getPost('confirm-clearall') == 'confirm'){
 
@@ -1637,11 +1639,35 @@ class SurveyRuntimeHelper {
             killSurveySession($this->surveyid);
 
             //TODO TWIG
+
+            /***
             $content = templatereplace(file_get_contents($this->sTemplateViewPath."clearall.pstpl"),array());
 
             App()->getController()->layout = 'survey';
             App()->getController()->render("/survey/system/display",array('content'=>$content));
+            */
+
+            global $token;
+            if($token){
+                $restartparam['token']=sanitize_token($token);
+            }
+
+            if (Yii::app()->request->getQuery('lang')){
+                $restartparam['lang'] = sanitize_languagecode(Yii::app()->request->getQuery('lang'));
+            }else{
+                $s_lang = isset(Yii::app()->session['survey_'.$this->surveyid]['s_lang']) ? Yii::app()->session['survey_'.$this->surveyid]['s_lang'] : 'en';
+                $restartparam['lang'] = $s_lang;
+            }
+
+            $restartparam['newtest'] = "Y";
+            $restarturl = Yii::app()->getController()->createUrl("survey/index/sid/$this->surveyid",$restartparam);
+
+            $thissurvey['surveyUrl'] = $restarturl;
+
+            $redata  = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_clearall.twig"), array(), $redata);
             App()->end();
+
 
         }elseif(App()->request->getPost('confirm-clearall') != 'cancel'){
 
@@ -1694,6 +1720,7 @@ class SurveyRuntimeHelper {
         global $clienttoken;
         global $tokensexist;
 
+        $this->tokensexist =  $tokensexist;
         /**
         * This method has multiple outcomes that virtually do the same thing
         * Possible scenarios/subscenarios are =>

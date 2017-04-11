@@ -1469,7 +1469,7 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
             $aForm['sType']           = ($scenarios['tokenRequired'])?'token':'captcha';
             $aForm['token']           = array_key_exists('token', $aEnterTokenData)?$aEnterTokenData['token']:null;
             $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
-            $aForm['bCaptchaEnabled'] = $aEnterTokenData['bCaptchaEnabled'];
+            $aForm['bCaptchaEnabled'] = (isset($aEnterTokenData['bCaptchaEnabled']))?$aEnterTokenData['bCaptchaEnabled']:'';
 
             // Rendering user_forms_layout.twig
             $thissurvey["aForm"]            = $aForm;
