@@ -626,7 +626,7 @@ class SettingsWidget extends CWidget
 
     }
 
-    /* Return htmlOptions for an input od seting
+    /* Return htmlOptions for an input od setting
      *
      * @param array metaData : completMetaData of setting
      * @param string form form to be used
