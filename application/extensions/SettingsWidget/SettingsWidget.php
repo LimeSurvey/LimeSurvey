@@ -596,20 +596,7 @@ class SettingsWidget extends CWidget
             $fileTypes = $metaData['options']['fileTypes'];
         }else{
             // default allowed file types
-            $fileTypes = array(
-                // images
-                'jpeg','jpg','gif','png',
-                // audio
-                'wav','mp3','ogg','aiff','m4p','flac',
-                //video
-                'mp4','avi','mkv','flv','wmv','mov',
-                // documents
-                'pdf','doc','docx','odt','xls','xlsx','odf','ppt','pptx','odp','xml',
-                //data
-                'csv','txt','dat',
-                // web
-                'html','htm','php',
-            );
+            $fileTypes =self::getDefaultFileTypes();
         }
 
         $defaults['multiple'] = 'multiple';
@@ -624,6 +611,28 @@ class SettingsWidget extends CWidget
             'value'=>$value
         ),true);
 
+    }
+
+
+    /**
+     * @return array Default file types
+     */
+    public static function getDefaultFileTypes(){
+
+        return  array(
+            // images
+            'jpeg','jpg','gif','png',
+            // audio
+            'wav','mp3','ogg','aiff','m4p','flac',
+            //video
+            'mp4','avi','mkv','flv','wmv','mov',
+            // documents
+            'pdf','doc','docx','odt','xls','xlsx','odf','ppt','pptx','odp','xml',
+            //data
+            'csv','txt','dat',
+            // web
+            'html','htm','php',
+        );
     }
 
     /* Return htmlOptions for an input od setting
