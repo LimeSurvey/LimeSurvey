@@ -1667,33 +1667,6 @@ class SurveyRuntimeHelper {
             $redata  = compact(array_keys(get_defined_vars()));
             echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_clearall.twig"), array(), $redata);
             App()->end();
-
-
-        }elseif(App()->request->getPost('confirm-clearall') != 'cancel'){
-
-            LimeExpressionManager::JumpTo($sessionSurvey['step'], false, true, true, false);  // do process the POST data
-            App()->getController()->layout       = "survey";
-            App()->getController()->bStartSurvey = true;
-
-            $aReplacements                 = array();
-            $aReplacements['FORMID']       = 'clearall';
-            $aReplacements['FORMHEADING']  = App()->getController()->renderPartial("/survey/frontpage/clearallForm/heading",array(),true);
-            $aReplacements['FORMMESSAGE']  = App()->getController()->renderPartial("/survey/frontpage/clearallForm/message",array(),true);
-            $aReplacements['FORMERROR']    = "";
-            $aReplacements['FORM']         = CHtml::beginForm(array("/survey/index","sid"=>$this->surveyid), 'post',array('id'=>'form-'.$aReplacements['FORMID'],'class'=>'ls-form'));
-            $aReplacements['FORM']        .= CHtml::hiddenField('move','clearall',array());
-            $aReplacements['FORM']        .= App()->getController()->renderPartial("/survey/frontpage/clearallForm/form",array(),true);
-            $aReplacements['FORM']        .= CHtml::hiddenField('thisstep',$sessionSurvey['step']);
-            $aReplacements['FORM']        .= CHtml::hiddenField('sid',$this->surveyid);
-            $aReplacements['FORM']        .= CHtml::endForm();
-
-            $content                       = templatereplace(file_get_contents($this->sTemplateViewPath."form.pstpl"),$aReplacements);
-
-            App()->getController()->render("/survey/system/display",array(
-                'content'=>$content,
-            ));
-
-            Yii::app()->end();
         }
     }
 
