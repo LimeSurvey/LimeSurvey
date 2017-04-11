@@ -599,6 +599,13 @@ class SettingsWidget extends CWidget
             $fileTypes =self::getDefaultFileTypes();
         }
 
+        if(isset($metaData['options']['max'])){
+            $max = $metaData['options']['max'];
+        }else{
+            // TODO get this via config?
+            $max =50;
+        }
+
         $defaults['multiple'] = 'multiple';
         $htmlOptions = $this->htmlOptions($metaData,$form,$defaults);
         $value = isset($metaData['content']) ? $metaData['content'] : '';
@@ -607,8 +614,9 @@ class SettingsWidget extends CWidget
             'duplicate' => gT('Duplicate file!'),
             'accept' => implode('|',$fileTypes),
             'denied' => gT('Invalid file type'),
+            'max'=>$max,
             'htmlOptions' => $htmlOptions,
-            'value'=>$value
+            'value'=>$value,
         ),true);
 
     }
