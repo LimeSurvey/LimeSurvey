@@ -4,15 +4,18 @@
 $dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
 
 ?>
+<?php $form = $this->beginWidget('CActiveForm', array('id'=>'survey-expiry',)); ?>
+
 <div id='publication' class="tab-pane fade in">
     <!-- Expiry date/time -->
     <div class="form-group">
         <label class="col-sm-6 control-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
         <div class="col-sm-6 has-feedback">
             <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                'name' => "expires",
+                'name' => 'expires',
                 'id' => 'expires',
                 'value' => null,
+                'htmlOptions' => array('class' => 'form-control custom-data'),
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' =>true,
@@ -39,4 +42,4 @@ $dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
     </div>
 
 </div>
-
+<?php $this->endWidget(); ?>

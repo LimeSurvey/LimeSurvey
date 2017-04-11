@@ -1445,18 +1445,23 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
+    /**
+     * Action to set expiry date to multiple surveys
+     */
     public function expireMultipleSurveys(){
         $sSurveys = $_POST['sItems'];
+        var_dump($_POST);
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
         foreach ($aSIDs as $sid){
             $survey = Survey::model()->findByPk($sid);
+            //$survey->expires =
             $aResults[$survey->primaryKey]['result'] = true;
             $aResults[$survey->primaryKey]['title']  = ellipsize($survey->correct_relation_defaultlanguage->surveyls_title,30);
         }
-
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('OK')));
     }
+
 
     function getUrlParamsJSON($iSurveyID)
     {
