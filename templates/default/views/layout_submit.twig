@@ -1,0 +1,54 @@
+{#
+    NOTE: THIS IS A FIRST CYCLE DEV
+    We'll probably have only one or two layout at the end of the process
+#}
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
+
+    {# Headers, metadatas, etc #}
+    {{ include('./subviews/head.twig') }}
+
+    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+
+        {# Bootstrap Navigation Bar: the top menu #}
+        {{ include('./subviews/nav_bar.twig') }}
+
+        {# Top Container: in this template, it contains only  #}
+        {{ include('./subviews/top_container.twig') }}
+
+        <!-- Outer Frame Container -->
+        <div class="outerframe container" id="outerframeContainer">
+
+            <!-- Main Row -->
+            <div id="main-row">
+                {{ include('./subviews/flash_message.twig') }}
+
+                <!-- Main Col -->
+                <div class="col-centered" id="main-col">
+
+                    {# include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
+                    {{ include('./subviews/warnings.twig') }}
+
+                    {{ include('assessments.twig') }}            
+
+
+
+                </div> <!-- main col -->
+            </div> <!-- main row -->
+        </div> <!-- outer frame container -->
+
+        {# Bootstrap alert modal #}
+        {{ include('./subviews/bootstrap_alert_modal.twig') }}
+
+        <!-- some template.js function launched before ready -->
+        <script type="text/javascript">
+        /*<![CDATA[*/
+            sliderSuffixClone();
+            fixBodyPadding();
+            hideQuestionWithRelevanceSubQuestion();
+            hideEmptyPart();
+        /*]]>*/
+        </script>
+    </body>
+</html>
+<!-- end of startpage.twig -->

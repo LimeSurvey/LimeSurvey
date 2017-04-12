@@ -1119,8 +1119,9 @@ function getSurveyInfo($surveyid, $languagecode='')
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
+    $oSurvey = Survey::model()->findByPk($surveyid);
     // Do job only if this survey exist
-    if(!Survey::model()->findByPk($surveyid))
+    if(!$oSurvey)
     {
         return false;
     }
@@ -1173,6 +1174,7 @@ function getSurveyInfo($surveyid, $languagecode='')
         }
 
     }
+    $thissurvey['oSurvey'] = $oSurvey;
     return $thissurvey;
 }
 

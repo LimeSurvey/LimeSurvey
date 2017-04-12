@@ -1,0 +1,148 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Default Template Layout  ·._.·´¯)·._.·´¯)
+
+    This is the main layout of the template.
+    It includes all other views used to render a survey.
+
+    If you're creating your own template, remember there is no obligation to respect the current file flow of this template.
+    It's different from the old LimeSurvey template engine, where you had to provide each one of the pstpl files.
+    Here, you must have a file called layout.twig (called from SurveyRuntimeHelper::run() ).
+    Then: you're free to organize your files and inclusion like you want.
+
+
+
+    (¯`·._.·(¯`·._.· Bootstrap ·._.·´¯)·._.·´¯)
+
+    LimeSurvey is using Bootstrap.see:
+    https://getbootstrap.com
+
+    This template is an instance of Bootswatch Theme Flatly. See:
+    https://bootswatch.com/
+
+
+
+    (¯`·._.·(¯`·._.· Twig Engine  ·._.·´¯)·._.·´¯)
+
+    The template engine is using twig. See:
+    http://twig.sensiolabs.org/
+
+    The main variable is aSurveyInfo. It's an array containing the main information about the survey.
+    aSurveyInfo also contains other needed arrays, such as aNavigator, or aQuestionGroups (which contain aQuestions), etc.
+
+    If you want to see what is availabe in aSurveyInfo, turn debug mode on in application/config.php, and move out of comments the following line:
+    {{ dump(aSurveyInfo) }}
+
+    To echo a variable, just do                      : {{ variable }}
+    To translate a string, just do                   : {{ string | t }}
+
+
+    (¯`·._.·(¯`·._.· Twig Engine: advanced  ·._.·´¯)·._.·´¯)
+
+    For security reason, Twig is in a sandBox. About sandBox, see:
+    http://twig.sensiolabs.org/doc/2.x/api.html#sandbox-extension
+
+    Available functions/Object Methods are defined in internal.php: components => twigRenderer
+    Eg:
+         Functions : 'include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses', 'getShowqnumcode', 'intval'
+
+         Methods   :
+                    - CHtml::textfield() (and: form, link, emailField, beginForm, endForm, dropDownList,htmlButton)
+                    - Survey::getAllLanguages()
+                    - LSHttpRequest::getParam()
+
+    If you need to add simple functions or static methods, just add them to internal.php.
+    If you need to add complex process, use application/core/LS_Twig_Extension.php (more indication there)
+
+
+    NOTE: if you think we should we should provide more functions, variables, etc, feel free to ask
+#}
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
+
+    {# Headers, metadatas, etc #}
+    {{ include('./subviews/head.twig') }}
+
+    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+
+        {# Bootstrap Navigation Bar: the top menu #}
+        {{ include('./subviews/nav_bar.twig') }}
+
+        {# Top Container: in this template, it contains only  #}
+        {{ include('./subviews/top_container.twig') }}
+
+        <!-- Outer Frame Container -->
+        <div class="outerframe container" id="outerframeContainer">
+
+            <!-- Main Row -->
+            <div id="main-row">
+                {{ include('./subviews/flash_message.twig') }}
+
+                <!-- Main Col -->
+                <div class="col-centered" id="main-col">
+
+                    {# include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
+                    {{ include('./subviews/warnings.twig') }}
+
+                    {# include the form opening tag #}
+                    {{ include('./subviews/start_form.twig') }} <!-- main form -->
+
+                        {# This will display the script and the hidden inputs needed for Expression Manager #}
+                        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+                        {# include the alert for no javascrit #}
+                        {{ include('./subviews/no_js_alert.twig') }}
+
+                        {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
+                        {{ include('./subviews/allinone_mode_welcome_privacy.twig') }}
+
+                        {#
+                            PRESENT THE QUESTION GROUPS
+
+                            This is the main part. It will render each question groups for this page (depending of Survey Mode setting )
+                            Each group will then render its own questions
+
+                         #}
+                        {% for  aGroup in aSurveyInfo.aGroups %}
+                            {{ include('./group.twig') }}
+                        {% endfor %}
+
+                        {# Presents the navigator #}
+                        {% if aSurveyInfo.aNavigator.show %}
+                            {{ include('./navigator.twig') }}
+                        {% endif %}
+
+                        {# Data shown when LEM debug timing mode is ON #}
+                        {{ include('./subviews/LEMDebug.twig') }}
+
+                    </form> <!-- main form -->
+                </div> <!-- main col -->
+            </div> <!-- main row -->
+        </div> <!-- outer frame container -->
+
+        {# Bootstrap alert modal #}
+        {{ include('./subviews/bootstrap_alert_modal.twig') }}
+
+        <!-- some template.js function launched before ready -->
+        <script type="text/javascript">
+        /*<![CDATA[*/
+            sliderSuffixClone();
+            fixBodyPadding();
+            hideQuestionWithRelevanceSubQuestion();
+            hideEmptyPart();
+        /*]]>*/
+        </script>
+    </body>
+</html>
+<!-- end of startpage.twig -->

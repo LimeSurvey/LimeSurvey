@@ -1,0 +1,64 @@
+{% set aAssessments = aSurveyInfo.aAssessments.datas %}
+
+
+<table class="assessment-table table">
+    <tr>
+        <td class="assessment-heading">
+            {{ "Your assessment" | t }}
+        </td>
+    </tr>
+
+    <tr>
+        <td class="assessments-container">
+            {% if aAssessments.subtotal.show %}
+                {% for key,val in aAssessments.subtotal %}
+                    {% if aAssessments.group %}
+                        {% if key in aAssessments.group | keys %}
+                            {% for assessed in aAssessments.group[key] %}
+                                {% if ( val >= assessed.min and val <= assessed.max ) %}
+                                <table class='assessments table'>
+                                    <tr>
+                                        <th>
+                                            {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
+                                        </th>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.message)  }}
+                                        </td>
+                                    </tr>
+                                </table>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+            {% endif %}
+
+
+
+            {% if aAssessments.total.show %}
+                {% for assessed in aAssessments.total %}
+                    {% if ( aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
+                        <table class='assessments table' align='center'>
+                            <tr>
+                                <th>
+                                    {# Beleive it or not, val is defined in previous loop... -_- #}
+                                    {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.message)  }}
+                                </td>
+                            </tr>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        </td>
+    </tr>
+</table>

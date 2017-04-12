@@ -191,29 +191,56 @@ $internalConfig = array(
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
             'options' => array(
-                'autoescape' => true,
+                'debug' => defined('YII_DEBUG') && YII_DEBUG ?true:false,
             ),
-            // Those extensions, include the sendbox, will be done later in the process
             'extensions' => array(
+                'LS_Twig_Extension',
                 'Twig_Extension_Sandbox',
                 'Twig_Extension_StringLoader',
+                'Twig_Extension_Debug',
+                // 'Twig_Extension_Escaper' // In the future, this extenstion could be use to build a powerfull XSS filter
             ),
             'globals' => array(
                 'html' => 'CHtml'
             ),
             'functions' => array(
-                'rot13' => 'str_rot13',
+                'flatEllipsizeText'     => 'viewHelper::flatEllipsizeText',
+                'getLanguageData'       => 'viewHelper::getLanguageData',
+                'array_flip'            => 'array_flip',
+                'array_intersect_key'   => 'array_intersect_key',
+                'registerPublicCssFile' => 'LS_Twig_Extension::registerPublicCssFile',
+                'getAllQuestionClasses' => 'LS_Twig_Extension::getAllQuestionClasses',
+                'intval'                => 'intval',
+                'empty'                 => 'empty',
+                'count'                 => 'count',
+                'reset'                 => 'reset',
+                'renderCaptcha'         => 'LS_Twig_Extension::renderCaptcha',
+                'getPost'               => 'LS_Twig_Extension::getPost',
+                'getParam'              => 'LS_Twig_Extension::getParam',
+                'getQuery'              => 'LS_Twig_Extension::getQuery',
+                'isset'                 => 'isset',
+                'str_replace'           => 'str_replace',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
+                't'     => 'eT',
+                'gT'    => 'gT',
             ),
+
             'sandboxConfig' => array(
-                'tags' => array('if', 'for'),
-                'filters' => array('escape'),
-                'methods' => array(),
-                'properties' => array(),
-                'functions' => array()
-            )
+                'tags' => array('if', 'for', 'set', 'autoescape'),
+                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
+                'methods' => array(
+                    'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
+                    'Survey'                            =>  array("getAllLanguages"),
+                    'LSHttpRequest'                     =>  array("getParam"),
+                ),
+                'properties' => array(
+                    'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
+                    'LSYii_Application'                 =>  array("request"),
+                ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace' ),
+            ),
 
             // Change template syntax to Smarty-like (not recommended)
             // Could be use to manage potential conflict with Expression Manager

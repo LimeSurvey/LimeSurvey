@@ -104,9 +104,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!$anonymized && isset($thissurvey['anonymized'])) {
         $anonymized=($thissurvey['anonymized']=="Y");
     }
-    // TEMPLATECSS
-    $_templatecss="";
-    $_templatejs="";
 
     /**
      * Template css/js files from the template config files are loaded.
@@ -120,63 +117,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if ($oTemplate === '')
     {
         $oTemplate = Template::model()->getInstance($templatename);
-    }
-
-    if(stripos ($line,"{TEMPLATECSS}"))
-    {
-        // This package is created in model TemplateConfiguration::createTemplatePackage
-        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager'))
-        {
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
-        }
-        else
-        {
-
-            // In debug mode, the Asset Manager is not used
-            // So, dev don't need to update the directory date to get the new version of their template.
-            // They must think about refreshing their brower's cache (ctrl + F5)
-            /* @todo : need to regsiter the packages of 'survey-template' */
-            $aOtherFiles = $oTemplate->otherFiles;
-
-            //var_dump($aCssFiles);var_dump($aJsFiles);die();
-            $aCssFiles = (array) $oTemplate->config->files->css->filename;
-            $aJsFiles  = (array) $oTemplate->config->files->js->filename;
-
-            foreach($aCssFiles as $sCssFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                {
-                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
-                }
-            }
-            foreach($aJsFiles as $sJsFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                {
-                    Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
-                }
-            }
-            /* RTL|LTR CSS & JS */
-            $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-            if (isset($oTemplate->config->files->$dir)){
-                $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array)$oTemplate->config->files->$dir->css->filename : array();
-                $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename) ? (array)$oTemplate->config->files->$dir->js->filename : array();
-                foreach($aCssFilesDir as $sCssFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                    {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
-                    }
-                }
-                foreach($aJsFilesDir as $sJsFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                    {
-                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
-                    }
-                }
-            }
-        }
     }
 
     // surveyformat
@@ -335,22 +275,20 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if(isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active']=='Y')
     {
-        $iscompleted=SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
+        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
     }
     else
     {
-        $iscompleted=false;
+        $iscompleted = $thissurvey['iscompleted'] = false;
     }
     if (isset($surveyid) && !$iscompleted)
     {
-        $aClearAll=doHtmlClearAll();
+        $aClearAll=doHtmlClearAll();    // Rem: still needed for JS
         $_clearall = $aClearAll['button'];
-        $_clearalllinks = $aClearAll['link'];
     }
     else
     {
         $_clearall = "";
-        $_clearalllinks = '';
     }
 
     if (isset(Yii::app()->session['datestamp']))
@@ -361,15 +299,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
+
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
     {
         $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
-        $_savelinks = doHtmlSaveLinks(isset($move)?$move:NULL);
-    }
-    else
-    {
-        $_saveall = "";
-        $_savelinks = "";
+        $aSaveAllButtons = getSaveLinks(isset($move)?$move:NULL);
+        $thissurvey['bShowLoadButton']=$aSaveAllButtons['bShowLoadButton'];
+        $thissurvey['bShowSaveButton']=$aSaveAllButtons['bShowSaveButton'];
     }
 
     if(isset($surveyid))
@@ -410,6 +346,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }else{
             $returndescription = gT("Go to survey");
         }
+
+        // TODO: change that
         $_return_to_survey = App()->twigRenderer->render("/survey/system/url",array(
             'url'=>$returnlink,
             'description'=>$returndescription,
@@ -422,20 +360,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_return_to_survey = "";
     }
 
-    // Assessments
-    $assessmenthtml="";
-    if (isset($surveyid) && !is_null($surveyid) && function_exists('doAssessment'))
-    {
-        $assessmentdata = doAssessment($surveyid, true);
-        $_assessment_current_total = $assessmentdata['total'];
-        if(stripos ($line,"{ASSESSMENTS}")){
-            $assessmenthtml=doAssessment($surveyid, false);
-        }
-    }
-    else
-    {
-        $_assessment_current_total = '';
-    }
     if(isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
     {
         $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
@@ -447,67 +371,30 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     else
     {
         $_googleAnalyticsAPIKey = "";
-
     }
+
+    $thissurvey['googleanalyticsapikey'] = $_googleAnalyticsAPIKey;
+
     $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '1');
     $_googleAnalyticsJavaScript = '';
 
-    if ($_googleAnalyticsStyle != '' && $_googleAnalyticsStyle != 0 && $_googleAnalyticsAPIKey != '')
+    if ( $_googleAnalyticsAPIKey != '' && $_googleAnalyticsStyle ==2 )
     {
-        switch ($_googleAnalyticsStyle)
-        {
-            case '1':
-                // Default Google Tracking
-                $_googleAnalyticsJavaScript = <<<EOD
-<script>
-(function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments) },i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', '$_googleAnalyticsAPIKey', 'auto');  // Replace with your property ID.
-ga('send', 'pageview');
-
-</script>
-
-EOD;
-                break;
-            case '2':
-                // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
-                $moveInfo = LimeExpressionManager::GetLastMoveResult();
-                if (is_null($moveInfo)) {
-                    $gseq='welcome';
-                }
-                else if ($moveInfo['finished'])
-                    {
-                        $gseq='finished';
-                    }
-                    else if (isset($moveInfo['at_start']) && $moveInfo['at_start'])
-                        {
-                            $gseq='welcome';
-                        }
-                        else if (is_null($_groupname))
-                            {
-                                $gseq='printanswers';
-                            }
-                            else
-                            {
-                                $gseq=$moveInfo['gseq']+1;
-                }
-                $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
-                $_googleAnalyticsJavaScript = <<<EOD
-<script>
-(function(i,s,o,g,r,a,m){ i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments) }
-,i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
- })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', '$_googleAnalyticsAPIKey', 'auto');
-ga('send', 'pageview', '$_trackURL');
-
-</script>
-EOD;
-                break;
+        // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
+        $moveInfo = LimeExpressionManager::GetLastMoveResult();
+        if (is_null($moveInfo)) {
+            $gseq='welcome';
+        }else if ($moveInfo['finished']){
+            $gseq='finished';
+        }else if (isset($moveInfo['at_start']) && $moveInfo['at_start']){
+            $gseq='welcome';
+        }else if (is_null($_groupname)){
+            $gseq='printanswers';
+        }else{
+            $gseq=$moveInfo['gseq']+1;
         }
+
+        $_trackURL = $thissurvey['trackURL'] = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
     }
 
     $_endtext = '';
@@ -530,12 +417,9 @@ EOD;
     $coreReplacements = array();
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['ANSWERSCLEARED'] = gT("Answers cleared");
-    $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
-    $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = App()->twigRenderer->render("/survey/system/no-javascript",array(),true);
     $coreReplacements['CLEARALL'] = $_clearall;
-    $coreReplacements['CLEARALL_LINKS'] = $_clearalllinks;
     $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
@@ -544,13 +428,9 @@ EOD;
     $coreReplacements['ADMINNAME'] = isset($thissurvey['admin']) ? $thissurvey['admin'] : '';
     $coreReplacements['ADMINEMAIL'] = isset($thissurvey['adminemail']) ? $thissurvey['adminemail'] : '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid','');// Use the gid of the question, except if we are not in question (Randomization group name)
-    $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
-    $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
     $coreReplacements['LANG'] = App()->language;
-    $coreReplacements['LANGUAGECHANGER'] = isset($languagechanger) ? $languagechanger : '';    // global
-    $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();  // TODO: Really generate this each time function is called? Only relevant for startpage.tstpl
     $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : '';    // global
     $coreReplacements['MOVEPREVBUTTON'] = isset($moveprevbutton) ? $moveprevbutton : '';    // global
     $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : '';    // global
@@ -566,11 +446,9 @@ EOD;
     $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
-    $coreReplacements['SAVE_LINKS'] = $_savelinks;
-    $coreReplacements['SAVE'] = $_saveall;
+    $coreReplacements['SAVE'] = isset($_saveall)?$_saveall:'';
     $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid']: '';
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
-    $coreReplacements['SITENAME'] = Yii::app()->getConfig('sitename');
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
@@ -578,8 +456,6 @@ EOD;
     $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
-    $coreReplacements['TEMPLATECSS'] = $_templatecss;
-    $coreReplacements['TEMPLATEJS'] = $_templatejs;
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
     $coreReplacements['TOKEN'] = (!$anonymized ? $_token : '');// Silently replace TOKEN by empty string
@@ -604,7 +480,7 @@ EOD;
     if(isset($thissurvey)){
         $line = Yii::app()->twigRenderer->renderTemplateFromString( $line, array('aSurveyInfo'=>$thissurvey), false);
     }
-    
+
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
     $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
 
@@ -677,80 +553,63 @@ function PassthruReplace($line, $thissurvey)
  * @param string $move ?
  * @return string ?
  */
-function doHtmlSaveLinks($move="")
+function getSaveLinks($move="")
 {
     static $aSaveAllButtons=array();
     if(isset($aSaveAllButtons[$move]))
         return $aSaveAllButtons[$move];
 
-    $surveyid=Yii::app()->getConfig('surveyID');
-    $thissurvey=getsurveyinfo($surveyid);
+    $surveyid   = Yii::app()->getConfig('surveyID');
+    $thissurvey = getsurveyinfo($surveyid);         // TODO: remove that call
+
+    $bShowLoadButton = false;
+    $bShowSaveButton = false;
 
     if($thissurvey['allowsave'] == "Y")
     {
-        $submit=ls_json_encode(array(
-                'loadall'=>'loadall'
-            ));
-        $sLoadButton=App()->twigRenderer->render("/survey/system/actionLink/saveLoad",array(
-            'submit'=>$submit,
-            'class'=>'ls-link-action ls-link-loadall'
-        ),true);
-        $submit=ls_json_encode(array(
-                'saveall'=>'saveall'
-            ));
-        $sSaveButton=App()->twigRenderer->render("/survey/system/actionLink/saveSave",array(
-            'submit'=>$submit,
-            'class'=>'ls-link-action ls-link-saveall'
-        ),true);
-    }
-    else
-    {
-        $sLoadButton = '';
-        $sSaveButton = '';
+        // Fill some test here, more clear ....
+        $bTokenanswerspersistence   =   $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
+        $bAlreadySaved              =   isset($_SESSION['survey_'.$surveyid]['scid']);
+        $iSessionStep               =   (isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
+        $iSessionMaxStep            =   (isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
+        $sSaveAllButtons="";
+
+        // Find out if the user has any saved data
+        if ($thissurvey['format'] == 'A')
+        {
+            if ( !$bTokenanswerspersistence && !$bAlreadySaved )
+            {
+                $bShowLoadButton = true;
+            }
+        }
+        elseif (!$iSessionStep) //Welcome page, show load (but not save)
+        {
+            if (!$bTokenanswerspersistence && !$bAlreadySaved )
+            {
+                $bShowLoadButton = true;
+            }
+            if($thissurvey['showwelcome']=="N")
+            {
+                $bShowSaveButton = true;
+            }
+        }
+        elseif ($iSessionMaxStep==1 && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
+        {
+            if (!$bTokenanswerspersistence && !$bAlreadySaved )
+            {
+                $bShowLoadButton = true;
+            }
+            $bShowSaveButton = true;
+        }
+        elseif ($move != "movelast") // Not on last page or submited survey
+        {
+            $bShowSaveButton = true;
+        }
     }
 
-
-    // Fill some test here, more clear ....
-    $bTokenanswerspersistence=$thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
-    $bAlreadySaved=isset($_SESSION['survey_'.$surveyid]['scid']);
-    $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
-    $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
-
-    $sSaveAllButtons="";
-    // Find out if the user has any saved data
-    if ($thissurvey['format'] == 'A')
-    {
-        if ( !$bTokenanswerspersistence && !$bAlreadySaved )
-        {
-            $sSaveAllButtons .= $sLoadButton;
-        }
-        $sSaveAllButtons .= $sSaveButton;
-    }
-    elseif (!$iSessionStep) //Welcome page, show load (but not save)
-    {
-        if (!$bTokenanswerspersistence && !$bAlreadySaved )
-        {
-            $sSaveAllButtons .= $sLoadButton;
-        }
-        if($thissurvey['showwelcome']=="N")
-        {
-            $sSaveAllButtons .= $sSaveButton;
-        }
-    }
-    elseif ($iSessionMaxStep==1 && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
-    {
-        if (!$bTokenanswerspersistence && !$bAlreadySaved )
-        {
-            $sSaveAllButtons .= $sLoadButton;
-        }
-        $sSaveAllButtons .= $sSaveButton;
-    }
-    elseif ($move != "movelast") // Not on last page or submited survey
-    {
-        $sSaveAllButtons .= $sSaveButton;
-    }
-    $aSaveAllButtons[$move]=$sSaveAllButtons;
-    return $aSaveAllButtons[$move];
+    $aSaveAllButtons['bShowLoadButton']=$bShowLoadButton;
+    $aSaveAllButtons['bShowSaveButton']=$bShowSaveButton;
+    return $aSaveAllButtons;
 }
 
 /**
@@ -758,6 +617,7 @@ function doHtmlSaveLinks($move="")
 * @param string $move :
 * @return string
 **/
+
 function doHtmlSaveAll($move="")
 {
     static $aSaveAllButtons=array();
@@ -765,7 +625,6 @@ function doHtmlSaveAll($move="")
         return $aSaveAllButtons[$move];
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
-
     if($thissurvey['allowsave'] == "Y")
     {
         $sLoadButton=App()->twigRenderer->render("/survey/system/actionButton/saveLoad",array(
@@ -785,13 +644,11 @@ function doHtmlSaveAll($move="")
         $sLoadButton = '';
         $sSaveButton = '';
     }
-
     // Fill some test here, more clear ....
     $bTokenanswerspersistence=$thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
     $bAlreadySaved=isset($_SESSION['survey_'.$surveyid]['scid']);
     $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
     $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
-
     $sSaveAllButtons="";
     // Find out if the user has any saved data
     if ($thissurvey['format'] == 'A')
@@ -828,6 +685,7 @@ function doHtmlSaveAll($move="")
     $aSaveAllButtons[$move]=$sSaveAllButtons;
     return $aSaveAllButtons[$move];
 }
+
 
 /**
  * ClearALl link and button

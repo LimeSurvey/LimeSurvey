@@ -34,21 +34,35 @@ class Template extends LSActiveRecord
     private static $standardTemplates = array();
 
     /**
-     * @inheritdoc
-     * @return Template
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
+     * @param string $class
+     * @return CActiveRecord
      */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
     public function tableName()
     {
         return '{{templates}}';
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns this table's primary key
+     *
+     * @access public
+     * @return string
+     */
     public function primaryKey()
     {
         return 'folder';
@@ -130,8 +144,8 @@ class Template extends LSActiveRecord
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed pstpl files, if the files refered in css exist, etc.
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param integer|string $iSurveyId        the id of the survey. If
-     * @return TemplateConfiguration
+     * @param integer $iSurveyId        the id of the survey. If
+     * @return StdClass
      */
     public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {

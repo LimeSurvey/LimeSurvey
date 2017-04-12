@@ -627,7 +627,8 @@ $config['third_party']                 = $config['publicurl'].'third_party/';
 $config['styleurl']                = $config['publicurl'].'styles/';
 
 
-$config['publicstyleurl']          = $config['publicurl'].'styles-public/';
+$config['publicstyle']             = 'styles-public/';
+$config['publicstyleurl']          = $config['publicurl'].$config['publicstyle'];
 $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
 $config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
 
@@ -645,6 +646,7 @@ $config['tempdir']                      = $config['rootdir'].DIRECTORY_SEPARATOR
 $config['imagedir']                     = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']                    = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir']      = $config['rootdir'].DIRECTORY_SEPARATOR."templates";            // The directory path of the standard templates
+$config['publicstylepath']              = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
 $config['corequestiontemplatedir']      = "question_templates";
 $config['corequestiontemplaterootdir']  = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestiontemplatedir'];   // The directory containing the core's question templates.
 $config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';

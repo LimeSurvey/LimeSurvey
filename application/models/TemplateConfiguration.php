@@ -57,6 +57,8 @@ class TemplateConfiguration extends CFormModel
      * @var array $otherFiles Array of files in the file directory
      * @see setOtherFiles()
      */
+    private $apiVersion;                        // Version of the LS API when created
+
     public $otherFiles;
 
 
@@ -174,10 +176,6 @@ class TemplateConfiguration extends CFormModel
 
         /* Add depend package according to packages */
         $this->depends                  = $this->getDependsPackages();
-
-        // overwrite_question_views accept different values : "true" or "yes"
-        $this->overwrite_question_views = (isset($this->config->engine->overwrite_question_views)) ? ($this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
-
         $this->otherFiles               = $this->setOtherFiles();
 
         // Package creation
@@ -198,6 +196,57 @@ class TemplateConfiguration extends CFormModel
         $config->metadatas->last_update = $date;
         $config->asXML( realpath ($this->xmlFile) );                // Belt
         touch ( $this->path );                                      // & Suspenders ;-)
+    }
+
+    public function registerAssets()
+    {
+        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
+            Yii::app()->clientScript->registerPackage( 'survey-template' );
+        }else{
+            $aDepends = $this->getRecursiveDependencies('survey-template');
+
+            // CONVERT ALL PACKAGE IN $aDepend to BASE URL instead of PATH
+            foreach($aDepends as $package){
+
+                $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
+
+                // This will overwrite the package definition  using a base url instead of a base path
+                if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
+                    Yii::app()->clientScript->addPackage( $package, array(
+                        'baseUrl'   => $aOldPackageDefinition['devBaseUrl'],                                 // Don't use asset manager
+                        'css'       => array_key_exists('css', $aOldPackageDefinition)?$aOldPackageDefinition['css']:array(),
+                        'js'        => array_key_exists('js', $aOldPackageDefinition)?$aOldPackageDefinition['js']:array(),
+                        'depends'   => array_key_exists('depends', $aOldPackageDefinition)?$aOldPackageDefinition['depends']:array(),
+                    ) );
+                }
+            }
+
+            Yii::app()->clientScript->registerPackage( 'survey-template' );
+        }
+
+
+    }
+
+    /**
+     * Return a list of all the recursive dependencies of a packages
+     * eg: If a package A depends on B, and B depends on C, getRecursiveDependencies('A') will return {B,C}
+     */
+    public function getRecursiveDependencies($sPackageName)
+    {
+        $aPackages     = Yii::app()->clientScript->packages;
+        if ( array_key_exists('depends', $aPackages[$sPackageName]) ){
+            $aDependencies = $aPackages[$sPackageName]['depends'];
+
+            foreach ($aDependencies as $sDpackageName){
+                if($aPackages[$sPackageName]['depends']){
+                    $aRDependencies = $this->getRecursiveDependencies($sDpackageName);                  // Recursive call
+                    if (is_array($aRDependencies)){
+                        $aDependencies = array_unique(array_merge($aDependencies, $aRDependencies));
+                    }
+                }
+            }
+            return $aDependencies;
+        }
     }
 
     /**
@@ -241,13 +290,22 @@ class TemplateConfiguration extends CFormModel
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
         // It will create the asset directory, and publish the css and js files
-        /* @todo : using assets directory  ? */
-        Yii::app()->clientScript->addPackage( 'survey-template', array(
-            'basePath'    => 'survey.template.path',
-            'css'         => $aCssFiles,
-            'js'          => $aJsFiles,
-            'depends'     => $this->depends,
-        ) );
+        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
+            Yii::app()->clientScript->addPackage( 'survey-template', array(
+                'basePath'    => 'survey.template.path',                        // Use asset manager
+                'css'         => $aCssFiles,
+                'js'          => $aJsFiles,
+                'depends'     => $this->depends,
+            ) );
+        }else{
+            $sTemplateurl = $this->getTemplateURL();
+            Yii::app()->clientScript->addPackage( 'survey-template', array(
+                'baseUrl'    =>  $sTemplateurl,                                 // Don't use asset manager
+                'css'         => $aCssFiles,
+                'js'          => $aJsFiles,
+                'depends'     => $this->depends,
+            ) );
+        }
     }
 
 
@@ -283,6 +341,20 @@ class TemplateConfiguration extends CFormModel
     private function setIsStandard()
     {
         return Template::isStandardTemplate($this->sTemplateName);
+    }
+
+    /**
+    * This function returns the complete URL path to a given template name
+    *
+    * @param string $sTemplateName
+    * @return string template url
+    */
+    public function getTemplateURL()
+    {
+        if(!isset($this->sTemplateurl)){
+            $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
+        }
+        return $this->sTemplateurl;
     }
 
     /**
@@ -359,6 +431,7 @@ class TemplateConfiguration extends CFormModel
 
         return $packages;
     }
+
     /**
      * Set the framework package
      * @param string $dir (rtl|ltr|)
@@ -418,12 +491,26 @@ class TemplateConfiguration extends CFormModel
                     $framework,
                 );
 
-                Yii::app()->clientScript->addPackage( $framework.'-template', array(
-                    'basePath'    => 'survey.template.path',
-                    'css'         => $packageCss,
-                    'js'          => $packageJs,
-                    'depends'     => $aDepends,
-                ));
+                if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
+                    Yii::app()->clientScript->addPackage(
+                        $framework.'-template', array(
+                            'basePath'    => 'survey.template.path',            // basePath: the asset manager will be used
+                            'css'         => $packageCss,
+                            'js'          => $packageJs,
+                            'depends'     => $aDepends,
+                        )
+                    );
+                }else{
+                    $sTemplateurl = $this->getTemplateURL();
+                    Yii::app()->clientScript->addPackage(
+                        $framework.'-template', array(
+                            'baseUrl'    =>  $sTemplateurl,                                 // Don't use asset manager
+                            'css'         => $packageCss,
+                            'js'          => $packageJs,
+                            'depends'     => $aDepends,
+                        )
+                    );
+                }
                 $frameworkPackages[]=$framework.'-template';
             }
             return $frameworkPackages;
