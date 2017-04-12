@@ -1,7 +1,6 @@
 <?php
 /** @var AdminController $this */
-/** @var array $dateformatdata */
-$dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
+$dateFormatDetails=getDateFormatData(Yii::app()->session['dateformat']);
 
 ?>
 <?php $form = $this->beginWidget('CActiveForm', array('id'=>'survey-expiry',)); ?>
@@ -17,23 +16,9 @@ $dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
                 'value' => null,
                 'htmlOptions' => array('class' => 'form-control custom-data'),
                 'pluginOptions' => array(
-                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                    'format' => $dateFormatDetails['jsdate'] . " HH:mm",
                     'allowInputToggle' =>true,
                     'showClear' => true,
-                    'tooltips' => array(
-                        'clear'=> gT('Clear selection'),
-                        'prevMonth'=> gT('Previous month'),
-                        'nextMonth'=> gT('Next month'),
-                        'selectYear'=> gT('Select year'),
-                        'prevYear'=> gT('Previous year'),
-                        'nextYear'=> gT('Next year'),
-                        'selectDecade'=> gT('Select decade'),
-                        'prevDecade'=> gT('Previous decade'),
-                        'nextDecade'=> gT('Next decade'),
-                        'prevCentury'=> gT('Previous century'),
-                        'nextCentury'=> gT('Next century'),
-                        'selectTime'=> gT('Select time')
-                    ),
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ));
