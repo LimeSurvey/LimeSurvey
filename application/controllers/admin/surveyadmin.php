@@ -1445,6 +1445,15 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
+    function datetimesettings(){
+        $data = array(
+            'dateformatsettings'=>getDateFormatData(Yii::app()->session['dateformat']),
+        );
+        if ( Permission::model()->hasGlobalPermission('surveys','read')) {
+
+            echo json_encode($data);
+        }
+    }
     /**
      * Action to set expiry date to multiple surveys
      */
