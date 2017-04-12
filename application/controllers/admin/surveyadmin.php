@@ -1448,9 +1448,11 @@ class SurveyAdmin extends Survey_Common_Action
     function datetimesettings(){
         $data = array(
             'dateformatsettings'=>getDateFormatData(Yii::app()->session['dateformat']),
+            'showClear' => true,
+            'allowInputToggle' => true,
         );
-        if ( Permission::model()->hasGlobalPermission('surveys','read')) {
 
+        if ( Permission::model()->hasGlobalPermission('surveys','read')) {
             echo json_encode($data);
         }
     }

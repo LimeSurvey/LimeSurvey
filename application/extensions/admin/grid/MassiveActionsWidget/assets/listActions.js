@@ -248,7 +248,8 @@ function prepareBsDateTimePicker($gridid){
     $('.date input').each(function(){
         $(this).datetimepicker({
             format: dateTimeFormat,
-            showClear: true,
+            showClear: dateTimeSettings.showClear,
+            allowInputToggle: dateTimeSettings.allowInputToggle,
         });
     });
 
