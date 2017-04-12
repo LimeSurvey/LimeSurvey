@@ -271,7 +271,6 @@ $(document).ready(function() {
 
     prepareBsSwitchBoolean(gridId);
     prepareBsSwitchInteger(gridId);
-    prepareBsDateTimePicker(gridId);
 
 
     // Grid refresh: see point 3
