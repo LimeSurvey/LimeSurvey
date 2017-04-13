@@ -75,6 +75,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
+
+    if($_surveyid) {
+        $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
+    }
+    else {
+        $totalgroups = "";
+    }
+
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if($_surveyid && !isset($thissurvey))
@@ -219,7 +227,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_therearexquestions = '';
     };
-
 
     if (isset($token))
     {
@@ -435,6 +442,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['MOVEPREVBUTTON'] = isset($moveprevbutton) ? $moveprevbutton : '';    // global
     $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : '';    // global
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
+    $coreReplacements['NUMBEROFGROUPS'] = $totalgroups;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACYHEADING'] = App()->twigRenderer->render("/survey/system/privacy/heading",array(),true);
     $coreReplacements['PRIVACYMESSAGE'] = App()->twigRenderer->render("/survey/system/privacy/message",array(),true);

@@ -1,6 +1,5 @@
 <?php
 
-    use \ls\pluginmanager\PluginEvent;
 
     abstract class QuestionPluginBase extends PluginBase{
         

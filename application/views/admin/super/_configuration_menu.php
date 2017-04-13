@@ -42,8 +42,6 @@
                             <dd><?php echo $surveyscount; ?></dd>
                             <dt class="text-info"><?php eT('Active surveys');?></dt>
                             <dd><?php echo $activesurveyscount; ?></dd>
-                            <dt class="text-info"><?php eT('Active tokens tables');?></dt>
-                            <dd><?php echo $activetokens;?></dd>
                             <dt class="text-info"><?php eT('ComfortUpdate key');?></dt>
                             <dd><?php echo $comfortUpdateKey;?></dd>
 

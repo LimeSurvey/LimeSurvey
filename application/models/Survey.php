@@ -691,7 +691,6 @@ class Survey extends LSActiveRecord
         }
     }
 
-
     /**
      * @return array
      */
@@ -817,9 +816,9 @@ class Survey extends LSActiveRecord
             $sStart = convertToGlobalSettingFormat( $sStart );
 
             // Icon generaton (for CGridView)
-            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Expire').': '.$sStop.'"><span class="fa  fa-clock-o text-success"></span></a>';
-            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Expired').': '.$sStop.'"><span class="fa fa fa-step-forward text-warning"></span></a>';
-            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Start').': '.$sStart.'"><span class="fa  fa-clock-o text-warning"></span></a>';
+            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'),$sStop).'"><span class="fa  fa-play text-success"></span></a>';
+            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'),$sStop).'"><span class="fa fa fa-step-forward text-warning"></span></a>';
+            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'),$sStart).'"><span class="fa  fa-clock-o text-warning"></span></a>';
 
             // Icon parsing
             if ( $bExpired || $bWillRun ) {
@@ -1052,15 +1051,17 @@ class Survey extends LSActiveRecord
                 } if($this->active == "S") {
                     $criteria->compare("t.active",'Y');
                     $criteria->addCondition("t.startdate >'$sNow'");
-                } if($this->active == "R") {
-                    $now = new CDbExpression("NOW()");
+                }
 
+                if($this->active == "R")
+                {
                     $criteria->compare("t.active",'Y');
                     $subCriteria1 = new CDbCriteria;
                     $subCriteria2 = new CDbCriteria;
-                    $subCriteria1->addCondition($now.' > t.startdate', 'OR');
-                    $subCriteria2->addCondition($now.' < t.expires', 'OR');
+                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'OR');
+                    $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
                     $subCriteria1->addCondition('t.expires IS NULL', "OR");
+                    $subCriteria1->addCondition("'{$sNow}' < t.expires", 'OR');
                     $subCriteria2->addCondition('t.startdate IS NULL', "OR");
                     $criteria->mergeWith($subCriteria1);
                     $criteria->mergeWith($subCriteria2);

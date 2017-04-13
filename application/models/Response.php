@@ -49,13 +49,30 @@ abstract class Response extends Dynamic
         $files = array();
         foreach ($questions as $question) {
 
-            $field = "{$question->sid}X{$question->gid}X{$question->qid}";
-            $data = json_decode(stripslashes($this->getAttribute($field)), true);
-            if (is_array($data)) {
-                $files = array_merge($files, $data);
+        /**
+        * Get all files related to this response and (optionally) question ID.
+        * 
+        * @param string $sQID The question ID - optional - Default 0
+        */
+        public function getFiles($sQID=0)
+        {
+            $aConditions=array('sid' => $this->dynamicId,'type' => '|','language'=>getBaseLanguageFromSurveyID($this->dynamicId));
+            if ($sQID>0)
+            {
+                $aConditions['qid']=$sQID;
             }
-        }
+            $aQuestions = Question::model()->findAllByAttributes($aConditions);
+            $files = array();
+            foreach ($aQuestions as $question)
+            {
 
+                $field = "{$question->sid}X{$question->gid}X{$question->qid}";
+                $data = json_decode(stripslashes($this->getAttribute($field)), true);
+                if (is_array($data))
+                {
+                    $files = array_merge($files, $data);
+                }
+            }
         return $files;
     }
 

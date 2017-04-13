@@ -45,7 +45,7 @@ $(document).ready(function(){
      }
     )
 
-    if ($.cookie('surveysecurityas')!='true')
+    if (Cookies.get('surveysecurityas')!='true')
     {
         $('.usersurveypermissions .extended').hide();
     }
@@ -76,7 +76,7 @@ $(document).ready(function(){
             $('.usersurveypermissions .extended').fadeOut();
         }
         updateExtendedButton(!extendoptionsvisible);
-        $.cookie('surveysecurityas',!extendoptionsvisible);
+        Cookies.set('surveysecurityas',!extendoptionsvisible);
     })
     updateExtendedButton(true);
 });

@@ -389,7 +389,7 @@ $config['bPdfQuestionBold'] = '0';		  // Questions in bold (1) or normal (0)
 $config['bPdfQuestionBorder'] = '1'; 	  // Border in questions. Accepts 0:no border, 1:border
 $config['bPdfResponseBorder'] = '1';	  // Border in responses. Accepts 0:no border, 1:border
 
-// QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF questionnaires
+// QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF survey
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
 $config['quexmlshowprintablehelp'] = false;
 

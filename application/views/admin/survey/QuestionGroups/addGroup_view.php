@@ -20,7 +20,7 @@
                 <li role="presentation" class="<?php if($active){ echo 'active'; $active=0; }?>">
                     <a data-toggle="tab" href="#<?php echo $grouplang; ?>">
                             <?php echo getLanguageNameFromCode($grouplang,false);
-                            if ($grouplang==$baselang) { ?>(<?php eT("Base language"); ?>) <?php } ?>
+                            if ($grouplang==$baselang) { ?> (<?php eT("Base language"); ?>) <?php } ?>
                     </a>
                 </li>
             <?php endforeach; ?>

@@ -49,12 +49,8 @@ class QuestionAttribute extends LSActiveRecord
     /** @inheritdoc */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
-            //FIXME this name conflicts with attribute qid. Should be "question"
-            'qid' => array(self::HAS_ONE, 'Questions', '',
-                'on' => "$alias.qid = questions.qid",
-            ),
+            'qid' => array(self::BELONGS_TO, 'Question', 'qid', 'together' => true),
         );
     }
 

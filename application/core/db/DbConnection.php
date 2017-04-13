@@ -14,6 +14,15 @@ class DbConnection extends \CDbConnection
         ));
     }
 
+    protected function initConnection($pdo)
+    {
+        parent::initConnection($pdo);
+        $driver=strtolower($pdo->getAttribute(PDO::ATTR_DRIVER_NAME));
+        if(in_array($driver,array('mysql','mysqli'))) {
+            $pdo->exec("SET collation_connection='utf8mb4_unicode_ci'");
+        }
+    }
+        
     /**
      * Quotes a string value for use in a query.
      * @param string $str string to be quoted

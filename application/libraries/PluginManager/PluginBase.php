@@ -45,7 +45,7 @@ abstract class PluginBase implements iPlugin {
      * @param PluginManager $manager    The plugin manager instantiating the object
      * @param int           $id         The id for storage
      */
-    public function __construct(\ls\pluginmanager\PluginManager $manager, $id)
+    public function __construct(\PluginManager $manager, $id)
     {
         $this->pluginManager = $manager;
         $this->id = $id;

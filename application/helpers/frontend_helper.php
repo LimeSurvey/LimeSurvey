@@ -2052,54 +2052,65 @@ function UpdateFieldArray()
 function checkCompletedQuota($surveyid,$return=false)
 {
     /* Check if session is set */
-    if (!isset(App()->session['survey_'.$surveyid]['srid']))
-    {
+    if (!isset(App()->session['survey_'.$surveyid]['srid'])) {
         return;
     }
     /* Check is Response is already submitted : only when "do" the quota: allow to send information about quota */
     $oResponse=Response::model($surveyid)->findByPk(App()->session['survey_'.$surveyid]['srid']);
-    if(!$return && $oResponse && !is_null($oResponse->submitdate))
-    {
+    if(!$return && $oResponse && !is_null($oResponse->submitdate)) {
         return;
     }
-    static $aMatchedQuotas; // EM call 2 times quotas with 3 lines of php code, then use static.
-    static $aPostedQuotaFields=array(); // Keep the posted field for the quota submit
+    // EM call 2 times quotas with 3 lines of php code, then use static.
+    static $aMatchedQuotas;
     if(!$aMatchedQuotas)
     {
         $aMatchedQuotas=array();
-        $aQuotasInfo = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-        // $aQuotasInfo have an 'active' key, we don't use it ?
-        if(!$aQuotasInfo || empty($aQuotasInfo))
+        // $aQuotasInfos = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        $aQuotas = Quota::model()->findAllByAttributes(array('sid' => $surveyid));
+        // if(!$aQuotasInfo || empty($aQuotaInfos)) {
+        if(!$aQuotas || empty($aQuotas)) {
             return $aMatchedQuotas;
+        }
+
         // OK, we have some quota, then find if this $_SESSION have some set
-        //$aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
-        foreach ($aQuotasInfo as $aQuotaInfo)
+        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
+        // foreach ($aQuotasInfos as $aQuotaInfo)
+        foreach ($aQuotas as $oQuota)
         {
-            if(!$aQuotaInfo['active'])
+            // if(!$aQuotaInfo['active']) {
+            if(!$oQuota->active) {
                 continue;
-            if(count($aQuotaInfo['members'])===0)
+            }
+            // if(count($aQuotaInfo['members'])===0) {
+            if(count($oQuota->quotaMembers)===0) {
                 continue;
+            }
             $iMatchedAnswers=0;
             $bPostedField=false;
+
+            ////Create filtering
             // Array of field with quota array value
             $aQuotaFields=array();
             // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
             $aQuotaRelevantFieldnames=array();
             // To count number of hidden questions
             $aQuotaQid=array();
-            foreach ($aQuotaInfo['members'] as $aQuotaMember)
+            //Fill the necessary filter arrays
+            foreach ($oQuota->quotaMembers as $oQuotaMember)
             {
+                $aQuotaMember = $oQuotaMember->memberInfo;
                 $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
-                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]=isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
+                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]= isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
                 $aQuotaQid[]=$aQuotaMember['qid'];
             }
             $aQuotaQid=array_unique($aQuotaQid);
+
+            ////Filter
             // For each field : test if actual responses is in quota (and is relevant)
             foreach ($aQuotaFields as $sFieldName=>$aValues)
             {
                 $bInQuota=isset($_SESSION['survey_'.$surveyid][$sFieldName]) && in_array($_SESSION['survey_'.$surveyid][$sFieldName],$aValues);
-                if($bInQuota && $aQuotaRelevantFieldnames[$sFieldName])
-                {
+                if($bInQuota && $aQuotaRelevantFieldnames[$sFieldName]) {
                     $iMatchedAnswers++;
                 }
                 if(!is_null(App()->request->getPost($sFieldName))){// Need only one posted value
@@ -2107,27 +2118,32 @@ function checkCompletedQuota($surveyid,$return=false)
                     $aPostedQuotaFields[$sFieldName]=App()->getRequest()->getPost($sFieldName);
                 }
             }
-            // Condition to count quota : Answers are the same in quota + an answer is submitted at this time (bPostedField) OR all questions is hidden (bAllHidden)
-            $bAllHidden=QuestionAttribute::model()->countByAttributes(array('qid'=>$aQuotaQid),'attribute=:attribute',array(':attribute'=>'hidden'))==count($aQuotaQid);
+
+
+            // Condition to count quota :
+            // Answers are the same in quota + an answer is submitted at this time (bPostedField)
+            //  OR all questions is hidden (bAllHidden)
+            $bAllHidden = QuestionAttribute::model()
+                ->countByAttributes(array('qid'=>$aQuotaQid),'attribute=:attribute',array(':attribute'=>'hidden')) == count($aQuotaQid);
+
             if($iMatchedAnswers==count($aQuotaFields) && ( $bPostedField || $bAllHidden) )
             {
-                if($aQuotaInfo['qlimit'] == 0)
-                { // Always add the quota if qlimit==0
-                    $aMatchedQuotas[]=$aQuotaInfo;
-                }
-                else
-                {
-                    $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);
-                    if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
-                        $aMatchedQuotas[]=$aQuotaInfo;
+                if($oQuota->qlimit == 0) { // Always add the quota if qlimit==0
+                    $aMatchedQuotas[]=$oQuota->viewArray;
+                } else {
+                    $iCompleted=getQuotaCompletedCount($surveyid, $oQuota->id);
+                    if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$oQuota->qlimit )) // This remove invalid quota and not completed
+                        $aMatchedQuotas[]=$oQuota->viewArray;
                 }
             }
         }
     }
-    if ($return)
+    if ($return) {
         return $aMatchedQuotas;
-    if(empty($aMatchedQuotas))
+    }
+    if(empty($aMatchedQuotas)) {
         return;
+    }
 
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
@@ -2160,6 +2176,7 @@ function checkCompletedQuota($surveyid,$return=false)
         /* @var $blockData PluginEventContent */
         $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
     }
+
     // Allow plugin to update message, url, url description and action
     $sMessage=$event->get('message',$aMatchedQuota['quotals_message']);
     $sUrl=$event->get('url',$aMatchedQuota['quotals_url']);
@@ -2169,10 +2186,9 @@ function checkCompletedQuota($surveyid,$return=false)
     $closeSurvey = ($sAction=="1" || App()->getRequest()->getPost('move')=='confirmquota');
     $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
     // Doing the action and show the page
-    if ($closeSurvey && $sClientToken){
+    if ($sAction == \Quota::ACTION_TERMINATE && $sClientToken) {
         submittokens(true);
     }
-
     // Construct the default message
     $sMessage        = templatereplace($sMessage,array(),$aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
     $sUrl            = passthruReplace($sUrl, $aSurveyInfo);
@@ -2267,8 +2283,6 @@ function GetReferringUrl()
 
 /**
 * Shows the welcome page, used in group by group and question by question mode
-* TODO: TWIG IT !
-*
 */
 function display_first_page($thissurvey) {
     global $token, $surveyid, $navigator;

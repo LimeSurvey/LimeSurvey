@@ -47,7 +47,7 @@ $(document).ready(function(){
      }
     )
 
-    if ($.cookie('userpermissions')!='true')
+    if (Cookies.get('userpermissions')!='true')
     {
         $('.userpermissions .extended').hide();
     }
@@ -80,7 +80,7 @@ $(document).ready(function(){
             $('.userpermissions .extended').fadeOut();
         }
         updateExtendedButton(!extendoptionsvisible);
-        $.cookie('userpermissions',!extendoptionsvisible);
+        Cookies.set('userpermissions',!extendoptionsvisible);
     })
     updateExtendedButton(false);
 });

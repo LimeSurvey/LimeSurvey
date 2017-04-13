@@ -11,8 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * This function imports a LimeSurvey .lsg question group XML file
 *
@@ -101,12 +99,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
 
         if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',false);
-        $results['groups']++;
 
         if (!isset($aGIDReplacements[$oldgid]))
         {
             $newgid=getLastInsertID('{{groups}}');
             $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+            $results['groups']++;
         }
     }
 
@@ -1018,11 +1016,10 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['gid']=$aGIDReplacements[$oldgid];
             }
             $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
-            $results['groups']++;
-
             if (!isset($aGIDReplacements[$oldgid]))
             {
                 $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+                $results['groups']++;
             }
             else
             {
@@ -1241,12 +1238,12 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
+                $results['subquestions']++;
             }
             else
             {
                 switchMSSQLIdentityInsert('questions',false);
             }
-            $results['subquestions']++;
         }
     }
 
@@ -2127,6 +2124,8 @@ function TSVImportSurvey($sFullFilePath)
 
     // fix Excel non-breaking space
     $file = str_replace("0xC20xA0",' ',$file);
+    // Replace all different newlines styles with \n
+    $file = preg_replace('~\R~u', "\n", $file);
     $filelines = explode("\n",$file);
     $row = array_shift($filelines);
     $headers = explode("\t",$row);
