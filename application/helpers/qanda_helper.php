@@ -3200,6 +3200,7 @@ function do_numerical($ia)
         $fValue = rtrim(rtrim($fValue,"0"),".");
     }
     $fValue = str_replace('.',$sSeparator,$fValue);
+    $fValue = htmlspecialchars($fValue);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
