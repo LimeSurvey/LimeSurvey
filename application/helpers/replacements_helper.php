@@ -486,7 +486,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 
     if(isset($thissurvey)){
-        $line = Yii::app()->twigRenderer->renderTemplateFromString( $line, array('aSurveyInfo'=>$thissurvey), false);
+        //$line = Yii::app()->twigRenderer->renderTemplateFromString( $line, array('aSurveyInfo'=>$thissurvey), false);
     }
 
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default

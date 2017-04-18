@@ -480,7 +480,8 @@ class SurveyRuntimeHelper {
         }
 
         $redata  = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplateViewPath."layout.twig"), array(), $redata);
+        //echo templatereplace(file_get_contents($sTemplateViewPath."layout.twig"), array(), $redata);
+        echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout.twig"), array('aSurveyInfo'=>$thissurvey), false);
     }
 
 
@@ -1072,7 +1073,8 @@ class SurveyRuntimeHelper {
                 // $cSave->showsaveform($thissurvey['sid']); // generates a form and exits, awaiting input
                 $thissurvey['aSaveForm'] = $cSave->getSaveFormDatas($thissurvey['sid']);
                 $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_save.twig"), array(), $redata);
+                //echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_save.twig"), array(), $redata);
+                echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
                 Yii::app()->end();
             }else{
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
@@ -1118,7 +1120,8 @@ class SurveyRuntimeHelper {
             if (!empty($aResult['aSaveErrors'])){
                 $thissurvey['aSaveForm'] = $cSave->getSaveFormDatas($thissurvey['sid']);
                 $redata                  = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_save.twig"), array(), $redata);
+                //echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_save.twig"), array(), $redata);
+                echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
                 Yii::app()->end();
             }
 
@@ -1191,7 +1194,8 @@ class SurveyRuntimeHelper {
                 $this->completed = $completed;
 
                 $redata  = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplateViewPath."layout-submit.twig"), array(), $redata);
+                //echo templatereplace(file_get_contents($sTemplateViewPath."layout-submit.twig"), array(), $redata);
+                echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout-submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
                 App()->end();
             }else{
 
@@ -1297,7 +1301,8 @@ class SurveyRuntimeHelper {
             }
 
             $redata  = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplateViewPath."layout-submit.twig"), array(), $redata);
+            //echo templatereplace(file_get_contents($sTemplateViewPath."layout-submit.twig"), array(), $redata);
+            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout-submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
             exit;
         }
     }
@@ -1653,7 +1658,8 @@ class SurveyRuntimeHelper {
             $thissurvey['surveyUrl'] = $restarturl;
 
             $redata  = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_clearall.twig"), array(), $redata);
+            //echo templatereplace(file_get_contents($this->sTemplateViewPath."layout_clearall.twig"), array(), $redata);
+            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_clearall.twig"), array('aSurveyInfo'=>$thissurvey), false);
             App()->end();
         }
     }
