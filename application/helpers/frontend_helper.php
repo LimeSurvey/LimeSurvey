@@ -1815,6 +1815,9 @@ function doAssessment($surveyid, $returndataonly=false)
 
             foreach ($fieldmap as $field){
 
+                // Init Assessment Value
+                $assessmentValue = NULL;
+
                 if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P'))){
 
                     $fieldmap[$field['fieldname']]['assessment_value'] = 0;
@@ -1825,9 +1828,10 @@ function doAssessment($surveyid, $returndataonly=false)
                         if (($field['type'] == "M") || ($field['type'] == "P")){
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y"){
 
-                                $aAttributes                                       = getQuestionAttributeValues($field['qid']);
-                                $fieldmap[$field['fieldname']]['assessment_value'] = (int)$aAttributes['assessment_value'];
-                                $total                                             = $total+(int)$aAttributes['assessment_value'];
+                                $aAttributes     = getQuestionAttributeValues($field['qid']);
+                                $assessmentValue = (int)$aAttributes['assessment_value'];
+                                $total           = $total+(int)$aAttributes['assessment_value'];
+                                $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         }else{
                               // Single choice question
@@ -1835,11 +1839,13 @@ function doAssessment($surveyid, $returndataonly=false)
                             $usresult = dbExecuteAssoc($usquery);          //Checked
 
                             if ($usresult){
-                                $usrow                                             = $usresult->read();
-                                $fieldmap[$field['fieldname']]['assessment_value'] = $usrow['assessment_value'];
-                                $total                                             = $total+$usrow['assessment_value'];
+                                $usrow              = $usresult->read();
+                                $assessmentValue    = $usrow['assessment_value'];
+                                $total              = $total+$usrow['assessment_value'];
                             }
                         }
+
+                        $fieldmap[$field['fieldname']]['assessment_value'] = $assessmentValue;
                     }
                     $groups[] = $field['gid'];
                 }
@@ -2202,7 +2208,7 @@ function checkCompletedQuota($surveyid,$return=false)
     $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
     $thissurvey['aQuotas']['sQuotaStep']         = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
     $thissurvey['aQuotas']['sClientToken']       = $sClientToken;
-    $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields;
+    $thissurvey['aQuotas']['aPostedQuotaFields'] = isset($aPostedQuotaFields)?$aPostedQuotaFields:'';
     $thissurvey['aQuotas']['sPluginBlocks']      = implode("\n", $blocks);
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
