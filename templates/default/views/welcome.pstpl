@@ -1,9 +1,0 @@
-{CHECKJAVASCRIPT}
-<div class="ls-js-hidden">{LANGUAGECHANGER}</div>
-
-<div id="welcome-container">
-  <h1 class="survey-name text-center">{SURVEYNAME}</h1>
-  <div class="text-info text-center survey-description">{SURVEYDESCRIPTION}</div>
-  <div class="survey-welcome h4 text-primary">{WELCOME}</div>
-  <div class="number-of-questions text-muted">{THEREAREXQUESTIONS}</div>
-</div>
