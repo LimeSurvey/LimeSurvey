@@ -152,15 +152,15 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * Render a string, not a file. It's used from template replace function.
      *
      * @param string  $line     The line of HTML/Twig to render
-     * @param array   $redata   Array containing the datas needed to render the view ($thissurvey)
+     * @param array   $aDatas   Array containing the datas needed to render the view ($thissurvey)
      * @param boolean $bReturn  Should the function echo the result, or just returns it?
      */
-    public function renderTemplateFromString( $line, $redata, $bReturn)
+    public function renderTemplateFromString( $line, $aDatas, $bReturn)
     {
         // If no redata, there is no need to use twig, so we just return the line.
         // This happen when calling templatereplace() from admin, to replace some keywords.
         // NOTE: this check is already done in templatereplace().
-        if (is_array($redata)){
+        if (is_array($aDatas)){
             $this->_twig      = $twig = parent::getTwig();
 
             // At this point, forced path should not be nulled.
@@ -172,7 +172,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
             // Twig rendering
             $oTwigTemplate = $twig->createTemplate($line);
-            $nvLine        = $oTwigTemplate->render($redata, false);
+            $nvLine        = $oTwigTemplate->render($aDatas, false);
         }else{
             $nvLine = $line;
         }
