@@ -57,10 +57,9 @@ class TemplateConfiguration extends CFormModel
      * @var array $otherFiles Array of files in the file directory
      * @see setOtherFiles()
      */
-    private $apiVersion;                        // Version of the LS API when created
-
     public $otherFiles;
 
+    public $sTemplateurl;
 
     /** @var  Survey $oSurvey The survey object */
     public $oSurvey;
