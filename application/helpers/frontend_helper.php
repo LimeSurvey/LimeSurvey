@@ -1454,14 +1454,13 @@ function getRenderWay($renderToken, $renderCaptcha)
 /**
  * Render token, captcha or register form
  * @param string $renderWay
- * @param array $redata
  * @param array $scenarios
  * @param string $sTemplateViewPath
  * @param array $aEnterTokenData
  * @param int $surveyid
  * @return void
  */
-function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid)
+function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid)
 {
     switch($renderWay){
 
@@ -1478,8 +1477,6 @@ function renderRenderWayForm($renderWay, array $redata, array $scenarios, $sTemp
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
 
-            $redata  = compact(array_keys(get_defined_vars()));
-            //echo templatereplace(file_get_contents($sTemplateViewPath."user_forms_layout.twig"), array(), $redata);
             echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."user_forms_layout.twig"), array('aSurveyInfo'=>$thissurvey), false);
             // With a good logic in survey runtime, we could avoid those exits
             Yii::app()->end();
@@ -1582,10 +1579,6 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
-    $redata = array();
-    $redata['thissurvey'] = $thissurvey;
-
-    //echo templatereplace(file_get_contents($sTemplateViewPath."layout_errors.twig"), array(), $redata);
     echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_errors.twig"), array('aSurveyInfo'=>$thissurvey), false);
     Yii::app()->end();
 }
@@ -2222,8 +2215,6 @@ function checkCompletedQuota($surveyid,$return=false)
         }
     }
 
-    $redata = compact(array_keys(get_defined_vars()));
-    //echo templatereplace(file_get_contents($sTemplateViewPath."layout_quotas.twig"), array(), $redata);
     echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_quotas.twig"), array('aSurveyInfo'=>$thissurvey), false);
     Yii::app()->end();
 }
@@ -2330,8 +2321,6 @@ function display_first_page($thissurvey) {
     LimeExpressionManager::FinishProcessingPage();
 
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
-    $redata = compact(array_keys(get_defined_vars()));
-    //echo templatereplace(file_get_contents($sTemplateViewPath."layout_first_page.twig"), array(), $redata);
     echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_first_page.twig"), array('aSurveyInfo'=>$thissurvey), false);
 }
 

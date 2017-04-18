@@ -484,11 +484,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $doTheseReplacements = $coreReplacements;
     }
 
-
-    if(isset($thissurvey)){
-        //$line = Yii::app()->twigRenderer->renderTemplateFromString( $line, array('aSurveyInfo'=>$thissurvey), false);
-    }
-
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
     $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
 
