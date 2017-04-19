@@ -1473,11 +1473,11 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
             $aForm['bCaptchaEnabled'] = (isset($aEnterTokenData['bCaptchaEnabled']))?$aEnterTokenData['bCaptchaEnabled']:'';
 
-            // Rendering user_forms_layout.twig
+            // Rendering layout_user_forms.twig
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
 
-            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."user_forms_layout.twig"), array('aSurveyInfo'=>$thissurvey), false);
+            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_user_forms.twig"), array('aSurveyInfo'=>$thissurvey), false);
             // With a good logic in survey runtime, we could avoid those exits
             Yii::app()->end();
             break;
