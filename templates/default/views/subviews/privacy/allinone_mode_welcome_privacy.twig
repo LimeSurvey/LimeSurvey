@@ -20,7 +20,7 @@
 
 {% if aSurveyInfo.format == 'A' %}
     {% if not aSurveyInfo.showwelcome is defined or not aSurveyInfo.showwelcome != 'N' %}
-        {{ include('welcome.twig') }}
+        {{ include('./subviews/welcome.twig') }}
     {% endif %}
 
     {% if aSurveyInfo.anonymized == 'Y' %}
