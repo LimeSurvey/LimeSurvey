@@ -9,6 +9,15 @@
     other free or open source software licenses.
     See COPYRIGHT.php for copyright notices and details.
 
+    (¯`·._.·(¯`·._.· Submit Layout  ·._.·´¯)·._.·´¯)
+
+    This page is displayed after user submitted the survey
+    It could be visually very different (no header, etc)
+
+    It shows the end text, assessments, print answer, and statistics
+
+    Datas are in: aSurveyInfo.aCompleted and aSurveyInfo.aAssessments
+    to show those datas, turn debug mode on, and uncomment: {{ dump(aSurveyInfo.aCompleted ) }}
 #}
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
@@ -21,7 +30,7 @@
         {# Bootstrap Navigation Bar: the top menu #}
         {{ include('./subviews/nav_bar.twig') }}
 
-        {# Top Container: in this template, it contains only  #}
+        {# Top Container: in this template #}
         {{ include('./subviews/progess_bar.twig') }}
 
         <!-- Outer Frame Container -->
