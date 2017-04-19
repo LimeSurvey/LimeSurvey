@@ -18,6 +18,9 @@
 
     It has no obligation to be the same layout than layout.twig, it can be completly different
 
+    NOTE: the main purpose of this file is to show how different can be the layouts. This one has a complete different design.
+    To see it: just try to preview a survey with an empty group.
+
 #}
 
 {% set aError     = aSurveyInfo.aError    %}
@@ -34,7 +37,10 @@
             ERROR! {{ aSurveyInfo.surveyls_title }}
         </title>
 
-        {# NOTE: YES, it's very bad to do it here. It a first cycle. I'll see what to do once I'll done all those kind of error page#}
+        {#
+            NOTE: YES, it's very bad to do it here. It a first cycle. I'll see what to do once I'll done all those kind of error page
+            TODO: move it to a separated css file
+        #}
         <style type="text/css">
         html{
           }
