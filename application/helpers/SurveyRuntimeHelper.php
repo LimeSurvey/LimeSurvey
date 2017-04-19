@@ -1614,15 +1614,6 @@ class SurveyRuntimeHelper {
 
             killSurveySession($this->surveyid);
 
-            //TODO TWIG
-
-            /***
-            $content = templatereplace(file_get_contents($this->sTemplateViewPath."clearall.pstpl"),array());
-
-            App()->getController()->layout = 'survey';
-            App()->getController()->render("/survey/system/display",array('content'=>$content));
-            */
-
             global $token;
             if($token){
                 $restartparam['token']=sanitize_token($token);

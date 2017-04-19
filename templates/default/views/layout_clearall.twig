@@ -8,6 +8,11 @@
     is derivative of works licensed under the GNU General Public License or
     other free or open source software licenses.
     See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Clear All Layout  ·._.·´¯)·._.·´¯)
+
+    This is what is shown when user cleared the survey (only show "Restart this survey")
+    NOTE: It probably doesn't need to be a separated layout.
 #}
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
@@ -30,7 +35,7 @@
 
                     <div class='return-to-survey'>
                         <div class="url-wrapper url-wrapper-survey-return">
-                            <a href="{{ aSurveyInfo.surveyUrl }}" class="ls-return">{{ "Restart this Survey" }}</a>
+                            <a href="{{ aSurveyInfo.surveyUrl }}" class="ls-return">{{ "Restart this Survey" | t}}</a>
                         </div>
                     </div>
                 </div>
