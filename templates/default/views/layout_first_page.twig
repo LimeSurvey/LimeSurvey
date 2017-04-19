@@ -50,7 +50,7 @@
                         {{ include('welcome.twig') }}
 
                         {% if(aSurveyInfo.anonymized) == "Y" %}
-                            {{ include('privacy.twig') }}
+                            {{ include('./subviews/privacy/privacy.twig') }}
                         {% endif %}
 
                         {# Presents the navigator #}
