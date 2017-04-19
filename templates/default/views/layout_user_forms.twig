@@ -1,6 +1,5 @@
 
 {#
-
     TODO: alignement, some unclosed div (for token + captcha)
 #}
 
@@ -22,155 +21,137 @@
             <!-- Main Row -->
             <div id="main-row">
 
-                    <!-- Main Col -->
-                    <div class="col-centered" id="main-col">
+                <!-- Main Col -->
+                <div class="col-centered" id="main-col">
 
-                        <div class='{{aSurveyInfo.aForm.sType}}-page'>
-                            <div class="h3">
-                                {# OLD FORMHEADING #}
-                                {% if aSurveyInfo.aForm.sType == 'token'  %}
-                                    {{ "To participate in this restricted survey, you need a valid token." | t }}
-                                {% endif %}
+                    <div class='{{aSurveyInfo.aForm.sType}}-page'>
+                        <div class="h3">
+                            {# OLD FORMHEADING #}
+                            {% if aSurveyInfo.aForm.sType == 'token'  %}
+                                {{ "To participate in this restricted survey, you need a valid token." | t }}
+                            {% endif %}
 
-                                {% if aSurveyInfo.aForm.sType == 'captcha'  %}
-                                    {{ "Before you start, please prove you are human." }}
-                                {% endif %}
-                            </div>
+                            {% if aSurveyInfo.aForm.sType == 'captcha'  %}
+                                {{ "Before you start, please prove you are human." | t }}
+                            {% endif %}
+                        </div>
 
-                            <div class="well">
+                        <div class="well">
 
-                                {# TOKEN #}
-                                {% if aSurveyInfo.aForm.sType == 'token'  %}
-                                    {# OLD FORMMESSAGE #}
-                                    <p class='text-info'>
-                                        {# TODO: convert !isset to null #}
-                                        {% if aSurveyInfo.aForm.token == null  %}
-                                            {{ "If you have been issued a token, please enter it in the box below and click continue." | t }}
-                                            {% else %}
-                                            {{ "Please confirm the token by answering the security question below and click continue." | t }}
-                                        {% endif %}
-                                    </p>
-                                {% endif %}
+                            {# TOKEN #}
+                            {% if aSurveyInfo.aForm.sType == 'token'  %}
+                                <p class='text-info'>
+                                    {% if aSurveyInfo.aForm.token == null  %}
+                                        {{ "If you have been issued a token, please enter it in the box below and click continue." | t }}
+                                    {% else %}
+                                        {{ "Please confirm the token by answering the security question below and click continue." | t }}
+                                    {% endif %}
+                                </p>
+                            {% endif %}
 
-                                {# OLD FORMERROR #}
-                                {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
-                                    {# TODO: check how is defined $class #}
-                                    <ul class='alert alert-danger list-unstyled' role='alert'>
-                                        {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
-                                            <li>{{ error }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
+                            {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
+                                <ul class='alert alert-danger list-unstyled' role='alert'>
+                                    {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
 
-                                <div class="form-{{ aSurveyInfo.aForm.sType }}">
-                                    {# old FORM#}
+                            <div class="form-{{ aSurveyInfo.aForm.sType }}">
+                                {#
+                                    array of attributes of the form tag.
+                                    To add a new attribute, just add an entry:
+                                    'attribute' : 'value',
+                                #}
+                                {%
+                                    set htmlOptions = {
+                                       'id'          : 'form-' ~ aSurveyInfo.aForm.sType ,
+                                       'name'        : 'limesurvey',
+                                       'class'       : 'ls-form',
+                                   }
+                                %}
 
-                                   {#
-                                       array of attributes of the form tag.
-                                       To add a new attribute, just add an entry:
-                                       'attribute' : 'value',
-                                   #}
-                                   {%
-                                        set htmlOptions = {
-                                           'id'          : 'form-' ~ aSurveyInfo.aForm.sType ,
-                                           'name'        : 'limesurvey',
-                                           'class'       : 'ls-form',
-                                       }
-                                   %}
-
-                                   <!-- Start of the main Form-->
-                                   {{
-                                       C.Html.form(
-                                           ( aSurveyInfo.surveyUrl ),
-                                           'post',
+                                {#  TOKEN FORM #}
+                                <!-- Start of the main Form-->
+                                {{
+                                    C.Html.form(
+                                        ( aSurveyInfo.surveyUrl ),
+                                            'post',
                                            (htmlOptions)
-                                       )
-                                   }}
-                                    {#  TOKEN FORM #}
+                                        )
+                                }}
 
+                                {% if aSurveyInfo.aForm.sType == 'token'  %}
 
+                                    <div class='form-horizontal'>
+                                        <div class='form-group'>
+                                            <label class='control-label col-sm-3' for='loadname'>
+                                                {{ "Token:" | t }}
+                                                <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
+                                                <span class="sr-only text-danger asterisk">
+                                                    ( {{ "Mandatory" | t }} )
+                                                <span>
+                                            </label>
 
-                                    {% if aSurveyInfo.aForm.sType == 'token'  %}
+                                            <div class='col-sm-7 load-survey-input input-cell'>
+                                                {% if aSurveyInfo.aForm.token == null  %}
+                                                    <input class='form-control' type='password' id='token' name='token' value='' required>
+                                                {% else %}
 
-                                        <div class='form-horizontal'>
-                                            <div class='form-group'>
-                                                <label class='control-label col-sm-3' for='loadname'>
-                                                    {{ "Token:" | t }}
-                                                    <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
-                                                    <span class="sr-only text-danger asterisk">
-                                                        ( {{ "Mandatory" | t }} )
-                                                    <span>
-                                                </label>
+                                                    {% set passwordFieldHtmlOptions = {
+                                                        'id'       : 'token',
+                                                        'required' : true,
+                                                        'readonly' : true,
+                                                        }
+                                                    %}
 
-                                                <div class='col-sm-7 load-survey-input input-cell'>
-                                                    {% if aSurveyInfo.aForm.token == null  %}
-                                                        <input class='form-control' type='password' id='token' name='token' value='' required>
-                                                    {% else %}
+                                                    {{
+                                                        C.Html.passwordField(
+                                                            'token',
+                                                            (( aSurveyInfo.aForm.token )),
+                                                            (passwordFieldHtmlOptions)
+                                                        )
+                                                    }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                                        {% set passwordFieldHtmlOptions = {
-                                                                    'id'       : 'token',
-                                                                    'required' : true,
-                                                                    'readonly' : true,
-                                                                }
-                                                        %}
-
-                                                        {{
-                                                            C.Html.passwordField(
-                                                                'token',
-                                                                (( aSurveyInfo.aForm.token )),
-                                                                (passwordFieldHtmlOptions)
-                                                                )
-                                                        }}
-                                                    {% endif %}
+                                    {#  CAPTACHA INSIDE TOKEN FORM #}
+                                    {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
+                                        <div class='form-group captcha-item'>
+                                            <!-- Doesn't seems aria capable -->
+                                            <label class='control-label col-sm-3' for='loadsecurity'>
+                                                {{ "Please enter the letters you see:" | t }}
+                                                <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
+                                                <span class="sr-only text-danger asterisk">
+                                                    ( {{ "Mandatory" | t }} )
+                                                <span>
+                                            </label>
+                                            <div class='col-sm-7'>
+                                                <div class='ls-input-group'>
+                                                    <div class='ls-input-group-extra captcha-widget' >
+                                                        {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
+                                                        {{ renderCaptcha() }}
+                                                    </div>
+                                                    <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {#  CAPTACHA INSIDE TOKEN FORM #}
-
-                                        {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
-                                            <div class='form-group captcha-item'>
-                                                <!-- Don't seems aria capable -->
-                                                <label class='control-label col-sm-3' for='loadsecurity'>
-                                                    {{ "Please enter the letters you see:" }}
-                                                    <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
-                                                    <span class="sr-only text-danger asterisk">
-                                                        ( {{ "Mandatory" | t }} )
-                                                    <span>
-                                                </label>
-                                                <div class='col-sm-7'>
-                                                    <div class='ls-input-group'>
-                                                        <div class='ls-input-group-extra captcha-widget' >
-
-                                                            {{ renderCaptcha() }}
-                                                            {#
-                                                            <?php  ?>
-                                                            #}
-                                                        </div>
-                                                        <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        {% endif %}
-
-                                        {{ aSurveyInfo.aForm.hiddenFields }}
-
-                                                <div class='form-group load-survey-row load-survey-submit'>
-                                                    <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
-                                                        <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'>
-                                                            {{ "Continue" | t }}
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-
                                     {% endif %}
 
+                                    {{ aSurveyInfo.aForm.hiddenFields }}
 
+                                    <div class='form-group load-survey-row load-survey-submit'>
+                                        <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
+                                            <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'>
+                                                {{ "Continue" | t }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endif %}
 
-
-                                    {% if aSurveyInfo.aForm.sType == 'captcha'  %}
+                                {% if aSurveyInfo.aForm.sType == 'captcha'  %}
                                     <div class='form-horizontal'>
                                         <div class='form-group'>
                                             <div class='form-group captcha-item'>
@@ -198,36 +179,26 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-                                    {% endif %}
-
-
+                                {% endif %}
                                 </form>
                             </div>
-
-
-
-                          </div>
                         </div>
+                    </div>
+                </div> <!-- main col -->
+            </div> <!-- main row -->
+        </div> <!-- outer frame container -->
 
+        {# Bootstrap alert modal #}
+        {{ include('./subviews/bootstrap_alert_modal.twig') }}
 
-                    </div> <!-- main col -->
-
-                </div> <!-- main row -->
-            </div> <!-- outer frame container -->
-
-            {# Bootstrap alert modal #}
-            {{ include('./subviews/bootstrap_alert_modal.twig') }}
-
-            <!-- some template.js function launched before ready -->
-            <script type="text/javascript">
-            /*<![CDATA[*/
-                sliderSuffixClone();
-                fixBodyPadding();
-                hideEmptyPart();
+        <!-- some template.js function launched before ready -->
+        <script type="text/javascript">
+        /*<![CDATA[*/
+            sliderSuffixClone();
+            fixBodyPadding();
+            hideEmptyPart();
             /*]]>*/
-            </script>
-        </body>
+        </script>
+    </body>
 </html>
 <!-- end of startpage.twig -->

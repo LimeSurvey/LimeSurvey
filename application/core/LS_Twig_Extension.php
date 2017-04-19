@@ -123,9 +123,9 @@ class LS_Twig_Extension extends Twig_Extension
     public static function renderCaptcha()
     {
         App()->getController()->widget('CCaptcha',array(
-        'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
-        'buttonType' => 'button',
-        'buttonLabel' => gt('Reload image','unescaped')
+            'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
+            'buttonType' => 'button',
+            'buttonLabel' => gt('Reload image','unescaped')
         ));
     }
 
