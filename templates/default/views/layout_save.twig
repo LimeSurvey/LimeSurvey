@@ -8,6 +8,24 @@
     is derivative of works licensed under the GNU General Public License or
     other free or open source software licenses.
     See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Save page Layout  ·._.·´¯)·._.·´¯)
+
+    This file display the page shown to user when he save his survey to complete it later
+
+
+    Depending on survey config, a navigator allowing user to change his response can be shown, and a end url
+
+    form datas are in: aSurveyInfo.aSaveForm (errors, css classes, captcha, etc)
+    to show those datas, turn debug mode on, and: {{ dump(aSurveyInfo.aSaveForm ) }} )
+
+    (¯`·._.·(¯`·._.·  Advanced ·._.·´¯)·._.·´¯)
+
+    The form is generated using the Yii function CHtml::form. You must keep it to get the CRSF token.
+    Inputs are also generated using the Yii function CHtml. Eg: input textField is generated via CHtml::textField
+    You can replace those inputs by pure Html (<input type="text" ... />), just be sure to use the correct options (id, classes, required, etc)
+    @see: http://www.yiiframework.com/wiki/48/by-example-chtml/ , http://www.yiiframework.com/doc/api/1.1/CHtml
+
 #}
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
@@ -72,6 +90,11 @@
                                 }
                             %}
 
+                            {#
+                                It generates the opening form tag and the CRSF token
+                                It uses the Yii fuction CHtml::form
+                                @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
+                            #}
                             <!-- Save Form -->
                             {{
                                 C.Html.form(
