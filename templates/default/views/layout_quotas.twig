@@ -8,7 +8,15 @@
     is derivative of works licensed under the GNU General Public License or
     other free or open source software licenses.
     See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Quotas Layout  ·._.·´¯)·._.·´¯)
+
+    This file display the page shown to user when a quota limit is reached.
+    Depending on survey config, a navigator allowing user to change his response can be shown, and a end url
+
+    quotas datas are in: aSurveyInfo.aQuotas (to show those datas, turn debug mode on, and: {{ dump(aSurveyInfo.aQuotas ) }} )
 #}
+
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
@@ -41,7 +49,7 @@
                         {# completed#}
                         <div class="completed-wrapper">
 
-                            {# Plugins HTML#}
+                            {# LS 2.50 Plugins HTML NOTE: plugins should now use the event defined in LSETwigViewRenderer::renderTemplateFromString() #}
                             {{ aSurveyInfo.aQuotas.sPluginBlocks }}
 
                             <div class='completed-text'>
@@ -49,8 +57,9 @@
                                     {{ aSurveyInfo.aQuotas.sMessage  }}
                                 </div>
 
-                                {# Navigator for quota page is pretty different from the classical navigator.  #}
+                                {# Navigator for quota page is pretty different from the classical navigator. So we can't include the navigator.twig #}
                                 {% if (aSurveyInfo.aQuotas.bShowNavigator) %}
+
                                         {#
                                             array of attributes of the form tag.
                                             To add a new attribute, just add an entry:
@@ -64,7 +73,11 @@
                                             }
                                         %}
 
-
+                                        {#
+                                            It generates the opening form tag and the CRSF token
+                                            It uses the Yii fuction CHtml::form
+                                            @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
+                                        #}
                                         <!-- Quota form for navigator -->
                                         {{
                                             C.Html.form(
@@ -117,9 +130,6 @@
                 </div> <!-- main col -->
             </div> <!-- main row -->
         </div> <!-- outer frame container -->
-
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
 
         <!-- some template.js function launched before ready -->
         <script type="text/javascript">
