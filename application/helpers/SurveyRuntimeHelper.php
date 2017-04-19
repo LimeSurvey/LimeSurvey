@@ -1285,7 +1285,7 @@ class SurveyRuntimeHelper {
                 killSurveySession($surveyid);
             }
 
-            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout-submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
+            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
             exit;
         }
     }
