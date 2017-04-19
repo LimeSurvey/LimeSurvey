@@ -472,7 +472,7 @@ class SurveyRuntimeHelper {
             $thissurvey['aLEM']['debugvalidation']['message'] = $moveResult['message'];
         }
 
-        echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."main_layout.twig"), array('aSurveyInfo'=>$thissurvey), false);
+        echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_main.twig"), array('aSurveyInfo'=>$thissurvey), false);
     }
 
 
