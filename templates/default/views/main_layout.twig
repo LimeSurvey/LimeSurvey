@@ -11,14 +11,14 @@
 
 
 
-    (¯`·._.·(¯`·._.· Default Template Layout  ·._.·´¯)·._.·´¯)
+    (¯`·._.·(¯`·._.· Default Template Main Layout  ·._.·´¯)·._.·´¯)
 
     This is the main layout of the template.
-    It includes all other views used to render a survey.
+    It's the on used to display groups and questions.
 
     If you're creating your own template, remember there is no obligation to respect the current file flow of this template.
     It's different from the old LimeSurvey template engine, where you had to provide each one of the pstpl files.
-    Here, you must have a file called layout.twig (called from SurveyRuntimeHelper::run() ).
+    Here, you must have a file called main_layout.twig (called from SurveyRuntimeHelper::run() ).
     Then: you're free to organize your files and inclusion like you want.
 
 
@@ -46,6 +46,8 @@
 
     To echo a variable, just do                      : {{ variable }}
     To translate a string, just do                   : {{ string | t }}
+
+    NOTE: aSurveyInfo should be cleaned to remove the unnecessary datas
 
 
     (¯`·._.·(¯`·._.· Twig Engine: advanced  ·._.·´¯)·._.·´¯)
