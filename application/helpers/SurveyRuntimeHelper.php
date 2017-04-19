@@ -1180,7 +1180,7 @@ class SurveyRuntimeHelper {
                 $completed  = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
                 $this->completed = $completed;
 
-                echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout-submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
+                echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout-submit-preview.twig"), array('aSurveyInfo'=>$thissurvey), false);
                 App()->end();
             }else{
 
