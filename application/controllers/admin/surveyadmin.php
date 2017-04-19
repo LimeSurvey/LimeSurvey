@@ -967,6 +967,10 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $aExcludes['dates'] = true;
                 }
+                if (Yii::app()->request->getPost('copysurveyresetresponsestartid') == "1")
+                {
+                    $aExcludes['reset_response_id'] = true;
+                }
                 if (!$iSurveyID)
                 {
                     $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
@@ -1010,10 +1014,18 @@ class SurveyAdmin extends Survey_Common_Action
                     Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
                 }
+                if (isset($aExcludes['reset_response_id']))
+                {
+                    $oSurvey=Survey::model()->findByPk($aImportResults['newsid']);
+                    $oSurvey->autonumber_start=0;
+                    $oSurvey->save();
+                }
                 if (!isset($aExcludes['permissions']))
                 {
                     Permission::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
                 }
+
+                
             }
             else
             {

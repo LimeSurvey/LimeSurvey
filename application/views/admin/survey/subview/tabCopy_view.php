@@ -131,6 +131,18 @@
                 ?>
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID?"); ?> </label>
+            <div class="col-sm-5">
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'copysurveyresetresponsestartid',
+                    'value'=> "0",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
+            </div>
+        </div>
 
         <!-- Submit -->
         <div class="text-center">
