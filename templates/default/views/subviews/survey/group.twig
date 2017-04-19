@@ -41,7 +41,7 @@
 
         <!-- PRESENT THE QUESTIONS -->
         {% for  aQuestion in aGroup.aQuestions %}
-             {{ include('./question.twig') }}
+             {{ include('./subviews/survey/question.twig') }}
         {% endfor %}
 
         <!-- Hidden inputs -->
