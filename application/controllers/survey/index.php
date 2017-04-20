@@ -11,7 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use \ls\pluginmanager\PluginEvent;
 class index extends CAction {
 
     public $oTemplate;
@@ -43,12 +42,7 @@ class index extends CAction {
         $oTemplate = Template::model()->getInstance('', $surveyid);
         $this->oTemplate = $oTemplate;
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
-        App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
-
-        foreach($oTemplate->depends as $package)
-        {
-            App()->getClientScript()->registerPackage((string) $package);
-        }
+        App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)    
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
         useFirebug();

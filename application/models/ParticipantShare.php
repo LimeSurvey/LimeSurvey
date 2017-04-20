@@ -19,6 +19,11 @@
  * @property integer $share_uid
  * @property string $date_added
  * @property string $can_edit
+ *
+ * @property Participant $participant
+ * @property User $shared_by
+ * @property SurveyLink $survey_links //TODO should be singular
+ * @property ParticipantAttribute[] $participantAttributes
  */
 class ParticipantShare extends LSActiveRecord
 {
@@ -26,29 +31,21 @@ class ParticipantShare extends LSActiveRecord
     public $ownerName;
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return CActiveRecord
+     * @inheritdoc
+     * @return ParticipantShare
      */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /**
-     * @return string the associated database table name
-     */
+    /** @inheritdoc */
     public function tableName()
     {
         return '{{participant_shares}}';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
+    /** @inheritdoc */
     public function rules()
     {
         // NOTE: you should only define rules for those attributes that
@@ -64,9 +61,7 @@ class ParticipantShare extends LSActiveRecord
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -79,9 +74,7 @@ class ParticipantShare extends LSActiveRecord
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
+    /** @inheritdoc */
     public function attributeLabels()
     {
         return array(
@@ -136,15 +129,13 @@ class ParticipantShare extends LSActiveRecord
      */
     public function getCanEditHtml(){
         $loggedInUser = yii::app()->user->getId();
-        if($this->participant->owner_uid == $loggedInUser)
-        {
+        if($this->participant->owner_uid == $loggedInUser) {
             $inputHtml = "<input type='checkbox' data-size='small' data-off-color='warning' data-on-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeEditableStatus' "
             . ($this->can_edit ? "checked" : "")
             . "/>";
             return  $inputHtml;
         }
-        else 
-        {
+        else {
             return ($this->can_edit ? gT("Yes") : gT('No'));
         }
     }
@@ -349,8 +340,7 @@ class ParticipantShare extends LSActiveRecord
      */
     public function updateShare($data)
     {
-        if (strpos( $data['participant_id'],'--' )!==false)
-        {
+        if (strpos( $data['participant_id'],'--' )!==false) {
             list($participantId, $shareuid)=explode("--", $data['participant_id']);
             $data=array("participant_id"=>$participantId, "share_uid"=>$shareuid, "can_edit"=>$data['can_edit']);
         }
@@ -368,8 +358,7 @@ class ParticipantShare extends LSActiveRecord
     {
         // Converting the comma separated id's to an array to delete multiple rows
         $rowid=explode(",",$rows);
-        foreach($rowid as $row)
-        {
+        foreach($rowid as $row) {
             list($participantId, $uId)=explode("--", $row);
             Yii::app()->db
                 ->createCommand()

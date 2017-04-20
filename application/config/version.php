@@ -13,8 +13,8 @@
 
 $config['versionnumber'] = '3.0.0-alpha'; //The current version of this branch
 $config['masterversion'] = '2.62.2'; //The current masters version merged into this branch
-$config['dbversionnumber'] = 264;
+$config['dbversionnumber'] = 263;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '2622';
+$config['assetsversionnumber'] = '2647';
 return $config;

@@ -15,8 +15,15 @@ if (!defined('BASEPATH'))
  *
   */
 
+//TODO separate class file (add exceptions folder?)
 class TemplateException extends Exception {}
 
+/**
+ * Class Template
+ *
+ * @property string $folder
+ * @property integer $creator
+ */
 class Template extends LSActiveRecord
 {
 
@@ -69,37 +76,38 @@ class Template extends LSActiveRecord
     */
     public static function templateNameFilter($sTemplateName)
     {
-        $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
-        $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
+        $sDefaultTemplate=Yii::app()->getConfig('defaulttemplate','default');
+        $sTemplateName=empty($sTemplateName) ? $sDefaultTemplate : $sTemplateName;
 
         /* Standard Template return it without testing */
-        if(self::isStandardTemplate($sTemplateName))
-        {
+        if(self::isStandardTemplate($sTemplateName)) {
             return $sTemplateName;
         }
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
-        if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'config.xml'))
-        {
+        if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'config.xml')) {
             return $sTemplateName;
         }
         /* Old template */
-        if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'startpage.pstpl'))
-        {
+        if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'startpage.pstpl')) {
             return $sTemplateName;
         }
         /* Then try with the global default template */
-        if($sTemplateName!=$sDefaulttemplate)
-            return self::templateNameFilter($sDefaulttemplate);
+        if($sTemplateName!=$sDefaultTemplate) {
+            return self::templateNameFilter($sDefaultTemplate);
+        }
         /* Last solution : default */
         return 'default';
     }
 
 
+    /**
+     * @param string $sTemplateName
+     * @return bool
+     */
     public static function checkIfTemplateExists($sTemplateName)
     {
         $aTemplates=self::getTemplateList();
-        if (array_key_exists($sTemplateName, $aTemplates))
-        {
+        if (array_key_exists($sTemplateName, $aTemplates)) {
             return true;
         }
         return false;
@@ -114,16 +122,15 @@ class Template extends LSActiveRecord
     public static function getTemplatePath($sTemplateName = "")
     {
         static $aTemplatePath=array();
-        if(isset($aTemplatePath[$sTemplateName]))
+        if(isset($aTemplatePath[$sTemplateName])) {
             return $aTemplatePath[$sTemplateName];
+        }
 
         $sFilteredTemplateName=self::templateNameFilter($sTemplateName);
-        if (self::isStandardTemplate($sFilteredTemplateName))
-        {
+        if (self::isStandardTemplate($sFilteredTemplateName)) {
             return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
         }
-        else
-        {
+        else {
             return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
         }
     }
@@ -147,72 +154,74 @@ class Template extends LSActiveRecord
         return $oTemplate;
     }
 
+
     /**
      * Return the list of ALL files present in the file directory
+     *
+     * @param string $filesDir
+     * @return array
      */
-    static public function getOtherFiles($filesdir)
+    static public function getOtherFiles($filesDir)
     {
-        $otherfiles = array();
-        if ( file_exists($filesdir) && $handle = opendir($filesdir))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
-                if (!is_dir($file))
-                {
-                    $otherfiles[] = array("name" => $file);
+        $otherFiles = array();
+        if ( file_exists($filesDir) && $handle = opendir($filesDir)) {
+            while (false !== ($file = readdir($handle))) {
+                if (!is_dir($file)) {
+                    $otherFiles[] = array("name" => $file);
                 }
             }
             closedir($handle);
         }
-        return $otherfiles;
+        return $otherFiles;
     }
 
 
     /**
-    * This function returns the complete URL path to a given template name
-    *
-    * @param string $sTemplateName
-    * @return string template url
-    */
+     * This function returns the complete URL path to a given template name
+     *
+     * @param string $sTemplateName
+     * @return string template url
+     */
     public static function getTemplateURL($sTemplateName="")
     {
         static $aTemplateUrl=array();
-        if(isset($aTemplateUrl[$sTemplateName]))
+        if(isset($aTemplateUrl[$sTemplateName])){
             return $aTemplateUrl[$sTemplateName];
+        }
 
         $sFiteredTemplateName=self::templateNameFilter($sTemplateName);
-        if (self::isStandardTemplate($sFiteredTemplateName))
-        {
+        if (self::isStandardTemplate($sFiteredTemplateName)) {
             return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$sFiteredTemplateName;
         }
-        else
-        {
+        else {
             return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$sFiteredTemplateName;
         }
     }
 
+
     /**
-    * Returns an array of all available template names - does a basic check if the template might be valid
-    *
-    */
+     * Returns an array of all available template names - does a basic check if the template might be valid
+     * @return array
+     */
     public static function getTemplateList()
     {
         $sUserTemplateRootDir=Yii::app()->getConfig("usertemplaterootdir");
-        $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
+        $standardTemplateRootDir=Yii::app()->getConfig("standardtemplaterootdir");
 
         $aTemplateList=array();
 
         $aStandardTemplates=self::getStandardTemplateList();
         foreach($aStandardTemplates as $templateName){
-            $aTemplateList[$templateName] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$templateName;
+            $aTemplateList[$templateName] = $standardTemplateRootDir.DIRECTORY_SEPARATOR.$templateName;
         }
-        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir))
-        {
-            while (false !== ($sFileName = readdir($handle)))
-            {
+        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
+            while (false !== ($sFileName = readdir($handle))) {
                 // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sUserTemplateRootDir/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName!=".svn" && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") || file_exists("{$sUserTemplateRootDir}/{$sFileName}/startpage.pstpl")))
-                {
+                if (!is_file("$sUserTemplateRootDir/$sFileName")
+                    && $sFileName != "."
+                    && $sFileName != ".." && $sFileName!=".svn"
+                    && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") || file_exists("{$sUserTemplateRootDir}/{$sFileName}/startpage.pstpl"))) {
+
                     $aTemplateList[$sFileName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sFileName;
                 }
             }
@@ -223,6 +232,9 @@ class Template extends LSActiveRecord
         return $aTemplateList;
     }
 
+    /**
+     * @return array
+     */
     public static function getTemplateListWithPreviews()
     {
         $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
@@ -236,13 +248,10 @@ class Template extends LSActiveRecord
             $aTemplateList[$templateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$templateName;
             $aTemplateList[$templateName]['preview'] = $standardtemplaterooturl.'/'.$templateName.'/preview.png';
         }
-        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
+        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir)) {
+            while (false !== ($file = readdir($handle))) {
                 // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-                {
+                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn") {
                     $aTemplateList[$file]['directory']  = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
                     $aTemplateList[$file]['preview'] = $usertemplaterooturl.'/'.$file.'/'.'preview.png';
                 }
@@ -255,12 +264,12 @@ class Template extends LSActiveRecord
     }
 
     /**
-    * isStandardTemplate returns true if a template is a standard template
-    * This function does not check if a template actually exists
-    *
-    * @param mixed $sTemplateName template name to look for
-    * @return bool True if standard template, otherwise false
-    */
+     * isStandardTemplate returns true if a template is a standard template
+     * This function does not check if a template actually exists
+     *
+     * @param mixed $sTemplateName template name to look for
+     * @return bool True if standard template, otherwise false
+     */
     public static function isStandardTemplate($sTemplateName)
     {
         $standardTemplates=self::getStandardTemplateList();
@@ -273,13 +282,12 @@ class Template extends LSActiveRecord
      * Please use this instead of global variable.
      *
      * @param string $sTemplateName
-     * @param int $iSurveyId
+     * @param int|string $iSurveyId
      * @return TemplateConfiguration
      */
     public static function getInstance($sTemplateName='', $iSurveyId='')
     {
-        if (empty(self::$instance))
-        {
+        if (empty(self::$instance)) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
         }
         return self::$instance;
@@ -292,12 +300,11 @@ class Template extends LSActiveRecord
     {
         // Don't touch symlinked assets because it won't work
         if (App()->getAssetManager()->linkAssets) return;
+
         $standardTemplatesPath = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR;
         $Resource = opendir($standardTemplatesPath);
-        while ($Item = readdir($Resource))
-        {
-            if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..")
-            {
+        while ($Item = readdir($Resource)) {
+            if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..") {
                 touch($standardTemplatesPath . $Item);
             }
         }
@@ -306,6 +313,7 @@ class Template extends LSActiveRecord
     /**
      * Return the standard template list
      * @return string[]
+     * @throws Exception
      */
     public static function getStandardTemplateList()
     {
@@ -313,13 +321,10 @@ class Template extends LSActiveRecord
         if(empty($standardTemplates)){
             $standardTemplates = array();
             $sStandardTemplateRootDir=Yii::app()->getConfig("standardtemplaterootdir");
-            if ($sStandardTemplateRootDir && $handle = opendir($sStandardTemplateRootDir))
-            {
-                while (false !== ($sFileName = readdir($handle)))
-                {
+            if ($sStandardTemplateRootDir && $handle = opendir($sStandardTemplateRootDir)) {
+                while (false !== ($sFileName = readdir($handle))) {
                     // Maybe $file[0] != "." to hide Linux hidden directory
-                    if (!is_file("$sStandardTemplateRootDir/$sFileName") && $sFileName[0] != "." && file_exists("{$sStandardTemplateRootDir}/{$sFileName}/config.xml"))
-                    {
+                    if (!is_file("$sStandardTemplateRootDir/$sFileName") && $sFileName[0] != "." && file_exists("{$sStandardTemplateRootDir}/{$sFileName}/config.xml")) {
                         $standardTemplates[$sFileName] = $sFileName;
                     }
                 }

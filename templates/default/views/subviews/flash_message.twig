@@ -1,0 +1,18 @@
+{#
+    Show the possible Yii Flash messages (not related to survey, but rather to application).
+    Only advanced users may use it.
+#}
+
+{%
+    set mapYiiToBootstrapClass  = {
+        'error'   : 'danger',
+        'success' : 'success',
+        'notice'  : 'info',
+    }
+%}
+
+{% for key, message in aSurveyInfo.yiiflashmessages %}
+    <div class='alert alert-{{ mapYiiToBootstrapClass.key }} alert-dismissible flash-{{ key }}'>
+        {{ message | t }}
+    </div>
+{% endfor %}

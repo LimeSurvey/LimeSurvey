@@ -1,5 +1,4 @@
 <?php
-
     /**
      * Relations
      * @property Token $token
@@ -7,7 +6,6 @@
      */
     abstract class Response extends Dynamic
     {
-
         public function beforeDelete() {
             if (parent::beforeDelete())
             {
@@ -16,7 +14,6 @@
             }
             return false;
         }
-
         /**
          *
          * @param mixed $className Either the classname or the survey id.
@@ -25,7 +22,6 @@
         public static function model($className = null) {
             return parent::model($className);
         }
-
         /**
          *
          * @param int $surveyId
@@ -35,7 +31,6 @@
         public static function create($surveyId, $scenario = 'insert') {
             return parent::create($surveyId, $scenario);
         }
-
         /**
          * Delete all files related to this repsonse.
          */
@@ -49,7 +44,6 @@
             $files = array();
             foreach ($questions as $question)
             {
-
                 $field = "{$question->sid}X{$question->gid}X{$question->qid}";
                 $data = json_decode(stripslashes($this->getAttribute($field)), true);
                 if (is_array($data))
@@ -57,10 +51,8 @@
                     $files = array_merge($files, $data);
                 }
             }
-
             return $files;
         }
-
         public function deleteFiles()
         {
             $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
@@ -84,22 +76,16 @@
             );
             return $result;
         }
-
         public function tableName()
         {
             return '{{survey_' . $this->dynamicId . '}}';
         }
-
         public function getSurveyId() {
             return $this->dynamicId;
         }
-
         public function browse(){
-
         }
         public function search(){
-            
+
         }
     }
-
-?>

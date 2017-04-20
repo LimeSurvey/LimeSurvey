@@ -1,4 +1,0 @@
-<div class='clearall-wrapper well'>
-    <div class='clearall-text'>{ANSWERSCLEARED}</div>
-    {RESTART}
-</div>

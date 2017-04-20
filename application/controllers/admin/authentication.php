@@ -1,7 +1,6 @@
 <?php
 // see: https://scrutinizer-ci.com/g/LimeSurvey/LimeSurvey/issues/master/files/application/controllers/admin/authentication.php?selectedSeverities[0]=10&orderField=path&order=asc&honorSelectedPaths=0
-
-use ls\pluginmanager\PluginEvent;
+// use ls\pluginmanager\PluginEvent;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -205,10 +204,7 @@ class Authentication extends Survey_Common_Action
         /* Adding beforeLogout event */
         $beforeLogout = new PluginEvent('beforeLogout');
         App()->getPluginManager()->dispatchEvent($beforeLogout);
-        // Expire the CSRF cookie
-        $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
-        $cookie->expire = time()-3600;
-        Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
+        regenerateCSRFToken();
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
 

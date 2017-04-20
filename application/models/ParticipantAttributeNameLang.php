@@ -12,51 +12,40 @@
  *
  */
 /**
- * This is the model class for table "{{{{participant_attribute_names}}}}".
+ * This is the model class for table "{{{{participant_attribute_names_lang}}}}".
  *
- * The followings are the available columns in table '{{{{participant_attribute_names}}}}':
+ * The followings are the available columns in table '{{{{participant_attribute_names_lang}}}}':
  * @property integer $attribute_id
- * @property string $attribute_type
- * @property string $visible
+ * @property string $attribute_name
+ * @property string $lang
+ *
+ * @property ParticipantAttributeName $participant_attribute_names //TODO should be singular
  */
 class ParticipantAttributeNameLang extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Participant Attribute Names Lang table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string
-    */
+    /** @inheritdoc */
     public function primaryKey()
     {
         return array('attribute_id', 'lang');
     }
 
+    /**
+     * @inheritdoc
+     * @return ParticipantAttributeNameLang
+     */
 	public static function model($class = __CLASS__)
 	{
 		return parent::model($class);
 	}
 
-	/**
-	 * @return string the associated database table name
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{participant_attribute_names_lang}}';
 	}
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
+    /** @inheritdoc */
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that will receive user inputs.
@@ -68,9 +57,7 @@ class ParticipantAttributeNameLang extends LSActiveRecord
 		);
 	}
 
-	/**
-	 * @return array relational rules.
-	 */
+    /** @inheritdoc */
 	public function relations()
 	{
 		// NOTE: you may need to adjust the relation name and the related

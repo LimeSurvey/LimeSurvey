@@ -11,14 +11,19 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
+/**
+ * Class FailedLoginAttempt
+ *
+ * @property integer $id
+ * @property string $ip Ip address
+ * @property string $last_attempt
+ * @property integer $number_attempts
+ */
 class FailedLoginAttempt extends LSActiveRecord
 {
 	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
+     * @inheritdoc
 	 * @return FailedLoginAttempt
 	 */
 	public static function model($class = __CLASS__)
@@ -26,23 +31,13 @@ class FailedLoginAttempt extends LSActiveRecord
 		return parent::model($class);
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function primaryKey()
 	{
 		return 'id';
 	}
 
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
+    /** @inheritdoc */
 	public function tableName()
 	{
 		return '{{failed_login_attempts}}';
@@ -75,13 +70,13 @@ class FailedLoginAttempt extends LSActiveRecord
 
 		$row = $this->find($criteria);
 
-		if ($row != null)
-		{
+		if ($row != null) {
 			$lastattempt = strtotime($row->last_attempt);
-			if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime'))
-				$this->deleteAttempts($ip);
-			else
-				$isLockedOut = true;
+			if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime')){
+                $this->deleteAttempts();
+            } else {
+                $isLockedOut = true;
+            }
 		}
 		return $isLockedOut;
 	}
@@ -109,14 +104,11 @@ class FailedLoginAttempt extends LSActiveRecord
 		$ip = substr(getIPAddress(),0,40);
 		$row = $this->findByAttributes(array('ip' => $ip));
 
-		if ($row !== null)
-		{
+		if ($row !== null) {
 			$row->number_attempts = $row->number_attempts + 1;
 			$row->last_attempt = $timestamp;
 			$row->save();
-		}
-		else
-		{
+		} else {
 			$record = new FailedLoginAttempt;
 			$record->ip = $ip;
 			$record->number_attempts = 1;

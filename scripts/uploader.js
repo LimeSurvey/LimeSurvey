@@ -17,7 +17,6 @@ function fixParentHeigth()
 }
 function doFileUpload(){
     var fieldname = $('#ia').val();
-
     /* Load the previously uploaded files */
     var filecount = window.parent.window.$('#'+fieldname+'_filecount').val();
     $('#'+fieldname+'_filecount').val(filecount);
@@ -42,7 +41,8 @@ function doFileUpload(){
                 previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' class='uploaded' onload='fixParentHeigth()' />";
             else
                 previewblock += "<div class='upload-placeholder' />";
-            previewblock += "<span class='file-name'>"+decodeURIComponent(json[i-1].name)+"</span>";
+
+            previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(json[i-1].name))+"</span>";
             previewblock += "</div>";
 
             previewblock +="<div class='file-info'><fieldset>";
@@ -170,7 +170,7 @@ function doFileUpload(){
                     previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded'  onload='fixParentHeigth()' />";
                 else
                     previewblock += "<div class='upload-placeholder' />";
-                previewblock += "<span class='file-name'>"+decodeURIComponent(metadata.name)+"<span>";
+                previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(metadata.name))+"<span>";
                 previewblock += "</div>";
 
                 previewblock +="<div class='file-info'><fieldset>";

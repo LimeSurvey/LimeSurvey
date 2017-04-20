@@ -121,8 +121,9 @@ $(document).on('click', '.listActions a', function ()
 
     })
 
-    // Define what should be done when user confirm the mass action
-    $modalButton.on('click', function(){
+    /* Define what should be done when user confirm the mass action */
+    /* remove all existing action before adding the new one */
+    $modalButton.off('click').on('click', function(){
 
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};

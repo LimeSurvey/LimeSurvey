@@ -16,14 +16,22 @@
 class InstallerConfigForm extends CFormModel
 {
 	// Database
+    /** @var string $dbtype */
 	public $dbtype;
+	/** @var string $dblocation */
     public $dblocation = 'localhost';
+    /** @var  string $dbname */
     public $dbname;
+    /** @var  string $dbuser */
 	public $dbuser;
+	/** @var string $dbpwd  */
 	public $dbpwd;
+	/** @var string $dbprefix */
 	public $dbprefix = 'lime_';
 
+	/** @var array $supported_db_types */
 	public $supported_db_types = array();
+	/** @var array $db_names */
 	public $db_names = array(
 		'mysql' => 'MySQL',
 		'mysqli' => 'MySQL (newer driver)',
@@ -34,23 +42,35 @@ class InstallerConfigForm extends CFormModel
 	);
 
 	// Optional
+    /** @var string $adminLoginPwd */
 	public $adminLoginPwd = 'password';
+	/** @var string $confirmPwd */
 	public $confirmPwd = 'password';
+	/** @var string $adminLoginName */
 	public $adminLoginName = 'admin';
+	/** @var string $adminName */
 	public $adminName = 'Administrator';
+	/** @var string $adminEmail */
 	public $adminEmail = 'your-email@example.net';
+	/** @var string $siteName */
 	public $siteName = 'LimeSurvey';
+	/** @var string $surveylang */
 	public $surveylang = 'en';
 
+
+    /**
+     * InstallerConfigForm constructor.
+     * @param string $scenario
+     */
 	public function __construct($scenario = 'database') {
         $drivers=array();
-        if (extension_loaded('pdo'))
-        {
+        if (extension_loaded('pdo')) {
             $drivers=CDbConnection::getAvailableDrivers();
         }
 		foreach($drivers as $driver) {
-			if (isset($this->db_names[$driver]))
-				$this->supported_db_types[$driver] = $this->db_names[$driver];
+			if (isset($this->db_names[$driver])){
+                $this->supported_db_types[$driver] = $this->db_names[$driver];
+            }
 		}
 
 		asort($this->supported_db_types);
@@ -61,6 +81,7 @@ class InstallerConfigForm extends CFormModel
 		$this->setScenario($scenario);
 	}
 
+    /** @inheritdoc */
     public function rules()
     {
         return array(
@@ -78,6 +99,7 @@ class InstallerConfigForm extends CFormModel
         );
     }
 
+    /** @inheritdoc */
 	public function attributeLabels()
 	{
 		return array(
@@ -90,4 +112,3 @@ class InstallerConfigForm extends CFormModel
 		);
 	}
 }
-?>
