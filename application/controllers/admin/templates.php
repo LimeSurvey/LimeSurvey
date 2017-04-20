@@ -235,7 +235,7 @@ class templates extends Survey_Common_Action
         $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
         $tempdir = Yii::app()->getConfig('tempdir');
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
-        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
+        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false,false);// Don't force lowercase or alphanumeric
 
         $dirfilepath = $oEditedTemplate->filesPath;
         if (!file_exists($dirfilepath))

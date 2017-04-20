@@ -90,6 +90,9 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countPartialAnswers
  * @property integer $countTotalAnswers
  * @property array $surveyinfo
+ * @property string creationDate Creation date formatted according to user format
+ * @property string startDateFormatted Start date formatted according to user format
+ * @property string expiryDateFormatted Expiry date formatted according to user format
  */
 class Survey extends LSActiveRecord
 {
@@ -717,13 +720,45 @@ class Survey extends LSActiveRecord
 
 
     /**
-     * @return string
+     * @param string $attribute date attribute name
+     * @return string formatted date
+     */
+    private function getDateFormatted($attribute)
+    {
+        $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
+        if($this->$attribute){
+            return convertDateTimeFormat($this->$attribute, 'Y-m-d', $dateformatdata['phpdate']);
+        }
+        return null;
+    }
+
+
+    /**
+     * @return string formatted date
      */
     public function getCreationDate()
     {
-        $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
-        return convertDateTimeFormat($this->datecreated, 'Y-m-d', $dateformatdata['phpdate']);
+        return $this->getDateFormatted('datecreated');
     }
+
+
+    /**
+     * @return string formatted date
+     */
+    public function getStartDateFormatted()
+    {
+        return $this->getDateFormatted('startdate');
+    }
+
+
+    /**
+     * @return string formatted date
+     */
+    public function getExpiryDateFormatted()
+    {
+        return $this->getDateFormatted('expires');
+    }
+
 
     /**
      * @return string

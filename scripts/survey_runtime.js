@@ -123,7 +123,7 @@ function checkconditions(value, name, type, evt_type)
 /**
  * fixnum_checkconditions : javascript function attach to some element
  * Update the answer of the user to be numeric and launch checkconditions
- * 
+ *
  * Also checks if any of the arrow keys is pressed to avoid unecessary hassle.
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
@@ -144,7 +144,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     * If have to use parsed value.
     */
     if(!bNumRealValue)
-    {                
+    {
         if(checkNumericRegex.test(value)) {
             try{
                 decimalValue = new Decimal(cleansedValue);
@@ -171,7 +171,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     if(bFixNumAuto && (newval != ""))
     {
         var addition = "";
-        if(cleansedValue.split("").pop().match(/(,)|(\.)/)){
+        if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
             addition = cleansedValue.split("").pop();
         }
         var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/);
@@ -186,7 +186,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
                     decimalValue = new Decimal(cleansedValue.replace(',','.'));
                 } catch(e){
                     decimalValue = new Decimal(NaN);
-                    
+
                 }
             }
         }
@@ -208,12 +208,12 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         if (displayVal=='NaN')
         {
             newval=displayVal;
-            displayVal=value;    
+            displayVal=value;
         }
         else{
             if(LEMradix==",")
                 displayVal = displayVal.replace(/\./,',');
-                                 
+
             newval = displayVal+addition
 
             if (name.match(/other$/)) {
@@ -224,7 +224,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
 
             if($('#answer'+name).val() != newval){
                 $('#answer'+name).val(newval);
-            }       
+            }
         }
     }
 
