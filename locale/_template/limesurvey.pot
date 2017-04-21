@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-04-21 10:58:42+00:00\n"
+"POT-Creation-Date: 2017-04-21 11:07:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7601,10 +7601,6 @@ msgstr ""
 #: application/helpers/expressions/em_core_helper.php:614
 #: application/helpers/expressions/em_core_helper.php:1739
 msgid "Undefined variable"
-msgstr ""
-
-#: application/helpers/expressions/em_core_helper.php:621
-msgid "Should never get to this line?"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:708
