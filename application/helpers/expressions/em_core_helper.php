@@ -618,7 +618,7 @@ class ExpressionManager {
                 // NB: No break needed
             case 'COMMA':
                 --$this->RDP_pos;
-                $this->RDP_AddError(self::gT("Should never get to this line?"),$token);
+                $this->RDP_AddError("Should never get to this line?",$token);
                 return false;
                 // NB: No break needed
             default:
