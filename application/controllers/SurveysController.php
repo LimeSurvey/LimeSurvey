@@ -35,6 +35,7 @@
 
             $this->sTemplate = $oTemplate->name;
             Yii::app()->clientScript->registerPackage( 'survey-template' );
+//            $this->aGlobalData['languagechanger'] = makeLanguageChanger(App()->language);
 
             $aData = array(
                     'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
@@ -45,7 +46,29 @@
                     'sSiteAdminEmail'   => Yii::app()->getConfig("siteadminemail"),
                 );
 
+            $aData = array(
+                    'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
+                    'futureSurveys'     => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
+                    'oTemplate'         => $oTemplate,
+                    'sSiteName'         => Yii::app()->getConfig('sitename'),
+                    'sSiteAdminName'    => Yii::app()->getConfig("siteadminname"),
+                    'sSiteAdminEmail'   => Yii::app()->getConfig("siteadminemail"),
+                );
+
+            $aData['alanguageChanger']['show']  = false;
+            $alanguageChangerDatas                   = getLanguageChangerDatasPublicList(App()->language);
+
+            if ($alanguageChangerDatas){
+                $aData['alanguageChanger']['show']  = true;
+                $aData['alanguageChanger']['datas'] = $alanguageChangerDatas;
+            }
+
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
+            
+
             $sTemplateViewPath = $oTemplate->pstplPath;
+
+
 
             ob_start(function($buffer, $phase)
             {
@@ -61,8 +84,9 @@
             Yii::app()->end(); // So we can still see debug messages
 
             ob_flush();
-        }
 
+
+        }
         /**
          * System error : only 404 error are managed here (2016-11-29)
          * SurveysController is the default controller set in internal

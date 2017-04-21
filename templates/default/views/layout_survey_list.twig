@@ -33,6 +33,8 @@
 
     <body class="default lang-{{surveylanguage}} {{surveyformat}}">
 
+        {# Bootstrap Navigation Bar: the top menu #}
+        {{ include('./subviews/nav_bar.twig') }}
 
         <!-- Outer Frame Container -->
         <div class="outerframe container" id="outerframeContainer">
@@ -44,6 +46,10 @@
                 <div class="col-centered" id="main-col">
 
                     <div class="row" id="surveys-list-container">
+
+                        {# include the alert for no javascrit #}
+                        {{ include('./subviews/no_js_alert.twig') }}
+
                         <div class="jumbotron" id="surveys-list-jumbotron">
                             <p>
                                 {% if  not empty(aSurveyInfo.oTemplate.siteLogo) %}
@@ -53,7 +59,7 @@
                             </p>
                         </div>
 
-                        <div class="col-xs-12 survey-list-heading">
+                        <div class="col-xs-12 survey-list-heading">                            
                             <div class='h3 '>
                                 {{ "The following surveys are available:" | t }}
                             </div>
