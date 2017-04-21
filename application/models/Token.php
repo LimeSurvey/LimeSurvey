@@ -283,14 +283,15 @@ abstract class Token extends Dynamic
         return parent::create($surveyId, $scenario);
     }
 
-        public function relations()
-        {
-            $result = array(
-                'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
-                'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
-                'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
-            );
-            return $result;
+    public function relations()
+    {
+        $result = array(
+            'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
+            'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
+            'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
+        );
+        return $result;
+    }
 
     /** @inheritdoc */
     public function save($runValidation = true, $attributes = null)
