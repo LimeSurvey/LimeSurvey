@@ -129,6 +129,11 @@ class LS_Twig_Extension extends Twig_Extension
         ));
     }
 
+    public static function assetPublish($sRessource)
+    {
+        return App()->getAssetManager()->publish($sRessource);
+    }
+
     public static function getPost($sName, $sDefaultValue=null)
     {
         return Yii::app()->request->getPost($sName, $sDefaultValue);
@@ -143,5 +148,6 @@ class LS_Twig_Extension extends Twig_Extension
     {
         return Yii::app()->request->getQuery($sName, $sDefaultValue);
     }
+
 
 }

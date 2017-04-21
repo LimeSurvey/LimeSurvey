@@ -220,6 +220,9 @@ $internalConfig = array(
                 'getQuery'              => 'LS_Twig_Extension::getQuery',
                 'isset'                 => 'isset',
                 'str_replace'           => 'str_replace',
+                'assetPublish'          => 'LS_Twig_Extension::assetPublish',
+                'sprintf'               => 'sprintf',
+                'gT'                    => 'gT',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -239,7 +242,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace' ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'sprintf', 'gT' ),
             ),
 
             // Change template syntax to Smarty-like (not recommended)
