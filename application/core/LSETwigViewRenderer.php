@@ -173,7 +173,11 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             // Plugin for blocks replacement
             // TODO: add blocks to template....
             $event = new PluginEvent('beforeTwigRenderTemplate');
-            $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
+
+            if (!empty($aDatas['aSurveyInfo']['sid'])){
+                $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
+            }
+            
             App()->getPluginManager()->dispatchEvent($event);
             $aPluginContent = $event->getAllContent();
             if (!empty($aPluginContent['sTwigBlocks'])){
