@@ -15,7 +15,7 @@
 #}
 
 {# It must not be shown once survey is completed #}
-{% if aSurveyInfo.iscompleted == false %}
+{% if aSurveyInfo.bShowClearAll == true  %}
     <!-- Exit and clear survey -->
     <li class="ls-no-js-hidden">
         <a href="#" data-limesurvey-submit='{ "clearall":"clearall" }'  data-confirmedby='{ "confirm-clearall":"confirm" }' data-confirmlabel='{{"Please confirm you want to clear your response?" | t }}' class='ls-link-action ls-link-clearall'>

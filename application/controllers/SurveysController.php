@@ -44,15 +44,7 @@
                     'sSiteName'         => Yii::app()->getConfig('sitename'),
                     'sSiteAdminName'    => Yii::app()->getConfig("siteadminname"),
                     'sSiteAdminEmail'   => Yii::app()->getConfig("siteadminemail"),
-                );
-
-            $aData = array(
-                    'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
-                    'futureSurveys'     => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
-                    'oTemplate'         => $oTemplate,
-                    'sSiteName'         => Yii::app()->getConfig('sitename'),
-                    'sSiteAdminName'    => Yii::app()->getConfig("siteadminname"),
-                    'sSiteAdminEmail'   => Yii::app()->getConfig("siteadminemail"),
+                    'bShowClearAll'     => false,
                 );
 
             $aData['alanguageChanger']['show']  = false;
@@ -64,7 +56,7 @@
             }
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
-            
+
 
             $sTemplateViewPath = $oTemplate->pstplPath;
 

@@ -175,9 +175,15 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $event = new PluginEvent('beforeTwigRenderTemplate');
 
             if (!empty($aDatas['aSurveyInfo']['sid'])){
+                $surveyid = $aDatas['aSurveyInfo']['sid'];
                 $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
+
+                if (!empty($_SESSION['survey_'.$surveyid]['srid'])){
+                    $aDatas['aSurveyInfo']['bShowClearAll'] = ! SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+                }
+
             }
-            
+
             App()->getPluginManager()->dispatchEvent($event);
             $aPluginContent = $event->getAllContent();
             if (!empty($aPluginContent['sTwigBlocks'])){
