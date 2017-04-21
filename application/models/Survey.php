@@ -125,6 +125,8 @@ class Survey extends LSActiveRecord
     /** @var integer $pac Partial-answers count*/
     private $pac;
 
+    private $sSurveyUrl;
+
     /**
      * Set defaults
      * @inheritdoc
@@ -1240,4 +1242,18 @@ class Survey extends LSActiveRecord
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
     }
+
+    public function getsSurveyUrl()
+    {
+        if ($this->sSurveyUrl==''){
+            if(!in_array(App()->language,$this->getAllLanguages())){
+                $surveylang=$this->language;
+            }else{
+                $surveylang=App()->language;
+            }
+            $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
+        }
+        return $this->sSurveyUrl;
+    }
+
 }
