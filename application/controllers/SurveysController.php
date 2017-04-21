@@ -21,43 +21,48 @@
 
         public function actionPublicList($lang = null)
         {
-            if (!empty($lang))// Control is a real language , in restrictToLanguages ?
-            {
+            if (!empty($lang)){
+                // Control is a real language , in restrictToLanguages ?
                 App()->setLanguage($lang);
-            }
-            else
-            {
+            }else{
                 App()->setLanguage(App()->getConfig('defaultlang'));
             }
-            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+
+
+            $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+            $oTemplate->registerAssets();
+
 
             $this->sTemplate = $oTemplate->name;
-            $this->aGlobalData['languagechanger'] = makeLanguageChanger(App()->language);
+            Yii::app()->clientScript->registerPackage( 'survey-template' );
 
             $aData = array(
-                    'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
-                    'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
+                    'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
+                    'futureSurveys'     => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
+                    'oTemplate'         => $oTemplate,
+                    'sSiteName'         => Yii::app()->getConfig('sitename'),
+                    'sSiteAdminName'    => Yii::app()->getConfig("siteadminname"),
+                    'sSiteAdminEmail'   => Yii::app()->getConfig("siteadminemail"),
                 );
-            $htmlOut = $this->renderPartial('publicSurveyList',  $aData,true );
 
-            $event = new PluginEvent('beforeSurveysStartpageRender', $this);
-            $event->set('aData', $aData);
-            App()->getPluginManager()->dispatchEvent($event);
+            $sTemplateViewPath = $oTemplate->pstplPath;
 
-            if($event->get('result'))
+            ob_start(function($buffer, $phase)
             {
-                $htmlFromEvent = $event->get('result');
-                $htmlOut = $htmlFromEvent['html'];
-                $this->layout=$event->get('layout',$this->layout); // with bare : directly render whole display, default is to add head/footer etc ... from template
-            }
-            $this->render("/surveys/display",array('content'=>$htmlOut));
-            /**
-             * OR
-             * $this->render("/survey/system/display",array('content'=>$htmlOut));
-             * ? template must be allowed to add content after and before all page ?
-             */
-            App()->end();
+                App()->getClientScript()->render($buffer);
+                App()->getClientScript()->reset();
+                return $buffer;
+            });
+
+            ob_implicit_flush(false);
+
+            Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
+            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_survey_list.twig"), array('aSurveyInfo'=>$aData), false);
+            Yii::app()->end(); // So we can still see debug messages
+
+            ob_flush();
         }
+
         /**
          * System error : only 404 error are managed here (2016-11-29)
          * SurveysController is the default controller set in internal
