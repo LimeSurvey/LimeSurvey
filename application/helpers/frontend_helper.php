@@ -253,7 +253,7 @@ function getLanguageChangerDatas($sSelectedLanguage="")
 *
 * @param mixed $sSelectedLanguage The language in which all information is shown
 */
-function makeLanguageChanger($sSelectedLanguage)
+function getLanguageChangerDatasPublicList($sSelectedLanguage)
 {
     $aLanguages=getLanguageDataRestricted(true);// Order by native
     if(count($aLanguages)>1)
@@ -268,8 +268,8 @@ function makeLanguageChanger($sSelectedLanguage)
             'aListLang' => $aListLang ,
             'sClass'    => $sClass    ,
         );
-        $sHTMLCode = Yii::app()->getController()->renderPartial('/surveys/LanguageChangerForm', $languageChangerDatas, true);
-        return $sHTMLCode;
+        //$sHTMLCode = Yii::app()->getController()->renderPartial('/surveys/LanguageChangerForm', $languageChangerDatas, true);
+        return $languageChangerDatas;
     }
     else
     {
