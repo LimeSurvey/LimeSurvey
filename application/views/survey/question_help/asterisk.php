@@ -1,6 +1,6 @@
 <?php
 /**
- * This file render the asterisk for mandatory questions
+ * This file renders the asterisk for mandatory questions
  */
 ?>
-<span class="text-danger asterisk"></span>
+<span class="text-danger fa fa-asterisk"></span>
