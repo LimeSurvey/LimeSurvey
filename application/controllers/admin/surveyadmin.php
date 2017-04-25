@@ -14,8 +14,6 @@ if (!defined('BASEPATH'))
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * survey
 *
@@ -64,7 +62,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aResults[$iSurveyID]['result'] = $oSurvey->deleteSurvey($iSurveyID, $recursive=true);
         }
 
-        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._delete_results', array('aResults'=>$aResults));
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('Deleted')));
     }
 
     public function listsurveys()
@@ -821,7 +819,7 @@ class SurveyAdmin extends Survey_Common_Action
 
                 if ($esrow['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
                 {
-                    $aTabTitles[$sLang] .= '(' . gT("Base language") . ')';
+                    $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
                 }
 
                 $aData['esrow'] = $esrow;
@@ -969,6 +967,10 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $aExcludes['dates'] = true;
                 }
+                if (Yii::app()->request->getPost('copysurveyresetresponsestartid') == "1")
+                {
+                    $aExcludes['reset_response_id'] = true;
+                }
                 if (!$iSurveyID)
                 {
                     $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
@@ -1012,10 +1014,18 @@ class SurveyAdmin extends Survey_Common_Action
                     Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
                 }
+                if (isset($aExcludes['reset_response_id']))
+                {
+                    $oSurvey=Survey::model()->findByPk($aImportResults['newsid']);
+                    $oSurvey->autonumber_start=0;
+                    $oSurvey->save();
+                }
                 if (!isset($aExcludes['permissions']))
                 {
                     Permission::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
                 }
+
+                
             }
             else
             {
@@ -1446,6 +1456,49 @@ class SurveyAdmin extends Survey_Common_Action
         Survey::model()->expire($iSurveyID);
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
+
+    function datetimesettings(){
+        $data = array(
+            'dateformatsettings'=>getDateFormatData(Yii::app()->session['dateformat']),
+            'showClear' => true,
+            'allowInputToggle' => true,
+        );
+
+        if ( Permission::model()->hasGlobalPermission('surveys','read')) {
+            echo json_encode($data);
+        }
+    }
+    /**
+     * Action to set expiry date to multiple surveys
+     */
+    public function expireMultipleSurveys(){
+        $sSurveys = $_POST['sItems'];
+        $aSIDs = json_decode($sSurveys);
+        $aResults = array();
+        $expires = App()->request->getPost('expires');
+        $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        if (trim($expires)=="") {
+            $expires=null;
+        }
+        else {
+            $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+            $expires=$datetimeobj->convert("Y-m-d H:i:s");
+        }
+
+        foreach ($aSIDs as $sid){
+            $survey = Survey::model()->findByPk($sid);
+            $survey->expires =$expires;
+            $aResults[$survey->primaryKey]['title']  = ellipsize($survey->correct_relation_defaultlanguage->surveyls_title,30);
+            if($survey->save()){
+                $aResults[$survey->primaryKey]['result'] = true;
+            }else{
+                $aResults[$survey->primaryKey]['result'] = false;
+            }
+        }
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('OK')));
+    }
+
 
     function getUrlParamsJSON($iSurveyID)
     {

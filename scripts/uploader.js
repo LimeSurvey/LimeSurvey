@@ -4,7 +4,6 @@ $(document).ready(function(){
 
 function doFileUpload(){
     var fieldname = $('#ia').val();
-
     /* Load the previously uploaded files */
     var filecount = window.parent.window.$('#'+fieldname+'_filecount').val();
     $('#'+fieldname+'_filecount').val(filecount);
@@ -29,9 +28,10 @@ function doFileUpload(){
                 previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' class='uploaded' />";
             else
                 previewblock += "<div class='upload-placeholder' />";
-            previewblock += "<span class='file-name'>"+decodeURIComponent(json[i-1].name)+"</span>";
+
+            previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(json[i-1].name))+"</span>";
             previewblock += "</div>";
-            
+
             previewblock +="<div class='file-info'><fieldset>";
             if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
             {
@@ -154,7 +154,7 @@ function doFileUpload(){
                     previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded' />";
                 else
                     previewblock += "<div class='upload-placeholder' />";
-                previewblock += "<span class='file-name'>"+decodeURIComponent(metadata.name)+"<span>";
+                previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(metadata.name))+"<span>";
                 previewblock += "</div>";
 
                 previewblock +="<div class='file-info'><fieldset>";
@@ -202,7 +202,7 @@ function doFileUpload(){
             {
                 $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+metadata.msg+'</p>');
             }
-            
+
         }
     });
 
@@ -280,13 +280,13 @@ function deletefile(fieldname, count) {
 
     var filecount = parseInt($('#'+fieldname+'_filecount').val());
     var licount   = parseInt($('#'+fieldname+'_licount').val());
-    
+
     $.ajax(
     {
         method: "POST",
         url: uploadurl,
-        data: { 
-            'delete': 1, 
+        data: {
+            'delete': 1,
             'fieldname': fieldname,
             'filename' : filename,
             'name' : name,

@@ -11,7 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-use \ls\pluginmanager\PluginEvent;
 /**
 * Database
 *g

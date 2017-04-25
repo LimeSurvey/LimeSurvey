@@ -14,8 +14,6 @@
 // TODO: Why needed?
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
-use \ls\pluginmanager\PluginEvent;
-
 function loadanswers()
 {
     Yii::trace('start', 'survey.loadanswers');
@@ -2099,79 +2097,96 @@ function UpdateFieldArray()
 function checkCompletedQuota($surveyid,$return=false)
 {
     /* Check if session is set */
-    if (!isset(App()->session['survey_'.$surveyid]['srid']))
-    {
+    if (!isset(App()->session['survey_'.$surveyid]['srid'])) {
         return;
     }
     /* Check is Response is already submitted : only when "do" the quota: allow to send information about quota */
     $oResponse=Response::model($surveyid)->findByPk(App()->session['survey_'.$surveyid]['srid']);
-    if(!$return && $oResponse && !is_null($oResponse->submitdate))
-    {
+    if(!$return && $oResponse && !is_null($oResponse->submitdate)) {
         return;
     }
-    static $aMatchedQuotas; // EM call 2 times quotas with 3 lines of php code, then use static.
+    // EM call 2 times quotas with 3 lines of php code, then use static.
+    static $aMatchedQuotas;
     if(!$aMatchedQuotas)
     {
         $aMatchedQuotas=array();
-        $quota_info=$aQuotasInfo = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-        // $aQuotasInfo have an 'active' key, we don't use it ?
-        if(!$aQuotasInfo || empty($aQuotasInfo))
+        // $aQuotasInfos = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        $aQuotas = Quota::model()->findAllByAttributes(array('sid' => $surveyid));
+        // if(!$aQuotasInfo || empty($aQuotaInfos)) {
+        if(!$aQuotas || empty($aQuotas)) {
             return $aMatchedQuotas;
+        }
+
         // OK, we have some quota, then find if this $_SESSION have some set
         $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
-        foreach ($aQuotasInfo as $aQuotaInfo)
+        // foreach ($aQuotasInfos as $aQuotaInfo)
+        foreach ($aQuotas as $oQuota)
         {
-            if(!$aQuotaInfo['active'])
+            // if(!$aQuotaInfo['active']) {
+            if(!$oQuota->active) {
                 continue;
-            if(count($aQuotaInfo['members'])===0)
+            }
+            // if(count($aQuotaInfo['members'])===0) {
+            if(count($oQuota->quotaMembers)===0) {
                 continue;
+            }
             $iMatchedAnswers=0;
             $bPostedField=false;
+
+            ////Create filtering
             // Array of field with quota array value
             $aQuotaFields=array();
             // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
             $aQuotaRelevantFieldnames=array();
             // To count number of hidden questions
             $aQuotaQid=array();
-            foreach ($aQuotaInfo['members'] as $aQuotaMember)
+            //Fill the necessary filter arrays
+            foreach ($oQuota->quotaMembers as $oQuotaMember)
             {
+                $aQuotaMember = $oQuotaMember->memberInfo;
                 $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
-                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]=isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
+                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]= isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
                 $aQuotaQid[]=$aQuotaMember['qid'];
             }
             $aQuotaQid=array_unique($aQuotaQid);
+
+            ////Filter
             // For each field : test if actual responses is in quota (and is relevant)
             foreach ($aQuotaFields as $sFieldName=>$aValues)
             {
                 $bInQuota=isset($_SESSION['survey_'.$surveyid][$sFieldName]) && in_array($_SESSION['survey_'.$surveyid][$sFieldName],$aValues);
-                if($bInQuota && $aQuotaRelevantFieldnames[$sFieldName])
-                {
+                if($bInQuota && $aQuotaRelevantFieldnames[$sFieldName]) {
                     $iMatchedAnswers++;
                 }
                 if(in_array($sFieldName,$aPostedFields))// Need only one posted value
                     $bPostedField=true;
             }
-            // Condition to count quota : Answers are the same in quota + an answer is submitted at this time (bPostedField) OR all questions is hidden (bAllHidden)
-            $bAllHidden=QuestionAttribute::model()->countByAttributes(array('qid'=>$aQuotaQid),'attribute=:attribute',array(':attribute'=>'hidden'))==count($aQuotaQid);
+
+
+            // Condition to count quota :
+            // Answers are the same in quota + an answer is submitted at this time (bPostedField)
+            //  OR all questions is hidden (bAllHidden)
+            $bAllHidden = QuestionAttribute::model()
+                ->countByAttributes(array('qid'=>$aQuotaQid),'attribute=:attribute',array(':attribute'=>'hidden')) == count($aQuotaQid);
+
             if($iMatchedAnswers==count($aQuotaFields) && ( $bPostedField || $bAllHidden) )
             {
-                if($aQuotaInfo['qlimit'] == 0)
-                { // Always add the quota if qlimit==0
-                    $aMatchedQuotas[]=$aQuotaInfo;
-                }
-                else
-                {
-                    $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);
-                    if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
-                        $aMatchedQuotas[]=$aQuotaInfo;
+                if($oQuota->qlimit == 0) { // Always add the quota if qlimit==0
+                    $aMatchedQuotas[]=$oQuota->viewArray;
+                } else {
+                    $iCompleted=getQuotaCompletedCount($surveyid, $oQuota->id);
+                    if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$oQuota->qlimit )) // This remove invalid quota and not completed
+                        $aMatchedQuotas[]=$oQuota->viewArray;
                 }
             }
         }
     }
-    if ($return)
+    if ($return) {
         return $aMatchedQuotas;
-    if(empty($aMatchedQuotas))
+    }
+    if(empty($aMatchedQuotas)) {
         return;
+    }
 
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
@@ -2204,6 +2219,7 @@ function checkCompletedQuota($surveyid,$return=false)
         /* @var $blockData PluginEventContent */
         $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
     }
+
     // Allow plugin to update message, url, url description and action
     $sMessage=$event->get('message',$aMatchedQuota['quotals_message']);
     $sUrl=$event->get('url',$aMatchedQuota['quotals_url']);
@@ -2212,8 +2228,9 @@ function checkCompletedQuota($surveyid,$return=false)
     $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
 
     // Doing the action and show the page
-    if ($sAction == "1" && $sClientToken)
+    if ($sAction == \Quota::ACTION_TERMINATE && $sClientToken) {
         submittokens(true);
+    }
     // Construct the default message
     $sMessage = templatereplace($sMessage,array(),$aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
     $sUrl = passthruReplace($sUrl, $aSurveyInfo);
@@ -2226,7 +2243,7 @@ function checkCompletedQuota($surveyid,$return=false)
     $sHtmlQuotaUrl=($sUrl)? "<a href='".$sUrl."'>".$sUrlDescription."</a>" : "";
 
     // Add the navigator with Previous button if quota allow modification.
-    if ($sAction == "2")
+    if ($sAction == \Quota::ACTION_CONFIRM_TERMINATE)
     {
         $sQuotaStep = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
         $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button btn btn-default"));
@@ -2246,8 +2263,9 @@ function checkCompletedQuota($surveyid,$return=false)
     sendCacheHeaders();
     if($sAutoloadUrl == 1 && $sUrl != "")
     {
-        if ($sAction == "1")
+        if ($sAction == \Quota::ACTION_TERMINATE) {
             killSurveySession($surveyid);
+        }
         header("Location: ".$sUrl);
     }
     doHeader();
@@ -2255,8 +2273,9 @@ function checkCompletedQuota($surveyid,$return=false)
     echo templatereplace(file_get_contents($sTemplateViewPath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
     echo templatereplace(file_get_contents($sTemplateViewPath."/endpage.pstpl"),array(),$aDataReplacement);
     doFooter($surveyid);
-    if ($sAction == "1")
+    if ($sAction == \Quota::ACTION_TERMINATE) {
         killSurveySession($surveyid);
+    }
     Yii::app()->end();
 }
 

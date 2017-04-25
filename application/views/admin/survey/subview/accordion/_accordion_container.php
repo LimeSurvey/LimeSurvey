@@ -5,6 +5,15 @@
  * @var $data
  */
 ?>
+<!-- Enable aufo-focus on element via url hash -->
+<script>
+    $(document).ready(function () {
+        if(location.hash != null && location.hash != ""){
+            $('.collapse').removeClass('in');
+            $(location.hash + '.collapse').collapse('show');
+        }
+    });
+</script>
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 

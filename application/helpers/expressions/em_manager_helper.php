@@ -3611,7 +3611,7 @@
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
-
+            $this->sessid = 'survey_' . $this->sid;
             $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
             //      LimeExpressionManager::ShowStackTrace();
 
@@ -4218,7 +4218,6 @@
                 $this->varNameAttr[$jsVarName] .= "}";
             }
             $this->q2subqInfo = $q2subqInfo;
-
             // Now set tokens
             if (Survey::model()->hasTokens($surveyid) && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
             {
@@ -4231,14 +4230,16 @@
                 );
 
                 $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
-                foreach ($token as $key => $val)
-                {
-                    $this->knownVars["TOKEN:" . strtoupper($key)] = array(
-                        'code' => $anonymized ? '' : $val,
-                        'jsName_on' => '',
-                        'jsName' => '',
-                        'readWrite' => 'N',
-                    );
+                if($token) {
+                    foreach ($token as $key => $val)
+                    {
+                        $this->knownVars["TOKEN:" . strtoupper($key)] = array(
+                            'code' => $anonymized ? '' : $val,
+                            'jsName_on' => '',
+                            'jsName' => '',
+                            'readWrite' => 'N',
+                        );
+                    }
                 }
             }
             else
@@ -9227,7 +9228,8 @@ EOD;
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
-
+            /* All final survey string must be shown in survey language #12208 */
+            Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
             $allErrors = array();
             $warnings = 0;
 
@@ -9258,7 +9260,9 @@ EOD;
                 LimeExpressionManager::StartSurvey($sid, 'survey', $surveyOptions, false,$LEMdebugLevel);
                 $moveResult = LimeExpressionManager::NavigateForwards();
             }
-
+            $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
+            /* We now get all survey string, then reset to admin language */
+            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
             $qtypes=getQuestionTypeList('','array');
 
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
@@ -9268,7 +9272,6 @@ EOD;
                 );
             }
 
-            $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
 
             $out = '<div id="showlogicfilediv" class="table-responsive"><h3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</h3>\n";
             $out .= "<table id='logicfiletable' class='table table-bordered'>";
@@ -9437,8 +9440,16 @@ EOD;
                             case 'code_filter':
                             case 'date_max':
                             case 'date_min':
+                                break;
                             case 'em_validation_q_tip':
                             case 'em_validation_sq_tip':
+                            case 'equation':
+                                $LEM->ProcessString($value, $qid,NULL,false,1,1,false,false);
+                                $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
+                                if ($LEM->em->HasErrors())
+                                {
+                                    ++$errorCount;
+                                }
                                 break;
                             case 'equals_num_value':
                             case 'em_validation_q':
@@ -9775,10 +9786,9 @@ EOD;
                 }
                 $out = "<p class='LEMheading'>$message</p>\n" . $out."</div>";
             }
-
             return array(
-            'errors'=>$allErrors,
-            'html'=>$out
+                'errors'=>$allErrors,
+                'html'=>$out
             );
         }
 

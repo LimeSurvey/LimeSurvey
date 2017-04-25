@@ -162,7 +162,7 @@ function checkconditions(value, name, type, evt_type)
 /**
  * fixnum_checkconditions : javascript function attach to some element
  * Update the answer of the user to be numeric and launch checkconditions
- * 
+ *
  * Also checks if any of the arrow keys is pressed to avoid unecessary hassle.
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
@@ -177,20 +177,24 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
 
     var decimalValue;
     var newval = new String(value);
-    var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
+    var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.|)[0-9]*$/);
     var cleansedValue = newval.replace(numRegex,'');
     /**
-     * If have to use parsed value.
-     */
+    * If have to use parsed value.
+    */
     if(!bNumRealValue)
-    {                
+    {
         if(checkNumericRegex.test(value)) {
             try{
                 decimalValue = new Decimal(cleansedValue);
             } catch(e){
-                decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                try{
+                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                } catch(e){
+                    decimalValue = new Decimal(NaN);
+                }
             }
-            
+
             if (typeof intonly !=='undefined' && intonly==1) {
                 newval = decimalValue.trunc();
             }
@@ -206,7 +210,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     if(bFixNumAuto && (newval != ""))
     {
         var addition = "";
-        if(cleansedValue.split("").pop().match(/(,)|(\.)/)){
+        if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
             addition = cleansedValue.split("").pop();
         }
         var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/);
@@ -217,7 +221,12 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             try{
                 decimalValue = new Decimal(cleansedValue);
             } catch(e){
-                decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                try{
+                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                } catch(e){
+                    decimalValue = new Decimal(NaN);
+
+                }
             }
         }
 
@@ -235,20 +244,26 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
          * Set display value
          */
         displayVal = decimalValue.toString();
-
-        if(LEMradix==",")
-            displayVal = displayVal.replace(/\./,',');
-
-        newval = displayVal+addition
-
-        if (name.match(/other$/)) {
-            if($('#answer'+name+'text').val() != newval){
-                $('#answer'+name+'text').val(newval);
-            }
+        if (displayVal=='NaN')
+        {
+            newval=displayVal;
+            displayVal=value;
         }
+        else{
+            if(LEMradix==",")
+                displayVal = displayVal.replace(/\./,',');
 
-        if($('#answer'+name).val() != newval){
-            $('#answer'+name).val(newval);
+            newval = displayVal+addition
+
+            if (name.match(/other$/)) {
+                if($('#answer'+name+'text').val() != newval){
+                    $('#answer'+name+'text').val(newval);
+                }
+            }
+
+            if($('#answer'+name).val() != newval){
+                $('#answer'+name).val(newval);
+            }
         }
     }
 

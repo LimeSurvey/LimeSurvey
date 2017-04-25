@@ -1,3 +1,4 @@
+![LimeSurvey Logo](https://www.limesurvey.org/images/logos/logo_main.png)
 # Sophisticated online survey software
 
 ## About

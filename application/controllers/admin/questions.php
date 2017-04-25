@@ -1423,7 +1423,7 @@ class questions extends Survey_Common_Action
             }
         }
 
-        Yii::app()->getController()->renderPartial('/admin/survey/Question/massive_actions/_delete_results', array('aResults'=>$aResults));
+        Yii::app()->getController()->renderPartial('/admin/survey/Question/massive_actions/_action_results', array('aResults'=>$aResults,'successLabel'=>gT('Deleted')));
     }
 
     /**

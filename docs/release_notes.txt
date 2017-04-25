@@ -35,8 +35,165 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.62.2 (build 170203) to 2.63.0 (build 170304) Feb 20 2017
 
+Changes from 2.64.6 (build 170332) to 2.64.7 (build 170404) Apr 4, 2017
+-Fixed issue #12187: invitation mails are not being sent using json-rpc (brammeleman)
+-Fixed issue #12249: This survey does not work with quota (Denis Chenu)
+-Fixed issue #12254: CSRF issue in admin after testing a survey (Carsten Schmitz)
+-Fixed issue: Collation error in token import when the file charset is not properly detected (Carsten Schmitz)
+#Updated translation: Czech by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Hungarian by kkd
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+
+
+Changes from 2.64.5 (build 170331) to 2.64.6 (build 170332) Mar 31, 2017
+-Fixed error: Still not working quotas created more problems (markusfluer)
+-Fixed issue: Not displaying quotas (markusfluer)
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by samarta
+
+Changes from 2.64.4 (build 170330) to 2.64.5 (build 170331) Mar 31, 2017
+-Fixed issue: Quotas are not accessible on a non activated survey. (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Czech by dusanm, jelen1, VBraun
+
+Changes from 2.64.3 (build 170327) to 2.64.4 (build 170330) Mar 30, 2017
+-Fixed issue #12076: Array of texts set to "numbers only" doesn't allow negative values (markusfluer)
+-Fixed issue: Active group not selected when filtering question list by group (LouisGac)
+-Fixed issue: Can't filter question list by group (LouisGac)
+-Fixed issue: PHP notice in browse token after tested another survey (Denis Chenu)
+-Fixed issue: Problems with a missing surveytable (Markus Flür)
+-Fixed issue: Switch option when import VV not used (Denis Chenu)
+-Fixed issue: Unable to use month in date (Denis Chenu)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by Calidonia
+#Updated translation: Portuguese (Portugal) by thiagosmartins, mauriciofurtado, holch, samarta
+
+Changes from 2.64.2 (build 170324) to 2.64.3 (build 170327) Mar 27, 2017
+-Fixed issue #12226: [security] Improper handling of insufficient privileges (Matthew)
+-Fixed issue: Error on upload in template editor (Carsten Schmitz)
+-Fixed issue: Not possible to change template in template editor (Carsten Schmitz)
+-Fixed issue: Quota methods not correct on frontend (markusfluer)
+-Fixed issue: Quotas were wrongly set in the backend. (markusfluer)
+-Fixed issue: [security] CSRF token not regenerated on log in (Carsten Schmitz)
+-Fixed issue: Unable to use EM in cron (Denis Chenu)
+-Fixed issue: XSS filter for participant firstname/lastname is applied when the participant is marked as completed or quota out (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by kmilojev, rovinj
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Mongolian by erka, samsharav, baatar
+#Updated translation: Norwegian (Bokmål) by peterhol, pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Spanish (Spain) by atavei, aesteban
+#Updated translation: Turkish by bulent, kayazeren
+
+Changes from 2.64.1 (build 170310) to 2.64.2 (build 170324) Mar 24, 2017
+-Fixed issue #12072: Conditions dialog very slow when creating/editing surveys (Carsten Schmitz)
+-Fixed issue #12189: Group import count are false (Denis Chenu)
+-Fixed issue #12192: Quotas page missing pagination - only 10 quotas visible (Tõnis Ormisson)
+-Fixed issue #12198: Date/Time question timeformat A seems invalid (Denis Chenu)
+-Fixed issue #12201: Quotas not triggered for secondary languages (Tõnis Ormisson)
+-Fixed issue #12207: Valid variable can be seen as invalid (Denis Chenu)
+-Fixed issue #12208: Bad language used for EM in survey logic file (Denis Chenu)
+-Fixed issue #12214: Check for integer on numerical questions not working correctly (Carsten Schmitz)
+-Fixed issue #12224: [security] Cross-Site Request Forgery issue (lacrioque) - reported by Dr. Erlijn van Genuchten & Manuel Stotz (SySS GmbH)
+-Fixed issue #12225: [security] CSS issues in file upload question type and administration user edition (Denis Chenu & Carsten Schmitz) - reported by Dr. Erlijn van Genuchten & Manuel Stotz (SySS GmbH)
+-Fixed issue: [security] XSS in plugin using sidebody function (Denis Chenu)
+-Fixed issue: Quota end message use base language only (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by Ramiky, jeskiv
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Slovak by dusanm
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.64.0 (build 170307) to 2.64.1 (build 170310) Mar 10 2017
+-Fixed issue #12136: The central participant database does not export (Olle Haerstedt)
+-Fixed issue #12173: Error with pluginhelper?sa=sidebody direct link (Denis Chenu)
+-Fixed issue #12176: Fatal error in admin response controller (Matthew)
+-Fixed issue #12177: Modal language changed to last survey language if massive exporting htmls (Tõnis Ormisson)
+-FIxed issue #12178: fix quota-grid errors if no quotas (Tõnis Ormisson)
+-Fixed issue #12183: New quota : autoload_url to Yes by default (Tõnis Ormisson)
+-Fixed issue: Captcha text was not unescaped at all places (Olle Haerstedt)
+-Fixed issue: Certain invalid numbers don't raise warning during entry (Carsten Schmitz)
+-Fixed issue: Good header for zip files download (Denis Chenu)
+-Fixed issue: Missing subaction in URL for generate question codes (Olle Haerstedt)
+
+Changes from 2.63.1 (build 170305) to 2.64.0 (build 170307) Mar 7 2017
+-Fixed issue #12118: Expiry date not referenced correctly at survey list overview (Tõnis Ormisson)
+-Fixed issue #12132: Survey List Status Filter 'Active and running' does not list expiring surveys (Tõnis Ormisson)
+-Fixed issue #12134: Activation button for active but expired should link to expiry options (Tõnis Ormisson)
+-Fixed issue #12146: Edit answer options: New answer option UI error (Matthew)
+-Fixed issue #12147: Template news_paper has phantom buttons (Matthew)
+-Fixed issue #12150: Download link in responses may download wrong file if same file name was uploaded twice (Carsten Schmitz)
+-Fixed issue #12156: RemoteControl get_question_properties does not convey answer options order (Matthew)
+-Fixed issue #12159: On-page Regex validation shows incorrect behaviour (Carsten Schmitz)
+-Fixed issue #12164: Bad header when download file in Response browsing (Denis Chenu)
+-Fixed issue #12165: Unable to add more than drop-down field to an attribute at a time (Matthew)
+-Fixed issue #12169: Import permission for Central Participant Database not available (Carsten Schmitz)
+-Fixed issue: Cannot import survey structure text format edited on Mac OS (Carsten Schmitz)
+-Fixed issue: $deleteAfterUse parameter in BigData constructor wasn't used. (brammeleman)
+-Fixed issue: Missing space before (Base language) (Tõnis Ormisson)
+-Fixed issue: RemoteControl API mail_registered_participants not working on MSSQL (Carsten Schmitz)
+-Fixed issue: Settings filter in survey list not working in MSSQL (Carsten Schmitz)
+-New feature #12117: Massive actions for quotas (Tõnis Ormisson)
+-New feature: Export printable questionnaires (Tõnis Ormisson)
+-New feature: Extend LDAP authentication plugin with optional group-membership restriction (Fred Yankowski)
+-New feature: Method to get all uploaded files for a given token (brammeleman)
+-New feature: NUMBEROFGROUPS replacement field on welcome template (Matthew Favetti)
+-New feature: Regular expression flags can now be used in validation (Carsten Schmitz)
+-New feature: Remote Control: list_users accepts user_id filter (Gabriel Jenik)
+#Updated translation: Basque by santises
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by Bobo001, yanglaw
+#Updated translation: Czech by VBraun
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by devUSIT, mauriciofurtado, holch, samarta
+#Updated translation: Russian by winterheart
+#Updated translation: Slovak by dusanm
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+
+Changes from 2.63.0 (build 170304) to 2.63.1 (build 170305) Feb 21 2017
+Fixed issue: Survey list & legacy plugins not working
+Updated translation: Catalan by qualitatuvic
+Updated translation: Polish by elissa
+Updated translation: Polish (Informal) by elissa
+
+Changes from 2.62.2 (build 170203) to 2.63.0 (build 170304) Feb 20 2017
 -Fixed issue #12003: TOKEN field is blank if user performs a GET during survey (Denis Chenu)
 -Fixed issue #12113: Fix invalid subquestions on activation (Denis Chenu)
 -Fixed issue #12113: Unable to fix Invalid Sub questions in multilingual survey (Denis Chenu)
@@ -47,7 +204,7 @@ Changes from 2.62.2 (build 170203) to 2.63.0 (build 170304) Feb 20 2017
 -Fixed issue: Missing spaces in title_bar between survey title and brackets (Tõnis Ormisson)
 -Fixed issue: Some options are being ignored in statistics (Carsten Schmitz)
 -Fixed issue: Timeline remote control not working (Stefan Verweij)
--New feature #12120: direct action by php-cli (#638) (Denis Chenu)
+-New feature #12120: direct action by php-cli (Denis Chenu)
 -New feature: add Plugin event afterFindSurvey (Tõnis Ormisson)
 -New feature: New plugin event afterSurveyQuestionAssessment (Gabriel Jenik)
 -New translation: Luxembourgish (Carsten Schmitz)

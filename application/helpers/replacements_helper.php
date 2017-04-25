@@ -75,6 +75,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
+
+    if($_surveyid) {
+        $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
+    }
+    else {
+        $totalgroups = "";
+    }
+
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if($_surveyid && !isset($thissurvey))
@@ -296,7 +304,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_therearexquestions = '';
     };
-
 
     if (isset($token))
     {
@@ -524,7 +531,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_loadform .=Yii::app()->getController()->widget('CCaptcha',array(
                     'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
                     'buttonType' => 'button',
-                    'buttonLabel' => gt('Reload image')
+                    'buttonLabel' => gt('Reload image', 'unescaped')
                 ),true);
         $_loadform .='</span>
                 </label>
@@ -692,6 +699,7 @@ EOD;
     $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : '';    // global
     $coreReplacements['NOSURVEYID'] = (isset($surveylist))?$surveylist['nosid']:'';
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
+    $coreReplacements['NUMBEROFGROUPS'] = $totalgroups;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span class='privacy-title'>".gT("A note on privacy")."</span><span class='privacy-body'><br />".gT("This survey is anonymous.")."<br />".gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.").'</span>';

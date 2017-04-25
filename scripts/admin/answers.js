@@ -171,18 +171,17 @@ function addinput()
     $codes = JSON.stringify(codes);
 
     //We build the datas for the request
-    datas                  = 'surveyid='+$elDatas.data('surveyid');
-    datas                 += '&gid='+$elDatas.data('gid');
-    datas                 += '&qid='+$elDatas.data('qid');
-    datas                 += '&codes='+$codes;
-    datas                 += '&scale_id='+$(this).data('scale-id');
-    datas                 += '&type=answer';
-    datas                 += '&position='+$(this).data('position');
-    datas                 += '&languages='+$languages;
-    console.log($elDatas.data('assessmentvisible'));
-    if( $elDatas.data('assessmentvisible') == 1 ){
-      datas += '&assessmentvisible=true';
-    }
+    datas = {
+        'surveyid':             $elDatas.data('surveyid'),
+        'gid':                  $elDatas.data('gid'),
+        'qid':                  $elDatas.data('qid'),
+        'codes':                $codes,
+        'scale_id':             $(this).data('scale-id'),
+        'type':                 'answer',
+        'position':             $(this).data('position'),
+        'languages':            $languages,
+        'assessmentvisible':    $elDatas.data('assessmentvisible') == 1,
+    };
 
     $scaleId  = $(this).data('scale-id')
     $position = $(this).data('position')

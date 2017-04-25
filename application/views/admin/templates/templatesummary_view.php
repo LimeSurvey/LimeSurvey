@@ -131,7 +131,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     </div>
                     <div class="modal-body">
                         <?php eT('To use a picture in a .pstpl file:');?><br/>
-                        <code>&lt;img src="{TEMPLATEURL}/files/yourpicture.png" /&gt;</code><br/><br/>
+                        <code>&lt;img src="{TEMPLATEURL}files/yourpicture.png" /&gt;</code><br/><br/>
                         <?php eT("To use a picture in a .css file: ");?><br/>
                         <code>background-image: url('../files/yourpicture.png');</code><br/><br/>
                         <?php eT("To place the logo anywhere in a .pstpl file: ");?><br/>

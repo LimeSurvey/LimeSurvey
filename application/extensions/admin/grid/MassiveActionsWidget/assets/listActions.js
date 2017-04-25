@@ -25,6 +25,7 @@ $(document).on('click', '.listActions a', function ()
     var $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType = $that.data('actionType');
 
+
     if( $oCheckedItems == '[]' ) {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
@@ -121,8 +122,9 @@ $(document).on('click', '.listActions a', function ()
 
     })
 
-    // Define what should be done when user confirm the mass action
-    $modalButton.on('click', function(){
+    /* Define what should be done when user confirm the mass action */
+    /* remove all existing action before adding the new one */
+    $modalButton.off('click').on('click', function(){
 
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
@@ -240,13 +242,42 @@ function prepareBsSwitchInteger($gridid){
     });
 }
 
+function prepareBsDateTimePicker($gridid){
+    var dateTimeSettings = getDefaultDateTimePickerSettings();
+    var dateTimeFormat = dateTimeSettings.dateformatsettings.jsdate+ ' HH:mm';
+    $('.date input').each(function(){
+        $(this).datetimepicker({
+            format: dateTimeFormat,
+            showClear: dateTimeSettings.showClear,
+            allowInputToggle: dateTimeSettings.allowInputToggle,
+        });
+    });
+
+}
+// get user session datetimesettings
+function getDefaultDateTimePickerSettings() {
+    var url = 'index.php?r=admin/survey&sa=datetimesettings';
+    var mydata = [];
+    $.ajaxSetup({
+        async: false
+    });
+    $.getJSON( url, function( data ) {
+        mydata = data;
+    });
+    return mydata;
+}
+
+
 $(document).ready(function() {
+
     prepareBsSwitchBoolean(gridId);
     prepareBsSwitchInteger(gridId);
+
 
     // Grid refresh: see point 3
     $(document).on('actions-updated', '#'+gridId,  function(){
         prepareBsSwitchBoolean(gridId);
         prepareBsSwitchInteger(gridId);
+        prepareBsDateTimePicker(gridId);
     });
 });

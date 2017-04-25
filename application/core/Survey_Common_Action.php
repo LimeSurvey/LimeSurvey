@@ -13,8 +13,6 @@
 *
 */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * Survey Common Action
 *
@@ -65,20 +63,15 @@ class Survey_Common_Action extends CAction
         // Populate the params. eg. surveyid -> iSurveyId
         $params = $this->_addPseudoParams($params);
 
-        if (!empty($params['iSurveyId']))
-        {
-            if(!Survey::model()->findByPk($params['iSurveyId']))
-            {
+        if (!empty($params['iSurveyId'])) {
+            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
+            if(!$oSurvey) {
                 Yii::app()->setFlashMessage(gT("Invalid survey ID"),'error');
                 $this->getController()->redirect(array("admin/index"));
-            }
-            elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
-            {
+            } elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
                 Yii::app()->setFlashMessage(gT("No permission"), 'error');
                 $this->getController()->redirect(array("admin/index"));
-            }
-            else
-            {
+            } else {
                 LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
             }
         }
@@ -123,39 +116,37 @@ class Survey_Common_Action extends CAction
         }
 
         $pseudos = array(
-        'id' => 'iId',
-        'gid' => 'iGroupId',
-        'qid' => 'iQuestionId',
-        'sid' => array('iSurveyId', 'iSurveyID'),
-        'surveyid' => array('iSurveyId', 'iSurveyID'),
-        'srid' => 'iSurveyResponseId',
-        'scid' => 'iSavedControlId',
-        'uid' => 'iUserId',
-        'ugid' => 'iUserGroupId',
-        'fieldname' => 'sFieldName',
-        'fieldtext' => 'sFieldText',
-        'action' => 'sAction',
-        'lang' => 'sLanguage',
-        'browselang' => 'sBrowseLang',
-        'tokenids' => 'aTokenIds',
-        'tokenid' => 'iTokenId',
-        'subaction' => 'sSubAction',
+            'id' => 'iId',
+            'gid' => 'iGroupId',
+            'qid' => 'iQuestionId',
+            /* Unsure we set 'iSurveyId', 'iSurveyID','surveyid' to same final survey id */
+            /* priority is surveyid,surveyId,sid : surveyId=1&sid=2 set sid surveyid to 1 */
+            'sid' => array('iSurveyId', 'iSurveyID','surveyid'), // Old link use sid
+            'surveyId' => array('iSurveyId', 'iSurveyID','surveyid'),// PluginHelper->sidebody : if disable surveyId usage : broke API
+            'surveyid' => array('iSurveyId', 'iSurveyID','surveyid'),
+            'srid' => 'iSurveyResponseId',
+            'scid' => 'iSavedControlId',
+            'uid' => 'iUserId',
+            'ugid' => 'iUserGroupId',
+            'fieldname' => 'sFieldName',
+            'fieldtext' => 'sFieldText',
+            'action' => 'sAction',
+            'lang' => 'sLanguage',
+            'browselang' => 'sBrowseLang',
+            'tokenids' => 'aTokenIds',
+            'tokenid' => 'iTokenId',
+            'subaction' => 'sSubAction',
         );
 
         // Foreach pseudo, take the key, if it exists,
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
         // (only if that place is empty)
-        foreach ($pseudos as $key => $pseudo)
-        {
-            if (!empty($params[$key]))
-            {
+        foreach ($pseudos as $key => $pseudo) {
+            if (!empty($params[$key])) {
                 $pseudo = (array) $pseudo;
-
-                foreach ($pseudo as $pseud)
-                {
-                    if (empty($params[$pseud]))
-                    {
+                foreach ($pseudo as $pseud) {
+                    if (empty($params[$pseud])) {
                         $params[$pseud] = $params[$key];
                     }
                 }
@@ -499,33 +490,6 @@ class Survey_Common_Action extends CAction
             // Count user
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
-            // Count tokens and deactivated surveys
-            $tablelist = Yii::app()->db->schema->getTableNames();
-            foreach ($tablelist as $table)
-            {
-                if (strpos($table, Yii::app()->db->tablePrefix . "old_tokens_") !== false)
-                {
-                    $oldtokenlist[] = $table;
-                }
-                elseif (strpos($table, Yii::app()->db->tablePrefix . "tokens_") !== false)
-                {
-                    $tokenlist[] = $table;
-                }
-                elseif (strpos($table, Yii::app()->db->tablePrefix . "old_survey_") !== false)
-                {
-                    $oldresultslist[] = $table;
-                }
-            }
-
-            if (isset($tokenlist) && is_array($tokenlist))
-            {
-                $activetokens = count($tokenlist);
-            }
-            else
-            {
-                $activetokens = 0;
-            }
-
             //Check if have a comfortUpdate key
             if(getGlobalSetting('emailsmtpdebug')!=null)
             {
@@ -536,7 +500,6 @@ class Survey_Common_Action extends CAction
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
             }
 
-            $aData['dataForConfigMenu']['activetokens'] = $activetokens;
             $aData['sitename'] = Yii::app()->getConfig("sitename");
 
             $updateModel = new UpdateForm();
@@ -766,7 +729,7 @@ class Survey_Common_Action extends CAction
             $baselang = $surveyinfo['language'];
 
             $activated = ($surveyinfo['active'] == 'Y');
-            App()->getClientScript()->registerPackage('jquery-cookie');
+            App()->getClientScript()->registerPackage('js-cookie');
 
             //Parse data to send to view
             $aData['surveyinfo'] = $surveyinfo;
@@ -1058,8 +1021,8 @@ class Survey_Common_Action extends CAction
                 $model->attributes = $_GET['Question'];
 
             // Filter group
-            if (isset($_GET['group_name']))
-                $model->group_name = $_GET['group_name'];
+            if (isset($_GET['gid']))
+                $model->gid = $_GET['gid'];
 
             // Set number of page
             if (isset($_GET['pageSize']))

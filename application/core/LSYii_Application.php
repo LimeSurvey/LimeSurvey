@@ -255,7 +255,7 @@ class LSYii_Application extends CWebApplication
          * Plugin event done before all web controller action
          * Can set run to false to deactivate action
          */
-        $event = new \ls\pluginmanager\PluginEvent('beforeControllerAction');
+        $event = new PluginEvent('beforeControllerAction');
         $event->set('controller',$controller->getId());
         $event->set('action',$action->getId());
         App()->getPluginManager()->dispatchEvent($event);

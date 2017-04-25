@@ -214,7 +214,6 @@ class Permission extends LSActiveRecord
                 'img' => 'global'
             ),
             'participantpanel' => array(
-                'import' => false,
                 'title' => gT("Central participant database"),
                 'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
                 'img' => 'cpdb'
@@ -357,16 +356,16 @@ class Permission extends LSActiveRecord
         $aFilteredPermissions=array();
         foreach ($aBasePermissions as $sPermissionname=>$aPermission)
         {
-            $aFilteredPermissions[$sPermissionname]['create']= (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
-            $aFilteredPermissions[$sPermissionname]['read']  = (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
-            $aFilteredPermissions[$sPermissionname]['update']= (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
-            $aFilteredPermissions[$sPermissionname]['delete']= (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
-            $aFilteredPermissions[$sPermissionname]['import']= (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
-            $aFilteredPermissions[$sPermissionname]['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
+            $aFilteredPermissions[$sPermissionname]['create']= ($aPermission['create'] && isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
+            $aFilteredPermissions[$sPermissionname]['read']  = ($aPermission['read'] && isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
+            $aFilteredPermissions[$sPermissionname]['update']= ($aPermission['update'] && isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
+            $aFilteredPermissions[$sPermissionname]['delete']= ($aPermission['delete'] && isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
+            $aFilteredPermissions[$sPermissionname]['import']= ($aPermission['import'] && isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
+            $aFilteredPermissions[$sPermissionname]['export']= ($aPermission['export'] && isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
         }
 
         $condition = array('entity_id' => $iEntityID, 'uid' => $iUserID);
-        $oEvent=new \ls\pluginmanager\PluginEvent('beforePermissionSetSave');
+        $oEvent=new PluginEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions',$aFilteredPermissions);
         $oEvent->set('iSurveyID',$iEntityID);
         $oEvent->set('iUserID',$iUserID);
@@ -529,7 +528,7 @@ class Permission extends LSActiveRecord
         //      they should read permissions via the model
         //      and they should add row in permission table  (entity = plugin, etc)
 
-        $oEvent=new \ls\pluginmanager\PluginEvent('beforeHasPermission');
+        $oEvent=new PluginEvent('beforeHasPermission');
         $oEvent->set('iEntityID',$iEntityID);
         $oEvent->set('sEntityName',$sEntityName);
         $oEvent->set('sPermission',$sPermission);

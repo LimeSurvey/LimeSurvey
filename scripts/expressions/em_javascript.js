@@ -215,12 +215,17 @@ function LEMis_float(a)
 }
 
 /**
- * Test if mixed_var is_int same way than PHP
- * From: http://phpjs.org/functions/is_int/
+ * Test if mixed_var is in integer value (no matter the real type)
  */
 function LEMis_int(mixed_var)
 {
-  return mixed_var === +mixed_var && isFinite(mixed_var) && !(mixed_var % 1);
+    try {
+        var iCheckValue = new Decimal(mixed_var)  
+    }  
+    catch (err) {
+        return false;
+    }
+    return iCheckValue.isInteger();
 }
 /**
  * Test if mixed_var is a PHP numeric value
@@ -380,10 +385,12 @@ function LEMimplode()
 /*
  * Returns true if within matches the pattern.  Pattern must start and end with the '/' character
  */
-function LEMregexMatch(pattern,within)
+function LEMregexMatch(sRegExp,within)
 {
     try {
-        var reg = new RegExp(pattern.substring(1,pattern.length-2));
+        var flags = sRegExp.replace(/.*\/([gimy]*)$/, '$1');
+        var pattern = sRegExp.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1').trim();
+        var reg = new RegExp(pattern, flags); // Note that the /u flag crashes IE11       
         return reg.test(within);
     }
     catch (err) {
@@ -747,7 +754,7 @@ function LEMval(alias)
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
                 }
-                return parseFloat(value);
+                return value;
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)

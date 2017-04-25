@@ -598,8 +598,8 @@ class conditionsaction extends Survey_Common_Action {
                         true
                     );
                 }
-                // If we have a condition, allways reset the condition, this can fix old import (see #09344)
-                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
+                // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
             }
             else
             { // no condition ==> disable delete all conditions button, and display a simple comment
