@@ -70,7 +70,14 @@ $(document).ready(function(){
                     {data: 'sid', visible: false},
                     {data: 'qid', visible: false},
                     {data: 'sqid', visible: false}
-                    ],
+                ],
+                "language":{
+                    "emptyTable":sNoParametersDefined,
+                    "search":sSearchPrompt,
+                    "infoEmpty":'',
+                    "info":sProgress
+                }    
+                ,
                 data: dataSet,
                 createdRow: function(thisRow,data,dataIndex){
                     $(thisRow).data('rawdata',JSON.stringify(data));
