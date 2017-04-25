@@ -29,8 +29,8 @@
          so final user can add paragraph, div, or whatever he wants in the subquestion text
          This field is related to the input thanks to attribute aria-labelledby
     -->
-    <div class="label-text label-clickable" id="label-answer<?php echo $name.$code; ?>">
+    <span class="label-text label-clickable" id="label-answer<?php echo $name.$code; ?>">
         <?php echo $answer; ?>
-    </div>
+    </span>
 </div>
 <!-- end of answer_row -->
