@@ -22,6 +22,9 @@ class SurveyRuntimeHelper {
      * i.e: all the private variable concerning the survey should be moved to the survey model and replaced by a $oSurvey
      */
 
+    // parameters
+    private $param;
+
     // Preview datas
     private $previewquestion     = false;
     private $previewgrp          = false;
@@ -99,6 +102,8 @@ class SurveyRuntimeHelper {
         $thissurvey = $this->thissurvey;
 
         extract($args);                                                         // TODO: Check if still needed at this level
+
+        $this->param = isset($param)?$param:'';
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
@@ -609,6 +614,7 @@ class SurveyRuntimeHelper {
             'previewgrp'             => $this->previewgrp             ,
             'previewquestion'        => $this->previewquestion        ,
             'sTemplateViewPath'      => $this->sTemplateViewPath      ,
+            'param'                  => $this->param                  ,
         );
         return $aPrivateVariables;
     }
@@ -1883,7 +1889,7 @@ class SurveyRuntimeHelper {
 
         }elseif($surveyMode == 'question' && $previewquestion){
                 $_qid       = sanitize_int($param['qid']);
-                LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
+                LimeExpressionManager::StartSurvey($this->surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                 $moveResult = $this->moveResult= LimeExpressionManager::JumpTo($qSec+1,true,false,true);
                 $stepInfo   = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
