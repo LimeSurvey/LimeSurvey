@@ -16,7 +16,7 @@ if(isset($_GET['isAjax'])){
 return array(
     /* For public template functionnality */
     'limesurvey-public'=>array(
-        'devBaseUrl'  => 'application/core/packages/limesurvey/',
+        'devBaseUrl'  => 'assets/packages/limesurvey/',
         'basePath' => 'core.limesurvey',/* public part only : rename directory ? */
         'css'=> array(
             'survey.css',
@@ -31,7 +31,7 @@ return array(
     ),
     /* For public template extended functionnality (based on default template) */
     'template-default'=>array(
-        'devBaseUrl'  => 'application/core/packages/template-default/',
+        'devBaseUrl'  => 'assets/packages/template-default/',
         'basePath' => 'core.template-default',
         'css'=> array(
             'template-core.css',
@@ -44,7 +44,7 @@ return array(
         )
     ),
     'template-default-ltr'=>array( /* complement for ltr */
-        'devBaseUrl'  => 'application/core/packages/template-default/',
+        'devBaseUrl'  => 'assets/packages/template-default/',
         'basePath' => 'core.template-default',
         'css'=> array(
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
@@ -54,7 +54,7 @@ return array(
         )
     ),
     'template-default-rtl'=>array( /* Same but for rtl */
-        'devBaseUrl'  => 'application/core/packages/template-default/',
+        'devBaseUrl'  => 'assets/packages/template-default/',
         'basePath' => 'core.template-default',
         'css'=> array(
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css',
@@ -65,7 +65,7 @@ return array(
     ),
 
     'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
-        'devBaseUrl'  => 'application/core/packages/bootstrap-rtl/',
+        'devBaseUrl'  => 'assets/packages/bootstrap-rtl/',
         'basePath' => 'core.bootstrap-rtl',
         'css'=> array(
             'bootstrap-rtl.css',
@@ -76,7 +76,7 @@ return array(
     ),
     /* Ranking question type */
     'question-ranking'=>array(
-        'devBaseUrl'  => 'application/core/packages/questions/ranking/',
+        'devBaseUrl'  => 'assets/packages/questions/ranking/',
         'basePath' => 'core.questions.ranking',
         'css'=> array(
             'ranking.css',
@@ -91,7 +91,7 @@ return array(
     ),
     /* numeric slider question : numerci question type with slider */
     'question-numeric-slider'=>array(
-        'devBaseUrl'  => 'application/core/packages/questions/numeric-slider/',
+        'devBaseUrl'  => 'assets/packages/questions/numeric-slider/',
         'basePath' => 'core.questions.numeric-slider',
         'css'=> array(
             'numeric-slider.css',
