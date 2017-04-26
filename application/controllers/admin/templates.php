@@ -730,7 +730,6 @@ class templates extends Survey_Common_Action
         Yii::app()->loadHelper("admin/template");
         $aData = array();
         $time = date("ymdHis");
-
         // Prepare textarea class for optional javascript
         $templateclasseditormode = getGlobalSetting('defaulttemplateeditormode'); // default
         if (Yii::app()->session['templateeditormode'] == 'none')
@@ -757,16 +756,14 @@ class templates extends Survey_Common_Action
                 $myoutput = str_replace($cssfile, $cssfile . "?t=$time", $myoutput);
             }
 
-
             $myoutput = implode("\n", $myoutput);
-
-
 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
             $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
-
+            App()->getClientScript()->unregisterPackage('admin-theme');         // We remove the admin package
             App()->getClientScript()->render($myoutput);
+
             @fwrite($fnew, $myoutput);
             @fclose($fnew);
         }
