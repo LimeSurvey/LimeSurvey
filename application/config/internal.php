@@ -107,7 +107,8 @@ $internalConfig = array(
             'packages' => array_merge(
                 require('third_party.php'),
                 require('packages.php')
-            )
+            ),
+            'class' => 'application.core.LSYii_ClientScript'
         ),
 
         'urlManager' => array(

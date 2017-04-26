@@ -675,7 +675,6 @@ class templates extends Survey_Common_Action
         Yii::app()->loadHelper("admin/template");
         $aData = array();
         $time = date("ymdHis");
-
         // Prepare textarea class for optional javascript
         $templateclasseditormode = getGlobalSetting('defaulttemplateeditormode'); // default
         if (Yii::app()->session['templateeditormode'] == 'none')
@@ -698,13 +697,16 @@ class templates extends Survey_Common_Action
             App()->getClientScript()->reset();
             @fwrite($fnew, getHeader());
 
+
             //~ foreach ($cssfiles as $cssfile)
             //~ {
                 //~ $myoutput = str_replace($cssfile, $cssfile . "?t=$time", $myoutput);
             //~ }
 
+
             $myoutput = implode("\n", $myoutput);
-            /* Must remove all exitsing scripts / css and js */
+            
+
 
             $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
             /* register template package : PS : use asset :) */
@@ -712,7 +714,11 @@ class templates extends Survey_Common_Action
             /* some needed utils script from limesurvey-public package */
             App()->getClientScript()->registerScript("activateActionLink","activateActionLink();",CClientScript::POS_END);/* show the button if needed */
 
+            /* Must remove all exitsing scripts / css and js */
+            App()->getClientScript()->unregisterPackage('admin-theme');         // We remove the admin package
+
             App()->getClientScript()->render($myoutput);
+
             @fwrite($fnew, $myoutput);
             @fclose($fnew);
         }
