@@ -121,13 +121,12 @@ class SurveyRuntimeHelper {
             // TODO: move somewhere else
             $this->setNotAnsweredAndNotValidated();
 
-            $this->setGroup();
-
         }else{
             $this->setPreview();
         }
 
         $this->moveSubmitIfNeeded();
+        $this->setGroup();
 
         $this->fixMaxStep();
 
