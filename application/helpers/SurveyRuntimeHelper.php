@@ -984,7 +984,7 @@ class SurveyRuntimeHelper {
         if (isset($moveResult) && isset($moveResult['seq']) ){
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             // we already done if move == 'movesubmit', don't do it again
-            if($moveResult['finished'] == true && $move != 'movesubmit' && $thissurvey['questionindex']==2){
+            if($moveResult['finished'] == true && $move != 'movesubmit' && $this->thissurvey['questionindex']==2){
                 //LimeExpressionManager::JumpTo(-1, false, false, true);
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
                 $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
