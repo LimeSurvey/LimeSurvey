@@ -42,7 +42,7 @@ $internalConfig = array(
     'aliases' => array(
         // Third party path
         'third_party' => realpath(__DIR__ . '/../../third_party'),
-        'core' => realpath(__DIR__ . '/../../../assets/packages'),
+        'core' => realpath(__DIR__ . '/../../assets/packages'),
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
