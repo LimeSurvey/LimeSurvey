@@ -1340,6 +1340,7 @@ function do_list_dropdown($ia)
     $_prefix = '';
 
     $value            = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+    $select_show_hide = (isset($other) && $other=='Y')?' showhideother(this.name, this.value);':'';
     $sOptions         = '';
 
     // If no answer previously selected
@@ -3193,10 +3194,10 @@ function do_multiplenumeric($ia)
                     'prefix'                 => $prefix,
                     'suffix'                 => $suffix,
                     'sInputContainerWidth'   => $sInputContainerWidth,
-                	'tiwidth'                => $tiwidth,
+                    'tiwidth'                => $tiwidth,
                     'inputsize'              => $inputsize,
                     'myfname'                => $myfname,
-	                'dispVal'                => htmlspecialchars($sValue),
+                    'dispVal'                => htmlspecialchars($sValue),
                     'maxlength'              => $maxlength,
                     'labelText'              => $labelText,
                     'integeronly'=> $integeronly,
