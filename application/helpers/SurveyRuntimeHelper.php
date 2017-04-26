@@ -551,11 +551,12 @@ class SurveyRuntimeHelper {
 
             // CHECK UPLOADED FILES
             // TMSW - Move this into LEM::NavigateForwards?
-            $filenotvalidated = $this->filenotvalidated = checkUploadedFileValidity($this->surveyid, $this->move);
+            $this->filenotvalidated = checkUploadedFileValidity($this->surveyid, $this->move);
 
             //SEE IF THIS GROUP SHOULD DISPLAY
-            if ($_SESSION[$this->LEMsessid]['step'] == 0)
+            if ($_SESSION[$this->LEMsessid]['step'] == 0) {
                 $this->show_empty_group = true;
+            }
 
             $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->surveyid]['totalquestions'];
 
