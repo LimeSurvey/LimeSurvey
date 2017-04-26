@@ -620,14 +620,15 @@ $config['tempurl']                 = $config['publicurl'].'tmp';
 $config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
 $config['uploadurl']               = $config['publicurl'].'upload';
 $config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // Location of the standard templates
-$config['adminscripts']            = $config['publicurl'].'scripts/admin/';
-$config['generalscripts']          = $config['publicurl'].'scripts/';
-$config['third_party']                 = $config['publicurl'].'third_party/';
+$config['adminscripts']            = $config['publicurl'].'assets/scripts/admin/';
+$config['generalscripts']          = $config['publicurl'].'assets/scripts/';
+$config['third_party']             = $config['publicurl'].'third_party/';
 
-$config['styleurl']                = $config['publicurl'].'styles/';
+$config['assets']                  = 'assets/';
+$config['styleurl']                = $config['publicurl'].$config['assets'].'styles-admin/';
 
 
-$config['publicstyle']             = 'styles-public/';
+$config['publicstyle']             = $config['assets'].'styles-public/';
 $config['publicstyleurl']          = $config['publicurl'].$config['publicstyle'];
 $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
 $config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
@@ -649,7 +650,7 @@ $config['standardtemplaterootdir']      = $config['rootdir'].DIRECTORY_SEPARATOR
 $config['publicstylepath']              = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
 $config['corequestiontemplatedir']      = "question_templates";
 $config['corequestiontemplaterootdir']  = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestiontemplatedir'];   // The directory containing the core's question templates.
-$config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
+$config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.$config['assets'].DIRECTORY_SEPARATOR.'styles-admin';
 $config['questiontypedir']              = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 $config['usertemplaterootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 $config['userquestiontemplatedir']      = "question_templates";   // The directory containing the user's question templates.

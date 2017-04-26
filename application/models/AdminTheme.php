@@ -211,7 +211,7 @@ class AdminTheme extends CFormModel
     {
         // We check if we should use the asset manager or not
         if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager')) {
-            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':$this->path . '/css/';         // We get the wanted path
+            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/assets/styles-public/':$this->path . '/css/';         // We get the wanted path
             App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
         } else {
             $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):$this->sTemplateUrl.'/css/';                        // We get the wanted url
@@ -243,14 +243,14 @@ class AdminTheme extends CFormModel
         $bIsInAdminTheme = !($cPATH == 'ADMIN_SCRIPT_PATH' || $cPATH == 'SCRIPT_PATH');                                             // we check if the path required is in Admin Theme itself.
         // If not, it's or a normal script (like ranking.js) or an admin script
         if (!$bIsInAdminTheme) {
-            $sAdminScriptPath = realpath ( Yii::app()->basePath .'/../scripts/admin/') . '/';
-            $sScriptPath      = realpath ( Yii::app()->basePath .'/../scripts/') . '/';
+            $sAdminScriptPath = realpath ( Yii::app()->basePath .'/../assets/scripts/admin/') . '/';
+            $sScriptPath      = realpath ( Yii::app()->basePath .'/../assets/scripts/') . '/';
             $path = ($cPATH == 'ADMIN_SCRIPT_PATH')?$sAdminScriptPath:$sScriptPath;                                                 // We get the wanted path
             $url  = ($cPATH == 'ADMIN_SCRIPT_PATH')?Yii::app()->getConfig('adminscripts'):Yii::app()->getConfig('generalscripts');  // We get the wanted url defined in config
         } else {
             // FIXME $this not available in static context
-            $path = $this->path.'/scripts/';
-            $url  = $this->sTemplateUrl.'/scripts/';
+            $path = $this->path.'/assets/scripts/';
+            $url  = $this->sTemplateUrl.'/assets/scripts/';
         }
 
         // We check if we should use the asset manager or not
