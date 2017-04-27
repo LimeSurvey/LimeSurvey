@@ -249,6 +249,7 @@ class SurveyRuntimeHelper {
          * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
          *
          */
+         $thissurvey['aQuestionIndex']['bShow'] = false;
         if(!$previewquestion && !$previewgrp){
             $questionindex            = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
             $questionindexmenu        = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
@@ -261,6 +262,9 @@ class SurveyRuntimeHelper {
             }
         }
 
+        if ( count($thissurvey['aQuestionIndex']['items']) > 0){
+            $thissurvey['aQuestionIndex']['bShow'] = true;
+        }
 
         sendCacheHeaders();
 

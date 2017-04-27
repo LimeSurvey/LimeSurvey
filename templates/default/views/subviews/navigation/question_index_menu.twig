@@ -26,7 +26,8 @@
 #}
 
 {# Question index in group by group mode #}
-{% if (aSurveyInfo.aQuestionIndex != null) %}
+
+{% if (aSurveyInfo.aQuestionIndex.bShow == true) %}
     {% if aSurveyInfo.format == 'G' %}
         <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
