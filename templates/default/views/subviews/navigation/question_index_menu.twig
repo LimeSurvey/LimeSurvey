@@ -26,8 +26,6 @@
 #}
 
 {# Question index in group by group mode #}
-
-{{ dump(aSurveyInfo.aQuestionIndex) }}
 {% if (aSurveyInfo.aQuestionIndex != null) %}
     {% if aSurveyInfo.format == 'G' %}
         <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
