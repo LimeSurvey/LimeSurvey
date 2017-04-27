@@ -249,21 +249,24 @@ class SurveyRuntimeHelper {
          * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
          *
          */
-         $thissurvey['aQuestionIndex']['bShow'] = false;
-        if(!$previewquestion && !$previewgrp){
-            $questionindex            = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
-            $questionindexmenu        = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
-            $thissurvey['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
 
-            if($thissurvey['questionindex'] > 1){
-                $thissurvey['aQuestionIndex']['type'] = 'full';
-            }else{
-                $thissurvey['aQuestionIndex']['type'] = 'incremental';
+        $thissurvey['aQuestionIndex']['bShow'] = false;
+        if ($thissurvey['questionindex']){
+            if(!$previewquestion && !$previewgrp){
+                $questionindex            = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
+                $questionindexmenu        = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
+                $thissurvey['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
+
+                if($thissurvey['questionindex'] > 1){
+                    $thissurvey['aQuestionIndex']['type'] = 'full';
+                }else{
+                    $thissurvey['aQuestionIndex']['type'] = 'incremental';
+                }
             }
-        }
 
-        if ( count($thissurvey['aQuestionIndex']['items']) > 0){
-            $thissurvey['aQuestionIndex']['bShow'] = true;
+            if ( count($thissurvey['aQuestionIndex']['items']) > 0){
+                $thissurvey['aQuestionIndex']['bShow'] = true;
+            }            
         }
 
         sendCacheHeaders();
