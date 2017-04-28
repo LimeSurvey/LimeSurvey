@@ -136,4 +136,79 @@ $(document).ready(function () {
             $('#chosen-icon').attr('class', fullCurrentIconName + ' text-success');
         }
     }
+
+    /**
+     * This part show and hide form elem, depending on the selection of "#Boxes_custom_content"
+     */
+
+    var scenarioDefault = ['.o-homepage-box-form__icon-select', '.o-homepage-box-form__url'];
+    var scenarioCustom = ['.o-homepage-box-form__class-name'];
+    var customContentState = $("#Boxes_custom_content").val();
+
+    /**
+     * Set scenario
+     */
+    function setScenario() {
+        var scenario = {};
+        if (customContentState == 0) {
+            scenario.showElems = scenarioDefault;
+            scenario.hideElems = scenarioCustom;
+        } else {
+            scenario.showElems = scenarioCustom;
+            scenario.hideElems = scenarioDefault;
+        }
+        return scenario;
+    }
+
+    /**
+     * This function toggle form elems depending of the choosen scenario
+     */
+    function toggleFormElems() {
+        $.each(setScenario(), function (scenarioKey, selectors) {
+            if (scenarioKey === 'showElems') {
+                $.each(selectors, function (key, value) {
+                    $(value).show();
+                });
+            }
+            if (scenarioKey === 'hideElems') {
+                $.each(selectors, function (key, value) {
+                    $(value).hide();
+                });
+            }
+        });
+    }
+
+    /**
+     * This function resets the field on reload
+     */
+    function clearFieldsOnReload() {
+        if (customContentState == 1) {
+            $('#Boxes_url').val(null);
+            $('.o-homepage-box-form__icon-select').find('input.form-control').val(null);
+            $('#chosen-icon').removeClass();
+        }
+        if (customContentState == 0) {
+            $('#Boxes_custom_classname').val(null);
+        }
+    }
+
+    /**
+     * This function init the form onload
+     */
+    function initForm() {
+        toggleFormElems();
+        clearFieldsOnReload();
+    }
+
+    /**
+     * This function toggles form elems onchange
+     */
+    $("#Boxes_custom_content").change(function () {
+        customContentState = this.value;
+        toggleFormElems();
+        clearFieldsOnReload();
+    });
+
+    initForm();
+
 });
