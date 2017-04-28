@@ -20,7 +20,7 @@ class PanelBoxWidget extends CWidget
     public $display = 'singlebox';
     public $boxesbyrow = 3;
     public $external = false;
-    public $bCustomContentIsActive = false;
+    public $iCustomContentIsActive = 0;
     public $sCustomWidgetClass;
 
     public function run()
@@ -30,8 +30,8 @@ class PanelBoxWidget extends CWidget
                 $this->setValuesFromDb();
             }
             // Render custom widget class switch is on and a class is filled in
-            if ($this->bCustomContentIsActive == true) {
-                if (class_exists($this->customWidgetClass)) {
+            if ($this->iCustomContentIsActive == 1) {
+                if (class_exists($this->sCustomWidgetClass)) {
                     $oCustomWidget = new $this->sCustomWidgetClass();
                     $oCustomWidget->renderBox();
                 }
@@ -67,6 +67,8 @@ class PanelBoxWidget extends CWidget
             $this->ico = $box->ico;
             $this->description = $box->desc;
             $this->usergroup = $box->usergroup;
+            $this->iCustomContentIsActive = $box->custom_content;
+            $this->sCustomWidgetClass = $box->custom_classname;
         } else {
             $this->position = '1';
             $this->url = '';
