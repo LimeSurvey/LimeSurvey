@@ -29,9 +29,11 @@ class Boxes extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-
-            array('custom_content, url, title, ico, desc, page', 'required', 'except' => 'isCustomContent'),
-            array('custom_content, custom_classname', 'required', 'on' => 'isCustomContent'),
+           // array('custom_classname,url, ico'),
+            array('custom_content, title, desc, page', 'required'),
+            array('url, ico', 'required', 'on' => 'isDefaultContent'),
+            array('custom_classname', 'required', 'on' => 'isCustomContent'),
+            array('url, ico,custom_classname', 'safe'),
             array('position', 'numerical', 'integerOnly' => true),
             array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
             // The following rule is used by search().
@@ -64,7 +66,7 @@ class Boxes extends CActiveRecord
             'desc' => gT('Description:'),
             'page' => gT('Name of the page where the box should be shown'),
             'usergroup' => gT('Display this box to:'),
-            'custom_classname' => gT('Custom widget classname'),
+            'custom_classname' => gT('Custom widget classname:'),
             'custom_content' => gT('Use custom widget?')
         );
     }
