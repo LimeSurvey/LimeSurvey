@@ -54,11 +54,13 @@ class homepagesettings extends Survey_Common_Action
         }
 
         $model = new Boxes;
+        $model->scenario = 'isDefaultContent';
 
         if (isset($_POST['Boxes'])) {
             $model->attributes = $_POST['Boxes'];
+
             if ($model->getAttribute('custom_content') === '1') {
-                $model->scenario = 'isCustomContent';
+                $model->scenario('isCustomContent');
             }
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', gT('New box created'));
@@ -94,14 +96,15 @@ class homepagesettings extends Survey_Common_Action
         }
 
         $model = $this->loadModel($id);
+        $model->scenario = 'isDefaultContent';
 
         // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
+        //$this->performAjaxValidation($model);
 
         if (isset($_POST['Boxes'])) {
             $model->attributes = $_POST['Boxes'];
             if ($model->getAttribute('custom_content') === '1') {
-                $model->scenario = 'isCustomContent';
+                $model->setScenario('isCustomContent');
             }
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', gT('Box updated'));
@@ -276,7 +279,7 @@ class homepagesettings extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
         }
-        
+
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             setGlobalSetting('boxes_by_row', $boxesbyrow);
             setGlobalSetting('boxes_offset', $boxesoffset);
