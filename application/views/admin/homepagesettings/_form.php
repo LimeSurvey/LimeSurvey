@@ -14,7 +14,7 @@
     // See class documentation of CActiveForm for details on this.
     'enableAjaxValidation' => false,
     'htmlOptions' => array(
-        'class' => "form-horizontal",
+        'class' => "form-horizontal o-homepage-box-form",
     )
 )); ?>
 <p class="note"><?php printf(gT('Fields with %s*%s are required.'), '<span class="required">', '</span>'); ?></p>
@@ -25,9 +25,8 @@
     </div>
 <?php endif; ?>
 
-
 <div class="form-group">
-    <label class='control-label col-sm-2'><?php echo $form->labelEx($model, 'position'); ?></label>
+    <?php echo $form->labelEx($model, 'position', array('class' => 'control-label col-sm-2')); ?>
     <div class='col-sm-2'>
         <?php echo $form->numberField($model, 'position', array('class' => 'form-control')); ?>
     </div>
@@ -39,7 +38,36 @@
 </div>
 
 <div class="form-group">
-    <label class='control-label col-sm-2'><?php echo $form->labelEx($model, 'url'); ?></label>
+    <?php echo $form->labelEx($model, 'custom_content', array('class' => 'control-label col-sm-2')); ?>
+    <div class='col-sm-2'>
+        <?php echo $form->dropDownList(
+            $model,
+            'custom_content',
+            $model->getYesNoOptions(),
+            array(
+                'class' => 'form-control',
+                'options' => array(//$model['custom_view'] => array('selected' => true)
+                )
+            )
+        ); ?>
+    </div>
+</div>
+
+<div class="form-group o-homepage-box-form__class-name">
+    <?php echo $form->labelEx($model, 'custom_classname',
+        array('class' => 'control-label col-sm-2', 'required' => true)); ?>
+    <div class='col-sm-2'>
+        <?php echo $form->textField($model, 'custom_classname', array('class' => 'form-control')); ?>
+    </div>
+    <?php if ($form->error($model, 'custom_classname')): ?>
+        <div class="col-sm-2 text-danger">
+            <?php echo $form->error($model, 'custom_classname'); ?>
+        </div>
+    <?php endif; ?>
+</div>
+
+<div class="form-group o-homepage-box-form__url">
+    <?php echo $form->labelEx($model, 'url', array('class' => 'control-label col-sm-2')); ?>
     <div class='col-sm-2'>
         <?php echo $form->textField($model, 'url', array('class' => 'form-control')); ?>
     </div>
@@ -51,7 +79,7 @@
 </div>
 
 <div class="form-group">
-    <label class='control-label col-sm-2'><?php echo $form->labelEx($model, 'title'); ?></label>
+    <?php echo $form->labelEx($model, 'title', array('class' => 'control-label col-sm-2')); ?>
     <div class='col-sm-2'>
         <?php echo $form->textField($model, 'title', array('class' => 'form-control')); ?>
     </div>
@@ -62,8 +90,8 @@
     <?php endif; ?>
 </div>
 
-<div class="form-group">
-    <label class='control-label col-sm-2'><?php echo $form->labelEx($model, 'ico'); ?></label>
+<div class="form-group o-homepage-box-form__icon-select">
+    <?php echo $form->labelEx($model, 'ico', array('class' => 'control-label col-sm-2', 'required' => true)); ?>
     <div class='col-sm-2'>
         <div class='btn-group'>
             <button type='button' class='btn btn-default dropdown-toggle limebutton form-control' data-toggle='dropdown'
@@ -117,8 +145,8 @@
     <?php endif; ?>
 </div>
 
-<div class="form-group">
-    <label class='control-label col-sm-2'><?php echo $form->labelEx($model, 'desc'); ?></label>
+<div class="form-group o-homepage-box-form__desc">
+    <?php echo $form->labelEx($model, 'desc', array('class' => 'control-label col-sm-2')); ?>
     <div class='col-sm-4'>
         <?php echo $form->textArea($model, 'desc', array('rows' => 6, 'cols' => 50, 'class' => 'form-control')); ?>
     </div>
@@ -139,7 +167,7 @@
 </div>
 
 <div class="form-group">
-    <label class='control-label col-sm-2'><?php echo $form->labelEx($model, 'usergroup'); ?></label>
+    <?php echo $form->labelEx($model, 'usergroup', array('class' => 'control-label col-sm-2')); ?>
     <div class='col-sm-2'>
         <?php
         $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');
