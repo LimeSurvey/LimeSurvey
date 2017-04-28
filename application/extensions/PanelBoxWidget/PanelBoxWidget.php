@@ -38,7 +38,6 @@ class PanelBoxWidget extends CWidget
             } else {
                 return $this->renderBox();
             }
-            return $this->renderBox();
         } elseif ($this->display = 'allboxesinrows') {
             return $this->renderRows();
         }

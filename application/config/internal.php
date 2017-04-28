@@ -96,6 +96,7 @@ $internalConfig = array(
 
         'clientScript'=>array(
             'packages' => require('third_party.php'),
+            'class' => 'application.core.LSYii_ClientScript',
         ),
 
         'urlManager' => array(
