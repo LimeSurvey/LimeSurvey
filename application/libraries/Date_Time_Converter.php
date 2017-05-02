@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 /**
  *		Date and Time Converter by Elac v0.9.3
  *		elacdude@gmail.com
@@ -22,21 +23,27 @@
  * 		11/14/08 - Version 0.9.4 released.  Bug fix
  * 					- Got rid of the _one_dig_num function and used ltrim($num "0") instead
  */
-
-
-
-
-
 class Date_Time_Converter
 {
-
-
     /*		PUBLIC VARIABLES		*/
 
+    /**
+     * The date to be calculated in timestamp format
+     * @var int?
+     */
+    public $date_time_stamp;
 
-    public $date_time_stamp;		//the date to be calculated in timestamp format
-    public $date_time;				//the date to be calculated. ex: 12/30/2008 17:40:00
-    public $date_time_mask;			//the php date() style format that $date_time is in.  ex: m/d/Y H:i:s
+    /**
+     * The date to be calculated. ex: 12/30/2008 17:40:00
+     * @var ?
+     */
+    public $date_time;
+
+    /**
+     * The php date() style format that $date_time is in.  ex: m/d/Y H:i:s
+     * @var ?
+     */
+    public $date_time_mask;
 
     public $seconds;
     public $minutes;
@@ -45,11 +52,6 @@ class Date_Time_Converter
     public $months;
     public $years;
     public $ampm;
-
-
-
-
-
 
     /*		CONSTRUCTOR and DESTRUCTOR */
 
@@ -69,7 +71,6 @@ class Date_Time_Converter
         $this->date_time_stamp = $this->_date_to_timestamp($sDate, $sFormat);
     }
 
-
     public function __destruct() {
         unset($this->date_time_stamp);
         unset($this->date_time);
@@ -82,12 +83,6 @@ class Date_Time_Converter
         unset($this->years);
         unset($this->ampm);
     }
-
-
-
-
-
-
 
     /*		PRIVATE FUNCTIONS		*/
 
@@ -106,7 +101,6 @@ class Date_Time_Converter
         $this->years        = date('Y');
         $this->ampm         = 'am';
     }
-
 
     /** Private Function.  Converts a textual month into a digit.  Accepts almost any
      * 	textual format of a month including abbreviations.
@@ -182,15 +176,6 @@ class Date_Time_Converter
                 break;
         }
     }
-
-
-
-
-
-
-
-
-
 
     /** Private Function. Converts a date into a timestamp.  Accepts almost any
      * 	format of date as long as you supply the correct mask.  DOES accept dates
@@ -356,20 +341,7 @@ class Date_Time_Converter
 
     }
 
-
-
-
-
-
-
-
-
-
     /**		PUBLIC FUNCTIONS			*/
-
-
-
-
 
     /** Sets a new format/mask for the date using the php date() style formatting
      * 	Example: $obj->convert("M j Y H:i:s A");
@@ -384,24 +356,10 @@ class Date_Time_Converter
         return $newdate;
     }
 
-
-
-
-
-
     /** Changes the date to a new one.
      *   Example: $obj->set_date_time('11/20/2005 07:40:00 AM', 'm/d/Y H:i:s A');
      */
     public function set_date_time($start_date_time, $mask) {
         $this->__construct($start_date_time, $mask);
     }
-
-
-
-
-
-
-
 }
-
-?>
