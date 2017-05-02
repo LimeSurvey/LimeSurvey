@@ -75,26 +75,10 @@ class LSYii_ClientScript extends CClientScript {
         $sFilePath  = Yii::app()->getConfig('rootdir') . $sCleanUrl;
         $sPath = '';
 
-        switch($aUrlParams[1]) {
 
-            // The file to register is already published via asset manager (it's in root/tmp/assets/...)
-            case 'tmp':
-                $sType = 'published';
-                break;
-
-            // The file to publish is inside the assets directory
-            case 'assets':
-                $sType = 'toPublish';
-                $sPath = $sFilePath;
-                break;
-
-            default:
-                $sType = 'unknown';
-                break;
-        }
-
-        // We check if the file to register exists in the local file system
-        if($sType=='unknown'){
+        if ($aUrlParams[1]=='tmp'){
+            $sType = 'published';
+        }else{
             if ( file_exists($sFilePath) ) {
                 $sType = 'toPublish';
                 $sPath = $sFilePath;
