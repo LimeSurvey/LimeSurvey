@@ -1,7 +1,7 @@
 <?php
     App()->getClientScript()->registerPackage('jquery-nestedSortable');
     $oAdminTheme = AdminTheme::getInstance();
-    $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'organize.js');    
+    App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'organize.js');    
     $oAdminTheme->registerCssFile( 'PUBLIC', 'organize.css' );
 ?>
 

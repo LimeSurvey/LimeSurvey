@@ -1651,7 +1651,7 @@ class ExpressionManager {
             /*
             $oAdminTheme = AdminTheme::getInstance();
             $oAdminTheme->registerCssFile( 'PUBLIC', 'expressions.css' );
-            $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'expression.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'expression.js');
             */
 
             App()->getClientScript()->registerCssFile( Yii::app()->getConfig('publicstyleurl') . "expressions.css" );

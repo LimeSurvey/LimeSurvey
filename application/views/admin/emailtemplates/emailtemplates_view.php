@@ -1,7 +1,7 @@
 <?php
     $surveyinfo = getSurveyInfo($surveyid);
     $oAdminTheme = AdminTheme::getInstance();
-    $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'emailtemplates.js');
+    App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'emailtemplates.js');
     $oAdminTheme->registerCssFile( 'PUBLIC', 'popup-dialog.css' );
     $count=0;
 ?>

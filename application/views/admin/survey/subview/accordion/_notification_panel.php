@@ -198,5 +198,5 @@
 </div>
 <?php
 $oAdminTheme = AdminTheme::getInstance();
-$oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'survey_edit_notificationpanel.js');
+App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js');
 ?>

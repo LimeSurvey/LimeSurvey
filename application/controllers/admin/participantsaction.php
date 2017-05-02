@@ -755,7 +755,7 @@ class participantsaction extends Survey_Common_Action
             );
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMapCSV.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'attributeMapCSV.js');
 
             $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
             ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
@@ -1676,7 +1676,7 @@ class participantsaction extends Survey_Common_Action
                 'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
                 'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
                 );
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'viewAttribute.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'viewAttribute.js');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
 
@@ -2412,7 +2412,7 @@ class participantsaction extends Survey_Common_Action
     public function attributeMap()
     {
         Yii::app()->loadHelper('common');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMap.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'attributeMap.js');
 
         $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');
@@ -2484,7 +2484,7 @@ class participantsaction extends Survey_Common_Action
     public function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMapToken.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'attributeMapToken.js');
         $this->registerCssFile( 'ADMIN', 'attributeMapToken.css' );
 
         $iSurveyID = (int)Yii::app()->request->getQuery('sid');

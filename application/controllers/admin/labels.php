@@ -504,7 +504,7 @@ class labels extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array())
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'labels.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'labels.js');
 
         if (!isset($aData['display']['menu_bars']['labels']) || $aData['display']['menu_bars']['labels'] != false)
         {

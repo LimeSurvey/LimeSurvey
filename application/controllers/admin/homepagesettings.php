@@ -399,7 +399,7 @@ class homepagesettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'homepagesettings.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'homepagesettings.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

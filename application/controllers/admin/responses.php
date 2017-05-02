@@ -393,8 +393,8 @@ class responses extends Survey_Common_Action
     {
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'listresponse.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
 
             // Basic datas for the view
             $aData                      = $this->_getData($iSurveyId);
@@ -929,7 +929,7 @@ class responses extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'browse.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
         $this->registerCssFile( 'PUBLIC', 'browse.css' );
 
         $iSurveyId = $aData['iSurveyId'];

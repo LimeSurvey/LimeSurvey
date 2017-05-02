@@ -1593,7 +1593,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _registerScriptFiles()
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveysettings.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
         App()->clientScript->registerPackage('bootstrap-switch');
         App()->getClientScript()->registerPackage('jquery-datatable');

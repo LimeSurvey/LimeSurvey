@@ -146,7 +146,7 @@ class export extends Survey_Common_Action {
         Yii::app()->loadHelper("admin/exportresults");
 
         $this->registerScriptFile( 'SCRIPT_PATH', '/expressions/em_javascript.js');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', '/exportresults.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . '/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');

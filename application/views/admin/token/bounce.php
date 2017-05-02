@@ -124,5 +124,5 @@
 
 <?php
     $oAdminTheme = AdminTheme::getInstance();
-    $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokenbounce.js');
+    App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokenbounce.js');
 ?>

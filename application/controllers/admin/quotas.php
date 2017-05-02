@@ -645,7 +645,7 @@ class quotas extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array())
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'quotas.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'quotas.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
