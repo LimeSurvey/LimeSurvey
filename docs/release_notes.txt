@@ -35,6 +35,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.64.7 (build 170404) to 2.65.0 (build 170502) Apr 4, 2017
+-New feature: Add massive set-expiry to survey-list (Tõnis Ormisson)
+-New feature: LDAP auth group filtering, support for $userdn (Enrico Polesel)
+-New feature: Option to reset response ID when copying a survey (Carsten Schmitz)
+-Fixed issue #12154: production CSS files contains info about *.css.map (LouisGac)
+-Fixed issue #12179: Missing translation in panel integration settings (Carsten Schmitz)
+-Fixed issue #12235: the template model of the administration interface changes the color of a template button (LouisGac)
+-Fixed issue #12237: Tips are missing in "General options" (Tõnis Ormisson)
+-Fixed issue #12263: Error when uploading additional file in template editor (Carsten Schmitz)
+-Fixed issue #12267: Quotas quick report (export to .csv) is missing (LouisGac)
+-Fixed issue #12270: [security] XSS Vulnerability (Matthew)
+-Fixed issue: IP address always saved even if not activated in survey settings (LouisGac)
+-Fixed issue: wrong url generation for survey new test, that could lead to session problem when combined with wrong resources url (eg: favicon). (LouisGac)
+-Fixed wrong URL at instructions for adding your own logo to a template (Marcel Minke)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by kmilojev
+#Updated translation: Czech by jelen1
+#Updated translation: Finnish by tigger, jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence, c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz, Rolime
+#Updated translation: Hungarian by fcsanyi, kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by holch, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by holch, devUSIT, samarta
+#Updated translation: Russian by ddrmoscow, c0der, vipgroup
+#Updated translation: Valencian by joamuran
 
 Changes from 2.64.6 (build 170332) to 2.64.7 (build 170404) Apr 4, 2017
 -Fixed issue #12187: invitation mails are not being sent using json-rpc (brammeleman)
