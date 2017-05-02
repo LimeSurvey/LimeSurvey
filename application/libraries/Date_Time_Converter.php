@@ -189,8 +189,6 @@ class Date_Time_Converter
      */
     private function _date_to_timestamp($thedate, $mask)
     {
-        tracevar('thedate = ' . $thedate);
-        tracevar('mask = ' . $mask);
         $mask_orig = $mask;
         // define the valid values that we will use to check
         // value => length
@@ -342,8 +340,6 @@ class Date_Time_Converter
             $this->hours = $this->hours + 12;
         }
 
-        tracevar('days = ' . $this->days);
-
         $make_stamp = adodb_mktime(
             (int) ltrim($this->hours, "0"),
             (int) ltrim($this->minutes, "0"),
@@ -353,7 +349,6 @@ class Date_Time_Converter
             (int) ltrim($this->years, "0")
         );
 
-        tracevar('make_stamp = ' . $make_stamp);
         return $make_stamp;
     }
 
@@ -364,9 +359,7 @@ class Date_Time_Converter
      */
     public function convert($new_mask, $save = true)
     {
-        tracevar('new_mask = ' . $new_mask);
         $newdate = adodb_date($new_mask, $this->date_time_stamp);
-        tracevar('newdate = ' . $newdate);
         //if they want to save and apply this new mask to $this->date_time, save it
         if ($save == true) {
             $this->date_time_mask = $new_mask;
