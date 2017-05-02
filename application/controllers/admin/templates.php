@@ -708,7 +708,7 @@ class templates extends Survey_Common_Action
 
 
 
-            $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'survey_runtime.js');
             /* register template package : PS : use asset :) */
             Yii::app()->clientScript->registerPackage( 'survey-template' );
             /* some needed utils script from limesurvey-public package */

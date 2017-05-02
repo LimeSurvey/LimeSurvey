@@ -55,7 +55,7 @@ class LSYii_ClientScript extends CClientScript {
     {
         // If possible, we publish the asset: it moves the file to the tmp/asset directory and return the url to access it
         if ( ( !YII_DEBUG || Yii::app()->getConfig('use_asset_manager')) ){
-            $aUrlDatas = $this->analyzeUrl($url);            
+            $aUrlDatas = $this->analyzeUrl($url);
             if ( $aUrlDatas['toPublish']){
                 $url = App()->getAssetManager()->publish( $aUrlDatas['sPathToFile']);
             }
@@ -76,7 +76,7 @@ class LSYii_ClientScript extends CClientScript {
         $sFilePath  = Yii::app()->getConfig('rootdir') . $sCleanUrl;
         $sPath = '';
 
-
+        // TODO: check if tmp directory can be named differently via config
         if ($aUrlParams[1]=='tmp'){
             $sType = 'published';
         }else{

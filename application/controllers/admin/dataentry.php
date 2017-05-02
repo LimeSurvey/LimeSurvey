@@ -938,7 +938,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= '</div>';
                             App()->getClientScript()->registerPackage('jquery-actual');
 
-                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
+                            App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'ranking.js');
                             $this->registerCssFile( 'PUBLIC', 'ranking.css' );
                             $this->registerCssFile( 'PUBLIC', 'jquery-ui-custom.css' );
 
@@ -2215,7 +2215,7 @@ class dataentry extends Survey_Common_Action
                                 }
                             $cdata['answers']=$answers;
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
+                            App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'ranking.js');
                             $this->registerCssFile( 'PUBLIC', 'ranking.css' );
                             unset($answers);
                             break;
