@@ -247,18 +247,19 @@ class AdminTheme extends CFormModel
             $sScriptPath      = realpath ( Yii::app()->basePath .'/../assets/scripts/') . '/';
             $path = ($cPATH == 'ADMIN_SCRIPT_PATH')?$sAdminScriptPath:$sScriptPath;                                                 // We get the wanted path
             $url  = ($cPATH == 'ADMIN_SCRIPT_PATH')?Yii::app()->getConfig('adminscripts'):Yii::app()->getConfig('generalscripts');  // We get the wanted url defined in config
-        } else {
-            // FIXME $this not available in static context
-            $path = $this->path.'/assets/scripts/';
-            $url  = $this->sTemplateUrl.'/assets/scripts/';
-        }
+        } 
+
+        App()->getClientScript()->registerScriptFile( $url . $sFile );
 
         // We check if we should use the asset manager or not
+        /*
+        Moved to LSYii_ClientScript
         if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager')) {
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $path . $sFile ));                      // We publish the asset
         } else {
             App()->getClientScript()->registerScriptFile( $url . $sFile );                                                          // We publish the script
         }
+        */
     }
 
     /**
