@@ -615,6 +615,9 @@ else
     $config['publicurl'] =  '/';
 }
 
+$config['assets']                  = 'assets/';
+
+// URL defintions
 $config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
 $config['tempurl']                 = $config['publicurl'].'tmp';
 $config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
@@ -623,19 +626,14 @@ $config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // L
 $config['adminscripts']            = $config['publicurl'].'assets/scripts/admin/';
 $config['generalscripts']          = $config['publicurl'].'assets/scripts/';
 $config['third_party']             = $config['publicurl'].'third_party/';
-
-$config['assets']                  = 'assets/';
 $config['styleurl']                = $config['publicurl'].$config['assets'].'styles-admin/';
-
-
-$config['publicstyle']             = $config['assets'].'styles-public/';
+$config['publicstyle']             = $config['publicurl'].$config['assets'].'styles-public/';
 $config['publicstyleurl']          = $config['publicurl'].$config['publicstyle'];
 $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
 $config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
-
 $config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
-
-
+$config['applicationurl']          = $config['publicurl'].'application/';
+$config['extensionsurl']           = $config['applicationurl'].'extensions/';
 
 
 $config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
