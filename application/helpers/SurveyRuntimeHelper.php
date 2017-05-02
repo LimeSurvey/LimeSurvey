@@ -266,7 +266,7 @@ class SurveyRuntimeHelper {
 
             if ( count($thissurvey['aQuestionIndex']['items']) > 0){
                 $thissurvey['aQuestionIndex']['bShow'] = true;
-            }            
+            }
         }
 
         sendCacheHeaders();
@@ -752,6 +752,7 @@ class SurveyRuntimeHelper {
         $surveyMode    = $this->surveyMode;
         $surveyOptions = $this->surveyOptions;
         $LEMsessid     = $this->LEMsessid;
+        $thissurvey    = $this->thissurvey;
 
         // First time the survey is loaded
         if (!isset($_SESSION[$LEMsessid]['step']))
