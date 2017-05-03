@@ -44,29 +44,20 @@ class LS_Twig_Extension extends Twig_Extension
 {
 
     /**
+     * NOTE: IT CAN'T WORK BECAUSE HEADER IS RENDERED BEFORE TWIG FILES EXECUTION....
+     *
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a public css file doing: {{ registerPublicCssFile($sPublicCssFileName) }}
      * @param string $sPublicCssFileName name of the CSS file to publish in public style directory
      */
     public static function registerPublicCssFile($sPublicCssFileName)
     {
-        if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
 
-            // Publish the css file as an asset and then register it
-            Yii::app()->getClientScript()->registerCssFile(                     // 2. Register the CSS file (add the <link rel="stylesheet" type="text/css" href=".../tmp/.../file.css"... to the HTML page)
-                Yii::app()->getAssetManager()->publish(                         // 1. Publish the asset     (copy the file.css to tmp/.../assets/... directory)
-                    Yii::app()->getConfig('publicstylepath') .                  // NOTE: assets needs a path, not an url, because the file is first moved to the tmp directory
-                    $sPublicCssFileName
-                )
-            );
-        }else{
-
-            // Directly register the CSS file without using the asset manager
-            Yii::app()->getClientScript()->registerCssFile(
-                Yii::app()->getConfig('publicstyleurl') .                       // NOTE: URL can be use, because it will only add a link to that url (add the <link rel="stylesheet" type="text/css" href="url.../file.css")
-                $sPublicCssFileName
-            );
-        }
+        // Directly register the CSS file without using the asset manager
+        Yii::app()->getClientScript()->registerCssFile(
+            Yii::app()->getConfig('publicstyleurl') .                       // NOTE: URL can be use, because it will only add a link to that url (add the <link rel="stylesheet" type="text/css" href="url.../file.css")
+            $sPublicCssFileName
+        );
     }
 
     /**

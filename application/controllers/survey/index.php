@@ -42,7 +42,7 @@ class index extends CAction {
         $oTemplate = Template::model()->getInstance('', $surveyid);
         $this->oTemplate = $oTemplate;
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
-        App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)    
+        App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
         useFirebug();
@@ -54,6 +54,7 @@ class index extends CAction {
             return $buffer;
         });
 
+        // TODO: If we want to be able to add CSS/JS from twig file using CClientScript, $this->action() should return an HTML string, and ob_implicit_flush(false); should happen after it.    
         ob_implicit_flush(false);
         $this->action();
         ob_flush();
