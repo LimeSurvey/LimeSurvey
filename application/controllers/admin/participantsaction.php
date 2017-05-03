@@ -2484,8 +2484,9 @@ class participantsaction extends Survey_Common_Action
     public function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
+        $oAdminTheme = AdminTheme::getInstance();
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'attributeMapToken.js');
-        $this->registerCssFile( 'ADMIN', 'attributeMapToken.css' );
+        App()->getClientScript()->registerCssFile( $oAdminTheme->sTemplateUrl.'/css/attributeMapToken.css' );
 
         $iSurveyID = (int)Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
