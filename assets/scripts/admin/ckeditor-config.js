@@ -73,5 +73,5 @@ CKEDITOR.editorConfig = function( config )
 };
 
 (function () {
-    CKEDITOR.plugins.addExternal('limereplacementfields', CKEDITOR.basePath + '../../scripts/admin/limereplacementfields/', 'plugin.js');
+    CKEDITOR.plugins.addExternal('limereplacementfields', CKEDITOR.basePath + '../../assets/scripts/admin/limereplacementfields/', 'plugin.js');
 })();
