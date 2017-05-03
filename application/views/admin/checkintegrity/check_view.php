@@ -217,7 +217,7 @@
         <?php } else
         {?>
         <br /><?php eT("Should we proceed with the delete?"); ?> <br />
-        <?php echo CHtml::form(array("admin/checkintegrity/fixintegrity"), 'post');?>
+        <?php echo CHtml::form(array("admin/checkintegrity/sa/fixintegrity"), 'post');?>
             <input type='hidden' name='ok' value='Y' />
             <input type='submit' value='<?php eT("Yes - Delete Them!"); ?>' />
         </form>
@@ -232,7 +232,7 @@
         <br /> <?php eT("No database action required!"); ?>
         <?php } else
         {?>
-        <?php echo CHtml::form(array("admin/checkintegrity/fixredundancy"), 'post');?>
+        <?php echo CHtml::form(array("admin/checkintegrity/sa/fixredundancy"), 'post');?>
             <ul class='data-redundancy-list'>
                 <?php
                     if (isset($redundantsurveytables))
