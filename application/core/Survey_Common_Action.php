@@ -1342,30 +1342,6 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * This function will register a script file,
-     * and will choose if it should use the asset manager or not
-     * @param string $cPATH : the CONSTANT name of the path of the script file (need to be converted in url if asset manager is not used)
-     * @param string $sFile : the file to publish
-     */
-    public function registerScriptFile( $cPATH, $sFile )
-    {
-        $oAdminTheme = AdminTheme::getInstance();
-        $oAdminTheme->registerScriptFile( $cPATH, $sFile );
-    }
-
-    /**
-     * This function will register a script file,
-     * and will choose if it should use the asset manager or not
-     * @param string $sPath : the type the path of the css file to publish ( public, template, etc)
-     * @param string $sFile : the file to publish
-     */
-    public function registerCssFile( $sPath, $sFile )
-    {
-        $oAdminTheme = AdminTheme::getInstance();
-        $oAdminTheme->registerCssFile( $sPath, $sFile );
-    }
-
-    /**
      * @param string $extractdir
      * @param string $destdir
      */

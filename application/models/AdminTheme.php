@@ -198,27 +198,6 @@ class AdminTheme extends CFormModel
 
     }
 
-
-
-    /**
-     * Register a JS File from the correct directory (publict style, style, upload, etc) using the correct method (with / whithout asset manager)
-     * This function is called from the different controllers when they want to register a specific css file.
-     *
-     * @var string $sPath  'PUBLIC' for /styles-public/, else templates/styles ('PUBLIC' is an heritage from 2.06, which was using constants to that goal.)
-     * @var string $sFile   the name of the css file
-     */
-    public function registerCssFile( $sPath='template', $sFile='' )
-    {
-        // We check if we should use the asset manager or not
-        if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager')) {
-            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/assets/styles-public/':$this->path . '/css/';         // We get the wanted path
-            App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
-        } else {
-            $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):$this->sTemplateUrl.'/css/';                        // We get the wanted url
-            App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
-        }
-    }
-
     /**
      * Get instance of theme object.
      * Will instantiate the Admin Theme object first time it is called.
