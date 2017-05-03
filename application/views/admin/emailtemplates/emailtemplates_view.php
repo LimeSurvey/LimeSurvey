@@ -1,8 +1,7 @@
 <?php
     $surveyinfo = getSurveyInfo($surveyid);
-    $oAdminTheme = AdminTheme::getInstance();
     App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'emailtemplates.js');
-    $oAdminTheme->registerCssFile( 'PUBLIC', 'popup-dialog.css' );
+    App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'popup-dialog.css');
     $count=0;
 ?>
 <script type='text/javascript'>

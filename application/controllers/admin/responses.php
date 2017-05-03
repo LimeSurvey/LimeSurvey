@@ -930,7 +930,7 @@ class responses extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
-        $this->registerCssFile( 'PUBLIC', 'browse.css' );
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];
         $aData['display']['menu_bars'] = false;

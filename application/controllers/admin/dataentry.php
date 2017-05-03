@@ -939,8 +939,8 @@ class dataentry extends Survey_Common_Action
                             App()->getClientScript()->registerPackage('jquery-actual');
 
                             App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'ranking.js');
-                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
-                            $this->registerCssFile( 'PUBLIC', 'jquery-ui-custom.css' );
+                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
+                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
 
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
@@ -2216,7 +2216,7 @@ class dataentry extends Survey_Common_Action
                             $cdata['answers']=$answers;
                             App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'ranking.js');
-                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
+                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)

@@ -1,8 +1,7 @@
 <?php
     App()->getClientScript()->registerPackage('jquery-nestedSortable');
-    $oAdminTheme = AdminTheme::getInstance();
-    App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'organize.js');    
-    $oAdminTheme->registerCssFile( 'PUBLIC', 'organize.css' );
+    App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'organize.js');
+    App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'organize.css');
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>

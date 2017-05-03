@@ -1646,17 +1646,9 @@ class ExpressionManager {
                 ++$errIndex;
             }
         }
-        if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
-        {
-            /*
-            $oAdminTheme = AdminTheme::getInstance();
-            $oAdminTheme->registerCssFile( 'PUBLIC', 'expressions.css' );
-            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'expression.js');
-            */
-
+        if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')){
             App()->getClientScript()->registerCssFile( Yii::app()->getConfig('publicstyleurl') . "expressions.css" );
             App()->getClientScript()->registerScriptFile( Yii::app()->getConfig('adminscripts') . "expression.js");
-
         }
         $sClass='em-expression';
         $sClass.=($bHaveError)?" em-haveerror":"";
