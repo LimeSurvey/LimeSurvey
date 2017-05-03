@@ -65,6 +65,19 @@ class LSYii_ClientScript extends CClientScript {
     }
 
 
+    public function registerCssFile($url,$media='')
+    {
+        // If possible, we publish the asset: it moves the file to the tmp/asset directory and return the url to access it
+        if ( ( !YII_DEBUG || Yii::app()->getConfig('use_asset_manager')) ){
+            $aUrlDatas = $this->analyzeUrl($url);
+            if ( $aUrlDatas['toPublish']){
+                $url = App()->getAssetManager()->publish( $aUrlDatas['sPathToFile']);
+            }
+        }
+        parent::registerCssFile($url,$media);                    // We publish the script
+    }
+
+
     /**
      * This function will analyze the url of a file (css/js) to register
      * It will check if it can be published via the asset manager and if so will retreive its path
