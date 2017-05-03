@@ -407,7 +407,7 @@ class SurveyRuntimeHelper {
                 $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
                 $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
                 $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
-                $aGroup['aQuestions'][$qid]['text']                 = $qa[0]['text'];
+                $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], NULL, false, 3, 1, false, true, false);
                 $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
                 $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
                 $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
@@ -416,7 +416,7 @@ class SurveyRuntimeHelper {
                 $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
                 $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
                 $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
-                $aGroup['aQuestions'][$qid]['help']['text']         = $lemQuestionInfo['info']['help'];
+                $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
             }
 
             $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
