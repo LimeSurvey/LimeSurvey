@@ -1687,6 +1687,13 @@ class remotecontrol_handle
                 }
                 else
                 {
+                    if (tableExists('{{survey_' . $iSurveyID . '}}')) {
+                        $participantToken = $result['token'];
+                        if(in_array('completed_responses', $aTokenProperties))
+                            $result['completed_responses'] = SurveyDynamic::model($iSurveyID)->countByAttributes(array('token' => $participantToken), 'submitdate IS NOT NULL');
+                        if(in_array('incomplete_responses', $aTokenProperties))
+                            $result['incomplete_responses'] = SurveyDynamic::model($iSurveyID)->countByAttributes(array('token' => $participantToken), 'submitdate IS NULL');
+                    }
                     return $result;
                 }
 
