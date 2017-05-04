@@ -72,6 +72,20 @@ class LS_Twig_Extension extends Twig_Extension
         );
     }
 
+    /**
+     * Publish a script file from general script directory, using or not the asset manager (depending on configuration)
+     * In any twig file, you can register a general script file doing: {{ registerGeneralScript($sGeneralScriptFileName) }}
+     * @param string $sGeneralScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
+     */
+    public static function registerGeneralScript($sGeneralScriptFileName, $position=null, array $htmlOptions=array())
+    {
+        Yii::app()->getClientScript()->registerScriptFile(
+            App()->getConfig('generalscripts') .
+            $sGeneralScriptFileName,
+            $position,
+            $htmlOptions
+        );
+    }
 
     /**
      * Retreive the question classes for a given question id
