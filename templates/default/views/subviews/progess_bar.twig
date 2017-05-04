@@ -21,7 +21,7 @@
 <div class="top-container">
     <div class="container top-content">
         {% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
-            {{ registerPublicCssFile('lime-progress.css') }}
+            {{  registerPublicCssFile('lime-progress.css') }}
 
             {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
             <div class="progress">

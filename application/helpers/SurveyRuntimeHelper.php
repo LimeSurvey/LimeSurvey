@@ -483,7 +483,7 @@ class SurveyRuntimeHelper {
             $thissurvey['aLEM']['debugvalidation']['message'] = $moveResult['message'];
         }
 
-        echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_main.twig"), array('aSurveyInfo'=>$thissurvey), false);
+        Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_main.twig"), array('aSurveyInfo'=>$thissurvey), false);
     }
 
 
@@ -1077,8 +1077,7 @@ class SurveyRuntimeHelper {
                 $cSave = new Save();
                 // $cSave->showsaveform($thissurvey['sid']); // generates a form and exits, awaiting input
                 $thissurvey['aSaveForm'] = $cSave->getSaveFormDatas($thissurvey['sid']);
-                echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
-                Yii::app()->end();
+                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
             }else{
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
                 // Now update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic, otherwise we land on
@@ -1122,8 +1121,7 @@ class SurveyRuntimeHelper {
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])){
                 $thissurvey['aSaveForm'] = $cSave->getSaveFormDatas($thissurvey['sid']);
-                echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
-                Yii::app()->end();
+                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
             }
 
             $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
@@ -1194,8 +1192,7 @@ class SurveyRuntimeHelper {
                 $completed  = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
                 $this->completed = $completed;
 
-                echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_submit_preview.twig"), array('aSurveyInfo'=>$thissurvey), false);
-                App()->end();
+                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_submit_preview.twig"), array('aSurveyInfo'=>$thissurvey), false);
             }else{
 
                 //Update the token if needed and send a confirmation email
@@ -1299,8 +1296,7 @@ class SurveyRuntimeHelper {
                 killSurveySession($surveyid);
             }
 
-            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
-            exit;
+            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
         }
     }
 
@@ -1645,8 +1641,7 @@ class SurveyRuntimeHelper {
 
             $thissurvey['surveyUrl'] = $restarturl;
 
-            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_clearall.twig"), array('aSurveyInfo'=>$thissurvey), false);
-            App()->end();
+            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_clearall.twig"), array('aSurveyInfo'=>$thissurvey), false);
         }
     }
 
