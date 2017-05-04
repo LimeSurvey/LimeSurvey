@@ -44,18 +44,15 @@ class LS_Twig_Extension extends Twig_Extension
 {
 
     /**
-     * NOTE: IT CAN'T WORK BECAUSE HEADER IS RENDERED BEFORE TWIG FILES EXECUTION....
-     *
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a public css file doing: {{ registerPublicCssFile($sPublicCssFileName) }}
      * @param string $sPublicCssFileName name of the CSS file to publish in public style directory
      */
     public static function registerPublicCssFile($sPublicCssFileName)
     {
-
         // Directly register the CSS file without using the asset manager
         Yii::app()->getClientScript()->registerCssFile(
-            Yii::app()->getConfig('publicstyleurl') .                       // NOTE: URL can be use, because it will only add a link to that url (add the <link rel="stylesheet" type="text/css" href="url.../file.css")
+            Yii::app()->getConfig('publicstyleurl') .
             $sPublicCssFileName
         );
     }
