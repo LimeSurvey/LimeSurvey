@@ -50,7 +50,6 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerPublicCssFile($sPublicCssFileName)
     {
-        // Directly register the CSS file without using the asset manager
         Yii::app()->getClientScript()->registerCssFile(
             Yii::app()->getConfig('publicstyleurl') .
             $sPublicCssFileName
@@ -67,12 +66,12 @@ class LS_Twig_Extension extends Twig_Extension
     {
         $oAdminTheme = AdminTheme::getInstance();
 
-        // Directly register the CSS file without using the asset manager
         Yii::app()->getClientScript()->registerCssFile(
             $oAdminTheme->sTemplateUrl .
             $sTemplateCssFileName
         );
     }
+
 
     /**
      * Retreive the question classes for a given question id
