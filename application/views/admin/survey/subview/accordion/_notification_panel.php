@@ -125,7 +125,7 @@
                         'offLabel'=>gT('Off')
                     ));
                 ?>
-            <?php endif;?>            
+            <?php endif;?>
         </div>
     </div>
 
@@ -196,7 +196,4 @@
         </div>
     </div>
 </div>
-<?php
-$oAdminTheme = AdminTheme::getInstance();
-App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js');
-?>
+<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js'); ?>
