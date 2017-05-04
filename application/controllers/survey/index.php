@@ -46,18 +46,7 @@ class index extends CAction {
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
         useFirebug();
-
-        ob_start(function($buffer, $phase)
-        {
-            App()->getClientScript()->render($buffer);
-            App()->getClientScript()->reset();
-            return $buffer;
-        });
-
-        // TODO: If we want to be able to add CSS/JS from twig file using CClientScript, $this->action() should return an HTML string, and ob_implicit_flush(false); should happen after it.    
-        ob_implicit_flush(false);
         $this->action();
-        ob_flush();
     }
 
     function action()

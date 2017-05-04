@@ -190,6 +190,17 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTwigTemplate = $twig->createTemplate($line);
         $nvLine        = $oTwigTemplate->render($aDatas, false);
 
-        return $nvLine;
+        ob_start(function($buffer, $phase)
+        {
+            App()->getClientScript()->render($buffer);
+            App()->getClientScript()->reset();
+            return $buffer;
+        });
+
+        ob_implicit_flush(false);
+        echo $nvLine;
+        ob_flush();
+
+        Yii::app()->end();
     }
 }
