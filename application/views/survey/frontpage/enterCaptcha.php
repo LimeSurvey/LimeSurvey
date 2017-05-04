@@ -6,7 +6,7 @@
     <div class='jumbotron'>
         <div id="tokenmessage" class="container clearfix">
             <h3>
-                <?php eT("Before you start, please prove you are human."); ?><br/>
+                <?php eT("Before you start please complete the following small task."); ?><br/>
             </h3>
         </div>
     </div>
