@@ -157,45 +157,39 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
     public function renderTemplateFromString( $line, $aDatas, $bReturn)
     {
-        // If no redata, there is no need to use twig, so we just return the line.
-        // This happen when calling templatereplace() from admin, to replace some keywords.
-        // NOTE: this check is already done in templatereplace().
-        if (is_array($aDatas)){
-            $this->_twig      = $twig = parent::getTwig();
+        $this->_twig      = $twig = parent::getTwig();
 
-            // At this point, forced path should not be nulled.
-            // It contains the path to the template's view directory for twig include statements
-            if (!is_null($this->forcedPath)){
-                $loader       = $this->_twig->getLoader();
-                $loader->setPaths($this->forcedPath);
-            }
-
-            // Plugin for blocks replacement
-            // TODO: add blocks to template....
-            $event = new PluginEvent('beforeTwigRenderTemplate');
-
-            if (!empty($aDatas['aSurveyInfo']['sid'])){
-                $surveyid = $aDatas['aSurveyInfo']['sid'];
-                $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
-
-                if (!empty($_SESSION['survey_'.$surveyid]['srid'])){
-                    $aDatas['aSurveyInfo']['bShowClearAll'] = ! SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
-                }
-
-            }
-
-            App()->getPluginManager()->dispatchEvent($event);
-            $aPluginContent = $event->getAllContent();
-            if (!empty($aPluginContent['sTwigBlocks'])){
-                $line = $line.$aPluginContent['sTwigBlocks'];
-            }
-
-            // Twig rendering
-            $oTwigTemplate = $twig->createTemplate($line);
-            $nvLine        = $oTwigTemplate->render($aDatas, false);
-        }else{
-            $nvLine = $line;
+        // At this point, forced path should not be nulled.
+        // It contains the path to the template's view directory for twig include statements
+        if (!is_null($this->forcedPath)){
+            $loader       = $this->_twig->getLoader();
+            $loader->setPaths($this->forcedPath);
         }
+
+        // Plugin for blocks replacement
+        // TODO: add blocks to template....
+        $event = new PluginEvent('beforeTwigRenderTemplate');
+
+        if (!empty($aDatas['aSurveyInfo']['sid'])){
+            $surveyid = $aDatas['aSurveyInfo']['sid'];
+            $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
+
+            if (!empty($_SESSION['survey_'.$surveyid]['srid'])){
+                $aDatas['aSurveyInfo']['bShowClearAll'] = ! SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+            }
+
+        }
+
+        App()->getPluginManager()->dispatchEvent($event);
+        $aPluginContent = $event->getAllContent();
+        if (!empty($aPluginContent['sTwigBlocks'])){
+            $line = $line.$aPluginContent['sTwigBlocks'];
+        }
+
+        // Twig rendering
+        $oTwigTemplate = $twig->createTemplate($line);
+        $nvLine        = $oTwigTemplate->render($aDatas, false);
+
         return $nvLine;
     }
 }
