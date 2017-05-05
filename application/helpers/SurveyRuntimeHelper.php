@@ -1658,7 +1658,7 @@ class SurveyRuntimeHelper {
         // Template settings
         $oTemplate         = $this->template;
         $sTemplatePath     = $oTemplate->path;
-        $sTemplateViewPath = $oTemplate->pstplPath;
+        $sTemplateViewPath = $oTemplate->viewPath;
 
 
         // TODO: find where they are defined before this call
@@ -1796,7 +1796,7 @@ class SurveyRuntimeHelper {
     private function initTemplate()
     {
         $oTemplate         = $this->template          = Template::model()->getInstance('', $this->surveyid);
-        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->pstplPath;
+        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->viewPath;
         $oTemplate->registerAssets();
         Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
     }

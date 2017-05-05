@@ -312,7 +312,6 @@ class index extends CAction {
 
         //SET THE TEMPLATE DIRECTORY
         $oTemplate = Template::model()->getInstance('', $surveyid);
-        $thistpl = $oTemplate->pstplPath;
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED

@@ -250,7 +250,7 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
             'aListLang' => $aListLang ,
             'sClass'    => $sClass    ,
         );
-        
+
         return $languageChangerDatas;
     }
     else
@@ -833,7 +833,7 @@ function buildsurveysession($surveyid,$preview=false)
     $oTemplate                        = Template::model()->getInstance('', $surveyid);
     App()->getController()->sTemplate = $oTemplate->name;                                   // It's going to be hard to be sure this is used ....
     $sTemplatePath                    = $oTemplate->path;
-    $sTemplateViewPath                = $oTemplate->pstplPath;
+    $sTemplateViewPath                = $oTemplate->viewPath;
 
 
     // Reset all the session variables and start again
@@ -1516,7 +1516,7 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     // Template settings
     $surveyid          = $thissurvey['sid'];
     $oTemplate         = Template::model()->getInstance('', $surveyid);
-    $sTemplateViewPath = $oTemplate->pstplPath;
+    $sTemplateViewPath = $oTemplate->viewPath;
     $oTemplate->registerAssets();
     Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
@@ -1975,7 +1975,7 @@ function checkCompletedQuota($surveyid,$return=false)
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->pstplPath;
+    $sTemplateViewPath = $oTemplate->viewPath;
 
 
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
@@ -2115,7 +2115,7 @@ function display_first_page($thissurvey) {
     // Template init
     $oTemplate         = Template::model()->getInstance('', $surveyid);
     $sTemplatePath     = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->pstplPath;
+    $sTemplateViewPath = $oTemplate->viewPath;
 
     LimeExpressionManager::StartProcessingPage();
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page

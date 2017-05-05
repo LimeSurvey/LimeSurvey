@@ -57,7 +57,7 @@
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
 
-            $sTemplateViewPath = $oTemplate->pstplPath;
+            $sTemplateViewPath = $oTemplate->viewPath;
 
             Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
             Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_survey_list.twig"), array('aSurveyInfo'=>$aData), false);

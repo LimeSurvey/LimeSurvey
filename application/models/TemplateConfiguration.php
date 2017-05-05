@@ -33,8 +33,6 @@ class TemplateConfiguration extends CFormModel
      */
     private $apiVersion;
 
-    /** @var  string $pstplPath Path of the pstpl files */
-    public $pstplPath;
     /** @var  string $viewPath Path of the views files (php files to replace existing core views) */
     public $viewPath;
     /** @var  string $siteLogo Name of the logo file (like: logo.png) */
@@ -150,8 +148,6 @@ class TemplateConfiguration extends CFormModel
         // Template configuration
         // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion:0;
-
-        $this->pstplPath                = (isset($this->config->engine->pstpldirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR                            : $this->path;
         $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR                            : '';
 
         $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                                                 : '';
