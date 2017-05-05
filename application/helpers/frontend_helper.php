@@ -250,7 +250,7 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
             'aListLang' => $aListLang ,
             'sClass'    => $sClass    ,
         );
-        //$sHTMLCode = Yii::app()->getController()->renderPartial('/surveys/LanguageChangerForm', $languageChangerDatas, true);
+        
         return $languageChangerDatas;
     }
     else
