@@ -1629,9 +1629,8 @@ function getNavigatorDatas()
 * Caculate assessement scores
 *
 * @param mixed $surveyid
-* @param boolean $returndataonly - only returns an array with data
 */
-function doAssessment($surveyid, $returndataonly=false)
+function doAssessment($surveyid)
 {
 
 
@@ -1781,62 +1780,19 @@ function doAssessment($surveyid, $returndataonly=false)
         if (isset($subtotal) && is_array($subtotal)){
             $assessment['subtotal']['show']  = true;
             $assessment['subtotal']['datas'] = $subtotal;
-
-            foreach($subtotal as $key=>$val){
-                if (isset($assessment['group'][$key])){
-
-                    foreach($assessment['group'][$key] as $assessed){
-
-                        if ($val >= $assessed['min'] && $val <= $assessed['max'] && $returndataonly===false){
-                            $assessments .= "\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-                            <table class='assessments'>
-                            <tr>
-                            <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
-                            </th>
-                            </tr>
-                            <tr>
-                            <td>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['message'])."
-                            </td>
-                            </tr>
-                            </table><br />\n";
-                        }
-                    }
-                }
-            }
         }
 
         $assessment['total']['show'] = false;
 
         if (isset($assessment['total'])){
-
             $assessment['total']['show'] = true;
-            foreach($assessment['total'] as $assessed){
-
-                if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false){
-
-                    $assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-                    <table class='assessments' align='center'>
-                    <tr>
-                    <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
-                    </th>
-                    </tr>
-                    <tr>
-                    <td>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
-                    </td>
-                    </tr>
-                    </table>\n";
-                }
-            }
         }
 
-        if ($returndataonly==true) {
-            $assessment['subtotal_score'] = (isset($subtotal))?$subtotal:'';
-            $assessment['total_score']    = (isset($total))?$total:'';
-            //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
-            return array('show'=>true, 'datas' => $assessment);
-        }else {
-            return $assessments;
-        }
+        $assessment['subtotal_score'] = (isset($subtotal))?$subtotal:'';
+        $assessment['total_score']    = (isset($total))?$total:'';
+        //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
+        return array('show'=>true, 'datas' => $assessment);
+
     }
 }
 
