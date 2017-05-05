@@ -260,40 +260,6 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
 }
 
 /**
- * Construct flash message container
- * Used in templatereplace to replace {FLASHMESSAGE} in startpage.tstpl
- *
- * @return string
- */
-function makeFlashMessage() {
-    global $surveyid;
-    $html = "";
-
-    $language = Yii::app()->getLanguage();
-    $originalPrefix = Yii::app()->user->getStateKeyPrefix();
-    // Bug in Yii? Getting the state-key prefix changes the locale, so set the language manually after.
-    Yii::app()->setLanguage($language);
-    Yii::app()->user->setStateKeyPrefix('frontend');
-
-    $mapYiiToBootstrapClass = array(
-        'error' => 'danger',
-        'success' => 'success',
-        'notice' => 'info'
-        // no warning in Yii?
-    );
-
-    foreach (Yii::app()->user->getFlashes() as $key => $message) {
-        $html .= "<div class='alert alert-" . $mapYiiToBootstrapClass[$key] . " alert-dismissible flash-" . $key . "'>" . $message . "</div>\n";
-    }
-
-    Yii::app()->user->setStateKeyPrefix($originalPrefix);
-
-    return $html;
-}
-
-
-
-/**
 * checkUploadedFileValidity used in SurveyRuntimeHelper
 */
 function checkUploadedFileValidity($surveyid, $move, $backok=null)
