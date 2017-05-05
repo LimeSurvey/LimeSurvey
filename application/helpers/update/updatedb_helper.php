@@ -1132,8 +1132,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         {
             $oTransaction = $oDB->beginTransaction();
             //Replace  by <script type="text/javascript" src="{TEMPLATEURL}template.js"></script> by {TEMPLATEJS}
-
-            $replacedTemplate=replaceTemplateJS();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>163),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -2996,62 +2994,6 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
     if ($aKeyName!=false)
     {
         try { $oDB->createCommand()->dropIndex($aKeyName,$sTableName); } catch(Exception $e) { }
-    }
-}
-
-function replaceTemplateJS(){
-    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-
-    if (!$usertemplaterootdir) {return false;}
-    $countstartpage=0;
-    $counterror=0;
-    $errortemplate=array();
-    if ($handle = opendir($usertemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if ($file != "." && $file != ".." && is_dir("{$usertemplaterootdir}/{$file}")) {
-                $fname = "$usertemplaterootdir/$file/startpage.pstpl";
-                if (is_file($fname))
-                {
-                    if(is_writable($fname)){
-                        $fhandle = fopen($fname,"r");
-                        $content = fread($fhandle,filesize($fname));
-                        $content = str_replace("<script type=\"text/javascript\" src=\"{TEMPLATEURL}template.js\"></script>", "{TEMPLATEJS}", $content);
-                        $fhandle = fopen($fname,"w");
-                        fwrite($fhandle,$content);
-                        fclose($fhandle);
-                        if(strpos($content, "{TEMPLATEJS}")===false)
-                        {
-                            $counterror++;
-                            $errortemplate[]=$file;
-                        }
-                    }else{
-                        $counterror++;
-                    }
-                    $countstartpage++;
-                }
-            }
-        }
-        closedir($handle);
-    }
-    if($counterror)
-    {
-        echo gT("Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually.");
-        echo "<br />";
-        echo gT("Template(s) to be verified :");
-        echo implode(",",$errortemplate);
-    }
-    else
-    {
-        if($countstartpage){
-            echo sprintf(gT("All %s user templates updated."),$countstartpage);
-        }
-    }
-    if($counterror){
-        return false;
-    }else{
-        return $countstartpage;
     }
 }
 
