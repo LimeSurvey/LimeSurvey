@@ -72,9 +72,6 @@ class TemplateConfiguration extends CFormModel
      * //TODO why string not boolean ??
      */
     public $hasConfigFile='';//
-    /** @var  boolean $isOldTemplate Is it a 2.06 template? */
-    public $isOldTemplate;
-
 
     /** @var bool $overwrite_question_views Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too. */
     public $overwrite_question_views=false;
@@ -133,21 +130,13 @@ class TemplateConfiguration extends CFormModel
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
         $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
-        $this->isOldTemplate = ( !$this->hasConfigFile && is_file($this->path.DIRECTORY_SEPARATOR.'startpage.pstpl')); // TODO: more complex checks
 
         if (!$this->hasConfigFile) {
-            // If it's an imported template from 2.06, we return default values
-            if ( $this->isOldTemplate ) {
-                /* Must review: maybe some package ?*/
-                $this->xmlFile = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'minimal-config.xml';
-            } else {
-                $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-                $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
-            }
-        } else {
-            $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
+            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+
         }
 
+        $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
         //////////////////////
         // Config file loading
 
