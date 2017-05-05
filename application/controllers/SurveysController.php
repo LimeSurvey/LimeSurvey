@@ -57,26 +57,10 @@
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
 
-
             $sTemplateViewPath = $oTemplate->pstplPath;
 
-
-
-            ob_start(function($buffer, $phase)
-            {
-                App()->getClientScript()->render($buffer);
-                App()->getClientScript()->reset();
-                return $buffer;
-            });
-
-            ob_implicit_flush(false);
-
             Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
-            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_survey_list.twig"), array('aSurveyInfo'=>$aData), false);
-            Yii::app()->end(); // So we can still see debug messages
-
-            ob_flush();
-
+            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_survey_list.twig"), array('aSurveyInfo'=>$aData), false);
 
         }
         /**
