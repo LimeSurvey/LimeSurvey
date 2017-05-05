@@ -137,6 +137,7 @@ class TemplateConfiguration extends CFormModel
         }
 
         $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
+
         //////////////////////
         // Config file loading
 
@@ -159,8 +160,6 @@ class TemplateConfiguration extends CFormModel
         $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : (string)$this->config->engine->cssframework;
         $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                             : array();
 
-        /* Add options/package according to apiVersion */
-        $this->fixTemplateByApi();
 
         /* Add depend package according to packages */
         $this->depends                  = $this->getDependsPackages();
@@ -343,49 +342,6 @@ class TemplateConfiguration extends CFormModel
             $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
         }
         return $this->sTemplateurl;
-    }
-
-    /**
-     * Fix template accorfing to apiVersion
-     */
-    private function fixTemplateByApi()
-    {
-        if($this->apiVersion<3) {
-            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl")) {
-                $messagePstpl  =  "<div id='{MESSAGEID}-wrapper'>\n"
-                                . "    {ERROR}\n"
-                                . "    <div class='{MESSAGEID}-text'>{MESSAGE}</div>\n"
-                                . "    {URL}"
-                                . "</div>";
-                file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."message.pstpl",$messagePstpl);
-            }
-            if(!is_file($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl")) {
-                $formTemplate  =  "<div class='{FORMID}-page'>\n"
-                                . "    <div class='form-heading'>{FORMHEADING}</div>\n"
-                                . "    {FORMMESSAGE}\n"
-                                . "    {FORMERROR}\n"
-                                . "    <div class='form-{FORMID}'>{FORM}</div>\n"
-                                . "</div>";
-                file_put_contents($this->pstplPath.DIRECTORY_SEPARATOR."form.pstpl",$formTemplate);
-            }
-            if(getLanguageRTL(App()->language)) {
-                unset($this->config->files->css);
-                unset($this->config->files->js);
-                unset($this->config->files->print_css);
-            }
-            $name=(isset($this->config->metadatas->name)) ? (string)$this->config->metadatas->name:null;
-            /* LimeSurvey template only updated via GUI */
-            if(in_array($name,array("Default","News Paper","Ubuntu Orange"))) {
-                $packages=new stdClass();
-                $packages->package="template-default";
-                $packages->ltr=new stdClass();
-                $packages->ltr->package="template-default-ltr";
-                $packages->rtl=new stdClass();
-                $packages->rtl->package="template-default-rtl";
-                $this->packages=$packages;
-                Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
-            }
-        }
     }
 
     /**
