@@ -156,24 +156,6 @@ function loadanswers()
     }
 }
 
-function makegraph($currentstep, $total)
-{
-    global $thissurvey;
-
-
-//    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'lime-progress.css');
-    $size = intval(($currentstep-1)/$total*100);
-
-    $graph='
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="'.$size.'" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: '.$size.'%;">
-            '.$size.'%
-        </div>
-    </div>';
-
-
-    return $graph;
-}
 
 /**
 * This function creates the language selector for a particular survey

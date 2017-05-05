@@ -230,14 +230,11 @@ class SurveyRuntimeHelper {
 
         if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y'){
             if ($show_empty_group){
-                // $percentcomplete = makegraph($_SESSION[$LEMsessid]['totalsteps'] + 1, $_SESSION[$LEMsessid]['totalsteps']);
                 $thissurvey['progress']['currentstep'] = $_SESSION[$LEMsessid]['totalsteps'] + 1;
                 $thissurvey['progress']['total']       = $_SESSION[$LEMsessid]['totalsteps'];
             }else{
-                // $percentcomplete = makegraph($_SESSION[$LEMsessid]['step'], $_SESSION[$LEMsessid]['totalsteps']);
                 $thissurvey['progress']['currentstep'] = $_SESSION[$LEMsessid]['step'];
                 $thissurvey['progress']['total']       = $_SESSION[$LEMsessid]['totalsteps'];
-
             }
         }
 
