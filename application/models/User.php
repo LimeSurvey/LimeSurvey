@@ -353,9 +353,6 @@ class User extends LSActiveRecord
                         "action"=> "deluser"
                     ));
 
-                $csrfTokenName = Yii::app()->request->csrfTokenName;
-                $csrfToken = Yii::app()->request->csrfToken;
-
                 $deleteUser = "<button
                 data-toggle='modal'
                 data-href='#'
@@ -363,7 +360,7 @@ class User extends LSActiveRecord
                   action: \"deluser\",
                   uid:\"".$this->uid."\",
                   user: \"".htmlspecialchars($oUser['full_name'])."\",
-                  ".$csrfTokenName.": \"".$csrfToken."\"});'
+                  });'
                 data-target='#confirmation-modal'
                 data-uid='".$this->uid."'
                 data-action='deluser'
