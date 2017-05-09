@@ -1074,7 +1074,7 @@ class SurveyRuntimeHelper {
                 $cSave = new Save();
                 // $cSave->showsaveform($thissurvey['sid']); // generates a form and exits, awaiting input
                 $thissurvey['aSaveForm'] = $cSave->getSaveFormDatas($thissurvey['sid']);
-                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
+                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($this->sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
             }else{
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
                 // Now update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic, otherwise we land on

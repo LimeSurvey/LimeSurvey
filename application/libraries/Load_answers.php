@@ -59,4 +59,5 @@ class Load_answers {
         ));
         Yii::app()->end();
     }
+
 }

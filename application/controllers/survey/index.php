@@ -416,7 +416,7 @@ class index extends CAction {
                 }
             }
 
-            if ($errormsg == "") {
+            if ( empty($aLoadErrorMsg) ) {
                 LimeExpressionManager::SetDirtyFlag();
                 buildsurveysession($surveyid);
                 if (loadanswers()){
@@ -436,14 +436,22 @@ class index extends CAction {
         //Allow loading of saved survey
         if (Yii::app()->getConfig('move')=="loadall")
         {
-            $aLoadErrorMsg=empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
-            Yii::import("application.libraries.Load_answers");
-            $tmp = new Load_answers();
-            $tmp->run(array(
-                "surveyid"=>$surveyid, // Not really needed : already in App()->getConfig('surveyID')
-                "aLoadErrorMsg"=>$aLoadErrorMsg,
-                "clienttoken"=>isset($clienttoken)? $clienttoken : null ,
-            ));
+            /* Construction of the form */
+            $aLoadForm['aCaptcha']['show'] = false;
+            if(function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($surveyid)->usecaptcha)){
+                $aLoadForm['aCaptcha']['show'] = true;
+                $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image',array('sid'=>$surveyid));
+            }
+
+            if (isset($clienttoken)){
+                $aLoadForm['sHiddenField'] = CHtml::hiddenField('token',$clienttoken);
+            }
+
+            $aLoadForm['aErrors']   = empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
+            $thissurvey['aLoadForm'] = $aLoadForm;
+            Yii::app()->twigRenderer->setForcedPath($oTemplate->viewPath);
+            $oTemplate->registerAssets();
+            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($oTemplate->viewPath."layout_load.twig"), array('aSurveyInfo'=>$thissurvey), false);
         }
 
 
