@@ -118,7 +118,7 @@ $internalConfig = array(
         ),
         // These are defaults and are later overwritten in LSYii_Application by a path based on config tempdir/tempurl
         'assetManager' => array(
-            'excludeFiles' => array("config.xml", "assessment.pstpl", "clearall.pstpl",  "completed.pstpl",  "endgroup.pstpl",  "endpage.pstpl",  "groupdescription.pstpl",  "load.pstpl",  "navigator.pstpl",  "printanswers.pstpl",  "print_group.pstpl",  "print_question.pstpl",  "print_survey.pstpl",  "privacy.pstpl",  "question.pstpl",  "register.pstpl",  "save.pstpl",  "startgroup.pstpl",  "startpage.pstpl",  "surveylist.pstpl",  "survey.pstpl",  "welcome.pstpl" ),
+            'excludeFiles' => array("config.xml" ),
         ),
 
         'request' => array(
@@ -249,15 +249,6 @@ $internalConfig = array(
                 'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'sprintf', 'gT' ),
             ),
 
-            // Change template syntax to Smarty-like (not recommended)
-            // Could be use to manage potential conflict with Expression Manager
-            /*
-            'lexerOptions' => array(
-                'tag_comment'  => array('{*', '*}'),
-                'tag_block'    => array('{', '}'),
-                'tag_variable' => array('{$', '}')
-            ),
-            */
         ),
     )
 );
