@@ -84,7 +84,7 @@ $config['defaulttemplate']    =  'default';         // This setting specifys the
 
 $config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2';  // File types allowed to be uploaded in the templates section.
 
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 $config['memory_limit']        =  '128';   // This sets how much memory LimeSurvey can access in megabytes. 128 MB is the minimum recommended - if you are using PDF functions up to 256 MB may be needed
 
