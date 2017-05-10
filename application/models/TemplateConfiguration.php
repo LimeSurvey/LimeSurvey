@@ -82,7 +82,7 @@ class TemplateConfiguration extends CFormModel
      * If it's a user template, it will check if it's an old 2.0x template to provide default configuration values corresponding to the old template system
      * If it's not an old template, it will check if it has a configuration file to load its datas.
      * If it's not the case (template probably doesn't exist), it will load the default template configuration
-     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed pstpl files, if the files refered in css exist, etc.
+     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed layout files, if the files refered in css exist, etc.
      *
      * @param string $sTemplateName the name of the template to load. The string come from the template selector in survey settings
      * @param string $iSurveyId the id of the survey. If
