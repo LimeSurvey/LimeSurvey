@@ -237,35 +237,7 @@ class questionIndexHelper {
         return $stepIndex;
     }
 
-    /**
-     * Return html for list of link
-     * @return string : html to be used
-     */
-    public function getIndexLink()
-    {
-        $indexItems=$this->getIndexItems();
-        if(!empty($indexItems)){
-            Yii::app()->getClientScript()->registerScript("activateActionLink","activateActionLink();",\CClientScript::POS_END);
-            return $this->getIndexHtml($this->surveyFormat,'link');
-        }else{
-            return '';
-        }
-    }
 
-    /**
-     * Return html for list of button
-     * @return string : html to be used
-     */
-    public function getIndexButton()
-    {
-        $indexItems=$this->getIndexItems();
-        if(!empty($indexItems)){
-            Yii::app()->getClientScript()->registerScript("manageIndex","manageIndex();",\CClientScript::POS_END);
-            return $this->getIndexHtml($this->surveyFormat);
-        }else{
-            return '';
-        }
-    }
     /**
      * Return html with params
      * @param string : $surveyFormat (G|S)

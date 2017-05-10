@@ -250,8 +250,6 @@ class SurveyRuntimeHelper {
         $thissurvey['aQuestionIndex']['bShow'] = false;
         if ($thissurvey['questionindex']){
             if(!$previewquestion && !$previewgrp){
-                $questionindex            = ls\helpers\questionIndexHelper::getInstance()->getIndexButton();
-                $questionindexmenu        = ls\helpers\questionIndexHelper::getInstance()->getIndexLink();
                 $thissurvey['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
 
                 if($thissurvey['questionindex'] > 1){
