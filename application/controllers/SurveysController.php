@@ -14,8 +14,6 @@
         public $aReplacementData= array();
         /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
         public $aGlobalData= array();
-        /* @var boolean did we need survey.pstpl when using layout */
-        public $bStartSurvey= false;
 
         public $defaultAction = 'publicList';
 

@@ -1887,7 +1887,7 @@ class SurveyRuntimeHelper {
 
         if ( !$this->previewgrp && !$this->previewquestion)
         {
-            if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
+            if (($this->show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist'])){
                 $this->gid              = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
                 $this->groupname        = gT("Submit your answers");
                 $this->groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
