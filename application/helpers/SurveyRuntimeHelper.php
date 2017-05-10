@@ -162,6 +162,7 @@ class SurveyRuntimeHelper {
                 $qanda = array();
             }
 
+            $upload_file = false;
             foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia){
                 ++$qnumber;
                 $ia[9] = $qnumber; // incremental question count;
@@ -218,7 +219,7 @@ class SurveyRuntimeHelper {
                 }
 
                 if ($ia[4] == "|")
-                    $upload_file = TRUE;
+                    $upload_file = true;
             } //end iteration
         }
 
@@ -272,7 +273,7 @@ class SurveyRuntimeHelper {
 
         $thissurvey['languagecode'] = $languagecode;
         $thissurvey['dir']          = (getLanguageRTL($languagecode))?"rtl":"ltr";
-        $thissurvey['upload_file']  = (isset($upload_file) && $upload_file)?true:false;
+        $thissurvey['upload_file']  = $upload_file;
         $hiddenfieldnames           = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
 
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
