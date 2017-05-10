@@ -146,41 +146,36 @@ class SurveyRuntimeHelper {
         //Iterate through the questions about to be displayed:
         $inputnames = array();
 
-        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
-        {
-            $gid = $gl['gid'];
+        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl){
+            $gid     = $gl['gid'];
             $qnumber = 0;
 
-            if ($surveyMode != 'survey')
-            {
+            if ($surveyMode != 'survey'){
                 $onlyThisGID = $stepInfo['gid'];
-                if ($onlyThisGID != $gid)
-                {
+                if ($onlyThisGID != $gid){
                     continue;
                 }
             }
 
-            // TMSW - could iterate through LEM::currentQset instead
-
             //// To diplay one question, all the questions are processed ?
-            if (!isset($qanda))
-            {
-                $qanda=array();
+            if (!isset($qanda)){
+                $qanda = array();
             }
-            foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia)
-            {
+
+            foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia){
                 ++$qnumber;
                 $ia[9] = $qnumber; // incremental question count;
 
-                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))// Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
-                {
-                    if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid'])
-                    {
+                // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
+                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)){
+
+                    if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid']){
                         continue;
                     }
+
                     $qidattributes = getQuestionAttributeValues($ia[0]);
-                    if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
-                    {
+
+                    if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)){
                         continue;
                     }
 
@@ -188,47 +183,47 @@ class SurveyRuntimeHelper {
                     // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
                     // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
                     list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia, $surveyid);
-                    if ($plus_qanda)
-                    {
+
+                    if ($plus_qanda){
                         $plus_qanda[] = $ia[4];
                         $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+
                         // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
                         if(isset($ia[10]))
                             $plus_qanda['finalgroup']=$ia[10];
                         else
                             $plus_qanda['finalgroup']=$ia[5];
+
                         $qanda[] = $plus_qanda;
                     }
-                    if ($plus_inputnames)
-                    {
+                    if ($plus_inputnames){
                         $inputnames = addtoarray_single($inputnames, $plus_inputnames);
                     }
 
                     //Display the "mandatory" popup if necessary
                     // TMSW - get question-level error messages - don't call **_popup() directly
-                    if ($okToShowErrors && $stepInfo['mandViolation'])
-                    {
+                    if ($okToShowErrors && $stepInfo['mandViolation']){
                         list($mandatorypopup, $popup) = mandatory_popup($ia, $notanswered);
                     }
 
                     //Display the "validation" popup if necessary
-                    if ($okToShowErrors && !$stepInfo['valid'])
-                    {
+                    if ($okToShowErrors && !$stepInfo['valid']){
                         list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
                     }
 
                     // Display the "file validation" popup if necessary
-                    if ($okToShowErrors && isset($filenotvalidated))
-                    {
+                    if ($okToShowErrors && isset($filenotvalidated)){
                         list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
                     }
                 }
+
                 if ($ia[4] == "|")
                     $upload_file = TRUE;
             } //end iteration
         }
 
         if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y'){
+
             if ($show_empty_group){
                 $thissurvey['progress']['currentstep'] = $_SESSION[$LEMsessid]['totalsteps'] + 1;
                 $thissurvey['progress']['total']       = $_SESSION[$LEMsessid]['totalsteps'];
@@ -240,14 +235,12 @@ class SurveyRuntimeHelper {
 
         $thissurvey['yiiflashmessages'] = Yii::app()->user->getFlashes();
 
-        //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-
         /**
          * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
          *
          */
-
         $thissurvey['aQuestionIndex']['bShow'] = false;
+
         if ($thissurvey['questionindex']){
             if(!$previewquestion && !$previewgrp){
                 $thissurvey['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
@@ -276,39 +269,37 @@ class SurveyRuntimeHelper {
         }else{
             $languagecode = Yii::app()->getConfig('defaultlang');
         }
+
         $thissurvey['languagecode'] = $languagecode;
         $thissurvey['dir']          = (getLanguageRTL($languagecode))?"rtl":"ltr";
+        $thissurvey['upload_file']  = (isset($upload_file) && $upload_file)?true:false;
+        $hiddenfieldnames           = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
 
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
 
-        $thissurvey['upload_file']      = (isset($upload_file) && $upload_file)?true:false;
-        $hiddenfieldnames               = $thissurvey['hiddenfieldnames']  = implode("|", $inputnames);
-
-
         // Show question code/number
-        $thissurvey['aShow']             = $this->getShowNumAndCode($thissurvey);
+        $thissurvey['aShow'] = $this->getShowNumAndCode($thissurvey);
 
         $popup = $this->popup;
         $aPopup=array(); // We can move this part where we want now
-        if (isset($backpopup))
-        {
+
+        if (isset($backpopup)){
             $aPopup[]=$backpopup;// If user click reload: no need other popup
-        }
-        else
-        {
-            if (isset($popup))
-            {
+        }else{
+
+            if (isset($popup)){
                 $aPopup[]=$popup;
             }
-            if (isset($vpopup))
-            {
+
+            if (isset($vpopup)){
                 $aPopup[]=$vpopup;
             }
-            if (isset($fpopup))
-            {
+
+            if (isset($fpopup)){
                 $aPopup[]=$fpopup;
             }
         }
+
         Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
 
@@ -319,34 +310,32 @@ class SurveyRuntimeHelper {
         $thissurvey['errorHtml']['messages']    = $aErrorHtmlMessage;
 
         $_gseq = -1;
+
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl){
 
-            $gid = $gl['gid'];
             ++$_gseq;
-            $aGroup    = array();
 
+            $gid              = $gl['gid'];
+            $aGroup           = array();
             $groupname        = $gl['group_name'];
             $groupdescription = $gl['description'];
 
-            if ($surveyMode != 'survey' && $gid != $onlyThisGID)
-            {
+            if ($surveyMode != 'survey' && $gid != $onlyThisGID){
                 continue;
             }
 
-            $redata = compact(array_keys(get_defined_vars()));
             Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
 
             $aGroup['class'] = "";
+            $gnoshow         = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
+            $redata          = compact(array_keys(get_defined_vars()));
 
-            $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
-            if  ($gnoshow && !$previewgrp)
-            {
+            if  ($gnoshow && !$previewgrp){
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']             = $gl['group_name'];
-            $aGroup['gseq']             = $_gseq;
-
+            $aGroup['name']        = $gl['group_name'];
+            $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($surveyid);
 
@@ -362,8 +351,9 @@ class SurveyRuntimeHelper {
             $aGroup['showdescription']  = (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_);
             $aGroup['description']      = $redata['groupdescription'];
 
-            foreach ($qanda as $qa) // one entry per QID
-            {
+            // one entry per QID
+            foreach ($qanda as $qa) {
+
                 // Test if finalgroup is in this qid (for all in one survey, else we do only qanda for needed question (in one by one or group by goup)
                 if ($gid != $qa['finalgroup']) {
                     continue;
@@ -375,16 +365,15 @@ class SurveyRuntimeHelper {
                 $lastgrouparray  = explode("X", $qa[7]);
                 $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                 $lastanswer      = $qa[7];
+                $n_q_display     = '';
 
-                $n_q_display = '';
-                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
-                {
+                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*'){
                     continue; // skip this one
                 }
 
+                $aReplacement = array();
+                $question     = $qa[0];
 
-                $aReplacement=array();
-                $question = $qa[0];
                 //===================================================================
                 // The following four variables offer the templating system the
                 // capacity to fully control the HTML output for questions making the
@@ -393,10 +382,6 @@ class SurveyRuntimeHelper {
                 $question['aid']  = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
                 //===================================================================
-
-
-
-                // question.twig
 
                 // easier to understand for survey maker
                 $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
@@ -418,10 +403,12 @@ class SurveyRuntimeHelper {
             $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
 
             if (!empty($qanda)){
+
                 if ($surveyMode == 'group') {
                     $aGroup['show_last_group']   = true;
                     $aGroup['lastgroup']         = $lastgroup;
                 }
+
                 if ($surveyMode == 'question') {
                     $aGroup['show_last_answer']   = true;
                     $aGroup['lastanswer']         = $lastanswer;
@@ -444,18 +431,18 @@ class SurveyRuntimeHelper {
         /**
         * Navigator
         */
-        $thissurvey['aNavigator'] = array();
+        $thissurvey['aNavigator']         = array();
         $thissurvey['aNavigator']['show'] = $aNavigator['show'] = $thissurvey['aNavigator']['save']['show'] = $thissurvey['aNavigator']['load']['show'] = false;
 
         if (!$previewgrp && !$previewquestion){
-            $thissurvey['aNavigator']    = getNavigatorDatas();
-            $thissurvey['hiddenInputs']  =  "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
-            $thissurvey['hiddenInputs'] .=  "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-            $thissurvey['hiddenInputs'] .= "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
-            $_SESSION[$LEMsessid]['LEMpostKey'] = mt_rand();
-            $thissurvey['hiddenInputs'] .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
-            if (isset($token) && !empty($token))
-            {
+            $thissurvey['aNavigator']            = getNavigatorDatas();
+            $thissurvey['hiddenInputs']          =  "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
+            $thissurvey['hiddenInputs']         .=  "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+            $thissurvey['hiddenInputs']         .= "<input type='hidden' name='start_time' value='" . time() . "' id='start_time' />\n";
+            $_SESSION[$LEMsessid]['LEMpostKey']  = mt_rand();
+            $thissurvey['hiddenInputs']         .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
+
+            if (isset($token) && !empty($token)){
                 $thissurvey['hiddenInputs'] .=  "\n<input type='hidden' name='token' value='$token' id='token' />\n";
             }
         }
@@ -465,16 +452,17 @@ class SurveyRuntimeHelper {
         App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
         App()->getClientScript()->registerScript("activateConfirmButton","activateConfirmButton();\n",CClientScript::POS_END);
 
-
         $thissurvey['aLEM']['debugtimming']['show'] = false;
+
         if (($this->LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING){
-            $thissurvey['aLEM']['debugtimming']['show'] = true;
+            $thissurvey['aLEM']['debugtimming']['show']   = true;
             $thissurvey['aLEM']['debugtimming']['script'] = LimeExpressionManager::GetDebugTimingMessage();
         }
 
         $thissurvey['aLEM']['debugvalidation']['show'] = false;
+
         if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
-            $thissurvey['aLEM']['debugvalidation']['show']   = true;
+            $thissurvey['aLEM']['debugvalidation']['show']    = true;
             $thissurvey['aLEM']['debugvalidation']['message'] = $moveResult['message'];
         }
 
