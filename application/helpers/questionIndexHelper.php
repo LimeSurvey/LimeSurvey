@@ -81,6 +81,7 @@ class questionIndexHelper {
 
         return self::$instance;
     }
+    
     /**
      * Get the array of all step for this session
      *
@@ -237,41 +238,4 @@ class questionIndexHelper {
         return $stepIndex;
     }
 
-
-    /**
-     * Return html with params
-     * @param string : $surveyFormat (G|S)
-     * @param string : $viewType (link|button)
-     *
-     * @return string : html to be used
-     */
-    private function getIndexHtml($surveyFormat,$viewType='button')
-    {
-        switch($surveyFormat){
-            case 'G':
-                $viewFile="groupIndex";
-                break;
-            case 'S':
-                $viewFile="questionIndex";
-                break;
-            default:
-                Yii::log("Uknow survey format for question index, must be G or S.", 'error','application.helpers.questionIndexHelper');
-                return "";
-        }
-        switch($viewType){
-            case 'button':
-                break;
-            case 'link':
-                $viewFile.="MenuLink";
-                break;
-            default:
-                Yii::log("Uknow view type for question index, must be button or link.", 'error','application.helpers.questionIndexHelper');
-                return "";
-        }
-        Yii::import('application.helpers.viewHelper', true);
-        return Yii::app()->getController()->renderPartial("/survey/system/surveyIndex/{$viewFile}",array(
-            'type'=>$this->indexType,
-            'indexItems'=>$this->indexItems,
-        ),true);
-    }
 }
