@@ -566,7 +566,6 @@ class SurveyRuntimeHelper {
     private function getArgs()
     {
         $aPrivateVariables = array(
-            'LEMdebugLevel'          => $this->LEMdebugLevel          ,
             'LEMskipReprocessing'    => $this->LEMskipReprocessing    ,
             'thissurvey'             => $this->thissurvey             ,
             'surveyid '              => $this->surveyid               ,
@@ -1299,7 +1298,6 @@ class SurveyRuntimeHelper {
         extract($args);
 
         // Todo: check which ones are really needed
-        $this->LEMdebugLevel          = isset( $LEMdebugLevel          )?$LEMdebugLevel          :null ;
         $this->LEMskipReprocessing    = isset( $LEMskipReprocessing    )?$LEMskipReprocessing    :null ;
         $this->thissurvey             = isset( $thissurvey             )?$thissurvey             :null ;
         $this->surveyid               = isset( $surveyid               )?$surveyid               :null ;
