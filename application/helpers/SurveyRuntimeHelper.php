@@ -262,7 +262,7 @@ class SurveyRuntimeHelper {
         // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
         if (Yii::app()->session['survey_'.$surveyid]['s_lang'] ){
             $languagecode =  Yii::app()->session['survey_'.$surveyid]['s_lang'];
-        }elseif (isset($surveyid) && $surveyid  && Survey::model()->findByPk($surveyid)){
+        }elseif ($surveyid  && Survey::model()->findByPk($surveyid)){
             $languagecode = Survey::model()->findByPk($surveyid)->language;
         }else{
             $languagecode = Yii::app()->getConfig('defaultlang');
