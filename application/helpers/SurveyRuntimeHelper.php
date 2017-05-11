@@ -1719,7 +1719,8 @@ class SurveyRuntimeHelper {
         }
         */
 
-        $aEnterErrors=array();
+        $aEnterErrors = array();
+        $FlashError   = false;
         // Scenario => Token required
         if ($scenarios['tokenRequired'] && !$preview){
             //Test if token is valid
@@ -1757,7 +1758,7 @@ class SurveyRuntimeHelper {
             list($renderToken, $FlashError, $aEnterTokenData) = testIfTokenIsValid($subscenarios, $thissurvey, $aEnterTokenData, $clienttoken);
         }
 
-        if (isset($FlashError) && $FlashError !== ""){
+        if ($FlashError){
             $aEnterErrors['flash'] = $FlashError;
         }
 
