@@ -687,11 +687,14 @@ class SurveyRuntimeHelper {
      * @param array $thissurvey     an array containing all the survey needed infos
      * @param int   $LEMdebugLevel  customizable debugging for Lime Expression Manager
      */
-    private function getSurveyOptions($thissurvey, $LEMdebugLevel, $clienttoken )
+    private function getSurveyOptions($thissurvey, $LEMdebugLevel  )
     {
-        $LEMsessid  = $this->LEMsessid;
-        $radix      = $this->getRadix($thissurvey);
-        $timeadjust = Yii::app()->getConfig("timeadjust");
+        global $clienttoken;
+        
+        $LEMsessid   = $this->LEMsessid;
+        $radix       = $this->getRadix($thissurvey);
+        $timeadjust  = Yii::app()->getConfig("timeadjust");
+
         $surveyOptions = array(
             'active'                      => ($thissurvey['active'] == 'Y'),
             'allowsave'                   => ($thissurvey['allowsave'] == 'Y'),
@@ -1818,7 +1821,7 @@ class SurveyRuntimeHelper {
         $thissurvey['oTemplate']    = (array) $this->template;
         $this->thissurvey           = $thissurvey;
         $surveyMode                 = $this->surveyMode      = $this->getSurveyMode($thissurvey);
-        $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel, (isset($clienttoken)?$clienttoken : NULL) );
+        $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel );
         $previewgrp                 = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $previewquestion            = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
         $preview                    = $this->preview         = ($previewquestion || $previewgrp);
