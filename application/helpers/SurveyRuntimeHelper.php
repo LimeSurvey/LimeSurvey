@@ -144,7 +144,7 @@ class SurveyRuntimeHelper {
 
         //Iterate through the questions about to be displayed:
         $inputnames = array();
-        $vpopup     = false;
+        $vpopup     = $fpopup = false;
 
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl){
             $gid     = $gl['gid'];
@@ -280,11 +280,11 @@ class SurveyRuntimeHelper {
 
         $aPopup=array(); // We can move this part where we want now
 
-        if ($this->backpopup != false){
+        if ( $this->backpopup != false ){
             $aPopup[]=$this->backpopup;// If user click reload: no need other popup
         }else{
 
-            if ($this->popup != false){
+            if ( $this->popup != false ){
                 $aPopup[] = $this->popup;
             }
 
@@ -292,7 +292,7 @@ class SurveyRuntimeHelper {
                 $aPopup[]=$vpopup;
             }
 
-            if (isset($fpopup)){
+            if ( $fpopup != false ){
                 $aPopup[]=$fpopup;
             }
         }
