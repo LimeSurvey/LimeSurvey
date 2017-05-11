@@ -44,7 +44,7 @@ class SurveyRuntimeHelper {
     private $aSurveyInfo;                                                       // Array returned by common_helper::getSurveyInfo(); (survey row + language settings );
     private $iSurveyid              = null;                                     // The survey id
     private $bShowEmptyGroup        = false;                                    // True only when $_SESSION[$this->LEMsessid]['step'] == 0 ; Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
-    private $surveyMode;                                                        // {Group By Group,  All in one, Question by question}
+    private $sSurveyMode;                                                        // {Group By Group,  All in one, Question by question}
     private $surveyOptions;                                                     // Few options comming from thissurvey, App->getConfig, LEM. Could be replaced by $oSurvey + relations ; the one coming from LEM and getConfig should be public variable on the surveyModel, set via public methods (active, allowsave, anonymized, assessments, datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings, surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
     private $totalquestions;                                                    // Number of question in the survey. Same, should be moved to survey model.
     private $bTokenAnswerPersitance;                                            // Are token used? Same...
@@ -149,7 +149,7 @@ class SurveyRuntimeHelper {
             $gid     = $gl['gid'];
             $qnumber = 0;
 
-            if ($surveyMode != 'survey'){
+            if ($this->surveyMode != 'survey'){
                 $onlyThisGID = $stepInfo['gid'];
                 if ($onlyThisGID != $gid){
                     continue;
@@ -166,7 +166,7 @@ class SurveyRuntimeHelper {
                 // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                 if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)){
 
-                    if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid']){
+                    if ($this->surveyMode == 'question' && $ia[0] != $stepInfo['qid']){
                         continue;
                     }
 
@@ -219,7 +219,7 @@ class SurveyRuntimeHelper {
             } //end iteration
         }
 
-        if ($surveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y'){
+        if ($this->surveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y'){
 
             if ($this->bShowEmptyGroup){
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['totalsteps'] + 1;
@@ -315,7 +315,7 @@ class SurveyRuntimeHelper {
             $groupname        = $gl['group_name'];
             $groupdescription = $gl['description'];
 
-            if ($surveyMode != 'survey' && $gid != $onlyThisGID){
+            if ($this->surveyMode != 'survey' && $gid != $onlyThisGID){
                 continue;
             }
 
@@ -399,12 +399,12 @@ class SurveyRuntimeHelper {
 
             if (!empty($qanda)){
 
-                if ($surveyMode == 'group') {
+                if ($this->surveyMode == 'group') {
                     $aGroup['show_last_group']   = true;
                     $aGroup['lastgroup']         = $lastgroup;
                 }
 
-                if ($surveyMode == 'question') {
+                if ($this->surveyMode == 'question') {
                     $aGroup['show_last_answer']   = true;
                     $aGroup['lastanswer']         = $lastanswer;
                 }
@@ -639,23 +639,21 @@ class SurveyRuntimeHelper {
      *
      * @return string
      */
-    private function getSurveyMode()
+    private function setSurveyMode()
     {
         switch ($this->aSurveyInfo['format'])
         {
             case "A": //All in one
-                $surveyMode = 'survey';
+                $this->surveyMode = 'survey';
                 break;
             default:
             case "S": //One at a time
-                $surveyMode = 'question';
+                $this->surveyMode = 'question';
                 break;
             case "G": //Group at a time
-                $surveyMode = 'group';
+                $this->surveyMode = 'group';
                 break;
         }
-
-        return $surveyMode;
     }
 
     /**
@@ -714,7 +712,6 @@ class SurveyRuntimeHelper {
     private function initFirstStep()
     {
         // retrieve datas from local variable
-        $surveyMode    = $this->surveyMode;
         $surveyOptions = $this->surveyOptions;
 
         // First time the survey is loaded
@@ -729,11 +726,11 @@ class SurveyRuntimeHelper {
                 LimeExpressionManager::SetDirtyFlag();
 
             // Init $LEM states.
-            LimeExpressionManager::StartSurvey($this->iSurveyid, $surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
+            LimeExpressionManager::StartSurvey($this->iSurveyid, $this->surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
             $_SESSION[$this->LEMsessid]['step'] = 0;
 
             // Welcome page.
-            if ($surveyMode == 'survey'){
+            if ($this->surveyMode == 'survey'){
                 LimeExpressionManager::JumpTo(1, false, false, true);
             }elseif (isset($this->aSurveyInfo['showwelcome']) && $this->aSurveyInfo['showwelcome'] == 'N'){
                 $moveResult                   = $this->moveResult = LimeExpressionManager::NavigateForwards();
@@ -752,12 +749,11 @@ class SurveyRuntimeHelper {
     private function initDirtyStep()
     {
         // retrieve datas from local variable
-        $surveyMode    = $this->surveyMode;
         $surveyOptions = $this->surveyOptions;
 
         //$_SESSION[$this->LEMsessid]['step'] can not be less than 0, fix it always #09772
         $_SESSION[$this->LEMsessid]['step']   = $_SESSION[$this->LEMsessid]['step']<0 ? 0 : $_SESSION[$this->LEMsessid]['step'];
-        LimeExpressionManager::StartSurvey($this->iSurveyid, $surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
+        LimeExpressionManager::StartSurvey($this->iSurveyid, $this->surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
         LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
     }
 
@@ -857,14 +853,13 @@ class SurveyRuntimeHelper {
     {
 
         // retrieve datas from local variable
-        $surveyMode             = $this->surveyMode;
         $surveyOptions          = $this->surveyOptions;
         $move                   = $this->move;
         $moveResult             = false;
 
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])){
 
-            LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], $surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
+            LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], $this->surveyMode, $surveyOptions, false, $this->LEMdebugLevel);
 
             // Do it only if needed : we don't need it if we don't have index
             if(isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep']>$_SESSION[$this->LEMsessid]['step'] && $this->aSurveyInfo['questionindex'] ){
@@ -892,13 +887,13 @@ class SurveyRuntimeHelper {
             }
 
             if (($move == 'movesubmit')){
-                if ($surveyMode == 'survey'){
+                if ($this->surveyMode == 'survey'){
                     $moveResult = $this->moveResult =  LimeExpressionManager::NavigateForwards();
                 }else{
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
                     // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
                     if($this->aSurveyInfo['questionindex']==2) // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
-                        LimeExpressionManager::StartSurvey($this->iSurveyid, $surveyMode, $surveyOptions);
+                        LimeExpressionManager::StartSurvey($this->iSurveyid, $this->surveyMode, $surveyOptions);
 
                     $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false);
                 }
@@ -923,7 +918,7 @@ class SurveyRuntimeHelper {
                 $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
             }
 
-            if ( ! $moveResult && !($surveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0)){
+            if ( ! $moveResult && !($this->surveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0)){
                 // Just in case not set via any other means, but don't do this if it is the welcome page
                 $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
                 $this->LEMskipReprocessing = true;
@@ -936,8 +931,7 @@ class SurveyRuntimeHelper {
      */
     private function checkIfFinished()
     {
-        // retrieve datas from local variable
-        $surveyMode    = $this->surveyMode;
+        // retrieve datas from local
         $surveyOptions = $this->surveyOptions;
         $move          = $this->move;
         $moveResult    = $this->moveResult;
@@ -948,7 +942,7 @@ class SurveyRuntimeHelper {
             // we already done if move == 'movesubmit', don't do it again
             if($moveResult['finished'] == true && $move != 'movesubmit' && $this->thissurvey['questionindex']==2){
                 //LimeExpressionManager::JumpTo(-1, false, false, true);
-                LimeExpressionManager::StartSurvey($this->iSurveyid, $surveyMode, $surveyOptions);
+                LimeExpressionManager::StartSurvey($this->iSurveyid, $this->surveyMode, $surveyOptions);
                 $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
                 if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs'])){
                     $moveResult['finished'] = true;
@@ -988,13 +982,10 @@ class SurveyRuntimeHelper {
      */
     private function displayFirstPageIfNeeded()
     {
-        // retrieve datas from local variable
-        $surveyMode    = $this->surveyMode;
-
         // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
         // Previously we used to keep the session and redirect the user to the
         // submit page.
-        if ($surveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0){
+        if ($this->surveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0){
             $_SESSION[$this->LEMsessid]['test']=time();
             display_first_page($this->thissurvey);
             Yii::app()->end(); // So we can still see debug messages
@@ -1104,7 +1095,6 @@ class SurveyRuntimeHelper {
     private function moveSubmitIfNeeded()
     {
         // retrieve datas from local variable
-        $surveyMode        = $this->surveyMode;
         $surveyOptions     = $this->surveyOptions;
         $move              = $this->move;
         $moveResult        = $this->moveResult;
@@ -1768,10 +1758,10 @@ class SurveyRuntimeHelper {
         // TODO: check this:
         $this->aSurveyInfo['oTemplate']    = (array) $this->template;
 
-        $surveyMode                 = $this->surveyMode      = $this->getSurveyMode();
+        $this->setSurveyMode();
         $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions();
-        $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $this->previewgrp      = ($this->surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
+        $this->previewquestion = ($this->surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
         $preview                    = $this->preview         = ($this->previewquestion || $this->previewgrp);
         $sLangCode                  = $this->sLangCode       = App()->language;
     }
@@ -1789,7 +1779,7 @@ class SurveyRuntimeHelper {
             $_SESSION[$this->LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
         }
 
-        if ($surveyMode == 'group' && $this->previewgrp){
+        if ($this->surveyMode == 'group' && $this->previewgrp){
             $_gid = sanitize_int($param['gid']);
 
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], 'group', $surveyOptions, false, $this->LEMdebugLevel);
@@ -1813,7 +1803,7 @@ class SurveyRuntimeHelper {
             $groupname        = $this->groupname        = $stepInfo['gname'];
             $groupdescription = $this->groupdescription = $stepInfo['gtext'];
 
-        }elseif($surveyMode == 'question' && $this->previewquestion){
+        }elseif($this->surveyMode == 'question' && $this->previewquestion){
                 $_qid       = sanitize_int($param['qid']);
                 LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
@@ -1835,9 +1825,9 @@ class SurveyRuntimeHelper {
                 $this->groupname        = gT("Submit your answers");
                 $this->groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
             }
-            else if ($surveyMode != 'survey')
+            else if ($this->surveyMode != 'survey')
             {
-                if ($surveyMode != 'group'){
+                if ($this->surveyMode != 'group'){
                     $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                 }
 
@@ -1850,7 +1840,7 @@ class SurveyRuntimeHelper {
 
     private function fixMaxStep()
     {
-        // NOTE: must stay after setPreview  because of ()$surveyMode == 'group' && $this->previewgrp) condition touching step
+        // NOTE: must stay after setPreview  because of ()$this->surveyMode == 'group' && $this->previewgrp) condition touching step
         if ($_SESSION[$this->LEMsessid]['step'] > $_SESSION[$this->LEMsessid]['maxstep'])
         {
             $_SESSION[$this->LEMsessid]['maxstep'] = $_SESSION[$this->LEMsessid]['step'];
