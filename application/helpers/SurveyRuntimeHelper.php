@@ -1613,7 +1613,7 @@ class SurveyRuntimeHelper {
 
             $thissurvey['surveyUrl'] = $restarturl;
 
-            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_clearall.twig"), array('aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($this->sTemplateViewPath."layout_clearall.twig"), array('aSurveyInfo'=>$thissurvey), false);
         }
     }
 
