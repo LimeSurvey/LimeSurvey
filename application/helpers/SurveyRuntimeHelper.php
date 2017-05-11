@@ -46,7 +46,6 @@ class SurveyRuntimeHelper {
     private $bShowEmptyGroup        = false;                                    // True only when $_SESSION[$this->LEMsessid]['step'] == 0 ; Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
     private $sSurveyMode;                                                       // {Group By Group,  All in one, Question by question}
     private $aSurveyOptions;                                                    // Few options comming from thissurvey, App->getConfig, LEM. Could be replaced by $oSurvey + relations ; the one coming from LEM and getConfig should be public variable on the surveyModel, set via public methods (active, allowsave, anonymized, assessments, datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings, surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
-    private $totalquestions;                                                    // Number of question in the survey. Same, should be moved to survey model.
     private $bTokenAnswerPersitance;                                            // Are token used? Same...
     private $bTokensexist;
     private $assessments;                                                       // Is assement used? Same...
@@ -546,10 +545,8 @@ class SurveyRuntimeHelper {
                 $this->bShowEmptyGroup = true;
             }
 
-            $totalquestions = $this->totalquestions = $_SESSION['survey_'.$this->iSurveyid]['totalquestions'];
-
             // For welcome screen
-            $this->thissurvey['iTotalquestions']   = $totalquestions;
+            $this->thissurvey['iTotalquestions']   = $_SESSION['survey_'.$this->iSurveyid]['totalquestions'];
             $showxquestions                        = Yii::app()->getConfig('showxquestions');
             $this->thissurvey['bShowxquestions']   = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($this->aSurveyInfo['showxquestions'])) || ($showxquestions == 'choose' && $this->aSurveyInfo['showxquestions'] == 'Y'));
         }
@@ -570,7 +567,6 @@ class SurveyRuntimeHelper {
             'show_empty_group'       => $this->bShowEmptyGroup       ,
             'surveyMode'             => $this->sSurveyMode             ,
             'surveyOptions'          => $this->aSurveyOptions          ,
-            'totalquestions'         => $this->totalquestions         ,
             'bTokenAnswerPersitance' => $this->bTokenAnswerPersitance ,
             'assessments'            => $this->assessments            ,
             'moveResult'             => $this->moveResult             ,
@@ -1238,7 +1234,6 @@ class SurveyRuntimeHelper {
         $this->bShowEmptyGroup       = isset( $show_empty_group       )?$show_empty_group       :null ;
         $this->sSurveyMode             = isset( $surveyMode             )?$surveyMode             :null ;
         $this->aSurveyOptions          = isset( $surveyOptions          )?$surveyOptions          :null ;
-        $this->totalquestions         = isset( $totalquestions         )?$totalquestions         :null ;
         $this->bTokenAnswerPersitance = isset( $bTokenAnswerPersitance )?$bTokenAnswerPersitance :null ;
         $this->assessments            = isset( $assessments            )?$assessments            :null ;
         $this->moveResult             = isset( $moveResult             )?$moveResult             :null ;
