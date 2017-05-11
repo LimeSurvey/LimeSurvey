@@ -649,8 +649,9 @@ class SurveyRuntimeHelper {
      * @param  array   $thissurvey (an array containg the datas of the dynamic survey model and its related language model )
      * @return string
      */
-    private function getSurveyMode($thissurvey)
+    private function getSurveyMode()
     {
+        $thissurvey = $this->thissurvey;
         switch ($thissurvey['format'])
         {
             case "A": //All in one
@@ -687,13 +688,15 @@ class SurveyRuntimeHelper {
      * @param array $thissurvey     an array containing all the survey needed infos
      * @param int   $LEMdebugLevel  customizable debugging for Lime Expression Manager
      */
-    private function getSurveyOptions($thissurvey, $LEMdebugLevel  )
+    private function getSurveyOptions()
     {
         global $clienttoken;
-        
-        $LEMsessid   = $this->LEMsessid;
-        $radix       = $this->getRadix($thissurvey);
-        $timeadjust  = Yii::app()->getConfig("timeadjust");
+
+        $LEMsessid     = $this->LEMsessid;
+        $radix         = $this->getRadix($thissurvey);
+        $timeadjust    = Yii::app()->getConfig("timeadjust");
+        $LEMdebugLevel = $this->LEMdebugLevel;
+        $thissurvey    = $this->thissurvey;
 
         $surveyOptions = array(
             'active'                      => ($thissurvey['active'] == 'Y'),
@@ -1820,8 +1823,8 @@ class SurveyRuntimeHelper {
         $thissurvey['surveyUrl']    = App()->createUrl("/survey/index",array("sid"=>$surveyid));
         $thissurvey['oTemplate']    = (array) $this->template;
         $this->thissurvey           = $thissurvey;
-        $surveyMode                 = $this->surveyMode      = $this->getSurveyMode($thissurvey);
-        $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions($thissurvey, $this->LEMdebugLevel );
+        $surveyMode                 = $this->surveyMode      = $this->getSurveyMode();
+        $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions();
         $previewgrp                 = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $previewquestion            = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
         $preview                    = $this->preview         = ($previewquestion || $previewgrp);
