@@ -201,7 +201,7 @@ class SurveyRuntimeHelper {
 
                     //Display the "validation" popup if necessary
                     if ($okToShowErrors && !$this->aStepInfo['valid']){
-                        list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
+                        list($validationpopup, $vpopup) = validation_popup($ia, $this->notvalidated);
                     }
 
                     // Display the "file validation" popup if necessary
@@ -1048,9 +1048,9 @@ class SurveyRuntimeHelper {
             //CHECK INPUT
             $invalidSQList = $this->invalidSQList = $this->aMoveResult['invalidSQs'];
             if (strlen($invalidSQList) > 0){
-                $notvalidated = $this->notvalidated = explode('|', $invalidSQList);
+                $this->notvalidated = explode('|', $invalidSQList);
             }else{
-                $notvalidated = $this->notvalidated = array();
+                $this->notvalidated = array();
             }
         }
     }
