@@ -53,7 +53,7 @@ class SurveyRuntimeHelper {
     private $sLangCode;                                                         // Current language code
 
     // moves
-    private $moveResult             = null;                                     // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
+    private $moveResult             = false;                                     // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
     private $move                   = null;                                     // The move requested by user. Set by frontend_helper::getMove() from the POST request.
     private $invalidLastPage        = false;                                    // Just a variable used to check if user submitted a survey while it's not finished. Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
     private $stepInfo;
@@ -886,6 +886,7 @@ class SurveyRuntimeHelper {
         $LEMsessid              = $this->LEMsessid;
         $move                   = $this->move;
         $LEMskipReprocessing    = $this->LEMskipReprocessing;
+        $moveResult             = false;
 
         if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
 
@@ -948,7 +949,7 @@ class SurveyRuntimeHelper {
                 $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
             }
 
-            if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0)){
+            if ( $moveResult && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0)){
                 // Just in case not set via any other means, but don't do this if it is the welcome page
                 $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
                 $LEMskipReprocessing = $this->LEMskipReprocessing = true;
@@ -970,7 +971,7 @@ class SurveyRuntimeHelper {
         $LEMsessid     = $this->LEMsessid;
 
         // Reload at first page (welcome after click previous fill an empty $moveResult array
-        if (isset($moveResult) && isset($moveResult['seq']) ){
+        if ( $moveResult && isset($moveResult['seq']) ){
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             // we already done if move == 'movesubmit', don't do it again
             if($moveResult['finished'] == true && $move != 'movesubmit' && $this->thissurvey['questionindex']==2){
@@ -1003,7 +1004,7 @@ class SurveyRuntimeHelper {
         $moveResult    = $this->moveResult;
         $LEMsessid     = $this->LEMsessid;
 
-        if (isset($moveResult) && isset($moveResult['seq']) ){
+        if ( $moveResult && isset($moveResult['seq']) ){
             if ($moveResult['finished'] != true){
                 $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1
                 $stepInfo                     = $this->stepInfo =  LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
@@ -1853,6 +1854,7 @@ class SurveyRuntimeHelper {
                 renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
             }
 
+            // TODO: remove this useless test
             if (isset($moveResult)){
                 $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
             }
