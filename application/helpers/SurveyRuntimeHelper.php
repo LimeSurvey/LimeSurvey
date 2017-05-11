@@ -137,7 +137,7 @@ class SurveyRuntimeHelper {
         //PRESENT SURVEY
         //******************************************************************************************************
 
-        $this->okToShowErrors = $okToShowErrors = (!($previewgrp || $this->previewquestion) && ($this->invalidLastPage || $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['step']));
+        $this->okToShowErrors = $okToShowErrors = (!($this->previewgrp || $this->previewquestion) && ($this->invalidLastPage || $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['step']));
 
         Yii::app()->getController()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
@@ -240,7 +240,7 @@ class SurveyRuntimeHelper {
         $thissurvey['aQuestionIndex']['bShow'] = false;
 
         if ($thissurvey['questionindex']){
-            if(!$this->previewquestion && !$previewgrp){
+            if(!$this->previewquestion && !$this->previewgrp){
                 $thissurvey['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
 
                 if($thissurvey['questionindex'] > 1){
@@ -326,7 +326,7 @@ class SurveyRuntimeHelper {
             $gnoshow         = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
             $redata          = compact(array_keys(get_defined_vars()));
 
-            if  ($gnoshow && !$previewgrp){
+            if  ($gnoshow && !$this->previewgrp){
                 $aGroup['class'] = ' ls-hidden';
             }
 
@@ -430,7 +430,7 @@ class SurveyRuntimeHelper {
         $thissurvey['aNavigator']         = array();
         $thissurvey['aNavigator']['show'] = $aNavigator['show'] = $thissurvey['aNavigator']['save']['show'] = $thissurvey['aNavigator']['load']['show'] = false;
 
-        if (!$previewgrp && !$this->previewquestion){
+        if (!$this->previewgrp && !$this->previewquestion){
             $thissurvey['aNavigator']            = getNavigatorDatas();
             $thissurvey['hiddenInputs']          = "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
             $thissurvey['hiddenInputs']         .= "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
@@ -1817,9 +1817,9 @@ class SurveyRuntimeHelper {
         $this->thissurvey           = $thissurvey;
         $surveyMode                 = $this->surveyMode      = $this->getSurveyMode();
         $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions();
-        $previewgrp                 = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
+        $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
-        $preview                    = $this->preview         = ($previewquestion || $previewgrp);
+        $preview                    = $this->preview         = ($this->previewquestion || $this->previewgrp);
         $sLangCode                  = $this->sLangCode       = App()->language;
         $show_empty_group           = $this->show_empty_group;
     }
@@ -1837,7 +1837,7 @@ class SurveyRuntimeHelper {
             $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
         }
 
-        if ($surveyMode == 'group' && $previewgrp){
+        if ($surveyMode == 'group' && $this->previewgrp){
             $_gid = sanitize_int($param['gid']);
 
             LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $this->LEMdebugLevel);
@@ -1861,7 +1861,7 @@ class SurveyRuntimeHelper {
             $groupname        = $this->groupname        = $stepInfo['gname'];
             $groupdescription = $this->groupdescription = $stepInfo['gtext'];
 
-        }elseif($surveyMode == 'question' && $previewquestion){
+        }elseif($surveyMode == 'question' && $this->previewquestion){
                 $_qid       = sanitize_int($param['qid']);
                 LimeExpressionManager::StartSurvey($this->surveyid, 'question', $surveyOptions, false, $this->LEMdebugLevel);
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
@@ -1898,7 +1898,7 @@ class SurveyRuntimeHelper {
 
     private function fixMaxStep()
     {
-        // NOTE: must stay after setPreview  because of ()$surveyMode == 'group' && $previewgrp) condition touching step
+        // NOTE: must stay after setPreview  because of ()$surveyMode == 'group' && $this->previewgrp) condition touching step
         if ($_SESSION[$this->LEMsessid]['step'] > $_SESSION[$this->LEMsessid]['maxstep'])
         {
             $_SESSION[$this->LEMsessid]['maxstep'] = $_SESSION[$this->LEMsessid]['step'];
