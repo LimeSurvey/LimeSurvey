@@ -592,7 +592,7 @@ class SurveyRuntimeHelper {
      */
     private function setArgs()
     {
-        if ($move == "movesubmit"){
+        if ($this->sMove == "movesubmit"){
 
             if ($this->aSurveyInfo['refurl'] == "Y"){
                 //Only add this if it doesn't already exist
@@ -790,10 +790,8 @@ class SurveyRuntimeHelper {
      */
     private function checkQuotas()
     {
-        $move          = $this->move;
-
         /* quota submitted */
-        if ( $move=='confirmquota'){
+        if ( $this->sMove =='confirmquota'){
             checkCompletedQuota($this->iSurveyid);
         }
     }
@@ -803,9 +801,7 @@ class SurveyRuntimeHelper {
      */
     private function checkClearCancel()
     {
-        $move          = $this->move;
-
-        if ( $move=="clearcancel"){
+        if ( $this->sMove=="clearcancel"){
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
         }
     }
@@ -815,7 +811,7 @@ class SurveyRuntimeHelper {
      */
     private function setPrevStep()
     {
-        $_SESSION[$this->LEMsessid]['prevstep'] = (!in_array($this->move,array("clearall","changelang","saveall","reload")))?$_SESSION[$this->LEMsessid]['step']:$this->move; // Accepted $move without error
+        $_SESSION[$this->LEMsessid]['prevstep'] = (!in_array($this->move,array("clearall","changelang","saveall","reload")))?$_SESSION[$this->LEMsessid]['step']:$this->move; // Accepted $this->sMove without error
     }
 
     /**
@@ -836,7 +832,6 @@ class SurveyRuntimeHelper {
     {
 
         // retrieve datas from local variable
-        $move                   = $this->move;
         $this->aMoveResult       = false;
 
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])){
@@ -854,7 +849,7 @@ class SurveyRuntimeHelper {
         }else if (!$this->LEMskipReprocessing){
 
             //Move current step ###########################################################################
-            if ($move == 'moveprev' && ($this->aSurveyInfo['allowprev'] == 'Y' || $this->aSurveyInfo['questionindex'] > 0)){
+            if ($this->sMove == 'moveprev' && ($this->aSurveyInfo['allowprev'] == 'Y' || $this->aSurveyInfo['questionindex'] > 0)){
                 $this->aMoveResult = LimeExpressionManager::NavigateBackwards();
 
                 if ($this->aMoveResult['at_start']){
@@ -863,11 +858,11 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if ( $move == "movenext"){
+            if ( $this->sMove == "movenext"){
                 $this->aMoveResult = LimeExpressionManager::NavigateForwards();
             }
 
-            if (($move == 'movesubmit')){
+            if (($this->sMove == 'movesubmit')){
                 if ($this->sSurveyMode == 'survey'){
                     $this->aMoveResult =  LimeExpressionManager::NavigateForwards();
                 }else{
@@ -879,24 +874,24 @@ class SurveyRuntimeHelper {
                     $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false);
                 }
             }
-            if ( $move=='clearall'){
+            if ( $this->sMove=='clearall'){
                 $this->manageClearAll();
             }
-            if ( $move=='changelang'){
+            if ( $this->sMove=='changelang'){
                 // jump to current step using new language, processing POST values
                 $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, true);  // do process the POST data
             }
 
-            if (isNumericInt($move) && $this->aSurveyInfo['questionindex'] == 1){
-                $move = $this->move = (int) $move;
+            if (isNumericInt($this->sMove) && $this->aSurveyInfo['questionindex'] == 1){
+                $this->sMove = (int) $this->sMove;
 
-                if ($move > 0 && (($move <= $_SESSION[$this->LEMsessid]['step']) || (isset($_SESSION[$this->LEMsessid]['maxstep']) && $move <= $_SESSION[$this->LEMsessid]['maxstep']))){
-                    $this->aMoveResult = LimeExpressionManager::JumpTo($move, false);
+                if ($this->sMove > 0 && (($this->sMove <= $_SESSION[$this->LEMsessid]['step']) || (isset($_SESSION[$this->LEMsessid]['maxstep']) && $this->sMove <= $_SESSION[$this->LEMsessid]['maxstep']))){
+                    $this->aMoveResult = LimeExpressionManager::JumpTo($this->sMove, false);
                 }
             }
-            elseif ( isNumericInt($move) && $this->aSurveyInfo['questionindex'] == 2){
-                $move       = $this->move       = (int) $move;
-                $this->aMoveResult = LimeExpressionManager::JumpTo($move, false, true, true);
+            elseif ( isNumericInt($this->sMove) && $this->aSurveyInfo['questionindex'] == 2){
+                $this->sMove       = (int) $this->sMove;
+                $this->aMoveResult = LimeExpressionManager::JumpTo($this->sMove, false, true, true);
             }
 
             if ( ! $this->aMoveResult && !($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0)){
@@ -908,18 +903,15 @@ class SurveyRuntimeHelper {
     }
 
     /**
-     * Test if the the moveresult is finished, to decide to set the new $move value
+     * Test if the the moveresult is finished, to decide to set the new $this->sMove value
      */
     private function checkIfFinished()
     {
-        // retrieve datas from local
-        $move          = $this->move;
-
         // Reload at first page (welcome after click previous fill an empty $this->aMoveResult array
         if ( $this->aMoveResult && isset($this->aMoveResult['seq']) ){
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             // we already done if move == 'movesubmit', don't do it again
-            if($this->aMoveResult['finished'] == true && $move != 'movesubmit' && $this->thissurvey['questionindex']==2){
+            if($this->aMoveResult['finished'] == true && $this->sMove != 'movesubmit' && $this->thissurvey['questionindex']==2){
                 //LimeExpressionManager::JumpTo(-1, false, false, true);
                 LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions);
                 $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
@@ -929,12 +921,12 @@ class SurveyRuntimeHelper {
             }
 
             if ($this->aMoveResult['finished'] == true){
-                $move = $this->move = 'movesubmit';
+                $this->move = 'movesubmit';
             }
 
-            if ($move == "movesubmit" && $this->aMoveResult['finished'] == false){
+            if ($this->sMove == "movesubmit" && $this->aMoveResult['finished'] == false){
                 // then there are errors, so don't finalize the survey
-                $move            = $this->move            = "movenext"; // so will re-display the survey
+                $this->sMove            = "movenext"; // so will re-display the survey
                 $invalidLastPage = $this->invalidLastPage = true;
             }
         }
@@ -1068,10 +1060,7 @@ class SurveyRuntimeHelper {
      */
     private function moveSubmitIfNeeded()
     {
-        // retrieve datas from local variable
-        $move              = $this->move;
-
-        if ($move == "movesubmit"){
+        if ($this->sMove == "movesubmit"){
 
             if ($this->aSurveyInfo['active'] != "Y"){
 
@@ -1215,8 +1204,8 @@ class SurveyRuntimeHelper {
         $this->bShowEmptyGroup        = isset( $show_empty_group       )?$show_empty_group       :null ;
         $this->sSurveyMode            = isset( $surveyMode             )?$surveyMode             :null ;
         $this->aSurveyOptions         = isset( $surveyOptions          )?$surveyOptions          :null ;
-        $this->aMoveResult             = isset( $moveResult             )?$moveResult             :null ;
-        $this->move                   = isset( $move                   )?$move                   :null ;
+        $this->aMoveResult            = isset( $moveResult             )?$moveResult             :null ;
+        $this->sMove                  = isset( $move                   )?$move                   :null ;
         $this->invalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
         $this->oResponse              = isset( $oResponse              )?$oResponse              :null ;
         $this->unansweredSQList       = isset( $unansweredSQList       )?$unansweredSQList       :null ;
