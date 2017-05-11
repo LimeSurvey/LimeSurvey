@@ -102,7 +102,7 @@ class SurveyRuntimeHelper {
 
         extract($args);                                                         // TODO: Check if still needed at this level
 
-        $this->param = isset($param)?$param:'';
+        $this->param = $param;
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
