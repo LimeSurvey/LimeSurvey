@@ -453,7 +453,7 @@ class SurveyRuntimeHelper {
 
         if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
             $this->aSurveyInfo['aLEM']['debugvalidation']['show']    = true;
-            $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = $moveResult['message'];
+            $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = $this->moveResult['message'];
         }
 
         Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($this->sTemplateViewPath."layout_main.twig"), array('aSurveyInfo'=>$this->aSurveyInfo), false);
@@ -594,7 +594,6 @@ class SurveyRuntimeHelper {
     {
 
         $move              = $this->move;
-        $moveResult        = $this->moveResult;
 
         if ($move == "movesubmit"){
 
@@ -722,7 +721,7 @@ class SurveyRuntimeHelper {
             if ($this->sSurveyMode == 'survey'){
                 LimeExpressionManager::JumpTo(1, false, false, true);
             }elseif (isset($this->aSurveyInfo['showwelcome']) && $this->aSurveyInfo['showwelcome'] == 'N'){
-                $moveResult                   = $this->moveResult = LimeExpressionManager::NavigateForwards();
+                $this->moveResult = LimeExpressionManager::NavigateForwards();
                 $_SESSION[$this->LEMsessid]['step'] = 1;
             }
         }elseif($this->iSurveyid != LimeExpressionManager::getLEMsurveyId()){
@@ -770,12 +769,12 @@ class SurveyRuntimeHelper {
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey',$_SESSION[$this->LEMsessid]['LEMpostKey']) != $_SESSION[$this->LEMsessid]['LEMpostKey']){
             // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
-            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
+            $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false, true);// We JumpTo current step without saving: see bug #11404
 
-            if (isset($moveResult['seq']) &&  App()->request->getPost('thisstep',$moveResult['seq']) == $moveResult['seq']){
+            if (isset($this->moveResult['seq']) &&  App()->request->getPost('thisstep',$this->moveResult['seq']) == $this->moveResult['seq']){
 
                 /* then pressing F5 or otherwise refreshing the current page, which is OK
-                 * Seems OK only when movenext but not with move by index : same with $moveResult = LimeExpressionManager::GetLastMoveResult(true);
+                 * Seems OK only when movenext but not with move by index : same with $this->moveResult = LimeExpressionManager::GetLastMoveResult(true);
                  */
                 $this->LEMskipReprocessing =  true;
                 $this->move                = "movenext"; // so will re-display the survey
@@ -810,7 +809,7 @@ class SurveyRuntimeHelper {
         $move          = $this->move;
 
         if ( $move=="clearcancel"){
-            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
+            $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
         }
     }
 
@@ -841,7 +840,7 @@ class SurveyRuntimeHelper {
 
         // retrieve datas from local variable
         $move                   = $this->move;
-        $moveResult             = false;
+        $this->moveResult       = false;
 
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])){
 
@@ -852,36 +851,35 @@ class SurveyRuntimeHelper {
                 LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
             }
 
-            $moveResult = $this->moveResult =  LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
+            $this->moveResult =  LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
 
             unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
         }else if (!$this->LEMskipReprocessing){
 
             //Move current step ###########################################################################
             if ($move == 'moveprev' && ($this->aSurveyInfo['allowprev'] == 'Y' || $this->aSurveyInfo['questionindex'] > 0)){
-                $moveResult = $this->moveResult = LimeExpressionManager::NavigateBackwards();
+                $this->moveResult = LimeExpressionManager::NavigateBackwards();
 
-                if ($moveResult['at_start']){
+                if ($this->moveResult['at_start']){
                     $_SESSION[$this->LEMsessid]['step'] = 0;
-                    unset($moveResult); // so display welcome page again
-                    unset($this->moveResult);
+                    unset($this->moveResult); // so display welcome page again
                 }
             }
 
             if ( $move == "movenext"){
-                $moveResult = $this->moveResult = LimeExpressionManager::NavigateForwards();
+                $this->moveResult = LimeExpressionManager::NavigateForwards();
             }
 
             if (($move == 'movesubmit')){
                 if ($this->sSurveyMode == 'survey'){
-                    $moveResult = $this->moveResult =  LimeExpressionManager::NavigateForwards();
+                    $this->moveResult =  LimeExpressionManager::NavigateForwards();
                 }else{
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
                     // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
                     if($this->aSurveyInfo['questionindex']==2) // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
                         LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions);
 
-                    $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false);
+                    $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false);
                 }
             }
             if ( $move=='clearall'){
@@ -889,24 +887,24 @@ class SurveyRuntimeHelper {
             }
             if ( $move=='changelang'){
                 // jump to current step using new language, processing POST values
-                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, true);  // do process the POST data
+                $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, true);  // do process the POST data
             }
 
             if (isNumericInt($move) && $this->aSurveyInfo['questionindex'] == 1){
                 $move = $this->move = (int) $move;
 
                 if ($move > 0 && (($move <= $_SESSION[$this->LEMsessid]['step']) || (isset($_SESSION[$this->LEMsessid]['maxstep']) && $move <= $_SESSION[$this->LEMsessid]['maxstep']))){
-                    $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false);
+                    $this->moveResult = LimeExpressionManager::JumpTo($move, false);
                 }
             }
             elseif ( isNumericInt($move) && $this->aSurveyInfo['questionindex'] == 2){
                 $move       = $this->move       = (int) $move;
-                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
+                $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
             }
 
-            if ( ! $moveResult && !($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0)){
+            if ( ! $this->moveResult && !($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0)){
                 // Just in case not set via any other means, but don't do this if it is the welcome page
-                $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
+                $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
                 $this->LEMskipReprocessing = true;
             }
         }
@@ -919,27 +917,25 @@ class SurveyRuntimeHelper {
     {
         // retrieve datas from local
         $move          = $this->move;
-        $moveResult    = $this->moveResult;
 
-        // Reload at first page (welcome after click previous fill an empty $moveResult array
-        if ( $moveResult && isset($moveResult['seq']) ){
+        // Reload at first page (welcome after click previous fill an empty $this->moveResult array
+        if ( $this->moveResult && isset($this->moveResult['seq']) ){
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             // we already done if move == 'movesubmit', don't do it again
-            if($moveResult['finished'] == true && $move != 'movesubmit' && $this->thissurvey['questionindex']==2){
+            if($this->moveResult['finished'] == true && $move != 'movesubmit' && $this->thissurvey['questionindex']==2){
                 //LimeExpressionManager::JumpTo(-1, false, false, true);
                 LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions);
-                $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
-                if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs'])){
-                    $moveResult['finished'] = true;
-                    $this->moveResult = $moveResult;
+                $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
+                if(!$this->moveResult['mandViolation'] && $this->moveResult['valid'] && empty($this->moveResult['invalidSQs'])){
+                    $this->moveResult['finished'] = true;
                 }
             }
 
-            if ($moveResult['finished'] == true){
+            if ($this->moveResult['finished'] == true){
                 $move = $this->move = 'movesubmit';
             }
 
-            if ($move == "movesubmit" && $moveResult['finished'] == false){
+            if ($move == "movesubmit" && $this->moveResult['finished'] == false){
                 // then there are errors, so don't finalize the survey
                 $move            = $this->move            = "movenext"; // so will re-display the survey
                 $invalidLastPage = $this->invalidLastPage = true;
@@ -952,12 +948,11 @@ class SurveyRuntimeHelper {
      */
     private function setStep()
     {
-        $moveResult    = $this->moveResult;
 
-        if ( $moveResult && isset($moveResult['seq']) ){
-            if ($moveResult['finished'] != true){
-                $_SESSION[$this->LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1
-                $stepInfo                     = $this->stepInfo =  LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+        if ( $this->moveResult && isset($this->moveResult['seq']) ){
+            if ($this->moveResult['finished'] != true){
+                $_SESSION[$this->LEMsessid]['step'] = $this->moveResult['seq'] + 1;  // step is index base 1
+                $stepInfo                     = $this->stepInfo =  LimeExpressionManager::GetStepIndexInfo($this->moveResult['seq']);
             }
         }
     }
@@ -989,7 +984,7 @@ class SurveyRuntimeHelper {
             $bTokenAnswerPersitance = $this->aSurveyInfo['tokenanswerspersistence'] == 'Y' && $this->iSurveyid!=null && tableExists('tokens_'.$this->iSurveyid);
 
             // must do this here to process the POSTed values
-            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false);   // by jumping to current step, saves data so far
+            $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false);   // by jumping to current step, saves data so far
 
             if (!isset($_SESSION[$this->LEMsessid]['scid']) && !$bTokenAnswerPersitance ){
                 Yii::import("application.libraries.Save");
@@ -1040,7 +1035,7 @@ class SurveyRuntimeHelper {
                 Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($this->sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$this->aSurveyInfo), false);
             }
 
-            $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
+            $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
             $this->LEMskipReprocessing = true;
         }
     }
@@ -1051,21 +1046,18 @@ class SurveyRuntimeHelper {
      */
     private function setNotAnsweredAndNotValidated()
     {
-        // retrieve datas from local variable
-        $moveResult    = $this->moveResult;
-
         global $notanswered;
         $this->notvalidated = $notanswered;
 
-        if (!$moveResult['finished']){
-            $unansweredSQList = $this->unansweredSQList = $moveResult['unansweredSQs'];
+        if (!$this->moveResult['finished']){
+            $unansweredSQList = $this->unansweredSQList = $this->moveResult['unansweredSQs'];
             if (strlen($unansweredSQList) > 0){
                 $notanswered = $this->notanswered =explode('|', $unansweredSQList);
             }else{
                 $notanswered = $this->notanswered = array();
             }
             //CHECK INPUT
-            $invalidSQList = $this->invalidSQList = $moveResult['invalidSQs'];
+            $invalidSQList = $this->invalidSQList = $this->moveResult['invalidSQs'];
             if (strlen($invalidSQList) > 0){
                 $notvalidated = $this->notvalidated = explode('|', $invalidSQList);
             }else{
@@ -1081,7 +1073,6 @@ class SurveyRuntimeHelper {
     {
         // retrieve datas from local variable
         $move              = $this->move;
-        $moveResult        = $this->moveResult;
 
         if ($move == "movesubmit"){
 
@@ -1184,7 +1175,7 @@ class SurveyRuntimeHelper {
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
             if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
                 $this->aSurveyInfo['aLEM']['debugvalidation']['show']   = true;
-                $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = $moveResult['message'];
+                $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = $this->moveResult['message'];
             }
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false; $this->aSurveyInfo['aLEM']['debugvalidation']['message'] = '';
@@ -1194,7 +1185,7 @@ class SurveyRuntimeHelper {
             }
 
             if ((($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)){
-                $this->aSurveyInfo['aLEM']['debugvalidation']['message'] .= "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
+                $this->aSurveyInfo['aLEM']['debugvalidation']['message'] .= "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $this->moveResult['message'] . "</td></tr></table>\n";
             }
 
             // The session cannot be killed until the page is completely rendered
@@ -1766,15 +1757,15 @@ class SurveyRuntimeHelper {
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath );
             }
 
-            $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
-            if (is_null($moveResult)){
+            $this->moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
+            if (is_null($this->moveResult)){
                 $sMessage = gT('This group contains no questions.  You must add questions to this group before you can preview it');
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath );
             }
 
-            $_SESSION[$this->LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
+            $_SESSION[$this->LEMsessid]['step'] = $this->moveResult['seq'] + 1;  // step is index base 1?
 
-            $stepInfo         = $this->stepInfo         = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+            $stepInfo         = $this->stepInfo         = LimeExpressionManager::GetStepIndexInfo($this->moveResult['seq']);
             $gid              = $this->gid              = $stepInfo['gid'];
             $groupname        = $this->groupname        = $stepInfo['gname'];
             $groupdescription = $this->groupdescription = $stepInfo['gtext'];
@@ -1783,8 +1774,8 @@ class SurveyRuntimeHelper {
                 $_qid       = sanitize_int($param['qid']);
                 LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $this->aSurveyOptions, false, $this->LEMdebugLevel);
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
-                $moveResult = $this->moveResult= LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                $stepInfo   = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                $this->moveResult= LimeExpressionManager::JumpTo($qSec+1,true,false,true);
+                $stepInfo   = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($this->moveResult['seq']);
         }
     }
 
@@ -1804,7 +1795,7 @@ class SurveyRuntimeHelper {
             else if ($this->sSurveyMode != 'survey')
             {
                 if ($this->sSurveyMode != 'group'){
-                    $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                    $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($this->moveResult['seq']);
                 }
 
                 $this->gid              = $stepInfo['gid'];
