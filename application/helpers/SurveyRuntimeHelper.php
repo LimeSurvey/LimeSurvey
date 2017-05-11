@@ -46,7 +46,6 @@ class SurveyRuntimeHelper {
     private $bShowEmptyGroup        = false;                                    // True only when $_SESSION[$this->LEMsessid]['step'] == 0 ; Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
     private $sSurveyMode;                                                       // {Group By Group,  All in one, Question by question}
     private $aSurveyOptions;                                                    // Few options comming from thissurvey, App->getConfig, LEM. Could be replaced by $oSurvey + relations ; the one coming from LEM and getConfig should be public variable on the surveyModel, set via public methods (active, allowsave, anonymized, assessments, datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings, surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
-    private $assessments;                                                       // Is assement used? Same...
     private $sLangCode;                                                         // Current language code
 
     // moves
@@ -565,7 +564,6 @@ class SurveyRuntimeHelper {
             'show_empty_group'       => $this->bShowEmptyGroup       ,
             'surveyMode'             => $this->sSurveyMode             ,
             'surveyOptions'          => $this->aSurveyOptions          ,
-            'assessments'            => $this->assessments            ,
             'moveResult'             => $this->moveResult             ,
             'move'                   => $this->move                   ,
             'stepInfo'               => $this->stepInfo               ,
@@ -1090,12 +1088,11 @@ class SurveyRuntimeHelper {
             if ($this->aSurveyInfo['active'] != "Y"){
 
                 sendCacheHeaders();
-                //Check for assessments
 
-                // TODO: TWIG ASSESSMENTS !!!!!
+                //Check for assessments
                 if ($this->aSurveyInfo['assessments'] == "Y"){
                     $this->aSurveyInfo['aAssessments']['show'] = true;
-                    $this->aSurveyInfo['aAssessments'] = $this->assessments = doAssessment($this->iSurveyid, true);
+                    $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid, true);
                 }
 
                 $redata = compact(array_keys(get_defined_vars()));
@@ -1118,9 +1115,7 @@ class SurveyRuntimeHelper {
                 $this->aSurveyInfo['aAssessments']['show'] = false;
                 if ($this->aSurveyInfo['assessments'] == "Y"){
                     $this->aSurveyInfo['aAssessments']['show'] = true;
-
-                    //$assessments = $this->assessments = doAssessment($this->iSurveyid);
-                    $this->aSurveyInfo['aAssessments'] = $this->assessments = doAssessment($this->iSurveyid, true);
+                    $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid, true);
                 }
 
                 // End text
@@ -1232,7 +1227,6 @@ class SurveyRuntimeHelper {
         $this->bShowEmptyGroup        = isset( $show_empty_group       )?$show_empty_group       :null ;
         $this->sSurveyMode            = isset( $surveyMode             )?$surveyMode             :null ;
         $this->aSurveyOptions         = isset( $surveyOptions          )?$surveyOptions          :null ;
-        $this->assessments            = isset( $assessments            )?$assessments            :null ;
         $this->moveResult             = isset( $moveResult             )?$moveResult             :null ;
         $this->move                   = isset( $move                   )?$move                   :null ;
         $this->invalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
