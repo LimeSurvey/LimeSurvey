@@ -61,7 +61,7 @@ class SurveyRuntimeHelper {
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
     // They could probably be merged.
     private $backpopup              = false;                                    // "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
-    private $popup;                                                             // savedcontrol, mandatory_popup
+    private $popup                  = false;                                    // savedcontrol, mandatory_popup
     private $notvalidated;                                                      // question validation error
 
     // response
@@ -200,7 +200,7 @@ class SurveyRuntimeHelper {
                     //Display the "mandatory" popup if necessary
                     // TMSW - get question-level error messages - don't call **_popup() directly
                     if ($okToShowErrors && $stepInfo['mandViolation']){
-                        list($mandatorypopup, $popup) = mandatory_popup($ia, $notanswered);
+                        list($mandatorypopup, $this->popup) = mandatory_popup($ia, $notanswered);
                     }
 
                     //Display the "validation" popup if necessary
@@ -277,15 +277,14 @@ class SurveyRuntimeHelper {
         // Show question code/number
         $thissurvey['aShow'] = $this->getShowNumAndCode($thissurvey);
 
-        $popup = $this->popup;
         $aPopup=array(); // We can move this part where we want now
 
         if ($this->backpopup != false){
             $aPopup[]=$this->backpopup;// If user click reload: no need other popup
         }else{
 
-            if (isset($popup)){
-                $aPopup[]=$popup;
+            if ($this->popup != false){
+                $aPopup[] = $this->popup;
             }
 
             if (isset($vpopup)){
@@ -582,7 +581,6 @@ class SurveyRuntimeHelper {
             'move'                   => $this->move                   ,
             'stepInfo'               => $this->stepInfo               ,
             'invalidLastPage'        => $this->invalidLastPage        ,
-            'backpopup'              => $this->backpopup              ,
             'popup'                  => $this->popup                  ,
             'oResponse'              => $this->oResponse              ,
             'unansweredSQList'       => $this->unansweredSQList       ,
@@ -1307,8 +1305,6 @@ class SurveyRuntimeHelper {
         $this->moveResult             = isset( $moveResult             )?$moveResult             :null ;
         $this->move                   = isset( $move                   )?$move                   :null ;
         $this->invalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
-        $this->backpopup              = isset( $backpopup              )?$backpopup              :null ;
-        $this->popup                  = isset( $popup                  )?$popup                  :null ;
         $this->oResponse              = isset( $oResponse              )?$oResponse              :null ;
         $this->unansweredSQList       = isset( $unansweredSQList       )?$unansweredSQList       :null ;
         $this->notanswered            = isset( $notanswered            )?$notanswered            :null ;
