@@ -438,7 +438,8 @@ class SurveyRuntimeHelper {
             $_SESSION[$LEMsessid]['LEMpostKey']  = mt_rand();
             $thissurvey['hiddenInputs']         .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION[$LEMsessid]['LEMpostKey']}' id='LEMpostKey' />\n";
 
-            if (isset($token) && !empty($token)){
+            global $token;
+            if ($token){
                 $thissurvey['hiddenInputs'] .=  "\n<input type='hidden' name='token' value='$token' id='token' />\n";
             }
         }
