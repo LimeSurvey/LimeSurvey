@@ -1854,10 +1854,7 @@ class SurveyRuntimeHelper {
                 renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
             }
 
-            // TODO: remove this useless test
-            if (isset($moveResult)){
-                $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
-            }
+            $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
 
             $stepInfo         = $this->stepInfo         = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
             $gid              = $this->gid              = $stepInfo['gid'];
