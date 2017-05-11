@@ -46,7 +46,6 @@ class SurveyRuntimeHelper {
     private $bShowEmptyGroup        = false;                                    // True only when $_SESSION[$this->LEMsessid]['step'] == 0 ; Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
     private $sSurveyMode;                                                       // {Group By Group,  All in one, Question by question}
     private $aSurveyOptions;                                                    // Few options comming from thissurvey, App->getConfig, LEM. Could be replaced by $oSurvey + relations ; the one coming from LEM and getConfig should be public variable on the surveyModel, set via public methods (active, allowsave, anonymized, assessments, datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings, surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
-    private $bTokenAnswerPersitance;                                            // Are token used? Same...
     private $bTokensexist;
     private $assessments;                                                       // Is assement used? Same...
     private $sLangCode;                                                         // Current language code
@@ -567,7 +566,6 @@ class SurveyRuntimeHelper {
             'show_empty_group'       => $this->bShowEmptyGroup       ,
             'surveyMode'             => $this->sSurveyMode             ,
             'surveyOptions'          => $this->aSurveyOptions          ,
-            'bTokenAnswerPersitance' => $this->bTokenAnswerPersitance ,
             'assessments'            => $this->assessments            ,
             'moveResult'             => $this->moveResult             ,
             'move'                   => $this->move                   ,
@@ -990,7 +988,7 @@ class SurveyRuntimeHelper {
         // TODO FIXME
          // Don't test if save is allowed
         if ($this->aSurveyInfo['active'] == "Y" && Yii::app()->request->getPost('saveall')){
-            $bTokenAnswerPersitance = $this->bTokenAnswerPersitance = $this->aSurveyInfo['tokenanswerspersistence'] == 'Y' && $this->iSurveyid!=null && tableExists('tokens_'.$this->iSurveyid);
+            $bTokenAnswerPersitance = $this->aSurveyInfo['tokenanswerspersistence'] == 'Y' && $this->iSurveyid!=null && tableExists('tokens_'.$this->iSurveyid);
 
             // must do this here to process the POSTed values
             $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false);   // by jumping to current step, saves data so far
@@ -1234,7 +1232,6 @@ class SurveyRuntimeHelper {
         $this->bShowEmptyGroup       = isset( $show_empty_group       )?$show_empty_group       :null ;
         $this->sSurveyMode             = isset( $surveyMode             )?$surveyMode             :null ;
         $this->aSurveyOptions          = isset( $surveyOptions          )?$surveyOptions          :null ;
-        $this->bTokenAnswerPersitance = isset( $bTokenAnswerPersitance )?$bTokenAnswerPersitance :null ;
         $this->assessments            = isset( $assessments            )?$assessments            :null ;
         $this->moveResult             = isset( $moveResult             )?$moveResult             :null ;
         $this->move                   = isset( $move                   )?$move                   :null ;
