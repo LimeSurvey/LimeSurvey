@@ -49,9 +49,9 @@ class SurveyRuntimeHelper {
     private $sLangCode;                                                         // Current language code
 
     // moves
-    private $aMoveResult            = false;                                     // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
+    private $aMoveResult            = false;                                    // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
     private $move                   = null;                                     // The move requested by user. Set by frontend_helper::getMove() from the POST request.
-    private $invalidLastPage        = false;                                    // Just a variable used to check if user submitted a survey while it's not finished. Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
+    private $bInvalidLastPage       = false;                                    // Just a variable used to check if user submitted a survey while it's not finished. Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
     private $stepInfo;
 
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
@@ -132,7 +132,7 @@ class SurveyRuntimeHelper {
         //PRESENT SURVEY
         //******************************************************************************************************
 
-        $this->okToShowErrors = $okToShowErrors = (!($this->previewgrp || $this->previewquestion) && ($this->invalidLastPage || $_SESSION[$this->LEMsessid]['prevstep'] == $_SESSION[$this->LEMsessid]['step']));
+        $this->okToShowErrors = $okToShowErrors = (!($this->previewgrp || $this->previewquestion) && ($this->bInvalidLastPage || $_SESSION[$this->LEMsessid]['prevstep'] == $_SESSION[$this->LEMsessid]['step']));
 
         Yii::app()->getController()->loadHelper('qanda');
         setNoAnswerMode($this->aSurveyInfo);
@@ -567,7 +567,7 @@ class SurveyRuntimeHelper {
             'moveResult'             => $this->aMoveResult             ,
             'move'                   => $this->move                   ,
             'stepInfo'               => $this->stepInfo               ,
-            'invalidLastPage'        => $this->invalidLastPage        ,
+            'invalidLastPage'        => $this->bInvalidLastPage        ,
             'popup'                  => $this->popup                  ,
             'oResponse'              => $this->oResponse              ,
             'unansweredSQList'       => $this->unansweredSQList       ,
@@ -779,7 +779,7 @@ class SurveyRuntimeHelper {
                 // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
                 $this->LEMskipReprocessing = true;
                 $this->move                = "movenext"; // so will re-display the survey
-                $this->invalidLastPage     = true;
+                $this->bInvalidLastPage     = true;
                 $this->backpopup           =  gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");    // TODO: twig
             }
         }
@@ -926,8 +926,8 @@ class SurveyRuntimeHelper {
 
             if ($this->sMove == "movesubmit" && $this->aMoveResult['finished'] == false){
                 // then there are errors, so don't finalize the survey
-                $this->sMove            = "movenext"; // so will re-display the survey
-                $invalidLastPage = $this->invalidLastPage = true;
+                $this->sMove           = "movenext"; // so will re-display the survey
+                $this->bInvalidLastPage = true;
             }
         }
     }
@@ -1206,7 +1206,7 @@ class SurveyRuntimeHelper {
         $this->aSurveyOptions         = isset( $surveyOptions          )?$surveyOptions          :null ;
         $this->aMoveResult            = isset( $moveResult             )?$moveResult             :null ;
         $this->sMove                  = isset( $move                   )?$move                   :null ;
-        $this->invalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
+        $this->bInvalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
         $this->oResponse              = isset( $oResponse              )?$oResponse              :null ;
         $this->unansweredSQList       = isset( $unansweredSQList       )?$unansweredSQList       :null ;
         $this->notanswered            = isset( $notanswered            )?$notanswered            :null ;
