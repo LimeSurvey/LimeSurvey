@@ -137,7 +137,7 @@ class SurveyRuntimeHelper {
         //PRESENT SURVEY
         //******************************************************************************************************
 
-        $this->okToShowErrors = $okToShowErrors = (!($previewgrp || $previewquestion) && ($this->invalidLastPage || $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['step']));
+        $this->okToShowErrors = $okToShowErrors = (!($previewgrp || $this->previewquestion) && ($this->invalidLastPage || $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['step']));
 
         Yii::app()->getController()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
@@ -240,7 +240,7 @@ class SurveyRuntimeHelper {
         $thissurvey['aQuestionIndex']['bShow'] = false;
 
         if ($thissurvey['questionindex']){
-            if(!$previewquestion && !$previewgrp){
+            if(!$this->previewquestion && !$previewgrp){
                 $thissurvey['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
 
                 if($thissurvey['questionindex'] > 1){
@@ -344,7 +344,7 @@ class SurveyRuntimeHelper {
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
-            $aGroup['showdescription']  = (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_);
+            $aGroup['showdescription']  = (!$this->previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_);
             $aGroup['description']      = $redata['groupdescription'];
 
             // one entry per QID
@@ -430,7 +430,7 @@ class SurveyRuntimeHelper {
         $thissurvey['aNavigator']         = array();
         $thissurvey['aNavigator']['show'] = $aNavigator['show'] = $thissurvey['aNavigator']['save']['show'] = $thissurvey['aNavigator']['load']['show'] = false;
 
-        if (!$previewgrp && !$previewquestion){
+        if (!$previewgrp && !$this->previewquestion){
             $thissurvey['aNavigator']            = getNavigatorDatas();
             $thissurvey['hiddenInputs']          = "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
             $thissurvey['hiddenInputs']         .= "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
@@ -1818,7 +1818,7 @@ class SurveyRuntimeHelper {
         $surveyMode                 = $this->surveyMode      = $this->getSurveyMode();
         $surveyOptions              = $this->surveyOptions   = $this->getSurveyOptions();
         $previewgrp                 = $this->previewgrp      = ($surveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $previewquestion            = $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $this->previewquestion = ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
         $preview                    = $this->preview         = ($previewquestion || $previewgrp);
         $sLangCode                  = $this->sLangCode       = App()->language;
         $show_empty_group           = $this->show_empty_group;
