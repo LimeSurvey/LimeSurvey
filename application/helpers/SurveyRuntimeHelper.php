@@ -1705,6 +1705,9 @@ class SurveyRuntimeHelper {
             $aEnterTokenData['bNewTest'] =  true;
         }
 
+        // TODO: check with markus why $loadall, it's never ever defined, even in master branch
+
+        /*
         // If this is a direct Reload previous answers URL, then add hidden fields
         if (isset($loadall) && isset($scid) && isset($loadname) && isset($loadpass)) {
             $aEnterTokenData['bDirectReload'] =  true;
@@ -1712,6 +1715,7 @@ class SurveyRuntimeHelper {
             $aEnterTokenData['sLoadname'] =  htmlspecialchars($loadname);
             $aEnterTokenData['sLoadpass'] =  htmlspecialchars($loadpass);
         }
+        */
 
         $aEnterErrors=array();
         // Scenario => Token required
