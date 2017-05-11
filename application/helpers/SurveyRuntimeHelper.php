@@ -144,6 +144,7 @@ class SurveyRuntimeHelper {
 
         //Iterate through the questions about to be displayed:
         $inputnames = array();
+        $vpopup     = false;
 
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl){
             $gid     = $gl['gid'];
@@ -287,7 +288,7 @@ class SurveyRuntimeHelper {
                 $aPopup[] = $this->popup;
             }
 
-            if (isset($vpopup)){
+            if ( $vpopup != false ){
                 $aPopup[]=$vpopup;
             }
 
