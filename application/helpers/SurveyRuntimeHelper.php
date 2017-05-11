@@ -566,7 +566,6 @@ class SurveyRuntimeHelper {
     private function getArgs()
     {
         $aPrivateVariables = array(
-            'LEMskipReprocessing'    => $this->LEMskipReprocessing    ,
             'thissurvey'             => $this->thissurvey             ,
             'surveyid '              => $this->surveyid               ,
             'show_empty_group'       => $this->show_empty_group       ,
@@ -683,9 +682,7 @@ class SurveyRuntimeHelper {
     /**
      * Retreives dew options comming from thissurvey, App->getConfig, LEM.
      * TODO: move to survey model
-     *
-     * @param array $thissurvey     an array containing all the survey needed infos
-     * @param int   $LEMdebugLevel  customizable debugging for Lime Expression Manager
+     *     
      */
     private function getSurveyOptions()
     {
@@ -694,7 +691,6 @@ class SurveyRuntimeHelper {
         $LEMsessid     = $this->LEMsessid;
         $radix         = $this->getRadix($thissurvey);
         $timeadjust    = Yii::app()->getConfig("timeadjust");
-        $LEMdebugLevel = $this->LEMdebugLevel;
         $thissurvey    = $this->thissurvey;
 
         $surveyOptions = array(
@@ -704,7 +700,7 @@ class SurveyRuntimeHelper {
             'assessments'                 => ($thissurvey['assessments'] == 'Y'),
             'datestamp'                   => ($thissurvey['datestamp'] == 'Y'),
             'deletenonvalues'             => Yii::app()->getConfig('deletenonvalues'),
-            'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
+            'hyperlinkSyntaxHighlighting' => (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
             'ipaddr'                      => ($thissurvey['ipaddr'] == 'Y'),
             'radix'                       => $radix,
             'refurl'                      => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : NULL),
@@ -1153,7 +1149,6 @@ class SurveyRuntimeHelper {
         $move              = $this->move;
         $moveResult        = $this->moveResult;
         $LEMsessid         = $this->LEMsessid;
-        $LEMdebugLevel     = $this->LEMdebugLevel;
         $thissurvey        = $this->thissurvey;
         $sTemplateViewPath = $this->sTemplateViewPath;
 
@@ -1259,18 +1254,18 @@ class SurveyRuntimeHelper {
 
 
             $thissurvey['aLEM']['debugvalidation']['show'] = false;
-            if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
+            if (($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY){
                 $thissurvey['aLEM']['debugvalidation']['show']   = true;
                 $thissurvey['aLEM']['debugvalidation']['message'] = $moveResult['message'];
             }
 
             $thissurvey['aLEM']['debugvalidation']['show'] = false; $thissurvey['aLEM']['debugvalidation']['message'] = '';
-            if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)){
+            if ((($this->LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)){
                 $thissurvey['aLEM']['debugvalidation']['show']     = true;
                 $thissurvey['aLEM']['debugvalidation']['message'] .= LimeExpressionManager::GetDebugTimingMessage();;
             }
 
-            if ((($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)){
+            if ((($this->LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)){
                 $thissurvey['aLEM']['debugvalidation']['message'] .= "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
             }
 
