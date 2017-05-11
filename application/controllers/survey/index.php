@@ -48,8 +48,8 @@ class index extends CAction {
             $thissurvey = getSurveyInfo($surveyid);
 
         // unused vars in this method (used in methods using compacted method vars)
-        @$loadname = $param['loadname'];
-        @$loadpass = $param['loadpass'];
+        $loadname = $param['loadname'];
+        $loadpass = $param['loadpass'];
         $sitename = Yii::app()->getConfig('sitename');
 
         if (isset($param['newtest']) && $param['newtest'] == "Y"){
