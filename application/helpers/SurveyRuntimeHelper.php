@@ -70,7 +70,7 @@ class SurveyRuntimeHelper {
     private $notanswered;                                                       // A global variable...Should be $oResponse->notanswered
     private $unansweredSQList;                                                  // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
     private $invalidSQList;                                                     // Invalid answered, fed from $moveResult(LEM). Its logic should be in Response model.
-    private $filenotvalidated;                                                  // Same, but specific to file question type. (seems to be problematic by the past)
+    private $filenotvalidated       = false;                                    // Same, but specific to file question type. (seems to be problematic by the past)
 
     // strings
     private $completed;                                                         // The string containing the completed message
@@ -209,8 +209,8 @@ class SurveyRuntimeHelper {
                     }
 
                     // Display the "file validation" popup if necessary
-                    if ($okToShowErrors && isset($filenotvalidated)){
-                        list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
+                    if ($okToShowErrors && ($this->filenotvalidated !== false) ){
+                        list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $this->filenotvalidated);
                     }
                 }
 
