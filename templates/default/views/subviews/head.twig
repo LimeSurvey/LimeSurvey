@@ -15,6 +15,10 @@
     Most of the time, it will not the right place to add your own JS/CSS. Use the config.xml file for that.
 #}
 
+{{ registerScript('activateConfirmLanguage',"$.extend(LSvar.lang," ~ aSurveyInfo.jYesNo ~ ")", "POS_BEGIN") }}
+{{ registerScript('activateActionLink',"activateActionLink();", "POS_END") }}
+{{ registerScript('activateConfirmButton',"activateConfirmButton();", "POS_END") }}
+
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />

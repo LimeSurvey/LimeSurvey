@@ -444,9 +444,7 @@ class SurveyRuntimeHelper {
         }
 
         // For "clear all" buttons
-        App()->getClientScript()->registerScript("activateConfirmLanguage","$.extend(LSvar.lang,".ls_json_encode(array('yes'=>gT("Yes"),'no'=>gT("No"))).")",CClientScript::POS_BEGIN);
-        App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
-        App()->getClientScript()->registerScript("activateConfirmButton","activateConfirmButton();\n",CClientScript::POS_END);
+        $thissurvey['jYesNo'] = ls_json_encode(array('yes'=>gT("Yes"),'no'=>gT("No")));
 
         $thissurvey['aLEM']['debugtimming']['show'] = false;
 
@@ -1600,7 +1598,7 @@ class SurveyRuntimeHelper {
 
             global $token;
             if($token){
-                $restartparam['token']=sanitize_token($token);
+                $restartparam['token'] = sanitize_token($token);
             }
 
             if (Yii::app()->request->getQuery('lang')){
