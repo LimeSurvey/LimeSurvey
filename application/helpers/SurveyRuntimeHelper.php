@@ -1547,8 +1547,7 @@ class SurveyRuntimeHelper {
     private function showTokenOrCaptchaFormsIfNeeded()
     {
         $this->iSurveyid   = $this->aSurveyInfo['sid'];
-        $sLangCode  = App()->language;
-        $preview    = $this->preview;
+        $preview           = $this->preview;
 
         // Template settings
         $oTemplate         = $this->template;
@@ -1621,7 +1620,7 @@ class SurveyRuntimeHelper {
         $aEnterTokenData['bNewTest']        =  false;
         $aEnterTokenData['bDirectReload']   =  false;
         $aEnterTokenData['iSurveyId']       = $this->iSurveyid;
-        $aEnterTokenData['sLangCode']       = $sLangCode;
+        $aEnterTokenData['sLangCode']       = App()->language;
 
         if (isset($_GET['bNewTest']) && $_GET['newtest'] == "Y"){
             $aEnterTokenData['bNewTest'] =  true;
@@ -1739,8 +1738,8 @@ class SurveyRuntimeHelper {
 
         $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $this->previewquestion = ($this->sSurveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
-        $preview                    = $this->preview         = ($this->previewquestion || $this->previewgrp);
-        $sLangCode                  = $this->sLangCode       = App()->language;
+        $preview               = $this->preview         = ($this->previewquestion || $this->previewgrp);
+        $this->sLangCode       = App()->language;
     }
 
     private function setPreview()
