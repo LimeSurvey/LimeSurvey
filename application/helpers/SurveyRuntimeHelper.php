@@ -46,7 +46,6 @@ class SurveyRuntimeHelper {
     private $bShowEmptyGroup        = false;                                    // True only when $_SESSION[$this->LEMsessid]['step'] == 0 ; Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
     private $sSurveyMode;                                                       // {Group By Group,  All in one, Question by question}
     private $aSurveyOptions;                                                    // Few options comming from thissurvey, App->getConfig, LEM. Could be replaced by $oSurvey + relations ; the one coming from LEM and getConfig should be public variable on the surveyModel, set via public methods (active, allowsave, anonymized, assessments, datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings, surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
-    private $bTokensexist;
     private $assessments;                                                       // Is assement used? Same...
     private $sLangCode;                                                         // Current language code
 
@@ -619,7 +618,8 @@ class SurveyRuntimeHelper {
             //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
             //don't use cookies if tokens are being used
             if ($this->aSurveyInfo['active'] == "Y"){
-                if ($this->aSurveyInfo['usecookie'] == "Y" && $this->bTokensexist != 1) {
+                global $tokensexist;
+                if ($this->aSurveyInfo['usecookie'] == "Y" && $tokensexist != 1) {
                     setcookie("LS_" . $this->iSurveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
                 }
             }
@@ -1228,10 +1228,10 @@ class SurveyRuntimeHelper {
         // Todo: check which ones are really needed
         $this->LEMskipReprocessing    = isset( $LEMskipReprocessing    )?$LEMskipReprocessing    :null ;
         $this->thissurvey             = isset( $thissurvey             )?$thissurvey             :null ;
-        $this->iSurveyid               = isset( $surveyid               )?$surveyid               :null ;
-        $this->bShowEmptyGroup       = isset( $show_empty_group       )?$show_empty_group       :null ;
-        $this->sSurveyMode             = isset( $surveyMode             )?$surveyMode             :null ;
-        $this->aSurveyOptions          = isset( $surveyOptions          )?$surveyOptions          :null ;
+        $this->iSurveyid              = isset( $surveyid               )?$surveyid               :null ;
+        $this->bShowEmptyGroup        = isset( $show_empty_group       )?$show_empty_group       :null ;
+        $this->sSurveyMode            = isset( $surveyMode             )?$surveyMode             :null ;
+        $this->aSurveyOptions         = isset( $surveyOptions          )?$surveyOptions          :null ;
         $this->assessments            = isset( $assessments            )?$assessments            :null ;
         $this->moveResult             = isset( $moveResult             )?$moveResult             :null ;
         $this->move                   = isset( $move                   )?$move                   :null ;
@@ -1565,8 +1565,6 @@ class SurveyRuntimeHelper {
         // TODO: find where they are defined before this call
         global $clienttoken;
         global $tokensexist;
-
-        $this->tokensexist =  $tokensexist;
         /**
         * This method has multiple outcomes that virtually do the same thing
         * Possible scenarios/subscenarios are =>
