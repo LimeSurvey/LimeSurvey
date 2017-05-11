@@ -682,7 +682,7 @@ class SurveyRuntimeHelper {
     /**
      * Retreives dew options comming from thissurvey, App->getConfig, LEM.
      * TODO: move to survey model
-     *     
+     *
      */
     private function getSurveyOptions()
     {
@@ -887,7 +887,6 @@ class SurveyRuntimeHelper {
         $surveyOptions          = $this->surveyOptions;
         $LEMsessid              = $this->LEMsessid;
         $move                   = $this->move;
-        $LEMskipReprocessing    = $this->LEMskipReprocessing;
         $moveResult             = false;
 
         if (isset($_SESSION[$LEMsessid]['LEMtokenResume'])){
@@ -902,7 +901,7 @@ class SurveyRuntimeHelper {
             $moveResult = $this->moveResult =  LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
 
             unset($_SESSION[$LEMsessid]['LEMtokenResume']);
-        }else if (!$LEMskipReprocessing){
+        }else if (!$this->LEMskipReprocessing){
 
             //Move current step ###########################################################################
             if ($move == 'moveprev' && ($thissurvey['allowprev'] == 'Y' || $thissurvey['questionindex'] > 0)){
@@ -954,7 +953,7 @@ class SurveyRuntimeHelper {
             if ( ! $moveResult && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0)){
                 // Just in case not set via any other means, but don't do this if it is the welcome page
                 $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
-                $LEMskipReprocessing = $this->LEMskipReprocessing = true;
+                $this->LEMskipReprocessing = true;
             }
         }
     }
@@ -1104,7 +1103,7 @@ class SurveyRuntimeHelper {
             }
 
             $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
-            $LEMskipReprocessing = $this->LEMskipReprocessing = true;
+            $this->LEMskipReprocessing = true;
         }
     }
 
