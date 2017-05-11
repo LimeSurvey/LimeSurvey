@@ -461,7 +461,7 @@ class SurveyRuntimeHelper {
             $thissurvey['aLEM']['debugvalidation']['message'] = $moveResult['message'];
         }
 
-        Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_main.twig"), array('aSurveyInfo'=>$thissurvey), false);
+        Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($this->sTemplateViewPath."layout_main.twig"), array('aSurveyInfo'=>$thissurvey), false);
     }
 
 
@@ -593,7 +593,6 @@ class SurveyRuntimeHelper {
             'groupdescription'       => $this->groupdescription       ,
             'previewgrp'             => $this->previewgrp             ,
             'previewquestion'        => $this->previewquestion        ,
-            'sTemplateViewPath'      => $this->sTemplateViewPath      ,
             'param'                  => $this->param                  ,
         );
         return $aPrivateVariables;
@@ -609,7 +608,6 @@ class SurveyRuntimeHelper {
         $moveResult        = $this->moveResult;
         $LEMsessid         = $this->LEMsessid;
         $thissurvey        = $this->thissurvey;
-        $sTemplateViewPath = $this->sTemplateViewPath;
 
         if ($move == "movesubmit"){
 
@@ -1099,7 +1097,7 @@ class SurveyRuntimeHelper {
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])){
                 $thissurvey['aSaveForm'] = $cSave->getSaveFormDatas($thissurvey['sid']);
-                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
+                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($this->sTemplateViewPath."layout_save.twig"), array('aSurveyInfo'=>$thissurvey), false);
             }
 
             $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
@@ -1149,7 +1147,6 @@ class SurveyRuntimeHelper {
         $moveResult        = $this->moveResult;
         $LEMsessid         = $this->LEMsessid;
         $thissurvey        = $this->thissurvey;
-        $sTemplateViewPath = $this->sTemplateViewPath;
 
         if ($move == "movesubmit"){
 
@@ -1169,7 +1166,7 @@ class SurveyRuntimeHelper {
                 $completed  = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
                 $this->completed = $completed;
 
-                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_submit_preview.twig"), array('aSurveyInfo'=>$thissurvey), false);
+                Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($this->sTemplateViewPath."layout_submit_preview.twig"), array('aSurveyInfo'=>$thissurvey), false);
             }else{
 
                 //Update the token if needed and send a confirmation email
@@ -1273,7 +1270,7 @@ class SurveyRuntimeHelper {
                 killSurveySession($surveyid);
             }
 
-            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($this->sTemplateViewPath."layout_submit.twig"), array('aSurveyInfo'=>$thissurvey), false);
         }
     }
 
@@ -1630,7 +1627,7 @@ class SurveyRuntimeHelper {
         // Template settings
         $oTemplate         = $this->template;
         $sTemplatePath     = $oTemplate->path;
-        $sTemplateViewPath = $oTemplate->viewPath;
+        $this->sTemplateViewPath = $oTemplate->viewPath;
 
 
         // TODO: find where they are defined before this call
@@ -1765,7 +1762,7 @@ class SurveyRuntimeHelper {
         $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
 
         /* This funtion end if an form need to be shown */
-        renderRenderWayForm($renderWay, $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid);
+        renderRenderWayForm($renderWay, $scenarios, $this->sTemplateViewPath, $aEnterTokenData, $surveyid);
 
     }
 
@@ -1773,9 +1770,9 @@ class SurveyRuntimeHelper {
     private function initTemplate()
     {
         $oTemplate         = $this->template          = Template::model()->getInstance('', $this->surveyid);
-        $sTemplateViewPath = $this->sTemplateViewPath = $oTemplate->viewPath;
+        $this->sTemplateViewPath = $oTemplate->viewPath;
         $oTemplate->registerAssets();
-        Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
+        Yii::app()->twigRenderer->setForcedPath($this->sTemplateViewPath);
     }
 
     private function makeLanguageChanger()
@@ -1845,13 +1842,13 @@ class SurveyRuntimeHelper {
 
             if ($gseq == -1){
                 $sMessage = gT('Invalid group number for this survey: ') . $_gid;
-                renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
+                renderError('', $sMessage, $thissurvey, $this->sTemplateViewPath );
             }
 
             $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
             if (is_null($moveResult)){
                 $sMessage = gT('This group contains no questions.  You must add questions to this group before you can preview it');
-                renderError('', $sMessage, $thissurvey, $sTemplateViewPath );
+                renderError('', $sMessage, $thissurvey, $this->sTemplateViewPath );
             }
 
             $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1?
