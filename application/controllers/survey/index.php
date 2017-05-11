@@ -17,12 +17,6 @@ class index extends CAction {
 
     public function run()
     {
-        /*
-         * Instead of manually rendering scripts after this function returns we
-         * use the callback. This ensures that scripts are always rendered, even
-         * if we call exit at some point in the code. (Which we shouldn't, but
-         * it happens.)
-         */
         // Ensure to set some var, but script are replaced in SurveyRuntimeHelper
         $aLSJavascriptVar                  = array();
         $aLSJavascriptVar['bFixNumAuto']   = (int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
@@ -35,16 +29,9 @@ class index extends CAction {
         $aLSJavascriptVar['startPopup']    = new stdClass;
         $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
 
-        // Template configuration
-        $param    = $this->_getParameters(func_get_args(), $_POST);
-        $surveyid = $param['sid'];
-
-        $oTemplate       = Template::model()->getInstance('', $surveyid);
-        $this->oTemplate = $oTemplate;
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-
         useFirebug();
         $this->action();
     }
