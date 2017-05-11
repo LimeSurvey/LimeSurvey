@@ -106,6 +106,20 @@ class LS_Twig_Extension extends Twig_Extension
         );
     }
 
+    /**
+     * Publish a script
+     * In any twig file, you can register a script doing: {{ registerScript($sId, $sScript) }}
+     */
+    public static function registerScript($id, $script, $position=null, array $htmlOptions=array())
+    {
+        $position = self::getPosition($position);
+        Yii::app()->getClientScript()->registerScript(
+            $id,
+            $script,
+            $position,
+            $htmlOptions
+        );
+    }
 
     public static function getPosition($position){
         switch($position) {

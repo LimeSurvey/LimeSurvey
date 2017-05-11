@@ -213,6 +213,7 @@ $internalConfig = array(
                 'registerTemplateCssFile' => 'LS_Twig_Extension::registerTemplateCssFile',
                 'registerGeneralScript'   => 'LS_Twig_Extension::registerGeneralScript',
                 'registerTemplateScript'  => 'LS_Twig_Extension::registerTemplateScript',
+                'registerScript'          => 'LS_Twig_Extension::registerScript',
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
@@ -246,7 +247,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'sprintf', 'gT' ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'sprintf', 'gT' ),
             ),
 
         ),
