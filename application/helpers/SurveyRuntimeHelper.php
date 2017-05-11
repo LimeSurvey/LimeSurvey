@@ -956,7 +956,7 @@ class SurveyRuntimeHelper {
                 $moveResult = $this->moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
             }
 
-            if ( $moveResult && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0)){
+            if ( ! $moveResult && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0)){
                 // Just in case not set via any other means, but don't do this if it is the welcome page
                 $moveResult          = $this->moveResult          = LimeExpressionManager::GetLastMoveResult(true);
                 $LEMskipReprocessing = $this->LEMskipReprocessing = true;
