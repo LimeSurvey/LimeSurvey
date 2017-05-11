@@ -60,7 +60,7 @@ class SurveyRuntimeHelper {
 
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
     // They could probably be merged.
-    private $backpopup;                                                         // "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
+    private $backpopup              = false;                                    // "Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
     private $popup;                                                             // savedcontrol, mandatory_popup
     private $notvalidated;                                                      // question validation error
 
@@ -280,8 +280,8 @@ class SurveyRuntimeHelper {
         $popup = $this->popup;
         $aPopup=array(); // We can move this part where we want now
 
-        if (isset($backpopup)){
-            $aPopup[]=$backpopup;// If user click reload: no need other popup
+        if ($this->backpopup != false){
+            $aPopup[]=$this->backpopup;// If user click reload: no need other popup
         }else{
 
             if (isset($popup)){
