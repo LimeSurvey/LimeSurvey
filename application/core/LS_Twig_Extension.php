@@ -79,6 +79,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerGeneralScript($sGeneralScriptFileName, $position=null, array $htmlOptions=array())
     {
+        $position = self::getPosition($position);
         Yii::app()->getClientScript()->registerScriptFile(
             App()->getConfig('generalscripts') .
             $sGeneralScriptFileName,
@@ -96,12 +97,36 @@ class LS_Twig_Extension extends Twig_Extension
     {
         $oAdminTheme = AdminTheme::getInstance();
 
+        $position = self::getPosition($position);
         Yii::app()->getClientScript()->registerScriptFile(
             $oAdminTheme->sTemplateUrl .
             $sTemplateScriptFileName,
             $position,
             $htmlOptions
         );
+    }
+
+
+    public static function getPosition($position){
+        switch($position) {
+            case "POS_HEAD":
+                $position = CClientScript::POS_HEAD;
+            break;
+
+            case "POS_BEGIN":
+                $position = CClientScript::POS_BEGIN;
+            break;
+
+            case "POS_END":
+                $position = CClientScript::POS_END;
+            break;
+
+            default:
+                $position = '';
+                break;
+        }
+
+        return $position;
     }
 
     /**
