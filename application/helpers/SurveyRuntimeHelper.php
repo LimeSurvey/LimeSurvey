@@ -297,8 +297,7 @@ class SurveyRuntimeHelper {
             }
         }
 
-        Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
-        Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
+        $thissurvey['jPopup'] = json_encode($aPopup);
 
         $bShowpopups                            = Yii::app()->getConfig('showpopups');
         $aErrorHtmlMessage                      = $this->getErrorHtmlMessage();

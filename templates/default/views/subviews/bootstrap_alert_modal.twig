@@ -20,6 +20,10 @@
     http://getbootstrap.com/javascript/#modals
 #}
 
+{# Register script for modal #}
+{{ registerScript('startPopup',"LSvar.startPopups=" ~ aSurveyInfo.jPopup, "POS_HEAD") }}
+{{ registerScript('showStartPopups',"showStartPopups();", "POS_END") }}
+
 <!-- Bootstrap Modal Alert -->
 <div id="bootstrap-alert-box-modal" class="modal fade">
     <div class="modal-dialog">
