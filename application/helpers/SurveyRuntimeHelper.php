@@ -195,7 +195,7 @@ class SurveyRuntimeHelper {
                     //Display the "mandatory" popup if necessary
                     // TMSW - get question-level error messages - don't call **_popup() directly
                     if ($okToShowErrors && $this->aStepInfo['mandViolation']){
-                        list($mandatorypopup, $this->popup) = mandatory_popup($ia, $notanswered);
+                        list($mandatorypopup, $this->popup) = mandatory_popup($ia, $this->notanswered);
                     }
 
                     //Display the "validation" popup if necessary
@@ -1033,14 +1033,16 @@ class SurveyRuntimeHelper {
     private function setNotAnsweredAndNotValidated()
     {
         global $notanswered;
+        // TODO: check that line:
         $this->notvalidated = $notanswered;
+        $this->notanswered  = $notanswered;
 
         if (!$this->aMoveResult['finished']){
             $unansweredSQList = $this->unansweredSQList = $this->aMoveResult['unansweredSQs'];
             if (strlen($unansweredSQList) > 0){
-                $notanswered = $this->notanswered =explode('|', $unansweredSQList);
+                $this->notanswered =explode('|', $unansweredSQList);
             }else{
-                $notanswered = $this->notanswered = array();
+                $this->notanswered = array();
             }
             //CHECK INPUT
             $invalidSQList = $this->invalidSQList = $this->aMoveResult['invalidSQs'];
