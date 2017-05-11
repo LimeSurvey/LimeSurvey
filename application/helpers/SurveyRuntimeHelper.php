@@ -157,10 +157,7 @@ class SurveyRuntimeHelper {
             }
 
             //// To diplay one question, all the questions are processed ?
-            if (!isset($qanda)){
-                $qanda = array();
-            }
-
+            $qanda = array();
             $upload_file = false;
             foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia){
                 ++$qnumber;
