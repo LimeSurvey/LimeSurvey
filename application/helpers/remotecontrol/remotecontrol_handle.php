@@ -1214,8 +1214,8 @@ class remotecontrol_handle
     * @param string $sSessionKey
     * @param int $iSurveyID The ID of the Survey that the question will belong
     * @param int $iGroupID The ID of the Group that the question will belong
-    * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
-    * @param string $sImportDataType  lsq, csv
+    * @param string $sImportData String containing the BASE 64 encoded data of a lsq
+    * @param string $sImportDataType  lsq
     * @param string $sMandatory Optional Mandatory question option (default to No)
     * @param string $sNewQuestionTitle  Optional new title for the question
     * @param string $sNewqQuestion An optional new question
@@ -1243,7 +1243,7 @@ class remotecontrol_handle
                 if($sGroupSurveyID != $iSurveyID)
                     return array('status' => 'Error: Missmatch in surveyid and groupid');
 
-                if (!in_array($sImportDataType,array('csv','lsq'))) return array('status' => 'Invalid extension');
+                if (!strtolower($sImportDataType)=='lsq') return array('status' => 'Invalid extension');
                 libxml_use_internal_errors(true);
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
