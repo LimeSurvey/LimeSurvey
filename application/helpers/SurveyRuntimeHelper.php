@@ -63,7 +63,6 @@ class SurveyRuntimeHelper {
     // response
     // TODO:  To respect object oriented design, all those "states" should be move to Response model, or its related models via relations.
     private $notanswered;                                                       // A global variable...Should be $oResponse->notanswered
-    private $unansweredSQList;                                                  // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
     private $invalidSQList;                                                     // Invalid answered, fed from $moveResult(LEM). Its logic should be in Response model.
     private $filenotvalidated       = false;                                    // Same, but specific to file question type. (seems to be problematic by the past)
 
@@ -569,7 +568,6 @@ class SurveyRuntimeHelper {
             'invalidLastPage'        => $this->bInvalidLastPage        ,
             'popup'                  => $this->popup                  ,
             'oResponse'              => $this->oResponse              ,
-            'unansweredSQList'       => $this->unansweredSQList       ,
             'notanswered'            => $this->notanswered            ,
             'invalidSQList'          => $this->invalidSQList          ,
             'filenotvalidated'       => $this->filenotvalidated       ,
@@ -1038,7 +1036,7 @@ class SurveyRuntimeHelper {
         $this->notanswered  = $notanswered;
 
         if (!$this->aMoveResult['finished']){
-            $unansweredSQList = $this->unansweredSQList = $this->aMoveResult['unansweredSQs'];
+            $unansweredSQList = $this->aMoveResult['unansweredSQs'];            // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
             if (strlen($unansweredSQList) > 0){
                 $this->notanswered =explode('|', $unansweredSQList);
             }else{
@@ -1206,7 +1204,6 @@ class SurveyRuntimeHelper {
         $this->aMoveResult            = isset( $moveResult             )?$moveResult             :null ;
         $this->sMove                  = isset( $move                   )?$move                   :null ;
         $this->bInvalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
-        $this->unansweredSQList       = isset( $unansweredSQList       )?$unansweredSQList       :null ;
         $this->notanswered            = isset( $notanswered            )?$notanswered            :null ;
         $this->invalidSQList          = isset( $invalidSQList          )?$invalidSQList          :null ;
         $this->filenotvalidated       = isset( $filenotvalidated       )?$filenotvalidated       :null ;
