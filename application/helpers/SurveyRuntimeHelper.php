@@ -52,7 +52,7 @@ class SurveyRuntimeHelper {
     private $aMoveResult            = false;                                    // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
     private $move                   = null;                                     // The move requested by user. Set by frontend_helper::getMove() from the POST request.
     private $bInvalidLastPage       = false;                                    // Just a variable used to check if user submitted a survey while it's not finished. Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
-    private $stepInfo;
+    private $aStepInfo;
 
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
     // They could probably be merged.
@@ -146,7 +146,7 @@ class SurveyRuntimeHelper {
             $qnumber = 0;
 
             if ($this->sSurveyMode != 'survey'){
-                $onlyThisGID = $stepInfo['gid'];
+                $onlyThisGID = $this->aStepInfo['gid'];
                 if ($onlyThisGID != $gid){
                     continue;
                 }
@@ -162,7 +162,7 @@ class SurveyRuntimeHelper {
                 // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                 if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)){
 
-                    if ($this->sSurveyMode == 'question' && $ia[0] != $stepInfo['qid']){
+                    if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']){
                         continue;
                     }
 
@@ -195,12 +195,12 @@ class SurveyRuntimeHelper {
 
                     //Display the "mandatory" popup if necessary
                     // TMSW - get question-level error messages - don't call **_popup() directly
-                    if ($okToShowErrors && $stepInfo['mandViolation']){
+                    if ($okToShowErrors && $this->aStepInfo['mandViolation']){
                         list($mandatorypopup, $this->popup) = mandatory_popup($ia, $notanswered);
                     }
 
                     //Display the "validation" popup if necessary
-                    if ($okToShowErrors && !$stepInfo['valid']){
+                    if ($okToShowErrors && !$this->aStepInfo['valid']){
                         list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
                     }
 
@@ -566,7 +566,7 @@ class SurveyRuntimeHelper {
             'surveyOptions'          => $this->aSurveyOptions          ,
             'moveResult'             => $this->aMoveResult             ,
             'move'                   => $this->move                   ,
-            'stepInfo'               => $this->stepInfo               ,
+            'stepInfo'               => $this->aStepInfo               ,
             'invalidLastPage'        => $this->bInvalidLastPage        ,
             'popup'                  => $this->popup                  ,
             'oResponse'              => $this->oResponse              ,
@@ -941,7 +941,7 @@ class SurveyRuntimeHelper {
         if ( $this->aMoveResult && isset($this->aMoveResult['seq']) ){
             if ($this->aMoveResult['finished'] != true){
                 $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1;  // step is index base 1
-                $stepInfo                     = $this->stepInfo =  LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
+                $this->aStepInfo =  LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
             }
         }
     }
@@ -1445,12 +1445,12 @@ class SurveyRuntimeHelper {
         $aErrorsMandatory=array();
 
         //Mandatory question(s) with unanswered answer
-        if ($this->stepInfo['mandViolation'] && $this->okToShowErrors){
+        if ($this->aStepInfo['mandViolation'] && $this->okToShowErrors){
             $aErrorsMandatory[]=gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
         }
 
         // Question(s) with not valid answer(s)
-        if ($this->stepInfo['valid'] && $this->okToShowErrors){
+        if ($this->aStepInfo['valid'] && $this->okToShowErrors){
             $aErrorsMandatory[]=gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
         }
 
@@ -1751,17 +1751,17 @@ class SurveyRuntimeHelper {
 
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1;  // step is index base 1?
 
-            $stepInfo         = $this->stepInfo         = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
-            $gid              = $this->gid              = $stepInfo['gid'];
-            $groupname        = $this->groupname        = $stepInfo['gname'];
-            $groupdescription = $this->groupdescription = $stepInfo['gtext'];
+            $this->aStepInfo         = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
+            $gid              = $this->gid              = $this->aStepInfo['gid'];
+            $groupname        = $this->groupname        = $this->aStepInfo['gname'];
+            $groupdescription = $this->groupdescription = $this->aStepInfo['gtext'];
 
         }elseif($this->sSurveyMode == 'question' && $this->previewquestion){
                 $_qid       = sanitize_int($param['qid']);
                 LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $this->aSurveyOptions, false, $this->LEMdebugLevel);
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                 $this->aMoveResult= LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                $stepInfo   = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
+                $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
         }
     }
 
@@ -1781,12 +1781,12 @@ class SurveyRuntimeHelper {
             else if ($this->sSurveyMode != 'survey')
             {
                 if ($this->sSurveyMode != 'group'){
-                    $stepInfo         = $this->stepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
+                    $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
                 }
 
-                $this->gid              = $stepInfo['gid'];
-                $this->groupname        = $stepInfo['gname'];
-                $this->groupdescription = $stepInfo['gtext'];
+                $this->gid              = $this->aStepInfo['gid'];
+                $this->groupname        = $this->aStepInfo['gname'];
+                $this->groupdescription = $this->aStepInfo['gtext'];
             }
         }
     }
