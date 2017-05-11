@@ -1325,21 +1325,17 @@ class SurveyRuntimeHelper {
 
         if(isset($aSurveyinfo['surveyls_numberformat'])){
             $aLSJavascriptVar                  = array();
-
             $aLSJavascriptVar['bFixNumAuto']   = (int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
             $aLSJavascriptVar['bNumRealValue'] = (int)(bool)Yii::app()->getConfig('bNumRealValue',0);
-
             $aRadix                            = getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']     = $aRadix['separator'];
-
             $aLSJavascriptVar['lang']          = new stdClass; // To add more easily some lang string here
             $aLSJavascriptVar['showpopup']     = (int)Yii::app()->getConfig('showpopups');
-
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
-
-            $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
+            $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
+            App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);                 // Ensure all js var is set before rendering the page (User can click before $.ready)
         }
     }
 

@@ -17,21 +17,6 @@ class index extends CAction {
 
     public function run()
     {
-        // Ensure to set some var, but script are replaced in SurveyRuntimeHelper
-        $aLSJavascriptVar                  = array();
-        $aLSJavascriptVar['bFixNumAuto']   = (int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
-        $aLSJavascriptVar['bNumRealValue'] = (int)(bool)Yii::app()->getConfig('bNumRealValue',0);
-        $aLangData                         = getLanguageData();
-        $aRadix                            = getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);
-        $aLSJavascriptVar['sLEMradix']     = $aRadix['separator'];
-        $aLSJavascriptVar['lang']          = new stdClass;
-        $aLSJavascriptVar['showpopup']     = (int)Yii::app()->getConfig('showpopups');
-        $aLSJavascriptVar['startPopup']    = new stdClass;
-        $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
-
-        App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
-        App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
         useFirebug();
         $this->action();
     }
