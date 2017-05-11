@@ -63,7 +63,6 @@ class SurveyRuntimeHelper {
     // response
     // TODO:  To respect object oriented design, all those "states" should be move to Response model, or its related models via relations.
     private $notanswered;                                                       // A global variable...Should be $oResponse->notanswered
-    private $invalidSQList;                                                     // Invalid answered, fed from $moveResult(LEM). Its logic should be in Response model.
     private $filenotvalidated       = false;                                    // Same, but specific to file question type. (seems to be problematic by the past)
 
     // strings
@@ -1043,7 +1042,7 @@ class SurveyRuntimeHelper {
                 $this->notanswered = array();
             }
             //CHECK INPUT
-            $invalidSQList = $this->invalidSQList = $this->aMoveResult['invalidSQs'];
+            $invalidSQList = $this->aMoveResult['invalidSQs'];                  // Invalid answered, fed from $moveResult(LEM). Its logic should be in Response model.
             if (strlen($invalidSQList) > 0){
                 $this->notvalidated = explode('|', $invalidSQList);
             }else{
@@ -1205,7 +1204,6 @@ class SurveyRuntimeHelper {
         $this->sMove                  = isset( $move                   )?$move                   :null ;
         $this->bInvalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
         $this->notanswered            = isset( $notanswered            )?$notanswered            :null ;
-        $this->invalidSQList          = isset( $invalidSQList          )?$invalidSQList          :null ;
         $this->filenotvalidated       = isset( $filenotvalidated       )?$filenotvalidated       :null ;
         $this->completed              = isset( $completed              )?$completed              :null ;
         $this->blocks                 = isset( $blocks                 )?$blocks                 :null ;
