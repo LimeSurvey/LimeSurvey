@@ -62,7 +62,6 @@ class SurveyRuntimeHelper {
 
     // response
     // TODO:  To respect object oriented design, all those "states" should be move to Response model, or its related models via relations.
-    private $oResponse;                                                         // An instance of the response model.
     private $notanswered;                                                       // A global variable...Should be $oResponse->notanswered
     private $unansweredSQList;                                                  // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
     private $invalidSQList;                                                     // Invalid answered, fed from $moveResult(LEM). Its logic should be in Response model.
@@ -989,8 +988,6 @@ class SurveyRuntimeHelper {
                 $oResponse           = SurveyDynamic::model($this->iSurveyid)->findByPk($iResponseID);
                 $oResponse->lastpage = $_SESSION[$this->LEMsessid]['step'];
                 $oResponse->save();
-
-                $this->oResponse = $oResponse;
             }
         }
     }
@@ -1207,7 +1204,6 @@ class SurveyRuntimeHelper {
         $this->aMoveResult            = isset( $moveResult             )?$moveResult             :null ;
         $this->sMove                  = isset( $move                   )?$move                   :null ;
         $this->bInvalidLastPage        = isset( $invalidLastPage        )?$invalidLastPage        :null ;
-        $this->oResponse              = isset( $oResponse              )?$oResponse              :null ;
         $this->unansweredSQList       = isset( $unansweredSQList       )?$unansweredSQList       :null ;
         $this->notanswered            = isset( $notanswered            )?$notanswered            :null ;
         $this->invalidSQList          = isset( $invalidSQList          )?$invalidSQList          :null ;
