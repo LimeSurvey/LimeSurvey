@@ -3472,6 +3472,8 @@ function getNextCode($sourcecode)
 */
 function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
+    $iOldSurveyID = (int)$iOldSurveyID; 
+    $iNewSurveyID = (int)$iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey')
     {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/'.$iOldSurveyID.'\/)';
@@ -4565,7 +4567,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
             {
-                $sOldCode=preg_quote($sOldCode,'/');
+                $sOldCode=preg_quote($sOldCode,'~');
                 $arQuestion->relevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->relevance,-1,$iCount);
                 $bModified = $bModified || $iCount;
                 $arQuestion->question=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->question,-1,$iCount);
@@ -4583,7 +4585,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
         $bModified=false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
-            $sOldCode=preg_quote($sOldCode,'/');
+            $sOldCode=preg_quote($sOldCode,'~');
             $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
             $bModified = $bModified || $iCount;
             $arGroup->description=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->description,-1,$iCount);
