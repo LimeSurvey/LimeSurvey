@@ -86,13 +86,12 @@ class SurveyRuntimeHelper {
     public function run($surveyid,$args)
     {
         // Survey settings
-        $this->setSurveySettings( $surveyid, $args);                            // All the results of those settings will be available in this function later with $this->getArgs();
+        $this->setSurveySettings( $surveyid, $args);
 
         // Start rendering
         $this->makeLanguageChanger();                                           //  language changer can be used on any entry screen, so it must be set first
 
-        extract($args);                                                         // TODO: Check if still needed at this level
-
+        extract($args);                                                         
         $this->param = $param;
 
         ///////////////////////////////////////////////////////////
@@ -119,10 +118,6 @@ class SurveyRuntimeHelper {
         $this->setGroup();
 
         $this->fixMaxStep();
-
-        // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
-        $aPrivateVariables = $this->getArgs();
-        extract($aPrivateVariables);
 
         //******************************************************************************************************
         //PRESENT SURVEY
@@ -546,38 +541,6 @@ class SurveyRuntimeHelper {
 
     }
 
-    /**
-     * Return an array containing all the private variable, for easy extraction.
-     * It makes easier to move piece of code to methods dispite the use of $redata = compact(array_keys(get_defined_vars()));
-     *
-     * @return array
-     */
-    private function getArgs()
-    {
-        $aPrivateVariables = array(
-            'thissurvey'             => $this->thissurvey             ,
-            'surveyid '              => $this->iSurveyid               ,
-            'show_empty_group'       => $this->bShowEmptyGroup       ,
-            'surveyMode'             => $this->sSurveyMode             ,
-            'surveyOptions'          => $this->aSurveyOptions          ,
-            'moveResult'             => $this->aMoveResult             ,
-            'move'                   => $this->move                   ,
-            'stepInfo'               => $this->aStepInfo               ,
-            'invalidLastPage'        => $this->bInvalidLastPage        ,
-            'popup'                  => $this->popup                  ,
-            'notanswered'            => $this->notanswered            ,
-            'filenotvalidated'       => $this->filenotvalidated       ,
-            'completed'              => $this->completed              ,
-            'notvalidated'           => $this->notvalidated           ,
-            'gid'                    => $this->gid                    ,
-            'groupname'              => $this->groupname              ,
-            'groupdescription'       => $this->groupdescription       ,
-            'previewgrp'             => $this->previewgrp             ,
-            'previewquestion'        => $this->previewquestion        ,
-            'param'                  => $this->param                  ,
-        );
-        return $aPrivateVariables;
-    }
 
     /**
      * Now it's ok ^^
@@ -1191,8 +1154,6 @@ class SurveyRuntimeHelper {
         $this->LEMskipReprocessing    = isset( $LEMskipReprocessing    )?$LEMskipReprocessing    :null ;
         $this->thissurvey             = isset( $thissurvey             )?$thissurvey             :null ;
         $this->iSurveyid              = isset( $surveyid               )?$surveyid               :null ;
-        $this->bShowEmptyGroup        = isset( $show_empty_group       )?$show_empty_group       :null ;
-        $this->sSurveyMode            = isset( $surveyMode             )?$surveyMode             :null ;
         $this->aSurveyOptions         = isset( $surveyOptions          )?$surveyOptions          :null ;
         $this->aMoveResult            = isset( $moveResult             )?$moveResult             :null ;
         $this->sMove                  = isset( $move                   )?$move                   :null ;
@@ -1676,7 +1637,6 @@ class SurveyRuntimeHelper {
     /**
      * This method will set survey values in public property of the class
      * So, any value here set as $this->xxx will be available as $xxx after :
-     * $aPrivateVariables = $this->getArgs(); extract($aPrivateVariables);
      * eg: $this->LEMsessid
      *
      */
@@ -1707,10 +1667,6 @@ class SurveyRuntimeHelper {
 
     private function setPreview()
     {
-        $aPrivateVariables = $this->getArgs();
-        extract($aPrivateVariables);
-
-
         $_SESSION[$this->LEMsessid]['prevstep'] = 2;
         $_SESSION[$this->LEMsessid]['maxstep']  = 0;
 
@@ -1754,8 +1710,6 @@ class SurveyRuntimeHelper {
 
     private function setGroup()
     {
-        $aPrivateVariables = $this->getArgs();
-        extract($aPrivateVariables);
 
         if ( !$this->previewgrp && !$this->previewquestion)
         {
