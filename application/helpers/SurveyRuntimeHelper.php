@@ -91,7 +91,7 @@ class SurveyRuntimeHelper {
         // Start rendering
         $this->makeLanguageChanger();                                           //  language changer can be used on any entry screen, so it must be set first
 
-        extract($args);                                                         
+        extract($args);
         $this->param = $param;
 
         ///////////////////////////////////////////////////////////
@@ -766,7 +766,7 @@ class SurveyRuntimeHelper {
      */
     private function setPrevStep()
     {
-        $_SESSION[$this->LEMsessid]['prevstep'] = (!in_array($this->move,array("clearall","changelang","saveall","reload")))?$_SESSION[$this->LEMsessid]['step']:$this->move; // Accepted $this->sMove without error
+        $_SESSION[$this->LEMsessid]['prevstep'] = (!in_array($this->move,array("clearall","changelang","saveall","reload", null)))?$_SESSION[$this->LEMsessid]['step']:$this->move; // Accepted $this->sMove without error
     }
 
     /**
