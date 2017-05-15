@@ -21,7 +21,7 @@
     <li id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-text-item form-group form-inline' <?php echo $sDisplayStyle; ?> >
 
         <!-- Checkbox + label -->
-        <div class="form-group checkbox-item othertext-label-checkox-container">
+        <div class="form-group checkbox-item othertext-label-checkbox-container">
             <!-- checkbox -->
             <input
                 class="other-checkbox"
@@ -37,7 +37,7 @@
         <!-- comment -->
         <div class="form-group text-item other-text-item">
             <input
-                class="form-control input-sm <?php echo $kpclass; ?>"
+                class="form-control input <?php echo $kpclass; ?>"
                 type="text"
                 name="<?php echo $myfname; ?>"
                 id="answer<?php echo $myfname; ?>"
