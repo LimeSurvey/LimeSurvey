@@ -37,7 +37,7 @@
         <!-- comment -->
         <div class="form-group text-item other-text-item">
             <input
-                class="form-control input <?php echo $kpclass; ?>"
+                class="form-control input-sm <?php echo $kpclass; ?>"
                 type="text"
                 name="<?php echo $myfname; ?>"
                 id="answer<?php echo $myfname; ?>"
