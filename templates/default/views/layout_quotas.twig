@@ -12,15 +12,17 @@
     (¯`·._.·(¯`·._.· Quotas Layout  ·._.·´¯)·._.·´¯)
 
     This file displays the page shown to user when a quota limit is reached.
-    Depending on survey config, a navigator allowing user to change his response can be shown, and a end url
+    Depending on survey config, a navigator allowing the respondent to change their responses can be shown, and a end url.
 
-    quotas datas are in: aSurveyInfo.aQuotas (to show those datas, turn debug mode on, and: {{ dump(aSurveyInfo.aQuotas ) }} )
+    Quotas data are in: aSurveyInfo.aQuotas
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file: 
+    {{ dump(aSurveyInfo.aQuotas ) }} )
 #}
 
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
-    {# Headers, metadatas, etc #}
+    {# Headers, metadata, etc #}
     {{ include('./subviews/head.twig') }}
 
     <body class="default lang-{{surveylanguage}} {{surveyformat}}">
@@ -39,7 +41,7 @@
                 <!-- Main Col -->
                 <div class="col-centered" id="main-col">
 
-                    {# include the form opening tag #}
+                    {# Include the form opening tag #}
                     {{ include('./subviews/start_form.twig') }} <!-- main form -->
 
                         {# This will display the script and the hidden inputs needed for Expression Manager #}

@@ -11,13 +11,13 @@
 
     (¯`·._.·(¯`·._.· Save page Layout  ·._.·´¯)·._.·´¯)
 
-    This file display the page shown to user when he save his survey to complete it later
-
+    This file displays the page shown to a respondent when they save the survey to complete it later.
 
     Depending on survey config, a navigator allowing user to change his response can be shown, and a end url
 
-    form datas are in: aSurveyInfo.aLoadForm (errors, css classes, captcha, etc)
-    to show those datas, turn debug mode on, and: {{ dump(aSurveyInfo.aLoadForm ) }} )
+    Form data are in: aSurveyInfo.aLoadForm (errors, css classes, captcha, etc)
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file: 
+    {{ dump(aSurveyInfo.aLoadForm ) }} )
 
     (¯`·._.·(¯`·._.·  Advanced ·._.·´¯)·._.·´¯)
 

@@ -12,13 +12,13 @@
     (¯`·._.·(¯`·._.· First Page Layout  ·._.·´¯)·._.·´¯)
 
     This layout is used to display the first page (title, welcome message, privacy, etc).
-    It is displayed only on "question by question" or "group by group" mode, when welcome message is activated
+    It is displayed only on "question by question" or "group by group" mode, when the welcome message is activated.
 
 #}
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
-    {# Headers, metadatas, etc #}
+    {# Headers, metadata, etc #}
     {{ include('./subviews/head.twig') }}
 
     <body class="default lang-{{surveylanguage}} {{surveyformat}}">
@@ -37,22 +37,22 @@
                 <!-- Main Col -->
                 <div class="col-centered" id="main-col">
 
-                    {# include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
+                    {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
                     {{ include('./subviews/warnings.twig') }}
 
-                    {# include the form opening tag #}
+                    {# Include the form opening tag #}
                     {{ include('./subviews/start_form.twig') }} <!-- main form -->
 
                         {# This will display the script and the hidden inputs needed for Expression Manager #}
                         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-                        {# include the alert for no javascrit #}
+                        {# Include the alert for no JavaScript #}
                         {{ include('./subviews/no_js_alert.twig') }}
 
-                        {# include the language changer selector #}
+                        {# Include the language changer selector #}
                         {{ include('./subviews/language_changer.twig') }}
 
-                        {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
+                        {# If survey mode is "All in One", this will add the welcome/privacy messages (if activated) #}
                         {{ include('./subviews/welcome.twig') }}
 
                         {% if(aSurveyInfo.anonymized) == "Y" %}

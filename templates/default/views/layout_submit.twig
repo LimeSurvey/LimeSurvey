@@ -11,13 +11,14 @@
 
     (¯`·._.·(¯`·._.· Submit Layout  ·._.·´¯)·._.·´¯)
 
-    This page is displayed after user submitted the survey
-    It could be visually very different (no header, etc)
+    This page is displayed after user submits the survey.
+    It could be, visually, very different (no header, etc).
 
-    It shows the end text, assessments, print answer, and statistics
+    It shows the end text, assessments, print answer, and statistics.
 
-    Datas are in: aSurveyInfo.aCompleted and aSurveyInfo.aAssessments
-    to show those datas, turn debug mode on, and uncomment: {{ dump(aSurveyInfo.aCompleted ) }}
+    Data are in: aSurveyInfo.aCompleted and aSurveyInfo.aAssessments.
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file: 
+    {{ dump(aSurveyInfo.aCompleted ) }}
 #}
 <!DOCTYPE html>
 <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
