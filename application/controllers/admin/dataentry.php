@@ -45,8 +45,6 @@ Y - Yes/No
 
 */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * dataentry
 *
@@ -145,14 +143,14 @@ class dataentry extends Survey_Common_Action
         Yii::app()->loadHelper('admin/import');
         // Fill option
         $aOptions=array();
-        $aOptions['bDeleteFistLine']=(Yii::app()->request->getPost('dontdeletefirstline') == "dontdeletefirstline")?false:true;// Force, maybe function change ;)
-        if(Yii::app()->request->getPost('noid')==="noid"){
+        $aOptions['bDeleteFistLine']=! (bool) Yii::app()->request->getPost('dontdeletefirstline');
+        if(Yii::app()->request->getPost('noid')){
             $aOptions['sExistingId']='ignore';
         }else{
             $aOptions['sExistingId']=Yii::app()->request->getPost('insertmethod');
         }
-        $aOptions['bNotFinalized']=(Yii::app()->request->getPost('notfinalized') == "notfinalized");
-        $aOptions['bForceImport']=(Yii::app()->request->getPost('forceimport') == "forceimport");
+        $aOptions['bNotFinalized']=(bool) Yii::app()->request->getPost('notfinalized');
+        $aOptions['bForceImport']=(bool) Yii::app()->request->getPost('forceimport');
         $aOptions['sCharset']=Yii::app()->request->getPost('vvcharset');
         $aOptions['sSeparator']="\t";
         $aResult=CSVImportResponses($filePath,$iSurveyId,$aOptions);
@@ -940,9 +938,9 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= '</div>';
                             App()->getClientScript()->registerPackage('jquery-actual');
 
-                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
-                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
-                            $this->registerCssFile( 'PUBLIC', 'jquery-ui-custom.css' );
+                            App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
+                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
 
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
@@ -2198,8 +2196,8 @@ class dataentry extends Survey_Common_Action
                                 }
                             $cdata['answers']=$answers;
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
-                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
+                            App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)

@@ -285,7 +285,6 @@ abstract class Token extends Dynamic
         return parent::create($surveyId, $scenario);
     }
 
-    /** @inheritdoc */
     public function relations()
     {
         $result = array(

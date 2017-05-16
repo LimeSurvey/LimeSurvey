@@ -12,8 +12,6 @@
 *
 */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
 * register
 *
@@ -31,8 +29,7 @@ class RegisterController extends LSYii_Controller {
     public $aReplacementData= array();
     /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
     public $aGlobalData= array();
-    /* @var boolean did we need survey.pstpl when using layout */
-    public $bStartSurvey= true;
+
 
     /**
     * The array of errors to be displayed

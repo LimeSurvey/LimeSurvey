@@ -238,7 +238,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
             'testSurvey' => new QuickMenuButton(array(
                 'name' => 'testSurvey',
                 'openInNewTab' => true,
-                'href' => Yii::app()->getController()->createUrl("survey/index/sid/$surveyId/newtest/Y/lang/$baselang"),
+                'href' => Yii::app()->getController()->createUrl("survey/index",array('sid'=>$surveyId, 'newtest'=>"Y",'lang'=>$baselang)),
                 'tooltip' => $activated ? gT('Execute survey') : gT('Test survey'),
                 'iconClass' => 'glyphicon glyphicon-cog navbar-brand'
             )),

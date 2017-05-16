@@ -77,8 +77,9 @@ else {
     $language = (isset($_REQUEST['lang']) ? sanitize_languagecode($_REQUEST['lang']) : NULL);
     $gid = (isset($_REQUEST['gid']) ? sanitize_int($_REQUEST['gid']) : NULL);
     $qid = (isset($_REQUEST['qid']) ? sanitize_int($_REQUEST['qid']) : NULL);
-    $oAdminTheme = AdminTheme::getInstance();
-    $oAdminTheme->registerCssFile( 'PUBLIC', 'expressionlogicfile.css' );
+
+    App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'expressionlogicfile.css');
+
     SetSurveyLanguage($surveyid, $language);
     LimeExpressionManager::SetDirtyFlag();
     Yii::app()->setLanguage(Yii::app()->session['adminlang']);

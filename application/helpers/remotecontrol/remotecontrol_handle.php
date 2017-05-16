@@ -1382,6 +1382,7 @@ class remotecontrol_handle
                                 $aData[$oAttribute['code']]['answer']=$oAttribute['answer'];
                                 $aData[$oAttribute['code']]['assessment_value']=$oAttribute['assessment_value'];
                                 $aData[$oAttribute['code']]['scale_id']=$oAttribute['scale_id'];
+                                $aData[$oAttribute['code']]['order']=$oAttribute['sortorder'];
                             }
                             $aResult['answeroptions']=$aData;
                         }
@@ -1930,20 +1931,31 @@ class remotecontrol_handle
             return array('status' => 'Invalid session key');
     }
 
-    /**
+/**  
     * RPC Routine to list the ids and info of users.
     * Returns array of ids and info.
     * @param string $sSessionKey Auth credentials
+    * @param int $uid Optional parameter user id.
     * @return array The list of users
     */
-
-    public function list_users($sSessionKey = null)
-    {
+    public function list_users($sSessionKey = null, $uid = FALSE)
+    {    
         if ($this->_checkSessionKey($sSessionKey))
         {
             if( Permission::model()->hasGlobalPermission('superadmin','read') )
             {
-                $users = User::model()->findAll();
+                $users = null;
+                if ($uid)
+                {
+                        $user = User::model()->findByPk($uid);
+                        if (!$user)
+                           return array('status' => 'Invalid user id');
+                        $users = array($user);
+                }
+                else
+                {
+                        $users = User::model()->findAll();
+                }
 
                 if(count($users)==0)
                     return array('status' => 'No surveys found');
@@ -1971,6 +1983,7 @@ class remotecontrol_handle
             return array('status' => 'Invalid session key');
         }
     }
+
     /**
     * RPC routine to to initialise the survey's collection of tokens where new participant tokens may be later added.
     *
@@ -2051,12 +2064,13 @@ class remotecontrol_handle
             }
             else
             {
+                $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );
                 $command->addCondition('usesleft > 0');
                 $command->addCondition("sent = 'N'");
                 $command->addCondition("remindersent = 'N'");
                 $command->addCondition("(completed ='N') or (completed='')");
-                $command->addCondition('ISNULL(validfrom) OR validfrom < NOW()');
-                $command->addCondition('ISNULL(validuntil) OR validuntil > NOW()');
+                $command->addCondition("validfrom is null OR validfrom < '{$sNow}'");
+                $command->addCondition("validuntil is null OR validuntil > '{$sNow}'");
                 $command->addCondition('emailstatus = "OK"');
             }
             $command->order = 'tid';
@@ -2482,6 +2496,48 @@ class remotecontrol_handle
 
     }
 
+
+    /**
+    * RPC to obtain all uploaded files for a single response
+    *
+    * @access public
+    *
+    * @param string  $sSessionKey  Auth credentials
+    * @param int     $iSurveyID    ID of the Survey
+    * @param int     $sToken       Response token
+    *
+    * @return array On success: array containing all uploads of the specified response
+    *               On failure: array with error information
+    */
+    public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
+
+        if(!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
+
+        $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $sToken));
+
+        if (!($oResponse instanceof Response)) {
+            return array('status' => 'Could not find response for given token');
+        }
+
+        $uploaded_files = array();
+        foreach ($oResponse->getFiles() as $aFile)
+        {
+            $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
+            
+            if (!file_exists($sFileRealName)) return array('status' => 'Could not find uploaded files');
+
+            $uploaded_files[$aFile['filename']] = array(
+                'meta'    => $aFile,
+                'content' => base64_encode(file_get_contents($sFileRealName))
+            );
+        }
+
+        return $uploaded_files;
+    }
 
 
     /**

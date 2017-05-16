@@ -13,8 +13,6 @@
  *
  */
 
-use \ls\pluginmanager\PluginEvent;
-
 /**
  * Responses Controller
  *
@@ -187,7 +185,7 @@ class responses extends Survey_Common_Action
                         if ($qidattributes['show_comment'] == 1)
                             $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i, 'qid'=>$field['qid']);
                         $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File size').")",'code'=>viewHelper::getFieldCode($field).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
@@ -277,8 +275,8 @@ class responses extends Survey_Common_Action
                                             break;
                                         case "name":
                                             $answervalue = CHtml::link(
-                                                $oPurifier->purify(rawurldecode($phparray[$index][$metadata])),
-                                                $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$iId,"sFileName"=>$phparray[$index][$metadata]))
+                                                htmlspecialchars($oPurifier->purify(rawurldecode($phparray[$index][$metadata]))),
+                                                $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$iId,"iQID"=>$fnames[$i]['qid'],"iIndex"=>$index))
                                             );
                                             break;
                                         default:
@@ -390,9 +388,10 @@ class responses extends Survey_Common_Action
     {
         /** @var Survey $oSurvey */
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read')) {
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        {
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'listresponse.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
 
             // Basic datas for the view
             $aData                      = $this->_getData($iSurveyId);
@@ -541,34 +540,40 @@ class responses extends Survey_Common_Action
     * @access public
     * @param $iSurveyId : survey id
     * @param $iResponseId : response if
-    * @param $sFileName : The filename
+    * @param $iQID : The question ID
     * @return application/octet-stream
     */
-    public function actionDownloadfile($iSurveyId,$iResponseId,$sFileName)
+    public function actionDownloadfile($iSurveyId, $iResponseId, $iQID, $iIndex)
     {
+        $iIndex=(int)$iIndex;
+        $iResponseId=(int)$iResponseId;
+        $iQID=(int)$iQID;
+
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
             $oResponse = Response::model($iSurveyId)->findByPk($iResponseId);
-            foreach ($oResponse->getFiles() as $aFile)
+            $aQuestionFiles=$oResponse->getFiles($iQID);
+            if (isset($aQuestionFiles[$iIndex]))
             {
-                if (rawurldecode($aFile['name']) == rawurldecode($sFileName))
+               $aFile=$aQuestionFiles[$iIndex];
+                $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
+                if (file_exists($sFileRealName))
                 {
-                    $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
-                    if (file_exists($sFileRealName))
-                    {
-                        @ob_clean();
-                        header('Content-Description: File Transfer');
-                        header('Content-Type: application/octet-stream');// Find the real type ?
-                        header('Content-Disposition: attachment; filename="' . rawurldecode($aFile['name']) . '"');
-                        header('Content-Transfer-Encoding: binary');
-                        header('Expires: 0');
-                        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                        header('Pragma: public');
-                        header('Content-Length: ' . filesize($sFileRealName));
-                        readfile($sFileRealName);
-                        exit;
+                    $mimeType=CFileHelper::getMimeType($sFileRealName, null, false);
+                    if(is_null($mimeType)){
+                        $mimeType="application/octet-stream";
                     }
-                    break;
+                    @ob_clean();
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: '.$mimeType);
+                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode($aFile['name'])) . '"');
+                    header('Content-Transfer-Encoding: binary');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($sFileRealName));
+                    readfile($sFileRealName);
+                    exit;
                 }
             }
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
@@ -879,7 +884,7 @@ class responses extends Survey_Common_Action
                 if (file_exists($tmpdir . basename($file['filename'])))
                 {
                     $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir . basename($file['filename']),
-                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, rawurldecode($file['name'])));
+                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, sanitize_filename(rawurldecode($file['name']))));
                 }
             }
         }
@@ -896,7 +901,7 @@ class responses extends Survey_Common_Action
             {
                 @ob_clean();
                 header('Content-Description: File Transfer');
-                header('Content-Type: application/octet-stream');
+                header('Content-Type: application/zip, application/octet-stream');
                 header('Content-Disposition: attachment; filename=' . basename($zipfilename));
                 header('Content-Transfer-Encoding: binary');
                 header('Expires: 0');
@@ -921,8 +926,8 @@ class responses extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'browse.js');
-        $this->registerCssFile( 'PUBLIC', 'browse.css' );
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];
         $aData['display']['menu_bars'] = false;

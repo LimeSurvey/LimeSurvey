@@ -42,7 +42,7 @@ class saved extends Survey_Common_Action
         if (count($aViewUrls['savedlist_view'][0]['aResults']))
         {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'saved.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'saved.js');
         }
 
 

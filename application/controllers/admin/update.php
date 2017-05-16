@@ -74,9 +74,9 @@ class update extends Survey_Common_Action
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
         $aData['fullpagebar']['update'] = true;
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/comfortupdate.js');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/buildComfortButtons.js');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/displayComfortStep.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
 
         $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
     }

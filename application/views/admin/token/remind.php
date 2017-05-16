@@ -41,7 +41,7 @@
                         echo ' ><a data-toggle="tab" href="#'.$language.'">' . getLanguageNameFromCode($language, false);
                         if ($language == $baselang)
                         {
-                            echo "(" . gT("Base language") . ")";
+                            echo " (" . gT("Base language") . ")";
                         }
                         echo "</a></li>";
                     }

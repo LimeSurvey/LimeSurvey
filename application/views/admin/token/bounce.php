@@ -122,7 +122,4 @@
     </div> <!-- Row -->
 </div> <!-- Side body -->
 
-<?php
-    $oAdminTheme = AdminTheme::getInstance();
-    $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokenbounce.js');
-?>
+<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokenbounce.js'); ?>

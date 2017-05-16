@@ -30,7 +30,8 @@ $config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."ima
 $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
-$config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
+$config['assets']                  = $config['rootdir'].DIRECTORY_SEPARATOR."assets";
+$config['styledir']                = $config['assets'].DIRECTORY_SEPARATOR.'styles-admin';
 $config['questiontypedir']         = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 
 return $config;

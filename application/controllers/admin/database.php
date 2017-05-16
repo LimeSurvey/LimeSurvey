@@ -11,7 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-use \ls\pluginmanager\PluginEvent;
 /**
 * Database
 *
@@ -1256,13 +1255,12 @@ class database extends Survey_Common_Action
                     $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
 
                     // If the question has a custom template, we first check if it provides custom attributes
-                    $oAttributeValues = QuestionAttribute::model()
-                        // FIXME $cqr missing
-                        ->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
-                    if (is_object($oAttributeValues && $oAttributeValues->value)){
-                        $aAttributeValues['question_template'] = $oAttributeValues->value;
-                    }else{
-                        $aAttributeValues['question_template'] = 'core';
+                    $aAttributeValues['question_template'] = 'core';
+                    if (isset($cqr)){
+                        $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
+                        if (is_object($oAttributeValues && $oAttributeValues->value)){
+                            $aAttributeValues['question_template'] = $oAttributeValues->value;
+                        }
                     }
                     // FIXME $cqr missing
                     $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );

@@ -84,7 +84,7 @@ $config['defaulttemplate']    =  'default';         // This setting specifys the
 
 $config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2';  // File types allowed to be uploaded in the templates section.
 
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 $config['memory_limit']        =  '128';   // This sets how much memory LimeSurvey can access in megabytes. 128 MB is the minimum recommended - if you are using PDF functions up to 256 MB may be needed
 
@@ -389,7 +389,7 @@ $config['bPdfQuestionBold'] = '0';		  // Questions in bold (1) or normal (0)
 $config['bPdfQuestionBorder'] = '1'; 	  // Border in questions. Accepts 0:no border, 1:border
 $config['bPdfResponseBorder'] = '1';	  // Border in responses. Accepts 0:no border, 1:border
 
-// QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF questionnaires
+// QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF survey
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
 $config['quexmlshowprintablehelp'] = false;
 
@@ -615,25 +615,25 @@ else
     $config['publicurl'] =  '/';
 }
 
+$config['assets']                  = 'assets/';
+
+// URL defintions
 $config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
 $config['tempurl']                 = $config['publicurl'].'tmp';
 $config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
 $config['uploadurl']               = $config['publicurl'].'upload';
 $config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // Location of the standard templates
-$config['adminscripts']            = $config['publicurl'].'scripts/admin/';
-$config['generalscripts']          = $config['publicurl'].'scripts/';
-$config['third_party']                 = $config['publicurl'].'third_party/';
-
-$config['styleurl']                = $config['publicurl'].'styles/';
-
-
-$config['publicstyleurl']          = $config['publicurl'].'styles-public/';
+$config['adminscripts']            = $config['publicurl'].'assets/scripts/admin/';
+$config['generalscripts']          = $config['publicurl'].'assets/scripts/';
+$config['third_party']             = $config['publicurl'].'third_party/';
+$config['styleurl']                = $config['publicurl'].$config['assets'].'styles-admin/';
+$config['publicstyle']             = $config['publicurl'].$config['assets'].'styles-public/';
+$config['publicstyleurl']          = $config['publicstyle'];
 $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
 $config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
-
 $config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
-
-
+$config['applicationurl']          = $config['publicurl'].'application/';
+$config['extensionsurl']           = $config['applicationurl'].'extensions/';
 
 
 $config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
@@ -645,9 +645,10 @@ $config['tempdir']                      = $config['rootdir'].DIRECTORY_SEPARATOR
 $config['imagedir']                     = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']                    = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir']      = $config['rootdir'].DIRECTORY_SEPARATOR."templates";            // The directory path of the standard templates
+$config['publicstylepath']              = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
 $config['corequestiontemplatedir']      = "question_templates";
 $config['corequestiontemplaterootdir']  = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestiontemplatedir'];   // The directory containing the core's question templates.
-$config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
+$config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.$config['assets'].DIRECTORY_SEPARATOR.'styles-admin';
 $config['questiontypedir']              = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 $config['usertemplaterootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 $config['userquestiontemplatedir']      = "question_templates";   // The directory containing the user's question templates.

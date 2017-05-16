@@ -1401,8 +1401,8 @@
                     case 'I':
                     case '!':
                     case 'O':
-                    case 'M':
-                    case 'L':
+                    case 'M': //NUMERICAL QUESTION TYPE
+                    case 'L': //LIST drop-down/radio-button list
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'default',
@@ -3621,7 +3621,7 @@
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($oSurvey,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
-
+            $this->sessid = 'survey_' . $this->sid;
             $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
             //      LimeExpressionManager::ShowStackTrace();
 
@@ -4228,7 +4228,6 @@
                 $this->varNameAttr[$jsVarName] .= "}";
             }
             $this->q2subqInfo = $q2subqInfo;
-
             // Now set tokens
             if ($oSurvey->hasTokens() && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '') {
                 //Gather survey data for tokenised surveys, for use in presenting questions
@@ -4240,14 +4239,16 @@
                 );
 
                 $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
-                foreach ($token as $key => $val)
-                {
-                    $this->knownVars["TOKEN:" . strtoupper($key)] = array(
-                        'code' => $anonymized ? '' : $val,
-                        'jsName_on' => '',
-                        'jsName' => '',
-                        'readWrite' => 'N',
-                    );
+                if($token) {
+                    foreach ($token as $key => $val)
+                    {
+                        $this->knownVars["TOKEN:" . strtoupper($key)] = array(
+                            'code' => $anonymized ? '' : $val,
+                            'jsName_on' => '',
+                            'jsName' => '',
+                            'readWrite' => 'N',
+                        );
+                    }
                 }
             }
             else
@@ -5486,8 +5487,7 @@
                             }
                             elseif(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
                             {
-                                // Message is set in ProcessCurrentResponses, show in _validateQuestion. But we leave the value in ProcessCurrentResponses
-                                // Because it can happen without hacking (we MUST force maxlength to 32 in views)
+                                // Here : we must ADD a message for the user and set the question "not valid" : show the same page + show with input-error class
                                 $val=NULL;
                             }
                             break;
@@ -5631,6 +5631,7 @@
                         $updatedValues = array();
                     }
                     $message = '';
+
                     $LEM->currentQset = array();    // reset active list of questions
                     $result = $LEM->_ValidateSurvey($force);
                     $message .= $result['message'];
@@ -7314,6 +7315,22 @@
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
+                        // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
+                        if( ! empty($sq['type'])) {
+                            // js to fix colors
+                            $relParts[] = "updateColors($('#question".$arg['qid']."').find('table.question'));\n";
+                            // js to fix headings
+                            $repeatheadings = Yii::app()->getConfig("repeatheadings");
+                            if(isset($LEM->qattr[$arg['qid']]['repeat_headings']) && $LEM->qattr[$arg['qid']]['repeat_headings'] !== "") {
+                                $repeatheadings = $LEM->qattr[$arg['qid']]['repeat_headings'];
+                            }
+                            if($repeatheadings > 0)
+                            {
+                                $relParts[] = "updateHeadings($('#question".$arg['qid']."').find('table.question'), "
+                                .$repeatheadings.");\n";
+                            }
+                        }
+                        // end
                         //this change is optional....changes to array should prevent "if( )"
                         $relParts[] = "  if ( " . (empty($sq['relevancejs'])?'1':$sq['relevancejs']) . " ) {\n";
                         if ($afHide)
@@ -9256,6 +9273,8 @@ EOD;
             $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
             $aAttributesDefinitions=\ls\helpers\questionHelper::getAttributesDefinitions();
+            /* All final survey string must be shown in survey language #12208 */
+            Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
             $allErrors = array();
             $warnings = 0;
 
@@ -9825,10 +9844,9 @@ EOD;
                 }
                 $out = "<p class='LEMheading'>$message</p>\n" . $out."</div>";
             }
-
             return array(
-            'errors'=>$allErrors,
-            'html'=>$out
+                'errors'=>$allErrors,
+                'html'=>$out
             );
         }
 

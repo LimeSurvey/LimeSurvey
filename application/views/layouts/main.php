@@ -7,7 +7,7 @@
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-superfish');
-            App()->getClientScript()->registerPackage('jquery-cookie');
+            App()->getClientScript()->registerPackage('js-cookie');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
@@ -18,8 +18,8 @@
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
 
         ?>
-        <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="<?php echo App()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
         <?php $this->widget('ext.LimeScript.LimeScript'); ?>
         <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
         <title>Limesurvey Administration</title>

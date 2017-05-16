@@ -296,4 +296,14 @@ class viewHelper
         );
         return $oPurifier->purify($sHtml);
      }
+
+     /**
+     * NOTE:  A real class helper is needed for twig, so I used this one for now.
+     * TODO: convert surveytranslator to a real helper
+     */
+     public static function getLanguageData($bOrderByNative=false,$sLanguageCode='en')
+     {
+         Yii::app()->loadHelper("surveytranslator");
+         return getLanguageData($bOrderByNative, $sLanguageCode );
+     }
 }

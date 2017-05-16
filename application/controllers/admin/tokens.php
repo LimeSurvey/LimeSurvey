@@ -11,8 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-     
-use \ls\pluginmanager\PluginEvent;
 
 /**
 * Tokens Controller
@@ -32,7 +30,7 @@ class tokens extends Survey_Common_Action
      */
     public function index($iSurveyId)
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
         $iSurveyId = sanitize_int($iSurveyId);
         //// TODO : check if it does something different than the model function
         $thissurvey = getSurveyInfo($iSurveyId);
@@ -329,7 +327,7 @@ class tokens extends Survey_Common_Action
         $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
 
         // Javascript
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::import('application.libraries.Date_Time_Converter', true);
@@ -412,8 +410,9 @@ class tokens extends Survey_Common_Action
      */
     public function editToken($iSurveyId)
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
+        {
             eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
             return;
         }
@@ -531,7 +530,7 @@ class tokens extends Survey_Common_Action
     public function addnew($iSurveyId)
     {
         $aData = array();
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
@@ -556,7 +555,7 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['buttons']['view']=TRUE;
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
         $request = Yii::app()->request;
         if ($request->getPost('subaction') == 'inserttoken') {
 
@@ -655,7 +654,7 @@ class tokens extends Survey_Common_Action
      */
     public function edit($iSurveyId, $iTokenId, $ajax = false)
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
         $iSurveyId = sanitize_int($iSurveyId);
         $iTokenId = sanitize_int($iTokenId);
 
@@ -760,7 +759,7 @@ class tokens extends Survey_Common_Action
      */
     public function delete($iSurveyID)
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
         $iSurveyID = sanitize_int($iSurveyID);
         $sTokenIDs = Yii::app()->request->getPost('tid');
         /* Check permissions */
@@ -1939,7 +1938,7 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokensimport.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokensimport.js');
         $aEncodings =aEncodingsArray();
 
         if (Yii::app()->request->isPostRequest) // && Yii::app()->request->getPost('subaction')=='upload')

@@ -235,7 +235,7 @@ class templates extends Survey_Common_Action
         $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
         $tempdir = Yii::app()->getConfig('tempdir');
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
-        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
+        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false,false);// Don't force lowercase or alphanumeric
 
         $dirfilepath = $oEditedTemplate->filesPath;
         if (!file_exists($dirfilepath))
@@ -352,9 +352,9 @@ class templates extends Survey_Common_Action
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'templates.js');
-        AdminTheme::staticRegisterScriptFile('ADMIN_SCRIPT_PATH', 'notifications.js' );
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'templates.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'notifications.js');
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
         $aData['fullpagebar']['returnbutton']=true;
@@ -675,7 +675,6 @@ class templates extends Survey_Common_Action
         Yii::app()->loadHelper("admin/template");
         $aData = array();
         $time = date("ymdHis");
-
         // Prepare textarea class for optional javascript
         $templateclasseditormode = getGlobalSetting('defaulttemplateeditormode'); // default
         if (Yii::app()->session['templateeditormode'] == 'none')
@@ -698,21 +697,28 @@ class templates extends Survey_Common_Action
             App()->getClientScript()->reset();
             @fwrite($fnew, getHeader());
 
+
             //~ foreach ($cssfiles as $cssfile)
             //~ {
                 //~ $myoutput = str_replace($cssfile, $cssfile . "?t=$time", $myoutput);
             //~ }
 
-            $myoutput = implode("\n", $myoutput);
-            /* Must remove all exitsing scripts / css and js */
 
-            $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
+            $myoutput = implode("\n", $myoutput);
+
+
+
+            App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'survey_runtime.js');
             /* register template package : PS : use asset :) */
             Yii::app()->clientScript->registerPackage( 'survey-template' );
             /* some needed utils script from limesurvey-public package */
             App()->getClientScript()->registerScript("activateActionLink","activateActionLink();",CClientScript::POS_END);/* show the button if needed */
 
+            /* Must remove all exitsing scripts / css and js */
+            App()->getClientScript()->unregisterPackage('admin-theme');         // We remove the admin package
+
             App()->getClientScript()->render($myoutput);
+
             @fwrite($fnew, $myoutput);
             @fclose($fnew);
         }
@@ -1384,7 +1390,7 @@ class templates extends Survey_Common_Action
             //$aCssfileseditable = (array) $oEditedTemplate->config->files_editable->css->filename;
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
         return $aViewUrls;
     }
 

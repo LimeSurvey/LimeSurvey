@@ -11,24 +11,24 @@ abstract class PluginBase implements iPlugin {
      * @var LimesurveyApi
      */
     protected $api = null;
-    
+
     /**
      *
      * @var PluginEvent
      */
     protected $event = null;
-    
+
     protected $id = null;
     protected $storage = 'DummyStorage';
-    
+
     static protected $description = 'Base plugin object';
     static protected $name = 'PluginBase';
     private $store = null;
     protected $settings = array();
-    
+
     /**
      * This holds the pluginmanager that instantiated the plugin
-     * 
+     *
      * @var PluginManager
      */
     protected $pluginManager;
@@ -45,7 +45,7 @@ abstract class PluginBase implements iPlugin {
      * @param PluginManager $manager    The plugin manager instantiating the object
      * @param int           $id         The id for storage
      */
-    public function __construct(\ls\pluginmanager\PluginManager $manager, $id)
+    public function __construct(PluginManager $manager, $id)
     {
         $this->pluginManager = $manager;
         $this->id = $id;
@@ -79,12 +79,12 @@ abstract class PluginBase implements iPlugin {
             'basePath' => $basePath
         ));
     }
-    
+
     /**
      * This function retrieves plugin data. Do not cache this data; the plugin storage
-     * engine will handling caching. After the first call to this function, subsequent 
-     * calls will only consist of a few function calls and array lookups. 
-     * 
+     * engine will handling caching. After the first call to this function, subsequent
+     * calls will only consist of a few function calls and array lookups.
+     *
      * @param string $key
      * @param string $model
      * @param int $id
@@ -95,7 +95,7 @@ abstract class PluginBase implements iPlugin {
     {
         return $this->getStore()->get($this, $key, $model, $id, $default);
     }
-    
+
     /**
      * Return the description for this plugin
      */
@@ -103,37 +103,37 @@ abstract class PluginBase implements iPlugin {
     {
         return static::$description;
     }
-    
+
     /**
      * Get the current event this plugin is responding to
-     * 
+     *
      * @return PluginEvent
      */
     public function getEvent()
     {
         return $this->event;
     }
-    
+
     /**
      * Returns the id of the plugin
-     * 
+     *
      * Used by storage model to find settings specific to this plugin
-     * 
+     *
      * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-    
+
     /**
      * Provides meta data on the plugin settings that are available for this plugin.
      * This does not include enable / disable; a disabled plugin is never loaded.
-     * 
+     *
      */
     public function getPluginSettings($getValues = true)
     {
-        
+
         $settings = $this->settings;
         foreach ($settings as $name => &$setting)
         {
@@ -156,7 +156,7 @@ abstract class PluginBase implements iPlugin {
     /**
      * Returns the plugin storage and takes care of
      * instantiating it
-     * 
+     *
      * @return iPluginStorage
      */
     public function getStore()
@@ -164,11 +164,11 @@ abstract class PluginBase implements iPlugin {
         if (is_null($this->store)) {
             $this->store = $this->pluginManager->getStore($this->storage);
         }
-        
+
         return $this->store;
     }
-    
-    /** 
+
+    /**
      * Publishes plugin assets.
      */
     public function publish($fileName)
@@ -180,7 +180,7 @@ abstract class PluginBase implements iPlugin {
             if (strpos('/', $fileName) === 0)
             {
                 $url = \Yii::getPathOfAlias('webroot') . $fileName;
-                
+
             }
             else // This is a plugin relative path.
             {
@@ -198,10 +198,10 @@ abstract class PluginBase implements iPlugin {
         }
         return $url;
     }
-    
+
     /**
-     * 
-     * @param string $name Name of the setting.         
+     *
+     * @param string $name Name of the setting.
      * The type of the setting is either a basic type or choice.
      * The choice type is either a single or a multiple choice setting.
      * @param array $options
@@ -218,9 +218,9 @@ abstract class PluginBase implements iPlugin {
     {
         $this->settings[$name] = $options;
     }
-    
+
     /**
-     * 
+     *
      * @param type $settings
      */
     public function saveSettings($settings)
@@ -230,11 +230,11 @@ abstract class PluginBase implements iPlugin {
             $this->set($name, $setting);
         }
     }
-    
-    
+
+
     /**
      * This function stores plugin data.
-     * 
+     *
      * @param string $key
      * @param mixed $data
      * @param string $model
@@ -245,11 +245,11 @@ abstract class PluginBase implements iPlugin {
     {
         return $this->getStore()->set($this, $key, $data, $model, $id);
     }
-    
+
     /**
      * Set the event to the plugin, this method is executed by the PluginManager
      * just before dispatching the event.
-     * 
+     *
      * @param PluginEvent $event
      * @return PluginBase
      */
@@ -263,10 +263,10 @@ abstract class PluginBase implements iPlugin {
      * Here you should handle subscribing to the events your plugin will handle
      */
     //abstract public function registerEvents();
-    
+
     /**
      * This function subscribes the plugin to receive an event.
-     * 
+     *
      * @param string $event
      * @param string $function
      */
@@ -274,11 +274,11 @@ abstract class PluginBase implements iPlugin {
     {
         return $this->pluginManager->subscribe($this, $event, $function);
     }
-    
+
     /**
      * This function unsubscribes the plugin from an event.
      * @param string $event
-     */        
+     */
     protected function unsubscribe($event)
     {
         return $this->pluginManager->unsubscribe($this, $event);

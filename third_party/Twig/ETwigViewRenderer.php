@@ -140,7 +140,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
     {
         // current controller properties will be accessible as {{ this.property }}
         $data['this'] = $context;
-        
+
         $sourceFile = realpath($sourceFile); // to prevent common problems with paths associated with symlinks
 
         foreach($this->_paths as $path) {

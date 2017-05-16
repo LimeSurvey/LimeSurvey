@@ -319,8 +319,9 @@ class SurveyDynamic extends LSActiveRecord
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
                 $sSurveyEntry .='<tr>';
-                if (isset($aFilesInfo[$iFileIndex])) {
-                    $sSurveyEntry.= '<td>'.CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), App()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>self::$sid,"iResponseId"=>$this->id,"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) ).'</td>';
+                if (isset($aFilesInfo[$iFileIndex]))
+                {
+                    $sSurveyEntry.= '<td>'.CHtml::link(CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name'])), App()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>self::$sid,"iResponseId"=>$this->id,"iQID"=>$oFieldMap->qid,"iIndex"=>$iFileIndex)) ).'</td>';
                     $sSurveyEntry.= '<td>'.sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2)).'</td>';
 
                     if ($aQuestionAttributes['show_title']) {

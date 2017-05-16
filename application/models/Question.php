@@ -46,6 +46,7 @@ class Question extends LSActiveRecord
 
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
+    public $gid;
 
     /**
      * @inheritdoc
@@ -961,9 +962,8 @@ class Question extends LSActiveRecord
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.qid::varchar' : 't.qid');
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
-
-        if($this->group_name != '') {
-            $criteria->compare('groups.group_name', $this->group_name, true, 'AND');
+        if($this->gid != ''){
+            $criteria->compare('groups.gid', $this->gid, true, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');

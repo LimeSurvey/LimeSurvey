@@ -355,7 +355,7 @@ class conditionsaction extends Survey_Common_Action {
 
             if ($scenariocount > 0)
             {
-                $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
+                App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'checkgroup.js');
                 foreach ($scenarios as $scenarionr) {
 
                     if ($s == 0 && $scenariocount > 1) {
@@ -600,8 +600,8 @@ class conditionsaction extends Survey_Common_Action {
                         true
                     );
                 }
-                // If we have a condition, allways reset the condition, this can fix old import (see #09344)
-                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
+                // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
             }
             else
             { // no condition ==> disable delete all conditions button, and display a simple comment
@@ -1798,7 +1798,7 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getCopyForm($qid, $gid, array $conditionsList, array $pquestions)
     {
-        $this->registerScriptFile('ADMIN_SCRIPT_PATH', 'checkgroup.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'checkgroup.js');
 
         $url = $this->getcontroller()->createUrl(
             '/admin/conditions/sa/index/subaction/copyconditions/',
@@ -1836,7 +1836,7 @@ class conditionsaction extends Survey_Common_Action {
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
-        $this->registerScriptFile('ADMIN_SCRIPT_PATH', 'conditions.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'conditions.js');
 
         if ($subaction == "editthiscondition" && isset($p_cid)) {
             $title = gT("Edit condition");

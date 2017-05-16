@@ -14,49 +14,52 @@
         public $aReplacementData= array();
         /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
         public $aGlobalData= array();
-        /* @var boolean did we need survey.pstpl when using layout */
-        public $bStartSurvey= false;
 
         public $defaultAction = 'publicList';
 
         public function actionPublicList($lang = null)
         {
-            if (!empty($lang))// Control is a real language , in restrictToLanguages ?
-            {
+            if (!empty($lang)){
+                // Control is a real language , in restrictToLanguages ?
                 App()->setLanguage($lang);
-            }
-            else
-            {
+            }else{
                 App()->setLanguage(App()->getConfig('defaultlang'));
             }
-            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+
+
+            $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+            $oTemplate->registerAssets();
+
 
             $this->sTemplate = $oTemplate->name;
-            $this->aGlobalData['languagechanger'] = makeLanguageChanger(App()->language);
+            Yii::app()->clientScript->registerPackage( 'survey-template' );
+//            $this->aGlobalData['languagechanger'] = makeLanguageChanger(App()->language);
 
             $aData = array(
-                    'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
-                    'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
+                    'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
+                    'futureSurveys'     => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
+                    'oTemplate'         => $oTemplate,
+                    'sSiteName'         => Yii::app()->getConfig('sitename'),
+                    'sSiteAdminName'    => Yii::app()->getConfig("siteadminname"),
+                    'sSiteAdminEmail'   => Yii::app()->getConfig("siteadminemail"),
+                    'bShowClearAll'     => false,
                 );
-            $htmlOut = $this->renderPartial('publicSurveyList',  $aData,true );
 
-            $event = new PluginEvent('beforeSurveysStartpageRender', $this);
-            $event->set('aData', $aData);
-            App()->getPluginManager()->dispatchEvent($event);
+            $aData['alanguageChanger']['show']  = false;
+            $alanguageChangerDatas                   = getLanguageChangerDatasPublicList(App()->language);
 
-            if($event->get('result'))
-            {
-                $htmlFromEvent = $event->get('result');
-                $htmlOut = $htmlFromEvent['html'];
-                $this->layout=$event->get('layout',$this->layout); // with bare : directly render whole display, default is to add head/footer etc ... from template
+            if ($alanguageChangerDatas){
+                $aData['alanguageChanger']['show']  = true;
+                $aData['alanguageChanger']['datas'] = $alanguageChangerDatas;
             }
-            $this->render("/surveys/display",array('content'=>$htmlOut));
-            /**
-             * OR
-             * $this->render("/survey/system/display",array('content'=>$htmlOut));
-             * ? template must be allowed to add content after and before all page ?
-             */
-            App()->end();
+
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
+
+            $sTemplateViewPath = $oTemplate->viewPath;
+
+            Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
+            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_survey_list.twig"), array('aSurveyInfo'=>$aData), false);
+
         }
         /**
          * System error : only 404 error are managed here (2016-11-29)

@@ -34,7 +34,7 @@ class translate extends Survey_Common_Action {
             echo $this->translate_google_api();
             return;
         }
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'translation.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'translation.js');
 
         $baselang = $oSurvey->language;
         $langs = $oSurvey->additionalLanguages;

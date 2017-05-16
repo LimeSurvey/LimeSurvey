@@ -34,21 +34,35 @@ class Template extends LSActiveRecord
     private static $standardTemplates = array();
 
     /**
-     * @inheritdoc
-     * @return Template
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
+     * @param string $class
+     * @return CActiveRecord
      */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
     public function tableName()
     {
         return '{{templates}}';
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns this table's primary key
+     *
+     * @access public
+     * @return string
+     */
     public function primaryKey()
     {
         return 'folder';
@@ -62,8 +76,8 @@ class Template extends LSActiveRecord
     */
     public static function templateNameFilter($sTemplateName)
     {
-        $sDefaultTemplate=Yii::app()->getConfig('defaulttemplate','default');
-        $sTemplateName=empty($sTemplateName) ? $sDefaultTemplate : $sTemplateName;
+        $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate','default');
+        $sTemplateName    = empty($sTemplateName) ? $sDefaultTemplate : $sTemplateName;
 
         /* Standard Template return it without testing */
         if(self::isStandardTemplate($sTemplateName)) {
@@ -73,10 +87,7 @@ class Template extends LSActiveRecord
         if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'config.xml')) {
             return $sTemplateName;
         }
-        /* Old template */
-        if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'startpage.pstpl')) {
-            return $sTemplateName;
-        }
+
         /* Then try with the global default template */
         if($sTemplateName!=$sDefaultTemplate) {
             return self::templateNameFilter($sDefaultTemplate);
@@ -127,11 +138,11 @@ class Template extends LSActiveRecord
      * If it's a user template, it will check if it's an old 2.0x template to provide default configuration values corresponding to the old template system
      * If it's not an old template, it will check if it has a configuration file to load its datas.
      * If it's not the case (template probably doesn't exist), it will load the default template configuration
-     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed pstpl files, if the files refered in css exist, etc.
+     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if the files refered in css exist, etc.
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param integer|string $iSurveyId        the id of the survey. If
-     * @return TemplateConfiguration
+     * @param integer $iSurveyId        the id of the survey. If
+     * @return StdClass
      */
     public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
@@ -206,7 +217,7 @@ class Template extends LSActiveRecord
                 if (!is_file("$sUserTemplateRootDir/$sFileName")
                     && $sFileName != "."
                     && $sFileName != ".." && $sFileName!=".svn"
-                    && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") || file_exists("{$sUserTemplateRootDir}/{$sFileName}/startpage.pstpl"))) {
+                    && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml"))) {
 
                     $aTemplateList[$sFileName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sFileName;
                 }

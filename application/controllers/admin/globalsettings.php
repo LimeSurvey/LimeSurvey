@@ -319,7 +319,7 @@ class GlobalSettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'globalsettings.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'globalsettings.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

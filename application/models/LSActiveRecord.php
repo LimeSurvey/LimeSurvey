@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *     Extensions to the CActiveRecord class
+  *     Extensions to the CActiveRecord class
  */
 class LSActiveRecord extends CActiveRecord
 {

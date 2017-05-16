@@ -59,7 +59,7 @@
                 foreach($model->getAttributesValues($model->attribute_id) as $attribute_value){
                     echo "<div class='control-group'>";
                     echo "<div class='dropDownContainer col-xs-8 col-offset-xs-2'>";
-                    echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[".$attribute_value['value_id']."]' value='".$attribute_value['value']."' />";
+                    echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
                     echo "</div>";
                     echo '<div class="col-xs-1">
                             <button class="btn btn-default form-group action_delDropdownField">
@@ -172,13 +172,12 @@
         });
         jQuery('#addDropdownField').on('click', function(e){
             e.preventDefault();
-            var count_id = ($('#ParticipantAttributeNamesDropdownEditList').find('div.dropdownOptionContainer').length)+1;
             jQuery('#dummyDropdownInputGroup')
             .clone()
             .appendTo($('#ParticipantAttributeNamesDropdownEditList'))
-            .find('input.selector_dropDownValue')
-                .attr('name', 'ParticipantAttributeNamesDropdown[]')
-                .attr('id', 'ParticipantAttributeNamesDropdown_'+count_id);
+            .removeAttr('id')
+            .find('input')
+                .attr('name', 'ParticipantAttributeNamesDropdown[]');
             return false;
         });
         jQuery('#addLanguageField').on('click', function(e){

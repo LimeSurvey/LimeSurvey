@@ -94,6 +94,9 @@ use \ls\pluginmanager\PluginEvent;
  * @property string[] $allLanguages All languages (additional and base)
  * @property boolean $isActive Whether survey is active or not
  * @property array $tokenAttributes
+ * @property string creationDate Creation date formatted according to user format
+ * @property string startDateFormatted Start date formatted according to user format
+ * @property string expiryDateFormatted Expiry date formatted according to user format
  */
 class Survey extends LSActiveRecord
 {
@@ -125,6 +128,8 @@ class Survey extends LSActiveRecord
     private $fac;
     /** @var integer $pac Partial-answers count*/
     private $pac;
+
+    private $sSurveyUrl;
 
     /**
      * Set defaults
@@ -696,7 +701,6 @@ class Survey extends LSActiveRecord
         }
     }
 
-
     /**
      * @return array
      */
@@ -723,13 +727,45 @@ class Survey extends LSActiveRecord
 
 
     /**
-     * @return string
+     * @param string $attribute date attribute name
+     * @return string formatted date
+     */
+    private function getDateFormatted($attribute)
+    {
+        $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
+        if($this->$attribute){
+            return convertDateTimeFormat($this->$attribute, 'Y-m-d', $dateformatdata['phpdate']);
+        }
+        return null;
+    }
+
+
+    /**
+     * @return string formatted date
      */
     public function getCreationDate()
     {
-        $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
-        return convertDateTimeFormat($this->datecreated, 'Y-m-d', $dateformatdata['phpdate']);
+        return $this->getDateFormatted('datecreated');
     }
+
+
+    /**
+     * @return string formatted date
+     */
+    public function getStartDateFormatted()
+    {
+        return $this->getDateFormatted('startdate');
+    }
+
+
+    /**
+     * @return string formatted date
+     */
+    public function getExpiryDateFormatted()
+    {
+        return $this->getDateFormatted('expires');
+    }
+
 
     /**
      * @return string
@@ -822,9 +858,9 @@ class Survey extends LSActiveRecord
             $sStart = convertToGlobalSettingFormat( $sStart );
 
             // Icon generaton (for CGridView)
-            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Expire').': '.$sStop.'"><span class="fa  fa-clock-o text-success"></span></a>';
-            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Expired').': '.$sStop.'"><span class="fa fa fa-step-forward text-warning"></span></a>';
-            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Start').': '.$sStart.'"><span class="fa  fa-clock-o text-warning"></span></a>';
+            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'),$sStop).'"><span class="fa  fa-play text-success"></span></a>';
+            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'),$sStop).'"><span class="fa fa fa-step-forward text-warning"></span></a>';
+            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'),$sStart).'"><span class="fa  fa-clock-o text-warning"></span></a>';
 
             // Icon parsing
             if ( $bExpired || $bWillRun ) {
@@ -1057,15 +1093,17 @@ class Survey extends LSActiveRecord
                 } if($this->active == "S") {
                     $criteria->compare("t.active",'Y');
                     $criteria->addCondition("t.startdate >'$sNow'");
-                } if($this->active == "R") {
-                    $now = new CDbExpression("NOW()");
+                }
 
+                if($this->active == "R")
+                {
                     $criteria->compare("t.active",'Y');
                     $subCriteria1 = new CDbCriteria;
                     $subCriteria2 = new CDbCriteria;
-                    $subCriteria1->addCondition($now.' > t.startdate', 'OR');
-                    $subCriteria2->addCondition($now.' < t.expires', 'OR');
+                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'OR');
+                    $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
                     $subCriteria1->addCondition('t.expires IS NULL', "OR");
+                    $subCriteria1->addCondition("'{$sNow}' < t.expires", 'OR');
                     $subCriteria2->addCondition('t.startdate IS NULL', "OR");
                     $criteria->mergeWith($subCriteria1);
                     $criteria->mergeWith($subCriteria2);
@@ -1209,4 +1247,18 @@ class Survey extends LSActiveRecord
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
     }
+
+    public function getsSurveyUrl()
+    {
+        if ($this->sSurveyUrl==''){
+            if(!in_array(App()->language,$this->getAllLanguages())){
+                $surveylang=$this->language;
+            }else{
+                $surveylang=App()->language;
+            }
+            $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
+        }
+        return $this->sSurveyUrl;
+    }
+
 }

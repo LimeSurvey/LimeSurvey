@@ -36,7 +36,14 @@ class Permission extends LSActiveRecord
         return '{{permissions}}';
     }
 
-    /** @inheritdoc */
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
+     * @param string $class
+     * @return Permission
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
@@ -218,7 +225,6 @@ class Permission extends LSActiveRecord
                 'img' => 'global'
             ),
             'participantpanel' => array(
-                'import' => false,
                 'title' => gT("Central participant database"),
                 'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
                 'img' => 'cpdb'

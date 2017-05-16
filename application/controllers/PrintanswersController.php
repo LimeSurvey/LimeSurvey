@@ -28,8 +28,6 @@ class PrintanswersController extends LSYii_Controller {
     public $aReplacementData= array();
     /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
     public $aGlobalData= array();
-    /* @var boolean did we need survey.pstpl when using layout */
-    public $bStartSurvey= false;
 
 
     /**
@@ -77,36 +75,11 @@ class PrintanswersController extends LSYii_Controller {
         /* Need a Template function to replace this line */
         Yii::app()->clientScript->registerPackage( 'survey-template' );
 
-        //Survey is not finished or don't exist
-        if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
-        //display "sorry but your session has expired"
-        {
-            $oTemplate = Template::model()->getInstance('', $iSurveyID);
-            $this->sTemplate=$oTemplate->sTemplateName;
-            $error=$this->renderPartial("/survey/system/errorWarning",array(
-                'aErrors'=>array(
-                    gT("We are sorry but your session has expired."),
-                ),
-            ),true);
-            $message=$this->renderPartial("/survey/system/message",array(
-                'aMessage'=>array(
-                    gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
-                ),
-            ),true);
-            /* Set the data for templatereplace */
-            $this->aGlobalData['thissurvey']=getSurveyInfo($iSurveyID);
-            $this->aReplacementData=$aReplacementData['MESSAGEID']='session-timeout';
-            $aReplacementData['MESSAGE']=$message;
-            $aReplacementData['URL']='';
-            $this->aReplacementData=$aReplacementData['ERROR']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
-            $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
-            $this->render("/survey/system/display",array('content'=>$content));
-            App()->end();
-        }
-        //Fin session time out
-        $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
-        //Ensure script is not run directly, avoid path disclosure
-        //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
+            //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
+            if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+            {
+                throw new CHttpException(401, gT('You are not allowed to print answers.'));
+            }
 
         //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
         if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))

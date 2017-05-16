@@ -85,7 +85,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['image_directory'] = Yii::app()->getConfig('rootdir').DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.Yii::app()->getConfig('admintheme').DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR;
+    $tcpdf['image_directory'] = Yii::app()->getConfig('rootdir').DIRECTORY_SEPARATOR.'assets/styles-admin'.DIRECTORY_SEPARATOR.Yii::app()->getConfig('admintheme').DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR;
 
     /************************************************************
     * TCPDF default (blank) image
@@ -254,4 +254,3 @@
     $tcpdf['cell_padding'] = 0;
 
     return $tcpdf;
-

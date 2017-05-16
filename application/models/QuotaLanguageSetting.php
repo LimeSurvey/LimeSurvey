@@ -12,6 +12,7 @@
    *
      *	Files Purpose: lots of common functions
 */
+
 /**
  * @property integer $quotals_id
  * @property integer $quotals_quota_id
@@ -46,13 +47,17 @@ class QuotaLanguageSetting extends LSActiveRecord
 		return 'quotals_id';
 	}
 
-    /** @inheritdoc */
+	/**
+	 * Returns the relations
+	 *
+	 * @access public
+	 * @return array
+	 */
 	public function relations()
 	{
 		$alias = $this->getTableAlias();
 		return array(
-			'quota' => array(self::BELONGS_TO, 'Quota', '',
-				'on' => "quota.id = $alias.quotals_quota_id"),
+			'quota' => array(self::BELONGS_TO, 'Quota', 'quotals_quota_id'),
 		);
 	}
 
@@ -60,12 +65,30 @@ class QuotaLanguageSetting extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('quotals_message','required'),
+            array('quotals_url','url'),
             array('quotals_name','LSYii_Validators'),// No access in quota editor, set to quota.name
             array('quotals_message','LSYii_Validators'),
             array('quotals_url','LSYii_Validators','isUrl'=>true),
             array('quotals_urldescrip','LSYii_Validators'),
+            array('quotals_url','urlValidator'),
         );
     }
+    public function urlValidator(){
+        if($this->quota->autoload_url == 1 && !$this->quotals_url ){
+            $this->addError('quotals_url',gT('URL must be set if autoload URL is turned on!'));
+        }
+    }
+
+    public function attributeLabels()
+    {
+        return array(
+            'quotals_message'=> gT("Quota message:"),
+            'quotals_url'=> gT("URL:"),
+            'quotals_urldescrip'=> gT("URL Description:"),
+        );
+    }
+
 
 	function insertRecords($data)
     {

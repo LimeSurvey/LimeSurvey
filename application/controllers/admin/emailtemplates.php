@@ -159,7 +159,7 @@ class emailtemplates extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = array(), $aData = array())
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'emailtemplates.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'emailtemplates.js');
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
