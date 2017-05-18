@@ -147,9 +147,4 @@ function hideEmptyPart()
             $(this).addClass("hidden");
         }
     });
-    $(".answer-container").each(function(){
-        if($(this).text().trim()==""){
-            $(this).addClass("hidden");
-        }
-    });
 }

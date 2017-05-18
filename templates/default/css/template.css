@@ -231,6 +231,11 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .slider-tick.custom::before {
   color: #2c3e50;
 }
+
+/* hide answers for text-display question */
+.boilerplate .answer-container {display:none;}
+
+
 /* Show more the heading in table */
 .ls-answers .ls-heading th{font-weight:700}
 /* Max width for some answer part */
@@ -713,3 +718,4 @@ div.yes-no .btn-group label {
 p.return-to-survey{
     clear:left;
 }
+
