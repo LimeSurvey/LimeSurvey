@@ -39,15 +39,13 @@
               />
 
             <label id="label-<?php echo $id;?>" for="<?php echo $id;?>" class="control-label checkbox-label"><?php echo $labeltext;?></label>
-
-            <?php if($javainput):?>
-                <input
-                type='hidden'
-                name='<?php echo $javaname?>'
-                id='<?php echo $javaname?>'
-                value='<?php echo $javavalue;?>'
-                />
-            <?php endif;?>
+            <?php
+            /* Value for expression manager javascript (use val()) ; no need to submit */
+            echo \CHtml::hiddenField($javaname,$javavalue,array(
+                'id' => $javaname,
+                'disabled' => true,
+            ));
+            ?>
         </div>
     </div>
 

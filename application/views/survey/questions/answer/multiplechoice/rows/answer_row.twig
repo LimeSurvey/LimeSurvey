@@ -26,15 +26,13 @@
         id="answer{{ name.title }}"
         value="Y"
         {{ checkedState }}
-        onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
     />
-
     <label for="answer{{ name.title }}" class="checkbox-label control-label">{{ question }}</label>
     <input
         type="hidden"
         name="java{{ myfname }}"
         id="java{{ myfname }}"
-        value="{{ sValue }}"
+        value="{{ C.Html.encode( sValue ) }}"
     />
 </li>
 <!-- end of answer_row -->

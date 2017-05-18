@@ -18,12 +18,13 @@
 <tr id="javatbd<?php echo $myfname;?>" class="<?php echo $coreRowClass;?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php echo ($error) ? " ls-mandatory-error" : ""; ?>" role="group" aria-labelledby="answertext<?php echo $myfname;?>">
     <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php echo ($error) ? " text-danger" : ""; ?><?php echo ($answerwidth==0)? " sr-only":""; ?>">
         <?php echo $answertext; ?>
-        <input
-            type="hidden"
-            name="java<?php echo $myfname;?>"
-            id="java<?php echo $myfname;?>"
-            value="<?php echo $value;?>"
-        />
+        <?php
+        /* Value for expression manager javascript : here ?  */
+        echo \CHtml::hiddenField("java{$myfname}",$value,array(
+            'id' => "java{$myfname}",
+            'disabled' => true,
+        ));
+        ?>
     </th>
 
     <!-- all cells for this row -->

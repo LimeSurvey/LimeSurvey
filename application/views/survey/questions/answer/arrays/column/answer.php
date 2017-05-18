@@ -57,11 +57,10 @@
     </tbody>
 </table>
 
-<?php foreach ($anscode as $i => $ld): ?>
-    <input
-        type="hidden"
-        name="java<?php echo $aQuestions[$i]['myfname']; ?>"
-        id="java<?php echo $aQuestions[$i]['myfname']; ?>"
-        value="<?php echo $aQuestions[$i]['myfname_value']; ?>"
-    />
-<?php endforeach; ?>
+<?php foreach ($anscode as $i => $ld) {
+    echo \CHtml::hiddenField("java{$aQuestions[$i]['myfname']}",$aQuestions[$i]['myfname_value'],array(
+        'id' => "java{$aQuestions[$i]['myfname']}",
+        'disabled' => true,
+    ));
+}
+?>
