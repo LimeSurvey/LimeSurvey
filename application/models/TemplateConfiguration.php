@@ -158,6 +158,9 @@ class TemplateConfiguration extends CFormModel
 
             $oTemplateToConfigure = $this->oMotherTemplate;
             $this->setThisTemplate($oTemplateToConfigure);
+
+            $this->filesPath                = $this->oMotherTemplate->filesPath; // View override will be managed file by file from tiwg rendering...
+            $this->viewPath                 = $this->oMotherTemplate->viewPath; // File override will be managed file by file from tiwg rendering...
             $this->depends                  = $this->getDependsPackages($this->oMotherTemplate);
 
         }else{
@@ -179,9 +182,9 @@ class TemplateConfiguration extends CFormModel
         $this->apiVersion               = (isset($oTemplateToConfigure->config->metadatas->apiVersion))            ? $oTemplateToConfigure->config->metadatas->apiVersion:0;
         $this->viewPath                 = (isset($oTemplateToConfigure->config->engine->viewdirectory))            ? $oTemplateToConfigure->path.DIRECTORY_SEPARATOR.$oTemplateToConfigure->config->engine->viewdirectory.DIRECTORY_SEPARATOR                            : '';
         $this->siteLogo                 = (isset($oTemplateToConfigure->config->files->logo))                      ? $oTemplateToConfigure->config->files->logo->filename                                                                                 : '';
-        $this->filesPath                = (isset($oTemplateToConfigure->config->engine->filesdirectory))           ? $oTemplateToConfigure->path.DIRECTORY_SEPARATOR.$oTemplateToConfigure->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
+        $this->filesPath                = (isset($oTemplateToConfigure->config->engine->filesdirectory))           ? $oTemplateToConfigure->path.DIRECTORY_SEPARATOR.$oTemplateToConfigure->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $oTemplateToConfigure->path . '/files/';
         $this->cssFramework             = (isset($oTemplateToConfigure->config->engine->cssframework))             ? $oTemplateToConfigure->config->engine->cssframework                                                                                  : '';
-        $this->cssFramework->name       = (isset($oTemplateToConfigure->config->engine->cssframework->name))       ? $oTemplateToConfigure->config->engine->cssframework->name                                                                            : (string) $oTemplateToConfigure->engine->cssframework;
+        $this->cssFramework->name       = (isset($oTemplateToConfigure->config->engine->cssframework->name))       ? $oTemplateToConfigure->config->engine->cssframework->name                                                                            : (string) $oTemplateToConfigure->config->engine->cssframework;
         $this->packages                 = (isset($oTemplateToConfigure->config->engine->packages))                 ? $oTemplateToConfigure->config->engine->packages                                                                                      : array();
         // Package creation
         $this->createTemplatePackage($oTemplateToConfigure);
