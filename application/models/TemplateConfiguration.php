@@ -80,21 +80,21 @@ class TemplateConfiguration extends CFormModel
     public $xmlFile;
 
     /**
-     * This method construct a template object, having all the needed configuration datas.
+     * This method constructs a template object, having all the needed configuration data.
      * It checks if the required template is a core one or a user one.
-     * If it's a user template, it will check if it's an old 2.0x template to provide default configuration values corresponding to the old template system
-     * If it's not an old template, it will check if it has a configuration file to load its datas.
-     * If it's not the case (template probably doesn't exist), it will load the default template configuration
-     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed layout files, if the files refered in css exist, etc.
+     * If it is a user template, it will check if it is an old 2.0x template to provide default configuration values corresponding to the old template system
+     * If it is not an old template, it will check if it has a configuration file to load its datas.
+     * If it is not the case (template probably doesn't exist), it will load the default template configuration
+     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also if this file is correct, if it has the needed layout files, if the files refered in css exist, etc.
      *
-     * @param string $sTemplateName the name of the template to load. The string come from the template selector in survey settings
+     * @param string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
      * @param string $iSurveyId the id of the survey. If
      * @return $this
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
-        // If it's called from template editor, a template name will be provided.
-        // If it's called for survey taking, a survey id will be provided
+        // If it is called from the template editor, a template name will be provided.
+        // If it is called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
             /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
             $sTemplateName=Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
@@ -111,9 +111,9 @@ class TemplateConfiguration extends CFormModel
                 $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
             }
         }
-        // We check if  it's a CORE template
+        // We check if  it is a CORE template
         $this->isStandard = $this->setIsStandard();
-        // If the template is standard, its root is based on standardtemplaterootdir, else, it's a user template, its root is based on usertemplaterootdir
+        // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
         $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
 
         // If the template directory doesn't exist, it can be that:
@@ -128,7 +128,7 @@ class TemplateConfiguration extends CFormModel
             }
         }
 
-        // If the template don't have a config file (maybe it has been deleted, or whatever),
+        // If the template doesn't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
         $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
 
@@ -159,8 +159,8 @@ class TemplateConfiguration extends CFormModel
             $oTemplateToConfigure = $this->oMotherTemplate;
             $this->setThisTemplate($oTemplateToConfigure);
 
-            $this->filesPath                = $this->oMotherTemplate->filesPath; // View override will be managed file by file from tiwg rendering...
-            $this->viewPath                 = $this->oMotherTemplate->viewPath; // File override will be managed file by file from tiwg rendering...
+            $this->filesPath                = $this->oMotherTemplate->filesPath; // View override will be managed file by file from twig rendering...
+            $this->viewPath                 = $this->oMotherTemplate->viewPath; // File override will be managed file by file from twig rendering...
             $this->depends                  = $this->getDependsPackages($this->oMotherTemplate);
 
         }else{
@@ -192,7 +192,7 @@ class TemplateConfiguration extends CFormModel
 
     /**
      * Update the configuration file "last update" node.
-     * For now, it's called only from template editor
+     * For now, it is called only from template editor
      */
     public function actualizeLastUpdate()
     {
@@ -216,7 +216,7 @@ class TemplateConfiguration extends CFormModel
 
                 $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
 
-                // This will overwrite the package definition  using a base url instead of a base path
+                // This will overwrite the package definition using a base url instead of a base path
                 if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
                     Yii::app()->clientScript->addPackage( $package, array(
                         'baseUrl'   => $aOldPackageDefinition['devBaseUrl'],                                 // Don't use asset manager
@@ -478,7 +478,7 @@ class TemplateConfiguration extends CFormModel
                 if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
                     Yii::app()->clientScript->addPackage(
                         $framework.'-template', array(
-                            'basePath'    => 'survey.template.path',            // basePath: the asset manager will be used
+                            'basePath'    => 'survey.template.path',      // basePath: the asset manager will be used
                             'css'         => $packageCss,
                             'js'          => $packageJs,
                             'depends'     => $aDepends,
@@ -488,7 +488,7 @@ class TemplateConfiguration extends CFormModel
                     $sTemplateurl = $oTemplate->getTemplateURL();
                     Yii::app()->clientScript->addPackage(
                         $framework.'-template', array(
-                            'baseUrl'    =>  $sTemplateurl,                                 // Don't use asset manager
+                            'baseUrl'    =>  $sTemplateurl,            // Don't use asset manager
                             'css'         => $packageCss,
                             'js'          => $packageJs,
                             'depends'     => $aDepends,
