@@ -32,8 +32,10 @@
 
 
             $this->sTemplate = $oTemplate->name;
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
-//            $this->aGlobalData['languagechanger'] = makeLanguageChanger(App()->language);
+            //Yii::app()->clientScript->registerPackage( 'survey-template' );
+            //Yii::app()->clientScript->registerPackage( 'survey-template-'.$oTemplate->sTemplateName );
+            //var_dump('survey-template-'.$oTemplate->sTemplateName);
+
 
             $aData = array(
                     'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),

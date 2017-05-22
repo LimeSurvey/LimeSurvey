@@ -172,7 +172,7 @@ class TemplateConfiguration extends CFormModel
 
         /* Add depend package according to packages */
         $this->otherFiles               = $this->setOtherFiles();
-
+        $this->createTemplatePackage($oTemplateToConfigure);    
         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         return $this;
     }
@@ -187,7 +187,7 @@ class TemplateConfiguration extends CFormModel
         $this->cssFramework->name       = (isset($oTemplateToConfigure->config->engine->cssframework->name))       ? $oTemplateToConfigure->config->engine->cssframework->name                                                                            : (string) $oTemplateToConfigure->config->engine->cssframework;
         $this->packages                 = (isset($oTemplateToConfigure->config->engine->packages))                 ? $oTemplateToConfigure->config->engine->packages                                                                                      : array();
         // Package creation
-        $this->createTemplatePackage($oTemplateToConfigure);
+
     }
 
     /**
