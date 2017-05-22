@@ -162,7 +162,7 @@ class TemplateConfiguration extends CFormModel
             $this->filesPath                = $this->oMotherTemplate->filesPath; // View override will be managed file by file from twig rendering...
             $this->viewPath                 = $this->oMotherTemplate->viewPath; // File override will be managed file by file from twig rendering...
             $this->depends                  = $this->getDependsPackages($this->oMotherTemplate);
-
+            $this->createTemplatePackage($oTemplateToConfigure);
         }else{
             $oTemplateToConfigure = $this;
             $this->setThisTemplate($oTemplateToConfigure);
@@ -172,7 +172,8 @@ class TemplateConfiguration extends CFormModel
 
         /* Add depend package according to packages */
         $this->otherFiles               = $this->setOtherFiles();
-        $this->createTemplatePackage($oTemplateToConfigure);    
+        $this->createTemplatePackage($this);
+
         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         return $this;
     }
@@ -276,8 +277,13 @@ class TemplateConfiguration extends CFormModel
      */
     public function createTemplatePackage($oTemplate)
     {
-        Yii::setPathOfAlias('survey.template.path',     $oTemplate->path);                                   // The package creation/publication need an alias
-        Yii::setPathOfAlias('survey.template.viewpath', $oTemplate->viewPath);
+        $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
+        $sViewName  = 'survey.template-'.$oTemplate->sTemplateName.'.viewpath';
+
+        //Yii::setPathOfAlias('survey.template.path',     $oTemplate->path);                                   // The package creation/publication need an alias
+        //Yii::setPathOfAlias('survey.template.viewpath', $oTemplate->viewPath);
+        Yii::setPathOfAlias($sPathName,     $oTemplate->path);                                   // The package creation/publication need an alias
+        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
         $aCssFiles   = (array)$oTemplate->config->files->css->filename;                                 // The CSS files of this template
         $aJsFiles    = (array)$oTemplate->config->files->js->filename;                                  // The JS files of this template
@@ -313,7 +319,7 @@ class TemplateConfiguration extends CFormModel
         // It will create the asset directory, and publish the css and js files
         if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
             Yii::app()->clientScript->addPackage( $sPackageName, array(
-                'basePath'    => 'survey.template.path',                        // Use asset manager
+                'basePath'    => $sPathName,                        // Use asset manager
                 'css'         => $aCssFiles,
                 'js'          => $aJsFiles,
                 'depends'     => $oTemplate->depends,
@@ -388,7 +394,7 @@ class TemplateConfiguration extends CFormModel
 
         /* Start by adding cssFramework package */
         $packages=$this->getFrameworkPackages($oTemplate);
-
+        
         if(!getLanguageRTL(App()->getLanguage())) {
             $packages=array_merge ($packages,$this->getFrameworkPackages($oTemplate, 'ltr'));
         } else {
@@ -476,9 +482,10 @@ class TemplateConfiguration extends CFormModel
                 );
 
                 if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
+                    $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
                     Yii::app()->clientScript->addPackage(
                         $framework.'-template', array(
-                            'basePath'    => 'survey.template.path',      // basePath: the asset manager will be used
+                            'basePath'    => $sPathName,      // basePath: the asset manager will be used
                             'css'         => $packageCss,
                             'js'          => $packageJs,
                             'depends'     => $aDepends,
