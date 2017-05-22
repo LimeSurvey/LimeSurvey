@@ -3955,9 +3955,12 @@ function do_array_5point($ia)
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
-            $answer_tds .= doRender('/survey/questions/arrays/5point/rows/cells/answer_td_answertext', array(
-                'answerwidth'=>$answerwidth,
-                'answertext2'=>$answertext2,
+
+            $answer_tds .= doRender('/survey/questions/arrays/5point/rows/cells/thead', array(
+                'class'=>'answertextright',
+                'style'=>'text-align:left',
+                'th_content'=>$answertext2,
+
             ), true);
              $textAlignClass = "text-right";
         }
