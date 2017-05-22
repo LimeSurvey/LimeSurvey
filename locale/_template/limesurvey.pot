@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-05-12 10:58:04+00:00\n"
+"POT-Creation-Date: 2017-05-22 15:25:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1304,12 +1304,12 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1728
 #: application/helpers/qanda_helper.php:1790
 #: application/helpers/qanda_helper.php:3916
-#: application/helpers/qanda_helper.php:4093
-#: application/helpers/qanda_helper.php:4497
-#: application/helpers/qanda_helper.php:4577
-#: application/helpers/qanda_helper.php:4723
-#: application/helpers/qanda_helper.php:5563
-#: application/helpers/qanda_helper.php:5564
+#: application/helpers/qanda_helper.php:4096
+#: application/helpers/qanda_helper.php:4500
+#: application/helpers/qanda_helper.php:4580
+#: application/helpers/qanda_helper.php:4726
+#: application/helpers/qanda_helper.php:5566
+#: application/helpers/qanda_helper.php:5567
 #: application/helpers/userstatistics_helper.php:708
 #: application/helpers/userstatistics_helper.php:747
 #: application/helpers/userstatistics_helper.php:1579
@@ -4099,7 +4099,7 @@ msgstr ""
 #: application/views/admin/token/browse.php:62
 #: application/views/admin/token/token_bar.php:274
 #: application/views/admin/update/manage/subscribe.php:42
-#: application/views/admin/update/updater/_error.php:162
+#: application/views/admin/update/updater/_error.php:163
 #: application/views/admin/update/updater/steps/_backup.php:77
 #: application/views/admin/update/updater/steps/_change_log.php:65
 #: application/views/admin/update/updater/steps/_check_local_errors.php:170
@@ -4450,7 +4450,7 @@ msgstr ""
 #: application/helpers/common_helper.php:5871
 #: application/helpers/qanda_helper.php:1234
 #: application/helpers/qanda_helper.php:1915
-#: application/helpers/qanda_helper.php:4704
+#: application/helpers/qanda_helper.php:4707
 #: application/views/admin/dataentry/content_view.php:143
 #: application/views/admin/dataentry/content_view.php:155
 #: application/views/survey/questions/arrays/dualscale/answer_dropdown.php:131
@@ -5820,10 +5820,10 @@ msgid "Full"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:114
-#: application/helpers/qanda_helper.php:4841
-#: application/helpers/qanda_helper.php:4856
-#: application/helpers/qanda_helper.php:4871
-#: application/helpers/qanda_helper.php:4872
+#: application/helpers/qanda_helper.php:4844
+#: application/helpers/qanda_helper.php:4859
+#: application/helpers/qanda_helper.php:4874
+#: application/helpers/qanda_helper.php:4875
 #: application/views/admin/assessments_view.php:87
 #: application/views/admin/assessments_view.php:132
 #: application/views/survey/questions/arrays/texts/columns/col_total.php:15
@@ -8261,105 +8261,105 @@ msgstr ""
 msgid "A table with a subquestion on each row. The answer options are values from 1 to 5 and are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4031
+#: application/helpers/qanda_helper.php:4034
 msgid "A table with a subquestion on each row. The answers are values from 1 to 10 and are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4047
-#: application/helpers/qanda_helper.php:4188
-#: application/helpers/qanda_helper.php:4296
-#: application/helpers/qanda_helper.php:4467
-#: application/helpers/qanda_helper.php:5793
+#: application/helpers/qanda_helper.php:4050
+#: application/helpers/qanda_helper.php:4191
+#: application/helpers/qanda_helper.php:4299
+#: application/helpers/qanda_helper.php:4470
+#: application/helpers/qanda_helper.php:5796
 msgid "The last cell is for 'No answer'."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4175
+#: application/helpers/qanda_helper.php:4178
 msgid "A table with a subquestion on each row. The answers are 'Yes', 'No', and 'Uncertain' and are in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4284
+#: application/helpers/qanda_helper.php:4287
 msgid "A table with a subquestion on each row. The answers are 'Increase', 'Same', 'Decrease' and are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4402
+#: application/helpers/qanda_helper.php:4405
 msgid "A table with a subquestion on each row. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4407
+#: application/helpers/qanda_helper.php:4410
 msgid "A table with a subquestion on each row. The answer options are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4462
+#: application/helpers/qanda_helper.php:4465
 msgid "After the answer options a cell does give some information."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4773
+#: application/helpers/qanda_helper.php:4776
 msgid "A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4833
+#: application/helpers/qanda_helper.php:4836
 msgid "Each answer may only be a number."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4845
-#: application/helpers/qanda_helper.php:4861
+#: application/helpers/qanda_helper.php:4848
+#: application/helpers/qanda_helper.php:4864
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4850
+#: application/helpers/qanda_helper.php:4853
 msgid "The last row shows the total for the column."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4864
+#: application/helpers/qanda_helper.php:4867
 msgid "The last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4883
+#: application/helpers/qanda_helper.php:4886
 msgid "The last row shows the total for the column and the last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4946
-#: application/helpers/qanda_helper.php:5297
+#: application/helpers/qanda_helper.php:4949
+#: application/helpers/qanda_helper.php:5300
 msgid "The last cell gives some information."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5147
+#: application/helpers/qanda_helper.php:5150
 msgid "A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5212
+#: application/helpers/qanda_helper.php:5215
 msgid "Please check the matching combinations."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5220
+#: application/helpers/qanda_helper.php:5223
 msgid "Please enter only numbers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5226
+#: application/helpers/qanda_helper.php:5229
 msgid "Please select an answer for each combination."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5539
+#: application/helpers/qanda_helper.php:5542
 msgid "A table with subquestions on each column. The subquestions texts are on the column header, the answer options are in row headers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5664
+#: application/helpers/qanda_helper.php:5667
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5670
-#: application/helpers/qanda_helper.php:6096
+#: application/helpers/qanda_helper.php:5673
+#: application/helpers/qanda_helper.php:6099
 #: application/views/survey/questions/arrays/array/dropdown/empty.php:3
 #: application/views/survey/questions/arrays/multiflexi/empty_error.php:2
 #: application/views/survey/questions/arrays/texts/empty_error.php:2
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5722
+#: application/helpers/qanda_helper.php:5725
 msgid "A table with a subquestion on each row, with two answers to provide on each line.  Please select the answers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5730
+#: application/helpers/qanda_helper.php:5733
 msgid "A table with one subquestion on each row and two answers to provide on each row. The related answer options are in the top table header row."
 msgstr ""
 
@@ -17671,7 +17671,7 @@ msgstr ""
 #: application/views/admin/update/updater/_error.php:87
 #: application/views/admin/update/updater/_error.php:93
 #: application/views/admin/update/updater/_error.php:99
-#: application/views/admin/update/updater/_error.php:133
+#: application/views/admin/update/updater/_error.php:134
 msgid "Please contact the LimeSurvey team."
 msgstr ""
 
@@ -17874,26 +17874,26 @@ msgstr ""
 msgid "ComfortUpdate couldn't remove one or more files that were deleted with the update."
 msgstr ""
 
-#: application/views/admin/update/updater/_error.php:126
+#: application/views/admin/update/updater/_error.php:127
 msgid "Could not remove the deleted directories"
 msgstr ""
 
-#: application/views/admin/update/updater/_error.php:127
+#: application/views/admin/update/updater/_error.php:128
 msgid "ComfortUpdate couldn't remove one or more directories that were deleted with the update."
 msgstr ""
 
-#: application/views/admin/update/updater/_error.php:133
+#: application/views/admin/update/updater/_error.php:134
 msgid "Unknown error."
 msgstr ""
 
-#: application/views/admin/update/updater/_error.php:149
+#: application/views/admin/update/updater/_error.php:150
 #: application/views/admin/update/updater/welcome/_error.php:74
 #: application/views/admin/update/updater/welcome/_welcome.php:60
 msgid "Buy a new key"
 msgstr ""
 
-#: application/views/admin/update/updater/_error.php:153
-#: application/views/admin/update/updater/_error.php:158
+#: application/views/admin/update/updater/_error.php:154
+#: application/views/admin/update/updater/_error.php:159
 #: application/views/admin/update/updater/welcome/_error.php:78
 #: application/views/admin/update/updater/welcome/_error.php:83
 #: application/views/admin/update/updater/welcome/_welcome.php:65
