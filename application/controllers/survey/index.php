@@ -43,6 +43,7 @@ class index extends CAction {
 
         Yii::app()->setConfig('surveyID',$surveyid);
         Yii::app()->setConfig('move',$move);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
         if (is_null($thissurvey) && !is_null($surveyid))
             $thissurvey = getSurveyInfo($surveyid);
