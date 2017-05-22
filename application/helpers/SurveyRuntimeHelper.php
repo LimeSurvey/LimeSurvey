@@ -87,7 +87,6 @@ class SurveyRuntimeHelper {
     {
         // Survey settings
         $this->setSurveySettings( $surveyid, $args);
-
         // Start rendering
         $this->makeLanguageChanger();                                           //  language changer can be used on any entry screen, so it must be set first
 
@@ -1474,7 +1473,7 @@ class SurveyRuntimeHelper {
         $preview           = $this->preview;
 
         // Template settings
-        $oTemplate         = $this->template;
+        $oTemplate         = $this->oTemplate;
         $sTemplatePath     = $oTemplate->path;
         $this->sTemplateViewPath = $oTemplate->viewPath;
 
@@ -1616,7 +1615,7 @@ class SurveyRuntimeHelper {
 
     private function initTemplate()
     {
-        $oTemplate         = $this->template          = Template::model()->getInstance('', $this->iSurveyid);
+        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);
         $this->sTemplateViewPath = $oTemplate->viewPath;
         $oTemplate->registerAssets();
         Yii::app()->twigRenderer->setForcedPath($this->sTemplateViewPath);
@@ -1654,7 +1653,7 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index",array("sid"=>$this->iSurveyid));
 
         // TODO: check this:
-        $this->aSurveyInfo['oTemplate']    = (array) $this->template;
+        $this->aSurveyInfo['oTemplate']    = (array) $this->oTemplate;
 
         $this->setSurveyMode();
         $this->setSurveyOptions();
