@@ -331,7 +331,7 @@ class update extends Survey_Common_Action
 
                 if (Yii::app()->request->getPost('datasupdateinfo'))
                 {
-                    $updateinfos= json_decode( base64_decode( Yii::app()->request->getPost('datasupdateinfo') ),true);
+                    $updateinfos= (array) json_decode( base64_decode( Yii::app()->request->getPost('datasupdateinfo') ),true);
 
                     $updateModel = new UpdateForm();
                     $backupInfos = $updateModel->backupFiles($updateinfos);
