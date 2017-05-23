@@ -34,11 +34,12 @@
         // rows/othertext.php
         echo $sOther;
     ?>
-    <input
-        type="hidden"
-        name="java<?php echo $name; ?>"
-        id="java<?php echo $name; ?>"
-        value="<?php echo $value; ?>"
-    />
+    <?php
+    /* Value for expression manager javascript (use id) ; no need to submit */
+    echo \CHtml::hiddenField("java{$name}",$value,array(
+        'id' => "java{$name}",
+        'disabled' => "disabled",
+    ));
+    ?>
 </div>
 <!-- end of answer  -->
