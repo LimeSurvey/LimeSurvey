@@ -54,11 +54,6 @@ class TemplateConfiguration extends CFormModel
      * @see getDependsPackages()
      */
     public $depends = array();
-    /**
-     * @var array $otherFiles Array of files in the file directory
-     * @see setOtherFiles()
-     */
-    public $otherFiles;
 
     public $sTemplateurl;
 
@@ -158,10 +153,9 @@ class TemplateConfiguration extends CFormModel
         }
 
         $this->setThisTemplate();
-        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
-
+        
         /* Add depend package according to packages */
-        //$this->otherFiles               = $this->setOtherFiles();
+        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
 
         $this->createTemplatePackage($this);
 
@@ -327,27 +321,6 @@ class TemplateConfiguration extends CFormModel
                 'depends'     => $oTemplate->depends,
             ) );
         }
-    }
-
-
-    /**
-     * Return the list of ALL files present in the file directory
-     * @return array
-     */
-    private function setOtherFiles()
-    {
-        $otherFiles = array();
-        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath)) {
-            while (false !== ($file = readdir($handle))) {
-                if($file!='.' && $file!='..') {
-                    if (!is_dir($file)) {
-                        $otherFiles[] = array("name" => $file);
-                    }
-                }
-            }
-            closedir($handle);
-        }
-        return $otherFiles;
     }
 
     public function getName()
