@@ -174,6 +174,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $loader       = $this->_twig->getLoader();
         $oRTemplate   = Template::model()->getInstance();
         $loader->addPath($oRTemplate->viewPath);
+        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
 
         // Add all mother templates path
         while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
