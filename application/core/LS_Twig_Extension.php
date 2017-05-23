@@ -64,10 +64,10 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerTemplateCssFile($sTemplateCssFileName)
     {
-        $oAdminTheme = AdminTheme::getInstance();
+        $oTemplate = Template::model()->getInstance();
 
         Yii::app()->getClientScript()->registerCssFile(
-            $oAdminTheme->sTemplateUrl .
+            $oTemplate->sTemplateUrl .
             $sTemplateCssFileName
         );
     }
@@ -95,11 +95,11 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
-        $oAdminTheme = AdminTheme::getInstance();
+        $oTemplate = Template::model()->getInstance();
 
         $position = self::getPosition($position);
         Yii::app()->getClientScript()->registerScriptFile(
-            $oAdminTheme->sTemplateUrl .
+            $oTemplate->sTemplateUrl .
             $sTemplateScriptFileName,
             $position,
             $htmlOptions
