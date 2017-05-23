@@ -136,6 +136,31 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
     }
 
+
+    public function renderTemplateFromFile($sView, $aDatas, $bReturn)
+    {
+        $oTemplate = $this->getTemplateForView($sView);
+        $line      = file_get_contents($oTemplate->viewPath.$sView);
+        $this->renderTemplateFromString( $line, $aDatas, $bReturn);
+    }
+
+    private function getTemplateForView($sView)
+    {
+        $oRTemplate = Template::model()->getInstance();
+
+        while (!file_exists($oRTemplate->viewPath.$sView)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
+    }
+
     /**
      * Render a string, not a file. It's used from template replace function.
      *
