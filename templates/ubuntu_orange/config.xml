@@ -40,5 +40,8 @@
             <name>bootstrap</name>
             <css replace="css/bootstrap.css">css/bootstrap.css</css>
         </cssframework>
+
+        <!-- Path of the twig files -->
+        <viewdirectory>views</viewdirectory>
     </engine>
 </config>
