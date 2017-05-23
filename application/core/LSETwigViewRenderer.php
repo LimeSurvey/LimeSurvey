@@ -157,13 +157,15 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
     public function renderTemplateFromString( $line, $aDatas, $bReturn)
     {
-        $this->_twig      = $twig = parent::getTwig();
+        $this->_twig  = $twig = parent::getTwig();
+        $loader       = $this->_twig->getLoader();
+        $oRTemplate   = Template::model()->getInstance();
+        $loader->addPath($oRTemplate->viewPath);
 
-        // At this point, forced path should not be nulled.
-        // It contains the path to the template's view directory for twig include statements
-        if (!is_null($this->forcedPath)){
-            $loader       = $this->_twig->getLoader();
-            $loader->setPaths($this->forcedPath);
+        // Add all mother templates path
+        while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
+            $oRTemplate = $oRTemplate->oMotherTemplate;
+            $loader->addPath($oRTemplate->viewPath);
         }
 
         // Plugin for blocks replacement
