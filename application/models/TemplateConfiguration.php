@@ -281,14 +281,14 @@ class TemplateConfiguration extends CFormModel
         $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
         foreach($aCssFiles as $key => $cssFile){
-            if (!empty($cssFile['replace'])){
+            if (!empty($cssFile['replace']) || !empty($cssFile['remove'])){
                 Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'css', $cssFile['replace'] );
                 unset($aCssFiles[$key]);
             }
         }
 
         foreach($aJsFiles as $key => $jsFile){
-            if (!empty($jsFile['replace'])){
+            if (!empty($jsFile['replace']) || !empty($jsFile['remove']) ){
                 Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'js', $jsFile['replace'] );
                 unset($aJsFiles[$key]);
             }
