@@ -226,6 +226,7 @@ $internalConfig = array(
                 'isset'                   => 'isset',
                 'str_replace'             => 'str_replace',
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
+                'image'                   => 'LS_Twig_Extension::image',
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
             ),
@@ -247,7 +248,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
                     'LSYii_Application'                 =>  array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'sprintf', 'gT' ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),
 
         ),

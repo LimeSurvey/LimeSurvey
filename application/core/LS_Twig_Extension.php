@@ -208,6 +208,30 @@ class LS_Twig_Extension extends Twig_Extension
         return App()->getAssetManager()->publish($sRessource);
     }
 
+    /**
+     * @var $sImagePath  string                 the image path relative to the template root
+     * @var $alt         string                 the alternative text display
+     * @var $htmlOptions array                  additional HTML attribute
+     */
+    public static function image($sImagePath, $alt='', $htmlOptions=array ( ) )
+    {
+        $oTemplate = $oRTemplate = Template::model()->getInstance();
+
+        // Reccurence on templates to find the file
+        while (!file_exists($oRTemplate->path.'/'.$sImagePath)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                // TODO: publish a default image "not found"
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+        $sUrlImgAsset = self::assetPublish($oRTemplate->path.'/'.$sImagePath);
+
+        return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
+    }
+
     public static function getPost($sName, $sDefaultValue=null)
     {
         return Yii::app()->request->getPost($sName, $sDefaultValue);
