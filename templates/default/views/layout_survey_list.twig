@@ -53,9 +53,10 @@
                         {{ include('./subviews/no_js_alert.twig') }}
 
                         <div class="jumbotron" id="surveys-list-jumbotron">
-                            <p>
+                            <p>                                
                                 {% if  not empty(aSurveyInfo.oTemplate.siteLogo) %}
-                                    <img class="img-responsive center-block" src="{{ assetPublish(aSurveyInfo.oTemplate.path ~ '/' ~ aSurveyInfo.oTemplate.siteLogo ) }}" alt=""/>
+                                    {% set htmlOptions = {'class': 'img-responsive center-block',} %}
+                                    {{ image(aSurveyInfo.oTemplate.siteLogo, "LimeSurvey Survey Software", htmlOptions ) }}
                                 {% endif %}
                                 {{ aSurveyInfo.sSiteName }}
                             </p>
