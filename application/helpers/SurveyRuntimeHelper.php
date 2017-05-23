@@ -1618,7 +1618,6 @@ class SurveyRuntimeHelper {
         $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);
         $this->sTemplateViewPath = $oTemplate->viewPath;
         $oTemplate->registerAssets();
-        Yii::app()->twigRenderer->setForcedPath($this->sTemplateViewPath);
     }
 
     private function makeLanguageChanger()

@@ -26,7 +26,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
      public  $sandboxConfig = array();
      private $_twig;
-     private $forcedPath = null;
 
     /**
      * Adds custom extensions
@@ -136,17 +135,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             return Yii::app()->getController()->renderPartial($sView, $aData, true);
         }
     }
-
-    /**
-     * Only use for renderTemplateFromString for now, to force the path of included twig files (in renderTemplateFromString: the template files)
-     * It's necessary for the twig include statments: by default, those views would be looked into application/views instead of the template's views directory.
-     * @param string $sPath  the path that will be used to render the views.
-     */
-    public function setForcedPath($sPath)
-    {
-        $this->forcedPath=$sPath;
-    }
-
 
     /**
      * Render a string, not a file. It's used from template replace function.

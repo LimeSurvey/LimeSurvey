@@ -1518,7 +1518,6 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     $oTemplate         = Template::model()->getInstance('', $surveyid);
     $sTemplateViewPath = $oTemplate->viewPath;
     $oTemplate->registerAssets();
-    Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
 
     $aError = array();
     $aError['title']      = ($sTitle != '')?$sTitle:gT("This survey cannot be tested or completed for the following reason(s):");
