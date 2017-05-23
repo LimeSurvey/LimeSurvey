@@ -65,9 +65,10 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerTemplateCssFile($sTemplateCssFileName)
     {
         $oTemplate = Template::model()->getInstance();
+        $oRTemplate = self::getTemplateForRessource($oTemplate, $sTemplateCssFileName);
 
         Yii::app()->getClientScript()->registerCssFile(
-            $oTemplate->sTemplateUrl .
+            $oRTemplate->sTemplateUrl .
             $sTemplateCssFileName
         );
     }
