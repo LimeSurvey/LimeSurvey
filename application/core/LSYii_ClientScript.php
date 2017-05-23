@@ -107,6 +107,7 @@ class LSYii_ClientScript extends CClientScript {
                 $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
 
                 // This will overwrite the package definition using a base url instead of a base path
+                // The package must have a devBaseUrl, else it will remain unchanged (for core/external package)
                 if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
                     Yii::app()->clientScript->addPackage( $package, array(
                         'baseUrl'   => $aOldPackageDefinition['devBaseUrl'],                                 // Don't use asset manager

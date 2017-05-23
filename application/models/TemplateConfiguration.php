@@ -391,27 +391,16 @@ class TemplateConfiguration extends CFormModel
                     $framework,
                 );
 
-                if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
-                    $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-                    Yii::app()->clientScript->addPackage(
-                        $framework.'-template', array(
-                            'basePath'    => $sPathName,      // basePath: the asset manager will be used
-                            'css'         => $packageCss,
-                            'js'          => $packageJs,
-                            'depends'     => $aDepends,
-                        )
-                    );
-                }else{
-                    $sTemplateurl = $oTemplate->getTemplateURL();
-                    Yii::app()->clientScript->addPackage(
-                        $framework.'-template', array(
-                            'baseUrl'    =>  $sTemplateurl,            // Don't use asset manager
-                            'css'         => $packageCss,
-                            'js'          => $packageJs,
-                            'depends'     => $aDepends,
-                        )
-                    );
-                }
+                Yii::app()->clientScript->addPackage(
+                    $framework.'-template', array(
+                        'devBaseUrl'  => $sTemplateurl,  // Don't use asset manager
+                        'basePath'    => $sPathName,      // basePath: the asset manager will be used
+                        'css'         => $packageCss,
+                        'js'          => $packageJs,
+                        'depends'     => $aDepends,
+                    )
+                );
+
                 $frameworkPackages[]=$framework.'-template';
             }
             return $frameworkPackages;
