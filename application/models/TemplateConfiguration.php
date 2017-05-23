@@ -313,7 +313,7 @@ class TemplateConfiguration extends CFormModel
         }
 
         $sPackageName = 'survey-template-'.$this->sTemplateName;
-
+        $sTemplateurl = $oTemplate->getTemplateURL();
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
         // It will create the asset directory, and publish the css and js files
@@ -325,7 +325,6 @@ class TemplateConfiguration extends CFormModel
                 'depends'     => $oTemplate->depends,
             ) );
         }else{
-            $sTemplateurl = $oTemplate->getTemplateURL();
             Yii::app()->clientScript->addPackage( $sPackageName, array(
                 'baseUrl'    =>  $sTemplateurl,                                 // Don't use asset manager
                 'css'         => $aCssFiles,
@@ -394,7 +393,7 @@ class TemplateConfiguration extends CFormModel
 
         /* Start by adding cssFramework package */
         $packages=$this->getFrameworkPackages($oTemplate);
-        
+
         if(!getLanguageRTL(App()->getLanguage())) {
             $packages=array_merge ($packages,$this->getFrameworkPackages($oTemplate, 'ltr'));
         } else {
