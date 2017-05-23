@@ -218,18 +218,31 @@ class LS_Twig_Extension extends Twig_Extension
         $oTemplate = $oRTemplate = Template::model()->getInstance();
 
         // Reccurence on templates to find the file
-        while (!file_exists($oRTemplate->path.'/'.$sImagePath)){
+        $oRTemplate = self::getTemplateForRessource($oTemplate, $sImagePath);
+
+        if($oRTemplate){
+            $sUrlImgAsset = self::assetPublish($oRTemplate->path.'/'.$sImagePath);
+        }else{
+            // TODO: publish a default image "not found"
+        }
+
+        return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
+    }
+
+    public static function getTemplateForRessource($oStarTemplate, $sRessource)
+    {
+        $oRTemplate = $oStarTemplate;
+        while (!file_exists($oRTemplate->path.'/'.$sRessource)){
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                // TODO: publish a default image "not found"
+                return false;
                 break;
             }
             $oRTemplate = $oMotherTemplate;
         }
-        $sUrlImgAsset = self::assetPublish($oRTemplate->path.'/'.$sImagePath);
 
-        return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
+        return $oRTemplate;
     }
 
     public static function getPost($sName, $sDefaultValue=null)
