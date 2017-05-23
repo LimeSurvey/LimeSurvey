@@ -245,8 +245,8 @@ $internalConfig = array(
                     'LSHttpRequest'                     =>  array("getParam"),
                 ),
                 'properties' => array(
-                    'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
-                    'LSYii_Application'                 =>  array("request"),
+                    'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
+                    'LSYii_Application'                          => array("request"),
                 ),
                 'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),
