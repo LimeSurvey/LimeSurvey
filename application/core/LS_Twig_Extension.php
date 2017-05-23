@@ -96,10 +96,11 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
         $oTemplate = Template::model()->getInstance();
+        $oRTemplate = self::getTemplateForRessource($oTemplate, $sTemplateScriptFileName);
 
         $position = self::getPosition($position);
         Yii::app()->getClientScript()->registerScriptFile(
-            $oTemplate->sTemplateUrl .
+            $oRTemplate->sTemplateUrl .
             $sTemplateScriptFileName,
             $position,
             $htmlOptions
