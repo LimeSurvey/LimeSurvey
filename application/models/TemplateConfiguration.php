@@ -25,6 +25,8 @@ class TemplateConfiguration extends CFormModel
     /** @var TemplateConfiguration $oMotherTemplate The template name */
     public $oMotherTemplate;
 
+    public $sPackageName;
+
     /** @var string $sTemplateName The template name */
     public $sTemplateName='';
     /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
@@ -153,7 +155,7 @@ class TemplateConfiguration extends CFormModel
         }
 
         $this->setThisTemplate();
-        
+
         /* Add depend package according to packages */
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
 
@@ -195,11 +197,11 @@ class TemplateConfiguration extends CFormModel
 
     public function registerAssets()
     {
-        $sPackageName  = 'survey-template-'.$this->sTemplateName;
+        // TODO: move all that to LSYii_ClientScript
         if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
-            Yii::app()->clientScript->registerPackage( $sPackageName );
+            Yii::app()->clientScript->registerPackage( $this->sPackageName );
         }else{
-            $aDepends = $this->getRecursiveDependencies($sPackageName);
+            $aDepends = $this->getRecursiveDependencies($this->sPackageName);
 
             // CONVERT ALL PACKAGE IN $aDepend to BASE URL instead of PATH
             foreach($aDepends as $package){
@@ -217,7 +219,7 @@ class TemplateConfiguration extends CFormModel
                 }
             }
 
-            Yii::app()->clientScript->registerPackage( $sPackageName );
+            Yii::app()->clientScript->registerPackage( $this->sPackageName );
         }
 
 
@@ -301,20 +303,20 @@ class TemplateConfiguration extends CFormModel
             Yii::app()->clientScript->registerScriptFile( Yii::app()->getConfig("generalscripts"). 'deactivatedebug.js', CClientScript::POS_END);
         }
 
-        $sPackageName = 'survey-template-'.$this->sTemplateName;
+        $this->sPackageName = 'survey-template-'.$this->sTemplateName;
         $sTemplateurl = $oTemplate->getTemplateURL();
         // The package "survey-template" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
         // It will create the asset directory, and publish the css and js files
         if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
-            Yii::app()->clientScript->addPackage( $sPackageName, array(
+            Yii::app()->clientScript->addPackage( $this->sPackageName, array(
                 'basePath'    => $sPathName,                        // Use asset manager
                 'css'         => $aCssFiles,
                 'js'          => $aJsFiles,
                 'depends'     => $oTemplate->depends,
             ) );
         }else{
-            Yii::app()->clientScript->addPackage( $sPackageName, array(
+            Yii::app()->clientScript->addPackage( $this->sPackageName, array(
                 'baseUrl'    =>  $sTemplateurl,                                 // Don't use asset manager
                 'css'         => $aCssFiles,
                 'js'          => $aJsFiles,
