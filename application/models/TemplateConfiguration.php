@@ -287,6 +287,13 @@ class TemplateConfiguration extends CFormModel
             }
         }
 
+        foreach($aJsFiles as $key => $jsFile){
+            if (!empty($jsFile['replace'])){
+                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'js', $jsFile['replace'] );
+                unset($aJsFiles[$key]);
+            }
+        }
+
         if (isset($oTemplate->config->files->$dir)) {
             $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array)$oTemplate->config->files->$dir->css->filename : array();
             $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename) ?  (array)$oTemplate->config->files->$dir->js->filename : array();
