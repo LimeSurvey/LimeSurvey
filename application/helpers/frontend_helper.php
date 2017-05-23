@@ -1516,8 +1516,8 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     // Template settings
     $surveyid          = $thissurvey['sid'];
     $oTemplate         = Template::model()->getInstance('', $surveyid);
-    $sTemplateViewPath = $oTemplate->viewPath;
-    $oTemplate->registerAssets();
+
+    //$oTemplate->registerAssets();
 
     $aError = array();
     $aError['title']      = ($sTitle != '')?$sTitle:gT("This survey cannot be tested or completed for the following reason(s):");

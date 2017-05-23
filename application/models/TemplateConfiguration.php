@@ -167,8 +167,6 @@ class TemplateConfiguration extends CFormModel
 
     private function setThisTemplate()
     {
-        $oMotherTemplate = $this->oMotherTemplate;
-
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
         $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
@@ -193,58 +191,6 @@ class TemplateConfiguration extends CFormModel
         $config->metadatas->last_update = $date;
         $config->asXML( realpath ($this->xmlFile) );                // Belt
         touch ( $this->path );                                      // & Suspenders ;-)
-    }
-
-    public function registerAssets()
-    {
-        // TODO: move all that to LSYii_ClientScript
-        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
-            Yii::app()->clientScript->registerPackage( $this->sPackageName );
-        }else{
-            $aDepends = $this->getRecursiveDependencies($this->sPackageName);
-
-            // CONVERT ALL PACKAGE IN $aDepend to BASE URL instead of PATH
-            foreach($aDepends as $package){
-
-                $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
-
-                // This will overwrite the package definition using a base url instead of a base path
-                if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
-                    Yii::app()->clientScript->addPackage( $package, array(
-                        'baseUrl'   => $aOldPackageDefinition['devBaseUrl'],                                 // Don't use asset manager
-                        'css'       => array_key_exists('css', $aOldPackageDefinition)?$aOldPackageDefinition['css']:array(),
-                        'js'        => array_key_exists('js', $aOldPackageDefinition)?$aOldPackageDefinition['js']:array(),
-                        'depends'   => array_key_exists('depends', $aOldPackageDefinition)?$aOldPackageDefinition['depends']:array(),
-                    ) );
-                }
-            }
-
-            Yii::app()->clientScript->registerPackage( $this->sPackageName );
-        }
-
-
-    }
-
-    /**
-     * Return a list of all the recursive dependencies of a packages
-     * eg: If a package A depends on B, and B depends on C, getRecursiveDependencies('A') will return {B,C}
-     */
-    public function getRecursiveDependencies($sPackageName)
-    {
-        $aPackages     = Yii::app()->clientScript->packages;
-        if ( array_key_exists('depends', $aPackages[$sPackageName]) ){
-            $aDependencies = $aPackages[$sPackageName]['depends'];
-
-            foreach ($aDependencies as $sDpackageName){
-                if($aPackages[$sPackageName]['depends']){
-                    $aRDependencies = $this->getRecursiveDependencies($sDpackageName);                  // Recursive call
-                    if (is_array($aRDependencies)){
-                        $aDependencies = array_unique(array_merge($aDependencies, $aRDependencies));
-                    }
-                }
-            }
-            return $aDependencies;
-        }
     }
 
     /**

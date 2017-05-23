@@ -1617,7 +1617,7 @@ class SurveyRuntimeHelper {
     {
         $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);
         $this->sTemplateViewPath = $oTemplate->viewPath;
-        $oTemplate->registerAssets();
+        //$oTemplate->registerAssets();
     }
 
     private function makeLanguageChanger()

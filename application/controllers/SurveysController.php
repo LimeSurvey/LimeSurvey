@@ -28,7 +28,7 @@
 
 
             $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
-            $oTemplate->registerAssets();
+            //$oTemplate->registerAssets();
 
 
             $this->sTemplate = $oTemplate->name;
