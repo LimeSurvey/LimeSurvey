@@ -155,40 +155,35 @@ class TemplateConfiguration extends CFormModel
 
             // Object Recursion
             $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName);
-
-            $oTemplateToConfigure = $this->oMotherTemplate;
-            $this->setThisTemplate($oTemplateToConfigure);
-
-            $this->filesPath                = $this->oMotherTemplate->filesPath; // View override will be managed file by file from twig rendering...
-            $this->viewPath                 = $this->oMotherTemplate->viewPath; // File override will be managed file by file from twig rendering...
-            $this->depends                  = $this->getDependsPackages($this->oMotherTemplate);
-            $this->createTemplatePackage($oTemplateToConfigure);
-        }else{
-            $oTemplateToConfigure = $this;
-            $this->setThisTemplate($oTemplateToConfigure);
         }
 
+        $this->setThisTemplate();
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
 
         /* Add depend package according to packages */
-        $this->otherFiles               = $this->setOtherFiles();
+        //$this->otherFiles               = $this->setOtherFiles();
+
         $this->createTemplatePackage($this);
 
         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         return $this;
     }
 
-    private function setThisTemplate($oTemplateToConfigure)
+    private function setThisTemplate()
     {
-        $this->apiVersion               = (isset($oTemplateToConfigure->config->metadatas->apiVersion))            ? $oTemplateToConfigure->config->metadatas->apiVersion:0;
-        $this->viewPath                 = (isset($oTemplateToConfigure->config->engine->viewdirectory))            ? $oTemplateToConfigure->path.DIRECTORY_SEPARATOR.$oTemplateToConfigure->config->engine->viewdirectory.DIRECTORY_SEPARATOR                            : '';
-        $this->siteLogo                 = (isset($oTemplateToConfigure->config->files->logo))                      ? $oTemplateToConfigure->config->files->logo->filename                                                                                 : '';
-        $this->filesPath                = (isset($oTemplateToConfigure->config->engine->filesdirectory))           ? $oTemplateToConfigure->path.DIRECTORY_SEPARATOR.$oTemplateToConfigure->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $oTemplateToConfigure->path . '/files/';
-        $this->cssFramework             = (isset($oTemplateToConfigure->config->engine->cssframework))             ? $oTemplateToConfigure->config->engine->cssframework                                                                                  : '';
-        $this->cssFramework->name       = (isset($oTemplateToConfigure->config->engine->cssframework->name))       ? $oTemplateToConfigure->config->engine->cssframework->name                                                                            : (string) $oTemplateToConfigure->config->engine->cssframework;
-        $this->packages                 = (isset($oTemplateToConfigure->config->engine->packages))                 ? $oTemplateToConfigure->config->engine->packages                                                                                      : array();
-        // Package creation
+        $oMotherTemplate = $this->oMotherTemplate;
 
+        // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
+        $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
+        $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
+        $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
+        $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR  : $this->oMotherTemplate->filesPath;
+
+        // Not mandatory (use package dependances)
+        $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
+        $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : '';
+        $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                                      : array();
+        // Package creation
     }
 
     /**
