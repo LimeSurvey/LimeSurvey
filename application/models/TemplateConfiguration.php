@@ -392,6 +392,8 @@ class TemplateConfiguration extends CFormModel
                 );
 
                 $sTemplateurl = $oTemplate->getTemplateURL();
+                $sPathName    = 'survey.template-'.$oTemplate->sTemplateName.'.path';
+                
                 Yii::app()->clientScript->addPackage(
                     $framework.'-template', array(
                         'devBaseUrl'  =>  $sTemplateurl,                        // Don't use asset manager
