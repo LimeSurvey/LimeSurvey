@@ -391,16 +391,16 @@ class TemplateConfiguration extends CFormModel
                     $framework,
                 );
 
+                $sTemplateurl = $oTemplate->getTemplateURL();
                 Yii::app()->clientScript->addPackage(
                     $framework.'-template', array(
-                        'devBaseUrl'  => $sTemplateurl,  // Don't use asset manager
-                        'basePath'    => $sPathName,      // basePath: the asset manager will be used
+                        'devBaseUrl'  =>  $sTemplateurl,                        // Don't use asset manager
+                        'basePath'    => $sPathName,                            // basePath: the asset manager will be used
                         'css'         => $packageCss,
                         'js'          => $packageJs,
                         'depends'     => $aDepends,
                     )
                 );
-
                 $frameworkPackages[]=$framework.'-template';
             }
             return $frameworkPackages;
