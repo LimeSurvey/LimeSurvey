@@ -23,15 +23,22 @@ class SurveyDao
         $survey->info = getSurveyInfo($survey->id);
         $availableLanguages = Survey::model()->findByPk($intId)->getAllLanguages();
 
-        if (is_null($lang) || in_array($lang, $availableLanguages) === false) {
+        if (is_null($lang) || in_array($lang, $availableLanguages) === false)
+        {
             // use base language when requested language is not found or no specific language is requested
             $lang = Survey::model()->findByPk($intId)->language;
         }
         App()->setLanguage($lang);
         $survey->fieldMap = createFieldMap($intId,'full',true,false,$lang);
         // Check to see if timings are present and add to fieldmap if needed
-        if ($survey->info['savetimings']=="Y") {
-            $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId,'full',true,false,$lang);
+        if ($survey->info['savetimings']=="Y")
+        {
+            //~ $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId,'full',true,false,$lang);
+            $aTimingFieldMaps=createTimingsFieldMap($intId, 'full',false,false,$lang);
+            foreach($aTimingFieldMaps as $sTimeField=>$aTimeFieldinfo)
+            {
+                $survey->fieldMap["survey_timings@".$sTimeField]=$aTimeFieldinfo;
+            }
         }
 
         if (empty($intId))
@@ -63,9 +70,11 @@ class SurveyDao
         $aAnswers= Yii::app()->db->createCommand($sQuery)->queryAll();
         foreach($aAnswers as $aAnswer)
         {
-             if(Yii::app()->controller->action->id !='remotecontrol')
-				$aAnswer['answer']=stripTagsFull($aAnswer['answer']);
-             $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
+            if(Yii::app()->controller->action->id !='remotecontrol')
+            {
+                $aAnswer['answer']=stripTagsFull($aAnswer['answer']);
+            }
+            $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
         }
         //Load language settings for requested language
         $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.' AND surveyls_language = \'' . $lang . '\';';
@@ -102,14 +111,18 @@ class SurveyDao
         $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
         // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField)
+        {
            $sField ="{{survey_{$survey->id}}}.".$sField;
+        }
         $oRecordSet = Yii::app()->db->createCommand()->from('{{survey_' . $survey->id . '}}');
         if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id,'tokens','read'))
         {
             $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}} tokentable','tokentable.token={{survey_' . $survey->id . '}}.token');
             $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . $survey->id . '}}')->getColumnNames();
             foreach ($aTokenFields as &$sField)
-               $sField ="tokentable.".$sField;
+            {
+                $sField ="tokentable.".$sField;
+            }
             $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('tokentable.token')));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.token'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
@@ -118,7 +131,9 @@ class SurveyDao
             $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
             $aTimingFields=Yii::app()->db->schema->getTable("{{survey_" . $survey->id . "_timings}}")->getColumnNames();
             foreach ($aTimingFields as &$sField)
-               $sField ="survey_timings.".$sField;
+            {
+               $sField ="survey_timings.".$sField." as survey_timings@".$sField;
+            }
             $aSelectFields=array_merge($aSelectFields,array_diff($aTimingFields, array('survey_timings.id')));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.id'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
@@ -132,7 +147,9 @@ class SurveyDao
         $oRecordSet->where($selection, $aParams);
 
         if(is_string($sFilter) && $sFilter)
+        {
             $oRecordSet->andWhere($sFilter);
+        }
         elseif(is_array($sFilter) && count($sFilter))
         {
             foreach($sFilter as $filter)

@@ -171,9 +171,14 @@ class export extends Survey_Common_Action {
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
             $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
-            if ($thissurvey['savetimings'] === "Y") {
-                //Append survey timings to the fieldmap array
-                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            if ($thissurvey['savetimings'] === "Y")
+            {
+                //Append survey timings to the fieldmap array, adding survey_timings@ for naming (see bug #09909)
+                $aTimingFieldMaps=createTimingsFieldMap($iSurveyID, 'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+                foreach($aTimingFieldMaps as $sTimeField=>$aTimeFieldinfo)
+                {
+                    $aFieldMap["survey_timings@".$sTimeField]=$aTimeFieldinfo;
+                }
             }
             $iFieldCount = count($aFieldMap);
 
