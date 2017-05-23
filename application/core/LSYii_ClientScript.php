@@ -46,6 +46,23 @@ class LSYii_ClientScript extends CClientScript {
     }
 
     /**
+     * Remove a file from a given package
+     *
+     * @var $sPackageName   string  name of the package
+     * @var $sType          string  css/js
+     * @var $sFileName      string name of the file to remove
+     */
+    public function removeFileFromPackage($sPackageName, $sType, $sFileName )
+    {
+        if (!empty(Yii::app()->clientScript->packages[$sPackageName])){
+            if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])){
+                $key = array_search( $sFileName,Yii::app()->clientScript->packages[$sPackageName][$sType]);
+                unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+            }
+        }
+    }
+
+    /**
      * In LimeSurvey, if debug mode is OFF we use the asset manager (so participants never needs to update their webbrowser cache).
      * If debug mode is ON, we don't use the asset manager, so developpers just have to refresh their browser cache to reload the new scripts.
      * To make developper life easier, if they want to register a single script file, they can use App()->getClientScript()->registerScriptFile({url to script file})
