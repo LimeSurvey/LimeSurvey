@@ -282,13 +282,8 @@ class TemplateConfiguration extends CFormModel
 
         foreach($aCssFiles as $key => $cssFile){
             if (!empty($cssFile['replace'])){
-                //unset($aCssFiles[$cssFile['replace']]);
-
-                // TODO: Remove the file from mother package, and add it to current package
-
+                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'css', $cssFile['replace'] );
                 unset($aCssFiles[$key]);
-
-
             }
         }
 
