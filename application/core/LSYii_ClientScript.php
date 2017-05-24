@@ -12,6 +12,20 @@
  *
  */
 
+ /*
+ * NOTE 1 : To refresh the assets, the base directory of the template must be updated.
+ * NOTE 2: By default, Asset Manager is off when debug mode is on.
+ *
+ * Developers should then think about :
+ * 1. refreshing their brower's cache (ctrl + F5) to see their changes
+ * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
+ *
+ *
+ * For more detail, see :
+ *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
+ *  http://www.yiiframework.com/doc/api/1.1/YiiBase#setPathOfAlias-detail
+ */
+
 class LSYii_ClientScript extends CClientScript {
 
     /**
