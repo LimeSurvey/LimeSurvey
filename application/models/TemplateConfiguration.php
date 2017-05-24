@@ -111,13 +111,7 @@ class TemplateConfiguration extends CFormModel
         $this->config  = simplexml_load_string($sXMLConfigFile);
 
         // Recursive mother templates configuration
-        if (isset($this->config->metadatas->extends)){
-            $sMotherTemplateName = (string) $this->config->metadatas->extends;
-            $this->oMotherTemplate = new TemplateConfiguration;
-
-            // Object Recursion
-            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName);
-        }
+        $this->setMotherTemplates();
 
         $this->setThisTemplate();
 
@@ -128,6 +122,16 @@ class TemplateConfiguration extends CFormModel
 
         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         return $this;
+    }
+
+    private function setMotherTemplates()
+    {
+        if (isset($this->config->metadatas->extends)){
+            $sMotherTemplateName   = (string) $this->config->metadatas->extends;
+            $this->oMotherTemplate = new TemplateConfiguration;
+            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+        }
+
     }
 
     private function setPath()
