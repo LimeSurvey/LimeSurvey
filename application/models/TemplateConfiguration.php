@@ -109,9 +109,6 @@ class TemplateConfiguration extends CFormModel
 
         $this->setThisTemplate();
 
-        /* Add depend package according to packages */
-        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
-
         $this->createTemplatePackage($this);
 
         return $this;
@@ -198,6 +195,9 @@ class TemplateConfiguration extends CFormModel
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
         $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : '';
         $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                                      : array();
+
+        /* Add depend package according to packages */
+        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
         // Package creation
     }
 
