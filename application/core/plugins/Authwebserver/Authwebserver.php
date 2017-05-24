@@ -20,7 +20,11 @@ class Authwebserver extends ls\pluginmanager\AuthPluginBase
                 'type' => 'checkbox',
                 'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
                 'default' => true,
-                )
+         ),
+	'logout_url' => array(
+		'type' => 'string',
+		'label' => 'Remote auth logout URL (LimeSurvey will redirect to this URL after local logout)',
+	),
     );
     
     public function init() {
@@ -30,6 +34,7 @@ class Authwebserver extends ls\pluginmanager\AuthPluginBase
          */
         $this->subscribe('beforeLogin');
         $this->subscribe('newUserSession');
+	$this->subscribe('afterLogout');
     }
 
     public function beforeLogin()
@@ -135,5 +140,13 @@ class Authwebserver extends ls\pluginmanager\AuthPluginBase
         
     }  
     
-    
+    public function afterLogout()
+    {
+	$logoutURL = $this->get('logout_url');
+        if (!empty($logoutURL))
+	{
+	header("Location: $logoutURL");
+	exit;
+	}
+    }    
 }
