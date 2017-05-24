@@ -90,24 +90,9 @@ class TemplateConfiguration extends CFormModel
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
-        // If it is called from the template editor, a template name will be provided.
-        // If it is called for survey taking, a survey id will be provided
-        if ($sTemplateName == '' && $iSurveyId == '') {
-            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
-            $sTemplateName=Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
-            //throw new TemplateException("Template needs either template name or survey id");
-        }
-        $this->sTemplateName = $sTemplateName;
-        $this->iSurveyId     = (int) $iSurveyId;
 
-        if ($sTemplateName=='') {
-            $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
-            if($this->oSurvey) {
-                $this->sTemplateName = $this->oSurvey->template;
-            } else {
-                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
-            }
-        }
+        $this->setTemplateName($sTemplateName);
+
         // We check if  it is a CORE template
         $this->isStandard = $this->setIsStandard();
         // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
@@ -163,6 +148,29 @@ class TemplateConfiguration extends CFormModel
 
         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         return $this;
+    }
+
+    private function setTemplateName($sTemplateName)
+    {
+        // If it is called from the template editor, a template name will be provided.
+        // If it is called for survey taking, a survey id will be provided
+        if ($sTemplateName == '' && $iSurveyId == '') {
+            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            $sTemplateName = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
+            //throw new TemplateException("Template needs either template name or survey id");
+        }
+        $this->sTemplateName = $sTemplateName;
+        $this->iSurveyId     = (int) $iSurveyId;
+
+        if ($sTemplateName == '') {
+            $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
+            if($this->oSurvey) {
+                $this->sTemplateName = $this->oSurvey->template;
+            } else {
+                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
+            }
+        }
+
     }
 
     private function setThisTemplate()
@@ -393,7 +401,7 @@ class TemplateConfiguration extends CFormModel
 
                 $sTemplateurl = $oTemplate->getTemplateURL();
                 $sPathName    = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-                
+
                 Yii::app()->clientScript->addPackage(
                     $framework.'-template', array(
                         'devBaseUrl'  =>  $sTemplateurl,                        // Don't use asset manager
