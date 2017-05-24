@@ -90,28 +90,129 @@ class TemplateConfiguration extends CFormModel
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
-
-        $this->setTemplateName($sTemplateName, $iSurveyId);
-
-        // We check if  it is a CORE template
-        $this->setIsStandard();
-
-        $this->setPath();
-
-
-        //////////////////////
-        // Config file loading
-
-        $this->readManifest();
-
-        // Recursive mother templates configuration
-        $this->setMotherTemplates();
-
-        $this->setThisTemplate();
-
-        $this->createTemplatePackage($this);
-
+        $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
+        $this->setIsStandard();                                                 // Check if  it is a CORE template
+        $this->setPath();                                                       // Check and set path
+        $this->readManifest();                                                  // Check and read the manifest to set local params
+        $this->setMotherTemplates();                                            // Recursive mother templates configuration
+        $this->setThisTemplate();                                               // Set the main config values of this template
+        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
+    }
+
+    /**
+     * Update the configuration file "last update" node.
+     * For now, it is called only from template editor
+     */
+    public function actualizeLastUpdate()
+    {
+        $date = date("Y-m-d H:i:s");
+        $config = simplexml_load_file(realpath ($this->xmlFile));
+        $config->metadatas->last_update = $date;
+        $config->asXML( realpath ($this->xmlFile) );                // Belt
+        touch ( $this->path );                                      // & Suspenders ;-)
+    }
+
+
+    /**
+     * get the template API version
+     * @return integer
+     */
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
+    }
+
+    /**
+    * This function returns the complete URL path to a given template name
+    *
+    * @param string $sTemplateName
+    * @return string template url
+    */
+    public function getTemplateURL()
+    {
+        if(!isset($this->sTemplateurl)){
+            $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
+        }
+        return $this->sTemplateurl;
+    }
+
+
+
+
+
+
+    /**
+     * Create a package for the asset manager.
+     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
+     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
+     * The publication of the package itself is done for now in replacements_helper, to respect the old logic of {TEMPLATECSS} replacement keyword
+     *
+     * NOTE 1 : To refresh the assets, the base directory of the template must be updated.
+     *
+     * NOTE 2: By default, Asset Manager is off when debug mode is on.
+     * Developers should then think about :
+     * 1. refreshing their brower's cache (ctrl + F5) to see their changes
+     * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
+     *
+     *
+     * For more detail, see :
+     *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
+     *  http://www.yiiframework.com/doc/api/1.1/YiiBase#setPathOfAlias-detail
+     *
+     */
+    private function createTemplatePackage($oTemplate)
+    {
+        $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
+        $sViewName  = 'survey.template-'.$oTemplate->sTemplateName.'.viewpath';
+
+        //Yii::setPathOfAlias('survey.template.path',     $oTemplate->path);                                   // The package creation/publication need an alias
+        //Yii::setPathOfAlias('survey.template.viewpath', $oTemplate->viewPath);
+        Yii::setPathOfAlias($sPathName,     $oTemplate->path);                                   // The package creation/publication need an alias
+        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
+
+        $aCssFiles   = (array)$oTemplate->config->files->css->filename;                                 // The CSS files of this template
+        $aJsFiles    = (array)$oTemplate->config->files->js->filename;                                  // The JS files of this template
+        $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+
+        foreach($aCssFiles as $key => $cssFile){
+            if (!empty($cssFile['replace']) || !empty($cssFile['remove'])){
+                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'css', $cssFile['replace'] );
+                unset($aCssFiles[$key]);
+            }
+        }
+
+        foreach($aJsFiles as $key => $jsFile){
+            if (!empty($jsFile['replace']) || !empty($jsFile['remove']) ){
+                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'js', $jsFile['replace'] );
+                unset($aJsFiles[$key]);
+            }
+        }
+
+        if (isset($oTemplate->config->files->$dir)) {
+            $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array)$oTemplate->config->files->$dir->css->filename : array();
+            $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename) ?  (array)$oTemplate->config->files->$dir->js->filename : array();
+            $aCssFiles    = array_merge($aCssFiles,$aCssFilesDir);
+            $aJsFiles     = array_merge($aJsFiles,$aJsFilesDir);
+        }
+
+        if (Yii::app()->getConfig('debug') == 0) {
+            Yii::app()->clientScript->registerScriptFile( Yii::app()->getConfig("generalscripts"). 'deactivatedebug.js', CClientScript::POS_END);
+        }
+
+        $this->sPackageName = 'survey-template-'.$this->sTemplateName;
+        $sTemplateurl = $oTemplate->getTemplateURL();
+
+        // The package "survey-template" will be available from anywhere in the app now.
+        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
+        // It will create the asset directory, and publish the css and js files
+        Yii::app()->clientScript->addPackage( $this->sPackageName, array(
+            'devBaseUrl'  => $sTemplateurl,
+            'basePath'    => $sPathName,                        // Use asset manager
+            'css'         => $aCssFiles,
+            'js'          => $aJsFiles,
+            'depends'     => $oTemplate->depends,
+        ) );
     }
 
     private function readManifest()
@@ -201,97 +302,6 @@ class TemplateConfiguration extends CFormModel
         // Package creation
     }
 
-    /**
-     * Update the configuration file "last update" node.
-     * For now, it is called only from template editor
-     */
-    public function actualizeLastUpdate()
-    {
-        $date = date("Y-m-d H:i:s");
-        $config = simplexml_load_file(realpath ($this->xmlFile));
-        $config->metadatas->last_update = $date;
-        $config->asXML( realpath ($this->xmlFile) );                // Belt
-        touch ( $this->path );                                      // & Suspenders ;-)
-    }
-
-    /**
-     * Create a package for the asset manager.
-     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
-     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
-     * The publication of the package itself is done for now in replacements_helper, to respect the old logic of {TEMPLATECSS} replacement keyword
-     *
-     * NOTE 1 : To refresh the assets, the base directory of the template must be updated.
-     *
-     * NOTE 2: By default, Asset Manager is off when debug mode is on.
-     * Developers should then think about :
-     * 1. refreshing their brower's cache (ctrl + F5) to see their changes
-     * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
-     *
-     *
-     * For more detail, see :
-     *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
-     *  http://www.yiiframework.com/doc/api/1.1/YiiBase#setPathOfAlias-detail
-     *
-     */
-    public function createTemplatePackage($oTemplate)
-    {
-        $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-        $sViewName  = 'survey.template-'.$oTemplate->sTemplateName.'.viewpath';
-
-        //Yii::setPathOfAlias('survey.template.path',     $oTemplate->path);                                   // The package creation/publication need an alias
-        //Yii::setPathOfAlias('survey.template.viewpath', $oTemplate->viewPath);
-        Yii::setPathOfAlias($sPathName,     $oTemplate->path);                                   // The package creation/publication need an alias
-        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
-
-        $aCssFiles   = (array)$oTemplate->config->files->css->filename;                                 // The CSS files of this template
-        $aJsFiles    = (array)$oTemplate->config->files->js->filename;                                  // The JS files of this template
-        $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-
-        foreach($aCssFiles as $key => $cssFile){
-            if (!empty($cssFile['replace']) || !empty($cssFile['remove'])){
-                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'css', $cssFile['replace'] );
-                unset($aCssFiles[$key]);
-            }
-        }
-
-        foreach($aJsFiles as $key => $jsFile){
-            if (!empty($jsFile['replace']) || !empty($jsFile['remove']) ){
-                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'js', $jsFile['replace'] );
-                unset($aJsFiles[$key]);
-            }
-        }
-
-        if (isset($oTemplate->config->files->$dir)) {
-            $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array)$oTemplate->config->files->$dir->css->filename : array();
-            $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename) ?  (array)$oTemplate->config->files->$dir->js->filename : array();
-            $aCssFiles    = array_merge($aCssFiles,$aCssFilesDir);
-            $aJsFiles     = array_merge($aJsFiles,$aJsFilesDir);
-        }
-
-        if (Yii::app()->getConfig('debug') == 0) {
-            Yii::app()->clientScript->registerScriptFile( Yii::app()->getConfig("generalscripts"). 'deactivatedebug.js', CClientScript::POS_END);
-        }
-
-        $this->sPackageName = 'survey-template-'.$this->sTemplateName;
-        $sTemplateurl = $oTemplate->getTemplateURL();
-
-        // The package "survey-template" will be available from anywhere in the app now.
-        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
-        // It will create the asset directory, and publish the css and js files
-        Yii::app()->clientScript->addPackage( $this->sPackageName, array(
-            'devBaseUrl'  => $sTemplateurl,
-            'basePath'    => $sPathName,                        // Use asset manager
-            'css'         => $aCssFiles,
-            'js'          => $aJsFiles,
-            'depends'     => $oTemplate->depends,
-        ) );
-    }
-
-    public function getName()
-    {
-        return $this->sTemplateName;
-    }
-
 
     /**
      * @return bool
@@ -301,19 +311,6 @@ class TemplateConfiguration extends CFormModel
         $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
     }
 
-    /**
-    * This function returns the complete URL path to a given template name
-    *
-    * @param string $sTemplateName
-    * @return string template url
-    */
-    public function getTemplateURL()
-    {
-        if(!isset($this->sTemplateurl)){
-            $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
-        }
-        return $this->sTemplateurl;
-    }
 
     /**
      * Get the depends package
@@ -433,12 +430,4 @@ class TemplateConfiguration extends CFormModel
         return array();
     }
 
-    /**
-     * get the template API version
-     * @return integer
-     */
-    public function getApiVersion()
-    {
-        return $this->apiVersion;
-    }
 }
