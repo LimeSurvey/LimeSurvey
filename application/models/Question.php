@@ -641,6 +641,12 @@ class Question extends LSActiveRecord
          */
         asort($questionTypes);
 
+        // allow plugins to alter the Question Type list
+        $event = new PluginEvent('afterQuestionTypesBuilt');
+        $event->set('questionTypes', $questionTypes);
+        App()->getPluginManager()->dispatchEvent($event);
+        $questionTypes = $event->get('questionTypes');
+
         return $questionTypes;
     }
 
