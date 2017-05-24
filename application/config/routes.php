@@ -32,6 +32,9 @@ $route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/
 //Expression Manager tests
 $route['admin/expressions'] = "admin/expressions/index";
 
+// Plugins direct route
+$route['plugin/<plugin:\w+>/<function:\w+>']=array('plugins/direct');
+
 //optout - optin
 $route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
 $route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens','matchValue'=>true);
