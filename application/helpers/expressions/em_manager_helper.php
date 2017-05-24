@@ -6828,6 +6828,11 @@
                         $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, false, 1, 1, false, false, true);// Fill the $_SESSION to don't do it again a second time
                         $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$_SESSION[$LEM->sessid][$sgqa]);
                     }
+                    elseif(!isset($_SESSION[$LEM->sessid][$sgqa]) && isset($_SESSION[$LEM->sessid]['startingValues'][$sgqa]) )
+                    {
+                        $_SESSION[$LEM->sessid][$sgqa]=$_SESSION[$LEM->sessid]['startingValues'][$sgqa];
+                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$_SESSION[$LEM->sessid][$sgqa]);
+                    }
                 }
             }
 
@@ -6851,6 +6856,10 @@
                     if(!is_null($LEM->knownVars[$sgqa]['default']))
                     {
                         $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'],  $qInfo['qid'], NULL, false, 1, 1, false, false, true);
+                    }
+                    elseif(!isset($_SESSION[$LEM->sessid][$sgqa]) && isset($_SESSION[$LEM->sessid]['startingValues'][$sgqa]) )
+                    {
+                        $_SESSION[$LEM->sessid][$sgqa]=$_SESSION[$LEM->sessid]['startingValues'][$sgqa];
                     }
                     else
                     {
