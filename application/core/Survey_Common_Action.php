@@ -842,23 +842,19 @@ class Survey_Common_Action extends CAction
 
             $aData['gid'] = $gid; // = $this->input->post('gid');
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
-            {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 $aData['permission'] = true;
             }
-            else
-            {
+            else {
                 $aData['gid'] = $gid = null;
                 $qid = null;
                 $aData['permission'] = false;
             }
 
-            if (getGroupListLang($gid, $baselang, $iSurveyID))
-            {
+            if (getGroupListLang($gid, $baselang, $iSurveyID)) {
                 $aData['groups'] = getGroupListLang($gid, $baselang, $iSurveyID);
             }
-            else
-            {
+            else {
                 $aData['groups'] = "<option>" . gT("None") . "</option>";
             }
 
@@ -867,14 +863,20 @@ class Survey_Common_Action extends CAction
             $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 
-            if(isset($aData['surveybar']['closebutton']['url']))
-            {
+            if (isset($aData['surveybar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
                 $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl));
             }
 
-            if($aData['gid']==null)
+            // allow plugins to alter $aData before rendering
+            $event = new PluginEvent('beforeSurveyBarRender', $this);
+            $event->set('aData', $aData);
+            App()->getPluginManager()->dispatchEvent($event);
+            $aData = $event->get('aData');
+
+            if ($aData['gid'] == null) {
                 $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
+            }
         }
     }
 

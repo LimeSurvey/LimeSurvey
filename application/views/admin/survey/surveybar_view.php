@@ -577,6 +577,20 @@
                     <?php eT('Import a group'); ?>
                 </a>
             <?php endif;?>
+
+            <?php
+              // menu items are expected to be instances of \ls\menu\MenuItem
+              if (isset($surveybar['extraMenuItems'])) {
+                foreach ($surveybar['extraMenuItems'] as $item) {
+                  ?>
+                    <a class="btn btn-default" href='<?php echo $item->getHref(); ?>' role="button">
+                        <span class="<?php echo $item->getIconClass(); ?>"></span>
+                        <?php eT($item->getLabel()); ?>
+                    </a>
+                  <?php
+                }
+              }
+            ?>
         </div>
 
         <!-- right action buttons -->
