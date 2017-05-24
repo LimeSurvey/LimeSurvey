@@ -36,7 +36,15 @@ class index extends CAction {
         $param = $this->_getParameters(func_get_args(), $_POST);
         $surveyid = $param['sid'];
 
-        $oTemplate = Template::model()->getInstance('', $surveyid);
+        // load target template by name if specified && exists
+        if(isset($param['templatename']) && in_array($param['templatename'],array_keys(Template::getTemplateList())) ){
+            $templateName = $param['templatename'];
+        }else{
+            $templateName = '';
+        }
+
+        $oTemplate = Template::model()->getInstance($templateName, $surveyid);
+
         $this->oTemplate = $oTemplate;
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
@@ -143,9 +151,9 @@ class index extends CAction {
         if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) ) {
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>App()->language,'newtest'=>'Y'));
             $asMessage = array(
-            gT('Token mismatch'),
-            gT('The token you provided doesn\'t match the one in your session.'),
-            "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
+                gT('Token mismatch'),
+                gT('The token you provided doesn\'t match the one in your session.'),
+                "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
             );
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         } elseif(!$clienttoken) {
@@ -158,9 +166,9 @@ class index extends CAction {
             if($clienttoken){$aReloadUrlParam['token']=$clienttoken;}
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam);
             $asMessage = array(
-            gT('Previous session is set to be finished.'),
-            gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
-            "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
+                gT('Previous session is set to be finished.'),
+                gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
+                "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
             );
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
@@ -190,9 +198,9 @@ class index extends CAction {
             if ($bPreviewRight === false)
             {
                 $asMessage = array(
-                gT("Error"),
-                gT("We are sorry but you don't have permissions to do this."),
-                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                    gT("Error"),
+                    gT("We are sorry but you don't have permissions to do this."),
+                    sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
                 $this->_niceExit($redata, __LINE__, null, $asMessage);
             }
@@ -277,9 +285,9 @@ class index extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-            gT("Error"),
-            gT("We are sorry but the survey is expired and no longer available."),
-            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                gT("Error"),
+                gT("We are sorry but the survey is expired and no longer available."),
+                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
@@ -290,9 +298,9 @@ class index extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-            gT("Error"),
-            gT("This survey is not yet started."),
-            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                gT("Error"),
+                gT("This survey is not yet started."),
+                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
@@ -304,9 +312,9 @@ class index extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-            gT("Error"),
-            gT("You have already completed this survey."),
-            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                gT("Error"),
+                gT("You have already completed this survey."),
+                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
@@ -377,7 +385,7 @@ class index extends CAction {
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token!="" &&
-        isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
+            isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
@@ -503,13 +511,13 @@ class index extends CAction {
             $redata = compact(array_keys(get_defined_vars()));
             $this->_printTemplateContent($thistpl.'/startpage.pstpl', $redata, __LINE__);
             echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
-            ."\t<script type='text/javascript'>\n"
-            ."\t<!--\n"
-            ."function checkconditions(value, name, type, evt_type)\n"
-            ."\t{\n"
-            ."\t}\n"
-            ."\t//-->\n"
-            ."\t</script>\n\n";
+                ."\t<script type='text/javascript'>\n"
+                ."\t<!--\n"
+                ."function checkconditions(value, name, type, evt_type)\n"
+                ."\t{\n"
+                ."\t}\n"
+                ."\t//-->\n"
+                ."\t</script>\n\n";
 
             //Present the clear all page using clearall.pstpl template
             $this->_printTemplateContent($thistpl.'/clearall.pstpl', $redata, __LINE__);
@@ -536,7 +544,7 @@ class index extends CAction {
         if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
             // load previous answers if any (dataentry with nosubmit)
-             $oResponses  = Response::model($surveyid)->findAllByAttributes(array(
+            $oResponses  = Response::model($surveyid)->findAllByAttributes(array(
                 'token' => $token
             ), array('order' => 'id DESC'));
             if (!empty($oResponses))
@@ -628,7 +636,7 @@ class index extends CAction {
         }
 
         // Need some $param (else PHP notice)
-        foreach(array('lang','action','newtest','qid','gid','sid','loadname','loadpass','scid','thisstep','move','token') as $sNeededParam)
+        foreach(array('lang','action','newtest','qid','gid','sid','loadname','loadpass','scid','thisstep','move','token','templatename') as $sNeededParam)
         {
             $param[$sNeededParam]=returnGlobal($sNeededParam,true);
         }
