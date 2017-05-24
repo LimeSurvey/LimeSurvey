@@ -2802,4 +2802,904 @@ class remotecontrol_handle
         }
         return false;
     }
+    
+    /**
+     * RPC routine to create a new user
+     * @param string $sSessionKey
+     * @param array $aAttributes
+     * @return array Array with status, uid, password
+     */
+    public function add_user($sSessionKey, $aAttributes, $sendMail = true, $sendPassword = true)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if( !Permission::model()->hasGlobalPermission('users','create') ) {
+            return array('status' => 'No permission');
+        }
+
+        // Validate UserName
+        $new_user = flattenText($aAttributes['username'],false,true,'UTF-8',true);
+        if (empty($new_user)) {
+            return array('status' => 'Error: A username was not supplied or the username is invalid.');
+        }
+        if (User::model()->find("users_name=:users_name",array(':users_name'=>$new_user))) {
+            return array('status' => 'Error: The username already exists.');
+        }
+
+        /**
+         * Create User
+         * Plugin Event
+         * https://github.com/LimeSurvey/LimeSurvey/blob/83eb591e7956bdc4d6d947be4543688296af0b95/application/core/plugins/Authdb/Authdb.php
+         */
+
+        // Set post manullay
+        $_POST['user_type'] = 'DB';
+        $_POST['new_user'] = $new_user;
+        $_POST['new_email'] = $aAttributes['email'];
+        $_POST['new_full_name'] = $aAttributes['full_name'];
+
+        // Call Event to create the User
+        $event = new PluginEvent('createNewUser');
+        $event->set('errorCode', AuthPluginBase::ERROR_NOT_ADDED);
+        $event->set('errorMessageTitle', "Failed to add user");
+        $event->set('errorMessageBody', "Plugin is not active");
+        App()->getPluginManager()->dispatchEvent($event);
+
+        if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE)
+        {
+            return array('status' => "Error: " . $event->get('errorMessageTitle'), 'message' => $event->get('errorMessageBody') );
+        }
+
+        // Get values back
+        $iNewUID = $event->get('newUserID');
+        $new_pass = $event->get('newPassword');
+        $new_email = $event->get('newEmail');
+        $new_full_name = $event->get('newFullName');
+
+        // add default template to template rights for user
+        Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => Yii::app()->getConfig("defaulttemplate"), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
+
+        /**
+         * Send Mail
+         */
+        $statusMail = 'unsent';
+        if ($sendMail)
+        {
+            $body = sprintf(gT("Hello %s,"), $new_full_name) . "<br /><br />\n";
+            $body .= sprintf(gT("This is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename")) . "<br /><br />\n";
+            $body .= gT("You can use now the following credentials to log into the site:") . "<br />\n";
+            $body .= gT("Username") . ": " . htmlspecialchars($new_user) . "<br />\n";
+            // authent is not delegated to web server or LDAP server
+            if (Yii::app()->getConfig("auth_webserver") === false  && Permission::model()->hasGlobalPermission('auth_db','read',$iNewUID)) {
+                // send password (if authorized by config)
+                if ($sendPassword || Yii::app()->getConfig("display_user_password_in_email") === true) {
+                    $body .= gT("Password") . ": " . $new_pass . "<br />\n";
+                }
+                else
+                {
+                    $body .= gT("Password") . ": " . gT("Please contact your LimeSurvey administrator for your password.") . "<br />\n";
+                }
+            }
+
+            $adminUrl = Yii::app()->createAbsoluteUrl("/admin");
+            $body .= "<a href='" . $adminUrl . "'>" . gT("Click here to log in.") . "</a><br /><br />\n";
+            $body .= sprintf(gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail")) . "<br />\n";
+
+            $subject = sprintf(gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
+            $to = $new_user . " <$new_email>";
+            $from = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
+            $extra = '';
+            $classMsg = '';
+            if (SendEmailMessage($body, $subject, $to, $from, Yii::app()->getConfig("sitename"), true, Yii::app()->getConfig("siteadminbounce"))) {
+                $statusMail = 'success';
+            }
+            else
+            {
+                $statusMail = 'failed';
+            }
+        }
+
+        return array('status' => 'Success', 'uid' => $iNewUID, 'password' => $new_pass, 'statusMail' => $statusMail);
+    }
+
+    /**
+     * RPC routine to delete a user
+     * @param  string  $sSessionKey
+     * @param  int  $uid
+     * @param  bool $transfer_to_admin
+     * @param  int $uid_transfer_surveys_to
+     * @return array
+     */
+    public function delete_user($sSessionKey, $uid, $transfer_to_admin = TRUE , $uid_transfer_surveys_to = 0)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
+            return array('status' => 'No permission');
+        }
+
+        /**
+         * Process user to delete
+         */
+
+        // Get super admin
+        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
+
+        // Initilize user
+        $postuserid = sanitize_int($uid);
+
+        // Validate user
+        if (!$postuserid)
+        {
+            return array('status' => 'Error: User was not supplied.');
+        }
+
+        // CAN'T DELETE ORIGINAL SUPERADMIN (with findByAttributes : found the first user without parent)
+        if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
+        {
+            return array('status' => 'Error: Initial Superadmin cannot be deleted!');
+        }
+
+        // Check logged in user owns the user to delete
+        $sresultcount = 0; // 1 if I am parent of $postuserid
+        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        {
+            $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+            $sresultcount = count($sresult);
+        }
+
+        if (!(Permission::model()->hasGlobalPermission('superadmin','read') || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID']))
+        {
+            return array('status' => 'Error: You do not have sufficient rights.');
+        }
+
+        /**
+         * Review surveys owned and who to transfer to
+         */
+
+        $transfer_surveys_to = $uid_transfer_surveys_to;
+
+        // If no user set to transfer, try to guess
+        if (empty($transfer_surveys_to))
+        {
+            // If only 2 users, transfer to the other
+            $ownerUser = User::model()->findAll();
+            if (count($ownerUser) == 2) {
+                foreach ($ownerUser as &$user)
+                {
+                    if ($postuserid != $user['uid'])
+                        $transfer_surveys_to = $user['uid'];
+                }
+            }
+        }
+
+        // If no user set to transfer and transfer to admin, set to transfer to admin
+        if (empty($transfer_surveys_to) && !empty($transfer_to_admin))
+        {
+            $transfer_surveys_to = $oInitialAdmin->uid;
+        }
+
+        // Get owned surveys
+        $ownerUser = Survey::model()->findAllByAttributes(array('owner_id' => $postuserid));
+
+        // If no user set to transfer and it owns surveys, error
+        if (empty($transfer_surveys_to) && count($ownerUser) > 0)
+        {
+            return array('status' => 'Error: No user was set to whom transfer the surveys.');
+        }
+
+        // Delete user and transfer surveys
+        return $this->deleteFinalUser($postuserid, $ownerUser, $transfer_surveys_to);
+
+        // If got to here, error.
+        return array('status' => 'Error: Unexpected End');
+    }
+
+    /**
+     * Aux function for delete user RPC routine
+     * @param  [type] $postuserid          [description]
+     * @param  [type] $result              [description]
+     * @param  [type] $transfer_surveys_to [description]
+     * @return [type]                      [description]
+     */
+    private function deleteFinalUser($postuserid, $result, $transfer_surveys_to)
+    {
+        // Never delete initial admin (with findByAttributes : found the first user without parent)
+        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
+        if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
+        {
+            return array('status' => 'Error: Initial Superadmin cannot be deleted!');
+        }
+
+        // Transfer surveys
+        if ($transfer_surveys_to > 0) {
+            $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transfer_surveys_to), 'owner_id='.$postuserid);
+        }
+
+        // Find user
+        $sresult = User::model()->findByAttributes(array('uid' => $postuserid));
+        $fields = $sresult;
+
+        // Reassign child users to theire grandpa (the parent of the user to be deleted)
+        if (isset($fields['parent_id'])) {
+            $uresult = User::model()->updateAll(array('parent_id' => $fields['parent_id']), 'parent_id='.$postuserid);
+        }
+
+        //DELETE USER FROM TABLE
+        $dresult = User::model()->deleteUser($postuserid);
+
+        // Delete user rights
+        $dresult = Permission::model()->deleteAllByAttributes(array('uid' => $postuserid));
+
+        // User deleted himself?
+        if ($postuserid == Yii::app()->session['loginID'])
+        {
+            session_destroy();    // user deleted himself
+        }
+
+        return array('status' => 'Success');
+    }
+
+    /**
+     * RPC routine to edit a  user
+     * @param  string $sSessionKey
+     * @param  int $uid
+     * @param  array $aAttributes: email, full_name, password
+     * @return array
+     */
+    public function edit_user($sSessionKey, $uid, $aAttributes)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if( !Permission::model()->hasGlobalPermission('users','update') ) {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize data
+        $postuserid = sanitize_int($uid);
+        $email = empty($aAttributes['email']) ? NULL : flattenText($aAttributes['email'],false,true,'UTF-8',true) ;
+        $full_name = empty($aAttributes['full_name']) ? NULL : flattenText($aAttributes['full_name'],false,true,'UTF-8',true) ;
+        $sPassword = empty($aAttributes['password']) ? NULL : $aAttributes['password'] ;
+
+        // Get user
+        $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+        $sresultcount = count($sresult);
+
+        // Check rights
+        if (! ((Permission::model()->hasGlobalPermission('superadmin','read') || $postuserid == Yii::app()->session['loginID'] ||
+        ($sresultcount > 0 && Permission::model()->hasGlobalPermission('users','update'))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
+        ) )
+        {
+            return array('status' => 'Error: You do not have sufficient rights');
+        }
+
+        // Process Password
+        if ($sPassword == null) $sPassword = '';
+
+        // Validate email
+        if (!empty($email) && !validateEmailAddress($email)) {
+            return array('status' => 'Error: Email address is not valid');
+        }
+
+        /**
+         * Update User
+         */
+
+        $oRecord = User::model()->findByPk($postuserid);
+        if (!empty($email)) $oRecord->email= $this->escape($email);
+        if (!empty($full_name)) $oRecord->full_name= $this->escape($full_name);
+        if (!empty($sPassword))
+        {
+            $oRecord->password= hash('sha256', $sPassword);
+        }
+
+        $uresult = $oRecord->save();    // store result of save in uresult
+        if (!$uresult)
+        {
+            return array('status' => 'Error: Update failed');
+        }
+
+        return array('status' => 'Success');
+    }
+
+    /**
+     * RPC routine to set user permissions
+     * @param string $sSessionKey
+     * @param int $uid
+     * @param array $aNewPermissions
+     *
+     *  Example:
+     * {"method":"set_user_permissions","params":{"sSessionKey":"xxx", "uid":"2", "aNewPermissions":{"perm_surveys_export":false}},"id":1}
+     */
+    public function set_user_permissions($sSessionKey, $uid, $aNewPermissions=array())
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if( !Permission::model()->hasGlobalPermission('users','create') ) {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize data
+        $iUserID= sanitize_int($uid);
+
+        /**
+         * Validate user
+         */
+
+        // A user may not modify his own permissions
+        if (Yii::app()->session['loginID']==$iUserID) {
+            return array('status' => 'Error: You are not allowed to edit your own user permissions.');
+        }
+
+        // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
+        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
+        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
+        {
+            return array('status' => 'Error: Initial Superadmin permissions cannot be updated.');
+        }
+
+        /**
+         * Compose permissions
+         */
+        if ($sEntityName == 'global')
+        {
+            $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
+        }
+        else
+        {
+            $aBaseUserPermissions = Permission::model()->getSurveyBasePermissions();
+        }
+
+        $aPermissions=array();
+        foreach ($aBaseUserPermissions as $sPermissionKey=>$aCRUDPermissions)
+        {
+            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
+            {
+                if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue;
+
+                if ($CRUDValue)
+                {
+                    if(!empty($aNewPermissions["perm_{$sPermissionKey}_{$sCRUDKey}"])){
+                        $aPermissions[$sPermissionKey][$sCRUDKey]=1;
+                    }
+                    else
+                    {
+                        $aPermissions[$sPermissionKey][$sCRUDKey]=0;
+                    }
+                }
+            }
+        }
+
+        /**
+         * Update permissions
+         */
+        if (!(Permission::model()->setPermissions($iUserID, 0, 'global', $aPermissions)))
+        {
+            return array('status' => 'Error: Operation failed.');
+        }
+
+        return array('status' => 'Success');
+    }
+
+    /**
+     * RPC routine to list user permissions
+     * @param  string $sSessionKey
+     * @param  int $uid
+     * @return array
+     */
+    public function list_user_permissions($sSessionKey, $uid)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Initialize data
+        $iUserID= sanitize_int($uid);
+
+        /**
+         * Get user
+         */
+
+        if ($iUserID) {//Never update 1st admin
+            if(Permission::model()->hasGlobalPermission('superadmin','read'))
+                $oUser = User::model()->findByAttributes(array('uid' => $iUserID));
+            else
+                $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
+        }
+
+        /**
+         * Check Permissions
+         */
+        if (!($oUser && (
+                Permission::model()->hasGlobalPermission('superadmin','read')
+                || Permission::model()->hasGlobalPermission('users','update')
+                &&  Yii::app()->session['loginID'] != $iUserID
+                )
+            ))
+        {
+            return array('status' => 'Error: You do not have sufficient rights');
+        }
+
+        /**
+         * Get base permissions
+         */
+
+        $aBasePermissions=Permission::model()->getGlobalBasePermissions();
+        if (!Permission::model()->hasGlobalPermission('superadmin','read', $iUserID)) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+        {
+            $aFilteredPermissions=array();
+            foreach  ($aBasePermissions as $PermissionName=>$aPermission)
+            {
+                foreach ($aPermission as $sPermissionKey=>&$sPermissionValue)
+                {
+                    if ($sPermissionKey!='title' && $sPermissionKey!='description' && $sPermissionKey!='img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey, $iUserID)) $sPermissionValue=false;
+                }
+                $aFilteredPermissions[$PermissionName]=$aPermission;
+            }
+            $aBasePermissions=$aFilteredPermissions;
+        }
+
+        // Only the original superadmin (UID 1) may create new superadmins
+        if (Yii::app()->session['loginID']!=1)
+        {
+            unset($aBasePermissions['superadmin']);
+        }
+
+        return $aBasePermissions;
+    }
+
+    private function escape($str)
+    {
+        if (is_string($str)) {
+            $str = $this->escape_str($str);
+        }
+        elseif (is_bool($str))
+        {
+            $str = ($str === true) ? 1 : 0;
+        }
+        elseif (is_null($str))
+        {
+            $str = 'NULL';
+        }
+
+        return $str;
+    }
+
+    private function escape_str($str, $like = FALSE)
+    {
+        if (is_array($str)) {
+            foreach ($str as $key => $val)
+            {
+                $str[$key] = $this->escape_str($val, $like);
+            }
+
+            return $str;
+        }
+
+        // Escape single quotes
+        $str = str_replace("'", "''", $this->remove_invisible_characters($str));
+
+        return $str;
+    }
+
+    private function remove_invisible_characters($str, $url_encoded = TRUE)
+    {
+        $non_displayables = array();
+
+        // every control character except newline (dec 10)
+        // carriage return (dec 13), and horizontal tab (dec 09)
+
+        if ($url_encoded) {
+            $non_displayables[] = '/%0[0-8bcef]/'; // url encoded 00-08, 11, 12, 14, 15
+            $non_displayables[] = '/%1[0-9a-f]/'; // url encoded 16-31
+        }
+
+        $non_displayables[] = '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S'; // 00-08, 11, 12, 14-31, 127
+
+        do
+        {
+            $str = preg_replace($non_displayables, '', $str, -1, $count);
+        } while ($count);
+
+        return $str;
+    }    
+    
+    /**
+     * RPC routine to list the available user groups
+     * @param string $sSessionKey
+     * @param int $owner_id Optional Filter by Owner
+     * @param int $uid Optional Filter by User in the Group
+     * @return array
+     */
+    function list_usergroups($sSessionKey, $owner_id = FALSE, $uid = FALSE)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if( !Permission::model()->hasGlobalPermission('usergroups','read') ) {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize Data
+        $owner_id = sanitize_int($owner_id);
+        $uid = sanitize_int($uid);
+
+
+        /**
+         * Compose the SQL statement
+         */
+
+        $sQuery = "SELECT distinct a.ugid, a.name, a.description, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
+
+        // Filter by own ones
+        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        {
+            $sQuery .=" AND (
+                b.uid = ".Yii::app()->session['loginID'] . "
+                    OR
+                a.owner_id = " . Yii::app()->session['loginID'] . "
+            )";
+        }
+
+        // Filter by Owner
+        if (!empty($owner_id))
+        {
+            $sQuery .=" AND a.owner_id = " . $owner_id;
+        }
+
+        // Filter by User in the group
+        if (!empty($uid))
+        {
+            $sQuery .=" AND b.uid = " . $uid;
+        }
+
+        $sQuery .=  " ORDER BY name";
+
+        /**
+         * Execute the query and get the data
+         */
+
+        $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
+        if (!$sresult) {
+            return array('status' => 'Error: Operation failed');
+        }
+
+        foreach ($sresult->readAll() as $row)
+        {
+            $groupnames[] = $row;
+        }
+
+        return $groupnames;
+    }
+
+    /**
+     * RPC routine to get the details of a user group
+     * @param string $sSessionKey
+     * @param int $ugid
+     * @return array
+     */
+    public function get_usergroup_properties($sSessionKey, $ugid)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if( !Permission::model()->hasGlobalPermission('usergroups','read') ) {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize Data
+        $ugid = sanitize_int($ugid);
+        $owner_id = Yii::app()->session['loginID'];
+
+        if (empty($ugid) || !($ugid > -1)) {
+            return array('status' => 'Error: No group selected.');
+        }
+
+        /**
+         * Get the details
+         */
+        $aData['ugid'] = $ugid;
+
+        $result = UserGroup::model()->requestViewGroup($ugid, Yii::app()->session["loginID"]);
+        if (!$result) {
+            return array('status' => 'Error: Group not found.');
+        }
+
+        $crow = $result[0];
+        $aData["name"] = $crow['name'];
+        $aData["owner_id"] = $crow['owner_id'];
+        if (!empty($crow['description']))
+            $aData["description"] = $crow['description'];
+        else
+            $aData["description"] = "";
+
+        /**
+         * Get the users
+         */
+        //$this->user_in_groups_model = new User_in_groups;
+        $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
+        $eguresult = dbExecuteAssoc($eguquery);
+        $aUserInGroupsResult = $eguresult->readAll();
+
+        $row = 0;
+        $userloop = array();
+        foreach ($aUserInGroupsResult as $egurow)
+        {
+            $userloop[$row]["userid"] = $egurow['uid'];
+            $userloop[$row]["username"] = $egurow['users_name'];
+            $userloop[$row]["email"] = $egurow['email'];
+
+            $row++;
+        }
+        $aData["users"] = $userloop;
+
+        /**
+         * Return
+         */
+        return ($aData);
+    }
+
+    /**
+     * RPC routine to create a user group
+     * @param string $sSessionKey
+     * @param array $aAttributes
+     */
+    public function add_usergroup($sSessionKey, $aAttributes)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if (!Permission::model()->hasGlobalPermission('usergroups','create')) {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize Data
+        $owner_id = Yii::app()->session['loginID'];
+        $db_group_name = flattenText($aAttributes['name'],false,true,'UTF-8',true);
+        $db_group_description = $aAttributes['description'];
+
+        if (empty($db_group_name)) {
+            return array('status' => 'Error: No group name given.');
+        }
+
+        if (strlen($db_group_name) > 21) {
+            return array('status' => 'Error: Group name length more than 20 characters');
+        }
+
+        if (UserGroup::model()->find("name=:groupName", array(':groupName'=>$db_group_name))) {
+            return array('status' => 'Error: Group already exists');
+        }
+
+
+        // Operation
+        $ugid = UserGroup::model()->addGroup($db_group_name, $db_group_description);
+        if ($ugid <= 0)
+        {
+            return array('status' => 'Error: Operation failed');
+        }
+
+        return (int)$ugid;
+    }
+
+
+    /**
+     * RPC routine to edit a user group
+     * @param  string $sSessionKey
+     * @param  int $ugid
+     * @param  array $aAttributes
+     * @return array|string|int
+     */
+    public function edit_usergroup($sSessionKey, $ugid, $aAttributes)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if (!Permission::model()->hasGlobalPermission('usergroups','update')) {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize Data
+        $ugid = sanitize_int($ugid);
+        $owner_id = Yii::app()->session['loginID'];
+
+        if (empty($ugid) || !($ugid > -1)) {
+            return array('status' => 'Error: No group selected.');
+        }
+
+        $db_group_name = flattenText($aAttributes['name'],false,true,'UTF-8',true);
+        $db_group_description = $aAttributes['description'];
+
+        if (empty($db_group_name)) {
+            return array('status' => 'Error: No group name given.');
+        }
+
+        if (strlen($db_group_name) > 21) {
+            return array('status' => 'Error: Group name length more than 20 characters');
+        }
+
+        // Find User Group
+        $result = UserGroup::model()->requestEditGroup($ugid, $owner_id);
+        if (!($result->count() > 0))
+        {
+            return array('status' => 'Error: User Group not found.');
+        }
+
+        // Operation
+        $result = UserGroup::model()->updateGroup($db_group_name, $db_group_description, $ugid);
+        if (!$result)
+        {
+            return array('status' => 'Error: Operation failed');
+        }
+
+        return array('status' => 'Success');
+    }
+
+    /**
+     * RPC routine to delete a user group
+     * @param  string $sSessionKey
+     * @param  int $ugid
+     * @return array|string|int
+     */
+    public function delete_usergroup($sSessionKey, $ugid)
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permission
+        if (!Permission::model()->hasGlobalPermission('usergroups','delete')) {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize Data
+        $ugid = sanitize_int($ugid);
+        $owner_id = Yii::app()->session['loginID'];
+
+        if (empty($ugid) || !($ugid > -1)) {
+            return array('status' => 'Error: No group selected.');
+        }
+
+        // Find User Group
+        $result = UserGroup::model()->requestEditGroup($ugid, $owner_id);
+        if (!($result->count() > 0))
+        {
+            return array('status' => 'Error: User Group not found.');
+        }
+
+        // Operation
+        $result = UserGroup::model()->deleteGroup($ugid, $owner_id);
+        if (!$result)
+        {
+            return array('status' => 'Error: Operation failed');
+        }
+
+        return array('status' => 'Success');
+    }
+
+    /**
+     * RPC routine to manage a user group: Add / remove users
+     * @param  string $sSessionKey
+     * @param  int $ugid
+     * @param  int $uid
+     * @param  string $action
+     * @return array|string|int
+     */
+    public function manage_usergroup($sSessionKey, $ugid, $uid, $action = 'add')
+    {
+        // Check Session
+        if (!$this->_checkSessionKey($sSessionKey))
+        {
+            return array('status' => 'Invalid Session Key');
+        }
+
+        // Check Permissions
+        if (!Permission::model()->hasGlobalPermission('usergroups','read') || !in_array($action, array('add', 'remove')))
+        {
+            return array('status' => 'No permission');
+        }
+
+        // Initialize Data
+        $ugid = sanitize_int($ugid);
+        $owner_id = Yii::app()->session['loginID'];
+        $uid = (int) sanitize_int($uid);
+
+        // User Group Validation
+        if (empty($ugid) || !($ugid > -1)) {
+            return array('status' => 'Error: No group selected.');
+        }
+
+        $group = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
+        if (empty($group))
+        {
+            return array('status' => 'Error: No group found.');
+        }
+
+        // User validation
+        if (empty($uid) || !($uid > 0)) {
+            return array('status' => 'Error: No user selected.');
+        }
+
+        if (! ($uid > 0 && User::model()->findByPk($uid) ) )
+        {
+            return array('status' => 'Error: No user found.');
+        }
+
+        // Validate we are not operating on the owner.
+        if ($group->owner_id == $uid)
+        {
+            return array('status' => 'Error: You can not add or remove the group owner from the group.');
+        }
+
+        // Find UserGroup-user relation
+        $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
+
+        // Operate
+        switch ($action)
+        {
+        case 'add' :
+            if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
+            {
+                return array('status' => 'Success');
+            }
+            else
+            {
+                return array('status' => 'Error: User already exists in the group.');
+            }
+            break;
+
+        case 'remove' :
+            if (!empty($user_in_group) && UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
+            {
+                return array('status' => 'Success');
+            }
+            else
+            {
+                return array('status' => 'User does not exist in the group.');
+            }
+            break;
+        }
+
+        return array('status' => 'Error: Unexpeced End.');
+    }
+    
 }
