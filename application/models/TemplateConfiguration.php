@@ -96,29 +96,8 @@ class TemplateConfiguration extends CFormModel
         // We check if  it is a CORE template
         $this->setIsStandard();
 
-        // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+        $this->setPath();
 
-        // If the template directory doesn't exist, it can be that:
-        // - user deleted a custom theme
-        // In any case, we just set Default as the template to use
-        if (!is_dir($this->path)) {
-            $this->sTemplateName = 'default';
-            $this->isStandard    = true;
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-            if(!$this->iSurveyId){
-                setGlobalSetting('defaulttemplate', 'default');
-            }
-        }
-
-        // If the template doesn't have a config file (maybe it has been deleted, or whatever),
-        // then, we load the default template
-        $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
-
-        if (!$this->hasConfigFile) {
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-
-        }
 
         $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
 
@@ -149,6 +128,33 @@ class TemplateConfiguration extends CFormModel
 
         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         return $this;
+    }
+
+    private function setPath()
+    {
+        // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
+        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+
+        // If the template directory doesn't exist, it can be that:
+        // - user deleted a custom theme
+        // In any case, we just set Default as the template to use
+        if (!is_dir($this->path)) {
+            $this->sTemplateName = 'default';
+            $this->isStandard    = true;
+            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+            if(!$this->iSurveyId){
+                setGlobalSetting('defaulttemplate', 'default');
+            }
+        }
+
+        // If the template doesn't have a config file (maybe it has been deleted, or whatever),
+        // then, we load the default template
+
+        $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
+        if (!$this->hasConfigFile) {
+            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+
+        }
     }
 
     private function setTemplateName($sTemplateName)
