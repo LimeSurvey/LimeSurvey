@@ -94,7 +94,8 @@ class TemplateConfiguration extends CFormModel
         $this->setTemplateName($sTemplateName);
 
         // We check if  it is a CORE template
-        $this->isStandard = $this->setIsStandard();
+        $this->setIsStandard();
+
         // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
         $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
 
@@ -285,7 +286,7 @@ class TemplateConfiguration extends CFormModel
      */
     private function setIsStandard()
     {
-        return Template::isStandardTemplate($this->sTemplateName);
+        $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
     }
 
     /**
