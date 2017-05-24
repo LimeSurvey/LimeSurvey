@@ -22,50 +22,51 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  */
 class TemplateConfiguration extends CFormModel
 {
-    /** @var TemplateConfiguration $oMotherTemplate The template name */
-    public $oMotherTemplate;
-
-    public $sPackageName;
-
     /** @var string $sTemplateName The template name */
     public $sTemplateName='';
-    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
-    public $iSurveyId='';
-    /** @var SimpleXMLElement $config Will contain the config.xml*/
-    public $config;
 
-    /** @var  string $viewPath Path of the views files (php files to replace existing core views) */
-    public $viewPath;
+    /** @var string $sPackageName Name of the asset package of this template*/
+    public $sPackageName;
+
     /** @var  string $siteLogo Name of the logo file (like: logo.png) */
     public $siteLogo;
-    /** @var  string $filesPath Path of the uploaded files */
-    public $filesPath;
-    /**
-     * @var string[] $cssFramework What framework css is used
-     * @see getFrameworkPackages()
-     */
-    public $cssFramework;
-    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
-    public $packages;
-    /**
-     * @var string[] $depends List of all dependencies (could be more that just the config.xml packages)
-     * @see getDependsPackages()
-     */
-    public $depends = array();
-
-    public $sTemplateurl;
-
-    /** @var boolean $isStandard Is this template a core one? */
-    public $isStandard;
 
     /** @var  string $path Path of this template */
     public $path;
 
-    /**
-     * @var string $hasConfigFile Does it has a config.xml file?
-     * //TODO why string not boolean ??
-     */
+    /** @var string[] $sTemplateurl Url to reach the framework */
+    public $sTemplateurl;
+
+    /** @var  string $viewPath Path of the views files (twig template) */
+    public $viewPath;
+
+    /** @var  string $filesPath Path of the tmeplate's files */
+    public $filesPath;
+
+    /** @var string[] $cssFramework What framework css is used */
+    public $cssFramework;
+
+    /** @var boolean $isStandard Is this template a core one? */
+    public $isStandard;
+
+    /** @var SimpleXMLElement $config Will contain the config.xml */
+    public $config;
+
+    /** @var TemplateConfiguration $oMotherTemplate The template name */
+    public $oMotherTemplate;
+
+
+    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
+    private $iSurveyId='';
+
+    /** @var string $hasConfigFile Does it has a config.xml file? */
     private $hasConfigFile='';//
+
+    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
+    private $packages;
+
+    /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
+    private $depends = array();
 
     /** @var bool $overwrite_question_views Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too. */
     private $overwrite_question_views=false;
@@ -73,9 +74,7 @@ class TemplateConfiguration extends CFormModel
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
     private $xmlFile;
 
-    /**
-     * @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update
-     */
+    /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
     private $apiVersion;
 
 
