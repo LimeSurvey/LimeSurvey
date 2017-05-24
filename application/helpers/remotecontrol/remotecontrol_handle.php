@@ -23,13 +23,20 @@ class remotecontrol_handle
 
 
     /**
-    * RPC routine to create a session key.
+    * Create and return a session key.
+    *
     * Using this function you can create a new XML-RPC/JSON-RPC session key.
     * This is mandatory for all following LSRC2 function calls.
+    * 
+    * * In case of success : Return the session key in string
+    * * In case of error:
+    *     * for protocol-level errors (invalid format etc), an error message.
+    *     * For invalid username and password, returns a null error and the result body contains a 'status' name-value pair with the error message.
+    * 
     * @access public
     * @param string $username
     * @param string $password
-    * @return string
+    * @return string|array
     */
     public function get_session_key($username, $password)
     {
@@ -57,9 +64,11 @@ class remotecontrol_handle
     /**
     * Closes the RPC session
     *
+    * Using this function you can close a previously opened XML-RPC/JSON-RPC session.
+    *
     * @access public
-    * @param string $sSessionKey
-    * @return string
+    * @param string $sSessionKey the session key
+    * @return string OK
     */
     public function release_session_key($sSessionKey)
     {
@@ -71,45 +80,49 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC Routine to get settings.
+    * Get a global setting
     *
+    * Function to query site settings. Can only be used by super administrators.
+    * 
     * @access public
     * @param string $sSessionKey Auth Credentials
     * @param string $sSetttingName Name of the setting to get
-    * @return string The requested value
+    * @return string|array The requested value or an array with the error in case of error
     */
     public function get_site_settings($sSessionKey,$sSetttingName)
     {
-        if ($this->_checkSessionKey($sSessionKey))
-        {
-            if(Permission::model()->hasGlobalPermission('superadmin','read'))
-            {
-                if (Yii::app()->getConfig($sSetttingName) !== false)
+        if ($this->_checkSessionKey($sSessionKey)) {
+            if(Permission::model()->hasGlobalPermission('superadmin','read')) {
+                if (Yii::app()->getConfig($sSetttingName) !== false) {
                     return Yii::app()->getConfig($sSetttingName);
-                else
+                } else {
                     return array('status' => 'Invalid setting');
-            }
-            else
+                }
+            } else {
                 return array('status' => 'Invalid setting');
-        }
-        else
+            }
+        } else {
             return array('status' => 'Invalid session key');
+        }
     }
 
 
     /* Survey specific functions */
 
     /**
-    * RPC Routine to add an empty survey with minimum details.
-    * Used as a placeholder for importing groups and/or questions.
+    * Add an empty survey with minimum details
+    * 
+    * This just try to create an empty survey with the minimal settings.
+    *
+    * Failure status: Invalid session key, No permission, Faulty parameters, Creation Failed result
     *
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID The desired ID of the Survey to add
     * @param string $sSurveyTitle Title of the new Survey
     * @param string $sSurveyLanguage Default language of the Survey
-    * @param string $sformat Question appearance format
-    * @return array|string|int
+    * @param string $sformat (optional) Question appearance format, default to group by group
+    * @return int|array The survey id in case of success
     */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
     {
@@ -164,12 +177,14 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC Routine to delete a survey.
+    * Delete a survey.
     *
+    * Failure status: Invalid session key, No permission
+    * 
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID The ID of the Survey to be deleted
-    * @return array Returns Status
+    * @return array Returns status : status are OK in case of success
     */
     public function delete_survey($sSessionKey, $iSurveyID)
     {
@@ -188,15 +203,19 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC Routine to import a survey - imports lss,csv,xls or survey zip archive.
+    * Import a survey in a know format
     *
+    * Allow importing lss,csv,xls or survey zip archive in BASE 64 encoded.
+    *
+    * Failure status: Invalid session key, No permission, The import error
+    * 
     * @access public
     * @param string $sSessionKey Auth Credentials
     * @param string $sImportData String containing the BASE 64 encoded data of a lss, csv, txt or survey lsa archive
     * @param string $sImportDataType lss, csv, txt or lsa
-    * @param string $sNewSurveyName The optional new name of the survey
-    * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
-    * @return array|integer iSurveyID - ID of the new survey
+    * @param string $sNewSurveyName (optionnal) The optional new name of the survey
+    * @param integer $DestSurveyID  (optionnal) This is the new ID of the survey - if already used a random one will be taken instead
+    * @return int|array The ID of the new survey in case of success
     */
     public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName=NULL, $DestSurveyID=NULL)
     {
@@ -225,15 +244,20 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC Routine to get survey properties.
+    * Get properties of a survey 
+    *
+    * The settings available is all internal properties of Survey model.
+    * @see \Survey for the list of available properties
+    * 
+    * Failure status : Invalid survey ID, Invalid session key, No permission, No valid Data
     *
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID The id of the Survey to be checked
-    * @param array $aSurveySettings The properties to get
+    * @param array|null $aSurveySettings (optionnal) The properties to get
     * @return array
     */
-    public function get_survey_properties($sSessionKey,$iSurveyID, $aSurveySettings)
+    public function get_survey_properties($sSessionKey,$iSurveyID, $aSurveySettings=null)
     {
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
@@ -246,10 +270,14 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
             {
                 $aBasicDestinationFields=Survey::model()->tableSchema->columnNames;
-                $aSurveySettings=array_intersect($aSurveySettings,$aBasicDestinationFields);
-
-                if (empty($aSurveySettings))
+                if(!empty($aSurveySettings)) {
+                    $aSurveySettings=array_intersect($aSurveySettings,$aBasicDestinationFields);
+                } else {
+                    $aSurveySettings=$aBasicDestinationFields;
+                }
+                if (empty($aSurveySettings)) {
                     return array('status' => 'No valid Data');
+                }
                 $aResult = array();
                 foreach($aSurveySettings as $sPropertyName)
                 {
@@ -265,13 +293,32 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC Routine to set survey properties.
+    * Set survey properties.
     *
+    * @see \Survey for the list of available properties
+    * Properties available are restricted
+    * * Allways
+    *     * sid
+    *     * owner_id
+    *     * active
+    *     * language
+    *     * additional_languages
+    * * In survey is active
+    *     * anonymized
+    *     * datestamp
+    *     * savetimings
+    *     * ipaddr
+    *     * refurl
+    *
+    * In case of partial success : return an array with key as properties and value as boolean , true if saved with success.
+    *
+    * Failure status : Invalid survey ID, Invalid session key, No permission, No valid Data
+    * 
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID - ID of the Survey
-    * @param array|struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
-    * @return array Of succeeded and failed nodifications according to internal validation
+    * @param integer $iSurveyID The ID of the Survey
+    * @param array|struct $aSurveyData An array with the particular properties as keys and their values to set on that particular Survey
+    * @return array In case of success Nodifications according to internal validation of each params set
     */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
     {
@@ -338,29 +385,31 @@ class remotecontrol_handle
 
 
     /**
-    * RPC Routine that launches a newly created survey.
+    * Activate an existing survey
+    *
+    * Return the result of the activation
+    * Failure status : Invalid Survey ID, Activation Error, Invalid session key, No permission
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The ID of the Survey to be activated
-    * @return array The result of the activation
+    * @param int $iSurveyID ID of the Survey to be activated
+    * @return array in case of success result of the activation
     */
     public function activate_survey($sSessionKey, $iSurveyID)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
             $oSurvey=Survey::model()->findByPk($iSurveyID);
-            if (is_null($oSurvey))
+            if (is_null($oSurvey)) {
                 return array('status' => 'Error: Invalid survey ID');
-
+            }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))
             {
                 Yii::app()->loadHelper('admin/activate');
                 $aActivateResults = activateSurvey($iSurveyID);
-
-                if (isset($aActivateResults['error'])) return array('status' => 'Error: '.$aActivateResults['error']);
-                else
-                {
+                if (isset($aActivateResults['error'])) {
+                    return array('status' => 'Error: '.$aActivateResults['error']);
+                } else {
                     return $aActivateResults;
                 }
             }
@@ -372,17 +421,18 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC routine to export statistics of a survey to a user.
-    * Returns string - base64 encoding of the statistics.
+    * Export statistics of a survey to a user.
     *
+    * Allow to export statistics available Returns string - base64 encoding of the statistics.
+    * 
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey
-    * @param string $docType Type of documents the exported statistics should be
-    * @param string $sLanguage Optional language of the survey to use
-    * @param string $graph Create graph option
-    * @param int|array $groupIDs An OPTIONAL array (ot a single int) containing the groups we choose to generate statistics from
-    * @return string Base64 encoded string with the statistics file
+    * @param string $docType (optionnal) Type of documents the exported statistics should be (pdf|xls|html)
+    * @param string $sLanguage (optional) language of the survey to use (default from Survey)
+    * @param string $graph (optionnal) Create graph option (default : no)
+    * @param int|array $groupIDs (optionnal) array or integer containing the groups we choose to generate statistics from
+    * @return string in case of success : Base64 encoded string with the statistics file
     */
     public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0', $groupIDs=null)
     {
@@ -1933,15 +1983,22 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC Routine to list the ids and info of surveys belonging to a user.
-    * Returns array of ids and info.
+    * List the survey belonging to a user
+    *
     * If user is admin he can get surveys of every user (parameter sUser) or all surveys (sUser=null)
     * Else only the surveys belonging to the user requesting will be shown.
+    * 
+    * Returns array with
+    * * `sid` the ids of survey
+    * * `surveyls_title` the title of the survey
+    * * `startdate` start date
+    * * `expires` expiration date
+    * * `active` if survey is active (Y) or not (!Y)
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param string $sUsername Optional username to get list of surveys
-    * @return array The list of surveys
+    * @param string|null $sUsername (optional) username to get list of surveys
+    * @return array In case of success the list of surveys
     */
     public function list_surveys($sSessionKey, $sUsername=NULL)
     {
@@ -1982,11 +2039,15 @@ class remotecontrol_handle
     }
 
 /**  
-    * RPC Routine to list the ids and info of users.
+    * Get list the ids and info of users.
+    * 
     * Returns array of ids and info.
+    *
+    * Failure status : No users found, Invalid session key, No permission (super admin is required)
+    * 
     * @param string $sSessionKey Auth credentials
     * @param int $uid Optional parameter user id.
-    * @return array The list of users
+    * @return array The list of users in case of success
     */
     public function list_users($sSessionKey = null, $uid = FALSE)
     {    
@@ -2008,7 +2069,7 @@ class remotecontrol_handle
                 }
 
                 if(count($users)==0)
-                    return array('status' => 'No surveys found');
+                    return array('status' => 'No users found');
 
                 foreach ($users as $user)
                 {
