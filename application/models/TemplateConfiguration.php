@@ -99,18 +99,11 @@ class TemplateConfiguration extends CFormModel
         $this->setPath();
 
 
-        $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
-
         //////////////////////
         // Config file loading
 
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $this->readManifest();
 
-        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-        $this->config  = simplexml_load_string($sXMLConfigFile);
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        
         // Recursive mother templates configuration
         $this->setMotherTemplates();
 
@@ -122,6 +115,15 @@ class TemplateConfiguration extends CFormModel
         $this->createTemplatePackage($this);
 
         return $this;
+    }
+
+    private function readManifest()
+    {
+        $this->xmlFile         = $this->path.DIRECTORY_SEPARATOR.'config.xml';
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
     }
 
     private function setMotherTemplates()
