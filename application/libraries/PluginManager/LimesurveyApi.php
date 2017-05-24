@@ -33,7 +33,7 @@ use Template;
          */
         protected function getTableName(iPlugin $plugin, $tableName)
         {
-            return App()->getDb()->tablePrefix . strtolower($plugin->getName()) . "_$tableName";
+            return App()->getDb()->tablePrefix . strtolower(get_class($plugin)) . "_$tableName";
         }
         /**
         * Sets a flash message to be shown to the user.
