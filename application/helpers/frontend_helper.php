@@ -831,7 +831,7 @@ function buildsurveysession($surveyid,$preview=false)
     $sLangCode                        = App()->language;
     $thissurvey                       = getSurveyInfo($surveyid,$sLangCode);
     $oTemplate                        = Template::model()->getInstance('', $surveyid);
-    App()->getController()->sTemplate = $oTemplate->name;                                   // It's going to be hard to be sure this is used ....
+    App()->getController()->sTemplate = $oTemplate->sTemplateName;                                   // It's going to be hard to be sure this is used ....
     $sTemplatePath                    = $oTemplate->path;
     $sTemplateViewPath                = $oTemplate->viewPath;
 

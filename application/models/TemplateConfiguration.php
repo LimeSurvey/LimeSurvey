@@ -156,9 +156,7 @@ class TemplateConfiguration extends CFormModel
         $aJsFiles    = (array) $oTemplate->config->files->js->filename;         // The JS files of this template
         $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
-        // Remove mother files
-        // TODO: need a general method called for css, js etc
-
+        // Remove/Replace mother files
         $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
         $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
 
@@ -230,7 +228,6 @@ class TemplateConfiguration extends CFormModel
             $this->oMotherTemplate = new TemplateConfiguration;
             $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
         }
-
     }
 
     /**
@@ -290,7 +287,6 @@ class TemplateConfiguration extends CFormModel
                 $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
             }
         }
-
     }
 
     /**
@@ -334,25 +330,25 @@ class TemplateConfiguration extends CFormModel
         /* Start by adding cssFramework package */
         $packages = $this->getFrameworkPackages($oTemplate);
 
-        if(!getLanguageRTL(App()->getLanguage())) {
-            $packages=array_merge ($packages,$this->getFrameworkPackages($oTemplate, 'ltr'));
+        if (!getLanguageRTL(App()->getLanguage())) {
+            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'ltr'));
         } else {
-            $packages=array_merge ($packages,$this->getFrameworkPackages($oTemplate, 'rtl'));
+            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'rtl'));
         }
 
         /* Core package */
         $packages[]='limesurvey-public';
 
         /* template packages */
-        if(!empty($this->packages->package)) {
-            $packages=array_merge ($packages,(array)$this->packages->package);
+        if (!empty($this->packages->package)) {
+            $packages = array_merge ($packages, (array)$this->packages->package);
         }
 
         /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
         $dir = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
-        if(!empty($this->packages->$dir->package)) {
-            $packages=array_merge ($packages,(array)$this->packages->$dir->package);
+        if (!empty($this->packages->$dir->package)) {
+            $packages = array_merge ($packages, (array)$this->packages->$dir->package);
         }
 
         if (isset($this->config->metadatas->extends)){
@@ -371,53 +367,60 @@ class TemplateConfiguration extends CFormModel
      */
     private function getFrameworkPackages($oTemplate, $dir="")
     {
-        $framework=isset($oTemplate->cssFramework->name)? (string)$oTemplate->cssFramework->name : (string)$oTemplate->cssFramework;
-        $framework=$dir ? $framework."-".$dir : $framework;
-        if(isset(Yii::app()->clientScript->packages[$framework])) {
-            $frameworkPackages=array();
+        // If current template doesn't have a name for the framework package, we use the mother's one
+        $framework = isset($oTemplate->cssFramework->name) ? (string) $oTemplate->cssFramework->name : (string) $oTemplate->oMotherTemplate->cssFramework;
+        $framework = $dir ? $framework."-".$dir : $framework;
+
+        if  ( isset(Yii::app()->clientScript->packages[$framework]) ) {
+
+            $frameworkPackages = array();
+
             /* Theming */
-            if($dir) {
-                $cssFrameworkCsss=isset($oTemplate->cssFramework->$dir->css) ? $oTemplate->cssFramework->$dir->css : array();
-                $cssFrameworkJss=isset($oTemplate->cssFramework->$dir->js) ? $oTemplate->cssFramework->$dir->js : array();
+            if ($dir) {
+                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->$dir->css ) ? $oTemplate->cssFramework->$dir->css : array();
+                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->$dir->js  ) ? $oTemplate->cssFramework->$dir->js  : array();
             } else {
-                $cssFrameworkCsss=isset($oTemplate->cssFramework->css) ? $oTemplate->cssFramework->css : array();
-                $cssFrameworkJss=isset($oTemplate->cssFramework->js) ? $oTemplate->cssFramework->js : array();
+                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->css       ) ? $oTemplate->cssFramework->css       : array();
+                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->js        ) ? $oTemplate->cssFramework->js        : array();
             }
-            if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
-                $frameworkPackages[]=$framework;
+
+            if (empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
+                $frameworkPackages[] = $framework;
             } else {
-                /* Need to create an adapted core framework */
-                $cssFrameworkPackage=Yii::app()->clientScript->packages[$framework];
-                /* Need to create an adapted template/theme framework */
-                $packageCss=array();
-                $packageJs=array();
-                /* css file to replace from default package */
-                $cssDelete=array();
+
+                $cssFrameworkPackage = Yii::app()->clientScript->packages[$framework];     // Need to create an adapted core framework
+                $packageCss          = array();                                            // Need to create an adapted template/theme framework */
+                $packageJs           = array();                                            // css file to replace from default package */
+                $cssDelete           = array();
+
                 foreach($cssFrameworkCsss as $cssFrameworkCss) {
                     if(isset($cssFrameworkCss['replace'])) {
-                        $cssDelete[]=$cssFrameworkCss['replace'];
+                        $cssDelete[] = $cssFrameworkCss['replace'];
                     }
                     if((string)$cssFrameworkCss) {
-                        $packageCss[]=(string)$cssFrameworkCss;
+                        $packageCss[] = (string) $cssFrameworkCss;
                     }
                 }
+
                 if(isset($cssFrameworkPackage['css'])) {
                     $cssFrameworkPackage['css']=array_diff($cssFrameworkPackage['css'],$cssDelete);
                 }
+
                 $jsDelete=array();
                 foreach($cssFrameworkJss as $cssFrameworkJs) {
                     if(isset($cssFrameworkJs['replace'])) {
-                        $jsDelete[]=$cssFrameworkJs['replace'];
+                        $jsDelete[] = $cssFrameworkJs['replace'];
                     }
                     if((string)$cssFrameworkJs) {
-                        $packageJs[]=(string)$cssFrameworkJs;
+                        $packageJs[] = (string)$cssFrameworkJs;
                     }
                 }
                 if(isset($cssFrameworkPackage['js'])) {
-                    $cssFrameworkPackage['js']=array_diff($cssFrameworkPackage['js'],$cssDelete);
+                    $cssFrameworkPackage['js'] = array_diff($cssFrameworkPackage['js'],$cssDelete);
                 }
+
                 /* And now : we add : core package fixed + template/theme package */
-                Yii::app()->clientScript->packages[$framework]=$cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
+                Yii::app()->clientScript->packages[$framework] = $cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
                 $aDepends=array(
                     $framework,
                 );
@@ -427,7 +430,7 @@ class TemplateConfiguration extends CFormModel
 
                 Yii::app()->clientScript->addPackage(
                     $framework.'-template', array(
-                        'devBaseUrl'  =>  $sTemplateurl,                        // Don't use asset manager
+                        'devBaseUrl'  => $sTemplateurl,                        // Don't use asset manager
                         'basePath'    => $sPathName,                            // basePath: the asset manager will be used
                         'css'         => $packageCss,
                         'js'          => $packageJs,
