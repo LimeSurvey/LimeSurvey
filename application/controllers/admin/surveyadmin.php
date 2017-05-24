@@ -659,6 +659,31 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['failedgroupcheck'] = $failedgroupcheck;
             $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
 
+            if (empty(Yii::app()->request->getPost('activate'))){
+                $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
+
+                $todayDate = new DateTime('now');
+                $surveyExpireDate = new DateTime($survey->expires);
+                $surveyStartDate = new DateTime($survey->startdate);                
+
+                if (!empty($survey->startdate) && $todayDate < $surveyStartDate) {
+                    
+                    $aViewUrls['output'] = "<div class='messagebox ui-corner-all'><div class='warningheader'>".gT("This Survey is not yet started. Would like to change the survey settings?")."</div>";                        
+                }
+                else if (!empty ($survey->expires) && $todayDate > $surveyExpireDate) {
+                    $aViewUrls['output'] = "<div class='messagebox ui-corner-all'><div class='warningheader'>".gT("This Survey is expired. Would like to change the survey settings?")."</div>";                        
+                }
+                else {
+                    $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);        
+                    return;
+                }
+                
+                $aViewUrls['output'].= "<div class='warningheader'><input type ='button' value = '".gT('Edit dates')."' onclick=\"location.href='".Yii::app()->getController()->createUrl("admin/survey?sa=editsurveysettings&surveyid=".$iSurveyID."#publication")."';\" /><input style='margin-left:10px' type='submit' value='".gT("Activate anyway")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/activate/surveyid/".$iSurveyID)."?activate=1")."\" /></div>";
+                $aViewUrls['output'].= "</div>";
+                $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
+                return;
+            }
+
             $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
         }
         else
