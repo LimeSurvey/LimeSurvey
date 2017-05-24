@@ -91,7 +91,7 @@ class TemplateConfiguration extends CFormModel
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
 
-        $this->setTemplateName($sTemplateName);
+        $this->setTemplateName($sTemplateName, $iSurveyId);
 
         // We check if  it is a CORE template
         $this->setIsStandard();
@@ -109,7 +109,8 @@ class TemplateConfiguration extends CFormModel
 
         // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
         $this->config  = simplexml_load_string($sXMLConfigFile);
-
+        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        
         // Recursive mother templates configuration
         $this->setMotherTemplates();
 
@@ -120,7 +121,6 @@ class TemplateConfiguration extends CFormModel
 
         $this->createTemplatePackage($this);
 
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
         return $this;
     }
 
@@ -161,7 +161,7 @@ class TemplateConfiguration extends CFormModel
         }
     }
 
-    private function setTemplateName($sTemplateName)
+    private function setTemplateName($sTemplateName, $iSurveyId)
     {
         // If it is called from the template editor, a template name will be provided.
         // If it is called for survey taking, a survey id will be provided
