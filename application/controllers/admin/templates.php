@@ -229,7 +229,7 @@ class templates extends Survey_Common_Action
         $editfile = App()->request->getPost('editfile');
         $templatename = returnGlobal('templatename');
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-        $templatedir = $oEditedTemplate->pstplPath;
+        $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
         $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
@@ -387,7 +387,7 @@ class templates extends Survey_Common_Action
         $sFileToDelete=sanitize_filename(App()->request->getPost('otherfile'),false,false);
         $sTemplateName=Template::templateNameFilter(App()->request->getPost('templatename'));
         $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
-        $templatedir = $oEditedTemplate->pstplPath;
+        $templatedir = $oEditedTemplate->viewPath;
         $filesdir = $oEditedTemplate->filesPath;
         $the_full_file_path = $filesdir . $sFileToDelete;
         if (@unlink($the_full_file_path))
@@ -973,9 +973,9 @@ class templates extends Survey_Common_Action
         if (file_exists(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile)){
             /* the file seems a simple file */
             $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile);
-        }elseif (file_exists($oEditedTemplate->pstplPath. DIRECTORY_SEPARATOR.$editfile)){
+        }elseif (file_exists($oEditedTemplate->viewPath. DIRECTORY_SEPARATOR.$editfile)){
             /* the file seems a view file */
-            $sEditFile=realpath($oEditedTemplate->pstplPath. DIRECTORY_SEPARATOR.$editfile);
+            $sEditFile=realpath($oEditedTemplate->viewPath. DIRECTORY_SEPARATOR.$editfile);
         }else{
             /* the file seems to be invalid */
             $sEditFile='';
@@ -1052,7 +1052,7 @@ class templates extends Survey_Common_Action
         $surveyid = '1295';
         $token = 1234567;
 
-        $templatedir = $oEditedTemplate->pstplPath;
+        $templatedir = $oEditedTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
@@ -1121,7 +1121,7 @@ class templates extends Survey_Common_Action
                 $files=$SurveyList;
                 foreach ($files as $qs)
                 {
-                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
+                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
                 break;
 
@@ -1129,14 +1129,14 @@ class templates extends Survey_Common_Action
                 $files=$Question;
                 $myoutput[] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_meta_view', array(), true);
 
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/startpage.pstpl", $aData, $oEditedTemplate));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/survey.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startpage.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
 
                 // Normally output by survey_runtime
                 $myoutput = array_merge($myoutput, array('<div id="group-0">'));
 
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/startgroup.pstpl", $aData, $oEditedTemplate));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/groupdescription.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startgroup.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/groupdescription.pstpl", $aData, $oEditedTemplate));
 
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
@@ -1155,7 +1155,7 @@ class templates extends Survey_Common_Action
                 );
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacements);
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/question.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
 
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT('Please explain something in detail:'),
@@ -1172,9 +1172,9 @@ class templates extends Survey_Common_Action
                 );
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacements);
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/question.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
 
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/endgroup.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endgroup.pstpl", $aData, $oEditedTemplate));
 
                 // Normally output by survey_runtime
                 $myoutput = array_merge($myoutput, array('</div>'));
@@ -1186,8 +1186,8 @@ class templates extends Survey_Common_Action
                     'MOVENEXTBUTTON' => $sMoveNext,
                     'NAVIGATOR' => "$sMovePrev $sMoveNext",
                 ));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/navigator.pstpl", $aData, $oEditedTemplate));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/endpage.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/navigator.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endpage.pstpl", $aData, $oEditedTemplate));
                 break;
 
             case 'welcome':
@@ -1199,7 +1199,7 @@ class templates extends Survey_Common_Action
                 ));
                 $files=$Welcome ;
                 foreach ($files as $qs) {
-                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
+                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
                 break;
 
@@ -1212,7 +1212,7 @@ class templates extends Survey_Common_Action
                         'SURVEYNAME' => 'Survey name'
                     ))
                 );
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/survey.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
 
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,array(
                     'REGISTERERROR' => 'Example error message',
@@ -1221,7 +1221,7 @@ class templates extends Survey_Common_Action
                     'REGISTERFORM' => $this->getController()->renderPartial('/admin/templates/templateeditor_register_view', array('alt' => true), true),
                 ));
 
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/register.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/register.pstpl", $aData, $oEditedTemplate));
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = "\n";
                 break;
@@ -1238,7 +1238,7 @@ class templates extends Survey_Common_Action
                 $saveForm .= App()->getController()->renderPartial("/survey/frontpage/saveForm/form",array('captcha'=>false),true);
                 $saveForm .= CHtml::endForm();
                 $aData['aReplacements']['SAVEFORM'] = $saveForm;
-                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/save.pstpl", $aData, $oEditedTemplate));
+                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/save.pstpl", $aData, $oEditedTemplate));
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = "\n";
                 break;
@@ -1254,7 +1254,7 @@ class templates extends Survey_Common_Action
                 $loadForm .= App()->getController()->renderPartial("/survey/frontpage/loadForm/form",array('captcha'=>false),true);
                 $loadForm .= CHtml::endForm();
                 $aData['aReplacements']['LOADFORM'] = $loadForm;
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/load.pstpl", $aData, $oEditedTemplate));
+                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/load.pstpl", $aData, $oEditedTemplate));
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), $aData['aReplacements'], $aData['aReplacements'], 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
                 $myoutput[] = "\n";
@@ -1275,7 +1275,7 @@ class templates extends Survey_Common_Action
                 $myoutput[] = "";
                 foreach ($files as $qs)
                 {
-                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->pstplPath . "/$qs", $aData, $oEditedTemplate));
+                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
                 break;
             case 'printablesurvey':
