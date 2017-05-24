@@ -33,10 +33,6 @@ class TemplateConfiguration extends CFormModel
     public $iSurveyId='';
     /** @var SimpleXMLElement $config Will contain the config.xml*/
     public $config;
-    /**
-     * @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update
-     */
-    private $apiVersion;
 
     /** @var  string $viewPath Path of the views files (php files to replace existing core views) */
     public $viewPath;
@@ -59,22 +55,29 @@ class TemplateConfiguration extends CFormModel
 
     public $sTemplateurl;
 
-    /** @var  Survey $oSurvey The survey object */
-    public $oSurvey;
     /** @var boolean $isStandard Is this template a core one? */
     public $isStandard;
+
     /** @var  string $path Path of this template */
     public $path;
+
     /**
      * @var string $hasConfigFile Does it has a config.xml file?
      * //TODO why string not boolean ??
      */
-    public $hasConfigFile='';//
+    private $hasConfigFile='';//
 
     /** @var bool $overwrite_question_views Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too. */
-    public $overwrite_question_views=false;
+    private $overwrite_question_views=false;
+
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
-    public $xmlFile;
+    private $xmlFile;
+
+    /**
+     * @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update
+     */
+    private $apiVersion;
+
 
     /**
      * This method constructs a template object, having all the needed configuration data.
@@ -274,9 +277,9 @@ class TemplateConfiguration extends CFormModel
         $this->iSurveyId     = (int) $iSurveyId;
 
         if ($sTemplateName == '') {
-            $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
-            if($this->oSurvey) {
-                $this->sTemplateName = $this->oSurvey->template;
+            $oSurvey       = Survey::model()->findByPk($iSurveyId);
+            if($oSurvey) {
+                $this->sTemplateName = $oSurvey->template;
             } else {
                 $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
             }
