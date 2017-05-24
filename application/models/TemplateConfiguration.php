@@ -158,19 +158,9 @@ class TemplateConfiguration extends CFormModel
 
         // Remove mother files
         // TODO: need a general method called for css, js etc
-        foreach($aCssFiles as $key => $cssFile){
-            if (!empty($cssFile['replace']) || !empty($cssFile['remove'])){
-                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'css', $cssFile['replace'] );
-                unset($aCssFiles[$key]);
-            }
-        }
 
-        foreach($aJsFiles as $key => $jsFile){
-            if (!empty($jsFile['replace']) || !empty($jsFile['remove']) ){
-                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, 'js', $jsFile['replace'] );
-                unset($aJsFiles[$key]);
-            }
-        }
+        $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+        $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
 
         if (isset($oTemplate->config->files->$dir)) {
             $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array) $oTemplate->config->files->$dir->css->filename : array();
@@ -196,6 +186,24 @@ class TemplateConfiguration extends CFormModel
             'js'          => $aJsFiles,
             'depends'     => $oTemplate->depends,
         ) );
+    }
+
+    /**
+     * Change the mother template configuration depending on template settings
+     * @var $sType     string   the type of settings to change (css or js)
+     * @var $aSettings array    array of local setting
+     * @return array
+     */
+    private function changeMotherConfiguration( $sType, $aSettings )
+    {
+        foreach( $aSettings as $key => $aSetting){
+            if (!empty($aSetting['replace']) || !empty($aSetting['remove'])){
+                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace'] );
+                unset($aSettings[$key]);
+            }
+        }
+
+        return $aSettings;
     }
 
     /**
@@ -342,7 +350,7 @@ class TemplateConfiguration extends CFormModel
 
         /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
         $dir = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-        
+
         if(!empty($this->packages->$dir->package)) {
             $packages=array_merge ($packages,(array)$this->packages->$dir->package);
         }
