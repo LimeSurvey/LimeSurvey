@@ -55,6 +55,14 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .top-container .form-change-lang {text-align:center}
 
 /**
+ * Navigator
+ */
+ 
+ .save-clearall-wrapper {
+	 margin-top: 0.75em;
+ }
+
+/**
  * Question part
  */
 /** Question Design **/
