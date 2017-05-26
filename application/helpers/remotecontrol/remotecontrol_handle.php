@@ -62,7 +62,7 @@ class remotecontrol_handle
     }
 
     /**
-    * Closes the RPC session
+    * Close the RPC session
     *
     * Using this function you can close a previously opened XML-RPC/JSON-RPC session.
     *
@@ -254,7 +254,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID The id of the Survey to be checked
-    * @param array|null $aSurveySettings (optionnal) The properties to get
+    * @param array|null $aSurveySettings (optional) The properties to get
     * @return array
     */
     public function get_survey_properties($sSessionKey,$iSurveyID, $aSurveySettings=null)
@@ -565,7 +565,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey to get summary
-    * @param string $sStatName (optionnal) Name of the summary option, or all to send all in an array (all by default)
+    * @param string $sStatName (optional) Name of the summary option, or all to send all in an array (all by default)
     * @return string|array in case of success the requested value or an array of all values 
     */
     public function get_summary($sSessionKey,$iSurveyID, $sStatName='all')
@@ -781,7 +781,7 @@ class remotecontrol_handle
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey
     * @param array|null $aSurveyLocaleSettings (optional) Properties to get, default to all attributes
-    * @param string|null $sLang (optionnal) Language to use, default to Survey->language
+    * @param string|null $sLang (optional) Language to use, default to Survey->language
     * @return array in case of success The requested values
     */
     public function get_language_properties($sSessionKey,$iSurveyID, $aSurveyLocaleSettings=null, $sLang=null)
