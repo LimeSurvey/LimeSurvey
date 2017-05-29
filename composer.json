@@ -1,12 +1,12 @@
 {
-	"name" : "pprossi/LimeSurvey",
+	"name" : "limesurvey/LimeSurvey",
 	"description" : "The most popular FOSS online survey tool on the web",
 	"homepage" : "https://www.limesurvey.org/",
 	"license" : "GPL 2.0",
 	"authors" : [{
-			"name" : "René Rossi",
-			"email" : "rossi@pixelproduction.de",
-			"homepage" : "www.pixelproduction.de",
+			"name" : "LimeSurvey Team",
+			"email" : "support@limesurvey.org",
+			"homepage" : "www.limesurvey.org",
 			"role" : "Developer"
 		}
 	],
