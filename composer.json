@@ -1,5 +1,5 @@
 {
-	"name" : "Limesurvey",
+	"name" : "LimeSurvey/LimeSurvey",
 	"description" : "The most popular FOSS online survey tool on the web",
 	"homepage" : "https://www.limesurvey.org/",
 	"license" : "GPL 2.0",
@@ -16,5 +16,8 @@
 		"source" : "https://github.com/LimeSurvey/LimeSurvey",
 		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
 		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
+	},
+	"require": {
+		"php": ">=5.4.2"
 	}
 }
