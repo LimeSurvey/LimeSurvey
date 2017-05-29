@@ -1268,8 +1268,7 @@ class Survey extends LSActiveRecord
             'survey.groups',
         );
 
-        $criteria->order =Yii::app()->db->quoteColumnName('groups.group_order').','
-            .Yii::app()->db->quoteColumnName('t.question_order');
+        $criteria->order ='`groups`.`group_order`, `t`.`question_order`';
         $criteria->addColumnCondition(array(
             't.sid' => $this->sid,
             't.language' => $this->language,
