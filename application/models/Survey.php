@@ -1257,14 +1257,19 @@ class Survey extends LSActiveRecord
         return $this->sSurveyUrl;
     }
 
-
     /**
      * @return Question[]
      */
     public function getQuotableQuestions()
     {
-        $criteria = $this->getQuestionOrderCriteria();
+        $criteria=new CDbCriteria;
+        $criteria->select = 't.*';
+        $criteria->with=array(
+            'survey.groups',
+        );
 
+        $criteria->order =Yii::app()->db->quoteColumnName('groups.group_order').','
+            .Yii::app()->db->quoteColumnName('t.question_order');
         $criteria->addColumnCondition(array(
             't.sid' => $this->sid,
             't.language' => $this->language,
@@ -1272,28 +1277,12 @@ class Survey extends LSActiveRecord
 
         ));
 
+        $criteria->addCondition('`groups`.`gid` =`t`.`gid`','AND');
         $criteria->addInCondition('t.type',Question::getQuotableTypes());
 
         /** @var Question[] $questions */
         $questions = Question::model()->findAll($criteria);
         return $questions;
-    }
-
-    /**
-     * Get the DB criteria to get questions as ordered in survey
-     * @return CDbCriteria
-     */
-    private function getQuestionOrderCriteria(){
-        $criteria=new CDbCriteria;
-        $criteria->select = Yii::app()->db->quoteColumnName('t.*');
-        $criteria->with=array(
-            'survey.groups',
-        );
-        $criteria->order =Yii::app()->db->quoteColumnName('groups.group_order').','
-            .Yii::app()->db->quoteColumnName('t.question_order');
-        $criteria->addCondition('`groups`.`gid` =`t`.`gid`','AND');
-        return $criteria;
-
     }
 
 }
