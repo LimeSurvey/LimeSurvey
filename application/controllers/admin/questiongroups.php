@@ -36,7 +36,13 @@ class questiongroups extends Survey_Common_Action
     function import()
     {
         $action = $_POST['action'];
-        $iSurveyID = $surveyid =  $aData['surveyid'] = (int)$_POST['sid'];
+        $oSurvey = Survey::model()->findByPk((int)$_POST['sid']);
+        if(!$oSurvey){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
+        }
+        $iSurveyID = $surveyid =  $aData['surveyid'] = $oSurvey->primaryKey;
 
         if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         {
@@ -118,7 +124,13 @@ class questiongroups extends Survey_Common_Action
      */
     function importView($surveyid)
     {
-        $iSurveyID = $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if(!$oSurvey){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
+        }
+        $iSurveyID = $surveyid = $oSurvey->primaryKey;
         if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         {
 
@@ -148,12 +160,17 @@ class questiongroups extends Survey_Common_Action
     /**
      * questiongroup::add()
      * Load add new question group screen.
-     * @return
+     * @return mixed
      */
-    function add($surveyid)
+    public function add($surveyid)
     {
-        /////
-        $iSurveyID = $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if(!$oSurvey){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
+        }
+        $iSurveyID = $surveyid = $oSurvey->primaryKey;
         $aViewUrls = $aData = array();
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
@@ -199,13 +216,18 @@ class questiongroups extends Survey_Common_Action
      */
     public function insert($surveyid)
     {
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if(!$oSurvey){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
+        }
+
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
         {
             Yii::app()->loadHelper('surveytranslator');
 
-            $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
-            foreach ($sSurveyLanguages as $sLanguage)
-            {
+            foreach ($oSurvey->getAllLanguages() as $sLanguage) {
                 $oGroup=new QuestionGroup;
                 $oGroup->sid=$surveyid;
                 if(isset($newGroupID)){
@@ -262,7 +284,13 @@ class questiongroups extends Survey_Common_Action
      */
     public function delete($iSurveyId, $iGroupId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $iGroupId, 'language' => $oSurvey->language));
+        if(!$oSurvey || !$oQuestionGroup){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
+        }
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
         {
@@ -290,14 +318,21 @@ class questiongroups extends Survey_Common_Action
 
     public function view($surveyid, $gid)
     {
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $oSurvey->language));
+
+        if(!$oSurvey || !$oQuestionGroup){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
+        }
+
         $aData = array();
-        $aData['surveyid'] = $iSurveyID = $surveyid;
+        $aData['surveyid'] = $iSurveyID = $oSurvey->primaryKey;
         $aData['gid'] = $gid;
-        $baselang = Survey::model()->findByPk($surveyid)->language;
         $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         $aData['condarray'] = $condarray;
 
-        $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $baselang));
         $grow           = $oQuestionGroup->attributes;
 
         $grow = array_map('flattenText', $grow);
@@ -335,7 +370,15 @@ class questiongroups extends Survey_Common_Action
      */
     public function edit($surveyid, $gid)
     {
-        $surveyid = $iSurveyID = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $oSurvey->language));
+        if(!$oSurvey || !$oQuestionGroup){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
+        }
+
+        $surveyid = $oSurvey->primaryKey;
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
@@ -414,8 +457,8 @@ class questiongroups extends Survey_Common_Action
             $aData['tabtitles'] = $aTabTitles;
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+            $surveyinfo = $oSurvey->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyid.")";
 
             ///////////
             // sidemenu
@@ -445,6 +488,12 @@ class questiongroups extends Survey_Common_Action
     {
         $gid = (int) $gid;
         $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
+        if(!$group){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
+        }
+
         $surveyid = $group->sid;
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
