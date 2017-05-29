@@ -1419,8 +1419,7 @@ class questions extends Survey_Common_Action
             if (is_object($oQuestion))
             {
                 $aResults[$iQid]['title']  = viewHelper::flatEllipsizeText($oQuestion->question,true,0);
-                $result = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
-                $aResults[$iQid]['result']   = $result['status'];
+                $aResults[$iQid]['result']    = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
 
             }
         }
