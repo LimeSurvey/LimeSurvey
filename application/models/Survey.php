@@ -83,7 +83,6 @@ use \ls\pluginmanager\PluginEvent;
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
- * @property Question[] $quotableQuestions
  *
  * @property array $fullAnswers
  * @property array $partialAnswers
@@ -686,7 +685,7 @@ class Survey extends LSActiveRecord
     /**
      * Attribute renamed to questionindex in dbversion 169
      * Y maps to 1 otherwise 0;
-     * @param string $value
+     * @param type $value
      */
     public function setAllowjumps($value)
     {
@@ -1255,33 +1254,6 @@ class Survey extends LSActiveRecord
             $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
         }
         return $this->sSurveyUrl;
-    }
-
-    /**
-     * @return Question[]
-     */
-    public function getQuotableQuestions()
-    {
-        $criteria=new CDbCriteria;
-        $criteria->select = 't.*';
-        $criteria->with=array(
-            'survey.groups',
-        );
-
-        $criteria->order ='`groups`.`group_order`, `t`.`question_order`';
-        $criteria->addColumnCondition(array(
-            't.sid' => $this->sid,
-            't.language' => $this->language,
-            'parent_qid' => 0,
-
-        ));
-
-        $criteria->addCondition('`groups`.`gid` =`t`.`gid`','AND');
-        $criteria->addInCondition('t.type',Question::getQuotableTypes());
-
-        /** @var Question[] $questions */
-        $questions = Question::model()->findAll($criteria);
-        return $questions;
     }
 
 }
