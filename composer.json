@@ -1,0 +1,24 @@
+{
+	"name" : "pprossi/LimeSurvey",
+	"description" : "The most popular FOSS online survey tool on the web",
+	"homepage" : "https://www.limesurvey.org/",
+	"license" : "GPL 2.0",
+	"authors" : [{
+			"name" : "René Rossi",
+			"email" : "rossi@pixelproduction.de",
+			"homepage" : "www.pixelproduction.de",
+			"role" : "Developer"
+		}
+	],
+	"support" : {
+		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
+		"irc" : "https://www.limesurvey.org/de/community-hilfe/irc-live-chat",
+		"source" : "https://github.com/LimeSurvey/LimeSurvey",
+		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
+		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
+	},
+	"require" : {
+		"php" : ">=5.4.2"
+	},
+	"minimum-stability" : "dev"
+}
